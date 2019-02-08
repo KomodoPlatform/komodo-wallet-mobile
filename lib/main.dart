@@ -1,15 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  List<Coin> listCoinElectrum = new List<Coin>();
+
   @override
   Widget build(BuildContext context) {
-    _getBalance("BEER");
-    _getBalance("PIZZA");
+    loadCoins();
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -29,9 +36,42 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Future<Balance> _getBalance(String coin) async {
-    return getBalance(coin).then((Balance balance) {
-      print(balance.coin + "\n" + balance.address + "\n" + balance.balance.toString());
+  Future<Balance> _getBalance(Coin coin) async {
+    return getBalance(coin).then((dynamic response) {
+      if (response is Balance) {
+        Balance balance = response;
+        print("COIN: " + balance.coin + "  ADDR: " + balance.address + "  BALANCE: " + balance.balance.toString());
+      } else if (response is ErrorString){
+        print(response.error);
+      }
+    });
+  }
+
+  Future<Balance> _activeCoin(Coin coin) async {
+    return activeCoin(coin).then((dynamic response) {
+      if (response is ActiveCoin) {
+        ActiveCoin activeCoin = response;
+        print("coin: " + coin.name + "  result: " + activeCoin.result);
+        if (activeCoin.result == "success") {
+          _getBalance(coin);
+        }
+      } else if (response is ErrorString){
+        print(response.error);
+      }
+
+    });
+  }
+
+  Future<String> _loadElectrumServersAsset() async {
+    return await rootBundle.loadString('assets/electrum_servers.json');
+  }
+
+  Future loadCoins() async {
+    String jsonString = await _loadElectrumServersAsset();
+    Iterable l = json.decode(jsonString);
+    List<Coin> coins = l.map((model) => Coin.fromJson(model)).toList();
+    coins.forEach((coin){
+      _activeCoin(coin);
     });
   }
 
