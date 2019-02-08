@@ -1,0 +1,35 @@
+{
+  "coqui": {
+    "address": "electrum1.cipig.net",
+    "port": 10011,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "COQUI",
+    "serverList": [
+      "electrum1.cipig.net:10011",
+      "electrum2.cipig.net:10011"
+    ]
+  },
+  "beer": {
+    "address": "electrum1.cipig.net",
+    "port": 10022,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "BEER",
+    "serverList": [
+      "electrum1.cipig.net:10022",
+      "electrum2.cipig.net:10022"
+    ]
+  },
+  "pizza": {
+    "address": "electrum1.cipig.net",
+    "port": 10024,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "PIZZA",
+    "serverList": [
+      "electrum1.cipig.net:10024",
+      "electrum2.cipig.net:10024"
+    ]
+  }
+}
