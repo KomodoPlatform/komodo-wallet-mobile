@@ -22,6 +22,7 @@ class Coin {
   int txfee;
   String abbr;
   List<String> serverList;
+  bool isActive;
 
   Coin({
     this.name,
@@ -31,6 +32,7 @@ class Coin {
     this.txfee,
     this.abbr,
     this.serverList,
+    this.isActive = false
   });
 
   factory Coin.fromJson(Map<String, dynamic> json) => new Coin(
