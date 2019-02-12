@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/screens/coin_detail.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 
 void main() => runApp(MyApp());
@@ -50,7 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: FutureBuilder<List<CoinBalance>>(
         future: MarketMakerService().loadCoins(),
         builder: (context, snapshot) {
-          if (snapshot.hasData && !(snapshot.connectionState == ConnectionState.waiting)) {
+          if ((snapshot.hasData &&
+              !(snapshot.connectionState == ConnectionState.waiting)) || listCoinElectrum.length > 0) {
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
@@ -59,6 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   Balance balance = snapshot.data[index].balance;
 
                   return ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CoinDetail(snapshot.data[index])),
+                      );
+                    },
                     leading: Text(balance.balance.toString()),
                     title: Text(
                       item.name,
