@@ -15,21 +15,19 @@ String url = 'http://10.0.2.2:7783';
 String userpass =
     "80c55cfc36648f2541c3ca95e163ee9da904987e28c33a69fd735032f0523058";
 
+MarketMakerService mm2 = MarketMakerService();
+
 class MarketMakerService {
-  static final MarketMakerService _singleton = new MarketMakerService._internal();
   List<Coin> coins = List<Coin>();
   bool activeCoinBool = true;
 
-  factory MarketMakerService() {
+  MarketMakerService() {
     if (Platform.isAndroid) {
       url = 'http://10.0.2.2:7783';
     } else if (Platform.isIOS) {
       url = 'http://localhost:7783';
     }
-    return _singleton;
-  }
-
-  MarketMakerService._internal();
+   }
 
   Future<List<Coin>> loadJsonCoins() async {
     String jsonString = await this.loadElectrumServersAsset();
@@ -44,6 +42,15 @@ class MarketMakerService {
         userpass: userpass, method: "my_balance", coin: coin.abbr);
     final response = await http.post(url, body: json.encode(getBalance));
     return balanceFromJson(response.body);
+  }
+
+  Future<List<Balance>> getAllBalances() async {
+    List<Balance> balances = new List<Balance>();
+
+    for (var coin in coins) {
+      balances.add(await getBalance(coin));
+    }
+    return balances;
   }
 
   Future<dynamic> activeCoin(Coin coin) async {
@@ -78,7 +85,6 @@ class MarketMakerService {
         await this.activeCoin(coin);
         coin.isActive = true;
       }
-      
       Balance balance = await this.getBalance(coin);
       listCoinElectrum.add(CoinBalance(coin, balance));
     }

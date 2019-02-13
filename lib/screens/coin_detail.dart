@@ -11,6 +11,7 @@ class CoinDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(coinBalance.coin.name),
       ),
@@ -20,6 +21,7 @@ class CoinDetail extends StatelessWidget {
           Text(coinBalance.coin.name),
           Text(coinBalance.balance.address),
           QrImage(
+            foregroundColor: Theme.of(context).textSelectionColor,
             data: coinBalance.balance.address,
             size: 200.0,
           ),
