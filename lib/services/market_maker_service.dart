@@ -10,6 +10,8 @@ import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:komodo_dex/model/get_orderbook.dart';
+import 'package:komodo_dex/model/orderbook.dart';
 
 String url = 'http://10.0.2.2:7783';
 String userpass =
@@ -27,7 +29,18 @@ class MarketMakerService {
     } else if (Platform.isIOS) {
       url = 'http://localhost:7783';
     }
-   }
+  }
+
+  Future<Orderbook> getOrderbook(Coin coinBase, Coin coinRel) async {
+    GetOrderbook getOrderbook = new GetOrderbook(
+      userpass: userpass,
+      method: 'orderbook',
+      base: coinBase.abbr,
+      rel: coinRel.abbr
+    );
+    final response = await http.post(url, body: json.encode(getOrderbook));
+    return orderbookFromJson(response.body);
+  }
 
   Future<List<Coin>> loadJsonCoins() async {
     String jsonString = await this.loadElectrumServersAsset();

@@ -6,13 +6,13 @@ import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class CoinsBloc implements BlocBase {
-  List<CoinBalance> coinBalance;
+  List<CoinBalance> _coinBalance;
   List<Balance> _balances;
-
+  
   // Streams to handle the list coin
   StreamController<List<CoinBalance>> _coinsController =
       StreamController<List<CoinBalance>>.broadcast();
-  Sink<List<CoinBalance>> get _inCoins => _coinsController.sink;
+  Sink<List<CoinBalance>> get _inCoins => _coinsController.sink; 
   Stream<List<CoinBalance>> get outCoins => _coinsController.stream;
 
   CoinsBloc(){
@@ -20,8 +20,8 @@ class CoinsBloc implements BlocBase {
   }
 
   void init() async {
-    coinBalance = await mm2.loadCoins();
-    _inCoins.add(coinBalance);
+    _coinBalance = await mm2.loadCoins();
+    _inCoins.add(_coinBalance);
   }
 
   @override
@@ -30,20 +30,20 @@ class CoinsBloc implements BlocBase {
   }
 
   void updateCoins(List<CoinBalance> coins) {
-    coinBalance = coins;
-    _inCoins.add(coinBalance);
+    _coinBalance = coins;
+    _inCoins.add(_coinBalance);
   }
 
   void updateBalanceForEachCoin() async{
     _balances = await mm2.getAllBalances();
 
-    coinBalance.forEach((coinBalance){
+    _coinBalance.forEach((coinBalance){
       _balances.forEach((balance){
         if (coinBalance.coin.abbr == balance.coin) {
           coinBalance.balance = balance;
         }
       });
     });
-    _inCoins.add(coinBalance);
+    _inCoins.add(_coinBalance);
   }
 }
