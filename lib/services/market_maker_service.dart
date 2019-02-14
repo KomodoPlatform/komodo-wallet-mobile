@@ -33,11 +33,10 @@ class MarketMakerService {
 
   Future<Orderbook> getOrderbook(Coin coinBase, Coin coinRel) async {
     GetOrderbook getOrderbook = new GetOrderbook(
-      userpass: userpass,
-      method: 'orderbook',
-      base: coinBase.abbr,
-      rel: coinRel.abbr
-    );
+        userpass: userpass,
+        method: 'orderbook',
+        base: coinBase.abbr,
+        rel: coinRel.abbr);
     final response = await http.post(url, body: json.encode(getOrderbook));
     return orderbookFromJson(response.body);
   }
@@ -59,10 +58,12 @@ class MarketMakerService {
 
   Future<List<Balance>> getAllBalances() async {
     List<Balance> balances = new List<Balance>();
+    List<Future<Balance>> futureBalances = new List<Future<Balance>>();
 
     for (var coin in coins) {
-      balances.add(await getBalance(coin));
+      futureBalances.add(getBalance(coin));
     }
+    balances = await Future.wait(futureBalances);
     return balances;
   }
 
@@ -88,6 +89,8 @@ class MarketMakerService {
 
   Future<List<CoinBalance>> loadCoins() async {
     List<CoinBalance> listCoinElectrum = new List<CoinBalance>();
+    List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
+
     if (this.coins.isEmpty) {
       this.activeCoinBool = false;
       await this.loadJsonCoins();
@@ -95,11 +98,19 @@ class MarketMakerService {
 
     for (var coin in this.coins) {
       if (!coin.isActive) {
-        await this.activeCoin(coin);
+        futureActiveCoins.add(this.activeCoin(coin));
         coin.isActive = true;
       }
-      Balance balance = await this.getBalance(coin);
-      listCoinElectrum.add(CoinBalance(coin, balance));
+    }
+    await Future.wait(futureActiveCoins);
+
+    List<Balance> balances = await getAllBalances();
+
+    for (var coin in this.coins) {
+      for (var balance in balances) {
+        if (coin.abbr == balance.coin)
+          listCoinElectrum.add(CoinBalance(coin, balance));
+      }
     }
 
     listCoinElectrum

@@ -18,9 +18,6 @@ class OrderbookBloc implements BlocBase{
   }
 
   void updateOrderbook(Coin coinBase, Coin coinRel) async{
-    print(coinBase.abbr);
-    print(coinRel.abbr);
-    
     Orderbook orderbook = await mm2.getOrderbook(coinBase, coinRel);
     _orderBook = orderbook;
     _inOrderbook.add(_orderBook);

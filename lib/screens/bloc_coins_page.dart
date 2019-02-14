@@ -22,7 +22,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
         child: StreamBuilder<List<CoinBalance>>(
     stream: coinsBloc.outCoins,
     builder: (context, snapshot) {
-      if (snapshot.hasData) {
+      if (snapshot.hasData && snapshot.data.length > 0) {
         return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {

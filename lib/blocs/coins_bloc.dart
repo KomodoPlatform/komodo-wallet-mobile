@@ -6,8 +6,8 @@ import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class CoinsBloc implements BlocBase {
-  List<CoinBalance> _coinBalance;
-  List<Balance> _balances;
+  List<CoinBalance> _coinBalance = new List<CoinBalance>();
+  List<Balance> _balances = new List<Balance>();
   
   // Streams to handle the list coin
   StreamController<List<CoinBalance>> _coinsController =
@@ -37,13 +37,14 @@ class CoinsBloc implements BlocBase {
   void updateBalanceForEachCoin() async{
     _balances = await mm2.getAllBalances();
 
-    _coinBalance.forEach((coinBalance){
-      _balances.forEach((balance){
+    for (var coinBalance in _coinBalance) {
+      for (var balance in _balances) {
         if (coinBalance.coin.abbr == balance.coin) {
           coinBalance.balance = balance;
         }
-      });
-    });
+      }
+    }
+        
     _inCoins.add(_coinBalance);
   }
 }
