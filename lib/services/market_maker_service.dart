@@ -38,6 +38,7 @@ class MarketMakerService {
         base: coinBase.abbr,
         rel: coinRel.abbr);
     final response = await http.post(url, body: json.encode(getOrderbook));
+    print(response.body.toString());
     return orderbookFromJson(response.body);
   }
 
@@ -53,6 +54,7 @@ class MarketMakerService {
     GetBalance getBalance = new GetBalance(
         userpass: userpass, method: "my_balance", coin: coin.abbr);
     final response = await http.post(url, body: json.encode(getBalance));
+    print(response.body.toString());
     return balanceFromJson(response.body);
   }
 
@@ -75,7 +77,7 @@ class MarketMakerService {
         urls: coin.serverList);
 
     final response = await http.post(url, body: json.encode(getActiveCoin));
-    print("coin" + coin.name + " result:" + response.body);
+    print(response.body.toString());
     try {
       return activeCoinFromJson(response.body);
     } catch (e) {

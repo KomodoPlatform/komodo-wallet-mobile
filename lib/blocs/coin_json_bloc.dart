@@ -25,15 +25,6 @@ class CoinJsonBloc implements BlocBase{
   Sink<Coin> get _inRelCoin => _relCoinController.sink; 
   Stream<Coin> get outRelCoin => _relCoinController.stream;
 
-  CoinJsonBloc() {
-    init();
-  }
-
-  void init() {
-    baseCoin = baseCoin;
-    _inBaseCoin.add(baseCoin);
-  }
-
   @override
   void dispose() {
     _baseCoinController.close();

@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         child: BlocProvider<CoinJsonBloc>(
           bloc: CoinJsonBloc(),
           child: MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Komodo DEX',
             theme: ThemeData(
               primaryColor: Color.fromRGBO(30, 42, 58, 1),
               backgroundColor: Color.fromRGBO(42, 54, 71, 1),
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
                 headline:
                     TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
                 title: TextStyle(fontSize: 26.0, color: Colors.white),
+                subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
                 body1: TextStyle(
                     fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
               ),

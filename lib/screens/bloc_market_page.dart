@@ -17,58 +17,127 @@ class _BlocMarketPageState extends State<BlocMarketPage> {
     final OrderbookBloc orderbookBloc = BlocProvider.of<OrderbookBloc>(context);
     final CoinJsonBloc coinJsonBloc = BlocProvider.of<CoinJsonBloc>(context);
 
-    orderbookBloc.updateOrderbook(
-                    coinJsonBloc.baseCoin, coinJsonBloc.relCoin);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(height: 40),
-        FutureBuilder<List<Coin>>(
-          future: mm2.loadJsonCoins(),
-          builder: (context, jsonCoins) {
-            final CoinJsonBloc coinJsonBloc =
-                BlocProvider.of<CoinJsonBloc>(context);
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                BuildButtonCoin(
-                    isBaseCoin: true,
-                    coinJsonBloc: coinJsonBloc,
-                    jsonCoins: jsonCoins),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text("/"),
-                ),
-                BuildButtonCoin(
-                    isBaseCoin: false,
-                    coinJsonBloc: coinJsonBloc,
-                    jsonCoins: jsonCoins),
-              ],
-            );
-          },
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child:
-              Text('Orderbook', style: Theme.of(context).textTheme.title),
-        ),
-        Builder(
-          builder: (context) {
-            final OrderbookBloc orderbookBloc =
-                BlocProvider.of<OrderbookBloc>(context);
-            return StreamBuilder<Orderbook>(
-              stream: orderbookBloc.outOrderbook,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(snapshot.data.asks.length.toString());
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
-            );
-          },
-        )
-      ],
+    orderbookBloc.updateOrderbook(coinJsonBloc.baseCoin, coinJsonBloc.relCoin);
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, right: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 40),
+          SelectedBaseRelCoin(),
+          SizedBox(height: 40),
+          Text('Order Book', style: Theme.of(context).textTheme.title),
+          Builder(
+            builder: (context) {
+              final OrderbookBloc orderbookBloc =
+                  BlocProvider.of<OrderbookBloc>(context);
+              return StreamBuilder<Orderbook>(
+                stream: orderbookBloc.outOrderbook,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final asks = snapshot.data.asks;
+                    final bids = snapshot.data.bids;
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 16),
+                        Text("Asks",
+                            style: Theme.of(context).textTheme.subtitle),
+                        SizedBox(height: 4),
+                        ListOrder(orders: asks),
+                        SizedBox(height: 16),
+                        Text("Bids",
+                            style: Theme.of(context).textTheme.subtitle),
+                        SizedBox(height: 4),
+                        ListOrder(orders: bids),
+                      ],
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ListOrder extends StatefulWidget {
+  const ListOrder({
+    Key key,
+    @required this.orders,
+  }) : super(key: key);
+
+  final List<Ask> orders;
+
+  @override
+  ListOrderState createState() {
+    return new ListOrderState();
+  }
+}
+
+class ListOrderState extends State<ListOrder> {
+  @override
+  Widget build(BuildContext context) {
+    final List<TableRow> tableRows = List<TableRow>();
+    tableRows.add(TableRow(children: [
+      Text("Price"),
+      Text("Maxvolume"),
+      Text("address"),
+    ]));
+
+    widget.orders.forEach((order) {
+      tableRows.add(TableRow(children: [
+        Text(order.price.toString()),
+        Text(order.maxvolume.toString()),
+        Text(order.address),
+      ]));
+    });
+
+    if (widget.orders.length > 0) {
+      return Table(
+        children: tableRows,
+      );
+    } else {
+      return Text("No orders.");
+    }
+  }
+}
+
+class SelectedBaseRelCoin extends StatelessWidget {
+  const SelectedBaseRelCoin({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Coin>>(
+      future: mm2.loadJsonCoins(),
+      builder: (context, jsonCoins) {
+        final CoinJsonBloc coinJsonBloc =
+            BlocProvider.of<CoinJsonBloc>(context);
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            BuildButtonCoin(
+                isBaseCoin: true,
+                coinJsonBloc: coinJsonBloc,
+                jsonCoins: jsonCoins),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text("/"),
+            ),
+            BuildButtonCoin(
+                isBaseCoin: false,
+                coinJsonBloc: coinJsonBloc,
+                jsonCoins: jsonCoins),
+          ],
+        );
+      },
     );
   }
 }
@@ -94,8 +163,7 @@ class BuildButtonCoin extends StatefulWidget {
 class BuildButtonCoinState extends State<BuildButtonCoin> {
   @override
   Widget build(BuildContext context) {
-    final OrderbookBloc orderbookBloc =
-                    BlocProvider.of<OrderbookBloc>(context);
+    final OrderbookBloc orderbookBloc = BlocProvider.of<OrderbookBloc>(context);
 
     Stream<Coin> stream;
     if (widget.isBaseCoin) {
@@ -118,13 +186,14 @@ class BuildButtonCoinState extends State<BuildButtonCoin> {
         },
       ),
       onPressed: () {
-        _askedToLead(context, orderbookBloc, widget.jsonCoins.data, widget.coinJsonBloc);
+        _askedToLead(
+            context, orderbookBloc, widget.jsonCoins.data, widget.coinJsonBloc);
       },
     );
   }
 
-  Future<void> _askedToLead(
-      BuildContext context, OrderbookBloc orderbookBloc, List<Coin> coins, CoinJsonBloc coinJsonBloc) async {
+  Future<void> _askedToLead(BuildContext context, OrderbookBloc orderbookBloc,
+      List<Coin> coins, CoinJsonBloc coinJsonBloc) async {
     await showDialog<List<Coin>>(
         context: context,
         builder: (BuildContext context) {

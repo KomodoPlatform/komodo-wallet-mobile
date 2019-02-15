@@ -44,7 +44,7 @@ class CoinsBloc implements BlocBase {
         }
       }
     }
-        
+
     _inCoins.add(_coinBalance);
   }
 }
