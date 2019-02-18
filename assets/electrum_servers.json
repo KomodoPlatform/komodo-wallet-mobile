@@ -204,7 +204,7 @@
     ]
   },
   {
-    "name": "btc",
+    "name": "bitcoin",
     "address": "e-x.not.fyi",
     "port": 50001,
     "proto": "tcp",

@@ -20,19 +20,23 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             title: 'Komodo DEX',
             theme: ThemeData(
-              primaryColor: Color.fromRGBO(30, 42, 58, 1),
-              backgroundColor: Color.fromRGBO(42, 54, 71, 1),
+              primaryColor: Color.fromRGBO(42, 54, 71, 1),
+              backgroundColor: Color.fromRGBO(30, 42, 58, 1),
               primaryColorDark: Color.fromRGBO(42, 54, 71, 1),
               accentColor: Color.fromRGBO(65, 234, 213, 1),
               textSelectionColor: Colors.white,
               dialogBackgroundColor: Color.fromRGBO(42, 54, 71, 1),
+              fontFamily: 'Ubuntu',
               textTheme: TextTheme(
                 headline:
-                    TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-                title: TextStyle(fontSize: 26.0, color: Colors.white),
+                    TextStyle(fontSize: 40, fontWeight: FontWeight.w700, color: Colors.white),
+                title: TextStyle(fontSize: 26.0, color: Colors.white, fontWeight: FontWeight.w700),
                 subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
                 body1: TextStyle(
-                    fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
+                    fontSize: 16.0, color: Colors.white),
+                body2: TextStyle(
+                    fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
+
               ),
             ),
             home: MyHomePage(title: 'Komodo DEX'),
@@ -67,44 +71,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () {
-              if (_currentIndex == 0) {
-                coinsBloc.updateBalanceForEachCoin();
-              } else if (_currentIndex == 1) {
-                orderbookBloc.updateOrderbook(
-                    coinJsonBloc.baseCoin, coinJsonBloc.relCoin);
-              }
-            },
-          )
-        ],
-      ),
       body: _children[_currentIndex],
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-            canvasColor: Theme.of(context).primaryColor,
-            primaryColor: Theme.of(context).accentColor,
-            textTheme: Theme.of(context).textTheme.copyWith(
-                caption: new TextStyle(
-                    color: Theme.of(context)
-                        .textSelectionColor
-                        .withOpacity(0.5)))),
-        child: BottomNavigationBar(
-          onTap: onTabTapped,
-          currentIndex: _currentIndex,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.account_balance_wallet),
-                title: Text("Portfolio")),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.insert_chart), title: Text("Market")),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings), title: Text("Settings")),
-          ],
+      bottomNavigationBar: Material(
+        elevation: 16.0,
+        child: Theme(
+          data: Theme.of(context).copyWith(
+              canvasColor: Theme.of(context).primaryColor,
+              primaryColor: Theme.of(context).accentColor,
+              textTheme: Theme.of(context).textTheme.copyWith(
+                  caption: new TextStyle(
+                      color: Theme.of(context)
+                          .textSelectionColor
+                          .withOpacity(0.5)))),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            onTap: onTabTapped,
+            currentIndex: _currentIndex,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.account_balance_wallet),
+                  title: Text("Portfolio")),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.insert_chart), title: Text("Market")),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.settings), title: Text("Settings")),
+            ],
+          ),
         ),
       ),
     );

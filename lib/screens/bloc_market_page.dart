@@ -12,56 +12,110 @@ class BlocMarketPage extends StatefulWidget {
 }
 
 class _BlocMarketPageState extends State<BlocMarketPage> {
+  final relTxtFldCtlr = TextEditingController();
+  final priceTxtFldCtlr = TextEditingController();
+
+  @override
+  void dispose() {
+    relTxtFldCtlr.dispose();
+    priceTxtFldCtlr.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final OrderbookBloc orderbookBloc = BlocProvider.of<OrderbookBloc>(context);
     final CoinJsonBloc coinJsonBloc = BlocProvider.of<CoinJsonBloc>(context);
 
     orderbookBloc.updateOrderbook(coinJsonBloc.baseCoin, coinJsonBloc.relCoin);
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 40),
-          SelectedBaseRelCoin(),
-          SizedBox(height: 40),
-          Text('Order Book', style: Theme.of(context).textTheme.title),
-          Builder(
-            builder: (context) {
-              final OrderbookBloc orderbookBloc =
-                  BlocProvider.of<OrderbookBloc>(context);
-              return StreamBuilder<Orderbook>(
-                stream: orderbookBloc.outOrderbook,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final asks = snapshot.data.asks;
-                    final bids = snapshot.data.bids;
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: 16),
-                        Text("Asks",
-                            style: Theme.of(context).textTheme.subtitle),
-                        SizedBox(height: 4),
-                        ListOrder(orders: asks),
-                        SizedBox(height: 16),
-                        Text("Bids",
-                            style: Theme.of(context).textTheme.subtitle),
-                        SizedBox(height: 4),
-                        ListOrder(orders: bids),
-                      ],
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
-              );
-            },
-          )
-        ],
-      ),
+    return ListView(
+      padding: const EdgeInsets.only(left: 16, right: 16),
+      children: <Widget>[
+        SizedBox(height: 40),
+        SelectedBaseRelCoin(),
+        SizedBox(height: 40),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                keyboardType: TextInputType.number,
+                controller: relTxtFldCtlr,
+                style: Theme.of(context).textTheme.body1,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).primaryColorLight)),
+                  focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                    hintStyle: Theme.of(context).textTheme.body1,
+                    labelStyle: Theme.of(context).textTheme.body1,
+                    labelText: 'Rel volume'),
+              ),
+            ),
+            SizedBox(width: 10,),
+            Expanded(
+              child: TextField(
+                keyboardType: TextInputType.number,
+                controller: priceTxtFldCtlr,
+                style: Theme.of(context).textTheme.body1,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).primaryColorLight)),
+                  focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).accentColor)),
+                    hintStyle: Theme.of(context).textTheme.body1,
+                    labelStyle: Theme.of(context).textTheme.body1,
+                    labelText: 'Price'),
+              ),
+            ),
+            SizedBox(width: 10,),
+            RaisedButton(
+              child: Text("BUY"),
+              onPressed: (){
+                print(relTxtFldCtlr.text);
+                print(priceTxtFldCtlr.text);
+              },
+            ),
+          ],
+        ),
+        SizedBox(height: 40),
+        Text('Order Book', style: Theme.of(context).textTheme.title),
+        Builder(
+          builder: (context) {
+            final OrderbookBloc orderbookBloc =
+                BlocProvider.of<OrderbookBloc>(context);
+            return StreamBuilder<Orderbook>(
+              stream: orderbookBloc.outOrderbook,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final asks = snapshot.data.asks;
+                  final bids = snapshot.data.bids;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 16),
+                      Text("Asks",
+                          style: Theme.of(context).textTheme.subtitle),
+                      SizedBox(height: 4),
+                      ListOrder(orders: asks),
+                      SizedBox(height: 16),
+                      Text("Bids",
+                          style: Theme.of(context).textTheme.subtitle),
+                      SizedBox(height: 4),
+                      ListOrder(orders: bids),
+                    ],
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            );
+          },
+        )
+      ],
     );
   }
 }
