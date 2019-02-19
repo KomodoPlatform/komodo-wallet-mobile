@@ -19,7 +19,7 @@ class GetBuy {
     String method;
     String base;
     String rel;
-    int relvolume;
+    double relvolume;
     double price;
 
     GetBuy({
@@ -36,7 +36,7 @@ class GetBuy {
         method: json["method"],
         base: json["base"],
         rel: json["rel"],
-        relvolume: json["relvolume"],
+        relvolume: json["relvolume"].toDouble(),
         price: json["price"].toDouble(),
     );
 

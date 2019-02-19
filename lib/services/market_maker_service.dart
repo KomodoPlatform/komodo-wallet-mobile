@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -10,12 +11,13 @@ import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 
 String url = 'http://10.0.2.2:7783';
 String userpass =
-    "80c55cfc36648f2541c3ca95e163ee9da904987e28c33a69fd735032f0523058";
+    "password";
 
 MarketMakerService mm2 = MarketMakerService();
 
@@ -67,6 +69,24 @@ class MarketMakerService {
     }
     balances = await Future.wait(futureBalances);
     return balances;
+  }
+
+  Future<dynamic> postBuy(Coin base, Coin rel, double relVolume, double price) async{
+    GetBuy getBuy = new GetBuy(
+      userpass: userpass,
+      method: "buy",
+      base: base.abbr,
+      rel: rel.abbr,
+      relvolume: relVolume,
+      price: price
+    );
+    final response = await http.post(url, body: json.encode(getBuy));
+    print(response.body.toString());
+    try {
+      return buyResponseFromJson(response.body);
+    } catch (e) {
+      return e;
+    }
   }
 
   Future<dynamic> activeCoin(Coin coin) async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coin_json_bloc.dart';
 import 'package:komodo_dex/blocs/orderbook_bloc.dart';
+import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
@@ -14,6 +15,7 @@ class BlocMarketPage extends StatefulWidget {
 class _BlocMarketPageState extends State<BlocMarketPage> {
   final relTxtFldCtlr = TextEditingController();
   final priceTxtFldCtlr = TextEditingController();
+  Widget _buttonWaiting = Text("Buy");
 
   @override
   void dispose() {
@@ -29,93 +31,142 @@ class _BlocMarketPageState extends State<BlocMarketPage> {
 
     orderbookBloc.updateOrderbook(coinJsonBloc.baseCoin, coinJsonBloc.relCoin);
 
-    return ListView(
-      padding: const EdgeInsets.only(left: 16, right: 16),
-      children: <Widget>[
-        SizedBox(height: 40),
-        SelectedBaseRelCoin(),
-        SizedBox(height: 40),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: TextField(
-                keyboardType: TextInputType.number,
-                controller: relTxtFldCtlr,
-                style: Theme.of(context).textTheme.body1,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).accentColor)),
-                    hintStyle: Theme.of(context).textTheme.body1,
-                    labelStyle: Theme.of(context).textTheme.body1,
-                    labelText: 'Rel volume'),
+    return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              orderbookBloc.updateOrderbook(
+                  coinJsonBloc.baseCoin, coinJsonBloc.relCoin);
+            },
+          )
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.only(left: 16, right: 16),
+        children: <Widget>[
+          SizedBox(height: 40),
+          SelectedBaseRelCoin(),
+          SizedBox(height: 40),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: TextField(
+                  autofocus: false,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.number,
+                  controller: relTxtFldCtlr,
+                  style: Theme.of(context).textTheme.body1,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorLight)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor)),
+                      hintStyle: Theme.of(context).textTheme.body1,
+                      labelStyle: Theme.of(context).textTheme.body1,
+                      labelText: 'Rel volume'),
+                ),
               ),
-            ),
-            SizedBox(width: 10,),
-            Expanded(
-              child: TextField(
-                keyboardType: TextInputType.number,
-                controller: priceTxtFldCtlr,
-                style: Theme.of(context).textTheme.body1,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).accentColor)),
-                    hintStyle: Theme.of(context).textTheme.body1,
-                    labelStyle: Theme.of(context).textTheme.body1,
-                    labelText: 'Price'),
+              SizedBox(
+                width: 10,
               ),
-            ),
-            SizedBox(width: 10,),
-            RaisedButton(
-              child: Text("BUY"),
-              onPressed: (){
-                print(relTxtFldCtlr.text);
-                print(priceTxtFldCtlr.text);
-              },
-            ),
-          ],
-        ),
-        SizedBox(height: 40),
-        Text('Order Book', style: Theme.of(context).textTheme.title),
-        Builder(
-          builder: (context) {
-            final OrderbookBloc orderbookBloc =
-                BlocProvider.of<OrderbookBloc>(context);
-            return StreamBuilder<Orderbook>(
-              stream: orderbookBloc.outOrderbook,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final asks = snapshot.data.asks;
-                  final bids = snapshot.data.bids;
+              Expanded(
+                child: TextField(
+                  autofocus: false,
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.number,
+                  controller: priceTxtFldCtlr,
+                  style: Theme.of(context).textTheme.body1,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorLight)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor)),
+                      hintStyle: Theme.of(context).textTheme.body1,
+                      labelStyle: Theme.of(context).textTheme.body1,
+                      labelText: 'Price'),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              RaisedButton(
+                color: Theme.of(context).accentColor,
+                textColor: Theme.of(context).primaryColor,
+                child: _buttonWaiting,
+                onPressed: () {
+                  setState(() {
+                    _buttonWaiting = Center(child: Container(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),);
+                  });
+                  mm2
+                      .postBuy(
+                          coinJsonBloc.baseCoin,
+                          coinJsonBloc.relCoin,
+                          double.parse(relTxtFldCtlr.text),
+                          double.parse(priceTxtFldCtlr.text))
+                      .then((onValue) {
+                    setState(() {
+                      _buttonWaiting = Text("BUY");
+                    });
+                    if (onValue is BuyResponse && onValue.result == "success") {
+                      Scaffold.of(context).showSnackBar(new SnackBar(
+                        content: new Text("Buy success, waiting for swap..."),
+                      ));
+                    } else {
+                      Scaffold.of(context).showSnackBar(new SnackBar(
+                        content: new Text("A error happened please wait."),
+                      ));
+                    }
+                  });
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 40),
+          Text('Order Book', style: Theme.of(context).textTheme.title),
+          Builder(
+            builder: (context) {
+              final OrderbookBloc orderbookBloc =
+                  BlocProvider.of<OrderbookBloc>(context);
+              return StreamBuilder<Orderbook>(
+                stream: orderbookBloc.outOrderbook,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final asks = snapshot.data.asks;
+                    final bids = snapshot.data.bids;
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(height: 16),
-                      Text("Asks",
-                          style: Theme.of(context).textTheme.subtitle),
-                      SizedBox(height: 4),
-                      ListOrder(orders: asks),
-                      SizedBox(height: 16),
-                      Text("Bids",
-                          style: Theme.of(context).textTheme.subtitle),
-                      SizedBox(height: 4),
-                      ListOrder(orders: bids),
-                    ],
-                  );
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              },
-            );
-          },
-        )
-      ],
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 16),
+                        Text("Asks",
+                            style: Theme.of(context).textTheme.subtitle),
+                        SizedBox(height: 4),
+                        ListOrder(orders: asks),
+                        SizedBox(height: 16),
+                        Text("Bids",
+                            style: Theme.of(context).textTheme.subtitle),
+                        SizedBox(height: 4),
+                        ListOrder(orders: bids),
+                      ],
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              );
+            },
+          )
+        ],
+      ),
     );
   }
 }
