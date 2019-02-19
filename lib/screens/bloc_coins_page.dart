@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -5,8 +6,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/coin_detail.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:komodo_dex/utils/bottom_wave_clipper.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class BlocCoinsPage extends StatefulWidget {
   @override
@@ -16,11 +16,53 @@ class BlocCoinsPage extends StatefulWidget {
 class _BlocCoinsPageState extends State<BlocCoinsPage> {
   @override
   Widget build(BuildContext context) {
-    double _heightScreen = MediaQuery.of(context).size.height; 
+    double _heightScreen = MediaQuery.of(context).size.height;
     final CoinsBloc coinsBloc = BlocProvider.of<CoinsBloc>(context);
     coinsBloc.updateBalanceForEachCoin();
 
-    return Stack(
+    return Scaffold(
+      body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                backgroundColor: Theme.of(context).backgroundColor,
+                expandedHeight: _heightScreen * 0.35,
+                floating: false,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    title: Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Center(
+                        heightFactor: 5,
+                        child: AutoSizeText(
+                          "\$156,125.91 USD",
+                          style: Theme.of(context).textTheme.title,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
+                    background: Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        stops: [0.01, 1],
+                        colors: [
+                          Color.fromRGBO(39, 71, 110, 1),
+                          Theme.of(context).accentColor,
+                        ],
+                      )),
+                      height: _heightScreen * 0.4,
+                    )),
+              ),
+            ];
+          },
+          body: Container(
+              color: Theme.of(context).backgroundColor,
+              child: ListCoins(coinsBloc: coinsBloc))),
+    );
+/*    return Stack(
       children: <Widget>[
         ClipPath(
           clipper: BottomWaveClipper(),
@@ -41,7 +83,8 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
         Align(
             alignment: Alignment.topCenter,
             child: Padding(
-                padding: EdgeInsets.only(top: _heightScreen * 0.12, left: 16, right: 16),
+                padding: EdgeInsets.only(
+                    top: _heightScreen * 0.12, left: 16, right: 16),
                 child: AutoSizeText(
                   "\$156,125.91 USD",
                   style: Theme.of(context).textTheme.headline,
@@ -52,25 +95,38 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
           child: Padding(
             padding: EdgeInsets.only(top: _heightScreen * 0.3),
             child: Container(
-              child: StreamBuilder<List<CoinBalance>>(
-                stream: coinsBloc.outCoins,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data.length > 0) {
-                    return ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, index) {
-                          return ItemCoin(
-                              index: index, listCoinBalances: snapshot.data);
-                        });
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
+              child: new ListCoins(coinsBloc: coinsBloc),
             ),
           ),
         ),
       ],
+    );*/
+  }
+}
+
+class ListCoins extends StatelessWidget {
+  const ListCoins({
+    Key key,
+    @required this.coinsBloc,
+  }) : super(key: key);
+
+  final CoinsBloc coinsBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<CoinBalance>>(
+      stream: coinsBloc.outCoins,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data.length > 0) {
+          return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                return ItemCoin(index: index, listCoinBalances: snapshot.data);
+              });
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }
@@ -86,7 +142,6 @@ class ItemCoin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double _heightScreen = MediaQuery.of(context).size.height;
-    double _heightCard = _heightScreen * 0.15;
     Coin coin = listCoinBalances[index].coin;
     Balance balance = listCoinBalances[index].balance;
 
@@ -112,16 +167,16 @@ class ItemCoin extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  CircleAvatar(
-                    radius: _heightCard * 0.25,
-                    backgroundImage: NetworkImage(
-                        "https://raw.githubusercontent.com/jl777/coins/master/icons/${balance.coin.toLowerCase()}.png"),
+                  PhotoHero(
+                    url:
+                        "https://raw.githubusercontent.com/jl777/coins/master/icons/${balance.coin.toLowerCase()}.png",
+                    photo:
+                        "https://raw.githubusercontent.com/jl777/coins/master/icons/${balance.coin.toLowerCase()}.png",
                   ),
                   SizedBox(height: 6),
                   Text(
                     coin.name.toUpperCase(),
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   )
                 ],
               ),
