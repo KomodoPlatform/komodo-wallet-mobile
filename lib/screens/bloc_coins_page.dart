@@ -327,7 +327,7 @@ class ItemCoin extends StatelessWidget {
                 borderRadius: BorderRadius.only(topRight: Radius.circular(6), bottomRight: Radius.circular(6)),
                 child: Container(
                   color: Color(int.parse(coin.colorCoin)),
-                  width: 16,
+                  width: 8,
                 ),
               ),
             ],
