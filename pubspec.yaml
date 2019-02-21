@@ -26,7 +26,6 @@ dev_dependencies:
   http: ^0.12.0
   qr_flutter: ^1.1.6
   auto_size_text: ^1.0.0
-  random_color: ^1.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

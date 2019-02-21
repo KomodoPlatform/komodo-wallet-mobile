@@ -7,7 +7,6 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/coin_detail.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'dart:math';
-import 'package:random_color/random_color.dart';
 
 class BlocCoinsPage extends StatefulWidget {
   @override
