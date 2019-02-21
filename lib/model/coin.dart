@@ -23,6 +23,7 @@ class Coin {
   String abbr;
   List<String> serverList;
   bool isActive;
+  String colorCoin;
 
   Coin({
     this.name,
@@ -32,7 +33,8 @@ class Coin {
     this.txfee,
     this.abbr,
     this.serverList,
-    this.isActive = false
+    this.isActive = false,
+    this.colorCoin
   });
 
   factory Coin.fromJson(Map<String, dynamic> json) => new Coin(
@@ -42,6 +44,7 @@ class Coin {
     proto: json["proto"],
     txfee: json["txfee"],
     abbr: json["abbr"],
+    colorCoin: json["colorCoin"],
     serverList: new List<String>.from(json["serverList"].map((x) => x)),
   );
 
@@ -52,6 +55,7 @@ class Coin {
     "proto": proto,
     "txfee": txfee,
     "abbr": abbr,
+    "colorCoin": colorCoin,
     "serverList": new List<dynamic>.from(serverList.map((x) => x)),
   };
 }

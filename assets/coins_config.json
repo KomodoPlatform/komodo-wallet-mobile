@@ -6,6 +6,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "COQUI",
+    "colorCoin": "0xFF5925d2",
     "serverList": [
       "electrum1.cipig.net:10011",
       "electrum2.cipig.net:10011"
@@ -18,6 +19,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "REVS",
+    "colorCoin": "0xFF9f77f4",
     "serverList": [
       "electrum1.cipig.net:10003",
       "electrum2.cipig.net:10003"
@@ -30,6 +32,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "SUPERNET",
+    "colorCoin": "0xFFc0274d",
     "serverList": [
       "electrum1.cipig.net:10005",
       "electrum2.cipig.net:10005"
@@ -42,6 +45,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "DEX",
+    "colorCoin": "0xFF988dbb",
     "serverList": [
       "electrum1.cipig.net:10006",
       "electrum2.cipig.net:10006"
@@ -54,6 +58,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "BOTS",
+    "colorCoin": "0xFFc0c5f1",
     "serverList": [
       "electrum1.cipig.net:10007",
       "electrum2.cipig.net:10007"
@@ -66,6 +71,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "CRYPTO",
+    "colorCoin": "0xFF33aabe",
     "serverList": [
       "electrum1.cipig.net:10008",
       "electrum2.cipig.net:10008"
@@ -78,6 +84,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "HODL",
+    "colorCoin": "0xFF7abaf3",
     "serverList": [
       "electrum1.cipig.net:10009",
       "electrum2.cipig.net:10009"
@@ -90,6 +97,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "PANGEA",
+    "colorCoin": "0xFF2d6c46",
     "serverList": [
       "electrum1.cipig.net:10010",
       "electrum2.cipig.net:10010"
@@ -102,6 +110,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "BET",
+    "colorCoin": "0xFFf4345b",
     "serverList": [
       "electrum1.cipig.net:10012",
       "electrum2.cipig.net:10012"
@@ -114,6 +123,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "MSHARK",
+    "colorCoin": "0xFFde4322",
     "serverList": [
       "electrum1.cipig.net:10013",
       "electrum2.cipig.net:10013"
@@ -126,6 +136,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "WLC",
+    "colorCoin": "0xFF4d8879",
     "serverList": [
       "electrum1.cipig.net:10014",
       "electrum2.cipig.net:10014"
@@ -138,6 +149,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "MGW",
+    "colorCoin": "0xFFf45b2a",
     "serverList": [
       "electrum1.cipig.net:10015",
       "electrum2.cipig.net:10015"
@@ -150,6 +162,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "BTCH",
+    "colorCoin": "0xFF3d2553",
     "serverList": [
       "electrum1.cipig.net:10020",
       "electrum2.cipig.net:10020"
@@ -162,6 +175,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "BEER",
+    "colorCoin": "0xFFaa81b8",
     "serverList": [
       "electrum1.cipig.net:10022",
       "electrum2.cipig.net:10022"
@@ -174,6 +188,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "PIZZA",
+    "colorCoin": "0xFF3d7d63",
     "serverList": [
       "electrum1.cipig.net:10024",
       "electrum2.cipig.net:10024"
@@ -186,6 +201,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "JUMBLR",
+    "colorCoin": "0xFF9e1ec2",
     "serverList": [
       "electrum1.cipig.net:10004",
       "electrum2.cipig.net:10004"
@@ -198,6 +214,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "KMD",
+    "colorCoin": "0xFF62a30d",
     "serverList": [
       "electrum1.cipig.net:10001",
       "electrum2.cipig.net:10001'"
@@ -209,6 +226,7 @@
     "port": 50001,
     "proto": "tcp",
     "abbr": "BTC",
+    "colorCoin": "0xFF98baca",
     "serverList": [
       "mooo.not.fyi:50011",
       "e-x.not.fyi:50001",
@@ -227,6 +245,7 @@
     "proto": "tcp",
     "abbr": "BLK",
     "txfee": 10000,
+    "colorCoin": "0xFF6f6fbd",
     "serverList": [
       "electrum1.cipig.net:10054",
       "electrum2.cipig.net:10054"
@@ -239,6 +258,7 @@
     "proto": "tcp",
     "abbr": "SIB",
     "txfee": 10000,
+    "colorCoin": "0xFF719203",
     "serverList": [
       "electrum1.cipig.net:10050",
       "electrum2.cipig.net:10050"
@@ -251,6 +271,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "CHIPS",
+    "colorCoin": "0xFF3dcce8",
     "serverList": [
       "electrum1.cipig.net:10053",
       "electrum2.cipig.net:10053"
@@ -263,6 +284,7 @@
     "proto": "tcp",
     "txfee": 1000,
     "abbr": "ZCL",
+    "colorCoin": "0xFF2ca6dc",
     "serverList": [
       "electrum1.cipig.net:10055",
       "electrum2.cipig.net:10055"
@@ -275,6 +297,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "BTCZ",
+    "colorCoin": "0xFFa1da21",
     "serverList": [
       "electrum1.cipig.net:10056",
       "electrum2.cipig.net:10056"
@@ -287,6 +310,7 @@
     "proto": "tcp",
     "txfee": 50000,
     "abbr": "GRS",
+    "colorCoin": "0xFFaeb07e",
     "serverList": [
       "electrum10.groestlcoin.org:50001",
       "electrum11.groestlcoin.org:50001"

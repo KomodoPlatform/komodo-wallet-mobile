@@ -106,7 +106,7 @@ class MarketMakerService {
   }
 
   Future<String> loadElectrumServersAsset() async {
-    return await rootBundle.loadString('assets/electrum_servers.json');
+    return await rootBundle.loadString('assets/coins_config.json');
   }
 
   Future<List<CoinBalance>> loadCoins() async {

@@ -15,13 +15,13 @@ class CoinDetail extends StatelessWidget {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(coinBalance.coin.name),
+        backgroundColor: Color(int.parse(coinBalance.coin.colorCoin)),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           PhotoHero(
             url: "https://raw.githubusercontent.com/jl777/coins/master/icons/${coinBalance.balance.coin.toLowerCase()}.png",
-            photo: "https://raw.githubusercontent.com/jl777/coins/master/icons/${coinBalance.balance.coin.toLowerCase()}.png",
             radius: 40,
           ),
           Text(coinBalance.coin.name),

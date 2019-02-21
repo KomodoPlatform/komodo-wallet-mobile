@@ -36,6 +36,8 @@ class MyApp extends StatelessWidget {
                     fontSize: 16.0, color: Colors.white),
                 body2: TextStyle(
                     fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
+                caption: TextStyle(
+                    fontSize: 12.0, color: Colors.white.withOpacity(0.8), fontWeight: FontWeight.w400)
 
               ),
             ),
@@ -73,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Theme.of(context).backgroundColor,
       body: _children[_currentIndex],
       bottomNavigationBar: Material(
-        elevation: 16.0,
+        elevation: 8.0,
         child: Theme(
           data: Theme.of(context).copyWith(
               canvasColor: Theme.of(context).primaryColor,
