@@ -98,7 +98,6 @@ class MarketMakerService {
     String jsonString = await this.loadElectrumServersAsset();
     Iterable l = json.decode(jsonString);
     List<Coin> coins = l.map((model) => Coin.fromJson(model)).toList();
-    print("LENGTH_coins_json" + coins.length.toString());
     this.coins = coins;
     return coins;
   }
@@ -161,7 +160,9 @@ class MarketMakerService {
   }
 
   Future<List<CoinBalance>> loadCoins() async {
-    await runBin();
+    if (this.activeCoinBool) {
+      await runBin();
+    }
     List<CoinBalance> listCoinElectrum = new List<CoinBalance>();
     List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
 
@@ -186,9 +187,6 @@ class MarketMakerService {
           listCoinElectrum.add(CoinBalance(coin, balance));
       }
     }
-    print("LENGTH_balances" + balances.length.toString());
-    print("LENGTH_coins" + this.coins.length.toString());
-    print("LENGTH_listCoinElectrum" + listCoinElectrum.length.toString());
 
     listCoinElectrum
         .sort((a, b) => a.balance.balance.compareTo(b.balance.balance));

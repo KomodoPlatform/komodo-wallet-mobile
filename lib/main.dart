@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coin_json_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orderbook_bloc.dart';
@@ -6,7 +7,12 @@ import 'package:komodo_dex/screens/bloc_coins_page.dart';
 import 'package:komodo_dex/screens/bloc_market_page.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MyApp());
+  });
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -28,18 +34,22 @@ class MyApp extends StatelessWidget {
               dialogBackgroundColor: Color.fromRGBO(42, 54, 71, 1),
               fontFamily: 'Ubuntu',
               textTheme: TextTheme(
-                headline:
-                    TextStyle(fontSize: 40, fontWeight: FontWeight.w700, color: Colors.white),
-                title: TextStyle(fontSize: 26.0, color: Colors.white, fontWeight: FontWeight.w700),
-                subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
-                body1: TextStyle(
-                    fontSize: 16.0, color: Colors.white),
-                body2: TextStyle(
-                    fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
-                caption: TextStyle(
-                    fontSize: 12.0, color: Colors.white.withOpacity(0.8), fontWeight: FontWeight.w400)
-
-              ),
+                  headline: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                  title: TextStyle(
+                      fontSize: 26.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700),
+                  subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
+                  body1: TextStyle(fontSize: 16.0, color: Colors.white),
+                  body2: TextStyle(
+                      fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
+                  caption: TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.white.withOpacity(0.8),
+                      fontWeight: FontWeight.w400)),
             ),
             home: MyHomePage(title: 'Komodo DEX'),
           ),
