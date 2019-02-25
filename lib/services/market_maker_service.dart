@@ -54,11 +54,14 @@ class MarketMakerService {
     String coins = '[{\"coin\": \"PIZZA\",\"asset\": \"PIZZA\",\"txversion\":4,\"rpcport\":11608},{\"coin\": \"BEER\",\"txversion\":4,\"asset\": \"BEER\",\"rpcport\": 8923}]';
     String passphrase = "seventy cuddly simmering trillion armored grout unadorned scouts ranch skeptic parlor exhale";
 
-    ProcessResult runmm2 = await Process.run('./data/data/com.komodoplatform.komododex/files/mm2', [
-      '{\"gui\":\"MM2GUI\",\"netid\":9999,\"client\":1,\"userhome\":\"\/data/data/com.komodoplatform.komododex/files/\",\"passphrase\":\"$passphrase\",\"coins\":$coins}',
-      '&'
-    ]);
+    ProcessResult runmm2 = await Process.run(
+      'mm2',
+      ['{\"gui\":\"MM2GUI\",\"netid\":9999,\"client\":1,\"userhome\":\"\/data/data/com.komodoplatform.komododex/files/\",\"passphrase\":\"$passphrase\",\"coins\":$coins}'],
+      workingDirectory: '/data/data/com.komodoplatform.komododex/files'
+    );
+    print('mm2 stopped. mm2 stdout:');
     print(runmm2.stdout);
+    print('mm2 stderr:');
     print(runmm2.stderr);
 
     return resultLS;
