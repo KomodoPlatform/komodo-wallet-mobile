@@ -9,15 +9,14 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/model/get_balance.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/services.dart' show rootBundle;
+import 'dart:io' show File, Platform, Process, ProcessResult;
+import 'package:flutter/services.dart' show ByteData, rootBundle;
 import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 
 String url = 'http://10.0.2.2:7783';
-String userpass =
-    "password";
+String userpass = "password";
 
 MarketMakerService mm2 = MarketMakerService();
 
@@ -31,6 +30,47 @@ class MarketMakerService {
     } else if (Platform.isIOS) {
       url = 'http://localhost:7783';
     }
+  }
+
+  Future<ProcessResult> runBin() async {
+    ByteData resultmm2 = await rootBundle.load("assets/mm2");
+    await writeData(resultmm2.buffer.asUint8List());
+
+    ProcessResult resultLS = await Process.run('ls', [
+      '-la',
+      '/data/data/com.komodoplatform.komododex/files/'
+    ]);
+
+    // print(resultLS.stdout);
+    // print(resultLS.stderr);
+
+    ProcessResult resultChmod = await Process.run('chmod', [
+      '+x',
+      '/data/data/com.komodoplatform.komododex/files/mm2'
+    ]);
+    // print(resultChmod.stdout);
+    // print(resultChmod.stderr);
+
+    String coins = '[{\"coin\": \"PIZZA\",\"asset\": \"PIZZA\",\"txversion\":4,\"rpcport\":11608},{\"coin\": \"BEER\",\"txversion\":4,\"asset\": \"BEER\",\"rpcport\": 8923}]';
+    String passphrase = "seventy cuddly simmering trillion armored grout unadorned scouts ranch skeptic parlor exhale";
+
+    ProcessResult runmm2 = await Process.run('./data/data/com.komodoplatform.komododex/files/mm2', [
+      '{\"gui\":\"MM2GUI\",\"netid\":9999,\"client\":1,\"userhome\":\"\/data/data/com.komodoplatform.komododex/files/\",\"passphrase\":\"$passphrase\",\"coins\":$coins}',
+      '&'
+    ]);
+    print(runmm2.stdout);
+    print(runmm2.stderr);
+
+    return resultLS;
+  }
+
+  Future<File> get _localFile async {
+    return File('/data/data/com.komodoplatform.komododex/files/mm2');
+  }
+
+  Future<File> writeData(List<int> data) async {
+    final file = await _localFile;
+    return file.writeAsBytes(data);
   }
 
   Future<Orderbook> getOrderbook(Coin coinBase, Coin coinRel) async {
@@ -71,15 +111,15 @@ class MarketMakerService {
     return balances;
   }
 
-  Future<dynamic> postBuy(Coin base, Coin rel, double relVolume, double price) async{
+  Future<dynamic> postBuy(
+      Coin base, Coin rel, double relVolume, double price) async {
     GetBuy getBuy = new GetBuy(
-      userpass: userpass,
-      method: "buy",
-      base: base.abbr,
-      rel: rel.abbr,
-      relvolume: relVolume,
-      price: price
-    );
+        userpass: userpass,
+        method: "buy",
+        base: base.abbr,
+        rel: rel.abbr,
+        relvolume: relVolume,
+        price: price);
     final response = await http.post(url, body: json.encode(getBuy));
     print(response.body.toString());
     try {
