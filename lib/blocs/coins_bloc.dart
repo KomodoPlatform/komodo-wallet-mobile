@@ -1,21 +1,23 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class CoinsBloc implements BlocBase {
   List<CoinBalance> _coinBalance = new List<CoinBalance>();
   List<Balance> _balances = new List<Balance>();
-  
+
   // Streams to handle the list coin
   StreamController<List<CoinBalance>> _coinsController =
       StreamController<List<CoinBalance>>.broadcast();
-  Sink<List<CoinBalance>> get _inCoins => _coinsController.sink; 
+  Sink<List<CoinBalance>> get _inCoins => _coinsController.sink;
   Stream<List<CoinBalance>> get outCoins => _coinsController.stream;
 
-  CoinsBloc(){
+  CoinsBloc() {
     init();
   }
 
@@ -34,7 +36,7 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(_coinBalance);
   }
 
-  void updateBalanceForEachCoin() async{
+  void updateBalanceForEachCoin() async {
     _balances = await mm2.getAllBalances();
 
     for (var coinBalance in _coinBalance) {
