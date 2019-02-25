@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/active_coin.dart';
@@ -36,33 +38,38 @@ class MarketMakerService {
     ByteData resultmm2 = await rootBundle.load("assets/mm2");
     await writeData(resultmm2.buffer.asUint8List());
 
-    ProcessResult resultLS = await Process.run('ls', [
-      '-la',
-      '/data/data/com.komodoplatform.komododex/files/'
-    ]);
+    ProcessResult resultLS = await Process.run(
+        'ls', ['-la', '/data/data/com.komodoplatform.komododex/files/']);
 
     // print(resultLS.stdout);
     // print(resultLS.stderr);
 
-    ProcessResult resultChmod = await Process.run('chmod', [
-      '+x',
-      '/data/data/com.komodoplatform.komododex/files/mm2'
-    ]);
+    await Process.run(
+        'chmod', ['777', '/data/data/com.komodoplatform.komododex/files/mm2']);
+
     // print(resultChmod.stdout);
     // print(resultChmod.stderr);
 
-    String coins = '[{\"coin\": \"PIZZA\",\"asset\": \"PIZZA\",\"txversion\":4,\"rpcport\":11608},{\"coin\": \"BEER\",\"txversion\":4,\"asset\": \"BEER\",\"rpcport\": 8923}]';
-    String passphrase = "seventy cuddly simmering trillion armored grout unadorned scouts ranch skeptic parlor exhale";
+    String coins =
+        '[{\"coin\": \"PIZZA\",\"asset\": \"PIZZA\",\"txversion\":4,\"rpcport\":11608},{\"coin\": \"BEER\",\"txversion\":4,\"asset\": \"BEER\",\"rpcport\": 8923}]';
+    String passphrase =
+        "seventy cuddly simmering trillion armored grout unadorned scouts ranch skeptic parlor exhale";
 
-    ProcessResult runmm2 = await Process.run(
-      'mm2',
-      ['{\"gui\":\"MM2GUI\",\"netid\":9999,\"client\":1,\"userhome\":\"\/data/data/com.komodoplatform.komododex/files/\",\"passphrase\":\"$passphrase\",\"coins\":$coins}'],
-      workingDirectory: '/data/data/com.komodoplatform.komododex/files'
-    );
-    print('mm2 stopped. mm2 stdout:');
-    print(runmm2.stdout);
-    print('mm2 stderr:');
-    print(runmm2.stderr);
+    Process runmm2 = await Process.start(
+        './mm2',
+        [
+          '{\"gui\":\"MM2GUI\",\"netid\":9999,\"client\":1,\"userhome\":\"/data/data/com.komodoplatform.komododex/files/\",\"passphrase\":\"$passphrase\",\"coins\":$coins}',
+        ],
+        workingDirectory: '/data/data/com.komodoplatform.komododex/files');
+
+    final Completer<int> completer = new Completer<int>();
+
+    runmm2.stdout.listen((List<int> event) {
+      print(utf8.decoder.convert(event).trim());
+    }, onDone: () async => completer.complete(await runmm2.exitCode));
+
+    // print(runmm2.stdout);
+    // print(runmm2.stderr);
 
     return resultLS;
   }
