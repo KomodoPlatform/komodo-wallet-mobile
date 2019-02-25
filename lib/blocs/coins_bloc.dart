@@ -18,8 +18,7 @@ class CoinsBloc implements BlocBase {
   Stream<List<CoinBalance>> get outCoins => _coinsController.stream;
 
   CoinsBloc() {
-    // init();
-    mm2.runBin();
+    init();
   }
 
   void init() async {
