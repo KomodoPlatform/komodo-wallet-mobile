@@ -28,6 +28,7 @@ dev_dependencies:
   auto_size_text: ^1.0.0
   barcode_scan: ^0.0.8
   shared_preferences: ^0.5.1+1
+  bip39: ^1.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -39,6 +40,7 @@ flutter:
   assets:
   - assets/coins_config.json
   - assets/mm2
+  - assets/logo_kmd.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

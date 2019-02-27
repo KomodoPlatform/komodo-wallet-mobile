@@ -4,8 +4,8 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coin_json_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orderbook_bloc.dart';
+import 'package:komodo_dex/screens/authenticate_page.dart';
 import 'package:komodo_dex/screens/bloc_coins_page.dart';
-import 'package:komodo_dex/screens/bloc_login_page.dart';
 import 'package:komodo_dex/screens/bloc_market_page.dart';
 import 'package:komodo_dex/screens/setting_page.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -33,6 +33,8 @@ class MyApp extends StatelessWidget {
         dialogBackgroundColor: Color.fromRGBO(42, 54, 71, 1),
         fontFamily: 'Ubuntu',
         hintColor: Colors.white,
+        disabledColor: Colors.grey,
+        buttonColor: Color.fromRGBO(39, 68, 108, 1),
         textTheme: TextTheme(
             headline: TextStyle(
                 fontSize: 40, fontWeight: FontWeight.w700, color: Colors.white),
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.w700),
             subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
             body1: TextStyle(fontSize: 16.0, color: Colors.white),
+            button: TextStyle(fontSize: 16.0, color: Colors.white),
             body2:
             TextStyle(fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
             caption: TextStyle(
@@ -61,7 +64,7 @@ class MyApp extends StatelessWidget {
                         bloc: CoinJsonBloc(),
                         child: MyHomePage(title: 'Komodo DEX'))));
           } else {
-            return BlocLoginPage();
+            return AuthenticatePage();
           }
         },
       ),
