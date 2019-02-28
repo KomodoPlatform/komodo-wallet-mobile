@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/screens/pin_page.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -24,16 +25,38 @@ class _SettingPageState extends State<SettingPage> {
             children: <Widget>[
               ListTile(
                 leading: Icon(
-                  Icons.exit_to_app,
+                  Icons.security,
                   color: Theme.of(context).hintColor,
                 ),
                 title: Text(
-                  'Logout',
+                  'Change PIN',
                   style: Theme.of(context).textTheme.body1,
                 ),
                 onTap: () {
-                  authBloc.logout();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PinPage()),
+                  );
                 },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.red.withOpacity(0.7),
+                  ),
+                  title: Text(
+                    'Logout',
+                    style: Theme.of(context).textTheme.body1.copyWith(
+                      color: Colors.red.withOpacity(0.7)
+                    ),
+                  ),
+                  onTap: () {
+                    authBloc.logout();
+                  },
+                ),
               )
             ],
           ),

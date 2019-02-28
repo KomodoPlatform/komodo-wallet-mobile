@@ -7,15 +7,18 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticateBloc extends BlocBase {
-  bool isLogin = false;
 
-  // Streams to handle the list coin
+  bool isLogin = false;
   StreamController<bool> _isLoginController =
       StreamController<bool>.broadcast();
-
   Sink<bool> get _inIsLogin => _isLoginController.sink;
-
   Stream<bool> get outIsLogin => _isLoginController.stream;
+
+  bool isPinShow = false;
+  StreamController<bool> _showPinController =
+        StreamController<bool>.broadcast();
+  Sink<bool> get _inShowPin => _showPinController.sink;
+  Stream<bool> get outShowPin => _showPinController.stream;
 
   AuthenticateBloc() {
     init();
@@ -34,6 +37,7 @@ class AuthenticateBloc extends BlocBase {
   @override
   void dispose() {
     _isLoginController.close();
+    _showPinController.close();
   }
 
   void login(String passphrase) async {
@@ -50,6 +54,11 @@ class AuthenticateBloc extends BlocBase {
     coinsBloc.resetCoinBalance();
     mm2.balances = new List<Balance>();
     _inIsLogin.add(false);
+  }
+
+  void showPin(bool isShow) {
+    isPinShow = isShow;
+    _inShowPin.add(isPinShow);
   }
 }
 
