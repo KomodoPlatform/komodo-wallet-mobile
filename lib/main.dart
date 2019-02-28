@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         dialogBackgroundColor: Color.fromRGBO(42, 54, 71, 1),
         fontFamily: 'Ubuntu',
         hintColor: Colors.white,
-        disabledColor: Colors.grey,
+        disabledColor: Color.fromRGBO(201, 201, 201, 1),
         buttonColor: Color.fromRGBO(39, 68, 108, 1),
         textTheme: TextTheme(
             headline: TextStyle(

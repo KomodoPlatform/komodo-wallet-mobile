@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 
-class BlocLoginPage extends StatefulWidget {
+class ConfirmAccountPage extends StatefulWidget {
+  final String seed;
+
+  ConfirmAccountPage(this.seed);
+
   @override
-  _BlocLoginPageState createState() => _BlocLoginPageState();
+  _ConfirmAccountPageState createState() => _ConfirmAccountPageState();
 }
 
-class _BlocLoginPageState extends State<BlocLoginPage> {
+class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
   TextEditingController controllerSeed = new TextEditingController();
   bool _isButtonDisabled;
 
-  @override
-  void initState() {
-    _isButtonDisabled = false;
-    super.initState();
-  }
   @override
   void dispose() {
     controllerSeed.dispose();
@@ -22,20 +21,26 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
   }
 
   @override
+  void initState() {
+    _isButtonDisabled = true;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: Column(
-        children: <Widget>[
-          _buildTitle(),
-          _buildInputSeed(),
-          _buildConfirmButton(),
-        ],
-      ),
-    );
+        resizeToAvoidBottomPadding: false,
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text('Confirm Seed'),
+        ),
+        body: Column(
+          children: <Widget>[
+            _buildTitle(),
+            _buildInputSeed(),
+            _buildConfirmButton(),
+          ],
+        ));
   }
 
   _buildTitle() {
@@ -47,10 +52,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
         Center(
           child: Text(
             'Enter Your Seed Phrase',
-            style: Theme
-                .of(context)
-                .textTheme
-                .title,
+            style: Theme.of(context).textTheme.title,
             textAlign: TextAlign.center,
           ),
         ),
@@ -67,42 +69,29 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
       child: TextField(
         controller: controllerSeed,
         onChanged: (str) {
-          if (str.length == 0) {
+          if (str == widget.seed) {
             setState(() {
-              _isButtonDisabled = true;
+              _isButtonDisabled = false;
             });
           } else {
             setState(() {
-              _isButtonDisabled = false;
+              _isButtonDisabled = true;
             });
           }
         },
         autocorrect: false,
         keyboardType: TextInputType.multiline,
         maxLines: null,
-        style: Theme
-            .of(context)
-            .textTheme
-            .body1,
+        style: Theme.of(context).textTheme.body1,
         decoration: InputDecoration(
             border: OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
                 borderSide:
-                BorderSide(color: Theme
-                    .of(context)
-                    .primaryColorLight)),
+                    BorderSide(color: Theme.of(context).primaryColorLight)),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme
-                    .of(context)
-                    .accentColor)),
-            hintStyle: Theme
-                .of(context)
-                .textTheme
-                .body2,
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .body1,
+                borderSide: BorderSide(color: Theme.of(context).accentColor)),
+            hintStyle: Theme.of(context).textTheme.body2,
+            labelStyle: Theme.of(context).textTheme.body1,
             hintText: 'Example: over cake age ...',
             labelText: null),
       ),
@@ -116,20 +105,13 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
         width: double.infinity,
         height: 50,
         child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0)),
-          color: Theme
-              .of(context)
-              .buttonColor,
-          disabledColor: Theme
-              .of(context)
-              .disabledColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+          color: Theme.of(context).buttonColor,
+          disabledColor: Theme.of(context).disabledColor,
           child: Text(
             'CONFIRM',
-            style: Theme
-                .of(context)
-                .textTheme
-                .button,
+            style: Theme.of(context).textTheme.button,
           ),
           onPressed: _isButtonDisabled ? null : _onLoginPressed,
         ),
@@ -138,6 +120,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
   }
 
   _onLoginPressed() {
+    Navigator.pop(context);
     Navigator.pop(context);
     authBloc.login(controllerSeed.text);
   }

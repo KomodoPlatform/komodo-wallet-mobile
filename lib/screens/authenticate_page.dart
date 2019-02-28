@@ -15,11 +15,12 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
       body: Stack(
         children: <Widget>[
           Positioned(
-            top: 90,
+            top: 250,
             left: 10,
             right: 10,
             child: SafeArea(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
                       height: 100,
@@ -39,9 +40,9 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
           SafeArea(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(left: 16, bottom: 52, right: 16),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
                       width: double.infinity,
@@ -87,6 +88,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                         },
                       ),
                     ),
+                    SizedBox(height: 100,)
                   ],
                 ),
               ),
