@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:komodo_dex/widgets/custom_textfield.dart';
 
 class BlocMarketPage extends StatefulWidget {
   @override
@@ -53,46 +54,20 @@ class _BlocMarketPageState extends State<BlocMarketPage> {
           Row(
             children: <Widget>[
               Expanded(
-                child: TextField(
-                  autofocus: false,
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
+                child: CustomTextField(
                   controller: relTxtFldCtlr,
-                  style: Theme.of(context).textTheme.body1,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorLight)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor)),
-                      hintStyle: Theme.of(context).textTheme.body1,
-                      labelStyle: Theme.of(context).textTheme.body1,
-                      labelText: 'Rel volume'),
+                  labelText: 'Rel volume',
+                  textInputType: TextInputType.numberWithOptions(decimal: true),
                 ),
               ),
               SizedBox(
                 width: 10,
               ),
               Expanded(
-                child: TextField(
-                  autofocus: false,
-                  textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.number,
+                child: CustomTextField(
                   controller: priceTxtFldCtlr,
-                  style: Theme.of(context).textTheme.body1,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorLight)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor)),
-                      hintStyle: Theme.of(context).textTheme.body1,
-                      labelStyle: Theme.of(context).textTheme.body1,
-                      labelText: 'Price'),
+                  labelText: 'Price',
+                  textInputType: TextInputType.numberWithOptions(decimal: true),
                 ),
               ),
               SizedBox(
@@ -104,7 +79,17 @@ class _BlocMarketPageState extends State<BlocMarketPage> {
                 child: _buttonWaiting,
                 onPressed: () {
                   setState(() {
-                    _buttonWaiting = Center(child: Container(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),);
+                    _buttonWaiting = Center(
+                      child: Container(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Theme
+                                      .of(context)
+                                      .primaryColor))),
+                    );
                   });
                   mm2
                       .postBuy(

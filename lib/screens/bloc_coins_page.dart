@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -6,7 +8,6 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/coin_detail.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
-import 'dart:math';
 
 class BlocCoinsPage extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    coinsBloc.updateBalanceForEachCoin();
+    coinsBloc.updateBalanceForEachCoin(false);
     super.initState();
   }
 
@@ -42,6 +43,16 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                actions: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      coinsBloc.updateBalanceForEachCoin(true);
+                    },
+                    child: Icon(
+                        Icons.refresh
+                    ),
+                  )
+                ],
                 backgroundColor: Theme.of(context).backgroundColor,
                 expandedHeight: _heightScreen * 0.35,
                 pinned: true,
@@ -79,14 +90,14 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                           height: _heightScreen * 0.35,
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            stops: [0.01, 1],
-                            colors: [
-                              Color.fromRGBO(39, 71, 110, 1),
-                              Theme.of(context).accentColor,
-                            ],
-                          )),
+                                begin: Alignment.bottomLeft,
+                                end: Alignment.topRight,
+                                stops: [0.01, 1],
+                                colors: [
+                                  Color.fromRGBO(39, 71, 110, 1),
+                                  Theme.of(context).accentColor,
+                                ],
+                              )),
                         ));
                   },
                 ),
@@ -176,7 +187,8 @@ class LoadAsset extends StatefulWidget {
 class LoadAssetState extends State<LoadAsset> {
   @override
   void initState() {
-    coinsBloc.updateBalanceForEachCoin();
+    coinsBloc.updateBalanceForEachCoin(false);
+
     super.initState();
   }
 
@@ -186,7 +198,6 @@ class LoadAssetState extends State<LoadAsset> {
       stream: coinsBloc.outCoins,
       builder: (context, snapshot) {
         List<Widget> listRet = List<Widget>();
-
         if (snapshot.hasData) {
           int assetNumber = 0;
 
@@ -229,10 +240,22 @@ class LoadAssetState extends State<LoadAsset> {
   }
 }
 
-class ListCoins extends StatelessWidget {
+class ListCoins extends StatefulWidget {
   const ListCoins({
     Key key,
   }) : super(key: key);
+
+  @override
+  ListCoinsState createState() {
+    return new ListCoinsState();
+  }
+}
+
+class ListCoinsState extends State<ListCoins> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -254,8 +277,7 @@ class ListCoins extends StatelessWidget {
 }
 
 class ItemCoin extends StatelessWidget {
-  const ItemCoin(
-      {Key key, @required this.listCoinBalances, @required this.index})
+  const ItemCoin({Key key, @required this.listCoinBalances, @required this.index})
       : super(key: key);
 
   final List<CoinBalance> listCoinBalances;
@@ -291,7 +313,7 @@ class ItemCoin extends StatelessWidget {
                 children: <Widget>[
                   PhotoHero(
                     url:
-                        "https://raw.githubusercontent.com/jl777/coins/master/icons/${balance.coin.toLowerCase()}.png",
+                    "https://raw.githubusercontent.com/jl777/coins/master/icons/${balance.coin.toLowerCase()}.png",
                   ),
                   SizedBox(height: 6),
                   Text(

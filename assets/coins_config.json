@@ -315,5 +315,19 @@
       "electrum10.groestlcoin.org:50001",
       "electrum11.groestlcoin.org:50001"
     ]
+  },
+  {
+    "name": "etomic",
+    "address": "electrum3.cipig.net",
+    "port": 10025,
+    "proto": "tcp",
+    "txfee": 50000,
+    "abbr": "ETOMIC",
+    "colorCoin": "0xFFa1da01",
+    "serverList": [
+      "electrum3.cipig.net:10025",
+      "electrum2.cipig.net:10025",
+      "electrum1.cipig.net:10025"
+    ]
   }
 ]
