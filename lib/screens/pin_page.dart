@@ -51,9 +51,6 @@ class PinPage extends StatelessWidget {
     var localAuth = LocalAuthentication();
     bool canCheckBiometrics =
     await localAuth.canCheckBiometrics;
-    print("--------------------------");
-    print(canCheckBiometrics);
-    print("--------------------------");
     return canCheckBiometrics;
   }
 }
