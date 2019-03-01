@@ -10,6 +10,7 @@ import 'package:komodo_dex/screens/bloc_market_page.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/screens/setting_page.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -56,28 +57,84 @@ class MyApp extends StatelessWidget {
         home: StreamBuilder<bool>(
           stream: authBloc.outIsLogin,
           builder: (context, isLogin) {
-            if (isLogin.hasData && isLogin.data) {
-              return BlocProvider<CoinsBloc>(
-                  bloc: CoinsBloc(),
-                  child: BlocProvider<OrderbookBloc>(
-                      bloc: OrderbookBloc(),
-                      child: BlocProvider<CoinJsonBloc>(
-                          bloc: CoinJsonBloc(),
-                          child: StreamBuilder(
-                              initialData: true,
-                              stream: authBloc.outShowPin,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData && snapshot.data) {
-                                  return PinPage();
-                                } else {
-                                  return MyHomePage();
-                                }
-                              }))));
-            } else {
-              return AuthenticatePage();
-            }
+            return StreamBuilder(
+              stream: authBloc.outpinStatus,
+              builder: (context, outShowCreatePin) {
+                if (outShowCreatePin.hasData) {
+                  print(outShowCreatePin.data);
+                }
+                if (outShowCreatePin.hasData &&
+                    outShowCreatePin.data == PinStatus.CREATE_PIN) {
+                  return new PinPage(
+                    title: 'Create PIN',
+                    subTitle: 'Enter your PIN code',
+                    isConfirmPin: PinStatus.CREATE_PIN,
+                  );
+                } else if (outShowCreatePin.hasData &&
+                    outShowCreatePin.data == PinStatus.CONFIRM_PIN) {
+                  return new PinPage(
+                    title: 'Confirm PIN',
+                    subTitle: 'Enter your PIN code',
+                    isConfirmPin: PinStatus.CONFIRM_PIN,
+                  );
+                } else if (outShowCreatePin.hasData &&
+                    outShowCreatePin.data == PinStatus.NORMAL_PIN) {
+                  if (isLogin.hasData && isLogin.data) {
+                    return InitBlocs(
+                        child: StreamBuilder(
+                            initialData: true,
+                            stream: authBloc.outShowPin,
+                            builder: (context, outShowPin) {
+                              return SharedPreferencesBuilder(
+                                pref: 'switch_pin',
+                                builder: (context, switchPinData) {
+                                  if (outShowPin.hasData && outShowPin.data &&
+                                      switchPinData.data) {
+                                    return new PinPage(
+                                      title: 'Lock Screen',
+                                      subTitle: 'Enter your PIN code',
+                                      isConfirmPin: PinStatus.NORMAL_PIN,
+                                    );
+                                  } else {
+                                    return MyHomePage();
+                                  }
+                                },
+                              );
+                            })
+                    );
+                  } else {
+                    return AuthenticatePage();
+                  }
+                } else {
+                  return Container();
+                }
+              },
+            );
           },
         ));
+  }
+}
+
+class InitBlocs extends StatefulWidget {
+  final Widget child;
+
+  InitBlocs({this.child});
+
+  @override
+  _InitBlocsState createState() => _InitBlocsState();
+}
+
+class _InitBlocsState extends State<InitBlocs> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<CoinsBloc>(
+        bloc: CoinsBloc(),
+        child: BlocProvider<OrderbookBloc>(
+            bloc: OrderbookBloc(),
+            child: BlocProvider<CoinJsonBloc>(
+              bloc: CoinJsonBloc(),
+              child: widget.child,
+            )));
   }
 }
 

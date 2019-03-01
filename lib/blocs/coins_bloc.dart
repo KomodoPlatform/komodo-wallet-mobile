@@ -18,7 +18,7 @@ class CoinsBloc implements BlocBase {
     init();
   }
 
-  void init() async {
+  Future<void> init() async {
     _coinBalance = await mm2.loadCoins(true);
     _inCoins.add(_coinBalance);
   }

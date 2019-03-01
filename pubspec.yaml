@@ -30,7 +30,6 @@ dev_dependencies:
   shared_preferences: ^0.5.1+1
   bip39: ^1.0.3
   pin_code_view: 0.1.1
-  local_auth: ^0.4.0+1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
