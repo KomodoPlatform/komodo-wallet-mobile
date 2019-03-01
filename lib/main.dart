@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coin_json_bloc.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orderbook_bloc.dart';
 import 'package:komodo_dex/screens/authenticate_page.dart';
 import 'package:komodo_dex/screens/bloc_coins_page.dart';
@@ -20,6 +19,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,53 +60,38 @@ class MyApp extends StatelessWidget {
             return StreamBuilder(
               stream: authBloc.outpinStatus,
               builder: (context, outShowCreatePin) {
-                if (outShowCreatePin.hasData) {
-                  print(outShowCreatePin.data);
-                }
                 if (outShowCreatePin.hasData &&
-                    outShowCreatePin.data == PinStatus.CREATE_PIN) {
-                  return new PinPage(
-                    title: 'Create PIN',
-                    subTitle: 'Enter your PIN code',
-                    isConfirmPin: PinStatus.CREATE_PIN,
-                  );
-                } else if (outShowCreatePin.hasData &&
-                    outShowCreatePin.data == PinStatus.CONFIRM_PIN) {
-                  return new PinPage(
-                    title: 'Confirm PIN',
-                    subTitle: 'Enter your PIN code',
-                    isConfirmPin: PinStatus.CONFIRM_PIN,
-                  );
-                } else if (outShowCreatePin.hasData &&
-                    outShowCreatePin.data == PinStatus.NORMAL_PIN) {
+                    (outShowCreatePin.data == PinStatus.NORMAL_PIN)) {
                   if (isLogin.hasData && isLogin.data) {
-                    return InitBlocs(
-                        child: StreamBuilder(
-                            initialData: true,
-                            stream: authBloc.outShowPin,
-                            builder: (context, outShowPin) {
-                              return SharedPreferencesBuilder(
-                                pref: 'switch_pin',
-                                builder: (context, switchPinData) {
-                                  if (outShowPin.hasData && outShowPin.data &&
-                                      switchPinData.data) {
-                                    return new PinPage(
-                                      title: 'Lock Screen',
-                                      subTitle: 'Enter your PIN code',
-                                      isConfirmPin: PinStatus.NORMAL_PIN,
-                                    );
-                                  } else {
-                                    return MyHomePage();
-                                  }
-                                },
-                              );
-                            })
-                    );
+                    return StreamBuilder(
+                        initialData: authBloc.isPinShow,
+                        stream: authBloc.outShowPin,
+                        builder: (context, outShowPin) {
+                          return SharedPreferencesBuilder(
+                            pref: 'switch_pin',
+                            builder: (context, switchPinData) {
+                              if (outShowPin.hasData && outShowPin.data &&
+                                  switchPinData.hasData &&
+                                  switchPinData.data) {
+                                return PinPage(
+                                    title: 'Lock Screen',
+                                    subTitle: 'Enter your PIN code',
+                                    isConfirmPin: PinStatus.NORMAL_PIN);
+                              } else {
+                                return InitBlocs(child: MyHomePage());
+                              }
+                            },
+                          );
+                        });
                   } else {
                     return AuthenticatePage();
                   }
                 } else {
-                  return Container();
+                  return PinPage(
+                      title: 'Create PIN',
+                      subTitle: 'Enter your PIN code',
+                      firstCreationPin: true,
+                      isConfirmPin: PinStatus.CREATE_PIN);
                 }
               },
             );
@@ -127,14 +112,12 @@ class InitBlocs extends StatefulWidget {
 class _InitBlocsState extends State<InitBlocs> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CoinsBloc>(
-        bloc: CoinsBloc(),
-        child: BlocProvider<OrderbookBloc>(
-            bloc: OrderbookBloc(),
-            child: BlocProvider<CoinJsonBloc>(
-              bloc: CoinJsonBloc(),
-              child: widget.child,
-            )));
+    return BlocProvider<OrderbookBloc>(
+        bloc: OrderbookBloc(),
+        child: BlocProvider<CoinJsonBloc>(
+          bloc: CoinJsonBloc(),
+          child: widget.child,
+        ));
   }
 }
 

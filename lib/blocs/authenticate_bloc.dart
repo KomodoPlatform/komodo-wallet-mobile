@@ -38,7 +38,7 @@ class AuthenticateBloc extends BlocBase {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString("passphrase") != null) {
       _inIsLogin.add(true);
-      coinsBloc.updateBalanceForEachCoin(true);
+      await coinsBloc.updateBalanceForEachCoin(true);
     } else {
       _inIsLogin.add(false);
     }
@@ -57,21 +57,24 @@ class AuthenticateBloc extends BlocBase {
   }
 
   void login(String passphrase) async {
+    mm2.ismm2Running = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("passphrase", passphrase);
+    await prefs.setBool('switch_pin', true);
     await prefs.setBool("isPinIsSet", false);
-    await updateStatusPin(PinStatus.CREATE_PIN, "");
-    await coinsBloc.init();
+    updateStatusPin(PinStatus.CREATE_PIN);
+    await prefs.remove("pin");
     _inIsLogin.add(true);
   }
 
   void logout() async {
+    mm2.ismm2Running = false;
     mm2.killmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("passphrase", null);
     await prefs.setBool("isPinIsSet", false);
-    await updateStatusPin(PinStatus.NORMAL_PIN, "");
-    print("PinStatus.CREATE_PIN");
+    updateStatusPin(PinStatus.NORMAL_PIN);
+    await prefs.remove("pin");
     coinsBloc.resetCoinBalance();
     mm2.balances = new List<Balance>();
     _inIsLogin.add(false);
@@ -82,11 +85,7 @@ class AuthenticateBloc extends BlocBase {
     _inShowPin.add(isPinShow);
   }
 
-  Future<void> updateStatusPin(PinStatus pinStatus, String code) async {
-    if (pinStatus == PinStatus.CONFIRM_PIN) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString("pin", code);
-    }
+  void updateStatusPin(PinStatus pinStatus) {
     this.pinStatus = pinStatus;
     _inpinStatus.add(this.pinStatus);
   }
@@ -96,6 +95,7 @@ class AuthenticateBloc extends BlocBase {
 enum PinStatus {
   CREATE_PIN,
   CONFIRM_PIN,
+  DISABLED_PIN,
   CHANGE_PIN,
   NORMAL_PIN
 }

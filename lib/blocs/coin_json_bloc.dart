@@ -28,6 +28,7 @@ class CoinJsonBloc implements BlocBase{
   @override
   void dispose() {
     _baseCoinController.close();
+    _relCoinController.close();
   }
 
   void updateBaseCoin(Coin coin){

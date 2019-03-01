@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -65,11 +66,18 @@ class _SettingPageState extends State<SettingPage> {
                             onChanged: (dataSwitch) {
                               setState(() {
                                 if (snapshot.data) {
-                                  authBloc.showPin(true);
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) =>
+                                          PinPage(
+                                            title: 'Lock Screen',
+                                            subTitle: 'Enter your PIN code',
+                                            isConfirmPin: PinStatus
+                                                .DISABLED_PIN,)));
+                                } else {
+                                  SharedPreferences.getInstance().then((data) {
+                                    data.setBool("switch_pin", dataSwitch);
+                                  });
                                 }
-                                SharedPreferences.getInstance().then((data) {
-                                  data.setBool("switch_pin", dataSwitch);
-                                });
                               });
                             }) : Container();
                       },
@@ -87,11 +95,12 @@ class _SettingPageState extends State<SettingPage> {
                   style: Theme.of(context).textTheme.body1,
                 ),
                 onTap: () {
-//                  Navigator.push(
-//                    context,
-//                    MaterialPageRoute(
-//                        builder: (context) => PinPage()),
-//                  );
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) =>
+                          PinPage(
+                            title: 'Lock Screen',
+                            subTitle: 'Enter your PIN code',
+                            isConfirmPin: PinStatus.CHANGE_PIN,)));
                 },
               ),
               Padding(

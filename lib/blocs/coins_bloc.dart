@@ -18,14 +18,16 @@ class CoinsBloc implements BlocBase {
     init();
   }
 
-  Future<void> init() async {
+  void init() async {
     _coinBalance = await mm2.loadCoins(true);
-    _inCoins.add(_coinBalance);
+    if (!_coinsController.isClosed) {
+      _inCoins.add(_coinBalance);
+    }
   }
 
   @override
   void dispose() {
-    _coinsController?.close();
+    _coinsController.close();
   }
 
   void resetCoinBalance() {
@@ -39,9 +41,8 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(_coinBalance);
   }
 
-  void updateBalanceForEachCoin(bool forceUpdate) async {
+  Future<void> updateBalanceForEachCoin(bool forceUpdate) async {
     _coinBalance = await mm2.loadCoins(forceUpdate);
-
     _inCoins.add(_coinBalance);
   }
 
