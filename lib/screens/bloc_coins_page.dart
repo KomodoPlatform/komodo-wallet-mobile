@@ -44,13 +44,11 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
             return <Widget>[
               SliverAppBar(
                 actions: <Widget>[
-                  GestureDetector(
-                    onTap: () {
+                  IconButton(
+                    icon: Icon(Icons.refresh),
+                    onPressed: () {
                       coinsBloc.updateBalanceForEachCoin(true);
                     },
-                    child: Icon(
-                        Icons.refresh
-                    ),
                   )
                 ],
                 backgroundColor: Theme.of(context).backgroundColor,
@@ -188,7 +186,6 @@ class LoadAssetState extends State<LoadAsset> {
   @override
   void initState() {
     coinsBloc.updateBalanceForEachCoin(false);
-
     super.initState();
   }
 
