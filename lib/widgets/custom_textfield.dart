@@ -5,6 +5,7 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String labelText;
   final TextInputType textInputType;
+  final String errorText;
 
   @override
   CustomTextFieldState createState() {
@@ -12,8 +13,8 @@ class CustomTextField extends StatefulWidget {
   }
 
   const CustomTextField(
-      {this.key, this.controller, this.labelText, this.textInputType})
-      : super(key: key);
+      {this.key, this.controller, this.labelText, this.textInputType, this.errorText})
+      :super(key: key);
 }
 
 class CustomTextFieldState extends State<CustomTextField> {
@@ -26,10 +27,11 @@ class CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       style: Theme.of(context).textTheme.body1,
       decoration: InputDecoration(
+          errorText: widget.errorText,
           border: OutlineInputBorder(),
           enabledBorder: OutlineInputBorder(
               borderSide:
-                  BorderSide(color: Theme.of(context).primaryColorLight)),
+              BorderSide(color: Theme.of(context).primaryColorLight)),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).accentColor)),
           hintStyle: Theme.of(context).textTheme.body1,
