@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/coin_detail.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class BlocCoinsPage extends StatefulWidget {
@@ -43,6 +44,12 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                leading: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    _buildDialogSelectCoin();
+                  },
+                ),
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.refresh),
@@ -93,7 +100,9 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                                 stops: [0.01, 1],
                                 colors: [
                                   Color.fromRGBO(39, 71, 110, 1),
-                                  Theme.of(context).accentColor,
+                                  Theme
+                                      .of(context)
+                                      .accentColor,
                                 ],
                               )),
                         ));
@@ -106,6 +115,52 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
               color: Theme.of(context).backgroundColor, child: ListCoins())),
     );
   }
+
+  void _buildDialogSelectCoin() async {
+    var coins = await mm2.loadJsonCoins(await mm2.loadElectrumServersAsset());
+    var coinsBalance = await coinsBloc.readJsonCoin();
+
+    showDialog<List<Coin>>(
+        context: context,
+        builder: (BuildContext context) {
+          List<SimpleDialogOption> listDialog = new List<SimpleDialogOption>();
+          coins.forEach((coin) {
+            bool isAlreadyAdded = false;
+            coinsBalance.forEach((coinsBalance) {
+              if (coin.abbr == coinsBalance.abbr) {
+                isAlreadyAdded = true;
+              }
+            });
+            if (!isAlreadyAdded) {
+              SimpleDialogOption dialogItem = SimpleDialogOption(
+                onPressed: () {
+                  print('ADDING COIN ${coin.abbr}');
+                  Scaffold.of(this.context).showSnackBar(new SnackBar(
+                    content: new Text('Adding ${coin.name} success !'),
+                  ));
+                  coinsBloc.addCoin(coin);
+                  Navigator.pop(context);
+                },
+                child: Text(coin.abbr),
+              );
+              listDialog.add(dialogItem);
+            }
+          });
+          return Theme(
+            data: ThemeData(
+                textTheme: Theme
+                    .of(context)
+                    .textTheme,
+                dialogBackgroundColor: Theme
+                    .of(context)
+                    .dialogBackgroundColor),
+            child: SimpleDialog(
+              title: Text('Add coin'),
+              children: listDialog,
+            ),
+          );
+        });
+  }
 }
 
 class BarGraph extends StatefulWidget {
@@ -116,13 +171,13 @@ class BarGraph extends StatefulWidget {
 }
 
 class BarGraphState extends State<BarGraph> {
-
   @override
   Widget build(BuildContext context) {
     double _widthScreen = MediaQuery.of(context).size.width;
     double _widthBar = _widthScreen - 32;
 
     return StreamBuilder<List<CoinBalance>>(
+      initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
       builder: (context, snapshot) {
         bool _isVisible = true;
@@ -138,15 +193,17 @@ class BarGraphState extends State<BarGraph> {
         if (snapshot.hasData) {
           double sumOfAllBalances = 0;
 
-          snapshot.data.forEach((coinBalance){
+          snapshot.data.forEach((coinBalance) {
             sumOfAllBalances += coinBalance.balance.balance;
           });
 
-          snapshot.data.forEach((coinBalance){
+          snapshot.data.forEach((coinBalance) {
             if (coinBalance.balance.balance > 0) {
               barItem.add(Container(
                 color: Color(int.parse(coinBalance.coin.colorCoin)),
-                width: _widthBar * (((coinBalance.balance.balance * 100) / sumOfAllBalances) / 100),
+                width: _widthBar *
+                    (((coinBalance.balance.balance * 100) / sumOfAllBalances) /
+                        100),
               ));
             }
           });
@@ -185,13 +242,14 @@ class LoadAsset extends StatefulWidget {
 class LoadAssetState extends State<LoadAsset> {
   @override
   void initState() {
-    coinsBloc.updateBalanceForEachCoin(false);
+//    coinsBloc.updateBalanceForEachCoin(false);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<CoinBalance>>(
+      initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
       builder: (context, snapshot) {
         List<Widget> listRet = List<Widget>();
@@ -257,6 +315,7 @@ class ListCoinsState extends State<ListCoins> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<CoinBalance>>(
+      initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data.length > 0) {
@@ -274,7 +333,8 @@ class ListCoinsState extends State<ListCoins> {
 }
 
 class ItemCoin extends StatelessWidget {
-  const ItemCoin({Key key, @required this.listCoinBalances, @required this.index})
+  const ItemCoin(
+      {Key key, @required this.listCoinBalances, @required this.index})
       : super(key: key);
 
   final List<CoinBalance> listCoinBalances;
@@ -309,8 +369,7 @@ class ItemCoin extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   PhotoHero(
-                    tag:
-                    "assets/${balance.coin.toLowerCase()}.png",
+                    tag: "assets/${balance.coin.toLowerCase()}.png",
                   ),
                   SizedBox(height: 6),
                   Text(
@@ -342,7 +401,9 @@ class ItemCoin extends StatelessWidget {
                 ),
               ),
               ClipRRect(
-                borderRadius: BorderRadius.only(topRight: Radius.circular(6), bottomRight: Radius.circular(6)),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(6),
+                    bottomRight: Radius.circular(6)),
                 child: Container(
                   color: Color(int.parse(coin.colorCoin)),
                   width: 8,

@@ -6,6 +6,7 @@ import 'dart:io' show File, Platform, Process, ProcessResult;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/buy_response.dart';
@@ -23,7 +24,6 @@ import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 final mm2 = MarketMakerService();
 
 class MarketMakerService {
@@ -34,7 +34,8 @@ class MarketMakerService {
   bool ismm2Running = true;
   String url = 'http://10.0.2.2:7783';
   String userpass = "";
-
+  Stream<List<int>> streamSubscriptionStdout;
+  bool mm2Ready = false;
 
   MarketMakerService() {
     if (Platform.isAndroid) {
@@ -44,7 +45,7 @@ class MarketMakerService {
     }
   }
 
-  Future<bool> runBin() async {
+  Future<void> runBin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String passphrase = prefs.getString('passphrase');
 
@@ -74,23 +75,48 @@ class MarketMakerService {
         ],
         workingDirectory: '/data/data/com.komodoplatform.komododex/files');
 
-    final Completer<int> completer = new Completer<int>();
-
-    mm2Process.stdout.firstWhere((List<int> event) {
-      print("mm2: " + utf8.decoder.convert(event).trim());
-      if (utf8.decoder.convert(event).trim().contains(
+    mm2Process.stdout.listen((onData) {
+      print("mm2: " + utf8.decoder.convert(onData).trim());
+      if (utf8.decoder.convert(onData).trim().contains(
           "DEX stats API enabled at")) {
-        print("OKOKOKOKOKOKOKOKOK----------------");
-        return true;
+        print("DEX stats API enabled at");
+        loadCoin(true);
+        coinsBloc.startCheckBalance();
+        mm2Ready = true;
       }
     });
+  }
 
+  Future<void> loadCoin(bool forceUpdate) async {
+    List<Future<dynamic>> futureActiveCoins = new List<
+        Future<dynamic>>();
+    List<Coin> coins = await coinsBloc.readJsonCoin();
+    for (var coin in coins) {
+      futureActiveCoins.add(this.activeCoin(coin));
+    }
+
+    await Future.wait(futureActiveCoins);
+
+    List<CoinBalance> listCoinElectrum = new List<CoinBalance>();
+    List<Balance> balances = await getAllBalances(forceUpdate);
+
+    for (var coin in coins) {
+      for (var balance in balances) {
+        if (coin.abbr == balance.coin) {
+          listCoinElectrum.add(CoinBalance(coin, balance));
+          listCoinElectrum
+              .sort((b, a) =>
+              a.balance.balance.compareTo(b.balance.balance));
+
+          coinsBloc.updateCoins(listCoinElectrum);
+        }
+      }
+    }
   }
 
   void killmm2() {
     if (mm2Process != null) {
       mm2Process.kill();
-      this.coins = List<Coin>();
       activeCoinBool = true;
       ismm2Running = true;
     }
@@ -116,12 +142,17 @@ class MarketMakerService {
     return orderbookFromJson(response.body);
   }
 
-  Future<List<Coin>> loadJsonCoins() async {
-    print("loadJsonCoins");
-    String jsonString = await this.loadElectrumServersAsset();
+  Future<List<Coin>> loadJsonCoins(String loadFile) async {
+    String jsonString = loadFile;
     Iterable l = json.decode(jsonString);
     List<Coin> coins = l.map((model) => Coin.fromJson(model)).toList();
-    this.coins = coins;
+    return coins;
+  }
+
+  Future<List<Coin>> loadJsonCoinsDefault() async {
+    String jsonString = await loadDefaultActivateCoin();
+    Iterable l = json.decode(jsonString);
+    List<Coin> coins = l.map((model) => Coin.fromJson(model)).toList();
     return coins;
   }
 
@@ -138,7 +169,7 @@ class MarketMakerService {
       List<Balance> balances = new List<Balance>();
       List<Future<Balance>> futureBalances = new List<Future<Balance>>();
 
-      for (var coin in coins) {
+      for (var coin in await coinsBloc.readJsonCoin()) {
         futureBalances.add(getBalance(coin));
       }
       balances = await Future.wait(futureBalances);
@@ -150,7 +181,8 @@ class MarketMakerService {
     }
   }
 
-  Future<dynamic> postBuy(Coin base, Coin rel, double relVolume, double price) async {
+  Future<dynamic> postBuy(Coin base, Coin rel, double relVolume,
+      double price) async {
     GetBuy getBuy = new GetBuy(
         userpass: userpass,
         method: "buy",
@@ -173,11 +205,10 @@ class MarketMakerService {
         userpass: userpass,
         method: 'send_raw_transaction',
         coin: coin.abbr,
-        txHex: txHex
-    );
+        txHex: txHex);
 
-    final response = await http.post(
-        url, body: json.encode(getSendRawTransaction));
+    final response =
+    await http.post(url, body: json.encode(getSendRawTransaction));
     try {
       return sendRawTransactionResponseFromJson(response.body);
     } catch (e) {
@@ -224,42 +255,7 @@ class MarketMakerService {
     return await rootBundle.loadString('assets/coins_config.json');
   }
 
-  Future<List<CoinBalance>> loadCoins(bool forceUpdate) async {
-    if (ismm2Running) {
-      ismm2Running = false;
-      await runBin().then((onValue){
-        print("---------------------------");
-        print(onValue);
-        print("---------------------------");
-      });
-      List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
-
-      if (this.coins.isEmpty) {
-        this.activeCoinBool = false;
-        await this.loadJsonCoins();
-      }
-
-      for (var coin in this.coins) {
-        if (!coin.isActive) {
-          futureActiveCoins.add(this.activeCoin(coin));
-          coin.isActive = true;
-        }
-      }
-      await Future.wait(futureActiveCoins);
-    }
-
-    List<CoinBalance> listCoinElectrum = new List<CoinBalance>();
-    List<Balance> balances = await getAllBalances(forceUpdate);
-
-    for (var coin in this.coins) {
-      for (var balance in balances) {
-        if (coin.abbr == balance.coin)
-          listCoinElectrum.add(CoinBalance(coin, balance));
-      }
-    }
-
-    listCoinElectrum
-        .sort((a, b) => a.balance.balance.compareTo(b.balance.balance));
-    return listCoinElectrum.reversed.toList();
+  Future<String> loadDefaultActivateCoin() async {
+    return await rootBundle.loadString('assets/coins_activate_default.json');
   }
 }

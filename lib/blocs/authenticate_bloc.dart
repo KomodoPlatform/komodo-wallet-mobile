@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,17 +59,24 @@ class AuthenticateBloc extends BlocBase {
 
   void login(String passphrase) async {
     mm2.ismm2Running = true;
+    mm2.mm2Ready = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("passphrase", passphrase);
     await prefs.setBool('switch_pin', true);
     await prefs.setBool("isPinIsSet", false);
     updateStatusPin(PinStatus.CREATE_PIN);
     await prefs.remove("pin");
+    List<Coin> coins = await coinsBloc.readJsonCoin();
+    if (coins.isEmpty) {
+      await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
+    }
+    mm2.runBin();
     _inIsLogin.add(true);
   }
 
   void logout() async {
     mm2.ismm2Running = false;
+    mm2.mm2Ready = false;
     mm2.killmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("passphrase", null);
@@ -76,6 +84,8 @@ class AuthenticateBloc extends BlocBase {
     updateStatusPin(PinStatus.NORMAL_PIN);
     await prefs.remove("pin");
     coinsBloc.resetCoinBalance();
+    coinsBloc.stopCheckBalance();
+    await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
     mm2.balances = new List<Balance>();
     _inIsLogin.add(false);
   }

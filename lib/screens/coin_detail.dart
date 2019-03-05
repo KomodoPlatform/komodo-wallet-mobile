@@ -86,13 +86,28 @@ class _CoinDetailState extends State<CoinDetail> {
           SizedBox(
             height: 25,
           ),
-          Text(
-            widget.coinBalance.balance.balance.toString(),
-            style: Theme
-                .of(context)
-                .textTheme
-                .title,
-            textAlign: TextAlign.center,
+          StreamBuilder<List<CoinBalance>>(
+              initialData: coinsBloc.coinBalance,
+              stream: coinsBloc.outCoins,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  snapshot.data.forEach((coinBalance) {
+                    if (coinBalance.coin.abbr == widget.coinBalance.coin.abbr) {
+                      widget.coinBalance = coinBalance;
+                    }
+                  });
+                  return Text(
+                    widget.coinBalance.balance.balance.toString(),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .title,
+                    textAlign: TextAlign.center,
+                  );
+                } else {
+                  return Container();
+                }
+              }
           ),
           SizedBox(
             height: 25,
@@ -284,6 +299,7 @@ class _CoinDetailState extends State<CoinDetail> {
             new FlatButton(
               child: new Text("Close"),
               onPressed: () {
+                coinsBloc.updateOneCoin(widget.coinBalance);
                 Navigator.of(context).pop();
               },
             ),
