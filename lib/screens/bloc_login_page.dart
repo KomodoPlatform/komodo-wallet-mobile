@@ -138,7 +138,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
   }
 
   _onLoginPressed() {
+    authBloc.login(controllerSeed.text.toString());
     Navigator.pop(context);
-    authBloc.login(controllerSeed.text);
   }
 }

@@ -5,12 +5,12 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class CoinJsonBloc implements BlocBase{
   Coin baseCoin = Coin(
-    name: "beer",
-    abbr: "BEER",
+    name: "bitcoin",
+    abbr: "BTC",
   );
   Coin relCoin = Coin(
-    name: "pizza",
-    abbr: "PIZZA",
+    name: "komodo",
+    abbr: "KMD",
   );
 
   // Streams to handle the list coin

@@ -9,6 +9,11 @@ Coin coinFromJson(String str) {
   return Coin.fromJson(jsonData);
 }
 
+List<Coin> listCoinFromJson(String str) {
+  final jsonData = json.decode(str);
+  return new List<Coin>.from(jsonData.map((x) => Coin.fromJson(x)));
+}
+
 String coinToJson(Coin data) {
   final dyn = data.toJson();
   return json.encode(dyn);

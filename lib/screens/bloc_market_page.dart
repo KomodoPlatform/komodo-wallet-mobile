@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coin_json_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orderbook_bloc.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -206,7 +207,7 @@ class SelectedBaseRelCoin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Coin>>(
-      future: mm2.loadJsonCoins(),
+      future: coinsBloc.readJsonCoin(),
       builder: (context, jsonCoins) {
         final CoinJsonBloc coinJsonBloc =
             BlocProvider.of<CoinJsonBloc>(context);

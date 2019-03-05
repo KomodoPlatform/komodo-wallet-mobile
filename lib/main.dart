@@ -8,14 +8,25 @@ import 'package:komodo_dex/screens/bloc_coins_page.dart';
 import 'package:komodo_dex/screens/bloc_market_page.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/screens/setting_page.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
+    _runBinMm2UserAlreadyLog();
     runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
   });
+}
+
+_runBinMm2UserAlreadyLog() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getString('passphrase') != null
+      && prefs.getString('passphrase') != "") {
+    mm2.runBin();
+  }
 }
 
 class MyApp extends StatelessWidget {
