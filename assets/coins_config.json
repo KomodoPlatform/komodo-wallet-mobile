@@ -329,33 +329,5 @@
       "electrum2.cipig.net:10025",
       "electrum1.cipig.net:10025"
     ]
-  },
-  {
-    "name": "LGElectronics",
-    "address": "116.203.111.225",
-    "port": 10001,
-    "proto": "tcp",
-    "txfee": 0,
-    "abbr": "LGE",
-    "colorCoin": "0xFFa0da01",
-    "serverList": [
-      "116.203.111.225:10001",
-      "116.203.120.175:10001",
-      "116.203.40.22:10001"
-    ]
-  },
-  {
-    "name": "LGLevant",
-    "address": "116.203.111.225",
-    "port": 10002,
-    "proto": "tcp",
-    "txfee": 0,
-    "abbr": "LGL",
-    "colorCoin": "0xF0a0da01",
-    "serverList": [
-      "116.203.111.225:10002",
-      "116.203.120.175:10002",
-      "116.203.40.22:10002"
-    ]
   }
 ]

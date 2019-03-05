@@ -309,8 +309,8 @@ class ItemCoin extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   PhotoHero(
-                    url:
-                    "https://raw.githubusercontent.com/jl777/coins/master/icons/${balance.coin.toLowerCase()}.png",
+                    tag:
+                    "assets/${balance.coin.toLowerCase()}.png",
                   ),
                   SizedBox(height: 6),
                   Text(
