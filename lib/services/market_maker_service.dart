@@ -44,7 +44,7 @@ class MarketMakerService {
     }
   }
 
-  Future<void> runBin() async {
+  Future<bool> runBin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String passphrase = prefs.getString('passphrase');
 
@@ -76,12 +76,15 @@ class MarketMakerService {
 
     final Completer<int> completer = new Completer<int>();
 
-    mm2Process.stdout.listen((List<int> event) {
+    mm2Process.stdout.firstWhere((List<int> event) {
       print("mm2: " + utf8.decoder.convert(event).trim());
-    }, onDone: () async {
-      completer.complete(await mm2Process.exitCode);
+      if (utf8.decoder.convert(event).trim().contains(
+          "DEX stats API enabled at")) {
+        print("OKOKOKOKOKOKOKOKOK----------------");
+        return true;
+      }
     });
-    await Future.delayed(const Duration(seconds: 3));
+
   }
 
   void killmm2() {
@@ -224,7 +227,11 @@ class MarketMakerService {
   Future<List<CoinBalance>> loadCoins(bool forceUpdate) async {
     if (ismm2Running) {
       ismm2Running = false;
-      await runBin();
+      await runBin().then((onValue){
+        print("---------------------------");
+        print(onValue);
+        print("---------------------------");
+      });
       List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
 
       if (this.coins.isEmpty) {
