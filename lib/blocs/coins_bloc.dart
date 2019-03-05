@@ -52,7 +52,7 @@ class CoinsBloc implements BlocBase {
       await mm2.loadCoin(forceUpdate);
   }
 
-  void addCoin(Coin coin) async {
+  Future<void> addCoin(Coin coin) async {
     print('Adding coin ${coin.abbr}');
     List<Coin> coins = await readJsonCoin();
     coins.add(coin);

@@ -135,11 +135,12 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
               SimpleDialogOption dialogItem = SimpleDialogOption(
                 onPressed: () {
                   print('ADDING COIN ${coin.abbr}');
-                  Scaffold.of(this.context).showSnackBar(new SnackBar(
-                    content: new Text('Adding ${coin.name} success !'),
-                  ));
-                  coinsBloc.addCoin(coin);
                   Navigator.pop(context);
+                  coinsBloc.addCoin(coin).then((data) {
+                    Scaffold.of(this.context).showSnackBar(new SnackBar(
+                      content: new Text('Adding ${coin.name} success !'),
+                    ));
+                  });
                 },
                 child: Text(coin.abbr),
               );
