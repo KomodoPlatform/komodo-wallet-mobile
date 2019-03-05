@@ -67,8 +67,8 @@ class _CoinDetailState extends State<CoinDetail> {
         title: Row(
           children: <Widget>[
             PhotoHero(
-              url:
-              "https://raw.githubusercontent.com/jl777/coins/master/icons/${widget.coinBalance.balance.coin.toLowerCase()}.png",
+              tag:
+              "assets/${widget.coinBalance.balance.coin.toLowerCase()}.png",
               radius: 16,
             ),
             SizedBox(
