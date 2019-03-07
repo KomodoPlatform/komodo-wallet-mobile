@@ -97,7 +97,8 @@ class _BlocMarketPageState extends State<BlocMarketPage> {
                           coinJsonBloc.baseCoin,
                           coinJsonBloc.relCoin,
                           double.parse(relTxtFldCtlr.text),
-                          double.parse(priceTxtFldCtlr.text))
+                      double.parse(priceTxtFldCtlr.text) +
+                          (double.parse(priceTxtFldCtlr.text) * 0.01))
                       .then((onValue) {
                     setState(() {
                       _buttonWaiting = Text("BUY");
