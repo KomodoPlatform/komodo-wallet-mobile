@@ -29,7 +29,6 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text('Confirm Seed'),

@@ -5,9 +5,9 @@ import 'package:komodo_dex/blocs/coin_json_bloc.dart';
 import 'package:komodo_dex/blocs/orderbook_bloc.dart';
 import 'package:komodo_dex/screens/authenticate_page.dart';
 import 'package:komodo_dex/screens/bloc_coins_page.dart';
-import 'package:komodo_dex/screens/bloc_market_page.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/screens/setting_page.dart';
+import 'package:komodo_dex/screens/swap_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   int _currentIndex = 0;
   final List<Widget> _children = [
     BlocCoinsPage(),
-    BlocMarketPage(),
+    SwapPage(),
     SettingPage()
   ];
 
@@ -180,6 +180,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: _children[_currentIndex],
       bottomNavigationBar: Material(
@@ -202,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   icon: Icon(Icons.account_balance_wallet),
                   title: Text("Portfolio")),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.insert_chart), title: Text("Market")),
+                  icon: Icon(Icons.swap_vert), title: Text("Swap")),
               BottomNavigationBarItem(
                   icon: Icon(Icons.settings), title: Text("Settings")),
             ],
