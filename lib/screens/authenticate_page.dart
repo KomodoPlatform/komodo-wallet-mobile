@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/bloc_login_page.dart';
 import 'package:komodo_dex/screens/new_account_page.dart';
 
@@ -53,7 +54,10 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                         color: Theme.of(context).buttonColor,
                         disabledColor: Theme.of(context).disabledColor,
                         child: Text(
-                          'LOGIN',
+                          AppLocalizations
+                              .of(context)
+                              .login
+                              .toUpperCase(),
                           style: Theme.of(context).textTheme.button,
                         ),
                         onPressed: () {
@@ -76,7 +80,10 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                             borderRadius: BorderRadius.circular(6.0)),
                         disabledColor: Theme.of(context).disabledColor,
                         child: Text(
-                          'NEW ACCOUNT',
+                          AppLocalizations
+                              .of(context)
+                              .newAccount
+                              .toUpperCase(),
                           style: Theme.of(context).textTheme.button,
                         ),
                         onPressed: () {

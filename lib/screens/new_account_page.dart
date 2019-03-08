@@ -1,6 +1,7 @@
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/confirm_account_page.dart';
 
 class NewAccountPage extends StatefulWidget {
@@ -25,7 +26,9 @@ class _NewAccountPageState extends State<NewAccountPage> {
             .of(context)
             .backgroundColor,
         appBar: AppBar(
-          title: Text('New Account'),
+          title: Text(AppLocalizations
+              .of(context)
+              .newAccountUpper),
         ),
         body: Column(
           children: <Widget>[
@@ -44,7 +47,9 @@ class _NewAccountPageState extends State<NewAccountPage> {
           height: 56,
         ),
         Text(
-          'Seed Phrase for Your Portfolio',
+          AppLocalizations
+              .of(context)
+              .seedPhraseTitle,
           style: Theme
               .of(context)
               .textTheme
@@ -155,14 +160,18 @@ class _NewAccountPageState extends State<NewAccountPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Important: please back up your seed phrase now!',
+                Text(AppLocalizations
+                    .of(context)
+                    .getBackupPhrase,
                   style: Theme
                       .of(context)
                       .textTheme
                       .body1
                       .copyWith(fontWeight: FontWeight.bold),),
                 SizedBox(height: 6,),
-                Text('We recommend storing it offline.', style: Theme
+                Text(AppLocalizations
+                    .of(context)
+                    .recommendSeedMessage, style: Theme
                     .of(context)
                     .textTheme
                     .body2,)
@@ -190,7 +199,10 @@ class _NewAccountPageState extends State<NewAccountPage> {
               .of(context)
               .disabledColor,
           child: Text(
-            'NEXT',
+            AppLocalizations
+                .of(context)
+                .next
+                .toUpperCase(),
             style: Theme
                 .of(context)
                 .textTheme

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 
 class BlocLoginPage extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
     _isButtonDisabled = false;
     super.initState();
   }
+
   @override
   void dispose() {
     controllerSeed.dispose();
@@ -25,7 +27,13 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text(
+            '${AppLocalizations
+                .of(context)
+                .login[0].toUpperCase()}${AppLocalizations
+                .of(context)
+                .login
+                .substring(1)}'),
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
@@ -46,7 +54,9 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
         ),
         Center(
           child: Text(
-            'Enter Your Seed Phrase',
+            AppLocalizations
+                .of(context)
+                .enterSeedPhrase,
             style: Theme
                 .of(context)
                 .textTheme
@@ -103,7 +113,9 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
                 .of(context)
                 .textTheme
                 .body1,
-            hintText: 'Example: over cake age ...',
+            hintText: AppLocalizations
+                .of(context)
+                .exampleHintSeed,
             labelText: null),
       ),
     );
@@ -116,8 +128,8 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
         width: double.infinity,
         height: 50,
         child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0)),
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
           color: Theme
               .of(context)
               .buttonColor,
@@ -125,7 +137,10 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
               .of(context)
               .disabledColor,
           child: Text(
-            'CONFIRM',
+            AppLocalizations
+                .of(context)
+                .confirm
+                .toUpperCase(),
             style: Theme
                 .of(context)
                 .textTheme

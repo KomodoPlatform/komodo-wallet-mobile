@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
@@ -91,7 +92,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                         borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(16))),
                                     child: Text(
-                                      "MAX",
+                                      AppLocalizations
+                                          .of(context)
+                                          .max,
                                       style: Theme.of(context)
                                           .textTheme
                                           .button
@@ -148,7 +151,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                             .copyWith(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w400),
-                                        hintText: 'Amount To Sell'),
+                                        hintText: AppLocalizations
+                                            .of(context)
+                                            .amountToSell),
                                   ),
                                 ),
                                 Padding(
@@ -186,7 +191,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                               SizedBox(
                                 width: 16,
                               ),
-                              Text('You will received: '),
+                              Text(AppLocalizations
+                                  .of(context)
+                                  .youWillReceived),
                               Expanded(
                                 child: Container(),
                               ),
@@ -363,7 +370,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     return Container(
                       child: Center(
                         child: Text(
-                          'Select the coin you want to SELL',
+                          AppLocalizations
+                              .of(context)
+                              .selectCoinToSell,
                           style: Theme.of(context).textTheme.subtitle,
                           textAlign: TextAlign.center,
                         ),
@@ -379,7 +388,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                             return Container(
                               child: Center(
                                 child: Text(
-                                  'Select the coin you want to BUY',
+                                  AppLocalizations
+                                      .of(context)
+                                      .selectCoinToBuy,
                                   style: Theme.of(context).textTheme.subtitle,
                                   textAlign: TextAlign.center,
                                 ),
@@ -410,7 +421,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                 dialogBackgroundColor: Theme.of(context).dialogBackgroundColor),
             child: market == Market.SELL
                 ? SimpleDialog(
-                    title: Text('Sell'),
+              title: Text(AppLocalizations
+                  .of(context)
+                  .sell),
                     children: _createListDialog(market, null),
                   )
                 : StreamBuilder<List<OrderCoin>>(
@@ -420,7 +433,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                       if (snapshot.hasData) {
                         print(snapshot.data.length);
                         return SimpleDialog(
-                          title: Text('Buy'),
+                          title: Text(AppLocalizations
+                              .of(context)
+                              .buy),
                           children: _createListDialog(market, snapshot.data),
                         );
                       } else {
@@ -549,7 +564,10 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             color: Theme.of(context).buttonColor,
             disabledColor: Theme.of(context).disabledColor,
             child: Text(
-              'SWAP',
+              AppLocalizations
+                  .of(context)
+                  .swap
+                  .toUpperCase(),
               style: Theme.of(context).textTheme.button,
             ),
             onPressed:
@@ -576,11 +594,15 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         .then((onValue) {
       if (onValue is BuyResponse && onValue.result == "success") {
         Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text("Buy success, waiting for swap..."),
+          content: new Text(AppLocalizations
+              .of(context)
+              .buySuccessWaiting),
         ));
       } else {
         Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text("A error happened please wait."),
+          content: new Text(AppLocalizations
+              .of(context)
+              .errorTryLater),
         ));
       }
     });

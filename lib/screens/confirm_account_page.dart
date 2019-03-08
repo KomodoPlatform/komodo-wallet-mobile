@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 
 class ConfirmAccountPage extends StatefulWidget {
   final String seed;
@@ -31,7 +32,9 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text('Confirm Seed'),
+          title: Text(AppLocalizations
+              .of(context)
+              .confirmSeed),
         ),
         body: Column(
           children: <Widget>[
@@ -50,7 +53,9 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
         ),
         Center(
           child: Text(
-            'Enter Your Seed Phrase',
+            AppLocalizations
+                .of(context)
+                .enterSeedPhrase,
             style: Theme.of(context).textTheme.title,
             textAlign: TextAlign.center,
           ),
@@ -91,7 +96,9 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                 borderSide: BorderSide(color: Theme.of(context).accentColor)),
             hintStyle: Theme.of(context).textTheme.body2,
             labelStyle: Theme.of(context).textTheme.body1,
-            hintText: 'Example: over cake age ...',
+            hintText: AppLocalizations
+                .of(context)
+                .exampleHintSeed,
             labelText: null),
       ),
     );
@@ -109,7 +116,10 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
           color: Theme.of(context).buttonColor,
           disabledColor: Theme.of(context).disabledColor,
           child: Text(
-            'CONFIRM',
+            AppLocalizations
+                .of(context)
+                .confirm
+                .toUpperCase(),
             style: Theme.of(context).textTheme.button,
           ),
           onPressed: _isButtonDisabled ? null : _onLoginPressed,
