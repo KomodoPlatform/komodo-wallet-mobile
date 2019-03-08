@@ -21,7 +21,7 @@ class AuthenticateBloc extends BlocBase {
   Sink<bool> get _inShowPin => _showPinController.sink;
   Stream<bool> get outShowPin => _showPinController.stream;
 
-  PinStatus pinStatus = PinStatus.CREATE_PIN;
+  PinStatus pinStatus = PinStatus.NORMAL_PIN;
 
   StreamController<PinStatus> _pinStatusController =
   StreamController<PinStatus>.broadcast();
@@ -43,11 +43,7 @@ class AuthenticateBloc extends BlocBase {
     } else {
       _inIsLogin.add(false);
     }
-    if (prefs.getString("pin") == "") {
-      _inpinStatus.add(pinStatus);
-    } else {
-      _inpinStatus.add(PinStatus.NORMAL_PIN);
-    }
+    _inpinStatus.add(PinStatus.NORMAL_PIN);
   }
 
   @override

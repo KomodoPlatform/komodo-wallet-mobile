@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
@@ -42,7 +43,6 @@ class _CoinDetailState extends State<CoinDetail> {
   void initState() {
     super.initState();
     _amountController.addListener(() {
-      print("CHANGE");
       setState(() {
         _validate = false;
       });
@@ -59,8 +59,9 @@ class _CoinDetailState extends State<CoinDetail> {
             icon: Icon(Icons.share),
             onPressed: () {
               Share.share(
-                  'My ${widget.coinBalance.coin.name} address: \n${widget
-                      .coinBalance.balance.address}');
+                  AppLocalizations.of(context).shareAddress(
+                      widget.coinBalance.coin.name, widget
+                      .coinBalance.balance.address));
             },
           )
         ],
@@ -126,7 +127,9 @@ class _CoinDetailState extends State<CoinDetail> {
             height: 50,
           ),
           Text(
-            "Withdraw",
+            AppLocalizations
+                .of(context)
+                .withdraw,
             style: Theme
                 .of(context)
                 .textTheme
@@ -135,8 +138,12 @@ class _CoinDetailState extends State<CoinDetail> {
           SizedBox(height: 16),
           CustomTextField(
             errorText:
-            _validate ? 'Value Can\'t Be Empty OR no enought coin' : null,
-            labelText: 'Amount To Withdraw',
+            _validate ? AppLocalizations
+                .of(context)
+                .errorValueEmpty : null,
+            labelText: AppLocalizations
+                .of(context)
+                .amount,
             textInputType: TextInputType.numberWithOptions(decimal: true),
             controller: _amountController,
           ),
@@ -145,7 +152,9 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               Expanded(
                 child: CustomTextField(
-                  labelText: 'Address To Send',
+                  labelText: AppLocalizations
+                      .of(context)
+                      .addressSend,
                   textInputType: TextInputType.text,
                   controller: _addressController,
                 ),
@@ -196,9 +205,14 @@ class _CoinDetailState extends State<CoinDetail> {
                   .disabledColor,
               child: Text(
                 _amountController.text.isNotEmpty
-                    ? 'WITHDRAW ${_amountController.text} ${widget.coinBalance
-                    .coin.abbr}'
-                    : 'WITHDRAW',
+                    ?
+                AppLocalizations.of(context).withdrawValue(
+                    _amountController.text, widget.coinBalance
+                    .coin.abbr)
+                    : AppLocalizations
+                    .of(context)
+                    .withdraw
+                    .toUpperCase(),
                 style: Theme
                     .of(context)
                     .textTheme
@@ -241,7 +255,9 @@ class _CoinDetailState extends State<CoinDetail> {
                       });
                     } else {
                       Scaffold.of(context).showSnackBar(new SnackBar(
-                        content: new Text("Error, please try later."),
+                        content: new Text(AppLocalizations
+                            .of(context)
+                            .errorTryLater),
                       ));
                     }
                   });
@@ -284,7 +300,9 @@ class _CoinDetailState extends State<CoinDetail> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Withdraw confirm"),
+          title: new Text(AppLocalizations
+              .of(context)
+              .withdrawConfirm),
           content: GestureDetector(
               onTap: () {
                 Clipboard.setData(new ClipboardData(text: data.txHash));
@@ -297,7 +315,9 @@ class _CoinDetailState extends State<CoinDetail> {
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("Close"),
+              child: new Text(AppLocalizations
+                  .of(context)
+                  .close),
               onPressed: () {
                 coinsBloc.updateOneCoin(widget.coinBalance);
                 Navigator.of(context).pop();

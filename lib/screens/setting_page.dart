@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +22,9 @@ class _SettingPageState extends State<SettingPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text("Settings"),
+        title: Text(AppLocalizations
+            .of(context)
+            .settings),
       ),
       body: Theme(
         data: Theme.of(context).copyWith(
@@ -34,7 +37,9 @@ class _SettingPageState extends State<SettingPage> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  'Security',
+                  AppLocalizations
+                      .of(context)
+                      .security,
                   style: Theme
                       .of(context)
                       .textTheme
@@ -52,7 +57,9 @@ class _SettingPageState extends State<SettingPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'Activate PIN access',
+                      AppLocalizations
+                          .of(context)
+                          .activateAccessPin,
                       style: Theme
                           .of(context)
                           .textTheme
@@ -69,8 +76,12 @@ class _SettingPageState extends State<SettingPage> {
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (context) =>
                                           PinPage(
-                                            title: 'Lock Screen',
-                                            subTitle: 'Enter your PIN code',
+                                            title: AppLocalizations
+                                                .of(context)
+                                                .lockScreen,
+                                            subTitle: AppLocalizations
+                                                .of(context)
+                                                .enterPinCode,
                                             isConfirmPin: PinStatus
                                                 .DISABLED_PIN,)));
                                 } else {
@@ -91,15 +102,21 @@ class _SettingPageState extends State<SettingPage> {
                   color: Theme.of(context).hintColor,
                 ),
                 title: Text(
-                  'Change PIN',
+                  AppLocalizations
+                      .of(context)
+                      .changePin,
                   style: Theme.of(context).textTheme.body1,
                 ),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context) =>
                           PinPage(
-                            title: 'Lock Screen',
-                            subTitle: 'Enter your PIN code',
+                            title: AppLocalizations
+                                .of(context)
+                                .lockScreen,
+                            subTitle: AppLocalizations
+                                .of(context)
+                                .enterPinCode,
                             isConfirmPin: PinStatus.CHANGE_PIN,)));
                 },
               ),
@@ -111,7 +128,9 @@ class _SettingPageState extends State<SettingPage> {
                     color: Colors.red.withOpacity(0.7),
                   ),
                   title: Text(
-                    'Logout',
+                    AppLocalizations
+                        .of(context)
+                        .logout,
                     style: Theme
                         .of(context)
                         .textTheme

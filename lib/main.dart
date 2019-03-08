@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coin_json_bloc.dart';
 import 'package:komodo_dex/blocs/orderbook_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authenticate_page.dart';
 import 'package:komodo_dex/screens/bloc_coins_page.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
@@ -35,6 +37,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'KomodEX',
+        localizationsDelegates: [
+          AppLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        supportedLocales: [Locale("en"), Locale("es"), Locale("pt")],
         theme: ThemeData(
           primaryColor: Color.fromRGBO(42, 54, 71, 1),
           backgroundColor: Color.fromRGBO(30, 42, 58, 1),
@@ -69,8 +77,10 @@ class MyApp extends StatelessWidget {
           stream: authBloc.outIsLogin,
           builder: (context, isLogin) {
             return StreamBuilder(
+              initialData: authBloc.pinStatus,
               stream: authBloc.outpinStatus,
               builder: (context, outShowCreatePin) {
+                print(outShowCreatePin.data);
                 if (outShowCreatePin.hasData &&
                     (outShowCreatePin.data == PinStatus.NORMAL_PIN)) {
                   if (isLogin.hasData && isLogin.data) {
@@ -99,8 +109,12 @@ class MyApp extends StatelessWidget {
                   }
                 } else {
                   return PinPage(
-                      title: 'Create PIN',
-                      subTitle: 'Enter your PIN code',
+                      title: AppLocalizations
+                          .of(context)
+                          .createPin,
+                      subTitle: AppLocalizations
+                          .of(context)
+                          .enterPinCode,
                       firstCreationPin: true,
                       isConfirmPin: PinStatus.CREATE_PIN);
                 }

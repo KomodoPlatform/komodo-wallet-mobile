@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,16 +34,12 @@ class _PinPageState extends State<PinPage> {
   @override
   void initState() {
     if (widget.isConfirmPin == PinStatus.CONFIRM_PIN) {
-      print("TEST");
       authBloc.showPin(false);
     }
     super.initState();
   }
 
   Widget build(BuildContext context) {
-//    if (widget.isConfirmPin == PinStatus.CONFIRM_PIN) {
-//      authBloc.showPin(false);
-//    }
     return Scaffold(
         body: Stack(
           children: <Widget>[
@@ -70,8 +67,12 @@ class _PinPageState extends State<PinPage> {
                     MaterialPageRoute materialPage = MaterialPageRoute(
                         builder: (context) =>
                             PinPage(
-                              title: 'Confirm PIN',
-                              subTitle: 'Enter your PIN code',
+                              title: AppLocalizations
+                                  .of(context)
+                                  .confirmPin,
+                              subTitle: AppLocalizations
+                                  .of(context)
+                                  .enterPinCode,
                               code: code,
                               isConfirmPin: PinStatus.CONFIRM_PIN,));
 
@@ -85,7 +86,6 @@ class _PinPageState extends State<PinPage> {
                   case PinStatus.CONFIRM_PIN:
                     if (prefs.getString('pin_create') == code.toString()) {
                       await prefs.setString("pin", code.toString());
-                      print("SHOWPIN FALSE");
                       authBloc.showPin(false);
                       authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
                       Navigator.pop(context);
@@ -115,8 +115,12 @@ class _PinPageState extends State<PinPage> {
                       Navigator.pushReplacement(context, MaterialPageRoute(
                           builder: (context) =>
                               PinPage(
-                                title: 'Create PIN',
-                                subTitle: 'Enter your PIN code',
+                                title: AppLocalizations
+                                    .of(context)
+                                    .createPin,
+                                subTitle: AppLocalizations
+                                    .of(context)
+                                    .enterPinCode,
                                 isConfirmPin: PinStatus.CREATE_PIN,)));
                     } else {
                       _errorPin();
@@ -148,7 +152,9 @@ class _PinPageState extends State<PinPage> {
 
   _errorPin() {
     setState(() {
-      _error = "Error try again!";
+      _error = AppLocalizations
+          .of(context)
+          .errorTryAgain;
     });
   }
 

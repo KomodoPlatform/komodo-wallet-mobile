@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -134,11 +135,12 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
             if (!isAlreadyAdded) {
               SimpleDialogOption dialogItem = SimpleDialogOption(
                 onPressed: () {
-                  print('ADDING COIN ${coin.abbr}');
                   Navigator.pop(context);
                   coinsBloc.addCoin(coin).then((data) {
                     Scaffold.of(this.context).showSnackBar(new SnackBar(
-                      content: new Text('Adding ${coin.name} success !'),
+                      content: new Text(
+                          AppLocalizations.of(context).addingCoinSuccess(
+                              coin.name)),
                     ));
                   });
                 },
@@ -156,7 +158,9 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                     .of(context)
                     .dialogBackgroundColor),
             child: SimpleDialog(
-              title: Text('Add coin'),
+              title: Text(AppLocalizations
+                  .of(context)
+                  .addCoin),
               children: listDialog,
             ),
           );
@@ -243,7 +247,6 @@ class LoadAsset extends StatefulWidget {
 class LoadAssetState extends State<LoadAsset> {
   @override
   void initState() {
-//    coinsBloc.updateBalanceForEachCoin(false);
     super.initState();
   }
 
@@ -268,7 +271,7 @@ class LoadAssetState extends State<LoadAsset> {
             color: Colors.white.withOpacity(0.8),
           ));
           listRet.add(Text(
-            "${assetNumber.toString()} Assets",
+            AppLocalizations.of(context).numberAssets(assetNumber.toString()),
             style: Theme.of(context).textTheme.caption,
           ));
           listRet.add(Icon(
