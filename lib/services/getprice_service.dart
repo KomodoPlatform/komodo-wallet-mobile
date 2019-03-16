@@ -1,35 +1,41 @@
+import 'dart:async';
+
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-///This class 
+
+final getPriceObj = GetPriceService();
+
+///This class
 class GetPriceService {
   int calc = 100000000;
   String coin = "";
   bool coinAvailable = false;
-  String coinUrl = 'https://api.bittrex.com/api/v1.1/public/getticker?market=BTC-';
-  String fiatUrl = 'https://api.coinbase.com/v2/prices/spot?currency=';
   double price = 0.0; 
 
   Future<double> getPrice(String coin, String currency) async {
 
+    String coinUrl = 'https://api.bittrex.com/api/v1.1/public/getticker?market=BTC-';
+    String fiatUrl = 'https://api.coinbase.com/v2/prices/spot?currency=';
     fiatUrl += currency;
     coinUrl += coin;
-    // create req obj with coinbase API endpoint 
-    var usdRequest = await HttpClient().getUrl(Uri.parse(fiatUrl));
-    var btcRequest = await HttpClient().getUrl(Uri.parse(coinUrl));
+    double price = 0.0;
 
-    var usdResponse = await usdRequest.close();
-    var btcResponse = await btcRequest.close();
-    double price = 0.0; 
-
-    // transforms and prints the response
-    await for (var contents in usdResponse.transform(Utf8Decoder())) {
-      Map decoded = jsonDecode(contents);
-      price=double.parse(decoded['data']['amount']);
-    }
-    await for (var contents in btcResponse.transform(Utf8Decoder())) {
-      Map decoded = jsonDecode(contents);
-      price*=decoded['result']['Last'];
+    if (coin != "BTC" && coin != "USDT"){
+      final response = await http.get(fiatUrl);
+      Map decoded = jsonDecode(response.body);
+      price = double.parse(decoded['data']['amount']);
+      print("COIN URL: " + coinUrl);
+      final response2 = await http.get(coinUrl);
+      Map decoded2 = jsonDecode(response2.body);
+      price *= decoded2['result']['Last'];
+    } else{
+      if (coin =="USDT"){
+        price = 1; //TODO fetch realtime USDT price since not always exact 1usd
+      } else if (coin == "BTC"){
+        price = 1;
+      }
     }
     return price;
   }
