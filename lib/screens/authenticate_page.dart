@@ -31,7 +31,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                     height: 25,
                   ),
                   Text(
-                    "KomodEX",
+                    "KomoDEX",
                     style: Theme.of(context).textTheme.title,
                   )
                 ],
