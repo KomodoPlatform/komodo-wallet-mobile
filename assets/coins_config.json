@@ -77,7 +77,7 @@
     "port": 10004,
     "proto": "tcp",
     "txfee": 10000,
-    "abbr": "KMD",
+    "abbr": "RICK",
     "colorCoin": "0xFFabdce4",
     "serverList": [
       "116.203.111.225:10004",
@@ -91,7 +91,7 @@
     "port": 10005,
     "proto": "tcp",
     "txfee": 10000,
-    "abbr": "KMD",
+    "abbr": "MORTY",
     "colorCoin": "0xFFf8f277",
     "serverList": [
       "116.203.111.225:10005",
