@@ -13,7 +13,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Stack(
+      body: Column(
         children: <Widget>[
           Positioned(
             top: 250,
