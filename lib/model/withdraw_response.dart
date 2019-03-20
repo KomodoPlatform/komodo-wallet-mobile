@@ -63,7 +63,7 @@ class FeeDetails {
   });
 
   factory FeeDetails.fromJson(Map<String, dynamic> json) => new FeeDetails(
-        amount: json["amount"].toDouble(),
+        amount: json["amount"]?.toDouble(),
         coin: json["coin"],
         gas: json["gas"],
         gasPrice: json["gas_price"]?.toDouble(),
