@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'KomodEX',
+        title: 'KomoDEX',
         localizationsDelegates: [
           AppLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,
