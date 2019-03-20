@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:path_provider/path_provider.dart';
@@ -36,10 +37,14 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  void updateOneCoin(CoinBalance coin) async {
+  Future<void> updateOneCoin(CoinBalance coin) async {
     coin.balance = await mm2.getBalance(coin.coin);
+    coin.balanceUSD = await getPriceObj.getPrice(coin.coin.abbr, "USD");
+    coin.getValue(coin.balanceUSD);
+    print(coin.balanceUSD);
     coinBalance.forEach((coinBalance) {
       if (coin.coin.abbr == coinBalance.coin.abbr) {
+        coinBalance = coin;
         this.coinBalance.remove(coinBalance);
         this.coinBalance.add(coin);
         _inCoins.add(this.coinBalance);
@@ -59,7 +64,10 @@ class CoinsBloc implements BlocBase {
     await writeJsonCoin(coins);
     await mm2.activeCoin(coin);
     Balance balance = await mm2.getBalance(coin);
-    this.coinBalance.add(CoinBalance(coin, balance));
+    CoinBalance coinBalance = CoinBalance(coin, balance);
+    coinBalance.balanceUSD = 0;
+    this.coinBalance.add(coinBalance);
+    updateOneCoin(coinBalance);
     _inCoins.add(this.coinBalance);
   }
 
