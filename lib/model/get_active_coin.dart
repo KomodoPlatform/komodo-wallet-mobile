@@ -18,12 +18,14 @@ class GetActiveCoin {
   String userpass;
   String method;
   String coin;
+  String swap_contract_address;
   List<String> urls;
 
   GetActiveCoin({
     this.userpass,
     this.method,
     this.coin,
+    this.swap_contract_address,
     this.urls,
   });
 
@@ -31,6 +33,7 @@ class GetActiveCoin {
     userpass: json["userpass"],
     method: json["method"],
     coin: json["coin"],
+    swap_contract_address: json["swap_contract_address"],
     urls: new List<String>.from(json["urls"].map((x) => x)),
   );
 
@@ -38,6 +41,7 @@ class GetActiveCoin {
     "userpass": userpass,
     "method": method,
     "coin": coin,
+    "swap_contract_address":swap_contract_address,
     "urls": new List<dynamic>.from(urls.map((x) => x)),
   };
 }
