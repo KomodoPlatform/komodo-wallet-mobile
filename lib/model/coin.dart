@@ -26,6 +26,7 @@ class Coin {
   String proto;
   int txfee;
   String abbr;
+  String swap_contract_address;
   List<String> serverList;
   bool isActive;
   String colorCoin;
@@ -37,6 +38,7 @@ class Coin {
     this.proto,
     this.txfee,
     this.abbr,
+    this.swap_contract_address,
     this.serverList,
     this.isActive = false,
     this.colorCoin
@@ -49,8 +51,9 @@ class Coin {
     proto: json["proto"],
     txfee: json["txfee"],
     abbr: json["abbr"],
+    swap_contract_address: json["swap_contract_address"],
     colorCoin: json["colorCoin"],
-    serverList: new List<String>.from(json["serverList"].map((x) => x)),
+    serverList: new List<String>.from(json["serverList"].map((x) => x))
   );
 
   Map<String, dynamic> toJson() => {
@@ -60,7 +63,12 @@ class Coin {
     "proto": proto,
     "txfee": txfee,
     "abbr": abbr,
+    "swap_contract_address": swap_contract_address,
     "colorCoin": colorCoin,
     "serverList": new List<dynamic>.from(serverList.map((x) => x)),
   };
+
+  String getTxFeeSatoshi() {
+      return (txfee / 100000000).toString();
+  }
 }
