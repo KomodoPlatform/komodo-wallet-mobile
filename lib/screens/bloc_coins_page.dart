@@ -436,7 +436,7 @@ class ItemCoin extends StatelessWidget {
                            builder: (context) {
                              NumberFormat f = new NumberFormat("###,##0.##");
                              return Text(
-                                "\₩${f.format(coinbalance.balanceUSD)} KRW",
+                                "\$${f.format(coinbalance.balanceUSD)} USD",
                                 style: Theme.of(context).textTheme.body2,
                               );
                            }
