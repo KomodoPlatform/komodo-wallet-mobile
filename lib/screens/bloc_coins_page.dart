@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -19,6 +20,8 @@ class BlocCoinsPage extends StatefulWidget {
 class _BlocCoinsPageState extends State<BlocCoinsPage> {
   ScrollController _scrollController;
   double _heightFactor = 7;
+  BuildContext contextMain;
+  NumberFormat f = new NumberFormat("###,##0.0#");
 
   _scrollListener() {
     setState(() {
@@ -38,6 +41,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
   Widget build(BuildContext context) {
     double _heightScreen = MediaQuery.of(context).size.height;
     double _widthScreen = MediaQuery.of(context).size.width;
+    contextMain = context;
 
     return Scaffold(
       body: NestedScrollView(
@@ -71,10 +75,26 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                           width: _widthScreen * 0.5,
                           child: Center(
                             heightFactor: _heightFactor,
-                            child: AutoSizeText(
-                              "\$156,125,123.91 USD",
-                              style: Theme.of(context).textTheme.title,
-                              maxLines: 1,
+                            child: StreamBuilder<List<CoinBalance>>(
+                                initialData: coinsBloc.coinBalance,
+                              stream: coinsBloc.outCoins,
+                              builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    double totalBalanceUSD = 0;
+                                    snapshot.data.forEach((coinBalance){
+                                      totalBalanceUSD += coinBalance.balanceUSD;
+                                    });
+                                    return AutoSizeText(
+                                      "\$${f.format(totalBalanceUSD)} USD",
+                                      maxFontSize: 18,
+                                      minFontSize: 12,
+                                      style: Theme.of(context).textTheme.title,
+                                      maxLines: 1,
+                                    );
+                                  } else {
+                                    return Center(child: Container(child: CircularProgressIndicator(),));
+                                  }
+                                }
                             ),
                           ),
                         ),
@@ -137,9 +157,9 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                 onPressed: () {
                   Navigator.pop(context);
                   coinsBloc.addCoin(coin).then((data) {
-                    Scaffold.of(this.context).showSnackBar(new SnackBar(
+                    Scaffold.of(contextMain).showSnackBar(new SnackBar(
                       content: new Text(
-                          AppLocalizations.of(context).addingCoinSuccess(
+                          AppLocalizations.of(contextMain).addingCoinSuccess(
                               coin.name)),
                     ));
                   });
@@ -199,15 +219,15 @@ class BarGraphState extends State<BarGraph> {
           double sumOfAllBalances = 0;
 
           snapshot.data.forEach((coinBalance) {
-            sumOfAllBalances += coinBalance.balance.balance;
+            sumOfAllBalances += coinBalance.balanceUSD;
           });
 
           snapshot.data.forEach((coinBalance) {
-            if (coinBalance.balance.balance > 0) {
+            if (coinBalance.balanceUSD > 0) {
               barItem.add(Container(
                 color: Color(int.parse(coinBalance.coin.colorCoin)),
                 width: _widthBar *
-                    (((coinBalance.balance.balance * 100) / sumOfAllBalances) /
+                    (((coinBalance.balanceUSD * 100) / sumOfAllBalances) /
                         100),
               ));
             }
@@ -322,15 +342,16 @@ class ListCoinsState extends State<ListCoins> {
       initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data.length > 0) {
           return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
-                return ItemCoin(index: index, listCoinBalances: snapshot.data);
-              });
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
+                if (snapshot.hasData && snapshot.data.length > 0) {
+                  return ItemCoin(index: index, listCoinBalances: snapshot.data);
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              }
+          );
       },
     );
   }
@@ -348,7 +369,9 @@ class ItemCoin extends StatelessWidget {
   Widget build(BuildContext context) {
     double _heightScreen = MediaQuery.of(context).size.height;
     Coin coin = listCoinBalances[index].coin;
+    CoinBalance coinbalance =listCoinBalances[index];
     Balance balance = listCoinBalances[index].balance;
+    NumberFormat f = new NumberFormat("###,##0.########");
 
     return Card(
       elevation: 8,
@@ -372,14 +395,14 @@ class ItemCoin extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  PhotoHero(
-                    tag: "assets/${balance.coin.toLowerCase()}.png",
-                  ),
-                  SizedBox(height: 6),
-                  Text(
-                    coin.name.toUpperCase(),
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  )
+                  Builder(builder: (context) {
+                    String coinStr = balance.coin.toLowerCase();
+                      return PhotoHero(
+                        radius: 28,
+                        tag: "assets/${balance
+                            .coin.toLowerCase()}.png",
+                      );
+                  }),
                 ],
               ),
               Expanded(
@@ -390,16 +413,34 @@ class ItemCoin extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Text(
-                        "${balance.balance.toString()} ${coin.abbr}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        coin.name.toUpperCase(),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .caption,
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       Text(
-                        "\$${(balance.balance * 1.3).toStringAsFixed(2)} USD",
-                        style: Theme.of(context).textTheme.body2,
-                      )
+                        "${f.format(balance.balance)} ${coin.abbr}",
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .subtitle,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                         Builder(
+                           builder: (context) {
+                             NumberFormat f = new NumberFormat("###,##0.##");
+                             return Text(
+                                "\₩${f.format(coinbalance.balanceUSD)} KRW",
+                                style: Theme.of(context).textTheme.body2,
+                              );
+                           }
+                         )
                     ],
                   ),
                 ),
