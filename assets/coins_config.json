@@ -1,213 +1,5 @@
 [
   {
-    "name": "pizza",
-    "address": "electrum1.cipig.net",
-    "port": 10024,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "PIZZA",
-    "colorCoin": "0xFF3d7d63",
-    "serverList": [
-      "electrum1.cipig.net:10024",
-      "electrum2.cipig.net:10024"
-    ]
-  },
-  {
-    "name": "beer",
-    "address": "electrum1.cipig.net",
-    "port": 10022,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "BEER",
-    "colorCoin": "0xFFaa81b8",
-    "serverList": [
-      "electrum1.cipig.net:10022",
-      "electrum2.cipig.net:10022"
-    ]
-  },
-  {
-    "name": "coqui",
-    "address": "electrum1.cipig.net",
-    "port": 10011,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "COQUI",
-    "colorCoin": "0xFF5925d2",
-    "serverList": [
-      "electrum1.cipig.net:10011",
-      "electrum2.cipig.net:10011"
-    ]
-  },
-  {
-    "name": "revs",
-    "address": "electrum1.cipig.net",
-    "port": 10003,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "REVS",
-    "colorCoin": "0xFF9f77f4",
-    "serverList": [
-      "electrum1.cipig.net:10003",
-      "electrum2.cipig.net:10003"
-    ]
-  },
-  {
-    "name": "supernet",
-    "address": "electrum1.cipig.net",
-    "port": 10005,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "SUPERNET",
-    "colorCoin": "0xFFc0274d",
-    "serverList": [
-      "electrum1.cipig.net:10005",
-      "electrum2.cipig.net:10005"
-    ]
-  },
-  {
-    "name": "dex",
-    "address": "electrum1.cipig.net",
-    "port": 10006,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "DEX",
-    "colorCoin": "0xFF988dbb",
-    "serverList": [
-      "electrum1.cipig.net:10006",
-      "electrum2.cipig.net:10006"
-    ]
-  },
-  {
-    "name": "bots",
-    "address": "electrum1.cipig.net",
-    "port": 10007,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "BOTS",
-    "colorCoin": "0xFFc0c5f1",
-    "serverList": [
-      "electrum1.cipig.net:10007",
-      "electrum2.cipig.net:10007"
-    ]
-  },
-  {
-    "name": "crypto",
-    "address": "electrum1.cipig.net",
-    "port": 10008,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "CRYPTO",
-    "colorCoin": "0xFF33aabe",
-    "serverList": [
-      "electrum1.cipig.net:10008",
-      "electrum2.cipig.net:10008"
-    ]
-  },
-  {
-    "name": "hodl",
-    "address": "electrum1.cipig.net",
-    "port": 10009,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "HODL",
-    "colorCoin": "0xFF7abaf3",
-    "serverList": [
-      "electrum1.cipig.net:10009",
-      "electrum2.cipig.net:10009"
-    ]
-  },
-  {
-    "name": "pangea",
-    "address": "electrum1.cipig.net",
-    "port": 10010,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "PANGEA",
-    "colorCoin": "0xFF2d6c46",
-    "serverList": [
-      "electrum1.cipig.net:10010",
-      "electrum2.cipig.net:10010"
-    ]
-  },
-  {
-    "name": "bet",
-    "address": "electrum1.cipig.net",
-    "port": 10012,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "BET",
-    "colorCoin": "0xFFf4345b",
-    "serverList": [
-      "electrum1.cipig.net:10012",
-      "electrum2.cipig.net:10012"
-    ]
-  },
-  {
-    "name": "mshark",
-    "address": "electrum1.cipig.net",
-    "port": 10013,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "MSHARK",
-    "colorCoin": "0xFFde4322",
-    "serverList": [
-      "electrum1.cipig.net:10013",
-      "electrum2.cipig.net:10013"
-    ]
-  },
-  {
-    "name": "wlc",
-    "address": "electrum1.cipig.net",
-    "port": 10014,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "WLC",
-    "colorCoin": "0xFF4d8879",
-    "serverList": [
-      "electrum1.cipig.net:10014",
-      "electrum2.cipig.net:10014"
-    ]
-  },
-  {
-    "name": "mgw",
-    "address": "electrum1.cipig.net",
-    "port": 10015,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "MGW",
-    "colorCoin": "0xFFf45b2a",
-    "serverList": [
-      "electrum1.cipig.net:10015",
-      "electrum2.cipig.net:10015"
-    ]
-  },
-  {
-    "name": "btch",
-    "address": "electrum1.cipig.net",
-    "port": 10020,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "BTCH",
-    "colorCoin": "0xFF3d2553",
-    "serverList": [
-      "electrum1.cipig.net:10020",
-      "electrum2.cipig.net:10020"
-    ]
-  },
-  {
-    "name": "jumblr",
-    "address": "electrum1.cipig.net",
-    "port": 10004,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "JUMBLR",
-    "colorCoin": "0xFF9e1ec2",
-    "serverList": [
-      "electrum1.cipig.net:10004",
-      "electrum2.cipig.net:10004"
-    ]
-  },
-  {
     "name": "komodo",
     "address": "electrum1.cipig.net",
     "port": 10001,
@@ -217,7 +9,7 @@
     "colorCoin": "0xFF62a30d",
     "serverList": [
       "electrum1.cipig.net:10001",
-      "electrum2.cipig.net:10001'"
+      "electrum2.cipig.net:10001"
     ]
   },
   {
@@ -239,95 +31,72 @@
     ]
   },
   {
-    "name": "blk",
-    "address": "electrum1.cipig.net",
-    "port": 10054,
-    "proto": "tcp",
-    "abbr": "BLK",
-    "txfee": 10000,
-    "colorCoin": "0xFF6f6fbd",
-    "serverList": [
-      "electrum1.cipig.net:10054",
-      "electrum2.cipig.net:10054"
-    ]
-  },
-  {
-    "name": "sib",
-    "address": "electrum1.cipig.net",
-    "port": 10050,
-    "proto": "tcp",
-    "abbr": "SIB",
-    "txfee": 10000,
-    "colorCoin": "0xFF719203",
-    "serverList": [
-      "electrum1.cipig.net:10050",
-      "electrum2.cipig.net:10050"
-    ]
-  },
-  {
-    "name": "chips",
-    "address": "electrum1.cipig.net",
-    "port": 10053,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "CHIPS",
-    "colorCoin": "0xFF3dcce8",
-    "serverList": [
-      "electrum1.cipig.net:10053",
-      "electrum2.cipig.net:10053"
-    ]
-  },
-  {
-    "name": "zcl",
-    "address": "electrum1.cipig.net",
-    "port": 50055,
-    "proto": "tcp",
-    "txfee": 1000,
-    "abbr": "ZCL",
-    "colorCoin": "0xFF2ca6dc",
-    "serverList": [
-      "electrum1.cipig.net:10055",
-      "electrum2.cipig.net:10055"
-    ]
-  },
-  {
-    "name": "btcz",
-    "address": "electrum1.cipig.net",
-    "port": 10056,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "BTCZ",
-    "colorCoin": "0xFFa1da21",
-    "serverList": [
-      "electrum1.cipig.net:10056",
-      "electrum2.cipig.net:10056"
-    ]
-  },
-  {
-    "name": "grs",
-    "address": "electrum10.groestlcoin.org",
+    "name": "Bitcoin Cash",
+    "address": "bch.imaginary.cash",
     "port": 50001,
     "proto": "tcp",
-    "txfee": 50000,
-    "abbr": "GRS",
-    "colorCoin": "0xFFaeb07e",
+    "txfee": 0,
+    "abbr": "BCH",
+    "colorCoin": "0xFF51d657",
     "serverList": [
-      "electrum10.groestlcoin.org:50001",
-      "electrum11.groestlcoin.org:50001"
+      "bch.imaginary.cash:50001",
+      "electroncash.dk:50001",
+      "wallet.satoshiscoffeehouse.com:50001"
     ]
   },
   {
-    "name": "etomic",
-    "address": "electrum3.cipig.net",
-    "port": 10025,
+    "name": "Ethereum",
+    "address": "195.201.0.6",
+    "port": 8555,
     "proto": "tcp",
-    "txfee": 50000,
-    "abbr": "ETOMIC",
-    "colorCoin": "0xFFa1da01",
+    "txfee": 0,
+    "abbr": "ETH",
+    "swap_contract_address":"0xE41d2489571d322189246DaFA5ebDe1F4699F498",
+    "colorCoin": "0xFF828384",
     "serverList": [
-      "electrum3.cipig.net:10025",
-      "electrum2.cipig.net:10025",
-      "electrum1.cipig.net:10025"
+      "http://195.201.0.6:8555",
+      "http://173.249.5.31:8555"
+    ]
+  },
+  {
+    "name": "Tether",
+    "address": "195.201.0.6",
+    "port": 8555,
+    "proto": "tcp",
+    "txfee": 0,
+    "abbr": "USDT",
+    "swap_contract_address":"0xdac17f958d2ee523a2206206994597c13d831ec7",
+    "colorCoin": "0xFF73c5ad",
+    "serverList": [
+      "http://195.201.0.6:8555"
+    ]
+  },
+  {
+    "name": "Rick",
+    "address": "116.203.111.225",
+    "port": 10004,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "KMD",
+    "colorCoin": "0xFFabdce4",
+    "serverList": [
+      "116.203.111.225:10004",
+      "116.203.120.175:10004",
+      "116.203.40.22:10004"
+    ]
+  },
+  {
+    "name": "Morty",
+    "address": "116.203.120.175",
+    "port": 10005,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "KMD",
+    "colorCoin": "0xFFf8f277",
+    "serverList": [
+      "116.203.111.225:10005",
+      "116.203.120.175:10005",
+      "116.203.40.22:10005"
     ]
   }
 ]
