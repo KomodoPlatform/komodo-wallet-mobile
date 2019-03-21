@@ -1,38 +1,12 @@
 [
   {
-    "name": "pizza",
-    "address": "electrum1.cipig.net",
-    "port": 10024,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "PIZZA",
-    "colorCoin": "0xFF3d7d63",
-    "serverList": [
-      "electrum1.cipig.net:10024",
-      "electrum2.cipig.net:10024"
-    ]
-  },
-  {
-    "name": "beer",
-    "address": "electrum1.cipig.net",
-    "port": 10022,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "BEER",
-    "colorCoin": "0xFFaa81b8",
-    "serverList": [
-      "electrum1.cipig.net:10022",
-      "electrum2.cipig.net:10022"
-    ]
-  },
-  {
     "name": "komodo",
     "address": "electrum1.cipig.net",
     "port": 10001,
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "KMD",
-    "colorCoin": "0xFF62a30d",
+    "colorCoin": "0xFF326464",
     "serverList": [
       "electrum1.cipig.net:10001",
       "electrum2.cipig.net:10001'"
@@ -44,7 +18,7 @@
     "port": 50001,
     "proto": "tcp",
     "abbr": "BTC",
-    "colorCoin": "0xFF98baca",
+    "colorCoin": "0xFFf7931a",
     "serverList": [
       "mooo.not.fyi:50011",
       "e-x.not.fyi:50001",

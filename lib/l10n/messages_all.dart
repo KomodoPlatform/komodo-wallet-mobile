@@ -14,11 +14,15 @@ import 'messages_messages.dart' as messages_messages;
 typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = {
 // ignore: unnecessary_new
+  'ko': () => new Future.value(null),
+// ignore: unnecessary_new
   'messages': () => new Future.value(null),
 };
 
 MessageLookupByLibrary _findExact(localeName) {
   switch (localeName) {
+    // case 'ko':
+    //   return messages_ko.messages;
     case 'messages':
       return messages_messages.messages;
     default:

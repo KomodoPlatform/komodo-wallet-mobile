@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/bloc_login_page.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/screens/new_account_page.dart';
 
 class AuthenticatePage extends StatefulWidget {
@@ -13,29 +14,29 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Stack(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Positioned(
-            top: 250,
-            left: 10,
-            right: 10,
-            child: SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                      height: 100,
-                      width: 100,
-                      child: Image.asset("assets/logo_kmd.png")),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Text(
-                    "KomodEX",
-                    style: Theme.of(context).textTheme.title,
-                  )
-                ],
-              ),
+          SizedBox(height: 40,),
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    height: 100,
+                    width: 100,
+                    child: Image.asset("assets/logo_kmd.png")),
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  "KomoDEX",
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .title,
+                )
+              ],
             ),
           ),
           SafeArea(

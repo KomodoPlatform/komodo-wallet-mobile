@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
+
   static Future<AppLocalizations> load(Locale locale) {
     final String name =
         locale.countryCode == null ? locale.languageCode : locale.toString();
@@ -134,6 +135,30 @@ class AppLocalizations {
 
   String get buySuccessWaiting =>
       Intl.message('Order matched, please wait', name: 'buySuccessWaiting');
+
+  String get networkFee => Intl.message('Network fee', name: 'networkFee');
+  String get commissionFee => Intl.message('commission fee', name: 'commissionFee');
+  String get portfolio => Intl.message('portfolio', name: 'portfolio');
+
+  String get checkOut => Intl.message('Check Out', name: 'checkOut');
+
+  String get estimateValue =>
+      Intl.message('Estimated Total Value', name: 'estimateValue');
+
+  String get selectPaymentMethod =>
+      Intl.message('Select Your Payment Method', name: 'selectPaymentMethod');
+
+  String get volumes => Intl.message('Volumes', name: 'volumes');
+
+  String get placeOrder => Intl.message('Place your order', name: 'placeOrder');
+  String get comingSoon => Intl.message("Coming soon...", name: 'comingSoon');
+
+  String get marketplace => Intl.message('Marketplace', name: 'marketplace');
+  String get youAreSending => Intl.message("You are sending", name: 'youAreSending');
+  String get code => Intl.message("Code: ", name: 'code');
+  String get value => Intl.message("Value: ", name: 'value');
+  String get paidWith => Intl.message("Paid with ", name: 'paidWith');
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -141,7 +166,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return ['en'].contains(locale.languageCode);
+    return ['en', 'ko'].contains(locale.languageCode);
   }
 
   @override

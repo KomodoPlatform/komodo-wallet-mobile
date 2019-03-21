@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-03-08T17:26:48.964449",
+  "@@last_modified": "2019-03-12T12:53:26.902289",
   "createPin": "Create PIN",
   "@createPin": {
     "type": "text",
@@ -217,6 +217,114 @@
   },
   "buySuccessWaiting": "Order matched, please wait",
   "@buySuccessWaiting": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "networkFee": "Network fee",
+  "@networkFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "commissionFee": "commission fee",
+  "@commissionFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "giftCard": "Gift Card",
+  "@giftCard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "portfolio": "portfolio",
+  "@portfolio": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkOut": "Check Out",
+  "@checkOut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "estimateValue": "Estimated Total Value",
+  "@estimateValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectPaymentMethod": "Select Your Payment Method",
+  "@selectPaymentMethod": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "volumes": "Volumes",
+  "@volumes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "placeOrder": "Place your order",
+  "@placeOrder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailCard": "Detail Card",
+  "@detailCard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yourCard": "Your Cards",
+  "@yourCard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "allCard": "All >",
+  "@allCard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "comingSoon": "Coming soon...",
+  "@comingSoon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "successBuyGift": "Success buy {brandName} card for {price} CAD !",
+  "@successBuyGift": {
+    "type": "text",
+    "placeholders": {
+      "brandName": {},
+      "price": {}
+    }
+  },
+  "marketplace": "Marketplace",
+  "@marketplace": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "youAreSending": "You are sending",
+  "@youAreSending": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "code": "Code: ",
+  "@code": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "value": "Value: ",
+  "@value": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paidWith": "Paid with ",
+  "@paidWith": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "balanceLiveen": "Balance Liveen",
+  "@balanceLiveen": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "transactionLiveen": "Transaction Liveen",
+  "@transactionLiveen": {
     "type": "text",
     "placeholders": {}
   }

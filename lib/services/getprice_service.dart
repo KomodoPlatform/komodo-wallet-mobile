@@ -22,7 +22,7 @@ class GetPriceService {
     coinUrl += coin;
     double price = 0.0;
 
-    if (coin != "BTC" && coin != "USDT"){
+    if (coin != "BTC" && coin != "USDT" && coin != "RICK" && coin != "MORTY"){
       final response = await http.get(fiatUrl);
       Map decoded = jsonDecode(response.body);
       price = double.parse(decoded['data']['amount']);
@@ -34,6 +34,10 @@ class GetPriceService {
       if (coin =="USDT"){
         price = 1; //TODO fetch realtime USDT price since not always exact 1usd
       } else if (coin == "BTC"){
+        price = 1;
+      } else if (coin == "RICK"){
+        price = 1;
+      } else if (coin == "MORTY"){
         price = 1;
       }
     }

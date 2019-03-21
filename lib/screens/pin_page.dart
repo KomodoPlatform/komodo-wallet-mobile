@@ -57,7 +57,7 @@ class _PinPageState extends State<PinPage> {
                 widget.subTitle,
                 style: TextStyle(color: Colors.white),
               ),
-              codeLength: 4,
+              codeLength: 6,
               onCodeEntered: (code) async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
 

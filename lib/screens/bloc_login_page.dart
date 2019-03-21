@@ -36,7 +36,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
                 .substring(1)}'),
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Column(
+      body: ListView(
         children: <Widget>[
           _buildTitle(),
           _buildInputSeed(),
