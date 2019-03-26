@@ -166,11 +166,11 @@ class _CoinDetailState extends State<CoinDetail> {
                           builder: (context) {
                             return transaction.isIn
                                 ? Text(
-                                    "+",
+                                    "+ ",
                                     style: subtitle,
                                   )
                                 : Text(
-                                    "-",
+                                    "- ",
                                     style: subtitle,
                                   );
                           },
@@ -183,8 +183,10 @@ class _CoinDetailState extends State<CoinDetail> {
                           ' ${widget.coinBalance.coin.abbr}',
                           style: subtitle,
                         ),
-                        SizedBox(
-                          width: 8,
+                        Expanded(
+                                                  child: SizedBox(
+                            width: 8,
+                          ),
                         ),
                         Builder(
                           builder: (context) {
@@ -241,7 +243,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         ),
                         Icon(
                           Icons.more_horiz,
-                          color: Theme.of(context).buttonColor,
+                          color: Theme.of(context).accentColor,
                           size: 32,
                         )
                       ],

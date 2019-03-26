@@ -31,6 +31,7 @@ class GetTransactionService {
     else if (coin == "RICK")
       pubkeyApi = 'https://rick.kmd.dev/api/';
     else if (coin == "MORTY") pubkeyApi = 'https://morty.kmd.dev/api/';
+    else if (coin == "KMD") pubkeyApi = 'https://api.kmd.dev/api/';
 
     if (coin != "USDT" && coin != "ETH") {
       final response = await http.get(pubkeyApi + 'addr/' + pubkey);
