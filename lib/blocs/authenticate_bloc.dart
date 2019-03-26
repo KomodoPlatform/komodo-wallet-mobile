@@ -8,7 +8,6 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticateBloc extends BlocBase {
-
   bool isLogin = false;
   StreamController<bool> _isLoginController =
       StreamController<bool>.broadcast();
@@ -17,19 +16,18 @@ class AuthenticateBloc extends BlocBase {
 
   bool isPinShow = false;
   StreamController<bool> _showPinController =
-        StreamController<bool>.broadcast();
+      StreamController<bool>.broadcast();
   Sink<bool> get _inShowPin => _showPinController.sink;
   Stream<bool> get outShowPin => _showPinController.stream;
 
   PinStatus pinStatus = PinStatus.NORMAL_PIN;
 
   StreamController<PinStatus> _pinStatusController =
-  StreamController<PinStatus>.broadcast();
+      StreamController<PinStatus>.broadcast();
 
   Sink<PinStatus> get _inpinStatus => _pinStatusController.sink;
 
   Stream<PinStatus> get outpinStatus => _pinStatusController.stream;
-
 
   AuthenticateBloc() {
     init();
@@ -95,15 +93,8 @@ class AuthenticateBloc extends BlocBase {
     this.pinStatus = pinStatus;
     _inpinStatus.add(this.pinStatus);
   }
-
 }
 
-enum PinStatus {
-  CREATE_PIN,
-  CONFIRM_PIN,
-  DISABLED_PIN,
-  CHANGE_PIN,
-  NORMAL_PIN
-}
+enum PinStatus { CREATE_PIN, CONFIRM_PIN, DISABLED_PIN, CHANGE_PIN, NORMAL_PIN }
 
 final authBloc = AuthenticateBloc();

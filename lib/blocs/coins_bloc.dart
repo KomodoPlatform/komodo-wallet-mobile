@@ -29,7 +29,8 @@ class CoinsBloc implements BlocBase {
       StreamController<List<Transaction>>.broadcast();
 
   Sink<List<Transaction>> get _inTransactions => _transactionsController.sink;
-  Stream<List<Transaction>> get outTransactions => _transactionsController.stream;
+  Stream<List<Transaction>> get outTransactions =>
+      _transactionsController.stream;
 
   var timer;
 
@@ -49,7 +50,8 @@ class CoinsBloc implements BlocBase {
   }
 
   void updateTransactions(CoinBalance coinBalance) async {
-    List<Transaction> transactions = await getTransactionObj.getTransactions(coinBalance.coin.abbr, coinBalance.balance.address);
+    List<Transaction> transactions = await getTransactionObj.getTransactions(
+        coinBalance.coin.abbr, coinBalance.balance.address);
     this.transactions = transactions;
     _inTransactions.add(this.transactions);
   }
@@ -75,8 +77,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> updateBalanceForEachCoin(bool forceUpdate) async {
-    if (mm2.mm2Ready)
-      await mm2.loadCoin(forceUpdate);
+    if (mm2.mm2Ready) await mm2.loadCoin(forceUpdate);
   }
 
   Future<void> addCoin(Coin coin) async {
@@ -128,10 +129,8 @@ class CoinsBloc implements BlocBase {
   }
 
   void stopCheckBalance() {
-    if (timer != null)
-      timer.cancel();
+    if (timer != null) timer.cancel();
   }
-
 }
 
 final coinsBloc = CoinsBloc();

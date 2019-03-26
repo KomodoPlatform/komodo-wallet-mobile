@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
-class CoinJsonBloc implements BlocBase{
+class CoinJsonBloc implements BlocBase {
   Coin baseCoin = Coin(
     name: "bitcoin",
     abbr: "BTC",
@@ -16,13 +16,13 @@ class CoinJsonBloc implements BlocBase{
   // Streams to handle the list coin
   StreamController<Coin> _baseCoinController =
       StreamController<Coin>.broadcast();
-  Sink<Coin> get _inBaseCoin => _baseCoinController.sink; 
+  Sink<Coin> get _inBaseCoin => _baseCoinController.sink;
   Stream<Coin> get outBaseCoin => _baseCoinController.stream;
 
   // Streams to handle the list coin
   StreamController<Coin> _relCoinController =
       StreamController<Coin>.broadcast();
-  Sink<Coin> get _inRelCoin => _relCoinController.sink; 
+  Sink<Coin> get _inRelCoin => _relCoinController.sink;
   Stream<Coin> get outRelCoin => _relCoinController.stream;
 
   @override
@@ -31,7 +31,7 @@ class CoinJsonBloc implements BlocBase{
     _relCoinController.close();
   }
 
-  void updateBaseCoin(Coin coin){
+  void updateBaseCoin(Coin coin) {
     baseCoin = coin;
     _inBaseCoin.add(baseCoin);
   }
@@ -40,5 +40,4 @@ class CoinJsonBloc implements BlocBase{
     relCoin = coin;
     _inRelCoin.add(relCoin);
   }
-
 }
