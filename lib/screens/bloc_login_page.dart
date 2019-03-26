@@ -10,10 +10,12 @@ class BlocLoginPage extends StatefulWidget {
 class _BlocLoginPageState extends State<BlocLoginPage> {
   TextEditingController controllerSeed = new TextEditingController();
   bool _isButtonDisabled;
+  bool _isLogin;
 
   @override
   void initState() {
     _isButtonDisabled = false;
+    _isLogin = false;
     super.initState();
   }
 
@@ -28,12 +30,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            '${AppLocalizations
-                .of(context)
-                .login[0].toUpperCase()}${AppLocalizations
-                .of(context)
-                .login
-                .substring(1)}'),
+            '${AppLocalizations.of(context).login[0].toUpperCase()}${AppLocalizations.of(context).login.substring(1)}'),
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(
@@ -54,13 +51,8 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
         ),
         Center(
           child: Text(
-            AppLocalizations
-                .of(context)
-                .enterSeedPhrase,
-            style: Theme
-                .of(context)
-                .textTheme
-                .title,
+            AppLocalizations.of(context).enterSeedPhrase,
+            style: Theme.of(context).textTheme.title,
             textAlign: TextAlign.center,
           ),
         ),
@@ -90,32 +82,17 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
         autocorrect: false,
         keyboardType: TextInputType.multiline,
         maxLines: null,
-        style: Theme
-            .of(context)
-            .textTheme
-            .body1,
+        style: Theme.of(context).textTheme.body1,
         decoration: InputDecoration(
             border: OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
                 borderSide:
-                BorderSide(color: Theme
-                    .of(context)
-                    .primaryColorLight)),
+                    BorderSide(color: Theme.of(context).primaryColorLight)),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme
-                    .of(context)
-                    .accentColor)),
-            hintStyle: Theme
-                .of(context)
-                .textTheme
-                .body2,
-            labelStyle: Theme
-                .of(context)
-                .textTheme
-                .body1,
-            hintText: AppLocalizations
-                .of(context)
-                .exampleHintSeed,
+                borderSide: BorderSide(color: Theme.of(context).accentColor)),
+            hintStyle: Theme.of(context).textTheme.body2,
+            labelStyle: Theme.of(context).textTheme.body1,
+            hintText: AppLocalizations.of(context).exampleHintSeed,
             labelText: null),
       ),
     );
@@ -127,33 +104,35 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
       child: Container(
         width: double.infinity,
         height: 50,
-        child: RaisedButton(
-          shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
-          color: Theme
-              .of(context)
-              .buttonColor,
-          disabledColor: Theme
-              .of(context)
-              .disabledColor,
-          child: Text(
-            AppLocalizations
-                .of(context)
-                .confirm
-                .toUpperCase(),
-            style: Theme
-                .of(context)
-                .textTheme
-                .button,
-          ),
-          onPressed: _isButtonDisabled ? null : _onLoginPressed,
-        ),
+        child: _isLogin
+            ? Center(child: CircularProgressIndicator())
+            : RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0)),
+                color: Theme.of(context).buttonColor,
+                disabledColor: Theme.of(context).disabledColor,
+                child: Text(
+                  AppLocalizations.of(context).confirm.toUpperCase(),
+                  style: Theme.of(context).textTheme.button,
+                ),
+                onPressed: _isButtonDisabled ? null : _onLoginPressed,
+              ),
       ),
     );
   }
 
   _onLoginPressed() {
-    authBloc.login(controllerSeed.text.toString());
-    Navigator.pop(context);
+    setState(() {
+      _isButtonDisabled = true;
+      _isLogin = true;
+    });
+    FocusScope.of(context).requestFocus(new FocusNode());
+    authBloc.login(controllerSeed.text.toString()).then((data) {
+      Navigator.pop(context);
+    }).then((data) {
+      setState(() {
+        _isLogin = false;
+      });
+    });
   }
 }
