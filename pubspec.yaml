@@ -1,5 +1,5 @@
-name: komodo_dex
-description: Komodo dex application use marketmaker on back.
+name: atomicDEX
+description: Multicoin Wallet with DEX gateway
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -7,7 +7,7 @@ description: Komodo dex application use marketmaker on back.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.0+1
+version: 0.1.0
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -36,6 +36,8 @@ dev_dependencies:
   flutter_launcher_icons: "^0.7.0"
   path_provider: ^0.5.0+1
   intl_translation: ^0.17.1
+  bs58check: ^1.0.1
+  url_launcher: ^5.0.2
 
 flutter_icons:
   android: "launcher_icon"
