@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
-
   static Future<AppLocalizations> load(Locale locale) {
     final String name =
         locale.countryCode == null ? locale.languageCode : locale.toString();
@@ -137,7 +136,8 @@ class AppLocalizations {
       Intl.message('Order matched, please wait', name: 'buySuccessWaiting');
 
   String get networkFee => Intl.message('Network fee', name: 'networkFee');
-  String get commissionFee => Intl.message('commission fee', name: 'commissionFee');
+  String get commissionFee =>
+      Intl.message('commission fee', name: 'commissionFee');
   String get portfolio => Intl.message('portfolio', name: 'portfolio');
 
   String get checkOut => Intl.message('Check Out', name: 'checkOut');
@@ -154,11 +154,26 @@ class AppLocalizations {
   String get comingSoon => Intl.message("Coming soon...", name: 'comingSoon');
 
   String get marketplace => Intl.message('Marketplace', name: 'marketplace');
-  String get youAreSending => Intl.message("You are sending", name: 'youAreSending');
+  String get youAreSending =>
+      Intl.message("You are sending", name: 'youAreSending');
   String get code => Intl.message("Code: ", name: 'code');
   String get value => Intl.message("Value: ", name: 'value');
   String get paidWith => Intl.message("Paid with ", name: 'paidWith');
 
+  String get errorValueNotEmpty =>
+      Intl.message("Please input data", name: 'errorValueNotEmpty');
+
+  String get errorAmountBalance =>
+      Intl.message("Not enough balance", name: 'errorAmountBalance');
+
+  String get errorNotAValidAddress =>
+      Intl.message("Not a valid address", name: 'errorNotAValidAddress');
+
+  String get toAddress => Intl.message("To address", name: 'toAddress');
+  String get receive => Intl.message("RECEIVE", name: 'receive');
+  String get send => Intl.message("SEND", name: 'send');
+  String get back => Intl.message("back", name: 'back');
+  String get cancel => Intl.message("cancel", name: 'cancel');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
