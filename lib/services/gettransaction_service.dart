@@ -61,7 +61,7 @@ class GetTransactionService {
           }
         }
 
-        val = double.parse(decoded2['vout'][0]['value']);
+        if(out) val = double.parse(decoded2['vout'][0]['value']);
         transactions.add(Transaction(
             txid: decoded2['txid'],
             isIn: !out,
