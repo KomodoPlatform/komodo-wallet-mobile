@@ -5,7 +5,9 @@ import 'dart:io';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/transaction.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
+import 'package:komodo_dex/services/gettransaction_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,6 +21,15 @@ class CoinsBloc implements BlocBase {
 
   Sink<List<CoinBalance>> get _inCoins => _coinsController.sink;
   Stream<List<CoinBalance>> get outCoins => _coinsController.stream;
+
+  List<Transaction> transactions = new List<Transaction>();
+
+  // Streams to handle the list coin
+  StreamController<List<Transaction>> _transactionsController =
+      StreamController<List<Transaction>>.broadcast();
+
+  Sink<List<Transaction>> get _inTransactions => _transactionsController.sink;
+  Stream<List<Transaction>> get outTransactions => _transactionsController.stream;
 
   var timer;
 
@@ -35,6 +46,17 @@ class CoinsBloc implements BlocBase {
   void updateCoins(List<CoinBalance> coins) {
     coinBalance = coins;
     _inCoins.add(coinBalance);
+  }
+
+  void updateTransactions(CoinBalance coinBalance) async {
+    List<Transaction> transactions = await getTransactionObj.getTransactions(coinBalance.coin.abbr, coinBalance.balance.address);
+    this.transactions = transactions;
+    _inTransactions.add(this.transactions);
+  }
+
+  void clearTransactions() {
+    transactions.clear();
+    _inTransactions.add(transactions);
   }
 
   Future<void> updateOneCoin(CoinBalance coin) async {
