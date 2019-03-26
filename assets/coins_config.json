@@ -31,20 +31,6 @@
     ]
   },
   {
-    "name": "Bitcoin Cash",
-    "address": "bch.imaginary.cash",
-    "port": 50001,
-    "proto": "tcp",
-    "txfee": 0,
-    "abbr": "BCH",
-    "colorCoin": "0xFF51d657",
-    "serverList": [
-      "bch.imaginary.cash:50001",
-      "electroncash.dk:50001",
-      "wallet.satoshiscoffeehouse.com:50001"
-    ]
-  },
-  {
     "name": "Ethereum",
     "address": "195.201.0.6",
     "port": 8555,
@@ -56,19 +42,6 @@
     "serverList": [
       "http://195.201.0.6:8555",
       "http://173.249.5.31:8555"
-    ]
-  },
-  {
-    "name": "Tether",
-    "address": "195.201.0.6",
-    "port": 8555,
-    "proto": "tcp",
-    "txfee": 0,
-    "abbr": "USDT",
-    "swap_contract_address":"0xdac17f958d2ee523a2206206994597c13d831ec7",
-    "colorCoin": "0xFF73c5ad",
-    "serverList": [
-      "http://195.201.0.6:8555"
     ]
   },
   {
