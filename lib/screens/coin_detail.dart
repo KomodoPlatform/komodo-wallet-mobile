@@ -106,8 +106,10 @@ class _CoinDetailState extends State<CoinDetail> {
                   StreamBuilder<List<Transaction>>(
                       stream: coinsBloc.outTransactions,
                       builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data.length == 0) {
+                          return Center(child: Text("No Transactions", style: Theme.of(context).textTheme.body2,));
+                        }
                         if (snapshot.hasData &&
-                            snapshot.hasData &&
                             snapshot.data.length > 0) {
                           return Padding(
                             padding: EdgeInsets.symmetric(
