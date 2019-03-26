@@ -275,7 +275,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data is CoinBalance) {
                     return Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                       width: double.infinity,
                       child: Column(
                         children: <Widget>[
@@ -333,13 +333,13 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     OrderCoin orderCoin = snapshot.data;
 
                     return Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                       width: double.infinity,
                       child: Column(
                         children: <Widget>[
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(32.0),
+                              padding: const EdgeInsets.all(16.0),
                               child: Image.asset(
                                   "assets/${orderCoin.coinBase.abbr.toLowerCase()}.png", fit: BoxFit.cover,),
                             ),
