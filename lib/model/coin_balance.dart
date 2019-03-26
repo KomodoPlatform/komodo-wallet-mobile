@@ -11,4 +11,8 @@ class CoinBalance{
   double getValue(double price){
     balanceUSD = balance.balance * price;
   }
+
+  String getBalanceUSD() {
+    return balanceUSD.toStringAsFixed(2);
+  }  
 }

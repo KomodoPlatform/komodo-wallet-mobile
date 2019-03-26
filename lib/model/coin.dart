@@ -26,8 +26,10 @@ class Coin {
   String proto;
   int txfee;
   String abbr;
+  int mm2;
   String swap_contract_address;
   List<String> serverList;
+  String explorerUrl;
   bool isActive;
   String colorCoin;
 
@@ -38,8 +40,10 @@ class Coin {
     this.proto,
     this.txfee,
     this.abbr,
+    this.mm2,
     this.swap_contract_address,
     this.serverList,
+    this.explorerUrl,
     this.isActive = false,
     this.colorCoin
   });
@@ -51,9 +55,11 @@ class Coin {
     proto: json["proto"],
     txfee: json["txfee"],
     abbr: json["abbr"],
+    mm2: json["mm2"],
     swap_contract_address: json["swap_contract_address"],
     colorCoin: json["colorCoin"],
-    serverList: new List<String>.from(json["serverList"].map((x) => x))
+    serverList: new List<String>.from(json["serverList"].map((x) => x)),
+    explorerUrl: json["explorerUrl"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -63,9 +69,11 @@ class Coin {
     "proto": proto,
     "txfee": txfee,
     "abbr": abbr,
+    "mm2": mm2,
     "swap_contract_address": swap_contract_address,
     "colorCoin": colorCoin,
     "serverList": new List<dynamic>.from(serverList.map((x) => x)),
+    "explorerUrl":explorerUrl
   };
 
   String getTxFeeSatoshi() {
