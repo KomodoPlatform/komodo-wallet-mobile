@@ -53,7 +53,7 @@ class AuthenticateBloc extends BlocBase {
     _pinStatusController.close();
   }
 
-  void login(String passphrase) async {
+  Future<void> login(String passphrase) async {
     mm2.ismm2Running = true;
     mm2.mm2Ready = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
