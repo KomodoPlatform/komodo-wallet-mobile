@@ -174,6 +174,8 @@ class AppLocalizations {
   String get send => Intl.message("SEND", name: 'send');
   String get back => Intl.message("back", name: 'back');
   String get cancel => Intl.message("cancel", name: 'cancel');
+    String get commingsoon => Intl.message("TX details coming soon", name: 'commingsoon');
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -181,7 +183,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'ko'].contains(locale.languageCode);
+    return ['en'].contains(locale.languageCode);
   }
 
   @override

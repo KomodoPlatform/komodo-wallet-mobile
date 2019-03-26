@@ -44,6 +44,11 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
+  void resetTransactions() {
+    transactions.clear();
+    _inTransactions.add(transactions);
+  }
+
   void updateCoins(List<CoinBalance> coins) {
     coinBalance = coins;
     _inCoins.add(coinBalance);
@@ -66,6 +71,9 @@ class CoinsBloc implements BlocBase {
     coin.balanceUSD = await getPriceObj.getPrice(coin.coin.abbr, "USD");
     coin.getValue(coin.balanceUSD);
     print(coin.balanceUSD);
+
+
+
     coinBalance.forEach((coinBalance) {
       if (coin.coin.abbr == coinBalance.coin.abbr) {
         coinBalance = coin;
@@ -74,6 +82,14 @@ class CoinsBloc implements BlocBase {
         _inCoins.add(this.coinBalance);
       }
     });
+
+    coinBalance
+        .sort((b, a) {
+      if (a.balanceUSD != null) {
+        return a.balanceUSD.compareTo(b.balanceUSD);
+      }
+    });
+    updateCoins(coinBalance);
   }
 
   Future<void> updateBalanceForEachCoin(bool forceUpdate) async {
@@ -84,6 +100,7 @@ class CoinsBloc implements BlocBase {
     print('Adding coin ${coin.abbr}');
     List<Coin> coins = await readJsonCoin();
     coins.add(coin);
+
     await writeJsonCoin(coins);
     await mm2.activeCoin(coin);
     Balance balance = await mm2.getBalance(coin);

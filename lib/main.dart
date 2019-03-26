@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        supportedLocales: [Locale("en"), Locale("es"), Locale("pt")],
+        supportedLocales: [Locale("en")],
         theme: ThemeData(
           primaryColor: Color.fromRGBO(42, 54, 71, 1),
           backgroundColor: Color.fromRGBO(30, 42, 58, 1),

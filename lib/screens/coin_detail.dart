@@ -44,6 +44,7 @@ class _CoinDetailState extends State<CoinDetail> {
   @override
   void initState() {
     currentIndex = 0;
+    coinsBloc.resetTransactions();
     coinsBloc.updateTransactions(widget.coinBalance);
     super.initState();
   }
@@ -111,7 +112,7 @@ class _CoinDetailState extends State<CoinDetail> {
                           return Padding(
                             padding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 8),
-                            child: _buildTransactions(snapshot.data),
+                            child: _buildTransactions(context ,snapshot.data),
                           );
                         } else {
                           return Center(child: CircularProgressIndicator());
@@ -126,7 +127,7 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _buildTransactions(List<Transaction> transactionsData) {
+  _buildTransactions(BuildContext context, List<Transaction> transactionsData) {
     List<Widget> transactions = new List<Widget>();
 
     transactionsData.sort((b, a) {
@@ -149,7 +150,10 @@ class _CoinDetailState extends State<CoinDetail> {
             child: InkWell(
               borderRadius: BorderRadius.all(Radius.circular(4)),
               onTap: () {
-                //open explorer
+                Scaffold.of(context).showSnackBar(new SnackBar(
+                  duration: Duration(milliseconds: 1000),
+                  content: new Text(AppLocalizations.of(context).commingsoon),
+                ));
               },
               child: Container(
                   child: Column(
@@ -184,7 +188,7 @@ class _CoinDetailState extends State<CoinDetail> {
                           style: subtitle,
                         ),
                         Expanded(
-                                                  child: SizedBox(
+                          child: SizedBox(
                             width: 8,
                           ),
                         ),
@@ -716,7 +720,7 @@ class _CoinDetailState extends State<CoinDetail> {
       });
     });
   }
-  
+
   _waitForInit() async {
     Timer(Duration(milliseconds: 500), () {
       setState(() {
