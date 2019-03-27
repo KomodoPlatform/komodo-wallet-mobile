@@ -33,7 +33,6 @@ class MarketMakerService {
   List<Balance> balances = new List<Balance>();
   Process mm2Process = null;
   List<Coin> coins = List<Coin>();
-  bool activeCoinBool = true;
   bool ismm2Running = true;
   String url = 'http://10.0.2.2:7783';
   String userpass = "";
@@ -53,7 +52,6 @@ class MarketMakerService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String passphrase = prefs.getString('passphrase');
 
-    print(passphrase);
     await Process.run('killall', ['mm2']);
 
     ProcessResult checkmm2 = await Process.run(
@@ -96,10 +94,13 @@ class MarketMakerService {
     List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
     List<Coin> coins = await coinsBloc.readJsonCoin();
     for (var coin in coins) {
-      futureActiveCoins.add(this.activeCoin(coin));
+      if (!coin.isActive) {
+        coin.isActive = true;
+        futureActiveCoins.add(this.activeCoin(coin));
+      }
     }
+    await coinsBloc.writeJsonCoin(coins);
 
-    print("COINREADJSON " + coins.length.toString());
     await Future.wait(futureActiveCoins);
 
     List<CoinBalance> listCoinElectrum = new List<CoinBalance>();
@@ -130,14 +131,12 @@ class MarketMakerService {
       }
     });
 
-    print("listCoinElectrum" + listCoinElectrum.length.toString());
     coinsBloc.updateCoins(listCoinElectrum);
   }
 
   void killmm2() {
     if (mm2Process != null) {
       mm2Process.kill();
-      activeCoinBool = true;
       ismm2Running = true;
     }
   }
@@ -297,7 +296,7 @@ class MarketMakerService {
     print(json.encode(getActiveCoin));
     final response = await http.post(url, body: json.encode(getActiveCoin));
     print(response.body.toString());
-    try {
+    try {      
       return activeCoinFromJson(response.body);
     } catch (e) {
       return errorFromJson(response.body);

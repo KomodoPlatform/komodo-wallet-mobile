@@ -1,6 +1,7 @@
 [
   {
     "name": "komodo",
+    "isActive": false,
     "address": "electrum1.cipig.net",
     "port": 10001,
     "proto": "tcp",
@@ -14,6 +15,7 @@
   },
   {
     "name": "bitcoin",
+    "isActive": false,
     "address": "e-x.not.fyi",
     "port": 50001,
     "proto": "tcp",
