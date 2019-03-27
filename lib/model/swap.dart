@@ -10,7 +10,6 @@ enum Status {
   SWAP_ONGOING,
   SWAP_SUCCESSFULL
 }
-
 Swap swapFromJson(String str) {
     final jsonData = json.decode(str);
     return Swap.fromJson(jsonData);
@@ -86,7 +85,7 @@ class EventElement {
 }
 
 class EventEvent {
-    Data data;
+    dynamic data;
     String type;
 
     EventEvent({
@@ -95,17 +94,53 @@ class EventEvent {
     });
 
     factory EventEvent.fromJson(Map<String, dynamic> json) => new EventEvent(
-        data: Data.fromJson(json["data"]),
+        data: json["data"],
         type: json["type"],
     );
 
     Map<String, dynamic> toJson() => {
-        "data": data.toJson(),
+        "data": data,
         "type": type,
     };
 }
 
-class Data {
+class DatumClass {
+    int amount;
+    dynamic feeDetails;
+    String from;
+    String to;
+    String txHash;
+    String txHex;
+
+    DatumClass({
+        this.amount,
+        this.feeDetails,
+        this.from,
+        this.to,
+        this.txHash,
+        this.txHex,
+    });
+
+    factory DatumClass.fromJson(Map<String, dynamic> json) => new DatumClass(
+        amount: json["amount"],
+        feeDetails: json["fee_details"],
+        from: json["from"],
+        to: json["to"],
+        txHash: json["tx_hash"],
+        txHex: json["tx_hex"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "amount": amount,
+        "fee_details": feeDetails,
+        "from": from,
+        "to": to,
+        "tx_hash": txHash,
+        "tx_hex": txHex,
+    };
+}
+
+class DataClass {
     int lockDuration;
     String maker;
     int makerAmount;
@@ -119,8 +154,14 @@ class Data {
     int takerPaymentConfirmations;
     int takerPaymentLock;
     String uuid;
+    int amount;
+    dynamic feeDetails;
+    String from;
+    String to;
+    String txHash;
+    String txHex;
 
-    Data({
+    DataClass({
         this.lockDuration,
         this.maker,
         this.makerAmount,
@@ -134,37 +175,55 @@ class Data {
         this.takerPaymentConfirmations,
         this.takerPaymentLock,
         this.uuid,
+        this.amount,
+        this.feeDetails,
+        this.from,
+        this.to,
+        this.txHash,
+        this.txHex,
     });
 
-    factory Data.fromJson(Map<String, dynamic> json) => new Data(
-        lockDuration: json["lock_duration"],
-        maker: json["maker"],
-        makerAmount: json["maker_amount"],
-        makerCoin: json["maker_coin"],
-        makerPaymentConfirmations: json["maker_payment_confirmations"],
-        makerPaymentWait: json["maker_payment_wait"],
-        myPersistentPub: json["my_persistent_pub"],
-        startedAt: json["started_at"],
-        takerAmount: json["taker_amount"],
-        takerCoin: json["taker_coin"],
-        takerPaymentConfirmations: json["taker_payment_confirmations"],
-        takerPaymentLock: json["taker_payment_lock"],
-        uuid: json["uuid"],
+    factory DataClass.fromJson(Map<String, dynamic> json) => new DataClass(
+        lockDuration: json["lock_duration"] == null ? null : json["lock_duration"],
+        maker: json["maker"] == null ? null : json["maker"],
+        makerAmount: json["maker_amount"] == null ? null : json["maker_amount"],
+        makerCoin: json["maker_coin"] == null ? null : json["maker_coin"],
+        makerPaymentConfirmations: json["maker_payment_confirmations"] == null ? null : json["maker_payment_confirmations"],
+        makerPaymentWait: json["maker_payment_wait"] == null ? null : json["maker_payment_wait"],
+        myPersistentPub: json["my_persistent_pub"] == null ? null : json["my_persistent_pub"],
+        startedAt: json["started_at"] == null ? null : json["started_at"],
+        takerAmount: json["taker_amount"] == null ? null : json["taker_amount"],
+        takerCoin: json["taker_coin"] == null ? null : json["taker_coin"],
+        takerPaymentConfirmations: json["taker_payment_confirmations"] == null ? null : json["taker_payment_confirmations"],
+        takerPaymentLock: json["taker_payment_lock"] == null ? null : json["taker_payment_lock"],
+        uuid: json["uuid"] == null ? null : json["uuid"],
+        amount: json["amount"] == null ? null : json["amount"],
+        feeDetails: json["fee_details"],
+        from: json["from"] == null ? null : json["from"],
+        to: json["to"] == null ? null : json["to"],
+        txHash: json["tx_hash"] == null ? null : json["tx_hash"],
+        txHex: json["tx_hex"] == null ? null : json["tx_hex"],
     );
 
     Map<String, dynamic> toJson() => {
-        "lock_duration": lockDuration,
-        "maker": maker,
-        "maker_amount": makerAmount,
-        "maker_coin": makerCoin,
-        "maker_payment_confirmations": makerPaymentConfirmations,
-        "maker_payment_wait": makerPaymentWait,
-        "my_persistent_pub": myPersistentPub,
-        "started_at": startedAt,
-        "taker_amount": takerAmount,
-        "taker_coin": takerCoin,
-        "taker_payment_confirmations": takerPaymentConfirmations,
-        "taker_payment_lock": takerPaymentLock,
-        "uuid": uuid,
+        "lock_duration": lockDuration == null ? null : lockDuration,
+        "maker": maker == null ? null : maker,
+        "maker_amount": makerAmount == null ? null : makerAmount,
+        "maker_coin": makerCoin == null ? null : makerCoin,
+        "maker_payment_confirmations": makerPaymentConfirmations == null ? null : makerPaymentConfirmations,
+        "maker_payment_wait": makerPaymentWait == null ? null : makerPaymentWait,
+        "my_persistent_pub": myPersistentPub == null ? null : myPersistentPub,
+        "started_at": startedAt == null ? null : startedAt,
+        "taker_amount": takerAmount == null ? null : takerAmount,
+        "taker_coin": takerCoin == null ? null : takerCoin,
+        "taker_payment_confirmations": takerPaymentConfirmations == null ? null : takerPaymentConfirmations,
+        "taker_payment_lock": takerPaymentLock == null ? null : takerPaymentLock,
+        "uuid": uuid == null ? null : uuid,
+        "amount": amount == null ? null : amount,
+        "fee_details": feeDetails,
+        "from": from == null ? null : from,
+        "to": to == null ? null : to,
+        "tx_hash": txHash == null ? null : txHash,
+        "tx_hex": txHex == null ? null : txHex,
     };
 }

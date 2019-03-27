@@ -118,9 +118,9 @@ class MarketMakerService {
 
           listCoinElectrum.add(coinBalance);
         }
-        if(coin.abbr == "KMD"){
+        if(balance.coin == "KMD"){
           pubkey = balance.address;
-        } 
+        }
       }
     }
 
