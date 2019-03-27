@@ -18,9 +18,11 @@ import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
+import 'package:komodo_dex/model/get_swap.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +39,7 @@ class MarketMakerService {
   String userpass = "";
   Stream<List<int>> streamSubscriptionStdout;
   bool mm2Ready = false;
+  String pubkey = "";
 
   MarketMakerService() {
     if (Platform.isAndroid) {
@@ -114,6 +117,9 @@ class MarketMakerService {
 
           listCoinElectrum.add(coinBalance);
         }
+        if(coin.abbr == "KMD"){
+          pubkey = balance.address;
+        } 
       }
     }
 
@@ -145,6 +151,24 @@ class MarketMakerService {
     return file.writeAsBytes(data);
   }
 
+  Future<dynamic> getSwapStatus(String uuid) async {
+    print(uuid);
+    GetSwap getSwap = new GetSwap(
+      userpass: userpass,
+      method: 'my_swap_status',
+      params: Params(
+        uuid: uuid
+      )
+    );
+    final response = await http.post(url, body: json.encode(getSwap));
+    print("GET STATUS" + response.body.toString());
+    try {
+      return swapFromJson(response.body);
+    } catch (e) {
+      return errorFromJson(response.body);
+    }
+  }
+  
   Future<Orderbook> getOrderbook(Coin coinBase, Coin coinRel) async {
     GetOrderbook getOrderbook = new GetOrderbook(
         userpass: userpass,
@@ -212,7 +236,7 @@ class MarketMakerService {
     try {
       return buyResponseFromJson(response.body);
     } catch (e) {
-      return e;
+      return errorFromJson(response.body);
     }
   }
 
