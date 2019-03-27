@@ -55,7 +55,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   _buildCardCoin(Market market) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(bottom: 8, left: 16, right: 16, top: 8),
         child: Container(
           width: double.infinity,
           child: Card(
@@ -92,9 +92,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                         borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(16))),
                                     child: Text(
-                                      AppLocalizations
-                                          .of(context)
-                                          .max,
+                                      AppLocalizations.of(context).max,
                                       style: Theme.of(context)
                                           .textTheme
                                           .button
@@ -151,8 +149,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                             .copyWith(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w400),
-                                        hintText: AppLocalizations
-                                            .of(context)
+                                        hintText: AppLocalizations.of(context)
                                             .amountToSell),
                                   ),
                                 ),
@@ -191,9 +188,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                               SizedBox(
                                 width: 16,
                               ),
-                              Text(AppLocalizations
-                                  .of(context)
-                                  .youWillReceived),
+                              Text(
+                                  AppLocalizations.of(context).youWillReceived),
                               Expanded(
                                 child: Container(),
                               ),
@@ -275,56 +271,57 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data is CoinBalance) {
                     return Container(
-                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, bottom: 16),
                       width: double.infinity,
-                      child: Column(
+                      child: Row(
                         children: <Widget>[
                           Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
+                            child: OverflowBox(
+                              maxHeight: 100,
+                              maxWidth: 100,
+                              minHeight: 0,
+                              minWidth: 0,
                               child: Image.asset(
-                                  "assets/${snapshot.data.coin.abbr.toLowerCase()}.png", fit: BoxFit.cover,),
+                                "assets/${snapshot.data.coin.abbr.toLowerCase()}.png",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          Row(
-                            children: <Widget>[
-                              Expanded(child: Container()),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  Text(
-                                    snapshot.data.coin.name.toUpperCase(),
-                                    style: Theme.of(context).textTheme.body2,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        snapshot.data.balance.balance
-                                            .toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle,
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        snapshot.data.coin.abbr,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle,
-                                      )
-                                    ],
-                                  ),
-                                  Text(
-                                    "\$${(snapshot.data.balance.balance * 1.3).toStringAsFixed(2)} USD",
-                                    style: Theme.of(context).textTheme.body2,
-                                  ),
-                                ],
-                              )
-                            ],
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Text(
+                                  snapshot.data.coin.name.toUpperCase(),
+                                  style: Theme.of(context).textTheme.body2,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text(
+                                      snapshot.data.balance.balance.toString(),
+                                      style:
+                                          Theme.of(context).textTheme.subtitle,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      snapshot.data.coin.abbr,
+                                      style:
+                                          Theme.of(context).textTheme.subtitle,
+                                    )
+                                  ],
+                                ),
+                                Text(
+                                  "\$${(snapshot.data.balance.balance * 1.3).toStringAsFixed(2)} USD",
+                                  style: Theme.of(context).textTheme.body2,
+                                ),
+                              ],
+                            ),
                           )
                         ],
                       ),
@@ -333,7 +330,11 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     OrderCoin orderCoin = snapshot.data;
 
                     return Container(
-                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        bottom: 16,
+                      ),
                       width: double.infinity,
                       child: Column(
                         children: <Widget>[
@@ -341,24 +342,11 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Image.asset(
-                                  "assets/${orderCoin.coinBase.abbr.toLowerCase()}.png", fit: BoxFit.cover,),
+                                "assets/${orderCoin.coinBase.abbr.toLowerCase()}.png",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          Row(
-                            children: <Widget>[
-                              Expanded(child: Container()),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  Text(
-                                    orderCoin.coinBase.name.toUpperCase(),
-                                    style: Theme.of(context).textTheme.body2,
-                                  ),
-                                ],
-                              )
-                            ],
-                          )
                         ],
                       ),
                     );
@@ -366,9 +354,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     return Container(
                       child: Center(
                         child: Text(
-                          AppLocalizations
-                              .of(context)
-                              .selectCoinToSell,
+                          AppLocalizations.of(context).selectCoinToSell,
                           style: Theme.of(context).textTheme.subtitle,
                           textAlign: TextAlign.center,
                         ),
@@ -384,9 +370,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                             return Container(
                               child: Center(
                                 child: Text(
-                                  AppLocalizations
-                                      .of(context)
-                                      .selectCoinToBuy,
+                                  AppLocalizations.of(context).selectCoinToBuy,
                                   style: Theme.of(context).textTheme.subtitle,
                                   textAlign: TextAlign.center,
                                 ),
@@ -417,9 +401,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                 dialogBackgroundColor: Theme.of(context).dialogBackgroundColor),
             child: market == Market.SELL
                 ? SimpleDialog(
-              title: Text(AppLocalizations
-                  .of(context)
-                  .sell),
+                    title: Text(AppLocalizations.of(context).sell),
                     children: _createListDialog(market, null),
                   )
                 : StreamBuilder<List<OrderCoin>>(
@@ -429,9 +411,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                       if (snapshot.hasData) {
                         print(snapshot.data.length);
                         return SimpleDialog(
-                          title: Text(AppLocalizations
-                              .of(context)
-                              .buy),
+                          title: Text(AppLocalizations.of(context).buy),
                           children: _createListDialog(market, snapshot.data),
                         );
                       } else {
@@ -532,13 +512,13 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
   _buildSwapArrow() {
     return Container(
-      height: 50,
+      height: 30,
       child: Center(
         child: RotatedBox(
           quarterTurns: 1,
           child: Icon(
             Icons.play_arrow,
-            size: 50,
+            size: 30,
             color: Colors.white30,
           ),
         ),
@@ -548,29 +528,23 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
   _buildSwapButton() {
     return Container(
-      height: 80,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: Container(
-          width: double.infinity,
-          child: RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(8), topLeft: Radius.circular(8))),
-            color: Theme.of(context).buttonColor,
-            disabledColor: Theme.of(context).disabledColor,
-            child: Text(
-              AppLocalizations
-                  .of(context)
-                  .swap
-                  .toUpperCase(),
-              style: Theme.of(context).textTheme.button,
-            ),
-            onPressed:
-                swapBloc.orderCoin != null && _controllerAmount.text.isNotEmpty
-                    ? _makeASwap
-                    : null,
+      height: 70,
+      child: Container(
+        width: double.infinity,
+        child: RaisedButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8), topLeft: Radius.circular(8))),
+          color: Theme.of(context).buttonColor,
+          disabledColor: Theme.of(context).disabledColor,
+          child: Text(
+            AppLocalizations.of(context).swap.toUpperCase(),
+            style: Theme.of(context).textTheme.button,
           ),
+          onPressed:
+              swapBloc.orderCoin != null && _controllerAmount.text.isNotEmpty
+                  ? _makeASwap
+                  : null,
         ),
       ),
     );
@@ -590,15 +564,11 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         .then((onValue) {
       if (onValue is BuyResponse && onValue.result == "success") {
         Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text(AppLocalizations
-              .of(context)
-              .buySuccessWaiting),
+          content: new Text(AppLocalizations.of(context).buySuccessWaiting),
         ));
       } else {
         Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text(AppLocalizations
-              .of(context)
-              .errorTryLater),
+          content: new Text(AppLocalizations.of(context).errorTryLater),
         ));
       }
     });
