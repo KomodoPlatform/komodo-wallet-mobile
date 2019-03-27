@@ -222,6 +222,7 @@ class MarketMakerService {
 
   Future<dynamic> postBuy(
       Coin base, Coin rel, double relVolume, double price) async {
+    print("SWAPPARAM: base: "+base.abbr+" rel: "+rel.abbr.toString()+" relvol: "+relVolume.toString()+" price: "+price.toString());
     GetBuy getBuy = new GetBuy(
         userpass: userpass,
         method: "buy",

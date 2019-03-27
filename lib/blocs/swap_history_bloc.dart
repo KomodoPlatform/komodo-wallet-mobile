@@ -48,6 +48,13 @@ class SwapHistoryBloc implements BlocBase {
           dynamic swap = await mm2.getSwapStatus(uuidFromJson(uuid).uuid);
 
           if (swap is Swap) {
+            swap.status = swap.status = Status.ORDER_MATCHED;
+            if (swap.result.events[0].event.data.makerPaymentConfirmations > 0)
+              swap.status = Status.SWAP_ONGOING;
+            if (swap.result.events[0].event.data.takerPaymentConfirmations > 0 &&
+            swap.result.events[0].event.data.makerPaymentConfirmations > 0) {
+              swap.status = Status.SWAP_SUCCESSFULL;
+            }
             swap.pubkey = mm2.pubkey;
             swaps.add(swap);
           } else if (swap is ErrorString) {
