@@ -340,12 +340,17 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                         children: <Widget>[
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Image.asset(
-                                "assets/${orderCoin.coinBase.abbr.toLowerCase()}.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                                padding: const EdgeInsets.all(16.0),
+                                child: OverflowBox(
+                                  maxHeight: 100,
+                                  maxWidth: 100,
+                                  minHeight: 0,
+                                  minWidth: 0,
+                                  child: Image.asset(
+                                    "assets/${orderCoin.coinBase.abbr.toLowerCase()}.png",
+                                    fit: BoxFit.cover,
+                                  ),
+                                )),
                           ),
                         ],
                       ),
