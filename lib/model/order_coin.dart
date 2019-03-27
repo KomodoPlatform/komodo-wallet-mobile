@@ -17,7 +17,7 @@ class OrderCoin {
 
   String getBuyAmount(double amountToSell) {
     String buyAmount = 0.toString();
-    buyAmount = (amountToSell * bestPrice).toStringAsFixed(8);
+    buyAmount = (amountToSell / bestPrice).toStringAsFixed(8);
     if (double.parse(buyAmount) == 0) {
       buyAmount = 0.toStringAsFixed(0);
     }
