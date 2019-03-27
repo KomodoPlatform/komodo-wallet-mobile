@@ -44,16 +44,16 @@ class SwapHistoryBloc implements BlocBase {
     List<Swap> swaps = new List<Swap>();
 
     if (uuids != null) {
-      print("LENGHT" + uuids.length.toString());
-
       for (var uuid in uuids) {
-        dynamic swap = await mm2.getSwapStatus(uuid);
+        if (uuidFromJson(uuid).pubkey == mm2.pubkey) {
+          dynamic swap = await mm2.getSwapStatus(uuidFromJson(uuid).uuid);
 
-        if (swap is Swap) {
-          swap.pubkey = mm2.pubkey;
-          swaps.add(swap);
-        } else if (swap is ErrorString) {
-          swaps.add(Swap(pubkey: mm2.pubkey, status: Status.ORDER_MATCHING, result: Result(uuid: uuid)));
+          if (swap is Swap) {
+            swap.pubkey = mm2.pubkey;
+            swaps.add(swap);
+          } else if (swap is ErrorString) {
+            swaps.add(Swap(pubkey: mm2.pubkey, status: Status.ORDER_MATCHING, result: Result(uuid: uuidFromJson(uuid).uuid)));
+          }
         }
       }
     }

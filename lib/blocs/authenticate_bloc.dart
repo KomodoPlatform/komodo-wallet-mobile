@@ -75,7 +75,6 @@ class AuthenticateBloc extends BlocBase {
     mm2.mm2Ready = false;
     mm2.killmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('uuids', null);
     await prefs.setString("passphrase", null);
     await prefs.setBool("isPinIsSet", false);
     updateStatusPin(PinStatus.NORMAL_PIN);
