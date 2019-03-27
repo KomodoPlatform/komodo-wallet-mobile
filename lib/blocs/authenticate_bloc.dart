@@ -36,6 +36,7 @@ class AuthenticateBloc extends BlocBase {
 
   void init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    
     if (prefs.getString("passphrase") != null) {
       _inIsLogin.add(true);
       await coinsBloc.updateBalanceForEachCoin(true);

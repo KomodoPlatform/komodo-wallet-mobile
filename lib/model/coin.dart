@@ -44,12 +44,13 @@ class Coin {
     this.swap_contract_address,
     this.serverList,
     this.explorerUrl,
-    this.isActive = false,
+    this.isActive,
     this.colorCoin
   });
 
   factory Coin.fromJson(Map<String, dynamic> json) => new Coin(
     name: json["name"],
+    isActive: json["isActive"],
     address: json["address"],
     port: json["port"],
     proto: json["proto"],
@@ -64,6 +65,7 @@ class Coin {
 
   Map<String, dynamic> toJson() => {
     "name": name,
+    "isActive": isActive,
     "address": address,
     "port": port,
     "proto": proto,
