@@ -587,11 +587,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             swapBloc.orderCoin.coinBase,
             swapBloc.orderCoin.coinRel,
             double.parse(_controllerAmount.text),
-            double.parse(swapBloc.orderCoin
-                    .getBuyAmount(double.parse(_controllerAmount.text))) +
-                (double.parse(swapBloc.orderCoin
-                        .getBuyAmount(double.parse(_controllerAmount.text))) *
-                    0.01))
+            swapBloc.orderCoin.bestPrice * 0.01)
         .then((onValue) {
       if (onValue is BuyResponse && onValue.result == "success") {
         swapHistoryBloc.saveUUID(onValue.pending.uuid);
