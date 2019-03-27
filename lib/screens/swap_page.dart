@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
+import 'package:komodo_dex/screens/swap_history.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 
 class SwapPage extends StatefulWidget {
@@ -36,18 +38,42 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            _buildCardCoin(Market.SELL),
-            _buildSwapArrow(),
-            _buildCardCoin(Market.BUY),
-            _buildSwapButton()
-          ],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(48),
+          child: SafeArea(
+            child: AppBar(
+              bottom: TabBar(
+                tabs: [
+                  Tab(
+                    text: AppLocalizations.of(context).create.toUpperCase(),
+                  ),
+                  Tab(text: AppLocalizations.of(context).history.toUpperCase())
+                ],
+              ),
+            ),
+          ),
         ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: TabBarView(
+          children: <Widget>[_buildSwapScreen(), SwapHistory()],
+        ),
+      ),
+    );
+  }
+
+  _buildSwapScreen() {
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          _buildCardCoin(Market.SELL),
+          _buildSwapArrow(),
+          _buildCardCoin(Market.BUY),
+          _buildSwapButton()
+        ],
       ),
     );
   }
@@ -568,6 +594,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     0.01))
         .then((onValue) {
       if (onValue is BuyResponse && onValue.result == "success") {
+        swapHistoryBloc.saveUUID(onValue.pending.uuid);
         Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text(AppLocalizations.of(context).buySuccessWaiting),
         ));

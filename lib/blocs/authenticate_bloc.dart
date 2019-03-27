@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticateBloc extends BlocBase {
   bool isLogin = false;
+
   StreamController<bool> _isLoginController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsLogin => _isLoginController.sink;
@@ -62,7 +63,8 @@ class AuthenticateBloc extends BlocBase {
     await prefs.remove("pin");
     List<Coin> coins = await coinsBloc.readJsonCoin();
     if (coins.isEmpty) {
-      await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
+      coins = await mm2.loadJsonCoinsDefault();
+      await coinsBloc.writeJsonCoin(coins);
     }
     mm2.runBin();
     _inIsLogin.add(true);
@@ -73,6 +75,7 @@ class AuthenticateBloc extends BlocBase {
     mm2.mm2Ready = false;
     mm2.killmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('uuids', null);
     await prefs.setString("passphrase", null);
     await prefs.setBool("isPinIsSet", false);
     updateStatusPin(PinStatus.NORMAL_PIN);

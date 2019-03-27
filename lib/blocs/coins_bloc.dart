@@ -71,9 +71,7 @@ class CoinsBloc implements BlocBase {
     coin.balanceUSD = await getPriceObj.getPrice(coin.coin.abbr, "USD");
     coin.getValue(coin.balanceUSD);
     print(coin.balanceUSD);
-
-
-
+    
     coinBalance.forEach((coinBalance) {
       if (coin.coin.abbr == coinBalance.coin.abbr) {
         coinBalance = coin;

@@ -25,14 +25,13 @@ void main() {
 
 _runBinMm2UserAlreadyLog() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getString('passphrase') != null
-      && prefs.getString('passphrase') != "") {
+  if (prefs.getString('passphrase') != null &&
+      prefs.getString('passphrase') != "") {
     mm2.runBin();
   }
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -91,7 +90,8 @@ class MyApp extends StatelessWidget {
                           return SharedPreferencesBuilder(
                             pref: 'switch_pin',
                             builder: (context, switchPinData) {
-                              if (outShowPin.hasData && outShowPin.data &&
+                              if (outShowPin.hasData &&
+                                  outShowPin.data &&
                                   switchPinData.hasData &&
                                   switchPinData.data) {
                                 return PinPage(
@@ -109,12 +109,8 @@ class MyApp extends StatelessWidget {
                   }
                 } else {
                   return PinPage(
-                      title: AppLocalizations
-                          .of(context)
-                          .createPin,
-                      subTitle: AppLocalizations
-                          .of(context)
-                          .enterPinCode,
+                      title: AppLocalizations.of(context).createPin,
+                      subTitle: AppLocalizations.of(context).enterPinCode,
                       firstCreationPin: true,
                       isConfirmPin: PinStatus.CREATE_PIN);
                 }
@@ -153,11 +149,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    BlocCoinsPage(),
-    SwapPage(),
-    SettingPage()
-  ];
+  final List<Widget> _children = [BlocCoinsPage(), SwapPage(), SettingPage()];
 
   @override
   void initState() {
@@ -197,30 +189,45 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: _children[_currentIndex],
-      bottomNavigationBar: Material(
-        elevation: 8.0,
-        child: Theme(
-          data: Theme.of(context).copyWith(
-              canvasColor: Theme.of(context).primaryColor,
-              primaryColor: Theme.of(context).accentColor,
-              textTheme: Theme.of(context).textTheme.copyWith(
-                  caption: new TextStyle(
-                      color: Theme.of(context)
-                          .textSelectionColor
-                          .withOpacity(0.5)))),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            onTap: onTabTapped,
-            currentIndex: _currentIndex,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.account_balance_wallet),
-                  title: Text("Portfolio")),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.swap_vert), title: Text("Swap")),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.settings), title: Text("Settings")),
-            ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              blurRadius: 10.0, // has the effect of softening the shadow
+              spreadRadius: 5.0, // has the effect of extending the shadow
+              offset: Offset(
+                10.0, // horizontal, move right 10
+                10.0, // vertical, move down 10
+              ),
+            )
+          ],
+        ),
+        child: Material(
+          elevation: 8.0,
+          child: Theme(
+            data: Theme.of(context).copyWith(
+                canvasColor: Theme.of(context).primaryColor,
+                primaryColor: Theme.of(context).accentColor,
+                textTheme: Theme.of(context).textTheme.copyWith(
+                    caption: new TextStyle(
+                        color: Theme.of(context)
+                            .textSelectionColor
+                            .withOpacity(0.5)))),
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              onTap: onTabTapped,
+              currentIndex: _currentIndex,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.account_balance_wallet),
+                    title: Text("Portfolio")),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.swap_vert), title: Text("Swap")),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.settings), title: Text("Settings")),
+              ],
+            ),
           ),
         ),
       ),
