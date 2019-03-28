@@ -176,7 +176,7 @@ class AppLocalizations {
   String get cancel => Intl.message("cancel", name: 'cancel');
   String get commingsoon => Intl.message("TX details coming soon", name: 'commingsoon');
   String get history => Intl.message("history", name: 'history');
-  String get create => Intl.message("create", name: 'create');
+  String get create => Intl.message("trade", name: 'trade');
 
 }
 
