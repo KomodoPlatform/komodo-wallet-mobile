@@ -461,42 +461,44 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
     if (orderbooks != null && market == Market.BUY) {
       orderbooks.forEach((orderbooks) {
-        SimpleDialogOption dialogItem = SimpleDialogOption(
-          onPressed: () {
-            setState(() {});
-            swapBloc.updateBuyCoin(orderbooks);
-            Navigator.pop(context);
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                  height: 30,
-                  width: 30,
-                  child: Image.asset(
-                    "assets/${orderbooks.coinBase.abbr.toLowerCase()}.png",
-                  )),
-              Expanded(
-                child: Container(),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(orderbooks
-                      .getBuyAmount(double.parse(_controllerAmount.text))),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    orderbooks.coinBase.abbr,
-                    style: Theme.of(context).textTheme.caption,
-                  )
-                ],
-              )
-            ],
-          ),
-        );
-        listDialog.add(dialogItem);
+        if (orderbooks.coinBase.abbr != swapBloc.sellCoin.coin.abbr) {
+          SimpleDialogOption dialogItem = SimpleDialogOption(
+            onPressed: () {
+              setState(() {});
+              swapBloc.updateBuyCoin(orderbooks);
+              Navigator.pop(context);
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    height: 30,
+                    width: 30,
+                    child: Image.asset(
+                      "assets/${orderbooks.coinBase.abbr.toLowerCase()}.png",
+                    )),
+                Expanded(
+                  child: Container(),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(orderbooks
+                        .getBuyAmount(double.parse(_controllerAmount.text))),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      orderbooks.coinBase.abbr,
+                      style: Theme.of(context).textTheme.caption,
+                    )
+                  ],
+                )
+              ],
+            ),
+          );
+          listDialog.add(dialogItem);
+        }
       });
     } else if (market == Market.SELL) {
       coinsBloc.coinBalance.forEach((coin) {
@@ -621,10 +623,12 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       } else {
         String timeSecondeLeft = onValue.error;
         print(timeSecondeLeft);
-        timeSecondeLeft = timeSecondeLeft.substring(timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
+        timeSecondeLeft = timeSecondeLeft.substring(
+            timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
         print(timeSecondeLeft);
         Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text(AppLocalizations.of(context).buySuccessWaitingError(timeSecondeLeft)),
+          content: new Text(AppLocalizations.of(context)
+              .buySuccessWaitingError(timeSecondeLeft)),
         ));
       }
     });

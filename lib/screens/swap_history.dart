@@ -124,37 +124,44 @@ class _SwapHistoryState extends State<SwapHistory> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 6, horizontal: 12),
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(24)),
-                                      color: colorStatus,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(stepStatus,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption
-                                                .copyWith(color: Colors.white)),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Text(swapStatus,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .body2
-                                                .copyWith(
-                                                  color: Colors.white,
-                                                ))
-                                      ],
+                              ConstrainedBox(
+                                constraints: new BoxConstraints(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width / 2,
+                                ),
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 6, horizontal: 12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(24)),
+                                        color: colorStatus,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(stepStatus,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption
+                                                  .copyWith(
+                                                      color: Colors.white)),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(swapStatus,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .body2
+                                                  .copyWith(
+                                                    color: Colors.white,
+                                                  ))
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
