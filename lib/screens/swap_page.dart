@@ -18,6 +18,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   TextEditingController _controllerAmount = new TextEditingController();
   Animation<double> animation;
   AnimationController controller;
+  bool isSwapProgress = false;
 
   @override
   void initState() {
@@ -562,26 +563,39 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       height: 70,
       child: Container(
         width: double.infinity,
-        child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(8), topLeft: Radius.circular(8))),
-          color: Theme.of(context).buttonColor,
-          disabledColor: Theme.of(context).disabledColor,
-          child: Text(
-            AppLocalizations.of(context).swap.toUpperCase(),
-            style: Theme.of(context).textTheme.button,
-          ),
-          onPressed:
-              swapBloc.orderCoin != null && _controllerAmount.text.isNotEmpty
+        child: Builder(builder: (context) {
+          if (isSwapProgress) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8),
+                      topLeft: Radius.circular(8))),
+              color: Theme.of(context).buttonColor,
+              disabledColor: Theme.of(context).disabledColor,
+              child: Text(
+                AppLocalizations.of(context).swap.toUpperCase(),
+                style: Theme.of(context).textTheme.button,
+              ),
+              onPressed: swapBloc.orderCoin != null &&
+                      _controllerAmount.text.isNotEmpty
                   ? _makeASwap
                   : null,
-        ),
+            );
+          }
+        }),
       ),
     );
   }
 
   _makeASwap() {
+    setState(() {
+      isSwapProgress = true;
+    });
+
     mm2
         .postBuy(
             swapBloc.orderCoin.coinBase,
@@ -589,14 +603,18 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             double.parse(_controllerAmount.text),
             swapBloc.orderCoin.bestPrice * 1.01)
         .then((onValue) {
+      setState(() {
+        isSwapProgress = false;
+      });
       if (onValue is BuyResponse && onValue.result == "success") {
         swapHistoryBloc.saveUUID(
-          onValue.pending.uuid,
-          swapBloc.orderCoin.coinBase,
-          swapBloc.orderCoin.coinRel,
-          double.parse(_controllerAmount.text),
-          double.parse(swapBloc.orderCoin.getBuyAmount(double.parse(_controllerAmount.text))));
-          
+            onValue.pending.uuid,
+            swapBloc.orderCoin.coinBase,
+            swapBloc.orderCoin.coinRel,
+            double.parse(_controllerAmount.text),
+            double.parse(swapBloc.orderCoin
+                .getBuyAmount(double.parse(_controllerAmount.text))));
+
         Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text(AppLocalizations.of(context).buySuccessWaiting),
         ));
