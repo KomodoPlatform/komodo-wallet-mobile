@@ -34,6 +34,7 @@ class CoinsBloc implements BlocBase {
       _transactionsController.stream;
 
   var timer;
+  var timer2;
 
   @override
   void dispose() {
@@ -72,7 +73,7 @@ class CoinsBloc implements BlocBase {
     coin.balanceUSD = await getPriceObj.getPrice(coin.coin.abbr, "USD");
     coin.getValue(coin.balanceUSD);
     print(coin.balanceUSD);
-    
+
     coinBalance.forEach((coinBalance) {
       if (coin.coin.abbr == coinBalance.coin.abbr) {
         coinBalance = coin;
@@ -82,8 +83,7 @@ class CoinsBloc implements BlocBase {
       }
     });
 
-    coinBalance
-        .sort((b, a) {
+    coinBalance.sort((b, a) {
       if (a.balanceUSD != null) {
         return a.balanceUSD.compareTo(b.balanceUSD);
       }
@@ -139,14 +139,17 @@ class CoinsBloc implements BlocBase {
   }
 
   void startCheckBalance() {
-    timer = Timer.periodic(Duration(seconds: 60), (_) {
-      swapHistoryBloc.updateSwap();
+    timer = Timer.periodic(Duration(seconds: 45), (_) {
       updateBalanceForEachCoin(true);
+    });
+    timer2 = Timer.periodic(Duration(seconds: 30), (_) {
+      swapHistoryBloc.updateSwap();
     });
   }
 
   void stopCheckBalance() {
     if (timer != null) timer.cancel();
+    if (timer2 != null) timer2.cancel();
   }
 }
 

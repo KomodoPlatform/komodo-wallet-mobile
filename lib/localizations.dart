@@ -6,8 +6,6 @@ import 'package:intl/intl.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
-  
-
   static Future<AppLocalizations> load(Locale locale) {
     final String name =
         locale.countryCode == null ? locale.languageCode : locale.toString();
@@ -132,12 +130,12 @@ class AppLocalizations {
   String get swap => Intl.message('swap', name: 'swap');
 
   String get buySuccessWaiting => Intl.message(
-        'Ordermatch, please wait!',
+        'Swap issued, please wait!',
         name: 'buySuccessWaiting',
       );
-  
+
   String buySuccessWaitingError(String seconde) => Intl.message(
-        'Ordermatch, please wait $seconde seconds!',
+        'Ordermatch ongoing, please wait $seconde seconds!',
         name: 'buySuccessWaiting',
         args: [seconde],
       );
@@ -181,16 +179,22 @@ class AppLocalizations {
   String get send => Intl.message("SEND", name: 'send');
   String get back => Intl.message("back", name: 'back');
   String get cancel => Intl.message("cancel", name: 'cancel');
-  String get commingsoon => Intl.message("TX details coming soon", name: 'commingsoon');
+  String get commingsoon =>
+      Intl.message("TX details coming soon!", name: 'commingsoon');
   String get history => Intl.message("history", name: 'history');
   String get create => Intl.message("trade", name: 'trade');
-  String get commingsoonGeneral => Intl.message("Coming soon !", name: 'commingsoonGeneral');
-  String get orderMatching => Intl.message("Order matching", name: 'orderMatching');
-  String get orderMatched => Intl.message("Order matched", name: 'orderMatched');
+  String get commingsoonGeneral =>
+      Intl.message("Details coming soon!", name: 'commingsoonGeneral');
+  String get orderMatching =>
+      Intl.message("Order matching", name: 'orderMatching');
+  String get orderMatched =>
+      Intl.message("Order matched", name: 'orderMatched');
   String get swapOngoing => Intl.message("Swap ongoing", name: 'swapOngoing');
-  String get swapSucceful => Intl.message("Swap successful", name: 'swapSucceful');
-  String get timeOut => Intl.message("Time out", name: 'timeOut');
-  String get errorTryLater => Intl.message("Error, try later", name: 'errorTryLater');
+  String get swapSucceful =>
+      Intl.message("Swap successful", name: 'swapSucceful');
+  String get timeOut => Intl.message("Timeout", name: 'timeOut');
+  String get errorTryLater =>
+      Intl.message("Error, please try later", name: 'errorTryLater');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
