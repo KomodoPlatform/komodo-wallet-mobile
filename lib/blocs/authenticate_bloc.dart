@@ -57,11 +57,21 @@ class AuthenticateBloc extends BlocBase {
     mm2.ismm2Running = true;
     mm2.mm2Ready = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("passphrase", passphrase);
-    await prefs.setBool('switch_pin', true);
+    if (prefs.getString("passphrase") == null || prefs.getString("passphrase") == "") {
+      await prefs.setString("passphrase", passphrase);
+    }
+
+    if (prefs.getString("pin") == null || prefs.getString("pin") == "") {
+      updateStatusPin(PinStatus.CREATE_PIN);
+      showPin(false);
+    } else {
+      showPin(true);
+      updateStatusPin(PinStatus.NORMAL_PIN);
+    }    await prefs.setBool('switch_pin', true);
     await prefs.setBool("isPinIsSet", false);
-    updateStatusPin(PinStatus.CREATE_PIN);
-    await prefs.remove("pin");
+    await prefs.setBool("showTransaction", false);
+
+    //await prefs.remove("pin");
     List<Coin> coins = await coinsBloc.readJsonCoin();
     if (coins.isEmpty) {
       coins = await mm2.loadJsonCoinsDefault();
@@ -76,10 +86,10 @@ class AuthenticateBloc extends BlocBase {
     mm2.mm2Ready = false;
     mm2.killmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("passphrase", null);
+    // await prefs.setString("passphrase", null);
     await prefs.setBool("isPinIsSet", false);
     updateStatusPin(PinStatus.NORMAL_PIN);
-    await prefs.remove("pin");
+    // await prefs.remove("pin");
     coinsBloc.resetCoinBalance();
     coinsBloc.stopCheckBalance();
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
