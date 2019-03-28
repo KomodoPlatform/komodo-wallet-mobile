@@ -590,7 +590,13 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             swapBloc.orderCoin.bestPrice * 1.01)
         .then((onValue) {
       if (onValue is BuyResponse && onValue.result == "success") {
-        swapHistoryBloc.saveUUID(onValue.pending.uuid);
+        swapHistoryBloc.saveUUID(
+          onValue.pending.uuid,
+          swapBloc.orderCoin.coinBase,
+          swapBloc.orderCoin.coinRel,
+          double.parse(_controllerAmount.text),
+          double.parse(swapBloc.orderCoin.getBuyAmount(double.parse(_controllerAmount.text))));
+          
         Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text(AppLocalizations.of(context).buySuccessWaiting),
         ));

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/uuid.dart';
@@ -25,13 +26,21 @@ class SwapHistoryBloc implements BlocBase {
     _swapsController.close();
   }
 
-  void saveUUID(String uuid) async {
+  void saveUUID(String uuid, Coin base, Coin rel, double amountToBuy,
+      double amountToGet) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> uuids = prefs.getStringList('uuids');
     if (uuids == null) {
       uuids = new List<String>();
     }
-    uuids.add(uuidToJson(Uuid(uuid: uuid, pubkey: mm2.pubkey)));
+    uuids.add(uuidToJson(Uuid(
+        base: base,
+        rel: rel,
+        amountToBuy: amountToBuy,
+        amountToGet: amountToGet,
+        uuid: uuid,
+        pubkey: mm2.pubkey,
+        timeStart: DateTime.now().millisecondsSinceEpoch ~/ 1000)));
     await prefs.setStringList('uuids', uuids);
   }
 
@@ -45,22 +54,31 @@ class SwapHistoryBloc implements BlocBase {
     // 2/3 - "Swap ongoing" - takefee paid --> TakerFeeSent
     // 3/3 - "Swap successful" - makerpayment issued (or confirmed with 1 conf) --> MakerPaymentSpent
 
+    print("TIMESTAMP" + new DateTime.now().millisecondsSinceEpoch.toString());
+
     if (uuids != null) {
       for (var uuid in uuids) {
-        print("PUBKEY: " + uuidFromJson(uuid).pubkey);
-        if (uuidFromJson(uuid).pubkey == mm2.pubkey) {
-          dynamic swap = await mm2.getSwapStatus(uuidFromJson(uuid).uuid);
+        Uuid uuidData = uuidFromJson(uuid);
+        Status status = Status.ORDER_MATCHING;
 
-          print("IF IS SWAP: " + (swap is Swap).toString());
+        if (uuidData.pubkey == mm2.pubkey) {
+          dynamic swap = await mm2.getSwapStatus(uuidData.uuid);
+          uuidData.pubkey = mm2.pubkey;
+
           if (swap is Swap) {
             swap.status = getStatusSwap(swap);
-            swap.pubkey = mm2.pubkey;
+            swap.uuid = uuidData;
             swaps.add(swap);
           } else if (swap is ErrorString) {
+            if (uuidData.timeStart + 120 <
+                DateTime.now().millisecondsSinceEpoch ~/ 1000) {
+              status = Status.TIME_OUT;
+            }
             swaps.add(Swap(
-                pubkey: mm2.pubkey,
-                status: Status.ORDER_MATCHING,
-                result: Result(uuid: uuidFromJson(uuid).uuid)));
+                status: status,
+                result: Result(uuid: uuidData.uuid),
+                uuid: uuidData,
+                ));
           }
         }
       }
@@ -73,7 +91,7 @@ class SwapHistoryBloc implements BlocBase {
   Status getStatusSwap(Swap swap) {
     Status status = Status.ORDER_MATCHING;
 
-    swap.result.events.forEach((event){
+    swap.result.events.forEach((event) {
       switch (event.event.type) {
         case "Started":
           status = Status.ORDER_MATCHED;
