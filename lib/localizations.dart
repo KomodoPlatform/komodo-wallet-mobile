@@ -177,7 +177,12 @@ class AppLocalizations {
   String get commingsoon => Intl.message("TX details coming soon", name: 'commingsoon');
   String get history => Intl.message("history", name: 'history');
   String get create => Intl.message("trade", name: 'trade');
-
+  String get commingsoonGeneral => Intl.message("Coming soon !", name: 'commingsoonGeneral');
+  String get orderMatching => Intl.message("Order matching", name: 'orderMatching');
+  String get orderMatched => Intl.message("Order matched", name: 'orderMatched');
+  String get swapOngoing => Intl.message("Swap ongoing", name: 'swapOngoing');
+  String get swapSucceful => Intl.message("Swap successful", name: 'swapSucceful');
+  String get timeOut => Intl.message("Time out", name: 'timeOut');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

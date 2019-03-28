@@ -160,7 +160,6 @@ class MarketMakerService {
       )
     );
     final response = await http.post(url, body: json.encode(getSwap));
-    print("GET STATUS" + response.body.toString());
     try {
       return swapFromJson(response.body);
     } catch (e) {

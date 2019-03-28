@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -139,6 +140,7 @@ class CoinsBloc implements BlocBase {
 
   void startCheckBalance() {
     timer = Timer.periodic(Duration(seconds: 60), (_) {
+      swapHistoryBloc.updateSwap();
       updateBalanceForEachCoin(true);
     });
   }
