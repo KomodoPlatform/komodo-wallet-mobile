@@ -74,9 +74,6 @@ class AppLocalizations {
       Intl.message('WITHDRAW $amount $coinName',
           args: [amount, coinName], name: 'withdrawValue');
 
-  String get errorTryLater =>
-      Intl.message('Error, please try later.', name: 'errorTryLater');
-
   String get withdrawConfirm =>
       Intl.message('Withdraw confirm', name: 'withdrawConfirm');
 
@@ -132,8 +129,16 @@ class AppLocalizations {
 
   String get swap => Intl.message('swap', name: 'swap');
 
-  String get buySuccessWaiting =>
-      Intl.message('Order matched, please wait', name: 'buySuccessWaiting');
+  String get buySuccessWaiting => Intl.message(
+        'Ordermatch, please wait!',
+        name: 'buySuccessWaiting',
+      );
+  
+  String buySuccessWaitingError(String seconde) => Intl.message(
+        'Ordermatch, please wait $seconde seconds!',
+        name: 'buySuccessWaiting',
+        args: [seconde],
+      );
 
   String get networkFee => Intl.message('Network fee', name: 'networkFee');
   String get commissionFee =>

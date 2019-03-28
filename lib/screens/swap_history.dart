@@ -122,38 +122,40 @@ class _SwapHistoryState extends State<SwapHistory> {
                             ),
                           ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              Expanded(
-                                child: Container(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 6, horizontal: 12),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(24)),
-                                    color: colorStatus,
-                                  ),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(stepStatus,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption
-                                              .copyWith(color: Colors.white)),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(swapStatus,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .body2
-                                              .copyWith(
-                                                color: Colors.white,
-                                              ))
-                                    ],
+                              Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 6, horizontal: 12),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(24)),
+                                      color: colorStatus,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(stepStatus,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption
+                                                .copyWith(color: Colors.white)),
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(swapStatus,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .body2
+                                                .copyWith(
+                                                  color: Colors.white,
+                                                ))
+                                      ],
+                                    ),
                                   ),
                                 ),
                               )
@@ -215,10 +217,10 @@ class _SwapHistoryState extends State<SwapHistory> {
   Color getColorStatus(Status status) {
     switch (status) {
       case Status.ORDER_MATCHING:
-        return Colors.orangeAccent;
+        return Colors.grey;
         break;
       case Status.ORDER_MATCHED:
-        return Colors.orangeAccent;
+        return Colors.yellowAccent.shade700.withOpacity(0.7);
         break;
       case Status.SWAP_ONGOING:
         return Colors.orangeAccent;

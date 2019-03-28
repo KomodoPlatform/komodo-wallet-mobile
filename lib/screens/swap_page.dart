@@ -619,8 +619,12 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
           content: new Text(AppLocalizations.of(context).buySuccessWaiting),
         ));
       } else {
+        String timeSecondeLeft = onValue.error;
+        print(timeSecondeLeft);
+        timeSecondeLeft = timeSecondeLeft.substring(timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
+        print(timeSecondeLeft);
         Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text(AppLocalizations.of(context).errorTryLater),
+          content: new Text(AppLocalizations.of(context).buySuccessWaitingError(timeSecondeLeft)),
         ));
       }
     });
