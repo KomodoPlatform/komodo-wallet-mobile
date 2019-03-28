@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart'; 
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/bloc_login_page.dart';
 import 'package:komodo_dex/screens/new_account_page.dart';
@@ -11,7 +11,6 @@ class AuthenticatePage extends StatefulWidget {
 }
 
 class _AuthenticatePageState extends State<AuthenticatePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,9 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          SizedBox(height: 40,),
+          SizedBox(
+            height: 40,
+          ),
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -32,11 +33,8 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                   height: 25,
                 ),
                 Text(
-                  "KomoDEX",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .title,
+                  "atomicDEX",
+                  style: Theme.of(context).textTheme.title,
                 )
               ],
             ),
@@ -57,17 +55,14 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                         color: Theme.of(context).buttonColor,
                         disabledColor: Theme.of(context).disabledColor,
                         child: Text(
-                          AppLocalizations
-                              .of(context)
-                              .login
-                              .toUpperCase(),
+                          AppLocalizations.of(context).login.toUpperCase(),
                           style: Theme.of(context).textTheme.button,
                         ),
                         onPressed: () async {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BlocLoginPage()),
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BlocLoginPage()),
                           );
                         },
                       ),
@@ -83,10 +78,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                             borderRadius: BorderRadius.circular(6.0)),
                         disabledColor: Theme.of(context).disabledColor,
                         child: Text(
-                          AppLocalizations
-                              .of(context)
-                              .newAccount
-                              .toUpperCase(),
+                          AppLocalizations.of(context).newAccount.toUpperCase(),
                           style: Theme.of(context).textTheme.button,
                         ),
                         onPressed: () {
@@ -98,7 +90,9 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                         },
                       ),
                     ),
-                    SizedBox(height: 100,)
+                    SizedBox(
+                      height: 100,
+                    )
                   ],
                 ),
               ),

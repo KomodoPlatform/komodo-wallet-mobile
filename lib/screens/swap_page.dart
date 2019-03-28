@@ -320,33 +320,33 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  snapshot.data.coin.name.toUpperCase(),
-                                  style: Theme.of(context).textTheme.body2,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Text(
-                                      snapshot.data.balance.balance.toString(),
-                                      style:
-                                          Theme.of(context).textTheme.subtitle,
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      snapshot.data.coin.abbr,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle,
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  "\$${(snapshot.data.balance.balance * 1.3).toStringAsFixed(2)} USD",
-                                  style: Theme.of(context).textTheme.body2,
-                                ),
+                                // Text(
+                                //   snapshot.data.coin.name.toUpperCase(),
+                                //   style: Theme.of(context).textTheme.body2,
+                                // ),
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.end,
+                                //   crossAxisAlignment: CrossAxisAlignment.end,
+                                //   children: <Widget>[
+                                //     Text(
+                                //       snapshot.data.balance.balance.toString(),
+                                //       style:
+                                //           Theme.of(context).textTheme.subtitle,
+                                //     ),
+                                //     SizedBox(
+                                //       width: 4,
+                                //     ),
+                                //     Text(
+                                //       snapshot.data.coin.abbr,
+                                //       style:
+                                //           Theme.of(context).textTheme.subtitle,
+                                //     )
+                                //   ],
+                                // ),
+                                // Text(
+                                //   "\$${(snapshot.data.balance.balance * 1.3).toStringAsFixed(2)} USD",
+                                //   style: Theme.of(context).textTheme.body2,
+                                // ),
                               ],
                             ),
                           )
@@ -455,13 +455,16 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         });
   }
 
+//orderbooks.getBuyAmount(double.parse(_controllerAmount.text))
   List<SimpleDialogOption> _createListDialog(
       Market market, List<OrderCoin> orderbooks) {
     List<SimpleDialogOption> listDialog = new List<SimpleDialogOption>();
-
     if (orderbooks != null && market == Market.BUY) {
       orderbooks.forEach((orderbooks) {
-        if (orderbooks.coinBase.abbr != swapBloc.sellCoin.coin.abbr) {
+        if (orderbooks.coinBase.abbr != swapBloc.sellCoin.coin.abbr &&
+            double.parse(orderbooks
+                    .getBuyAmount(double.parse(_controllerAmount.text))) >
+                0) {
           SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
               setState(() {});
@@ -502,42 +505,44 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       });
     } else if (market == Market.SELL) {
       coinsBloc.coinBalance.forEach((coin) {
-        SimpleDialogOption dialogItem = SimpleDialogOption(
-          onPressed: () {
-            _controllerAmount.text = '';
-            swapBloc.updateSellCoin(coin);
-            swapBloc.updateBuyCoin(null);
-            Navigator.pop(context);
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                  height: 30,
-                  width: 30,
-                  child: Image.asset(
-                    "assets/${coin.coin.abbr.toLowerCase()}.png",
-                  )),
-              Expanded(
-                child: Container(),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(coin.balance.balance.toString()),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    coin.coin.abbr,
-                    style: Theme.of(context).textTheme.caption,
-                  )
-                ],
-              )
-            ],
-          ),
-        );
-        listDialog.add(dialogItem);
+        if (coin.balance.balance > 0) {
+          SimpleDialogOption dialogItem = SimpleDialogOption(
+            onPressed: () {
+              _controllerAmount.text = '';
+              swapBloc.updateSellCoin(coin);
+              swapBloc.updateBuyCoin(null);
+              Navigator.pop(context);
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    height: 30,
+                    width: 30,
+                    child: Image.asset(
+                      "assets/${coin.coin.abbr.toLowerCase()}.png",
+                    )),
+                Expanded(
+                  child: Container(),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(coin.balance.balance.toString()),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      coin.coin.abbr,
+                      style: Theme.of(context).textTheme.caption,
+                    )
+                  ],
+                )
+              ],
+            ),
+          );
+          listDialog.add(dialogItem);
+        } //if
       });
     }
 

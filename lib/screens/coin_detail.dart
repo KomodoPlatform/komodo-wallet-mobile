@@ -107,14 +107,17 @@ class _CoinDetailState extends State<CoinDetail> {
                       stream: coinsBloc.outTransactions,
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data.length == 0) {
-                          return Center(child: Text("No Transactions", style: Theme.of(context).textTheme.body2,));
+                          return Center(
+                              child: Text(
+                            "No Transactions",
+                            style: Theme.of(context).textTheme.body2,
+                          ));
                         }
-                        if (snapshot.hasData &&
-                            snapshot.data.length > 0) {
+                        if (snapshot.hasData && snapshot.data.length > 0) {
                           return Padding(
                             padding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 8),
-                            child: _buildTransactions(context ,snapshot.data),
+                            child: _buildTransactions(context, snapshot.data),
                           );
                         } else {
                           return Center(child: CircularProgressIndicator());

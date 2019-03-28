@@ -20,21 +20,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    _checkPassphrase().then((data){
+    _checkPassphrase().then((data) {
       _runBinMm2UserAlreadyLog();
       runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
     });
   });
 }
 
-  Future<void> _checkPassphrase() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+Future<void> _checkPassphrase() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (prefs.getString("passphrase") != null && prefs.getString("passphrase") != "") {
-      prefs.setBool("switch_pin", true);
-      authBloc.login(prefs.getString("passphrase"));
-    }
+  if (prefs.getString("passphrase") != null &&
+      prefs.getString("passphrase") != "") {
+    prefs.setBool("switch_pin", true);
+    authBloc.login(prefs.getString("passphrase"));
   }
+}
 
 _runBinMm2UserAlreadyLog() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'KomoDEX',
+        title: 'atomicDEX',
         localizationsDelegates: [
           AppLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,
