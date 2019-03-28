@@ -15,7 +15,7 @@ class AuthenticateBloc extends BlocBase {
   Sink<bool> get _inIsLogin => _isLoginController.sink;
   Stream<bool> get outIsLogin => _isLoginController.stream;
 
-  bool isPinShow = false;
+  bool isPinShow = true;
   StreamController<bool> _showPinController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inShowPin => _showPinController.sink;
@@ -57,11 +57,17 @@ class AuthenticateBloc extends BlocBase {
     mm2.ismm2Running = true;
     mm2.mm2Ready = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString("passphrase") != null && prefs.getString("passphrase").isNotEmpty) {
+      prefs.setString("pin", prefs.getString("pin"));
+      updateStatusPin(PinStatus.NORMAL_PIN);
+    } else {
+      updateStatusPin(PinStatus.CREATE_PIN);
+      await prefs.remove("pin");
+    }
     await prefs.setString("passphrase", passphrase);
     await prefs.setBool('switch_pin', true);
     await prefs.setBool("isPinIsSet", false);
-    updateStatusPin(PinStatus.CREATE_PIN);
-    await prefs.remove("pin");
+
     List<Coin> coins = await coinsBloc.readJsonCoin();
     if (coins.isEmpty) {
       coins = await mm2.loadJsonCoinsDefault();

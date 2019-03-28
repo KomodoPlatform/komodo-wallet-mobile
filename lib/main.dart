@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,10 +20,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    _runBinMm2UserAlreadyLog();
-    runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+    _checkPassphrase().then((data){
+      _runBinMm2UserAlreadyLog();
+      runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+    });
   });
 }
+
+  Future<void> _checkPassphrase() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (prefs.getString("passphrase") != null && prefs.getString("passphrase") != "") {
+      prefs.setBool("switch_pin", true);
+      authBloc.login(prefs.getString("passphrase"));
+    }
+  }
 
 _runBinMm2UserAlreadyLog() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -79,7 +92,6 @@ class MyApp extends StatelessWidget {
               initialData: authBloc.pinStatus,
               stream: authBloc.outpinStatus,
               builder: (context, outShowCreatePin) {
-                print(outShowCreatePin.data);
                 if (outShowCreatePin.hasData &&
                     (outShowCreatePin.data == PinStatus.NORMAL_PIN)) {
                   if (isLogin.hasData && isLogin.data) {

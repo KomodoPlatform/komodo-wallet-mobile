@@ -51,7 +51,8 @@ class MarketMakerService {
   Future<void> runBin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String passphrase = prefs.getString('passphrase');
-
+    
+    await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
     await Process.run('killall', ['mm2']);
 
     ProcessResult checkmm2 = await Process.run(
