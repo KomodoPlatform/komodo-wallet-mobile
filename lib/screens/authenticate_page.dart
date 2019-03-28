@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart'; 
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/bloc_login_page.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/screens/new_account_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
   @override
@@ -61,12 +63,18 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                               .toUpperCase(),
                           style: Theme.of(context).textTheme.button,
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BlocLoginPage()),
-                          );
+                        onPressed: () async {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                          if (prefs.getString("passphrase") == null || prefs.getString("passphrase") == "") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BlocLoginPage()),
+                            );
+                          } else {
+                            authBloc.login(prefs.getString("passphrase"));
+                          }
                         },
                       ),
                     ),
