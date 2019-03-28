@@ -1,4 +1,4 @@
-package com.komodoplatform.komododex
+package com.komodoplatform.atomicdex
 
 import android.os.Build
 import android.os.Bundle
