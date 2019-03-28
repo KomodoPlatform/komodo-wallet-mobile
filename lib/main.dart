@@ -223,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     icon: Icon(Icons.account_balance_wallet),
                     title: Text("Portfolio")),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.swap_vert), title: Text("Swap")),
+                    icon: Icon(Icons.swap_vert), title: Text("DEX")),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.settings), title: Text("Settings")),
               ],

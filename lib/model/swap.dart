@@ -4,6 +4,13 @@
 
 import 'dart:convert';
 
+enum Status {
+  ORDER_MATCHING,
+  ORDER_MATCHED,
+  SWAP_ONGOING,
+  SWAP_SUCCESSFUL
+}
+
 Swap swapFromJson(String str) {
     final jsonData = json.decode(str);
     return Swap.fromJson(jsonData);
@@ -12,13 +19,6 @@ Swap swapFromJson(String str) {
 String swapToJson(Swap data) {
     final dyn = data.toJson();
     return json.encode(dyn);
-}
-
-enum Status {
-  ORDER_MATCHING,
-  ORDER_MATCHED,
-  SWAP_ONGOING,
-  SWAP_SUCCESSFULL
 }
 
 class Swap {
@@ -42,24 +42,32 @@ class Swap {
 }
 
 class Result {
+    List<String> errorEvents;
     List<EventElement> events;
+    List<String> successEvents;
     String type;
     String uuid;
 
     Result({
+        this.errorEvents,
         this.events,
+        this.successEvents,
         this.type,
         this.uuid,
     });
 
     factory Result.fromJson(Map<String, dynamic> json) => new Result(
+        errorEvents: new List<String>.from(json["error_events"].map((x) => x)),
         events: new List<EventElement>.from(json["events"].map((x) => EventElement.fromJson(x))),
+        successEvents: new List<String>.from(json["success_events"].map((x) => x)),
         type: json["type"],
         uuid: json["uuid"],
     );
 
     Map<String, dynamic> toJson() => {
+        "error_events": new List<dynamic>.from(errorEvents.map((x) => x)),
         "events": new List<dynamic>.from(events.map((x) => x.toJson())),
+        "success_events": new List<dynamic>.from(successEvents.map((x) => x)),
         "type": type,
         "uuid": uuid,
     };

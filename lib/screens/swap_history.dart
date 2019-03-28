@@ -10,7 +10,6 @@ class SwapHistory extends StatefulWidget {
 class _SwapHistoryState extends State<SwapHistory> {
   @override
   void initState() {
-    print("INITSTATE");
     swapHistoryBloc.updateSwap();
     super.initState();
   }

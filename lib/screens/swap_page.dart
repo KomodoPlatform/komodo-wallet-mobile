@@ -303,22 +303,22 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                       child: Row(
                         children: <Widget>[
                           Expanded(
-                            child: OverflowBox(
-                              maxHeight: 100,
-                              maxWidth: 100,
-                              minHeight: 0,
-                              minWidth: 0,
-                              child: Image.asset(
-                                "assets/${snapshot.data.coin.abbr.toLowerCase()}.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
+                                Expanded(
+                                  child: OverflowBox(
+                                    maxHeight: 100,
+                                    maxWidth: 100,
+                                    minHeight: 0,
+                                    minWidth: 0,
+                                    child: Image.asset(
+                                      "assets/${snapshot.data.coin.abbr.toLowerCase()}.png",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                                 Text(
                                   snapshot.data.coin.name.toUpperCase(),
                                   style: Theme.of(context).textTheme.body2,
@@ -587,7 +587,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             swapBloc.orderCoin.coinBase,
             swapBloc.orderCoin.coinRel,
             double.parse(_controllerAmount.text),
-            swapBloc.orderCoin.bestPrice * 0.01)
+            swapBloc.orderCoin.bestPrice * 1.01)
         .then((onValue) {
       if (onValue is BuyResponse && onValue.result == "success") {
         swapHistoryBloc.saveUUID(onValue.pending.uuid);
