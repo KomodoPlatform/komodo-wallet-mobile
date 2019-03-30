@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPage extends StatefulWidget {
@@ -120,32 +124,47 @@ class _SettingPageState extends State<SettingPage> {
                             isConfirmPin: PinStatus.CHANGE_PIN,)));
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: ListTile(
-                  leading: Icon(
-                    Icons.exit_to_app,
-                    color: Colors.red.withOpacity(0.7),
-                  ),
-                  title: Text(
-                    AppLocalizations
-                        .of(context)
-                        .logout,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .body1
-                        .copyWith(color: Colors.red.withOpacity(0.7)),
-                  ),
-                  onTap: () {
-                    authBloc.logout();
+              ListTile(
+                leading: Icon(Icons.feedback, color: Colors.white),
+                title: Text(
+                  AppLocalizations.of(context).feedback,
+                  style: Theme.of(context).textTheme.body1,
+                ),
+                onTap: () {
+                    _shareFile();          
                   },
                 ),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.exit_to_app,
+                      color: Colors.red.withOpacity(0.7),
+                    ),
+                    title: Text(
+                      AppLocalizations
+                          .of(context)
+                          .logout,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(color: Colors.red.withOpacity(0.7)),
+                    ),
+                    onTap: () {
+                      authBloc.logout();
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
+    }
+  
+    void _shareFile() {
+      File file = new File('${mm2.filesPath}log.txt');
+      Share.shareFile(file, subject: "My logs for the ${DateTime.now().toIso8601String()}");
+    }
 }

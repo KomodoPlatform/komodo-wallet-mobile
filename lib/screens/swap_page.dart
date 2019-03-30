@@ -320,33 +320,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                     ),
                                   ),
                                 ),
-                                // Text(
-                                //   snapshot.data.coin.name.toUpperCase(),
-                                //   style: Theme.of(context).textTheme.body2,
-                                // ),
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.end,
-                                //   crossAxisAlignment: CrossAxisAlignment.end,
-                                //   children: <Widget>[
-                                //     Text(
-                                //       snapshot.data.balance.balance.toString(),
-                                //       style:
-                                //           Theme.of(context).textTheme.subtitle,
-                                //     ),
-                                //     SizedBox(
-                                //       width: 4,
-                                //     ),
-                                //     Text(
-                                //       snapshot.data.coin.abbr,
-                                //       style:
-                                //           Theme.of(context).textTheme.subtitle,
-                                //     )
-                                //   ],
-                                // ),
-                                // Text(
-                                //   "\$${(snapshot.data.balance.balance * 1.3).toStringAsFixed(2)} USD",
-                                //   style: Theme.of(context).textTheme.body2,
-                                // ),
                               ],
                             ),
                           )
@@ -455,7 +428,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         });
   }
 
-//orderbooks.getBuyAmount(double.parse(_controllerAmount.text))
   List<SimpleDialogOption> _createListDialog(
       Market market, List<OrderCoin> orderbooks) {
     List<SimpleDialogOption> listDialog = new List<SimpleDialogOption>();

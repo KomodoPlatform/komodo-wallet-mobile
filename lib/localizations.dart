@@ -195,6 +195,7 @@ class AppLocalizations {
   String get timeOut => Intl.message("Timeout", name: 'timeOut');
   String get errorTryLater =>
       Intl.message("Error, please try later", name: 'errorTryLater');
+  String get feedback => Intl.message("Feedback", name: 'feedback');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
