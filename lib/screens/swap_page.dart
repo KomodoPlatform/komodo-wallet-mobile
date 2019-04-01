@@ -88,6 +88,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         child: Container(
           width: double.infinity,
           child: Card(
+            elevation: 8.0,
             child: Column(
               children: <Widget>[
                 Expanded(
