@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -55,14 +56,6 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                     _buildDialogSelectCoin();
                   },
                 ),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.refresh),
-                    onPressed: () {
-                      coinsBloc.updateBalanceForEachCoin(true);
-                    },
-                  )
-                ],
                 backgroundColor: Theme.of(context).backgroundColor,
                 expandedHeight: _heightScreen * 0.35,
                 pinned: true,
@@ -77,11 +70,11 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                             heightFactor: _heightFactor,
                             child: StreamBuilder<List<CoinBalance>>(
                                 initialData: coinsBloc.coinBalance,
-                              stream: coinsBloc.outCoins,
-                              builder: (context, snapshot) {
+                                stream: coinsBloc.outCoins,
+                                builder: (context, snapshot) {
                                   if (snapshot.hasData) {
                                     double totalBalanceUSD = 0;
-                                    snapshot.data.forEach((coinBalance){
+                                    snapshot.data.forEach((coinBalance) {
                                       totalBalanceUSD += coinBalance.balanceUSD;
                                     });
                                     return AutoSizeText(
@@ -92,10 +85,12 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                                       maxLines: 1,
                                     );
                                   } else {
-                                    return Center(child: Container(child: CircularProgressIndicator(),));
+                                    return Center(
+                                        child: Container(
+                                      child: CircularProgressIndicator(),
+                                    ));
                                   }
-                                }
-                            ),
+                                }),
                           ),
                         ),
                         background: Container(
@@ -116,16 +111,14 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                           height: _heightScreen * 0.35,
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: [0.01, 1],
-                                colors: [
-                                  Color.fromRGBO(39, 71, 110, 1),
-                                  Theme
-                                      .of(context)
-                                      .accentColor,
-                                ],
-                              )),
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: [0.01, 1],
+                            colors: [
+                              Color.fromRGBO(39, 71, 110, 1),
+                              Theme.of(context).accentColor,
+                            ],
+                          )),
                         ));
                   },
                 ),
@@ -158,9 +151,8 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                   Navigator.pop(context);
                   coinsBloc.addCoin(coin).then((data) {
                     Scaffold.of(contextMain).showSnackBar(new SnackBar(
-                      content: new Text(
-                          AppLocalizations.of(contextMain).addingCoinSuccess(
-                              coin.name)),
+                      content: new Text(AppLocalizations.of(contextMain)
+                          .addingCoinSuccess(coin.name)),
                     ));
                   });
                 },
@@ -171,16 +163,10 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
           });
           return Theme(
             data: ThemeData(
-                textTheme: Theme
-                    .of(context)
-                    .textTheme,
-                dialogBackgroundColor: Theme
-                    .of(context)
-                    .dialogBackgroundColor),
+                textTheme: Theme.of(context).textTheme,
+                dialogBackgroundColor: Theme.of(context).dialogBackgroundColor),
             child: SimpleDialog(
-              title: Text(AppLocalizations
-                  .of(context)
-                  .addCoin),
+              title: Text(AppLocalizations.of(context).addCoin),
               children: listDialog,
             ),
           );
@@ -227,8 +213,7 @@ class BarGraphState extends State<BarGraph> {
               barItem.add(Container(
                 color: Color(int.parse(coinBalance.coin.colorCoin)),
                 width: _widthBar *
-                    (((coinBalance.balanceUSD * 100) / sumOfAllBalances) /
-                        100),
+                    (((coinBalance.balanceUSD * 100) / sumOfAllBalances) / 100),
               ));
             }
           });
@@ -331,6 +316,9 @@ class ListCoins extends StatefulWidget {
 }
 
 class ListCoinsState extends State<ListCoins> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+
   @override
   void initState() {
     super.initState();
@@ -342,18 +330,27 @@ class ListCoinsState extends State<ListCoins> {
       initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
       builder: (context, snapshot) {
-          return ListView.builder(
+        return RefreshIndicator(
+          backgroundColor: Theme.of(context).backgroundColor,
+          key: _refreshIndicatorKey,
+          onRefresh: _refresh,
+          child: ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 if (snapshot.hasData && snapshot.data.length > 0) {
-                  return ItemCoin(index: index, listCoinBalances: snapshot.data);
+                  return ItemCoin(
+                      index: index, listCoinBalances: snapshot.data);
                 } else {
                   return Center(child: CircularProgressIndicator());
                 }
-              }
-          );
+              }),
+        );
       },
     );
+  }
+
+  Future<Null> _refresh() async{
+    return await coinsBloc.updateBalanceForEachCoin(true);
   }
 }
 
@@ -369,7 +366,7 @@ class ItemCoin extends StatelessWidget {
   Widget build(BuildContext context) {
     double _heightScreen = MediaQuery.of(context).size.height;
     Coin coin = listCoinBalances[index].coin;
-    CoinBalance coinbalance =listCoinBalances[index];
+    CoinBalance coinbalance = listCoinBalances[index];
     Balance balance = listCoinBalances[index].balance;
     NumberFormat f = new NumberFormat("###,##0.########");
 
@@ -397,11 +394,10 @@ class ItemCoin extends StatelessWidget {
                 children: <Widget>[
                   Builder(builder: (context) {
                     String coinStr = balance.coin.toLowerCase();
-                      return PhotoHero(
-                        radius: 28,
-                        tag: "assets/${balance
-                            .coin.toLowerCase()}.png",
-                      );
+                    return PhotoHero(
+                      radius: 28,
+                      tag: "assets/${balance.coin.toLowerCase()}.png",
+                    );
                   }),
                 ],
               ),
@@ -414,33 +410,25 @@ class ItemCoin extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         coin.name.toUpperCase(),
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .caption,
+                        style: Theme.of(context).textTheme.caption,
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       Text(
                         "${f.format(balance.balance)} ${coin.abbr}",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .subtitle,
+                        style: Theme.of(context).textTheme.subtitle,
                       ),
                       SizedBox(
                         height: 4,
                       ),
-                         Builder(
-                           builder: (context) {
-                             NumberFormat f = new NumberFormat("###,##0.##");
-                             return Text(
-                                "\$${f.format(coinbalance.balanceUSD)} USD",
-                                style: Theme.of(context).textTheme.body2,
-                              );
-                           }
-                         )
+                      Builder(builder: (context) {
+                        NumberFormat f = new NumberFormat("###,##0.##");
+                        return Text(
+                          "\$${f.format(coinbalance.balanceUSD)} USD",
+                          style: Theme.of(context).textTheme.body2,
+                        );
+                      })
                     ],
                   ),
                 ),

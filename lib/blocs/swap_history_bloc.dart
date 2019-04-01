@@ -44,7 +44,7 @@ class SwapHistoryBloc implements BlocBase {
     await prefs.setStringList('uuids', uuids);
   }
 
-  void updateSwap() async {
+  Future<void> updateSwap() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> uuids = prefs.getStringList('uuids');
     List<Swap> swaps = new List<Swap>();
@@ -85,7 +85,7 @@ class SwapHistoryBloc implements BlocBase {
     }
 
     this.swaps = swaps;
-    _inSwaps.add(this.swaps);
+    return _inSwaps.add(this.swaps);
   }
 
   Status getStatusSwap(Swap swap) {
