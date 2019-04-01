@@ -11,7 +11,6 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/coin_detail.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
-import 'package:komodo_dex/utils/SliverFooter.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class BlocCoinsPage extends StatefulWidget {
