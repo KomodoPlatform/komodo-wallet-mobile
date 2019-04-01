@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
@@ -19,7 +21,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   Animation<double> animation;
   AnimationController controller;
   bool isSwapProgress = false;
-
+  
   @override
   void initState() {
     super.initState();
@@ -413,14 +415,23 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     initialData: swapBloc.orderCoins,
                     stream: swapBloc.outListOrderCoin,
                     builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        print(snapshot.data.length);
-                        return SimpleDialog(
-                          title: Text(AppLocalizations.of(context).buy),
-                          children: _createListDialog(market, snapshot.data),
-                        );
+                      bool orderHasAsks = false;
+                      if (snapshot.hasData && snapshot.data.length > 0) {
+                        snapshot.data.forEach((orderbook) {
+                          if (orderbook.orderbook.asks.length > 0) {
+                            orderHasAsks = true;
+                          }
+                        });
+                        if (orderHasAsks) {
+                          return SimpleDialog(
+                            title: Text(AppLocalizations.of(context).buy),
+                            children: _createListDialog(market, snapshot.data),
+                          );
+                        } else {
+                          return DialogLooking();
+                        }
                       } else {
-                        return Center(child: CircularProgressIndicator());
+                        return DialogLooking();
                       }
                     },
                   ),
@@ -609,6 +620,51 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         ));
       }
     });
+  }
+}
+
+class DialogLooking extends StatefulWidget {
+  @override
+  _DialogLookingState createState() => _DialogLookingState();
+}
+
+class _DialogLookingState extends State<DialogLooking> {
+  var timerGetOrderbook;
+
+  @override
+  void initState() {
+    timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
+      swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+    });
+    super.initState();
+  }
+  @override
+  void dispose() {
+    if (timerGetOrderbook != null) 
+      timerGetOrderbook.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 16,
+            ),
+            Text(
+              AppLocalizations.of(context).loadingOrderbook,
+              style: Theme.of(context).textTheme.body1,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 

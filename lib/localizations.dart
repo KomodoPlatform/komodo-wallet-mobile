@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
+
   static Future<AppLocalizations> load(Locale locale) {
     final String name =
         locale.countryCode == null ? locale.languageCode : locale.toString();
@@ -196,6 +197,7 @@ class AppLocalizations {
   String get errorTryLater =>
       Intl.message("Error, please try later", name: 'errorTryLater');
   String get feedback => Intl.message("Feedback", name: 'feedback');
+  String get loadingOrderbook => Intl.message("Looking for orderbook...", name: 'loadingOrderbook');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

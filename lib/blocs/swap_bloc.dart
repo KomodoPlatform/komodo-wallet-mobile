@@ -56,7 +56,7 @@ class SwapBloc implements BlocBase {
     _inSellCoin.add(sellCoin);
   }
 
-  void getBuyCoins(Coin rel) async {
+  Future<void> getBuyCoins(Coin rel) async {
     orderCoins = new List<OrderCoin>();
 
     List<Coin> coins = await coinsBloc.readJsonCoin();
@@ -95,6 +95,7 @@ class SwapBloc implements BlocBase {
     });
 
     _inListOrderCoin.add(orderCoins);
+    return;
   }
 }
 
