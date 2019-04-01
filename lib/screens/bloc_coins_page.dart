@@ -11,6 +11,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/coin_detail.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/SliverFooter.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class BlocCoinsPage extends StatefulWidget {
@@ -50,12 +51,6 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                leading: IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    _buildDialogSelectCoin();
-                  },
-                ),
                 backgroundColor: Theme.of(context).backgroundColor,
                 expandedHeight: _heightScreen * 0.35,
                 pinned: true,
@@ -128,49 +123,6 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
           body: Container(
               color: Theme.of(context).backgroundColor, child: ListCoins())),
     );
-  }
-
-  void _buildDialogSelectCoin() async {
-    var coins = await mm2.loadJsonCoins(await mm2.loadElectrumServersAsset());
-    var coinsBalance = await coinsBloc.readJsonCoin();
-
-    showDialog<List<Coin>>(
-        context: context,
-        builder: (BuildContext context) {
-          List<SimpleDialogOption> listDialog = new List<SimpleDialogOption>();
-          coins.forEach((coin) {
-            bool isAlreadyAdded = false;
-            coinsBalance.forEach((coinsBalance) {
-              if (coin.abbr == coinsBalance.abbr) {
-                isAlreadyAdded = true;
-              }
-            });
-            if (!isAlreadyAdded) {
-              SimpleDialogOption dialogItem = SimpleDialogOption(
-                onPressed: () {
-                  Navigator.pop(context);
-                  coinsBloc.addCoin(coin).then((data) {
-                    Scaffold.of(contextMain).showSnackBar(new SnackBar(
-                      content: new Text(AppLocalizations.of(contextMain)
-                          .addingCoinSuccess(coin.name)),
-                    ));
-                  });
-                },
-                child: Text(coin.abbr),
-              );
-              listDialog.add(dialogItem);
-            }
-          });
-          return Theme(
-            data: ThemeData(
-                textTheme: Theme.of(context).textTheme,
-                dialogBackgroundColor: Theme.of(context).dialogBackgroundColor),
-            child: SimpleDialog(
-              title: Text(AppLocalizations.of(context).addCoin),
-              children: listDialog,
-            ),
-          );
-        });
   }
 }
 
@@ -330,122 +282,220 @@ class ListCoinsState extends State<ListCoins> {
       initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
       builder: (context, snapshot) {
-        return RefreshIndicator(
-          backgroundColor: Theme.of(context).backgroundColor,
-          key: _refreshIndicatorKey,
-          onRefresh: _refresh,
-          child: ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) {
-                if (snapshot.hasData && snapshot.data.length > 0) {
-                  return ItemCoin(
-                      index: index, listCoinBalances: snapshot.data);
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              }),
-        );
+        if (snapshot.hasData && snapshot.data.length > 0) {
+          List<dynamic> datas = new List<dynamic>();
+          datas.addAll(snapshot.data);
+
+          datas.add(true);
+
+          return RefreshIndicator(
+              backgroundColor: Theme.of(context).backgroundColor,
+              key: _refreshIndicatorKey,
+              onRefresh: _refresh,
+              child: ListView(
+                children: datas
+                    .map((data) =>
+                        ItemCoin(mContext: context, coinBalance: data))
+                    .toList(),
+              ));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
       },
     );
   }
 
-  Future<Null> _refresh() async{
+  Future<Null> _refresh() async {
     return await coinsBloc.updateBalanceForEachCoin(true);
   }
 }
 
-class ItemCoin extends StatelessWidget {
-  const ItemCoin(
-      {Key key, @required this.listCoinBalances, @required this.index})
+class ItemCoin extends StatefulWidget {
+  const ItemCoin({Key key, @required this.mContext, @required this.coinBalance})
       : super(key: key);
 
-  final List<CoinBalance> listCoinBalances;
-  final int index;
+  final dynamic coinBalance;
+  final BuildContext mContext;
 
+  @override
+  _ItemCoinState createState() => _ItemCoinState();
+}
+
+class _ItemCoinState extends State<ItemCoin> {
+  bool isAddCoinProgress = false;
   @override
   Widget build(BuildContext context) {
     double _heightScreen = MediaQuery.of(context).size.height;
-    Coin coin = listCoinBalances[index].coin;
-    CoinBalance coinbalance = listCoinBalances[index];
-    Balance balance = listCoinBalances[index].balance;
-    NumberFormat f = new NumberFormat("###,##0.########");
 
-    return Card(
-      elevation: 8,
-      color: Theme.of(context).primaryColor,
-      margin: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
-      child: InkWell(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CoinDetail(listCoinBalances[index])),
-          );
+    if (widget.coinBalance is bool) {
+      return FutureBuilder<bool>(
+        future: _buildAddCoinButton(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: isAddCoinProgress
+                  ? Center(child: CircularProgressIndicator())
+                  : Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(
+                          child: FloatingActionButton(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Theme.of(context).accentColor,
+                        child: Icon(
+                          Icons.add,
+                        ),
+                        onPressed: () {
+                          _buildDialogSelectCoin(context);
+                        },
+                      )),
+                    ),
+            );
+          } else {
+            return Container();
+          }
         },
-        child: Container(
-          height: _heightScreen * 0.15,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 16),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Builder(builder: (context) {
-                    String coinStr = balance.coin.toLowerCase();
-                    return PhotoHero(
-                      radius: 28,
-                      tag: "assets/${balance.coin.toLowerCase()}.png",
-                    );
-                  }),
-                ],
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        coin.name.toUpperCase(),
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        "${f.format(balance.balance)} ${coin.abbr}",
-                        style: Theme.of(context).textTheme.subtitle,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Builder(builder: (context) {
-                        NumberFormat f = new NumberFormat("###,##0.##");
-                        return Text(
-                          "\$${f.format(coinbalance.balanceUSD)} USD",
-                          style: Theme.of(context).textTheme.body2,
-                        );
-                      })
-                    ],
+      );
+    } else {
+      Coin coin = widget.coinBalance.coin;
+      Balance balance = widget.coinBalance.balance;
+      NumberFormat f = new NumberFormat("###,##0.########");
+      return Card(
+        elevation: 8,
+        color: Theme.of(context).primaryColor,
+        margin: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
+        child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CoinDetail(widget.coinBalance)),
+            );
+          },
+          child: Container(
+            height: _heightScreen * 0.15,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 16),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Builder(builder: (context) {
+                      String coinStr = balance.coin.toLowerCase();
+                      return PhotoHero(
+                        radius: 28,
+                        tag: "assets/${balance.coin.toLowerCase()}.png",
+                      );
+                    }),
+                  ],
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          coin.name.toUpperCase(),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          "${f.format(balance.balance)} ${coin.abbr}",
+                          style: Theme.of(context).textTheme.subtitle,
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Builder(builder: (context) {
+                          NumberFormat f = new NumberFormat("###,##0.##");
+                          return Text(
+                            "\$${f.format(widget.coinBalance.balanceUSD)} USD",
+                            style: Theme.of(context).textTheme.body2,
+                          );
+                        })
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(6),
-                    bottomRight: Radius.circular(6)),
-                child: Container(
-                  color: Color(int.parse(coin.colorCoin)),
-                  width: 8,
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(6),
+                      bottomRight: Radius.circular(6)),
+                  child: Container(
+                    color: Color(int.parse(coin.colorCoin)),
+                    width: 8,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
+  }
+
+  Future<bool> _buildAddCoinButton() async {
+    var allCoins =
+        await mm2.loadJsonCoins(await mm2.loadElectrumServersAsset());
+    var allCoinsActivate = await coinsBloc.readJsonCoin();
+
+    return allCoins.length == allCoinsActivate.length ? false : true;
+  }
+
+  void _buildDialogSelectCoin(BuildContext context) async {
+    var allCoins =
+        await mm2.loadJsonCoins(await mm2.loadElectrumServersAsset());
+    var allCoinsActivate = await coinsBloc.readJsonCoin();
+
+    showDialog<List<Coin>>(
+        context: context,
+        builder: (BuildContext context) {
+          List<SimpleDialogOption> listDialog = new List<SimpleDialogOption>();
+          allCoins.forEach((coin) {
+            bool isAlreadyAdded = false;
+            allCoinsActivate.forEach((coinsBalance) {
+              if (coin.abbr == coinsBalance.abbr) {
+                isAlreadyAdded = true;
+              }
+            });
+            if (!isAlreadyAdded) {
+              SimpleDialogOption dialogItem = SimpleDialogOption(
+                onPressed: () {
+                  setState(() {
+                    isAddCoinProgress = true;
+                  });
+                  Navigator.pop(context);
+                  coinsBloc.addCoin(coin).then((data) {
+                    Scaffold.of(widget.mContext).showSnackBar(new SnackBar(
+                      content: new Text(AppLocalizations.of(widget.mContext)
+                          .addingCoinSuccess(coin.name)),
+                    ));
+                  }).then((onValue) {
+                    setState(() {
+                      isAddCoinProgress = false;
+                    });
+                  });
+                },
+                child: Text(coin.abbr),
+              );
+              listDialog.add(dialogItem);
+            }
+          });
+          return Theme(
+            data: ThemeData(
+                textTheme: Theme.of(context).textTheme,
+                dialogBackgroundColor: Theme.of(context).dialogBackgroundColor),
+            child: SimpleDialog(
+              title: Text(AppLocalizations.of(context).addCoin),
+              children: listDialog,
+            ),
+          );
+        });
   }
 }
