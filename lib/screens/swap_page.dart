@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
@@ -21,21 +22,61 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   Animation<double> animation;
   AnimationController controller;
   bool isSwapProgress = false;
-  
+  CoinBalance coinBalance;
+  FocusNode _focus = new FocusNode();
+
   @override
   void initState() {
     super.initState();
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
+    _controllerAmount.addListener(onChange);
     controller = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
     controller.forward();
   }
 
+  void onChange() {
+    String text = _controllerAmount.text;
+    print(text);
+    if (text.isNotEmpty) {
+      print("-----------REMOVE--------");
+      setState(() {
+        if (coinBalance != null && double.parse(text) >
+            coinBalance.balance.balance) {
+          setMaxValue();
+        }
+      });
+    }
+  }
+
+  void setMaxValue() async{
+    _focus.unfocus();
+    setState(() {
+      var txFee = coinBalance.coin.txfee;
+      var fee;
+      if (txFee == null) {
+        fee = 0;
+      } else {
+        fee = (txFee.toDouble() / 100000000);
+      }
+      _controllerAmount.text =
+          ((coinBalance.balance.balance - (coinBalance.balance.balance * 0.01)) -
+                  fee)
+              .toString();
+    });
+    await Future.delayed(const Duration(milliseconds: 0), () {
+      setState(() {
+        FocusScope.of(context).requestFocus(_focus);
+      });
+    });
+  }
+
   @override
   void dispose() {
     _controllerAmount.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -105,6 +146,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                       if (snapshot.data is CoinBalance &&
                           snapshot.hasData &&
                           snapshot.data != null) {
+                        coinBalance = snapshot.data;
                         return Container(
                           height: 70,
                           width: double.infinity,
@@ -131,36 +173,15 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                                   .accentColor),
                                     ),
                                     onPressed: () {
-                                      setState(() {
-                                        var txFee = snapshot.data.coin.txfee;
-                                        var fee;
-                                        if (txFee == null) {
-                                          fee = 0;
-                                        } else {
-                                          fee = (txFee.toDouble() / 100000000);
-                                        }
-                                        _controllerAmount.text =
-                                            (snapshot.data.balance.balance -
-                                                    fee)
-                                                .toString();
-                                      });
+                                      setMaxValue();
                                     },
                                   ),
                                 ),
                                 Expanded(
-                                  child: TextField(
+                                  child: TextFormField(
+                                    focusNode: _focus,
+                                    inputFormatters: [WhitelistingTextInputFormatter(RegExp("^\$|^(0|([1-9][0-9]{0,3}))(\\.[0-9]{0,8})?\$"))],
                                     controller: _controllerAmount,
-                                    onChanged: (data) {
-                                      setState(() {
-                                        if (double.parse(
-                                                _controllerAmount.text) >
-                                            snapshot.data.balance.balance) {
-                                          _controllerAmount.text =
-                                              (snapshot.data.balance.balance)
-                                                  .toString();
-                                        }
-                                      });
-                                    },
                                     style: Theme.of(context)
                                         .textTheme
                                         .body1
@@ -639,10 +660,10 @@ class _DialogLookingState extends State<DialogLooking> {
     });
     super.initState();
   }
+
   @override
   void dispose() {
-    if (timerGetOrderbook != null) 
-      timerGetOrderbook.cancel();
+    if (timerGetOrderbook != null) timerGetOrderbook.cancel();
     super.dispose();
   }
 
