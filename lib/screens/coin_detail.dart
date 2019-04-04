@@ -40,6 +40,8 @@ class _CoinDetailState extends State<CoinDetail> {
   int currentIndex = 0;
   List<Widget> listSteps = List<Widget>();
   ScrollController _scrollController = new ScrollController();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
@@ -100,30 +102,37 @@ class _CoinDetailState extends State<CoinDetail> {
             _buildForm(),
             _buildHeaderCoinDetail(context),
             Expanded(
-              child: ListView(
-                controller: _scrollController,
-                children: <Widget>[
-                  StreamBuilder<List<Transaction>>(
-                      stream: coinsBloc.outTransactions,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data.length == 0) {
-                          return Center(
-                              child: Text(
-                            "No Transactions",
-                            style: Theme.of(context).textTheme.body2,
-                          ));
-                        }
-                        if (snapshot.hasData && snapshot.data.length > 0) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 8),
-                            child: _buildTransactions(context, snapshot.data),
-                          );
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      })
-                ],
+              child: RefreshIndicator(
+                backgroundColor: Theme.of(context).backgroundColor,
+                color: Theme.of(context).accentColor,
+                key: _refreshIndicatorKey,
+                onRefresh: _refresh,
+                child: ListView(
+                  controller: _scrollController,
+                  children: <Widget>[
+                    StreamBuilder<List<Transaction>>(
+                        stream: coinsBloc.outTransactions,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data.length == 0) {
+                            return Center(
+                                child: Text(
+                              "No Transactions",
+                              style: Theme.of(context).textTheme.body2,
+                            ));
+                          }
+                          if (snapshot.hasData && snapshot.data.length > 0) {
+                            print(snapshot.data.length);
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 8),
+                              child: _buildTransactions(context, snapshot.data),
+                            );
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        })
+                  ],
+                ),
               ),
             )
           ],
@@ -132,22 +141,23 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
+  Future<Null> _refresh() async {
+    return await coinsBloc.updateTransactions(widget.coinBalance);
+  }
+
   _buildTransactions(BuildContext context, List<Transaction> transactionsData) {
-    List<Widget> transactions = new List<Widget>();
+    return Column(
+      children: transactionsData.map((transaction) => _buildItemTransaction(transaction))
+                    .toList(),
+    );
+  }
 
-    transactionsData.sort((b, a) {
-      if (a.date != null) {
-        return a.date.compareTo(b.date);
-      }
-    });
-
+  Widget _buildItemTransaction(Transaction transaction){
     TextStyle subtitle = Theme.of(context)
         .textTheme
         .subtitle
         .copyWith(fontWeight: FontWeight.bold);
-
-    transactionsData.forEach((transaction) {
-      transactions.add(Padding(
+    return Padding(
         padding: const EdgeInsets.symmetric(vertical: 2),
         child: Card(
             color: Theme.of(context).primaryColor,
@@ -261,11 +271,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 ],
               )),
             )),
-      ));
-    });
-    return Column(
-      children: transactions,
-    );
+      );
   }
 
   _buildHeaderCoinDetail(BuildContext context) {

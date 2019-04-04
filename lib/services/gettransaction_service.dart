@@ -11,7 +11,6 @@ final getTransactionObj = GetTransactionService();
 class GetTransactionService {
   int calc = 100000000;
   int numTxs = 0;
-  List<Transaction> transactions = new List<Transaction>();
   bool coinAvailable = false;
   bool out = false;
   int numTx = 0;
@@ -19,6 +18,7 @@ class GetTransactionService {
   // is being replaced with our own SPV solution for the beta release. Hence why the below URLs and data is not set through config file
   //
   Future<List<Transaction>> getTransactions(String coin, String pubkey) async {
+      List<Transaction> transactions = new List<Transaction>();
     // Explorer API:
     //
     // ETH:  http://api.ethplorer.io/getAddressTransactions/0x6ce989d2E0361f1201aDf57CD324723018Cf3ce4?apiKey=freekey

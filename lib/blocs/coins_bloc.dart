@@ -39,6 +39,7 @@ class CoinsBloc implements BlocBase {
   @override
   void dispose() {
     _coinsController.close();
+    _transactionsController.close();
   }
 
   void resetCoinBalance() {
@@ -56,10 +57,15 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  void updateTransactions(CoinBalance coinBalance) async {
-    List<Transaction> transactions = await getTransactionObj.getTransactions(
+  Future<void> updateTransactions(CoinBalance coinBalance) async {
+    List<Transaction> transactionsData = await getTransactionObj.getTransactions(
         coinBalance.coin.abbr, coinBalance.balance.address);
-    this.transactions = transactions;
+    transactionsData.sort((b, a) {
+      if (a.date != null) {
+        return a.date.compareTo(b.date);
+      }
+    });
+    this.transactions = transactionsData;
     _inTransactions.add(this.transactions);
   }
 
