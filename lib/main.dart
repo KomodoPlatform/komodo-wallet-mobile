@@ -16,6 +16,7 @@ import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:local_auth/local_auth.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -45,7 +46,14 @@ _runBinMm2UserAlreadyLog() async {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final LocalAuthentication auth = LocalAuthentication();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -107,10 +115,24 @@ class MyApp extends StatelessWidget {
                                   outShowPin.data &&
                                   switchPinData.hasData &&
                                   switchPinData.data) {
-                                return PinPage(
-                                    title: 'Lock Screen',
-                                    subTitle: 'Enter your PIN code',
-                                    isConfirmPin: PinStatus.NORMAL_PIN);
+                                return Stack(
+                                  children: <Widget>[
+                                    FutureBuilder(
+                                      future: _checkBiometrics(),
+                                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                        if (snapshot.hasData && snapshot.data) {
+                                          print(snapshot.data);
+                                          _authenticateBiometrics();
+                                        }
+                                        return Container();
+                                    },
+                                    ),
+                                    PinPage(
+                                        title: 'Lock Screen',
+                                        subTitle: 'Enter your PIN code',
+                                        isConfirmPin: PinStatus.NORMAL_PIN),
+                                  ],
+                                );
                               } else {
                                 return InitBlocs(child: MyHomePage());
                               }
@@ -131,6 +153,30 @@ class MyApp extends StatelessWidget {
             );
           },
         ));
+  }
+
+  Future<bool> _authenticateBiometrics() async{
+    var localAuth = LocalAuthentication();
+    
+    bool didAuthenticate =
+    await localAuth.authenticateWithBiometrics(
+      
+        localizedReason: 'Please authenticate to show account balance');
+    if (didAuthenticate) {
+      authBloc.showPin(false);
+    }
+    return didAuthenticate;
+  }
+
+  Future<bool> _checkBiometrics() async {
+    bool canCheckBiometrics = false;
+    try {
+      canCheckBiometrics = await auth.canCheckBiometrics;
+      print(canCheckBiometrics);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    return canCheckBiometrics;
   }
 }
 
