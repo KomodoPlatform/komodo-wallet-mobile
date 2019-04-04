@@ -41,7 +41,7 @@ _runBinMm2UserAlreadyLog() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getString('passphrase') != null &&
       prefs.getString('passphrase') != "") {
-    mm2.runBin();
+    await mm2.runBin();
   }
 }
 

@@ -73,7 +73,7 @@ class AuthenticateBloc extends BlocBase {
       coins = await mm2.loadJsonCoinsDefault();
       await coinsBloc.writeJsonCoin(coins);
     }
-    mm2.runBin();
+    await mm2.runBin();
     _inIsLogin.add(true);
   }
 

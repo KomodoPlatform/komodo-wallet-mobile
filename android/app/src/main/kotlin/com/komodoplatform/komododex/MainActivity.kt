@@ -5,10 +5,10 @@ import android.os.Bundle
 
 import io.flutter.app.FlutterActivity
 import io.flutter.plugins.GeneratedPluginRegistrant
-import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+
 
 
 class MainActivity: FlutterActivity() {
@@ -27,6 +27,7 @@ class MainActivity: FlutterActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
       }
     })
+
   }
 
   @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

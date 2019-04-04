@@ -63,6 +63,7 @@ class MarketMakerService {
     if (checkmm2.stdout.toString().trim() !=
         "${filesPath}mm2") {
       ByteData resultmm2 = await rootBundle.load("assets/mm2");
+      
       await writeData(resultmm2.buffer.asUint8List());
       await Process.run('chmod',
           ['777', '/data/data/com.komodoplatform.atomicdex/files/mm2']);
