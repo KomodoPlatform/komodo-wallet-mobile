@@ -272,6 +272,7 @@ class ListCoinsState extends State<ListCoins> {
 
   @override
   void initState() {
+    coinsBloc.updateBalanceForEachCoin(false);
     super.initState();
   }
 
@@ -284,13 +285,11 @@ class ListCoinsState extends State<ListCoins> {
         if (snapshot.hasData && snapshot.data.length > 0) {
           List<dynamic> datas = new List<dynamic>();
           datas.addAll(snapshot.data);
-
           datas.add(true);
-
           return RefreshIndicator(
               backgroundColor: Theme.of(context).backgroundColor,
               key: _refreshIndicatorKey,
-              onRefresh: _refresh,
+              onRefresh: () => _refresh(true),
               child: ListView(
                 children: datas
                     .map((data) =>
@@ -304,8 +303,8 @@ class ListCoinsState extends State<ListCoins> {
     );
   }
 
-  Future<Null> _refresh() async {
-    return await coinsBloc.updateBalanceForEachCoin(true);
+  Future<Null> _refresh(bool isForcedRefresh) async {
+    return await coinsBloc.updateBalanceForEachCoin(isForcedRefresh);
   }
 }
 

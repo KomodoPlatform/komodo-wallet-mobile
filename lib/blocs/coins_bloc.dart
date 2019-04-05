@@ -98,7 +98,8 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> updateBalanceForEachCoin(bool forceUpdate) async {
-    if (mm2.mm2Ready) await mm2.loadCoin(forceUpdate);
+    if (mm2.mm2Ready) 
+      await mm2.loadCoin(forceUpdate);
   }
 
   Future<void> addCoin(Coin coin) async {
@@ -137,9 +138,6 @@ class CoinsBloc implements BlocBase {
       String contents = await file.readAsString();
       return listCoinFromJson(contents);
     } catch (e) {
-      // If encountering an error, return 0
-      print("ERROR FILE");
-      print(e);
       return new List<Coin>();
     }
   }

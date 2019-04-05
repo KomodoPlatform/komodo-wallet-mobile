@@ -67,12 +67,6 @@ class AuthenticateBloc extends BlocBase {
     await prefs.setString("passphrase", passphrase);
     await prefs.setBool('switch_pin', true);
     await prefs.setBool("isPinIsSet", false);
-
-    List<Coin> coins = await coinsBloc.readJsonCoin();
-    if (coins.isEmpty) {
-      coins = await mm2.loadJsonCoinsDefault();
-      await coinsBloc.writeJsonCoin(coins);
-    }
     await mm2.runBin();
     _inIsLogin.add(true);
   }
