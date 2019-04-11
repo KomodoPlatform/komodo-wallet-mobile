@@ -41,7 +41,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     String text = _controllerAmount.text;
     print(text);
     if (text.isNotEmpty) {
-      print("-----------REMOVE--------");
       setState(() {
         if (coinBalance != null && double.parse(text) >
             coinBalance.balance.balance) {
@@ -64,7 +63,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       _controllerAmount.text =
           ((coinBalance.balance.balance - (coinBalance.balance.balance * 0.01)) -
                   fee)
-              .toString();
+              .toStringAsFixed(8);
     });
     await Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {

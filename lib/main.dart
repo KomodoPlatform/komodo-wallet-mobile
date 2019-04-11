@@ -160,7 +160,6 @@ class _MyAppState extends State<MyApp> {
     
     bool didAuthenticate =
     await localAuth.authenticateWithBiometrics(
-      
         localizedReason: 'Please authenticate to show account balance');
     if (didAuthenticate) {
       authBloc.showPin(false);

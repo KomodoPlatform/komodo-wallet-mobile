@@ -42,12 +42,14 @@ class _CoinDetailState extends State<CoinDetail> {
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
+  FocusNode _focus = new FocusNode();
 
   @override
   void initState() {
     currentIndex = 0;
     coinsBloc.resetTransactions();
     coinsBloc.updateTransactions(widget.coinBalance);
+    _amountController.addListener(onChange);
     super.initState();
   }
 
@@ -58,6 +60,40 @@ class _CoinDetailState extends State<CoinDetail> {
     _addressController.dispose();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void onChange() {
+    String text = _amountController.text;
+    if (text.isNotEmpty) {
+      setState(() {
+        if (widget.coinBalance != null &&
+            double.parse(text) > widget.coinBalance.balance.balance) {
+          setMaxValue();
+        }
+      });
+    }
+  }
+
+  void setMaxValue() async {
+    _focus.unfocus();
+    setState(() {
+      var txFee = widget.coinBalance.coin.txfee;
+      var fee;
+      if (txFee == null) {
+        fee = 0;
+      } else {
+        fee = (txFee.toDouble() / 100000000);
+      }
+      _amountController.text = ((widget.coinBalance.balance.balance -
+                  (widget.coinBalance.balance.balance * 0.01)) -
+              fee)
+          .toStringAsFixed(8);
+    });
+    await Future.delayed(const Duration(milliseconds: 0), () {
+      setState(() {
+        FocusScope.of(context).requestFocus(_focus);
+      });
+    });
   }
 
   @override
@@ -121,7 +157,6 @@ class _CoinDetailState extends State<CoinDetail> {
                             ));
                           }
                           if (snapshot.hasData && snapshot.data.length > 0) {
-                            print(snapshot.data.length);
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 8),
@@ -147,131 +182,130 @@ class _CoinDetailState extends State<CoinDetail> {
 
   _buildTransactions(BuildContext context, List<Transaction> transactionsData) {
     return Column(
-      children: transactionsData.map((transaction) => _buildItemTransaction(transaction))
-                    .toList(),
+      children: transactionsData
+          .map((transaction) => _buildItemTransaction(transaction))
+          .toList(),
     );
   }
 
-  Widget _buildItemTransaction(Transaction transaction){
+  Widget _buildItemTransaction(Transaction transaction) {
     TextStyle subtitle = Theme.of(context)
         .textTheme
         .subtitle
         .copyWith(fontWeight: FontWeight.bold);
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: Card(
-            color: Theme.of(context).primaryColor,
-            elevation: 8.0,
-            child: InkWell(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-              onTap: () {
-                Scaffold.of(context).showSnackBar(new SnackBar(
-                  duration: Duration(milliseconds: 1000),
-                  content: new Text(AppLocalizations.of(context).commingsoon),
-                ));
-              },
-              child: Container(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 16, left: 16, right: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Builder(
-                          builder: (context) {
-                            return transaction.isIn
-                                ? Text(
-                                    "+ ",
-                                    style: subtitle,
-                                  )
-                                : Text(
-                                    "- ",
-                                    style: subtitle,
-                                  );
-                          },
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Card(
+          color: Theme.of(context).primaryColor,
+          elevation: 8.0,
+          child: InkWell(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            onTap: () {
+              Scaffold.of(context).showSnackBar(new SnackBar(
+                duration: Duration(milliseconds: 1000),
+                content: new Text(AppLocalizations.of(context).commingsoon),
+              ));
+            },
+            child: Container(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Builder(
+                        builder: (context) {
+                          return transaction.isIn
+                              ? Text(
+                                  "+ ",
+                                  style: subtitle,
+                                )
+                              : Text(
+                                  "- ",
+                                  style: subtitle,
+                                );
+                        },
+                      ),
+                      Text(
+                        transaction.value.toString(),
+                        style: subtitle,
+                      ),
+                      Text(
+                        ' ${widget.coinBalance.coin.abbr}',
+                        style: subtitle,
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          width: 8,
                         ),
-                        Text(
-                          transaction.value.toString(),
-                          style: subtitle,
-                        ),
-                        Text(
-                          ' ${widget.coinBalance.coin.abbr}',
-                          style: subtitle,
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            width: 8,
-                          ),
-                        ),
-                        Builder(
-                          builder: (context) {
-                            return transaction.isConfirm
-                                ? Container(
-                                    height: 12,
-                                    width: 12,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(16)),
-                                        color: Colors.green),
-                                  )
-                                : Container(
-                                    height: 12,
-                                    width: 12,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(16)),
-                                        color: Colors.red),
-                                  );
-                          },
-                        ),
-                      ],
-                    ),
+                      ),
+                      Builder(
+                        builder: (context) {
+                          return transaction.isConfirm
+                              ? Container(
+                                  height: 12,
+                                  width: 12,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(16)),
+                                      color: Colors.green),
+                                )
+                              : Container(
+                                  height: 12,
+                                  width: 12,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(16)),
+                                      color: Colors.red),
+                                );
+                        },
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16, right: 16, bottom: 16, top: 8),
-                    child: AutoSizeText(
-                      "TXID: " +
-                          transaction.txid.substring(1, 5) +
-                          "..." +
-                          transaction.txid.substring(
-                              transaction.txid.length - 5,
-                              transaction.txid.length),
-                      maxLines: 1,
-                      style: Theme.of(context).textTheme.body2,
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16, right: 16, bottom: 16, top: 8),
+                  child: AutoSizeText(
+                    "TXID: " +
+                        transaction.txid.substring(1, 5) +
+                        "..." +
+                        transaction.txid.substring(transaction.txid.length - 5,
+                            transaction.txid.length),
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.body2,
                   ),
-                  Container(
-                    color: Theme.of(context).backgroundColor,
-                    height: 1,
-                    width: double.infinity,
+                ),
+                Container(
+                  color: Theme.of(context).backgroundColor,
+                  height: 1,
+                  width: double.infinity,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        transaction.getTimeFormat(),
+                        style: Theme.of(context).textTheme.body2,
+                      ),
+                      Icon(
+                        Icons.more_horiz,
+                        color: Theme.of(context).accentColor,
+                        size: 32,
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          transaction.getTimeFormat(),
-                          style: Theme.of(context).textTheme.body2,
-                        ),
-                        Icon(
-                          Icons.more_horiz,
-                          color: Theme.of(context).accentColor,
-                          size: 32,
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              )),
+                )
+              ],
             )),
-      );
+          )),
+    );
   }
 
   _buildHeaderCoinDetail(BuildContext context) {
@@ -321,7 +355,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _buildButtonLight(StatusButton statusButton, BuildContext context) {
-    if (currentIndex == 2) {
+    if (currentIndex == 3) {
       _closeAfterAWait();
     }
     return Expanded(
@@ -332,7 +366,7 @@ class _CoinDetailState extends State<CoinDetail> {
             if (statusButton == StatusButton.RECEIVE)
               _showDialogAddress(context);
             if (statusButton == StatusButton.SEND) {
-              if (currentIndex == 2) {
+              if (currentIndex == 3) {
                 setState(() {
                   isExpanded = false;
                   _waitForInit();
@@ -475,7 +509,6 @@ class _CoinDetailState extends State<CoinDetail> {
               onPressed: () {
                 // Validate will return true if the form is valid, or false if
                 // the form is invalid.
-                print(_formKey.currentState);
                 if (_formKey.currentState.validate()) {
                   setState(() {
                     isExpanded = false;
@@ -647,7 +680,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 ),
               ),
             ],
-          ),
+          )
         ],
       ),
     );
@@ -658,20 +691,28 @@ class _CoinDetailState extends State<CoinDetail> {
         double.parse(widget.coinBalance.coin.getTxFeeSatoshi());
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
 
+    listSteps.add(Container(
+                      height: 100,
+                      width: double.infinity,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      )));
+    setState(() {
+      currentIndex = 2;
+    });
     mm2
         .postWithdraw(widget.coinBalance.coin,
             _addressController.text.toString(), amountMinusFee)
         .then((data) {
-      setState(() {
-        _onWithdrawPost = true;
-      });
       if (data is WithdrawResponse) {
         mm2
             .postRawTransaction(widget.coinBalance.coin, data.txHex)
             .then((dataRawTx) {
           if (dataRawTx is SendRawTransactionResponse) {
             setState(() {
-              coinsBloc.clearTransactions();
+              _onWithdrawPost = false;
               coinsBloc.updateTransactions(widget.coinBalance);
               listSteps.add(Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -705,17 +746,14 @@ class _CoinDetailState extends State<CoinDetail> {
                   ),
                 ),
               ));
-              currentIndex = 2;
+              currentIndex = 3;
             });
           }
-          setState(() {
-            _onWithdrawPost = false;
-          });
         });
       } else {
-        setState(() {
-          _onWithdrawPost = false;
-        });
+        // setState(() {
+        //   _onWithdrawPost = false;
+        // });
         Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text(AppLocalizations.of(context).errorTryLater),
         ));
@@ -742,7 +780,6 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _copyToClipBoard(BuildContext context, String str) {
-    print(str);
     Scaffold.of(context).showSnackBar(new SnackBar(
       duration: Duration(milliseconds: 300),
       content: new Text("Copied to the clipboard"),
@@ -785,24 +822,43 @@ class _CoinDetailState extends State<CoinDetail> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              AppLocalizations.of(context).withdraw,
-              style: Theme.of(context).textTheme.title,
-            ),
             SizedBox(height: 16),
             Row(
               children: <Widget>[
+                Container(
+                  height: 60,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0)),
+                    child: Text(
+                      "MAX",
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(color: Theme.of(context).accentColor),
+                    ),
+                    onPressed: () {
+                      setMaxValue();
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
                 Expanded(
                   child: TextFormField(
                     inputFormatters: [
-                      DecimalTextInputFormatter(decimalRange: 8)
+                      WhitelistingTextInputFormatter(RegExp(
+                          "^\$|^(0|([1-9][0-9]{0,3}))(\\.[0-9]{0,8})?\$"))
                     ],
+                    focusNode: _focus,
                     controller: _amountController,
                     autofocus: false,
                     textInputAction: TextInputAction.done,
                     keyboardType:
                         TextInputType.numberWithOptions(decimal: true),
                     style: Theme.of(context).textTheme.body1,
+                    textAlign: TextAlign.end,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder(
@@ -830,31 +886,26 @@ class _CoinDetailState extends State<CoinDetail> {
                     },
                   ),
                 ),
-                Container(
-                  height: 60,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        _amountController.text =
-                            widget.coinBalance.balance.balance.toString();
-                      });
-                    },
-                    child: FlatButton(
-                      child: Text(
-                        "MAX",
-                        style: Theme.of(context)
-                            .textTheme
-                            .body1
-                            .copyWith(color: Theme.of(context).accentColor),
-                      ),
-                    ),
-                  ),
-                )
               ],
             ),
             SizedBox(height: 16),
             Row(
               children: <Widget>[
+                Container(
+                  height: 60,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0)),
+                    onPressed: scan,
+                    child: Icon(
+                      Icons.add_a_photo,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
                 Expanded(
                   child: TextFormField(
                     controller: _addressController,
@@ -862,6 +913,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.text,
                     style: Theme.of(context).textTheme.body1,
+                    textAlign: TextAlign.end,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder(
@@ -886,16 +938,6 @@ class _CoinDetailState extends State<CoinDetail> {
                             .errorNotAValidAddress;
                       }
                     },
-                  ),
-                ),
-                InkWell(
-                  onTap: scan,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Icon(
-                      Icons.add_a_photo,
-                      color: Colors.white,
-                    ),
                   ),
                 ),
               ],
