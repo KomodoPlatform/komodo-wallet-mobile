@@ -1,7 +1,6 @@
 [
   {
     "name": "komodo",
-    "isActive": false,
     "address": "electrum1.cipig.net",
     "port": 10001,
     "proto": "tcp",
@@ -15,7 +14,6 @@
   },
   {
     "name": "bitcoin",
-    "isActive": false,
     "address": "e-x.not.fyi",
     "port": 50001,
     "proto": "tcp",
@@ -34,7 +32,6 @@
   },
   {
     "name": "Ethereum",
-    "isActive": false,
     "address": "195.201.0.6",
     "port": 8555,
     "proto": "tcp",
@@ -49,7 +46,6 @@
   },
   {
     "name": "Rick",
-    "isActive": false,
     "address": "116.203.111.225",
     "port": 10004,
     "proto": "tcp",
@@ -64,7 +60,6 @@
   },
   {
     "name": "Morty",
-    "isActive": false,
     "address": "116.203.120.175",
     "port": 10005,
     "proto": "tcp",
