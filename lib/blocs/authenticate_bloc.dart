@@ -65,7 +65,11 @@ class AuthenticateBloc extends BlocBase {
       await prefs.remove("pin");
     }
     await prefs.setString("passphrase", passphrase);
-    await prefs.setBool('switch_pin', true);
+    if (prefs.getBool('switch_pin') != null) {
+      await prefs.setBool('switch_pin', prefs.getBool('switch_pin'));
+    } else {
+      await prefs.setBool('switch_pin', true);
+    }
     await prefs.setBool("isPinIsSet", false);
     await mm2.runBin();
     _inIsLogin.add(true);

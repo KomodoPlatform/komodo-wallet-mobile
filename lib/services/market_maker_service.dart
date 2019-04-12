@@ -104,10 +104,7 @@ class MarketMakerService {
     List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
     List<Coin> coins = await coinsBloc.readJsonCoin();
     for (var coin in coins) {
-      if (!coin.isActive) {
-        coin.isActive = true;
-        futureActiveCoins.add(this.activeCoin(coin));
-      }
+      futureActiveCoins.add(this.activeCoin(coin));
     }
     await coinsBloc.writeJsonCoin(coins);
 
@@ -161,7 +158,6 @@ class MarketMakerService {
   }
 
   Future<dynamic> getSwapStatus(String uuid) async {
-    print(uuid);
     GetSwap getSwap = new GetSwap(
         userpass: userpass,
         method: 'my_swap_status',

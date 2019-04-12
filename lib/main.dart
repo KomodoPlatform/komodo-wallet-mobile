@@ -33,7 +33,6 @@ Future<void> _checkPassphrase() async {
 
   if (prefs.getString("passphrase") != null &&
       prefs.getString("passphrase") != "") {
-    prefs.setBool("switch_pin", true);
     authBloc.login(prefs.getString("passphrase"));
   }
 }
