@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:io' show File, Platform, Process, ProcessResult;
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -25,6 +26,7 @@ import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final mm2 = MarketMakerService();
@@ -169,6 +171,7 @@ class MarketMakerService {
       return errorFromJson(response.body);
     }
   }
+  
 
   Future<Orderbook> getOrderbook(Coin coinBase, Coin coinRel) async {
     GetOrderbook getOrderbook = new GetOrderbook(
@@ -289,7 +292,6 @@ class MarketMakerService {
   Future<dynamic> activeCoin(Coin coin) async {
     GetActiveCoin getActiveCoin;
     if (coin.swap_contract_address != null) {
-      print("Ethereum");
       getActiveCoin = new GetActiveCoin(
           userpass: userpass,
           method: "enable",
@@ -297,7 +299,6 @@ class MarketMakerService {
           swap_contract_address: coin.swap_contract_address,
           urls: coin.serverList);
     } else {
-      print("non-ETH");
       getActiveCoin = new GetActiveCoin(
           userpass: userpass,
           method: "electrum",
@@ -307,7 +308,7 @@ class MarketMakerService {
 
     print(json.encode(getActiveCoin));
     final response = await http.post(url, body: json.encode(getActiveCoin));
-    print(response.body.toString());
+    // print(response.body.toString());
     try {
       return activeCoinFromJson(response.body);
     } catch (e) {

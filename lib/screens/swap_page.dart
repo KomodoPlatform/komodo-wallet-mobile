@@ -9,6 +9,8 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
+import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/screens/swap_detail_page.dart';
 import 'package:komodo_dex/screens/swap_history.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 
@@ -42,15 +44,15 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     print(text);
     if (text.isNotEmpty) {
       setState(() {
-        if (coinBalance != null && double.parse(text) >
-            coinBalance.balance.balance) {
+        if (coinBalance != null &&
+            double.parse(text) > coinBalance.balance.balance) {
           setMaxValue();
         }
       });
     }
   }
 
-  void setMaxValue() async{
+  void setMaxValue() async {
     _focus.unfocus();
     setState(() {
       var txFee = coinBalance.coin.txfee;
@@ -60,10 +62,10 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       } else {
         fee = (txFee.toDouble() / 100000000);
       }
-      _controllerAmount.text =
-          ((coinBalance.balance.balance - (coinBalance.balance.balance * 0.01)) -
-                  fee)
-              .toStringAsFixed(8);
+      _controllerAmount.text = ((coinBalance.balance.balance -
+                  (coinBalance.balance.balance * 0.01)) -
+              fee)
+          .toStringAsFixed(8);
     });
     await Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {
@@ -179,7 +181,10 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                 Expanded(
                                   child: TextFormField(
                                     focusNode: _focus,
-                                    inputFormatters: [WhitelistingTextInputFormatter(RegExp("^\$|^(0|([1-9][0-9]{0,3}))(\\.[0-9]{0,8})?\$"))],
+                                    inputFormatters: [
+                                      WhitelistingTextInputFormatter(RegExp(
+                                          "^\$|^(0|([1-9][0-9]{0,3}))(\\.[0-9]{0,8})?\$"))
+                                    ],
                                     controller: _controllerAmount,
                                     style: Theme.of(context)
                                         .textTheme
@@ -614,9 +619,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             double.parse(_controllerAmount.text),
             swapBloc.orderCoin.bestPrice * 1.01)
         .then((onValue) {
-      setState(() {
-        isSwapProgress = false;
-      });
       if (onValue is BuyResponse && onValue.result == "success") {
         swapHistoryBloc.saveUUID(
             onValue.pending.uuid,
@@ -625,10 +627,22 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             double.parse(_controllerAmount.text),
             double.parse(swapBloc.orderCoin
                 .getBuyAmount(double.parse(_controllerAmount.text))));
-
-        Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text(AppLocalizations.of(context).buySuccessWaiting),
-        ));
+        swapHistoryBloc.updateSwap().then((data) {
+          setState(() {
+            isSwapProgress = false;
+          });
+          swapHistoryBloc.swaps.forEach((swap) {
+            if (swap.uuid.uuid == onValue.pending.uuid) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SwapDetailPage(
+                          swap: swap,
+                        )),
+              );
+            }
+          });
+        });
       } else {
         String timeSecondeLeft = onValue.error;
         print(timeSecondeLeft);

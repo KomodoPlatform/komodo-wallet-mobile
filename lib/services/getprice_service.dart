@@ -26,7 +26,6 @@ class GetPriceService {
       final response = await http.get(fiatUrl);
       Map decoded = jsonDecode(response.body);
       price = double.parse(decoded['data']['amount']);
-      print("COIN URL: " + coinUrl);
       final response2 = await http.get(coinUrl);
       Map decoded2 = jsonDecode(response2.body);
       price *= decoded2['result']['Last'];

@@ -7,6 +7,7 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/screens/swap_detail_page.dart';
 
 class SwapHistory extends StatefulWidget {
   @override
@@ -48,9 +49,9 @@ class _SwapHistoryState extends State<SwapHistory> {
                 itemCount: swaps.length,
                 itemBuilder: (BuildContext context, int index) {
                   Swap swap = swaps[index];
-                  String swapStatus = getSwapStatusString(swap.status);
-                  Color colorStatus = getColorStatus(swap.status);
-                  String stepStatus = getStepStatus(swap.status);
+                  String swapStatus = swapHistoryBloc.getSwapStatusString(context, swap.status);
+                  Color colorStatus = swapHistoryBloc.getColorStatus(swap.status);
+                  String stepStatus = swapHistoryBloc.getStepStatus(swap.status);
                   String amountToBuy = getAmountToBuy(swap);
 
                   return Card(
@@ -60,11 +61,11 @@ class _SwapHistoryState extends State<SwapHistory> {
                       child: InkWell(
                         borderRadius: BorderRadius.all(Radius.circular(4)),
                         onTap: () {
-                          Scaffold.of(context).showSnackBar(new SnackBar(
-                            duration: Duration(milliseconds: 1000),
-                            content: new Text(AppLocalizations.of(context)
-                                .commingsoonGeneral),
-                          ));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SwapDetailPage(swap: swap,)),
+                          );
                         },
                         child: Column(
                           children: <Widget>[
@@ -208,72 +209,6 @@ class _SwapHistoryState extends State<SwapHistory> {
       '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} ${coin.abbr}',
       style: Theme.of(context).textTheme.body1,
     );
-  }
-
-  String getSwapStatusString(Status status) {
-    switch (status) {
-      case Status.ORDER_MATCHING:
-        return AppLocalizations.of(context).orderMatching;
-        break;
-      case Status.ORDER_MATCHED:
-        return AppLocalizations.of(context).orderMatched;
-        break;
-      case Status.SWAP_ONGOING:
-        return AppLocalizations.of(context).swapOngoing;
-        break;
-      case Status.SWAP_SUCCESSFUL:
-        return AppLocalizations.of(context).swapSucceful;
-        break;
-      case Status.TIME_OUT:
-        return AppLocalizations.of(context).timeOut;
-        break;
-      default:
-    }
-    return "";
-  }
-
-  Color getColorStatus(Status status) {
-    switch (status) {
-      case Status.ORDER_MATCHING:
-        return Colors.grey;
-        break;
-      case Status.ORDER_MATCHED:
-        return Colors.yellowAccent.shade700.withOpacity(0.7);
-        break;
-      case Status.SWAP_ONGOING:
-        return Colors.orangeAccent;
-        break;
-      case Status.SWAP_SUCCESSFUL:
-        return Colors.green.shade500;
-        break;
-      case Status.TIME_OUT:
-        return Colors.redAccent;
-        break;
-      default:
-    }
-    return Colors.redAccent;
-  }
-
-  String getStepStatus(Status status) {
-    switch (status) {
-      case Status.ORDER_MATCHING:
-        return "0/3";
-        break;
-      case Status.ORDER_MATCHED:
-        return "1/3";
-        break;
-      case Status.SWAP_ONGOING:
-        return "2/3";
-        break;
-      case Status.SWAP_SUCCESSFUL:
-        return "✓";
-        break;
-      case Status.TIME_OUT:
-        return "";
-        break;
-      default:
-    }
-    return "";
   }
 
   String getAmountToBuy(Swap swap) => swap.uuid.amountToBuy.toString();

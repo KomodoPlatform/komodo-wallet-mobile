@@ -40,8 +40,9 @@
     "swap_contract_address":"0xE41d2489571d322189246DaFA5ebDe1F4699F498",
     "colorCoin": "0xFF828384",
     "serverList": [
-      "http://195.201.0.6:8555",
-      "http://173.249.5.31:8555"
+      "http://electrum1.cipig.net:8555",
+      "http://electrum2.cipig.net:8555",
+      "http://electrum3.cipig.net:8555"
     ]
   },
   {
