@@ -278,7 +278,7 @@ class _ProgressSwapState extends State<ProgressSwap>
             ),
           ),
           Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.08,
+              bottom: MediaQuery.of(context).size.height * 0.06,
               child: Text(
                 swapHistoryBloc.getSwapStatusString(
                     context, widget.swap.status),
