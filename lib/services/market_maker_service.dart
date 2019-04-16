@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/buy_response.dart';
@@ -53,6 +54,7 @@ class MarketMakerService {
   }
 
   Future<void> runBin() async {
+    mm2Ready = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String passphrase = prefs.getString('passphrase');
 
@@ -90,14 +92,22 @@ class MarketMakerService {
     mm2Process.stdout.listen((onData) {
       sink.write(utf8.decoder.convert(onData));
       print("mm2: " + utf8.decoder.convert(onData).trim());
-      if (utf8.decoder
+      String logMm2 = utf8.decoder
           .convert(onData)
-          .trim()
+          .trim();
+      if (logMm2
           .contains("DEX stats API enabled at")) {
         print("DEX stats API enabled at");
         loadCoin(true);
         coinsBloc.startCheckBalance();
         mm2Ready = true;
+      }
+
+      if (logMm2.contains("Received 'negotiation") || 
+      logMm2.contains("Got maker payment") ||
+      logMm2.contains("Sending 'taker-fee") ||
+      logMm2.contains("Finished")) {
+        swapHistoryBloc.updateSwap();
       }
     });
   }
@@ -106,8 +116,10 @@ class MarketMakerService {
     List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
     List<Coin> coins = await coinsBloc.readJsonCoin();
     for (var coin in coins) {
-      futureActiveCoins.add(this.activeCoin(coin));
+      if (mm2Ready)
+        futureActiveCoins.add(this.activeCoin(coin));
     }
+    mm2Ready = false;
     await coinsBloc.writeJsonCoin(coins);
 
     await Future.wait(futureActiveCoins);
