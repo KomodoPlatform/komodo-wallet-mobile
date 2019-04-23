@@ -9,6 +9,7 @@ import 'package:komodo_dex/blocs/orderbook_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authenticate_page.dart';
 import 'package:komodo_dex/screens/bloc_coins_page.dart';
+import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/screens/setting_page.dart';
 import 'package:komodo_dex/screens/swap_page.dart';
@@ -114,24 +115,7 @@ class _MyAppState extends State<MyApp> {
                                   outShowPin.data &&
                                   switchPinData.hasData &&
                                   switchPinData.data) {
-                                return Stack(
-                                  children: <Widget>[
-                                    FutureBuilder(
-                                      future: _checkBiometrics(),
-                                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                        if (snapshot.hasData && snapshot.data) {
-                                          print(snapshot.data);
-                                          _authenticateBiometrics();
-                                        }
-                                        return Container();
-                                    },
-                                    ),
-                                    PinPage(
-                                        title: 'Lock Screen',
-                                        subTitle: 'Enter your PIN code',
-                                        isConfirmPin: PinStatus.NORMAL_PIN),
-                                  ],
-                                );
+                                return LockScreen(pinStatus: PinStatus.NORMAL_PIN,);
                               } else {
                                 return InitBlocs(child: MyHomePage());
                               }
@@ -152,29 +136,6 @@ class _MyAppState extends State<MyApp> {
             );
           },
         ));
-  }
-
-  Future<bool> _authenticateBiometrics() async{
-    var localAuth = LocalAuthentication();
-    
-    bool didAuthenticate =
-    await localAuth.authenticateWithBiometrics(
-        localizedReason: 'Please authenticate to show account balance');
-    if (didAuthenticate) {
-      authBloc.showPin(false);
-    }
-    return didAuthenticate;
-  }
-
-  Future<bool> _checkBiometrics() async {
-    bool canCheckBiometrics = false;
-    try {
-      canCheckBiometrics = await auth.canCheckBiometrics;
-      print(canCheckBiometrics);
-    } on PlatformException catch (e) {
-      print(e);
-    }
-    return canCheckBiometrics;
   }
 }
 

@@ -135,7 +135,8 @@ class _PinPageState extends State<PinPage> {
               child: InkWell(
                 onTap: () {
                   authBloc.logout();
-                  if (widget.isConfirmPin == PinStatus.CONFIRM_PIN) {
+                  authBloc.showPin(false);
+                  if (widget.isConfirmPin != PinStatus.CREATE_PIN && widget.isConfirmPin != PinStatus.NORMAL_PIN) {
                     Navigator.pop(context);
                   }
                 },

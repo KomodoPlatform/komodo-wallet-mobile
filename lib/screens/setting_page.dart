@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
@@ -78,16 +79,7 @@ class _SettingPageState extends State<SettingPage> {
                               setState(() {
                                 if (snapshot.data) {
                                   Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) =>
-                                          PinPage(
-                                            title: AppLocalizations
-                                                .of(context)
-                                                .lockScreen,
-                                            subTitle: AppLocalizations
-                                                .of(context)
-                                                .enterPinCode,
-                                            isConfirmPin: PinStatus
-                                                .DISABLED_PIN,)));
+                                      builder: (context) => LockScreen(pinStatus: PinStatus.DISABLED_PIN,)));
                                 } else {
                                   SharedPreferences.getInstance().then((data) {
                                     data.setBool("switch_pin", dataSwitch);
