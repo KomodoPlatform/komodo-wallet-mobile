@@ -16,6 +16,7 @@ import 'package:komodo_dex/model/transaction.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share/share.dart';
@@ -692,13 +693,13 @@ class _CoinDetailState extends State<CoinDetail> {
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
 
     listSteps.add(Container(
-                      height: 100,
-                      width: double.infinity,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      )));
+        height: 100,
+        width: double.infinity,
+        child: Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+          ),
+        )));
     setState(() {
       currentIndex = 2;
     });
@@ -930,12 +931,20 @@ class _CoinDetailState extends State<CoinDetail> {
                       if (value.isEmpty) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
                       }
-                      try {
-                        Uint8List decoded = bs58check.decode(value);
-                        print(bs58check.encode(decoded));
-                      } catch (e) {
-                        return AppLocalizations.of(context)
-                            .errorNotAValidAddress;
+                      if (widget.coinBalance.coin.abbr == "ETH") {
+                        if (!isAddress(value)) {
+                          return AppLocalizations.of(context)
+                              .errorNotAValidAddress;
+                        }
+                      } else {
+                        try {
+                          Uint8List decoded = bs58check.decode(value);
+                          print(bs58check.encode(decoded));
+                        } catch (e) {
+                          print(e);
+                          return AppLocalizations.of(context)
+                              .errorNotAValidAddress;
+                        }
                       }
                     },
                   ),
