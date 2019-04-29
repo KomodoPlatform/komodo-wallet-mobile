@@ -65,7 +65,7 @@ class CoinsBloc implements BlocBase {
     if (fromTxHash == null) {
       this.transactions = transactions;
     }  else {
-      this.transactions.result.fromTxHash = transactions.result.fromTxHash;
+      this.transactions.result.fromId = transactions.result.fromId;
       this.transactions.result.limit = transactions.result.limit;
       this.transactions.result.skipped = transactions.result.skipped;
       this.transactions.result.total = transactions.result.total;

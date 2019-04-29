@@ -25,14 +25,14 @@ class Transactions {
 }
 
 class Result {
-    String fromTxHash;
+    dynamic fromId;
     int limit;
     int skipped;
     int total;
     List<Transaction> transactions;
 
     Result({
-        this.fromTxHash,
+        this.fromId,
         this.limit,
         this.skipped,
         this.total,
@@ -40,7 +40,7 @@ class Result {
     });
 
     factory Result.fromJson(Map<String, dynamic> json) => new Result(
-        fromTxHash: json["from_tx_hash"],
+        fromId: json["from_id"],
         limit: json["limit"],
         skipped: json["skipped"],
         total: json["total"],
@@ -48,7 +48,7 @@ class Result {
     );
 
     Map<String, dynamic> toJson() => {
-        "from_tx_hash": fromTxHash,
+        "from_id": fromId,
         "limit": limit,
         "skipped": skipped,
         "total": total,
@@ -62,9 +62,11 @@ class Transaction {
     int confirmations;
     FeeDetails feeDetails;
     List<String> from;
+    String internalId;
     double myBalanceChange;
     double receivedByMe;
     double spentByMe;
+    int timestamp;
     List<String> to;
     double totalAmount;
     String txHash;
@@ -76,9 +78,11 @@ class Transaction {
         this.confirmations,
         this.feeDetails,
         this.from,
+        this.internalId,
         this.myBalanceChange,
         this.receivedByMe,
         this.spentByMe,
+        this.timestamp,
         this.to,
         this.totalAmount,
         this.txHash,
@@ -91,9 +95,11 @@ class Transaction {
         confirmations: json["confirmations"],
         feeDetails: FeeDetails.fromJson(json["fee_details"]),
         from: new List<String>.from(json["from"].map((x) => x)),
+        internalId: json["internal_id"],
         myBalanceChange: json["my_balance_change"].toDouble(),
         receivedByMe: json["received_by_me"].toDouble(),
         spentByMe: json["spent_by_me"].toDouble(),
+        timestamp: json["timestamp"],
         to: new List<String>.from(json["to"].map((x) => x)),
         totalAmount: json["total_amount"].toDouble(),
         txHash: json["tx_hash"],
@@ -106,15 +112,16 @@ class Transaction {
         "confirmations": confirmations,
         "fee_details": feeDetails.toJson(),
         "from": new List<dynamic>.from(from.map((x) => x)),
+        "internal_id": internalId,
         "my_balance_change": myBalanceChange,
         "received_by_me": receivedByMe,
         "spent_by_me": spentByMe,
+        "timestamp": timestamp,
         "to": new List<dynamic>.from(to.map((x) => x)),
         "total_amount": totalAmount,
         "tx_hash": txHash,
         "tx_hex": txHex,
     };
-
 }
 
 class FeeDetails {

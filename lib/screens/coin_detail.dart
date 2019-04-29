@@ -44,7 +44,7 @@ class _CoinDetailState extends State<CoinDetail> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   FocusNode _focus = new FocusNode();
-  String fromTxHash;
+  String fromId;
   int LIMIT = 10;
   bool isLoading = false;
 
@@ -69,7 +69,7 @@ class _CoinDetailState extends State<CoinDetail> {
           isLoading = true;
         });
         coinsBloc
-            .updateTransactions(widget.coinBalance.coin, LIMIT, fromTxHash)
+            .updateTransactions(widget.coinBalance.coin, LIMIT, fromId)
             .then((onValue) {
           setState(() {
             isLoading = false;
@@ -236,7 +236,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildItemTransaction(Transaction transaction) {
-    this.fromTxHash = transaction.txHash;
+    this.fromId = transaction.internalId;
     TextStyle subtitle = Theme.of(context)
         .textTheme
         .subtitle
