@@ -1,0 +1,134 @@
+// To parse this JSON data, do
+//
+//     final transactions = transactionsFromJson(jsonString);
+
+import 'dart:convert';
+
+Transactions transactionsFromJson(String str) => Transactions.fromJson(json.decode(str));
+
+String transactionsToJson(Transactions data) => json.encode(data.toJson());
+
+class Transactions {
+    Result result;
+
+    Transactions({
+        this.result,
+    });
+
+    factory Transactions.fromJson(Map<String, dynamic> json) => new Transactions(
+        result: Result.fromJson(json["result"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "result": result.toJson(),
+    };
+}
+
+class Result {
+    String fromTxHash;
+    int limit;
+    int skipped;
+    int total;
+    List<Transaction> transactions;
+
+    Result({
+        this.fromTxHash,
+        this.limit,
+        this.skipped,
+        this.total,
+        this.transactions,
+    });
+
+    factory Result.fromJson(Map<String, dynamic> json) => new Result(
+        fromTxHash: json["from_tx_hash"],
+        limit: json["limit"],
+        skipped: json["skipped"],
+        total: json["total"],
+        transactions: new List<Transaction>.from(json["transactions"].map((x) => Transaction.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "from_tx_hash": fromTxHash,
+        "limit": limit,
+        "skipped": skipped,
+        "total": total,
+        "transactions": new List<dynamic>.from(transactions.map((x) => x.toJson())),
+    };
+}
+
+class Transaction {
+    int blockHeight;
+    String coin;
+    int confirmations;
+    FeeDetails feeDetails;
+    List<String> from;
+    double myBalanceChange;
+    double receivedByMe;
+    double spentByMe;
+    List<String> to;
+    double totalAmount;
+    String txHash;
+    String txHex;
+
+    Transaction({
+        this.blockHeight,
+        this.coin,
+        this.confirmations,
+        this.feeDetails,
+        this.from,
+        this.myBalanceChange,
+        this.receivedByMe,
+        this.spentByMe,
+        this.to,
+        this.totalAmount,
+        this.txHash,
+        this.txHex,
+    });
+
+    factory Transaction.fromJson(Map<String, dynamic> json) => new Transaction(
+        blockHeight: json["block_height"],
+        coin: json["coin"],
+        confirmations: json["confirmations"],
+        feeDetails: FeeDetails.fromJson(json["fee_details"]),
+        from: new List<String>.from(json["from"].map((x) => x)),
+        myBalanceChange: json["my_balance_change"].toDouble(),
+        receivedByMe: json["received_by_me"].toDouble(),
+        spentByMe: json["spent_by_me"].toDouble(),
+        to: new List<String>.from(json["to"].map((x) => x)),
+        totalAmount: json["total_amount"].toDouble(),
+        txHash: json["tx_hash"],
+        txHex: json["tx_hex"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "block_height": blockHeight,
+        "coin": coin,
+        "confirmations": confirmations,
+        "fee_details": feeDetails.toJson(),
+        "from": new List<dynamic>.from(from.map((x) => x)),
+        "my_balance_change": myBalanceChange,
+        "received_by_me": receivedByMe,
+        "spent_by_me": spentByMe,
+        "to": new List<dynamic>.from(to.map((x) => x)),
+        "total_amount": totalAmount,
+        "tx_hash": txHash,
+        "tx_hex": txHex,
+    };
+
+}
+
+class FeeDetails {
+    double amount;
+
+    FeeDetails({
+        this.amount,
+    });
+
+    factory FeeDetails.fromJson(Map<String, dynamic> json) => new FeeDetails(
+        amount: json["amount"].toDouble(),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "amount": amount,
+    };
+}

@@ -12,7 +12,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
-import 'package:komodo_dex/model/transaction.dart';
+import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -44,14 +44,39 @@ class _CoinDetailState extends State<CoinDetail> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   FocusNode _focus = new FocusNode();
+  String fromTxHash;
+  int LIMIT = 10;
+  bool isLoading = false;
 
   @override
   void initState() {
     currentIndex = 0;
-    coinsBloc.resetTransactions();
-    coinsBloc.updateTransactions(widget.coinBalance);
+    setState(() {
+      isLoading = true;
+    });
+    coinsBloc.updateTransactions(widget.coinBalance.coin, LIMIT, null).then((onValue){
+      setState(() {
+        isLoading = false;
+      });
+    });
     _amountController.addListener(onChange);
     super.initState();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        setState(() {
+          isLoading = true;
+        });
+        coinsBloc
+            .updateTransactions(widget.coinBalance.coin, LIMIT, fromTxHash)
+            .then((onValue) {
+          setState(() {
+            isLoading = false;
+          });
+        });
+      }
+    });
   }
 
   @override
@@ -138,58 +163,80 @@ class _CoinDetailState extends State<CoinDetail> {
           children: <Widget>[
             _buildForm(),
             _buildHeaderCoinDetail(context),
-            Expanded(
-              child: RefreshIndicator(
-                backgroundColor: Theme.of(context).backgroundColor,
-                color: Theme.of(context).accentColor,
-                key: _refreshIndicatorKey,
-                onRefresh: _refresh,
-                child: ListView(
-                  controller: _scrollController,
-                  children: <Widget>[
-                    StreamBuilder<List<Transaction>>(
-                        stream: coinsBloc.outTransactions,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data.length == 0) {
-                            return Center(
-                                child: Text(
-                              "No Transactions",
-                              style: Theme.of(context).textTheme.body2,
-                            ));
-                          }
-                          if (snapshot.hasData && snapshot.data.length > 0) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 8),
-                              child: _buildTransactions(context, snapshot.data),
-                            );
-                          } else {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                        })
-                  ],
-                ),
-              ),
-            )
+            _buildTransactionsList(context),
           ],
         );
       }),
     );
   }
 
+  _buildTransactionsList(BuildContext context) {
+    return Expanded(
+      child: RefreshIndicator(
+        backgroundColor: Theme.of(context).backgroundColor,
+        color: Theme.of(context).accentColor,
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        child: ListView(
+          controller: _scrollController,
+          children: <Widget>[
+            StreamBuilder<Transactions>(
+                stream: coinsBloc.outTransactions,
+                builder: (context, snapshot) {
+                  Transactions transactions = snapshot.data;
+
+                  if (snapshot.hasData &&
+                      transactions.result.transactions.length == 0) {
+                    return Center(
+                        child: Text(
+                      "No Transactions",
+                      style: Theme.of(context).textTheme.body2,
+                    ));
+                  }
+                  if (snapshot.hasData &&
+                      transactions.result.transactions.length > 0) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      child: _buildTransactions(
+                          context, transactions.result.transactions),
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                })
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<Null> _refresh() async {
-    return await coinsBloc.updateTransactions(widget.coinBalance);
+    return await coinsBloc.updateTransactions(
+        widget.coinBalance.coin, LIMIT, null);
   }
 
   _buildTransactions(BuildContext context, List<Transaction> transactionsData) {
+    List<Widget> transactionsWidget = transactionsData
+        .map((transaction) => _buildItemTransaction(transaction))
+        .toList();
+
+    transactionsWidget.add(Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: new Center(
+        child: new Opacity(
+          opacity: isLoading ? 1.0 : 00,
+          child: new CircularProgressIndicator(),
+        ),
+      ),
+    ));
+
     return Column(
-      children: transactionsData
-          .map((transaction) => _buildItemTransaction(transaction))
-          .toList(),
+      children: transactionsWidget,
     );
   }
 
   Widget _buildItemTransaction(Transaction transaction) {
+    this.fromTxHash = transaction.txHash;
     TextStyle subtitle = Theme.of(context)
         .textTheme
         .subtitle
@@ -219,19 +266,16 @@ class _CoinDetailState extends State<CoinDetail> {
                     children: <Widget>[
                       Builder(
                         builder: (context) {
-                          return transaction.isIn
+                          return transaction.myBalanceChange > 0
                               ? Text(
-                                  "+ ",
+                                  "+",
                                   style: subtitle,
                                 )
-                              : Text(
-                                  "- ",
-                                  style: subtitle,
-                                );
+                              : Container();
                         },
                       ),
                       Text(
-                        transaction.value.toString(),
+                        transaction.myBalanceChange.toString(),
                         style: subtitle,
                       ),
                       Text(
@@ -245,7 +289,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                       Builder(
                         builder: (context) {
-                          return transaction.isConfirm
+                          return transaction.confirmations > 0
                               ? Container(
                                   height: 12,
                                   width: 12,
@@ -272,10 +316,11 @@ class _CoinDetailState extends State<CoinDetail> {
                       left: 16, right: 16, bottom: 16, top: 8),
                   child: AutoSizeText(
                     "TXID: " +
-                        transaction.txid.substring(1, 5) +
+                        transaction.txHash.substring(1, 5) +
                         "..." +
-                        transaction.txid.substring(transaction.txid.length - 5,
-                            transaction.txid.length),
+                        transaction.txHash.substring(
+                            transaction.txHash.length - 5,
+                            transaction.txHash.length),
                     maxLines: 1,
                     style: Theme.of(context).textTheme.body2,
                   ),
@@ -291,9 +336,12 @@ class _CoinDetailState extends State<CoinDetail> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        transaction.getTimeFormat(),
-                        style: Theme.of(context).textTheme.body2,
+                      // Text(
+                      //   transaction.getTimeFormat(),
+                      //   style: Theme.of(context).textTheme.body2,
+                      // ),
+                      Expanded(
+                        child: Container(),
                       ),
                       Icon(
                         Icons.more_horiz,
@@ -714,7 +762,8 @@ class _CoinDetailState extends State<CoinDetail> {
           if (dataRawTx is SendRawTransactionResponse) {
             setState(() {
               _onWithdrawPost = false;
-              coinsBloc.updateTransactions(widget.coinBalance);
+              coinsBloc.updateTransactions(
+                  widget.coinBalance.coin, LIMIT, null);
               listSteps.add(Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(

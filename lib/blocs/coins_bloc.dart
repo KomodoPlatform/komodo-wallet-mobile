@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction.dart';
+import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/gettransaction_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
@@ -23,14 +25,14 @@ class CoinsBloc implements BlocBase {
   Sink<List<CoinBalance>> get _inCoins => _coinsController.sink;
   Stream<List<CoinBalance>> get outCoins => _coinsController.stream;
 
-  List<Transaction> transactions = new List<Transaction>();
+  Transactions transactions = new Transactions();
 
   // Streams to handle the list coin
-  StreamController<List<Transaction>> _transactionsController =
-      StreamController<List<Transaction>>.broadcast();
+  StreamController<Transactions> _transactionsController =
+      StreamController<Transactions>.broadcast();
 
-  Sink<List<Transaction>> get _inTransactions => _transactionsController.sink;
-  Stream<List<Transaction>> get outTransactions =>
+  Sink<Transactions> get _inTransactions => _transactionsController.sink;
+  Stream<Transactions> get outTransactions =>
       _transactionsController.stream;
 
   var timer;
@@ -48,7 +50,7 @@ class CoinsBloc implements BlocBase {
   }
 
   void resetTransactions() {
-    transactions.clear();
+    transactions = new Transactions();
     _inTransactions.add(transactions);
   }
 
@@ -57,21 +59,19 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  Future<void> updateTransactions(CoinBalance coinBalance) async {
-    List<Transaction> transactionsData = await getTransactionObj.getTransactions(
-        coinBalance.coin.abbr, coinBalance.balance.address);
-    transactionsData.sort((b, a) {
-      if (a.date != null) {
-        return a.date.compareTo(b.date);
-      }
-    });
-    this.transactions = transactionsData;
+  Future<void> updateTransactions(Coin coin, int limit, String fromTxHash) async {
+    Transactions transactions = await mm2.getTransactions(coin, limit, fromTxHash);
+    
+    if (fromTxHash == null) {
+      this.transactions = transactions;
+    }  else {
+      this.transactions.result.fromTxHash = transactions.result.fromTxHash;
+      this.transactions.result.limit = transactions.result.limit;
+      this.transactions.result.skipped = transactions.result.skipped;
+      this.transactions.result.total = transactions.result.total;
+      this.transactions.result.transactions.addAll(transactions.result.transactions);
+    }
     _inTransactions.add(this.transactions);
-  }
-
-  void clearTransactions() {
-    transactions.clear();
-    _inTransactions.add(transactions);
   }
 
   Future<void> updateOneCoin(CoinBalance coin) async {

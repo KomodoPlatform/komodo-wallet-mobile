@@ -21,10 +21,12 @@ import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/get_swap.dart';
+import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -92,21 +94,18 @@ class MarketMakerService {
     mm2Process.stdout.listen((onData) {
       sink.write(utf8.decoder.convert(onData));
       print("mm2: " + utf8.decoder.convert(onData).trim());
-      String logMm2 = utf8.decoder
-          .convert(onData)
-          .trim();
-      if (logMm2
-          .contains("DEX stats API enabled at")) {
+      String logMm2 = utf8.decoder.convert(onData).trim();
+      if (logMm2.contains("DEX stats API enabled at")) {
         print("DEX stats API enabled at");
         loadCoin(true);
         coinsBloc.startCheckBalance();
         mm2Ready = true;
       }
 
-      if (logMm2.contains("Received 'negotiation") || 
-      logMm2.contains("Got maker payment") ||
-      logMm2.contains("Sending 'taker-fee") ||
-      logMm2.contains("Finished")) {
+      if (logMm2.contains("Received 'negotiation") ||
+          logMm2.contains("Got maker payment") ||
+          logMm2.contains("Sending 'taker-fee") ||
+          logMm2.contains("Finished")) {
         swapHistoryBloc.updateSwap();
       }
     });
@@ -116,8 +115,7 @@ class MarketMakerService {
     List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
     List<Coin> coins = await coinsBloc.readJsonCoin();
     for (var coin in coins) {
-      if (mm2Ready)
-        futureActiveCoins.add(this.activeCoin(coin));
+      if (mm2Ready) futureActiveCoins.add(this.activeCoin(coin));
     }
     mm2Ready = false;
     await coinsBloc.writeJsonCoin(coins);
@@ -183,7 +181,6 @@ class MarketMakerService {
       return errorFromJson(response.body);
     }
   }
-  
 
   Future<Orderbook> getOrderbook(Coin coinBase, Coin coinRel) async {
     GetOrderbook getOrderbook = new GetOrderbook(
@@ -266,6 +263,21 @@ class MarketMakerService {
     }
   }
 
+  Future<Transactions> getTransactions(
+      Coin coin, int limit, String fromTxHash) async {
+    GetTxHistory getTxHistory = new GetTxHistory(
+        userpass: userpass, 
+        method: "my_tx_history",
+        coin: coin.abbr,
+        limit: limit,
+        fromTxHash: fromTxHash);
+    print(json.encode(getTxHistory));
+    print(url);
+    final response = await http.post(url, body: json.encode(getTxHistory));
+    print("RESULT: " + response.body.toString());
+    return transactionsFromJson(response.body);
+  }
+
   Future<dynamic> postRawTransaction(Coin coin, String txHex) async {
     GetSendRawTransaction getSendRawTransaction = new GetSendRawTransaction(
         userpass: userpass,
@@ -308,6 +320,7 @@ class MarketMakerService {
           userpass: userpass,
           method: "enable",
           coin: coin.abbr,
+          tx_history: true,
           swap_contract_address: coin.swap_contract_address,
           urls: coin.serverList);
     } else {
@@ -315,6 +328,7 @@ class MarketMakerService {
           userpass: userpass,
           method: "electrum",
           coin: coin.abbr,
+          tx_history: true,
           urls: coin.serverList);
     }
 
