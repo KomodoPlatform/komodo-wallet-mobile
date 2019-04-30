@@ -264,13 +264,13 @@ class MarketMakerService {
   }
 
   Future<Transactions> getTransactions(
-      Coin coin, int limit, String fromTxHash) async {
+      Coin coin, int limit, String fromId) async {
     GetTxHistory getTxHistory = new GetTxHistory(
         userpass: userpass, 
         method: "my_tx_history",
         coin: coin.abbr,
         limit: limit,
-        fromTxHash: fromTxHash);
+        fromId: fromId);
     print(json.encode(getTxHistory));
     print(url);
     final response = await http.post(url, body: json.encode(getTxHistory));

@@ -59,10 +59,10 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  Future<void> updateTransactions(Coin coin, int limit, String fromTxHash) async {
-    Transactions transactions = await mm2.getTransactions(coin, limit, fromTxHash);
+  Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
+    Transactions transactions = await mm2.getTransactions(coin, limit, fromId);
     
-    if (fromTxHash == null) {
+    if (fromId == null) {
       this.transactions = transactions;
     }  else {
       this.transactions.result.fromId = transactions.result.fromId;

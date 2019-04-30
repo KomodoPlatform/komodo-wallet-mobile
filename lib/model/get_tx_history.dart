@@ -13,14 +13,14 @@ class GetTxHistory {
     String method;
     String coin;
     int limit;
-    String fromTxHash;
+    String fromId;
 
     GetTxHistory({
         this.userpass,
         this.method,
         this.coin,
         this.limit,
-        this.fromTxHash,
+        this.fromId,
     });
 
     factory GetTxHistory.fromJson(Map<String, dynamic> json) => new GetTxHistory(
@@ -28,7 +28,7 @@ class GetTxHistory {
         method: json["method"],
         coin: json["coin"],
         limit: json["limit"],
-        fromTxHash: json["from_tx_hash"],
+        fromId: json["from_id"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -36,6 +36,6 @@ class GetTxHistory {
         "method": method,
         "coin": coin,
         "limit": limit,
-        "from_tx_hash": fromTxHash,
+        "from_id": fromId,
     };
 }
