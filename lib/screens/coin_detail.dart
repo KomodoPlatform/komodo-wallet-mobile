@@ -462,6 +462,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _showDialogAddress(BuildContext mContext) {
+    print(widget.coinBalance.balance.address);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -801,9 +802,9 @@ class _CoinDetailState extends State<CoinDetail> {
           }
         });
       } else {
-        // setState(() {
-        //   _onWithdrawPost = false;
-        // });
+        setState(() {
+          _onWithdrawPost = false;
+        });
         Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text(AppLocalizations.of(context).errorTryLater),
         ));
