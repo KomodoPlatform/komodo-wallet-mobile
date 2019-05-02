@@ -9,7 +9,12 @@
     "colorCoin": "0xFF326464",
     "serverList": [
       "electrum1.cipig.net:10001",
-      "electrum2.cipig.net:10001'"
+      "electrum2.cipig.net:10001"
+    ],
+    "explorerUrl": [
+      "https://kmdexplorer.io/",
+      "http://kmd.explorer.dexstats.info/",
+      "https://explorer.komodo.services/"
     ]
   },
   {
@@ -28,6 +33,9 @@
       "btc.asis.io:50001",
       "electrum.backplanedns.org:50001",
       "electrum.festivaldelhumor.org:50001"
+    ],
+    "explorerUrl": [
+      "https://insight.bitpay.com/"
     ]
   }
 ]

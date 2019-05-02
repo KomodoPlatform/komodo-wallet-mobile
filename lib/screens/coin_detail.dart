@@ -14,6 +14,8 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
+import 'package:komodo_dex/screens/transaction_detail.dart';
+import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -54,7 +56,9 @@ class _CoinDetailState extends State<CoinDetail> {
     setState(() {
       isLoading = true;
     });
-    coinsBloc.updateTransactions(widget.coinBalance.coin, LIMIT, null).then((onValue){
+    coinsBloc
+        .updateTransactions(widget.coinBalance.coin, LIMIT, null)
+        .then((onValue) {
       setState(() {
         isLoading = false;
       });
@@ -217,7 +221,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   _buildTransactions(BuildContext context, List<Transaction> transactionsData) {
     List<Widget> transactionsWidget = transactionsData
-        .map((transaction) => _buildItemTransaction(transaction))
+        .map((transaction) => _buildItemTransaction(transaction, context))
         .toList();
 
     transactionsWidget.add(Padding(
@@ -235,7 +239,7 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  Widget _buildItemTransaction(Transaction transaction) {
+  Widget _buildItemTransaction(Transaction transaction, BuildContext context) {
     this.fromId = transaction.internalId;
     TextStyle subtitle = Theme.of(context)
         .textTheme
@@ -249,43 +253,97 @@ class _CoinDetailState extends State<CoinDetail> {
           child: InkWell(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             onTap: () {
-              Scaffold.of(context).showSnackBar(new SnackBar(
-                duration: Duration(milliseconds: 1000),
-                content: new Text(AppLocalizations.of(context).commingsoon),
-              ));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TransactionDetail(
+                        transaction: transaction,
+                        coinBalance: widget.coinBalance)),
+              );
             },
             child: Container(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: new Border.all(color: transaction.myBalanceChange > 0 ? Colors.green : Colors.redAccent, width: 2)),
+                          child: transaction.myBalanceChange > 0 ? Icon(Icons.arrow_downward, color: Colors.white,): Icon(Icons.arrow_upward, color: Colors.white,)),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 16, left: 16, right: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Builder(
+                                builder: (context) {
+                                  return transaction.myBalanceChange > 0
+                                      ? Text(
+                                          "+",
+                                          style: subtitle,
+                                        )
+                                      : Container();
+                                },
+                              ),
+                              Text(
+                                transaction.myBalanceChange.toString(),
+                                style: subtitle,
+                              ),
+                              Text(
+                                ' ${widget.coinBalance.coin.abbr}',
+                                style: subtitle,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, bottom: 16, top: 8),
+                          child: Text(
+                            (widget.coinBalance.priceForOne *
+                                        transaction.myBalanceChange)
+                                    .toStringAsFixed(2) +
+                                " USD",
+                            style: Theme.of(context).textTheme.body2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Container(
+                  color: Theme.of(context).backgroundColor,
+                  height: 1,
+                  width: double.infinity,
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Builder(
-                        builder: (context) {
-                          return transaction.myBalanceChange > 0
-                              ? Text(
-                                  "+",
-                                  style: subtitle,
-                                )
-                              : Container();
-                        },
-                      ),
-                      Text(
-                        transaction.myBalanceChange.toString(),
-                        style: subtitle,
-                      ),
-                      Text(
-                        ' ${widget.coinBalance.coin.abbr}',
-                        style: subtitle,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          transaction.getTimeFormat(),
+                          style: Theme.of(context).textTheme.body2,
+                        ),
                       ),
                       Expanded(
-                        child: SizedBox(
-                          width: 8,
-                        ),
+                        child: Container(),
                       ),
                       Builder(
                         builder: (context) {
@@ -307,46 +365,6 @@ class _CoinDetailState extends State<CoinDetail> {
                                       color: Colors.red),
                                 );
                         },
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, bottom: 16, top: 8),
-                  child: AutoSizeText(
-                    "TXID: " +
-                        transaction.txHash.substring(1, 5) +
-                        "..." +
-                        transaction.txHash.substring(
-                            transaction.txHash.length - 5,
-                            transaction.txHash.length),
-                    maxLines: 1,
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                ),
-                Container(
-                  color: Theme.of(context).backgroundColor,
-                  height: 1,
-                  width: double.infinity,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      // Text(
-                      //   transaction.getTimeFormat(),
-                      //   style: Theme.of(context).textTheme.body2,
-                      // ),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      Icon(
-                        Icons.more_horiz,
-                        color: Theme.of(context).accentColor,
-                        size: 32,
                       )
                     ],
                   ),

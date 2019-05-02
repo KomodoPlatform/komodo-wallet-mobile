@@ -29,7 +29,7 @@ class Coin {
   int mm2;
   String swap_contract_address;
   List<String> serverList;
-  String explorerUrl;
+  List<String> explorerUrl;
   String colorCoin;
 
   Coin({
@@ -57,7 +57,7 @@ class Coin {
     swap_contract_address: json["swap_contract_address"],
     colorCoin: json["colorCoin"],
     serverList: new List<String>.from(json["serverList"].map((x) => x)),
-    explorerUrl: json["explorerUrl"],
+    explorerUrl: new List<String>.from(json["explorerUrl"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -71,7 +71,7 @@ class Coin {
     "swap_contract_address": swap_contract_address,
     "colorCoin": colorCoin,
     "serverList": new List<dynamic>.from(serverList.map((x) => x)),
-    "explorerUrl":explorerUrl
+    "explorerUrl": new List<dynamic>.from(explorerUrl.map((x) => x)),
   };
 
   String getTxFeeSatoshi() {

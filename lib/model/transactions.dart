@@ -4,92 +4,97 @@
 
 import 'dart:convert';
 
-Transactions transactionsFromJson(String str) => Transactions.fromJson(json.decode(str));
+import 'package:intl/intl.dart';
+
+Transactions transactionsFromJson(String str) =>
+    Transactions.fromJson(json.decode(str));
 
 String transactionsToJson(Transactions data) => json.encode(data.toJson());
 
 class Transactions {
-    Result result;
+  Result result;
 
-    Transactions({
-        this.result,
-    });
+  Transactions({
+    this.result,
+  });
 
-    factory Transactions.fromJson(Map<String, dynamic> json) => new Transactions(
+  factory Transactions.fromJson(Map<String, dynamic> json) => new Transactions(
         result: Result.fromJson(json["result"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "result": result.toJson(),
-    };
+      };
 }
 
 class Result {
-    dynamic fromId;
-    int limit;
-    int skipped;
-    int total;
-    List<Transaction> transactions;
+  dynamic fromId;
+  int limit;
+  int skipped;
+  int total;
+  List<Transaction> transactions;
 
-    Result({
-        this.fromId,
-        this.limit,
-        this.skipped,
-        this.total,
-        this.transactions,
-    });
+  Result({
+    this.fromId,
+    this.limit,
+    this.skipped,
+    this.total,
+    this.transactions,
+  });
 
-    factory Result.fromJson(Map<String, dynamic> json) => new Result(
+  factory Result.fromJson(Map<String, dynamic> json) => new Result(
         fromId: json["from_id"],
         limit: json["limit"],
         skipped: json["skipped"],
         total: json["total"],
-        transactions: new List<Transaction>.from(json["transactions"].map((x) => Transaction.fromJson(x))),
-    );
+        transactions: new List<Transaction>.from(
+            json["transactions"].map((x) => Transaction.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "from_id": fromId,
         "limit": limit,
         "skipped": skipped,
         "total": total,
-        "transactions": new List<dynamic>.from(transactions.map((x) => x.toJson())),
-    };
+        "transactions":
+            new List<dynamic>.from(transactions.map((x) => x.toJson())),
+      };
 }
 
 class Transaction {
-    int blockHeight;
-    String coin;
-    int confirmations;
-    FeeDetails feeDetails;
-    List<String> from;
-    String internalId;
-    double myBalanceChange;
-    double receivedByMe;
-    double spentByMe;
-    int timestamp;
-    List<String> to;
-    double totalAmount;
-    String txHash;
-    String txHex;
+  int blockHeight;
+  String coin;
+  int confirmations;
+  FeeDetails feeDetails;
+  List<String> from;
+  String internalId;
+  double myBalanceChange;
+  double receivedByMe;
+  double spentByMe;
+  int timestamp;
+  List<String> to;
+  double totalAmount;
+  String txHash;
+  String txHex;
 
-    Transaction({
-        this.blockHeight,
-        this.coin,
-        this.confirmations,
-        this.feeDetails,
-        this.from,
-        this.internalId,
-        this.myBalanceChange,
-        this.receivedByMe,
-        this.spentByMe,
-        this.timestamp,
-        this.to,
-        this.totalAmount,
-        this.txHash,
-        this.txHex,
-    });
+  Transaction({
+    this.blockHeight,
+    this.coin,
+    this.confirmations,
+    this.feeDetails,
+    this.from,
+    this.internalId,
+    this.myBalanceChange,
+    this.receivedByMe,
+    this.spentByMe,
+    this.timestamp,
+    this.to,
+    this.totalAmount,
+    this.txHash,
+    this.txHex,
+  });
 
-    factory Transaction.fromJson(Map<String, dynamic> json) => new Transaction(
+  factory Transaction.fromJson(Map<String, dynamic> json) => new Transaction(
         blockHeight: json["block_height"],
         coin: json["coin"],
         confirmations: json["confirmations"],
@@ -104,9 +109,9 @@ class Transaction {
         totalAmount: json["total_amount"].toDouble(),
         txHash: json["tx_hash"],
         txHex: json["tx_hex"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "block_height": blockHeight,
         "coin": coin,
         "confirmations": confirmations,
@@ -121,21 +126,25 @@ class Transaction {
         "total_amount": totalAmount,
         "tx_hash": txHash,
         "tx_hex": txHex,
-    };
+      };
+
+  String getTimeFormat() {
+    return DateFormat('dd MMM yyyy HH:mm').format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
+  }
 }
 
 class FeeDetails {
-    double amount;
+  double amount;
 
-    FeeDetails({
-        this.amount,
-    });
+  FeeDetails({
+    this.amount,
+  });
 
-    factory FeeDetails.fromJson(Map<String, dynamic> json) => new FeeDetails(
+  factory FeeDetails.fromJson(Map<String, dynamic> json) => new FeeDetails(
         amount: json["amount"].toDouble(),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "amount": amount,
-    };
+      };
 }

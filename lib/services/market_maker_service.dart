@@ -130,9 +130,9 @@ class MarketMakerService {
         if (coin.abbr == balance.coin) {
           var coinBalance = CoinBalance(coin, balance);
           if (forceUpdate || coinBalance.balanceUSD == null) {
-            coinBalance.balanceUSD =
+            coinBalance.priceForOne =
                 await getPriceObj.getPrice(coin.abbr, "USD");
-            coinBalance.getValue(coinBalance.balanceUSD);
+            coinBalance.balanceUSD = coinBalance.priceForOne * coinBalance.balance.balance;
           }
 
           listCoinElectrum.add(coinBalance);

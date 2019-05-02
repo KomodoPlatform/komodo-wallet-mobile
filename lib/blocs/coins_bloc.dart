@@ -76,10 +76,8 @@ class CoinsBloc implements BlocBase {
 
   Future<void> updateOneCoin(CoinBalance coin) async {
     coin.balance = await mm2.getBalance(coin.coin);
-    coin.balanceUSD = await getPriceObj.getPrice(coin.coin.abbr, "USD");
-    coin.getValue(coin.balanceUSD);
-    print(coin.balanceUSD);
-
+    coin.priceForOne = await getPriceObj.getPrice(coin.coin.abbr, "USD");
+    coin.balanceUSD = coin.balance.balance * coin.priceForOne;
     coinBalance.forEach((coinBalance) {
       if (coin.coin.abbr == coinBalance.coin.abbr) {
         coinBalance = coin;

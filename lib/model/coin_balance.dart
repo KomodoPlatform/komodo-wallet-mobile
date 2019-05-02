@@ -5,12 +5,9 @@ class CoinBalance{
   Coin coin;
   Balance balance;
   double balanceUSD;
+  double priceForOne;
 
   CoinBalance(this.coin, this.balance);
-
-  double getValue(double price){
-    balanceUSD = balance.balance * price;
-  }
 
   String getBalanceUSD() {
     return balanceUSD.toStringAsFixed(2);
