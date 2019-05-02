@@ -123,8 +123,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
   _buildListDetails() {
     return Column(
       children: <Widget>[
-        ItemTransationDetail(
-            title: "Block", data: widget.transaction.blockHeight.toString()),
+        widget.transaction.blockHeight > 0 ? ItemTransationDetail(
+            title: "Block", data: widget.transaction.blockHeight.toString()) : Container(),
         ItemTransationDetail(
             title: "Confirmations",
             data: widget.transaction.confirmations.toString()),
