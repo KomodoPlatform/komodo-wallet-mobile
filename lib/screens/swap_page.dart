@@ -650,6 +650,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
         print(timeSecondeLeft);
         Scaffold.of(context).showSnackBar(new SnackBar(
+          duration: Duration(seconds: 2),
           content: new Text(AppLocalizations.of(context)
               .buySuccessWaitingError(timeSecondeLeft)),
         ));

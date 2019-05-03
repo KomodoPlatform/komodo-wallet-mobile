@@ -9,6 +9,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction.dart';
 import 'package:komodo_dex/model/transactions.dart';
+import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/gettransaction_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
@@ -32,8 +33,7 @@ class CoinsBloc implements BlocBase {
       StreamController<Transactions>.broadcast();
 
   Sink<Transactions> get _inTransactions => _transactionsController.sink;
-  Stream<Transactions> get outTransactions =>
-      _transactionsController.stream;
+  Stream<Transactions> get outTransactions => _transactionsController.stream;
 
   var timer;
   var timer2;
@@ -61,15 +61,19 @@ class CoinsBloc implements BlocBase {
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     Transactions transactions = await mm2.getTransactions(coin, limit, fromId);
-    
+
     if (fromId == null) {
       this.transactions = transactions;
-    }  else {
+    } else {
       this.transactions.result.fromId = transactions.result.fromId;
       this.transactions.result.limit = transactions.result.limit;
       this.transactions.result.skipped = transactions.result.skipped;
       this.transactions.result.total = transactions.result.total;
-      this.transactions.result.transactions.addAll(transactions.result.transactions);
+      this
+          .transactions
+          .result
+          .transactions
+          .addAll(transactions.result.transactions);
     }
     _inTransactions.add(this.transactions);
   }
@@ -96,8 +100,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> updateBalanceForEachCoin(bool forceUpdate) async {
-    if (mm2.mm2Ready) 
-      await mm2.loadCoin(forceUpdate);
+    await mm2.loadCoin(forceUpdate);
   }
 
   Future<void> addCoin(Coin coin) async {
@@ -153,6 +156,7 @@ class CoinsBloc implements BlocBase {
     if (timer != null) timer.cancel();
     if (timer2 != null) timer2.cancel();
   }
+
 }
 
 final coinsBloc = CoinsBloc();

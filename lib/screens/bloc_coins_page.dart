@@ -471,6 +471,7 @@ class _ItemCoinState extends State<ItemCoin> {
                   Navigator.pop(context);
                   coinsBloc.addCoin(coin).then((data) {
                     Scaffold.of(widget.mContext).showSnackBar(new SnackBar(
+                      duration: Duration(seconds: 2),
                       content: new Text(AppLocalizations.of(widget.mContext)
                           .addingCoinSuccess(coin.name)),
                     ));

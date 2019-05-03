@@ -49,6 +49,8 @@ class _CoinDetailState extends State<CoinDetail> {
   String fromId;
   int LIMIT = 10;
   bool isLoading = false;
+  double elevationHeader = 0.0;
+  bool loadingWithdrawDialog = true;
 
   @override
   void initState() {
@@ -136,6 +138,7 @@ class _CoinDetailState extends State<CoinDetail> {
       resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
+        elevation: elevationHeader,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.share),
@@ -273,9 +276,21 @@ class _CoinDetailState extends State<CoinDetail> {
                       child: Container(
                           padding: const EdgeInsets.all(8.0),
                           decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: new Border.all(color: transaction.myBalanceChange > 0 ? Colors.green : Colors.redAccent, width: 2)),
-                          child: transaction.myBalanceChange > 0 ? Icon(Icons.arrow_downward, color: Colors.white,): Icon(Icons.arrow_upward, color: Colors.white,)),
+                              shape: BoxShape.circle,
+                              border: new Border.all(
+                                  color: transaction.myBalanceChange > 0
+                                      ? Colors.green
+                                      : Colors.redAccent,
+                                  width: 2)),
+                          child: transaction.myBalanceChange > 0
+                              ? Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.white,
+                                )
+                              : Icon(
+                                  Icons.arrow_upward,
+                                  color: Colors.white,
+                                )),
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -411,6 +426,10 @@ class _CoinDetailState extends State<CoinDetail> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _buildButtonLight(StatusButton.RECEIVE, context),
+            widget.coinBalance.coin.abbr == "KMD" &&
+                    widget.coinBalance.balance.balance >= 10
+                ? _buildButtonLight(StatusButton.CLAIM, context)
+                : Container(),
             _buildButtonLight(StatusButton.SEND, context),
           ],
         ),
@@ -422,7 +441,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _buildButtonLight(StatusButton statusButton, BuildContext context) {
-    if (currentIndex == 3) {
+    if (currentIndex == 3 && statusButton == StatusButton.SEND) {
       _closeAfterAWait();
     }
     return Expanded(
@@ -430,19 +449,29 @@ class _CoinDetailState extends State<CoinDetail> {
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(32)),
           onTap: () {
-            if (statusButton == StatusButton.RECEIVE)
-              _showDialogAddress(context);
-            if (statusButton == StatusButton.SEND) {
-              if (currentIndex == 3) {
-                setState(() {
-                  isExpanded = false;
-                  _waitForInit();
-                });
-              } else {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
-              }
+            switch (statusButton) {
+              case StatusButton.RECEIVE:
+                _showDialogAddress(context);
+                break;
+              case StatusButton.SEND:
+                if (currentIndex == 3) {
+                  setState(() {
+                    isExpanded = false;
+                    _waitForInit();
+                  });
+                } else {
+                  setState(() {
+                    elevationHeader == 8.0
+                        ? elevationHeader = 8.0
+                        : elevationHeader = 0.0;
+                    isExpanded = !isExpanded;
+                  });
+                }
+                break;
+              case StatusButton.CLAIM:
+                _showDialogClaim(context);
+                break;
+              default:
             }
           },
           child: Container(
@@ -470,6 +499,11 @@ class _CoinDetailState extends State<CoinDetail> {
                               AppLocalizations.of(context).send.toUpperCase(),
                               style: Theme.of(context).textTheme.body1,
                             );
+                    case StatusButton.CLAIM:
+                      return Text(
+                        AppLocalizations.of(context).claim.toUpperCase(),
+                        style: Theme.of(context).textTheme.body1,
+                      );
                       break;
                   }
                 },
@@ -477,6 +511,103 @@ class _CoinDetailState extends State<CoinDetail> {
         ),
       ),
     );
+  }
+
+  _showDialogClaim(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(AppLocalizations.of(context).loading),
+                ],
+              ),
+            ),
+          );
+        });
+
+    mm2
+        .postWithdraw(
+            widget.coinBalance.coin,
+            widget.coinBalance.balance.address,
+            widget.coinBalance.balance.balance -
+                widget.coinBalance.coin.txfee / 100000000)
+        .then((data) {
+      Navigator.of(context).pop();
+      if (data is WithdrawResponse) {
+        print(data.myBalanceChange);
+        if (data.myBalanceChange > 0) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(AppLocalizations.of(context).claimTitle),
+                actions: <Widget>[
+                  FlatButton(
+                    child:
+                        Text(AppLocalizations.of(context).close.toUpperCase()),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text(
+                        AppLocalizations.of(context).confirm.toUpperCase(),
+                        style: Theme.of(context).textTheme.button),
+                    onPressed: () {
+                      mm2
+                          .postRawTransaction(
+                              widget.coinBalance.coin, data.txHex)
+                          .then((dataRawTx) {
+                        if (dataRawTx is SendRawTransactionResponse) {
+                          Navigator.of(context).pop();
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                      AppLocalizations.of(context).success),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(AppLocalizations.of(context)
+                                          .close
+                                          .toUpperCase()),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        }
+                      });
+                    },
+                  )
+                ],
+              );
+            },
+          );
+        } else {
+          Scaffold.of(context).showSnackBar(new SnackBar(
+            duration: Duration(seconds: 2),
+            content: new Text(AppLocalizations.of(context).noRewardYet),
+          ));
+        }
+      } else {
+        Scaffold.of(context).showSnackBar(new SnackBar(
+          duration: Duration(seconds: 2),
+          content: new Text(AppLocalizations.of(context).errorTryLater),
+        ));
+      }
+    });
   }
 
   _showDialogAddress(BuildContext mContext) {
@@ -524,7 +655,7 @@ class _CoinDetailState extends State<CoinDetail> {
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text(AppLocalizations.of(context).close),
+              child: new Text(AppLocalizations.of(context).close.toUpperCase()),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -543,7 +674,9 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       duration: Duration(milliseconds: 200),
       firstChild: Container(),
-      secondChild: Container(
+      secondChild: Card(
+          margin: EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
+          elevation: 8.0,
           color: Theme.of(context).primaryColor,
           child: listSteps[currentIndex]),
     );
@@ -824,6 +957,7 @@ class _CoinDetailState extends State<CoinDetail> {
           _onWithdrawPost = false;
         });
         Scaffold.of(context).showSnackBar(new SnackBar(
+          duration: Duration(seconds: 2),
           content: new Text(AppLocalizations.of(context).errorTryLater),
         ));
       }
@@ -1030,4 +1164,4 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 }
 
-enum StatusButton { SEND, RECEIVE }
+enum StatusButton { SEND, RECEIVE, CLAIM }
