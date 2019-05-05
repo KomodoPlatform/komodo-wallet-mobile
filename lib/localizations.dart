@@ -198,6 +198,11 @@ class AppLocalizations {
       Intl.message("Error, please try later", name: 'errorTryLater');
   String get feedback => Intl.message("Feedback", name: 'feedback');
   String get loadingOrderbook => Intl.message("Looking for orderbook...", name: 'loadingOrderbook');
+  String get claim => Intl.message("claim", name: 'claim');
+  String get claimTitle => Intl.message("Claim your KMD rewards ?", name: 'claimTitle');
+  String get success => Intl.message("Success !", name: 'success');
+  String get noRewardYet => Intl.message("No reward find please wait 1 hour and reclaim.", name: 'noRewardYet');
+  String get loading => Intl.message("Loading...", name: 'loading');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -26,9 +26,14 @@ class GetPriceService {
       final response = await http.get(fiatUrl);
       Map decoded = jsonDecode(response.body);
       price = double.parse(decoded['data']['amount']);
+      print(coinUrl);
       final response2 = await http.get(coinUrl);
-      Map decoded2 = jsonDecode(response2.body);
-      price *= decoded2['result']['Last'];
+      try {
+        Map decoded2 = jsonDecode(response2.body);
+        price *= decoded2['result']['Last'];
+      } catch (e) {
+        print(e);
+      }
     } else{
       if (coin =="USDT"){
         price = 1; //TODO fetch realtime USDT price since not always exact 1usd
