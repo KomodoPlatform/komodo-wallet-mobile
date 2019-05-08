@@ -65,6 +65,7 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: [Locale("en")],
         theme: ThemeData(
+          brightness:Brightness.dark,
           primaryColor: Color.fromRGBO(42, 54, 71, 1),
           backgroundColor: Color.fromRGBO(30, 42, 58, 1),
           primaryColorDark: Color.fromRGBO(42, 54, 71, 1),
@@ -166,7 +167,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+
   int _currentIndex = 0;
+
   final List<Widget> _children = [BlocCoinsPage(), SwapPage(), SettingPage()];
 
   @override

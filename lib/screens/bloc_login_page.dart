@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 
@@ -9,13 +12,14 @@ class BlocLoginPage extends StatefulWidget {
 
 class _BlocLoginPageState extends State<BlocLoginPage> {
   TextEditingController controllerSeed = new TextEditingController();
-  bool _isButtonDisabled;
+  bool _isButtonDisabled = false;
   bool _isLogin;
 
   @override
   void initState() {
-    _isButtonDisabled = false;
+    print("INITSTATE");
     _isLogin = false;
+    _isButtonDisabled = true;
     super.initState();
   }
 
@@ -69,6 +73,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
       child: TextField(
         controller: controllerSeed,
         onChanged: (str) {
+          print(str.length);
           if (str.length == 0) {
             setState(() {
               _isButtonDisabled = true;
@@ -81,6 +86,8 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
         },
         autocorrect: false,
         keyboardType: TextInputType.multiline,
+        obscureText: true,
+        enableInteractiveSelection: true,
         maxLines: null,
         style: Theme.of(context).textTheme.body1,
         decoration: InputDecoration(

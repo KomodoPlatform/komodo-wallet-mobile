@@ -34,7 +34,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    coinsBloc.updateBalanceForEachCoin(false);
+    mm2.loadCoin(false);
     super.initState();
   }
 
@@ -51,7 +51,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
             return <Widget>[
               SliverAppBar(
                 backgroundColor: Theme.of(context).backgroundColor,
-                expandedHeight: _heightScreen * 0.35,
+                expandedHeight: _heightScreen * 0.25,
                 pinned: true,
                 flexibleSpace: Builder(
                   builder: (context) {
@@ -89,7 +89,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                         ),
                         background: Container(
                           child: Padding(
-                            padding: EdgeInsets.only(top: _heightScreen * 0.23),
+                            padding: EdgeInsets.only(top: _heightScreen * 0.20),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -272,7 +272,7 @@ class ListCoinsState extends State<ListCoins> {
 
   @override
   void initState() {
-    coinsBloc.updateBalanceForEachCoin(false);
+    mm2.loadCoin(false);
     super.initState();
   }
 
@@ -289,7 +289,7 @@ class ListCoinsState extends State<ListCoins> {
           return RefreshIndicator(
               backgroundColor: Theme.of(context).backgroundColor,
               key: _refreshIndicatorKey,
-              onRefresh: () => _refresh(true),
+              onRefresh: () => mm2.loadCoin(true),
               child: ListView(
                 children: datas
                     .map((data) =>
@@ -301,10 +301,6 @@ class ListCoinsState extends State<ListCoins> {
         }
       },
     );
-  }
-
-  Future<Null> _refresh(bool isForcedRefresh) async {
-    return await coinsBloc.updateBalanceForEachCoin(isForcedRefresh);
   }
 }
 

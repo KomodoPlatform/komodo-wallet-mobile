@@ -99,10 +99,6 @@ class CoinsBloc implements BlocBase {
     updateCoins(coinBalance);
   }
 
-  Future<void> updateBalanceForEachCoin(bool forceUpdate) async {
-    await mm2.loadCoin(forceUpdate);
-  }
-
   Future<void> addCoin(Coin coin) async {
     print('Adding coin ${coin.abbr}');
     List<Coin> coins = await readJsonCoin();
@@ -145,10 +141,18 @@ class CoinsBloc implements BlocBase {
 
   void startCheckBalance() {
     timer = Timer.periodic(Duration(seconds: 45), (_) {
-      updateBalanceForEachCoin(true);
+      if (!mm2.ismm2Running) {
+        _.cancel();
+      } else {
+        mm2.loadCoin(true);
+      }
     });
     timer2 = Timer.periodic(Duration(seconds: 30), (_) {
-      swapHistoryBloc.updateSwap();
+      if (!mm2.ismm2Running) {
+        _.cancel();
+      } else {
+        swapHistoryBloc.updateSwap();
+      }
     });
   }
 

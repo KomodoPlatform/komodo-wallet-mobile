@@ -87,7 +87,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   @override
   void dispose() {
-    coinsBloc.updateBalanceForEachCoin(true);
+    mm2.loadCoin(true);
     _amountController.dispose();
     _addressController.dispose();
     _scrollController.dispose();

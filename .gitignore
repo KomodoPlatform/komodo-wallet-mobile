@@ -1,3 +1,10 @@
+# mm2 binary assets
+/assets/mm2
+
+# signing artefacts
+/android/key.properties
+/android/app/*.keystore
+
 # Miscellaneous
 *.class
 *.lock
@@ -62,6 +69,8 @@ build/
 **/ios/Flutter/flutter_assets/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+
+**/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3

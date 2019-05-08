@@ -45,7 +45,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     if (text.isNotEmpty) {
       setState(() {
         if (coinBalance != null &&
-            double.parse(text) > coinBalance.balance.balance) {
+            double.parse(text.replaceAll(",", ".")) > coinBalance.balance.balance) {
           setMaxValue();
         }
       });
@@ -83,28 +83,36 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(48),
-          child: SafeArea(
-            child: AppBar(
-              bottom: TabBar(
-                tabs: [
-                  Tab(
-                    text: AppLocalizations.of(context).create.toUpperCase(),
-                  ),
-                  Tab(text: AppLocalizations.of(context).history.toUpperCase())
-                ],
+    return GestureDetector(
+      onTap: () {
+        print("TOTO");
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          resizeToAvoidBottomPadding: false,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(48),
+            child: SafeArea(
+              child: AppBar(
+                bottom: TabBar(
+                  tabs: [
+                    Tab(
+                      text: AppLocalizations.of(context).create.toUpperCase(),
+                    ),
+                    Tab(
+                        text:
+                            AppLocalizations.of(context).history.toUpperCase())
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: TabBarView(
-          children: <Widget>[_buildSwapScreen(), SwapHistory()],
+          backgroundColor: Theme.of(context).backgroundColor,
+          body: TabBarView(
+            children: <Widget>[_buildSwapScreen(), SwapHistory()],
+          ),
         ),
       ),
     );
@@ -183,7 +191,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                     focusNode: _focus,
                                     inputFormatters: [
                                       WhitelistingTextInputFormatter(RegExp(
-                                          "^\$|^(0|([1-9][0-9]{0,3}))(\\.[0-9]{0,8})?\$"))
+                                          "^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"),)
                                     ],
                                     controller: _controllerAmount,
                                     style: Theme.of(context)
@@ -193,6 +201,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                     textAlign: TextAlign.end,
+                                    textInputAction: TextInputAction.done,
                                     keyboardType:
                                         TextInputType.numberWithOptions(
                                             decimal: true),
@@ -229,7 +238,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                         String amountBuy = "0";
                         if (_controllerAmount.text.isNotEmpty) {
                           amountBuy = ordercoin.getBuyAmount(
-                              double.parse(_controllerAmount.text));
+                              double.parse(_controllerAmount.text.replaceAll(",", ".")));
                         }
 
                         return Container(
@@ -472,7 +481,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       orderbooks.forEach((orderbooks) {
         if (orderbooks.coinBase.abbr != swapBloc.sellCoin.coin.abbr &&
             double.parse(orderbooks
-                    .getBuyAmount(double.parse(_controllerAmount.text))) >
+                    .getBuyAmount(double.parse(_controllerAmount.text.replaceAll(",", ".")))) >
                 0) {
           SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
@@ -496,7 +505,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     Text(orderbooks
-                        .getBuyAmount(double.parse(_controllerAmount.text))),
+                        .getBuyAmount(double.parse(_controllerAmount.text.replaceAll(",", ".")))),
                     SizedBox(
                       width: 4,
                     ),
@@ -616,7 +625,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         .postBuy(
             swapBloc.orderCoin.coinBase,
             swapBloc.orderCoin.coinRel,
-            double.parse(_controllerAmount.text),
+            double.parse(_controllerAmount.text.replaceAll(",", ".")),
             swapBloc.orderCoin.bestPrice * 1.01)
         .then((onValue) {
       if (onValue is BuyResponse && onValue.result == "success") {
@@ -624,9 +633,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             onValue.pending.uuid,
             swapBloc.orderCoin.coinBase,
             swapBloc.orderCoin.coinRel,
-            double.parse(_controllerAmount.text),
+            double.parse(_controllerAmount.text.replaceAll(",", ".")),
             double.parse(swapBloc.orderCoin
-                .getBuyAmount(double.parse(_controllerAmount.text))));
+                .getBuyAmount(double.parse(_controllerAmount.text.replaceAll(",", ".")))));
         swapHistoryBloc.updateSwap().then((data) {
           setState(() {
             isSwapProgress = false;

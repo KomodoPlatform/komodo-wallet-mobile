@@ -39,7 +39,6 @@ class AuthenticateBloc extends BlocBase {
     
     if (prefs.getString("passphrase") != null) {
       _inIsLogin.add(true);
-      await coinsBloc.updateBalanceForEachCoin(true);
     } else {
       _inIsLogin.add(false);
     }
@@ -54,8 +53,8 @@ class AuthenticateBloc extends BlocBase {
   }
 
   Future<void> login(String passphrase) async {
-    mm2.ismm2Running = true;
     mm2.mm2Ready = false;
+    mm2.killmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString("passphrase") != null && prefs.getString("passphrase").isNotEmpty) {
       prefs.setString("pin", prefs.getString("pin"));
@@ -76,16 +75,15 @@ class AuthenticateBloc extends BlocBase {
   }
 
   void logout() async {
-    mm2.ismm2Running = false;
-    mm2.mm2Ready = false;
+    coinsBloc.stopCheckBalance();
     mm2.killmm2();
+    mm2.mm2Ready = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("passphrase", null);
     await prefs.setBool("isPinIsSet", false);
     updateStatusPin(PinStatus.NORMAL_PIN);
     await prefs.remove("pin");
     coinsBloc.resetCoinBalance();
-    coinsBloc.stopCheckBalance();
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
     mm2.balances = new List<Balance>();
     _inIsLogin.add(false);
