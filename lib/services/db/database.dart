@@ -43,10 +43,21 @@ class DBProvider {
 
   saveArticle(Article newArticle) async {
     final db = await database;
-    var res = await db.rawInsert(
-        "INSERT Into ArticlesSaved (id, title, media, header, body, keywords, isSavedArticle, creationDate, author, v)"
-        " VALUES ('${newArticle.id}','${newArticle.title}','${json.encode(newArticle.media)}', '${newArticle.header}','${newArticle.body}','${newArticle.keywords}','${newArticle.isSavedArticle}','${newArticle.creationDate.toString()}', '${newArticle.author == null ? "KomodoPlatform" : newArticle.author}','${newArticle.v}')",);
-    print(res.toString());
+
+    Map<String, dynamic> row = {
+      'id' : newArticle.id,
+      'title'  : newArticle.title,
+      'media' : json.encode(newArticle.media),
+      'header' : newArticle.header,
+      'body' : newArticle.body,
+      'keywords': newArticle.keywords,
+      'isSavedArticle' : newArticle.isSavedArticle,
+      'creationDate' : newArticle.creationDate.toString(),
+      'author' : newArticle.author == null ? "KomodoPlatform" : newArticle.author,
+      'v' : newArticle.v
+    };
+    int res = await db.insert('ArticlesSaved ', row);
+
     return res;
   }
 
@@ -67,7 +78,7 @@ class DBProvider {
         body: maps[i]['body'],
         keywords: maps[i]['keywords'],
         author: maps[i]['author'],
-        isSavedArticle: maps[i]['isSavedArticle'].toLowerCase() == 'true',
+        isSavedArticle: maps[i]['isSavedArticle'] == 1,
         creationDate: DateTime.parse(maps[i]['creationDate']),
         v: maps[i]['v'],
       );
