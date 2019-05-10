@@ -10,6 +10,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authenticate_page.dart';
 import 'package:komodo_dex/screens/bloc_coins_page.dart';
 import 'package:komodo_dex/screens/lock_screen.dart';
+import 'package:komodo_dex/screens/media_page.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/screens/setting_page.dart';
 import 'package:komodo_dex/screens/swap_page.dart';
@@ -170,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   int _currentIndex = 0;
 
-  final List<Widget> _children = [BlocCoinsPage(), SwapPage(), SettingPage()];
+  final List<Widget> _children = [BlocCoinsPage(), SwapPage(), Media(), SettingPage()];
 
   @override
   void initState() {
@@ -242,11 +243,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               items: [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.account_balance_wallet),
-                    title: Text("Portfolio")),
+                    title: Text(AppLocalizations.of(context).portfolio)),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.swap_vert), title: Text("DEX")),
+                    icon: Icon(Icons.swap_vert), title: Text(AppLocalizations.of(context).dex)),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), title: Text("Settings")),
+                    icon: Icon(Icons.library_books), title: Text(AppLocalizations.of(context).media)),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.settings), title: Text(AppLocalizations.of(context).settings)),
               ],
             ),
           ),

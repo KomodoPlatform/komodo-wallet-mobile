@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/media_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
-import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,6 +54,7 @@ class AuthenticateBloc extends BlocBase {
   }
 
   Future<void> login(String passphrase) async {
+    await DBProvider.db.initDB();
     mm2.mm2Ready = false;
     mm2.killmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -86,6 +88,7 @@ class AuthenticateBloc extends BlocBase {
     coinsBloc.resetCoinBalance();
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
     mm2.balances = new List<Balance>();
+    await mediaBloc.deleteAll();
     _inIsLogin.add(false);
   }
 

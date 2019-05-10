@@ -144,7 +144,7 @@ class AppLocalizations {
   String get networkFee => Intl.message('Network fee', name: 'networkFee');
   String get commissionFee =>
       Intl.message('commission fee', name: 'commissionFee');
-  String get portfolio => Intl.message('portfolio', name: 'portfolio');
+  String get portfolio => Intl.message('Portfolio', name: 'portfolio');
 
   String get checkOut => Intl.message('Check Out', name: 'checkOut');
 
@@ -203,6 +203,10 @@ class AppLocalizations {
   String get success => Intl.message("Success !", name: 'success');
   String get noRewardYet => Intl.message("No reward find please wait 1 hour and reclaim.", name: 'noRewardYet');
   String get loading => Intl.message("Loading...", name: 'loading');
+  String get dex => Intl.message("DEX", name: 'dex');
+  String get media => Intl.message("News", name: 'media');
+  String get newsFeed => Intl.message("News feed", name: 'newsFeed');
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
