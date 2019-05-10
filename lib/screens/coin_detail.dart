@@ -292,50 +292,34 @@ class _CoinDetailState extends State<CoinDetail> {
                                   color: Colors.white,
                                 )),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 16, left: 16, right: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Builder(
-                                builder: (context) {
-                                  return transaction.myBalanceChange > 0
-                                      ? Text(
-                                          "+",
-                                          style: subtitle,
-                                        )
-                                      : Container();
-                                },
-                              ),
-                              Text(
-                                transaction.myBalanceChange.toString(),
-                                style: subtitle,
-                              ),
-                              Text(
-                                ' ${widget.coinBalance.coin.abbr}',
-                                style: subtitle,
-                              ),
-                            ],
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, top: 8),
+                            child: AutoSizeText(
+                              '${transaction.myBalanceChange > 0 ? "+" : ""}${transaction.myBalanceChange.toString()} ${widget.coinBalance.coin.abbr}',
+                              maxLines: 1,
+                              style: subtitle,
+                              textAlign: TextAlign.end,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 16, right: 16, bottom: 16, top: 8),
-                          child: Text(
-                            (widget.coinBalance.priceForOne *
-                                        transaction.myBalanceChange)
-                                    .toStringAsFixed(2) +
-                                " USD",
-                            style: Theme.of(context).textTheme.body2,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, bottom: 16, top: 8),
+                            child: Text(
+                              (widget.coinBalance.priceForOne *
+                                          transaction.myBalanceChange)
+                                      .toStringAsFixed(2) +
+                                  " USD",
+                              style: Theme.of(context).textTheme.body2,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),

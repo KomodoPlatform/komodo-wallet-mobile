@@ -74,11 +74,15 @@ class _TransactionDetailState extends State<TransactionDetail> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Center(
-                    child: AutoSizeText(
-                      tx.myBalanceChange.toString() + " " + tx.coin,
-                      style: Theme.of(context).textTheme.title,
-                      textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                      child: AutoSizeText(
+                        tx.myBalanceChange.toString() + " " + tx.coin,
+                        style: Theme.of(context).textTheme.title,
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   Text(

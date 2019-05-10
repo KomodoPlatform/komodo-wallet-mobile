@@ -38,12 +38,10 @@
     "proto": "tcp",
     "txfee": 0,
     "abbr": "ETH",
-    "swap_contract_address":"0xE41d2489571d322189246DaFA5ebDe1F4699F498",
+    "swap_contract_address":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
     "colorCoin": "0xFF828384",
     "serverList": [
-      "http://electrum1.cipig.net:8555",
-      "http://electrum2.cipig.net:8555",
-      "http://electrum3.cipig.net:8555"
+      "http://195.201.0.6:8555"
     ],
     "explorerUrl": [
       "https://etherscan.io/"

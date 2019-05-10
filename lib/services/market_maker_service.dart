@@ -385,7 +385,7 @@ class MarketMakerService {
           urls: coin.serverList);
     }
 
-    // print(json.encode(getActiveCoin));
+    print(json.encode(getActiveCoin));
     final response = await http.post(url, body: json.encode(getActiveCoin));
     print(response.body.toString());
     try {
