@@ -19,14 +19,37 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
-void main() {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+void main() async{
+  bool isInDebugMode = false;
+
+  FlutterError.onError = (FlutterErrorDetails details) {
+    if (isInDebugMode) {
+      // In development mode simply print to console.
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // In production mode report to the application zone to report to
+      // Crashlytics.
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
+  await FlutterCrashlytics().initialize();
+
+  runZoned<Future<Null>>(() async {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     _checkPassphrase().then((data) {
       _runBinMm2UserAlreadyLog();
+      
       runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
     });
+  });
+  }, onError: (error, stackTrace) async {
+    // Whenever an error occurs, call the `reportCrash` function. This will send
+    // Dart errors to our dev console or Crashlytics depending on the environment.
+    print("error");
+    await FlutterCrashlytics().reportCrash(error, stackTrace, forceCrash: false);
   });
 }
 

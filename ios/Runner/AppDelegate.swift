@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import Firebase
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -27,8 +28,9 @@ import Flutter
                 result("Flutter method not implemented on iOS")
             }
         })
-        
+        FirebaseApp.configure()
         GeneratedPluginRegistrant.register(with: self)
+        
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 }

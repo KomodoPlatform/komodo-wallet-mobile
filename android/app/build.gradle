@@ -31,6 +31,14 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+apply plugin: 'io.fabric'
+
+crashlytics {
+    enableNdk true
+    androidNdkOut "../../debugSymbols"
+    androidNdkLibsOut "../../build/app/intermediates/transforms/stripDebugSymbol/release/0/lib"
+}
+
 android {
     compileSdkVersion 28
 
@@ -74,7 +82,12 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version" 
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
+    
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 }
+
+apply plugin: 'com.google.gms.google-services'
