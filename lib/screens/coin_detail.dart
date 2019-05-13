@@ -733,7 +733,7 @@ class _CoinDetailState extends State<CoinDetail> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Text(
-                _amountController.text,
+                sendamount.toString(),
                 style: Theme.of(context).textTheme.subtitle,
               ),
               SizedBox(
@@ -778,8 +778,8 @@ class _CoinDetailState extends State<CoinDetail> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Text(
-                sendamount.toString(),
-                style: sendamount > 0
+                amountMinusFee.toString(),
+                style: amountMinusFee > 0
                     ? Theme.of(context).textTheme.title
                     : Theme.of(context)
                         .textTheme
@@ -874,7 +874,8 @@ class _CoinDetailState extends State<CoinDetail> {
     double amountMinusFee = double.parse(_amountController.text) -
         double.parse(widget.coinBalance.coin.getTxFeeSatoshi());
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
-    print("amountminusfee: " + amountMinusFee.toString());
+    double fee = widget.coinBalance.coin.txfee / 100000000;
+    double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
 
     listSteps.add(Container(
         height: 100,
@@ -889,7 +890,7 @@ class _CoinDetailState extends State<CoinDetail> {
     });
     mm2
         .postWithdraw(widget.coinBalance.coin,
-            _addressController.text.toString(), amountMinusFee)
+            _addressController.text.toString(), sendamount)
         .then((data) {
       if (data is WithdrawResponse) {
         mm2
