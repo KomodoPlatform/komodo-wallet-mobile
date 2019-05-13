@@ -115,7 +115,10 @@ class _BrowseNewsState extends State<BrowseNews> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MediaDetailPage(article: article,)),
+          MaterialPageRoute(
+              builder: (context) => MediaDetailPage(
+                    article: article,
+                  )),
         );
       },
       child: Column(
@@ -182,7 +185,10 @@ class _ArticleItemState extends State<ArticleItem> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MediaDetailPage(article: article,)),
+          MaterialPageRoute(
+              builder: (context) => MediaDetailPage(
+                    article: article,
+                  )),
         );
       },
       child: Column(
@@ -279,12 +285,12 @@ class _IconsArticleState extends State<IconsArticle> {
             print(widget.article.isSavedArticle);
             if (widget.article.isSavedArticle) {
               setState(() {
-                 widget.article.isSavedArticle = false;
+                widget.article.isSavedArticle = false;
               });
               mediaBloc.deleteArticle(widget.article);
             } else {
               setState(() {
-                 widget.article.isSavedArticle = true;
+                widget.article.isSavedArticle = true;
               });
               mediaBloc.addArticle(widget.article);
             }
@@ -297,8 +303,7 @@ class _IconsArticleState extends State<IconsArticle> {
             borderRadius: BorderRadius.all(Radius.circular(2)),
             onTap: () {
               Share.share(
-                'Article from AtomicDEX application:\n\n${widget.article.title}\nBy ${widget.article.author}\n${timeago.format(widget.article.creationDate)}\n\n${widget.article.body}'
-              );
+                  'Article from AtomicDEX application:\n\n${widget.article.title}\nBy ${widget.article.author}\n${timeago.format(widget.article.creationDate)}\n\n${widget.article.body}');
             },
             child: Icon(Icons.share, color: Colors.grey, size: 30)),
       ],

@@ -37,7 +37,7 @@ class AuthenticateBloc extends BlocBase {
 
   void init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    
+
     if (prefs.getString("passphrase") != null) {
       _inIsLogin.add(true);
     } else {
@@ -58,7 +58,8 @@ class AuthenticateBloc extends BlocBase {
     mm2.mm2Ready = false;
     mm2.killmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("passphrase") != null && prefs.getString("passphrase").isNotEmpty) {
+    if (prefs.getString("passphrase") != null &&
+        prefs.getString("passphrase").isNotEmpty) {
       prefs.setString("pin", prefs.getString("pin"));
       updateStatusPin(PinStatus.NORMAL_PIN);
     } else {

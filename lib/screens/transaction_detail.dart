@@ -39,8 +39,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
           ),
           IconButton(
             icon: Icon(Icons.open_in_browser),
-            onPressed: (){
-              _launchURL(widget.coinBalance.coin.explorerUrl[0] + "tx/" + widget.transaction.txHash);
+            onPressed: () {
+              _launchURL(widget.coinBalance.coin.explorerUrl[0] +
+                  "tx/" +
+                  widget.transaction.txHash);
             },
           )
         ],
@@ -54,12 +56,12 @@ class _TransactionDetailState extends State<TransactionDetail> {
 
   _launchURL(String url) async {
     print(url);
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 
   _buildHeader() {
     Transaction tx = widget.transaction;
@@ -127,8 +129,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
   _buildListDetails() {
     return Column(
       children: <Widget>[
-        widget.transaction.blockHeight > 0 ? ItemTransationDetail(
-            title: "Block", data: widget.transaction.blockHeight.toString()) : Container(),
+        widget.transaction.blockHeight > 0
+            ? ItemTransationDetail(
+                title: "Block", data: widget.transaction.blockHeight.toString())
+            : Container(),
         ItemTransationDetail(
             title: "Confirmations",
             data: widget.transaction.confirmations.toString()),
@@ -140,7 +144,11 @@ class _TransactionDetailState extends State<TransactionDetail> {
         widget.transaction.myBalanceChange > 0
             ? ItemTransationDetail(
                 title: "From", data: widget.transaction.from[0])
-            : ItemTransationDetail(title: "To", data: widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]),
+            : ItemTransationDetail(
+                title: "To",
+                data: widget.transaction.to.length > 1
+                    ? widget.transaction.to[1]
+                    : widget.transaction.to[0]),
         ItemTransationDetail(title: "Tx Hash", data: widget.transaction.txHash),
       ],
     );

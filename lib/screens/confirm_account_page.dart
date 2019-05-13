@@ -32,9 +32,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text(AppLocalizations
-              .of(context)
-              .confirmSeed),
+          title: Text(AppLocalizations.of(context).confirmSeed),
         ),
         body: Column(
           children: <Widget>[
@@ -53,9 +51,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
         ),
         Center(
           child: Text(
-            AppLocalizations
-                .of(context)
-                .enterSeedPhrase,
+            AppLocalizations.of(context).enterSeedPhrase,
             style: Theme.of(context).textTheme.title,
             textAlign: TextAlign.center,
           ),
@@ -96,9 +92,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                 borderSide: BorderSide(color: Theme.of(context).accentColor)),
             hintStyle: Theme.of(context).textTheme.body2,
             labelStyle: Theme.of(context).textTheme.body1,
-            hintText: AppLocalizations
-                .of(context)
-                .exampleHintSeed,
+            hintText: AppLocalizations.of(context).exampleHintSeed,
             labelText: null),
       ),
     );
@@ -116,10 +110,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
           color: Theme.of(context).buttonColor,
           disabledColor: Theme.of(context).disabledColor,
           child: Text(
-            AppLocalizations
-                .of(context)
-                .confirm
-                .toUpperCase(),
+            AppLocalizations.of(context).confirm.toUpperCase(),
             style: Theme.of(context).textTheme.button,
           ),
           onPressed: _isButtonDisabled ? null : _onLoginPressed,

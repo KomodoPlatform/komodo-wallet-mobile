@@ -115,7 +115,8 @@ class MarketMakerService {
       });
     } else if (Platform.isIOS) {
       await stopmm2();
-      await platformmm2.invokeMethod('start', {'params': startParam}); //start mm2
+      await platformmm2
+          .invokeMethod('start', {'params': startParam}); //start mm2
 
       // check when mm2 is ready then load coins
       var timerTmp = DateTime.now().millisecondsSinceEpoch;
@@ -125,10 +126,10 @@ class MarketMakerService {
         if (t1 <= t2) {
           _.cancel();
         }
-        checkStatusmm2().then((onValue){
+        checkStatusmm2().then((onValue) {
           print(onValue);
           if (onValue == 3) {
-            loadCoin(true).then((data){
+            loadCoin(true).then((data) {
               coinsBloc.startCheckBalance();
               mm2Ready = true;
               ismm2Running = true;
@@ -141,7 +142,7 @@ class MarketMakerService {
   }
 
   Future<int> checkStatusmm2() async {
-      return await platformmm2.invokeMethod('status');
+    return await platformmm2.invokeMethod('status');
   }
 
   Future<void> loadCoin(bool forceUpdate) async {
@@ -222,16 +223,16 @@ class MarketMakerService {
     // print("STATUS RES" + res.toString());
     ismm2Running = false;
     // if (res == 3) {
-      try {
-        BaseService baseService =
-            new BaseService(userpass: userpass, method: "stop");
+    try {
+      BaseService baseService =
+          new BaseService(userpass: userpass, method: "stop");
 
-        final response = await http.post(url, body: json.encode(baseService));
-        print(response.body.toString());
-        return baseServiceFromJson(response.body);
-      } catch (e) {
-        return null;
-      }
+      final response = await http.post(url, body: json.encode(baseService));
+      print(response.body.toString());
+      return baseServiceFromJson(response.body);
+    } catch (e) {
+      return null;
+    }
     // }
   }
 
@@ -356,6 +357,7 @@ class MarketMakerService {
       to: addressTo,
       amount: amount,
     );
+    print("sending: " + amount.toString());
     print(json.encode(getWithdraw));
     final response = await http.post(url, body: json.encode(getWithdraw));
     print("response.body postWithdraw" + response.body.toString());

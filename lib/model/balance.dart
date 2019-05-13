@@ -26,14 +26,14 @@ class Balance {
   });
 
   factory Balance.fromJson(Map<String, dynamic> json) => new Balance(
-    address: json["address"],
-    balance: json["balance"].toDouble(),
-    coin: json["coin"],
-  );
+        address: json["address"],
+        balance: json["balance"].toDouble(),
+        coin: json["coin"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "address": address,
-    "balance": balance,
-    "coin": coin,
-  };
+        "address": address,
+        "balance": balance,
+        "coin": coin,
+      };
 }

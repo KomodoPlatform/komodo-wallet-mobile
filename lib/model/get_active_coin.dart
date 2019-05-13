@@ -22,30 +22,30 @@ class GetActiveCoin {
   List<String> urls;
   bool tx_history;
 
-  GetActiveCoin({
-    this.userpass,
-    this.method,
-    this.coin,
-    this.swap_contract_address,
-    this.urls,
-    this.tx_history
-  });
+  GetActiveCoin(
+      {this.userpass,
+      this.method,
+      this.coin,
+      this.swap_contract_address,
+      this.urls,
+      this.tx_history});
 
-  factory GetActiveCoin.fromJson(Map<String, dynamic> json) => new GetActiveCoin(
-    userpass: json["userpass"],
-    method: json["method"],
-    coin: json["coin"],
-    tx_history: json["tx_history"],
-    swap_contract_address: json["swap_contract_address"],
-    urls: new List<String>.from(json["urls"].map((x) => x)),
-  );
+  factory GetActiveCoin.fromJson(Map<String, dynamic> json) =>
+      new GetActiveCoin(
+        userpass: json["userpass"],
+        method: json["method"],
+        coin: json["coin"],
+        tx_history: json["tx_history"],
+        swap_contract_address: json["swap_contract_address"],
+        urls: new List<String>.from(json["urls"].map((x) => x)),
+      );
 
   Map<String, dynamic> toJson() => {
-    "userpass": userpass,
-    "method": method,
-    "coin": coin,
-    "tx_history": tx_history,
-    "swap_contract_address":swap_contract_address,
-    "urls": new List<dynamic>.from(urls.map((x) => x)),
-  };
+        "userpass": userpass,
+        "method": method,
+        "coin": coin,
+        "tx_history": tx_history,
+        "swap_contract_address": swap_contract_address,
+        "urls": new List<dynamic>.from(urls.map((x) => x)),
+      };
 }

@@ -16,7 +16,6 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-
   @override
   void initState() {
     super.initState();
@@ -27,9 +26,7 @@ class _SettingPageState extends State<SettingPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text(AppLocalizations
-            .of(context)
-            .settings),
+        title: Text(AppLocalizations.of(context).settings),
       ),
       body: Theme(
         data: Theme.of(context).copyWith(
@@ -42,51 +39,47 @@ class _SettingPageState extends State<SettingPage> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  AppLocalizations
-                      .of(context)
-                      .security,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .body2,
+                  AppLocalizations.of(context).security,
+                  style: Theme.of(context).textTheme.body2,
                 ),
               ),
               ListTile(
                 leading: Icon(
                   Icons.dialpad,
-                  color: Theme
-                      .of(context)
-                      .hintColor,
+                  color: Theme.of(context).hintColor,
                 ),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      AppLocalizations
-                          .of(context)
-                          .activateAccessPin,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .body1,
+                      AppLocalizations.of(context).activateAccessPin,
+                      style: Theme.of(context).textTheme.body1,
                     ),
                     SharedPreferencesBuilder(
                       pref: 'switch_pin',
                       builder: (context, snapshot) {
-                        return snapshot.hasData ? Switch(
-                            value: snapshot.data,
-                            onChanged: (dataSwitch) {
-                              setState(() {
-                                if (snapshot.data) {
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => LockScreen(pinStatus: PinStatus.DISABLED_PIN,)));
-                                } else {
-                                  SharedPreferences.getInstance().then((data) {
-                                    data.setBool("switch_pin", dataSwitch);
+                        return snapshot.hasData
+                            ? Switch(
+                                value: snapshot.data,
+                                onChanged: (dataSwitch) {
+                                  setState(() {
+                                    if (snapshot.data) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => LockScreen(
+                                                    pinStatus:
+                                                        PinStatus.DISABLED_PIN,
+                                                  )));
+                                    } else {
+                                      SharedPreferences.getInstance()
+                                          .then((data) {
+                                        data.setBool("switch_pin", dataSwitch);
+                                      });
+                                    }
                                   });
-                                }
-                              });
-                            }) : Container();
+                                })
+                            : Container();
                       },
                     )
                   ],
@@ -98,22 +91,19 @@ class _SettingPageState extends State<SettingPage> {
                   color: Theme.of(context).hintColor,
                 ),
                 title: Text(
-                  AppLocalizations
-                      .of(context)
-                      .changePin,
+                  AppLocalizations.of(context).changePin,
                   style: Theme.of(context).textTheme.body1,
                 ),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) =>
-                          PinPage(
-                            title: AppLocalizations
-                                .of(context)
-                                .lockScreen,
-                            subTitle: AppLocalizations
-                                .of(context)
-                                .enterPinCode,
-                            isConfirmPin: PinStatus.CHANGE_PIN,)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PinPage(
+                                title: AppLocalizations.of(context).lockScreen,
+                                subTitle:
+                                    AppLocalizations.of(context).enterPinCode,
+                                isConfirmPin: PinStatus.CHANGE_PIN,
+                              )));
                 },
               ),
               ListTile(
@@ -123,40 +113,38 @@ class _SettingPageState extends State<SettingPage> {
                   style: Theme.of(context).textTheme.body1,
                 ),
                 onTap: () {
-                    _shareFile();          
+                  _shareFile();
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.red.withOpacity(0.7),
+                  ),
+                  title: Text(
+                    AppLocalizations.of(context).logout,
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(color: Colors.red.withOpacity(0.7)),
+                  ),
+                  onTap: () {
+                    authBloc.logout();
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.exit_to_app,
-                      color: Colors.red.withOpacity(0.7),
-                    ),
-                    title: Text(
-                      AppLocalizations
-                          .of(context)
-                          .logout,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(color: Colors.red.withOpacity(0.7)),
-                    ),
-                    onTap: () {
-                      authBloc.logout();
-                    },
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
-      );
-    }
-  
-    void _shareFile() {
-      File file = new File('${mm2.filesPath}log.txt');
-      Share.shareFile(file, subject: "My logs for the ${DateTime.now().toIso8601String()}");
-    }
+      ),
+    );
+  }
+
+  void _shareFile() {
+    File file = new File('${mm2.filesPath}log.txt');
+    Share.shareFile(file,
+        subject: "My logs for the ${DateTime.now().toIso8601String()}");
+  }
 }

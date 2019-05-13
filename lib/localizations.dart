@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
-
   static Future<AppLocalizations> load(Locale locale) {
     final String name =
         locale.countryCode == null ? locale.languageCode : locale.toString();
@@ -197,16 +196,19 @@ class AppLocalizations {
   String get errorTryLater =>
       Intl.message("Error, please try later", name: 'errorTryLater');
   String get feedback => Intl.message("Feedback", name: 'feedback');
-  String get loadingOrderbook => Intl.message("Looking for orderbook...", name: 'loadingOrderbook');
+  String get loadingOrderbook =>
+      Intl.message("Looking for orderbook...", name: 'loadingOrderbook');
   String get claim => Intl.message("claim", name: 'claim');
-  String get claimTitle => Intl.message("Claim your KMD rewards ?", name: 'claimTitle');
+  String get claimTitle =>
+      Intl.message("Claim your KMD rewards ?", name: 'claimTitle');
   String get success => Intl.message("Success !", name: 'success');
-  String get noRewardYet => Intl.message("No reward find please wait 1 hour and reclaim.", name: 'noRewardYet');
+  String get noRewardYet =>
+      Intl.message("No reward find please wait 1 hour and reclaim.",
+          name: 'noRewardYet');
   String get loading => Intl.message("Loading...", name: 'loading');
   String get dex => Intl.message("DEX", name: 'dex');
   String get media => Intl.message("News", name: 'media');
   String get newsFeed => Intl.message("News feed", name: 'newsFeed');
-
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

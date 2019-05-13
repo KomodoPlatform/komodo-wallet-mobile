@@ -45,7 +45,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     if (text.isNotEmpty) {
       setState(() {
         if (coinBalance != null &&
-            double.parse(text.replaceAll(",", ".")) > coinBalance.balance.balance) {
+            double.parse(text.replaceAll(",", ".")) >
+                coinBalance.balance.balance) {
           setMaxValue();
         }
       });
@@ -190,8 +191,10 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                   child: TextFormField(
                                     focusNode: _focus,
                                     inputFormatters: [
-                                      WhitelistingTextInputFormatter(RegExp(
-                                          "^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"),)
+                                      WhitelistingTextInputFormatter(
+                                        RegExp(
+                                            "^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"),
+                                      )
                                     ],
                                     controller: _controllerAmount,
                                     style: Theme.of(context)
@@ -237,8 +240,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
                         String amountBuy = "0";
                         if (_controllerAmount.text.isNotEmpty) {
-                          amountBuy = ordercoin.getBuyAmount(
-                              double.parse(_controllerAmount.text.replaceAll(",", ".")));
+                          amountBuy = ordercoin.getBuyAmount(double.parse(
+                              _controllerAmount.text.replaceAll(",", ".")));
                         }
 
                         return Container(
@@ -480,8 +483,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     if (orderbooks != null && market == Market.BUY) {
       orderbooks.forEach((orderbooks) {
         if (orderbooks.coinBase.abbr != swapBloc.sellCoin.coin.abbr &&
-            double.parse(orderbooks
-                    .getBuyAmount(double.parse(_controllerAmount.text.replaceAll(",", ".")))) >
+            double.parse(orderbooks.getBuyAmount(double.parse(
+                    _controllerAmount.text.replaceAll(",", ".")))) >
                 0) {
           SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
@@ -504,8 +507,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    Text(orderbooks
-                        .getBuyAmount(double.parse(_controllerAmount.text.replaceAll(",", ".")))),
+                    Text(orderbooks.getBuyAmount(double.parse(
+                        _controllerAmount.text.replaceAll(",", ".")))),
                     SizedBox(
                       width: 4,
                     ),
@@ -634,8 +637,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             swapBloc.orderCoin.coinBase,
             swapBloc.orderCoin.coinRel,
             double.parse(_controllerAmount.text.replaceAll(",", ".")),
-            double.parse(swapBloc.orderCoin
-                .getBuyAmount(double.parse(_controllerAmount.text.replaceAll(",", ".")))));
+            double.parse(swapBloc.orderCoin.getBuyAmount(
+                double.parse(_controllerAmount.text.replaceAll(",", ".")))));
         swapHistoryBloc.updateSwap().then((data) {
           setState(() {
             isSwapProgress = false;

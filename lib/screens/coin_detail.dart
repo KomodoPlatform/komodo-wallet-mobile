@@ -116,10 +116,8 @@ class _CoinDetailState extends State<CoinDetail> {
       } else {
         fee = (txFee.toDouble() / 100000000);
       }
-      _amountController.text = ((widget.coinBalance.balance.balance -
-                  (widget.coinBalance.balance.balance * 0.01)) -
-              fee)
-          .toStringAsFixed(8);
+      _amountController.text =
+          (widget.coinBalance.balance.balance - fee).toStringAsFixed(8);
     });
     await Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {
@@ -713,9 +711,10 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _buildConfirmationStep() {
-    double amountMinusFee = double.parse(_amountController.text) -
-        double.parse(widget.coinBalance.coin.getTxFeeSatoshi());
+    double fee = widget.coinBalance.coin.txfee / 100000000;
+    double amountMinusFee = double.parse(_amountController.text);
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
+    double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -779,8 +778,8 @@ class _CoinDetailState extends State<CoinDetail> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Text(
-                amountMinusFee.toString(),
-                style: amountMinusFee > 0
+                sendamount.toString(),
+                style: sendamount > 0
                     ? Theme.of(context).textTheme.title
                     : Theme.of(context)
                         .textTheme
@@ -875,6 +874,7 @@ class _CoinDetailState extends State<CoinDetail> {
     double amountMinusFee = double.parse(_amountController.text) -
         double.parse(widget.coinBalance.coin.getTxFeeSatoshi());
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
+    print("amountminusfee: " + amountMinusFee.toString());
 
     listSteps.add(Container(
         height: 100,

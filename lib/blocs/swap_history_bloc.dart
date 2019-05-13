@@ -68,7 +68,8 @@ class SwapHistoryBloc implements BlocBase {
           if (swap is Swap) {
             swap.status = getStatusSwap(swap);
             if (uuidData.timeStart + 600 <
-              DateTime.now().millisecondsSinceEpoch ~/ 1000 && swap.status != Status.SWAP_SUCCESSFUL) {
+                    DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
+                swap.status != Status.SWAP_SUCCESSFUL) {
               swap.status = Status.TIME_OUT;
             }
             swap.uuid = uuidData;
@@ -79,10 +80,10 @@ class SwapHistoryBloc implements BlocBase {
               status = Status.TIME_OUT;
             }
             swaps.add(Swap(
-                status: status,
-                result: Result(uuid: uuidData.uuid),
-                uuid: uuidData,
-                ));
+              status: status,
+              result: Result(uuid: uuidData.uuid),
+              uuid: uuidData,
+            ));
           }
         }
       }
@@ -112,7 +113,6 @@ class SwapHistoryBloc implements BlocBase {
 
     return status;
   }
-
 
   String getSwapStatusString(BuildContext context, Status status) {
     switch (status) {
@@ -205,5 +205,4 @@ class SwapHistoryBloc implements BlocBase {
   double getNumberStep() {
     return 3;
   }
-
 }

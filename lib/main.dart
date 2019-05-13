@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: [Locale("en")],
         theme: ThemeData(
-          brightness:Brightness.dark,
+          brightness: Brightness.dark,
           primaryColor: Color.fromRGBO(42, 54, 71, 1),
           backgroundColor: Color.fromRGBO(30, 42, 58, 1),
           primaryColorDark: Color.fromRGBO(42, 54, 71, 1),
@@ -117,7 +117,9 @@ class _MyAppState extends State<MyApp> {
                                   outShowPin.data &&
                                   switchPinData.hasData &&
                                   switchPinData.data) {
-                                return LockScreen(pinStatus: PinStatus.NORMAL_PIN,);
+                                return LockScreen(
+                                  pinStatus: PinStatus.NORMAL_PIN,
+                                );
                               } else {
                                 return InitBlocs(child: MyHomePage());
                               }
@@ -168,10 +170,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
-
   int _currentIndex = 0;
 
-  final List<Widget> _children = [BlocCoinsPage(), SwapPage(), Media(), SettingPage()];
+  final List<Widget> _children = [
+    BlocCoinsPage(),
+    SwapPage(),
+    Media(),
+    SettingPage()
+  ];
 
   @override
   void initState() {
@@ -245,11 +251,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     icon: Icon(Icons.account_balance_wallet),
                     title: Text(AppLocalizations.of(context).portfolio)),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.swap_vert), title: Text(AppLocalizations.of(context).dex)),
+                    icon: Icon(Icons.swap_vert),
+                    title: Text(AppLocalizations.of(context).dex)),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.library_books), title: Text(AppLocalizations.of(context).media)),
+                    icon: Icon(Icons.library_books),
+                    title: Text(AppLocalizations.of(context).media)),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), title: Text(AppLocalizations.of(context).settings)),
+                    icon: Icon(Icons.settings),
+                    title: Text(AppLocalizations.of(context).settings)),
               ],
             ),
           ),

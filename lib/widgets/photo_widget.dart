@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
 class PhotoHero extends StatelessWidget {
-  const PhotoHero({
-    Key key,
-    this.onTap,
-    this.width,
-    this.tag,
-    this.radius
-  }) : super(key: key);
+  const PhotoHero({Key key, this.onTap, this.width, this.tag, this.radius})
+      : super(key: key);
 
   final VoidCallback onTap;
   final double width;

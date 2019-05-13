@@ -18,7 +18,7 @@ class GetTransactionService {
   // is being replaced with our own SPV solution for the beta release. Hence why the below URLs and data is not set through config file
   //
   Future<List<Transaction>> getTransactions(String coin, String pubkey) async {
-      List<Transaction> transactions = new List<Transaction>();
+    List<Transaction> transactions = new List<Transaction>();
     // Explorer API:
     //
     // ETH:  http://api.ethplorer.io/getAddressTransactions/0x6ce989d2E0361f1201aDf57CD324723018Cf3ce4?apiKey=freekey
@@ -30,7 +30,8 @@ class GetTransactionService {
       pubkeyApi = 'https://insight.bitpay.com/api/';
     else if (coin == "RICK")
       pubkeyApi = 'https://rick.kmd.dev/api/';
-    else if (coin == "MORTY") pubkeyApi = 'https://morty.kmd.dev/api/';
+    else if (coin == "MORTY")
+      pubkeyApi = 'https://morty.kmd.dev/api/';
     else if (coin == "KMD") pubkeyApi = 'https://api.kmd.dev/api/';
 
     if (coin != "USDT" && coin != "ETH") {
@@ -61,7 +62,7 @@ class GetTransactionService {
           }
         }
 
-        if(out) val = double.parse(decoded2['vout'][0]['value']);
+        if (out) val = double.parse(decoded2['vout'][0]['value']);
         transactions.add(Transaction(
             txid: decoded2['txid'],
             isIn: !out,

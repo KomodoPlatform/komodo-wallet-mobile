@@ -26,14 +26,14 @@ class GetBalance {
   });
 
   factory GetBalance.fromJson(Map<String, dynamic> json) => new GetBalance(
-    userpass: json["userpass"],
-    method: json["method"],
-    coin: json["coin"],
-  );
+        userpass: json["userpass"],
+        method: json["method"],
+        coin: json["coin"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "userpass": userpass,
-    "method": method,
-    "coin": coin,
-  };
+        "userpass": userpass,
+        "method": method,
+        "coin": coin,
+      };
 }

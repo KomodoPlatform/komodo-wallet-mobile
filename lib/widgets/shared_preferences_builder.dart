@@ -8,12 +8,9 @@ class SharedPreferencesBuilder<T> extends StatelessWidget {
   final AsyncWidgetBuilder<T> builder;
   final T initialData;
 
-  const SharedPreferencesBuilder({
-    Key key,
-    @required this.pref,
-    @required this.builder,
-    this.initialData
-  }) : super(key: key);
+  const SharedPreferencesBuilder(
+      {Key key, @required this.pref, @required this.builder, this.initialData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

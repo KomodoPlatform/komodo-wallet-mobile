@@ -71,7 +71,7 @@ class MediaBloc implements BlocBase {
   }
 
   updateSavedArticle(Article article) {
-    this.articles.forEach((_article){
+    this.articles.forEach((_article) {
       if (_article.id == article.id) {
         _article.isSavedArticle = article.isSavedArticle;
       }
@@ -79,8 +79,7 @@ class MediaBloc implements BlocBase {
     _inArticles.add(this.articles);
   }
 
-  deleteAll() async{
-     await DBProvider.db.deleteAll();
+  deleteAll() async {
+    await DBProvider.db.deleteAll();
   }
-
 }

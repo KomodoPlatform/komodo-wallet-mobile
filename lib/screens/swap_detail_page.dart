@@ -337,7 +337,7 @@ class _DetailSwapState extends State<DetailSwap> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 24),
           child: InkWell(
-            onTap: (){
+            onTap: () {
               copyToClipBoard(context, widget.swap.uuid.uuid);
             },
             child: Padding(

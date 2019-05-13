@@ -49,9 +49,12 @@ class _SwapHistoryState extends State<SwapHistory> {
                 itemCount: swaps.length,
                 itemBuilder: (BuildContext context, int index) {
                   Swap swap = swaps[index];
-                  String swapStatus = swapHistoryBloc.getSwapStatusString(context, swap.status);
-                  Color colorStatus = swapHistoryBloc.getColorStatus(swap.status);
-                  String stepStatus = swapHistoryBloc.getStepStatus(swap.status);
+                  String swapStatus =
+                      swapHistoryBloc.getSwapStatusString(context, swap.status);
+                  Color colorStatus =
+                      swapHistoryBloc.getColorStatus(swap.status);
+                  String stepStatus =
+                      swapHistoryBloc.getStepStatus(swap.status);
                   String amountToBuy = getAmountToBuy(swap);
 
                   return Card(
@@ -64,7 +67,9 @@ class _SwapHistoryState extends State<SwapHistory> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SwapDetailPage(swap: swap,)),
+                                builder: (context) => SwapDetailPage(
+                                      swap: swap,
+                                    )),
                           );
                         },
                         child: Column(
@@ -189,10 +194,10 @@ class _SwapHistoryState extends State<SwapHistory> {
         });
   }
 
-  Future<Null> _onRefresh() async{
+  Future<Null> _onRefresh() async {
     return await swapHistoryBloc.updateSwap();
   }
-  
+
   _buildIcon(Coin coin) {
     return Container(
       height: 25,

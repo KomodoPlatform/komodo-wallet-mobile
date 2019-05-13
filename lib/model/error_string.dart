@@ -22,10 +22,10 @@ class ErrorString {
   });
 
   factory ErrorString.fromJson(Map<String, dynamic> json) => new ErrorString(
-    error: json["error"],
-  );
+        error: json["error"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "error": error,
-  };
+        "error": error,
+      };
 }

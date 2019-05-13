@@ -129,38 +129,41 @@ class Transaction {
       };
 
   String getTimeFormat() {
-    return DateFormat('dd MMM yyyy HH:mm').format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
+    return DateFormat('dd MMM yyyy HH:mm')
+        .format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
   }
 }
 
 class FeeDetails {
-    double amount;
-    String coin;
-    int gas;
-    double gasPrice;
-    double totalFee;
+  double amount;
+  String coin;
+  int gas;
+  double gasPrice;
+  double totalFee;
 
-    FeeDetails({
-        this.amount,
-        this.coin,
-        this.gas,
-        this.gasPrice,
-        this.totalFee,
-    });
+  FeeDetails({
+    this.amount,
+    this.coin,
+    this.gas,
+    this.gasPrice,
+    this.totalFee,
+  });
 
-    factory FeeDetails.fromJson(Map<String, dynamic> json) => new FeeDetails(
+  factory FeeDetails.fromJson(Map<String, dynamic> json) => new FeeDetails(
         amount: json["amount"] == null ? null : json["amount"].toDouble(),
         coin: json["coin"] == null ? null : json["coin"],
         gas: json["gas"] == null ? null : json["gas"],
-        gasPrice: json["gas_price"] == null ? null : json["gas_price"].toDouble(),
-        totalFee: json["total_fee"] == null ? null : json["total_fee"].toDouble(),
-    );
+        gasPrice:
+            json["gas_price"] == null ? null : json["gas_price"].toDouble(),
+        totalFee:
+            json["total_fee"] == null ? null : json["total_fee"].toDouble(),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "amount": amount == null ? null : amount,
         "coin": coin == null ? null : coin,
         "gas": gas == null ? null : gas,
         "gas_price": gasPrice == null ? null : gasPrice,
         "total_fee": totalFee == null ? null : totalFee,
-    };
+      };
 }

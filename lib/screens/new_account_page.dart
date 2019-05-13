@@ -22,13 +22,9 @@ class _NewAccountPageState extends State<NewAccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        backgroundColor: Theme
-            .of(context)
-            .backgroundColor,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text(AppLocalizations
-              .of(context)
-              .newAccountUpper),
+          title: Text(AppLocalizations.of(context).newAccountUpper),
         ),
         body: Column(
           children: <Widget>[
@@ -47,13 +43,8 @@ class _NewAccountPageState extends State<NewAccountPage> {
           height: 56,
         ),
         Text(
-          AppLocalizations
-              .of(context)
-              .seedPhraseTitle,
-          style: Theme
-              .of(context)
-              .textTheme
-              .title,
+          AppLocalizations.of(context).seedPhraseTitle,
+          style: Theme.of(context).textTheme.title,
           textAlign: TextAlign.center,
         ),
         SizedBox(
@@ -97,14 +88,13 @@ class _NewAccountPageState extends State<NewAccountPage> {
               ),
               Expanded(
                   child: Text(
-                    seed,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .body1
-                        .copyWith(color: Colors.red),
-                    textAlign: TextAlign.center,
-                  )),
+                seed,
+                style: Theme.of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(color: Colors.red),
+                textAlign: TextAlign.center,
+              )),
               SizedBox(
                 width: 6,
               ),
@@ -137,13 +127,13 @@ class _NewAccountPageState extends State<NewAccountPage> {
             child: Container(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Colors.pink,
-                        Colors.red.withOpacity(0.4),
-                      ],
-                    )),
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.pink,
+                    Colors.red.withOpacity(0.4),
+                  ],
+                )),
                 height: 45,
                 width: 45,
                 child: Center(
@@ -160,21 +150,20 @@ class _NewAccountPageState extends State<NewAccountPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(AppLocalizations
-                    .of(context)
-                    .getBackupPhrase,
-                  style: Theme
-                      .of(context)
+                Text(
+                  AppLocalizations.of(context).getBackupPhrase,
+                  style: Theme.of(context)
                       .textTheme
                       .body1
-                      .copyWith(fontWeight: FontWeight.bold),),
-                SizedBox(height: 6,),
-                Text(AppLocalizations
-                    .of(context)
-                    .recommendSeedMessage, style: Theme
-                    .of(context)
-                    .textTheme
-                    .body2,)
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Text(
+                  AppLocalizations.of(context).recommendSeedMessage,
+                  style: Theme.of(context).textTheme.body2,
+                )
               ],
             ),
           )
@@ -190,29 +179,18 @@ class _NewAccountPageState extends State<NewAccountPage> {
         width: double.infinity,
         height: 50,
         child: RaisedButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0)),
-          color: Theme
-              .of(context)
-              .buttonColor,
-          disabledColor: Theme
-              .of(context)
-              .disabledColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+          color: Theme.of(context).buttonColor,
+          disabledColor: Theme.of(context).disabledColor,
           child: Text(
-            AppLocalizations
-                .of(context)
-                .next
-                .toUpperCase(),
-            style: Theme
-                .of(context)
-                .textTheme
-                .button,
+            AppLocalizations.of(context).next.toUpperCase(),
+            style: Theme.of(context).textTheme.button,
           ),
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => ConfirmAccountPage(seed)),
+              MaterialPageRoute(builder: (context) => ConfirmAccountPage(seed)),
             );
           },
         ),

@@ -15,8 +15,6 @@ class TitleCoin extends StatefulWidget {
 class _TitleCoinState extends State<TitleCoin> {
   @override
   Widget build(BuildContext context) {
-    return Hero(
-        tag: widget.tag,
-        child: Text(widget.text, style: widget.style));
+    return Hero(tag: widget.tag, child: Text(widget.text, style: widget.style));
   }
 }

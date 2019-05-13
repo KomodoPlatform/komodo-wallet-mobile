@@ -45,16 +45,17 @@ class DBProvider {
     final db = await database;
 
     Map<String, dynamic> row = {
-      'id' : newArticle.id,
-      'title'  : newArticle.title,
-      'media' : json.encode(newArticle.media),
-      'header' : newArticle.header,
-      'body' : newArticle.body,
+      'id': newArticle.id,
+      'title': newArticle.title,
+      'media': json.encode(newArticle.media),
+      'header': newArticle.header,
+      'body': newArticle.body,
       'keywords': newArticle.keywords,
-      'isSavedArticle' : newArticle.isSavedArticle,
-      'creationDate' : newArticle.creationDate.toString(),
-      'author' : newArticle.author == null ? "KomodoPlatform" : newArticle.author,
-      'v' : newArticle.v
+      'isSavedArticle': newArticle.isSavedArticle,
+      'creationDate': newArticle.creationDate.toString(),
+      'author':
+          newArticle.author == null ? "KomodoPlatform" : newArticle.author,
+      'v': newArticle.v
     };
     int res = await db.insert('ArticlesSaved ', row);
 

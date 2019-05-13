@@ -1,7 +1,7 @@
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 
-class CoinBalance{
+class CoinBalance {
   Coin coin;
   Balance balance;
   double balanceUSD;
@@ -11,5 +11,5 @@ class CoinBalance{
 
   String getBalanceUSD() {
     return balanceUSD.toStringAsFixed(2);
-  }  
+  }
 }

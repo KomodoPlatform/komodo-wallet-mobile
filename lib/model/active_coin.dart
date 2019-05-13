@@ -26,14 +26,14 @@ class ActiveCoin {
   });
 
   factory ActiveCoin.fromJson(Map<String, dynamic> json) => new ActiveCoin(
-    address: json["address"],
-    balance: json["balance"].toDouble(),
-    result: json["result"],
-  );
+        address: json["address"],
+        balance: json["balance"].toDouble(),
+        result: json["result"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "address": address,
-    "balance": balance,
-    "result": result,
-  };
+        "address": address,
+        "balance": balance,
+        "result": result,
+      };
 }
