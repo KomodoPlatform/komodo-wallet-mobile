@@ -21,7 +21,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 
-void main() async{
+import 'blocs/coins_bloc.dart';
+
+void main() async {
   bool isInDebugMode = false;
 
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -38,35 +40,30 @@ void main() async{
 
   runZoned<Future<Null>>(() async {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
-    _checkPassphrase().then((data) {
-      _runBinMm2UserAlreadyLog();
-      
-      runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+        .then((_) {
+      _runBinMm2UserAlreadyLog().then((onValue) {
+        runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+      });
     });
-  });
   }, onError: (error, stackTrace) async {
     // Whenever an error occurs, call the `reportCrash` function. This will send
     // Dart errors to our dev console or Crashlytics depending on the environment.
     print("error");
-    await FlutterCrashlytics().reportCrash(error, stackTrace, forceCrash: false);
+    await FlutterCrashlytics()
+        .reportCrash(error, stackTrace, forceCrash: false);
   });
 }
 
-Future<void> _checkPassphrase() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  if (prefs.getString("passphrase") != null &&
-      prefs.getString("passphrase") != "") {
-    authBloc.login(prefs.getString("passphrase"));
-  }
-}
-
-_runBinMm2UserAlreadyLog() async {
+Future<void> _runBinMm2UserAlreadyLog() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getString('passphrase') != null &&
       prefs.getString('passphrase') != "") {
-    await mm2.runBin();
+    print("readJsonCoin");
+    await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
+    authBloc.login(prefs.getString("passphrase"));
+  } else {
+    print("loadJsonCoinsDefault");
+    await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
   }
 }
 
@@ -121,6 +118,7 @@ class _MyAppState extends State<MyApp> {
         ),
         home: StreamBuilder<bool>(
           stream: authBloc.outIsLogin,
+          initialData: authBloc.isLogin,
           builder: (context, isLogin) {
             return StreamBuilder(
               initialData: authBloc.pinStatus,

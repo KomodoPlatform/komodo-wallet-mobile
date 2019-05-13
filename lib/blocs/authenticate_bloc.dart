@@ -39,8 +39,10 @@ class AuthenticateBloc extends BlocBase {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.getString("passphrase") != null) {
+      this.isLogin = true;
       _inIsLogin.add(true);
     } else {
+      this.isLogin = false;
       _inIsLogin.add(false);
     }
     _inpinStatus.add(PinStatus.NORMAL_PIN);
@@ -74,6 +76,7 @@ class AuthenticateBloc extends BlocBase {
     }
     await prefs.setBool("isPinIsSet", false);
     await mm2.runBin();
+    this.isLogin = true;
     _inIsLogin.add(true);
   }
 
@@ -90,6 +93,7 @@ class AuthenticateBloc extends BlocBase {
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
     mm2.balances = new List<Balance>();
     await mediaBloc.deleteAll();
+    this.isLogin = false;
     _inIsLogin.add(false);
   }
 
