@@ -17,7 +17,6 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
 
   @override
   void initState() {
-    print("INITSTATE");
     _isLogin = false;
     _isButtonDisabled = true;
     super.initState();

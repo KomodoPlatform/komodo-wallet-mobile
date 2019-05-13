@@ -194,7 +194,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       transactions.result.transactions.length == 0) {
                     return Center(
                         child: Text(
-                      "No Transactions",
+                      AppLocalizations.of(context).noTxs,
                       style: Theme.of(context).textTheme.body2,
                     ));
                   }
@@ -913,7 +913,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         },
                         child: Column(
                           children: <Widget>[
-                            Text("Success !"),
+                            Text(AppLocalizations.of(context).success),
                             SizedBox(
                               height: 16,
                             ),
@@ -969,7 +969,7 @@ class _CoinDetailState extends State<CoinDetail> {
   _copyToClipBoard(BuildContext context, String str) {
     Scaffold.of(context).showSnackBar(new SnackBar(
       duration: Duration(milliseconds: 300),
-      content: new Text("Copied to the clipboard"),
+      content: new Text(AppLocalizations.of(context).clipboard),
     ));
     Clipboard.setData(new ClipboardData(text: str));
   }
@@ -1018,7 +1018,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6.0)),
                     child: Text(
-                      "MAX",
+                      AppLocalizations.of(context).max,
                       style: Theme.of(context)
                           .textTheme
                           .body1

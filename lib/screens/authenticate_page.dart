@@ -33,7 +33,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                   height: 25,
                 ),
                 Text(
-                  "atomicDEX",
+                  AppLocalizations.of(context).appName,
                   style: Theme.of(context).textTheme.title,
                 )
               ],

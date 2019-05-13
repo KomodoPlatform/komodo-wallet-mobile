@@ -29,7 +29,7 @@ class _SwapHistoryState extends State<SwapHistory> {
           if (snapshot.hasData && snapshot.data.length == 0) {
             return Center(
               child: Text(
-                "No Swaps",
+                AppLocalizations.of(context).noSwaps,
                 style: Theme.of(context).textTheme.body2,
               ),
             );

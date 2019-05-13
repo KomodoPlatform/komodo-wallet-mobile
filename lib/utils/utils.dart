@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keccak/keccak.dart';
 
+import '../localizations.dart';
+
 copyToClipBoard(BuildContext context, String str) {
   Scaffold.of(context).showSnackBar(new SnackBar(
     duration: Duration(milliseconds: 300),
-    content: new Text("Copied to the clipboard"),
+    content: new Text(AppLocalizations.of(context).clipboard),
   ));
   Clipboard.setData(new ClipboardData(text: str));
 }

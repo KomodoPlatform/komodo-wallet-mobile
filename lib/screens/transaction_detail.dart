@@ -28,8 +28,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
             icon: Icon(Icons.share),
             onPressed: () {
               String fromOrTo = widget.transaction.myBalanceChange > 0
-                  ? 'From: ${widget.transaction.from[0]}'
-                  : 'To ${widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]}';
+                  ? '${AppLocalizations.of(context).from}: ${widget.transaction.from[0]}'
+                  : '${AppLocalizations.of(context).to} ${widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]}';
 
               String dataToShare =
                   'Transaction detail:\nAmount: ${widget.transaction.myBalanceChange} ${widget.transaction.coin}\nDate: ${widget.transaction.getTimeFormat()}\nBlock: ${widget.transaction.blockHeight}\nConfirmations: ${widget.transaction.confirmations}\nFee: ${widget.transaction.feeDetails.amount} ${widget.transaction.coin}\n${fromOrTo}\nTx Hash: ${widget.transaction.txHash}';
@@ -115,8 +115,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
                   ),
                   padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   child: tx.confirmations > 0
-                      ? Text("CONFIRMED")
-                      : Text("NOT CONFIRMED"),
+                      ? Text(AppLocalizations.of(context).txConfirmed)
+                      : Text(AppLocalizations.of(context).txNotConfirmed),
                 )
               ],
             ),
@@ -131,21 +131,21 @@ class _TransactionDetailState extends State<TransactionDetail> {
       children: <Widget>[
         widget.transaction.blockHeight > 0
             ? ItemTransationDetail(
-                title: "Block", data: widget.transaction.blockHeight.toString())
+                title: AppLocalizations.of(context).txBlock, data: widget.transaction.blockHeight.toString())
             : Container(),
         ItemTransationDetail(
-            title: "Confirmations",
+            title: AppLocalizations.of(context).txConfirmations,
             data: widget.transaction.confirmations.toString()),
         ItemTransationDetail(
-            title: "Fee",
+            title: AppLocalizations.of(context).txFee,
             data: widget.transaction.feeDetails.amount.toString() +
                 " " +
                 widget.transaction.coin),
         widget.transaction.myBalanceChange > 0
             ? ItemTransationDetail(
-                title: "From", data: widget.transaction.from[0])
+                title: AppLocalizations.of(context).from, data: widget.transaction.from[0])
             : ItemTransationDetail(
-                title: "To",
+                title: AppLocalizations.of(context).to,
                 data: widget.transaction.to.length > 1
                     ? widget.transaction.to[1]
                     : widget.transaction.to[0]),

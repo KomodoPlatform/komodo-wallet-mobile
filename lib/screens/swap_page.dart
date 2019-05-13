@@ -86,7 +86,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print("TOTO");
         FocusScope.of(context).requestFocus(new FocusNode());
       },
       child: DefaultTabController(

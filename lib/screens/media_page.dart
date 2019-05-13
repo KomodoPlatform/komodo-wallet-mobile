@@ -61,7 +61,7 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
                 labelPadding: EdgeInsets.symmetric(horizontal: 16),
                 indicator: CustomTabIndicator(context: context),
                 controller: _controllerTabs,
-                tabs: <Widget>[Tab(text: "BROWSE"), Tab(text: "SAVED")],
+                tabs: <Widget>[Tab(text: AppLocalizations.of(context).mediaBrowse), Tab(text: AppLocalizations.of(context).mediaSaved)],
               ),
             ),
           ),
@@ -303,7 +303,7 @@ class _IconsArticleState extends State<IconsArticle> {
             borderRadius: BorderRadius.all(Radius.circular(2)),
             onTap: () {
               Share.share(
-                  'Article from AtomicDEX application:\n\n${widget.article.title}\nBy ${widget.article.author}\n${timeago.format(widget.article.creationDate)}\n\n${widget.article.body}');
+                  '${AppLocalizations.of(context).articleFrom}:\n\n${widget.article.title}\nBy ${widget.article.author}\n${timeago.format(widget.article.creationDate)}\n\n${widget.article.body}');
             },
             child: Icon(Icons.share, color: Colors.grey, size: 30)),
       ],
@@ -344,7 +344,7 @@ class SavedNews extends StatelessWidget {
                   height: 16,
                 ),
                 Text(
-                  "YOU HAVE NO SAVED ARTICLES YET.",
+                  AppLocalizations.of(context).mediaNotSavedDescription,
                   style: Theme.of(context).textTheme.title,
                   textAlign: TextAlign.center,
                 ),
@@ -358,7 +358,7 @@ class SavedNews extends StatelessWidget {
                   color: Theme.of(context).accentColor,
                   disabledColor: Theme.of(context).disabledColor,
                   child: Text(
-                    "BROWSE FEED",
+                    AppLocalizations.of(context).mediaBrowseFeed,
                     style: Theme.of(context)
                         .textTheme
                         .button

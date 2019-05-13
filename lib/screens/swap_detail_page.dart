@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/uuid.dart';
@@ -116,9 +117,9 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
             ),
             Column(
               children: <Widget>[
-                Text("TRADE", style: Theme.of(context).textTheme.title),
+                Text(AppLocalizations.of(context).trade, style: Theme.of(context).textTheme.title),
                 Text(
-                  "COMPLETED!",
+                  AppLocalizations.of(context).tradeCompleted,
                   style: Theme.of(context)
                       .textTheme
                       .title
@@ -259,7 +260,7 @@ class _ProgressSwapState extends State<ProgressSwap>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "Step ",
+                    '${AppLocalizations.of(context).step} ',
                     style: Theme.of(context).textTheme.subtitle,
                   ),
                   Text(
@@ -316,7 +317,7 @@ class _DetailSwapState extends State<DetailSwap> {
         Padding(
           padding: const EdgeInsets.only(top: 32, left: 24, right: 24),
           child: Text(
-            'TRADE DETAIL:',
+            '${AppLocalizations.of(context).tradeDetail}:',
             style: Theme.of(context).textTheme.subtitle.copyWith(
                 color: Theme.of(context).accentColor,
                 fontWeight: FontWeight.bold),
@@ -326,7 +327,7 @@ class _DetailSwapState extends State<DetailSwap> {
           padding:
               const EdgeInsets.only(top: 16, left: 24, right: 24, bottom: 4),
           child: Text(
-            "Requested Trade:",
+            "${AppLocalizations.of(context).requestedTrade}:",
             style: Theme.of(context)
                 .textTheme
                 .body2
@@ -349,7 +350,7 @@ class _DetailSwapState extends State<DetailSwap> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Text(
-                      'Swap ID:',
+                      '${AppLocalizations.of(context).swapID}:',
                       style: Theme.of(context).textTheme.body2,
                     ),
                   ),
@@ -385,7 +386,7 @@ class _DetailSwapState extends State<DetailSwap> {
               _buildTextAmount(
                   widget.swap.uuid.rel, widget.uuid.amountToBuy.toString()),
               Text(
-                "Sell",
+                AppLocalizations.of(context).sell,
                 style: Theme.of(context)
                     .textTheme
                     .body2
@@ -412,7 +413,7 @@ class _DetailSwapState extends State<DetailSwap> {
               _buildTextAmount(widget.swap.uuid.base,
                   widget.swap.uuid.amountToGet.toString()),
               Text(
-                "Receive",
+                '${AppLocalizations.of(context).receive[0].toUpperCase()}${AppLocalizations.of(context).receive.substring(1)}',
                 style: Theme.of(context)
                     .textTheme
                     .body2

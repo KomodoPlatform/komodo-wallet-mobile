@@ -47,7 +47,7 @@ class _LockScreenState extends State<LockScreen> {
     var localAuth = LocalAuthentication();
 
     bool didAuthenticate = await localAuth.authenticateWithBiometrics(
-        localizedReason: 'Please authenticate to show account balance');
+        localizedReason: AppLocalizations.of(context).lockScreenAuth);
     if (didAuthenticate) {
       if (widget.pinStatus == PinStatus.DISABLED_PIN) {
         SharedPreferences.getInstance().then((data) {

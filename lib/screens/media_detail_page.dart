@@ -45,7 +45,7 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
                 ),
                 Expanded(
                   child: Text(
-                    ' | By ${widget.article.author}',
+                    ' | ${AppLocalizations.of(context).mediaBy} ${widget.article.author}',
                     style: body2Light,
                   ),
                 ),
