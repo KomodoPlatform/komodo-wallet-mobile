@@ -149,8 +149,7 @@ class MarketMakerService {
     List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
     List<Coin> coins = await coinsBloc.readJsonCoin();
     for (var coin in coins) {
-      print("forceUpdate" + forceUpdate.toString());
-      if (forceUpdate) futureActiveCoins.add(this.activeCoin(coin));
+      futureActiveCoins.add(this.activeCoin(coin));
     }
     mm2Ready = false;
     await coinsBloc.writeJsonCoin(coins);
