@@ -130,10 +130,10 @@ class MarketMakerService {
         checkStatusmm2().then((onValue) {
           if (onValue == 3) {
             ismm2Running = true;
+            _.cancel();
             activateCoins().then((onValue) {
               loadCoin(true).then((data) {
                 coinsBloc.startCheckBalance();
-                _.cancel();
               });
             });
           }
