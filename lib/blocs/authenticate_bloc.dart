@@ -57,7 +57,6 @@ class AuthenticateBloc extends BlocBase {
 
   Future<void> login(String passphrase) async {
     await DBProvider.db.initDB();
-    mm2.mm2Ready = false;
     mm2.killmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString("passphrase") != null &&
@@ -83,7 +82,6 @@ class AuthenticateBloc extends BlocBase {
   void logout() async {
     coinsBloc.stopCheckBalance();
     mm2.killmm2();
-    mm2.mm2Ready = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("passphrase", null);
     await prefs.setBool("isPinIsSet", false);

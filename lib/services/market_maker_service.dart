@@ -45,7 +45,6 @@ class MarketMakerService {
   String url = 'http://10.0.2.2:7783';
   String userpass = "";
   Stream<List<int>> streamSubscriptionStdout;
-  bool mm2Ready = false;
   String pubkey = "";
   String filesPath = "";
   var sink;
@@ -63,7 +62,6 @@ class MarketMakerService {
     final directory = await getApplicationDocumentsDirectory();
     filesPath = directory.path + "/";
 
-    mm2Ready = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String passphrase = prefs.getString('passphrase');
 
@@ -75,7 +73,6 @@ class MarketMakerService {
 
     String startParam =
         '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"${filesPath}\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coins,\"dbdir\":\"$filesPath\"}';
-    // await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
 
     if (Platform.isAndroid) {
       await Process.run('killall', ['mm2']);
@@ -108,10 +105,12 @@ class MarketMakerService {
               logMm2.contains("Finished")) {
             swapHistoryBloc.updateSwap();
           }
-          loadCoin(true);
           ismm2Running = true;
-          coinsBloc.startCheckBalance();
-          mm2Ready = true;
+          activateCoins().then((_) {
+            loadCoin(true).then((_) {
+              coinsBloc.startCheckBalance();
+            });
+          });
         }
       });
     } else if (Platform.isIOS) {
@@ -127,14 +126,15 @@ class MarketMakerService {
         if (t1 <= t2) {
           _.cancel();
         }
+
         checkStatusmm2().then((onValue) {
-          print(onValue);
           if (onValue == 3) {
-            loadCoin(true).then((data) {
-              coinsBloc.startCheckBalance();
-              mm2Ready = true;
-              ismm2Running = true;
-              _.cancel();
+            ismm2Running = true;
+            activateCoins().then((onValue) {
+              loadCoin(true).then((data) {
+                coinsBloc.startCheckBalance();
+                _.cancel();
+              });
             });
           }
         });
@@ -146,17 +146,20 @@ class MarketMakerService {
     return await platformmm2.invokeMethod('status');
   }
 
-  Future<void> loadCoin(bool forceUpdate) async {
+  Future<void> activateCoins() async {
     List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
     List<Coin> coins = await coinsBloc.readJsonCoin();
+
     for (var coin in coins) {
+      print("activate coin :" + coin.abbr);
       futureActiveCoins.add(this.activeCoin(coin));
     }
-    mm2Ready = false;
     await coinsBloc.writeJsonCoin(coins);
-
     await Future.wait(futureActiveCoins);
+  }
 
+  Future<void> loadCoin(bool forceUpdate) async {
+    List<Coin> coins = await coinsBloc.readJsonCoin();
     List<CoinBalance> listCoinElectrum = new List<CoinBalance>();
     List<Balance> balances = await getAllBalances(forceUpdate);
 
@@ -168,9 +171,8 @@ class MarketMakerService {
             coinBalance.priceForOne =
                 await getPriceObj.getPrice(coin.abbr, "USD");
             coinBalance.balanceUSD =
-                coinBalance.priceForOne * coinBalance.balance.balance;
+                  coinBalance.priceForOne * coinBalance.balance.balance;
           }
-
           listCoinElectrum.add(coinBalance);
         }
         if (balance.coin == "KMD") {
@@ -350,7 +352,6 @@ class MarketMakerService {
 
   Future<dynamic> postWithdraw(
       Coin coin, String addressTo, double amount, bool isMax) async {
-
     GetWithdraw getWithdraw = new GetWithdraw(
       userpass: userpass,
       method: "withdraw",
@@ -361,7 +362,7 @@ class MarketMakerService {
     if (!isMax) {
       getWithdraw.amount = amount;
     }
-    
+
     print("sending: " + amount.toString());
     print(getWithdrawToJson(getWithdraw));
     final response = await http.post(url, body: getWithdrawToJson(getWithdraw));

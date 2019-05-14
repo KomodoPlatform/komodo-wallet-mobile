@@ -221,6 +221,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.paused:
         print("paused");
+
+
+        
         authBloc.showPin(true);
         break;
       case AppLifecycleState.resumed:
