@@ -43,9 +43,3 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-// crashlytics {
-//     enableNdk true
-//     androidNdkOut "../../debugSymbols"
-//     androidNdkLibsOut "../../build/app/intermediates/transforms/stripDebugSymbol/release/0/lib"
-// }
