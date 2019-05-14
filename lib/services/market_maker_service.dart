@@ -109,6 +109,7 @@ class MarketMakerService {
             swapHistoryBloc.updateSwap();
           }
           loadCoin(true);
+          ismm2Running = true;
           coinsBloc.startCheckBalance();
           mm2Ready = true;
         }
