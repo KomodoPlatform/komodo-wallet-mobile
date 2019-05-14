@@ -117,7 +117,7 @@ class _CoinDetailState extends State<CoinDetail> {
         fee = (txFee.toDouble() / 100000000);
       }
       _amountController.text =
-          (widget.coinBalance.balance.balance - fee).toStringAsFixed(8);
+          (widget.coinBalance.balance.balance).toStringAsFixed(8);
     });
     await Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {
@@ -521,7 +521,8 @@ class _CoinDetailState extends State<CoinDetail> {
             widget.coinBalance.coin,
             widget.coinBalance.balance.address,
             widget.coinBalance.balance.balance -
-                widget.coinBalance.coin.txfee / 100000000)
+                widget.coinBalance.coin.txfee / 100000000,
+                true)
         .then((data) {
       Navigator.of(context).pop();
       if (data is WithdrawResponse) {
@@ -888,9 +889,11 @@ class _CoinDetailState extends State<CoinDetail> {
     setState(() {
       currentIndex = 2;
     });
+    print(widget.coinBalance.balance.balance == double.parse(_amountController.text));
     mm2
         .postWithdraw(widget.coinBalance.coin,
-            _addressController.text.toString(), sendamount)
+            _addressController.text.toString(), sendamount, 
+            widget.coinBalance.balance.balance == double.parse(_amountController.text))
         .then((data) {
       if (data is WithdrawResponse) {
         mm2
