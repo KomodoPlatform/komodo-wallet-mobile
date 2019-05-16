@@ -11,6 +11,11 @@ GetActiveCoin getActiveCoinFromJson(String str) {
 
 String getActiveCoinToJson(GetActiveCoin data) {
   final dyn = data.toJson();
+  if (data.swap_contract_address == null) {
+    dyn.remove("swap_contract_address");
+  }
+
+  print(dyn.toString());
   return json.encode(dyn);
 }
 

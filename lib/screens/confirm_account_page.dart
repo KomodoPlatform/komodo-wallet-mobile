@@ -119,9 +119,11 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
     );
   }
 
-  _onLoginPressed() {
-    Navigator.pop(context);
-    Navigator.pop(context);
-    authBloc.login(controllerSeed.text);
+  _onLoginPressed() async{
+    print("_onLoginPressed");
+    await authBloc.login(controllerSeed.text).then((onValue){
+      Navigator.pop(context);
+      Navigator.pop(context);
+    });
   }
 }

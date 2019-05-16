@@ -1,11 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/coin_json_bloc.dart';
-import 'package:komodo_dex/blocs/orderbook_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authenticate_page.dart';
 import 'package:komodo_dex/screens/bloc_coins_page.dart';
@@ -17,9 +16,9 @@ import 'package:komodo_dex/screens/swap_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'blocs/coins_bloc.dart';
 
@@ -48,7 +47,7 @@ void main() async {
   }, onError: (error, stackTrace) async {
     // Whenever an error occurs, call the `reportCrash` function. This will send
     // Dart errors to our dev console or Crashlytics depending on the environment.
-    print("error");
+    print(stackTrace);
     await FlutterCrashlytics()
         .reportCrash(error, stackTrace, forceCrash: false);
   });
@@ -60,7 +59,12 @@ Future<void> _runBinMm2UserAlreadyLog() async {
       prefs.getString('passphrase') != "") {
     print("readJsonCoin");
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
-    authBloc.login(prefs.getString("passphrase"));
+    await authBloc.loginUI(true, prefs.getString("passphrase"));
+
+    if (!(authBloc.isPinShow && prefs.getBool("switch_pin"))) {
+      print("login isPinShow");
+      await authBloc.login(prefs.getString("passphrase"));
+    }
   } else {
     print("loadJsonCoinsDefault");
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
@@ -142,7 +146,7 @@ class _MyAppState extends State<MyApp> {
                                   pinStatus: PinStatus.NORMAL_PIN,
                                 );
                               } else {
-                                return InitBlocs(child: MyHomePage());
+                                return MyHomePage();
                               }
                             },
                           );
@@ -155,32 +159,12 @@ class _MyAppState extends State<MyApp> {
                       title: AppLocalizations.of(context).createPin,
                       subTitle: AppLocalizations.of(context).enterPinCode,
                       firstCreationPin: true,
-                      isConfirmPin: PinStatus.CREATE_PIN);
+                      isConfirmPin: PinStatus.CREATE_PIN,
+                      isFromChangingPin: false,);
                 }
               },
             );
           },
-        ));
-  }
-}
-
-class InitBlocs extends StatefulWidget {
-  final Widget child;
-
-  InitBlocs({this.child});
-
-  @override
-  _InitBlocsState createState() => _InitBlocsState();
-}
-
-class _InitBlocsState extends State<InitBlocs> {
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider<OrderbookBloc>(
-        bloc: OrderbookBloc(),
-        child: BlocProvider<CoinJsonBloc>(
-          bloc: CoinJsonBloc(),
-          child: widget.child,
         ));
   }
 }
@@ -213,17 +197,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
+        if (Platform.isIOS) {
+          await mm2.stopmm2();
+        }
         print("inactive");
         break;
       case AppLifecycleState.paused:
         print("paused");
-
-
-        
         authBloc.showPin(true);
         break;
       case AppLifecycleState.resumed:
@@ -231,6 +214,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.suspending:
         print("suspending");
+        await mm2.stopmm2();
         break;
     }
   }

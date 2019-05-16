@@ -2,14 +2,11 @@ package com.komodoplatform.atomicdex
 
 import android.os.Build
 import android.os.Bundle
-
 import io.flutter.app.FlutterActivity
 import io.flutter.plugins.GeneratedPluginRegistrant
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
-
-
 
 class MainActivity: FlutterActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {

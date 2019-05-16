@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/confirm_account_page.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +32,7 @@ class _LockScreenState extends State<LockScreen> {
             if (snapshot.hasData && snapshot.data) {
               print(snapshot.data);
               _authenticateBiometrics();
+              return Container();
             }
             return Container();
           },
@@ -38,6 +41,7 @@ class _LockScreenState extends State<LockScreen> {
           title: AppLocalizations.of(context).lockScreen,
           subTitle: AppLocalizations.of(context).enterPinCode,
           isConfirmPin: widget.pinStatus,
+          isFromChangingPin: false,
         ),
       ],
     );
@@ -56,6 +60,10 @@ class _LockScreenState extends State<LockScreen> {
         Navigator.pop(context);
       }
       authBloc.showPin(false);
+      if (widget.pinStatus == PinStatus.NORMAL_PIN && !mm2.ismm2Running) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await authBloc.login(prefs.getString("passphrase"));
+      }
     }
     return didAuthenticate;
   }

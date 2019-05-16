@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +16,7 @@ class PinPage extends StatefulWidget {
   @required
   final PinStatus isConfirmPin;
   final String code;
+  final bool isFromChangingPin;
 
   @override
   _PinPageState createState() => _PinPageState();
@@ -24,6 +26,7 @@ class PinPage extends StatefulWidget {
       this.title,
       this.subTitle,
       this.isConfirmPin,
+      this.isFromChangingPin,
       this.code});
 }
 
@@ -69,6 +72,7 @@ class _PinPageState extends State<PinPage> {
                           subTitle: AppLocalizations.of(context).enterPinCode,
                           code: code,
                           isConfirmPin: PinStatus.CONFIRM_PIN,
+                          isFromChangingPin: widget.isFromChangingPin,
                         ));
 
                 if (widget.firstCreationPin != null &&
@@ -84,6 +88,8 @@ class _PinPageState extends State<PinPage> {
                   authBloc.showPin(false);
                   authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
                   Navigator.pop(context);
+                  if (!widget.isFromChangingPin)
+                    await authBloc.login(prefs.getString("passphrase"));
                 } else {
                   _errorPin();
                 }
@@ -91,6 +97,10 @@ class _PinPageState extends State<PinPage> {
               case PinStatus.NORMAL_PIN:
                 if (await _isPinCorrect(code)) {
                   authBloc.showPin(false);
+                  if (!mm2.ismm2Running) {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    await authBloc.login(prefs.getString("passphrase"));
+                  }
                 } else {
                   _errorPin();
                 }
@@ -115,6 +125,7 @@ class _PinPageState extends State<PinPage> {
                                 subTitle:
                                     AppLocalizations.of(context).enterPinCode,
                                 isConfirmPin: PinStatus.CREATE_PIN,
+                                isFromChangingPin: true,
                               )));
                 } else {
                   _errorPin();
