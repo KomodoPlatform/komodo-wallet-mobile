@@ -134,7 +134,7 @@ class AppLocalizations {
       Intl.message("Claim your KMD reward?", name: 'claimTitle');
   String get success => Intl.message("Success!", name: 'success');
   String get noRewardYet =>
-      Intl.message("No reward claimable please try again in 1h.",
+      Intl.message("No reward claimable - please try again in 1h.",
           name: 'noRewardYet');
   String get loading => Intl.message("Loading...", name: 'loading');
   String get dex => Intl.message("DEX", name: 'dex');
@@ -154,7 +154,7 @@ class AppLocalizations {
   String get trade => Intl.message("TRADE", name: 'trade');
   String get tradeCompleted => Intl.message("SWAP COMPLETED!", name: 'tradeCompleted');
   String get step => Intl.message("Step", name: 'step');
-  String get tradeDetail => Intl.message("TRADE DETAIL", name: 'tradeDetail');
+  String get tradeDetail => Intl.message("TRADE DETAILS", name: 'tradeDetail');
   String get requestedTrade => Intl.message("Requested Trade", name: 'requestedTrade');
   String get swapID => Intl.message("Swap ID", name: 'swapID');
   String get mediaBrowse => Intl.message("BROWSE", name: 'mediaBrowse');
