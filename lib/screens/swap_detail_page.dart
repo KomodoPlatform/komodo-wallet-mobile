@@ -4,6 +4,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/uuid.dart';
+import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,39 +33,42 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
+    return LockScreen(
+          child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
-      ),
-      body: StreamBuilder<List<Swap>>(
-          stream: swapHistoryBloc.outSwaps,
-          builder: (context, snapshot) {
-            Swap swapData = new Swap();
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Theme.of(context).backgroundColor,
+        ),
+        body: StreamBuilder<List<Swap>>(
+            stream: swapHistoryBloc.outSwaps,
+            initialData: swapHistoryBloc.swaps,
+            builder: (context, snapshot) {
+              Swap swapData = new Swap();
 
-            if (snapshot.hasData && snapshot.data.length > 0) {
-              snapshot.data.forEach((swap) {
-                if (swap.uuid.uuid == widget.swap.uuid.uuid) swapData = swap;
-              });
-              if (swapData.status == Status.SWAP_SUCCESSFUL &&
-                  isAnimationStepFinalIsFinish) {
-                return FinalTradeSuccess(
-                    uuid: widget.swap.uuid, swap: swapData);
-              } else {
-                return StepperTrade(
-                    uuid: widget.swap.uuid,
-                    swap: swapData,
-                    onStepFinish: () {
-                      setState(() {
-                        isAnimationStepFinalIsFinish = true;
+              if (snapshot.hasData && snapshot.data.length > 0) {
+                snapshot.data.forEach((swap) {
+                  if (swap.uuid.uuid == widget.swap.uuid.uuid) swapData = swap;
+                });
+                if (swapData.status == Status.SWAP_SUCCESSFUL &&
+                    isAnimationStepFinalIsFinish) {
+                  return FinalTradeSuccess(
+                      uuid: widget.swap.uuid, swap: swapData);
+                } else {
+                  return StepperTrade(
+                      uuid: widget.swap.uuid,
+                      swap: swapData,
+                      onStepFinish: () {
+                        setState(() {
+                          isAnimationStepFinalIsFinish = true;
+                        });
                       });
-                    });
+                }
+              } else {
+                return Container();
               }
-            } else {
-              return Container();
-            }
-          }),
+            }),
+      ),
     );
   }
 }

@@ -165,6 +165,7 @@ class AppLocalizations {
   String get mediaBy => Intl.message("By", name: 'mediaBy');
   String get lockScreenAuth => Intl.message("Please authenticate!", name: 'lockScreenAuth');
   String get noTxs => Intl.message("No Transactions", name: 'noTxs');
+  String get noArticles => Intl.message("No articles, comeback soon !", name: 'noArticles');
   String get infoTrade1 => Intl.message("After the match is found, you will not be able to cancel this trade.", name: 'infoTrade1');
   String get infoTrade2 => Intl.message("This transaction could take up to 10 min. Warning, don't kill the application for a success swap.", name: 'infoTrade2');
   String get swapDetailTitle => Intl.message("CONFIRM EXCHANGE DETAILS", name: 'swapDetailTitle');

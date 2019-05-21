@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transactions.dart';
+import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,36 +22,38 @@ class TransactionDetail extends StatefulWidget {
 class _TransactionDetailState extends State<TransactionDetail> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {
-              String fromOrTo = widget.transaction.myBalanceChange > 0
-                  ? '${AppLocalizations.of(context).from}: ${widget.transaction.from[0]}'
-                  : '${AppLocalizations.of(context).to} ${widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]}';
+    return LockScreen(
+          child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {
+                String fromOrTo = widget.transaction.myBalanceChange > 0
+                    ? '${AppLocalizations.of(context).from}: ${widget.transaction.from[0]}'
+                    : '${AppLocalizations.of(context).to} ${widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]}';
 
-              String dataToShare =
-                  'Transaction detail:\nAmount: ${widget.transaction.myBalanceChange} ${widget.transaction.coin}\nDate: ${widget.transaction.getTimeFormat()}\nBlock: ${widget.transaction.blockHeight}\nConfirmations: ${widget.transaction.confirmations}\nFee: ${widget.transaction.feeDetails.amount} ${widget.transaction.coin}\n${fromOrTo}\nTx Hash: ${widget.transaction.txHash}';
+                String dataToShare =
+                    'Transaction detail:\nAmount: ${widget.transaction.myBalanceChange} ${widget.transaction.coin}\nDate: ${widget.transaction.getTimeFormat()}\nBlock: ${widget.transaction.blockHeight}\nConfirmations: ${widget.transaction.confirmations}\nFee: ${widget.transaction.feeDetails.amount} ${widget.transaction.coin}\n${fromOrTo}\nTx Hash: ${widget.transaction.txHash}';
 
-              Share.share(dataToShare);
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.open_in_browser),
-            onPressed: () {
-              _launchURL(widget.coinBalance.coin.explorerUrl[0] +
-                  "tx/" +
-                  widget.transaction.txHash);
-            },
-          )
-        ],
-        elevation: 0,
-      ),
-      body: ListView(
-        children: <Widget>[_buildHeader(), _buildListDetails()],
+                Share.share(dataToShare);
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.open_in_browser),
+              onPressed: () {
+                _launchURL(widget.coinBalance.coin.explorerUrl[0] +
+                    "tx/" +
+                    widget.transaction.txHash);
+              },
+            )
+          ],
+          elevation: 0,
+        ),
+        body: ListView(
+          children: <Widget>[_buildHeader(), _buildListDetails()],
+        ),
       ),
     );
   }

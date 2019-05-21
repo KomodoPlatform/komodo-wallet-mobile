@@ -92,6 +92,27 @@ class _BrowseNewsState extends State<BrowseNews> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Article> articles = snapshot.data;
+
+            if (articles.length == 0) {
+              return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.info,
+                  color: Colors.grey,
+                  size: 48,
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  AppLocalizations.of(context).noArticles,
+                  style: Theme.of(context).textTheme.title,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            );
+            }
             return ListView.builder(
               itemCount: articles.length,
               itemBuilder: (BuildContext context, int index) {

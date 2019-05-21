@@ -120,51 +120,8 @@ class _MyAppState extends State<MyApp> {
                   color: Colors.white.withOpacity(0.8),
                   fontWeight: FontWeight.w400)),
         ),
-        home: StreamBuilder<bool>(
-          stream: authBloc.outIsLogin,
-          initialData: authBloc.isLogin,
-          builder: (context, isLogin) {
-            return StreamBuilder(
-              initialData: authBloc.pinStatus,
-              stream: authBloc.outpinStatus,
-              builder: (context, outShowCreatePin) {
-                if (outShowCreatePin.hasData &&
-                    (outShowCreatePin.data == PinStatus.NORMAL_PIN)) {
-                  if (isLogin.hasData && isLogin.data) {
-                    return StreamBuilder(
-                        initialData: authBloc.isPinShow,
-                        stream: authBloc.outShowPin,
-                        builder: (context, outShowPin) {
-                          return SharedPreferencesBuilder(
-                            pref: 'switch_pin',
-                            builder: (context, switchPinData) {
-                              if (outShowPin.hasData &&
-                                  outShowPin.data &&
-                                  switchPinData.hasData &&
-                                  switchPinData.data) {
-                                return LockScreen(
-                                  pinStatus: PinStatus.NORMAL_PIN,
-                                );
-                              } else {
-                                return MyHomePage();
-                              }
-                            },
-                          );
-                        });
-                  } else {
-                    return AuthenticatePage();
-                  }
-                } else {
-                  return PinPage(
-                      title: AppLocalizations.of(context).createPin,
-                      subTitle: AppLocalizations.of(context).enterPinCode,
-                      firstCreationPin: true,
-                      isConfirmPin: PinStatus.CREATE_PIN,
-                      isFromChangingPin: false,);
-                }
-              },
-            );
-          },
+        home: LockScreen(
+          child: MyHomePage(),
         ));
   }
 }

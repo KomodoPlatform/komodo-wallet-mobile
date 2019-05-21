@@ -8,12 +8,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
+import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/transaction_detail.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
@@ -94,6 +96,7 @@ class _CoinDetailState extends State<CoinDetail> {
     super.dispose();
   }
 
+  
   void onChange() {
     String text = _amountController.text;
     if (text.isNotEmpty) {
@@ -132,46 +135,48 @@ class _CoinDetailState extends State<CoinDetail> {
       initSteps();
     }
 
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        elevation: elevationHeader,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {
-              Share.share(AppLocalizations.of(context).shareAddress(
-                  widget.coinBalance.coin.name,
-                  widget.coinBalance.balance.address));
-            },
-          )
-        ],
-        title: Row(
-          children: <Widget>[
-            PhotoHero(
-              tag:
-                  "assets/${widget.coinBalance.balance.coin.toLowerCase()}.png",
-              radius: 16,
-            ),
-            SizedBox(
-              width: 8,
-            ),
-            Text(widget.coinBalance.coin.name.toUpperCase()),
+    return LockScreen(
+          child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          elevation: elevationHeader,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {
+                Share.share(AppLocalizations.of(context).shareAddress(
+                    widget.coinBalance.coin.name,
+                    widget.coinBalance.balance.address));
+              },
+            )
           ],
+          title: Row(
+            children: <Widget>[
+              PhotoHero(
+                tag:
+                    "assets/${widget.coinBalance.balance.coin.toLowerCase()}.png",
+                radius: 16,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Text(widget.coinBalance.coin.name.toUpperCase()),
+            ],
+          ),
+          centerTitle: false,
+          backgroundColor: Color(int.parse(widget.coinBalance.coin.colorCoin)),
         ),
-        centerTitle: false,
-        backgroundColor: Color(int.parse(widget.coinBalance.coin.colorCoin)),
+        body: Builder(builder: (context) {
+          return Column(
+            children: <Widget>[
+              _buildForm(),
+              _buildHeaderCoinDetail(context),
+              _buildTransactionsList(context),
+            ],
+          );
+        }),
       ),
-      body: Builder(builder: (context) {
-        return Column(
-          children: <Widget>[
-            _buildForm(),
-            _buildHeaderCoinDetail(context),
-            _buildTransactionsList(context),
-          ],
-        );
-      }),
     );
   }
 
@@ -187,10 +192,12 @@ class _CoinDetailState extends State<CoinDetail> {
           children: <Widget>[
             StreamBuilder<Transactions>(
                 stream: coinsBloc.outTransactions,
+                initialData: coinsBloc.transactions,
                 builder: (context, snapshot) {
                   Transactions transactions = snapshot.data;
 
-                  if (snapshot.hasData &&
+                  if (snapshot.hasData && transactions.result != null
+                  && transactions.result.transactions != null &&
                       transactions.result.transactions.length == 0) {
                     return Center(
                         child: Text(
@@ -198,7 +205,8 @@ class _CoinDetailState extends State<CoinDetail> {
                       style: Theme.of(context).textTheme.body2,
                     ));
                   }
-                  if (snapshot.hasData &&
+                  if (snapshot.hasData && transactions.result != null
+                  && transactions.result.transactions != null &&
                       transactions.result.transactions.length > 0) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),

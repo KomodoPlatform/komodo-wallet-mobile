@@ -25,6 +25,7 @@ class _SwapHistoryState extends State<SwapHistory> {
   Widget build(BuildContext context) {
     return StreamBuilder<List<Swap>>(
         stream: swapHistoryBloc.outSwaps,
+        initialData: swapHistoryBloc.swaps,
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data.length == 0) {
             return Center(
