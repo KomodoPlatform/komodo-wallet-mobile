@@ -27,8 +27,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   bool isSwapProgress = false;
   CoinBalance coinBalance;
   FocusNode _focus = new FocusNode();
+  String tmpText = "";
   String amountToBuy;
-
   @override
   void initState() {
     super.initState();
@@ -43,16 +43,31 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
   void onChange() {
     String text = _controllerAmount.text;
-    print(text);
     if (text.isNotEmpty) {
       setState(() {
         if (coinBalance != null &&
             double.parse(text.replaceAll(",", ".")) >
                 coinBalance.balance.balance) {
           setMaxValue();
+        } else {
+          if (text.contains(
+              RegExp("^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"))) {
+          } else {
+            _controllerAmount.text = tmpText;
+            _unfocusFocus();
+          }
         }
       });
     }
+  }
+
+  void _unfocusFocus() async {
+    _focus.unfocus();
+    await Future.delayed(const Duration(milliseconds: 0), () {
+      setState(() {
+        FocusScope.of(context).requestFocus(_focus);
+      });
+    });
   }
 
   void setMaxValue() async {
@@ -191,12 +206,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                 Expanded(
                                   child: TextFormField(
                                     focusNode: _focus,
-                                    inputFormatters: [
-                                      WhitelistingTextInputFormatter(
-                                        RegExp(
-                                            "^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"),
-                                      )
-                                    ],
                                     controller: _controllerAmount,
                                     style: Theme.of(context)
                                         .textTheme
