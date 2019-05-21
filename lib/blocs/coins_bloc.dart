@@ -35,6 +35,15 @@ class CoinsBloc implements BlocBase {
   Sink<Transactions> get _inTransactions => _transactionsController.sink;
   Stream<Transactions> get outTransactions => _transactionsController.stream;
 
+  List<Coin> coinToActivate = new List<Coin>();
+
+  // Streams to handle the list coin to activate
+  StreamController<List<Coin>> _coinToActivateController =
+      StreamController<List<Coin>>.broadcast();
+
+  Sink<List<Coin>> get _inCoinToActivate => _coinToActivateController.sink;
+  Stream<List<Coin>> get outCoinToActivate => _coinToActivateController.stream;
+
   var timer;
   var timer2;
 
@@ -42,6 +51,7 @@ class CoinsBloc implements BlocBase {
   void dispose() {
     _coinsController.close();
     _transactionsController.close();
+    _coinToActivateController.close();
   }
 
   void resetCoinBalance() {
@@ -78,40 +88,17 @@ class CoinsBloc implements BlocBase {
     _inTransactions.add(this.transactions);
   }
 
-  Future<void> updateOneCoin(CoinBalance coin) async {
-    coin.balance = await mm2.getBalance(coin.coin);
-    coin.priceForOne = await getPriceObj.getPrice(coin.coin.abbr, "USD");
-    coin.balanceUSD = coin.balance.balance * coin.priceForOne;
-    coinBalance.forEach((coinBalance) {
-      if (coin.coin.abbr == coinBalance.coin.abbr) {
-        coinBalance = coin;
-        this.coinBalance.remove(coinBalance);
-        this.coinBalance.add(coin);
-        _inCoins.add(this.coinBalance);
-      }
-    });
-
-    coinBalance.sort((b, a) {
-      if (a.balanceUSD != null) {
-        return a.balanceUSD.compareTo(b.balanceUSD);
-      }
-    });
-    updateCoins(coinBalance);
-  }
-
-  Future<void> addCoin(Coin coin) async {
-    print('Adding coin ${coin.abbr}');
-    List<Coin> coins = await readJsonCoin();
-    coins.add(coin);
-
-    await writeJsonCoin(coins);
-    await mm2.activeCoin(coin);
-    Balance balance = await mm2.getBalance(coin);
-    CoinBalance coinBalance = CoinBalance(coin, balance);
-    coinBalance.balanceUSD = 0;
-    this.coinBalance.add(coinBalance);
-    updateOneCoin(coinBalance);
-    _inCoins.add(this.coinBalance);
+  Future<void> addMultiCoins(List<Coin> coins) async{
+    List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
+    List<Coin> coinsReadJson = await readJsonCoin();
+    for (var coin in coins) {
+      coinsReadJson.add(coin);
+      print(coin.abbr);
+      futureActiveCoins.add(mm2.activeCoin(coin));
+    }
+    await Future.wait(futureActiveCoins);
+    await writeJsonCoin(coinsReadJson);
+    await mm2.loadCoin(true);
   }
 
   Future<String> get _localPath async {
@@ -137,6 +124,39 @@ class CoinsBloc implements BlocBase {
     } catch (e) {
       return new List<Coin>();
     }
+  }
+
+  Future<List<Coin>> getAllNotActiveCoins() async {
+    var allCoins =
+        await mm2.loadJsonCoins(await mm2.loadElectrumServersAsset());
+    var allCoinsActivate = await coinsBloc.readJsonCoin();
+    List<Coin> coinsNotActivated = new List<Coin>();
+
+    allCoins.forEach((coin) {
+                  bool isAlreadyAdded = false;
+      allCoinsActivate.forEach((coinActivate) {
+        if (coin.abbr == coinActivate.abbr)
+          isAlreadyAdded = true;
+      });
+      if (!isAlreadyAdded)
+        coinsNotActivated.add(coin);
+    });
+    return coinsNotActivated;
+  }
+
+  void addActivateCoin(Coin coin) {
+    this.coinToActivate.add(coin);
+    _inCoinToActivate.add(this.coinToActivate);
+  }
+
+  void removeActivateCoin(Coin coin) {
+    this.coinToActivate.remove(coin);
+    _inCoinToActivate.add(this.coinToActivate);
+  }
+
+  void resetActivateCoin() {
+    this.coinToActivate.clear();
+    _inCoinToActivate.add(this.coinToActivate);
   }
 
   void startCheckBalance() {

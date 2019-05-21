@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/coin_detail.dart';
+import 'package:komodo_dex/screens/select_coins_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
@@ -344,7 +345,11 @@ class _ItemCoinState extends State<ItemCoin> {
                           Icons.add,
                         ),
                         onPressed: () {
-                          _buildDialogSelectCoin(context);
+                           Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SelectCoinsPage()),
+                          );
                         },
                       )),
                     ),
@@ -444,57 +449,5 @@ class _ItemCoinState extends State<ItemCoin> {
     var allCoinsActivate = await coinsBloc.readJsonCoin();
 
     return allCoins.length == allCoinsActivate.length ? false : true;
-  }
-
-  void _buildDialogSelectCoin(BuildContext context) async {
-    var allCoins =
-        await mm2.loadJsonCoins(await mm2.loadElectrumServersAsset());
-    var allCoinsActivate = await coinsBloc.readJsonCoin();
-
-    showDialog<List<Coin>>(
-        context: context,
-        builder: (BuildContext context) {
-          List<SimpleDialogOption> listDialog = new List<SimpleDialogOption>();
-          allCoins.forEach((coin) {
-            bool isAlreadyAdded = false;
-            allCoinsActivate.forEach((coinsBalance) {
-              if (coin.abbr == coinsBalance.abbr) {
-                isAlreadyAdded = true;
-              }
-            });
-            if (!isAlreadyAdded) {
-              SimpleDialogOption dialogItem = SimpleDialogOption(
-                onPressed: () {
-                  setState(() {
-                    isAddCoinProgress = true;
-                  });
-                  Navigator.pop(context);
-                  coinsBloc.addCoin(coin).then((data) {
-                    Scaffold.of(widget.mContext).showSnackBar(new SnackBar(
-                      duration: Duration(seconds: 2),
-                      content: new Text(AppLocalizations.of(widget.mContext)
-                          .addingCoinSuccess(coin.name)),
-                    ));
-                  }).then((onValue) {
-                    setState(() {
-                      isAddCoinProgress = false;
-                    });
-                  });
-                },
-                child: Text(coin.abbr),
-              );
-              listDialog.add(dialogItem);
-            }
-          });
-          return Theme(
-            data: ThemeData(
-                textTheme: Theme.of(context).textTheme,
-                dialogBackgroundColor: Theme.of(context).dialogBackgroundColor),
-            child: SimpleDialog(
-              title: Text(AppLocalizations.of(context).addCoin),
-              children: listDialog,
-            ),
-          );
-        });
   }
 }

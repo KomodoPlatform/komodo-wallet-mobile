@@ -10,7 +10,7 @@ description: Multicoin Wallet with DEX gateway
 version: 0.1.0
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.3.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -41,7 +41,7 @@ dev_dependencies:
   share:
     path: ../plugins/packages/share
   local_auth: ^0.4.0+1
-  flutter_svg: ^0.12.4
+  flutter_svg: ^0.13.0+1
   keccak: ^1.0.3
   timeago: ^2.0.14
   sqflite: ^1.1.0
