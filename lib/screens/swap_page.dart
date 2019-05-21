@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/screens/swap_confirmation_page.dart';
 import 'package:komodo_dex/screens/swap_detail_page.dart';
 import 'package:komodo_dex/screens/swap_history.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
@@ -26,6 +27,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   bool isSwapProgress = false;
   CoinBalance coinBalance;
   FocusNode _focus = new FocusNode();
+  String amountToBuy;
 
   @override
   void initState() {
@@ -237,9 +239,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                           snapshot.data is OrderCoin) {
                         OrderCoin ordercoin = snapshot.data;
 
-                        String amountBuy = "0";
+                        
                         if (_controllerAmount.text.isNotEmpty) {
-                          amountBuy = ordercoin.getBuyAmount(double.parse(
+                          amountToBuy = ordercoin.getBuyAmount(double.parse(
                               _controllerAmount.text.replaceAll(",", ".")));
                         }
 
@@ -259,7 +261,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                               Expanded(
                                 child: Container(),
                               ),
-                              Text(amountBuy,
+                              Text(amountToBuy,
                                   style: Theme.of(context)
                                       .textTheme
                                       .body1
@@ -609,7 +611,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
               ),
               onPressed: swapBloc.orderCoin != null &&
                       _controllerAmount.text.isNotEmpty
-                  ? _makeASwap
+                  ? _confirmSwap
                   : null,
             );
           }
@@ -618,55 +620,15 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     );
   }
 
-  _makeASwap() {
-    setState(() {
-      isSwapProgress = true;
-    });
-
-    mm2
-        .postBuy(
-            swapBloc.orderCoin.coinBase,
-            swapBloc.orderCoin.coinRel,
-            double.parse(_controllerAmount.text.replaceAll(",", ".")),
-            swapBloc.orderCoin.bestPrice * 1.01)
-        .then((onValue) {
-      if (onValue is BuyResponse && onValue.result == "success") {
-        swapHistoryBloc.saveUUID(
-            onValue.pending.uuid,
-            swapBloc.orderCoin.coinBase,
-            swapBloc.orderCoin.coinRel,
-            double.parse(_controllerAmount.text.replaceAll(",", ".")),
-            double.parse(swapBloc.orderCoin.getBuyAmount(
-                double.parse(_controllerAmount.text.replaceAll(",", ".")))));
-        swapHistoryBloc.updateSwap().then((data) {
-          setState(() {
-            isSwapProgress = false;
-          });
-          swapHistoryBloc.swaps.forEach((swap) {
-            if (swap.uuid.uuid == onValue.pending.uuid) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SwapDetailPage(
-                          swap: swap,
-                        )),
-              );
-            }
-          });
-        });
-      } else {
-        String timeSecondeLeft = onValue.error;
-        print(timeSecondeLeft);
-        timeSecondeLeft = timeSecondeLeft.substring(
-            timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
-        print(timeSecondeLeft);
-        Scaffold.of(context).showSnackBar(new SnackBar(
-          duration: Duration(seconds: 2),
-          content: new Text(AppLocalizations.of(context)
-              .buySuccessWaitingError(timeSecondeLeft)),
-        ));
-      }
-    });
+  _confirmSwap() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SwapConfirmation(
+                amountToSell: _controllerAmount.text,
+                amountToBuy: amountToBuy,
+              )),
+    );
   }
 }
 

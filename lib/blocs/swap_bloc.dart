@@ -15,17 +15,13 @@ class SwapBloc implements BlocBase {
   // Streams to handle the list coin
   StreamController<OrderCoin> _orderCoinController =
       StreamController<OrderCoin>.broadcast();
-
   Sink<OrderCoin> get _inOrderCoin => _orderCoinController.sink;
-
   Stream<OrderCoin> get outOrderCoin => _orderCoinController.stream;
 
   // Streams to handle the list coin
   StreamController<CoinBalance> _sellCoinController =
       StreamController<CoinBalance>.broadcast();
-
   Sink<CoinBalance> get _inSellCoin => _sellCoinController.sink;
-
   Stream<CoinBalance> get outSellCoin => _sellCoinController.stream;
 
   List<OrderCoin> orderCoins = new List<OrderCoin>();
@@ -33,12 +29,12 @@ class SwapBloc implements BlocBase {
   // Streams to handle the list coin
   StreamController<List<OrderCoin>> _listOrderCoinController =
       StreamController<List<OrderCoin>>.broadcast();
-
   Sink<List<OrderCoin>> get _inListOrderCoin => _listOrderCoinController.sink;
-
   Stream<List<OrderCoin>> get outListOrderCoin =>
       _listOrderCoinController.stream;
 
+
+  
   @override
   void dispose() {
     _orderCoinController.close();
