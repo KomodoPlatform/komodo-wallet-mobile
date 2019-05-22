@@ -58,10 +58,20 @@ class MarketMakerService {
     }
   }
 
-  Future<void> runBin() async {
-
+  Future<void> initMarketMaker() async{
     final directory = await getApplicationDocumentsDirectory();
     filesPath = directory.path + "/";
+    
+    ProcessResult checkmm2 = await Process.run('ls', ['${filesPath}mm2']);
+
+    if (checkmm2.stdout.toString().trim() != "${filesPath}mm2") {
+      ByteData resultmm2 = await rootBundle.load("assets/mm2");
+      await writeData(resultmm2.buffer.asUint8List());
+      await Process.run('chmod', ['777', '${filesPath}mm2']);
+    }
+  }
+
+  Future<void> runBin() async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String passphrase = prefs.getString('passphrase');
@@ -77,16 +87,6 @@ class MarketMakerService {
 
     if (Platform.isAndroid) {
       await stopmm2();
-
-      ProcessResult checkmm2 = await Process.run('ls', ['${filesPath}mm2']);
-
-      if (checkmm2.stdout.toString().trim() != "${filesPath}mm2") {
-        ByteData resultmm2 = await rootBundle.load("assets/mm2");
-        await writeData(resultmm2.buffer.asUint8List());
-        await Process.run('chmod', ['777', '${filesPath}mm2']);
-        ProcessResult checkmm2 = await Process.run('ls', ['${filesPath}']);
-        print(checkmm2.stdout);
-      }
 
       mm2Process = await Process.start('./mm2', [startParam],
           workingDirectory: '${filesPath}');

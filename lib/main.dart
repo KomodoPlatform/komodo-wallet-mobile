@@ -41,7 +41,9 @@ void main() async {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((_) {
       _runBinMm2UserAlreadyLog().then((onValue) {
-        runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+        mm2.initMarketMaker().then((_){
+          runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+        });
       });
     });
   }, onError: (error, stackTrace) async {
