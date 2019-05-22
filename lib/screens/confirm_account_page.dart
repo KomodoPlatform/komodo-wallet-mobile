@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
 
 class ConfirmAccountPage extends StatefulWidget {
   final String seed;
 
-  ConfirmAccountPage(this.seed);
+  ConfirmAccountPage({this.seed});
 
   @override
   _ConfirmAccountPageState createState() => _ConfirmAccountPageState();
@@ -104,24 +105,17 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
       child: Container(
         width: double.infinity,
         height: 50,
-        child: RaisedButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
-          color: Theme.of(context).buttonColor,
-          disabledColor: Theme.of(context).disabledColor,
-          child: Text(
-            AppLocalizations.of(context).confirm.toUpperCase(),
-            style: Theme.of(context).textTheme.button,
-          ),
+        child: PrimaryButton(
+          text: AppLocalizations.of(context).confirm,
           onPressed: _isButtonDisabled ? null : _onLoginPressed,
-        ),
+        )
       ),
     );
   }
 
   _onLoginPressed() async{
     print("_onLoginPressed");
-    await authBloc.login(controllerSeed.text).then((onValue){
+    await authBloc.loginUI(false, controllerSeed.text).then((onValue){
       Navigator.pop(context);
       Navigator.pop(context);
     });

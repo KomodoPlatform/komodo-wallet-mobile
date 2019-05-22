@@ -3,6 +3,8 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/bloc_login_page.dart';
 import 'package:komodo_dex/screens/new_account_page.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
@@ -14,6 +16,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -49,15 +52,8 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                     Container(
                       width: double.infinity,
                       height: 50,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0)),
-                        color: Theme.of(context).buttonColor,
-                        disabledColor: Theme.of(context).disabledColor,
-                        child: Text(
-                          AppLocalizations.of(context).login.toUpperCase(),
-                          style: Theme.of(context).textTheme.button,
-                        ),
+                      child: PrimaryButton(
+                        text: AppLocalizations.of(context).login,
                         onPressed: () async {
                           Navigator.push(
                             context,
@@ -65,31 +61,24 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                                 builder: (context) => BlocLoginPage()),
                           );
                         },
-                      ),
+                      )
                     ),
                     SizedBox(
                       height: 16,
                     ),
                     Container(
-                      width: double.infinity,
-                      height: 50,
-                      child: FlatButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0)),
-                        disabledColor: Theme.of(context).disabledColor,
-                        child: Text(
-                          AppLocalizations.of(context).newAccount.toUpperCase(),
-                          style: Theme.of(context).textTheme.button,
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NewAccountPage()),
-                          );
-                        },
-                      ),
-                    ),
+                        width: double.infinity,
+                        height: 50,
+                        child: SecondaryButton(
+                          text: AppLocalizations.of(context).newAccount,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NewAccountPage()),
+                            );
+                          },
+                        )),
                     SizedBox(
                       height: 100,
                     )

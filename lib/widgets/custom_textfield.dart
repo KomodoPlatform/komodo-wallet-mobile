@@ -6,6 +6,8 @@ class CustomTextField extends StatefulWidget {
   final String labelText;
   final TextInputType textInputType;
   final String errorText;
+  final String hintText;
+  final void Function(String) onChanged;
 
   @override
   CustomTextFieldState createState() {
@@ -17,6 +19,8 @@ class CustomTextField extends StatefulWidget {
       this.controller,
       this.labelText,
       this.textInputType,
+      this.hintText,
+      this.onChanged,
       this.errorText})
       : super(key: key);
 }
@@ -25,6 +29,7 @@ class CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: widget.onChanged,
       autofocus: false,
       textInputAction: TextInputAction.done,
       keyboardType: widget.textInputType,
@@ -38,8 +43,9 @@ class CustomTextFieldState extends State<CustomTextField> {
                   BorderSide(color: Theme.of(context).primaryColorLight)),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).accentColor)),
-          hintStyle: Theme.of(context).textTheme.body1,
+          hintStyle: Theme.of(context).textTheme.body2,
           labelStyle: Theme.of(context).textTheme.body1,
+          hintText: widget.hintText,
           labelText: widget.labelText),
     );
   }

@@ -2,7 +2,9 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/check_passphrase_page.dart';
 import 'package:komodo_dex/screens/confirm_account_page.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
 
 class NewAccountPage extends StatefulWidget {
   @override
@@ -56,7 +58,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
 
   _buildSeedGenerator() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(8)),
         child: Container(
@@ -119,7 +121,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
 
   _buildWarningSaveSeed() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(32.0),
       child: Row(
         children: <Widget>[
           ClipRRect(
@@ -174,26 +176,19 @@ class _NewAccountPageState extends State<NewAccountPage> {
 
   _buildNextButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       child: Container(
         width: double.infinity,
         height: 50,
-        child: RaisedButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
-          color: Theme.of(context).buttonColor,
-          disabledColor: Theme.of(context).disabledColor,
-          child: Text(
-            AppLocalizations.of(context).next.toUpperCase(),
-            style: Theme.of(context).textTheme.button,
-          ),
-          onPressed: () {
+        child: PrimaryButton(
+          text: AppLocalizations.of(context).next,
+            onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ConfirmAccountPage(seed)),
+              MaterialPageRoute(builder: (context) => CheckPassphrasePage(seed: seed,)),
             );
           },
-        ),
+        )
       ),
     );
   }

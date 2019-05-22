@@ -172,6 +172,21 @@ class AppLocalizations {
   String get infoTrade1 => Intl.message("After the ordermatch you can not cancel this transaction.", name: 'infoTrade1');
   String get infoTrade2 => Intl.message("This transaction could take up to 10 mins - DONT close this application!", name: 'infoTrade2');
   String get swapDetailTitle => Intl.message("CONFIRM EXCHANGE DETAILS", name: 'swapDetailTitle');
+  String get checkSeedPhrase => Intl.message("Check seed phrase", name: 'checkSeedPhrase');
+  String get checkSeedPhraseTitle => Intl.message("LET'S DOUBLE CHECK YOUR SEED PHRASE", name: 'checkSeedPhraseTitle');
+  String get checkSeedPhraseInfo => Intl.message("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want.", name: 'checkSeedPhraseInfo');
+  String checkSeedPhraseSubtile(String index) => Intl.message(
+        'What is the ${index}th word in your seed phrase?',
+        name: 'checkSeedPhraseSubtile',
+        args: [index],
+      );
+  String checkSeedPhraseHint(String index) => Intl.message(
+        'Enter your ${index}th word',
+        name: 'checkSeedPhraseHint',
+        args: [index],
+      );
+  String get checkSeedPhraseButton1 => Intl.message("CONTINUE", name: 'checkSeedPhraseButton1');
+  String get checkSeedPhraseButton2 => Intl.message("GO BACK AND CHECK AGAIN", name: 'checkSeedPhraseButton2');
 
 }
 

@@ -74,7 +74,17 @@ class _LockScreenState extends State<LockScreen> {
                               ],
                             );
                           } else {
-                            return widget.child;
+                            if (widget.child == null && widget.pinStatus == PinStatus.DISABLED_PIN)
+                              return PinPage(
+                                  title:
+                                      AppLocalizations.of(context).lockScreen,
+                                  subTitle:
+                                      AppLocalizations.of(context).enterPinCode,
+                                  isConfirmPin: widget.pinStatus,
+                                  isFromChangingPin: false,
+                                );
+                            else
+                              return widget.child;
                           }
                         },
                       );

@@ -37,21 +37,24 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                     height: 100,
                     color: Theme.of(context).primaryColor,
                     child: Center(
-                      child: PrimaryButton(
-                        text: AppLocalizations.of(context).done,
-                        onPressed: () async {
-                          setState(() {
-                            isActivate = true;
-                          });
-                          print(coinsBloc.coinToActivate.length);
-                          await coinsBloc
-                              .addMultiCoins(coinsBloc.coinToActivate)
-                              .then((onValue) {
-                            _closeSelectCoinsPage();
-                          }).timeout(Duration(seconds: 20), onTimeout: () {
-                            _closeSelectCoinsPage();
-                          });
-                        },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: PrimaryButton(
+                          text: AppLocalizations.of(context).done,
+                          onPressed: () async {
+                            setState(() {
+                              isActivate = true;
+                            });
+                            print(coinsBloc.coinToActivate.length);
+                            await coinsBloc
+                                .addMultiCoins(coinsBloc.coinToActivate)
+                                .then((onValue) {
+                              _closeSelectCoinsPage();
+                            }).timeout(Duration(seconds: 20), onTimeout: () {
+                              _closeSelectCoinsPage();
+                            });
+                          },
+                        ),
                       ),
                     ),
                   )

@@ -58,10 +58,12 @@ class _SettingPageState extends State<SettingPage> {
                     SharedPreferencesBuilder(
                       pref: 'switch_pin',
                       builder: (context, snapshot) {
+                        print("switch_pin pref " + snapshot.data.toString());
                         return snapshot.hasData
                             ? Switch(
                                 value: snapshot.data,
                                 onChanged: (dataSwitch) {
+                                  print("dataSwitch" + dataSwitch.toString());
                                   setState(() {
                                     if (snapshot.data) {
                                       Navigator.push(

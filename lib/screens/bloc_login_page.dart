@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
 
 class BlocLoginPage extends StatefulWidget {
   @override
@@ -112,17 +113,11 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
         height: 50,
         child: _isLogin
             ? Center(child: CircularProgressIndicator())
-            : RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0)),
-                color: Theme.of(context).buttonColor,
-                disabledColor: Theme.of(context).disabledColor,
-                child: Text(
-                  AppLocalizations.of(context).confirm.toUpperCase(),
-                  style: Theme.of(context).textTheme.button,
-                ),
-                onPressed: _isButtonDisabled ? null : _onLoginPressed,
-              ),
+            : 
+            PrimaryButton(
+              text: AppLocalizations.of(context).confirm,
+              onPressed: _isButtonDisabled ? null : _onLoginPressed
+            ),
       ),
     );
   }
