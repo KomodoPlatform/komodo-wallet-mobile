@@ -166,11 +166,11 @@ class AppLocalizations {
   String get lockScreenAuth => Intl.message("Please authenticate!", name: 'lockScreenAuth');
   String get noTxs => Intl.message("No Transactions", name: 'noTxs');
   String get done => Intl.message("done", name: 'done');
-  String get selectCoinTitle => Intl.message("select your coins", name: 'selectCoinTitle');
-  String get selectCoinInfo => Intl.message("Select coins you want to activate, they will be added to your portfolio.", name: 'selectCoinInfo');
-  String get noArticles => Intl.message("No articles, comeback soon !", name: 'noArticles');
-  String get infoTrade1 => Intl.message("After the match is found, you will not be able to cancel this trade.", name: 'infoTrade1');
-  String get infoTrade2 => Intl.message("This transaction could take up to 10 min. Warning, don't kill the application for a success swap.", name: 'infoTrade2');
+  String get selectCoinTitle => Intl.message("Activate coins:", name: 'selectCoinTitle');
+  String get selectCoinInfo => Intl.message("Select the coins you want to add to your portfolio.", name: 'selectCoinInfo');
+  String get noArticles => Intl.message("No news - please check back later!", name: 'noArticles');
+  String get infoTrade1 => Intl.message("After the ordermatch you can not cancel this transaction.", name: 'infoTrade1');
+  String get infoTrade2 => Intl.message("This transaction could take up to 10 mins - DONT close this application!", name: 'infoTrade2');
   String get swapDetailTitle => Intl.message("CONFIRM EXCHANGE DETAILS", name: 'swapDetailTitle');
 
 }
