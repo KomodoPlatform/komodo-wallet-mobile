@@ -34,7 +34,7 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
   @override
   Widget build(BuildContext context) {
     return LockScreen(
-          child: Scaffold(
+      child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           elevation: 0,
@@ -121,7 +121,8 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
             ),
             Column(
               children: <Widget>[
-                Text(AppLocalizations.of(context).trade, style: Theme.of(context).textTheme.title),
+                Text(AppLocalizations.of(context).trade,
+                    style: Theme.of(context).textTheme.title),
                 Text(
                   AppLocalizations.of(context).tradeCompleted,
                   style: Theme.of(context)
@@ -252,45 +253,45 @@ class _ProgressSwapState extends State<ProgressSwap>
     }
 
     return Expanded(
-      child: Stack(
-        alignment: AlignmentDirectional.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          CustomPaint(
-            painter: RadialPainter(
-                context: context, progressInDegrees: progressDegrees),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.6,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    '${AppLocalizations.of(context).step} ',
-                    style: Theme.of(context).textTheme.subtitle,
-                  ),
-                  Text(
-                    swapHistoryBloc
-                        .getStepStatusNumber(widget.swap.status)
-                        .toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle
-                        .copyWith(color: Theme.of(context).accentColor),
-                  ),
-                  Text('/${swapHistoryBloc.getNumberStep().toInt().toString()}',
-                      style: Theme.of(context).textTheme.subtitle)
-                ],
+          Container(
+            height: MediaQuery.of(context).size.height * 0.45,
+            child: CustomPaint(
+              painter: RadialPainter(
+                  context: context, progressInDegrees: progressDegrees),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${AppLocalizations.of(context).step} ',
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
+                    Text(
+                      swapHistoryBloc
+                          .getStepStatusNumber(widget.swap.status)
+                          .toString(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle
+                          .copyWith(color: Theme.of(context).accentColor),
+                    ),
+                    Text('/${swapHistoryBloc.getNumberStep().toInt().toString()}',
+                        style: Theme.of(context).textTheme.subtitle)
+                  ],
+                ),
               ),
             ),
           ),
-          Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.06,
-              child: Text(
-                swapHistoryBloc.getSwapStatusString(
-                    context, widget.swap.status),
-                style: Theme.of(context).textTheme.body1.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.5)),
-              ))
+          Text(
+            swapHistoryBloc.getSwapStatusString(context, widget.swap.status),
+            style: Theme.of(context).textTheme.body1.copyWith(
+                fontWeight: FontWeight.w300,
+                color: Colors.white.withOpacity(0.5)),
+          )
         ],
       ),
     );
@@ -340,10 +341,12 @@ class _DetailSwapState extends State<DetailSwap> {
         ),
         _buildAmountSwap(),
         Padding(
-          padding: const EdgeInsets.only(top: 24),
-          child: _buildInfo(AppLocalizations.of(context).swapID, widget.swap.uuid.uuid)
-        ),
-        widget.swap.status == Status.SWAP_SUCCESSFUL ? _buildInfosDetail() : Container(),
+            padding: const EdgeInsets.only(top: 24),
+            child: _buildInfo(
+                AppLocalizations.of(context).swapID, widget.swap.uuid.uuid)),
+        widget.swap.status == Status.SWAP_SUCCESSFUL
+            ? _buildInfosDetail()
+            : Container(),
         SizedBox(
           height: 32,
         )
@@ -355,20 +358,20 @@ class _DetailSwapState extends State<DetailSwap> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _buildInfo(AppLocalizations.of(context).takerpaymentsID, _getTakerpaymentID(widget.swap))
-        ),
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: _buildInfo(AppLocalizations.of(context).takerpaymentsID,
+                _getTakerpaymentID(widget.swap))),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _buildInfo(AppLocalizations.of(context).makerpaymentID, _getMakerpaymentID(widget.swap))
-        ),
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: _buildInfo(AppLocalizations.of(context).makerpaymentID,
+                _getMakerpaymentID(widget.swap))),
       ],
     );
   }
 
-  String _getTakerpaymentID(Swap swap){
+  String _getTakerpaymentID(Swap swap) {
     String takerpaymentID = "";
-    swap.result.events.forEach((event){
+    swap.result.events.forEach((event) {
       if (event.event.type == "TakerPaymentSent") {
         takerpaymentID = event.event.data["tx_hash"];
       }
@@ -376,9 +379,9 @@ class _DetailSwapState extends State<DetailSwap> {
     return takerpaymentID;
   }
 
-  String _getMakerpaymentID(Swap swap){
+  String _getMakerpaymentID(Swap swap) {
     String makepaymentID = "";
-    swap.result.events.forEach((event){
+    swap.result.events.forEach((event) {
       if (event.event.type == "MakerPaymentSpent") {
         makepaymentID = event.event.data["tx_hash"];
       }
@@ -388,33 +391,33 @@ class _DetailSwapState extends State<DetailSwap> {
 
   _buildInfo(String title, String id) {
     return InkWell(
-            onTap: () {
-              copyToClipBoard(context, id);
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Text(
-                      '$title:',
-                      style: Theme.of(context).textTheme.body2,
-                    ),
-                  ),
-                  Text(
-                    id,
-                    style: Theme.of(context)
-                        .textTheme
-                        .body1
-                        .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ],
+      onTap: () {
+        copyToClipBoard(context, id);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Text(
+                '$title:',
+                style: Theme.of(context).textTheme.body2,
               ),
             ),
-          );
+            Text(
+              id,
+              style: Theme.of(context)
+                  .textTheme
+                  .body1
+                  .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   _buildAmountSwap() {
