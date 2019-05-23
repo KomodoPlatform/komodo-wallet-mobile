@@ -340,10 +340,56 @@ class _DetailSwapState extends State<DetailSwap> {
         ),
         _buildAmountSwap(),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          child: InkWell(
+          padding: const EdgeInsets.only(top: 24),
+          child: _buildInfo(AppLocalizations.of(context).swapID, widget.swap.uuid.uuid)
+        ),
+        widget.swap.status == Status.SWAP_SUCCESSFUL ? _buildInfosDetail() : Container(),
+        SizedBox(
+          height: 32,
+        )
+      ],
+    );
+  }
+
+  _buildInfosDetail() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: _buildInfo(AppLocalizations.of(context).takerpaymentsID, _getTakerpaymentID(widget.swap))
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: _buildInfo(AppLocalizations.of(context).makerpaymentID, _getMakerpaymentID(widget.swap))
+        ),
+      ],
+    );
+  }
+
+  String _getTakerpaymentID(Swap swap){
+    String takerpaymentID = "";
+    swap.result.events.forEach((event){
+      if (event.event.type == "TakerPaymentSent") {
+        takerpaymentID = event.event.data["tx_hash"];
+      }
+    });
+    return takerpaymentID;
+  }
+
+  String _getMakerpaymentID(Swap swap){
+    String makepaymentID = "";
+    swap.result.events.forEach((event){
+      if (event.event.type == "MakerPaymentSpent") {
+        makepaymentID = event.event.data["tx_hash"];
+      }
+    });
+    return makepaymentID;
+  }
+
+  _buildInfo(String title, String id) {
+    return InkWell(
             onTap: () {
-              copyToClipBoard(context, widget.swap.uuid.uuid);
+              copyToClipBoard(context, id);
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -354,12 +400,12 @@ class _DetailSwapState extends State<DetailSwap> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Text(
-                      '${AppLocalizations.of(context).swapID}:',
+                      '$title:',
                       style: Theme.of(context).textTheme.body2,
                     ),
                   ),
                   Text(
-                    widget.swap.uuid.uuid,
+                    id,
                     style: Theme.of(context)
                         .textTheme
                         .body1
@@ -368,13 +414,7 @@ class _DetailSwapState extends State<DetailSwap> {
                 ],
               ),
             ),
-          ),
-        ),
-        SizedBox(
-          height: 32,
-        )
-      ],
-    );
+          );
   }
 
   _buildAmountSwap() {
