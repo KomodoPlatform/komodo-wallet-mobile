@@ -22,9 +22,14 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
         .textTheme
         .body1
         .copyWith(color: Colors.black.withOpacity(0.7), fontSize: 14);
+    String splitText1 =
+        widget.article.body.substring(0, (widget.article.body.length ~/ 2));
+    String splitText2 =
+        widget.article.body.substring((widget.article.body.length ~/ 2));
+    int index = 0;
 
     return LockScreen(
-          child: Scaffold(
+      child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
@@ -62,23 +67,16 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
         ),
         body: ListView(
           children: <Widget>[
-            CarouselSlider(
-              autoPlay: true,
+            Container(
               height: 250,
-              viewportFraction: 1.0,
-              enableInfiniteScroll: false,
-              items: widget.article.media.map((i) {
-                return Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                    child: Image.network(
-                      i,
-                      fit: BoxFit.cover,
-                      width: 1000.0,
-                    ),
-                  ),
-                );
-              }).toList(),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                child: Image.network(
+                  widget.article.media[0],
+                  fit: BoxFit.cover,
+                  width: 1000.0,
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -93,10 +91,43 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                widget.article.body,
+                splitText1,
                 style: body2Light,
               ),
-            )
+            ),
+            Builder(builder: (context) {
+              if (widget.article.media.length > 1) {
+                List<Widget> medias = widget.article.media.map((i) {
+                    return Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                        child: Image.network(
+                          i,
+                          fit: BoxFit.cover,
+                          width: 1000.0,
+                        ),
+                      ),
+                    );
+                  }).toList();
+                medias.removeAt(0);
+                return CarouselSlider(
+                  autoPlay: true,
+                  height: 250,
+                  viewportFraction: 1.0,
+                  enableInfiniteScroll: false,
+                  items: medias,
+                );
+              } else {
+                return Container();
+              }
+            }),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                splitText2,
+                style: body2Light,
+              ),
+            ),
           ],
         ),
       ),
