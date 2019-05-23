@@ -345,7 +345,7 @@ class _ItemCoinState extends State<ItemCoin> {
                           Icons.add,
                         ),
                         onPressed: () {
-                           Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SelectCoinsPage()),
@@ -380,19 +380,39 @@ class _ItemCoinState extends State<ItemCoin> {
             height: _heightScreen * 0.15,
             child: Row(
               children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(6),
+                      topLeft: Radius.circular(6)),
+                  child: Container(
+                    color: Color(int.parse(coin.colorCoin)),
+                    width: 8,
+                  ),
+                ),
                 SizedBox(width: 16),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Builder(builder: (context) {
-                      String coinStr = balance.coin.toLowerCase();
-                      return PhotoHero(
-                        radius: 28,
-                        tag: "assets/${balance.coin.toLowerCase()}.png",
-                      );
-                    }),
-                  ],
+                Container(
+                  width: 100,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Builder(builder: (context) {
+                        String coinStr = balance.coin.toLowerCase();
+                        return PhotoHero(
+                          radius: 28,
+                          tag: "assets/${balance.coin.toLowerCase()}.png",
+                        );
+                      }),
+                      SizedBox(height: 8),
+                      Text(
+                        coin.name.toUpperCase(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle
+                            .copyWith(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 ),
                 Expanded(
                   child: Padding(
@@ -401,16 +421,15 @@ class _ItemCoinState extends State<ItemCoin> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        Text(
-                          coin.name.toUpperCase(),
-                          style: Theme.of(context).textTheme.caption,
-                        ),
                         SizedBox(
                           height: 4,
                         ),
-                        Text(
-                          "${f.format(balance.balance)} ${coin.abbr}",
-                          style: Theme.of(context).textTheme.subtitle,
+                        Container(
+                          child: AutoSizeText(
+                            "${f.format(balance.balance)} ${coin.abbr}",
+                            maxLines: 1,
+                            style: Theme.of(context).textTheme.subtitle,
+                          ),
                         ),
                         SizedBox(
                           height: 4,
@@ -421,18 +440,27 @@ class _ItemCoinState extends State<ItemCoin> {
                             "\$${f.format(widget.coinBalance.balanceUSD)} USD",
                             style: Theme.of(context).textTheme.body2,
                           );
-                        })
+                        }),
+                        widget.coinBalance.coin.abbr == "KMD" 
+                        && widget.coinBalance.balance.balance >= 10
+                            ?
+                            Padding(
+                              padding: EdgeInsets.only(top: 8),
+                              child: OutlineButton(
+                                borderSide: BorderSide(color: Theme.of(context).accentColor),
+                                highlightedBorderColor: Colors.white,
+                                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30.0)),
+                                onPressed: (){
+                                  CoinDetail(widget.coinBalance).showDialogClaim(context);
+                                },
+                                child: Text("CLAIM YOUR REWARDS", style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),),
+                              ),)
+                            
+                            : Container()
                       ],
                     ),
-                  ),
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(6),
-                      bottomRight: Radius.circular(6)),
-                  child: Container(
-                    color: Color(int.parse(coin.colorCoin)),
-                    width: 8,
                   ),
                 ),
               ],

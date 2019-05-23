@@ -1,17 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/transaction.dart';
 import 'package:komodo_dex/model/transactions.dart';
-import 'package:komodo_dex/model/withdraw_response.dart';
-import 'package:komodo_dex/services/getprice_service.dart';
-import 'package:komodo_dex/services/gettransaction_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:path_provider/path_provider.dart';

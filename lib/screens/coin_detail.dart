@@ -32,6 +32,104 @@ class CoinDetail extends StatefulWidget {
 
   @override
   _CoinDetailState createState() => _CoinDetailState();
+
+    showDialogClaim(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(AppLocalizations.of(context).loading),
+                ],
+              ),
+            ),
+          );
+        });
+
+    mm2
+        .postWithdraw(
+            coinBalance.coin,
+            coinBalance.balance.address,
+            coinBalance.balance.balance -
+                coinBalance.coin.txfee / 100000000,
+                true)
+        .then((data) {
+      Navigator.of(context).pop();
+      if (data is WithdrawResponse) {
+        print(data.myBalanceChange);
+        if (data.myBalanceChange > 0) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(AppLocalizations.of(context).claimTitle),
+                actions: <Widget>[
+                  FlatButton(
+                    child:
+                        Text(AppLocalizations.of(context).close.toUpperCase()),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text(
+                        AppLocalizations.of(context).confirm.toUpperCase(),
+                        style: Theme.of(context).textTheme.button),
+                    onPressed: () {
+                      mm2
+                          .postRawTransaction(
+                              coinBalance.coin, data.txHex)
+                          .then((dataRawTx) {
+                        if (dataRawTx is SendRawTransactionResponse) {
+                          Navigator.of(context).pop();
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                      AppLocalizations.of(context).success),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(AppLocalizations.of(context)
+                                          .close
+                                          .toUpperCase()),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        }
+                      });
+                    },
+                  )
+                ],
+              );
+            },
+          );
+        } else {
+          Scaffold.of(context).showSnackBar(new SnackBar(
+            duration: Duration(seconds: 2),
+            content: new Text(AppLocalizations.of(context).noRewardYet),
+          ));
+        }
+      } else {
+        Scaffold.of(context).showSnackBar(new SnackBar(
+          duration: Duration(seconds: 2),
+          content: new Text(AppLocalizations.of(context).errorTryLater),
+        ));
+      }
+    });
+  }
 }
 
 class _CoinDetailState extends State<CoinDetail> {
@@ -416,8 +514,8 @@ class _CoinDetailState extends State<CoinDetail> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _buildButtonLight(StatusButton.RECEIVE, context),
-            widget.coinBalance.coin.abbr == "KMD" &&
-                    widget.coinBalance.balance.balance >= 10
+            widget.coinBalance.coin.abbr == "KMD" 
+            && widget.coinBalance.balance.balance >= 10
                 ? _buildButtonLight(StatusButton.CLAIM, context)
                 : Container(),
             _buildButtonLight(StatusButton.SEND, context),
@@ -459,7 +557,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 }
                 break;
               case StatusButton.CLAIM:
-                _showDialogClaim(context);
+                widget.showDialogClaim(context);
                 break;
               default:
             }
@@ -501,104 +599,6 @@ class _CoinDetailState extends State<CoinDetail> {
         ),
       ),
     );
-  }
-
-  _showDialogClaim(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(AppLocalizations.of(context).loading),
-                ],
-              ),
-            ),
-          );
-        });
-
-    mm2
-        .postWithdraw(
-            widget.coinBalance.coin,
-            widget.coinBalance.balance.address,
-            widget.coinBalance.balance.balance -
-                widget.coinBalance.coin.txfee / 100000000,
-                true)
-        .then((data) {
-      Navigator.of(context).pop();
-      if (data is WithdrawResponse) {
-        print(data.myBalanceChange);
-        if (data.myBalanceChange > 0) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(AppLocalizations.of(context).claimTitle),
-                actions: <Widget>[
-                  FlatButton(
-                    child:
-                        Text(AppLocalizations.of(context).close.toUpperCase()),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  RaisedButton(
-                    child: Text(
-                        AppLocalizations.of(context).confirm.toUpperCase(),
-                        style: Theme.of(context).textTheme.button),
-                    onPressed: () {
-                      mm2
-                          .postRawTransaction(
-                              widget.coinBalance.coin, data.txHex)
-                          .then((dataRawTx) {
-                        if (dataRawTx is SendRawTransactionResponse) {
-                          Navigator.of(context).pop();
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                      AppLocalizations.of(context).success),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text(AppLocalizations.of(context)
-                                          .close
-                                          .toUpperCase()),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
-                        }
-                      });
-                    },
-                  )
-                ],
-              );
-            },
-          );
-        } else {
-          Scaffold.of(context).showSnackBar(new SnackBar(
-            duration: Duration(seconds: 2),
-            content: new Text(AppLocalizations.of(context).noRewardYet),
-          ));
-        }
-      } else {
-        Scaffold.of(context).showSnackBar(new SnackBar(
-          duration: Duration(seconds: 2),
-          content: new Text(AppLocalizations.of(context).errorTryLater),
-        ));
-      }
-    });
   }
 
   _showDialogAddress(BuildContext mContext) {

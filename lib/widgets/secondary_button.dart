@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class SecondaryButton extends StatefulWidget {
   final VoidCallback onPressed;
   final String text;
+  final Widget child;
 
-  SecondaryButton({@required this.onPressed, @required this.text});
+  SecondaryButton({@required this.onPressed,this.text, this.child});
 
   @override
   _SecondaryButtonState createState() => _SecondaryButtonState();
@@ -13,6 +14,12 @@ class SecondaryButton extends StatefulWidget {
 class _SecondaryButtonState extends State<SecondaryButton> {
   @override
   Widget build(BuildContext context) {
+    Widget child;
+    if (widget.text != null) {
+      child = Text(widget.text.toUpperCase(),style: Theme.of(context).textTheme.button,);
+    } else {
+      child = widget.child;
+    }
     return Container(
       width: double.infinity,
       child: OutlineButton(
@@ -22,7 +29,7 @@ class _SecondaryButtonState extends State<SecondaryButton> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
         onPressed: widget.onPressed,
-        child: Text(widget.text.toUpperCase(),style: Theme.of(context).textTheme.button,),
+        child: child,
       ),
     );
   }
