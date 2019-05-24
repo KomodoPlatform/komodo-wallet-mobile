@@ -61,7 +61,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                             topRight: Radius.circular(8)),
                         child: Container(
                             width: double.infinity,
-                            height: 125,
+                            height: MediaQuery.of(context).size.height * 0.15,
                             color: Colors.white.withOpacity(0.15),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +94,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                             bottomRight: Radius.circular(8)),
                         child: Container(
                             width: double.infinity,
-                            height: 125,
+                            height: MediaQuery.of(context).size.height * 0.15,
                             color: Colors.white.withOpacity(0.15),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +127,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 ),
                 Positioned(
                     left: (MediaQuery.of(context).size.width / 2) - 64,
-                    top: 101,
+                    top: MediaQuery.of(context).size.height * 0.122,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(32)),
                       child: Container(
@@ -141,7 +141,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                     ))
               ],
             ),
-            Expanded(child: SizedBox()),
+            Expanded(child: Container(),),
             RaisedButton(
               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 52),
               shape: RoundedRectangleBorder(
@@ -176,7 +176,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                         color: Theme.of(context).primaryColor,
                         child: Padding(
                           padding:
-                              EdgeInsets.symmetric(vertical: 48, horizontal: 32),
+                              EdgeInsets.symmetric(vertical: 32, horizontal: 32),
                           child: Column(
                             children: <Widget>[
                               Text(
