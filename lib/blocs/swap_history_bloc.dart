@@ -18,14 +18,21 @@ class SwapHistoryBloc implements BlocBase {
   // Streams to handle the list coin
   StreamController<List<Swap>> _swapsController =
       StreamController<List<Swap>>.broadcast();
-
   Sink<List<Swap>> get _inSwaps => _swapsController.sink;
-
   Stream<List<Swap>> get outSwaps => _swapsController.stream;
 
+  bool isAnimationStepFinalIsFinish = false;
+
+  // Streams to handle the list coin
+  StreamController<bool> _isAnimationStepFinalIsFinishController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inIsAnimationStepFinalIsFinish => _isAnimationStepFinalIsFinishController.sink;
+  Stream<bool> get outIsAnimationStepFinalIsFinish => _isAnimationStepFinalIsFinishController.stream;
+  
   @override
   void dispose() {
     _swapsController.close();
+    _isAnimationStepFinalIsFinishController.close();
   }
 
   void saveUUID(String uuid, Coin base, Coin rel, double amountToBuy,

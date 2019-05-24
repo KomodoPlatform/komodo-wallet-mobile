@@ -19,14 +19,13 @@ class SwapDetailPage extends StatefulWidget {
 }
 
 class _SwapDetailPageState extends State<SwapDetailPage> {
-  bool isAnimationStepFinalIsFinish = false;
 
   @override
   void initState() {
     swapHistoryBloc.updateSwap();
     if (widget.swap.status != null &&
         widget.swap.status == Status.SWAP_SUCCESSFUL)
-      isAnimationStepFinalIsFinish = true;
+      swapHistoryBloc.isAnimationStepFinalIsFinish = true;
     print(widget.swap.uuid.uuid);
     super.initState();
   }
@@ -51,7 +50,7 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
                   if (swap.uuid.uuid == widget.swap.uuid.uuid) swapData = swap;
                 });
                 if (swapData.status == Status.SWAP_SUCCESSFUL &&
-                    isAnimationStepFinalIsFinish) {
+                    swapHistoryBloc.isAnimationStepFinalIsFinish) {
                   return FinalTradeSuccess(
                       uuid: widget.swap.uuid, swap: swapData);
                 } else {
@@ -60,7 +59,7 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
                       swap: swapData,
                       onStepFinish: () {
                         setState(() {
-                          isAnimationStepFinalIsFinish = true;
+                          swapHistoryBloc.isAnimationStepFinalIsFinish = true;
                         });
                       });
                 }
@@ -344,7 +343,8 @@ class _DetailSwapState extends State<DetailSwap> {
             padding: const EdgeInsets.only(top: 24),
             child: _buildInfo(
                 AppLocalizations.of(context).swapID, widget.swap.uuid.uuid)),
-        widget.swap.status == Status.SWAP_SUCCESSFUL
+        widget.swap.status == Status.SWAP_SUCCESSFUL 
+        && swapHistoryBloc.isAnimationStepFinalIsFinish
             ? _buildInfosDetail()
             : Container(),
         SizedBox(
