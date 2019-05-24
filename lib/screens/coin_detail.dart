@@ -154,6 +154,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   @override
   void initState() {
+    authBloc.setIsQrCodeActive(false);
     currentIndex = 0;
     setState(() {
       isLoading = true;
@@ -989,6 +990,7 @@ class _CoinDetailState extends State<CoinDetail> {
   /// Open a activity for scan QRCode example usage:
   /// MaterialButton(onPressed: scan, child: new Text("SEND"))
   Future scan() async {
+    authBloc.setIsQrCodeActive(true);
     try {
       String barcode = await BarcodeScanner.scan();
       setState(() {
@@ -1008,6 +1010,7 @@ class _CoinDetailState extends State<CoinDetail> {
     } catch (e) {
       setState(() => this.barcode = 'Unknown error: $e');
     }
+    authBloc.setIsQrCodeActive(false);
   }
 
   void initSteps() {

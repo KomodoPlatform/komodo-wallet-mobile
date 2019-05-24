@@ -111,6 +111,7 @@ class _LockScreenState extends State<LockScreen> {
     var localAuth = LocalAuthentication();
 
     bool didAuthenticate = await localAuth.authenticateWithBiometrics(
+        stickyAuth: true,
         localizedReason: AppLocalizations.of(context).lockScreenAuth);
     if (didAuthenticate) {
       if (widget.pinStatus == PinStatus.DISABLED_PIN) {

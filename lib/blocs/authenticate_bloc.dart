@@ -23,13 +23,16 @@ class AuthenticateBloc extends BlocBase {
   Stream<bool> get outShowPin => _showPinController.stream;
 
   PinStatus pinStatus = PinStatus.NORMAL_PIN;
-
   StreamController<PinStatus> _pinStatusController =
       StreamController<PinStatus>.broadcast();
-
   Sink<PinStatus> get _inpinStatus => _pinStatusController.sink;
-
   Stream<PinStatus> get outpinStatus => _pinStatusController.stream;
+
+  bool isQrCodeActive = false;
+  StreamController<bool> _isQrCodeActiveController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inIsQrCodeActive => _isQrCodeActiveController.sink;
+  Stream<bool> get outIsQrCodeActive => _isQrCodeActiveController.stream;
 
   AuthenticateBloc() {
     init();
@@ -53,6 +56,7 @@ class AuthenticateBloc extends BlocBase {
     _isLoginController.close();
     _showPinController.close();
     _pinStatusController.close();
+    _isQrCodeActiveController.close();
   }
 
   Future<void> login(String passphrase) async {
@@ -119,6 +123,11 @@ class AuthenticateBloc extends BlocBase {
   void updateStatusPin(PinStatus pinStatus) {
     this.pinStatus = pinStatus;
     _inpinStatus.add(this.pinStatus);
+  }
+
+  void setIsQrCodeActive(bool active) {
+    this.isQrCodeActive = active;
+    _inIsQrCodeActive.add(this.isQrCodeActive);
   }
 }
 
