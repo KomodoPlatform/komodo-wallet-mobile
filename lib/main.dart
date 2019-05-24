@@ -159,9 +159,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
-        if (Platform.isIOS) {
-          await mm2.stopmm2();
-        }
         print("inactive");
         break;
       case AppLifecycleState.paused:

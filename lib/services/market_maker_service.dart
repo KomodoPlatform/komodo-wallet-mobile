@@ -61,14 +61,17 @@ class MarketMakerService {
   Future<void> initMarketMaker() async{
     final directory = await getApplicationDocumentsDirectory();
     filesPath = directory.path + "/";
-    
-    ProcessResult checkmm2 = await Process.run('ls', ['${filesPath}mm2']);
 
-    if (checkmm2.stdout.toString().trim() != "${filesPath}mm2") {
-      ByteData resultmm2 = await rootBundle.load("assets/mm2");
-      await writeData(resultmm2.buffer.asUint8List());
-      await Process.run('chmod', ['777', '${filesPath}mm2']);
+    if (Platform.isAndroid) {
+      ProcessResult checkmm2 = await Process.run('ls', ['${filesPath}mm2']);
+
+      if (checkmm2.stdout.toString().trim() != "${filesPath}mm2") {
+        ByteData resultmm2 = await rootBundle.load("assets/mm2");
+        await writeData(resultmm2.buffer.asUint8List());
+        await Process.run('chmod', ['777', '${filesPath}mm2']);
+      }
     }
+
   }
 
   Future<void> runBin() async {
