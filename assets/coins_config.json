@@ -49,16 +49,16 @@
   },
   {
     "name": "Rick",
-    "address": "116.203.111.225",
-    "port": 10004,
+    "address": "electrum3.cipig.net",
+    "port": 10017,
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "RICK",
     "colorCoin": "0xFFabdce4",
     "serverList": [
-      "116.203.111.225:10004",
-      "116.203.120.175:10004",
-      "116.203.40.22:10004"
+      "electrum1.cipig.net:10017",
+      "electrum2.cipig.net:10017",
+      "electrum3.cipig.net:10017"
     ],
     "explorerUrl": [
       "https://rick.kmd.dev/"
@@ -66,16 +66,16 @@
   },
   {
     "name": "Morty",
-    "address": "116.203.120.175",
-    "port": 10005,
+    "address": "electrum1.cipig.net",
+    "port": 10018,
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "MORTY",
     "colorCoin": "0xFFf8f277",
     "serverList": [
-      "116.203.111.225:10005",
-      "116.203.120.175:10005",
-      "116.203.40.22:10005"
+      "electrum3.cipig.net:10018",
+      "electrum2.cipig.net:10018",
+      "electrum1.cipig.net:10018"
     ],
     "explorerUrl": [
       "https://morty.kmd.dev/"
