@@ -67,7 +67,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  '${widget.amountToSell} ${swapBloc.orderCoin.coinBase.abbr}',
+                                  '${widget.amountToSell} ${swapBloc.orderCoin.coinRel.abbr}',
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.title,
                                 ),
@@ -100,7 +100,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  '${widget.amountToBuy} ${swapBloc.orderCoin.coinRel.abbr}',
+                                  '${widget.amountToBuy} ${swapBloc.orderCoin.coinBase.abbr}',
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.title,
                                 ),
