@@ -67,7 +67,7 @@ class SwapHistoryBloc implements BlocBase {
 
           if (swap is Swap) {
             swap.status = getStatusSwap(swap);
-            if (uuidData.timeStart + 600 <
+            if (uuidData.timeStart + 3600 <
                     DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
                 swap.status != Status.SWAP_SUCCESSFUL) {
               swap.status = Status.TIME_OUT;
@@ -75,7 +75,7 @@ class SwapHistoryBloc implements BlocBase {
             swap.uuid = uuidData;
             swaps.add(swap);
           } else if (swap is ErrorString) {
-            if (uuidData.timeStart + 120 <
+            if (uuidData.timeStart + 600 <
                 DateTime.now().millisecondsSinceEpoch ~/ 1000) {
               status = Status.TIME_OUT;
             }
