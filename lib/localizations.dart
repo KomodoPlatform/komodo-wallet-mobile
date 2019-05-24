@@ -169,8 +169,8 @@ class AppLocalizations {
   String get selectCoinTitle => Intl.message("Activate coins:", name: 'selectCoinTitle');
   String get selectCoinInfo => Intl.message("Select the coins you want to add to your portfolio.", name: 'selectCoinInfo');
   String get noArticles => Intl.message("No news - please check back later!", name: 'noArticles');
-  String get infoTrade1 => Intl.message("After the ordermatch you can not cancel this transaction.", name: 'infoTrade1');
-  String get infoTrade2 => Intl.message("This transaction could take up to 10 mins - DONT close this application!", name: 'infoTrade2');
+  String get infoTrade1 => Intl.message("The swap request can not be undone and is a final event!", name: 'infoTrade1');
+  String get infoTrade2 => Intl.message("This transaction can take up to 10 mins - DONT close this application!", name: 'infoTrade2');
   String get swapDetailTitle => Intl.message("CONFIRM EXCHANGE DETAILS", name: 'swapDetailTitle');
   String get checkSeedPhrase => Intl.message("Check seed phrase", name: 'checkSeedPhrase');
   String get checkSeedPhraseTitle => Intl.message("LET'S DOUBLE CHECK YOUR SEED PHRASE", name: 'checkSeedPhraseTitle');
