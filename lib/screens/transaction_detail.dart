@@ -142,9 +142,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
             data: widget.transaction.confirmations.toString()),
         ItemTransationDetail(
             title: AppLocalizations.of(context).txFee,
-            data: widget.transaction.feeDetails.amount.toString() +
-                " " +
-                widget.transaction.coin),
+            data: _getFee()),
         widget.transaction.myBalanceChange > 0
             ? ItemTransationDetail(
                 title: AppLocalizations.of(context).from, data: widget.transaction.from[0])
@@ -156,6 +154,19 @@ class _TransactionDetailState extends State<TransactionDetail> {
         ItemTransationDetail(title: "Tx Hash", data: widget.transaction.txHash),
       ],
     );
+  }
+
+  String _getFee() {
+    String fee = "";
+
+    if (widget.transaction.feeDetails.amount == null) {
+      fee = widget.transaction.feeDetails.totalFee.toString();
+    } else {
+      fee = widget.transaction.feeDetails.amount.toString();
+    }
+    return fee +
+                " " +
+                widget.transaction.coin;
   }
 }
 
