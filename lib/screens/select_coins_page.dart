@@ -16,10 +16,29 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
+        title: Text(
+          AppLocalizations.of(context).selectCoinTitle.toUpperCase(),
+          style: Theme.of(context).textTheme.subtitle,
+          textAlign: TextAlign.start,
+        ),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            );
+          },
+        ),
+      ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
         child: isActivate
-            ? Center(child: CircularProgressIndicator())
+            ? LoadingCoin()
             : Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: <Widget>[
@@ -39,21 +58,15 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: PrimaryButton(
-                          text: AppLocalizations.of(context).done,
-                          onPressed: () async {
-                            setState(() {
-                              isActivate = true;
-                            });
-                            print(coinsBloc.coinToActivate.length);
-                            await coinsBloc
-                                .addMultiCoins(coinsBloc.coinToActivate)
-                                .then((onValue) {
-                              _closeSelectCoinsPage();
-                            }).timeout(Duration(seconds: 20), onTimeout: () {
-                              _closeSelectCoinsPage();
-                            });
-                          },
+                        child: StreamBuilder<List<Coin>>(
+                          initialData: coinsBloc.coinToActivate,
+                          stream: coinsBloc.outCoinToActivate,
+                          builder: (context, snapshot) {
+                            return PrimaryButton(
+                              text: AppLocalizations.of(context).done,
+                              onPressed: snapshot.hasData && snapshot.data.length > 0 ? _pressDoneButton : null,
+                            );
+                          }
                         ),
                       ),
                     ),
@@ -62,6 +75,18 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
               ),
       ),
     );
+  }
+
+  _pressDoneButton() async {
+    setState(() {
+      isActivate = true;
+    });
+    print(coinsBloc.coinToActivate.length);
+    await coinsBloc.addMultiCoins(coinsBloc.coinToActivate).then((onValue) {
+      _closeSelectCoinsPage();
+    }).timeout(Duration(seconds: 20), onTimeout: () {
+      _closeSelectCoinsPage();
+    });
   }
 
   _closeSelectCoinsPage() {
@@ -101,13 +126,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            AppLocalizations.of(context).selectCoinTitle.toUpperCase(),
-            style: Theme.of(context).textTheme.title,
-            textAlign: TextAlign.start,
-          ),
           SizedBox(
-            height: 16,
+            height: 8,
           ),
           Text(
             AppLocalizations.of(context).selectCoinInfo,
@@ -165,5 +185,33 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
         ),
       ),
     );
+  }
+}
+
+class LoadingCoin extends StatefulWidget {
+  @override
+  _LoadingCoinState createState() => _LoadingCoinState();
+}
+
+class _LoadingCoinState extends State<LoadingCoin> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        CircularProgressIndicator(),
+        SizedBox(height: 16,),
+        StreamBuilder<Coin>(
+          stream: coinsBloc.outcurrentActiveCoin,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Text('Activate: ${snapshot.data.name}');
+            } else {
+              return Container();
+            }
+          }
+        )
+      ],
+    ));
   }
 }

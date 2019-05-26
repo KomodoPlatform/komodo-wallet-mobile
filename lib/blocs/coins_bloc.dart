@@ -38,6 +38,16 @@ class CoinsBloc implements BlocBase {
   Sink<List<Coin>> get _inCoinToActivate => _coinToActivateController.sink;
   Stream<List<Coin>> get outCoinToActivate => _coinToActivateController.stream;
 
+
+  Coin currentActiveCoin = new Coin();
+
+  // Streams to handle the list coin
+  StreamController<Coin> _currentActiveCoinController =
+      StreamController<Coin>.broadcast();
+
+  Sink<Coin> get _inCurrentActiveCoin => _currentActiveCoinController.sink;
+  Stream<Coin> get outcurrentActiveCoin => _currentActiveCoinController.stream;
+
   var timer;
   var timer2;
 
@@ -46,6 +56,7 @@ class CoinsBloc implements BlocBase {
     _coinsController.close();
     _transactionsController.close();
     _coinToActivateController.close();
+    _currentActiveCoinController.close();
   }
 
   void resetCoinBalance() {
@@ -83,14 +94,17 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> addMultiCoins(List<Coin> coins) async{
-    List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
+    // List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
     List<Coin> coinsReadJson = await readJsonCoin();
     for (var coin in coins) {
       coinsReadJson.add(coin);
       print(coin.abbr);
-      futureActiveCoins.add(mm2.activeCoin(coin));
+      this.currentActiveCoin = coin;
+      _inCurrentActiveCoin.add(coin);
+      await mm2.activeCoin(coin);
     }
-    await Future.wait(futureActiveCoins);
+
+    // await Future.wait(futureActiveCoins);
     await writeJsonCoin(coinsReadJson);
     await mm2.loadCoin(true);
   }
