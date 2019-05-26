@@ -34,7 +34,7 @@ class CoinDetail extends StatefulWidget {
   @override
   _CoinDetailState createState() => _CoinDetailState();
 
-    showDialogClaim(BuildContext context) {
+  showDialogClaim(BuildContext context) {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -59,9 +59,8 @@ class CoinDetail extends StatefulWidget {
         .postWithdraw(
             coinBalance.coin,
             coinBalance.balance.address,
-            coinBalance.balance.balance -
-                coinBalance.coin.txfee / 100000000,
-                true)
+            coinBalance.balance.balance - coinBalance.coin.txfee / 100000000,
+            true)
         .then((data) {
       Navigator.of(context).pop();
       if (data is WithdrawResponse) {
@@ -86,8 +85,7 @@ class CoinDetail extends StatefulWidget {
                         style: Theme.of(context).textTheme.button),
                     onPressed: () {
                       mm2
-                          .postRawTransaction(
-                              coinBalance.coin, data.txHex)
+                          .postRawTransaction(coinBalance.coin, data.txHex)
                           .then((dataRawTx) {
                         if (dataRawTx is SendRawTransactionResponse) {
                           Navigator.of(context).pop();
@@ -196,7 +194,6 @@ class _CoinDetailState extends State<CoinDetail> {
     super.dispose();
   }
 
-  
   void onChange() {
     String text = _amountController.text;
     if (text.isNotEmpty) {
@@ -236,7 +233,7 @@ class _CoinDetailState extends State<CoinDetail> {
     }
 
     return LockScreen(
-          child: Scaffold(
+      child: Scaffold(
         resizeToAvoidBottomPadding: false,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
@@ -296,23 +293,27 @@ class _CoinDetailState extends State<CoinDetail> {
                 builder: (context, snapshot) {
                   Transactions transactions = snapshot.data;
 
-                  if (snapshot.hasData && transactions.result != null
-                  && transactions.result.transactions != null &&
-                      transactions.result.transactions.length == 0) {
-                    return Center(
-                        child: Text(
-                      AppLocalizations.of(context).noTxs,
-                      style: Theme.of(context).textTheme.body2,
-                    ));
-                  }
-                  if (snapshot.hasData && transactions.result != null
-                  && transactions.result.transactions != null &&
-                      transactions.result.transactions.length > 0) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                      child: _buildTransactions(
-                          context, transactions.result.transactions),
-                    );
+                  if (snapshot.hasData &&
+                      transactions.result != null &&
+                      transactions.result.transactions != null) {
+                    if (transactions.result.transactions.length > 0) {
+                      return Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                        child: _buildTransactions(
+                            context, transactions.result.transactions),
+                      );
+                    } else if (widget.coinBalance.balance.balance > 0 && transactions.result.transactions.length < 1) {
+                      return Center(child: CircularProgressIndicator()); 
+                    } else if (transactions.result.transactions.length == 0) {
+                      return Center(
+                          child: Text(
+                        AppLocalizations.of(context).noTxs,
+                        style: Theme.of(context).textTheme.body2,
+                      ));
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
                   } else {
                     return Center(child: CircularProgressIndicator());
                   }
@@ -516,8 +517,8 @@ class _CoinDetailState extends State<CoinDetail> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _buildButtonLight(StatusButton.RECEIVE, context),
-            widget.coinBalance.coin.abbr == "KMD" 
-            && widget.coinBalance.balance.balance >= 10
+            widget.coinBalance.coin.abbr == "KMD" &&
+                    widget.coinBalance.balance.balance >= 10
                 ? _buildButtonLight(StatusButton.CLAIM, context)
                 : Container(),
             _buildButtonLight(StatusButton.SEND, context),
@@ -899,11 +900,15 @@ class _CoinDetailState extends State<CoinDetail> {
     setState(() {
       currentIndex = 2;
     });
-    print(widget.coinBalance.balance.balance == double.parse(_amountController.text));
+    print(widget.coinBalance.balance.balance ==
+        double.parse(_amountController.text));
     mm2
-        .postWithdraw(widget.coinBalance.coin,
-            _addressController.text.toString(), sendamount, 
-            widget.coinBalance.balance.balance == double.parse(_amountController.text))
+        .postWithdraw(
+            widget.coinBalance.coin,
+            _addressController.text.toString(),
+            sendamount,
+            widget.coinBalance.balance.balance ==
+                double.parse(_amountController.text))
         .then((data) {
       if (data is WithdrawResponse) {
         mm2
