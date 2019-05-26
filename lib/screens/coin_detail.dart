@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
@@ -34,7 +35,7 @@ class CoinDetail extends StatefulWidget {
   _CoinDetailState createState() => _CoinDetailState();
 
     showDialogClaim(BuildContext context) {
-    showDialog(
+    dialogBloc.dialog = showDialog(
         context: context,
         builder: (BuildContext context) {
           return Dialog(
@@ -66,7 +67,7 @@ class CoinDetail extends StatefulWidget {
       if (data is WithdrawResponse) {
         print(data.myBalanceChange);
         if (data.myBalanceChange > 0) {
-          showDialog(
+          dialogBloc.dialog = showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
@@ -90,7 +91,7 @@ class CoinDetail extends StatefulWidget {
                           .then((dataRawTx) {
                         if (dataRawTx is SendRawTransactionResponse) {
                           Navigator.of(context).pop();
-                          showDialog(
+                          dialogBloc.dialog = showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
@@ -604,7 +605,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   _showDialogAddress(BuildContext mContext) {
     print(widget.coinBalance.balance.address);
-    showDialog(
+    dialogBloc.dialog = showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog

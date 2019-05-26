@@ -3,17 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
-import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/swap_confirmation_page.dart';
-import 'package:komodo_dex/screens/swap_detail_page.dart';
 import 'package:komodo_dex/screens/swap_history.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
 
 class SwapPage extends StatefulWidget {
   @override
@@ -29,6 +25,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   FocusNode _focus = new FocusNode();
   String tmpText = "";
   String amountToBuy;
+
   @override
   void initState() {
     super.initState();
@@ -248,7 +245,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                           snapshot.data is OrderCoin) {
                         OrderCoin ordercoin = snapshot.data;
 
-                        
                         if (_controllerAmount.text.isNotEmpty) {
                           amountToBuy = ordercoin.getBuyAmount(double.parse(
                               _controllerAmount.text.replaceAll(",", ".")));
@@ -447,7 +443,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
       }
     }
-    await showDialog<List<CoinBalance>>(
+    dialogBloc.dialog = showDialog<List<CoinBalance>>(
         context: context,
         builder: (BuildContext context) {
           return Theme(

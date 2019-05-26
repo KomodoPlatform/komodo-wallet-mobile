@@ -93,6 +93,7 @@ class SwapBloc implements BlocBase {
     _inListOrderCoin.add(orderCoins);
     return;
   }
+
 }
 
 final swapBloc = SwapBloc();
