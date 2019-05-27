@@ -18,9 +18,7 @@ import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/transaction_detail.dart';
-import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
-import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -531,7 +529,7 @@ class _CoinDetailState extends State<CoinDetail> {
           ],
         ),
         SizedBox(
-          height: 36,
+          height: 16,
         )
       ],
     );

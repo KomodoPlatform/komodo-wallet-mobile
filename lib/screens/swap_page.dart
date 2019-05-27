@@ -148,7 +148,11 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   _buildCardCoin(Market market) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 8, left: 16, right: 16, top: 8),
+        padding: EdgeInsets.only(
+            bottom: market == Market.SELL ? 0 : 8,
+            left: 16,
+            right: 16,
+            top: market == Market.SELL ? 8 : 0),
         child: Container(
           width: double.infinity,
           child: Card(
@@ -355,14 +359,16 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 Expanded(
-                                  child: OverflowBox(
-                                    maxHeight: 100,
-                                    maxWidth: 100,
-                                    minHeight: 0,
-                                    minWidth: 0,
-                                    child: Image.asset(
-                                      "assets/${snapshot.data.coin.abbr.toLowerCase()}.png",
-                                      fit: BoxFit.cover,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: OverflowBox(
+                                        maxHeight: 80,
+                                                                              child: Image.asset(
+                                          "assets/${snapshot.data.coin.abbr.toLowerCase()}.png",
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -386,15 +392,14 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                         children: <Widget>[
                           Expanded(
                             child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: OverflowBox(
-                                  maxHeight: 100,
-                                  maxWidth: 100,
-                                  minHeight: 0,
-                                  minWidth: 0,
-                                  child: Image.asset(
-                                    "assets/${orderCoin.coinBase.abbr.toLowerCase()}.png",
-                                    fit: BoxFit.cover,
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: OverflowBox(
+                                    maxHeight: 80,
+                                    child: Image.asset(
+                                      "assets/${orderCoin.coinBase.abbr.toLowerCase()}.png",
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 )),
                           ),
@@ -580,13 +585,13 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
   _buildSwapArrow() {
     return Container(
-      height: 30,
+      height: 25,
       child: Center(
         child: RotatedBox(
           quarterTurns: 1,
           child: Icon(
             Icons.play_arrow,
-            size: 30,
+            size: 25,
             color: Colors.white30,
           ),
         ),
@@ -596,7 +601,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
   _buildSwapButton() {
     return Container(
-      height: 70,
+      height: MediaQuery.of(context).size.height * 0.08,
       child: Container(
         width: double.infinity,
         child: Builder(builder: (context) {

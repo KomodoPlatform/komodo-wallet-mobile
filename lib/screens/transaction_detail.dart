@@ -70,7 +70,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
   _buildHeader() {
     Transaction tx = widget.transaction;
     return Container(
-      height: MediaQuery.of(context).size.height * 0.2,
+      height: 200,
       color: Theme.of(context).primaryColor,
       child: Column(
         children: <Widget>[

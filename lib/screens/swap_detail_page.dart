@@ -164,7 +164,7 @@ class StepperTrade extends StatefulWidget {
 class _StepperTradeState extends State<StepperTrade> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: <Widget>[
         ProgressSwap(
             uuid: widget.uuid,
@@ -251,37 +251,35 @@ class _ProgressSwapState extends State<ProgressSwap>
       }
     }
 
-    return Expanded(
+    return Container(
+      height: 350,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height * 0.45,
-            child: CustomPaint(
-              painter: RadialPainter(
-                  context: context, progressInDegrees: progressDegrees),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.6,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      '${AppLocalizations.of(context).step} ',
-                      style: Theme.of(context).textTheme.subtitle,
-                    ),
-                    Text(
-                      swapHistoryBloc
-                          .getStepStatusNumber(widget.swap.status)
-                          .toString(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle
-                          .copyWith(color: Theme.of(context).accentColor),
-                    ),
-                    Text('/${swapHistoryBloc.getNumberStep().toInt().toString()}',
-                        style: Theme.of(context).textTheme.subtitle)
-                  ],
-                ),
+          CustomPaint(
+            painter: RadialPainter(
+                context: context, progressInDegrees: progressDegrees),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '${AppLocalizations.of(context).step} ',
+                    style: Theme.of(context).textTheme.subtitle,
+                  ),
+                  Text(
+                    swapHistoryBloc
+                        .getStepStatusNumber(widget.swap.status)
+                        .toString(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle
+                        .copyWith(color: Theme.of(context).accentColor),
+                  ),
+                  Text('/${swapHistoryBloc.getNumberStep().toInt().toString()}',
+                      style: Theme.of(context).textTheme.subtitle)
+                ],
               ),
             ),
           ),

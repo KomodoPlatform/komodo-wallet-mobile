@@ -96,10 +96,9 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                           ),
                           background: Container(
                             child: Padding(
-                              padding:
-                                  EdgeInsets.only(top: _heightScreen * 0.20),
+                              padding: const EdgeInsets.only(bottom: 16),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   LoadAsset(),
@@ -381,7 +380,7 @@ class _ItemCoinState extends State<ItemCoin> {
             );
           },
           child: Container(
-            height: _heightScreen * 0.15,
+            height: 125,
             child: Row(
               children: <Widget>[
                 ClipRRect(
