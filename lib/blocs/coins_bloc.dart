@@ -188,6 +188,7 @@ class CoinsBloc implements BlocBase {
     if (timer != null) timer.cancel();
     if (timer2 != null) timer2.cancel();
   }
+
 }
 
 final coinsBloc = CoinsBloc();

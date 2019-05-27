@@ -43,7 +43,7 @@ void main() async {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((_) {
       _runBinMm2UserAlreadyLog().then((onValue) {
-        mm2.initMarketMaker().then((_){
+        mm2.initMarketMaker().then((_) {
           runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
         });
       });
@@ -137,6 +137,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   int _currentIndex = 0;
+  var timer;
+  bool isNetworkAvailable = false;
 
   final List<Widget> _children = [
     BlocCoinsPage(),
@@ -148,13 +150,38 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    new Future.delayed(Duration.zero, () {
+      _checkNetworkStatus(context);
+    });
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    if (timer != null) {
+      timer.cancel();
+    }
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  _checkNetworkStatus(BuildContext context) {
+    timer = Timer.periodic(Duration(seconds: 20), (_) async {
+      try {
+        final result = await InternetAddress.lookup('google.com');
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+          print('connected');
+          setState(() {
+            isNetworkAvailable = false;
+          });
+        }
+      } on SocketException catch (_) {
+        print('not connected');
+        setState(() {
+          isNetworkAvailable = true;
+        });
+      }
+    });
   }
 
   @override
@@ -166,8 +193,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.paused:
         print("paused");
         dialogBloc.closeDialog(context);
-        if (!authBloc.isQrCodeActive)
-          authBloc.showPin(true);
+        if (!authBloc.isQrCodeActive) authBloc.showPin(true);
         break;
       case AppLifecycleState.resumed:
         print("resumed");
@@ -210,24 +236,41 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         color: Theme.of(context)
                             .textSelectionColor
                             .withOpacity(0.5)))),
-            child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              onTap: onTabTapped,
-              currentIndex: _currentIndex,
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.account_balance_wallet),
-                    title: Text(AppLocalizations.of(context).portfolio)),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.swap_vert),
-                    title: Text(AppLocalizations.of(context).dex)),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.library_books),
-                    title: Text(AppLocalizations.of(context).media)),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.settings),
-                    title: Text(AppLocalizations.of(context).settings)),
-              ],
+            child: SizedBox(
+              height: isNetworkAvailable ? 80 : 56,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  if (isNetworkAvailable) Expanded(
+                    child: Center(
+                      child: Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          color: Colors.redAccent,
+                          child: Center(child: Text("No Internet Connexion"))),
+                    ),
+                  ),
+                  BottomNavigationBar(
+                    type: BottomNavigationBarType.fixed,
+                    onTap: onTabTapped,
+                    currentIndex: _currentIndex,
+                    items: [
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.account_balance_wallet),
+                          title: Text(AppLocalizations.of(context).portfolio)),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.swap_vert),
+                          title: Text(AppLocalizations.of(context).dex)),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.library_books),
+                          title: Text(AppLocalizations.of(context).media)),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.settings),
+                          title: Text(AppLocalizations.of(context).settings)),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
