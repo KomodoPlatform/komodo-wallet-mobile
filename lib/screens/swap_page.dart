@@ -480,6 +480,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     },
                   ),
           );
+        }).then((_){
+          dialogBloc.dialog = null;
         });
   }
 

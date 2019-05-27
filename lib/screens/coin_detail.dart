@@ -53,6 +53,8 @@ class CoinDetail extends StatefulWidget {
               ),
             ),
           );
+        }).then((_){
+          dialogBloc.dialog = null;
         });
 
     mm2
@@ -106,7 +108,9 @@ class CoinDetail extends StatefulWidget {
                                     ),
                                   ],
                                 );
-                              });
+                              }).then((_){
+          dialogBloc.dialog = null;
+        });
                         }
                       });
                     },
@@ -114,7 +118,9 @@ class CoinDetail extends StatefulWidget {
                 ],
               );
             },
-          );
+          ).then((_){
+          dialogBloc.dialog = null;
+        });
         } else {
           Scaffold.of(context).showSnackBar(new SnackBar(
             duration: Duration(seconds: 2),
@@ -659,6 +665,7 @@ class _CoinDetailState extends State<CoinDetail> {
       },
     ).then((data) {
       setState(() {});
+      dialogBloc.dialog = null;
     });
   }
 
