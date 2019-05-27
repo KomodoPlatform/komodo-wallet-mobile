@@ -14,3 +14,19 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our 
 [online documentation](https://flutter.io/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
+
+## For iOS build:
+
+1. Plug your device (iPhone) to your computer.
+
+2. 
+```
+git clone https://github.com/ca333/komodoDEX.git
+cd komodoDEX 
+flutter packages get
+```
+3. Copy your libmm2.a generate by [this repo](https://gitlab.com/artemciy/mm2tester?nav_source=navbar) on `komodoDEX/ios/.`.
+
+4. `flutter run`
+
+5. If it's your first compilation on this device you must give authorization on your device go to `Settings > General > Device Management` then trust the application. You can now `flutter run` again.
