@@ -181,7 +181,7 @@ class MarketMakerService {
               coinBalance.priceForOne =
                   await getPriceObj.getPrice(coin.abbr, "USD");
               coinBalance.balanceUSD =
-                  coinBalance.priceForOne * coinBalance.balance.balance;
+                  coinBalance.priceForOne * double.parse(coinBalance.balance.balance);
             }
             listCoinElectrum.add(coinBalance);
           } else if (balance is ErrorString) {
@@ -276,11 +276,14 @@ class MarketMakerService {
 
 
   Future<dynamic> getSwapStatus(String uuid) async {
+    print("-----uuid-----" + uuid);
+    
     GetSwap getSwap = new GetSwap(
         userpass: userpass,
         method: 'my_swap_status',
         params: Params(uuid: uuid));
-    final response = await http.post(url, body: json.encode(getSwap));
+    final response = await http.post(url, body: getSwapToJson(getSwap));
+    print(response.body.toString());
     try {
       return swapFromJson(response.body);
     } catch (e) {
@@ -303,7 +306,8 @@ class MarketMakerService {
     GetBalance getBalance = new GetBalance(
         userpass: userpass, method: "my_balance", coin: coin.abbr);
     final response = await http.post(url, body: json.encode(getBalance));
-    print(response.body.toString());
+
+    print("getBalance" + response.body.toString());
 
     try {
       return balanceFromJson(response.body);
@@ -313,13 +317,13 @@ class MarketMakerService {
   }
 
   Future<dynamic> postBuy(
-      Coin base, Coin rel, double relVolume, double price) async {
+      Coin base, Coin rel, double volume, double price) async {
     print("SWAPPARAM: base: " +
         base.abbr +
         " rel: " +
         rel.abbr.toString() +
         " relvol: " +
-        relVolume.toString() +
+        volume.toString() +
         " price: " +
         price.toString());
     GetBuy getBuy = new GetBuy(
@@ -327,8 +331,8 @@ class MarketMakerService {
         method: "buy",
         base: base.abbr,
         rel: rel.abbr,
-        relvolume: relVolume,
-        price: price);
+        volume: volume.toStringAsFixed(8),
+        price: price.toStringAsFixed(8));
     final response = await http.post(url, body: json.encode(getBuy));
 
     print(response.body.toString());

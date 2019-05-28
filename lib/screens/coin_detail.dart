@@ -59,7 +59,7 @@ class CoinDetail extends StatefulWidget {
         .postWithdraw(
             coinBalance.coin,
             coinBalance.balance.address,
-            coinBalance.balance.balance - coinBalance.coin.txfee / 100000000,
+            double.parse(coinBalance.balance.balance) - coinBalance.coin.txfee / 100000000,
             true)
         .then((data) {
       Navigator.of(context).pop();
@@ -203,7 +203,7 @@ class _CoinDetailState extends State<CoinDetail> {
     if (text.isNotEmpty) {
       setState(() {
         if (widget.coinBalance != null &&
-            double.parse(text) > widget.coinBalance.balance.balance) {
+            double.parse(text) > double.parse(widget.coinBalance.balance.balance)) {
           setMaxValue();
         }
       });
@@ -221,7 +221,7 @@ class _CoinDetailState extends State<CoinDetail> {
         fee = (txFee.toDouble() / 100000000);
       }
       _amountController.text =
-          (widget.coinBalance.balance.balance).toStringAsFixed(8);
+          (double.parse(widget.coinBalance.balance.balance)).toStringAsFixed(8);
     });
     await Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {
@@ -307,7 +307,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         child: _buildTransactions(
                             context, transactions.result.transactions),
                       );
-                    } else if (widget.coinBalance.balance.balance > 0 && transactions.result.transactions.length < 1) {
+                    } else if (double.parse(widget.coinBalance.balance.balance) > 0 && transactions.result.transactions.length < 1) {
                       return Center(child: CircularProgressIndicator()); 
                     } else if (transactions.result.transactions.length == 0) {
                       return Center(
@@ -522,7 +522,7 @@ class _CoinDetailState extends State<CoinDetail> {
           children: <Widget>[
             _buildButtonLight(StatusButton.RECEIVE, context),
             widget.coinBalance.coin.abbr == "KMD" &&
-                    widget.coinBalance.balance.balance >= 10
+                    double.parse(widget.coinBalance.balance.balance) >= 10
                 ? _buildButtonLight(StatusButton.CLAIM, context)
                 : Container(),
             _buildButtonLight(StatusButton.SEND, context),
@@ -1085,7 +1085,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         labelText: AppLocalizations.of(context).amount),
                     // The validator receives the text the user has typed in
                     validator: (value) {
-                      double balance = widget.coinBalance.balance.balance;
+                      double balance = double.parse(widget.coinBalance.balance.balance);
 
                       if (value.isEmpty || double.parse(value) <= 0) {
                         return AppLocalizations.of(context).errorValueNotEmpty;

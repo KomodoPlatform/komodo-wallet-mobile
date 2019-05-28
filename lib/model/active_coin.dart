@@ -16,7 +16,7 @@ String activeCoinToJson(ActiveCoin data) {
 
 class ActiveCoin {
   String address;
-  double balance;
+  String balance;
   String result;
 
   ActiveCoin({
@@ -27,7 +27,7 @@ class ActiveCoin {
 
   factory ActiveCoin.fromJson(Map<String, dynamic> json) => new ActiveCoin(
         address: json["address"],
-        balance: json["balance"].toDouble(),
+        balance: json["balance"],
         result: json["result"],
       );
 

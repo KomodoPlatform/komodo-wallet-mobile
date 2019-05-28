@@ -255,16 +255,16 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         .postBuy(swapBloc.orderCoin.coinBase, swapBloc.orderCoin.coinRel,
             amountToSell, swapBloc.orderCoin.bestPrice * 1.01)
         .then((onValue) {
-      if (onValue is BuyResponse && onValue.result == "success") {
+      if (onValue is BuyResponse) {
         swapHistoryBloc.saveUUID(
-            onValue.pending.uuid,
+            onValue.result.uuid,
             swapBloc.orderCoin.coinBase,
             swapBloc.orderCoin.coinRel,
             amountToSell,
             double.parse(swapBloc.orderCoin.getBuyAmount(amountToSell)));
         swapHistoryBloc.updateSwap().then((data) {
           swapHistoryBloc.swaps.forEach((swap) {
-            if (swap.uuid.uuid == onValue.pending.uuid) {
+            if (swap.uuid.uuid == onValue.result.uuid) {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

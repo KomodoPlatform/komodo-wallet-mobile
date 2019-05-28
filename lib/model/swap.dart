@@ -159,13 +159,13 @@ class DatumClass {
 class DataClass {
   int lockDuration;
   String maker;
-  int makerAmount;
+  String makerAmount;
   String makerCoin;
   int makerPaymentConfirmations;
   int makerPaymentWait;
   String myPersistentPub;
   int startedAt;
-  int takerAmount;
+  String takerAmount;
   String takerCoin;
   int takerPaymentConfirmations;
   int takerPaymentLock;

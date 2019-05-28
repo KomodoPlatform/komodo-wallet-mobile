@@ -19,15 +19,15 @@ class GetBuy {
   String method;
   String base;
   String rel;
-  double relvolume;
-  double price;
+  String volume;
+  String price;
 
   GetBuy({
     this.userpass,
     this.method,
     this.base,
     this.rel,
-    this.relvolume,
+    this.volume,
     this.price,
   });
 
@@ -36,8 +36,8 @@ class GetBuy {
         method: json["method"],
         base: json["base"],
         rel: json["rel"],
-        relvolume: json["relvolume"].toDouble(),
-        price: json["price"].toDouble(),
+        volume: json["volume"],
+        price: json["price"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,7 +45,7 @@ class GetBuy {
         "method": method,
         "base": base,
         "rel": rel,
-        "relvolume": relvolume,
+        "volume": volume,
         "price": price,
       };
 }

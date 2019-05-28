@@ -223,7 +223,7 @@ class LoadAssetState extends State<LoadAsset> {
           int assetNumber = 0;
 
           snapshot.data.forEach((coinBalance) {
-            if (coinBalance.balance.balance > 0) {
+            if (double.parse(coinBalance.balance.balance) > 0) {
               assetNumber++;
             }
           });
@@ -429,7 +429,7 @@ class _ItemCoinState extends State<ItemCoin> {
                         ),
                         Container(
                           child: AutoSizeText(
-                            "${f.format(balance.balance)} ${coin.abbr}",
+                            "${f.format(double.parse(balance.balance))} ${coin.abbr}",
                             maxLines: 1,
                             style: Theme.of(context).textTheme.subtitle,
                           ),
@@ -445,7 +445,7 @@ class _ItemCoinState extends State<ItemCoin> {
                           );
                         }),
                         widget.coinBalance.coin.abbr == "KMD" &&
-                                widget.coinBalance.balance.balance >= 10
+                                double.parse(widget.coinBalance.balance.balance) >= 10
                             ? Padding(
                                 padding: EdgeInsets.only(top: 8),
                                 child: OutlineButton(
