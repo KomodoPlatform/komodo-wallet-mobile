@@ -236,40 +236,50 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         color: Theme.of(context)
                             .textSelectionColor
                             .withOpacity(0.5)))),
-            child: SizedBox(
-              height: isNetworkAvailable ? 80 : 56,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  if (isNetworkAvailable) Expanded(
-                    child: Center(
-                      child: Container(
-                          height: double.infinity,
-                          width: double.infinity,
-                          color: Colors.redAccent,
-                          child: Center(child: Text("No Internet Connexion"))),
-                    ),
-                  ),
-                  BottomNavigationBar(
-                    type: BottomNavigationBarType.fixed,
-                    onTap: onTabTapped,
-                    currentIndex: _currentIndex,
-                    items: [
-                      BottomNavigationBarItem(
-                          icon: Icon(Icons.account_balance_wallet),
-                          title: Text(AppLocalizations.of(context).portfolio)),
-                      BottomNavigationBarItem(
-                          icon: Icon(Icons.swap_vert),
-                          title: Text(AppLocalizations.of(context).dex)),
-                      BottomNavigationBarItem(
-                          icon: Icon(Icons.library_books),
-                          title: Text(AppLocalizations.of(context).media)),
-                      BottomNavigationBarItem(
-                          icon: Icon(Icons.settings),
-                          title: Text(AppLocalizations.of(context).settings)),
+            child: Container(
+              color: Theme.of(context).primaryColor,
+              child: SafeArea(
+                child: SizedBox(
+                  height: isNetworkAvailable ? 80 : 56,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      if (isNetworkAvailable)
+                        Expanded(
+                          child: Center(
+                            child: Container(
+                                height: double.infinity,
+                                width: double.infinity,
+                                color: Colors.redAccent,
+                                child: Center(
+                                    child: Text("No Internet Connexion"))),
+                          ),
+                        ),
+                      BottomNavigationBar(
+                        elevation: 0,
+                        type: BottomNavigationBarType.fixed,
+                        onTap: onTabTapped,
+                        currentIndex: _currentIndex,
+                        items: [
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.account_balance_wallet),
+                              title:
+                                  Text(AppLocalizations.of(context).portfolio)),
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.swap_vert),
+                              title: Text(AppLocalizations.of(context).dex)),
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.library_books),
+                              title: Text(AppLocalizations.of(context).media)),
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.settings),
+                              title:
+                                  Text(AppLocalizations.of(context).settings)),
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
