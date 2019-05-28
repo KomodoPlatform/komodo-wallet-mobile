@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
+import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -39,14 +41,24 @@ class CoinsBloc implements BlocBase {
   Stream<List<Coin>> get outCoinToActivate => _coinToActivateController.stream;
 
 
-  Coin currentActiveCoin = new Coin();
+  CoinToActivate currentActiveCoin = new CoinToActivate();
 
   // Streams to handle the list coin
-  StreamController<Coin> _currentActiveCoinController =
+  StreamController<CoinToActivate> _currentActiveCoinController =
+      StreamController<CoinToActivate>.broadcast();
+
+  Sink<CoinToActivate> get _inCurrentActiveCoin => _currentActiveCoinController.sink;
+  Stream<CoinToActivate> get outcurrentActiveCoin => _currentActiveCoinController.stream;
+
+  Coin failCoinActivate = new Coin();
+
+  // Streams to handle the list coin
+  StreamController<Coin> _failCoinActivateController =
       StreamController<Coin>.broadcast();
 
-  Sink<Coin> get _inCurrentActiveCoin => _currentActiveCoinController.sink;
-  Stream<Coin> get outcurrentActiveCoin => _currentActiveCoinController.stream;
+  Sink<Coin> get _inFailCoinActivate => _failCoinActivateController.sink;
+  Stream<Coin> get outFailCoinActivate => _failCoinActivateController.stream;
+
 
   var timer;
   var timer2;
@@ -57,6 +69,7 @@ class CoinsBloc implements BlocBase {
     _transactionsController.close();
     _coinToActivateController.close();
     _currentActiveCoinController.close();
+    _failCoinActivateController.close();
   }
 
   void resetCoinBalance() {
@@ -94,17 +107,24 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> addMultiCoins(List<Coin> coins) async{
-    // List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
     List<Coin> coinsReadJson = await readJsonCoin();
     for (var coin in coins) {
-      coinsReadJson.add(coin);
-      print(coin.abbr);
-      this.currentActiveCoin = coin;
-      _inCurrentActiveCoin.add(coin);
-      await mm2.activeCoin(coin);
+      await mm2.activeCoin(coin).then((onValue){
+        if (onValue is ActiveCoin) {
+          coinsReadJson.add(coin);
+          this.currentActiveCoin = CoinToActivate(coin: coin, isActivate: true);
+          _inCurrentActiveCoin.add(this.currentActiveCoin);
+        } else if (onValue is ErrorString) {
+          this.currentActiveCoin = CoinToActivate(coin: coin, isActivate: false);
+          _inCurrentActiveCoin.add(this.currentActiveCoin);
+          print('Sorry, coin not available ${coin.abbr}');
+        }
+      }).catchError((onError){
+        print("SPV ERROR" + onError);
+      });
+
     }
 
-    // await Future.wait(futureActiveCoins);
     await writeJsonCoin(coinsReadJson);
     await mm2.loadCoin(true);
   }
@@ -192,3 +212,10 @@ class CoinsBloc implements BlocBase {
 }
 
 final coinsBloc = CoinsBloc();
+
+class CoinToActivate {
+  Coin coin;
+  bool isActivate;
+
+  CoinToActivate({this.coin, this.isActivate});
+}
