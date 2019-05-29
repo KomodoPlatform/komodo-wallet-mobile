@@ -16,14 +16,17 @@ class OrderCoin {
       this.maxVolume});
 
   String getBuyAmount(double amountToSell) {
+    print("amountToSell" + amountToSell.toString());
     String buyAmount = 0.toString();
     buyAmount = (amountToSell / bestPrice).toStringAsFixed(8);
     if (double.parse(buyAmount) == 0) {
       buyAmount = 0.toStringAsFixed(0);
     }
+    print("maxVolume" + maxVolume.toString());
     if (double.parse(buyAmount) >= maxVolume) {
       buyAmount = maxVolume.toString();
     }
+    print("buyAmount" + buyAmount);
     return buyAmount;
   }
 }
