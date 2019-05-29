@@ -40,15 +40,16 @@ class CoinsBloc implements BlocBase {
   Sink<List<Coin>> get _inCoinToActivate => _coinToActivateController.sink;
   Stream<List<Coin>> get outCoinToActivate => _coinToActivateController.stream;
 
-
   CoinToActivate currentActiveCoin = new CoinToActivate();
 
   // Streams to handle the list coin
   StreamController<CoinToActivate> _currentActiveCoinController =
       StreamController<CoinToActivate>.broadcast();
 
-  Sink<CoinToActivate> get _inCurrentActiveCoin => _currentActiveCoinController.sink;
-  Stream<CoinToActivate> get outcurrentActiveCoin => _currentActiveCoinController.stream;
+  Sink<CoinToActivate> get _inCurrentActiveCoin =>
+      _currentActiveCoinController.sink;
+  Stream<CoinToActivate> get outcurrentActiveCoin =>
+      _currentActiveCoinController.stream;
 
   Coin failCoinActivate = new Coin();
 
@@ -58,7 +59,6 @@ class CoinsBloc implements BlocBase {
 
   Sink<Coin> get _inFailCoinActivate => _failCoinActivateController.sink;
   Stream<Coin> get outFailCoinActivate => _failCoinActivateController.stream;
-
 
   var timer;
   var timer2;
@@ -106,27 +106,44 @@ class CoinsBloc implements BlocBase {
     _inTransactions.add(this.transactions);
   }
 
-  Future<void> addMultiCoins(List<Coin> coins) async{
+  Future<void> addMultiCoins(List<Coin> coins, bool isSavedToLocal) async {
     List<Coin> coinsReadJson = await readJsonCoin();
+
     for (var coin in coins) {
-      await mm2.activeCoin(coin).then((onValue){
+      await mm2.activeCoin(coin).then((onValue) {
         if (onValue is ActiveCoin) {
-          coinsReadJson.add(coin);
-          this.currentActiveCoin = CoinToActivate(coin: coin, isActivate: true);
-          _inCurrentActiveCoin.add(this.currentActiveCoin);
+          if (isSavedToLocal) coinsReadJson.add(coin);
+          currentCoinActivate(CoinToActivate(coin: coin, isActivate: true));
         } else if (onValue is ErrorString) {
-          this.currentActiveCoin = CoinToActivate(coin: coin, isActivate: false);
-          _inCurrentActiveCoin.add(this.currentActiveCoin);
+          coinsReadJson.forEach((coinJson) {
+            if (coinJson.abbr == coin.abbr) {
+              coinsReadJson.remove(coinJson);
+            }
+          });
+          currentCoinActivate(CoinToActivate(coin: coin, isActivate: false));
           print('Sorry, coin not available ${coin.abbr}');
         }
-      }).catchError((onError){
-        print("SPV ERROR" + onError);
+      }).catchError((onError) {
+        coinsReadJson.forEach((coinJson) {
+          if (coinJson.abbr == coin.abbr) {
+            coinsReadJson.remove(coinJson);
+          }
+        });
+        currentCoinActivate(CoinToActivate(coin: coin, isActivate: false));
+        print('Sorry, coin not available ${coin.abbr}');
       });
-
     }
-
+    print(coinsReadJson.length);
     await writeJsonCoin(coinsReadJson);
+
+    // List<Coin> cs = await readJsonCoin();
+    // print(cs.length);
     await mm2.loadCoin(true);
+  }
+
+  void currentCoinActivate(CoinToActivate coinToAtivate) {
+    this.currentActiveCoin = coinToAtivate;
+    _inCurrentActiveCoin.add(this.currentActiveCoin);
   }
 
   Future<String> get _localPath async {
@@ -161,13 +178,11 @@ class CoinsBloc implements BlocBase {
     List<Coin> coinsNotActivated = new List<Coin>();
 
     allCoins.forEach((coin) {
-                  bool isAlreadyAdded = false;
+      bool isAlreadyAdded = false;
       allCoinsActivate.forEach((coinActivate) {
-        if (coin.abbr == coinActivate.abbr)
-          isAlreadyAdded = true;
+        if (coin.abbr == coinActivate.abbr) isAlreadyAdded = true;
       });
-      if (!isAlreadyAdded)
-        coinsNotActivated.add(coin);
+      if (!isAlreadyAdded) coinsNotActivated.add(coin);
     });
     return coinsNotActivated;
   }
@@ -208,7 +223,6 @@ class CoinsBloc implements BlocBase {
     if (timer != null) timer.cancel();
     if (timer2 != null) timer2.cancel();
   }
-
 }
 
 final coinsBloc = CoinsBloc();

@@ -97,23 +97,18 @@ class MarketMakerService {
         String logMm2 = utf8.decoder.convert(onData).trim();
         sink.write(logMm2);
         print("mm2: " + logMm2);
-
+        if (logMm2.contains("Received 'negotiation") ||
+            logMm2.contains("Got maker payment") ||
+            logMm2.contains("Sending 'taker-fee") ||
+            logMm2.contains("Finished")) {
+          swapHistoryBloc.updateSwap();
+        }
         if (logMm2.contains("DEX stats API enabled at")) {
           print("DEX stats API enabled at");
-          if (logMm2.contains("Received 'negotiation") ||
-              logMm2.contains("Got maker payment") ||
-              logMm2.contains("Sending 'taker-fee") ||
-              logMm2.contains("Finished")) {
-            swapHistoryBloc.updateSwap();
-          }
 
           ismm2Running = true;
 
-          activateCoins().then((_) {
-            loadCoin(true).then((_) {
-              coinsBloc.startCheckBalance();
-            });
-          });
+          _initCoinsAndLoad();
         }
       });
     } else if (Platform.isIOS) {
@@ -136,36 +131,53 @@ class MarketMakerService {
             ismm2Running = true;
             _.cancel();
             print("CANCEL TIMER");
-            activateCoins().then((onValue) {
-              print("ALL COINS ACTIVATES");
-              loadCoin(true).then((data) {
-                print("LOADCOIN FINISHED");
-                coinsBloc.startCheckBalance();
-              });
-            });
+            _initCoinsAndLoad();
           }
         });
       });
     }
   }
 
+  _initCoinsAndLoad() async {
+    coinsBloc
+        .addMultiCoins(await coinsBloc.readJsonCoin(), false)
+        .then((onValue) {
+      print("ALL COINS ACTIVATES");
+      loadCoin(true).then((data) {
+        print("LOADCOIN FINISHED");
+        coinsBloc.startCheckBalance();
+      });
+    });
+  }
+
   Future<int> checkStatusmm2() async {
     return await platformmm2.invokeMethod('status');
   }
 
-  Future<void> activateCoins() async {
-    print("ACTIVATE BEGIN");
-    List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
-    List<Coin> coins = await coinsBloc.readJsonCoin();
+  // Future<void> activateCoins() async {
+  //   print("ACTIVATE BEGIN");
+  //   List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
+  //   List<Coin> coins = await coinsBloc.readJsonCoin();
 
-    for (var coin in coins) {
-      futureActiveCoins.add(this.activeCoin(coin));
-    }
-    await coinsBloc.writeJsonCoin(coins);
-    print("ACTIVATE MIDDLE");
-    await Future.wait(futureActiveCoins);
-    print("ACTIVATE FINISH");
-  }
+  //   for (var coin in coins) {
+  //     await mm2.activeCoin(coin).then((onValue) {
+  //       if (onValue is ActiveCoin) {
+  //         coinsBloc.currentCoinActivate(
+  //             CoinToActivate(coin: coin, isActivate: true));
+  //       } else if (onValue is ErrorString) {
+  //         coinsBloc.currentCoinActivate(
+  //             CoinToActivate(coin: coin, isActivate: false));
+  //         print('Sorry, coin not available ${coin.abbr}');
+  //       }
+  //     }).catchError((onError) {
+  //       print("SPV ERROR" + onError);
+  //     });
+  //   }
+  //   // await coinsBloc.writeJsonCoin(coins);
+  //   // print("ACTIVATE MIDDLE");
+  //   // await Future.wait(futureActiveCoins);
+  //   // print("ACTIVATE FINISH");
+  // }
 
   Future<void> loadCoin(bool forceUpdate) async {
     List<Coin> coins = await coinsBloc.readJsonCoin();
@@ -174,20 +186,17 @@ class MarketMakerService {
 
     for (var coin in coins) {
       for (var balance in balances) {
-        if (coin.abbr == balance.coin) {
-          if (balance is Balance) {
-            var coinBalance = CoinBalance(coin, balance);
-            if (forceUpdate || coinBalance.balanceUSD == null) {
-              coinBalance.priceForOne =
-                  await getPriceObj.getPrice(coin.abbr, "USD");
-              coinBalance.balanceUSD =
-                  coinBalance.priceForOne * coinBalance.balance.balance;
-            }
-            listCoinElectrum.add(coinBalance);
-          } else if (balance is ErrorString) {
-            print(balance.error);
+        if (balance is Balance && coin.abbr == balance.coin) {
+          var coinBalance = CoinBalance(coin, balance);
+          if (forceUpdate || coinBalance.balanceUSD == null) {
+            coinBalance.priceForOne =
+                await getPriceObj.getPrice(coin.abbr, "USD");
+            coinBalance.balanceUSD =
+                coinBalance.priceForOne * coinBalance.balance.balance;
           }
+          listCoinElectrum.add(coinBalance);
         }
+
         if (balance is Balance && balance.coin == "KMD") {
           pubkey = balance.address;
         }
@@ -272,8 +281,6 @@ class MarketMakerService {
   Future<String> loadDefaultActivateCoin() async {
     return await rootBundle.loadString('assets/coins_activate_default.json');
   }
-
-
 
   Future<dynamic> getSwapStatus(String uuid) async {
     GetSwap getSwap = new GetSwap(

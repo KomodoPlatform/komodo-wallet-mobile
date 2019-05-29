@@ -304,8 +304,16 @@ class ListCoinsState extends State<ListCoins> {
                         ItemCoin(mContext: context, coinBalance: data))
                     .toList(),
               ));
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return LoadingCoin();
         } else {
-          return Center(child: CircularProgressIndicator());
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AddCoinButton(),
+              Text("Please Add A Coin"),
+            ],
+          );
         }
       },
     );
@@ -324,44 +332,12 @@ class ItemCoin extends StatefulWidget {
 }
 
 class _ItemCoinState extends State<ItemCoin> {
-  bool isAddCoinProgress = false;
   @override
   Widget build(BuildContext context) {
     double _heightScreen = MediaQuery.of(context).size.height;
 
     if (widget.coinBalance is bool) {
-      return FutureBuilder<bool>(
-        future: _buildAddCoinButton(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: isAddCoinProgress
-                  ? Center(child: CircularProgressIndicator())
-                  : Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                          child: FloatingActionButton(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: Theme.of(context).accentColor,
-                        child: Icon(
-                          Icons.add,
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SelectCoinsPage()),
-                          );
-                        },
-                      )),
-                    ),
-            );
-          } else {
-            return Container();
-          }
-        },
-      );
+      return AddCoinButton();
     } else {
       Coin coin = widget.coinBalance.coin;
       Balance balance = widget.coinBalance.balance;
@@ -481,6 +457,46 @@ class _ItemCoinState extends State<ItemCoin> {
         ),
       );
     }
+  }
+}
+
+class AddCoinButton extends StatefulWidget {
+  @override
+  _AddCoinButtonState createState() => _AddCoinButtonState();
+}
+
+class _AddCoinButtonState extends State<AddCoinButton> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: _buildAddCoinButton(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                  child: FloatingActionButton(
+                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Theme.of(context).accentColor,
+                child: Icon(
+                  Icons.add,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SelectCoinsPage()),
+                  );
+                },
+              )),
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
+    );
   }
 
   Future<bool> _buildAddCoinButton() async {
