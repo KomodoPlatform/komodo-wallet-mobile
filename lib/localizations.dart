@@ -189,6 +189,7 @@ class AppLocalizations {
   String get checkSeedPhraseButton2 => Intl.message("GO BACK AND CHECK AGAIN", name: 'checkSeedPhraseButton2');
   String get takerpaymentsID => Intl.message("Taker Payment ID", name: 'takerpaymentsID');
   String get makerpaymentID => Intl.message("Maker Payment ID", name: 'makerpaymentID');
+  String get activateAccessBiometric => Intl.message("Activate Biometric protection", name: 'activateAccessBiometric');
 
 }
 

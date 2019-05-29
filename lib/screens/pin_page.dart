@@ -115,6 +115,16 @@ class _PinPageState extends State<PinPage> {
                   _errorPin();
                 }
                 break;
+              case PinStatus.DISABLED_PIN_BIOMETRIC:
+                if (await _isPinCorrect(code)) {
+                  SharedPreferences.getInstance().then((data) {
+                    data.setBool("switch_pin_biometric", false);
+                  });
+                  Navigator.pop(context);
+                } else {
+                  _errorPin();
+                }
+                break;
               case PinStatus.CHANGE_PIN:
                 if (await _isPinCorrect(code)) {
                   Navigator.pushReplacement(

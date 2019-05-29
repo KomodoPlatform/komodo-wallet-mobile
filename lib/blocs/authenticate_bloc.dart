@@ -71,15 +71,22 @@ class AuthenticateBloc extends BlocBase {
       await prefs.remove("pin");
     }
     await prefs.setString("passphrase", passphrase);
-    if (prefs.getBool('switch_pin') != null) {
-      await prefs.setBool('switch_pin', prefs.getBool('switch_pin'));
-    } else {
-      await prefs.setBool('switch_pin', true);
-    }
+
+    await _initSwitch('switch_pin', true);
+    await _initSwitch('switch_pin_biometric', false);
+
     await prefs.setBool("isPinIsSet", false);
     await mm2.runBin();
     this.isLogin = true;
     _inIsLogin.add(true);
+  }
+
+  _initSwitch(String key, bool defaultSwitch) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.getBool(key) != null ?
+      await prefs.setBool(key, prefs.getBool(key)) :
+      await prefs.setBool(key, defaultSwitch);
+    
   }
 
   Future<void> loginUI(bool isLogin, String passphrase) async {
@@ -131,6 +138,6 @@ class AuthenticateBloc extends BlocBase {
   }
 }
 
-enum PinStatus { CREATE_PIN, CONFIRM_PIN, DISABLED_PIN, CHANGE_PIN, NORMAL_PIN }
+enum PinStatus { CREATE_PIN, CONFIRM_PIN, DISABLED_PIN, CHANGE_PIN, NORMAL_PIN, DISABLED_PIN_BIOMETRIC }
 
 final authBloc = AuthenticateBloc();
