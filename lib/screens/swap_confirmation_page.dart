@@ -20,6 +20,8 @@ class SwapConfirmation extends StatefulWidget {
 }
 
 class _SwapConfirmationState extends State<SwapConfirmation> {
+  bool isSwapMaking = false;
+
   @override
   void dispose() {
     swapBloc.updateSellCoin(null);
@@ -223,14 +225,18 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   _buildButtons() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 16,),
-        RaisedButton(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 52),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-          child: Text(AppLocalizations.of(context).confirm.toUpperCase()),
-          onPressed: () => _makeASwap(),
+        SizedBox(
+          height: 16,
         ),
+        isSwapMaking
+            ? CircularProgressIndicator()
+            : RaisedButton(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 52),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                child: Text(AppLocalizations.of(context).confirm.toUpperCase()),
+                onPressed: isSwapMaking ? null : _makeASwap,
+              ),
         SizedBox(
           height: 8,
         ),
@@ -248,6 +254,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   _makeASwap() {
+    setState(() {
+      isSwapMaking = true;
+    });
     double amountToSell =
         double.parse(widget.amountToSell.replaceAll(",", "."));
 
@@ -271,11 +280,18 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                     builder: (context) => SwapDetailPage(
                           swap: swap,
                         )),
-              );
+              ).then((onValue) {
+                setState(() {
+                  isSwapMaking = false;
+                });
+              });
             }
           });
         });
       } else {
+        setState(() {
+          isSwapMaking = false;
+        });
         String timeSecondeLeft = onValue.error;
         print(timeSecondeLeft);
         timeSecondeLeft = timeSecondeLeft.substring(
