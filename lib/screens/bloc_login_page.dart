@@ -80,27 +80,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
             child: TextField(
               controller: controllerSeed,
               onChanged: (str) {
-                if (checkBox) {
-                  if (str.length > 0) {
-                    setState(() {
-                      _isButtonDisabled = false;
-                    });
-                  } else {
-                    setState(() {
-                      _isButtonDisabled = true;
-                    });
-                  }
-                } else {
-                  if (bip39.validateMnemonic(str)) {
-                    setState(() {
-                      _isButtonDisabled = false;
-                    });
-                  } else {
-                    setState(() {
-                      _isButtonDisabled = true;
-                    });
-                  }
-                }
+                _checkSeed(str);
               },
               autocorrect: false,
               keyboardType: TextInputType.multiline,
@@ -134,11 +114,37 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
               },
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: _isSeedShow ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+                child: _isSeedShow
+                    ? Icon(Icons.visibility)
+                    : Icon(Icons.visibility_off),
               ))
         ],
       ),
     );
+  }
+
+  _checkSeed(String str) {
+    if (checkBox) {
+      if (str.length > 0) {
+        setState(() {
+          _isButtonDisabled = false;
+        });
+      } else {
+        setState(() {
+          _isButtonDisabled = true;
+        });
+      }
+    } else {
+      if (bip39.validateMnemonic(str)) {
+        setState(() {
+          _isButtonDisabled = false;
+        });
+      } else {
+        setState(() {
+          _isButtonDisabled = true;
+        });
+      }
+    }
   }
 
   _buildCheckBoxCustomSeed() {
@@ -149,7 +155,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
           onChanged: (data) {
             setState(() {
               checkBox = !checkBox;
-              controllerSeed.clear();
+              _checkSeed(controllerSeed.text);
             });
           },
         ),
