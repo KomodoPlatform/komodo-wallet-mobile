@@ -27,15 +27,16 @@ class _SwapHistoryState extends State<SwapHistory> {
         stream: swapHistoryBloc.outSwaps,
         initialData: swapHistoryBloc.swaps,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data.length == 0 && snapshot.connectionState == ConnectionState.done) {
+          print(snapshot.data.length);
+          print(snapshot.connectionState);
+          if (snapshot.hasData && snapshot.data.length == 0 && snapshot.connectionState == ConnectionState.active) {
             return Center(
               child: Text(
                 AppLocalizations.of(context).noSwaps,
                 style: Theme.of(context).textTheme.body2,
               ),
             );
-          }
-          if (snapshot.hasData && snapshot.data.length > 0) {
+          } else if (snapshot.hasData && snapshot.data.length > 0) {
             List<Swap> swaps = snapshot.data;
             swaps.sort((b, a) {
               if (a.uuid.timeStart != null) {

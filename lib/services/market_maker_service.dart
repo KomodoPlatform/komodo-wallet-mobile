@@ -145,6 +145,7 @@ class MarketMakerService {
       print("ALL COINS ACTIVATES");
       loadCoin(true).then((data) {
         print("LOADCOIN FINISHED");
+        swapHistoryBloc.updateSwap();
         coinsBloc.startCheckBalance();
       });
     });
