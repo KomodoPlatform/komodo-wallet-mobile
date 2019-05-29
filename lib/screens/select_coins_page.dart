@@ -205,7 +205,7 @@ class _LoadingCoinState extends State<LoadingCoin> {
           stream: coinsBloc.outcurrentActiveCoin,
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data.isActivate) {
-              return Text('Activate: ${snapshot.data.coin.name}');
+              return Text('Activating ${snapshot.data.coin.name} ...');
             } else if (snapshot.hasData && !snapshot.data.isActivate) {
               return Text('Sorry, ${snapshot.data.coin.name} not available.');
             } else {
