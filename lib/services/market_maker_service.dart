@@ -154,31 +154,6 @@ class MarketMakerService {
     return await platformmm2.invokeMethod('status');
   }
 
-  // Future<void> activateCoins() async {
-  //   print("ACTIVATE BEGIN");
-  //   List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
-  //   List<Coin> coins = await coinsBloc.readJsonCoin();
-
-  //   for (var coin in coins) {
-  //     await mm2.activeCoin(coin).then((onValue) {
-  //       if (onValue is ActiveCoin) {
-  //         coinsBloc.currentCoinActivate(
-  //             CoinToActivate(coin: coin, isActivate: true));
-  //       } else if (onValue is ErrorString) {
-  //         coinsBloc.currentCoinActivate(
-  //             CoinToActivate(coin: coin, isActivate: false));
-  //         print('Sorry, coin not available ${coin.abbr}');
-  //       }
-  //     }).catchError((onError) {
-  //       print("SPV ERROR" + onError);
-  //     });
-  //   }
-  //   // await coinsBloc.writeJsonCoin(coins);
-  //   // print("ACTIVATE MIDDLE");
-  //   // await Future.wait(futureActiveCoins);
-  //   // print("ACTIVATE FINISH");
-  // }
-
   Future<void> loadCoin(bool forceUpdate) async {
     List<Coin> coins = await coinsBloc.readJsonCoin();
     List<CoinBalance> listCoinElectrum = new List<CoinBalance>();

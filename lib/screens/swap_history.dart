@@ -27,7 +27,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         stream: swapHistoryBloc.outSwaps,
         initialData: swapHistoryBloc.swaps,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data.length == 0) {
+          if (snapshot.hasData && snapshot.data.length == 0 && snapshot.connectionState == ConnectionState.done) {
             return Center(
               child: Text(
                 AppLocalizations.of(context).noSwaps,
