@@ -116,7 +116,7 @@ class CoinsBloc implements BlocBase {
           currentCoinActivate(CoinToActivate(coin: coin, isActivate: true));
         } else if (onValue is ErrorString) {
           coinsReadJson.forEach((coinJson) {
-            if (coinJson.abbr == coin.abbr) {
+            if (coinJson.abbr == coin.abbr && isSavedToLocal) {
               coinsReadJson.remove(coinJson);
             }
           });
@@ -125,7 +125,7 @@ class CoinsBloc implements BlocBase {
         }
       }).catchError((onError) {
         coinsReadJson.forEach((coinJson) {
-          if (coinJson.abbr == coin.abbr) {
+          if (coinJson.abbr == coin.abbr && isSavedToLocal) {
             coinsReadJson.remove(coinJson);
           }
         });
@@ -133,11 +133,7 @@ class CoinsBloc implements BlocBase {
         print('Sorry, coin not available ${coin.abbr}');
       });
     }
-    print(coinsReadJson.length);
-    await writeJsonCoin(coinsReadJson);
-
-    // List<Coin> cs = await readJsonCoin();
-    // print(cs.length);
+    if (isSavedToLocal) await writeJsonCoin(coinsReadJson);
     await mm2.loadCoin(true);
   }
 
