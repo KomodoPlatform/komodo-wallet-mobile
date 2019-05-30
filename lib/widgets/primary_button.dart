@@ -16,7 +16,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
     return Container(
       width: double.infinity,
       child: RaisedButton(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 72),
+        padding: EdgeInsets.symmetric(vertical: 16,),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),),
         onPressed: widget.onPressed,

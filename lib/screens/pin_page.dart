@@ -43,6 +43,7 @@ class _PinPageState extends State<PinPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
         body: Stack(
       children: <Widget>[
         new PinCode(

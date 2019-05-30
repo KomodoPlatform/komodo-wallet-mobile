@@ -191,6 +191,11 @@ class AppLocalizations {
   String get makerpaymentID => Intl.message("Maker Payment ID", name: 'makerpaymentID');
   String get activateAccessBiometric => Intl.message("Activate Biometric protection", name: 'activateAccessBiometric');
   String get allowCustomSeed => Intl.message("Allow custom seed", name: 'allowCustomSeed');
+  String get hintEnterPassword => Intl.message("Enter your password", name: 'hintEnterPassword');
+  String get signInWithSeedPhrase => Intl.message("Sign in with seed phrase", name: 'signInWithSeedPhrase');
+  String get signInWithPassword => Intl.message("Sign in with password", name: 'signInWithPassword');
+  String get hintEnterSeedPhrase => Intl.message("Enter your seed phrase", name: 'hintEnterSeedPhrase');
+  String get wrongPassword => Intl.message("The password does not match. Please try again.", name: 'wrongPassword');
 
 }
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:komodo_dex/model/article.dart';
+import 'package:komodo_dex/model/wallet.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -23,7 +24,7 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "ArticlesSaved.db");
+    String path = join(documentsDirectory.path, "AtomicDEX.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE ArticlesSaved ("
@@ -37,6 +38,10 @@ class DBProvider {
           "creationDate TEXT,"
           "author TEXT,"
           "v INTEGER"
+          ")");
+      await db.execute("CREATE TABLE Wallet ("
+          "id TEXT PRIMARY KEY,"
+          "name TEXT"
           ")");
     });
   }
@@ -100,8 +105,42 @@ class DBProvider {
     );
   }
 
-  Future<void> deleteAll() async {
+  Future<void> deleteAllArticles() async {
     final db = await database;
     await db.rawDelete("DELETE FROM ArticlesSaved");
+  }
+
+
+  saveWallet(Wallet newWallet) async {
+    final db = await database;
+
+    Map<String, dynamic> row = {
+      'id': newWallet.id,
+      'name': newWallet.name
+    };
+    int res = await db.insert('Wallet ', row);
+
+    return res;
+  }
+
+  Future<List<Wallet>> getAllWallet() async {
+    // Get a reference to the database
+    final Database db = await database;
+
+    // Query the table for All The Article.
+    final List<Map<String, dynamic>> maps = await db.query('Wallet');
+    print(maps.length);
+    // Convert the List<Map<String, dynamic> into a List<Dog>.
+    return List.generate(maps.length, (i) {
+      return Wallet(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+      );
+    });
+  }
+
+  Future<void> deleteAllWallets() async {
+    final db = await database;
+    await db.rawDelete("DELETE FROM Wallet");
   }
 }

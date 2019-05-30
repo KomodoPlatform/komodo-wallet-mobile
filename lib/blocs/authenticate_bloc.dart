@@ -117,7 +117,7 @@ class AuthenticateBloc extends BlocBase {
     coinsBloc.resetCoinBalance();
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
     mm2.balances = new List<Balance>();
-    await mediaBloc.deleteAll();
+    await mediaBloc.deleteAllArticles();
     this.isLogin = false;
     _inIsLogin.add(false);
   }

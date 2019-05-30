@@ -6,26 +6,51 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/authenticate_page.dart';
+import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/bloc_coins_page.dart';
 import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/media_page.dart';
-import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/screens/setting_page.dart';
 import 'package:komodo_dex/screens/swap_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 import 'blocs/coins_bloc.dart';
 
 void main() async {
   bool isInDebugMode = false;
+
+  await DBProvider.db.deleteAllWallets();
+  var entryptionTool = new EncryptionTool();
+  var wallet = new Wallet(name: "Mon Super Wallet", id: Uuid().v1());
+  print(wallet.id);
+
+  await entryptionTool.writeData(wallet, "password", "toto tutu tata");
+  await DBProvider.db.saveWallet(wallet);
+
+  var wallet2 = new Wallet(name: "Wallet super cool de ouf super long nom genre mega long abuser", id: Uuid().v1());
+  print(wallet2.id);
+
+  await entryptionTool.writeData(wallet2, "password2", "toto tutu tata");
+  await DBProvider.db.saveWallet(wallet2);
+  // List<Wallet> wallets = await DBProvider.db.getAllWallet();
+
+  // wallets.forEach((wallet) async{
+  //   print(await entryptionTool.readData(wallet, "password"));
+  // });
+
+  // print(await entryptionTool.readData("password2"));
+  // await entryptionTool.deleteData("password");
+  // print(await entryptionTool.readData("password"));
+
+  
 
   FlutterError.onError = (FlutterErrorDetails details) {
     if (isInDebugMode) {
@@ -103,6 +128,7 @@ class _MyAppState extends State<MyApp> {
           dialogBackgroundColor: Color.fromRGBO(42, 54, 71, 1),
           fontFamily: 'Ubuntu',
           hintColor: Colors.white,
+          errorColor: Color.fromRGBO(220, 3, 51, 1),
           disabledColor: Color.fromRGBO(201, 201, 201, 1),
           buttonColor: Color.fromRGBO(39, 68, 108, 1),
           textTheme: TextTheme(

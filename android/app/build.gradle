@@ -52,14 +52,14 @@ android {
 
     defaultConfig {
         applicationId "com.komodoplatform.atomicdex"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters 'armeabi-v7a'
-        }
+        // ndk {
+        //     abiFilters 'armeabi-v7a'
+        // }
     }
 
 
