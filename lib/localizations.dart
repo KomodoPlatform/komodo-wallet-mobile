@@ -77,7 +77,7 @@ class AppLocalizations {
       Intl.message('Activate PIN protection', name: 'activateAccessPin');
   String get lockScreen => Intl.message('Screen is locked', name: 'lockScreen');
   String get changePin => Intl.message('Change PIN code', name: 'changePin');
-  String get logout => Intl.message('Logout', name: 'logout');
+  String get logout => Intl.message('Log Out', name: 'logout');
   String get max => Intl.message('MAX', name: 'max');
   String get amountToSell =>
       Intl.message('Amount To Sell', name: 'amountToSell');
@@ -165,7 +165,7 @@ class AppLocalizations {
   String get mediaBy => Intl.message("By", name: 'mediaBy');
   String get lockScreenAuth => Intl.message("Please authenticate!", name: 'lockScreenAuth');
   String get noTxs => Intl.message("No Transactions", name: 'noTxs');
-  String get done => Intl.message("done", name: 'done');
+  String get done => Intl.message("Done", name: 'done');
   String get selectCoinTitle => Intl.message("Activate coins:", name: 'selectCoinTitle');
   String get selectCoinInfo => Intl.message("Select the coins you want to add to your portfolio.", name: 'selectCoinInfo');
   String get noArticles => Intl.message("No news - please check back later!", name: 'noArticles');
@@ -191,6 +191,42 @@ class AppLocalizations {
   String get makerpaymentID => Intl.message("Maker Payment ID", name: 'makerpaymentID');
   String get activateAccessBiometric => Intl.message("Activate Biometric protection", name: 'activateAccessBiometric');
   String get allowCustomSeed => Intl.message("Allow custom seed", name: 'allowCustomSeed');
+  String get hintEnterPassword => Intl.message("Enter your password", name: 'hintEnterPassword');
+  String get signInWithSeedPhrase => Intl.message("Sign in with seed phrase", name: 'signInWithSeedPhrase');
+  String get signInWithPassword => Intl.message("Sign in with password", name: 'signInWithPassword');
+  String get hintEnterSeedPhrase => Intl.message("Enter your seed phrase", name: 'hintEnterSeedPhrase');
+  String get wrongPassword => Intl.message("The password does not match. Please try again.", name: 'wrongPassword');
+  String get hintNameYourWallet => Intl.message("Name your wallet", name: 'hintNameYourWallet');
+  String get infoWalletPassword => Intl.message("You can choose to encrypt your wallet with a password. If you choose not to use a password, you will need to enter your seed every time you want to access your wallet.", name: 'infoWalletPassword');
+  String get confirmPassword => Intl.message("Confirm password", name: 'confirmPassword');
+  String get dontWantPassword => Intl.message("I don't want a password", name: 'dontWantPassword');
+  String get areYouSure => Intl.message("ARE YOU SURE?", name: 'areYouSure');
+  String get infoPasswordDialog => Intl.message("If you do not enter a password, you will need to enter your seed phrase every time you want to access your wallet.", name: 'infoPasswordDialog');
+  String get setUpPassword => Intl.message("SET UP A PASSWORD", name: 'setUpPassword');
+  String get createAWallet => Intl.message("CREATE A WALLET", name: 'createAWallet');
+  String get restoreWallet => Intl.message("RESTORE", name: 'restoreWallet');
+  String get hintPassword => Intl.message("Password", name: 'hintPassword');
+  String get hintConfirmPassword => Intl.message("Confirm Password", name: 'hintConfirmPassword');
+  String get hintCurrentPassword => Intl.message("Current password", name: 'hintCurrentPassword');
+  String get logoutsettings => Intl.message("Log Out Settings", name: 'logoutsettings');
+  String get logoutOnExit => Intl.message("Log Out on Exit", name: 'logoutOnExit');
+  String get deleteWallet => Intl.message("Delete Wallet", name: 'deleteWallet');
+  String get delete => Intl.message("Delete", name: 'delete');
+  String get settingDialogSpan1 => Intl.message("Are you sure you want to delete ", name: 'settingDialogSpan1');
+  String get settingDialogSpan2 => Intl.message(" wallet?", name: 'settingDialogSpan2');
+  String get settingDialogSpan3 => Intl.message("If so, make sure you ", name: 'settingDialogSpan3');
+  String get settingDialogSpan4 => Intl.message(" record your seed phrase.", name: 'settingDialogSpan4');
+  String get settingDialogSpan5 => Intl.message(" In order to restore your wallet in the future.", name: 'settingDialogSpan5');
+  String get backupTitle => Intl.message("Backup", name: 'backupTitle');
+  String get viewSeed => Intl.message("View Seed", name: 'viewSeed');
+  String get enterpassword => Intl.message("Please enter your password to continue.", name: 'enterpassword');
+  String get clipboardCopy => Intl.message("Copy then to your clipboard", name: 'clipboardCopy');
+
+  String get welcomeTitle => Intl.message("WELCOME", name: 'welcomeTitle');
+  String get welcomeName => Intl.message("AtomicDEX", name: 'welcomeName');
+  String get welcomeWallet => Intl.message("wallet", name: 'welcomeWallet');
+  String get welcomeInfo => Intl.message("AtomicDEX Wallet is a multi-functional wallet that a user can use to hold KMD assets, exchange other currencies, pay and receive payments, and to have access to market news and information.", name: 'welcomeInfo');
+  String get welcomeLetSetUp => Intl.message("LET'S GET SET UP!", name: 'welcomeLetSetUp');
 
 }
 

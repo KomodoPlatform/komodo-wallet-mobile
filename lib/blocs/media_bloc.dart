@@ -79,7 +79,7 @@ class MediaBloc implements BlocBase {
     _inArticles.add(this.articles);
   }
 
-  deleteAll() async {
-    await DBProvider.db.deleteAll();
+  deleteAllArticles() async {
+    await DBProvider.db.deleteAllArticles();
   }
 }

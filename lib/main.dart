@@ -6,21 +6,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/authenticate_page.dart';
+import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/bloc_coins_page.dart';
 import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/media_page.dart';
-import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/screens/setting_page.dart';
 import 'package:komodo_dex/screens/swap_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 import 'blocs/coins_bloc.dart';
 
@@ -103,6 +103,7 @@ class _MyAppState extends State<MyApp> {
           dialogBackgroundColor: Color.fromRGBO(42, 54, 71, 1),
           fontFamily: 'Ubuntu',
           hintColor: Colors.white,
+          errorColor: Color.fromRGBO(220, 3, 51, 1),
           disabledColor: Color.fromRGBO(201, 201, 201, 1),
           buttonColor: Color.fromRGBO(39, 68, 108, 1),
           textTheme: TextTheme(
@@ -115,7 +116,7 @@ class _MyAppState extends State<MyApp> {
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
               subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
-              body1: TextStyle(fontSize: 16.0, color: Colors.white),
+              body1: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.w300),
               button: TextStyle(fontSize: 16.0, color: Colors.white),
               body2: TextStyle(
                   fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
@@ -193,6 +194,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.paused:
         print("paused");
         dialogBloc.closeDialog(context);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        if (prefs.getBool("switch_pin_log_out_on_exit")) {
+          authBloc.logout();
+        }
         if (!authBloc.isQrCodeActive) authBloc.showPin(true);
         break;
       case AppLifecycleState.resumed:

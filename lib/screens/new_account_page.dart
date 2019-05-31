@@ -67,7 +67,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
               color: Colors.red.withOpacity(0.15),
               border: Border.all(color: Colors.red)),
           padding: const EdgeInsets.all(8.0),
-          height: 100,
+          // height: 100,
           child: Row(
             children: <Widget>[
               InkWell(

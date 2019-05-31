@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
+import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
@@ -61,6 +62,8 @@ class AuthenticateBloc extends BlocBase {
 
   Future<void> login(String passphrase) async {
     await DBProvider.db.initDB();
+    walletBloc.setCurrentWallet(await DBProvider.db.getCurrentWallet());
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString("passphrase") != null &&
         prefs.getString("passphrase").isNotEmpty) {
@@ -76,6 +79,8 @@ class AuthenticateBloc extends BlocBase {
     await _initSwitch('switch_pin_biometric', false);
 
     await prefs.setBool("isPinIsSet", false);
+    await prefs.setBool("switch_pin_log_out_on_exit", false);
+
     await mm2.runBin();
     this.isLogin = true;
     _inIsLogin.add(true);
@@ -112,12 +117,16 @@ class AuthenticateBloc extends BlocBase {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("passphrase", null);
     await prefs.setBool("isPinIsSet", false);
+    
     updateStatusPin(PinStatus.NORMAL_PIN);
     await prefs.remove("pin");
     coinsBloc.resetCoinBalance();
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
     mm2.balances = new List<Balance>();
-    await mediaBloc.deleteAll();
+    await mediaBloc.deleteAllArticles();
+    walletBloc.setCurrentWallet(null);
+    await DBProvider.db.deleteCurrentWallet();
+    
     this.isLogin = false;
     _inIsLogin.add(false);
   }

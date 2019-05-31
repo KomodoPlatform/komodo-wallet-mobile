@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/check_passphrase_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/confirm_account_page.dart';
+import 'package:komodo_dex/screens/create_password_page.dart';
 import 'package:komodo_dex/widgets/custom_textfield.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
@@ -29,6 +30,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 
   @override
   void initState() {
+    checkPassphrasePage.setIsWordGood(false);
     List<WordData> wordsData = new List<WordData>();
     List<String> wordsSeed = widget.seed.split(" ");
 
@@ -52,54 +54,51 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).checkSeedPhrase),
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(32.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              AppLocalizations.of(context).checkSeedPhraseTitle,
-              style: Theme.of(context).textTheme.title,
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Text(
-              AppLocalizations.of(context).checkSeedPhraseInfo,
-              style: Theme.of(context).textTheme.body2,
-            ),
-            SizedBox(
-              height: 48,
-            ),
-            wordsWidget[stepper],
-            Expanded(
-              child: Container(),
-            ),
-            StreamBuilder<bool>(
-                initialData: checkPassphrasePage.isWordGood,
-                stream: checkPassphrasePage.outIsWordGoodLogin,
-                builder: (context, snapshot) {
-                  return PrimaryButton(
-                    text: AppLocalizations.of(context).checkSeedPhraseButton1,
-                    onPressed: snapshot.data ? _onPressedNext : null,
-                  );
-                }),
-            SizedBox(
-              height: 16,
-            ),
-            SecondaryButton(
-              text: AppLocalizations.of(context).checkSeedPhraseButton2,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ),
+        children: <Widget>[
+          Text(
+            AppLocalizations.of(context).checkSeedPhraseTitle,
+            style: Theme.of(context).textTheme.title,
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Text(
+            AppLocalizations.of(context).checkSeedPhraseInfo,
+            style: Theme.of(context).textTheme.body2,
+          ),
+          SizedBox(
+            height: 48,
+          ),
+          wordsWidget[stepper],
+          SizedBox(
+            height: 16,
+          ),
+          StreamBuilder<bool>(
+              initialData: checkPassphrasePage.isWordGood,
+              stream: checkPassphrasePage.outIsWordGoodLogin,
+              builder: (context, snapshot) {
+                return PrimaryButton(
+                  text: AppLocalizations.of(context).checkSeedPhraseButton1,
+                  onPressed: snapshot.data ? _onPressedNext : null,
+                );
+              }),
+          SizedBox(
+            height: 16,
+          ),
+          SecondaryButton(
+            text: AppLocalizations.of(context).checkSeedPhraseButton2,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
       ),
     );
   }
@@ -111,11 +110,12 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => ConfirmAccountPage(
+              builder: (context) => CreatePasswordPage(
                     seed: widget.seed,
                   )),
         );
       } else {
+        checkPassphrasePage.setIsWordGood(false);
         setState(() {
           stepper += 1;
         });
@@ -148,25 +148,23 @@ class _SeedRandomState extends State<SeedRandom> {
           height: 8,
         ),
         StreamBuilder<bool>(
-          initialData: checkPassphrasePage.isResetText,
-          stream: checkPassphrasePage.outIsResetTextLogin,
-          builder: (context, snapshot) {
-            if (snapshot.data) {
-              _controller.text = "";
-            }
-            return CustomTextField(
-              controller: _controller,
-              onChanged: (text) {
-                checkPassphrasePage.setWord(text);
-                checkPassphrasePage.setIsWordGood(
-                    CheckPassphrasePage().checkSeedWord(widget.data));
-              },
-              hintText: AppLocalizations.of(context)
-                  .checkSeedPhraseHint((widget.data.index + 1).toString()),
-            );
-            
-          }
-        ),
+            initialData: checkPassphrasePage.isResetText,
+            stream: checkPassphrasePage.outIsResetTextLogin,
+            builder: (context, snapshot) {
+              if (snapshot.data) {
+                _controller.text = "";
+              }
+              return CustomTextField(
+                controller: _controller,
+                onChanged: (text) {
+                  checkPassphrasePage.setWord(text);
+                  checkPassphrasePage.setIsWordGood(
+                      CheckPassphrasePage().checkSeedWord(widget.data));
+                },
+                hintText: AppLocalizations.of(context)
+                    .checkSeedPhraseHint((widget.data.index + 1).toString()),
+              );
+            }),
       ],
     );
   }
