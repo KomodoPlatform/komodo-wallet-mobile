@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/bloc_login_page.dart';
-import 'package:komodo_dex/screens/new_account_page.dart';
 import 'package:komodo_dex/screens/unlock_wallet_page.dart';
+import 'package:komodo_dex/screens/welcome_page.dart';
 
 class AuthenticatePage extends StatefulWidget {
   @override
@@ -37,10 +38,10 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
 
 class BoxButton extends StatelessWidget {
   final String text;
-  final IconData icon;
+  final String assetPath;
   final Function onPressed;
 
-  BoxButton({this.text, this.icon, @required this.onPressed});
+  BoxButton({this.text, this.assetPath, @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +63,7 @@ class BoxButton extends StatelessWidget {
             child: Center(
                 child: Column(
               children: <Widget>[
-                Icon(
-                  icon,
-                  size: 42,
-                ),
+                SvgPicture.asset(assetPath),
                 SizedBox(
                   height: 8,
                 ),
@@ -140,7 +138,6 @@ class _BuildScreenAuthMultiWalletsState
       child: InkWell(
         borderRadius: BorderRadius.all(Radius.circular(8)),
         onTap: () {
-          // go to screen unlock with password
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => UnlockWalletPage(wallet: wallet)),
@@ -266,12 +263,12 @@ class _CreateWalletButtonState extends State<CreateWalletButton> {
   @override
   Widget build(BuildContext context) {
     return BoxButton(
-      text: "CREATE A WALLET",
-      icon: Icons.account_balance_wallet,
+      text: AppLocalizations.of(context).createAWallet,
+      assetPath: "assets/create_wallet.svg",
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NewAccountPage()),
+          MaterialPageRoute(builder: (context) => WelcomePage()),
         );
       },
     );
@@ -287,8 +284,8 @@ class _RestoreButtonState extends State<RestoreButton> {
   @override
   Widget build(BuildContext context) {
     return BoxButton(
-      text: "RESTORE",
-      icon: Icons.lock_open,
+      text: AppLocalizations.of(context).restoreWallet,
+      assetPath: "assets/lock_off.svg",
       onPressed: () {
         Navigator.push(
           context,

@@ -43,6 +43,10 @@ class DBProvider {
           "id TEXT PRIMARY KEY,"
           "name TEXT"
           ")");
+      await db.execute("CREATE TABLE CurrentWallet ("
+          "id TEXT PRIMARY KEY,"
+          "name TEXT"
+          ")");
     });
   }
 
@@ -110,7 +114,6 @@ class DBProvider {
     await db.rawDelete("DELETE FROM ArticlesSaved");
   }
 
-
   saveWallet(Wallet newWallet) async {
     final db = await database;
 
@@ -143,4 +146,46 @@ class DBProvider {
     final db = await database;
     await db.rawDelete("DELETE FROM Wallet");
   }
+
+  Future<void> deleteWallet(Wallet wallet) async {
+    print(wallet.id);
+    final db = await database;
+    await db.delete("Wallet", where: 'id = ?', whereArgs: [wallet.id]);
+  }
+
+  saveCurrentWallet(Wallet currentWallet) async {
+    final db = await database;
+
+    Map<String, dynamic> row = {
+      'id': currentWallet.id,
+      'name': currentWallet.name
+    };
+    int res = await db.insert('CurrentWallet ', row);
+
+    return res;
+  }
+
+  Future<Wallet> getCurrentWallet() async {
+    final db = await database;
+
+    final List<Map<String, dynamic>> maps = await db.query('CurrentWallet');
+
+    List<Wallet> wallets = List.generate(maps.length, (i) {
+      return Wallet(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+      );
+    });
+    if (wallets.length == 0) {
+      return null;
+    } else {
+      return wallets[0];
+    }
+  }
+
+  Future<void> deleteCurrentWallet() async {
+    final db = await database;
+    await db.rawDelete("DELETE FROM CurrentWallet");
+  }
+
 }

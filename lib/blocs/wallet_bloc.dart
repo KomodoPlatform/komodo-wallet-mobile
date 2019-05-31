@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:uuid/uuid.dart';
 
 final walletBloc = WalletBloc();
 
@@ -19,9 +20,18 @@ class WalletBloc implements BlocBase {
   Sink<List<Wallet>> get _inWallets => _walletsController.sink;
   Stream<List<Wallet>> get outWallets => _walletsController.stream;
 
+  Wallet currentWallet = new Wallet();
+
+  // Streams to handle the list coin
+  StreamController<Wallet> _currentWalletController =
+      StreamController<Wallet>.broadcast();
+  Sink<Wallet> get _inCurrentWallet => _currentWalletController.sink;
+  Stream<Wallet> get outCurrentWallet => _currentWalletController.stream;
+
   @override
   void dispose() {
     _walletsController.close();
+    _currentWalletController.close();
   }
 
   Future<List<Wallet>> getWalletsSaved() async {
@@ -42,4 +52,18 @@ class WalletBloc implements BlocBase {
     }
   }
 
+  void initCurrentWallet(String name) {
+    this.currentWallet = new Wallet(id: Uuid().v1(), name: name);
+    _inCurrentWallet.add(this.currentWallet);
+  }
+
+  void setCurrentWallet(Wallet wallet) {
+    this.currentWallet = wallet;
+    _inCurrentWallet.add(this.currentWallet);
+  }
+
+  void deleteCurrentWallet() async {
+    await DBProvider.db.deleteWallet(this.currentWallet);
+    authBloc.logout();
+  }
 }

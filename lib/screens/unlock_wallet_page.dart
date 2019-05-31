@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/bloc_login_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
@@ -41,7 +42,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: SvgPicture.asset("assets/lock.svg",
-                      semanticsLabel: 'Trade Success'),
+                      semanticsLabel: 'Lock'),
                 ),
               ),
             ),
@@ -67,39 +68,43 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
-              child: TextField(
-                  maxLength: 120,
-                  controller: controller,
-                  onChanged: (str) {
-                    if (str.length == 0 || str.length > 120) {
-                      setState(() {
-                        isButtonLoginEnabled = false;
-                      });
-                    } else {
-                      setState(() {
-                        isButtonLoginEnabled = true;
-                      });
-                    }
-                  },
-                  onSubmitted: (data) {
-                    // print(data);
-                  },
-                  autocorrect: false,
-                  obscureText: true,
-                  enableInteractiveSelection: false,
-                  style: Theme.of(context).textTheme.body1,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorLight)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor)),
-                      hintStyle: Theme.of(context).textTheme.body2,
-                      labelStyle: Theme.of(context).textTheme.body1,
-                      hintText: AppLocalizations.of(context).hintEnterPassword,
-                      labelText: null)),
+              child: Builder(
+                builder: (context) {
+                  return TextField(
+                      maxLength: 120,
+                      controller: controller,
+                      onChanged: (str) {
+                        if (str.length == 0 || str.length > 120) {
+                          setState(() {
+                            isButtonLoginEnabled = false;
+                          });
+                        } else {
+                          setState(() {
+                            isButtonLoginEnabled = true;
+                          });
+                        }
+                      },
+                      onSubmitted: (data) {
+                        _login(context);
+                      },
+                      autocorrect: false,
+                      obscureText: true,
+                      enableInteractiveSelection: false,
+                      style: Theme.of(context).textTheme.body1,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColorLight)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Theme.of(context).accentColor)),
+                          hintStyle: Theme.of(context).textTheme.body2,
+                          labelStyle: Theme.of(context).textTheme.body1,
+                          hintText: AppLocalizations.of(context).hintEnterPassword,
+                          labelText: null));
+                }
+              ),
             ),
           ),
           Builder(
@@ -157,8 +162,10 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
 
     walletBloc
         .loginWithPassword(context, controller.text, widget.wallet)
-        .then((data) {
+        .then((data) async{
       Navigator.of(context).pop();
+      await DBProvider.db.saveCurrentWallet(widget.wallet);
+      walletBloc.setCurrentWallet(widget.wallet);
     }).catchError((onError) {
       print(onError);
       Scaffold.of(context).showSnackBar(new SnackBar(

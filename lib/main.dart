@@ -27,31 +27,6 @@ import 'blocs/coins_bloc.dart';
 void main() async {
   bool isInDebugMode = false;
 
-  await DBProvider.db.deleteAllWallets();
-  var entryptionTool = new EncryptionTool();
-  var wallet = new Wallet(name: "Mon Super Wallet", id: Uuid().v1());
-  print(wallet.id);
-
-  await entryptionTool.writeData(wallet, "password", "toto tutu tata");
-  await DBProvider.db.saveWallet(wallet);
-
-  var wallet2 = new Wallet(name: "Wallet super cool de ouf super long nom genre mega long abuser", id: Uuid().v1());
-  print(wallet2.id);
-
-  await entryptionTool.writeData(wallet2, "password2", "toto tutu tata");
-  await DBProvider.db.saveWallet(wallet2);
-  // List<Wallet> wallets = await DBProvider.db.getAllWallet();
-
-  // wallets.forEach((wallet) async{
-  //   print(await entryptionTool.readData(wallet, "password"));
-  // });
-
-  // print(await entryptionTool.readData("password2"));
-  // await entryptionTool.deleteData("password");
-  // print(await entryptionTool.readData("password"));
-
-  
-
   FlutterError.onError = (FlutterErrorDetails details) {
     if (isInDebugMode) {
       // In development mode simply print to console.
@@ -141,7 +116,7 @@ class _MyAppState extends State<MyApp> {
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
               subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
-              body1: TextStyle(fontSize: 16.0, color: Colors.white),
+              body1: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.w300),
               button: TextStyle(fontSize: 16.0, color: Colors.white),
               body2: TextStyle(
                   fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
@@ -219,6 +194,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.paused:
         print("paused");
         dialogBloc.closeDialog(context);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        if (prefs.getBool("switch_pin_log_out_on_exit")) {
+          authBloc.logout();
+        }
         if (!authBloc.isQrCodeActive) authBloc.showPin(true);
         break;
       case AppLifecycleState.resumed:
