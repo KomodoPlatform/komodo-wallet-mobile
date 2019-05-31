@@ -257,7 +257,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                 width: double.infinity,
                                 color: Colors.redAccent,
                                 child: Center(
-                                    child: Text("No Internet Connexion"))),
+                                    child: Text("No Internet Connection"))),
                           ),
                         ),
                       BottomNavigationBar(
