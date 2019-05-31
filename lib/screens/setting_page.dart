@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -247,7 +248,11 @@ class _SettingPageState extends State<SettingPage> {
 
   _buildLogout() {
     return CustomTile(
-      onPressed: () => authBloc.logout(),
+      onPressed: () { 
+          authBloc.logout().then((onValue){
+            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          });
+        },
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.all(6.0),

@@ -111,7 +111,7 @@ class AuthenticateBloc extends BlocBase {
     _inIsLogin.add(isLogin);
   }
 
-  void logout() async {
+  Future<void> logout() async {
     coinsBloc.stopCheckBalance();
     await mm2.stopmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
