@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -19,16 +20,26 @@ class SwapDetailPage extends StatefulWidget {
 }
 
 class _SwapDetailPageState extends State<SwapDetailPage> {
+  Swap swapData = new Swap();
 
   @override
   void initState() {
+
     swapHistoryBloc.updateSwap();
     if (widget.swap.status != null &&
         widget.swap.status == Status.SWAP_SUCCESSFUL)
       swapHistoryBloc.isAnimationStepFinalIsFinish = true;
     print(widget.swap.uuid.uuid);
     super.initState();
+
+    SystemChannels.lifecycle.setMessageHandler((msg){
+      debugPrint('SystemChannels> $msg');
+      if(msg==AppLifecycleState.resumed.toString())setState((){
+        swapHistoryBloc.updateSwap();
+      });
+    });
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +54,14 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
             stream: swapHistoryBloc.outSwaps,
             initialData: swapHistoryBloc.swaps,
             builder: (context, snapshot) {
-              Swap swapData = new Swap();
-
               if (snapshot.hasData && snapshot.data.length > 0) {
                 snapshot.data.forEach((swap) {
-                  if (swap.uuid.uuid == widget.swap.uuid.uuid) swapData = swap;
+                  if (swap.uuid.uuid == widget.swap.uuid.uuid) {
+                    swapData = swap;
+                    print(swap.status);
+                  }
                 });
+
                 if (swapData.status == Status.SWAP_SUCCESSFUL &&
                     swapHistoryBloc.isAnimationStepFinalIsFinish) {
                   return FinalTradeSuccess(
