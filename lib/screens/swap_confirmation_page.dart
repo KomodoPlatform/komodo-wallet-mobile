@@ -280,11 +280,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                     builder: (context) => SwapDetailPage(
                           swap: swap,
                         )),
-              ).then((onValue) {
-                setState(() {
-                  isSwapMaking = false;
-                });
-              });
+              );
             }
           });
         });
