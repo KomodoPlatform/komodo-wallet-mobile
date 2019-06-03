@@ -176,7 +176,7 @@ class AppLocalizations {
   String get checkSeedPhraseTitle => Intl.message("LET'S DOUBLE CHECK YOUR SEED PHRASE", name: 'checkSeedPhraseTitle');
   String get checkSeedPhraseInfo => Intl.message("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want.", name: 'checkSeedPhraseInfo');
   String checkSeedPhraseSubtile(String index) => Intl.message(
-        'What is the word ${index} in your seed phrase?',
+        'What is the ${index}. word in your seed phrase?',
         name: 'checkSeedPhraseSubtile',
         args: [index],
       );
