@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/bloc_login_page.dart';
 import 'package:komodo_dex/screens/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/welcome_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
   @override
@@ -140,7 +144,16 @@ class _BuildScreenAuthMultiWalletsState
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UnlockWalletPage(wallet: wallet)),
+            MaterialPageRoute(
+                builder: (context) => UnlockWalletPage(
+                  textButton: AppLocalizations.of(context).login,
+                      wallet: wallet,
+                      onSuccess: (seed) async{
+                        if (!mm2.ismm2Running) {
+                          await authBloc.login(seed, null);
+                        }
+                      },
+                    )),
           );
         },
         child: Container(

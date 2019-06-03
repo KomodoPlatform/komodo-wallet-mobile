@@ -227,6 +227,7 @@ class AppLocalizations {
   String get welcomeWallet => Intl.message("wallet", name: 'welcomeWallet');
   String get welcomeInfo => Intl.message("AtomicDEX Wallet is a multi-functional wallet that a user can use to hold KMD assets, exchange other currencies, pay and receive payments, and to have access to market news and information.", name: 'welcomeInfo');
   String get welcomeLetSetUp => Intl.message("LET'S GET SET UP!", name: 'welcomeLetSetUp');
+  String get unlock => Intl.message("unlock", name: 'unlock');
 
 }
 

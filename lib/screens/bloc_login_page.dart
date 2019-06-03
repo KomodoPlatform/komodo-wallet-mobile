@@ -189,7 +189,7 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
     });
     FocusScope.of(context).requestFocus(new FocusNode());
 
-    authBloc.loginUI(true, controllerSeed.text.toString()).then((onValue) {
+    authBloc.loginUI(true, controllerSeed.text.toString(), null).then((onValue) {
       Navigator.pop(context);
     }).then((_) {
       setState(() {

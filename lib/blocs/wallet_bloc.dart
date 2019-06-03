@@ -43,10 +43,11 @@ class WalletBloc implements BlocBase {
 
   Future<void> loginWithPassword(BuildContext context, String password, Wallet wallet) async{
     var entryptionTool = new EncryptionTool();
-    var seedPhrase = await entryptionTool.readData(wallet, password);
+    var seedPhrase = await entryptionTool.readData(KeyEncryption.SEED, wallet, password);
 
     if (seedPhrase != null) {
-      await authBloc.loginUI(true, seedPhrase);
+      await DBProvider.db.saveCurrentWallet(wallet);
+      await authBloc.loginUI(true, seedPhrase, password);
     } else {
       throw(AppLocalizations.of(context).wrongPassword);
     }
@@ -65,5 +66,11 @@ class WalletBloc implements BlocBase {
   void deleteCurrentWallet() async {
     await DBProvider.db.deleteWallet(this.currentWallet);
     authBloc.logout();
+  }
+
+  Future<void> deleteSeedPhrase(String password, Wallet wallet) async {
+    var entryptionTool = new EncryptionTool();
+    await entryptionTool.deleteData(KeyEncryption.SEED, wallet, password);
+    await entryptionTool.deleteData(KeyEncryption.PIN, wallet, password);
   }
 }

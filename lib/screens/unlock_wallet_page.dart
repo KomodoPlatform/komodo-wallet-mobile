@@ -11,8 +11,15 @@ import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class UnlockWalletPage extends StatefulWidget {
   final Wallet wallet;
+  final Function(String) onSuccess;
+  final bool isSignWithSeedIsEnabled;
+  final String textButton;
 
-  UnlockWalletPage({@required this.wallet});
+  UnlockWalletPage(
+      {@required this.wallet,
+      this.onSuccess,
+      this.isSignWithSeedIsEnabled = true,
+      @required this.textButton});
 
   @override
   _UnlockWalletPageState createState() => _UnlockWalletPageState();
@@ -68,43 +75,42 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
-              child: Builder(
-                builder: (context) {
-                  return TextField(
-                      maxLength: 120,
-                      controller: controller,
-                      onChanged: (str) {
-                        if (str.length == 0 || str.length > 120) {
-                          setState(() {
-                            isButtonLoginEnabled = false;
-                          });
-                        } else {
-                          setState(() {
-                            isButtonLoginEnabled = true;
-                          });
-                        }
-                      },
-                      onSubmitted: (data) {
-                        _login(context);
-                      },
-                      autocorrect: false,
-                      obscureText: true,
-                      enableInteractiveSelection: false,
-                      style: Theme.of(context).textTheme.body1,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColorLight)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Theme.of(context).accentColor)),
-                          hintStyle: Theme.of(context).textTheme.body2,
-                          labelStyle: Theme.of(context).textTheme.body1,
-                          hintText: AppLocalizations.of(context).hintEnterPassword,
-                          labelText: null));
-                }
-              ),
+              child: Builder(builder: (context) {
+                return TextField(
+                    maxLength: 120,
+                    controller: controller,
+                    onChanged: (str) {
+                      if (str.length == 0 || str.length > 120) {
+                        setState(() {
+                          isButtonLoginEnabled = false;
+                        });
+                      } else {
+                        setState(() {
+                          isButtonLoginEnabled = true;
+                        });
+                      }
+                    },
+                    onSubmitted: (data) {
+                      _login(context);
+                    },
+                    autocorrect: false,
+                    obscureText: true,
+                    enableInteractiveSelection: false,
+                    style: Theme.of(context).textTheme.body1,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColorLight)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).accentColor)),
+                        hintStyle: Theme.of(context).textTheme.body2,
+                        labelStyle: Theme.of(context).textTheme.body1,
+                        hintText:
+                            AppLocalizations.of(context).hintEnterPassword,
+                        labelText: null));
+              }),
             ),
           ),
           Builder(
@@ -120,33 +126,36 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       child: PrimaryButton(
                         onPressed:
                             isButtonLoginEnabled ? () => _login(context) : null,
-                        text: AppLocalizations.of(context).login,
+                        text: widget.textButton,
                       ));
             },
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: InkWell(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BlocLoginPage()),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    AppLocalizations.of(context).signInWithSeedPhrase,
-                    style: Theme.of(context).textTheme.body2.copyWith(
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.white),
+          widget.isSignWithSeedIsEnabled
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BlocLoginPage()),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          AppLocalizations.of(context).signInWithSeedPhrase,
+                          style: Theme.of(context).textTheme.body2.copyWith(
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.white),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
+                )
+              : Container(),
           SizedBox(
             height: 16,
           )
@@ -162,10 +171,9 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
 
     walletBloc
         .loginWithPassword(context, controller.text, widget.wallet)
-        .then((data) async{
+        .then((data) async {
       Navigator.of(context).pop();
-      await DBProvider.db.saveCurrentWallet(widget.wallet);
-      walletBloc.setCurrentWallet(widget.wallet);
+      widget.onSuccess(controller.text);
     }).catchError((onError) {
       print(onError);
       Scaffold.of(context).showSnackBar(new SnackBar(

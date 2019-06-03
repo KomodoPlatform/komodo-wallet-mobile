@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/check_passphrase_page.dart';
-import 'package:komodo_dex/screens/confirm_account_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class NewAccountPage extends StatefulWidget {

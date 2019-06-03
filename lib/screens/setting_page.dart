@@ -9,6 +9,7 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
+import 'package:komodo_dex/screens/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -193,10 +194,19 @@ class _SettingPageState extends State<SettingPage> {
       onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => PinPage(
-                    title: AppLocalizations.of(context).lockScreen,
-                    subTitle: AppLocalizations.of(context).enterPinCode,
-                    isConfirmPin: PinStatus.CHANGE_PIN,
+              builder: (context) => UnlockWalletPage(
+                    textButton: AppLocalizations.of(context).unlock,
+                    wallet: walletBloc.currentWallet,
+                    isSignWithSeedIsEnabled: false,
+                    onSuccess: (password) {
+                      Navigator.push(context ,MaterialPageRoute(
+                          builder: (context) => PinPage(
+                              title: AppLocalizations.of(context).lockScreen,
+                              subTitle:
+                                  AppLocalizations.of(context).enterPinCode,
+                              isConfirmPin: PinStatus.CHANGE_PIN,
+                              password: password)));
+                    },
                   ))),
       child: ListTile(
         trailing:
@@ -248,11 +258,11 @@ class _SettingPageState extends State<SettingPage> {
 
   _buildLogout() {
     return CustomTile(
-      onPressed: () { 
-          authBloc.logout().then((onValue){
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          });
-        },
+      onPressed: () {
+        authBloc.logout().then((onValue) {
+          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        });
+      },
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.all(6.0),
@@ -321,118 +331,158 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   _showDialogDeleteWallet() {
-    dialogBloc.dialog = showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            contentPadding: EdgeInsets.symmetric(horizontal: 16),
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0)),
-            backgroundColor: Colors.white,
-            title: Column(
-              children: <Widget>[
-                SvgPicture.asset("assets/delete_wallet.svg"),
-                SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  AppLocalizations.of(context).deleteWallet.toUpperCase(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .title
-                      .copyWith(color: Theme.of(context).errorColor),
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-              ],
-            ),
-            children: <Widget>[
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
-                  TextSpan(
-                      text: AppLocalizations.of(context).settingDialogSpan1,
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(color: Theme.of(context).primaryColor)),
-                  TextSpan(
-                      text: walletBloc.currentWallet.name,
-                      style: Theme.of(context).textTheme.body1.copyWith(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold)),
-                  TextSpan(
-                      text: AppLocalizations.of(context).settingDialogSpan2,
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(color: Theme.of(context).primaryColor)),
-                ]),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Center(
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(children: [
-                    TextSpan(
-                        text: AppLocalizations.of(context).settingDialogSpan3,
-                        style: Theme.of(context)
-                            .textTheme
-                            .body1
-                            .copyWith(color: Theme.of(context).primaryColor)),
-                    TextSpan(
-                        text: AppLocalizations.of(context).settingDialogSpan4,
-                        style: Theme.of(context).textTheme.body1.copyWith(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold)),
-                    TextSpan(
-                        text: AppLocalizations.of(context).settingDialogSpan5,
-                        style: Theme.of(context)
-                            .textTheme
-                            .body1
-                            .copyWith(color: Theme.of(context).primaryColor)),
-                  ]),
-                ),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: SecondaryButton(
-                      text: AppLocalizations.of(context).cancel,
-                      onPressed: () => Navigator.of(context).pop(),
-                      isDarkMode: false,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    child: PrimaryButton(
-                      text: AppLocalizations.of(context).delete,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        walletBloc.deleteCurrentWallet();
-                      },
-                      backgroundColor: Theme.of(context).errorColor,
-                      isDarkMode: false,
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 24,
-              ),
-            ],
-          );
-        }).then((_) {
-      dialogBloc.dialog = null;
-    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => UnlockWalletPage(
+                textButton: AppLocalizations.of(context).unlock,
+                wallet: walletBloc.currentWallet,
+                isSignWithSeedIsEnabled: false,
+                onSuccess: (password) {
+                  print(password);
+                  dialogBloc.dialog = showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SimpleDialog(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(8.0)),
+                          backgroundColor: Colors.white,
+                          title: Column(
+                            children: <Widget>[
+                              SvgPicture.asset("assets/delete_wallet.svg"),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .deleteWallet
+                                    .toUpperCase(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .title
+                                    .copyWith(
+                                        color: Theme.of(context).errorColor),
+                              ),
+                              SizedBox(
+                                height: 24,
+                              ),
+                            ],
+                          ),
+                          children: <Widget>[
+                            RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: AppLocalizations.of(context)
+                                        .settingDialogSpan1,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .body1
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .primaryColor)),
+                                TextSpan(
+                                    text: walletBloc.currentWallet.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .body1
+                                        .copyWith(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text: AppLocalizations.of(context)
+                                        .settingDialogSpan2,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .body1
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .primaryColor)),
+                              ]),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Center(
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: AppLocalizations.of(context)
+                                          .settingDialogSpan3,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body1
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor)),
+                                  TextSpan(
+                                      text: AppLocalizations.of(context)
+                                          .settingDialogSpan4,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body1
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontWeight: FontWeight.bold)),
+                                  TextSpan(
+                                      text: AppLocalizations.of(context)
+                                          .settingDialogSpan5,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body1
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor)),
+                                ]),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: SecondaryButton(
+                                    text: AppLocalizations.of(context).cancel,
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    isDarkMode: false,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Expanded(
+                                  child: PrimaryButton(
+                                    text: AppLocalizations.of(context).delete,
+                                    onPressed: () async {
+                                      Navigator.of(context).pop();
+                                      await walletBloc.deleteSeedPhrase(
+                                          password, walletBloc.currentWallet);
+                                      walletBloc.deleteCurrentWallet();
+                                    },
+                                    backgroundColor:
+                                        Theme.of(context).errorColor,
+                                    isDarkMode: false,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 24,
+                            ),
+                          ],
+                        );
+                      }).then((_) {
+                    dialogBloc.dialog = null;
+                  });
+                },
+              )),
+    );
   }
 
   void _shareFile() {
