@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authenticate_page.dart';
-import 'package:komodo_dex/screens/confirm_account_page.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
@@ -15,8 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LockScreen extends StatefulWidget {
   final PinStatus pinStatus;
   final Widget child;
+  final String password;
 
-  LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child});
+  LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.password});
 
   @override
   _LockScreenState createState() => _LockScreenState();
@@ -98,6 +98,7 @@ class _LockScreenState extends State<LockScreen> {
                 subTitle: AppLocalizations.of(context).enterPinCode,
                 firstCreationPin: true,
                 isConfirmPin: PinStatus.CREATE_PIN,
+                password: widget.password,
                 isFromChangingPin: false,
               );
             }
@@ -125,7 +126,7 @@ class _LockScreenState extends State<LockScreen> {
         authBloc.showPin(false);
         if (widget.pinStatus == PinStatus.NORMAL_PIN && !mm2.ismm2Running) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          await authBloc.login(prefs.getString("passphrase"));
+          await authBloc.login(prefs.getString("passphrase"), null);
         }
       }
       return didAuthenticate;

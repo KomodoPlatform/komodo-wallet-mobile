@@ -44,6 +44,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                   context: context,
                 )
               : UnlockPassword(
+                icon: SvgPicture.asset("assets/seed_logo.svg"),
                   onSuccess: (data) {
                     setState(() {
                       seed = data;
@@ -141,8 +142,9 @@ class _ViewSeedState extends State<ViewSeed> {
 class UnlockPassword extends StatefulWidget {
   final Function(String) onSuccess;
   final Function(String) onError;
+  final SvgPicture icon;
 
-  UnlockPassword({this.onSuccess, this.onError});
+  UnlockPassword({this.onSuccess, this.onError, this.icon});
 
   @override
   _UnlockPasswordState createState() => _UnlockPasswordState();
@@ -158,7 +160,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
       padding: EdgeInsets.all(16),
       children: <Widget>[
         SizedBox(height: 32),
-        SvgPicture.asset("assets/seed_logo.svg"),
+        widget.icon,
         SizedBox(height: 100),
         Text(
           AppLocalizations.of(context).enterpassword,
@@ -211,7 +213,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
 
   _checkPassword(String data) async {
     var entryptionTool = new EncryptionTool();
-    String seed = await entryptionTool.readData(walletBloc.currentWallet, data);
+    String seed = await entryptionTool.readData(KeyEncryption.SEED, walletBloc.currentWallet, data);
     if (seed != null) {
       widget.onSuccess(seed);
     } else {

@@ -86,7 +86,7 @@ class MarketMakerService {
 
     if (Platform.isAndroid) {
       await stopmm2();
-
+      
       mm2Process = await Process.start('./mm2', [startParam],
           workingDirectory: '${filesPath}');
 

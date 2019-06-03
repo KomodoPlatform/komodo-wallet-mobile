@@ -230,18 +230,20 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
       var entryptionTool = new EncryptionTool();
       var wallet = walletBloc.currentWallet;
 
-      await entryptionTool.writeData(wallet, controller1.text, widget.seed);
+      await entryptionTool.writeData(KeyEncryption.SEED, wallet, controller1.text, widget.seed);
       await DBProvider.db.saveWallet(wallet);
       await DBProvider.db.saveCurrentWallet(wallet);
     }
 
-    await authBloc.loginUI(false, widget.seed).then((onValue) {
+    await authBloc.loginUI(false, widget.seed, controller1.text).then((onValue) {
       setState(() {
         isLoading = true;
       });
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MyApp()),
+        MaterialPageRoute(builder: (context) => MyApp(
+          password: controller1.text,
+        )),
       );
     });
   }

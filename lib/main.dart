@@ -44,8 +44,8 @@ void main() async {
   runZoned<Future<Null>>(() async {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((_) {
-      _runBinMm2UserAlreadyLog().then((onValue) {
-        mm2.initMarketMaker().then((_) {
+      mm2.initMarketMaker().then((_) {
+        _runBinMm2UserAlreadyLog().then((onValue) {
           runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
         });
       });
@@ -65,11 +65,11 @@ Future<void> _runBinMm2UserAlreadyLog() async {
       prefs.getString('passphrase') != "") {
     print("readJsonCoin");
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
-    await authBloc.loginUI(true, prefs.getString("passphrase"));
+    await authBloc.initSwitchPref();
 
     if (!(authBloc.isPinShow && prefs.getBool("switch_pin"))) {
       print("login isPinShow");
-      await authBloc.login(prefs.getString("passphrase"));
+      await authBloc.login(prefs.getString("passphrase"), null);
     }
   } else {
     print("loadJsonCoinsDefault");
@@ -78,6 +78,10 @@ Future<void> _runBinMm2UserAlreadyLog() async {
 }
 
 class MyApp extends StatefulWidget {
+  final String password;
+
+  MyApp({this.password});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -118,7 +122,10 @@ class _MyAppState extends State<MyApp> {
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
               subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
-              body1: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.w300),
+              body1: TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w300),
               button: TextStyle(fontSize: 16.0, color: Colors.white),
               body2: TextStyle(
                   fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
@@ -128,6 +135,7 @@ class _MyAppState extends State<MyApp> {
                   fontWeight: FontWeight.w400)),
         ),
         home: LockScreen(
+          password: widget.password,
           child: MyHomePage(),
         ));
   }

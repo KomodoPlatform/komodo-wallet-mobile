@@ -7,16 +7,21 @@ import 'package:uuid/uuid.dart';
 class EncryptionTool {
   final storage = new FlutterSecureStorage();
 
-  Future<void> writeData(Wallet wallet, String password, String seed) async{
-    await storage.write(key: '$password${wallet.name}${wallet.id}', value: seed);
+  Future<void> writeData(KeyEncryption key, Wallet wallet, String password, String data) async{
+    await storage.write(key: '${key.toString()}$password${wallet.name}${wallet.id}', value: data);
   }
 
-  Future<String> readData(Wallet wallet, String password) async{
-    return await storage.read(key:'$password${wallet.name}${wallet.id}');
+  Future<String> readData(KeyEncryption key, Wallet wallet, String password) async{
+    return await storage.read(key:'${key.toString()}$password${wallet.name}${wallet.id}');
   }
 
-  Future<void> deleteData(Wallet wallet, String password) async {
-    await storage.delete(key: '$password${wallet.name}${wallet.id}');
+  Future<void> deleteData(KeyEncryption key, Wallet wallet, String password) async {
+    await storage.delete(key: '${key.toString()}$password${wallet.name}${wallet.id}');
   }
+}
+
+enum KeyEncryption{
+  SEED,
+  PIN
 }
 

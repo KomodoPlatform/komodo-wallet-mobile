@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:path/path.dart';
@@ -154,6 +155,8 @@ class DBProvider {
   }
 
   saveCurrentWallet(Wallet currentWallet) async {
+    await deleteCurrentWallet();
+    walletBloc.setCurrentWallet(currentWallet);
     final db = await database;
 
     Map<String, dynamic> row = {

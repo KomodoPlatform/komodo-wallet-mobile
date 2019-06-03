@@ -176,12 +176,12 @@ class AppLocalizations {
   String get checkSeedPhraseTitle => Intl.message("LET'S DOUBLE CHECK YOUR SEED PHRASE", name: 'checkSeedPhraseTitle');
   String get checkSeedPhraseInfo => Intl.message("Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want.", name: 'checkSeedPhraseInfo');
   String checkSeedPhraseSubtile(String index) => Intl.message(
-        'What is the ${index}th word in your seed phrase?',
+        'What is the ${index}. word in your seed phrase?',
         name: 'checkSeedPhraseSubtile',
         args: [index],
       );
   String checkSeedPhraseHint(String index) => Intl.message(
-        'Enter your ${index}th word',
+        'Enter the word ${index}',
         name: 'checkSeedPhraseHint',
         args: [index],
       );
@@ -227,6 +227,7 @@ class AppLocalizations {
   String get welcomeWallet => Intl.message("wallet", name: 'welcomeWallet');
   String get welcomeInfo => Intl.message("AtomicDEX Wallet is a multi-functional wallet that a user can use to hold KMD assets, exchange other currencies, pay and receive payments, and to have access to market news and information.", name: 'welcomeInfo');
   String get welcomeLetSetUp => Intl.message("LET'S GET SET UP!", name: 'welcomeLetSetUp');
+  String get unlock => Intl.message("unlock", name: 'unlock');
 
 }
 
