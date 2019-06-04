@@ -33,8 +33,6 @@ class SwapBloc implements BlocBase {
   Stream<List<OrderCoin>> get outListOrderCoin =>
       _listOrderCoinController.stream;
 
-
-  
   @override
   void dispose() {
     _orderCoinController.close();
@@ -94,6 +92,21 @@ class SwapBloc implements BlocBase {
     return;
   }
 
+  String getExchangeRate() {
+    if (swapBloc.orderCoin != null) {
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${swapBloc.orderCoin.bestPrice} ${swapBloc.orderCoin.coinRel.abbr}';
+    } else {
+      return "";
+    }
+  }
+
+  String getExchangeRateUSD() {
+    if (swapBloc.orderCoin != null && this.sellCoin.priceForOne != null) {
+      return ' - (${(this.sellCoin.priceForOne * swapBloc.orderCoin.bestPrice).toString()} USD)';
+    } else {
+      return "";
+    }
+  }
 }
 
 final swapBloc = SwapBloc();
