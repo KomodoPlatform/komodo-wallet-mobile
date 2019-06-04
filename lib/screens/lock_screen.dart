@@ -15,8 +15,9 @@ class LockScreen extends StatefulWidget {
   final PinStatus pinStatus;
   final Widget child;
   final String password;
+  final Function onSuccess;
 
-  LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.password});
+  LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.password, this.onSuccess});
 
   @override
   _LockScreenState createState() => _LockScreenState();
@@ -70,6 +71,7 @@ class _LockScreenState extends State<LockScreen> {
                                       AppLocalizations.of(context).enterPinCode,
                                   isConfirmPin: widget.pinStatus,
                                   isFromChangingPin: false,
+                                  onSuccess: widget.onSuccess,
                                 ),
                               ],
                             );

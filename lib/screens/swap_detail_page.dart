@@ -31,19 +31,14 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
       swapHistoryBloc.isAnimationStepFinalIsFinish = true;
     print(widget.swap.uuid.uuid);
     super.initState();
-
-    SystemChannels.lifecycle.setMessageHandler((msg){
-      debugPrint('SystemChannels> $msg');
-      if(msg==AppLifecycleState.resumed.toString())setState((){
-        swapHistoryBloc.updateSwap();
-      });
-    });
   }
   
-
   @override
   Widget build(BuildContext context) {
     return LockScreen(
+      onSuccess: (){
+        swapHistoryBloc.updateSwap();
+      },
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
@@ -61,7 +56,7 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
                     print(swap.status);
                   }
                 });
-
+                print("SWAP STATUS" + swapData.status.toString());
                 if (swapData.status == Status.SWAP_SUCCESSFUL &&
                     swapHistoryBloc.isAnimationStepFinalIsFinish) {
                   return FinalTradeSuccess(
