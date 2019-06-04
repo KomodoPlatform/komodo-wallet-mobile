@@ -20,7 +20,7 @@ class PinPage extends StatefulWidget {
   final String code;
   final bool isFromChangingPin;
   final String password;
-  final Function onSuccess;
+  final VoidCallback onSuccess;
 
   @override
   _PinPageState createState() => _PinPageState();

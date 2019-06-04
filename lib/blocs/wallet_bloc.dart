@@ -41,13 +41,14 @@ class WalletBloc implements BlocBase {
     return this.wallets;
   }
 
-  Future<void> loginWithPassword(BuildContext context, String password, Wallet wallet) async{
+  Future<String> loginWithPassword(BuildContext context, String password, Wallet wallet) async{
     var entryptionTool = new EncryptionTool();
     var seedPhrase = await entryptionTool.readData(KeyEncryption.SEED, wallet, password);
 
     if (seedPhrase != null) {
-      await DBProvider.db.saveCurrentWallet(wallet);
+        await DBProvider.db.saveCurrentWallet(wallet);
       await authBloc.loginUI(true, seedPhrase, password);
+      return seedPhrase;
     } else {
       throw(AppLocalizations.of(context).wrongPassword);
     }

@@ -3,9 +3,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/new_account_page.dart';
+import 'package:komodo_dex/screens/restore_seed_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class WelcomePage extends StatefulWidget {
+  final bool isFromRestore;
+
+  WelcomePage({this.isFromRestore = false});
+
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
@@ -113,10 +118,17 @@ class _WelcomePageState extends State<WelcomePage> {
   _newPage() {
     if (isButtonLoginEnabled) {
       walletBloc.initCurrentWallet(controller.text);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => NewAccountPage()),
-      );
+      if (widget.isFromRestore) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => RestoreSeedPage()),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NewAccountPage()),
+        );
+      }
     }
   }
 }
