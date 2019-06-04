@@ -488,7 +488,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                           return DialogLooking();
                         }
                       } else {
-                        return DialogLooking();
+                      return DialogLooking();
                       }
                     },
                   ),
@@ -498,8 +498,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     });
   }
 
-  List<SimpleDialogOption> _createListDialog(BuildContext context,
-      Market market, List<OrderCoin> orderbooks) {
+  List<SimpleDialogOption> _createListDialog(
+      BuildContext context, Market market, List<OrderCoin> orderbooks) {
     List<SimpleDialogOption> listDialog = new List<SimpleDialogOption>();
     if (orderbooks != null && market == Market.BUY) {
       orderbooks.forEach((orderbooks) {
@@ -659,11 +659,24 @@ class DialogLooking extends StatefulWidget {
 
 class _DialogLookingState extends State<DialogLooking> {
   var timerGetOrderbook;
+  var isTimeOut = false;
 
   @override
   void initState() {
+    int timeOutSeconds = 30;
+    int timeOutCurrent = 0;
+
     timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
-      swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+      print(timeOutCurrent);
+      if (timeOutCurrent >= timeOutSeconds) {
+        _.cancel();
+        setState(() {
+          isTimeOut = true;
+        });
+      } else {
+        swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+      }
+      timeOutCurrent += 5;
     });
     super.initState();
   }
@@ -682,13 +695,22 @@ class _DialogLookingState extends State<DialogLooking> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CircularProgressIndicator(),
+            isTimeOut
+                ? Container(
+                    height: 16,
+                  )
+                : CircularProgressIndicator(),
             SizedBox(
               width: 16,
             ),
-            Text(
-              AppLocalizations.of(context).loadingOrderbook,
-              style: Theme.of(context).textTheme.body1,
+            Flexible(
+              child: Text(
+                isTimeOut
+                    ? AppLocalizations.of(context)
+                        .noOrder(swapBloc.sellCoin.coin.name)
+                    : AppLocalizations.of(context).loadingOrderbook,
+                style: Theme.of(context).textTheme.body1,
+              ),
             )
           ],
         ),
