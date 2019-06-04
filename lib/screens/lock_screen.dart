@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authenticate_page.dart';
+import 'package:komodo_dex/screens/create_password_page.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
@@ -14,10 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LockScreen extends StatefulWidget {
   final PinStatus pinStatus;
   final Widget child;
-  final String password;
   final Function onSuccess;
 
-  LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.password, this.onSuccess});
+  LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.onSuccess});
 
   @override
   _LockScreenState createState() => _LockScreenState();
@@ -25,9 +25,12 @@ class LockScreen extends StatefulWidget {
 
 class _LockScreenState extends State<LockScreen> {
   final LocalAuthentication auth = LocalAuthentication();
+  String password;
 
   @override
   Widget build(BuildContext context) {
+    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
+    password = args?.password;
     return StreamBuilder<bool>(
       stream: authBloc.outIsLogin,
       initialData: authBloc.isLogin,
@@ -100,7 +103,7 @@ class _LockScreenState extends State<LockScreen> {
                 subTitle: AppLocalizations.of(context).enterPinCode,
                 firstCreationPin: true,
                 isConfirmPin: PinStatus.CREATE_PIN,
-                password: widget.password,
+                password: password,
                 isFromChangingPin: false,
               );
             }

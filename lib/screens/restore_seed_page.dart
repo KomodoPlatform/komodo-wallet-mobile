@@ -197,12 +197,5 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         seed: controllerSeed.text.toString(),
       )),
     );
-    // authBloc.loginUI(true, controllerSeed.text.toString(), null).then((onValue) {
-    //   Navigator.pop(context);
-    // }).then((_) {
-    //   setState(() {
-    //     _isLogin = false;
-    //   });
-    // });
   }
 }
