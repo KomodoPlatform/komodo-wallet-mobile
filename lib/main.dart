@@ -23,6 +23,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:connectivity/connectivity.dart';
 
 import 'blocs/coins_bloc.dart';
 
@@ -150,6 +151,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   int _currentIndex = 0;
   var timer;
   bool isNetworkAvailable = false;
+  var subscription;
 
   final List<Widget> _children = [
     BlocCoinsPage(),
@@ -174,22 +176,20 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     }
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+    subscription.cancel();
   }
 
   _checkNetworkStatus(BuildContext context) {
-    timer = Timer.periodic(Duration(seconds: 20), (_) async {
-      try {
-        final result = await InternetAddress.lookup('google.com');
-        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-          print('connected');
-          setState(() {
-            isNetworkAvailable = false;
-          });
-        }
-      } on SocketException catch (_) {
-        print('not connected');
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.none) {
         setState(() {
           isNetworkAvailable = true;
+        });
+      } else {
+        setState(() {
+          isNetworkAvailable = false;
         });
       }
     });

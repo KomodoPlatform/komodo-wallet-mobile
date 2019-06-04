@@ -48,6 +48,7 @@ dev_dependencies:
   flutter_crashlytics: ^1.0.0
   flutter_secure_storage: ^3.2.1+1
   uuid: ^2.0.1
+  connectivity: ^0.4.3+2
 
 flutter_icons:
   android: "launcher_icon"
