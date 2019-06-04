@@ -11,7 +11,7 @@ import 'package:komodo_dex/widgets/secondary_button.dart';
 class CreatePasswordPage extends StatefulWidget {
   final String seed;
 
-  CreatePasswordPage({this.seed});
+  CreatePasswordPage({@required this.seed});
 
   @override
   _CreatePasswordPageState createState() => _CreatePasswordPageState();

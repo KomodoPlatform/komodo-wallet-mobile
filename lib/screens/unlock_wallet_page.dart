@@ -4,7 +4,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/screens/bloc_login_page.dart';
+import 'package:komodo_dex/screens/restore_seed_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
@@ -140,7 +140,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BlocLoginPage()),
+                              builder: (context) => RestoreSeedPage()),
                         );
                       },
                       child: Padding(
@@ -173,7 +173,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
         .loginWithPassword(context, controller.text, widget.wallet)
         .then((data) async {
       Navigator.of(context).pop();
-      widget.onSuccess(controller.text);
+      widget.onSuccess(data);
     }).catchError((onError) {
       print(onError);
       Scaffold.of(context).showSnackBar(new SnackBar(

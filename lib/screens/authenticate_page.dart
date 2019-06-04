@@ -4,7 +4,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/screens/bloc_login_page.dart';
+import 'package:komodo_dex/screens/restore_seed_page.dart';
 import 'package:komodo_dex/screens/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/welcome_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
@@ -302,7 +302,9 @@ class _RestoreButtonState extends State<RestoreButton> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => BlocLoginPage()),
+          MaterialPageRoute(builder: (context) => WelcomePage(
+            isFromRestore: true,
+          )),
         );
       },
     );

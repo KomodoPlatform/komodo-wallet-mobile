@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/create_password_page.dart';
+import 'package:komodo_dex/screens/welcome_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:bip39/bip39.dart' as bip39;
 
-class BlocLoginPage extends StatefulWidget {
+class RestoreSeedPage extends StatefulWidget {
   @override
-  _BlocLoginPageState createState() => _BlocLoginPageState();
+  _RestoreSeedPageState createState() => _RestoreSeedPageState();
 }
 
-class _BlocLoginPageState extends State<BlocLoginPage> {
+class _RestoreSeedPageState extends State<RestoreSeedPage> {
   TextEditingController controllerSeed = new TextEditingController();
   bool _isButtonDisabled = false;
   bool _isLogin;
@@ -189,12 +191,18 @@ class _BlocLoginPageState extends State<BlocLoginPage> {
     });
     FocusScope.of(context).requestFocus(new FocusNode());
 
-    authBloc.loginUI(true, controllerSeed.text.toString(), null).then((onValue) {
-      Navigator.pop(context);
-    }).then((_) {
-      setState(() {
-        _isLogin = false;
-      });
-    });
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => CreatePasswordPage(
+        seed: controllerSeed.text.toString(),
+      )),
+    );
+    // authBloc.loginUI(true, controllerSeed.text.toString(), null).then((onValue) {
+    //   Navigator.pop(context);
+    // }).then((_) {
+    //   setState(() {
+    //     _isLogin = false;
+    //   });
+    // });
   }
 }
