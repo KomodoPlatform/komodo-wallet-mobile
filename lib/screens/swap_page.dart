@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
@@ -25,10 +26,15 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   FocusNode _focus = new FocusNode();
   String tmpText = "";
   String amountToBuy;
+  TabController tabController;
 
   @override
   void initState() {
     super.initState();
+    tabController = new TabController(length: 2, vsync: this);
+    if (swapHistoryBloc.isSwapsOnGoing) {
+      tabController.index = 1;
+    }
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
     _controllerAmount.addListener(onChange);
@@ -111,6 +117,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             child: SafeArea(
               child: AppBar(
                 bottom: TabBar(
+                  controller: tabController,
                   tabs: [
                     Tab(
                       text: AppLocalizations.of(context).create.toUpperCase(),
@@ -125,6 +132,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
           ),
           backgroundColor: Theme.of(context).backgroundColor,
           body: TabBarView(
+            controller: tabController,
             children: <Widget>[_buildSwapScreen(), SwapHistory()],
           ),
         ),
@@ -364,7 +372,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                     child: Center(
                                       child: OverflowBox(
                                         maxHeight: 80,
-                                                                              child: Image.asset(
+                                        child: Image.asset(
                                           "assets/${snapshot.data.coin.abbr.toLowerCase()}.png",
                                           fit: BoxFit.cover,
                                         ),
@@ -458,7 +466,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             child: market == Market.SELL
                 ? SimpleDialog(
                     title: Text(AppLocalizations.of(context).sell),
-                    children: _createListDialog(market, null),
+                    children: _createListDialog(context, market, null),
                   )
                 : StreamBuilder<List<OrderCoin>>(
                     initialData: swapBloc.orderCoins,
@@ -474,7 +482,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                         if (orderHasAsks) {
                           return SimpleDialog(
                             title: Text(AppLocalizations.of(context).buy),
-                            children: _createListDialog(market, snapshot.data),
+                            children: _createListDialog(context, market, snapshot.data),
                           );
                         } else {
                           return DialogLooking();
@@ -485,12 +493,12 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     },
                   ),
           );
-        }).then((_){
-          dialogBloc.dialog = null;
-        });
+        }).then((_) {
+      dialogBloc.dialog = null;
+    });
   }
 
-  List<SimpleDialogOption> _createListDialog(
+  List<SimpleDialogOption> _createListDialog(BuildContext context,
       Market market, List<OrderCoin> orderbooks) {
     List<SimpleDialogOption> listDialog = new List<SimpleDialogOption>();
     if (orderbooks != null && market == Market.BUY) {

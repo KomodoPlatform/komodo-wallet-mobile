@@ -135,10 +135,13 @@ class _MyAppState extends State<MyApp> {
                   color: Colors.white.withOpacity(0.8),
                   fontWeight: FontWeight.w400)),
         ),
-        home: LockScreen(
-          password: widget.password,
-          child: MyHomePage(),
-        ));
+        initialRoute: '/',
+        routes: {
+          // When we navigate to the "/" route, build the FirstScreen Widget
+          '/': (context) => LockScreen(
+            child: MyHomePage(),
+          ),
+        });
   }
 }
 

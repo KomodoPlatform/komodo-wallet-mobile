@@ -93,6 +93,7 @@ class _PinPageState extends State<PinPage> {
               case PinStatus.CONFIRM_PIN:
                 if (prefs.getString('pin_create') == code.toString()) {
                   var wallet = await DBProvider.db.getCurrentWallet();
+
                   if (wallet != null) {
                     var entryptionTool = new EncryptionTool();
                     await entryptionTool.writeData(KeyEncryption.PIN, wallet, widget.password, code.toString());

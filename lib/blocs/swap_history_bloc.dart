@@ -26,9 +26,13 @@ class SwapHistoryBloc implements BlocBase {
   // Streams to handle the list coin
   StreamController<bool> _isAnimationStepFinalIsFinishController =
       StreamController<bool>.broadcast();
-  Sink<bool> get _inIsAnimationStepFinalIsFinish => _isAnimationStepFinalIsFinishController.sink;
-  Stream<bool> get outIsAnimationStepFinalIsFinish => _isAnimationStepFinalIsFinishController.stream;
-  
+  Sink<bool> get _inIsAnimationStepFinalIsFinish =>
+      _isAnimationStepFinalIsFinishController.sink;
+  Stream<bool> get outIsAnimationStepFinalIsFinish =>
+      _isAnimationStepFinalIsFinishController.stream;
+
+  bool isSwapsOnGoing = false;
+
   @override
   void dispose() {
     _swapsController.close();
@@ -64,6 +68,8 @@ class SwapHistoryBloc implements BlocBase {
     // 2/3 - "Swap ongoing" - takefee paid --> TakerFeeSent
     // 3/3 - "Swap successful" - makerpayment issued (or confirmed with 1 conf) --> MakerPaymentSpent
 
+    isSwapsOnGoing = false;
+
     if (uuids != null) {
       for (var uuid in uuids) {
         Uuid uuidData = uuidFromJson(uuid);
@@ -82,6 +88,11 @@ class SwapHistoryBloc implements BlocBase {
             }
             swap.uuid = uuidData;
             swaps.add(swap);
+            if (swap.status == Status.ORDER_MATCHED ||
+                swap.status == Status.ORDER_MATCHING ||
+                swap.status == Status.SWAP_ONGOING) {
+              isSwapsOnGoing = true;
+            }
           } else if (swap is ErrorString) {
             if (uuidData.timeStart + 600 <
                 DateTime.now().millisecondsSinceEpoch ~/ 1000) {
