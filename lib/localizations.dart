@@ -233,6 +233,8 @@ class AppLocalizations {
         name: 'noOrder',
         args: [coinName],
       );
+  String get bestAvailableRate => Intl.message("Best available rate", name: 'bestAvailableRate');
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

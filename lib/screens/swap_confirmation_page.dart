@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/media_page.dart';
 import 'package:komodo_dex/screens/swap_detail_page.dart';
+import 'package:komodo_dex/screens/swap_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 
 class SwapConfirmation extends StatefulWidget {
@@ -23,25 +24,34 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   bool isSwapMaking = false;
 
   @override
-  void dispose() {
-    swapBloc.updateSellCoin(null);
-    swapBloc.updateBuyCoin(null);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return LockScreen(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(),
-        body: ListView(
-          children: <Widget>[
-            _buildTitle(),
-            _buildCoinSwapDetail(),
-            _buildButtons(),
-            _buildInfoSwap()
-          ],
+      child: WillPopScope(
+        onWillPop: () {
+          swapBloc.updateSellCoin(null);
+          swapBloc.updateBuyCoin(null);
+          Navigator.pop(context);
+        },
+        child: Scaffold(
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: AppBar(
+            leading: InkWell(
+                onTap: () {
+                  swapBloc.updateSellCoin(null);
+                  swapBloc.updateBuyCoin(null);
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.arrow_back)),
+          ),
+          body: ListView(
+            children: <Widget>[
+              _buildTitle(),
+              _buildCoinSwapDetail(),
+              ExchangeRate(),
+              _buildButtons(),
+              _buildInfoSwap()
+            ],
+          ),
         ),
       ),
     );
@@ -246,6 +256,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
           child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
           onPressed: () {
+            swapBloc.updateSellCoin(null);
+            swapBloc.updateBuyCoin(null);
             Navigator.of(context).pop();
           },
         ),

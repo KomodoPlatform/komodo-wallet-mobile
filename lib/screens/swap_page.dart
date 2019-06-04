@@ -37,6 +37,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     }
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
+    print("initState updateBuyCoin NULL");
+
     _controllerAmount.addListener(onChange);
     controller = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
@@ -147,6 +149,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
           _buildCardCoin(Market.SELL),
           _buildSwapArrow(),
           _buildCardCoin(Market.BUY),
+          ExchangeRate(),
           _buildSwapButton()
         ],
       ),
@@ -482,13 +485,14 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                         if (orderHasAsks) {
                           return SimpleDialog(
                             title: Text(AppLocalizations.of(context).buy),
-                            children: _createListDialog(context, market, snapshot.data),
+                            children: _createListDialog(
+                                context, market, snapshot.data),
                           );
                         } else {
                           return DialogLooking();
                         }
                       } else {
-                      return DialogLooking();
+                        return DialogLooking();
                       }
                     },
                   ),
@@ -551,6 +555,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
           SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
               _controllerAmount.text = '';
+              setState(() {});
               swapBloc.updateSellCoin(coin);
               swapBloc.updateBuyCoin(null);
               Navigator.pop(context);
@@ -618,21 +623,26 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
               child: CircularProgressIndicator(),
             );
           } else {
-            return RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(8),
-                      topLeft: Radius.circular(8))),
-              color: Theme.of(context).buttonColor,
-              disabledColor: Theme.of(context).disabledColor,
-              child: Text(
-                AppLocalizations.of(context).swap.toUpperCase(),
-                style: Theme.of(context).textTheme.button,
-              ),
-              onPressed: swapBloc.orderCoin != null &&
-                      _controllerAmount.text.isNotEmpty
-                  ? _confirmSwap
-                  : null,
+            return StreamBuilder<Object>(
+              stream: swapBloc.outOrderCoin,
+              builder: (context, snapshot) {
+                return RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          topLeft: Radius.circular(8))),
+                  color: Theme.of(context).buttonColor,
+                  disabledColor: Theme.of(context).disabledColor,
+                  child: Text(
+                    AppLocalizations.of(context).swap.toUpperCase(),
+                    style: Theme.of(context).textTheme.button,
+                  ),
+                  onPressed: snapshot.hasData && snapshot.connectionState == ConnectionState.active  &&
+                          _controllerAmount.text.isNotEmpty
+                      ? _confirmSwap
+                      : null,
+                );
+              }
             );
           }
         }),
@@ -722,4 +732,51 @@ class _DialogLookingState extends State<DialogLooking> {
 enum Market {
   SELL,
   BUY,
+}
+
+class ExchangeRate extends StatefulWidget {
+  @override
+  _ExchangeRateState createState() => _ExchangeRateState();
+}
+
+class _ExchangeRateState extends State<ExchangeRate> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<Object>(
+      initialData: swapBloc.orderCoin,
+      stream: swapBloc.outOrderCoin,
+      builder: (context, snapshot) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            children: <Widget>[
+              Text(
+                snapshot.hasData ? AppLocalizations.of(context).bestAvailableRate : "",
+                style: Theme.of(context).textTheme.body2.copyWith(fontSize: 12),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    swapBloc.getExchangeRate(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    swapBloc.getExchangeRateUSD(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .body2,
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      }
+    );
+  }
 }
