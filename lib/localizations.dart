@@ -181,7 +181,7 @@ class AppLocalizations {
         args: [index],
       );
   String checkSeedPhraseHint(String index) => Intl.message(
-        'Enter the word ${index}',
+        'Enter the ${index}. word',
         name: 'checkSeedPhraseHint',
         args: [index],
       );
