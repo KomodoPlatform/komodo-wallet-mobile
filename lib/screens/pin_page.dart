@@ -20,6 +20,7 @@ class PinPage extends StatefulWidget {
   final String code;
   final bool isFromChangingPin;
   final String password;
+  final Function onSuccess;
 
   @override
   _PinPageState createState() => _PinPageState();
@@ -31,6 +32,7 @@ class PinPage extends StatefulWidget {
       this.isConfirmPin,
       this.isFromChangingPin,
       this.password,
+      this.onSuccess,
       this.code});
 }
 
@@ -113,6 +115,7 @@ class _PinPageState extends State<PinPage> {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     await authBloc.login(prefs.getString("passphrase"), null);
                   }
+                  widget.onSuccess();
                 } else {
                   _errorPin();
                 }

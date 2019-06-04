@@ -97,7 +97,9 @@ class MarketMakerService {
         String logMm2 = utf8.decoder.convert(onData).trim();
         sink.write(logMm2);
         print("mm2: " + logMm2);
-        if (logMm2.contains("Received 'negotiation") ||
+        
+        if (logMm2.contains("Entering the taker_swap_loop") ||
+            logMm2.contains("Received 'negotiation") ||
             logMm2.contains("Got maker payment") ||
             logMm2.contains("Sending 'taker-fee") ||
             logMm2.contains("Finished")) {
