@@ -5,8 +5,10 @@ class SecondaryButton extends StatefulWidget {
   final String text;
   final Widget child;
   final bool isDarkMode;
+  final Color borderColor;
+  final Color textColor;
 
-  SecondaryButton({@required this.onPressed,this.text, this.child, this.isDarkMode = true});
+  SecondaryButton({@required this.onPressed,this.text, this.child, this.isDarkMode = true, this.borderColor = Colors.black, this.textColor = Colors.black});
 
   @override
   _SecondaryButtonState createState() => _SecondaryButtonState();
@@ -17,15 +19,15 @@ class _SecondaryButtonState extends State<SecondaryButton> {
   Widget build(BuildContext context) {
     Widget child;
     if (widget.text != null) {
-      child = Text(widget.text.toUpperCase(),style: Theme.of(context).textTheme.button.copyWith(color: widget.isDarkMode ? Colors.white : Theme.of(context).primaryColor),);
+      child = Text(widget.text.toUpperCase(),style: Theme.of(context).textTheme.button.copyWith(color: widget.isDarkMode ? Colors.white : widget.textColor),);
     } else {
       child = widget.child;
     }
     return Container(
       width: double.infinity,
       child: OutlineButton(
-        borderSide: BorderSide(color: widget.isDarkMode ? Colors.white : Theme.of(context).primaryColor),
-        highlightedBorderColor: widget.isDarkMode ? Colors.white : Theme.of(context).primaryColor,
+        borderSide: BorderSide(color: widget.isDarkMode ? Colors.white : widget.borderColor),
+        highlightedBorderColor: widget.isDarkMode ? Colors.white : widget.borderColor,
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -139,8 +140,8 @@ class _MyAppState extends State<MyApp> {
         routes: {
           // When we navigate to the "/" route, build the FirstScreen Widget
           '/': (context) => LockScreen(
-            child: MyHomePage(),
-          ),
+                child: MyHomePage(),
+              ),
         });
   }
 }
@@ -151,7 +152,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
-  int _currentIndex = 0;
   var timer;
   bool isNetworkAvailable = false;
   var subscription;
@@ -225,90 +225,96 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: _children[_currentIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black,
-              blurRadius: 10.0, // has the effect of softening the shadow
-              spreadRadius: 5.0, // has the effect of extending the shadow
-              offset: Offset(
-                10.0, // horizontal, move right 10
-                10.0, // vertical, move down 10
+    return StreamBuilder<int>(
+        initialData: mainBloc.currentIndexTab,
+        stream: mainBloc.outCurrentIndex,
+        builder: (context, snapshot) {
+          return Scaffold(
+            resizeToAvoidBottomPadding: false,
+            backgroundColor: Theme.of(context).backgroundColor,
+            body: _children[snapshot.data],
+            bottomNavigationBar: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 10.0, // has the effect of softening the shadow
+                    spreadRadius: 5.0, // has the effect of extending the shadow
+                    offset: Offset(
+                      10.0, // horizontal, move right 10
+                      10.0, // vertical, move down 10
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-        child: Material(
-          elevation: 8.0,
-          child: Theme(
-            data: Theme.of(context).copyWith(
-                canvasColor: Theme.of(context).primaryColor,
-                primaryColor: Theme.of(context).accentColor,
-                textTheme: Theme.of(context).textTheme.copyWith(
-                    caption: new TextStyle(
-                        color: Theme.of(context)
-                            .textSelectionColor
-                            .withOpacity(0.5)))),
-            child: Container(
-              color: Theme.of(context).primaryColor,
-              child: SafeArea(
-                child: SizedBox(
-                  height: isNetworkAvailable ? 80 : 56,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      if (isNetworkAvailable)
-                        Expanded(
-                          child: Center(
-                            child: Container(
-                                height: double.infinity,
-                                width: double.infinity,
-                                color: Colors.redAccent,
+              child: Material(
+                elevation: 8.0,
+                child: Theme(
+                  data: Theme.of(context).copyWith(
+                      canvasColor: Theme.of(context).primaryColor,
+                      primaryColor: Theme.of(context).accentColor,
+                      textTheme: Theme.of(context).textTheme.copyWith(
+                          caption: new TextStyle(
+                              color: Theme.of(context)
+                                  .textSelectionColor
+                                  .withOpacity(0.5)))),
+                  child: Container(
+                    color: Theme.of(context).primaryColor,
+                    child: SafeArea(
+                      child: SizedBox(
+                        height: isNetworkAvailable ? 80 : 56,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            if (isNetworkAvailable)
+                              Expanded(
                                 child: Center(
-                                    child: Text("No Internet Connection"))),
-                          ),
+                                  child: Container(
+                                      height: double.infinity,
+                                      width: double.infinity,
+                                      color: Colors.redAccent,
+                                      child: Center(
+                                          child:
+                                              Text("No Internet Connection"))),
+                                ),
+                              ),
+                            BottomNavigationBar(
+                              elevation: 0,
+                              type: BottomNavigationBarType.fixed,
+                              onTap: onTabTapped,
+                              currentIndex: snapshot.data,
+                              items: [
+                                BottomNavigationBarItem(
+                                    icon: Icon(Icons.account_balance_wallet),
+                                    title: Text(AppLocalizations.of(context)
+                                        .portfolio)),
+                                BottomNavigationBarItem(
+                                    icon: Icon(Icons.swap_vert),
+                                    title:
+                                        Text(AppLocalizations.of(context).dex)),
+                                BottomNavigationBarItem(
+                                    icon: Icon(Icons.library_books),
+                                    title: Text(
+                                        AppLocalizations.of(context).media)),
+                                BottomNavigationBarItem(
+                                    icon: Icon(Icons.settings),
+                                    title: Text(
+                                        AppLocalizations.of(context).settings)),
+                              ],
+                            )
+                          ],
                         ),
-                      BottomNavigationBar(
-                        elevation: 0,
-                        type: BottomNavigationBarType.fixed,
-                        onTap: onTabTapped,
-                        currentIndex: _currentIndex,
-                        items: [
-                          BottomNavigationBarItem(
-                              icon: Icon(Icons.account_balance_wallet),
-                              title:
-                                  Text(AppLocalizations.of(context).portfolio)),
-                          BottomNavigationBarItem(
-                              icon: Icon(Icons.swap_vert),
-                              title: Text(AppLocalizations.of(context).dex)),
-                          BottomNavigationBarItem(
-                              icon: Icon(Icons.library_books),
-                              title: Text(AppLocalizations.of(context).media)),
-                          BottomNavigationBarItem(
-                              icon: Icon(Icons.settings),
-                              title:
-                                  Text(AppLocalizations.of(context).settings)),
-                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
+        });
   }
 
   void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    mainBloc.setCurrentIndexTab(index);
   }
 }
