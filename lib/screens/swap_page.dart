@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -11,6 +12,9 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/screens/swap_confirmation_page.dart';
 import 'package:komodo_dex/screens/swap_history.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:komodo_dex/widgets/primary_dialog.dart';
+import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class SwapPage extends StatefulWidget {
   @override
@@ -459,44 +463,97 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
       }
     }
+    List<SimpleDialogOption> listDialogCoins = _createListDialog(context, market, null);
+
     dialogBloc.dialog = showDialog<List<CoinBalance>>(
         context: context,
         builder: (BuildContext context) {
-          return Theme(
-            data: ThemeData(
-                textTheme: Theme.of(context).textTheme,
-                dialogBackgroundColor: Theme.of(context).dialogBackgroundColor),
-            child: market == Market.SELL
-                ? SimpleDialog(
-                    title: Text(AppLocalizations.of(context).sell),
-                    children: _createListDialog(context, market, null),
-                  )
-                : StreamBuilder<List<OrderCoin>>(
-                    initialData: swapBloc.orderCoins,
-                    stream: swapBloc.outListOrderCoin,
-                    builder: (context, snapshot) {
-                      bool orderHasAsks = false;
-                      if (snapshot.hasData && snapshot.data.length > 0) {
-                        snapshot.data.forEach((orderbook) {
-                          if (orderbook.orderbook.asks.length > 0) {
-                            orderHasAsks = true;
-                          }
-                        });
-                        if (orderHasAsks) {
-                          return SimpleDialog(
-                            title: Text(AppLocalizations.of(context).buy),
-                            children: _createListDialog(
-                                context, market, snapshot.data),
-                          );
-                        } else {
-                          return DialogLooking();
+          return market == Market.SELL
+              ? listDialogCoins.length > 0
+                  ? SimpleDialog(
+                      title: Text(AppLocalizations.of(context).sell),
+                      children: listDialogCoins,
+                    )
+                  : SimpleDialog(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(8.0)),
+                      backgroundColor: Colors.white,
+                      title: Column(
+                        children: <Widget>[
+                          Icon(
+                            Icons.info_outline,
+                            color: Theme.of(context).accentColor,
+                            size: 48,
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            "No funds",
+                            style: Theme.of(context)
+                                .textTheme
+                                .title
+                                .copyWith(color: Theme.of(context).accentColor),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          )
+                        ],
+                      ),
+                      children: <Widget>[
+                        Text("No funds detected please add some.",
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                color: Theme.of(context).primaryColor)),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 2,
+                              child: PrimaryButton(
+                                text: "Go to portfolio",
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  mainBloc.setCurrentIndexTab(0);
+                                },
+                                backgroundColor: Theme.of(context).accentColor,
+                                isDarkMode: false,
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                      ],
+                    )
+              : StreamBuilder<List<OrderCoin>>(
+                  initialData: swapBloc.orderCoins,
+                  stream: swapBloc.outListOrderCoin,
+                  builder: (context, snapshot) {
+                    bool orderHasAsks = false;
+                    if (snapshot.hasData && snapshot.data.length > 0) {
+                      snapshot.data.forEach((orderbook) {
+                        if (orderbook.orderbook.asks.length > 0) {
+                          orderHasAsks = true;
                         }
+                      });
+                      if (orderHasAsks) {
+                        return SimpleDialog(
+                          title: Text(AppLocalizations.of(context).buy),
+                          children:
+                              _createListDialog(context, market, snapshot.data),
+                        );
                       } else {
                         return DialogLooking();
                       }
-                    },
-                  ),
-          );
+                    } else {
+                      return DialogLooking();
+                    }
+                  },
+                );
         }).then((_) {
       dialogBloc.dialog = null;
     });
@@ -624,26 +681,27 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             );
           } else {
             return StreamBuilder<Object>(
-              stream: swapBloc.outOrderCoin,
-              builder: (context, snapshot) {
-                return RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(8),
-                          topLeft: Radius.circular(8))),
-                  color: Theme.of(context).buttonColor,
-                  disabledColor: Theme.of(context).disabledColor,
-                  child: Text(
-                    AppLocalizations.of(context).swap.toUpperCase(),
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                  onPressed: snapshot.hasData && snapshot.connectionState == ConnectionState.active  &&
-                          _controllerAmount.text.isNotEmpty
-                      ? _confirmSwap
-                      : null,
-                );
-              }
-            );
+                stream: swapBloc.outOrderCoin,
+                builder: (context, snapshot) {
+                  return RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(8),
+                            topLeft: Radius.circular(8))),
+                    color: Theme.of(context).buttonColor,
+                    disabledColor: Theme.of(context).disabledColor,
+                    child: Text(
+                      AppLocalizations.of(context).swap.toUpperCase(),
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                    onPressed: snapshot.hasData &&
+                            snapshot.connectionState ==
+                                ConnectionState.active &&
+                            _controllerAmount.text.isNotEmpty
+                        ? _confirmSwap
+                        : null,
+                  );
+                });
           }
         }),
       ),
@@ -743,40 +801,40 @@ class _ExchangeRateState extends State<ExchangeRate> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Object>(
-      initialData: swapBloc.orderCoin,
-      stream: swapBloc.outOrderCoin,
-      builder: (context, snapshot) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            children: <Widget>[
-              Text(
-                snapshot.hasData ? AppLocalizations.of(context).bestAvailableRate : "",
-                style: Theme.of(context).textTheme.body2.copyWith(fontSize: 12),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    swapBloc.getExchangeRate(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .body1
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    swapBloc.getExchangeRateUSD(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .body2,
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
-      }
-    );
+        initialData: swapBloc.orderCoin,
+        stream: swapBloc.outOrderCoin,
+        builder: (context, snapshot) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  snapshot.hasData
+                      ? AppLocalizations.of(context).bestAvailableRate
+                      : "",
+                  style:
+                      Theme.of(context).textTheme.body2.copyWith(fontSize: 12),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      swapBloc.getExchangeRate(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      swapBloc.getExchangeRateUSD(),
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        });
   }
 }
