@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -380,6 +381,7 @@ class _ItemCoinState extends State<ItemCoin> {
           icon: Icons.swap_vert,
           onTap: () {
             mainBloc.setCurrentIndexTab(1);
+            swapHistoryBloc.isSwapsOnGoing = false;
             Future.delayed(const Duration(milliseconds: 100), () {
               swapBloc.updateSellCoin(widget.coinBalance);
               swapBloc.setFocusTextField(true);
