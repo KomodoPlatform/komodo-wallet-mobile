@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/article.dart';
@@ -356,11 +357,7 @@ class SavedNews extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  Icons.bookmark_border,
-                  color: Colors.grey,
-                  size: 48,
-                ),
+                SvgPicture.asset("assets/icon_not_saved.svg"),
                 SizedBox(
                   height: 16,
                 ),
