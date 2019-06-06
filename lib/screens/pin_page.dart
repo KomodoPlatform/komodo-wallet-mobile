@@ -116,7 +116,9 @@ class _PinPageState extends State<PinPage> {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     await authBloc.login(prefs.getString("passphrase"), null);
                   }
-                  widget.onSuccess();
+                  if (widget.onSuccess != null) {
+                    widget.onSuccess();
+                  }
                 } else {
                   _errorPin();
                 }

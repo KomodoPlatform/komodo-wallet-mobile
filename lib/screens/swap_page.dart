@@ -13,8 +13,6 @@ import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/screens/swap_confirmation_page.dart';
 import 'package:komodo_dex/screens/swap_history.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/primary_dialog.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class SwapPage extends StatefulWidget {
   @override
@@ -41,7 +39,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     }
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
-    print("initState updateBuyCoin NULL");
 
     _controllerAmount.addListener(onChange);
     controller = AnimationController(
@@ -220,30 +217,37 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 Expanded(
-                                  child: TextFormField(
-                                    focusNode: _focus,
-                                    controller: _controllerAmount,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .copyWith(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.end,
-                                    textInputAction: TextInputAction.done,
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(
-                                            decimal: true),
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintStyle: Theme.of(context)
+                                  child: StreamBuilder<bool>(
+                                    initialData: swapBloc.focusTextField,
+                                    stream: swapBloc.outFocusTextField,
+                                    builder: (context, snapshot) {
+                                      return TextFormField(
+                                        focusNode: _focus,
+                                        controller: _controllerAmount,
+                                        autofocus: snapshot.data,
+                                        style: Theme.of(context)
                                             .textTheme
-                                            .body2
+                                            .body1
                                             .copyWith(
                                                 fontSize: 18,
-                                                fontWeight: FontWeight.w400),
-                                        hintText: AppLocalizations.of(context)
-                                            .amountToSell),
+                                                fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.end,
+                                        textInputAction: TextInputAction.done,
+                                        keyboardType:
+                                            TextInputType.numberWithOptions(
+                                                decimal: true),
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintStyle: Theme.of(context)
+                                                .textTheme
+                                                .body2
+                                                .copyWith(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w400),
+                                            hintText: AppLocalizations.of(context)
+                                                .amountToSell),
+                                      );
+                                    }
                                   ),
                                 ),
                                 Padding(

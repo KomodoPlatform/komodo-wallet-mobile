@@ -3,14 +3,18 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/coin_detail.dart';
 import 'package:komodo_dex/screens/select_coins_page.dart';
+import 'package:komodo_dex/screens/swap_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
@@ -299,6 +303,7 @@ class ListCoinsState extends State<ListCoins> {
               key: _refreshIndicatorKey,
               onRefresh: () => mm2.loadCoin(true),
               child: ListView(
+                padding: EdgeInsets.all(0),
                 children: datas
                     .map((data) =>
                         ItemCoin(mContext: context, coinBalance: data))
@@ -342,119 +347,173 @@ class _ItemCoinState extends State<ItemCoin> {
       Coin coin = widget.coinBalance.coin;
       Balance balance = widget.coinBalance.balance;
       NumberFormat f = new NumberFormat("###,##0.########");
-      return Card(
-        elevation: 8,
-        color: Theme.of(context).primaryColor,
-        margin: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
-        child: InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
+      List<Widget> actions = new List<Widget>();
+      if (balance.balance > 0) {
+        actions.add(IconSlideAction(
+          caption: AppLocalizations.of(context).send,
+          color: Colors.white,
+          icon: Icons.arrow_upward,
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CoinDetail(widget.coinBalance)),
+                  builder: (context) => CoinDetail(
+                        coinBalance: widget.coinBalance,
+                        isSendIsActive: true,
+                      )),
             );
           },
-          child: Container(
-            height: 125,
-            child: Row(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(6),
-                      topLeft: Radius.circular(6)),
-                  child: Container(
-                    color: Color(int.parse(coin.colorCoin)),
-                    width: 8,
-                  ),
-                ),
-                SizedBox(width: 16),
-                Container(
-                  width: 100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+        ));
+      }
+      actions.add(IconSlideAction(
+        caption: AppLocalizations.of(context).receive,
+        color: Theme.of(context).backgroundColor,
+        icon: Icons.arrow_downward,
+        onTap: () {
+          showAddressDialog(context, balance.address);
+        },
+      ));
+      if (balance.balance > 0) {
+        actions.add(IconSlideAction(
+          caption: AppLocalizations.of(context).swap.toUpperCase(),
+          color: Theme.of(context).accentColor,
+          icon: Icons.swap_vert,
+          onTap: () {
+            mainBloc.setCurrentIndexTab(1);
+            Future.delayed(const Duration(milliseconds: 100), () {
+              swapBloc.updateSellCoin(widget.coinBalance);
+              swapBloc.setFocusTextField(true);
+            });
+          },
+        ));
+      }
+
+      return Column(
+        children: <Widget>[
+          Slidable(
+            actionPane: SlidableDrawerActionPane(),
+            actionExtentRatio: 0.25,
+            actions: actions,
+            child: Builder(builder: (context) {
+              return InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                onLongPress: () {
+                  Slidable.of(context)
+                      .open(actionType: SlideActionType.primary);
+                },
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            CoinDetail(coinBalance: widget.coinBalance)),
+                  );
+                },
+                child: Container(
+                  height: 125,
+                  color: Theme.of(context).primaryColor,
+                  child: Row(
                     children: <Widget>[
-                      Builder(builder: (context) {
-                        String coinStr = balance.coin.toLowerCase();
-                        return PhotoHero(
-                          radius: 28,
-                          tag: "assets/${balance.coin.toLowerCase()}.png",
-                        );
-                      }),
-                      SizedBox(height: 8),
-                      Text(
-                        coin.name.toUpperCase(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle
-                            .copyWith(fontSize: 16),
+                      Container(
+                        color: Color(int.parse(coin.colorCoin)),
+                        width: 8,
+                      ),
+                      SizedBox(width: 16),
+                      Container(
+                        width: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Builder(builder: (context) {
+                              String coinStr = balance.coin.toLowerCase();
+                              return PhotoHero(
+                                radius: 28,
+                                tag: "assets/${balance.coin.toLowerCase()}.png",
+                              );
+                            }),
+                            SizedBox(height: 8),
+                            Text(
+                              coin.name.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle
+                                  .copyWith(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Container(
+                                child: AutoSizeText(
+                                  "${f.format(balance.balance)} ${coin.abbr}",
+                                  maxLines: 1,
+                                  style: Theme.of(context).textTheme.subtitle,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Builder(builder: (context) {
+                                NumberFormat f = new NumberFormat("###,##0.##");
+                                return Text(
+                                  "\$${f.format(widget.coinBalance.balanceUSD)} USD",
+                                  style: Theme.of(context).textTheme.body2,
+                                );
+                              }),
+                              widget.coinBalance.coin.abbr == "KMD" &&
+                                      widget.coinBalance.balance.balance >= 10
+                                  ? Padding(
+                                      padding: EdgeInsets.only(top: 8),
+                                      child: OutlineButton(
+                                        borderSide: BorderSide(
+                                            color:
+                                                Theme.of(context).accentColor),
+                                        highlightedBorderColor: Colors.white,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 6, horizontal: 16),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0)),
+                                        onPressed: () {
+                                          CoinDetail(
+                                                  coinBalance:
+                                                      widget.coinBalance)
+                                              .showDialogClaim(context);
+                                        },
+                                        child: Text(
+                                          "CLAIM YOUR REWARDS",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body1
+                                              .copyWith(fontSize: 12),
+                                        ),
+                                      ),
+                                    )
+                                  : Container()
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Container(
-                          child: AutoSizeText(
-                            "${f.format(balance.balance)} ${coin.abbr}",
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Builder(builder: (context) {
-                          NumberFormat f = new NumberFormat("###,##0.##");
-                          return Text(
-                            "\$${f.format(widget.coinBalance.balanceUSD)} USD",
-                            style: Theme.of(context).textTheme.body2,
-                          );
-                        }),
-                        widget.coinBalance.coin.abbr == "KMD" &&
-                                widget.coinBalance.balance.balance >= 10
-                            ? Padding(
-                                padding: EdgeInsets.only(top: 8),
-                                child: OutlineButton(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).accentColor),
-                                  highlightedBorderColor: Colors.white,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 6, horizontal: 16),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)),
-                                  onPressed: () {
-                                    CoinDetail(widget.coinBalance)
-                                        .showDialogClaim(context);
-                                  },
-                                  child: Text(
-                                    "CLAIM YOUR REWARDS",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .copyWith(fontSize: 12),
-                                  ),
-                                ),
-                              )
-                            : Container()
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              );
+            }),
           ),
-        ),
+          Divider(
+            height: 0,
+          ),
+        ],
       );
     }
   }
