@@ -26,7 +26,7 @@ import 'package:share/share.dart';
 
 class CoinDetail extends StatefulWidget {
   CoinBalance coinBalance;
-  final bool isSendIsActive;
+  bool isSendIsActive;
 
   CoinDetail({this.coinBalance, this.isSendIsActive = false});
 
@@ -492,7 +492,7 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _buildHeaderCoinDetail(BuildContext context) {
+  _buildHeaderCoinDetail(BuildContext mContext) {
     return Column(
       children: <Widget>[
         Padding(
@@ -527,12 +527,14 @@ class _CoinDetailState extends State<CoinDetail> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _buildButtonLight(StatusButton.RECEIVE, context),
+            _buildButtonLight(StatusButton.RECEIVE, mContext),
             widget.coinBalance.coin.abbr == "KMD" &&
                     widget.coinBalance.balance.balance >= 10
-                ? _buildButtonLight(StatusButton.CLAIM, context)
+                ? _buildButtonLight(StatusButton.CLAIM, mContext)
                 : Container(),
-            widget.coinBalance.balance.balance > 0 ? _buildButtonLight(StatusButton.SEND, context) : Container(),
+            widget.coinBalance.balance.balance > 0
+                ? _buildButtonLight(StatusButton.SEND, mContext)
+                : Container(),
           ],
         ),
         SizedBox(
@@ -542,7 +544,7 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _buildButtonLight(StatusButton statusButton, BuildContext context) {
+  _buildButtonLight(StatusButton statusButton, BuildContext mContext) {
     if (currentIndex == 3 && statusButton == StatusButton.SEND) {
       _closeAfterAWait();
     }
@@ -553,7 +555,7 @@ class _CoinDetailState extends State<CoinDetail> {
           onTap: () {
             switch (statusButton) {
               case StatusButton.RECEIVE:
-                showAddressDialog(context, widget.coinBalance.balance.address);
+                showAddressDialog(mContext, widget.coinBalance.balance.address);
                 break;
               case StatusButton.SEND:
                 if (currentIndex == 3) {
@@ -571,7 +573,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 }
                 break;
               case StatusButton.CLAIM:
-                widget.showDialogClaim(context);
+                widget.showDialogClaim(mContext);
                 break;
               default:
             }
@@ -836,6 +838,9 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _onPressedConfirmWithdraw(BuildContext context) {
+    setState(() {
+      widget.isSendIsActive = false;
+    });
     double amountMinusFee = double.parse(_amountController.text) -
         double.parse(widget.coinBalance.coin.getTxFeeSatoshi());
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
@@ -1124,9 +1129,9 @@ class _CoinDetailState extends State<CoinDetail> {
 
 enum StatusButton { SEND, RECEIVE, CLAIM }
 
-showAddressDialog(BuildContext context, String address) {
+showAddressDialog(BuildContext mContext, String address) {
   dialogBloc.dialog = showDialog(
-    context: context,
+    context: mContext,
     builder: (BuildContext context) {
       // return object of type Dialog
       return AlertDialog(
@@ -1137,7 +1142,7 @@ showAddressDialog(BuildContext context, String address) {
             borderRadius: BorderRadius.circular(6.0)),
         content: InkWell(
           onTap: () {
-            copyToClipBoard(context, address);
+            copyToClipBoard(mContext, address);
           },
           child: Container(
             height: MediaQuery.of(context).size.height * 0.4,
