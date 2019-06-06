@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -154,18 +155,15 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
               ],
             ),
             Positioned(
-                left: (MediaQuery.of(context).size.width / 2) - 64,
-                top: 96,
+                left: (MediaQuery.of(context).size.width / 2) - 43,
+                top: 100,
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(32)),
                   child: Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                          EdgeInsets.symmetric(vertical: 4, horizontal: 4),
                       color: Theme.of(context).backgroundColor,
-                      child: Icon(
-                        Icons.swap_vert,
-                        size: 32,
-                      )),
+                      child: SvgPicture.asset("assets/icon_swap.svg")),
                 ))
           ],
         )
