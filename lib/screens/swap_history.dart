@@ -8,6 +8,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/swap_detail_page.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 
 class SwapHistory extends StatefulWidget {
   @override
@@ -15,9 +16,12 @@ class SwapHistory extends StatefulWidget {
 }
 
 class _SwapHistoryState extends State<SwapHistory> {
+  int LIMIT = 10;
+
   @override
   void initState() {
-    swapHistoryBloc.updateSwap();
+    swapHistoryBloc.updateSwaps(LIMIT, null);
+
     super.initState();
   }
 
@@ -27,15 +31,16 @@ class _SwapHistoryState extends State<SwapHistory> {
         stream: swapHistoryBloc.outSwaps,
         initialData: swapHistoryBloc.swaps,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data.length == 0) {
+          print(snapshot.data.length);
+          print(snapshot.connectionState);
+          if (snapshot.hasData && snapshot.data.length == 0 && snapshot.connectionState == ConnectionState.active) {
             return Center(
               child: Text(
                 AppLocalizations.of(context).noSwaps,
                 style: Theme.of(context).textTheme.body2,
               ),
             );
-          }
-          if (snapshot.hasData && snapshot.data.length > 0) {
+          } else if (snapshot.hasData && snapshot.data.length > 0) {
             List<Swap> swaps = snapshot.data;
             swaps.sort((b, a) {
               if (a.uuid.timeStart != null) {
@@ -196,7 +201,7 @@ class _SwapHistoryState extends State<SwapHistory> {
   }
 
   Future<Null> _onRefresh() async {
-    return await swapHistoryBloc.updateSwap();
+    return await swapHistoryBloc.updateSwaps(LIMIT, null);
   }
 
   _buildIcon(Coin coin) {

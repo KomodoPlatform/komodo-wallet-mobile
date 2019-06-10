@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/uuid.dart';
 import 'package:komodo_dex/screens/lock_screen.dart';
+import 'package:komodo_dex/screens/swap_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,20 +22,25 @@ class SwapDetailPage extends StatefulWidget {
 }
 
 class _SwapDetailPageState extends State<SwapDetailPage> {
+  Swap swapData = new Swap();
 
   @override
   void initState() {
-    swapHistoryBloc.updateSwap();
+
+    swapHistoryBloc.updateSwaps(10, null);
     if (widget.swap.status != null &&
         widget.swap.status == Status.SWAP_SUCCESSFUL)
       swapHistoryBloc.isAnimationStepFinalIsFinish = true;
     print(widget.swap.uuid.uuid);
     super.initState();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return LockScreen(
+      onSuccess: (){
+        swapHistoryBloc.updateSwaps(10, null);
+      },
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
@@ -43,12 +51,14 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
             stream: swapHistoryBloc.outSwaps,
             initialData: swapHistoryBloc.swaps,
             builder: (context, snapshot) {
-              Swap swapData = new Swap();
-
               if (snapshot.hasData && snapshot.data.length > 0) {
                 snapshot.data.forEach((swap) {
-                  if (swap.uuid.uuid == widget.swap.uuid.uuid) swapData = swap;
+                  if (swap.uuid.uuid == widget.swap.uuid.uuid) {
+                    swapData = swap;
+                    print(swap.status);
+                  }
                 });
+                print("SWAP STATUS" + swapData.status.toString());
                 if (swapData.status == Status.SWAP_SUCCESSFUL &&
                     swapHistoryBloc.isAnimationStepFinalIsFinish) {
                   return FinalTradeSuccess(

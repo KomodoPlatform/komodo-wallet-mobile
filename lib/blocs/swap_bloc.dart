@@ -33,13 +33,21 @@ class SwapBloc implements BlocBase {
   Stream<List<OrderCoin>> get outListOrderCoin =>
       _listOrderCoinController.stream;
 
+  bool focusTextField = false;
 
-  
+  // Streams to handle the list coin
+  StreamController<bool> _focusTextFieldController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inFocusTextField => _focusTextFieldController.sink;
+  Stream<bool> get outFocusTextField =>
+      _focusTextFieldController.stream;
+      
   @override
   void dispose() {
     _orderCoinController.close();
     _sellCoinController.close();
     _listOrderCoinController.close();
+    _focusTextFieldController.close();
   }
 
   void updateBuyCoin(OrderCoin orderCoin) {
@@ -96,6 +104,26 @@ class SwapBloc implements BlocBase {
     return;
   }
 
+  String getExchangeRate() {
+    if (swapBloc.orderCoin != null) {
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${swapBloc.orderCoin.bestPrice} ${swapBloc.orderCoin.coinRel.abbr}';
+    } else {
+      return "";
+    }
+  }
+
+  String getExchangeRateUSD() {
+    if (swapBloc.orderCoin != null && this.sellCoin.priceForOne != null) {
+      return ' - (${(this.sellCoin.priceForOne * swapBloc.orderCoin.bestPrice).toString()} USD)';
+    } else {
+      return "";
+    }
+  }
+
+  void setFocusTextField(bool focus) {
+    this.focusTextField = focus;
+    _inFocusTextField.add(this.focusTextField);
+  }
 }
 
 final swapBloc = SwapBloc();

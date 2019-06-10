@@ -82,7 +82,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       isActivate = true;
     });
     print(coinsBloc.coinToActivate.length);
-    await coinsBloc.addMultiCoins(coinsBloc.coinToActivate).then((onValue) {
+    await coinsBloc.addMultiCoins(coinsBloc.coinToActivate, true).then((onValue) {
       _closeSelectCoinsPage();
     }).timeout(Duration(seconds: 20), onTimeout: () {
       _closeSelectCoinsPage();
@@ -201,13 +201,15 @@ class _LoadingCoinState extends State<LoadingCoin> {
       children: <Widget>[
         CircularProgressIndicator(),
         SizedBox(height: 16,),
-        StreamBuilder<Coin>(
+        StreamBuilder<CoinToActivate>(
           stream: coinsBloc.outcurrentActiveCoin,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text('Activate: ${snapshot.data.name}');
+            if (snapshot.hasData && snapshot.data.isActivate) {
+              return Text('Activating ${snapshot.data.coin.name} ...');
+            } else if (snapshot.hasData && !snapshot.data.isActivate) {
+              return Text('Sorry, ${snapshot.data.coin.name} not available.');
             } else {
-              return Container();
+               return Text("");
             }
           }
         )

@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
+import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -38,15 +40,25 @@ class CoinsBloc implements BlocBase {
   Sink<List<Coin>> get _inCoinToActivate => _coinToActivateController.sink;
   Stream<List<Coin>> get outCoinToActivate => _coinToActivateController.stream;
 
-
-  Coin currentActiveCoin = new Coin();
+  CoinToActivate currentActiveCoin = new CoinToActivate();
 
   // Streams to handle the list coin
-  StreamController<Coin> _currentActiveCoinController =
+  StreamController<CoinToActivate> _currentActiveCoinController =
+      StreamController<CoinToActivate>.broadcast();
+
+  Sink<CoinToActivate> get _inCurrentActiveCoin =>
+      _currentActiveCoinController.sink;
+  Stream<CoinToActivate> get outcurrentActiveCoin =>
+      _currentActiveCoinController.stream;
+
+  Coin failCoinActivate = new Coin();
+
+  // Streams to handle the list coin
+  StreamController<Coin> _failCoinActivateController =
       StreamController<Coin>.broadcast();
 
-  Sink<Coin> get _inCurrentActiveCoin => _currentActiveCoinController.sink;
-  Stream<Coin> get outcurrentActiveCoin => _currentActiveCoinController.stream;
+  Sink<Coin> get _inFailCoinActivate => _failCoinActivateController.sink;
+  Stream<Coin> get outFailCoinActivate => _failCoinActivateController.stream;
 
   var timer;
   var timer2;
@@ -57,6 +69,7 @@ class CoinsBloc implements BlocBase {
     _transactionsController.close();
     _coinToActivateController.close();
     _currentActiveCoinController.close();
+    _failCoinActivateController.close();
   }
 
   void resetCoinBalance() {
@@ -93,20 +106,41 @@ class CoinsBloc implements BlocBase {
     _inTransactions.add(this.transactions);
   }
 
-  Future<void> addMultiCoins(List<Coin> coins) async{
-    // List<Future<dynamic>> futureActiveCoins = new List<Future<dynamic>>();
+  Future<void> addMultiCoins(List<Coin> coins, bool isSavedToLocal) async {
     List<Coin> coinsReadJson = await readJsonCoin();
-    for (var coin in coins) {
-      coinsReadJson.add(coin);
-      print(coin.abbr);
-      this.currentActiveCoin = coin;
-      _inCurrentActiveCoin.add(coin);
-      await mm2.activeCoin(coin);
-    }
 
-    // await Future.wait(futureActiveCoins);
-    await writeJsonCoin(coinsReadJson);
+    for (var coin in coins) {
+      await mm2.activeCoin(coin).then((onValue) {
+        if (onValue is ActiveCoin) {
+          if (isSavedToLocal) coinsReadJson.add(coin);
+          print(coin.abbr);
+          currentCoinActivate(CoinToActivate(coin: coin, isActivate: true));
+        } else if (onValue is ErrorString) {
+          coinsReadJson.forEach((coinJson) {
+            if (coinJson.abbr == coin.abbr && isSavedToLocal) {
+              coinsReadJson.remove(coinJson);
+            }
+          });
+          currentCoinActivate(CoinToActivate(coin: coin, isActivate: false));
+          print('Sorry, coin not available ${coin.abbr}');
+        }
+      }).catchError((onError) {
+        coinsReadJson.forEach((coinJson) {
+          if (coinJson.abbr == coin.abbr && isSavedToLocal) {
+            coinsReadJson.remove(coinJson);
+          }
+        });
+        currentCoinActivate(CoinToActivate(coin: coin, isActivate: false));
+        print('Sorry, coin not available ${coin.abbr}');
+      });
+    }
+    if (isSavedToLocal) await writeJsonCoin(coinsReadJson);
     await mm2.loadCoin(true);
+  }
+
+  void currentCoinActivate(CoinToActivate coinToAtivate) {
+    this.currentActiveCoin = coinToAtivate;
+    _inCurrentActiveCoin.add(this.currentActiveCoin);
   }
 
   Future<String> get _localPath async {
@@ -141,13 +175,11 @@ class CoinsBloc implements BlocBase {
     List<Coin> coinsNotActivated = new List<Coin>();
 
     allCoins.forEach((coin) {
-                  bool isAlreadyAdded = false;
+      bool isAlreadyAdded = false;
       allCoinsActivate.forEach((coinActivate) {
-        if (coin.abbr == coinActivate.abbr)
-          isAlreadyAdded = true;
+        if (coin.abbr == coinActivate.abbr) isAlreadyAdded = true;
       });
-      if (!isAlreadyAdded)
-        coinsNotActivated.add(coin);
+      if (!isAlreadyAdded) coinsNotActivated.add(coin);
     });
     return coinsNotActivated;
   }
@@ -179,7 +211,7 @@ class CoinsBloc implements BlocBase {
       if (!mm2.ismm2Running) {
         _.cancel();
       } else {
-        swapHistoryBloc.updateSwap();
+        swapHistoryBloc.updateSwaps(10, null);
       }
     });
   }
@@ -188,7 +220,13 @@ class CoinsBloc implements BlocBase {
     if (timer != null) timer.cancel();
     if (timer2 != null) timer2.cancel();
   }
-
 }
 
 final coinsBloc = CoinsBloc();
+
+class CoinToActivate {
+  Coin coin;
+  bool isActivate;
+
+  CoinToActivate({this.coin, this.isActivate});
+}

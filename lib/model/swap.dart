@@ -25,14 +25,14 @@ String swapToJson(Swap data) {
 }
 
 class Swap {
-  Result result;
+  ResultSwap result;
   Status status;
   Uuid uuid;
 
   Swap({this.result, this.status, this.uuid});
 
   factory Swap.fromJson(Map<String, dynamic> json) => new Swap(
-        result: Result.fromJson(json["result"]),
+        result: ResultSwap.fromJson(json["result"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,14 +46,14 @@ class Swap {
   }
 }
 
-class Result {
+class ResultSwap {
   List<String> errorEvents;
   List<EventElement> events;
   List<String> successEvents;
   String type;
   String uuid;
 
-  Result({
+  ResultSwap({
     this.errorEvents,
     this.events,
     this.successEvents,
@@ -61,7 +61,7 @@ class Result {
     this.uuid,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => new Result(
+  factory ResultSwap.fromJson(Map<String, dynamic> json) => new ResultSwap(
         errorEvents: new List<String>.from(json["error_events"].map((x) => x)),
         events: new List<EventElement>.from(
             json["events"].map((x) => EventElement.fromJson(x))),

@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
+import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,58 +61,83 @@ class AuthenticateBloc extends BlocBase {
     _isQrCodeActiveController.close();
   }
 
-  Future<void> login(String passphrase) async {
+  Future<void> login(String passphrase, String password) async {
     await DBProvider.db.initDB();
+    walletBloc.setCurrentWallet(await DBProvider.db.getCurrentWallet());
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("passphrase") != null &&
-        prefs.getString("passphrase").isNotEmpty) {
-      prefs.setString("pin", prefs.getString("pin"));
-      updateStatusPin(PinStatus.NORMAL_PIN);
-    } else {
-      updateStatusPin(PinStatus.CREATE_PIN);
-      await prefs.remove("pin");
-    }
+    await _checkPINStatus(password);
     await prefs.setString("passphrase", passphrase);
-    if (prefs.getBool('switch_pin') != null) {
-      await prefs.setBool('switch_pin', prefs.getBool('switch_pin'));
-    } else {
-      await prefs.setBool('switch_pin', true);
-    }
+    await initSwitchPref();
+
     await prefs.setBool("isPinIsSet", false);
+    await prefs.setBool("switch_pin_log_out_on_exit", false);
+
     await mm2.runBin();
     this.isLogin = true;
     _inIsLogin.add(true);
   }
 
-  Future<void> loginUI(bool isLogin, String passphrase) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  initSwitchPref() async{
+    await initSwitch('switch_pin', true);
+    await initSwitch('switch_pin_biometric', false);
+  }
 
-    if (prefs.getString("passphrase") != null &&
-        prefs.getString("passphrase").isNotEmpty) {
-      prefs.setString("pin", prefs.getString("pin"));
+  initSwitch(String key, bool defaultSwitch) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.getBool(key) != null ?
+      await prefs.setBool(key, prefs.getBool(key)) :
+      await prefs.setBool(key, defaultSwitch);
+    
+  }
+
+  _checkPINStatus(String password) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var wallet = await DBProvider.db.getCurrentWallet();
+    String pin;
+    if (wallet != null && password != null) {
+      var entryptionTool = new EncryptionTool();
+      pin = await entryptionTool.readData(KeyEncryption.PIN, wallet, password);
+    }
+    if (pin != null) {
+      prefs.setString("pin", pin);
       updateStatusPin(PinStatus.NORMAL_PIN);
     } else {
-      updateStatusPin(PinStatus.CREATE_PIN);
-      await prefs.remove("pin");
+      if (prefs.getString("passphrase") != null &&
+          prefs.getString("passphrase").isNotEmpty) {
+        prefs.setString("pin", prefs.getString("pin"));
+        updateStatusPin(PinStatus.NORMAL_PIN);
+      } else {
+        updateStatusPin(PinStatus.CREATE_PIN);
+        await prefs.remove("pin");
+      }
     }
-    await prefs.setString("passphrase", passphrase);
+  }
 
+  Future<void> loginUI(bool isLogin, String passphrase, String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await _checkPINStatus(password);
+    await prefs.setString("passphrase", passphrase);
     this.isLogin = isLogin;
     _inIsLogin.add(isLogin);
   }
 
-  void logout() async {
+  Future<void> logout() async {
     coinsBloc.stopCheckBalance();
     await mm2.stopmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("passphrase", null);
     await prefs.setBool("isPinIsSet", false);
+    
     updateStatusPin(PinStatus.NORMAL_PIN);
     await prefs.remove("pin");
     coinsBloc.resetCoinBalance();
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
     mm2.balances = new List<Balance>();
-    await mediaBloc.deleteAll();
+    await mediaBloc.deleteAllArticles();
+    walletBloc.setCurrentWallet(null);
+    await DBProvider.db.deleteCurrentWallet();
+    
     this.isLogin = false;
     _inIsLogin.add(false);
   }
@@ -131,6 +158,6 @@ class AuthenticateBloc extends BlocBase {
   }
 }
 
-enum PinStatus { CREATE_PIN, CONFIRM_PIN, DISABLED_PIN, CHANGE_PIN, NORMAL_PIN }
+enum PinStatus { CREATE_PIN, CONFIRM_PIN, DISABLED_PIN, CHANGE_PIN, NORMAL_PIN, DISABLED_PIN_BIOMETRIC }
 
 final authBloc = AuthenticateBloc();

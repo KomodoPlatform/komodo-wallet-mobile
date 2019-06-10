@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authenticate_page.dart';
-import 'package:komodo_dex/screens/confirm_account_page.dart';
+import 'package:komodo_dex/screens/create_password_page.dart';
 import 'package:komodo_dex/screens/pin_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
@@ -15,8 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LockScreen extends StatefulWidget {
   final PinStatus pinStatus;
   final Widget child;
+  final Function onSuccess;
 
-  LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child});
+  LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.onSuccess});
 
   @override
   _LockScreenState createState() => _LockScreenState();
@@ -24,9 +25,12 @@ class LockScreen extends StatefulWidget {
 
 class _LockScreenState extends State<LockScreen> {
   final LocalAuthentication auth = LocalAuthentication();
+  String password;
 
   @override
   Widget build(BuildContext context) {
+    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
+    password = args?.password;
     return StreamBuilder<bool>(
       stream: authBloc.outIsLogin,
       initialData: authBloc.isLogin,
@@ -44,7 +48,7 @@ class _LockScreenState extends State<LockScreen> {
                     builder: (context, outShowPin) {
                       return SharedPreferencesBuilder(
                         pref: 'switch_pin',
-                        builder: (context, switchPinData) {
+                        builder: (context, switchPinData){
                           if (outShowPin.hasData &&
                               outShowPin.data &&
                               switchPinData.hasData &&
@@ -70,11 +74,12 @@ class _LockScreenState extends State<LockScreen> {
                                       AppLocalizations.of(context).enterPinCode,
                                   isConfirmPin: widget.pinStatus,
                                   isFromChangingPin: false,
+                                  onSuccess: widget.onSuccess,
                                 ),
                               ],
                             );
                           } else {
-                            if (widget.child == null && widget.pinStatus == PinStatus.DISABLED_PIN)
+                            if (widget.child == null && (widget.pinStatus == PinStatus.DISABLED_PIN || widget.pinStatus == PinStatus.DISABLED_PIN_BIOMETRIC))
                               return PinPage(
                                   title:
                                       AppLocalizations.of(context).lockScreen,
@@ -98,6 +103,7 @@ class _LockScreenState extends State<LockScreen> {
                 subTitle: AppLocalizations.of(context).enterPinCode,
                 firstCreationPin: true,
                 isConfirmPin: PinStatus.CREATE_PIN,
+                password: password,
                 isFromChangingPin: false,
               );
             }
@@ -108,25 +114,30 @@ class _LockScreenState extends State<LockScreen> {
   }
 
   Future<bool> _authenticateBiometrics() async {
-    var localAuth = LocalAuthentication();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool("switch_pin_biometric")) {
+      var localAuth = LocalAuthentication();
 
-    bool didAuthenticate = await localAuth.authenticateWithBiometrics(
-        stickyAuth: true,
-        localizedReason: AppLocalizations.of(context).lockScreenAuth);
-    if (didAuthenticate) {
-      if (widget.pinStatus == PinStatus.DISABLED_PIN) {
-        SharedPreferences.getInstance().then((data) {
-          data.setBool("switch_pin", false);
-        });
-        Navigator.pop(context);
+      bool didAuthenticate = await localAuth.authenticateWithBiometrics(
+          stickyAuth: true,
+          localizedReason: AppLocalizations.of(context).lockScreenAuth);
+      if (didAuthenticate) {
+        if (widget.pinStatus == PinStatus.DISABLED_PIN) {
+          SharedPreferences.getInstance().then((data) {
+            data.setBool("switch_pin", false);
+          });
+          Navigator.pop(context);
+        }
+        authBloc.showPin(false);
+        if (widget.pinStatus == PinStatus.NORMAL_PIN && !mm2.ismm2Running) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await authBloc.login(prefs.getString("passphrase"), null);
+        }
       }
-      authBloc.showPin(false);
-      if (widget.pinStatus == PinStatus.NORMAL_PIN && !mm2.ismm2Running) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await authBloc.login(prefs.getString("passphrase"));
-      }
+      return didAuthenticate;
+    } else {
+      return false;
     }
-    return didAuthenticate;
   }
 
   Future<bool> _checkBiometrics() async {

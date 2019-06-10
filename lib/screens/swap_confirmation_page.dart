@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -7,6 +8,7 @@ import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/media_page.dart';
 import 'package:komodo_dex/screens/swap_detail_page.dart';
+import 'package:komodo_dex/screens/swap_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 
 class SwapConfirmation extends StatefulWidget {
@@ -20,26 +22,37 @@ class SwapConfirmation extends StatefulWidget {
 }
 
 class _SwapConfirmationState extends State<SwapConfirmation> {
-  @override
-  void dispose() {
-    swapBloc.updateSellCoin(null);
-    swapBloc.updateBuyCoin(null);
-    super.dispose();
-  }
+  bool isSwapMaking = false;
 
   @override
   Widget build(BuildContext context) {
     return LockScreen(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(),
-        body: ListView(
-          children: <Widget>[
-            _buildTitle(),
-            _buildCoinSwapDetail(),
-            _buildButtons(),
-            _buildInfoSwap()
-          ],
+      child: WillPopScope(
+        onWillPop: () {
+          swapBloc.updateSellCoin(null);
+          swapBloc.updateBuyCoin(null);
+          Navigator.pop(context);
+        },
+        child: Scaffold(
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: AppBar(
+            leading: InkWell(
+                onTap: () {
+                  swapBloc.updateSellCoin(null);
+                  swapBloc.updateBuyCoin(null);
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.arrow_back)),
+          ),
+          body: ListView(
+            children: <Widget>[
+              _buildTitle(),
+              _buildCoinSwapDetail(),
+              ExchangeRate(),
+              _buildButtons(),
+              _buildInfoSwap()
+            ],
+          ),
         ),
       ),
     );
@@ -142,18 +155,15 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
               ],
             ),
             Positioned(
-                left: (MediaQuery.of(context).size.width / 2) - 64,
-                top: 96,
+                left: (MediaQuery.of(context).size.width / 2) - 43,
+                top: 100,
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(32)),
                   child: Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                          EdgeInsets.symmetric(vertical: 4, horizontal: 4),
                       color: Theme.of(context).backgroundColor,
-                      child: Icon(
-                        Icons.swap_vert,
-                        size: 32,
-                      )),
+                      child: SvgPicture.asset("assets/icon_swap.svg")),
                 ))
           ],
         )
@@ -223,14 +233,18 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   _buildButtons() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 16,),
-        RaisedButton(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 52),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-          child: Text(AppLocalizations.of(context).confirm.toUpperCase()),
-          onPressed: () => _makeASwap(),
+        SizedBox(
+          height: 16,
         ),
+        isSwapMaking
+            ? CircularProgressIndicator()
+            : RaisedButton(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 52),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                child: Text(AppLocalizations.of(context).confirm.toUpperCase()),
+                onPressed: isSwapMaking ? null : _makeASwap,
+              ),
         SizedBox(
           height: 8,
         ),
@@ -240,6 +254,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
           child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
           onPressed: () {
+            swapBloc.updateSellCoin(null);
+            swapBloc.updateBuyCoin(null);
             Navigator.of(context).pop();
           },
         ),
@@ -248,6 +264,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   _makeASwap() {
+    setState(() {
+      isSwapMaking = true;
+    });
     double amountToSell =
         double.parse(widget.amountToSell.replaceAll(",", "."));
 
@@ -256,13 +275,13 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             amountToSell, swapBloc.orderCoin.bestPrice * 1.01)
         .then((onValue) {
       if (onValue is BuyResponse) {
-        swapHistoryBloc.saveUUID(
-            onValue.result.uuid,
-            swapBloc.orderCoin.coinBase,
-            swapBloc.orderCoin.coinRel,
-            amountToSell,
-            double.parse(swapBloc.orderCoin.getBuyAmount(amountToSell)));
-        swapHistoryBloc.updateSwap().then((data) {
+        // swapHistoryBloc.saveUUID(
+        //     onValue.result.uuid,
+        //     swapBloc.orderCoin.coinBase,
+        //     swapBloc.orderCoin.coinRel,
+        //     amountToSell,
+        //     double.parse(swapBloc.orderCoin.getBuyAmount(amountToSell)));
+        swapHistoryBloc.updateSwaps(10, null).then((data) {
           swapHistoryBloc.swaps.forEach((swap) {
             if (swap.uuid.uuid == onValue.result.uuid) {
               Navigator.pushReplacement(
@@ -276,6 +295,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           });
         });
       } else {
+        setState(() {
+          isSwapMaking = false;
+        });
         String timeSecondeLeft = onValue.error;
         print(timeSecondeLeft);
         timeSecondeLeft = timeSecondeLeft.substring(

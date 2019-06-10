@@ -26,8 +26,9 @@ import 'package:share/share.dart';
 
 class CoinDetail extends StatefulWidget {
   CoinBalance coinBalance;
+  bool isSendIsActive;
 
-  CoinDetail(this.coinBalance);
+  CoinDetail({this.coinBalance, this.isSendIsActive = false});
 
   @override
   _CoinDetailState createState() => _CoinDetailState();
@@ -51,15 +52,16 @@ class CoinDetail extends StatefulWidget {
               ),
             ),
           );
-        }).then((_){
-          dialogBloc.dialog = null;
-        });
+        }).then((_) {
+      dialogBloc.dialog = null;
+    });
 
     mm2
         .postWithdraw(
             coinBalance.coin,
             coinBalance.balance.address,
-            double.parse(coinBalance.balance.balance) - coinBalance.coin.txfee / 100000000,
+            double.parse(coinBalance.balance.balance) -
+                coinBalance.coin.txfee / 100000000,
             true)
         .then((data) {
       Navigator.of(context).pop();
@@ -106,9 +108,9 @@ class CoinDetail extends StatefulWidget {
                                     ),
                                   ],
                                 );
-                              }).then((_){
-          dialogBloc.dialog = null;
-        });
+                              }).then((_) {
+                            dialogBloc.dialog = null;
+                          });
                         }
                       });
                     },
@@ -116,9 +118,9 @@ class CoinDetail extends StatefulWidget {
                 ],
               );
             },
-          ).then((_){
-          dialogBloc.dialog = null;
-        });
+          ).then((_) {
+            dialogBloc.dialog = null;
+          });
         } else {
           Scaffold.of(context).showSnackBar(new SnackBar(
             duration: Duration(seconds: 2),
@@ -157,6 +159,11 @@ class _CoinDetailState extends State<CoinDetail> {
 
   @override
   void initState() {
+    if (widget.isSendIsActive) {
+      setState(() {
+        isExpanded = true;
+      });
+    }
     authBloc.setIsQrCodeActive(false);
     currentIndex = 0;
     setState(() {
@@ -203,7 +210,8 @@ class _CoinDetailState extends State<CoinDetail> {
     if (text.isNotEmpty) {
       setState(() {
         if (widget.coinBalance != null &&
-            double.parse(text) > double.parse(widget.coinBalance.balance.balance)) {
+            double.parse(text) >
+                double.parse(widget.coinBalance.balance.balance)) {
           setMaxValue();
         }
       });
@@ -307,8 +315,11 @@ class _CoinDetailState extends State<CoinDetail> {
                         child: _buildTransactions(
                             context, transactions.result.transactions),
                       );
-                    } else if (double.parse(widget.coinBalance.balance.balance) > 0 && transactions.result.transactions.length < 1) {
-                      return Center(child: CircularProgressIndicator()); 
+                    } else if (double.parse(
+                                widget.coinBalance.balance.balance) >
+                            0 &&
+                        transactions.result.transactions.length < 1) {
+                      return Center(child: CircularProgressIndicator());
                     } else if (transactions.result.transactions.length == 0) {
                       return Center(
                           child: Text(
@@ -485,7 +496,7 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _buildHeaderCoinDetail(BuildContext context) {
+  _buildHeaderCoinDetail(BuildContext mContext) {
     return Column(
       children: <Widget>[
         Padding(
@@ -520,12 +531,14 @@ class _CoinDetailState extends State<CoinDetail> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _buildButtonLight(StatusButton.RECEIVE, context),
+            _buildButtonLight(StatusButton.RECEIVE, mContext),
             widget.coinBalance.coin.abbr == "KMD" &&
                     double.parse(widget.coinBalance.balance.balance) >= 10
                 ? _buildButtonLight(StatusButton.CLAIM, context)
                 : Container(),
-            _buildButtonLight(StatusButton.SEND, context),
+            double.parse(widget.coinBalance.balance.balance) > 0
+                ? _buildButtonLight(StatusButton.SEND, mContext)
+                : Container(),
           ],
         ),
         SizedBox(
@@ -535,7 +548,7 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _buildButtonLight(StatusButton statusButton, BuildContext context) {
+  _buildButtonLight(StatusButton statusButton, BuildContext mContext) {
     if (currentIndex == 3 && statusButton == StatusButton.SEND) {
       _closeAfterAWait();
     }
@@ -546,7 +559,7 @@ class _CoinDetailState extends State<CoinDetail> {
           onTap: () {
             switch (statusButton) {
               case StatusButton.RECEIVE:
-                _showDialogAddress(context);
+                showAddressDialog(mContext, widget.coinBalance.balance.address);
                 break;
               case StatusButton.SEND:
                 if (currentIndex == 3) {
@@ -564,7 +577,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 }
                 break;
               case StatusButton.CLAIM:
-                widget.showDialogClaim(context);
+                widget.showDialogClaim(mContext);
                 break;
               default:
             }
@@ -606,65 +619,6 @@ class _CoinDetailState extends State<CoinDetail> {
         ),
       ),
     );
-  }
-
-  _showDialogAddress(BuildContext mContext) {
-    print(widget.coinBalance.balance.address);
-    dialogBloc.dialog = showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          contentPadding: EdgeInsets.all(16),
-          titlePadding: EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.circular(6.0)),
-          content: InkWell(
-            onTap: () {
-              _copyToClipBoard(mContext, widget.coinBalance.balance.address);
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.4,
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: QrImage(
-                      foregroundColor: Colors.white,
-                      data: widget.coinBalance.balance.address,
-                    ),
-                  ),
-                  Container(
-                    child: Center(
-                        child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: AutoSizeText(
-                        widget.coinBalance.balance.address,
-                        style: Theme.of(context).textTheme.body1,
-                        maxLines: 1,
-                      ),
-                    )),
-                  )
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text(AppLocalizations.of(context).close.toUpperCase()),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    ).then((data) {
-      setState(() {});
-      dialogBloc.dialog = null;
-    });
   }
 
   _buildForm() {
@@ -888,6 +842,9 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _onPressedConfirmWithdraw(BuildContext context) {
+    setState(() {
+      widget.isSendIsActive = false;
+    });
     double amountMinusFee = double.parse(_amountController.text) -
         double.parse(widget.coinBalance.coin.getTxFeeSatoshi());
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
@@ -905,14 +862,14 @@ class _CoinDetailState extends State<CoinDetail> {
     setState(() {
       currentIndex = 2;
     });
-    print(widget.coinBalance.balance.balance ==
-        double.parse(_amountController.text));
+    // print(widget.coinBalance.balance.balance ==
+    //     double.parse(_amountController.text));
     mm2
         .postWithdraw(
             widget.coinBalance.coin,
             _addressController.text.toString(),
             sendamount,
-            widget.coinBalance.balance.balance ==
+            double.parse(widget.coinBalance.balance.balance) ==
                 double.parse(_amountController.text))
         .then((data) {
       if (data is WithdrawResponse) {
@@ -1066,7 +1023,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     ],
                     focusNode: _focus,
                     controller: _amountController,
-                    autofocus: false,
+                    autofocus: widget.isSendIsActive,
                     textInputAction: TextInputAction.done,
                     keyboardType:
                         TextInputType.numberWithOptions(decimal: true),
@@ -1085,7 +1042,8 @@ class _CoinDetailState extends State<CoinDetail> {
                         labelText: AppLocalizations.of(context).amount),
                     // The validator receives the text the user has typed in
                     validator: (value) {
-                      double balance = double.parse(widget.coinBalance.balance.balance);
+                      double balance =
+                          double.parse(widget.coinBalance.balance.balance);
 
                       if (value.isEmpty || double.parse(value) <= 0) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
@@ -1175,3 +1133,60 @@ class _CoinDetailState extends State<CoinDetail> {
 }
 
 enum StatusButton { SEND, RECEIVE, CLAIM }
+
+showAddressDialog(BuildContext mContext, String address) {
+  dialogBloc.dialog = showDialog(
+    context: mContext,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return AlertDialog(
+        contentPadding: EdgeInsets.all(16),
+        titlePadding: EdgeInsets.all(0),
+        shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(6.0)),
+        content: InkWell(
+          onTap: () {
+            copyToClipBoard(mContext, address);
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.4,
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: QrImage(
+                    foregroundColor: Colors.white,
+                    data: address,
+                  ),
+                ),
+                Container(
+                  child: Center(
+                      child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: AutoSizeText(
+                      address,
+                      style: Theme.of(context).textTheme.body1,
+                      maxLines: 1,
+                    ),
+                  )),
+                )
+              ],
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new FlatButton(
+            child: new Text(AppLocalizations.of(context).close.toUpperCase()),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  ).then((data) {
+    dialogBloc.dialog = null;
+  });
+}

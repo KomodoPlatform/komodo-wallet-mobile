@@ -1,6 +1,6 @@
 [
   {
-    "name": "komodo",
+    "name": "Komodo",
     "address": "electrum1.cipig.net",
     "port": 10001,
     "proto": "tcp",
@@ -18,7 +18,7 @@
     ]
   },
   {
-    "name": "bitcoin",
+    "name": "Bitcoin",
     "address": "e-x.not.fyi",
     "port": 50001,
     "proto": "tcp",
@@ -79,6 +79,40 @@
     ],
     "explorerUrl": [
       "https://morty.kmd.dev/"
+    ]
+  },
+  {
+    "name": "Digibyte",
+    "address": "electrum1.cipig.net",
+    "port": 10059,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "DGB",
+    "colorCoin": "0xFF082550",
+    "serverList": [
+      "electrum3.cipig.net:10059",
+      "electrum2.cipig.net:10059",
+      "electrum1.cipig.net:10059"
+    ],
+    "explorerUrl": [
+      "https://digiexplorer.info/"
+    ]
+  },
+  {
+    "name": "QTUM",
+    "address": "s1.qtum.info",
+    "port": 50001,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "QTUM",
+    "colorCoin": "0xFF52a5da",
+    "serverList": [
+      "s2.qtum.info:50001",
+      "s4.qtum.info:50001",
+      "s5.qtum.info:50001"
+    ],
+    "explorerUrl": [
+      "https://qtum.info/"
     ]
   }
 ]
