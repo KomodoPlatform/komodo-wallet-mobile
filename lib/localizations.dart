@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
+
   static Future<AppLocalizations> load(Locale locale) {
     final String name =
         locale.countryCode == null ? locale.languageCode : locale.toString();
@@ -234,7 +235,7 @@ class AppLocalizations {
         args: [coinName],
       );
   String get bestAvailableRate => Intl.message("Best available rate", name: 'bestAvailableRate');
-
+  String get receiveLower => Intl.message("Receive", name: 'receiveLower');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -249,6 +250,7 @@ class CoinsBloc implements BlocBase {
     });
     if (listCoinElectrum.isNotEmpty) {
       updateCoins(listCoinElectrum);
+
     }
   }
 
