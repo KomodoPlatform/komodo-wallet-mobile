@@ -15,6 +15,7 @@ import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/model/get_balance.dart';
@@ -104,8 +105,12 @@ class MarketMakerService {
             logMm2.contains("Received 'negotiation") ||
             logMm2.contains("Got maker payment") ||
             logMm2.contains("Sending 'taker-fee") ||
+            logMm2.contains("Sending 'taker-payment") ||
             logMm2.contains("Finished")) {
-          swapHistoryBloc.updateSwaps(10, null);
+          print("Update swaps from log");
+          Future.delayed(const Duration(seconds: 1), () {
+            swapHistoryBloc.updateSwaps(10, null);
+          });
         }
         if (logMm2.contains("DEX stats API enabled at")) {
           print("DEX stats API enabled at");
@@ -143,11 +148,11 @@ class MarketMakerService {
   }
 
   _initCoinsAndLoad() async {
-    coinsBloc
-        .addMultiCoins(await coinsBloc.readJsonCoin(), false)
-        .then((onValue) {
+    await coinsBloc.activateCoinKickStart();
+
+    coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin(), false).then((onValue) {
       print("ALL COINS ACTIVATES");
-      loadCoin(true).then((data) {
+      coinsBloc.loadCoin(true).then((data) {
         print("LOADCOIN FINISHED");
         swapHistoryBloc.updateSwaps(10, null);
         coinsBloc.startCheckBalance();
@@ -157,41 +162,6 @@ class MarketMakerService {
 
   Future<int> checkStatusmm2() async {
     return await platformmm2.invokeMethod('status');
-  }
-
-  Future<void> loadCoin(bool forceUpdate) async {
-    List<Coin> coins = await coinsBloc.readJsonCoin();
-    List<CoinBalance> listCoinElectrum = new List<CoinBalance>();
-    List<dynamic> balances = await getAllBalances(forceUpdate);
-
-    for (var coin in coins) {
-      for (var balance in balances) {
-        if (balance is Balance && coin.abbr == balance.coin) {
-          var coinBalance = CoinBalance(coin, balance);
-          if (forceUpdate || coinBalance.balanceUSD == null) {
-            coinBalance.priceForOne =
-                await getPriceObj.getPrice(coin.abbr, "USD");
-            coinBalance.balanceUSD = coinBalance.priceForOne *
-                double.parse(coinBalance.balance.balance);
-          }
-          listCoinElectrum.add(coinBalance);
-        } else if (balance is ErrorString) {
-          print(balance.error);
-        }
-
-        if (balance is Balance && balance.coin == "KMD") {
-          pubkey = balance.address;
-        }
-      }
-    }
-
-    listCoinElectrum.sort((b, a) {
-      if (a.balanceUSD != null) {
-        return a.balanceUSD.compareTo(b.balanceUSD);
-      }
-    });
-
-    coinsBloc.updateCoins(listCoinElectrum);
   }
 
   Future<File> get _localFile async {
@@ -265,16 +235,13 @@ class MarketMakerService {
   }
 
   Future<dynamic> getSwapStatus(String uuid) async {
-    // print("-----uuid-----" + uuid);
-
     GetSwap getSwap = new GetSwap(
         userpass: userpass,
         method: 'my_swap_status',
         params: Params(uuid: uuid));
 
-    // print(getSwapToJson(getSwap));
     final response = await http.post(url, body: getSwapToJson(getSwap));
-    // print(response.body.toString());
+
     try {
       return swapFromJson(response.body);
     } catch (e) {
@@ -324,15 +291,8 @@ class MarketMakerService {
         rel: rel.abbr,
         volume: volume.toStringAsFixed(8),
         price: price.toStringAsFixed(8));
+    print(json.encode(getBuy));
     final response = await http.post(url, body: json.encode(getBuy));
-    // I/flutter (13517): SWAPPARAM: base: MORTY rel: RICK relvol: 1.0 price: 0.8767316817
-    // I/flutter (13517): {"result":{"action":"Buy","base":"MORTY","base_amount":"1.00000000"
-    //,"dest_pub_key":"0000000000000000000000000000000000000000000000000000000000000000","method":"request",
-    //"rel":"RICK","rel_amount":"0.8767316800000000","sender_pubkey":"0fd5cc0dcca2d6437ee5f256a28389ab0f786eb6370405ac96daf2d96474a844"
-    //,"uuid":"4af44ed9-1412-4646-bf3b-0cb24aef16d6"}}
-
-    // {\"userpass\":\"$userpass\",\"method\":\"buy\",\"base\":\"MORTY\",\"rel\":\"RICK\",\"volume\":1,\"price\":2}"
-    // means buy 1 MORTY paying no more than 2 RICK per each MORTY
 
     print(response.body.toString());
     try {
@@ -364,15 +324,21 @@ class MarketMakerService {
         limit: limit,
         fromUuid: fromUuid);
 
-    final response = await http.post(url, body: getRecentSwapToJson(getRecentSwap));
-    print("RESULT: " + response.body.toString());
-    print("RESULT: " + response.body.toString().substring(0, 1024));
-    print("RESULT: " + response.body.toString().substring(1025, 2048));
-    print("RESULT: " + response.body.toString().substring(2049, 3072));
-    print("RESULT: " + response.body.toString().substring(3073, 4096));
-    print("RESULT: " + response.body.toString().substring(4097, 5120));
-
+    final response =
+        await http.post(url, body: getRecentSwapToJson(getRecentSwap));
+    print(response.body.toString());
     return recentSwapsFromJson(response.body);
+  }
+
+  Future<CoinToKickStart> getCoinToKickStart() async {
+    GetRecentSwap getRecentSwap = new GetRecentSwap(
+        userpass: userpass,
+        method: "coins_needed_for_kick_start");
+
+    final response =
+        await http.post(url, body: getRecentSwapToJson(getRecentSwap));
+    print("coins_needed_for_kick_start" + response.body.toString());
+    return coinToKickStartFromJson(response.body);
   }
 
   Future<dynamic> postRawTransaction(Coin coin, String txHex) async {

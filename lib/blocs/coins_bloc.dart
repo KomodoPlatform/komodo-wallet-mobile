@@ -4,10 +4,12 @@ import 'dart:io';
 
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
+import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/transactions.dart';
+import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:path_provider/path_provider.dart';
@@ -135,7 +137,7 @@ class CoinsBloc implements BlocBase {
       });
     }
     if (isSavedToLocal) await writeJsonCoin(coinsReadJson);
-    await mm2.loadCoin(true);
+    await loadCoin(true);
   }
 
   void currentCoinActivate(CoinToActivate coinToAtivate) {
@@ -204,14 +206,7 @@ class CoinsBloc implements BlocBase {
       if (!mm2.ismm2Running) {
         _.cancel();
       } else {
-        mm2.loadCoin(true);
-      }
-    });
-    timer2 = Timer.periodic(Duration(seconds: 30), (_) {
-      if (!mm2.ismm2Running) {
-        _.cancel();
-      } else {
-        swapHistoryBloc.updateSwaps(10, null);
+        loadCoin(true);
       }
     });
   }
@@ -219,6 +214,59 @@ class CoinsBloc implements BlocBase {
   void stopCheckBalance() {
     if (timer != null) timer.cancel();
     if (timer2 != null) timer2.cancel();
+  }
+
+  Future<void> loadCoin(bool forceUpdate) async {
+    List<Coin> coins = await coinsBloc.readJsonCoin();
+    List<CoinBalance> listCoinElectrum = new List<CoinBalance>();
+    List<dynamic> balances = await mm2.getAllBalances(forceUpdate);
+
+    for (var coin in coins) {
+      for (var balance in balances) {
+        if (balance is Balance && coin.abbr == balance.coin) {
+          var coinBalance = CoinBalance(coin, balance);
+          if (forceUpdate || coinBalance.balanceUSD == null) {
+            coinBalance.priceForOne =
+                await getPriceObj.getPrice(coin.abbr, "USD");
+            coinBalance.balanceUSD = coinBalance.priceForOne *
+                double.parse(coinBalance.balance.balance);
+          }
+          listCoinElectrum.add(coinBalance);
+        } else if (balance is ErrorString) {
+          print(balance.error);
+        }
+
+        if (balance is Balance && balance.coin == "KMD") {
+          mm2.pubkey = balance.address;
+        }
+      }
+    }
+
+    listCoinElectrum.sort((b, a) {
+      if (a.balanceUSD != null) {
+        return a.balanceUSD.compareTo(b.balanceUSD);
+      }
+    });
+    if (listCoinElectrum.isNotEmpty) {
+      updateCoins(listCoinElectrum);
+    }
+  }
+
+  Future<void> activateCoinKickStart() async {
+    List<Coin> coinsToSave = await readJsonCoin();
+    List<Coin> coinsAll = await getAllNotActiveCoins();
+
+    await mm2.getCoinToKickStart().then((coinsToKickStart) {
+      coinsAll.forEach((coin) {
+        coinsToKickStart.result.forEach((coinToKickStart) {
+          if (coin.abbr == coinToKickStart.toString()) {
+            coinsToSave.add(coin);
+          }
+        });
+      });
+    });
+
+    await writeJsonCoin(coinsToSave);
   }
 }
 

@@ -717,6 +717,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       context,
       MaterialPageRoute(
           builder: (context) => SwapConfirmation(
+            
                 amountToSell: _controllerAmount.text,
                 amountToBuy: amountToBuy,
               )),

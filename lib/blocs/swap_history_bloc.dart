@@ -33,106 +33,52 @@ class SwapHistoryBloc implements BlocBase {
       _isAnimationStepFinalIsFinishController.stream;
 
   bool isSwapsOnGoing = false;
-
   @override
   void dispose() {
     _swapsController.close();
     _isAnimationStepFinalIsFinishController.close();
   }
 
-  // void saveUUID(String uuid, Coin base, Coin rel, double amountToBuy,
-  //     double amountToGet) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   List<String> uuids = prefs.getStringList('uuids');
-  //   if (uuids == null) {
-  //     uuids = new List<String>();
-  //   }
-  //   uuids.add(uuidToJson(Uuid(
-  //       base: base,
-  //       rel: rel,
-  //       amountToBuy: amountToBuy,
-  //       amountToGet: amountToGet,
-  //       uuid: uuid,
-  //       pubkey: mm2.pubkey,
-  //       timeStart: DateTime.now().millisecondsSinceEpoch ~/ 1000)));
-  //   await prefs.setStringList('uuids', uuids);
-  // }
-
-  // Future<void> updateSwap() async {
-  //   print("UPDATE SWAPS");
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   List<String> uuids = prefs.getStringList('uuids');
-  //   List<Swap> swaps = new List<Swap>();
-
-  //   // 0/3 - "Order matching" --> before Started
-  //   // 1/3 - "Order matched" - matched (when entering swap loop) --> Started
-  //   // 2/3 - "Swap ongoing" - takefee paid --> TakerFeeSent
-  //   // 3/3 - "Swap successful" - makerpayment issued (or confirmed with 1 conf) --> MakerPaymentSpent
-
-  //   isSwapsOnGoing = false;
-
-  //   if (uuids != null) {
-  //     for (var uuid in uuids) {
-  //       Uuid uuidData = uuidFromJson(uuid);
-  //       Status status = Status.ORDER_MATCHING;
-
-  //       if (uuidData.pubkey == mm2.pubkey) {
-  //         dynamic swap = await mm2.getSwapStatus(uuidData.uuid);
-  //         uuidData.pubkey = mm2.pubkey;
-
-  //         if (swap is Swap) {
-  //           swap.status = getStatusSwap(swap);
-  //           if (uuidData.timeStart + 3600 <
-  //                   DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
-  //               swap.status != Status.SWAP_SUCCESSFUL) {
-  //             swap.status = Status.TIME_OUT;
-  //           }
-  //           swap.uuid = uuidData;
-  //           swaps.add(swap);
-  //           if (swap.status == Status.ORDER_MATCHED ||
-  //               swap.status == Status.ORDER_MATCHING ||
-  //               swap.status == Status.SWAP_ONGOING) {
-  //             isSwapsOnGoing = true;
-  //           }
-  //         } else if (swap is ErrorString) {
-  //           if (uuidData.timeStart + 600 <
-  //               DateTime.now().millisecondsSinceEpoch ~/ 1000) {
-  //             status = Status.TIME_OUT;
-  //           }
-  //           swaps.add(Swap(
-  //             status: status,
-  //             result: Result(uuid: uuidData.uuid),
-  //             uuid: uuidData,
-  //           ));
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   this.swaps = swaps;
-  //   return _inSwaps.add(this.swaps);
-  // }
-
-  Future<void> updateSwaps(int limit, String fromUuid) async {
+  Future<List<Swap>> updateSwaps(int limit, String fromUuid) async {
+    isSwapsOnGoing = false;
     RecentSwaps recentSwaps = await mm2.getRecentSwaps(limit, fromUuid);
 
-    List<Swap> recentSwapList = new List<Swap>();
     if (fromUuid == null) {
       this.swaps.clear();
+      _inSwaps.add(this.swaps);
     }
     recentSwaps.result.swaps.forEach((swap) {
-      if (swap is ResultSwap) {
-        recentSwapList.add(new Swap(result: swap));
+      dynamic nSwap = new Swap(result: swap, status: getStatusSwap(swap));
+      if (nSwap is Swap) {
+        if (swap.myInfo.startedAt + 3600 <
+                DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
+            getStatusSwap(swap) != Status.SWAP_SUCCESSFUL) {
+          nSwap.status = Status.TIME_OUT;
+        }
+        this.swaps.add(nSwap);
+        if (nSwap.status == Status.ORDER_MATCHED ||
+            nSwap.status == Status.ORDER_MATCHING ||
+            nSwap.status == Status.SWAP_ONGOING) {
+          isSwapsOnGoing = true;
+        }
+      } else if (nSwap is ErrorString) {
+        if (swap.myInfo.startedAt + 600 <
+            DateTime.now().millisecondsSinceEpoch ~/ 1000) {
+          this.swaps.add(Swap(
+                status: Status.TIME_OUT,
+                result: swap,
+              ));
+        }
       }
     });
-    this.swaps = recentSwapList;
     _inSwaps.add(this.swaps);
+    return this.swaps;
   }
 
-  Status getStatusSwap(Swap swap) {
+  Status getStatusSwap(ResultSwap resultSwap) {
     Status status = Status.ORDER_MATCHING;
 
-    swap.result.events.forEach((event) {
+    resultSwap.events.forEach((event) {
       switch (event.event.type) {
         case "Started":
           status = Status.ORDER_MATCHED;

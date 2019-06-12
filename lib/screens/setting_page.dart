@@ -198,7 +198,7 @@ class _SettingPageState extends State<SettingPage> {
                     textButton: AppLocalizations.of(context).unlock,
                     wallet: walletBloc.currentWallet,
                     isSignWithSeedIsEnabled: false,
-                    onSuccess: (password) {
+                    onSuccess: (_, password) {
                       Navigator.push(context ,MaterialPageRoute(
                           builder: (context) => PinPage(
                               title: AppLocalizations.of(context).lockScreen,
@@ -338,7 +338,7 @@ class _SettingPageState extends State<SettingPage> {
                 textButton: AppLocalizations.of(context).unlock,
                 wallet: walletBloc.currentWallet,
                 isSignWithSeedIsEnabled: false,
-                onSuccess: (password) {
+                onSuccess: (_, password) {
                   print(password);
                   dialogBloc.dialog = showDialog(
                       context: context,

@@ -46,18 +46,22 @@ void main() async {
   runZoned<Future<Null>>(() async {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((_) {
-      mm2.initMarketMaker().then((_) {
-        _runBinMm2UserAlreadyLog().then((onValue) {
-          runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+          startApp();
         });
-      });
-    });
   }, onError: (error, stackTrace) async {
     // Whenever an error occurs, call the `reportCrash` function. This will send
     // Dart errors to our dev console or Crashlytics depending on the environment.
     print(stackTrace);
     await FlutterCrashlytics()
         .reportCrash(error, stackTrace, forceCrash: false);
+  });
+}
+
+startApp() {
+  mm2.initMarketMaker().then((_) {
+    _runBinMm2UserAlreadyLog().then((onValue) {
+      runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+    });
   });
 }
 
@@ -192,7 +196,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         });
       } else {
         setState(() {
-          isNetworkAvailable = false;
+          if (isNetworkAvailable) {
+            _runBinMm2UserAlreadyLog();
+            isNetworkAvailable = false;
+          }
         });
       }
     });
