@@ -12,13 +12,18 @@ class SwapBloc implements BlocBase {
   OrderCoin orderCoin;
   CoinBalance sellCoin;
 
-  // Streams to handle the list coin
   StreamController<OrderCoin> _orderCoinController =
       StreamController<OrderCoin>.broadcast();
   Sink<OrderCoin> get _inOrderCoin => _orderCoinController.sink;
   Stream<OrderCoin> get outOrderCoin => _orderCoinController.stream;
 
-  // Streams to handle the list coin
+
+  Coin receiveCoin;
+  StreamController<Coin> _receiveCoinController =
+      StreamController<Coin>.broadcast();
+  Sink<Coin> get _inReceiveCoin => _receiveCoinController.sink;
+  Stream<Coin> get outReceiveCoin => _receiveCoinController.stream;
+
   StreamController<CoinBalance> _sellCoinController =
       StreamController<CoinBalance>.broadcast();
   Sink<CoinBalance> get _inSellCoin => _sellCoinController.sink;
@@ -26,7 +31,6 @@ class SwapBloc implements BlocBase {
 
   List<OrderCoin> orderCoins = new List<OrderCoin>();
 
-  // Streams to handle the list coin
   StreamController<List<OrderCoin>> _listOrderCoinController =
       StreamController<List<OrderCoin>>.broadcast();
   Sink<List<OrderCoin>> get _inListOrderCoin => _listOrderCoinController.sink;
@@ -35,7 +39,6 @@ class SwapBloc implements BlocBase {
 
   bool focusTextField = false;
 
-  // Streams to handle the list coin
   StreamController<bool> _focusTextFieldController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inFocusTextField => _focusTextFieldController.sink;
@@ -48,11 +51,17 @@ class SwapBloc implements BlocBase {
     _sellCoinController.close();
     _listOrderCoinController.close();
     _focusTextFieldController.close();
+    _receiveCoinController.close();
   }
 
   void updateBuyCoin(OrderCoin orderCoin) {
     this.orderCoin = orderCoin;
     _inOrderCoin.add(this.orderCoin);
+  }
+
+    void updateReceiveCoin(Coin receiveCoin) {
+    this.receiveCoin = receiveCoin;
+    _inReceiveCoin.add(this.receiveCoin);
   }
 
   void updateSellCoin(CoinBalance coinBalance) {

@@ -4,7 +4,6 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_new_page.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 
 class SwapPage extends StatefulWidget {
   @override

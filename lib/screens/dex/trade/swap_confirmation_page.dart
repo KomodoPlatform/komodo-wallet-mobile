@@ -8,7 +8,7 @@ import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_new_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 
 class SwapConfirmation extends StatefulWidget {

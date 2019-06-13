@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,9 +13,9 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class TradeNewPage extends StatefulWidget {
   @override
@@ -25,11 +27,14 @@ class _TradeNewPageState extends State<TradeNewPage>
   TextEditingController _controllerAmountSell = new TextEditingController();
   TextEditingController _controllerAmountReceive = new TextEditingController();
   CoinBalance currentCoinBalance;
+  Coin currentCoinToBuy;
   String tmpText = "";
-  FocusNode _focus = new FocusNode();
+  FocusNode _focusSell = new FocusNode();
+  FocusNode _focusReceive = new FocusNode();
   Animation<double> animation;
   AnimationController controller;
   String amountToBuy;
+  bool enabledReceiceField = false;
 
   @override
   void initState() {
@@ -41,16 +46,26 @@ class _TradeNewPageState extends State<TradeNewPage>
       swapBloc.updateSellCoin(null);
     }
     swapBloc.updateBuyCoin(null);
+    swapBloc.updateReceiveCoin(null);
+
     _controllerAmountReceive.clear();
-    _controllerAmountSell.addListener(onChange);
+    _controllerAmountSell.addListener(onChangeSell);
+    _controllerAmountReceive.addListener(onChangeReceive);
+
     controller = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
     controller.forward();
   }
 
-  void onChange() {
+  void onChangeReceive() {
+    setState(() {});
+  }
+
+  void onChangeSell() {
     swapBloc.updateBuyCoin(null);
+    // _controllerAmountReceive.text = "";
+    setState(() {});
     String text = _controllerAmountSell.text;
     if (text.isNotEmpty) {
       setState(() {
@@ -71,16 +86,16 @@ class _TradeNewPageState extends State<TradeNewPage>
   }
 
   void _unfocusFocus() async {
-    _focus.unfocus();
+    _focusSell.unfocus();
     await Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {
-        FocusScope.of(context).requestFocus(_focus);
+        FocusScope.of(context).requestFocus(_focusSell);
       });
     });
   }
 
   void setMaxValue() async {
-    _focus.unfocus();
+    _focusSell.unfocus();
     setState(() {
       var txFee = currentCoinBalance.coin.txfee;
       var fee;
@@ -97,7 +112,7 @@ class _TradeNewPageState extends State<TradeNewPage>
     });
     await Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {
-        FocusScope.of(context).requestFocus(_focus);
+        FocusScope.of(context).requestFocus(_focusSell);
       });
     });
   }
@@ -147,13 +162,25 @@ class _TradeNewPageState extends State<TradeNewPage>
   _buildButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 70),
-      child: PrimaryButton(
-        onPressed: _controllerAmountSell.text.length > 0 &&
-                _controllerAmountReceive.text.length > 0
-            ? _confirmSwap
-            : null,
-        text: AppLocalizations.of(context).trade,
-      ),
+      child: StreamBuilder<CoinBalance>(
+          initialData: swapBloc.sellCoin,
+          stream: swapBloc.outSellCoin,
+          builder: (context, sellCoin) {
+            return StreamBuilder<Coin>(
+                initialData: swapBloc.receiveCoin,
+                stream: swapBloc.outReceiveCoin,
+                builder: (context, receiveCoin) {
+                  return PrimaryButton(
+                    onPressed: _controllerAmountSell.text.length > 0 &&
+                            _controllerAmountReceive.text.length > 0 &&
+                            sellCoin.hasData &&
+                            receiveCoin.hasData
+                        ? _confirmSwap
+                        : null,
+                    text: AppLocalizations.of(context).trade,
+                  );
+                });
+          }),
     );
   }
 
@@ -185,11 +212,14 @@ class _TradeNewPageState extends State<TradeNewPage>
                           WhitelistingTextInputFormatter(RegExp(
                               "^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$"))
                         ],
-                        focusNode: market == Market.SELL ? _focus : null,
+                        focusNode:
+                            market == Market.SELL ? _focusSell : _focusReceive,
                         controller: market == Market.SELL
                             ? _controllerAmountSell
                             : _controllerAmountReceive,
-                        enabled: market == Market.RECEIVE ? false : true,
+                        enabled: market == Market.RECEIVE
+                            ? enabledReceiceField
+                            : true,
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
                         style: Theme.of(context).textTheme.title,
@@ -223,36 +253,54 @@ class _TradeNewPageState extends State<TradeNewPage>
   _buildCoinSelect(Market market) {
     return InkWell(
       borderRadius: BorderRadius.circular(4),
-      onTap: () {
-        if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
-          setState(() {
-            FocusScope.of(context).requestFocus(_focus);
-            controller.reset();
-            controller.forward();
-          });
+      onTap: () async {
+        if (enabledReceiceField && market == Market.RECEIVE) {
+          await _openDialogAllCoins();
         } else {
-          _openDialogCoinWithBalance(market);
+          if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
+            setState(() {
+              FocusScope.of(context).requestFocus(_focusSell);
+              controller.reset();
+              controller.forward();
+            });
+          } else {
+            _openDialogCoinWithBalance(market);
+          }
         }
       },
-      child: StreamBuilder<dynamic>(
-          initialData:
-              market == Market.SELL ? swapBloc.sellCoin : swapBloc.orderCoin,
-          stream: market == Market.SELL
-              ? swapBloc.outSellCoin
-              : swapBloc.outOrderCoin,
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data is CoinBalance) {
-              CoinBalance coinBalance = snapshot.data;
-              currentCoinBalance = coinBalance;
-              return _buildSelectorCoin(coinBalance.coin);
-            } else if (snapshot.hasData && snapshot.data is OrderCoin) {
-              OrderCoin orderCoin = snapshot.data;
-
-              return _buildSelectorCoin(orderCoin.coinBase);
-            } else {
-              return _buildSelectorCoin(null);
-            }
-          }),
+      child: enabledReceiceField && market == Market.RECEIVE
+          ? Container(
+              child: StreamBuilder<Coin>(
+                initialData: swapBloc.receiveCoin,
+                stream: swapBloc.outReceiveCoin,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return _buildSelectorCoin(snapshot.data);
+                  } else {
+                    return _buildSelectorCoin(null);
+                  }
+                },
+              ),
+            )
+          : StreamBuilder<dynamic>(
+              initialData: market == Market.SELL
+                  ? swapBloc.sellCoin
+                  : swapBloc.orderCoin,
+              stream: market == Market.SELL
+                  ? swapBloc.outSellCoin
+                  : swapBloc.outOrderCoin,
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data is CoinBalance) {
+                  CoinBalance coinBalance = snapshot.data;
+                  currentCoinBalance = coinBalance;
+                  return _buildSelectorCoin(coinBalance.coin);
+                } else if (snapshot.hasData && snapshot.data is OrderCoin) {
+                  OrderCoin orderCoin = snapshot.data;
+                  return _buildSelectorCoin(orderCoin.coinBase);
+                } else {
+                  return _buildSelectorCoin(null);
+                }
+              }),
     );
   }
 
@@ -293,6 +341,63 @@ class _TradeNewPageState extends State<TradeNewPage>
         )
       ],
     );
+  }
+
+  _openDialogAllCoins() async {
+    List<Coin> coins = await coinsBloc.readJsonCoin();
+    Coin coinToRemove = swapBloc.sellCoin.coin;
+
+    int indexToRemove = 0;
+    coins.asMap().forEach((index, c) {
+      if (c.abbr == coinToRemove.abbr) {
+        indexToRemove = index;
+      }
+    });
+    coins.removeAt(indexToRemove);
+    dialogBloc.dialog = showDialog<List<Coin>>(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: Text(AppLocalizations.of(context).receiveLower),
+            children: coins.map((item) {
+              return InkWell(
+                onTap: () {
+                  swapBloc.updateReceiveCoin(item);
+                  Navigator.of(context).pop();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Container(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset(
+                          "assets/${item.abbr.toLowerCase()}.png",
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Text(
+                        item.name,
+                        style: Theme.of(context).textTheme.subtitle,
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          );
+        }).then((_) {
+      dialogBloc.dialog = null;
+    });
   }
 
   _openDialogCoinWithBalance(Market market) async {
@@ -386,7 +491,15 @@ class _TradeNewPageState extends State<TradeNewPage>
                               _createListDialog(context, market, snapshot.data),
                         );
                       } else {
-                        return DialogLooking();
+                        return DialogLooking(
+                          onMakeOrder: () {
+                            setState(() {
+                              enabledReceiceField = true;
+                            });
+                            FocusScope.of(this.context)
+                                .requestFocus(_focusReceive);
+                          },
+                        );
                       }
                     } else {
                       return DialogLooking();
@@ -514,4 +627,159 @@ class _TradeNewPageState extends State<TradeNewPage>
 enum Market {
   SELL,
   RECEIVE,
+}
+
+class DialogLooking extends StatefulWidget {
+  final Function onMakeOrder;
+
+  const DialogLooking({Key key, this.onMakeOrder}) : super(key: key);
+
+  @override
+  _DialogLookingState createState() => _DialogLookingState();
+}
+
+class _DialogLookingState extends State<DialogLooking> {
+  var timerGetOrderbook;
+  var isTimeOut = false;
+
+  @override
+  void initState() {
+    int timeOutSeconds = 1;
+    int timeOutCurrent = 0;
+
+    setState(() {
+      isTimeOut = true;
+    });
+    timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
+      print(timeOutCurrent);
+      if (timeOutCurrent >= timeOutSeconds - 5) {
+        _.cancel();
+        setState(() {
+          isTimeOut = true;
+        });
+      } else {
+        swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+      }
+      timeOutCurrent += 5;
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (timerGetOrderbook != null) timerGetOrderbook.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        child: isTimeOut
+            ? _buildSellDialogContent()
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: isTimeOut
+                        ? Container(
+                            height: 16,
+                          )
+                        : CircularProgressIndicator(),
+                  ),
+                  Flexible(
+                    child: Text(
+                      AppLocalizations.of(context).loadingOrderbook,
+                      style: Theme.of(context).textTheme.body1,
+                    ),
+                  )
+                ],
+              ),
+      ),
+    );
+  }
+
+  _buildSellDialogContent() {
+    return Wrap(
+      direction: Axis.horizontal,
+      children: <Widget>[
+        Text(
+          AppLocalizations.of(context).noOrder(swapBloc.sellCoin.coin.name),
+          style: Theme.of(context).textTheme.subtitle,
+        ),
+        Container(
+          height: 16,
+        ),
+        PrimaryButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            widget.onMakeOrder();
+            // disabled the input
+            // display in real time the price exchange
+            // go to confirmation with tag SELL
+          },
+          text: AppLocalizations.of(context).makeAorder,
+        ),
+        Container(
+          height: 8,
+        ),
+        SecondaryButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          text: AppLocalizations.of(context).cancel,
+        ),
+      ],
+    );
+  }
+}
+
+class ExchangeRate extends StatefulWidget {
+  @override
+  _ExchangeRateState createState() => _ExchangeRateState();
+}
+
+class _ExchangeRateState extends State<ExchangeRate> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<Object>(
+        initialData: swapBloc.orderCoin,
+        stream: swapBloc.outOrderCoin,
+        builder: (context, snapshot) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  snapshot.hasData
+                      ? AppLocalizations.of(context).bestAvailableRate
+                      : "",
+                  style:
+                      Theme.of(context).textTheme.body2.copyWith(fontSize: 12),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      swapBloc.getExchangeRate(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      swapBloc.getExchangeRateUSD(),
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        });
+  }
 }

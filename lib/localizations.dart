@@ -230,12 +230,14 @@ class AppLocalizations {
   String get welcomeLetSetUp => Intl.message("LET'S GET SET UP!", name: 'welcomeLetSetUp');
   String get unlock => Intl.message("unlock", name: 'unlock');
   String noOrder(String coinName) => Intl.message(
-        'No $coinName orders available - please try again later',
+        'No $coinName orders available - please try again later, or make a order.',
         name: 'noOrder',
         args: [coinName],
       );
   String get bestAvailableRate => Intl.message("Best available rate", name: 'bestAvailableRate');
   String get receiveLower => Intl.message("Receive", name: 'receiveLower');
+  String get makeAorder => Intl.message("make a order", name: 'makeAorder');
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
