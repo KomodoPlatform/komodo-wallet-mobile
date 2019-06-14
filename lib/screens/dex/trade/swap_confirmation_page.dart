@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -11,17 +12,19 @@ import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_new_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 
-enum SwapStatus {
-  BUY,
-  SELL
-}
+enum SwapStatus { BUY, SELL }
 
 class SwapConfirmation extends StatefulWidget {
   final SwapStatus swapStatus;
   final String amountToSell;
   final String amountToBuy;
+  final Function orderSuccess;
 
-  SwapConfirmation({this.amountToSell, this.amountToBuy, @required this.swapStatus});
+  SwapConfirmation(
+      {this.amountToSell,
+      this.amountToBuy,
+      @required this.swapStatus,
+      this.orderSuccess});
 
   @override
   _SwapConfirmationState createState() => _SwapConfirmationState();
@@ -43,9 +46,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     return LockScreen(
       child: WillPopScope(
         onWillPop: () {
-          swapBloc.updateSellCoin(null);
-          swapBloc.updateBuyCoin(null);
-          swapBloc.updateReceiveCoin(null);
+          _resetSwapPage();
           Navigator.pop(context);
         },
         child: Scaffold(
@@ -53,9 +54,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           appBar: AppBar(
             leading: InkWell(
                 onTap: () {
-                  swapBloc.updateSellCoin(null);
-                  swapBloc.updateBuyCoin(null);
-                  swapBloc.updateReceiveCoin(null);
+                  _resetSwapPage();
                   Navigator.pop(context);
                 },
                 child: Icon(Icons.arrow_back)),
@@ -72,6 +71,13 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         ),
       ),
     );
+  }
+
+  _resetSwapPage() {
+    swapBloc.updateSellCoin(null);
+    swapBloc.updateBuyCoin(null);
+    swapBloc.updateReceiveCoin(null);
+    swapBloc.enabledReceiceField = false;
   }
 
   _buildTitle() {
@@ -284,14 +290,24 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     });
     double amountToSell =
         double.parse(widget.amountToSell.replaceAll(",", "."));
-
     double amountToBuy = (amountToSell *
         (amountToSell / (amountToSell * swapBloc.orderCoin.bestPrice)));
-    mm2
-        .postBuy(swapBloc.orderCoin.coinBase, swapBloc.orderCoin.coinRel,
-            amountToBuy, swapBloc.orderCoin.bestPrice * 1.01)
-        .then((onValue) {
-      if (onValue is BuyResponse) {
+    Coin coinBase = swapBloc.orderCoin.coinBase;
+    Coin coinRel = swapBloc.orderCoin.coinRel;
+    double price = swapBloc.orderCoin.bestPrice * 1.01;
+
+    if (widget.swapStatus == SwapStatus.BUY) {
+      mm2.postBuy(coinBase, coinRel, amountToBuy, price).then(
+          (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
+    } else if (widget.swapStatus == SwapStatus.SELL) {
+      mm2.postSell(coinRel, coinBase, amountToSell, price).then(
+          (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
+    }
+  }
+
+  _goToNextScreen(dynamic onValue, double amountToSell, double amountToBuy) {
+    if (onValue is BuyResponse) {
+      if (widget.swapStatus == SwapStatus.BUY) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -309,21 +325,24 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                         )),
                   )),
         );
-      } else {
-        setState(() {
-          isSwapMaking = false;
-        });
-        String timeSecondeLeft = onValue.error;
-        print(timeSecondeLeft);
-        timeSecondeLeft = timeSecondeLeft.substring(
-            timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
-        print(timeSecondeLeft);
-        Scaffold.of(context).showSnackBar(new SnackBar(
-          duration: Duration(seconds: 2),
-          content: new Text(AppLocalizations.of(context)
-              .buySuccessWaitingError(timeSecondeLeft)),
-        ));
+      } else if (widget.swapStatus == SwapStatus.SELL) {
+        Navigator.of(context).pop();
+        widget.orderSuccess();
       }
-    });
+    } else {
+      setState(() {
+        isSwapMaking = false;
+      });
+      String timeSecondeLeft = onValue.error;
+      print(timeSecondeLeft);
+      timeSecondeLeft = timeSecondeLeft.substring(
+          timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
+      print(timeSecondeLeft);
+      Scaffold.of(context).showSnackBar(new SnackBar(
+        duration: Duration(seconds: 2),
+        content: new Text(AppLocalizations.of(context)
+            .buySuccessWaitingError(timeSecondeLeft)),
+      ));
+    }
   }
 }

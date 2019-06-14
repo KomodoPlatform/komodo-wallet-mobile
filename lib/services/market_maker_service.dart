@@ -302,6 +302,37 @@ class MarketMakerService {
     }
   }
 
+  Future<dynamic> postSell(
+      Coin base, Coin rel, double volume, double price) async {
+    print("SWAPPARAM: base: " +
+        base.abbr +
+        " rel: " +
+        rel.abbr.toString() +
+        " relvol: " +
+        volume.toString() +
+        " price: " +
+        price.toString());
+    GetBuy getBuy = new GetBuy(
+        userpass: userpass,
+        method: "sell",
+        base: base.abbr,
+        rel: rel.abbr,
+        volume: volume.toStringAsFixed(8),
+        price: price.toStringAsFixed(8));
+    print(json.encode(getBuy));
+    final response = await http.post(url, body: json.encode(getBuy));
+
+    print(response.body.toString());
+    try {
+      return buyResponseFromJson(response.body);
+    } catch (e) {
+      return errorFromJson(response.body);
+    }
+  }
+
+
+
+
   Future<Transactions> getTransactions(
       Coin coin, int limit, String fromId) async {
     GetTxHistory getTxHistory = new GetTxHistory(

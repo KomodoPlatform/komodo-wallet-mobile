@@ -43,14 +43,14 @@ class _TradeNewPageState extends State<TradeNewPage>
   @override
   void initState() {
     super.initState();
+    swapBloc.outFocusTextField.listen((onData) {
+      FocusScope.of(context).requestFocus(_focusSell);
+    });
     _noOrderFound = false;
     initListenerAmountReceive();
     swapBloc.enabledReceiceField = false;
-    if (coinsBloc.coinBalance != null && coinsBloc.coinBalance.length > 1) {
-      swapBloc.updateSellCoin(coinsBloc.coinBalance.first);
-    } else {
-      swapBloc.updateSellCoin(null);
-    }
+
+    swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
     swapBloc.updateReceiveCoin(null);
 
@@ -690,8 +690,7 @@ class _TradeNewPageState extends State<TradeNewPage>
                 String tmp = _controllerAmountSell.text;
                 _controllerAmountSell.text = "";
                 _controllerAmountSell.text = tmp;
-              _controllerAmountReceive.text = "";
-
+                _controllerAmountReceive.text = "";
               });
               swapBloc.updateSellCoin(coin);
               swapBloc.updateBuyCoin(null);
@@ -737,10 +736,49 @@ class _TradeNewPageState extends State<TradeNewPage>
     setState(() {
       _noOrderFound = false;
     });
+
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => SwapConfirmation(
+                orderSuccess: () {
+                  dialogBloc.dialog = showDialog(
+                          builder: (context) {
+                            return SimpleDialog(
+                              title: Text("Order Created"),
+                              contentPadding: EdgeInsets.all(24),
+                              children: <Widget>[
+                                Text("Your order as been successfull created."),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                PrimaryButton(
+                                  text: "SHOW MY ORDERS",
+                                  onPressed: () {
+                                    swapBloc.setIndexTabDex(2);
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                SecondaryButton(
+                                  text: AppLocalizations.of(context).close,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                          context: context)
+                      .then((_) {
+                    dialogBloc.dialog = null;
+                  });
+                },
+                swapStatus: swapBloc.enabledReceiceField
+                    ? SwapStatus.SELL
+                    : SwapStatus.BUY,
                 amountToSell: _controllerAmountSell.text,
                 amountToBuy: _controllerAmountReceive.text,
               )),

@@ -59,6 +59,12 @@ class SwapBloc implements BlocBase {
   Sink<bool> get _inIsTimeOut => _isTimeOutController.sink;
   Stream<bool> get outIsTimeOut => _isTimeOutController.stream;
 
+  int indexTab = 0;
+  StreamController<int> _indexTabController =
+  StreamController<int>.broadcast();
+  Sink<int> get _inIndexTab => _indexTabController.sink;
+  Stream<int> get outIndexTab => _indexTabController.stream;
+
   @override
   void dispose() {
     _orderCoinController.close();
@@ -67,6 +73,12 @@ class SwapBloc implements BlocBase {
     _focusTextFieldController.close();
     _receiveCoinController.close();
     _amountReceiveController.close();
+    _indexTabController.close();
+  }
+
+  void setIndexTabDex(int index) {
+    this.indexTab = index;
+    _indexTabController.add(this.indexTab);
   }
 
   void updateBuyCoin(OrderCoin orderCoin) {
@@ -157,15 +169,16 @@ class SwapBloc implements BlocBase {
     double maxVolume = 0;
     int i = 0;
     orderbook.asks.forEach((ask) {
-      print("ask" + ask.price.toString());
-      if (i == 0) {
-        maxVolume = ask.maxvolume;
-        bestPrice = ask.price;
-      } else if (ask.price < bestPrice) {
-        maxVolume = ask.maxvolume;
-        bestPrice = ask.price;
+      if (ask.address != swapBloc.sellCoin.balance.address) {
+        if (i == 0) {
+          maxVolume = ask.maxvolume;
+          bestPrice = ask.price;
+        } else if (ask.price < bestPrice) {
+          maxVolume = ask.maxvolume;
+          bestPrice = ask.price;
+        }
+        i++;
       }
-      i++;
     });
     print("BEST PRICE" + bestPrice.toString());
     this.orderCoin = OrderCoin(
