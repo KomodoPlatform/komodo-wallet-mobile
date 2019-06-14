@@ -11,11 +11,17 @@ import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_new_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 
+enum SwapStatus {
+  BUY,
+  SELL
+}
+
 class SwapConfirmation extends StatefulWidget {
+  final SwapStatus swapStatus;
   final String amountToSell;
   final String amountToBuy;
 
-  SwapConfirmation({this.amountToSell, this.amountToBuy});
+  SwapConfirmation({this.amountToSell, this.amountToBuy, @required this.swapStatus});
 
   @override
   _SwapConfirmationState createState() => _SwapConfirmationState();
@@ -28,6 +34,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   void dispose() {
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
+    swapBloc.updateReceiveCoin(null);
     super.dispose();
   }
 
@@ -38,6 +45,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         onWillPop: () {
           swapBloc.updateSellCoin(null);
           swapBloc.updateBuyCoin(null);
+          swapBloc.updateReceiveCoin(null);
           Navigator.pop(context);
         },
         child: Scaffold(
@@ -47,6 +55,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 onTap: () {
                   swapBloc.updateSellCoin(null);
                   swapBloc.updateBuyCoin(null);
+                  swapBloc.updateReceiveCoin(null);
                   Navigator.pop(context);
                 },
                 child: Icon(Icons.arrow_back)),

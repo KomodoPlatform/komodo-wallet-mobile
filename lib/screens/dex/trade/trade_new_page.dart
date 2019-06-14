@@ -18,6 +18,9 @@ import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class TradeNewPage extends StatefulWidget {
+  BuildContext mContext;
+
+  TradeNewPage({this.mContext});
   @override
   _TradeNewPageState createState() => _TradeNewPageState();
 }
@@ -34,12 +37,15 @@ class _TradeNewPageState extends State<TradeNewPage>
   Animation<double> animation;
   AnimationController controller;
   String amountToBuy;
-  bool enabledReceiceField = false;
+  var timerGetOrderbook;
+  bool _noOrderFound = false;
 
   @override
   void initState() {
     super.initState();
-
+    _noOrderFound = false;
+    initListenerAmountReceive();
+    swapBloc.enabledReceiceField = false;
     if (coinsBloc.coinBalance != null && coinsBloc.coinBalance.length > 1) {
       swapBloc.updateSellCoin(coinsBloc.coinBalance.first);
     } else {
@@ -51,27 +57,87 @@ class _TradeNewPageState extends State<TradeNewPage>
     _controllerAmountReceive.clear();
     _controllerAmountSell.addListener(onChangeSell);
     _controllerAmountReceive.addListener(onChangeReceive);
-
     controller = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
     controller.forward();
   }
 
+  @override
+  void dispose() {
+    _controllerAmountSell.dispose();
+    controller.dispose();
+    if (timerGetOrderbook != null) timerGetOrderbook.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: EdgeInsets.symmetric(vertical: 16),
+      children: <Widget>[
+        _buildExchange(),
+        StreamBuilder<Object>(
+            initialData: false,
+            stream: swapBloc.outIsTimeOut,
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data) {
+                return ExchangeRate();
+              } else {
+                return Container(
+                  height: 84,
+                );
+              }
+            }),
+        _buildButton()
+      ],
+    );
+  }
+
+  void initListenerAmountReceive() {
+    swapBloc.outAmountReceive.listen((onData) {
+      if (!mounted) return;
+      setState(() {
+        if (onData != 0) {
+          _controllerAmountReceive.text = onData.toString();
+        } else {
+          _controllerAmountReceive.text = "";
+        }
+      });
+    });
+  }
+
   void onChangeReceive() {
-    setState(() {});
+    // if (_controllerAmountReceive.text.length > 0) {
+    //   setState(() {
+    //     _noOrderFound = false;
+    //   });
+    // }
+
+    if (_noOrderFound &&
+        _controllerAmountReceive.text.isNotEmpty &&
+        _controllerAmountSell.text.isNotEmpty &&
+        _controllerAmountSell.text.isNotEmpty) {
+      swapBloc.updateBuyCoin(OrderCoin(
+          coinBase: swapBloc.receiveCoin,
+          coinRel: swapBloc.sellCoin.coin,
+          bestPrice: double.parse(_controllerAmountReceive.text) /
+              double.parse(_controllerAmountSell.text),
+          maxVolume: double.parse(_controllerAmountSell.text)));
+    }
   }
 
   void onChangeSell() {
     swapBloc.updateBuyCoin(null);
-    // _controllerAmountReceive.text = "";
     setState(() {});
     String text = _controllerAmountSell.text;
+    print("------" + text);
     if (text.isNotEmpty) {
       setState(() {
         if (currentCoinBalance != null &&
             double.parse(text.replaceAll(",", ".")) >
                 double.parse(currentCoinBalance.balance.balance)) {
+          print("setMaxValue");
           setMaxValue();
         } else {
           if (text.contains(
@@ -115,21 +181,6 @@ class _TradeNewPageState extends State<TradeNewPage>
         FocusScope.of(context).requestFocus(_focusSell);
       });
     });
-  }
-
-  @override
-  void dispose() {
-    _controllerAmountSell.dispose();
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.symmetric(vertical: 16),
-      children: <Widget>[_buildExchange(), ExchangeRate(), _buildButton()],
-    );
   }
 
   _buildExchange() {
@@ -191,60 +242,118 @@ class _TradeNewPageState extends State<TradeNewPage>
         elevation: 8,
         margin: EdgeInsets.all(8),
         color: Theme.of(context).primaryColor,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 38, horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                market == Market.SELL
-                    ? AppLocalizations.of(context).sell
-                    : AppLocalizations.of(context).receiveLower,
-                style: Theme.of(context).textTheme.body2,
-              ),
-              Row(
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 32, bottom: 52),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Flexible(
-                    child: TextFormField(
-                        scrollPadding: EdgeInsets.only(left: 35),
-                        inputFormatters: [
-                          DecimalTextInputFormatter(decimalRange: 8),
-                          WhitelistingTextInputFormatter(RegExp(
-                              "^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$"))
-                        ],
-                        focusNode:
-                            market == Market.SELL ? _focusSell : _focusReceive,
-                        controller: market == Market.SELL
-                            ? _controllerAmountSell
-                            : _controllerAmountReceive,
-                        enabled: market == Market.RECEIVE
-                            ? enabledReceiceField
-                            : true,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        style: Theme.of(context).textTheme.title,
-                        textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(
-                            hintStyle: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .copyWith(
-                                    fontSize: 18, fontWeight: FontWeight.w400),
-                            hintText: market == Market.SELL
-                                ? AppLocalizations.of(context).amountToSell
-                                : "")),
+                  Text(
+                    market == Market.SELL
+                        ? AppLocalizations.of(context).sell
+                        : AppLocalizations.of(context).receiveLower,
+                    style: Theme.of(context).textTheme.body2,
                   ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Container(
-                    width: 130,
-                    child: _buildCoinSelect(market),
+                  Row(
+                    children: <Widget>[
+                      Flexible(
+                        child: StreamBuilder<bool>(
+                            initialData: true,
+                            stream: swapBloc.outIsTimeOut,
+                            builder: (context, snapshot) {
+                              return Stack(
+                                children: <Widget>[
+                                  TextFormField(
+                                      scrollPadding: EdgeInsets.only(left: 35),
+                                      inputFormatters: [
+                                        DecimalTextInputFormatter(
+                                            decimalRange: 8),
+                                        WhitelistingTextInputFormatter(RegExp(
+                                            "^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$"))
+                                      ],
+                                      focusNode: market == Market.SELL
+                                          ? _focusSell
+                                          : _focusReceive,
+                                      controller: market == Market.SELL
+                                          ? _controllerAmountSell
+                                          : _controllerAmountReceive,
+                                      enabled: market == Market.RECEIVE
+                                          ? swapBloc.enabledReceiceField
+                                          : true,
+                                      keyboardType:
+                                          TextInputType.numberWithOptions(
+                                              decimal: true),
+                                      style: Theme.of(context).textTheme.title,
+                                      textInputAction: TextInputAction.done,
+                                      decoration: InputDecoration(
+                                          hintStyle: Theme.of(context)
+                                              .textTheme
+                                              .body2
+                                              .copyWith(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w400),
+                                          hintText: market == Market.SELL
+                                              ? AppLocalizations.of(context)
+                                                  .amountToSell
+                                              : "")),
+                                  market == Market.RECEIVE && !snapshot.data
+                                      ? Positioned(
+                                          bottom: 15,
+                                          child: Row(
+                                            children: <Widget>[
+                                              Container(
+                                                height: 15,
+                                                width: 15,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 6,
+                                              ),
+                                              Text(
+                                                AppLocalizations.of(context)
+                                                    .loadingOrderbook,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .body2,
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      : Container()
+                                ],
+                              );
+                            }),
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Container(
+                        width: 130,
+                        child: _buildCoinSelect(market),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+            _noOrderFound && market == Market.RECEIVE
+                ? Positioned(
+                    bottom: 10,
+                    left: 22,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .noOrder(swapBloc.receiveCoin.abbr),
+                          style: Theme.of(context).textTheme.body2,
+                        )))
+                : Container()
+          ],
         ),
       ),
     );
@@ -254,21 +363,19 @@ class _TradeNewPageState extends State<TradeNewPage>
     return InkWell(
       borderRadius: BorderRadius.circular(4),
       onTap: () async {
-        if (enabledReceiceField && market == Market.RECEIVE) {
+        if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
+          setState(() {
+            FocusScope.of(context).requestFocus(_focusSell);
+            controller.reset();
+            controller.forward();
+          });
+        } else if (market == Market.RECEIVE) {
           await _openDialogAllCoins();
         } else {
-          if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
-            setState(() {
-              FocusScope.of(context).requestFocus(_focusSell);
-              controller.reset();
-              controller.forward();
-            });
-          } else {
-            _openDialogCoinWithBalance(market);
-          }
+          _openDialogCoinWithBalance(market);
         }
       },
-      child: enabledReceiceField && market == Market.RECEIVE
+      child: market == Market.RECEIVE
           ? Container(
               child: StreamBuilder<Coin>(
                 initialData: swapBloc.receiveCoin,
@@ -361,8 +468,15 @@ class _TradeNewPageState extends State<TradeNewPage>
             title: Text(AppLocalizations.of(context).receiveLower),
             children: coins.map((item) {
               return InkWell(
-                onTap: () {
+                onTap: () async {
+                  setState(() {
+                    swapBloc.enabledReceiceField = false;
+                    _noOrderFound = false;
+                  });
                   swapBloc.updateReceiveCoin(item);
+                  _controllerAmountReceive.text = "";
+                  if (timerGetOrderbook != null) timerGetOrderbook.cancel();
+                  _lookingForOrder();
                   Navigator.of(context).pop();
                 },
                 child: Padding(
@@ -492,12 +606,13 @@ class _TradeNewPageState extends State<TradeNewPage>
                         );
                       } else {
                         return DialogLooking(
+                          amountToSell: _controllerAmountSell.text,
                           onMakeOrder: () {
-                            setState(() {
-                              enabledReceiceField = true;
-                            });
-                            FocusScope.of(this.context)
-                                .requestFocus(_focusReceive);
+                            // setState(() {
+                            //   swapBloc.enabledReceiceField = true;
+                            // });
+                            // FocusScope.of(this.context)
+                            //     .requestFocus(_focusReceive);
                           },
                         );
                       }
@@ -522,13 +637,15 @@ class _TradeNewPageState extends State<TradeNewPage>
                 0) {
           SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
-              setState(() {});
-              if (_controllerAmountSell.text.isNotEmpty) {
-                amountToBuy = orderbooks.getBuyAmount(double.parse(
-                    _controllerAmountSell.text.replaceAll(",", ".")));
-                _controllerAmountReceive.text = amountToBuy;
-              }
+              setState(() {
+                if (_controllerAmountSell.text.isNotEmpty) {
+                  amountToBuy = orderbooks.getBuyAmount(double.parse(
+                      _controllerAmountSell.text.replaceAll(",", ".")));
+                  _controllerAmountReceive.text = amountToBuy;
+                }
+              });
               swapBloc.updateBuyCoin(orderbooks);
+
               Navigator.pop(context);
             },
             child: Row(
@@ -568,7 +685,14 @@ class _TradeNewPageState extends State<TradeNewPage>
         if (double.parse(coin.balance.balance) > 0) {
           SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
+              setState(() {
+                currentCoinBalance = coin;
+                String tmp = _controllerAmountSell.text;
+                _controllerAmountSell.text = "";
+                _controllerAmountSell.text = tmp;
               _controllerAmountReceive.text = "";
+
+              });
               swapBloc.updateSellCoin(coin);
               swapBloc.updateBuyCoin(null);
               Navigator.pop(context);
@@ -610,17 +734,56 @@ class _TradeNewPageState extends State<TradeNewPage>
   }
 
   _confirmSwap() {
+    setState(() {
+      _noOrderFound = false;
+    });
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => SwapConfirmation(
                 amountToSell: _controllerAmountSell.text,
-                amountToBuy: amountToBuy,
+                amountToBuy: _controllerAmountReceive.text,
               )),
     ).then((_) {
       _controllerAmountReceive.clear();
       _controllerAmountSell.clear();
     });
+  }
+
+  _lookingForOrder() async {
+    swapBloc.setTimeout(false);
+    int timeOutSeconds = 5;
+    int timeOutCurrent = 0;
+
+    double amount = await swapBloc.setReceiveAmount(
+        swapBloc.receiveCoin, _controllerAmountSell.text);
+    if (amount == 0) {
+      timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
+        print(timeOutCurrent);
+        if (timeOutCurrent >= timeOutSeconds - 5) {
+          _.cancel();
+          swapBloc.setTimeout(true);
+          setState(() {
+            _controllerAmountReceive.text = swapBloc.amountReceive.toString();
+          });
+          if (swapBloc.amountReceive == 0) {
+            setState(() {
+              _noOrderFound = true;
+              _controllerAmountReceive.text = "";
+              swapBloc.enabledReceiceField = true;
+
+              FocusScope.of(this.context).requestFocus(_focusReceive);
+            });
+          }
+        } else {
+          swapBloc.setReceiveAmount(
+              swapBloc.receiveCoin, _controllerAmountSell.text);
+        }
+        timeOutCurrent += 5;
+      });
+    } else {
+      swapBloc.setTimeout(true);
+    }
   }
 }
 
@@ -631,74 +794,22 @@ enum Market {
 
 class DialogLooking extends StatefulWidget {
   final Function onMakeOrder;
+  final String amountToSell;
 
-  const DialogLooking({Key key, this.onMakeOrder}) : super(key: key);
+  const DialogLooking({Key key, this.onMakeOrder, this.amountToSell})
+      : super(key: key);
 
   @override
   _DialogLookingState createState() => _DialogLookingState();
 }
 
 class _DialogLookingState extends State<DialogLooking> {
-  var timerGetOrderbook;
-  var isTimeOut = false;
-
-  @override
-  void initState() {
-    int timeOutSeconds = 1;
-    int timeOutCurrent = 0;
-
-    setState(() {
-      isTimeOut = true;
-    });
-    timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
-      print(timeOutCurrent);
-      if (timeOutCurrent >= timeOutSeconds - 5) {
-        _.cancel();
-        setState(() {
-          isTimeOut = true;
-        });
-      } else {
-        swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
-      }
-      timeOutCurrent += 5;
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    if (timerGetOrderbook != null) timerGetOrderbook.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        child: isTimeOut
-            ? _buildSellDialogContent()
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: isTimeOut
-                        ? Container(
-                            height: 16,
-                          )
-                        : CircularProgressIndicator(),
-                  ),
-                  Flexible(
-                    child: Text(
-                      AppLocalizations.of(context).loadingOrderbook,
-                      style: Theme.of(context).textTheme.body1,
-                    ),
-                  )
-                ],
-              ),
-      ),
+          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          child: _buildSellDialogContent()),
     );
   }
 
@@ -717,9 +828,6 @@ class _DialogLookingState extends State<DialogLooking> {
           onPressed: () {
             Navigator.of(context).pop();
             widget.onMakeOrder();
-            // disabled the input
-            // display in real time the price exchange
-            // go to confirmation with tag SELL
           },
           text: AppLocalizations.of(context).makeAorder,
         ),
@@ -745,41 +853,47 @@ class ExchangeRate extends StatefulWidget {
 class _ExchangeRateState extends State<ExchangeRate> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Object>(
+    return StreamBuilder<OrderCoin>(
         initialData: swapBloc.orderCoin,
         stream: swapBloc.outOrderCoin,
         builder: (context, snapshot) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  snapshot.hasData
-                      ? AppLocalizations.of(context).bestAvailableRate
-                      : "",
-                  style:
-                      Theme.of(context).textTheme.body2.copyWith(fontSize: 12),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      swapBloc.getExchangeRate(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      swapBloc.getExchangeRateUSD(),
-                      style: Theme.of(context).textTheme.body2,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          );
+          if (snapshot.hasData && snapshot.data.bestPrice > 0) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context).bestAvailableRate,
+                    style: Theme.of(context)
+                        .textTheme
+                        .body2
+                        .copyWith(fontSize: 12),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        swapBloc.getExchangeRate(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .body1
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        swapBloc.getExchangeRateUSD(),
+                        style: Theme.of(context).textTheme.body2,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+          } else {
+            return Container(
+              height: 84,
+            );
+          }
         });
   }
 }

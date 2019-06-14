@@ -57,9 +57,13 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             ),
           ),
           backgroundColor: Theme.of(context).backgroundColor,
-          body: TabBarView(
-            controller: tabController,
-            children: <Widget>[TradeNewPage(), SwapHistory()],
+          body: Builder(
+            builder: (context) {
+              return TabBarView(
+                controller: tabController,
+                children: <Widget>[TradeNewPage(mContext: context,), SwapHistory()],
+              );
+            }
           ),
         ),
       ),

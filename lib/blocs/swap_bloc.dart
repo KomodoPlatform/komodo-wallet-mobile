@@ -11,12 +11,12 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 class SwapBloc implements BlocBase {
   OrderCoin orderCoin;
   CoinBalance sellCoin;
+  bool enabledReceiceField;
 
   StreamController<OrderCoin> _orderCoinController =
       StreamController<OrderCoin>.broadcast();
   Sink<OrderCoin> get _inOrderCoin => _orderCoinController.sink;
   Stream<OrderCoin> get outOrderCoin => _orderCoinController.stream;
-
 
   Coin receiveCoin;
   StreamController<Coin> _receiveCoinController =
@@ -42,9 +42,23 @@ class SwapBloc implements BlocBase {
   StreamController<bool> _focusTextFieldController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inFocusTextField => _focusTextFieldController.sink;
-  Stream<bool> get outFocusTextField =>
-      _focusTextFieldController.stream;
-      
+  Stream<bool> get outFocusTextField => _focusTextFieldController.stream;
+
+  double amountReceive;
+
+  StreamController<double> _amountReceiveController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inAmountReceiveCoin => _amountReceiveController.sink;
+  Stream<double> get outAmountReceive => _amountReceiveController.stream;
+
+
+  bool isTimeOut = false;
+
+  StreamController<bool> _isTimeOutController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inIsTimeOut => _isTimeOutController.sink;
+  Stream<bool> get outIsTimeOut => _isTimeOutController.stream;
+
   @override
   void dispose() {
     _orderCoinController.close();
@@ -52,6 +66,7 @@ class SwapBloc implements BlocBase {
     _listOrderCoinController.close();
     _focusTextFieldController.close();
     _receiveCoinController.close();
+    _amountReceiveController.close();
   }
 
   void updateBuyCoin(OrderCoin orderCoin) {
@@ -59,7 +74,7 @@ class SwapBloc implements BlocBase {
     _inOrderCoin.add(this.orderCoin);
   }
 
-    void updateReceiveCoin(Coin receiveCoin) {
+  void updateReceiveCoin(Coin receiveCoin) {
     this.receiveCoin = receiveCoin;
     _inReceiveCoin.add(this.receiveCoin);
   }
@@ -115,7 +130,7 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRate() {
     if (swapBloc.orderCoin != null) {
-      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${swapBloc.orderCoin.bestPrice} ${swapBloc.orderCoin.coinRel.abbr}';
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${swapBloc.orderCoin.bestPrice.toStringAsFixed(8)} ${swapBloc.orderCoin.coinRel.abbr}';
     } else {
       return "";
     }
@@ -123,7 +138,9 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRateUSD() {
     if (swapBloc.orderCoin != null && this.sellCoin.priceForOne != null) {
-      return ' - (${(this.sellCoin.priceForOne * swapBloc.orderCoin.bestPrice).toString()} USD)';
+      String res = (this.sellCoin.priceForOne * swapBloc.orderCoin.bestPrice)
+          .toStringAsFixed(2);
+      return '($res USD)';
     } else {
       return "";
     }
@@ -132,6 +149,42 @@ class SwapBloc implements BlocBase {
   void setFocusTextField(bool focus) {
     this.focusTextField = focus;
     _inFocusTextField.add(this.focusTextField);
+  }
+
+  Future<double> setReceiveAmount(Coin coin, String amountSell) async {
+    Orderbook orderbook = await mm2.getOrderbook(sellCoin.coin, coin);
+    double bestPrice = 0;
+    double maxVolume = 0;
+    int i = 0;
+    orderbook.asks.forEach((ask) {
+      print("ask" + ask.price.toString());
+      if (i == 0) {
+        maxVolume = ask.maxvolume;
+        bestPrice = ask.price;
+      } else if (ask.price < bestPrice) {
+        maxVolume = ask.maxvolume;
+        bestPrice = ask.price;
+      }
+      i++;
+    });
+    print("BEST PRICE" + bestPrice.toString());
+    this.orderCoin = OrderCoin(
+      coinRel: sellCoin.coin,
+      coinBase: coin,
+      orderbook: orderbook,
+      maxVolume: maxVolume,
+      bestPrice: bestPrice,
+    );
+    _inOrderCoin.add(this.orderCoin);
+
+    this.amountReceive = double.parse(this.orderCoin.getBuyAmount(double.parse(amountSell.replaceAll(",", "."))));
+    _inAmountReceiveCoin.add(this.amountReceive);
+    return this.amountReceive;
+  }
+
+  void setTimeout(bool time) {
+    this.isTimeOut = time;
+    _inIsTimeOut.add(this.isTimeOut);
   }
 }
 
