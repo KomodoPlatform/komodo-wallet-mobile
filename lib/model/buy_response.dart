@@ -4,114 +4,70 @@
 
 import 'dart:convert';
 
-BuyResponse buyResponseFromJson(String str) {
-  final jsonData = json.decode(str);
-  return BuyResponse.fromJson(jsonData);
-}
+BuyResponse buyResponseFromJson(String str) => BuyResponse.fromJson(json.decode(str));
 
-String buyResponseToJson(BuyResponse data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String buyResponseToJson(BuyResponse data) => json.encode(data.toJson());
 
 class BuyResponse {
-  List<dynamic> netamounts;
-  Pending pending;
-  String result;
-  List<List<int>> swaps;
-  String uuid;
+    Result result;
 
-  BuyResponse({
-    this.netamounts,
-    this.pending,
-    this.result,
-    this.swaps,
-    this.uuid,
-  });
+    BuyResponse({
+        this.result,
+    });
 
-  factory BuyResponse.fromJson(Map<String, dynamic> json) => new BuyResponse(
-        netamounts: new List<dynamic>.from(json["netamounts"].map((x) => x)),
-        pending: Pending.fromJson(json["pending"]),
-        result: json["result"],
-        swaps: new List<List<int>>.from(
-            json["swaps"].map((x) => new List<int>.from(x.map((x) => x)))),
-        uuid: json["uuid"],
-      );
+    factory BuyResponse.fromJson(Map<String, dynamic> json) => new BuyResponse(
+        result: Result.fromJson(json["result"]),
+    );
 
-  Map<String, dynamic> toJson() => {
-        "netamounts": new List<dynamic>.from(netamounts.map((x) => x)),
-        "pending": pending.toJson(),
-        "result": result,
-        "swaps": new List<dynamic>.from(
-            swaps.map((x) => new List<dynamic>.from(x.map((x) => x)))),
-        "uuid": uuid,
-      };
+    Map<String, dynamic> toJson() => {
+        "result": result.toJson(),
+    };
 }
 
-class Pending {
-  String alice;
-  int aliceid;
-  String base;
-  double basevalue;
-  String bob;
-  String desthash;
-  int expiration;
-  int quoteid;
-  String rel;
-  double relvalue;
-  int requestid;
-  int timeleft;
-  int tradeid;
-  String uuid;
+class Result {
+    String action;
+    String base;
+    String baseAmount;
+    String destPubKey;
+    String method;
+    String rel;
+    String relAmount;
+    String senderPubkey;
+    String uuid;
 
-  Pending({
-    this.alice,
-    this.aliceid,
-    this.base,
-    this.basevalue,
-    this.bob,
-    this.desthash,
-    this.expiration,
-    this.quoteid,
-    this.rel,
-    this.relvalue,
-    this.requestid,
-    this.timeleft,
-    this.tradeid,
-    this.uuid,
-  });
+    Result({
+        this.action,
+        this.base,
+        this.baseAmount,
+        this.destPubKey,
+        this.method,
+        this.rel,
+        this.relAmount,
+        this.senderPubkey,
+        this.uuid,
+    });
 
-  factory Pending.fromJson(Map<String, dynamic> json) => new Pending(
-        alice: json["alice"],
-        aliceid: json["aliceid"],
+    factory Result.fromJson(Map<String, dynamic> json) => new Result(
+        action: json["action"],
         base: json["base"],
-        basevalue: json["basevalue"].toDouble(),
-        bob: json["bob"],
-        desthash: json["desthash"],
-        expiration: json["expiration"],
-        quoteid: json["quoteid"],
+        baseAmount: json["base_amount"],
+        destPubKey: json["dest_pub_key"],
+        method: json["method"],
         rel: json["rel"],
-        relvalue: json["relvalue"].toDouble(),
-        requestid: json["requestid"],
-        timeleft: json["timeleft"],
-        tradeid: json["tradeid"],
+        relAmount: json["rel_amount"],
+        senderPubkey: json["sender_pubkey"],
         uuid: json["uuid"],
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
-        "alice": alice,
-        "aliceid": aliceid,
+    Map<String, dynamic> toJson() => {
+        "action": action,
         "base": base,
-        "basevalue": basevalue,
-        "bob": bob,
-        "desthash": desthash,
-        "expiration": expiration,
-        "quoteid": quoteid,
+        "base_amount": baseAmount,
+        "dest_pub_key": destPubKey,
+        "method": method,
         "rel": rel,
-        "relvalue": relvalue,
-        "requestid": requestid,
-        "timeleft": timeleft,
-        "tradeid": tradeid,
+        "rel_amount": relAmount,
+        "sender_pubkey": senderPubkey,
         "uuid": uuid,
-      };
+    };
 }

@@ -41,7 +41,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     if (mm2.ismm2Running) {
-      mm2.loadCoin(false);
+      coinsBloc.loadCoin(false);
     }
 
     super.initState();
@@ -228,7 +228,7 @@ class LoadAssetState extends State<LoadAsset> {
           int assetNumber = 0;
 
           snapshot.data.forEach((coinBalance) {
-            if (coinBalance.balance.balance > 0) {
+            if (double.parse(coinBalance.balance.balance) > 0) {
               assetNumber++;
             }
           });
@@ -280,11 +280,12 @@ class ListCoins extends StatefulWidget {
 class ListCoinsState extends State<ListCoins> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
+  final SlidableController slidableController = SlidableController();
 
   @override
   void initState() {
     if (mm2.ismm2Running) {
-      mm2.loadCoin(false);
+      coinsBloc.loadCoin(false);
     }
     super.initState();
   }
@@ -295,43 +296,53 @@ class ListCoinsState extends State<ListCoins> {
       initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data.length > 0) {
-          List<dynamic> datas = new List<dynamic>();
-          datas.addAll(snapshot.data);
-          datas.add(true);
-          return RefreshIndicator(
-              backgroundColor: Theme.of(context).backgroundColor,
-              key: _refreshIndicatorKey,
-              onRefresh: () => mm2.loadCoin(true),
-              child: ListView(
-                padding: EdgeInsets.all(0),
-                children: datas
-                    .map((data) =>
-                        ItemCoin(mContext: context, coinBalance: data))
-                    .toList(),
-              ));
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return LoadingCoin();
-        } else {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              AddCoinButton(),
-              Text("Please Add A Coin"),
-            ],
-          );
-        }
+        return RefreshIndicator(
+            backgroundColor: Theme.of(context).backgroundColor,
+            key: _refreshIndicatorKey,
+            onRefresh: () => coinsBloc.loadCoin(true),
+            child: Builder(builder: (context) {
+              if (snapshot.hasData && snapshot.data.length > 0) {
+                List<dynamic> datas = new List<dynamic>();
+                datas.addAll(snapshot.data);
+                datas.add(true);
+                return ListView(
+                  padding: EdgeInsets.all(0),
+                  children: datas
+                      .map((data) => ItemCoin(
+                            mContext: context,
+                            coinBalance: data,
+                            slidableController: slidableController,
+                          ))
+                      .toList(),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return LoadingCoin();
+              } else {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    AddCoinButton(),
+                    Text("Please Add A Coin"),
+                  ],
+                );
+              }
+            }));
       },
     );
   }
 }
 
 class ItemCoin extends StatefulWidget {
-  const ItemCoin({Key key, @required this.mContext, @required this.coinBalance})
+  const ItemCoin(
+      {Key key,
+      @required this.mContext,
+      @required this.coinBalance,
+      this.slidableController})
       : super(key: key);
 
   final dynamic coinBalance;
   final BuildContext mContext;
+  final SlidableController slidableController;
 
   @override
   _ItemCoinState createState() => _ItemCoinState();
@@ -349,7 +360,7 @@ class _ItemCoinState extends State<ItemCoin> {
       Balance balance = widget.coinBalance.balance;
       NumberFormat f = new NumberFormat("###,##0.########");
       List<Widget> actions = new List<Widget>();
-      if (balance.balance > 0) {
+      if (double.parse(balance.balance) > 0) {
         actions.add(IconSlideAction(
           caption: AppLocalizations.of(context).send,
           color: Colors.white,
@@ -374,7 +385,7 @@ class _ItemCoinState extends State<ItemCoin> {
           showAddressDialog(context, balance.address);
         },
       ));
-      if (balance.balance > 0) {
+      if (double.parse(balance.balance) > 0) {
         actions.add(IconSlideAction(
           caption: AppLocalizations.of(context).swap.toUpperCase(),
           color: Theme.of(context).accentColor,
@@ -393,6 +404,7 @@ class _ItemCoinState extends State<ItemCoin> {
       return Column(
         children: <Widget>[
           Slidable(
+            controller: widget.slidableController,
             actionPane: SlidableDrawerActionPane(),
             actionExtentRatio: 0.25,
             actions: actions,
@@ -404,6 +416,10 @@ class _ItemCoinState extends State<ItemCoin> {
                       .open(actionType: SlideActionType.primary);
                 },
                 onTap: () {
+                  if (widget.slidableController != null &&
+                      widget.slidableController.activeState != null) {
+                    widget.slidableController.activeState.close();
+                  }
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -457,7 +473,7 @@ class _ItemCoinState extends State<ItemCoin> {
                               ),
                               Container(
                                 child: AutoSizeText(
-                                  "${f.format(balance.balance)} ${coin.abbr}",
+                                  "${f.format(double.parse(balance.balance))} ${coin.abbr}",
                                   maxLines: 1,
                                   style: Theme.of(context).textTheme.subtitle,
                                 ),
@@ -473,7 +489,9 @@ class _ItemCoinState extends State<ItemCoin> {
                                 );
                               }),
                               widget.coinBalance.coin.abbr == "KMD" &&
-                                      widget.coinBalance.balance.balance >= 10
+                                      double.parse(widget
+                                              .coinBalance.balance.balance) >=
+                                          10
                                   ? Padding(
                                       padding: EdgeInsets.only(top: 8),
                                       child: OutlineButton(

@@ -78,6 +78,7 @@ class SwapBloc implements BlocBase {
           double maxVolume = 0;
           int i = 0;
           orderbook.asks.forEach((ask) {
+            print("ask" + ask.price.toString());
             if (i == 0) {
               maxVolume = ask.maxvolume;
               bestPrice = ask.price;
@@ -87,6 +88,7 @@ class SwapBloc implements BlocBase {
             }
             i++;
           });
+          print("BEST PRICE" + bestPrice.toString());
           orderCoins.add(OrderCoin(
             coinRel: rel,
             coinBase: coin,

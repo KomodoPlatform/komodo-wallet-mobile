@@ -53,7 +53,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       setState(() {
         if (coinBalance != null &&
             double.parse(text.replaceAll(",", ".")) >
-                coinBalance.balance.balance) {
+                double.parse(coinBalance.balance.balance)) {
           setMaxValue();
         } else {
           if (text.contains(
@@ -86,8 +86,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       } else {
         fee = (txFee.toDouble() / 100000000);
       }
-      _controllerAmount.text = ((coinBalance.balance.balance -
-                  (coinBalance.balance.balance * 0.01)) -
+      _controllerAmount.text = ((double.parse(coinBalance.balance.balance) -
+                  (double.parse(coinBalance.balance.balance) * 0.01)) -
               fee)
           .toStringAsFixed(8);
     });
@@ -612,7 +612,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       });
     } else if (market == Market.SELL) {
       coinsBloc.coinBalance.forEach((coin) {
-        if (coin.balance.balance > 0) {
+        if (double.parse(coin.balance.balance) > 0) {
           SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
               _controllerAmount.text = '';
@@ -717,6 +717,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       context,
       MaterialPageRoute(
           builder: (context) => SwapConfirmation(
+            
                 amountToSell: _controllerAmount.text,
                 amountToBuy: amountToBuy,
               )),

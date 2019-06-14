@@ -67,7 +67,9 @@ class BoxButton extends StatelessWidget {
             child: Center(
                 child: Column(
               children: <Widget>[
-                SvgPicture.asset(assetPath),
+                Container(
+                  height: 40,
+                  child: SvgPicture.asset(assetPath)),
                 SizedBox(
                   height: 8,
                 ),
@@ -148,9 +150,9 @@ class _BuildScreenAuthMultiWalletsState
                 builder: (context) => UnlockWalletPage(
                   textButton: AppLocalizations.of(context).login,
                       wallet: wallet,
-                      onSuccess: (seed) async{
+                      onSuccess: (seed, password) async{
                         if (!mm2.ismm2Running) {
-                          await authBloc.login(seed, null);
+                          await authBloc.loginUI(true, seed, password);
                         }
                       },
                     )),

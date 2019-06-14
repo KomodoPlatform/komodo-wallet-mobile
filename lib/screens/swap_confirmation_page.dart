@@ -5,6 +5,8 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/lock_screen.dart';
 import 'package:komodo_dex/screens/media_page.dart';
 import 'package:komodo_dex/screens/swap_detail_page.dart';
@@ -23,6 +25,13 @@ class SwapConfirmation extends StatefulWidget {
 
 class _SwapConfirmationState extends State<SwapConfirmation> {
   bool isSwapMaking = false;
+
+  @override
+  void dispose() {
+    swapBloc.updateSellCoin(null);
+    swapBloc.updateBuyCoin(null);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,8 +169,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(32)),
                   child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
                       color: Theme.of(context).backgroundColor,
                       child: SvgPicture.asset("assets/icon_swap.svg")),
                 ))
@@ -270,30 +278,30 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     double amountToSell =
         double.parse(widget.amountToSell.replaceAll(",", "."));
 
+    double amountToBuy = (amountToSell *
+        (amountToSell / (amountToSell * swapBloc.orderCoin.bestPrice)));
     mm2
         .postBuy(swapBloc.orderCoin.coinBase, swapBloc.orderCoin.coinRel,
-            amountToSell, swapBloc.orderCoin.bestPrice * 1.01)
+            amountToBuy, swapBloc.orderCoin.bestPrice * 1.01)
         .then((onValue) {
-      if (onValue is BuyResponse && onValue.result == "success") {
-        swapHistoryBloc.saveUUID(
-            onValue.pending.uuid,
-            swapBloc.orderCoin.coinBase,
-            swapBloc.orderCoin.coinRel,
-            amountToSell,
-            double.parse(swapBloc.orderCoin.getBuyAmount(amountToSell)));
-        swapHistoryBloc.updateSwap().then((data) {
-          swapHistoryBloc.swaps.forEach((swap) {
-            if (swap.uuid.uuid == onValue.pending.uuid) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SwapDetailPage(
-                          swap: swap,
+      if (onValue is BuyResponse) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SwapDetailPage(
+                    swap: new Swap(
+                        status: Status.ORDER_MATCHING,
+                        result: ResultSwap(
+                          uuid: onValue.result.uuid,
+                          myInfo: MyInfo(
+                              myAmount: amountToSell.toString(),
+                              otherAmount: amountToBuy.toString(),
+                              myCoin: onValue.result.rel,
+                              otherCoin: onValue.result.base,
+                              startedAt: DateTime.now().millisecondsSinceEpoch),
                         )),
-              );
-            }
-          });
-        });
+                  )),
+        );
       } else {
         setState(() {
           isSwapMaking = false;

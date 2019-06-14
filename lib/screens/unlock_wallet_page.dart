@@ -11,7 +11,7 @@ import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class UnlockWalletPage extends StatefulWidget {
   final Wallet wallet;
-  final Function(String) onSuccess;
+  final Function(String seed, String password) onSuccess;
   final bool isSignWithSeedIsEnabled;
   final String textButton;
 
@@ -173,7 +173,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
         .loginWithPassword(context, controller.text, widget.wallet)
         .then((data) async {
       Navigator.of(context).pop();
-      widget.onSuccess(data);
+      widget.onSuccess(data, controller.text);
     }).catchError((onError) {
       print(onError);
       Scaffold.of(context).showSnackBar(new SnackBar(

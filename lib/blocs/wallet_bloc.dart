@@ -47,7 +47,6 @@ class WalletBloc implements BlocBase {
 
     if (seedPhrase != null) {
         await DBProvider.db.saveCurrentWallet(wallet);
-      await authBloc.loginUI(true, seedPhrase, password);
       return seedPhrase;
     } else {
       throw(AppLocalizations.of(context).wrongPassword);
