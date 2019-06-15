@@ -86,7 +86,7 @@
     "address": "electrum1.cipig.net",
     "port": 10059,
     "proto": "tcp",
-    "txfee": 10000,
+    "txfee": 100000,
     "abbr": "DGB",
     "colorCoin": "0xFF082550",
     "serverList": [
@@ -103,7 +103,7 @@
     "address": "s1.qtum.info",
     "port": 50001,
     "proto": "tcp",
-    "txfee": 10000,
+    "txfee": 400000,
     "abbr": "QTUM",
     "colorCoin": "0xFF52a5da",
     "serverList": [
