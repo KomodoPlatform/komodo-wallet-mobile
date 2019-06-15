@@ -14,12 +14,14 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_buy.dart';
+import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
@@ -27,7 +29,9 @@ import 'package:komodo_dex/model/get_swap.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/transactions.dart';
@@ -359,6 +363,29 @@ class MarketMakerService {
         await http.post(url, body: getRecentSwapToJson(getRecentSwap));
     print(response.body.toString());
     return recentSwapsFromJson(response.body);
+  }
+
+  Future<Orders> getMyOrders() async {
+    GetRecentSwap getRecentSwap = new GetRecentSwap(
+        userpass: userpass,
+        method: "my_orders");
+
+    final response =
+        await http.post(url, body: getRecentSwapToJson(getRecentSwap));
+    print("my_orders" + response.body.toString());
+    return ordersFromJson(response.body);
+  }
+
+  Future<ResultSuccess> cancelOrder(String uuid) async {
+    GetCancelOrder getCancelOrder = new GetCancelOrder(
+        userpass: userpass,
+        method: "cancel_order",
+        uuid: uuid);
+
+    final response =
+        await http.post(url, body: getCancelOrderToJson(getCancelOrder));
+    print("cancel_order" + response.body.toString());
+    return resultFromJson(response.body);
   }
 
   Future<CoinToKickStart> getCoinToKickStart() async {

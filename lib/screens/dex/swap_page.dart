@@ -53,7 +53,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             bottom: PreferredSize(
               preferredSize: new Size(200.0, 70.0),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                 child: Container(
                   height: 40,
                   
