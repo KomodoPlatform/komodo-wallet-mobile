@@ -4,7 +4,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transactions.dart';
-import 'package:komodo_dex/screens/lock_screen.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';

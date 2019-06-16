@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/screens/restore_seed_page.dart';
-import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/screens/settings/restore_seed_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class UnlockWalletPage extends StatefulWidget {
   final Wallet wallet;

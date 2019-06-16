@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/check_passphrase_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/create_password_page.dart';
+import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/widgets/custom_textfield.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';

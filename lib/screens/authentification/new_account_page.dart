@@ -2,7 +2,7 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/check_passphrase_page.dart';
+import 'package:komodo_dex/screens/authentification/check_passphrase_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class NewAccountPage extends StatefulWidget {

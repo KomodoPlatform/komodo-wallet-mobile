@@ -20,6 +20,7 @@ class _CustomPainter extends BoxPainter {
       : assert(decoration != null),
         super(onChanged);
 
+  
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     assert(configuration != null);

@@ -13,9 +13,8 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/screens/coin_detail.dart';
-import 'package:komodo_dex/screens/select_coins_page.dart';
-import 'package:komodo_dex/screens/swap_page.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail.dart';
+import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 

@@ -1,25 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
-import 'package:komodo_dex/screens/swap_confirmation_page.dart';
-import 'package:komodo_dex/screens/swap_history.dart';
+import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
-class SwapPage extends StatefulWidget {
+class TradePage extends StatefulWidget {
   @override
-  _SwapPageState createState() => _SwapPageState();
+  _TradePageState createState() => _TradePageState();
 }
 
-class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
+class _TradePageState extends State<TradePage> with TickerProviderStateMixin{
   TextEditingController _controllerAmount = new TextEditingController();
   Animation<double> animation;
   AnimationController controller;
@@ -33,10 +30,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    tabController = new TabController(length: 2, vsync: this);
-    if (swapHistoryBloc.isSwapsOnGoing) {
-      tabController.index = 1;
-    }
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
 
@@ -45,6 +38,13 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         duration: const Duration(milliseconds: 500), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
     controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controllerAmount.dispose();
+    controller.dispose();
+    super.dispose();
   }
 
   void onChange() {
@@ -99,51 +99,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   }
 
   @override
-  void dispose() {
-    _controllerAmount.dispose();
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
-      },
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(48),
-            child: SafeArea(
-              child: AppBar(
-                bottom: TabBar(
-                  controller: tabController,
-                  tabs: [
-                    Tab(
-                      text: AppLocalizations.of(context).create.toUpperCase(),
-                    ),
-                    Tab(
-                        text:
-                            AppLocalizations.of(context).history.toUpperCase())
-                  ],
-                ),
-              ),
-            ),
-          ),
-          backgroundColor: Theme.of(context).backgroundColor,
-          body: TabBarView(
-            controller: tabController,
-            children: <Widget>[_buildSwapScreen(), SwapHistory()],
-          ),
-        ),
-      ),
-    );
-  }
-
-  _buildSwapScreen() {
     return SafeArea(
       child: Column(
         children: <Widget>[
@@ -218,37 +174,38 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                                 ),
                                 Expanded(
                                   child: StreamBuilder<bool>(
-                                    initialData: swapBloc.focusTextField,
-                                    stream: swapBloc.outFocusTextField,
-                                    builder: (context, snapshot) {
-                                      return TextFormField(
-                                        focusNode: _focus,
-                                        controller: _controllerAmount,
-                                        autofocus: snapshot.data,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .body1
-                                            .copyWith(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.end,
-                                        textInputAction: TextInputAction.done,
-                                        keyboardType:
-                                            TextInputType.numberWithOptions(
-                                                decimal: true),
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintStyle: Theme.of(context)
-                                                .textTheme
-                                                .body2
-                                                .copyWith(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w400),
-                                            hintText: AppLocalizations.of(context)
-                                                .amountToSell),
-                                      );
-                                    }
-                                  ),
+                                      initialData: swapBloc.focusTextField,
+                                      stream: swapBloc.outFocusTextField,
+                                      builder: (context, snapshot) {
+                                        return TextFormField(
+                                          focusNode: _focus,
+                                          controller: _controllerAmount,
+                                          autofocus: snapshot.data,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body1
+                                              .copyWith(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.end,
+                                          textInputAction: TextInputAction.done,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .body2
+                                                  .copyWith(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                              hintText:
+                                                  AppLocalizations.of(context)
+                                                      .amountToSell),
+                                        );
+                                      }),
                                 ),
                                 Padding(
                                   padding:
@@ -321,6 +278,61 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  _buildSwapArrow() {
+    return Container(
+      height: 25,
+      child: Center(
+        child: RotatedBox(
+          quarterTurns: 1,
+          child: Icon(
+            Icons.play_arrow,
+            size: 25,
+            color: Colors.white30,
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildSwapButton() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.08,
+      child: Container(
+        width: double.infinity,
+        child: Builder(builder: (context) {
+          if (isSwapProgress) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return StreamBuilder<Object>(
+                stream: swapBloc.outOrderCoin,
+                builder: (context, snapshot) {
+                  return RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(8),
+                            topLeft: Radius.circular(8))),
+                    color: Theme.of(context).buttonColor,
+                    disabledColor: Theme.of(context).disabledColor,
+                    child: Text(
+                      AppLocalizations.of(context).swap.toUpperCase(),
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                    onPressed: snapshot.hasData &&
+                            snapshot.connectionState ==
+                                ConnectionState.active &&
+                            _controllerAmount.text.isNotEmpty
+                        ? _confirmSwap
+                        : null,
+                  );
+                });
+          }
+        }),
       ),
     );
   }
@@ -461,13 +473,25 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         });
   }
 
+  _confirmSwap() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SwapConfirmation(
+                amountToSell: _controllerAmount.text,
+                amountToBuy: amountToBuy,
+              )),
+    );
+  }
+
   _openDialogCoinWithBalance(Market market) async {
     if (market == Market.BUY) {
       if (swapBloc.sellCoin != null && swapBloc.sellCoin.coin != null) {
         swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
       }
     }
-    List<SimpleDialogOption> listDialogCoins = _createListDialog(context, market, null);
+    List<SimpleDialogOption> listDialogCoins =
+        _createListDialog(context, market, null);
 
     dialogBloc.dialog = showDialog<List<CoinBalance>>(
         context: context,
@@ -656,74 +680,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
     return listDialog;
   }
-
-  _buildSwapArrow() {
-    return Container(
-      height: 25,
-      child: Center(
-        child: RotatedBox(
-          quarterTurns: 1,
-          child: Icon(
-            Icons.play_arrow,
-            size: 25,
-            color: Colors.white30,
-          ),
-        ),
-      ),
-    );
-  }
-
-  _buildSwapButton() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.08,
-      child: Container(
-        width: double.infinity,
-        child: Builder(builder: (context) {
-          if (isSwapProgress) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return StreamBuilder<Object>(
-                stream: swapBloc.outOrderCoin,
-                builder: (context, snapshot) {
-                  return RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(8),
-                            topLeft: Radius.circular(8))),
-                    color: Theme.of(context).buttonColor,
-                    disabledColor: Theme.of(context).disabledColor,
-                    child: Text(
-                      AppLocalizations.of(context).swap.toUpperCase(),
-                      style: Theme.of(context).textTheme.button,
-                    ),
-                    onPressed: snapshot.hasData &&
-                            snapshot.connectionState ==
-                                ConnectionState.active &&
-                            _controllerAmount.text.isNotEmpty
-                        ? _confirmSwap
-                        : null,
-                  );
-                });
-          }
-        }),
-      ),
-    );
-  }
-
-  _confirmSwap() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => SwapConfirmation(
-            
-                amountToSell: _controllerAmount.text,
-                amountToBuy: amountToBuy,
-              )),
-    );
-  }
 }
+
 
 class DialogLooking extends StatefulWidget {
   @override
