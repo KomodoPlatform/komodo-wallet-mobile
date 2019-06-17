@@ -142,77 +142,11 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               ),
             );
           }),
-          SizedBox(
-            height: 8,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: SecondaryButton(
-              text: AppLocalizations.of(context).dontWantPassword,
-              onPressed: () => _showDialogConfirm(context),
-            ),
-          )
         ],
       ),
     );
   }
 
-  _showDialogConfirm(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            contentPadding: EdgeInsets.all(16),
-            backgroundColor: Colors.white,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0)),
-            title: Column(
-              children: <Widget>[
-                Icon(
-                  Icons.info_outline,
-                  size: 40,
-                  color: Theme.of(context).accentColor,
-                ),
-                Text(AppLocalizations.of(context).areYouSure,
-                    style: Theme.of(context)
-                        .textTheme
-                        .title
-                        .copyWith(color: Theme.of(context).accentColor))
-              ],
-            ),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 26),
-                child: Center(
-                    child: Text(
-                  AppLocalizations.of(context).infoPasswordDialog,
-                  style: Theme.of(context)
-                      .textTheme
-                      .body1
-                      .copyWith(color: Theme.of(context).primaryColor),
-                  textAlign: TextAlign.center,
-                )),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              PrimaryButton(
-                text: AppLocalizations.of(context).setUpPassword,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              SecondaryButton(
-                  text: AppLocalizations.of(context).dontWantPassword,
-                  onPressed: () => _nextPage(false),
-                  isDarkMode: false)
-            ],
-          );
-        });
-  }
 
   _checkValidation(BuildContext context) {
     if (controller1.text == controller2.text) {
