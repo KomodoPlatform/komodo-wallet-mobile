@@ -12,6 +12,7 @@ class SwapBloc implements BlocBase {
   OrderCoin orderCoin;
   CoinBalance sellCoin;
   bool enabledReceiveField;
+  bool enabledSellField;
 
   StreamController<OrderCoin> _orderCoinController =
       StreamController<OrderCoin>.broadcast();
