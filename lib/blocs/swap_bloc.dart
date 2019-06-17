@@ -11,7 +11,7 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 class SwapBloc implements BlocBase {
   OrderCoin orderCoin;
   CoinBalance sellCoin;
-  bool enabledReceiceField;
+  bool enabledReceiveField;
 
   StreamController<OrderCoin> _orderCoinController =
       StreamController<OrderCoin>.broadcast();
