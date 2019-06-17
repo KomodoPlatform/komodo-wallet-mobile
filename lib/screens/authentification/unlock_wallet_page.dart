@@ -26,6 +26,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
   TextEditingController controller = new TextEditingController();
   bool isLoading = false;
   bool isButtonLoginEnabled = false;
+  bool isObscured = true;
 
   @override
   Widget build(BuildContext context) {
@@ -73,40 +74,64 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Builder(builder: (context) {
-                return TextField(
-                    maxLength: 120,
-                    controller: controller,
-                    onChanged: (str) {
-                      if (str.length == 0 || str.length > 120) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                                          child: TextField(
+                          maxLength: 40,
+                          controller: controller,
+                          onChanged: (str) {
+                            if (str.length == 0 || str.length > 40) {
+                              setState(() {
+                                isButtonLoginEnabled = false;
+                              });
+                            } else {
+                              setState(() {
+                                isButtonLoginEnabled = true;
+                              });
+                            }
+                          },
+                          onSubmitted: (data) {
+                            _login(context);
+                          },
+                          autocorrect: false,
+                          obscureText: isObscured,
+                          enableInteractiveSelection: false,
+                          style: Theme.of(context).textTheme.body1,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).primaryColorLight)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).accentColor)),
+                              hintStyle: Theme.of(context).textTheme.body2,
+                              labelStyle: Theme.of(context).textTheme.body1,
+                              hintText:
+                                  AppLocalizations.of(context).hintEnterPassword,
+                              labelText: null)),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    InkWell(
+                      onTap: () {
                         setState(() {
-                          isButtonLoginEnabled = false;
+                          isObscured = !isObscured;
                         });
-                      } else {
-                        setState(() {
-                          isButtonLoginEnabled = true;
-                        });
-                      }
-                    },
-                    onSubmitted: (data) {
-                      _login(context);
-                    },
-                    autocorrect: false,
-                    obscureText: true,
-                    enableInteractiveSelection: false,
-                    style: Theme.of(context).textTheme.body1,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColorLight)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).accentColor)),
-                        hintStyle: Theme.of(context).textTheme.body2,
-                        labelStyle: Theme.of(context).textTheme.body1,
-                        hintText:
-                            AppLocalizations.of(context).hintEnterPassword,
-                        labelText: null));
+                      },
+                      child: Container(
+                          height: 60,
+                          padding: EdgeInsets.only(right: 16, left: 16),
+                          child: isObscured
+                              ? Icon(Icons.visibility)
+                              : Icon(Icons.visibility_off)),
+                    )
+                  ],
+                );
               }),
             ),
           ),

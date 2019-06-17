@@ -27,6 +27,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   String _password;
+  bool isObscured = true;
 
   @override
   void initState() {
@@ -97,72 +98,104 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
             SizedBox(
               height: 16,
             ),
-            TextFormField(
-                maxLength: 40,
-                focusNode: _focus1,
-                controller: controller1,
-                onFieldSubmitted: (term) {
-                  _fieldFocusChange(context, _focus1, _focus2);
-                  _validateInputs();
-                },
-                textInputAction: TextInputAction.next,
-                autocorrect: false,
-                enableInteractiveSelection: true,
-                obscureText: true,
-                validator: (String arg) {
-                  RegExp exp = RegExp(
-                      r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
-                  if (!arg.contains(exp))
-                    return 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.';
-                  else
-                    return null;
-                },
-                onSaved: (String val) {
-                  _password = val;
-                },
-                style: Theme.of(context).textTheme.body1,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    errorMaxLines: 3,
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColorLight)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).accentColor)),
-                    hintStyle: Theme.of(context).textTheme.body2,
-                    labelStyle: Theme.of(context).textTheme.body1,
-                    hintText: AppLocalizations.of(context).hintPassword,
-                    labelText: null)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: TextFormField(
+                      maxLength: 40,
+                      focusNode: _focus1,
+                      controller: controller1,
+                      onFieldSubmitted: (term) {
+                        _fieldFocusChange(context, _focus1, _focus2);
+                        _validateInputs();
+                      },
+                      textInputAction: TextInputAction.next,
+                      autocorrect: false,
+                      enableInteractiveSelection: true,
+                      obscureText: isObscured,
+                      validator: (String arg) {
+                        RegExp exp = RegExp(
+                            r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
+                        if (!arg.contains(exp))
+                          return 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.';
+                        else
+                          return null;
+                      },
+                      onSaved: (String val) {
+                        _password = val;
+                      },
+                      style: Theme.of(context).textTheme.body1,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColorLight)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).accentColor)),
+                          hintStyle: Theme.of(context).textTheme.body2,
+                          labelStyle: Theme.of(context).textTheme.body1,
+                          hintText: AppLocalizations.of(context).hintPassword,
+                          labelText: null)),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isObscured = !isObscured;
+                    });
+                  },
+                  child: Container(
+                      height: 60,
+                      padding: EdgeInsets.only(right: 16, left: 16),
+                      child: isObscured
+                          ? Icon(Icons.visibility)
+                          : Icon(Icons.visibility_off)),
+                )
+              ],
+            ),
             SizedBox(
               height: 8,
             ),
             Builder(builder: (context) {
-              return TextFormField(
-                  maxLength: 40,
-                  controller: controller2,
-                  textInputAction: TextInputAction.done,
-                  autocorrect: false,
-                  focusNode: _focus2,
-                  obscureText: true,
-                  enableInteractiveSelection: true,
-                  onFieldSubmitted: (data) {
-                    _checkValidation(context);
-                  },
-                  style: Theme.of(context).textTheme.body1,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorLight)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor)),
-                      hintStyle: Theme.of(context).textTheme.body2,
-                      labelStyle: Theme.of(context).textTheme.body1,
-                      hintText:
-                          AppLocalizations.of(context).hintConfirmPassword,
-                      labelText: null));
+              return Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextFormField(
+                        maxLength: 40,
+                        controller: controller2,
+                        textInputAction: TextInputAction.done,
+                        autocorrect: false,
+                        focusNode: _focus2,
+                        obscureText: isObscured,
+                        enableInteractiveSelection: true,
+                        onFieldSubmitted: (data) {
+                          _checkValidation(context);
+                        },
+                        style: Theme.of(context).textTheme.body1,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).accentColor)),
+                            hintStyle: Theme.of(context).textTheme.body2,
+                            labelStyle: Theme.of(context).textTheme.body1,
+                            hintText: AppLocalizations.of(context)
+                                .hintConfirmPassword,
+                            labelText: null)),
+                  ),
+                  SizedBox(
+                    width: 72,
+                  ),
+                ],
+              );
             }),
             SizedBox(
               height: 16,
@@ -178,77 +211,10 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 ),
               );
             }),
-            SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: SecondaryButton(
-                text: AppLocalizations.of(context).dontWantPassword,
-                onPressed: () => _showDialogConfirm(context),
-              ),
-            )
           ],
         ),
       ),
     );
-  }
-
-  _showDialogConfirm(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            contentPadding: EdgeInsets.all(16),
-            backgroundColor: Colors.white,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0)),
-            title: Column(
-              children: <Widget>[
-                Icon(
-                  Icons.info_outline,
-                  size: 40,
-                  color: Theme.of(context).accentColor,
-                ),
-                Text(AppLocalizations.of(context).areYouSure,
-                    style: Theme.of(context)
-                        .textTheme
-                        .title
-                        .copyWith(color: Theme.of(context).accentColor))
-              ],
-            ),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 26),
-                child: Center(
-                    child: Text(
-                  AppLocalizations.of(context).infoPasswordDialog,
-                  style: Theme.of(context)
-                      .textTheme
-                      .body1
-                      .copyWith(color: Theme.of(context).primaryColor),
-                  textAlign: TextAlign.center,
-                )),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              PrimaryButton(
-                text: AppLocalizations.of(context).setUpPassword,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              SecondaryButton(
-                  text: AppLocalizations.of(context).dontWantPassword,
-                  onPressed: () => _nextPage(false),
-                  isDarkMode: false)
-            ],
-          );
-        });
   }
 
   _checkValidation(BuildContext context) {
@@ -288,7 +254,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   }
 
   _showError(BuildContext context, String data) {
-    print("SNACKBAR");
     Scaffold.of(context).showSnackBar(new SnackBar(
       duration: Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,

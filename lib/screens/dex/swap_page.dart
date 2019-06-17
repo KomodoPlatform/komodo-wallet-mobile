@@ -4,7 +4,7 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
 import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_new_page.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
 class SwapPage extends StatefulWidget {
@@ -87,7 +87,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             return TabBarView(
               controller: tabController,
               children: <Widget>[
-                TradeNewPage(
+                TradePage(
                   mContext: context,
                 ),
                 SwapHistory(),
