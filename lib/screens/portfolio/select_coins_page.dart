@@ -11,7 +11,7 @@ class SelectCoinsPage extends StatefulWidget {
 }
 
 class _SelectCoinsPageState extends State<SelectCoinsPage> {
-  bool isActivate = false;
+  bool isActive = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
-        child: isActivate
+        child: isActive
             ? LoadingCoin()
             : Stack(
                 alignment: AlignmentDirectional.bottomCenter,
@@ -79,7 +79,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   _pressDoneButton() async {
     setState(() {
-      isActivate = true;
+      isActive = true;
     });
     print(coinsBloc.coinToActivate.length);
     await coinsBloc.addMultiCoins(coinsBloc.coinToActivate, true).then((onValue) {
@@ -92,7 +92,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   _closeSelectCoinsPage() {
     coinsBloc.resetActivateCoin();
     setState(() {
-      isActivate = false;
+      isActive = false;
     });
     Navigator.pop(context);
   }
@@ -149,16 +149,16 @@ class BuildItemCoin extends StatefulWidget {
 }
 
 class _BuildItemCoinState extends State<BuildItemCoin> {
-  bool isActivate = false;
+  bool isActive = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         setState(() {
-          isActivate = !isActivate;
+          isActive = !isActive;
         });
-        isActivate
+        isActive
             ? coinsBloc.addActivateCoin(widget.coin)
             : coinsBloc.removeActivateCoin(widget.coin);
       },
@@ -169,7 +169,7 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
             Container(
               height: 15,
               width: 15,
-              color: isActivate
+              color: isActive
                   ? Theme.of(context).accentColor
                   : Theme.of(context).primaryColor,
             ),
@@ -204,9 +204,9 @@ class _LoadingCoinState extends State<LoadingCoin> {
         StreamBuilder<CoinToActivate>(
           stream: coinsBloc.outcurrentActiveCoin,
           builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data.isActivate) {
+            if (snapshot.hasData && snapshot.data.isActive) {
               return Text('Activating ${snapshot.data.coin.name} ...');
-            } else if (snapshot.hasData && !snapshot.data.isActivate) {
+            } else if (snapshot.hasData && !snapshot.data.isActive) {
               return Text('Sorry, ${snapshot.data.coin.name} not available.');
             } else {
                return Text("Starting markermaker...");
