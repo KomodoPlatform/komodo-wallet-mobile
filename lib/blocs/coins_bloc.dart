@@ -141,8 +141,8 @@ class CoinsBloc implements BlocBase {
     await loadCoin(true);
   }
 
-  void currentCoinActivate(CoinToActivate coinToAtivate) {
-    this.currentActiveCoin = coinToAtivate;
+  void currentCoinActivate(CoinToActivate coinToActivate) {
+    this.currentActiveCoin = coinToActivate;
     _inCurrentActiveCoin.add(this.currentActiveCoin);
   }
 
