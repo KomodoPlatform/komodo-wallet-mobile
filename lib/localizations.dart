@@ -240,6 +240,7 @@ class AppLocalizations {
   String get makeAorder => Intl.message("make a order", name: 'makeAorder');
   String get exchangeTitle => Intl.message("EXCHANGE", name: 'exchangeTitle');
   String get orders => Intl.message("orders", name: 'orders');
+  String get selectCoin => Intl.message("Select coins", name: 'selectCoin');
 
 }
 
