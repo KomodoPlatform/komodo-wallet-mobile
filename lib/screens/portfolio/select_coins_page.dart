@@ -209,7 +209,7 @@ class _LoadingCoinState extends State<LoadingCoin> {
             } else if (snapshot.hasData && !snapshot.data.isActive) {
               return Text('Sorry, ${snapshot.data.coin.name} not available.');
             } else {
-               return Text("Starting markermaker...");
+               return Text("Connecting...");
             }
           }
         )
