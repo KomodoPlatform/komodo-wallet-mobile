@@ -127,6 +127,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void onChangeReceive() {
+    print("<<<<<<<<<<<<<<<<<<<<<< change1");
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
         _controllerAmountSell.text.isNotEmpty &&
@@ -142,7 +143,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   void onChangeSell() {
     swapBloc.updateBuyCoin(null);
-    setState(() {});
+    setState(() {
     String text = _controllerAmountSell.text;
     print("------" + text);
     if (text.isNotEmpty) {
@@ -160,8 +161,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             _unfocusFocus();
           }
         }
+        swapBloc.setReceiveAmount(
+              swapBloc.receiveCoin, _controllerAmountSell.text);
       });
     }
+    });
   }
 
   void _unfocusFocus() async {
