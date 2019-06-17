@@ -34,6 +34,7 @@ class AppLocalizations {
         name: 'addingCoinSuccess',
         args: [name],
       );
+  String get connecting => Intl.message('Connecting...', name: 'connecting');
   String get addCoin => Intl.message('Activate coin', name: 'addCoin');
   String numberAssets(String assets) =>
       Intl.message("$assets Assets", args: [assets], name: 'numberAssets');

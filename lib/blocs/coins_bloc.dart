@@ -117,14 +117,14 @@ class CoinsBloc implements BlocBase {
         if (onValue is ActiveCoin) {
           if (isSavedToLocal) coinsReadJson.add(coin);
           print(coin.abbr);
-          currentCoinActivate(CoinToActivate(coin: coin, isActivate: true));
+          currentCoinActivate(CoinToActivate(coin: coin, isActive: true));
         } else if (onValue is ErrorString) {
           coinsReadJson.forEach((coinJson) {
             if (coinJson.abbr == coin.abbr && isSavedToLocal) {
               coinsReadJson.remove(coinJson);
             }
           });
-          currentCoinActivate(CoinToActivate(coin: coin, isActivate: false));
+          currentCoinActivate(CoinToActivate(coin: coin, isActive: false));
           print('Sorry, coin not available ${coin.abbr}');
         }
       }).catchError((onError) {
@@ -133,7 +133,7 @@ class CoinsBloc implements BlocBase {
             coinsReadJson.remove(coinJson);
           }
         });
-        currentCoinActivate(CoinToActivate(coin: coin, isActivate: false));
+        currentCoinActivate(CoinToActivate(coin: coin, isActive: false));
         print('Sorry, coin not available ${coin.abbr}');
       });
     }
@@ -141,8 +141,8 @@ class CoinsBloc implements BlocBase {
     await loadCoin(true);
   }
 
-  void currentCoinActivate(CoinToActivate coinToAtivate) {
-    this.currentActiveCoin = coinToAtivate;
+  void currentCoinActivate(CoinToActivate coinToActivate) {
+    this.currentActiveCoin = coinToActivate;
     _inCurrentActiveCoin.add(this.currentActiveCoin);
   }
 
@@ -276,7 +276,7 @@ final coinsBloc = CoinsBloc();
 
 class CoinToActivate {
   Coin coin;
-  bool isActivate;
+  bool isActive;
 
-  CoinToActivate({this.coin, this.isActivate});
+  CoinToActivate({this.coin, this.isActive});
 }

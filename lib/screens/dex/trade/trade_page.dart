@@ -47,7 +47,7 @@ class _TradePageState extends State<TradePage>
     });
     _noOrderFound = false;
     initListenerAmountReceive();
-    swapBloc.enabledReceiceField = false;
+    swapBloc.enabledReceiveField = false;
 
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
@@ -280,7 +280,7 @@ class _TradePageState extends State<TradePage>
                                           ? _controllerAmountSell
                                           : _controllerAmountReceive,
                                       enabled: market == Market.RECEIVE
-                                          ? swapBloc.enabledReceiceField
+                                          ? swapBloc.enabledReceiveField
                                           : true,
                                       keyboardType:
                                           TextInputType.numberWithOptions(
@@ -470,7 +470,7 @@ class _TradePageState extends State<TradePage>
               return InkWell(
                 onTap: () async {
                   setState(() {
-                    swapBloc.enabledReceiceField = false;
+                    swapBloc.enabledReceiveField = false;
                     _noOrderFound = false;
                   });
                   swapBloc.updateReceiveCoin(item);
@@ -609,7 +609,7 @@ class _TradePageState extends State<TradePage>
                           amountToSell: _controllerAmountSell.text,
                           onMakeOrder: () {
                             // setState(() {
-                            //   swapBloc.enabledReceiceField = true;
+                            //   swapBloc.enabledReceiveField = true;
                             // });
                             // FocusScope.of(this.context)
                             //     .requestFocus(_focusReceive);
@@ -776,7 +776,7 @@ class _TradePageState extends State<TradePage>
                     dialogBloc.dialog = null;
                   });
                 },
-                swapStatus: swapBloc.enabledReceiceField
+                swapStatus: swapBloc.enabledReceiveField
                     ? SwapStatus.SELL
                     : SwapStatus.BUY,
                 amountToSell: _controllerAmountSell.text,
@@ -808,7 +808,7 @@ class _TradePageState extends State<TradePage>
             setState(() {
               _noOrderFound = true;
               _controllerAmountReceive.text = "";
-              swapBloc.enabledReceiceField = true;
+              swapBloc.enabledReceiveField = true;
 
               FocusScope.of(this.context).requestFocus(_focusReceive);
             });
