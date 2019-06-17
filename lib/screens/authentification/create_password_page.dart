@@ -24,6 +24,9 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   final FocusNode _focus2 = FocusNode();
   bool isLoading = false;
   bool isValidPassword = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+  String _password;
   bool isObscured = true;
 
   @override
@@ -36,8 +39,10 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   void _onChange() {
     String text = controller1.text;
     String text2 = controller2.text;
-
-    if (text.isEmpty || text2.isEmpty) {
+    if (text.isEmpty ||
+        text2.isEmpty ||
+        !_formKey.currentState.validate() ||
+        controller1.text != controller2.text) {
       setState(() {
         isValidPassword = false;
       });
@@ -45,6 +50,20 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
       setState(() {
         isValidPassword = true;
       });
+    }
+  }
+
+  bool _validateInputs() {
+    if (_formKey.currentState.validate()) {
+//    If all data are correct then save data to out variables
+      _formKey.currentState.save();
+      return true;
+    } else {
+//    If all data are not valid then start auto validation.
+      setState(() {
+        _autoValidate = true;
+      });
+      return false;
     }
   }
 
@@ -56,88 +75,55 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
         elevation: 0,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: ListView(
-        padding: EdgeInsets.all(16),
-        children: <Widget>[
-          SizedBox(
-            height: 16,
-          ),
-          Text(
-            "CREATE A PASSWORD",
-            style: Theme.of(context).textTheme.title,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Text(
-            AppLocalizations.of(context).infoWalletPassword,
-            style: Theme.of(context).textTheme.body2,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: TextFormField(
-                    maxLength: 40,
-                    focusNode: _focus1,
-                    controller: controller1,
-                    onFieldSubmitted: (term) {
-                      _fieldFocusChange(context, _focus1, _focus2);
-                    },
-                    textInputAction: TextInputAction.next,
-                    autocorrect: false,
-                    enableInteractiveSelection: true,
-                    obscureText: isObscured,
-                    style: Theme.of(context).textTheme.body1,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColorLight)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).accentColor)),
-                        hintStyle: Theme.of(context).textTheme.body2,
-                        labelStyle: Theme.of(context).textTheme.body1,
-                        hintText: AppLocalizations.of(context).hintPassword,
-                        labelText: null)),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    isObscured = !isObscured;
-                  });
-                },
-                child: Container(
-                    height: 60,
-                    padding: EdgeInsets.only(right: 16, left: 16),
-                    child: isObscured ? Icon(Icons.visibility) : Icon(Icons.visibility_off)),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Builder(builder: (context) {
-            return Row(
+      body: Form(
+        key: _formKey,
+        autovalidate: _autoValidate,
+        child: ListView(
+          padding: EdgeInsets.all(16),
+          children: <Widget>[
+            SizedBox(
+              height: 16,
+            ),
+            Text(
+              "CREATE A PASSWORD",
+              style: Theme.of(context).textTheme.title,
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Text(
+              AppLocalizations.of(context).infoWalletPassword,
+              style: Theme.of(context).textTheme.body2,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(
                   child: TextFormField(
                       maxLength: 40,
-                      controller: controller2,
-                      textInputAction: TextInputAction.done,
+                      focusNode: _focus1,
+                      controller: controller1,
+                      onFieldSubmitted: (term) {
+                        _fieldFocusChange(context, _focus1, _focus2);
+                        _validateInputs();
+                      },
+                      textInputAction: TextInputAction.next,
                       autocorrect: false,
-                      focusNode: _focus2,
-                      obscureText: isObscured,
                       enableInteractiveSelection: true,
-                      onFieldSubmitted: (data) {
-                        _checkValidation(context);
+                      obscureText: isObscured,
+                      validator: (String arg) {
+                        RegExp exp = RegExp(
+                            r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
+                        if (!arg.contains(exp))
+                          return 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.';
+                        else
+                          return null;
+                      },
+                      onSaved: (String val) {
+                        _password = val;
                       },
                       style: Theme.of(context).textTheme.body1,
                       decoration: InputDecoration(
@@ -150,41 +136,94 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                                   color: Theme.of(context).accentColor)),
                           hintStyle: Theme.of(context).textTheme.body2,
                           labelStyle: Theme.of(context).textTheme.body1,
-                          hintText:
-                              AppLocalizations.of(context).hintConfirmPassword,
+                          hintText: AppLocalizations.of(context).hintPassword,
                           labelText: null)),
                 ),
                 SizedBox(
-                  width: 72,
+                  width: 8,
                 ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isObscured = !isObscured;
+                    });
+                  },
+                  child: Container(
+                      height: 60,
+                      padding: EdgeInsets.only(right: 16, left: 16),
+                      child: isObscured
+                          ? Icon(Icons.visibility)
+                          : Icon(Icons.visibility_off)),
+                )
               ],
-            );
-          }),
-          SizedBox(
-            height: 16,
-          ),
-          Builder(builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: PrimaryButton(
-                text: AppLocalizations.of(context).confirmPassword,
-                onPressed:
-                    isValidPassword ? () => _checkValidation(context) : null,
-                isLoading: isLoading,
-              ),
-            );
-          }),
-        ],
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Builder(builder: (context) {
+              return Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextFormField(
+                        maxLength: 40,
+                        controller: controller2,
+                        textInputAction: TextInputAction.done,
+                        autocorrect: false,
+                        focusNode: _focus2,
+                        obscureText: isObscured,
+                        enableInteractiveSelection: true,
+                        onFieldSubmitted: (data) {
+                          _checkValidation(context);
+                        },
+                        style: Theme.of(context).textTheme.body1,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color:
+                                        Theme.of(context).primaryColorLight)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).accentColor)),
+                            hintStyle: Theme.of(context).textTheme.body2,
+                            labelStyle: Theme.of(context).textTheme.body1,
+                            hintText: AppLocalizations.of(context)
+                                .hintConfirmPassword,
+                            labelText: null)),
+                  ),
+                  SizedBox(
+                    width: 72,
+                  ),
+                ],
+              );
+            }),
+            SizedBox(
+              height: 16,
+            ),
+            Builder(builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: PrimaryButton(
+                  text: AppLocalizations.of(context).confirmPassword,
+                  onPressed:
+                      isValidPassword ? () => _checkValidation(context) : null,
+                  isLoading: isLoading,
+                ),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
 
-
   _checkValidation(BuildContext context) {
-    if (controller1.text == controller2.text) {
-      _nextPage(true);
-    } else {
-      _showError(context, AppLocalizations.of(context).wrongPassword);
+    if (_validateInputs()) {
+      if (controller1.text == controller2.text) {
+        _nextPage(true);
+      } else {
+        _showError(context, AppLocalizations.of(context).wrongPassword);
+      }
     }
   }
 
