@@ -127,7 +127,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void onChangeReceive() {
-    print("<<<<<<<<<<<<<<<<<<<<<< change1");
+    // print("<<<<<<<<<<<<<<<<<<<<<< change1");
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
         _controllerAmountSell.text.isNotEmpty &&
@@ -144,27 +144,27 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void onChangeSell() {
     swapBloc.updateBuyCoin(null);
     setState(() {
-    String text = _controllerAmountSell.text;
-    print("------" + text);
-    if (text.isNotEmpty) {
-      setState(() {
-        if (currentCoinBalance != null &&
-            double.parse(text.replaceAll(",", ".")) >
-                double.parse(currentCoinBalance.balance.balance)) {
-          print("setMaxValue");
-          setMaxValue();
-        } else {
-          if (text.contains(
-              RegExp("^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"))) {
+      String text = _controllerAmountSell.text;
+      // print("------" + text);
+      if (text.isNotEmpty) {
+        setState(() {
+          if (currentCoinBalance != null &&
+              double.parse(text.replaceAll(",", ".")) >
+                  double.parse(currentCoinBalance.balance.balance)) {
+            print("setMaxValue");
+            setMaxValue();
           } else {
-            _controllerAmountSell.text = tmpText;
-            _unfocusFocus();
+            if (text.contains(
+                RegExp("^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"))) {
+            } else {
+              _controllerAmountSell.text = tmpText;
+              _unfocusFocus();
+            }
           }
-        }
-        swapBloc.setReceiveAmount(
+          swapBloc.setReceiveAmount(
               swapBloc.receiveCoin, _controllerAmountSell.text);
-      });
-    }
+        });
+      }
     });
   }
 
