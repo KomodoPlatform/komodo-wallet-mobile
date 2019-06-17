@@ -8,7 +8,6 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
@@ -17,15 +16,15 @@ import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
-class TradeNewPage extends StatefulWidget {
-  BuildContext mContext;
+class TradePage extends StatefulWidget {
+  final BuildContext mContext;
 
-  TradeNewPage({this.mContext});
+  TradePage({this.mContext});
   @override
-  _TradeNewPageState createState() => _TradeNewPageState();
+  _TradePageState createState() => _TradePageState();
 }
 
-class _TradeNewPageState extends State<TradeNewPage>
+class _TradePageState extends State<TradePage>
     with TickerProviderStateMixin {
   TextEditingController _controllerAmountSell = new TextEditingController();
   TextEditingController _controllerAmountReceive = new TextEditingController();
@@ -58,9 +57,10 @@ class _TradeNewPageState extends State<TradeNewPage>
     _controllerAmountSell.addListener(onChangeSell);
     _controllerAmountReceive.addListener(onChangeReceive);
     controller = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
+        duration: const Duration(milliseconds: 0), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
     controller.forward();
+    controller.duration = Duration(milliseconds: 500);
   }
 
   @override
