@@ -20,7 +20,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
   @override
   Widget build(BuildContext context) {
     return LockScreen(
-          child: Scaffold(
+      child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           backgroundColor: Theme.of(context).backgroundColor,
@@ -44,7 +44,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                   context: context,
                 )
               : UnlockPassword(
-                icon: SvgPicture.asset("assets/seed_logo.svg"),
+                  icon: SvgPicture.asset("assets/seed_logo.svg"),
                   onSuccess: (data) {
                     setState(() {
                       seed = data;
@@ -122,13 +122,15 @@ class _ViewSeedState extends State<ViewSeed> {
             crossAxisSpacing: 4.0,
           ),
         ),
-        SizedBox(height: 24,),
+        SizedBox(
+          height: 24,
+        ),
         Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: SecondaryButton(
               text: AppLocalizations.of(context).clipboardCopy,
-              onPressed: (){
+              onPressed: () {
                 copyToClipBoard(context, widget.seed);
               },
             ),
@@ -153,6 +155,7 @@ class UnlockPassword extends StatefulWidget {
 class _UnlockPasswordState extends State<UnlockPassword> {
   TextEditingController controller = new TextEditingController();
   bool isContinueEnabled = false;
+  bool isObscured = true;
 
   @override
   Widget build(BuildContext context) {
@@ -167,36 +170,60 @@ class _UnlockPasswordState extends State<UnlockPassword> {
           style: Theme.of(context).textTheme.body1,
         ),
         SizedBox(height: 8),
-        TextField(
-            maxLength: 40,
-            controller: controller,
-            textInputAction: TextInputAction.done,
-            onSubmitted: (data) {
-              _checkPassword(data);
-            },
-            onChanged: (data) {
-              setState(() {
-                data.isNotEmpty
-                    ? isContinueEnabled = true
-                    : isContinueEnabled = false;
-              });
-            },
-            autocorrect: false,
-            obscureText: true,
-            enableInteractiveSelection: true,
-            style: Theme.of(context).textTheme.body1,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).primaryColorLight)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).accentColor)),
-                hintStyle: Theme.of(context).textTheme.body2,
-                labelStyle: Theme.of(context).textTheme.body1,
-                hintText: AppLocalizations.of(context).hintCurrentPassword,
-                labelText: null)),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                  maxLength: 40,
+                  controller: controller,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (data) {
+                    _checkPassword(data);
+                  },
+                  onChanged: (data) {
+                    setState(() {
+                      data.isNotEmpty
+                          ? isContinueEnabled = true
+                          : isContinueEnabled = false;
+                    });
+                  },
+                  autocorrect: false,
+                  obscureText: isObscured,
+                  enableInteractiveSelection: true,
+                  style: Theme.of(context).textTheme.body1,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorLight)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor)),
+                      hintStyle: Theme.of(context).textTheme.body2,
+                      labelStyle: Theme.of(context).textTheme.body1,
+                      hintText:
+                          AppLocalizations.of(context).hintCurrentPassword,
+                      labelText: null)),
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  isObscured = !isObscured;
+                });
+              },
+              child: Container(
+                  height: 60,
+                  padding: EdgeInsets.only(right: 16, left: 16),
+                  child: isObscured
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off)),
+            )
+          ],
+        ),
         SizedBox(height: 50),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 60),
@@ -213,7 +240,8 @@ class _UnlockPasswordState extends State<UnlockPassword> {
 
   _checkPassword(String data) async {
     var entryptionTool = new EncryptionTool();
-    String seed = await entryptionTool.readData(KeyEncryption.SEED, walletBloc.currentWallet, data);
+    String seed = await entryptionTool.readData(
+        KeyEncryption.SEED, walletBloc.currentWallet, data);
     if (seed != null) {
       widget.onSuccess(seed);
     } else {

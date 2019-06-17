@@ -24,6 +24,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   final FocusNode _focus2 = FocusNode();
   bool isLoading = false;
   bool isValidPassword = false;
+  bool isObscured = true;
 
   @override
   void initState() {
@@ -75,58 +76,89 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
           SizedBox(
             height: 16,
           ),
-          TextFormField(
-              maxLength: 40,
-              focusNode: _focus1,
-              controller: controller1,
-              onFieldSubmitted: (term) {
-                _fieldFocusChange(context, _focus1, _focus2);
-              },
-              textInputAction: TextInputAction.next,
-              autocorrect: false,
-              enableInteractiveSelection: true,
-              obscureText: true,
-              style: Theme.of(context).textTheme.body1,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor)),
-                  hintStyle: Theme.of(context).textTheme.body2,
-                  labelStyle: Theme.of(context).textTheme.body1,
-                  hintText: AppLocalizations.of(context).hintPassword,
-                  labelText: null)),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: TextFormField(
+                    maxLength: 40,
+                    focusNode: _focus1,
+                    controller: controller1,
+                    onFieldSubmitted: (term) {
+                      _fieldFocusChange(context, _focus1, _focus2);
+                    },
+                    textInputAction: TextInputAction.next,
+                    autocorrect: false,
+                    enableInteractiveSelection: true,
+                    obscureText: isObscured,
+                    style: Theme.of(context).textTheme.body1,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColorLight)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).accentColor)),
+                        hintStyle: Theme.of(context).textTheme.body2,
+                        labelStyle: Theme.of(context).textTheme.body1,
+                        hintText: AppLocalizations.of(context).hintPassword,
+                        labelText: null)),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isObscured = !isObscured;
+                  });
+                },
+                child: Container(
+                    height: 60,
+                    padding: EdgeInsets.only(right: 16, left: 16),
+                    child: isObscured ? Icon(Icons.visibility) : Icon(Icons.visibility_off)),
+              )
+            ],
+          ),
           SizedBox(
             height: 8,
           ),
           Builder(builder: (context) {
-            return TextFormField(
-                maxLength: 40,
-                controller: controller2,
-                textInputAction: TextInputAction.done,
-                autocorrect: false,
-                focusNode: _focus2,
-                obscureText: true,
-                enableInteractiveSelection: true,
-                onFieldSubmitted: (data) {
-                  _checkValidation(context);
-                },
-                style: Theme.of(context).textTheme.body1,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColorLight)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Theme.of(context).accentColor)),
-                    hintStyle: Theme.of(context).textTheme.body2,
-                    labelStyle: Theme.of(context).textTheme.body1,
-                    hintText: AppLocalizations.of(context).hintConfirmPassword,
-                    labelText: null));
+            return Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextFormField(
+                      maxLength: 40,
+                      controller: controller2,
+                      textInputAction: TextInputAction.done,
+                      autocorrect: false,
+                      focusNode: _focus2,
+                      obscureText: isObscured,
+                      enableInteractiveSelection: true,
+                      onFieldSubmitted: (data) {
+                        _checkValidation(context);
+                      },
+                      style: Theme.of(context).textTheme.body1,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColorLight)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).accentColor)),
+                          hintStyle: Theme.of(context).textTheme.body2,
+                          labelStyle: Theme.of(context).textTheme.body1,
+                          hintText:
+                              AppLocalizations.of(context).hintConfirmPassword,
+                          labelText: null)),
+                ),
+                SizedBox(
+                  width: 72,
+                ),
+              ],
+            );
           }),
           SizedBox(
             height: 16,
@@ -243,15 +275,12 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
         isLoading = true;
       });
 
-      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false, arguments: ScreenArguments(
-        controller1.text
-      ));
-
+      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false,
+          arguments: ScreenArguments(controller1.text));
     });
   }
 
   _showError(BuildContext context, String data) {
-    print("SNACKBAR");
     Scaffold.of(context).showSnackBar(new SnackBar(
       duration: Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
@@ -269,5 +298,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
 class ScreenArguments {
   final String password;
 
-  ScreenArguments(this.password,);
+  ScreenArguments(
+    this.password,
+  );
 }
