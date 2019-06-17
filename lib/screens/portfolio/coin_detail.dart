@@ -156,9 +156,11 @@ class _CoinDetailState extends State<CoinDetail> {
   bool isLoading = false;
   double elevationHeader = 0.0;
   bool loadingWithdrawDialog = true;
+  CoinBalance currentCoinBalance;
 
   @override
   void initState() {
+    currentCoinBalance = widget.coinBalance;
     if (widget.isSendIsActive) {
       setState(() {
         isExpanded = true;
@@ -170,7 +172,7 @@ class _CoinDetailState extends State<CoinDetail> {
       isLoading = true;
     });
     coinsBloc
-        .updateTransactions(widget.coinBalance.coin, LIMIT, null)
+        .updateTransactions(currentCoinBalance.coin, LIMIT, null)
         .then((onValue) {
       setState(() {
         isLoading = false;
@@ -186,7 +188,7 @@ class _CoinDetailState extends State<CoinDetail> {
           isLoading = true;
         });
         coinsBloc
-            .updateTransactions(widget.coinBalance.coin, LIMIT, fromId)
+            .updateTransactions(currentCoinBalance.coin, LIMIT, fromId)
             .then((onValue) {
           setState(() {
             isLoading = false;
@@ -209,9 +211,9 @@ class _CoinDetailState extends State<CoinDetail> {
     String text = _amountController.text;
     if (text.isNotEmpty) {
       setState(() {
-        if (widget.coinBalance != null &&
+        if (currentCoinBalance != null &&
             double.parse(text) >
-                double.parse(widget.coinBalance.balance.balance)) {
+                double.parse(currentCoinBalance.balance.balance)) {
           setMaxValue();
         }
       });
@@ -221,7 +223,7 @@ class _CoinDetailState extends State<CoinDetail> {
   void setMaxValue() async {
     _focus.unfocus();
     setState(() {
-      var txFee = widget.coinBalance.coin.txfee;
+      var txFee = currentCoinBalance.coin.txfee;
       var fee;
       if (txFee == null) {
         fee = 0;
@@ -229,7 +231,7 @@ class _CoinDetailState extends State<CoinDetail> {
         fee = (txFee.toDouble() / 100000000);
       }
       _amountController.text =
-          (double.parse(widget.coinBalance.balance.balance)).toStringAsFixed(8);
+          (double.parse(currentCoinBalance.balance.balance)).toStringAsFixed(8);
     });
     await Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {
@@ -255,8 +257,8 @@ class _CoinDetailState extends State<CoinDetail> {
               icon: Icon(Icons.share),
               onPressed: () {
                 Share.share(AppLocalizations.of(context).shareAddress(
-                    widget.coinBalance.coin.name,
-                    widget.coinBalance.balance.address));
+                    currentCoinBalance.coin.name,
+                    currentCoinBalance.balance.address));
               },
             )
           ],
@@ -264,17 +266,17 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               PhotoHero(
                 tag:
-                    "assets/${widget.coinBalance.balance.coin.toLowerCase()}.png",
+                    "assets/${currentCoinBalance.balance.coin.toLowerCase()}.png",
                 radius: 16,
               ),
               SizedBox(
                 width: 8,
               ),
-              Text(widget.coinBalance.coin.name.toUpperCase()),
+              Text(currentCoinBalance.coin.name.toUpperCase()),
             ],
           ),
           centerTitle: false,
-          backgroundColor: Color(int.parse(widget.coinBalance.coin.colorCoin)),
+          backgroundColor: Color(int.parse(currentCoinBalance.coin.colorCoin)),
         ),
         body: Builder(builder: (context) {
           return Column(
@@ -316,7 +318,7 @@ class _CoinDetailState extends State<CoinDetail> {
                             context, transactions.result.transactions),
                       );
                     } else if (double.parse(
-                                widget.coinBalance.balance.balance) >
+                                currentCoinBalance.balance.balance) >
                             0 &&
                         transactions.result.transactions.length < 1) {
                       return Center(child: CircularProgressIndicator());
@@ -341,7 +343,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   Future<Null> _refresh() async {
     return await coinsBloc.updateTransactions(
-        widget.coinBalance.coin, LIMIT, null);
+        currentCoinBalance.coin, LIMIT, null);
   }
 
   _buildTransactions(BuildContext context, List<Transaction> transactionsData) {
@@ -383,7 +385,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 MaterialPageRoute(
                     builder: (context) => TransactionDetail(
                         transaction: transaction,
-                        coinBalance: widget.coinBalance)),
+                        coinBalance: currentCoinBalance)),
               );
             },
             child: Container(
@@ -423,7 +425,7 @@ class _CoinDetailState extends State<CoinDetail> {
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, top: 8),
                             child: AutoSizeText(
-                              '${transaction.myBalanceChange > 0 ? "+" : ""}${transaction.myBalanceChange.toString()} ${widget.coinBalance.coin.abbr}',
+                              '${transaction.myBalanceChange > 0 ? "+" : ""}${transaction.myBalanceChange.toString()} ${currentCoinBalance.coin.abbr}',
                               maxLines: 1,
                               style: subtitle,
                               textAlign: TextAlign.end,
@@ -433,7 +435,7 @@ class _CoinDetailState extends State<CoinDetail> {
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, bottom: 16, top: 8),
                             child: Text(
-                              (widget.coinBalance.priceForOne *
+                              (currentCoinBalance.priceForOne *
                                           transaction.myBalanceChange)
                                       .toStringAsFixed(2) +
                                   " USD",
@@ -507,20 +509,20 @@ class _CoinDetailState extends State<CoinDetail> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   snapshot.data.forEach((coinBalance) {
-                    if (coinBalance.coin.abbr == widget.coinBalance.coin.abbr) {
-                      widget.coinBalance = coinBalance;
+                    if (coinBalance.coin.abbr == currentCoinBalance.coin.abbr) {
+                      currentCoinBalance = coinBalance;
                     }
                   });
                   return Column(
                     children: <Widget>[
                       Text(
-                        widget.coinBalance.balance.balance.toString() +
+                        currentCoinBalance.balance.balance.toString() +
                             " " +
-                            widget.coinBalance.balance.coin.toString(),
+                            currentCoinBalance.balance.coin.toString(),
                         style: Theme.of(context).textTheme.title,
                         textAlign: TextAlign.center,
                       ),
-                      Text('\$${widget.coinBalance.getBalanceUSD()} USD')
+                      Text('\$${currentCoinBalance.getBalanceUSD()} USD')
                     ],
                   );
                 } else {
@@ -532,11 +534,11 @@ class _CoinDetailState extends State<CoinDetail> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _buildButtonLight(StatusButton.RECEIVE, mContext),
-            widget.coinBalance.coin.abbr == "KMD" &&
-                    double.parse(widget.coinBalance.balance.balance) >= 10
+            currentCoinBalance.coin.abbr == "KMD" &&
+                    double.parse(currentCoinBalance.balance.balance) >= 10
                 ? _buildButtonLight(StatusButton.CLAIM, context)
                 : Container(),
-            double.parse(widget.coinBalance.balance.balance) > 0
+            double.parse(currentCoinBalance.balance.balance) > 0
                 ? _buildButtonLight(StatusButton.SEND, mContext)
                 : Container(),
           ],
@@ -559,7 +561,7 @@ class _CoinDetailState extends State<CoinDetail> {
           onTap: () {
             switch (statusButton) {
               case StatusButton.RECEIVE:
-                showAddressDialog(mContext, widget.coinBalance.balance.address);
+                showAddressDialog(mContext, currentCoinBalance.balance.address);
                 break;
               case StatusButton.SEND:
                 if (currentIndex == 3) {
@@ -682,7 +684,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _buildConfirmationStep() {
-    double fee = widget.coinBalance.coin.txfee / 100000000;
+    double fee = currentCoinBalance.coin.txfee / 100000000;
     double amountMinusFee = double.parse(_amountController.text);
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
     double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
@@ -711,7 +713,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 width: 4,
               ),
               Text(
-                widget.coinBalance.coin.abbr,
+                currentCoinBalance.coin.abbr,
                 style: Theme.of(context).textTheme.body1,
               ),
             ],
@@ -724,7 +726,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 style: Theme.of(context).textTheme.body2,
               ),
               Text(
-                widget.coinBalance.coin.getTxFeeSatoshi(),
+                currentCoinBalance.coin.getTxFeeSatoshi(),
                 style: Theme.of(context).textTheme.body2,
               ),
               SizedBox(
@@ -763,7 +765,7 @@ class _CoinDetailState extends State<CoinDetail> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: Text(
-                  widget.coinBalance.coin.abbr,
+                  currentCoinBalance.coin.abbr,
                   style: Theme.of(context).textTheme.subtitle,
                 ),
               ),
@@ -846,9 +848,9 @@ class _CoinDetailState extends State<CoinDetail> {
       widget.isSendIsActive = false;
     });
     double amountMinusFee = double.parse(_amountController.text) -
-        double.parse(widget.coinBalance.coin.getTxFeeSatoshi());
+        double.parse(currentCoinBalance.coin.getTxFeeSatoshi());
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
-    double fee = widget.coinBalance.coin.txfee / 100000000;
+    double fee = currentCoinBalance.coin.txfee / 100000000;
     double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
 
     listSteps.add(Container(
@@ -862,11 +864,10 @@ class _CoinDetailState extends State<CoinDetail> {
     setState(() {
       currentIndex = 2;
     });
-    // print(widget.coinBalance.balance.balance ==
-    //     double.parse(_amountController.text));
+
     mm2
         .postWithdraw(
-            widget.coinBalance.coin,
+            currentCoinBalance.coin,
             _addressController.text.toString(),
             sendamount,
             double.parse(widget.coinBalance.balance.balance) ==
@@ -881,6 +882,10 @@ class _CoinDetailState extends State<CoinDetail> {
               _onWithdrawPost = false;
               coinsBloc.updateTransactions(
                   widget.coinBalance.coin, LIMIT, null);
+              coinsBloc.loadCoin(true);
+              new Future.delayed(Duration(seconds: 5), () {
+                coinsBloc.loadCoin(true);
+              });
               listSteps.add(Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
