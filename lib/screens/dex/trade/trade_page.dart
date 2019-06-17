@@ -161,8 +161,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               _unfocusFocus();
             }
           }
-          swapBloc.setReceiveAmount(
-              swapBloc.receiveCoin, _controllerAmountSell.text);
+          if (swapBloc.receiveCoin != null) {
+            swapBloc.setReceiveAmount(
+                swapBloc.receiveCoin, _controllerAmountSell.text);
+          }
         });
       }
     });
