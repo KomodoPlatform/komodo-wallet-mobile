@@ -150,7 +150,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           if (currentCoinBalance != null &&
               double.parse(amountSell.replaceAll(",", ".")) >
                   double.parse(currentCoinBalance.balance.balance)) {
-            print("setMaxValue");
             setMaxValue();
           } else {
             if (amountSell.contains(
@@ -179,7 +178,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void _checkMaxVolume() {
     if (double.parse(_controllerAmountSell.text) >=
         swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice) {
-      print("SETMAXVOLUME");
       _setMaxVolumeSell();
     }
   }
@@ -413,11 +411,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     left: 22,
                     child: Container(
                         width: MediaQuery.of(context).size.width * 0.8,
-                        child: swapBloc.receiveCoin != null ? Text(
-                          AppLocalizations.of(context)
-                              .noOrder(swapBloc.receiveCoin.abbr),
-                          style: Theme.of(context).textTheme.body2,
-                        ) : Text("")))
+                        child: swapBloc.receiveCoin != null
+                            ? Text(
+                                AppLocalizations.of(context)
+                                    .noOrder(swapBloc.receiveCoin.abbr),
+                                style: Theme.of(context).textTheme.body2,
+                              )
+                            : Text("")))
                 : Container()
           ],
         ),
@@ -440,8 +440,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               controllerAnimationCoinSell.forward();
             }
           });
-        } else if (market == Market.RECEIVE) {
-          await _openDialogAllCoins();
         } else {
           _openDialogCoinWithBalance(market);
         }
@@ -523,71 +521,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
-  _openDialogAllCoins() async {
-    List<Coin> coins = await coinsBloc.readJsonCoin();
-    Coin coinToRemove = swapBloc.sellCoin.coin;
-
-    int indexToRemove = 0;
-    coins.asMap().forEach((index, c) {
-      if (c.abbr == coinToRemove.abbr) {
-        indexToRemove = index;
-      }
-    });
-    coins.removeAt(indexToRemove);
-    dialogBloc.dialog = showDialog<List<Coin>>(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            title: Text(AppLocalizations.of(context).receiveLower),
-            children: coins.map((item) {
-              return InkWell(
-                onTap: () async {
-                  _controllerAmountReceive.clear();
-                  setState(() {
-                    swapBloc.enabledReceiveField = false;
-                    _noOrderFound = false;
-                  });
-                  swapBloc.updateReceiveCoin(item);
-                  _controllerAmountReceive.text = "";
-                  if (timerGetOrderbook != null) timerGetOrderbook.cancel();
-                  _lookingForOrder();
-                  Navigator.of(context).pop();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Container(
-                        height: 30,
-                        width: 30,
-                        child: Image.asset(
-                          "assets/${item.abbr.toLowerCase()}.png",
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      Text(
-                        item.name,
-                        style: Theme.of(context).textTheme.subtitle,
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          );
-        }).then((_) {
-      dialogBloc.dialog = null;
-    });
-  }
-
   _openDialogCoinWithBalance(Market market) async {
     if (market == Market.RECEIVE) {
       if (swapBloc.sellCoin != null && swapBloc.sellCoin.coin != null) {
@@ -622,7 +555,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                             height: 16,
                           ),
                           Text(
-                            "No funds",
+                            AppLocalizations.of(context).noFunds,
                             style: Theme.of(context)
                                 .textTheme
                                 .title
@@ -634,7 +567,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                         ],
                       ),
                       children: <Widget>[
-                        Text("No funds detected please add some.",
+                        Text(AppLocalizations.of(context).noFundsDetected,
                             style: Theme.of(context).textTheme.body1.copyWith(
                                 color: Theme.of(context).primaryColor)),
                         SizedBox(
@@ -645,7 +578,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                             Expanded(
                               flex: 2,
                               child: PrimaryButton(
-                                text: "Go to portfolio",
+                                text: AppLocalizations.of(context).goToPorfolio,
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   mainBloc.setCurrentIndexTab(0);
@@ -674,21 +607,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       });
                       if (orderHasAsks) {
                         return SimpleDialog(
-                          title: Text(AppLocalizations.of(context).buy),
+                          title:
+                              Text(AppLocalizations.of(context).receiveLower),
                           children:
                               _createListDialog(context, market, snapshot.data),
                         );
                       } else {
-                        return DialogLooking(
-                          amountToSell: _controllerAmountSell.text,
-                          onMakeOrder: () {
-                            // setState(() {
-                            //   swapBloc.enabledReceiveField = true;
-                            // });
-                            // FocusScope.of(this.context)
-                            //     .requestFocus(_focusReceive);
-                          },
-                        );
+                        return DialogLooking();
                       }
                     } else {
                       return DialogLooking();
@@ -704,21 +629,25 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       BuildContext context, Market market, List<OrderCoin> orderbooks) {
     List<SimpleDialogOption> listDialog = new List<SimpleDialogOption>();
     if (orderbooks != null && market == Market.RECEIVE) {
-      orderbooks.forEach((orderbooks) {
-        if (orderbooks.coinBase.abbr != swapBloc.sellCoin.coin.abbr &&
-            double.parse(orderbooks.getBuyAmount(double.parse(
-                    _controllerAmountSell.text.replaceAll(",", ".")))) >
-                0) {
-          SimpleDialogOption dialogItem = SimpleDialogOption(
+      orderbooks.forEach((orderbook) {
+        SimpleDialogOption dialogItem;
+        if (orderbook.coinBase.abbr != swapBloc.sellCoin.coin.abbr) {
+          bool isOrderAvailable =
+              orderbook.coinBase.abbr != swapBloc.sellCoin.coin.abbr &&
+                  double.parse(orderbook.getBuyAmount(double.parse(
+                          _controllerAmountSell.text.replaceAll(",", ".")))) >
+                      0;
+          dialogItem = SimpleDialogOption(
             onPressed: () {
+              _controllerAmountReceive.clear();
               setState(() {
-                if (_controllerAmountSell.text.isNotEmpty) {
-                  amountToBuy = orderbooks.getBuyAmount(double.parse(
-                      _controllerAmountSell.text.replaceAll(",", ".")));
-                  _controllerAmountReceive.text = amountToBuy;
-                }
+                swapBloc.enabledReceiveField = false;
+                _noOrderFound = false;
               });
-              swapBloc.updateBuyCoin(orderbooks);
+              swapBloc.updateReceiveCoin(orderbook.coinBase);
+              _controllerAmountReceive.text = "";
+              if (timerGetOrderbook != null) timerGetOrderbook.cancel();
+              _lookingForOrder();
 
               Navigator.pop(context);
             },
@@ -729,7 +658,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     height: 30,
                     width: 30,
                     child: Image.asset(
-                      "assets/${orderbooks.coinBase.abbr.toLowerCase()}.png",
+                      "assets/${orderbook.coinBase.abbr.toLowerCase()}.png",
                     )),
                 Expanded(
                   child: Container(),
@@ -737,20 +666,32 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    Text(orderbooks.getBuyAmount(double.parse(
-                        _controllerAmountSell.text.replaceAll(",", ".")))),
+                    isOrderAvailable
+                        ? Text(orderbook.getBuyAmount(double.parse(
+                            _controllerAmountSell.text.replaceAll(",", "."))))
+                        : Text(
+                            AppLocalizations.of(context).noOrderAvailable,
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(color: Theme.of(context).errorColor),
+                          ),
                     SizedBox(
                       width: 4,
                     ),
-                    Text(
-                      orderbooks.coinBase.abbr,
-                      style: Theme.of(context).textTheme.caption,
-                    )
+                    isOrderAvailable
+                        ? Text(
+                            orderbook.coinBase.abbr,
+                            style: Theme.of(context).textTheme.caption,
+                          )
+                        : Container()
                   ],
                 )
               ],
             ),
           );
+        }
+        if (dialogItem != null) {
           listDialog.add(dialogItem);
         }
       });
@@ -825,15 +766,18 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   dialogBloc.dialog = showDialog(
                           builder: (context) {
                             return SimpleDialog(
-                              title: Text("Order Created"),
+                              title: Text(
+                                  AppLocalizations.of(context).orderCreated),
                               contentPadding: EdgeInsets.all(24),
                               children: <Widget>[
-                                Text("Your order as been successfull created."),
+                                Text(AppLocalizations.of(context)
+                                    .orderCreatedInfo),
                                 SizedBox(
                                   height: 16,
                                 ),
                                 PrimaryButton(
-                                  text: "SHOW MY ORDERS",
+                                  text:
+                                      AppLocalizations.of(context).showMyOrders,
                                   onPressed: () {
                                     swapBloc.setIndexTabDex(1);
                                     Navigator.of(context).pop();
@@ -870,45 +814,27 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _lookingForOrder() async {
     swapBloc.setTimeout(false);
-    int timeOutSeconds = 5;
-    int timeOutCurrent = 0;
 
     double amount = await swapBloc.setReceiveAmount(
         swapBloc.receiveCoin, _controllerAmountSell.text);
+    swapBloc.setTimeout(true);
 
     if (amount == 0) {
-      timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
-        print(timeOutCurrent);
-        if (timeOutCurrent >= timeOutSeconds - 5) {
-          _.cancel();
-          swapBloc.setTimeout(true);
-          setState(() {
-            _controllerAmountReceive.text = swapBloc.amountReceive.toString();
-          });
-          if (swapBloc.amountReceive == 0) {
-            setState(() {
-              _noOrderFound = true;
-              _controllerAmountReceive.text = "";
-              if (swapBloc.receiveCoin != null) {
-                swapBloc.enabledReceiveField = true;
-                FocusScope.of(this.context).requestFocus(_focusReceive);
-              }
-
-            });
-          }
-        } else {
-          swapBloc
-              .setReceiveAmount(
-                  swapBloc.receiveCoin, _controllerAmountSell.text)
-              .then((_) {
-            _checkMaxVolume();
-          });
-        }
-        timeOutCurrent += 5;
+      setState(() {
+        _controllerAmountReceive.text = swapBloc.amountReceive.toString();
       });
+      if (swapBloc.amountReceive == 0) {
+        setState(() {
+          _noOrderFound = true;
+          _controllerAmountReceive.text = "";
+          if (swapBloc.receiveCoin != null) {
+            swapBloc.enabledReceiveField = true;
+            FocusScope.of(this.context).requestFocus(_focusReceive);
+          }
+        });
+      }
     } else {
       _checkMaxVolume();
-      swapBloc.setTimeout(true);
     }
   }
 }
@@ -919,54 +845,46 @@ enum Market {
 }
 
 class DialogLooking extends StatefulWidget {
-  final Function onMakeOrder;
-  final String amountToSell;
-
-  const DialogLooking({Key key, this.onMakeOrder, this.amountToSell})
-      : super(key: key);
-
   @override
   _DialogLookingState createState() => _DialogLookingState();
 }
 
 class _DialogLookingState extends State<DialogLooking> {
+  var timerGetOrderbook;
+
+  @override
+  void initState() {
+    timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
+      swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (timerGetOrderbook != null) timerGetOrderbook.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          child: _buildSellDialogContent()),
-    );
-  }
-
-  _buildSellDialogContent() {
-    return Wrap(
-      direction: Axis.horizontal,
-      children: <Widget>[
-        Text(
-          AppLocalizations.of(context).noOrder(swapBloc.sellCoin.coin.name),
-          style: Theme.of(context).textTheme.subtitle,
+        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 16,
+            ),
+            Text(
+              AppLocalizations.of(context).loadingOrderbook,
+              style: Theme.of(context).textTheme.body1,
+            )
+          ],
         ),
-        Container(
-          height: 16,
-        ),
-        PrimaryButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            widget.onMakeOrder();
-          },
-          text: AppLocalizations.of(context).makeAorder,
-        ),
-        Container(
-          height: 8,
-        ),
-        SecondaryButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          text: AppLocalizations.of(context).cancel,
-        ),
-      ],
+      ),
     );
   }
 }

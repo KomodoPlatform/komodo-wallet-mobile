@@ -241,6 +241,14 @@ class AppLocalizations {
   String get exchangeTitle => Intl.message("EXCHANGE", name: 'exchangeTitle');
   String get orders => Intl.message("orders", name: 'orders');
   String get selectCoin => Intl.message("Select coin", name: 'selectCoin');
+  String get noFunds => Intl.message("No funds", name: 'noFunds');
+  String get noFundsDetected => Intl.message("No funds detected please add some.", name: 'noFundsDetected');
+  String get goToPorfolio => Intl.message("Go to portfolio", name: 'goToPorfolio');
+  String get noOrderAvailable => Intl.message("No order available", name: 'noOrderAvailable');
+  String get orderCreated => Intl.message("Order Created", name: 'orderCreated');
+  String get orderCreatedInfo => Intl.message("Your order as been successfull created.", name: 'orderCreatedInfo');
+  String get showMyOrders => Intl.message("SHOW MY ORDERS", name: 'showMyOrders');
+
 
 }
 
