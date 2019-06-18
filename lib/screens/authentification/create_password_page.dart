@@ -114,6 +114,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       autocorrect: false,
                       enableInteractiveSelection: true,
                       obscureText: isObscured,
+                      
                       validator: (String arg) {
                         RegExp exp = RegExp(
                             r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
@@ -127,6 +128,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       },
                       style: Theme.of(context).textTheme.body1,
                       decoration: InputDecoration(
+                        errorMaxLines: 3,
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
