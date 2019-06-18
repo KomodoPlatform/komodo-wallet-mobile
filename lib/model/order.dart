@@ -6,8 +6,9 @@ class Order {
   String relAmount;
   String uuid;
   int createdAt;
+  bool cancelable;
 
-  Order({this.base, this.orderType, this.rel, this.relAmount, this.uuid, this.baseAmount, this.createdAt});
+  Order({this.base, this.orderType, this.rel, this.relAmount, this.uuid, this.baseAmount, this.createdAt, this.cancelable});
 }
 
 enum OrderType{

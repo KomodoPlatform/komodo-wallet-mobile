@@ -835,7 +835,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                 PrimaryButton(
                                   text: "SHOW MY ORDERS",
                                   onPressed: () {
-                                    swapBloc.setIndexTabDex(2);
+                                    swapBloc.setIndexTabDex(1);
                                     Navigator.of(context).pop();
                                   },
                                 ),

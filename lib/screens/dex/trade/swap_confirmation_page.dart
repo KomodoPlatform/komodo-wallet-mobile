@@ -6,6 +6,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
