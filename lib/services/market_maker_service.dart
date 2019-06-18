@@ -33,6 +33,7 @@ import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
+import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
@@ -334,8 +335,25 @@ class MarketMakerService {
     }
   }
 
+    Future<dynamic> postSetPrice(
+      Coin base, Coin rel, double volume, double price) async {
+    GetBuy getBuy = new GetBuy(
+        userpass: userpass,
+        method: "setprice",
+        base: base.abbr,
+        rel: rel.abbr,
+        volume: volume.toStringAsFixed(8),
+        price: price.toStringAsFixed(8));
+    print(json.encode(getBuy));
+    final response = await http.post(url, body: getBuyToJson(getBuy));
 
-
+    print(response.body.toString());
+    try {
+      return setPriceResponseFromJson(response.body);
+    } catch (e) {
+      return errorFromJson(response.body);
+    }
+  }
 
   Future<Transactions> getTransactions(
       Coin coin, int limit, String fromId) async {

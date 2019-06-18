@@ -95,7 +95,7 @@ class _OrdersPageState extends State<OrdersPage> {
                   ),
                 ],
               ),
-              Row(
+              order.cancelable ? Row(
                 children: <Widget>[
                   Expanded(
                     flex: 1,
@@ -114,7 +114,7 @@ class _OrdersPageState extends State<OrdersPage> {
                     ),
                   )
                 ],
-              )
+              ) : Container()
             ],
           ),
         ),

@@ -34,22 +34,27 @@ class OrdersBloc implements BlocBase {
 
     for (var entry in newOrders.result.takerOrders.entries) {
       orders.add(Order(
+          cancelable: entry.value.cancellable,
           base: entry.value.request.base,
           rel: entry.value.request.rel,
           orderType: OrderType.TAKER,
-          createdAt: entry.value.createdAt,
+          createdAt: entry.value.createdAt ~/ 1000,
           baseAmount: entry.value.request.baseAmount,
           relAmount: entry.value.request.relAmount,
           uuid: entry.key));
     }
+
     for (var entry in newOrders.result.makerOrders.entries) {
       orders.add(Order(
+          cancelable: entry.value.cancellable,
           baseAmount: entry.value.maxBaseVol,
           base: entry.value.base,
           rel: entry.value.rel,
           orderType: OrderType.MAKER,
-          createdAt: entry.value.createdAt,
-          relAmount: (double.parse(entry.value.price) * double.parse(entry.value.maxBaseVol)).toString(),
+          createdAt: entry.value.createdAt ~/ 1000,
+          relAmount: (double.parse(entry.value.price) *
+                  double.parse(entry.value.maxBaseVol))
+              .toString(),
           uuid: entry.key));
     }
     this.orders = orders;
@@ -59,7 +64,7 @@ class OrdersBloc implements BlocBase {
     _inCurrentOrders.add(this.currentOrders);
   }
 
-  Future<void> cancelOrder(String uuid) async{
+  Future<void> cancelOrder(String uuid) async {
     await mm2.cancelOrder(uuid);
     updateOrders();
   }

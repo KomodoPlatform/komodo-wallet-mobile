@@ -24,7 +24,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       tabController.index = onData;
     });
     if (swapHistoryBloc.isSwapsOnGoing) {
-      tabController.index = 1;
+      tabController.index = 2;
     }
   }
 
@@ -53,10 +53,10 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             bottom: PreferredSize(
               preferredSize: new Size(200.0, 70.0),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                 child: Container(
                   height: 40,
-                  
                   decoration: new BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(32)),
@@ -71,11 +71,12 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                       ),
                       Tab(
                           text: AppLocalizations.of(context)
-                              .history
+                              .orders
                               .toUpperCase()),
                       Tab(
-                          text:
-                              AppLocalizations.of(context).orders.toUpperCase())
+                          text: AppLocalizations.of(context)
+                              .history
+                              .toUpperCase()),
                     ],
                   ),
                 ),
@@ -90,8 +91,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                 TradePage(
                   mContext: context,
                 ),
-                SwapHistory(),
                 OrdersPage(),
+                SwapHistory(),
               ],
             );
           }),

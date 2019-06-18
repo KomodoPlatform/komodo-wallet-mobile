@@ -54,6 +54,7 @@ class MakerOrder {
     String rel;
     List<String> startedSwaps;
     String uuid;
+    bool cancellable;
 
     MakerOrder({
         this.base,
@@ -64,6 +65,7 @@ class MakerOrder {
         this.price,
         this.rel,
         this.startedSwaps,
+        this.cancellable,
         this.uuid,
     });
 
@@ -75,6 +77,7 @@ class MakerOrder {
         minBaseVol: json["min_base_vol"],
         price: json["price"],
         rel: json["rel"],
+        cancellable: json["cancellable"],
         startedSwaps: new List<String>.from(json["started_swaps"].map((x) => x)),
         uuid: json["uuid"],
     );
@@ -86,6 +89,7 @@ class MakerOrder {
         "max_base_vol": maxBaseVol,
         "min_base_vol": minBaseVol,
         "price": price,
+        "cancellable": cancellable,
         "rel": rel,
         "started_swaps": new List<dynamic>.from(startedSwaps.map((x) => x)),
         "uuid": uuid,
@@ -216,21 +220,25 @@ class TakerOrder {
     int createdAt;
     Map<String, Match> matches;
     Request request;
+    bool cancellable;
 
     TakerOrder({
         this.createdAt,
         this.matches,
+        this.cancellable,
         this.request,
     });
 
     factory TakerOrder.fromJson(Map<String, dynamic> json) => new TakerOrder(
         createdAt: json["created_at"],
+        cancellable: json["cancellable"],
         matches: new Map.from(json["matches"]).map((k, v) => new MapEntry<String, Match>(k, Match.fromJson(v))),
         request: Request.fromJson(json["request"]),
     );
 
     Map<String, dynamic> toJson() => {
         "created_at": createdAt,
+        "cancellable": cancellable,
         "matches": new Map.from(matches).map((k, v) => new MapEntry<String, dynamic>(k, v.toJson())),
         "request": request.toJson(),
     };
