@@ -174,7 +174,7 @@ class SwapBloc implements BlocBase {
         if (i == 0) {
           maxVolume = ask.maxvolume;
           bestPrice = ask.price;
-        } else if (ask.price < bestPrice) {
+        } else if (ask.price <= bestPrice && ask.maxvolume > maxVolume) {
           maxVolume = ask.maxvolume;
           bestPrice = ask.price;
         }
@@ -182,6 +182,8 @@ class SwapBloc implements BlocBase {
       }
     });
     print("BEST PRICE" + bestPrice.toString());
+    print("MAXVOLUME" + maxVolume.toString());
+
     this.orderCoin = OrderCoin(
       coinRel: sellCoin.coin,
       coinBase: coin,

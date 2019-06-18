@@ -30,6 +30,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   CoinBalance currentCoinBalance;
   Coin currentCoinToBuy;
   String tmpText = "";
+  String tmpAmountSell = "";
   FocusNode _focusSell = new FocusNode();
   FocusNode _focusReceive = new FocusNode();
   Animation<double> animationInputSell;
@@ -127,7 +128,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void onChangeReceive() {
-    // print("<<<<<<<<<<<<<<<<<<<<<< change1");
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
         _controllerAmountSell.text.isNotEmpty &&
@@ -142,32 +142,46 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void onChangeSell() {
-    swapBloc.updateBuyCoin(null);
     setState(() {
-      String text = _controllerAmountSell.text;
-      // print("------" + text);
-      if (text.isNotEmpty) {
+      String amountSell = _controllerAmountSell.text;
+      print(amountSell);
+      if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
           if (currentCoinBalance != null &&
-              double.parse(text.replaceAll(",", ".")) >
+              double.parse(amountSell.replaceAll(",", ".")) >
                   double.parse(currentCoinBalance.balance.balance)) {
             print("setMaxValue");
             setMaxValue();
           } else {
-            if (text.contains(
+            if (amountSell.contains(
                 RegExp("^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"))) {
             } else {
               _controllerAmountSell.text = tmpText;
               _unfocusFocus();
             }
           }
-          if (swapBloc.receiveCoin != null) {
-            swapBloc.setReceiveAmount(
-                swapBloc.receiveCoin, _controllerAmountSell.text);
+
+          if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
+            swapBloc
+                .setReceiveAmount(
+                    swapBloc.receiveCoin, _controllerAmountSell.text)
+                .then((_) {
+              _checkMaxVolume();
+            });
           }
         });
       }
+
+      tmpAmountSell = amountSell;
     });
+  }
+
+  void _checkMaxVolume() {
+    if (double.parse(_controllerAmountSell.text) >=
+        swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice) {
+      print("SETMAXVOLUME");
+      _setMaxVolumeSell();
+    }
   }
 
   void _unfocusFocus() async {
@@ -199,6 +213,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       setState(() {
         FocusScope.of(context).requestFocus(_focusSell);
       });
+    });
+  }
+
+  void _setMaxVolumeSell() {
+    setState(() {
+      _controllerAmountSell.text =
+          (swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice)
+              .toString()
+              .replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "");
+      _unfocusFocus();
     });
   }
 
@@ -389,11 +413,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     left: 22,
                     child: Container(
                         width: MediaQuery.of(context).size.width * 0.8,
-                        child: Text(
+                        child: swapBloc.receiveCoin != null ? Text(
                           AppLocalizations.of(context)
                               .noOrder(swapBloc.receiveCoin.abbr),
                           style: Theme.of(context).textTheme.body2,
-                        )))
+                        ) : Text("")))
                 : Container()
           ],
         ),
@@ -518,6 +542,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             children: coins.map((item) {
               return InkWell(
                 onTap: () async {
+                  _controllerAmountReceive.clear();
                   setState(() {
                     swapBloc.enabledReceiveField = false;
                     _noOrderFound = false;
@@ -734,6 +759,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         if (double.parse(coin.balance.balance) > 0) {
           SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
+              swapBloc.updateBuyCoin(null);
+              swapBloc.updateReceiveCoin(null);
+              swapBloc.setTimeout(true);
+              _controllerAmountReceive.clear();
               setState(() {
                 currentCoinBalance = coin;
                 String tmp = _controllerAmountSell.text;
@@ -839,13 +868,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     });
   }
 
-  _lookingForOrder() async {
+  Future<void> _lookingForOrder() async {
     swapBloc.setTimeout(false);
     int timeOutSeconds = 5;
     int timeOutCurrent = 0;
 
     double amount = await swapBloc.setReceiveAmount(
         swapBloc.receiveCoin, _controllerAmountSell.text);
+
     if (amount == 0) {
       timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
         print(timeOutCurrent);
@@ -859,18 +889,25 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             setState(() {
               _noOrderFound = true;
               _controllerAmountReceive.text = "";
-              swapBloc.enabledReceiveField = true;
+              if (swapBloc.receiveCoin != null) {
+                swapBloc.enabledReceiveField = true;
+                FocusScope.of(this.context).requestFocus(_focusReceive);
+              }
 
-              FocusScope.of(this.context).requestFocus(_focusReceive);
             });
           }
         } else {
-          swapBloc.setReceiveAmount(
-              swapBloc.receiveCoin, _controllerAmountSell.text);
+          swapBloc
+              .setReceiveAmount(
+                  swapBloc.receiveCoin, _controllerAmountSell.text)
+              .then((_) {
+            _checkMaxVolume();
+          });
         }
         timeOutCurrent += 5;
       });
     } else {
+      _checkMaxVolume();
       swapBloc.setTimeout(true);
     }
   }
