@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -24,6 +25,7 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+
   @override
   void initState() {
     super.initState();
@@ -199,13 +201,16 @@ class _SettingPageState extends State<SettingPage> {
                     wallet: walletBloc.currentWallet,
                     isSignWithSeedIsEnabled: false,
                     onSuccess: (_, password) {
-                      Navigator.push(context ,MaterialPageRoute(
-                          builder: (context) => PinPage(
-                              title: AppLocalizations.of(context).lockScreen,
-                              subTitle:
-                                  AppLocalizations.of(context).enterPinCode,
-                              isConfirmPin: PinStatus.CHANGE_PIN,
-                              password: password)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PinPage(
+                                  title:
+                                      AppLocalizations.of(context).lockScreen,
+                                  subTitle:
+                                      AppLocalizations.of(context).enterPinCode,
+                                  isConfirmPin: PinStatus.CHANGE_PIN,
+                                  password: password)));
                     },
                   ))),
       child: ListTile(
@@ -339,7 +344,7 @@ class _SettingPageState extends State<SettingPage> {
                 wallet: walletBloc.currentWallet,
                 isSignWithSeedIsEnabled: false,
                 onSuccess: (_, password) {
-                  print(password);
+                  Navigator.of(context).pop();
                   dialogBloc.dialog = showDialog(
                       context: context,
                       builder: (context) {
@@ -461,8 +466,12 @@ class _SettingPageState extends State<SettingPage> {
                                     text: AppLocalizations.of(context).delete,
                                     onPressed: () async {
                                       Navigator.of(context).pop();
+                                      settingsBloc.setDeleteLoading(true);
+                                      _showLoadingDelete();
                                       await walletBloc.deleteSeedPhrase(
                                           password, walletBloc.currentWallet);
+                                      settingsBloc.setDeleteLoading(false);
+
                                       walletBloc.deleteCurrentWallet();
                                     },
                                     backgroundColor:
@@ -483,6 +492,41 @@ class _SettingPageState extends State<SettingPage> {
                 },
               )),
     );
+  }
+
+  _showLoadingDelete() {
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (context) {
+          return StreamBuilder<Object>(
+            initialData: settingsBloc.isDeleteLoading,
+            stream: settingsBloc.outIsDeleteLoading,
+            builder: (context, snapshot) {
+              if (snapshot.hasData && !snapshot.data) {
+                Navigator.of(context).pop();
+              }
+              return SimpleDialog(
+                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                children: <Widget>[
+                  Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Text("Deleting wallet...")
+                    ],
+                  ))
+                ],
+              );
+            }
+          );
+        }).then((_) {
+      dialogBloc.dialog = null;
+    });
   }
 
   void _shareFile() {
