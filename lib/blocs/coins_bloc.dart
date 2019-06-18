@@ -112,6 +112,7 @@ class CoinsBloc implements BlocBase {
   Future<void> addMultiCoins(List<Coin> coins, bool isSavedToLocal) async {
     List<Coin> coinsReadJson = await readJsonCoin();
 
+    
     for (var coin in coins) {
       await mm2.activeCoin(coin).then((onValue) {
         if (onValue is ActiveCoin) {
@@ -137,7 +138,9 @@ class CoinsBloc implements BlocBase {
         print('Sorry, coin not available ${coin.abbr}');
       });
     }
-    if (isSavedToLocal) await writeJsonCoin(coinsReadJson);
+    if (isSavedToLocal){
+      await writeJsonCoin(coinsReadJson);
+    }
     await loadCoin(true);
   }
 
@@ -156,9 +159,17 @@ class CoinsBloc implements BlocBase {
     return File('$path/coins_activate_default.json');
   }
 
-  Future<File> writeJsonCoin(List<Coin> coins) async {
+  Future<File> writeJsonCoin(List<Coin> newCoins) async {
     final file = await _localFile;
-    return file.writeAsString(json.encode(coins));
+    List<Coin> currentCoins = await readJsonCoin();
+
+    newCoins.forEach((newCoin) {
+      if (currentCoins.every((currentCoin) => currentCoin.abbr != newCoin.abbr)) {
+        currentCoins.add(newCoin);
+      }
+    });
+
+    return file.writeAsString(json.encode(currentCoins));
   }
 
   Future<List<Coin>> readJsonCoin() async {

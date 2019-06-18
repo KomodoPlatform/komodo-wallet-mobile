@@ -212,6 +212,7 @@ class MarketMakerService {
   Future<List<dynamic>> getAllBalances(bool forceUpdate) async {
     List<Coin> coins = await coinsBloc.readJsonCoin();
 
+    
     if (this.balances.isEmpty ||
         forceUpdate ||
         coins.length != this.balances.length) {
