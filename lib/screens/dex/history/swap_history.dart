@@ -21,6 +21,7 @@ class _SwapHistoryState extends State<SwapHistory> {
 
   @override
   void initState() {
+    swapHistoryBloc.setSwaps(null);
     swapHistoryBloc.updateSwaps(LIMIT, null);
 
     _scrollController.addListener(() {

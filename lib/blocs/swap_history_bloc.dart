@@ -42,11 +42,8 @@ class SwapHistoryBloc implements BlocBase {
   Future<List<Swap>> updateSwaps(int limit, String fromUuid) async {
     isSwapsOnGoing = false;
     RecentSwaps recentSwaps = await mm2.getRecentSwaps(limit, fromUuid);
+    List<Swap> newSwaps = new List<Swap>();
 
-    if (fromUuid == null) {
-      this.swaps.clear();
-      _inSwaps.add(this.swaps);
-    }
     recentSwaps.result.swaps.forEach((swap) {
       dynamic nSwap = new Swap(result: swap, status: getStatusSwap(swap));
       if (nSwap is Swap) {
@@ -55,7 +52,7 @@ class SwapHistoryBloc implements BlocBase {
             getStatusSwap(swap) != Status.SWAP_SUCCESSFUL) {
           nSwap.status = Status.TIME_OUT;
         }
-        this.swaps.add(nSwap);
+        newSwaps.add(nSwap);
         if (nSwap.status == Status.ORDER_MATCHED ||
             nSwap.status == Status.ORDER_MATCHING ||
             nSwap.status == Status.SWAP_ONGOING) {
@@ -64,15 +61,43 @@ class SwapHistoryBloc implements BlocBase {
       } else if (nSwap is ErrorString) {
         if (swap.myInfo.startedAt + 600 <
             DateTime.now().millisecondsSinceEpoch ~/ 1000) {
-          this.swaps.add(Swap(
-                status: Status.TIME_OUT,
-                result: swap,
-              ));
+          newSwaps.add(Swap(
+            status: Status.TIME_OUT,
+            result: swap,
+          ));
         }
       }
     });
-    _inSwaps.add(this.swaps);
+    setSwaps(newSwaps);
     return this.swaps;
+  }
+
+  void setSwaps(List<Swap> newSwaps) {
+    if (newSwaps == null) {
+      this.swaps.clear();
+    } else {
+      if (this.swaps.length == 0) {
+        this.swaps.addAll(newSwaps);
+      } else {
+        newSwaps.forEach((newSwap) {
+          bool isSwapAlreadyExist = false;
+          this.swaps.asMap().forEach((index, currentSwap) {
+            if (newSwap.result.uuid == currentSwap.result.uuid) {
+              isSwapAlreadyExist = true;
+              if (newSwap.status != currentSwap.status) {
+                this.swaps.removeAt(index);
+                this.swaps.add(newSwap);
+              }
+            }
+          });
+          if (!isSwapAlreadyExist) {
+            this.swaps.add(newSwap);
+          }
+        });
+      }
+    }
+
+    _inSwaps.add(this.swaps);
   }
 
   Status getStatusSwap(ResultSwap resultSwap) {
