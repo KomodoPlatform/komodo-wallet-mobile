@@ -78,7 +78,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Expanded(
-                                          child: TextField(
+                      child: TextField(
                           maxLength: 40,
                           controller: controller,
                           onChanged: (str) {
@@ -110,8 +110,8 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                                       color: Theme.of(context).accentColor)),
                               hintStyle: Theme.of(context).textTheme.body2,
                               labelStyle: Theme.of(context).textTheme.body1,
-                              hintText:
-                                  AppLocalizations.of(context).hintEnterPassword,
+                              hintText: AppLocalizations.of(context)
+                                  .hintEnterPassword,
                               labelText: null)),
                     ),
                     SizedBox(
@@ -194,10 +194,11 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
     walletBloc
         .loginWithPassword(context, controller.text, widget.wallet)
         .then((data) async {
-      Navigator.of(context).pop();
-      widget.onSuccess(data, controller.text);
+      await widget.onSuccess(data, controller.text);
+      setState(() {
+        isLoading = false;
+      });
     }).catchError((onError) {
-      print(onError);
       Scaffold.of(context).showSnackBar(new SnackBar(
         duration: Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,

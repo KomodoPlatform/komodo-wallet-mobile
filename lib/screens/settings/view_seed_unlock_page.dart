@@ -156,6 +156,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
   TextEditingController controller = new TextEditingController();
   bool isContinueEnabled = false;
   bool isObscured = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +228,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
         SizedBox(height: 50),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 60),
-          child: PrimaryButton(
+          child: isLoading ? Center(child: CircularProgressIndicator()) : PrimaryButton(
             text: AppLocalizations.of(context).checkSeedPhraseButton1,
             onPressed: isContinueEnabled
                 ? () => _checkPassword(controller.text)
@@ -240,8 +241,14 @@ class _UnlockPasswordState extends State<UnlockPassword> {
 
   _checkPassword(String data) async {
     var entryptionTool = new EncryptionTool();
+    setState(() {
+      isLoading = true;
+    });
     String seed = await entryptionTool.readData(
         KeyEncryption.SEED, walletBloc.currentWallet, data);
+    setState(() {
+      isLoading = false;
+    });
     if (seed != null) {
       widget.onSuccess(seed);
     } else {

@@ -151,6 +151,7 @@ class _BuildScreenAuthMultiWalletsState
                         if (!mm2.ismm2Running) {
                           await authBloc.loginUI(true, seed, password);
                         }
+                        Navigator.of(context).pop();
                       },
                     )),
           );
