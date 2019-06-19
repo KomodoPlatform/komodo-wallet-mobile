@@ -145,7 +145,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void onChangeSell() {
     setState(() {
       String amountSell = _controllerAmountSell.text;
-      print(amountSell);
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
           if (currentCoinBalance != null &&
