@@ -41,8 +41,9 @@ class BoxButton extends StatelessWidget {
   final String text;
   final String assetPath;
   final Function onPressed;
+  final Key key;
 
-  BoxButton({this.text, this.assetPath, @required this.onPressed});
+  BoxButton({this.key, this.text, this.assetPath, @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -276,6 +277,7 @@ class _CreateWalletButtonState extends State<CreateWalletButton> {
   @override
   Widget build(BuildContext context) {
     return BoxButton(
+      key: Key('createWalletButton'),
       text: AppLocalizations.of(context).createAWallet,
       assetPath: "assets/create_wallet.svg",
       onPressed: () {

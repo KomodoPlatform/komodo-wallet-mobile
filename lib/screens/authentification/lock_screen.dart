@@ -7,6 +7,7 @@ import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
@@ -130,8 +131,7 @@ class _LockScreenState extends State<LockScreen> {
         }
         authBloc.showPin(false);
         if (widget.pinStatus == PinStatus.NORMAL_PIN && !mm2.ismm2Running) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await authBloc.login(prefs.getString("passphrase"), null);
+          await authBloc.login(await new EncryptionTool().read("passphrase"), null);
         }
       }
       return didAuthenticate;
