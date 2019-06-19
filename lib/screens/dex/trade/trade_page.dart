@@ -709,9 +709,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               swapBloc.setTimeout(true);
               _controllerAmountReceive.clear();
               setState(() {
-                errorMinValue = false;
-              });
-              setState(() {
                 currentCoinBalance = coin;
                 String tmp = _controllerAmountSell.text;
                 _controllerAmountSell.text = "";
