@@ -111,12 +111,12 @@ class _PinPageState extends State<PinPage> {
                                   code.toString());
                             }
 
-                            await prefs.setString("pin", code.toString());
+                            await new EncryptionTool().write("pin", code.toString());
                             authBloc.showPin(false);
                             authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
                             if (!widget.isFromChangingPin)
                               await authBloc.login(
-                                  prefs.getString("passphrase"),
+                                  await new EncryptionTool().read("passphrase"),
                                   widget.password);
                             Navigator.pop(context);
                             setState(() {
@@ -130,10 +130,8 @@ class _PinPageState extends State<PinPage> {
                           if (await _isPinCorrect(code)) {
                             authBloc.showPin(false);
                             if (!mm2.ismm2Running) {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
                               await authBloc.login(
-                                  prefs.getString("passphrase"), null);
+                                  await new EncryptionTool().read("passphrase"), null);
                             }
                             if (widget.onSuccess != null) {
                               widget.onSuccess();
@@ -229,7 +227,6 @@ class _PinPageState extends State<PinPage> {
   }
 
   Future<bool> _isPinCorrect(String code) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("pin") == code.toString();
+    return await new EncryptionTool().read("pin") == code.toString();
   }
 }

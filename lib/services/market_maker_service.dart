@@ -38,6 +38,7 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -80,8 +81,7 @@ class MarketMakerService {
   }
 
   Future<void> runBin() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String passphrase = prefs.getString('passphrase');
+    String passphrase = await new EncryptionTool().read("passphrase");
 
     var bytes = utf8.encode(passphrase); // data being hashed
     userpass = sha256.convert(bytes).toString();
