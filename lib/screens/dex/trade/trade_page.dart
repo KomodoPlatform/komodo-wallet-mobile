@@ -11,6 +11,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
+import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -218,7 +219,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     setState(() {
       _controllerAmountSell.text =
           (swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice)
-              .toString()
+              .toStringAsFixed(8)
               .replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "");
       _unfocusFocus();
     });
@@ -637,8 +638,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   double.parse(orderbook.getBuyAmount(double.parse(
                           _controllerAmountSell.text.replaceAll(",", ".")))) >
                       0;
+          print("----getBuyAmount----" + orderbook.getBuyAmount(double.parse(
+                          _controllerAmountSell.text.replaceAll(",", "."))));
           dialogItem = SimpleDialogOption(
-            onPressed: () {
+            onPressed: () async{
               _controllerAmountReceive.clear();
               setState(() {
                 swapBloc.enabledReceiveField = false;
@@ -647,6 +650,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               swapBloc.updateReceiveCoin(orderbook.coinBase);
               _controllerAmountReceive.text = "";
               if (timerGetOrderbook != null) timerGetOrderbook.cancel();
+              
               _lookingForOrder();
 
               Navigator.pop(context);
