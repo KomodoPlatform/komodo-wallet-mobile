@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -41,6 +42,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   var timerGetOrderbook;
   bool _noOrderFound = false;
   bool enabledSellField = false;
+  bool errorMinValue = false;
+  double minValueNumber = 0;
 
   @override
   void initState() {
@@ -141,10 +144,33 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
+  void _checkAmountMin(double arg) {
+    if (arg != null && arg < 3 && swapBloc.sellCoin.coin.abbr == "RICK") {
+      setState(() {
+        errorMinValue = true;
+        minValueNumber = 3;
+      });
+    } else {
+      setState(() {
+        errorMinValue = false;
+      });
+    }
+  }
+
   void onChangeSell() {
     setState(() {
       String amountSell = _controllerAmountSell.text;
-      print(amountSell);
+      print("amountSell-------------" + amountSell);
+      if (amountSell.isNotEmpty) {
+        setState(() {
+          errorMinValue = false;
+        });
+        _checkAmountMin(double.parse(amountSell));
+      } else {
+        setState(() {
+          errorMinValue = false;
+        });
+      }
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
           if (currentCoinBalance != null &&
@@ -405,6 +431,20 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 ],
               ),
             ),
+            errorMinValue && market == Market.SELL
+                ? Positioned(
+                    bottom: 25,
+                    right: 24,
+                    child: Container(
+                        child: Text(
+                      AppLocalizations.of(context).minValue(
+                          swapBloc.sellCoin.coin.abbr, minValueNumber),
+                      style: Theme.of(context)
+                          .textTheme
+                          .body2
+                          .copyWith(color: Theme.of(context).errorColor),
+                    )))
+                : Container(),
             _noOrderFound && market == Market.RECEIVE
                 ? Positioned(
                     bottom: 10,
@@ -704,6 +744,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               swapBloc.updateReceiveCoin(null);
               swapBloc.setTimeout(true);
               _controllerAmountReceive.clear();
+              setState(() {
+                errorMinValue = false;
+              });
               setState(() {
                 currentCoinBalance = coin;
                 String tmp = _controllerAmountSell.text;
