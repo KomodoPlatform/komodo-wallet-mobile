@@ -198,14 +198,8 @@ class SwapBloc implements BlocBase {
           .getBuyAmount(double.parse(amountSell.replaceAll(",", "."))));
 
     _inAmountReceiveCoin.add(this.amountReceive);
-    print("--------" + amountSell);
-    print("--------" + this.amountReceive.toString());
     return this.amountReceive;
   }
-
-  // void setReceiveAmount() {
-
-  // }
 
   void setTimeout(bool time) {
     this.isTimeOut = time;
