@@ -13,6 +13,7 @@ import 'package:komodo_dex/screens/news/media_page.dart';
 import 'package:komodo_dex/screens/portfolio/bloc_coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter_crashlytics/flutter_crashlytics.dart';
@@ -59,16 +60,16 @@ startApp() {
 }
 
 Future<void> _runBinMm2UserAlreadyLog() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getString('passphrase') != null &&
-      prefs.getString('passphrase') != "") {
+  String passphrase = await new EncryptionTool().read("passphrase");
+  if (passphrase != null && passphrase.isNotEmpty) {
     print("readJsonCoin");
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (!(authBloc.isPinShow && prefs.getBool("switch_pin"))) {
       print("login isPinShow");
-      await authBloc.login(prefs.getString("passphrase"), null);
+      await authBloc.login(await new EncryptionTool().read("passphrase"), null);
     }
   } else {
     print("loadJsonCoinsDefault");

@@ -41,9 +41,7 @@ class AuthenticateBloc extends BlocBase {
   }
 
   void init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.getString("passphrase") != null) {
+    if (await new EncryptionTool().read("passphrase") != null) {
       this.isLogin = true;
       _inIsLogin.add(true);
     } else {
@@ -67,7 +65,7 @@ class AuthenticateBloc extends BlocBase {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await _checkPINStatus(password);
-    await prefs.setString("passphrase", passphrase);
+    await new EncryptionTool().write("passphrase", passphrase);
     await initSwitchPref();
 
     await prefs.setBool("isPinIsSet", false);
@@ -92,32 +90,32 @@ class AuthenticateBloc extends BlocBase {
   }
 
   _checkPINStatus(String password) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     var wallet = await DBProvider.db.getCurrentWallet();
+    var entryptionTool = new EncryptionTool();
+
     String pin;
     if (wallet != null && password != null) {
-      var entryptionTool = new EncryptionTool();
       pin = await entryptionTool.readData(KeyEncryption.PIN, wallet, password);
     }
     if (pin != null) {
-      prefs.setString("pin", pin);
+      await entryptionTool.write("pin", pin);
       updateStatusPin(PinStatus.NORMAL_PIN);
     } else {
-      if (prefs.getString("passphrase") != null &&
-          prefs.getString("passphrase").isNotEmpty) {
-        prefs.setString("pin", prefs.getString("pin"));
+      String passphrase = await entryptionTool.read("passphrase");
+      if (passphrase != null && passphrase.isNotEmpty) {
+        // prefs.setString("pin", prefs.getString("pin"));
+        // await entryptionTool.write("pin",  await entryptionTool.read("pin"));
         updateStatusPin(PinStatus.NORMAL_PIN);
       } else {
         updateStatusPin(PinStatus.CREATE_PIN);
-        await prefs.remove("pin");
+        await entryptionTool.delete("pin");
       }
     }
   }
 
   Future<void> loginUI(bool isLogin, String passphrase, String password) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     await _checkPINStatus(password);
-    await prefs.setString("passphrase", passphrase);
+    await new EncryptionTool().write("passphrase", passphrase);
     this.isLogin = isLogin;
     _inIsLogin.add(isLogin);
   }
@@ -126,11 +124,11 @@ class AuthenticateBloc extends BlocBase {
     coinsBloc.stopCheckBalance();
     await mm2.stopmm2();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("passphrase", null);
+    await new EncryptionTool().delete("passphrase");
     await prefs.setBool("isPinIsSet", false);
     
     updateStatusPin(PinStatus.NORMAL_PIN);
-    await prefs.remove("pin");
+    await new EncryptionTool().delete("pin");
     coinsBloc.resetCoinBalance();
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
     mm2.balances = new List<Balance>();

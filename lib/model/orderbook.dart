@@ -64,6 +64,7 @@ class Orderbook {
         "rel": rel,
         "timestamp": timestamp,
       };
+
 }
 
 class Ask {

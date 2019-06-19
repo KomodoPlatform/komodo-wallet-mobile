@@ -248,7 +248,11 @@ class AppLocalizations {
   String get orderCreated => Intl.message("Order Created", name: 'orderCreated');
   String get orderCreatedInfo => Intl.message("Your order as been successfull created.", name: 'orderCreatedInfo');
   String get showMyOrders => Intl.message("SHOW MY ORDERS", name: 'showMyOrders');
-
+  String minValue(String coinName, double number) => Intl.message(
+        'The minimun sell is ${number.toString()} $coinName',
+        name: 'minValue',
+        args: [coinName, number],
+      );
 
 }
 

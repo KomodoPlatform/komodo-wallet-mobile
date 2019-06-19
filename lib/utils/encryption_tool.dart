@@ -28,6 +28,18 @@ class EncryptionTool {
     return Password.hash(data, new PBKDF2());
   }
 
+  Future<void> write(String key, String data) async{
+    await storage.write(key: key, value: data);
+  }
+
+  Future<String> read(String key) async{
+    return await storage.read(key: key);
+  }
+
+  Future<void> delete(String key) async {
+    await storage.delete(key: key);
+  }
+
 }
 
 enum KeyEncryption{
