@@ -43,8 +43,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   var timerGetOrderbook;
   bool _noOrderFound = false;
   bool enabledSellField = false;
-  bool errorMinValue = false;
-  double minValueNumber = 0;
 
   @override
   void initState() {
@@ -142,19 +140,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           bestPrice: double.parse(_controllerAmountReceive.text) /
               double.parse(_controllerAmountSell.text),
           maxVolume: double.parse(_controllerAmountSell.text)));
-    }
-  }
-
-  void _checkAmountMin(double arg) {
-    if (arg != null && arg < 3 && swapBloc.sellCoin.coin.abbr == "RICK") {
-      setState(() {
-        errorMinValue = true;
-        minValueNumber = 3;
-      });
-    } else {
-      setState(() {
-        errorMinValue = false;
-      });
     }
   }
 
@@ -421,20 +406,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 ],
               ),
             ),
-            errorMinValue && market == Market.SELL
-                ? Positioned(
-                    bottom: 25,
-                    right: 24,
-                    child: Container(
-                        child: Text(
-                      AppLocalizations.of(context).minValue(
-                          swapBloc.sellCoin.coin.abbr, minValueNumber),
-                      style: Theme.of(context)
-                          .textTheme
-                          .body2
-                          .copyWith(color: Theme.of(context).errorColor),
-                    )))
-                : Container(),
             _noOrderFound && market == Market.RECEIVE
                 ? Positioned(
                     bottom: 10,
