@@ -301,7 +301,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       mm2.postBuy(coinBase, coinRel, amountToBuy, price).then(
           (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      mm2.postSell(coinRel, coinBase, amountToSell, price).then(
+      mm2.postSell(coinRel, coinBase, amountToSell, swapBloc.orderCoin.bestPrice).then(
           (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
     }
   }

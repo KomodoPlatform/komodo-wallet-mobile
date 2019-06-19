@@ -52,7 +52,6 @@ class SwapBloc implements BlocBase {
   Sink<double> get _inAmountReceiveCoin => _amountReceiveController.sink;
   Stream<double> get outAmountReceive => _amountReceiveController.stream;
 
-
   bool isTimeOut = false;
 
   StreamController<bool> _isTimeOutController =
@@ -61,8 +60,7 @@ class SwapBloc implements BlocBase {
   Stream<bool> get outIsTimeOut => _isTimeOutController.stream;
 
   int indexTab = 0;
-  StreamController<int> _indexTabController =
-  StreamController<int>.broadcast();
+  StreamController<int> _indexTabController = StreamController<int>.broadcast();
   Sink<int> get _inIndexTab => _indexTabController.sink;
   Stream<int> get outIndexTab => _indexTabController.stream;
 
@@ -136,9 +134,9 @@ class SwapBloc implements BlocBase {
         }
       });
     });
-
-    _inListOrderCoin.add(orderCoins);
-    return;
+    this.orderCoins = orderCoins;
+    print("this.orderCoins.length" + this.orderCoins.length.toString());
+    _inListOrderCoin.add(this.orderCoins);
   }
 
   String getExchangeRate() {
@@ -164,8 +162,9 @@ class SwapBloc implements BlocBase {
     _inFocusTextField.add(this.focusTextField);
   }
 
-  Future<double> setReceiveAmount(Coin coin, String amountSell) async {
-    Orderbook orderbook = await mm2.getOrderbook(sellCoin.coin, coin);
+  Future<double> setReceiveAmount(
+      Coin coin, String amountSell) async {
+    Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
     double bestPrice = 0;
     double maxVolume = 0;
     int i = 0;
@@ -193,10 +192,20 @@ class SwapBloc implements BlocBase {
     );
     _inOrderCoin.add(this.orderCoin);
 
-    this.amountReceive = double.parse(this.orderCoin.getBuyAmount(double.parse(amountSell.replaceAll(",", "."))));
+
+    this.amountReceive = double.parse(this
+          .orderCoin
+          .getBuyAmount(double.parse(amountSell.replaceAll(",", "."))));
+
     _inAmountReceiveCoin.add(this.amountReceive);
+    print("--------" + amountSell);
+    print("--------" + this.amountReceive.toString());
     return this.amountReceive;
   }
+
+  // void setReceiveAmount() {
+
+  // }
 
   void setTimeout(bool time) {
     this.isTimeOut = time;
