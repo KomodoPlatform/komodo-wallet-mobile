@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
@@ -28,7 +30,7 @@ class OrdersBloc implements BlocBase {
     _ordersController.close();
   }
 
-  void updateOrders() async {
+  Future<void> updateOrders() async {
     Orders newOrders = await mm2.getMyOrders();
     List<Order> orders = new List<Order>();
 
@@ -62,6 +64,41 @@ class OrdersBloc implements BlocBase {
 
     this.currentOrders = newOrders;
     _inCurrentOrders.add(this.currentOrders);
+  }
+
+  List<dynamic> orderSwaps = new List<dynamic>();
+  StreamController<List<dynamic>> _orderSwapsController =
+      StreamController<List<dynamic>>.broadcast();
+  Sink<List<dynamic>> get _inOrderSwaps => _orderSwapsController.sink;
+  Stream<List<dynamic>> get outOrderSwaps => _orderSwapsController.stream;
+
+  void updateOrdersSwaps(int limit, String fromUuid) async {
+    await updateOrders();
+    // all orders update
+    await swapHistoryBloc.updateSwaps(limit, fromUuid);
+    // all swaps update
+
+    //combine two list to one list dynamic
+    this.orderSwaps.clear();
+    this.orders.removeWhere((order) => order.cancelable = false);
+    this.orderSwaps.addAll(this.orders);
+
+    swapHistoryBloc.swaps.removeWhere((swap) =>
+        swap.status == Status.SWAP_SUCCESSFUL ||
+        swap.status == Status.TIME_OUT);
+    this.orderSwaps.addAll(swapHistoryBloc.swaps);
+    this.orderSwaps.sort((a, b) {
+      if (a is Order && b is Order) {
+        return a.createdAt.compareTo(b.createdAt);
+      } else if (a is Swap && b is Order) {
+        return a.result.myInfo.startedAt.compareTo(b.createdAt);
+      } else if (a is Order && b is Swap) {
+        return a.createdAt.compareTo(b.result.myInfo.startedAt);
+      } else {
+        return a.result.myInfo.startedAt.compareTo(b.result.myInfo.startedAt);
+      }
+    });
+    print(this.orderSwaps);
   }
 
   Future<void> cancelOrder(String uuid) async {

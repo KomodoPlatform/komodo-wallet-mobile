@@ -16,6 +16,7 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   void initState() {
     ordersBloc.updateOrders();
+    ordersBloc.updateOrdersSwaps(50, null);
     super.initState();
   }
 

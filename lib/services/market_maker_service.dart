@@ -14,6 +14,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
@@ -336,17 +337,20 @@ class MarketMakerService {
     }
   }
 
-    Future<dynamic> postSetPrice(
-      Coin base, Coin rel, double volume, double price) async {
-    GetBuy getBuy = new GetBuy(
+  Future<dynamic> postSetPrice(
+      Coin base, Coin rel, double volume, double price, bool cancelPrevious, bool max) async {
+    GetSetPrice getSetPrice = new GetSetPrice(
         userpass: userpass,
         method: "setprice",
         base: base.abbr,
         rel: rel.abbr,
+        cancelPrevious: cancelPrevious,
+        max: max,
         volume: volume.toStringAsFixed(8),
         price: price.toStringAsFixed(8));
-    print(json.encode(getBuy));
-    final response = await http.post(url, body: getBuyToJson(getBuy));
+
+    print(getSetPriceToJson(getSetPrice));
+    final response = await http.post(url, body: getSetPriceToJson(getSetPrice));
 
     print(response.body.toString());
     try {

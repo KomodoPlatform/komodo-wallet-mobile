@@ -301,13 +301,13 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       mm2.postBuy(coinBase, coinRel, amountToBuy, price).then(
           (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      mm2.postSell(coinRel, coinBase, amountToSell, price).then(
+      mm2.postSetPrice(coinRel, coinBase, amountToSell, price, false, false).then(
           (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
     }
   }
 
   _goToNextScreen(dynamic onValue, double amountToSell, double amountToBuy) {
-    if (onValue is BuyResponse) {
+    if (onValue is SetPriceResponse || onValue is BuyResponse) {
       if (widget.swapStatus == SwapStatus.BUY) {
         Navigator.pushReplacement(
           context,
