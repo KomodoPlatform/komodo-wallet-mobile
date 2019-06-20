@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -301,13 +303,16 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       mm2.postBuy(coinBase, coinRel, amountToBuy, price).then(
           (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      mm2.postSell(coinRel, coinBase, amountToSell, swapBloc.orderCoin.bestPrice).then(
+      mm2.postSetPrice(coinRel, coinBase, amountToSell, swapBloc.orderCoin.bestPrice, false, false).then(
           (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
     }
   }
 
   _goToNextScreen(dynamic onValue, double amountToSell, double amountToBuy) {
-    if (onValue is BuyResponse) {
+    ordersBloc.updateOrdersSwaps();
+    swapHistoryBloc.updateSwaps(50, null);
+
+    if (onValue is SetPriceResponse || onValue is BuyResponse) {
       if (widget.swapStatus == SwapStatus.BUY) {
         Navigator.pushReplacement(
           context,

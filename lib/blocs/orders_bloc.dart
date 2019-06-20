@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
@@ -22,13 +24,19 @@ class OrdersBloc implements BlocBase {
   Sink<Orders> get _inCurrentOrders => _currentOrdersController.sink;
   Stream<Orders> get outCurrentOrders => _currentOrdersController.stream;
 
+  List<dynamic> orderSwaps = new List<dynamic>();
+  StreamController<List<dynamic>> _orderSwapsController =
+      StreamController<List<dynamic>>.broadcast();
+  Sink<List<dynamic>> get _inOrderSwaps => _orderSwapsController.sink;
+  Stream<List<dynamic>> get outOrderSwaps => _orderSwapsController.stream;
+
   @override
   void dispose() {
     _currentOrdersController.close();
     _ordersController.close();
   }
 
-  void updateOrders() async {
+  Future<void> updateOrders() async {
     Orders newOrders = await mm2.getMyOrders();
     List<Order> orders = new List<Order>();
 
@@ -64,8 +72,47 @@ class OrdersBloc implements BlocBase {
     _inCurrentOrders.add(this.currentOrders);
   }
 
+  void updateOrdersSwaps() async {
+    List<dynamic> ordersSwaps = new List<dynamic>();
+
+    await updateOrders();
+    List<Swap> swaps = await swapHistoryBloc.fetchSwaps(50, null);
+
+    swaps.removeWhere((swap) =>
+        swap.status == Status.SWAP_SUCCESSFUL ||
+        swap.status == Status.TIME_OUT);
+
+    List<Order> orders = this.orders;
+
+    swaps.forEach((swap) =>
+        orders.removeWhere((order) => order.uuid == swap.result.uuid));
+
+    ordersSwaps.addAll(orders);
+    ordersSwaps.addAll(swaps);
+    ordersSwaps.sort((a, b) {
+      if (a is Order && b is Order) {
+        return b.compareToOrder(a);
+      } else if (a is Order && b is Swap) {
+        return b.compareToOrder(a);
+      } else if (a is Swap && b is Order) {
+        return b.compareToSwap(a);
+      } else {
+        return b.compareToSwap(a);
+      }
+    });
+    this.orderSwaps = ordersSwaps;
+    _inOrderSwaps.add(ordersSwaps);
+  }
+
   Future<void> cancelOrder(String uuid) async {
     await mm2.cancelOrder(uuid);
-    updateOrders();
+    this.orderSwaps.removeWhere((orderSwap) {
+      if (orderSwap is Order) {
+        return orderSwap.uuid == uuid;
+      } else {
+        return false;
+      }
+    });
+    _inOrderSwaps.add(this.orderSwaps);
   }
 }

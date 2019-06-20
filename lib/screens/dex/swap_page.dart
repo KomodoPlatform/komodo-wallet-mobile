@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -19,12 +20,14 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     tabController = new TabController(length: 3, vsync: this);
+    swapHistoryBloc.updateSwaps(50, null);
+    ordersBloc.updateOrdersSwaps();
 
     swapBloc.outIndexTab.listen((onData) {
       tabController.index = onData;
     });
     if (swapHistoryBloc.isSwapsOnGoing) {
-      tabController.index = 2;
+      tabController.index = 1;
     }
   }
 

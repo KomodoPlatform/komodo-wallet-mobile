@@ -8,12 +8,14 @@ import 'package:flutter/services.dart' show ByteData, MethodChannel, rootBundle;
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
@@ -106,7 +108,9 @@ class MarketMakerService {
         sink.write(logMm2);
         print("mm2: " + logMm2);
 
-        if (logMm2.contains("Entering the taker_swap_loop") ||
+
+        if (logMm2.contains("CONNECTED") ||
+          logMm2.contains("Entering the taker_swap_loop") ||
             logMm2.contains("Received 'negotiation") ||
             logMm2.contains("Got maker payment") ||
             logMm2.contains("Sending 'taker-fee") ||
@@ -114,7 +118,9 @@ class MarketMakerService {
             logMm2.contains("Finished")) {
           print("Update swaps from log");
           Future.delayed(const Duration(seconds: 1), () {
-            swapHistoryBloc.updateSwaps(10, null);
+              swapHistoryBloc.updateSwaps(50, null).then((_){
+              ordersBloc.updateOrdersSwaps();
+            });
           });
         }
         if (logMm2.contains("DEX stats API enabled at")) {
@@ -159,7 +165,7 @@ class MarketMakerService {
       print("ALL COINS ACTIVATES");
       coinsBloc.loadCoin(true).then((data) {
         print("LOADCOIN FINISHED");
-        swapHistoryBloc.updateSwaps(10, null);
+        swapHistoryBloc.updateSwaps(50, null);
         coinsBloc.startCheckBalance();
       });
     });
@@ -336,17 +342,20 @@ class MarketMakerService {
     }
   }
 
-    Future<dynamic> postSetPrice(
-      Coin base, Coin rel, double volume, double price) async {
-    GetBuy getBuy = new GetBuy(
+  Future<dynamic> postSetPrice(
+      Coin base, Coin rel, double volume, double price, bool cancelPrevious, bool max) async {
+    GetSetPrice getSetPrice = new GetSetPrice(
         userpass: userpass,
         method: "setprice",
         base: base.abbr,
         rel: rel.abbr,
+        cancelPrevious: cancelPrevious,
+        max: max,
         volume: volume.toStringAsFixed(8),
         price: price.toStringAsFixed(8));
-    print(json.encode(getBuy));
-    final response = await http.post(url, body: getBuyToJson(getBuy));
+
+    print(getSetPriceToJson(getSetPrice));
+    final response = await http.post(url, body: getSetPriceToJson(getSetPrice));
 
     print(response.body.toString());
     try {

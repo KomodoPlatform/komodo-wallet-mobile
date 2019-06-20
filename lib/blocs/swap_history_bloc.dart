@@ -41,6 +41,11 @@ class SwapHistoryBloc implements BlocBase {
 
   Future<List<Swap>> updateSwaps(int limit, String fromUuid) async {
     isSwapsOnGoing = false;
+    setSwaps(await fetchSwaps(limit, fromUuid));
+    return this.swaps;
+  }
+
+  Future<List<Swap>> fetchSwaps(int limit, String fromUuid) async{
     RecentSwaps recentSwaps = await mm2.getRecentSwaps(limit, fromUuid);
     List<Swap> newSwaps = new List<Swap>();
 
@@ -68,8 +73,7 @@ class SwapHistoryBloc implements BlocBase {
         }
       }
     });
-    setSwaps(newSwaps);
-    return this.swaps;
+    return newSwaps;
   }
 
   void setSwaps(List<Swap> newSwaps) {
@@ -96,7 +100,6 @@ class SwapHistoryBloc implements BlocBase {
         });
       }
     }
-
     _inSwaps.add(this.swaps);
   }
 

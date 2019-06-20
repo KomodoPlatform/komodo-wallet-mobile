@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/uuid.dart';
 
@@ -39,9 +40,17 @@ class Swap {
         "result": result.toJson(),
       };
 
-  int compareTo(Swap other) {
+
+  int compareToSwap(Swap other) {
     int order = other.result.myInfo.startedAt.compareTo(result.myInfo.startedAt);
     if (order == 0) order = result.myInfo.startedAt.compareTo(other.result.myInfo.startedAt);
     return order;
   }
+
+  int compareToOrder(Order other) {
+    int order = other.createdAt.compareTo(result.myInfo.startedAt);
+    if (order == 0) order = result.myInfo.startedAt.compareTo(other.createdAt);
+    return order;
+  }
+
 }
