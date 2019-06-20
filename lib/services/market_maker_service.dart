@@ -108,7 +108,9 @@ class MarketMakerService {
         sink.write(logMm2);
         print("mm2: " + logMm2);
 
-        if (logMm2.contains("Entering the taker_swap_loop") ||
+
+        if (logMm2.contains("CONNECTED") ||
+          logMm2.contains("Entering the taker_swap_loop") ||
             logMm2.contains("Received 'negotiation") ||
             logMm2.contains("Got maker payment") ||
             logMm2.contains("Sending 'taker-fee") ||
@@ -116,8 +118,8 @@ class MarketMakerService {
             logMm2.contains("Finished")) {
           print("Update swaps from log");
           Future.delayed(const Duration(seconds: 1), () {
-            swapHistoryBloc.updateSwaps(10, null).then((_){
-              ordersBloc.updateOrdersSwaps(50, null);
+              swapHistoryBloc.updateSwaps(50, null).then((_){
+              ordersBloc.updateOrdersSwaps();
             });
           });
         }
@@ -163,7 +165,7 @@ class MarketMakerService {
       print("ALL COINS ACTIVATES");
       coinsBloc.loadCoin(true).then((data) {
         print("LOADCOIN FINISHED");
-        swapHistoryBloc.updateSwaps(10, null);
+        swapHistoryBloc.updateSwaps(50, null);
         coinsBloc.startCheckBalance();
       });
     });

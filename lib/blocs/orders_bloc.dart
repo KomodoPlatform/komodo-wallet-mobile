@@ -72,88 +72,36 @@ class OrdersBloc implements BlocBase {
     _inCurrentOrders.add(this.currentOrders);
   }
 
-  void updateOrdersSwaps(int limit, String fromUuid) async {
+  void updateOrdersSwaps() async {
     List<dynamic> ordersSwaps = new List<dynamic>();
+
     await updateOrders();
-    // all orders update
-    // await swapHistoryBloc.updateSwaps(limit, fromUuid);
-    // all swaps update
+    List<Swap> swaps = await swapHistoryBloc.fetchSwaps(50, null);
 
-    //combine two list to one list dynamic
-    // this.orders.removeWhere((order) => order.cancelable = true);
-    ordersSwaps.addAll(this.orders);
+    swaps.removeWhere((swap) =>
+        swap.status == Status.SWAP_SUCCESSFUL ||
+        swap.status == Status.TIME_OUT);
 
-    // swapHistoryBloc.swaps.removeWhere((swap) =>
-    //     swap.status == Status.SWAP_SUCCESSFUL ||
-    //     swap.status == Status.TIME_OUT);
-    ordersSwaps.addAll(swapHistoryBloc.swaps);
+    List<Order> orders = this.orders;
+
+    swaps.forEach((swap) =>
+        orders.removeWhere((order) => order.uuid == swap.result.uuid));
+
+    ordersSwaps.addAll(orders);
+    ordersSwaps.addAll(swaps);
     ordersSwaps.sort((a, b) {
       if (a is Order && b is Order) {
-        return a.createdAt.compareTo(b.createdAt);
-      } else if (a is Swap && b is Order) {
-        return a.result.myInfo.startedAt.compareTo(b.createdAt);
+        return b.compareToOrder(a);
       } else if (a is Order && b is Swap) {
-        return a.createdAt.compareTo(b.result.myInfo.startedAt);
+        return b.compareToOrder(a);
+      } else if (a is Swap && b is Order) {
+        return b.compareToSwap(a);
       } else {
-        return a.result.myInfo.startedAt.compareTo(b.result.myInfo.startedAt);
+        return b.compareToSwap(a);
       }
     });
-    // this.orderSwaps = ordersSwaps;
-    // _inOrderSwaps.add(this.orderSwaps);
-
-    setOrderSwaps(ordersSwaps);
-  }
-
-  void setOrderSwaps(List<dynamic> newOrdersSwaps) {
-    if (newOrdersSwaps == null) {
-      this.orderSwaps.clear();
-    } else {
-      if (this.orderSwaps.length == 0) {
-        this.orderSwaps.addAll(newOrdersSwaps);
-      } else {
-        newOrdersSwaps.forEach((newOrderSwap) {
-          bool isSwapAlreadyExist = false;
-          this.orderSwaps.asMap().forEach((index, currentOrderSwap) {
-            if ((newOrderSwap is Swap &&
-                    currentOrderSwap is Swap &&
-                    newOrderSwap.result.uuid == currentOrderSwap.result.uuid) ||
-                (newOrderSwap is Order &&
-                    currentOrderSwap is Order &&
-                    newOrderSwap.uuid == currentOrderSwap.uuid) ||
-                (newOrderSwap is Swap &&
-                    currentOrderSwap is Order &&
-                    newOrderSwap.result.uuid == currentOrderSwap.uuid)) {
-              isSwapAlreadyExist = true;
-
-              if (newOrderSwap is Swap &&
-                    currentOrderSwap is Swap && newOrderSwap.status != currentOrderSwap.status) {
-                this.orderSwaps.removeAt(index);
-                this.orderSwaps.add(newOrderSwap);
-              }
-              // this.orderSwaps.removeAt(index);
-              // if (newOrderSwap is Swap && currentOrderSwap is Order) {
-              //   this.orderSwaps.add(newOrderSwap);
-              // }
-              // remove only the ORDER not the SWAP
-            }
-          });
-          if (!isSwapAlreadyExist) {
-            this.orderSwaps.add(newOrderSwap);
-          }
-        });
-      }
-    }
-    this.orderSwaps.removeWhere((orderSwap) {
-      if (orderSwap is Order) {
-        return orderSwap.cancelable == false;
-      } else if (orderSwap is Swap){
-        return orderSwap.status == Status.SWAP_SUCCESSFUL || orderSwap.status == Status.TIME_OUT;
-      } else {
-        return false;
-      }
-    });
-
-    _inOrderSwaps.add(this.orderSwaps);
+    this.orderSwaps = ordersSwaps;
+    _inOrderSwaps.add(ordersSwaps);
   }
 
   Future<void> cancelOrder(String uuid) async {
@@ -166,6 +114,5 @@ class OrdersBloc implements BlocBase {
       }
     });
     _inOrderSwaps.add(this.orderSwaps);
-    updateOrdersSwaps(50, null);
   }
 }
