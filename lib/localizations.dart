@@ -152,7 +152,7 @@ class AppLocalizations {
   String get txConfirmations => Intl.message("Confirmations", name: 'txConfirmations');
   String get txFee => Intl.message("Fee", name: 'txFee');
   String get txHash => Intl.message("Transaction ID", name: 'Tx Hash');
-  String get noSwaps => Intl.message("No Swaps", name: 'noSwaps');
+  String get noSwaps => Intl.message("No history.", name: 'noSwaps');
   String get trade => Intl.message("TRADE", name: 'trade');
   String get tradeCompleted => Intl.message("SWAP COMPLETED!", name: 'tradeCompleted');
   String get step => Intl.message("Step", name: 'step');

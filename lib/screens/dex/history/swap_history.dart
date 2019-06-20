@@ -47,8 +47,13 @@ class _SwapHistoryState extends State<SwapHistory> {
         builder: (context, snapshot) {
           print(snapshot.data.length);
           print(snapshot.connectionState);
+          List<Swap> swaps = snapshot.data;
+
+          swaps.removeWhere((swap) =>
+                swap.status != Status.SWAP_SUCCESSFUL &&
+                swap.status != Status.TIME_OUT);
           if (snapshot.hasData &&
-              snapshot.data.length == 0 &&
+              swaps.length == 0 &&
               snapshot.connectionState == ConnectionState.active) {
             return Center(
               child: Text(
@@ -56,12 +61,8 @@ class _SwapHistoryState extends State<SwapHistory> {
                 style: Theme.of(context).textTheme.body2,
               ),
             );
-          } else if (snapshot.hasData && snapshot.data.length > 0) {
-            List<Swap> swaps = snapshot.data;
+          } else if (snapshot.hasData && swaps.length > 0) {
 
-            swaps.removeWhere((swap) =>
-                swap.status != Status.SWAP_SUCCESSFUL &&
-                swap.status != Status.TIME_OUT);
 
             swaps.sort((b, a) {
               if (b is Swap && a is Swap) {
