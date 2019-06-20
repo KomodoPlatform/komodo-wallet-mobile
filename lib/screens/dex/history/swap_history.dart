@@ -66,20 +66,21 @@ class _SwapHistoryState extends State<SwapHistory> {
                 }
               }
             });
+            snapshot.data.removeWhere((swap) => swap.status != Status.SWAP_SUCCESSFUL && swap.status != Status.TIME_OUT);
+
             List<Widget> swapsWidget = snapshot.data
-                .map((swap) =>
-                    _buildItemSwap(context, swap, snapshot.data.length))
+                .map((swap) => BuildItemSwap(context: context, swap: swap))
                 .toList();
 
-            swapsWidget.add(Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: new Center(
-                child: new Opacity(
-                  opacity: isLoadingNewSwaps ? 1.0 : 00,
-                  child: new CircularProgressIndicator(),
-                ),
-              ),
-            ));
+            // swapsWidget.add(Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: new Center(
+            //     child: new Opacity(
+            //       opacity: isLoadingNewSwaps ? 1.0 : 00,
+            //       child: new CircularProgressIndicator(),
+            //     ),
+            //   ),
+            // ));
 
             return RefreshIndicator(
               backgroundColor: Theme.of(context).backgroundColor,
@@ -97,13 +98,31 @@ class _SwapHistoryState extends State<SwapHistory> {
         });
   }
 
-  Widget _buildItemSwap(BuildContext mContext, Swap swap, int length) {
-    fromUUID = swap.result.uuid;
-    String swapStatus =
-        swapHistoryBloc.getSwapStatusString(context, swap.status);
-    Color colorStatus = swapHistoryBloc.getColorStatus(swap.status);
-    String stepStatus = swapHistoryBloc.getStepStatus(swap.status);
-    String amountToBuy = getAmountToBuy(swap);
+  Future<List<Swap>> _onRefresh() async {
+    return await swapHistoryBloc.updateSwaps(LIMIT, null);
+  }
+
+}
+
+class BuildItemSwap extends StatefulWidget {
+  final BuildContext context;
+  final Swap swap;
+
+  BuildItemSwap({this.context, this.swap});
+
+  @override
+  _BuildItemSwapState createState() => _BuildItemSwapState();
+}
+
+class _BuildItemSwapState extends State<BuildItemSwap> {
+
+
+  @override
+  Widget build(BuildContext context) {
+       String swapStatus =
+        swapHistoryBloc.getSwapStatusString(context, widget.swap.status);
+    Color colorStatus = swapHistoryBloc.getColorStatus(widget.swap.status);
+    String stepStatus = swapHistoryBloc.getStepStatus(widget.swap.status);
 
     return Card(
         elevation: 8.0,
@@ -116,7 +135,7 @@ class _SwapHistoryState extends State<SwapHistory> {
               context,
               MaterialPageRoute(
                   builder: (context) => SwapDetailPage(
-                        swap: swap,
+                        swap: widget.swap,
                       )),
             );
           },
@@ -127,23 +146,23 @@ class _SwapHistoryState extends State<SwapHistory> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    _buildTextAmount(swap.result.myInfo.myCoin,
-                        swap.result.myInfo.myAmount),
+                    _buildTextAmount(widget.swap.result.myInfo.myCoin,
+                        widget.swap.result.myInfo.myAmount),
                     Expanded(
                       child: Container(),
                     ),
-                    _buildIcon(swap.result.myInfo.myCoin),
+                    _buildIcon(widget.swap.result.myInfo.myCoin),
                     Icon(
                       Icons.sync,
                       size: 20,
                       color: Colors.white,
                     ),
-                    _buildIcon(swap.result.myInfo.otherCoin),
+                    _buildIcon(widget.swap.result.myInfo.otherCoin),
                     Expanded(
                       child: Container(),
                     ),
-                    _buildTextAmount(swap.result.myInfo.otherCoin,
-                        swap.result.myInfo.otherAmount)
+                    _buildTextAmount(widget.swap.result.myInfo.otherCoin,
+                        widget.swap.result.myInfo.otherAmount)
                   ],
                 ),
               ),
@@ -155,11 +174,11 @@ class _SwapHistoryState extends State<SwapHistory> {
                   children: <Widget>[
                     AutoSizeText(
                       "UUID: " +
-                          swap.result.uuid.substring(0, 5) +
+                          widget.swap.result.uuid.substring(0, 5) +
                           "..." +
-                          swap.result.uuid.substring(
-                              swap.result.uuid.length - 5,
-                              swap.result.uuid.length),
+                          widget.swap.result.uuid.substring(
+                              widget.swap.result.uuid.length - 5,
+                              widget.swap.result.uuid.length),
                       maxLines: 1,
                       style: Theme.of(context).textTheme.body2,
                     ),
@@ -174,7 +193,7 @@ class _SwapHistoryState extends State<SwapHistory> {
                     Text(
                       DateFormat('dd MMM yyyy HH:mm').format(
                           DateTime.fromMillisecondsSinceEpoch(
-                              swap.result.myInfo.startedAt * 1000)),
+                              widget.swap.result.myInfo.startedAt * 1000)),
                       style: Theme.of(context).textTheme.body2,
                     ),
                   ],
@@ -228,11 +247,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         ));
   }
 
-  Future<List<Swap>> _onRefresh() async {
-    return await swapHistoryBloc.updateSwaps(LIMIT, null);
-  }
-
-  _buildIcon(String coin) {
+   _buildIcon(String coin) {
     return Container(
       height: 25,
       width: 25,

@@ -69,6 +69,7 @@ class SwapHistoryBloc implements BlocBase {
       }
     });
     setSwaps(newSwaps);
+
     return this.swaps;
   }
 
@@ -96,7 +97,6 @@ class SwapHistoryBloc implements BlocBase {
         });
       }
     }
-
     _inSwaps.add(this.swaps);
   }
 

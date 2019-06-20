@@ -24,6 +24,12 @@ class OrdersBloc implements BlocBase {
   Sink<Orders> get _inCurrentOrders => _currentOrdersController.sink;
   Stream<Orders> get outCurrentOrders => _currentOrdersController.stream;
 
+  List<dynamic> orderSwaps = new List<dynamic>();
+  StreamController<List<dynamic>> _orderSwapsController =
+      StreamController<List<dynamic>>.broadcast();
+  Sink<List<dynamic>> get _inOrderSwaps => _orderSwapsController.sink;
+  Stream<List<dynamic>> get outOrderSwaps => _orderSwapsController.stream;
+
   @override
   void dispose() {
     _currentOrdersController.close();
@@ -66,28 +72,22 @@ class OrdersBloc implements BlocBase {
     _inCurrentOrders.add(this.currentOrders);
   }
 
-  List<dynamic> orderSwaps = new List<dynamic>();
-  StreamController<List<dynamic>> _orderSwapsController =
-      StreamController<List<dynamic>>.broadcast();
-  Sink<List<dynamic>> get _inOrderSwaps => _orderSwapsController.sink;
-  Stream<List<dynamic>> get outOrderSwaps => _orderSwapsController.stream;
-
   void updateOrdersSwaps(int limit, String fromUuid) async {
+    List<dynamic> ordersSwaps = new List<dynamic>();
     await updateOrders();
     // all orders update
-    await swapHistoryBloc.updateSwaps(limit, fromUuid);
+    // await swapHistoryBloc.updateSwaps(limit, fromUuid);
     // all swaps update
 
     //combine two list to one list dynamic
-    this.orderSwaps.clear();
-    this.orders.removeWhere((order) => order.cancelable = false);
-    this.orderSwaps.addAll(this.orders);
+    // this.orders.removeWhere((order) => order.cancelable = true);
+    ordersSwaps.addAll(this.orders);
 
-    swapHistoryBloc.swaps.removeWhere((swap) =>
-        swap.status == Status.SWAP_SUCCESSFUL ||
-        swap.status == Status.TIME_OUT);
-    this.orderSwaps.addAll(swapHistoryBloc.swaps);
-    this.orderSwaps.sort((a, b) {
+    // swapHistoryBloc.swaps.removeWhere((swap) =>
+    //     swap.status == Status.SWAP_SUCCESSFUL ||
+    //     swap.status == Status.TIME_OUT);
+    ordersSwaps.addAll(swapHistoryBloc.swaps);
+    ordersSwaps.sort((a, b) {
       if (a is Order && b is Order) {
         return a.createdAt.compareTo(b.createdAt);
       } else if (a is Swap && b is Order) {
@@ -98,11 +98,74 @@ class OrdersBloc implements BlocBase {
         return a.result.myInfo.startedAt.compareTo(b.result.myInfo.startedAt);
       }
     });
-    print(this.orderSwaps);
+    // this.orderSwaps = ordersSwaps;
+    // _inOrderSwaps.add(this.orderSwaps);
+
+    setOrderSwaps(ordersSwaps);
+  }
+
+  void setOrderSwaps(List<dynamic> newOrdersSwaps) {
+    if (newOrdersSwaps == null) {
+      this.orderSwaps.clear();
+    } else {
+      if (this.orderSwaps.length == 0) {
+        this.orderSwaps.addAll(newOrdersSwaps);
+      } else {
+        newOrdersSwaps.forEach((newOrderSwap) {
+          bool isSwapAlreadyExist = false;
+          this.orderSwaps.asMap().forEach((index, currentOrderSwap) {
+            if ((newOrderSwap is Swap &&
+                    currentOrderSwap is Swap &&
+                    newOrderSwap.result.uuid == currentOrderSwap.result.uuid) ||
+                (newOrderSwap is Order &&
+                    currentOrderSwap is Order &&
+                    newOrderSwap.uuid == currentOrderSwap.uuid) ||
+                (newOrderSwap is Swap &&
+                    currentOrderSwap is Order &&
+                    newOrderSwap.result.uuid == currentOrderSwap.uuid)) {
+              isSwapAlreadyExist = true;
+
+              if (newOrderSwap is Swap &&
+                    currentOrderSwap is Swap && newOrderSwap.status != currentOrderSwap.status) {
+                this.orderSwaps.removeAt(index);
+                this.orderSwaps.add(newOrderSwap);
+              }
+              // this.orderSwaps.removeAt(index);
+              // if (newOrderSwap is Swap && currentOrderSwap is Order) {
+              //   this.orderSwaps.add(newOrderSwap);
+              // }
+              // remove only the ORDER not the SWAP
+            }
+          });
+          if (!isSwapAlreadyExist) {
+            this.orderSwaps.add(newOrderSwap);
+          }
+        });
+      }
+    }
+    this.orderSwaps.removeWhere((orderSwap) {
+      if (orderSwap is Order) {
+        return orderSwap.cancelable == false;
+      } else if (orderSwap is Swap){
+        return orderSwap.status == Status.SWAP_SUCCESSFUL || orderSwap.status == Status.TIME_OUT;
+      } else {
+        return false;
+      }
+    });
+
+    _inOrderSwaps.add(this.orderSwaps);
   }
 
   Future<void> cancelOrder(String uuid) async {
     await mm2.cancelOrder(uuid);
-    updateOrders();
+    this.orderSwaps.removeWhere((orderSwap) {
+      if (orderSwap is Order) {
+        return orderSwap.uuid == uuid;
+      } else {
+        return false;
+      }
+    });
+    _inOrderSwaps.add(this.orderSwaps);
+    updateOrdersSwaps(50, null);
   }
 }

@@ -8,6 +8,7 @@ import 'package:flutter/services.dart' show ByteData, MethodChannel, rootBundle;
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -115,7 +116,9 @@ class MarketMakerService {
             logMm2.contains("Finished")) {
           print("Update swaps from log");
           Future.delayed(const Duration(seconds: 1), () {
-            swapHistoryBloc.updateSwaps(10, null);
+            swapHistoryBloc.updateSwaps(10, null).then((_){
+              ordersBloc.updateOrdersSwaps(50, null);
+            });
           });
         }
         if (logMm2.contains("DEX stats API enabled at")) {

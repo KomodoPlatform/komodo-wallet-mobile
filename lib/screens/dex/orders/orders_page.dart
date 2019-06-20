@@ -5,6 +5,8 @@ import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/screens/dex/history/swap_history.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -15,23 +17,27 @@ class OrdersPage extends StatefulWidget {
 class _OrdersPageState extends State<OrdersPage> {
   @override
   void initState() {
-    ordersBloc.updateOrders();
     ordersBloc.updateOrdersSwaps(50, null);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Order>>(
-        initialData: ordersBloc.orders,
-        stream: ordersBloc.outOrders,
+    return StreamBuilder<List<dynamic>>(
+        initialData: ordersBloc.orderSwaps,
+        stream: ordersBloc.outOrderSwaps,
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data.length > 0) {
             return ListView.builder(
               padding: EdgeInsets.all(8),
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
-                return _buildItemOrder(snapshot.data[index]);
+                if (snapshot.data[index] is Swap) {
+                  return BuildItemSwap(context: context, swap: snapshot.data[index]);
+                } else {
+                  return _buildItemOrder(snapshot.data[index]);
+                }
               },
             );
           } else {
@@ -96,26 +102,25 @@ class _OrdersPageState extends State<OrdersPage> {
                   ),
                 ],
               ),
-              order.cancelable ? Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: SecondaryButton(
-
-                      text: AppLocalizations.of(context).cancel,
-                      onPressed: () {
-                        ordersBloc.cancelOrder(order.uuid);
-                      },
-                    ),
-                  )
-                ],
-              ) : Container()
+              order.cancelable
+                  ? Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Container(),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: SecondaryButton(
+                            text: AppLocalizations.of(context).cancel,
+                            onPressed: () {
+                              ordersBloc.cancelOrder(order.uuid);
+                            },
+                          ),
+                        )
+                      ],
+                    )
+                  : Container()
             ],
           ),
         ),
