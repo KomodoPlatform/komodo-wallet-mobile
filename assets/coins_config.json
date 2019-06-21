@@ -131,5 +131,21 @@
     "explorerUrl": [
       "https://blockexplorer.one/litecoin/mainnet/"
     ]
+  },
+  {
+    "name": "BAT",
+    "address": "195.201.0.6",
+    "port": 8555,
+    "proto": "tcp",
+    "txfee": 0,
+    "abbr": "BAT",
+    "swap_contract_address":"0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+    "colorCoin": "0xFFff5000",
+    "serverList": [
+      "http://195.201.0.6:8555"
+    ],
+    "explorerUrl": [
+      "https://etherscan.io/"
+    ]
   }
 ]
