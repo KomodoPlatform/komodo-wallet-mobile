@@ -13,6 +13,8 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_code.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
@@ -301,39 +303,44 @@ class _CoinDetailState extends State<CoinDetail> {
         child: ListView(
           controller: _scrollController,
           children: <Widget>[
-            StreamBuilder<Transactions>(
+            StreamBuilder<dynamic>(
                 stream: coinsBloc.outTransactions,
                 initialData: coinsBloc.transactions,
                 builder: (context, snapshot) {
-                  Transactions transactions = snapshot.data;
+                  if (snapshot.data is Transactions) {
+                    Transactions transactions = snapshot.data;
 
-                  if (snapshot.hasData &&
-                      transactions.result != null &&
-                      transactions.result.transactions != null) {
-                    if (transactions.result.transactions.length > 0) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                        child: _buildTransactions(
-                            context, transactions.result.transactions),
-                      );
-                    } else if (double.parse(
-                                currentCoinBalance.balance.balance) >
-                            0 &&
-                        transactions.result.transactions.length < 1) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (transactions.result.transactions.length == 0) {
-                      return Center(
-                          child: Text(
-                        AppLocalizations.of(context).noTxs,
-                        style: Theme.of(context).textTheme.body2,
-                      ));
-                    } else {
-                      return Center(child: CircularProgressIndicator());
+                    if (snapshot.hasData &&
+                        transactions.result != null &&
+                        transactions.result.transactions != null) {
+                          if (snapshot.connectionState == ConnectionState.waiting){
+                            return Center(child: CircularProgressIndicator());
+                          }
+                      if (transactions.result.transactions.length > 0) {
+                        return Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                          child: _buildTransactions(
+                              context, transactions.result.transactions),
+                        );
+                      } else if (transactions.result.transactions.length == 0) {
+                        return Center(
+                            child: Text(
+                          AppLocalizations.of(context).noTxs,
+                          style: Theme.of(context).textTheme.body2,
+                        ));
+                      }
                     }
+                  } else if (snapshot.data is ErrorCode) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(child: Text((snapshot.data as ErrorCode).error.message, style: Theme.of(context).textTheme.body2, textAlign: TextAlign.center,)),
+                    );
                   } else {
-                    return Center(child: CircularProgressIndicator());
+                    return Container();
                   }
+
+
                 })
           ],
         ),

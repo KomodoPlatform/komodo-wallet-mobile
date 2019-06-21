@@ -15,6 +15,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -365,7 +366,7 @@ class MarketMakerService {
     }
   }
 
-  Future<Transactions> getTransactions(
+  Future<dynamic> getTransactions(
       Coin coin, int limit, String fromId) async {
     GetTxHistory getTxHistory = new GetTxHistory(
         userpass: userpass,
@@ -377,7 +378,11 @@ class MarketMakerService {
     print(url);
     final response = await http.post(url, body: json.encode(getTxHistory));
     print("RESULT: " + response.body.toString());
-    return transactionsFromJson(response.body);
+    try {
+      return transactionsFromJson(response.body);
+    } catch (e) {
+      return errorCodeFromJson(response.body);
+    }
   }
 
   Future<RecentSwaps> getRecentSwaps(int limit, String fromUuid) async {

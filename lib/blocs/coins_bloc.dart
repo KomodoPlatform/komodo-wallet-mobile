@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
@@ -25,14 +26,14 @@ class CoinsBloc implements BlocBase {
   Sink<List<CoinBalance>> get _inCoins => _coinsController.sink;
   Stream<List<CoinBalance>> get outCoins => _coinsController.stream;
 
-  Transactions transactions = new Transactions();
+  dynamic transactions;
 
   // Streams to handle the list coin
-  StreamController<Transactions> _transactionsController =
-      StreamController<Transactions>.broadcast();
+  StreamController<dynamic> _transactionsController =
+      StreamController<dynamic>.broadcast();
 
-  Sink<Transactions> get _inTransactions => _transactionsController.sink;
-  Stream<Transactions> get outTransactions => _transactionsController.stream;
+  Sink<dynamic> get _inTransactions => _transactionsController.sink;
+  Stream<dynamic> get outTransactions => _transactionsController.stream;
 
   List<Coin> coinToActivate = new List<Coin>();
 
@@ -91,22 +92,27 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
-    Transactions transactions = await mm2.getTransactions(coin, limit, fromId);
+    dynamic transactions = await mm2.getTransactions(coin, limit, fromId);
 
-    if (fromId == null) {
-      this.transactions = transactions;
-    } else {
-      this.transactions.result.fromId = transactions.result.fromId;
-      this.transactions.result.limit = transactions.result.limit;
-      this.transactions.result.skipped = transactions.result.skipped;
-      this.transactions.result.total = transactions.result.total;
-      this
-          .transactions
-          .result
-          .transactions
-          .addAll(transactions.result.transactions);
+    if (transactions is Transactions) {
+      if (fromId == null) {
+        this.transactions = transactions;
+      } else {
+        this.transactions.result.fromId = transactions.result.fromId;
+        this.transactions.result.limit = transactions.result.limit;
+        this.transactions.result.skipped = transactions.result.skipped;
+        this.transactions.result.total = transactions.result.total;
+        this
+            .transactions
+            .result
+            .transactions
+            .addAll(transactions.result.transactions);
+      }
+      _inTransactions.add(this.transactions);
+    } else if (transactions is ErrorCode) {
+      _inTransactions.add(transactions);
+      return transactions;
     }
-    _inTransactions.add(this.transactions);
   }
 
   Future<void> addMultiCoins(List<Coin> coins, bool isSavedToLocal) async {
