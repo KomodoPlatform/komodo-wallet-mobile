@@ -114,5 +114,22 @@
     "explorerUrl": [
       "https://qtum.info/"
     ]
+  },
+  {
+    "name": "Litecoin",
+    "address": "electrum-ltc.bysh.me",
+    "port": 50001,
+    "proto": "tcp",
+    "txfee": 100000,
+    "abbr": "LTC",
+    "colorCoin": "0xFF52a5da",
+    "serverList": [
+      "electrum.ltc.xurious.com:50001",
+      "ltc.rentonisk.com:50001",
+      "electrum-ltc.bysh.me:50001"
+    ],
+    "explorerUrl": [
+      "https://blockexplorer.one/litecoin/mainnet/"
+    ]
   }
 ]
