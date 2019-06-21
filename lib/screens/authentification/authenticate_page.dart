@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
@@ -149,6 +150,7 @@ class _BuildScreenAuthMultiWalletsState
                   textButton: AppLocalizations.of(context).login,
                       wallet: wallet,
                       onSuccess: (seed, password) async{
+                        await coinsBloc.resetCoinDefault();
                         if (!mm2.ismm2Running) {
                           await authBloc.loginUI(true, seed, password);
                         }

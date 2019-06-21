@@ -92,7 +92,6 @@ class MarketMakerService {
 
     String coinsInitParam = coinInitToJson(await readJsonCoinInit());
 
-    print(coinsInitParam);
     String startParam =
         '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"${filesPath}\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
 
