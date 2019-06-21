@@ -94,8 +94,6 @@ class _BrowseNewsState extends State<BrowseNews> {
         stream: mediaBloc.outArticles,
         initialData: mediaBloc.articles,
         builder: (context, snapshot) {
-          print(snapshot.connectionState);
-          print("articles" + snapshot.data.length.toString());
           if (snapshot.hasData && snapshot.data.length > 0) {
             List<Article> articles = snapshot.data;
 
