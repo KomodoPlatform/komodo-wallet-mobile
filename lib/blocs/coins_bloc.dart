@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/transactions.dart';
@@ -167,6 +169,7 @@ class CoinsBloc implements BlocBase {
 
   Future<File> writeJsonCoin(List<Coin> newCoins) async {
     final file = await _localFile;
+    
     List<Coin> currentCoins = await readJsonCoin();
 
     newCoins.forEach((newCoin) {
@@ -243,11 +246,17 @@ class CoinsBloc implements BlocBase {
       for (var balance in balances) {
         if (balance is Balance && coin.abbr == balance.coin) {
           var coinBalance = CoinBalance(coin, balance);
-          if (forceUpdate || coinBalance.balanceUSD == null) {
+          if ((forceUpdate || coinBalance.balanceUSD == null) && double.parse(coinBalance.balance.balance) > 0) {
             coinBalance.priceForOne =
-                await getPriceObj.getPrice(coin.abbr, "USD");
+                await getPriceObj.getPrice(coin.abbr, "USD").timeout(Duration(seconds: 5), onTimeout: (){
+                  return 0;
+                });
+            
             coinBalance.balanceUSD = coinBalance.priceForOne *
                 double.parse(coinBalance.balance.balance);
+          } else {
+            coinBalance.priceForOne = 0;
+            coinBalance.balanceUSD = 0;
           }
           listCoinElectrum.add(coinBalance);
         } else if (balance is ErrorString) {

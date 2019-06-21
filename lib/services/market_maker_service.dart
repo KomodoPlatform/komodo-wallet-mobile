@@ -15,6 +15,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/result.dart';
@@ -89,11 +90,11 @@ class MarketMakerService {
     var bytes = utf8.encode(passphrase); // data being hashed
     userpass = sha256.convert(bytes).toString();
 
-    String coins =
-        '[{\"coin\":\"LTC\",\"name\":\"litecoin\",\"fname\":\"Litecoin\",\"rpcport\": 9332,\"pubtype\": 48,\"p2shtype\": 5,\"wiftype\": 176,\"txfee\": 100000,\"mm2\": 1},{\"coin\":\"QTUM\",\"name\":\"QTUM\",\"pubtype\":58,\"p2shtype\":50,\"txfee\":400000,\"wiftype\":128,\"mm2\":1},{\"coin\":\"DGB\",\"name\":\"DGB\",\"pubtype\":30,\"txfee\":100000,\"p2shtype\":5,\"wiftype\":128,\"mm2\":1},{\"coin\":\"BTC\",\"name\":\"Bitcoin\",\"pubtype\":0,\"p2shtype\":5,\"wiftype\":128,\"mm2\":1},{\"coin\":\"KMD\",\"asset\":\"KMD\",\"mm2\":1,\"txfee\":10000},{\"coin\":\"RICK\",\"asset\":\"RICK\",\"rpcport\":28223,\"mm2\":1,\"txfee\":10000},{\"coin\":\"MORTY\",\"asset\":\"MORTY\",\"rpcport\":63812,\"mm2\":1,\"txfee\":10000},{\"coin\":\"ETH\",\"name\":\"ethereum\",\"etomic\":\"0x0000000000000000000000000000000000000000\",\"rpcport\":80,\"mm2\":1},{\"coin\":\"USDT\",\"name\":\"Tether\",\"etomic\":\"0xdac17f958d2ee523a2206206994597c13d831ec7\",\"rpcport\":80,\"mm2\":1},{\"coin\":\"THETA\",\"name\":\"Theta\",\"etomic\":\"0x3883f5e181fccaF8410FA61e12b59BAd963fb645\",\"rpcport\":80},{\"coin\":\"BAT\",\"name\":\"BAT\",\"etomic\":\"0x0D8775F648430679A709E98d2b0Cb6250d2887EF\",\"rpcport\":80,\"mm2\":1},{\"coin\":\"EOS\",\"name\":\"EOS\",\"etomic\":\"0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0\",\"rpcport\":80}]';
+    String coinsInitParam = coinInitToJson(await readJsonCoinInit());
 
+    print(coinsInitParam);
     String startParam =
-        '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"${filesPath}\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coins,\"dbdir\":\"$filesPath\"}';
+        '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"${filesPath}\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
 
     if (Platform.isAndroid) {
       await stopmm2();
@@ -156,6 +157,14 @@ class MarketMakerService {
           }
         });
       });
+    }
+  }
+
+  Future<List<CoinInit>> readJsonCoinInit() async {
+    try {
+      return coinInitFromJson(await rootBundle.loadString('assets/coins_init_mm2.json'));
+    } catch (e) {
+      return new List<CoinInit>();
     }
   }
 
