@@ -62,7 +62,10 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
                 labelPadding: EdgeInsets.symmetric(horizontal: 16),
                 indicator: CustomTabIndicator(context: context),
                 controller: _controllerTabs,
-                tabs: <Widget>[Tab(text: AppLocalizations.of(context).mediaBrowse), Tab(text: AppLocalizations.of(context).mediaSaved)],
+                tabs: <Widget>[
+                  Tab(text: AppLocalizations.of(context).mediaBrowse),
+                  Tab(text: AppLocalizations.of(context).mediaSaved)
+                ],
               ),
             ),
           ),
@@ -91,28 +94,30 @@ class _BrowseNewsState extends State<BrowseNews> {
         stream: mediaBloc.outArticles,
         initialData: mediaBloc.articles,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          print(snapshot.connectionState);
+          print("articles" + snapshot.data.length.toString());
+          if (snapshot.hasData && snapshot.data.length > 0) {
             List<Article> articles = snapshot.data;
 
             if (articles.length == 0) {
               return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  Icons.info,
-                  color: Colors.grey,
-                  size: 48,
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  AppLocalizations.of(context).noArticles,
-                  style: Theme.of(context).textTheme.title,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            );
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.info,
+                    color: Colors.grey,
+                    size: 48,
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).noArticles,
+                    style: Theme.of(context).textTheme.title,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              );
             }
             return ListView.builder(
               itemCount: articles.length,
@@ -126,8 +131,11 @@ class _BrowseNewsState extends State<BrowseNews> {
                   );
               },
             );
-          } else {
+          
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
+          } else {
+            return Container();
           }
         });
   }

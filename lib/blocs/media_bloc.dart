@@ -30,6 +30,7 @@ class MediaBloc implements BlocBase {
   }
 
   void getArticles() async {
+    print("GETARTICLESS");
     final response =
         await http.get("https://genesis.kmd.dev/api/dex/news/all");
     List<Article> articlesSaved = await DBProvider.db.getAllArticlesSaved();
