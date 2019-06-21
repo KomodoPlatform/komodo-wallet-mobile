@@ -130,7 +130,7 @@ class AuthenticateBloc extends BlocBase {
     updateStatusPin(PinStatus.NORMAL_PIN);
     await new EncryptionTool().delete("pin");
     coinsBloc.resetCoinBalance();
-    await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
+    await coinsBloc.resetCoinDefault();
     mm2.balances = new List<Balance>();
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);

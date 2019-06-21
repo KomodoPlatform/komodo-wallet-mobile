@@ -178,7 +178,12 @@ class CoinsBloc implements BlocBase {
       }
     });
 
-    return file.writeAsString(json.encode(currentCoins));
+    return file.writeAsString(json.encode(newCoins));
+  }
+
+  Future<File> resetCoinDefault() async {
+    final file = await _localFile;
+    return file.writeAsString(json.encode(await mm2.loadJsonCoinsDefault()));
   }
 
   Future<List<Coin>> readJsonCoin() async {

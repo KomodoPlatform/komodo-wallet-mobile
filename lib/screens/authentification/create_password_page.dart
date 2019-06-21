@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/main.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
@@ -114,7 +117,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       autocorrect: false,
                       enableInteractiveSelection: true,
                       obscureText: isObscured,
-                      
                       validator: (String arg) {
                         RegExp exp = RegExp(
                             r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
@@ -128,7 +130,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       },
                       style: Theme.of(context).textTheme.body1,
                       decoration: InputDecoration(
-                        errorMaxLines: 3,
+                          errorMaxLines: 3,
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -222,26 +224,25 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   _checkValidation(BuildContext context) {
     if (_validateInputs()) {
       if (controller1.text == controller2.text) {
-        _nextPage(true);
+        _nextPage();
       } else {
         _showError(context, AppLocalizations.of(context).wrongPassword);
       }
     }
   }
 
-  _nextPage(bool isPasswordSaved) async {
+  _nextPage() async {
     setState(() {
       isLoading = true;
     });
-    if (isPasswordSaved) {
-      var entryptionTool = new EncryptionTool();
-      var wallet = walletBloc.currentWallet;
+    var entryptionTool = new EncryptionTool();
+    var wallet = walletBloc.currentWallet;
 
-      await entryptionTool.writeData(
-          KeyEncryption.SEED, wallet, controller1.text, widget.seed);
-      await DBProvider.db.saveWallet(wallet);
-      await DBProvider.db.saveCurrentWallet(wallet);
-    }
+    await entryptionTool.writeData(
+        KeyEncryption.SEED, wallet, controller1.text, widget.seed);
+    await DBProvider.db.saveWallet(wallet);
+    await DBProvider.db.saveCurrentWallet(wallet);
+    await coinsBloc.resetCoinDefault();
 
     await authBloc
         .loginUI(false, widget.seed, controller1.text)
