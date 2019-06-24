@@ -33,7 +33,7 @@
   },
   {
     "name": "Ethereum",
-    "address": "eth2.cipig.net",
+    "address": "http://eth2.cipig.net",
     "port": 8555,
     "proto": "tcp",
     "txfee": 0,
@@ -41,9 +41,9 @@
     "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
     "colorCoin": "0xFF828384",
     "serverList": [
-      "eth1.cipig.net:8555",
-      "eth2.cipig.net:8555",
-      "eth3.cipig.net:8555"
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
     ],
     "explorerUrl": [
       "https://etherscan.io/"
@@ -85,7 +85,7 @@
   },
   {
     "name": "USDC",
-    "address": "eth1.cipig.net",
+    "address": "http://eth1.cipig.net",
     "port": 8555,
     "proto": "tcp",
     "txfee": 0,
@@ -93,9 +93,9 @@
     "swap_contract_address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     "colorCoin": "0xFF2775c9",
     "serverList": [
-      "eth1.cipig.net:8555",
-      "eth2.cipig.net:8555",
-      "eth3.cipig.net:8555"
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
     ],
     "explorerUrl": [
       "https://etherscan.io/"
@@ -103,7 +103,7 @@
   },
   {
     "name": "Binance Token",
-    "address": "eth3.cipig.net",
+    "address": "http://eth3.cipig.net",
     "port": 8555,
     "proto": "tcp",
     "txfee": 0,
@@ -111,9 +111,9 @@
     "swap_contract_address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
     "colorCoin": "0xFF1a53f0",
     "serverList": [
-      "eth1.cipig.net:8555",
-      "eth2.cipig.net:8555",
-      "eth3.cipig.net:8555"
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
     ],
     "explorerUrl": [
       "https://etherscan.io/"
@@ -172,7 +172,7 @@
   },
   {
     "name": "BAT",
-    "address": "eth1.cipig.net",
+    "address": "http://eth1.cipig.net",
     "port": 8555,
     "proto": "tcp",
     "txfee": 0,
@@ -180,9 +180,9 @@
     "swap_contract_address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
     "colorCoin": "0xFFff5000",
     "serverList": [
-      "eth1.cipig.net:8555",
-      "eth2.cipig.net:8555",
-      "eth3.cipig.net:8555"
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
     ],
     "explorerUrl": [
       "https://etherscan.io/"
