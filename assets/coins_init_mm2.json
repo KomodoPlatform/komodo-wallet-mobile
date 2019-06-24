@@ -49,8 +49,8 @@
         "txfee": 10000
     },
     {
-        "coin": "RedFOX",
-        "asset": "RFOX",
+        "coin": "RFOX",
+        "asset": "RedFOX",
         "rpcport": 32269,
         "mm2": 1,
         "txfee": 10000
@@ -117,6 +117,13 @@
         "mm2": 1
     },
     {
+        "coin": "USDC",
+        "name": "USDC",
+        "etomic": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
         "coin": "EOS",
         "name": "EOS",
         "etomic": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
@@ -126,13 +133,6 @@
         "coin": "BNB",
         "name": "Binance",
         "etomic": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
-        "rpcport": 80,
-        "mm2": 1
-    },
-    {
-        "coin": "USDC",
-        "name": "USD Coin",
-        "etomic": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
         "rpcport": 80,
         "mm2": 1
     }
