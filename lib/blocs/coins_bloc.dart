@@ -155,6 +155,7 @@ class CoinsBloc implements BlocBase {
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
       }));
     }
+
     await Future.wait(listFutureActiveCoin)
         .then((_) async => await writeJsonCoin(coinsReadJson))
         .then((_) async => await loadCoin(true));
@@ -259,7 +260,6 @@ class CoinsBloc implements BlocBase {
 
   Future<void> loadCoin(bool forceUpdate) async {
     List<Coin> coins = await coinsBloc.readJsonCoin();
-
     List<Future> getAllBalances = new List<Future>();
 
     coins.forEach((coin) {
@@ -294,7 +294,6 @@ class CoinsBloc implements BlocBase {
         print("-----" + onError.error);
       }));
     });
-
     await Future.wait(getAllBalances);
   }
 
