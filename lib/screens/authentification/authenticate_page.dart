@@ -301,6 +301,7 @@ class _RestoreButtonState extends State<RestoreButton> {
   @override
   Widget build(BuildContext context) {
     return BoxButton(
+      key: Key('restoreWallet'),
       text: AppLocalizations.of(context).restoreWallet,
       assetPath: "assets/lock_off.svg",
       onPressed: () {

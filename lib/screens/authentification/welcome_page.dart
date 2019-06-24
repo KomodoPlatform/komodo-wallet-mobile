@@ -37,6 +37,7 @@ class _WelcomePageState extends State<WelcomePage> {
           Center(
             child: Text(
               AppLocalizations.of(context).welcomeTitle,
+              key: Key('titleCreateWallet'),
               style: Theme.of(context).textTheme.title.copyWith(fontSize: 32),
             ),
           ),

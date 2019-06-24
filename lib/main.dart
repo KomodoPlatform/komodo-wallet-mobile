@@ -22,42 +22,45 @@ import 'package:connectivity/connectivity.dart';
 
 import 'blocs/coins_bloc.dart';
 
-void main() async {
-  bool isInDebugMode = false;
+void main() => runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
 
-  FlutterError.onError = (FlutterErrorDetails details) {
-    if (isInDebugMode) {
-      // In development mode simply print to console.
-      FlutterError.dumpErrorToConsole(details);
-    } else {
-      // In production mode report to the application zone to report to
-      // Crashlytics.
-      Zone.current.handleUncaughtError(details.exception, details.stack);
-    }
-  };
-  await FlutterCrashlytics().initialize();
+// void main() async {
+// runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+// bool isInDebugMode = false;
 
-  runZoned<Future<Null>>(() async {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-        .then((_) {
-          startApp();
-        });
-  }, onError: (error, stackTrace) async {
-    // Whenever an error occurs, call the `reportCrash` function. This will send
-    // Dart errors to our dev console or Crashlytics depending on the environment.
-    print(stackTrace);
-    await FlutterCrashlytics()
-        .reportCrash(error, stackTrace, forceCrash: false);
-  });
-}
+// FlutterError.onError = (FlutterErrorDetails details) {
+//   if (isInDebugMode) {
+//     // In development mode simply print to console.
+//     FlutterError.dumpErrorToConsole(details);
+//   } else {
+//     // In production mode report to the application zone to report to
+//     // Crashlytics.
+//     Zone.current.handleUncaughtError(details.exception, details.stack);
+//   }
+// };
+// await FlutterCrashlytics().initialize();
 
-startApp() {
-  mm2.initMarketMaker().then((_) {
-    _runBinMm2UserAlreadyLog().then((onValue) {
-      runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
-    });
-  });
-}
+// runZoned<Future<Null>>(() async {
+//   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+//       .then((_) {
+//         startApp();
+//       });
+// }, onError: (error, stackTrace) async {
+//   // Whenever an error occurs, call the `reportCrash` function. This will send
+//   // Dart errors to our dev console or Crashlytics depending on the environment.
+//   print(stackTrace);
+//   await FlutterCrashlytics()
+//       .reportCrash(error, stackTrace, forceCrash: false);
+// });
+// }
+
+// startApp() {
+//   mm2.initMarketMaker().then((_) {
+//     _runBinMm2UserAlreadyLog().then((onValue) {
+//       runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+//     });
+//   });
+// }
 
 Future<void> _runBinMm2UserAlreadyLog() async {
   String passphrase = await new EncryptionTool().read("passphrase");
@@ -88,6 +91,39 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final LocalAuthentication auth = LocalAuthentication();
+
+  @override
+  void initState() {
+    bool isInDebugMode = false;
+
+    FlutterError.onError = (FlutterErrorDetails details) {
+      if (isInDebugMode) {
+        // In development mode simply print to console.
+        FlutterError.dumpErrorToConsole(details);
+      } else {
+        // In production mode report to the application zone to report to
+        // Crashlytics.
+        Zone.current.handleUncaughtError(details.exception, details.stack);
+      }
+    };
+    FlutterCrashlytics().initialize().then((_) {
+      runZoned<Future<Null>>(() async {
+        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+            .then((_) async {
+          await mm2.initMarketMaker();
+          await _runBinMm2UserAlreadyLog();
+        });
+      }, onError: (error, stackTrace) async {
+        // Whenever an error occurs, call the `reportCrash` function. This will send
+        // Dart errors to our dev console or Crashlytics depending on the environment.
+        print(stackTrace);
+        await FlutterCrashlytics()
+            .reportCrash(error, stackTrace, forceCrash: false);
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -258,8 +294,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       primaryColor: Theme.of(context).accentColor,
                       textTheme: Theme.of(context).textTheme.copyWith(
                           caption: new TextStyle(
-                              color: Colors.white
-                                  .withOpacity(0.5)))),
+                              color: Colors.white.withOpacity(0.5)))),
                   child: Container(
                     color: Theme.of(context).primaryColor,
                     child: SafeArea(
