@@ -48,6 +48,56 @@
     ]
   },
   {
+    "name": "DASH",
+    "address": "electrum3.cipig.net",
+    "port": 10061,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "DASH",
+    "colorCoin": "0xFF5783a7",
+    "serverList": [
+      "electrum1.cipig.net:10061",
+      "electrum2.cipig.net:10061",
+      "electrum3.cipig.net:10061"
+    ],
+    "explorerUrl": [
+      "https://explorer.dash.org/"
+    ]
+  },
+  {
+    "name": "Litecoin",
+    "address": "electrum-ltc.bysh.me",
+    "port": 50001,
+    "proto": "tcp",
+    "txfee": 100000,
+    "abbr": "LTC",
+    "colorCoin": "0xFFbebebe",
+    "serverList": [
+      "electrum.ltc.xurious.com:50001",
+      "ltc.rentonisk.com:50001",
+      "electrum-ltc.bysh.me:50001"
+    ],
+    "explorerUrl": [
+      "https://blockexplorer.one/litecoin/mainnet/"
+    ]
+  },
+  {
+    "name": "USDC",
+    "address": "195.201.0.6",
+    "port": 8555,
+    "proto": "tcp",
+    "txfee": 0,
+    "abbr": "USDC",
+    "swap_contract_address":"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    "colorCoin": "0xFF2775c9",
+    "serverList": [
+    "http://195.201.0.6:8555"
+    ],
+    "explorerUrl": [
+      "https://etherscan.io/"
+    ]
+  },
+  {
     "name": "Binance Token",
     "address": "195.201.0.6",
     "port": 8555,
@@ -98,20 +148,20 @@
     ]
   },
   {
-    "name": "Litecoin",
-    "address": "electrum-ltc.bysh.me",
-    "port": 50001,
+    "name": "RedFOX",
+    "address": "electrum1.cipig.net",
+    "port": 10034,
     "proto": "tcp",
-    "txfee": 100000,
-    "abbr": "LTC",
-    "colorCoin": "0xFFbebebe",
+    "txfee": 10000,
+    "abbr": "RFOX",
+    "colorCoin": "0xFFcc0000",
     "serverList": [
-      "electrum.ltc.xurious.com:50001",
-      "ltc.rentonisk.com:50001",
-      "electrum-ltc.bysh.me:50001"
+      "electrum3.cipig.net:10034",
+      "electrum2.cipig.net:10034",
+      "electrum1.cipig.net:10034"
     ],
     "explorerUrl": [
-      "https://blockexplorer.one/litecoin/mainnet/"
+      "https://rfox.explorer.dexstats.info/"
     ]
   },
   {
@@ -125,22 +175,6 @@
     "colorCoin": "0xFFff5000",
     "serverList": [
       "http://195.201.0.6:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "OmiseGO",
-    "address": "195.201.0.6",
-    "port": 8555,
-    "proto": "tcp",
-    "txfee": 0,
-    "abbr": "OMG",
-    "swap_contract_address":"0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
-    "colorCoin": "0xFF1a53f0",
-    "serverList": [
-    "http://195.201.0.6:8555"
     ],
     "explorerUrl": [
       "https://etherscan.io/"
