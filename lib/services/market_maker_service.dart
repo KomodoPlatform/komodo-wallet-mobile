@@ -170,7 +170,7 @@ class MarketMakerService {
   _initCoinsAndLoad() async {
     await coinsBloc.activateCoinKickStart();
 
-    coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin(), false).then((onValue) {
+    coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((onValue) {
       print("ALL COINS ACTIVATES");
       coinsBloc.loadCoin(true).then((data) {
         print("LOADCOIN FINISHED");
@@ -480,7 +480,7 @@ class MarketMakerService {
     }
   }
 
-  Future<dynamic> activeCoin(Coin coin) async {
+  Future<ActiveCoin> activeCoin(Coin coin) async {
     print("activate coin :" + coin.abbr);
     GetActiveCoin getActiveCoin;
     if (coin.swap_contract_address != null) {
@@ -502,12 +502,17 @@ class MarketMakerService {
 
     final response =
         await http.post(url, body: getActiveCoinToJson(getActiveCoin));
-    print("response Active Coin: " + response.body.toString());
     try {
-      return activeCoinFromJson(response.body);
+      print("response Active Coin: " + response.body.toString());
+      if (activeCoinFromJson(response.body).result != null) {
+        return activeCoinFromJson(response.body);
+      } else {
+        throw errorFromJson(response.body);
+      }
+      
     } catch (e) {
-      print(errorFromJson(response.body));
-      return errorFromJson(response.body);
+      print("-------------------" + errorFromJson(response.body).error);
+      throw errorFromJson(response.body);
     }
   }
 }

@@ -117,37 +117,25 @@ class CoinsBloc implements BlocBase {
     }
   }
 
-  Future<void> addMultiCoins(List<Coin> coins, bool isSavedToLocal) async {
+  Future<void> addMultiCoins(List<Coin> coins) async {
     List<Coin> coinsReadJson = await readJsonCoin();
-
-    
+    List<Coin> coinsToDelete = new List<Coin>();
     for (var coin in coins) {
       await mm2.activeCoin(coin).then((onValue) {
-        if (onValue is ActiveCoin) {
-          if (isSavedToLocal) coinsReadJson.add(coin);
-          print(coin.abbr);
+        if (onValue is ActiveCoin && onValue.result != null) {
+          coinsReadJson.add(coin);
           currentCoinActivate(CoinToActivate(coin: coin, isActive: true));
-        } else if (onValue is ErrorString) {
-          coinsReadJson.forEach((coinJson) {
-            if (coinJson.abbr == coin.abbr && isSavedToLocal) {
-              coinsReadJson.remove(coinJson);
-            }
-          });
-          currentCoinActivate(CoinToActivate(coin: coin, isActive: false));
-          print('Sorry, coin not available ${coin.abbr}');
         }
-      }).catchError((onError) {
-        coinsReadJson.forEach((coinJson) {
-          if (coinJson.abbr == coin.abbr && isSavedToLocal) {
-            coinsReadJson.remove(coinJson);
-          }
-        });
+      }).catchError((onError) async {
+        coinsReadJson.removeWhere((coinRead) => coinRead.abbr == coin.abbr);
+        coinsToDelete.add(coin);
         currentCoinActivate(CoinToActivate(coin: coin, isActive: false));
         print('Sorry, coin not available ${coin.abbr}');
       });
     }
-    if (isSavedToLocal){
-      await writeJsonCoin(coinsReadJson);
+    await writeJsonCoin(coinsReadJson);
+    for (var item in coinsToDelete) {
+      await deleteJsonCoin(item);
     }
     await loadCoin(true);
   }
@@ -169,16 +157,22 @@ class CoinsBloc implements BlocBase {
 
   Future<File> writeJsonCoin(List<Coin> newCoins) async {
     final file = await _localFile;
-    
     List<Coin> currentCoins = await readJsonCoin();
 
     newCoins.forEach((newCoin) {
-      if (currentCoins.every((currentCoin) => currentCoin.abbr != newCoin.abbr)) {
+      if (currentCoins
+          .every((currentCoin) => currentCoin.abbr != newCoin.abbr)) {
         currentCoins.add(newCoin);
       }
     });
+    return file.writeAsString(json.encode(currentCoins));
+  }
 
-    return file.writeAsString(json.encode(newCoins));
+  Future<void> deleteJsonCoin(Coin coin) async {
+    List<Coin> currentCoins = await readJsonCoin();
+    currentCoins.removeWhere((currentCoin) => currentCoin.abbr == coin.abbr);
+    final file = await _localFile;
+    await file.writeAsString(json.encode(currentCoins));
   }
 
   Future<File> resetCoinDefault() async {
@@ -251,12 +245,14 @@ class CoinsBloc implements BlocBase {
       for (var balance in balances) {
         if (balance is Balance && coin.abbr == balance.coin) {
           var coinBalance = CoinBalance(coin, balance);
-          if ((forceUpdate || coinBalance.balanceUSD == null) && double.parse(coinBalance.balance.balance) > 0) {
-            coinBalance.priceForOne =
-                await getPriceObj.getPrice(coin.abbr, "USD").timeout(Duration(seconds: 5), onTimeout: (){
-                  return 0;
-                });
-            
+          if ((forceUpdate || coinBalance.balanceUSD == null) &&
+              double.parse(coinBalance.balance.balance) > 0) {
+            coinBalance.priceForOne = await getPriceObj
+                .getPrice(coin.abbr, "USD")
+                .timeout(Duration(seconds: 5), onTimeout: () {
+              return 0;
+            });
+
             coinBalance.balanceUSD = coinBalance.priceForOne *
                 double.parse(coinBalance.balance.balance);
           } else {
@@ -265,7 +261,7 @@ class CoinsBloc implements BlocBase {
           }
           listCoinElectrum.add(coinBalance);
         } else if (balance is ErrorString) {
-          print(balance.error);
+          print("-------------------" + balance.error);
         }
 
         if (balance is Balance && balance.coin == "KMD") {
@@ -281,7 +277,6 @@ class CoinsBloc implements BlocBase {
     });
     if (listCoinElectrum.isNotEmpty) {
       updateCoins(listCoinElectrum);
-
     }
   }
 
