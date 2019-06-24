@@ -48,37 +48,19 @@
     ]
   },
   {
-    "name": "Rick",
-    "address": "electrum3.cipig.net",
-    "port": 10017,
+    "name": "Binance Token",
+    "address": "195.201.0.6",
+    "port": 8555,
     "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "RICK",
-    "colorCoin": "0xFFabdce4",
+    "txfee": 0,
+    "abbr": "BNB",
+    "swap_contract_address":"0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
+    "colorCoin": "0xFF1a53f0",
     "serverList": [
-      "electrum1.cipig.net:10017",
-      "electrum2.cipig.net:10017",
-      "electrum3.cipig.net:10017"
+    "http://195.201.0.6:8555"
     ],
     "explorerUrl": [
-      "https://rick.kmd.dev/"
-    ]
-  },
-  {
-    "name": "Morty",
-    "address": "electrum1.cipig.net",
-    "port": 10018,
-    "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "MORTY",
-    "colorCoin": "0xFFf8f277",
-    "serverList": [
-      "electrum3.cipig.net:10018",
-      "electrum2.cipig.net:10018",
-      "electrum1.cipig.net:10018"
-    ],
-    "explorerUrl": [
-      "https://morty.kmd.dev/"
+      "https://etherscan.io/"
     ]
   },
   {
@@ -122,7 +104,7 @@
     "proto": "tcp",
     "txfee": 100000,
     "abbr": "LTC",
-    "colorCoin": "0xFF52a5da",
+    "colorCoin": "0xFFbebebe",
     "serverList": [
       "electrum.ltc.xurious.com:50001",
       "ltc.rentonisk.com:50001",
@@ -146,6 +128,56 @@
     ],
     "explorerUrl": [
       "https://etherscan.io/"
+    ]
+  },
+  {
+    "name": "OmiseGO",
+    "address": "195.201.0.6",
+    "port": 8555,
+    "proto": "tcp",
+    "txfee": 0,
+    "abbr": "OMG",
+    "swap_contract_address":"0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
+    "colorCoin": "0xFF1a53f0",
+    "serverList": [
+    "http://195.201.0.6:8555"
+    ],
+    "explorerUrl": [
+      "https://etherscan.io/"
+    ]
+  },
+  {
+    "name": "Rick",
+    "address": "electrum3.cipig.net",
+    "port": 10017,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "RICK",
+    "colorCoin": "0xFFabdce4",
+    "serverList": [
+      "electrum1.cipig.net:10017",
+      "electrum2.cipig.net:10017",
+      "electrum3.cipig.net:10017"
+    ],
+    "explorerUrl": [
+      "https://rick.kmd.dev/"
+    ]
+  },
+  {
+    "name": "Morty",
+    "address": "electrum1.cipig.net",
+    "port": 10018,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "MORTY",
+    "colorCoin": "0xFFf8f277",
+    "serverList": [
+      "electrum3.cipig.net:10018",
+      "electrum2.cipig.net:10018",
+      "electrum1.cipig.net:10018"
+    ],
+    "explorerUrl": [
+      "https://morty.kmd.dev/"
     ]
   }
 ]

@@ -86,9 +86,22 @@
         "mm2": 1
     },
     {
+        "coin": "OMG",
+        "name": "OmiseGO",
+        "etomic": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
         "coin": "EOS",
         "name": "EOS",
         "etomic": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
+        "rpcport": 80
+    },
+    {
+        "coin": "BNB",
+        "name": "Binance",
+        "etomic": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
         "rpcport": 80
     }
 ]
