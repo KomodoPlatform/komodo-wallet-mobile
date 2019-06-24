@@ -300,6 +300,7 @@ class ListCoinsState extends State<ListCoins> {
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.loadCoin(true),
             child: Builder(builder: (context) {
+              print(snapshot.connectionState);
               if (snapshot.hasData && snapshot.data.length > 0) {
                 List<dynamic> datas = new List<dynamic>();
                 datas.addAll(snapshot.data);
@@ -316,7 +317,7 @@ class ListCoinsState extends State<ListCoins> {
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
-              } else {
+              } else if (snapshot.data.length == 0){
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
