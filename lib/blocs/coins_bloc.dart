@@ -141,11 +141,13 @@ class CoinsBloc implements BlocBase {
     List<Future> listFutureActiveCoin = new List<Future>();
 
     for (var coin in coins) {
-      currentCoinActivate(
-          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
-      listFutureActiveCoin.add(mm2.activeCoin(coin).then((onValue) {
+
+      listFutureActiveCoin.add(mm2.activeCoin(coin)
+      .then((onValue) {
         if (onValue is ActiveCoin && onValue.result != null) {
           coinsReadJson.add(coin);
+                currentCoinActivate(
+          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
         }
       }).catchError((onError) async {
         coinsReadJson.removeWhere((coinRead) => coinRead.abbr == coin.abbr);
@@ -261,30 +263,32 @@ class CoinsBloc implements BlocBase {
 
     coins.forEach((coin) {
       getAllBalances.add(mm2.getBalance(coin).then((balance) {
-        var coinBalance;
-        if (balance is Balance && coin.abbr == balance.coin) {
-          coinBalance = CoinBalance(coin, balance);
-          if ((forceUpdate || coinBalance.balanceUSD == null) &&
-              double.parse(coinBalance.balance.balance) > 0) {
-            coinBalance.priceForOne = 1.0;
-          } else {
-            coinBalance.priceForOne = 0.0;
+        getPriceObj.getPrice(coin.abbr, "USD").then((price){
+          var coinBalance;
+          if (balance is Balance && coin.abbr == balance.coin) {
+            coinBalance = CoinBalance(coin, balance);
+            if ((forceUpdate || coinBalance.balanceUSD == null) &&
+                double.parse(coinBalance.balance.balance) > 0) {
+              coinBalance.priceForOne = price;
+            } else {
+              coinBalance.priceForOne = 0.0;
+            }
+            coinBalance.balanceUSD = coinBalance.priceForOne *
+                double.parse(coinBalance.balance.balance);
+          } else if (balance is ErrorString) {
+            coinBalance = CoinBalance(
+                coin, new Balance(address: "", balance: "1.0", coin: coin.abbr));
+            coinBalance.priceForOne = price;
+            coinBalance.balanceUSD = coinBalance.priceForOne *
+                double.parse(coinBalance.balance.balance);
+            print("-------------------" + balance.error);
           }
-          coinBalance.balanceUSD = coinBalance.priceForOne *
-              double.parse(coinBalance.balance.balance);
-        } else if (balance is ErrorString) {
-          coinBalance = CoinBalance(
-              coin, new Balance(address: "", balance: "1.0", coin: coin.abbr));
-          coinBalance.priceForOne = 1.0;
-          coinBalance.balanceUSD = coinBalance.priceForOne *
-              double.parse(coinBalance.balance.balance);
-          print("-------------------" + balance.error);
-        }
 
-        if (balance is Balance && balance.coin == "KMD") {
-          mm2.pubkey = balance.address;
-        }
-        updateOneCoin(coinBalance);
+          if (balance is Balance && balance.coin == "KMD") {
+            mm2.pubkey = balance.address;
+          }
+          updateOneCoin(coinBalance);
+        });
       }).catchError((onError) {
         print("-----" + onError.error);
       }));

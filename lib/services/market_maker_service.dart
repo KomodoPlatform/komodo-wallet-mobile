@@ -485,39 +485,40 @@ class MarketMakerService {
     dynamic getActiveCoin;
     var response;
 
-    if (coin.swap_contract_address != null) {
-      getActiveCoin = new GetEnabledCoin(
-          userpass: userpass,
-          method: "enable",
-          coin: coin.abbr,
-          tx_history: true,
-          swap_contract_address: coin.swap_contract_address,
-          urls: coin.serverList);
-      response =
-          await http.post(url, body: getEnabledCoinToJson(getActiveCoin));
-    } else {
-      getActiveCoin = new GetActiveCoin(
-          userpass: userpass,
-          method: "electrum",
-          coin: coin.abbr,
-          txHistory: true,
-          servers: servers);
-      response = await http.post(url, body: getActiveCoinToJson(getActiveCoin));
-    }
-
-    response.timeout(Duration(seconds: 5), (){
-      throw new ErrorString(error: "Timeout on ${coin.abbr}");
-    });
-
-    print("response Active Coin: " + response.body.toString());
-
     try {
+      if (coin.swap_contract_address != null) {
+        getActiveCoin = new GetEnabledCoin(
+            userpass: userpass,
+            method: "enable",
+            coin: coin.abbr,
+            tx_history: true,
+            swap_contract_address: coin.swap_contract_address,
+            urls: coin.serverList);
+        response = await http
+            .post(url, body: getEnabledCoinToJson(getActiveCoin))
+            .timeout(Duration(seconds: 15));
+      } else {
+        getActiveCoin = new GetActiveCoin(
+            userpass: userpass,
+            method: "electrum",
+            coin: coin.abbr,
+            txHistory: true,
+            servers: servers);
+        response = await http
+            .post(url, body: getActiveCoinToJson(getActiveCoin))
+            .timeout(Duration(seconds: 15));
+      }
+
+      print("response Active Coin: " + response.body.toString());
+
       if (activeCoinFromJson(response.body).result != null) {
         return activeCoinFromJson(response.body);
       } else {
         print(response.body);
         throw errorFromJson(response.body);
       }
+    } on TimeoutException catch (_) {
+      throw new ErrorString(error: "Timeout on ${coin.abbr}");
     } catch (e) {
       print("-------------------" + errorFromJson(response.body).error);
       print(response.body);
