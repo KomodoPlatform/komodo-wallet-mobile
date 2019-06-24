@@ -178,6 +178,7 @@ class CoinsBloc implements BlocBase {
 
   Future<File> writeJsonCoin(List<Coin> newCoins) async {
     final file = await _localFile;
+
     List<Coin> currentCoins = await readJsonCoin();
 
     newCoins.forEach((newCoin) {

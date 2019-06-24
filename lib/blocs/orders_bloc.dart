@@ -59,6 +59,7 @@ class OrdersBloc implements BlocBase {
           base: entry.value.base,
           rel: entry.value.rel,
           orderType: OrderType.MAKER,
+          startedSwaps: entry.value.startedSwaps,
           createdAt: entry.value.createdAt ~/ 1000,
           relAmount: (double.parse(entry.value.price) *
                   double.parse(entry.value.maxBaseVol))
@@ -84,8 +85,19 @@ class OrdersBloc implements BlocBase {
 
     List<Order> orders = this.orders;
 
-    swaps.forEach((swap) =>
-        orders.removeWhere((order) => order.uuid == swap.result.uuid));
+    swaps.forEach((swap) => orders.removeWhere((order) {
+          bool isSwapUUIDExist = false;
+          if (order.uuid == swap.result.uuid) {
+            isSwapUUIDExist = true;
+          } else {
+            order.startedSwaps.forEach(((startedSwap) {
+              if (startedSwap == swap.result.uuid) {
+                isSwapUUIDExist = true;
+              }
+            }));
+          }
+          return isSwapUUIDExist;
+        }));
 
     ordersSwaps.addAll(orders);
     ordersSwaps.addAll(swaps);

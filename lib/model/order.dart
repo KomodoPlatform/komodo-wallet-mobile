@@ -9,8 +9,18 @@ class Order {
   String uuid;
   int createdAt;
   bool cancelable;
+  List<String> startedSwaps;
 
-  Order({this.base, this.orderType, this.rel, this.relAmount, this.uuid, this.baseAmount, this.createdAt, this.cancelable});
+  Order(
+      {this.base,
+      this.orderType,
+      this.rel,
+      this.startedSwaps,
+      this.relAmount,
+      this.uuid,
+      this.baseAmount,
+      this.createdAt,
+      this.cancelable});
 
   int compareToOrder(Order other) {
     int order = other.createdAt.compareTo(createdAt);
@@ -25,7 +35,4 @@ class Order {
   }
 }
 
-enum OrderType{
-  MAKER,
-  TAKER
-}
+enum OrderType { MAKER, TAKER }
