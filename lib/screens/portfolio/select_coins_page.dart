@@ -82,7 +82,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       isActive = true;
     });
     print(coinsBloc.coinToActivate.length);
-    await coinsBloc.addMultiCoins(coinsBloc.coinToActivate, true).then((onValue) {
+    await coinsBloc.addMultiCoins(coinsBloc.coinToActivate).then((onValue) {
       _closeSelectCoinsPage();
     }).timeout(Duration(seconds: 20), onTimeout: () {
       _closeSelectCoinsPage();
@@ -204,10 +204,8 @@ class _LoadingCoinState extends State<LoadingCoin> {
         StreamBuilder<CoinToActivate>(
           stream: coinsBloc.outcurrentActiveCoin,
           builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data.isActive) {
-              return Text('Activating ${snapshot.data.coin.name} ...');
-            } else if (snapshot.hasData && !snapshot.data.isActive) {
-              return Text('Sorry, ${snapshot.data.coin.name} not available.');
+            if (snapshot.hasData) {
+              return Text(snapshot.data.currentStatus);
             } else {
                return Text(AppLocalizations.of(context).connecting);
             }

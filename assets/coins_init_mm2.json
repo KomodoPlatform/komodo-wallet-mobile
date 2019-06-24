@@ -39,6 +39,30 @@
         "mm2": 1
     },
     {
+        "coin": "DASH",
+        "name": "Dash",
+        "rpcport": 9998,
+        "pubtype": 76,
+        "p2shtype": 16,
+        "wiftype": 204,
+        "mm2": 1,
+        "txfee": 10000
+    },
+    {
+        "coin": "RFOX",
+        "asset": "RedFOX",
+        "rpcport": 32269,
+        "mm2": 1,
+        "txfee": 10000
+    },
+    {
+        "coin": "LABS",
+        "asset": "LABS",
+        "mm2": 1,
+        "rpcport": 40265,
+        "txfee": 10000
+    },
+    {
         "coin": "KMD",
         "asset": "KMD",
         "mm2": 1,
@@ -86,9 +110,30 @@
         "mm2": 1
     },
     {
+        "coin": "OMG",
+        "name": "OmiseGO",
+        "etomic": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
+        "coin": "USDC",
+        "name": "USDC",
+        "etomic": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
         "coin": "EOS",
         "name": "EOS",
         "etomic": "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0",
         "rpcport": 80
+    },
+    {
+        "coin": "BNB",
+        "name": "Binance",
+        "etomic": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
+        "rpcport": 80,
+        "mm2": 1
     }
 ]

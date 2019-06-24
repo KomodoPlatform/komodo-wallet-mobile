@@ -20,7 +20,6 @@ class EncryptionTool {
 
   Future<String> convertToPbkdf2(String data) async{
     var res = await compute(_computeHash, data);
-    print(res);
     return res;
   }
 

@@ -33,52 +33,90 @@
   },
   {
     "name": "Ethereum",
-    "address": "195.201.0.6",
+    "address": "eth2.cipig.net",
     "port": 8555,
     "proto": "tcp",
     "txfee": 0,
     "abbr": "ETH",
-    "swap_contract_address":"0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
     "colorCoin": "0xFF828384",
     "serverList": [
-      "http://195.201.0.6:8555"
+      "eth1.cipig.net:8555",
+      "eth2.cipig.net:8555",
+      "eth3.cipig.net:8555"
     ],
     "explorerUrl": [
       "https://etherscan.io/"
     ]
   },
   {
-    "name": "Rick",
+    "name": "DASH",
     "address": "electrum3.cipig.net",
-    "port": 10017,
+    "port": 10061,
     "proto": "tcp",
     "txfee": 10000,
-    "abbr": "RICK",
-    "colorCoin": "0xFFabdce4",
+    "abbr": "DASH",
+    "colorCoin": "0xFF5783a7",
     "serverList": [
-      "electrum1.cipig.net:10017",
-      "electrum2.cipig.net:10017",
-      "electrum3.cipig.net:10017"
+      "electrum1.cipig.net:10061",
+      "electrum2.cipig.net:10061",
+      "electrum3.cipig.net:10061"
     ],
     "explorerUrl": [
-      "https://rick.kmd.dev/"
+      "https://explorer.dash.org/"
     ]
   },
   {
-    "name": "Morty",
-    "address": "electrum1.cipig.net",
-    "port": 10018,
+    "name": "Litecoin",
+    "address": "electrum-ltc.bysh.me",
+    "port": 50001,
     "proto": "tcp",
-    "txfee": 10000,
-    "abbr": "MORTY",
-    "colorCoin": "0xFFf8f277",
+    "txfee": 100000,
+    "abbr": "LTC",
+    "colorCoin": "0xFFbebebe",
     "serverList": [
-      "electrum3.cipig.net:10018",
-      "electrum2.cipig.net:10018",
-      "electrum1.cipig.net:10018"
+      "electrum.ltc.xurious.com:50001",
+      "ltc.rentonisk.com:50001",
+      "electrum-ltc.bysh.me:50001"
     ],
     "explorerUrl": [
-      "https://morty.kmd.dev/"
+      "https://blockexplorer.one/litecoin/mainnet/"
+    ]
+  },
+  {
+    "name": "USDC",
+    "address": "eth1.cipig.net",
+    "port": 8555,
+    "proto": "tcp",
+    "txfee": 0,
+    "abbr": "USDC",
+    "swap_contract_address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    "colorCoin": "0xFF2775c9",
+    "serverList": [
+      "eth1.cipig.net:8555",
+      "eth2.cipig.net:8555",
+      "eth3.cipig.net:8555"
+    ],
+    "explorerUrl": [
+      "https://etherscan.io/"
+    ]
+  },
+  {
+    "name": "Binance Token",
+    "address": "eth3.cipig.net",
+    "port": 8555,
+    "proto": "tcp",
+    "txfee": 0,
+    "abbr": "BNB",
+    "swap_contract_address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
+    "colorCoin": "0xFF1a53f0",
+    "serverList": [
+      "eth1.cipig.net:8555",
+      "eth2.cipig.net:8555",
+      "eth3.cipig.net:8555"
+    ],
+    "explorerUrl": [
+      "https://etherscan.io/"
     ]
   },
   {
@@ -116,36 +154,72 @@
     ]
   },
   {
-    "name": "Litecoin",
-    "address": "electrum-ltc.bysh.me",
-    "port": 50001,
+    "name": "RedFOX",
+    "address": "electrum1.cipig.net",
+    "port": 10034,
     "proto": "tcp",
-    "txfee": 100000,
-    "abbr": "LTC",
-    "colorCoin": "0xFF52a5da",
+    "txfee": 10000,
+    "abbr": "RFOX",
+    "colorCoin": "0xFFcc0000",
     "serverList": [
-      "electrum.ltc.xurious.com:50001",
-      "ltc.rentonisk.com:50001",
-      "electrum-ltc.bysh.me:50001"
+      "electrum3.cipig.net:10034",
+      "electrum2.cipig.net:10034",
+      "electrum1.cipig.net:10034"
     ],
     "explorerUrl": [
-      "https://blockexplorer.one/litecoin/mainnet/"
+      "https://rfox.explorer.dexstats.info/"
     ]
   },
   {
     "name": "BAT",
-    "address": "195.201.0.6",
+    "address": "eth1.cipig.net",
     "port": 8555,
     "proto": "tcp",
     "txfee": 0,
     "abbr": "BAT",
-    "swap_contract_address":"0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+    "swap_contract_address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
     "colorCoin": "0xFFff5000",
     "serverList": [
-      "http://195.201.0.6:8555"
+      "eth1.cipig.net:8555",
+      "eth2.cipig.net:8555",
+      "eth3.cipig.net:8555"
     ],
     "explorerUrl": [
       "https://etherscan.io/"
+    ]
+  },
+  {
+    "name": "Rick",
+    "address": "electrum3.cipig.net",
+    "port": 10017,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "RICK",
+    "colorCoin": "0xFFabdce4",
+    "serverList": [
+      "electrum1.cipig.net:10017",
+      "electrum2.cipig.net:10017",
+      "electrum3.cipig.net:10017"
+    ],
+    "explorerUrl": [
+      "https://rick.kmd.dev/"
+    ]
+  },
+  {
+    "name": "Morty",
+    "address": "electrum1.cipig.net",
+    "port": 10018,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "MORTY",
+    "colorCoin": "0xFFf8f277",
+    "serverList": [
+      "electrum3.cipig.net:10018",
+      "electrum2.cipig.net:10018",
+      "electrum1.cipig.net:10018"
+    ],
+    "explorerUrl": [
+      "https://morty.kmd.dev/"
     ]
   }
 ]

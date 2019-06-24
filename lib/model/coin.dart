@@ -31,6 +31,7 @@ class Coin {
   List<String> serverList;
   List<String> explorerUrl;
   String colorCoin;
+  double priceUSD;
 
   Coin(
       {this.name,
@@ -40,6 +41,7 @@ class Coin {
       this.txfee,
       this.abbr,
       this.mm2,
+      this.priceUSD,
       this.swap_contract_address,
       this.serverList,
       this.explorerUrl,
