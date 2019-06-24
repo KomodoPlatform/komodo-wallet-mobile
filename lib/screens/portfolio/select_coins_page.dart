@@ -82,7 +82,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       isActive = true;
     });
     print(coinsBloc.coinToActivate.length);
-    await coinsBloc.addMultiCoins(coinsBloc.coinToActivate, true).then((onValue) {
+    await coinsBloc.addMultiCoins(coinsBloc.coinToActivate).then((onValue) {
       _closeSelectCoinsPage();
     }).timeout(Duration(seconds: 20), onTimeout: () {
       _closeSelectCoinsPage();
