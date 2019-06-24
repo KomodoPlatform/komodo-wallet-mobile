@@ -4,18 +4,14 @@
 
 import 'dart:convert';
 
-GetActiveCoin getActiveCoinFromJson(String str) {
-  final jsonData = json.decode(str);
-  return GetActiveCoin.fromJson(jsonData);
-}
+GetActiveCoin getActiveCoinFromJson(String str) =>
+    GetActiveCoin.fromJson(json.decode(str));
 
 String getActiveCoinToJson(GetActiveCoin data) {
   final dyn = data.toJson();
-  if (data.swap_contract_address == null) {
+  if (data.swapContractAddress == null) {
     dyn.remove("swap_contract_address");
   }
-
-  print(dyn.toString());
   return json.encode(dyn);
 }
 
@@ -23,34 +19,62 @@ class GetActiveCoin {
   String userpass;
   String method;
   String coin;
-  String swap_contract_address;
-  List<String> urls;
-  bool tx_history;
+  List<Server> servers;
+  bool txHistory;
+  String swapContractAddress;
 
   GetActiveCoin(
       {this.userpass,
       this.method,
       this.coin,
-      this.swap_contract_address,
-      this.urls,
-      this.tx_history});
+      this.swapContractAddress,
+      this.servers,
+      this.txHistory});
 
   factory GetActiveCoin.fromJson(Map<String, dynamic> json) =>
       new GetActiveCoin(
         userpass: json["userpass"],
         method: json["method"],
         coin: json["coin"],
-        tx_history: json["tx_history"],
-        swap_contract_address: json["swap_contract_address"],
-        urls: new List<String>.from(json["urls"].map((x) => x)),
+        txHistory: json["tx_history"],
+        swapContractAddress: json["swap_contract_address"],
+        servers: new List<Server>.from(
+            json["servers"].map((x) => Server.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "userpass": userpass,
         "method": method,
         "coin": coin,
-        "tx_history": tx_history,
-        "swap_contract_address": swap_contract_address,
-        "urls": new List<dynamic>.from(urls.map((x) => x)),
+        "tx_history": txHistory,
+        "swap_contract_address": swapContractAddress,
+        "servers": new List<dynamic>.from(servers.map((x) => x.toJson())),
+      };
+}
+
+class Server {
+  String url;
+  String protocol;
+  bool disableCertVerification;
+
+  Server({
+    this.url,
+    this.protocol,
+    this.disableCertVerification,
+  });
+
+  factory Server.fromJson(Map<String, dynamic> json) => new Server(
+        url: json["url"],
+        protocol: json["protocol"] == null ? null : json["protocol"],
+        disableCertVerification: json["disable_cert_verification"] == null
+            ? null
+            : json["disable_cert_verification"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "url": url,
+        "protocol": protocol == null ? null : protocol,
+        "disable_cert_verification":
+            disableCertVerification == null ? null : disableCertVerification,
       };
 }

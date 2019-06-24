@@ -17,6 +17,7 @@ import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/error_code.dart';
+import 'package:komodo_dex/model/get_enable_coin.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -109,9 +110,8 @@ class MarketMakerService {
         sink.write(logMm2);
         print("mm2: " + logMm2);
 
-
         if (logMm2.contains("CONNECTED") ||
-          logMm2.contains("Entering the taker_swap_loop") ||
+            logMm2.contains("Entering the taker_swap_loop") ||
             logMm2.contains("Received 'negotiation") ||
             logMm2.contains("Got maker payment") ||
             logMm2.contains("Sending 'taker-fee") ||
@@ -119,7 +119,7 @@ class MarketMakerService {
             logMm2.contains("Finished")) {
           print("Update swaps from log");
           Future.delayed(const Duration(seconds: 1), () {
-              swapHistoryBloc.updateSwaps(50, null).then((_){
+            swapHistoryBloc.updateSwaps(50, null).then((_) {
               ordersBloc.updateOrdersSwaps();
             });
           });
@@ -161,7 +161,8 @@ class MarketMakerService {
 
   Future<List<CoinInit>> readJsonCoinInit() async {
     try {
-      return coinInitFromJson(await rootBundle.loadString('assets/coins_init_mm2.json'));
+      return coinInitFromJson(
+          await rootBundle.loadString('assets/coins_init_mm2.json'));
     } catch (e) {
       return new List<CoinInit>();
     }
@@ -228,7 +229,6 @@ class MarketMakerService {
   Future<List<dynamic>> getAllBalances(bool forceUpdate) async {
     List<Coin> coins = await coinsBloc.readJsonCoin();
 
-    
     if (this.balances.isEmpty ||
         forceUpdate ||
         coins.length != this.balances.length) {
@@ -351,8 +351,8 @@ class MarketMakerService {
     }
   }
 
-  Future<dynamic> postSetPrice(
-      Coin base, Coin rel, double volume, double price, bool cancelPrevious, bool max) async {
+  Future<dynamic> postSetPrice(Coin base, Coin rel, double volume, double price,
+      bool cancelPrevious, bool max) async {
     GetSetPrice getSetPrice = new GetSetPrice(
         userpass: userpass,
         method: "setprice",
@@ -374,8 +374,7 @@ class MarketMakerService {
     }
   }
 
-  Future<dynamic> getTransactions(
-      Coin coin, int limit, String fromId) async {
+  Future<dynamic> getTransactions(Coin coin, int limit, String fromId) async {
     GetTxHistory getTxHistory = new GetTxHistory(
         userpass: userpass,
         method: "my_tx_history",
@@ -407,9 +406,8 @@ class MarketMakerService {
   }
 
   Future<Orders> getMyOrders() async {
-    GetRecentSwap getRecentSwap = new GetRecentSwap(
-        userpass: userpass,
-        method: "my_orders");
+    GetRecentSwap getRecentSwap =
+        new GetRecentSwap(userpass: userpass, method: "my_orders");
 
     final response =
         await http.post(url, body: getRecentSwapToJson(getRecentSwap));
@@ -419,9 +417,7 @@ class MarketMakerService {
 
   Future<ResultSuccess> cancelOrder(String uuid) async {
     GetCancelOrder getCancelOrder = new GetCancelOrder(
-        userpass: userpass,
-        method: "cancel_order",
-        uuid: uuid);
+        userpass: userpass, method: "cancel_order", uuid: uuid);
 
     final response =
         await http.post(url, body: getCancelOrderToJson(getCancelOrder));
@@ -431,8 +427,7 @@ class MarketMakerService {
 
   Future<CoinToKickStart> getCoinToKickStart() async {
     GetRecentSwap getRecentSwap = new GetRecentSwap(
-        userpass: userpass,
-        method: "coins_needed_for_kick_start");
+        userpass: userpass, method: "coins_needed_for_kick_start");
 
     final response =
         await http.post(url, body: getRecentSwapToJson(getRecentSwap));
@@ -482,36 +477,51 @@ class MarketMakerService {
 
   Future<ActiveCoin> activeCoin(Coin coin) async {
     print("activate coin :" + coin.abbr);
-    GetActiveCoin getActiveCoin;
-    if (coin.swap_contract_address != null) {
-      getActiveCoin = new GetActiveCoin(
-          userpass: userpass,
-          method: "enable",
-          coin: coin.abbr,
-          tx_history: true,
-          swap_contract_address: coin.swap_contract_address,
-          urls: coin.serverList);
-    } else {
-      getActiveCoin = new GetActiveCoin(
-          userpass: userpass,
-          method: "electrum",
-          coin: coin.abbr,
-          tx_history: true,
-          urls: coin.serverList);
-    }
+    List<Server> servers = new List<Server>();
+    coin.serverList.forEach((url) {
+      servers.add(
+          Server(url: url, protocol: "TCP", disableCertVerification: false));
+    });
+    dynamic getActiveCoin;
+    var response;
 
-    final response =
-        await http.post(url, body: getActiveCoinToJson(getActiveCoin));
     try {
+      if (coin.swap_contract_address != null) {
+        getActiveCoin = new GetEnabledCoin(
+            userpass: userpass,
+            method: "enable",
+            coin: coin.abbr,
+            tx_history: true,
+            swap_contract_address: coin.swap_contract_address,
+            urls: coin.serverList);
+        response = await http
+            .post(url, body: getEnabledCoinToJson(getActiveCoin))
+            .timeout(Duration(seconds: 15));
+      } else {
+        getActiveCoin = new GetActiveCoin(
+            userpass: userpass,
+            method: "electrum",
+            coin: coin.abbr,
+            txHistory: true,
+            servers: servers);
+        response = await http
+            .post(url, body: getActiveCoinToJson(getActiveCoin))
+            .timeout(Duration(seconds: 15));
+      }
+
       print("response Active Coin: " + response.body.toString());
+
       if (activeCoinFromJson(response.body).result != null) {
         return activeCoinFromJson(response.body);
       } else {
+        print(response.body);
         throw errorFromJson(response.body);
       }
-      
+    } on TimeoutException catch (_) {
+      throw new ErrorString(error: "Timeout on ${coin.abbr}");
     } catch (e) {
       print("-------------------" + errorFromJson(response.body).error);
+      print(response.body);
       throw errorFromJson(response.body);
     }
   }
