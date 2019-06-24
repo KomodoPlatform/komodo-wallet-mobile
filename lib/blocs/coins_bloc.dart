@@ -93,6 +93,25 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
+  void updateOneCoin(CoinBalance coin) {
+    bool isExist = false;
+    this.coinBalance.forEach((coinBalance) {
+      if (coinBalance.coin.abbr == coin.coin.abbr) {
+        isExist = true;
+        coinBalance = coin;
+      }
+    });
+    if (!isExist) {
+      this.coinBalance.add(coin);
+    }
+    this.coinBalance.sort((b, a) {
+      if (a.balanceUSD != null) {
+        return a.balanceUSD.compareTo(b.balanceUSD);
+      }
+    });
+    _inCoins.add(this.coinBalance);
+  }
+
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     dynamic transactions = await mm2.getTransactions(coin, limit, fromId);
 
@@ -119,25 +138,27 @@ class CoinsBloc implements BlocBase {
 
   Future<void> addMultiCoins(List<Coin> coins) async {
     List<Coin> coinsReadJson = await readJsonCoin();
-    List<Coin> coinsToDelete = new List<Coin>();
+    List<Future> listFutureActiveCoin = new List<Future>();
+
     for (var coin in coins) {
-      await mm2.activeCoin(coin).then((onValue) {
+
+      listFutureActiveCoin.add(mm2.activeCoin(coin)
+      .then((onValue) {
         if (onValue is ActiveCoin && onValue.result != null) {
           coinsReadJson.add(coin);
-          currentCoinActivate(CoinToActivate(coin: coin, isActive: true));
+                currentCoinActivate(
+          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
         }
       }).catchError((onError) async {
         coinsReadJson.removeWhere((coinRead) => coinRead.abbr == coin.abbr);
-        coinsToDelete.add(coin);
-        currentCoinActivate(CoinToActivate(coin: coin, isActive: false));
-        print('Sorry, coin not available ${coin.abbr}');
-      });
+        currentCoinActivate(CoinToActivate(
+            currentStatus: 'Sorry, ${coin.abbr} not available.'));
+      }));
     }
-    await writeJsonCoin(coinsReadJson);
-    for (var item in coinsToDelete) {
-      await deleteJsonCoin(item);
-    }
-    await loadCoin(true);
+
+    await Future.wait(listFutureActiveCoin)
+        .then((_) async => await writeJsonCoin(coinsReadJson))
+        .then((_) async => await loadCoin(true));
   }
 
   void currentCoinActivate(CoinToActivate coinToActivate) {
@@ -238,46 +259,41 @@ class CoinsBloc implements BlocBase {
 
   Future<void> loadCoin(bool forceUpdate) async {
     List<Coin> coins = await coinsBloc.readJsonCoin();
-    List<CoinBalance> listCoinElectrum = new List<CoinBalance>();
-    List<dynamic> balances = await mm2.getAllBalances(forceUpdate);
+    List<Future> getAllBalances = new List<Future>();
 
-    for (var coin in coins) {
-      for (var balance in balances) {
-        if (balance is Balance && coin.abbr == balance.coin) {
-          var coinBalance = CoinBalance(coin, balance);
-          if ((forceUpdate || coinBalance.balanceUSD == null) &&
-              double.parse(coinBalance.balance.balance) > 0) {
-            coinBalance.priceForOne = await getPriceObj
-                .getPrice(coin.abbr, "USD")
-                .timeout(Duration(seconds: 5), onTimeout: () {
-              return 0;
-            });
-
+    coins.forEach((coin) {
+      getAllBalances.add(mm2.getBalance(coin).then((balance) {
+        getPriceObj.getPrice(coin.abbr, "USD").then((price){
+          var coinBalance;
+          if (balance is Balance && coin.abbr == balance.coin) {
+            coinBalance = CoinBalance(coin, balance);
+            if ((forceUpdate || coinBalance.balanceUSD == null) &&
+                double.parse(coinBalance.balance.balance) > 0) {
+              coinBalance.priceForOne = price;
+            } else {
+              coinBalance.priceForOne = 0.0;
+            }
             coinBalance.balanceUSD = coinBalance.priceForOne *
                 double.parse(coinBalance.balance.balance);
-          } else {
-            coinBalance.priceForOne = 0;
-            coinBalance.balanceUSD = 0;
+          } else if (balance is ErrorString) {
+            coinBalance = CoinBalance(
+                coin, new Balance(address: "", balance: "1.0", coin: coin.abbr));
+            coinBalance.priceForOne = price;
+            coinBalance.balanceUSD = coinBalance.priceForOne *
+                double.parse(coinBalance.balance.balance);
+            print("-------------------" + balance.error);
           }
-          listCoinElectrum.add(coinBalance);
-        } else if (balance is ErrorString) {
-          print("-------------------" + balance.error);
-        }
 
-        if (balance is Balance && balance.coin == "KMD") {
-          mm2.pubkey = balance.address;
-        }
-      }
-    }
-
-    listCoinElectrum.sort((b, a) {
-      if (a.balanceUSD != null) {
-        return a.balanceUSD.compareTo(b.balanceUSD);
-      }
+          if (balance is Balance && balance.coin == "KMD") {
+            mm2.pubkey = balance.address;
+          }
+          updateOneCoin(coinBalance);
+        });
+      }).catchError((onError) {
+        print("-----" + onError.error);
+      }));
     });
-    if (listCoinElectrum.isNotEmpty) {
-      updateCoins(listCoinElectrum);
-    }
+    await Future.wait(getAllBalances);
   }
 
   Future<void> activateCoinKickStart() async {
@@ -302,7 +318,8 @@ final coinsBloc = CoinsBloc();
 
 class CoinToActivate {
   Coin coin;
+  String currentStatus;
   bool isActive;
 
-  CoinToActivate({this.coin, this.isActive});
+  CoinToActivate({this.coin, this.isActive, this.currentStatus});
 }
