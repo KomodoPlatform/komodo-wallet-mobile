@@ -115,6 +115,9 @@ class SwapHistoryBloc implements BlocBase {
         case "TakerFeeSent":
           status = Status.SWAP_ONGOING;
           break;
+        case "TakerFeeValidated":
+          status = Status.SWAP_ONGOING;
+          break;
         case "MakerPaymentSpent":
           status = Status.SWAP_SUCCESSFUL;
           break;
