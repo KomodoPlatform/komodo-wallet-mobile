@@ -253,6 +253,9 @@ class AppLocalizations {
         name: 'minValue',
         args: [coinName, number],
       );
+  String get encryptingWallet => Intl.message("Encrypting wallet", name: 'encryptingWallet');
+  String get decryptingWallet => Intl.message("Decrypting wallet", name: 'decryptingWallet');
+
 
 }
 
