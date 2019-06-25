@@ -69,6 +69,7 @@ class _WelcomePageState extends State<WelcomePage> {
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: TextField(
+              key: Key("name-wallet-field"),
                 maxLength: 40,
                 controller: controller,
                 onChanged: (str) {

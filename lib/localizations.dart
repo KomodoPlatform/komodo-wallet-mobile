@@ -253,6 +253,7 @@ class AppLocalizations {
         name: 'minValue',
         args: [coinName, number],
       );
+  String get titleCreatePassword => Intl.message("CREATE A PASSWORD", name: 'titleCreatePassword');
 
 }
 

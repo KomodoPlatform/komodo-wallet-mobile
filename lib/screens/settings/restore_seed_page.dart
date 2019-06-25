@@ -77,6 +77,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         children: <Widget>[
           Expanded(
             child: TextField(
+              key: Key("restore-seed-field"),
               controller: controllerSeed,
               onChanged: (str) {
                 _checkSeed(str);
@@ -150,6 +151,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     return Row(
       children: <Widget>[
         Checkbox(
+          key: Key("checkbox-custom-seed"),
           value: checkBox,
           onChanged: (data) {
             setState(() {

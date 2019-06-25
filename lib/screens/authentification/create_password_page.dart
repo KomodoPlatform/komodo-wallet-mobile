@@ -88,7 +88,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               height: 16,
             ),
             Text(
-              "CREATE A PASSWORD",
+              AppLocalizations.of(context).titleCreatePassword,
               style: Theme.of(context).textTheme.title,
             ),
             SizedBox(
@@ -106,6 +106,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               children: <Widget>[
                 Expanded(
                   child: TextFormField(
+                    key: Key("create-password-field"),
                       maxLength: 40,
                       focusNode: _focus1,
                       controller: controller1,
@@ -169,6 +170,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
+                      key: Key("create-password-field-confirm"),
                         maxLength: 40,
                         controller: controller2,
                         textInputAction: TextInputAction.done,
