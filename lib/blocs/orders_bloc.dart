@@ -80,6 +80,7 @@ class OrdersBloc implements BlocBase {
     List<Swap> swaps = await swapHistoryBloc.fetchSwaps(50, null);
 
     swaps.removeWhere((swap) =>
+        swap.status == Status.SWAP_FAILED ||
         swap.status == Status.SWAP_SUCCESSFUL ||
         swap.status == Status.TIME_OUT);
 

@@ -45,7 +45,7 @@ class SwapHistoryBloc implements BlocBase {
     return this.swaps;
   }
 
-  Future<List<Swap>> fetchSwaps(int limit, String fromUuid) async{
+  Future<List<Swap>> fetchSwaps(int limit, String fromUuid) async {
     RecentSwaps recentSwaps = await mm2.getRecentSwaps(limit, fromUuid);
     List<Swap> newSwaps = new List<Swap>();
 
@@ -107,6 +107,7 @@ class SwapHistoryBloc implements BlocBase {
     Status status = Status.ORDER_MATCHING;
 
     resultSwap.events.forEach((event) {
+      print(event.event.type);
       switch (event.event.type) {
         case "Started":
           status = Status.ORDER_MATCHED;
@@ -114,13 +115,70 @@ class SwapHistoryBloc implements BlocBase {
         case "TakerFeeSent":
           status = Status.SWAP_ONGOING;
           break;
+        case "TakerFeeValidated":
+          status = Status.SWAP_ONGOING;
+          break;
         case "MakerPaymentSpent":
           status = Status.SWAP_SUCCESSFUL;
+          break;
+        case "TakerPaymentSpent":
+          status = Status.SWAP_SUCCESSFUL;
+          break;
+        case "StartFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "NegotiateFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "MakerPaymentValidateFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "TakerPaymentTransactionFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "TakerPaymentDataSendFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "TakerPaymentWaitForSpendFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "MakerPaymentSpendFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "TakerPaymentRefunded":
+          status = Status.SWAP_FAILED;
+          break;
+        case "TakerPaymentRefundFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "TakerFeeSendFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "TakerFeeValidateFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "MakerPaymentTransactionFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "MakerPaymentDataSendFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "TakerPaymentValidateFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "TakerPaymentSpendFailed":
+          status = Status.SWAP_FAILED;
+          break;
+        case "MakerPaymentRefunded":
+          status = Status.SWAP_FAILED;
+          break;
+        case "MakerPaymentRefundFailed":
+          status = Status.SWAP_FAILED;
           break;
         default:
       }
     });
-
+    print("STATUS: " + status.toString());
     return status;
   }
 
@@ -140,6 +198,9 @@ class SwapHistoryBloc implements BlocBase {
         break;
       case Status.TIME_OUT:
         return AppLocalizations.of(context).timeOut;
+        break;
+      case Status.SWAP_FAILED:
+        return AppLocalizations.of(context).swapFailed;
         break;
       default:
     }
@@ -161,6 +222,9 @@ class SwapHistoryBloc implements BlocBase {
         return Colors.green.shade500;
         break;
       case Status.TIME_OUT:
+        return Colors.redAccent;
+        break;
+      case Status.SWAP_FAILED:
         return Colors.redAccent;
         break;
       default:
@@ -185,6 +249,9 @@ class SwapHistoryBloc implements BlocBase {
       case Status.TIME_OUT:
         return "";
         break;
+      case Status.SWAP_FAILED:
+        return "";
+        break;
       default:
     }
     return "";
@@ -205,6 +272,9 @@ class SwapHistoryBloc implements BlocBase {
         return 3;
         break;
       case Status.TIME_OUT:
+        return 0;
+        break;
+      case Status.SWAP_FAILED:
         return 0;
         break;
       default:
