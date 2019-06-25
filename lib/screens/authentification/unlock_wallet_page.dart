@@ -138,11 +138,26 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
           Builder(
             builder: (BuildContext context) {
               return isLoading
-                  ? Container(
-                      height: 52,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ))
+                  ? Column(
+                      children: <Widget>[
+                        Container(
+                            height: 52,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            )),
+                        isLoading
+                            ? SizedBox(
+                                height: 8,
+                              )
+                            : Container(),
+                        isLoading
+                            ? Text(
+                                AppLocalizations.of(context).decryptingWallet,
+                                style: Theme.of(context).textTheme.body1,
+                              )
+                            : Container()
+                      ],
+                    )
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 100),
                       child: PrimaryButton(
