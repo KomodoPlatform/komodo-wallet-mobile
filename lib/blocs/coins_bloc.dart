@@ -95,13 +95,17 @@ class CoinsBloc implements BlocBase {
 
   void updateOneCoin(CoinBalance coin) {
     bool isExist = false;
-    this.coinBalance.forEach((coinBalance) {
+    int currentIndex = 0;
+    this.coinBalance.asMap().forEach((index, coinBalance) {
       if (coinBalance.coin.abbr == coin.coin.abbr) {
         isExist = true;
-        coinBalance = coin;
+        currentIndex = index;
       }
     });
     if (!isExist) {
+      this.coinBalance.add(coin);
+    } else {
+      this.coinBalance.removeAt(currentIndex);
       this.coinBalance.add(coin);
     }
     this.coinBalance.sort((b, a) {

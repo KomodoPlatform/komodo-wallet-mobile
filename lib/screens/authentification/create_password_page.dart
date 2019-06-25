@@ -207,11 +207,23 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
             Builder(builder: (context) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: PrimaryButton(
-                  text: AppLocalizations.of(context).confirmPassword,
-                  onPressed:
-                      isValidPassword ? () => _checkValidation(context) : null,
-                  isLoading: isLoading,
+                child: Column(
+                  children: <Widget>[
+                    PrimaryButton(
+                      text: AppLocalizations.of(context).confirmPassword,
+                      onPressed: isValidPassword
+                          ? () => _checkValidation(context)
+                          : null,
+                      isLoading: isLoading,
+                    ),
+                    isLoading ? SizedBox(height: 8,) : Container(),
+                    isLoading
+                        ? Text(
+                            AppLocalizations.of(context).encryptingWallet,
+                            style: Theme.of(context).textTheme.body1,
+                          )
+                        : Container()
+                  ],
                 ),
               );
             }),
