@@ -106,7 +106,7 @@ class MarketMakerService {
       sink = file.openWrite();
 
       mm2Process.stdout.listen((onData) {
-        String logMm2 = utf8.decoder.convert(onData).trim();
+        String logMm2 = utf8.decoder.convert(onData).trim() + "\n";
         sink.write(logMm2);
         print("mm2: " + logMm2);
 
