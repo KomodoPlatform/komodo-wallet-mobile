@@ -105,8 +105,10 @@ class CoinsBloc implements BlocBase {
     if (!isExist) {
       this.coinBalance.add(coin);
     } else {
-      this.coinBalance.removeAt(currentIndex);
-      this.coinBalance.add(coin);
+      if (double.parse(coin.balance.balance) > 0) {
+        this.coinBalance.removeAt(currentIndex);
+        this.coinBalance.add(coin);
+      }
     }
     this.coinBalance.sort((b, a) {
       if (a.balanceUSD != null) {
