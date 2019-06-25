@@ -127,6 +127,7 @@ class AppLocalizations {
   String get swapOngoing => Intl.message("Swap ongoing", name: 'swapOngoing');
   String get swapSucceful => Intl.message("Swap successful", name: 'swapSucceful');
   String get timeOut => Intl.message("Timeout", name: 'timeOut');
+  String get swapFailed => Intl.message("Swap failed", name: 'swapFailed');
   String get errorTryLater => Intl.message("Error, please try later", name: 'errorTryLater');
   String get feedback => Intl.message("Send Feedback", name: 'feedback');
   String get loadingOrderbook =>
