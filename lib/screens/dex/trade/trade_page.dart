@@ -875,6 +875,7 @@ class _DialogLookingState extends State<DialogLooking> {
 
   @override
   void initState() {
+    
     timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
       swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
     });

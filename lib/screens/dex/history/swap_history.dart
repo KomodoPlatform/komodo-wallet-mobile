@@ -50,9 +50,10 @@ class _SwapHistoryState extends State<SwapHistory> {
           List<Swap> swaps = snapshot.data;
 
           swaps.removeWhere((swap) =>
-                swap.status != Status.SWAP_FAILED &&
-                swap.status != Status.SWAP_SUCCESSFUL &&
-                swap.status != Status.TIME_OUT);
+              swap.result.myInfo == null || (
+              swap.status != Status.SWAP_FAILED &&
+              swap.status != Status.SWAP_SUCCESSFUL &&
+              swap.status != Status.TIME_OUT));
           if (snapshot.hasData &&
               swaps.length == 0 &&
               snapshot.connectionState == ConnectionState.active) {
@@ -63,8 +64,6 @@ class _SwapHistoryState extends State<SwapHistory> {
               ),
             );
           } else if (snapshot.hasData && swaps.length > 0) {
-
-
             swaps.sort((b, a) {
               if (b is Swap && a is Swap) {
                 if (a.result.myInfo.startedAt != null) {

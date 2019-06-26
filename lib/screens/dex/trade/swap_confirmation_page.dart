@@ -7,6 +7,7 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -255,39 +256,42 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   _buildButtons() {
-    return Column(
-      children: <Widget>[
-        SizedBox(
-          height: 16,
-        ),
-        isSwapMaking
-            ? CircularProgressIndicator()
-            : RaisedButton(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 52),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                child: Text(AppLocalizations.of(context).confirm.toUpperCase()),
-                onPressed: isSwapMaking ? null : _makeASwap,
-              ),
-        SizedBox(
-          height: 8,
-        ),
-        FlatButton(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 56),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-          child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
-          onPressed: () {
-            swapBloc.updateSellCoin(null);
-            swapBloc.updateBuyCoin(null);
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
+    return Builder(builder: (context) {
+      return Column(
+        children: <Widget>[
+          SizedBox(
+            height: 16,
+          ),
+          isSwapMaking
+              ? CircularProgressIndicator()
+              : RaisedButton(
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 52),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                  child:
+                      Text(AppLocalizations.of(context).confirm.toUpperCase()),
+                  onPressed: isSwapMaking ? null : () => _makeASwap(context),
+                ),
+          SizedBox(
+            height: 8,
+          ),
+          FlatButton(
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 56),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)),
+            child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
+            onPressed: () {
+              swapBloc.updateSellCoin(null);
+              swapBloc.updateBuyCoin(null);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    });
   }
 
-  _makeASwap() {
+  _makeASwap(BuildContext mContext) {
     setState(() {
       isSwapMaking = true;
     });
@@ -300,15 +304,19 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     double price = swapBloc.orderCoin.bestPrice * 1.01;
 
     if (widget.swapStatus == SwapStatus.BUY) {
-      mm2.postBuy(coinBase, coinRel, amountToBuy, price).then(
-          (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
+      mm2.postBuy(coinBase, coinRel, amountToBuy, price).then((onValue) =>
+          _goToNextScreen(mContext, onValue, amountToSell, amountToBuy));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      mm2.postSetPrice(coinRel, coinBase, amountToSell, swapBloc.orderCoin.bestPrice, false, false).then(
-          (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
+      mm2
+          .postSetPrice(coinRel, coinBase, amountToSell,
+              swapBloc.orderCoin.bestPrice, false, false)
+          .then((onValue) =>
+              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy));
     }
   }
 
-  _goToNextScreen(dynamic onValue, double amountToSell, double amountToBuy) {
+  _goToNextScreen(BuildContext mContext, dynamic onValue, double amountToSell,
+      double amountToBuy) {
     ordersBloc.updateOrdersSwaps();
     swapHistoryBloc.updateSwaps(50, null);
 
@@ -336,6 +344,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         widget.orderSuccess();
       }
     } else {
+      ErrorString error = onValue;
+      
       setState(() {
         isSwapMaking = false;
       });
@@ -344,10 +354,11 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       timeSecondeLeft = timeSecondeLeft.substring(
           timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
       print(timeSecondeLeft);
-      Scaffold.of(context).showSnackBar(new SnackBar(
-        duration: Duration(seconds: 2),
-        content: new Text(AppLocalizations.of(context)
-            .buySuccessWaitingError(timeSecondeLeft)),
+      Scaffold.of(mContext).showSnackBar(new SnackBar(
+        duration: Duration(seconds: 4),
+        backgroundColor: Theme.of(context).errorColor,
+        content: new Text(error.error
+            .substring(error.error.lastIndexOf(r']') + 1).trim()),
       ));
     }
   }

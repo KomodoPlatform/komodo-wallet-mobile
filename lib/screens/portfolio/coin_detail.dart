@@ -313,9 +313,9 @@ class _CoinDetailState extends State<CoinDetail> {
                     if (snapshot.hasData &&
                         transactions.result != null &&
                         transactions.result.transactions != null) {
-                          if (snapshot.connectionState == ConnectionState.waiting){
-                            return Center(child: CircularProgressIndicator());
-                          }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
                       if (transactions.result.transactions.length > 0) {
                         return Padding(
                           padding:
@@ -334,13 +334,16 @@ class _CoinDetailState extends State<CoinDetail> {
                   } else if (snapshot.data is ErrorCode) {
                     return Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Center(child: Text((snapshot.data as ErrorCode).error.message, style: Theme.of(context).textTheme.body2, textAlign: TextAlign.center,)),
+                      child: Center(
+                          child: Text(
+                        (snapshot.data as ErrorCode).error.message,
+                        style: Theme.of(context).textTheme.body2,
+                        textAlign: TextAlign.center,
+                      )),
                     );
                   } else {
                     return Container();
                   }
-
-
                 })
           ],
         ),

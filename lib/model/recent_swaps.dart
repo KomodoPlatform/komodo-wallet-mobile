@@ -81,7 +81,7 @@ class ResultSwap {
             json["events"].map((x) => EventElement.fromJson(x))),
         successEvents:
             new List<String>.from(json["success_events"].map((x) => x)),
-        myInfo: MyInfo.fromJson(json["my_info"]),
+        myInfo: json["my_info"] == null ? null : MyInfo.fromJson(json["my_info"]),
         type: json["type"],
         uuid: json["uuid"],
       );
@@ -90,7 +90,7 @@ class ResultSwap {
         "error_events": new List<dynamic>.from(errorEvents.map((x) => x)),
         "events": new List<dynamic>.from(events.map((x) => x.toJson())),
         "success_events": new List<dynamic>.from(successEvents.map((x) => x)),
-        "my_info": myInfo.toJson(),
+        "my_info": myInfo == null ? null : myInfo.toJson(),
         "type": type,
         "uuid": uuid,
       };
