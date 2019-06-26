@@ -41,17 +41,25 @@ class Swap {
         "result": result.toJson(),
       };
 
-
   int compareToSwap(Swap other) {
-    int order = other.result.myInfo.startedAt.compareTo(result.myInfo.startedAt);
-    if (order == 0) order = result.myInfo.startedAt.compareTo(other.result.myInfo.startedAt);
+    int order = 0;
+    if (other.result.myInfo != null && result.myInfo != null) {
+      order = other.result.myInfo.startedAt.compareTo(result.myInfo.startedAt);
+      if (order == 0)
+        order =
+            result.myInfo.startedAt.compareTo(other.result.myInfo.startedAt);
+    }
     return order;
   }
 
   int compareToOrder(Order other) {
-    int order = other.createdAt.compareTo(result.myInfo.startedAt);
-    if (order == 0) order = result.myInfo.startedAt.compareTo(other.createdAt);
+    int order = 0;
+    if (result.myInfo != null) {
+      order = other.createdAt.compareTo(result.myInfo.startedAt);
+      if (order == 0)
+        order = result.myInfo.startedAt.compareTo(other.createdAt);
+    }
+
     return order;
   }
-
 }

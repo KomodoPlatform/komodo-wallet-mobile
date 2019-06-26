@@ -29,8 +29,13 @@ class Order {
   }
 
   int compareToSwap(Swap other) {
-    int order = other.result.myInfo.startedAt.compareTo(createdAt);
-    if (order == 0) order = createdAt.compareTo(other.result.myInfo.startedAt);
+    int order = 0;
+    if (other.result.myInfo != null) {
+      order = other.result.myInfo.startedAt.compareTo(createdAt);
+      if (order == 0)
+        order = createdAt.compareTo(other.result.myInfo.startedAt);
+    }
+
     return order;
   }
 }

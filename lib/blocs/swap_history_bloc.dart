@@ -52,7 +52,7 @@ class SwapHistoryBloc implements BlocBase {
     recentSwaps.result.swaps.forEach((swap) {
       dynamic nSwap = new Swap(result: swap, status: getStatusSwap(swap));
       if (nSwap is Swap) {
-        if (swap.myInfo.startedAt + 3600 <
+        if (swap.myInfo != null && swap.myInfo.startedAt + 3600 <
                 DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
             getStatusSwap(swap) != Status.SWAP_SUCCESSFUL) {
           nSwap.status = Status.TIME_OUT;
@@ -64,7 +64,7 @@ class SwapHistoryBloc implements BlocBase {
           isSwapsOnGoing = true;
         }
       } else if (nSwap is ErrorString) {
-        if (swap.myInfo.startedAt + 600 <
+        if (swap.myInfo != null &&  swap.myInfo.startedAt + 600 <
             DateTime.now().millisecondsSinceEpoch ~/ 1000) {
           newSwaps.add(Swap(
             status: Status.TIME_OUT,
