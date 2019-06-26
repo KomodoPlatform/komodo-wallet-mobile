@@ -264,7 +264,9 @@ class _SettingPageState extends State<SettingPage> {
   _buildLogout() {
     return CustomTile(
       onPressed: () {
+        print("PRESSED");
         authBloc.logout().then((onValue) {
+          print("PRESSED");
           SystemChannels.platform.invokeMethod('SystemNavigator.pop');
         });
       },

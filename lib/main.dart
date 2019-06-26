@@ -63,7 +63,7 @@ Future<void> _runBinMm2UserAlreadyLog() async {
   String passphrase = await new EncryptionTool().read("passphrase");
   if (passphrase != null && passphrase.isNotEmpty) {
     print("readJsonCoin");
-    // await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
+    await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -178,8 +178,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       timer.cancel();
     }
     WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
     subscription.cancel();
+    super.dispose();
   }
 
   _checkNetworkStatus(BuildContext context) {

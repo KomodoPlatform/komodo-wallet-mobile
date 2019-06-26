@@ -66,9 +66,7 @@ class BoxButton extends StatelessWidget {
             child: Center(
                 child: Column(
               children: <Widget>[
-                Container(
-                  height: 40,
-                  child: SvgPicture.asset(assetPath)),
+                Container(height: 40, child: SvgPicture.asset(assetPath)),
                 SizedBox(
                   height: 8,
                 ),
@@ -147,12 +145,13 @@ class _BuildScreenAuthMultiWalletsState
             context,
             MaterialPageRoute(
                 builder: (context) => UnlockWalletPage(
-                  textButton: AppLocalizations.of(context).login,
+                      textButton: AppLocalizations.of(context).login,
                       wallet: wallet,
-                      onSuccess: (seed, password) async{
+                      onSuccess: (seed, password) async {
                         await coinsBloc.resetCoinDefault();
+                        authBloc.showPin(false);
                         if (!mm2.ismm2Running) {
-                          await authBloc.loginUI(true, seed, password);
+                          await authBloc.login(seed, password);
                         }
                         Navigator.of(context).pop();
                       },
@@ -306,9 +305,10 @@ class _RestoreButtonState extends State<RestoreButton> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => WelcomePage(
-            isFromRestore: true,
-          )),
+          MaterialPageRoute(
+              builder: (context) => WelcomePage(
+                    isFromRestore: true,
+                  )),
         );
       },
     );

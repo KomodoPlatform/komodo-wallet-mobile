@@ -175,7 +175,6 @@ class _StepperTradeState extends State<StepperTrade> {
   Widget build(BuildContext context) {
     if (widget.swap.result.myInfo == null) {
       widget.swap.status = Status.SWAP_FAILED;
-      Navigator.of(context).pop();
     }
     return ListView(
       children: <Widget>[
