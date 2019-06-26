@@ -550,57 +550,58 @@ class _AddCoinButtonState extends State<AddCoinButton> {
     return Column(
       children: <Widget>[
         StreamBuilder<CoinToActivate>(
+            initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Column(
                   children: <Widget>[
-                    SizedBox(height: 16,),
+                    SizedBox(
+                      height: 16,
+                    ),
                     CircularProgressIndicator(),
-                    SizedBox(height: 8,),
+                    SizedBox(
+                      height: 8,
+                    ),
                     Text(snapshot.data.currentStatus),
+                    SizedBox(
+                      height: 16,
+                    ),
                   ],
                 );
               } else {
-                return Container();
+                return FutureBuilder<bool>(
+                  future: _buildAddCoinButton(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data) {
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Center(
+                              child: FloatingActionButton(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            foregroundColor: Theme.of(context).accentColor,
+                            child: Icon(
+                              Icons.add,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SelectCoinsPage()),
+                              );
+                            },
+                          )),
+                        ),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                );
               }
             }),
-        FutureBuilder<bool>(
-          future: _buildAddCoinButton(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Center(
-                      child: FloatingActionButton(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Theme.of(context).accentColor,
-                    child: Icon(
-                      Icons.add,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SelectCoinsPage(
-                                  coinsToActivate: (data) {
-                                    coinsBloc.addMultiCoins(data).then((_){
-                                      coinsBloc.setCloseViewSelectCoin(true);
-                                    });
-                                  },
-                                )),
-                      );
-                    },
-                  )),
-                ),
-              );
-            } else {
-              return Container();
-            }
-          },
-        ),
       ],
     );
   }

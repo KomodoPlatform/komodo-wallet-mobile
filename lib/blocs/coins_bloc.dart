@@ -73,10 +73,12 @@ class CoinsBloc implements BlocBase {
       StreamController<bool>.broadcast();
 
   Sink<bool> get _inCloseViewSelectCoin => _closeViewSelectCoinController.sink;
-  Stream<bool> get outCloseViewSelectCoin => _closeViewSelectCoinController.stream;
+  Stream<bool> get outCloseViewSelectCoin =>
+      _closeViewSelectCoinController.stream;
 
   var timer;
   var timer2;
+  bool onActivateCoins = false;
 
   @override
   void dispose() {
@@ -158,6 +160,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> addMultiCoins(List<Coin> coins) async {
+    onActivateCoins = true;
     List<Coin> coinsReadJson = await readJsonCoin();
     List<Future> listFutureActiveCoin = new List<Future>();
 
@@ -172,7 +175,12 @@ class CoinsBloc implements BlocBase {
           });
         })
         .then((_) async => await writeJsonCoin(coinsReadJson))
-        .then((_) async => await loadCoin());
+        .then((_) => onActivateCoins = false)
+        .then((_) async {
+          onActivateCoins = false;
+          currentCoinActivate(null);
+          await loadCoin();
+        });
   }
 
   Future<Coin> _activeCoinFuture(Coin coin) async {
@@ -295,7 +303,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> loadCoin() async {
-    if (mm2.ismm2Running) {
+    if (mm2.ismm2Running && !onActivateCoins) {
       List<Coin> coins = await coinsBloc.readJsonCoin();
       List<Future> getAllBalances = new List<Future>();
 
@@ -310,6 +318,12 @@ class CoinsBloc implements BlocBase {
         });
       });
     }
+  }
+
+  Future<void> activateCoinsSelected(List<Coin> coinToActivate) async {
+    coinsBloc.addMultiCoins(coinToActivate).then((_) {
+      coinsBloc.setCloseViewSelectCoin(true);
+    });
   }
 
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {

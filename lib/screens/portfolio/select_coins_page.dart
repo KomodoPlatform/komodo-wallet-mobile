@@ -34,6 +34,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   @override
   void dispose() {
     sub.cancel();
+    coinsBloc.resetActivateCoin();
     super.dispose();
   }
   
@@ -113,8 +114,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     setState(() {
       isActive = true;
     });
-    widget.coinsToActivate(coinsBloc.coinToActivate);
-
+    // widget.coinsToActivate(coinsBloc.coinToActivate);
+    coinsBloc.activateCoinsSelected(coinsBloc.coinToActivate);
     // coinsBloc.addMultiCoins(coinsBloc.coinToActivate).then((onValue) {
     //   _closeSelectCoinsPage();
     // }).timeout(Duration(seconds: 20), onTimeout: () {
