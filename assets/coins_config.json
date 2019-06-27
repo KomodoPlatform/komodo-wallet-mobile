@@ -32,6 +32,24 @@
     ]
   },
   {
+    "name": "Bitcoin Cash",
+    "address": "bch.imaginary.cash",
+    "port": 50001,
+    "proto": "tcp",
+    "abbr": "BCH",
+    "colorCoin": "0xFF2db300",
+    "serverList": [
+      "bch.imaginary.cash:50001",
+      "bch.loping.net:50001",
+      "electron.coinucopia.io:50001",
+      "electrumx-bch.cryptonermal.net:50001",
+      "wallet.satoshiscoffeehouse.com:50001"
+    ],
+    "explorerUrl": [
+      "https://insight.bitpay.com/"
+    ]
+  },
+  {
     "name": "Ethereum",
     "address": "http://eth2.cipig.net",
     "port": 8555,
