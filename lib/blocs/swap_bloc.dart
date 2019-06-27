@@ -73,11 +73,12 @@ class SwapBloc implements BlocBase {
     _receiveCoinController.close();
     _amountReceiveController.close();
     _indexTabController.close();
+    _isTimeOutController.close();
   }
 
   void setIndexTabDex(int index) {
     this.indexTab = index;
-    _indexTabController.add(this.indexTab);
+    _inIndexTab.add(this.indexTab);
   }
 
   void updateBuyCoin(OrderCoin orderCoin) {

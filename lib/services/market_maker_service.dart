@@ -20,7 +20,6 @@ import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_enable_coin.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/result.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_active_coin.dart';
@@ -36,22 +35,19 @@ import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
-import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final mm2 = MarketMakerService();
 
 class MarketMakerService {
   List<dynamic> balances = new List<dynamic>();
-  Process mm2Process = null;
+  Process mm2Process;
   List<Coin> coins = List<Coin>();
   bool ismm2Running = false;
   String url = 'http://10.0.2.2:7783';
@@ -94,14 +90,14 @@ class MarketMakerService {
     String coinsInitParam = coinInitToJson(await readJsonCoinInit());
 
     String startParam =
-        '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"${filesPath}\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
+        '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"$filesPath\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
 
     await stopmm2();
     if (Platform.isAndroid) {
       mm2Process = await Process.start('./mm2', [startParam],
-          workingDirectory: '${filesPath}');
+          workingDirectory: '$filesPath');
 
-      var file = new File('${filesPath}/log.txt');
+      var file = new File('$filesPath/log.txt');
       sink = file.openWrite();
 
       mm2Process.stdout.listen((onData) {
@@ -482,13 +478,13 @@ class MarketMakerService {
     var response;
 
     try {
-      if (coin.swap_contract_address != null) {
+      if (coin.swapContractAddress != null) {
         getActiveCoin = new GetEnabledCoin(
             userpass: userpass,
             method: "enable",
             coin: coin.abbr,
-            tx_history: true,
-            swap_contract_address: coin.swap_contract_address,
+            txHistory: true,
+            swapContractAddress: coin.swapContractAddress,
             urls: coin.serverList);
         response = await http
             .post(url, body: getEnabledCoinToJson(getActiveCoin))

@@ -14,8 +14,8 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
-import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
+import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -27,8 +27,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share/share.dart';
 
 class CoinDetail extends StatefulWidget {
-  CoinBalance coinBalance;
-  bool isSendIsActive;
+  final CoinBalance coinBalance;
+  final bool isSendIsActive;
 
   CoinDetail({this.coinBalance, this.isSendIsActive = false});
 
@@ -154,16 +154,18 @@ class _CoinDetailState extends State<CoinDetail> {
       new GlobalKey<RefreshIndicatorState>();
   FocusNode _focus = new FocusNode();
   String fromId;
-  int LIMIT = 10;
+  int limit = 10;
   bool isLoading = false;
   double elevationHeader = 0.0;
   bool loadingWithdrawDialog = true;
   CoinBalance currentCoinBalance;
+  bool isSendIsActive;
 
   @override
   void initState() {
+    isSendIsActive = widget.isSendIsActive;
     currentCoinBalance = widget.coinBalance;
-    if (widget.isSendIsActive) {
+    if (isSendIsActive) {
       setState(() {
         isExpanded = true;
       });
@@ -174,7 +176,7 @@ class _CoinDetailState extends State<CoinDetail> {
       isLoading = true;
     });
     coinsBloc
-        .updateTransactions(currentCoinBalance.coin, LIMIT, null)
+        .updateTransactions(currentCoinBalance.coin, limit, null)
         .then((onValue) {
       setState(() {
         isLoading = false;
@@ -190,7 +192,7 @@ class _CoinDetailState extends State<CoinDetail> {
           isLoading = true;
         });
         coinsBloc
-            .updateTransactions(currentCoinBalance.coin, LIMIT, fromId)
+            .updateTransactions(currentCoinBalance.coin, limit, fromId)
             .then((onValue) {
           setState(() {
             isLoading = false;
@@ -225,13 +227,6 @@ class _CoinDetailState extends State<CoinDetail> {
   void setMaxValue() async {
     _focus.unfocus();
     setState(() {
-      var txFee = currentCoinBalance.coin.txfee;
-      var fee;
-      if (txFee == null) {
-        fee = 0;
-      } else {
-        fee = (txFee.toDouble() / 100000000);
-      }
       _amountController.text = currentCoinBalance.balance.getBalance();
     });
     await Future.delayed(const Duration(milliseconds: 0), () {
@@ -340,9 +335,8 @@ class _CoinDetailState extends State<CoinDetail> {
                         textAlign: TextAlign.center,
                       )),
                     );
-                  } else {
-                    return Container();
                   }
+                  return Container();
                 })
           ],
         ),
@@ -352,7 +346,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   Future<Null> _refresh() async {
     return await coinsBloc.updateTransactions(
-        currentCoinBalance.coin, LIMIT, null);
+        currentCoinBalance.coin, limit, null);
   }
 
   _buildTransactions(BuildContext context, List<Transaction> transactionsData) {
@@ -542,14 +536,26 @@ class _CoinDetailState extends State<CoinDetail> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            SizedBox(
+              width: 16,
+            ),
             _buildButtonLight(StatusButton.RECEIVE, mContext),
+            SizedBox(
+              width: 8,
+            ),
             currentCoinBalance.coin.abbr == "KMD" &&
                     double.parse(currentCoinBalance.balance.getBalance()) >= 10
                 ? _buildButtonLight(StatusButton.CLAIM, context)
                 : Container(),
+            SizedBox(
+              width: 8,
+            ),
             double.parse(currentCoinBalance.balance.getBalance()) > 0
                 ? _buildButtonLight(StatusButton.SEND, mContext)
                 : Container(),
+            SizedBox(
+              width: 16,
+            ),
           ],
         ),
         SizedBox(
@@ -564,70 +570,69 @@ class _CoinDetailState extends State<CoinDetail> {
       _closeAfterAWait();
     }
     return Expanded(
-      child: FlatButton(
-        child: InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(32)),
-          onTap: () {
-            switch (statusButton) {
-              case StatusButton.RECEIVE:
-                showAddressDialog(mContext, currentCoinBalance.balance.address);
-                break;
-              case StatusButton.SEND:
-                if (currentIndex == 3) {
-                  setState(() {
-                    isExpanded = false;
-                    _waitForInit();
-                  });
-                } else {
-                  setState(() {
-                    elevationHeader == 8.0
-                        ? elevationHeader = 8.0
-                        : elevationHeader = 0.0;
-                    isExpanded = !isExpanded;
-                  });
+      child: InkWell(
+        borderRadius: BorderRadius.all(Radius.circular(32)),
+        onTap: () {
+          switch (statusButton) {
+            case StatusButton.RECEIVE:
+              showAddressDialog(mContext, currentCoinBalance.balance.address);
+              break;
+            case StatusButton.SEND:
+              if (currentIndex == 3) {
+                setState(() {
+                  isExpanded = false;
+                  _waitForInit();
+                });
+              } else {
+                setState(() {
+                  elevationHeader == 8.0
+                      ? elevationHeader = 8.0
+                      : elevationHeader = 0.0;
+                  isExpanded = !isExpanded;
+                });
+              }
+              break;
+            case StatusButton.CLAIM:
+              widget.showDialogClaim(mContext);
+              break;
+            default:
+          }
+        },
+        child: Container(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(32)),
+                border:
+                    Border.all(color: Theme.of(context).textSelectionColor)),
+            child: Center(child: Builder(
+              builder: (context) {
+                switch (statusButton) {
+                  case StatusButton.RECEIVE:
+                    return Text(
+                      AppLocalizations.of(context).receive,
+                      style: Theme.of(context).textTheme.body1,
+                    );
+                    break;
+                  case StatusButton.SEND:
+                    return isExpanded
+                        ? Text(
+                            AppLocalizations.of(context).close.toUpperCase(),
+                            style: Theme.of(context).textTheme.body1,
+                          )
+                        : Text(
+                            AppLocalizations.of(context).send.toUpperCase(),
+                            style: Theme.of(context).textTheme.body1,
+                          );
+                  case StatusButton.CLAIM:
+                    return Text(
+                      AppLocalizations.of(context).claim.toUpperCase(),
+                      style: Theme.of(context).textTheme.body1,
+                    );
+                    break;
                 }
-                break;
-              case StatusButton.CLAIM:
-                widget.showDialogClaim(mContext);
-                break;
-              default:
-            }
-          },
-          child: Container(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(32)),
-                  border:
-                      Border.all(color: Theme.of(context).textSelectionColor)),
-              child: Center(child: Builder(
-                builder: (context) {
-                  switch (statusButton) {
-                    case StatusButton.RECEIVE:
-                      return Text(
-                        AppLocalizations.of(context).receive,
-                        style: Theme.of(context).textTheme.body1,
-                      );
-                      break;
-                    case StatusButton.SEND:
-                      return isExpanded
-                          ? Text(
-                              AppLocalizations.of(context).close.toUpperCase(),
-                              style: Theme.of(context).textTheme.body1,
-                            )
-                          : Text(
-                              AppLocalizations.of(context).send.toUpperCase(),
-                              style: Theme.of(context).textTheme.body1,
-                            );
-                    case StatusButton.CLAIM:
-                      return Text(
-                        AppLocalizations.of(context).claim.toUpperCase(),
-                        style: Theme.of(context).textTheme.body1,
-                      );
-                      break;
-                  }
-                },
-              ))),
-        ),
+                return Container();
+              },
+            ))),
       ),
     );
   }
@@ -813,11 +818,9 @@ class _CoinDetailState extends State<CoinDetail> {
                         _waitForInit();
                       });
                     },
-                    child: FlatButton(
-                      child: Text(
-                        AppLocalizations.of(context).cancel.toUpperCase(),
-                        style: Theme.of(context).textTheme.button,
-                      ),
+                    child: Text(
+                      AppLocalizations.of(context).cancel.toUpperCase(),
+                      style: Theme.of(context).textTheme.button,
                     ),
                   ),
                 ),
@@ -854,7 +857,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   _onPressedConfirmWithdraw(BuildContext context) {
     setState(() {
-      widget.isSendIsActive = false;
+      isSendIsActive = false;
     });
     double amountMinusFee = double.parse(_amountController.text) -
         double.parse(currentCoinBalance.coin.getTxFeeSatoshi());
@@ -890,7 +893,7 @@ class _CoinDetailState extends State<CoinDetail> {
             setState(() {
               _onWithdrawPost = false;
               coinsBloc.updateTransactions(
-                  widget.coinBalance.coin, LIMIT, null);
+                  widget.coinBalance.coin, limit, null);
               coinsBloc.loadCoin();
               new Future.delayed(Duration(seconds: 5), () {
                 coinsBloc.loadCoin();
@@ -1037,7 +1040,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     ],
                     focusNode: _focus,
                     controller: _amountController,
-                    autofocus: widget.isSendIsActive,
+                    autofocus: isSendIsActive,
                     textInputAction: TextInputAction.done,
                     keyboardType:
                         TextInputType.numberWithOptions(decimal: true),
@@ -1068,6 +1071,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       if (currentAmount > balance) {
                         return AppLocalizations.of(context).errorAmountBalance;
                       }
+                      return "";
                     },
                   ),
                 ),
@@ -1115,7 +1119,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       if (value.isEmpty) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
                       }
-                      if (widget.coinBalance.coin.swap_contract_address != null) {
+                      if (widget.coinBalance.coin.swapContractAddress != null) {
                         if (!isAddress(value)) {
                           return AppLocalizations.of(context)
                               .errorNotAValidAddress;
@@ -1130,6 +1134,7 @@ class _CoinDetailState extends State<CoinDetail> {
                               .errorNotAValidAddress;
                         }
                       }
+                      return "";
                     },
                   ),
                 ),
@@ -1177,7 +1182,8 @@ showAddressDialog(BuildContext mContext, String address) {
                 Container(
                   child: Center(
                       child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                     child: AutoSizeText(
                       address,
                       style: Theme.of(context).textTheme.body1,

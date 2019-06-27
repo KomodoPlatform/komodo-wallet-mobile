@@ -26,7 +26,6 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
         widget.article.body.substring(0, (widget.article.body.length ~/ 2));
     String splitText2 =
         widget.article.body.substring((widget.article.body.length ~/ 2));
-    int index = 0;
 
     return LockScreen(
       child: Scaffold(

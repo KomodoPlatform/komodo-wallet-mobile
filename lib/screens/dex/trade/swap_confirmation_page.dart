@@ -52,6 +52,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         onWillPop: () {
           _resetSwapPage();
           Navigator.pop(context);
+          return;
         },
         child: Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
