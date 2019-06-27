@@ -122,7 +122,7 @@ class CoinsBloc implements BlocBase {
     if (!isExist) {
       this.coinBalance.add(coin);
     } else {
-      if (double.parse(coin.balance.balance) > 0) {
+      if (double.parse(coin.balance.getBalance()) > 0) {
         this.coinBalance.removeAt(currentIndex);
         this.coinBalance.add(coin);
       }
@@ -339,19 +339,19 @@ class CoinsBloc implements BlocBase {
     if (balance is Balance && coin.abbr == balance.coin) {
       coinBalance = CoinBalance(coin, balance);
       if (coinBalance.balanceUSD == null &&
-          double.parse(coinBalance.balance.balance) > 0) {
+          double.parse(coinBalance.balance.getBalance()) > 0) {
         coinBalance.priceForOne = price;
       } else {
         coinBalance.priceForOne = 0.0;
       }
       coinBalance.balanceUSD =
-          coinBalance.priceForOne * double.parse(coinBalance.balance.balance);
+          coinBalance.priceForOne * double.parse(coinBalance.balance.getBalance());
     } else if (balance is ErrorString) {
       coinBalance = CoinBalance(
           coin, new Balance(address: "", balance: "1.0", coin: coin.abbr));
       coinBalance.priceForOne = price;
       coinBalance.balanceUSD =
-          coinBalance.priceForOne * double.parse(coinBalance.balance.balance);
+          coinBalance.priceForOne * double.parse(coinBalance.balance.getBalance());
       print("-------------------" + balance.error);
     }
 
