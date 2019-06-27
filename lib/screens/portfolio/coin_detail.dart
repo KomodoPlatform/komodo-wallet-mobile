@@ -1177,11 +1177,11 @@ showAddressDialog(BuildContext mContext, String address) {
                 Container(
                   child: Center(
                       child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                     child: AutoSizeText(
                       address,
                       style: Theme.of(context).textTheme.body1,
-                      maxLines: 1,
+                      maxLines: 2,
                     ),
                   )),
                 )
