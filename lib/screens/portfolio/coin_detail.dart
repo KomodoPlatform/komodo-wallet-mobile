@@ -208,6 +208,7 @@ class _CoinDetailState extends State<CoinDetail> {
     _amountController.dispose();
     _addressController.dispose();
     _scrollController.dispose();
+    coinsBloc.resetTransactions();
     super.dispose();
   }
 
@@ -279,12 +280,90 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               _buildForm(),
               _buildHeaderCoinDetail(context),
+              _buildSyncChain(),
               _buildTransactionsList(context),
             ],
           );
         }),
       ),
     );
+  }
+
+  bool isRefresh = false;
+
+  _buildSyncChain() {
+    return StreamBuilder<dynamic>(
+        stream: coinsBloc.outTransactions,
+        initialData: coinsBloc.transactions,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data is Transactions) {
+            Transactions tx = snapshot.data;
+            String syncState =
+                "${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}";
+            if (tx.result != null &&
+                tx.result.syncStatus != null &&
+                tx.result.syncStatus.state != null) {
+              print(tx.result.syncStatus.state);
+
+              if (tx.result.syncStatus.state == syncState) {
+                String txLeft;
+                if (widget.coinBalance.coin.swapContractAddress != null) {
+                  txLeft =
+                      tx.result.syncStatus.additionalInfo.blocksLeft.toString();
+                } else {
+                  txLeft = tx.result.syncStatus.additionalInfo.transactionsLeft
+                      .toString();
+                }
+                return Container(
+                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                  color: Theme.of(context).primaryColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Center(
+                        child: isRefresh
+                            ? Container(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 1,
+                                ),
+                              )
+                            : Center(
+                                child: InkWell(
+                                    onTap: () async {
+                                      setState(() {
+                                        isRefresh = true;
+                                      });
+                                      await _refresh();
+                                      setState(() {
+                                        isRefresh = false;
+                                      });
+                                    },
+                                    child: Container(
+                                        height: 20,
+                                        width: 20,
+                                        child: Icon(Icons.refresh))),
+                              ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text("Blockchain Sync"),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Text(widget.coinBalance.coin.swapContractAddress != null
+                          ? "Block left ${txLeft}"
+                          : "Transactions left ${txLeft}")
+                    ],
+                  ),
+                );
+              }
+            }
+          }
+          return Container();
+        });
   }
 
   _buildTransactionsList(BuildContext context) {
@@ -301,15 +380,17 @@ class _CoinDetailState extends State<CoinDetail> {
                 stream: coinsBloc.outTransactions,
                 initialData: coinsBloc.transactions,
                 builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
                   if (snapshot.data is Transactions) {
                     Transactions transactions = snapshot.data;
+                    String syncState =
+                        "${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}";
 
                     if (snapshot.hasData &&
                         transactions.result != null &&
                         transactions.result.transactions != null) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      }
                       if (transactions.result.transactions.length > 0) {
                         return Padding(
                           padding:
@@ -317,7 +398,9 @@ class _CoinDetailState extends State<CoinDetail> {
                           child: _buildTransactions(
                               context, transactions.result.transactions),
                         );
-                      } else if (transactions.result.transactions.length == 0) {
+                      } else if (transactions.result.transactions.length == 0 &&
+                          !(transactions.result.syncStatus.state ==
+                              syncState)) {
                         return Center(
                             child: Text(
                           AppLocalizations.of(context).noTxs,
