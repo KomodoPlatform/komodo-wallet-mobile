@@ -130,7 +130,7 @@ class Transaction {
 
   String getTimeFormat() {
     if (timestamp == 0) {
-      return "not confirmed";
+      return "unconfirmed";
     } else {
       return DateFormat('dd MMM yyyy HH:mm')
           .format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
