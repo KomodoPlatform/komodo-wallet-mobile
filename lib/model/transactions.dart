@@ -29,6 +29,8 @@ class Transactions {
 
 class Result {
   dynamic fromId;
+  int currentBlock;
+  SyncStatus syncStatus;
   int limit;
   int skipped;
   int total;
@@ -36,6 +38,8 @@ class Result {
 
   Result({
     this.fromId,
+    this.currentBlock,
+    this.syncStatus,
     this.limit,
     this.skipped,
     this.total,
@@ -47,17 +51,44 @@ class Result {
         limit: json["limit"],
         skipped: json["skipped"],
         total: json["total"],
+        currentBlock:
+            json["current_block"] == null ? null : json["current_block"],
+        syncStatus: json["sync_status"] == null
+            ? null
+            : SyncStatus.fromJson(json["sync_status"]),
         transactions: new List<Transaction>.from(
             json["transactions"].map((x) => Transaction.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "from_id": fromId,
+        "current_block": currentBlock == null ? null : currentBlock,
         "limit": limit,
         "skipped": skipped,
         "total": total,
+        "sync_status": syncStatus == null ? null : syncStatus.toJson(),
         "transactions":
             new List<dynamic>.from(transactions.map((x) => x.toJson())),
+      };
+}
+
+class SyncStatus {
+  int blocksLeft;
+  bool isFinished;
+
+  SyncStatus({
+    this.blocksLeft,
+    this.isFinished,
+  });
+
+  factory SyncStatus.fromJson(Map<String, dynamic> json) => new SyncStatus(
+        blocksLeft: json["blocks_left"] == null ? null : json["blocks_left"],
+        isFinished: json["is_finished"] == null ? null : json["is_finished"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "blocks_left": blocksLeft == null ? null : blocksLeft,
+        "is_finished": isFinished == null ? null : isFinished,
       };
 }
 

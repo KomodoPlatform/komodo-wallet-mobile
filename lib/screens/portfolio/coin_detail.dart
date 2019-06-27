@@ -307,6 +307,17 @@ class _CoinDetailState extends State<CoinDetail> {
                 stream: coinsBloc.outTransactions,
                 initialData: coinsBloc.transactions,
                 builder: (context, snapshot) {
+                  if (snapshot.data is Transactions &&
+                      snapshot.data.result.syncStatus != null &&
+                      snapshot.data.result.syncStatus.isFinished != null && !snapshot.data.result.syncStatus.isFinished) {
+                    return Center(
+                          child: Column(
+                            children: <Widget>[
+                              Text("Sync chain current block ${snapshot.data.result.currentBlock}, block left ${snapshot.data.result.syncStatus.blocksLeft}"),
+                              CircularProgressIndicator(),
+                            ],
+                          ));
+                  }
                   if (snapshot.data is Transactions) {
                     Transactions transactions = snapshot.data;
 
@@ -1116,7 +1127,8 @@ class _CoinDetailState extends State<CoinDetail> {
                       if (value.isEmpty) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
                       }
-                      if (widget.coinBalance.coin.swap_contract_address != null) {
+                      if (widget.coinBalance.coin.swap_contract_address !=
+                          null) {
                         if (!isAddress(value)) {
                           return AppLocalizations.of(context)
                               .errorNotAValidAddress;
