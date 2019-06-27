@@ -536,14 +536,26 @@ class _CoinDetailState extends State<CoinDetail> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            SizedBox(
+              width: 16,
+            ),
             _buildButtonLight(StatusButton.RECEIVE, mContext),
+            SizedBox(
+              width: 8,
+            ),
             currentCoinBalance.coin.abbr == "KMD" &&
                     double.parse(currentCoinBalance.balance.getBalance()) >= 10
                 ? _buildButtonLight(StatusButton.CLAIM, context)
                 : Container(),
+            SizedBox(
+              width: 8,
+            ),
             double.parse(currentCoinBalance.balance.getBalance()) > 0
                 ? _buildButtonLight(StatusButton.SEND, mContext)
                 : Container(),
+            SizedBox(
+              width: 16,
+            ),
           ],
         ),
         SizedBox(
