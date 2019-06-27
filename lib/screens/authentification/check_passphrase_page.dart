@@ -124,7 +124,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 }
 
 class SeedRandom extends StatefulWidget {
-  WordData data;
+  final WordData data;
 
   SeedRandom({this.data});
   @override

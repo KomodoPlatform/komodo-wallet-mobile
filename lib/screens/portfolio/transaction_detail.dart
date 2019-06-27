@@ -1,9 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/transactions.dart';
+import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:share/share.dart';
@@ -33,9 +32,12 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 String fromOrTo = widget.transaction.myBalanceChange > 0
                     ? '${AppLocalizations.of(context).from}: ${widget.transaction.from[0]}'
                     : '${AppLocalizations.of(context).to} ${widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]}';
-
+                String fee = "";
+                if (widget.transaction.feeDetails != null && widget.transaction.feeDetails.amount != null) {
+                  fee = widget.transaction.feeDetails.amount.toString();
+                }
                 String dataToShare =
-                    'Transaction detail:\nAmount: ${widget.transaction.myBalanceChange} ${widget.transaction.coin}\nDate: ${widget.transaction.getTimeFormat()}\nBlock: ${widget.transaction.blockHeight}\nConfirmations: ${widget.transaction.confirmations}\nFee: ${widget.transaction.feeDetails.amount} ${widget.transaction.coin}\n${fromOrTo}\nTx Hash: ${widget.transaction.txHash}';
+                    'Transaction detail:\nAmount: ${widget.transaction.myBalanceChange} ${widget.transaction.coin}\nDate: ${widget.transaction.getTimeFormat()}\nBlock: ${widget.transaction.blockHeight}\nConfirmations: ${widget.transaction.confirmations}\nFee: $fee ${widget.transaction.coin}\n$fromOrTo\nTx Hash: ${widget.transaction.txHash}';
 
                 Share.share(dataToShare);
               },
@@ -159,7 +161,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
   String _getFee() {
     String fee = "";
 
-    if (widget.transaction.feeDetails.amount == null) {
+    if (widget.transaction.feeDetails != null && widget.transaction.feeDetails.amount == null) {
       fee = widget.transaction.feeDetails.totalFee.toString();
     } else {
       fee = widget.transaction.feeDetails.amount.toString();

@@ -20,7 +20,7 @@ class WalletBloc implements BlocBase {
   Sink<List<Wallet>> get _inWallets => _walletsController.sink;
   Stream<List<Wallet>> get outWallets => _walletsController.stream;
 
-  Wallet currentWallet = new Wallet();
+  Wallet currentWallet;
 
   // Streams to handle the list coin
   StreamController<Wallet> _currentWalletController =

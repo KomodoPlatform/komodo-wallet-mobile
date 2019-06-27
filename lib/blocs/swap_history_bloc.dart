@@ -2,14 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/uuid.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final swapHistoryBloc = SwapHistoryBloc();
 
@@ -23,20 +20,10 @@ class SwapHistoryBloc implements BlocBase {
   Stream<List<Swap>> get outSwaps => _swapsController.stream;
 
   bool isAnimationStepFinalIsFinish = false;
-
-  // Streams to handle the list coin
-  StreamController<bool> _isAnimationStepFinalIsFinishController =
-      StreamController<bool>.broadcast();
-  Sink<bool> get _inIsAnimationStepFinalIsFinish =>
-      _isAnimationStepFinalIsFinishController.sink;
-  Stream<bool> get outIsAnimationStepFinalIsFinish =>
-      _isAnimationStepFinalIsFinishController.stream;
-
   bool isSwapsOnGoing = false;
   @override
   void dispose() {
     _swapsController.close();
-    _isAnimationStepFinalIsFinishController.close();
   }
 
   Future<List<Swap>> updateSwaps(int limit, String fromUuid) async {

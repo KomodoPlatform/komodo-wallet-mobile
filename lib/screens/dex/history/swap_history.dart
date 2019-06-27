@@ -71,6 +71,7 @@ class _SwapHistoryState extends State<SwapHistory> {
                       .compareTo(b.result.myInfo.startedAt);
                 }
               }
+              return 0;
             });
 
             List<Widget> swapsWidget = swaps

@@ -27,7 +27,7 @@ class Coin {
   int txfee;
   String abbr;
   int mm2;
-  String swap_contract_address;
+  String swapContractAddress;
   List<String> serverList;
   List<String> explorerUrl;
   String colorCoin;
@@ -42,7 +42,7 @@ class Coin {
       this.abbr,
       this.mm2,
       this.priceUSD,
-      this.swap_contract_address,
+      this.swapContractAddress,
       this.serverList,
       this.explorerUrl,
       this.colorCoin});
@@ -55,7 +55,7 @@ class Coin {
         txfee: json["txfee"],
         abbr: json["abbr"],
         mm2: json["mm2"],
-        swap_contract_address: json["swap_contract_address"],
+        swapContractAddress: json["swap_contract_address"],
         colorCoin: json["colorCoin"],
         serverList: new List<String>.from(json["serverList"].map((x) => x)),
         explorerUrl: new List<String>.from(json["explorerUrl"].map((x) => x)),
@@ -69,7 +69,7 @@ class Coin {
         "txfee": txfee,
         "abbr": abbr,
         "mm2": mm2,
-        "swap_contract_address": swap_contract_address,
+        "swap_contract_address": swapContractAddress,
         "colorCoin": colorCoin,
         "serverList": new List<dynamic>.from(serverList.map((x) => x)),
         "explorerUrl": new List<dynamic>.from(explorerUrl.map((x) => x)),

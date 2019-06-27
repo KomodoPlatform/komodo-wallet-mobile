@@ -3,13 +3,9 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/main.dart';
-import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
   final String seed;
@@ -29,7 +25,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   bool isValidPassword = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-  String _password;
   bool isObscured = true;
 
   @override
@@ -124,9 +119,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                           return 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.';
                         else
                           return null;
-                      },
-                      onSaved: (String val) {
-                        _password = val;
                       },
                       style: Theme.of(context).textTheme.body1,
                       decoration: InputDecoration(
