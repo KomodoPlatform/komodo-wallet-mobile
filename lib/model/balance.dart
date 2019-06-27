@@ -27,7 +27,8 @@ class Balance {
 
   factory Balance.fromJson(Map<String, dynamic> json) => new Balance(
         address: json["address"],
-        balance: json["balance"],
+        balance: double.parse(json["balance"])
+            .toStringAsFixed(8),
         coin: json["coin"],
       );
 
@@ -36,4 +37,16 @@ class Balance {
         "balance": balance,
         "coin": coin,
       };
+  
+  String replaceAllTrainlingZero(String data) {
+    for (var i = 0; i < 8; i++) {
+      data = data.replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "");
+    }
+
+    return data;
+  }
+
+  String getBalance() {
+    return replaceAllTrainlingZero(balance);
+  }
 }

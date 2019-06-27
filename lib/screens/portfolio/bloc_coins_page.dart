@@ -227,7 +227,7 @@ class LoadAssetState extends State<LoadAsset> {
           int assetNumber = 0;
 
           snapshot.data.forEach((coinBalance) {
-            if (double.parse(coinBalance.balance.balance) > 0) {
+            if (double.parse(coinBalance.balance.getBalance()) > 0) {
               assetNumber++;
             }
           });
@@ -360,7 +360,7 @@ class _ItemCoinState extends State<ItemCoin> {
       Balance balance = widget.coinBalance.balance;
       NumberFormat f = new NumberFormat("###,##0.########");
       List<Widget> actions = new List<Widget>();
-      if (double.parse(balance.balance) > 0) {
+      if (double.parse(balance.getBalance()) > 0) {
         actions.add(IconSlideAction(
           caption: AppLocalizations.of(context).send,
           color: Colors.white,
@@ -385,7 +385,7 @@ class _ItemCoinState extends State<ItemCoin> {
           showAddressDialog(context, balance.address);
         },
       ));
-      if (double.parse(balance.balance) > 0) {
+      if (double.parse(balance.getBalance()) > 0) {
         actions.add(IconSlideAction(
           caption: AppLocalizations.of(context).swap.toUpperCase(),
           color: Theme.of(context).accentColor,
@@ -473,7 +473,7 @@ class _ItemCoinState extends State<ItemCoin> {
                               ),
                               Container(
                                 child: AutoSizeText(
-                                  "${f.format(double.parse(balance.balance))} ${coin.abbr}",
+                                  "${f.format(double.parse(balance.getBalance()))} ${coin.abbr}",
                                   maxLines: 1,
                                   style: Theme.of(context).textTheme.subtitle,
                                 ),
@@ -490,7 +490,7 @@ class _ItemCoinState extends State<ItemCoin> {
                               }),
                               widget.coinBalance.coin.abbr == "KMD" &&
                                       double.parse(widget
-                                              .coinBalance.balance.balance) >=
+                                              .coinBalance.balance.getBalance()) >=
                                           10
                                   ? Padding(
                                       padding: EdgeInsets.only(top: 8),
