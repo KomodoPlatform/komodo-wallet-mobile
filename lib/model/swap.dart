@@ -6,7 +6,6 @@ import 'dart:convert';
 
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/uuid.dart';
 
 enum Status {
   ORDER_MATCHING,

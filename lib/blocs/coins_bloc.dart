@@ -2,14 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/transactions.dart';
@@ -57,15 +52,6 @@ class CoinsBloc implements BlocBase {
   Stream<CoinToActivate> get outcurrentActiveCoin =>
       _currentActiveCoinController.stream;
 
-  Coin failCoinActivate = new Coin();
-
-  // Streams to handle the list coin
-  StreamController<Coin> _failCoinActivateController =
-      StreamController<Coin>.broadcast();
-
-  Sink<Coin> get _inFailCoinActivate => _failCoinActivateController.sink;
-  Stream<Coin> get outFailCoinActivate => _failCoinActivateController.stream;
-
   bool closeViewSelectCoin = false;
 
   // Streams to handle the list coin
@@ -86,7 +72,7 @@ class CoinsBloc implements BlocBase {
     _transactionsController.close();
     _coinToActivateController.close();
     _currentActiveCoinController.close();
-    _failCoinActivateController.close();
+    _closeViewSelectCoinController.close();
   }
 
   void setCloseViewSelectCoin(bool closeViewSelectCoin) {
@@ -128,8 +114,10 @@ class CoinsBloc implements BlocBase {
       }
     }
     this.coinBalance.sort((b, a) {
-      if (a.balanceUSD != null) {
+      if (a.balanceUSD != null && b.balanceUSD != null) {
         return a.balanceUSD.compareTo(b.balanceUSD);
+      } else {
+        return 0;
       }
     });
     _inCoins.add(this.coinBalance);

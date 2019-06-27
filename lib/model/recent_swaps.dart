@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:komodo_dex/model/transaction_data.dart';
+
 RecentSwaps recentSwapsFromJson(String str) =>
     RecentSwaps.fromJson(json.decode(str));
 
@@ -81,7 +83,8 @@ class ResultSwap {
             json["events"].map((x) => EventElement.fromJson(x))),
         successEvents:
             new List<String>.from(json["success_events"].map((x) => x)),
-        myInfo: json["my_info"] == null ? null : MyInfo.fromJson(json["my_info"]),
+        myInfo:
+            json["my_info"] == null ? null : MyInfo.fromJson(json["my_info"]),
         type: json["type"],
         uuid: json["uuid"],
       );
@@ -335,70 +338,6 @@ class FeeDetails {
 
   Map<String, dynamic> toJson() => {
         "amount": amount,
-      };
-}
-
-class Transaction {
-  int blockHeight;
-  String coin;
-  FeeDetails feeDetails;
-  List<String> from;
-  String internalId;
-  double myBalanceChange;
-  double receivedByMe;
-  double spentByMe;
-  int timestamp;
-  List<String> to;
-  double totalAmount;
-  String txHash;
-  String txHex;
-
-  Transaction({
-    this.blockHeight,
-    this.coin,
-    this.feeDetails,
-    this.from,
-    this.internalId,
-    this.myBalanceChange,
-    this.receivedByMe,
-    this.spentByMe,
-    this.timestamp,
-    this.to,
-    this.totalAmount,
-    this.txHash,
-    this.txHex,
-  });
-
-  factory Transaction.fromJson(Map<String, dynamic> json) => new Transaction(
-        blockHeight: json["block_height"],
-        coin: json["coin"],
-        feeDetails: FeeDetails.fromJson(json["fee_details"]),
-        from: new List<String>.from(json["from"].map((x) => x)),
-        internalId: json["internal_id"],
-        myBalanceChange: json["my_balance_change"].toDouble(),
-        receivedByMe: json["received_by_me"].toDouble(),
-        spentByMe: json["spent_by_me"].toDouble(),
-        timestamp: json["timestamp"],
-        to: new List<String>.from(json["to"].map((x) => x)),
-        totalAmount: json["total_amount"].toDouble(),
-        txHash: json["tx_hash"],
-        txHex: json["tx_hex"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "block_height": blockHeight,
-        "coin": coin,
-        "fee_details": feeDetails.toJson(),
-        "from": new List<dynamic>.from(from.map((x) => x)),
-        "internal_id": internalId,
-        "my_balance_change": myBalanceChange,
-        "received_by_me": receivedByMe,
-        "spent_by_me": spentByMe,
-        "timestamp": timestamp,
-        "to": new List<dynamic>.from(to.map((x) => x)),
-        "total_amount": totalAmount,
-        "tx_hash": txHash,
-        "tx_hex": txHex,
       };
 }
 

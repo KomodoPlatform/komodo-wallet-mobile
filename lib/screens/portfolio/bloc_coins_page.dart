@@ -325,6 +325,8 @@ class ListCoinsState extends State<ListCoins> {
                     Text("Please Add A Coin"),
                   ],
                 );
+              } else {
+                return Container();
               }
             }));
       },
@@ -351,8 +353,6 @@ class ItemCoin extends StatefulWidget {
 class _ItemCoinState extends State<ItemCoin> {
   @override
   Widget build(BuildContext context) {
-    double _heightScreen = MediaQuery.of(context).size.height;
-
     if (widget.coinBalance is bool) {
       return AddCoinButton();
     } else {
@@ -444,7 +444,6 @@ class _ItemCoinState extends State<ItemCoin> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Builder(builder: (context) {
-                              String coinStr = balance.coin.toLowerCase();
                               return PhotoHero(
                                 radius: 28,
                                 tag: "assets/${balance.coin.toLowerCase()}.png",

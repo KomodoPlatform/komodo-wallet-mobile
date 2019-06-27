@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/orders.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class OrdersPage extends StatefulWidget {
   @override
@@ -41,6 +38,8 @@ class _OrdersPageState extends State<OrdersPage> {
                       context: context, swap: orderSwaps[index]);
                 } else if (orderSwaps[index] is Order) {
                   return _buildItemOrder(orderSwaps[index]);
+                } else {
+                  return Container();
                 }
               },
             );

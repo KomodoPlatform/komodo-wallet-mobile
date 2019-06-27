@@ -34,6 +34,7 @@ class OrdersBloc implements BlocBase {
   void dispose() {
     _currentOrdersController.close();
     _ordersController.close();
+    _orderSwapsController.close();
   }
 
   Future<void> updateOrders() async {

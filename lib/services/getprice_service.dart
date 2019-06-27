@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:io';
 
 final getPriceObj = GetPriceService();
 
@@ -35,7 +34,7 @@ class GetPriceService {
       }
     } else {
       if (coin == "USDT") {
-        price = 1; //TODO fetch realtime USDT price since not always exact 1usd
+        price = 1;
       } else if (coin == "BTC") {
         price = 1;
       } else if (coin == "RICK") {
