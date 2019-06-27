@@ -160,8 +160,12 @@ class Transaction {
       };
 
   String getTimeFormat() {
-    return DateFormat('dd MMM yyyy HH:mm')
-        .format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
+    if (timestamp == 0) {
+      return "unconfirmed";
+    } else {
+      return DateFormat('dd MMM yyyy HH:mm')
+          .format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
+    }
   }
 }
 

@@ -150,7 +150,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         setState(() {
           if (currentCoinBalance != null &&
               double.parse(amountSell.replaceAll(",", ".")) >
-                  double.parse(currentCoinBalance.balance.balance)) {
+                  double.parse(currentCoinBalance.balance.getBalance())) {
             setMaxValue();
           } else {
             if (amountSell.contains(
@@ -203,8 +203,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         fee = (txFee.toDouble() / 100000000);
       }
       _controllerAmountSell
-          .text = ((double.parse(currentCoinBalance.balance.balance) -
-                  (double.parse(currentCoinBalance.balance.balance) * 0.01)) -
+          .text = ((double.parse(currentCoinBalance.balance.getBalance()) -
+                  (double.parse(currentCoinBalance.balance.getBalance()) * 0.01)) -
               fee)
           .toStringAsFixed(8);
     });
@@ -701,7 +701,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       });
     } else if (market == Market.SELL) {
       coinsBloc.coinBalance.forEach((coin) {
-        if (double.parse(coin.balance.balance) > 0) {
+        if (double.parse(coin.balance.getBalance()) > 0) {
           SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
               swapBloc.updateBuyCoin(null);
@@ -736,7 +736,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    Text(coin.balance.balance.toString()),
+                    Text(coin.balance.getBalance()),
                     SizedBox(
                       width: 4,
                     ),
