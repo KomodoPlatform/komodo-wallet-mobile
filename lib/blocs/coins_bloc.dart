@@ -66,8 +66,19 @@ class CoinsBloc implements BlocBase {
   Sink<Coin> get _inFailCoinActivate => _failCoinActivateController.sink;
   Stream<Coin> get outFailCoinActivate => _failCoinActivateController.stream;
 
+  bool closeViewSelectCoin = false;
+
+  // Streams to handle the list coin
+  StreamController<bool> _closeViewSelectCoinController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inCloseViewSelectCoin => _closeViewSelectCoinController.sink;
+  Stream<bool> get outCloseViewSelectCoin =>
+      _closeViewSelectCoinController.stream;
+
   var timer;
   var timer2;
+  bool onActivateCoins = false;
 
   @override
   void dispose() {
@@ -76,6 +87,11 @@ class CoinsBloc implements BlocBase {
     _coinToActivateController.close();
     _currentActiveCoinController.close();
     _failCoinActivateController.close();
+  }
+
+  void setCloseViewSelectCoin(bool closeViewSelectCoin) {
+    this.closeViewSelectCoin = closeViewSelectCoin;
+    _inCloseViewSelectCoin.add(this.closeViewSelectCoin);
   }
 
   void resetCoinBalance() {
@@ -96,6 +112,7 @@ class CoinsBloc implements BlocBase {
   void updateOneCoin(CoinBalance coin) {
     bool isExist = false;
     int currentIndex = 0;
+
     this.coinBalance.asMap().forEach((index, coinBalance) {
       if (coinBalance.coin.abbr == coin.coin.abbr) {
         isExist = true;
@@ -143,28 +160,49 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> addMultiCoins(List<Coin> coins) async {
+    onActivateCoins = true;
     List<Coin> coinsReadJson = await readJsonCoin();
     List<Future> listFutureActiveCoin = new List<Future>();
 
-    for (var coin in coins) {
-
-      listFutureActiveCoin.add(mm2.activeCoin(coin)
-      .then((onValue) {
-        if (onValue is ActiveCoin && onValue.result != null) {
-          coinsReadJson.add(coin);
-                currentCoinActivate(
-          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
-        }
-      }).catchError((onError) async {
-        coinsReadJson.removeWhere((coinRead) => coinRead.abbr == coin.abbr);
-        currentCoinActivate(CoinToActivate(
-            currentStatus: 'Sorry, ${coin.abbr} not available.'));
-      }));
-    }
+    coins.forEach((coin) => listFutureActiveCoin.add(_activeCoinFuture(coin)));
 
     await Future.wait(listFutureActiveCoin)
+        .then((onValue) {
+          onValue.forEach((coinActivate) {
+            if (coinActivate is Coin && coinActivate != null) {
+              coinsReadJson.add(coinActivate);
+            }
+          });
+        })
         .then((_) async => await writeJsonCoin(coinsReadJson))
-        .then((_) async => await loadCoin(true));
+        .then((_) => onActivateCoins = false)
+        .then((_) async {
+          onActivateCoins = false;
+          currentCoinActivate(null);
+          await loadCoin();
+        });
+  }
+
+  Future<Coin> _activeCoinFuture(Coin coin) async {
+    Coin coinToactivate;
+    await mm2.activeCoin(coin).catchError((onError) {
+      print(onError.error);
+      if (onError is ErrorString &&
+          onError.error.contains("Coin ${coin.abbr} already initialized")) {
+        coinToactivate = coin;
+        currentCoinActivate(
+            CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
+      } else {
+        currentCoinActivate(CoinToActivate(
+            currentStatus: 'Sorry, ${coin.abbr} not available.'));
+      }
+    }).then((activeCoin) {
+      coinToactivate = coin;
+      currentCoinActivate(
+          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
+    }).timeout(Duration(seconds: 30));
+
+    return coinToactivate;
   }
 
   void currentCoinActivate(CoinToActivate coinToActivate) {
@@ -254,7 +292,7 @@ class CoinsBloc implements BlocBase {
       if (!mm2.ismm2Running) {
         _.cancel();
       } else {
-        loadCoin(true);
+        loadCoin();
       }
     });
   }
@@ -264,43 +302,63 @@ class CoinsBloc implements BlocBase {
     if (timer2 != null) timer2.cancel();
   }
 
-  Future<void> loadCoin(bool forceUpdate) async {
-    List<Coin> coins = await coinsBloc.readJsonCoin();
-    List<Future> getAllBalances = new List<Future>();
+  Future<void> loadCoin() async {
+    if (mm2.ismm2Running && !onActivateCoins) {
+      List<Coin> coins = await coinsBloc.readJsonCoin();
+      List<Future> getAllBalances = new List<Future>();
 
-    coins.forEach((coin) {
-      getAllBalances.add(mm2.getBalance(coin).then((balance) {
-        getPriceObj.getPrice(coin.abbr, "USD").then((price){
-          var coinBalance;
-          if (balance is Balance && coin.abbr == balance.coin) {
-            coinBalance = CoinBalance(coin, balance);
-            if ((forceUpdate || coinBalance.balanceUSD == null) &&
-                double.parse(coinBalance.balance.balance) > 0) {
-              coinBalance.priceForOne = price;
-            } else {
-              coinBalance.priceForOne = 0.0;
-            }
-            coinBalance.balanceUSD = coinBalance.priceForOne *
-                double.parse(coinBalance.balance.balance);
-          } else if (balance is ErrorString) {
-            coinBalance = CoinBalance(
-                coin, new Balance(address: "", balance: "1.0", coin: coin.abbr));
-            coinBalance.priceForOne = price;
-            coinBalance.balanceUSD = coinBalance.priceForOne *
-                double.parse(coinBalance.balance.balance);
-            print("-------------------" + balance.error);
+      coins.forEach((coin) {
+        getAllBalances.add(_getBalanceForCoin(coin));
+      });
+      await Future.wait(getAllBalances).then((onValue) {
+        onValue.forEach((balance) {
+          if (balance is CoinBalance) {
+            updateOneCoin(balance);
           }
-
-          if (balance is Balance && balance.coin == "KMD") {
-            mm2.pubkey = balance.address;
-          }
-          updateOneCoin(coinBalance);
         });
-      }).catchError((onError) {
-        print("-----" + onError.error);
-      }));
+      });
+    }
+  }
+
+  Future<void> activateCoinsSelected(List<Coin> coinToActivate) async {
+    coinsBloc.addMultiCoins(coinToActivate).then((_) {
+      coinsBloc.setCloseViewSelectCoin(true);
     });
-    await Future.wait(getAllBalances);
+  }
+
+  Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
+    dynamic balance = await mm2.getBalance(coin).timeout(Duration(seconds: 15));
+    if (balance is ErrorString) {
+      print(balance.error);
+    }
+    double price = await getPriceObj
+        .getPrice(coin.abbr, "USD")
+        .timeout(Duration(seconds: 15), onTimeout: () => 0);
+
+    var coinBalance;
+    if (balance is Balance && coin.abbr == balance.coin) {
+      coinBalance = CoinBalance(coin, balance);
+      if (coinBalance.balanceUSD == null &&
+          double.parse(coinBalance.balance.balance) > 0) {
+        coinBalance.priceForOne = price;
+      } else {
+        coinBalance.priceForOne = 0.0;
+      }
+      coinBalance.balanceUSD =
+          coinBalance.priceForOne * double.parse(coinBalance.balance.balance);
+    } else if (balance is ErrorString) {
+      coinBalance = CoinBalance(
+          coin, new Balance(address: "", balance: "1.0", coin: coin.abbr));
+      coinBalance.priceForOne = price;
+      coinBalance.balanceUSD =
+          coinBalance.priceForOne * double.parse(coinBalance.balance.balance);
+      print("-------------------" + balance.error);
+    }
+
+    if (balance is Balance && balance.coin == "KMD") {
+      mm2.pubkey = balance.address;
+    }
+    return coinBalance;
   }
 
   Future<void> activateCoinKickStart() async {

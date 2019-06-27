@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -6,96 +8,130 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class SelectCoinsPage extends StatefulWidget {
+  final Function(List<Coin>) coinsToActivate;
+
+  SelectCoinsPage({this.coinsToActivate});
+
   @override
   _SelectCoinsPageState createState() => _SelectCoinsPageState();
 }
 
 class _SelectCoinsPageState extends State<SelectCoinsPage> {
   bool isActive = false;
+    StreamSubscription<bool> sub;
 
+  @override
+  void initState() {
+    coinsBloc.setCloseViewSelectCoin(false);
+    sub = coinsBloc.outCloseViewSelectCoin.listen((onData){
+      if (onData != null && onData == true) {
+        Navigator.of(context).pop();
+      }
+    });
+    super.initState();
+  }
+  
+  @override
+  void dispose() {
+    sub.cancel();
+    coinsBloc.resetActivateCoin();
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).backgroundColor,
+          elevation: 0,
+          title: Text(
+            AppLocalizations.of(context).selectCoinTitle.toUpperCase(),
+            style: Theme.of(context).textTheme.subtitle,
+            textAlign: TextAlign.start,
+          ),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              );
+            },
+          ),
+        ),
         backgroundColor: Theme.of(context).backgroundColor,
-        elevation: 0,
-        title: Text(
-          AppLocalizations.of(context).selectCoinTitle.toUpperCase(),
-          style: Theme.of(context).textTheme.subtitle,
-          textAlign: TextAlign.start,
-        ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            );
-          },
-        ),
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: SafeArea(
-        child: isActive
-            ? LoadingCoin()
-            : Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: <Widget>[
-                  ListView(
-                    padding: EdgeInsets.only(bottom: 100, top: 32),
+        body: StreamBuilder<CoinToActivate>(
+            stream: coinsBloc.outcurrentActiveCoin,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return LoadingCoin();
+              } else {
+                return SafeArea(
+                  child: isActive ? LoadingCoin() : Stack(
+                    alignment: AlignmentDirectional.bottomCenter,
                     children: <Widget>[
-                      _buildHeader(),
-                      SizedBox(
-                        height: 32,
+                      ListView(
+                        padding: EdgeInsets.only(bottom: 100, top: 32),
+                        children: <Widget>[
+                          _buildHeader(),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          _buildListCoin(),
+                        ],
                       ),
-                      _buildListCoin(),
+                      Container(
+                        height: 100,
+                        color: Theme.of(context).primaryColor,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: StreamBuilder<List<Coin>>(
+                                initialData: coinsBloc.coinToActivate,
+                                stream: coinsBloc.outCoinToActivate,
+                                builder: (context, snapshot) {
+                                  return PrimaryButton(
+                                    text: AppLocalizations.of(context).done,
+                                    isLoading: isActive,
+                                    onPressed: snapshot.hasData &&
+                                            snapshot.data.length > 0
+                                        ? _pressDoneButton
+                                        : null,
+                                  );
+                                }),
+                          ),
+                        ),
+                      )
                     ],
                   ),
-                  Container(
-                    height: 100,
-                    color: Theme.of(context).primaryColor,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: StreamBuilder<List<Coin>>(
-                          initialData: coinsBloc.coinToActivate,
-                          stream: coinsBloc.outCoinToActivate,
-                          builder: (context, snapshot) {
-                            return PrimaryButton(
-                              text: AppLocalizations.of(context).done,
-                              onPressed: snapshot.hasData && snapshot.data.length > 0 ? _pressDoneButton : null,
-                            );
-                          }
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-      ),
-    );
+                );
+              }
+            }));
   }
 
-  _pressDoneButton() async {
+  _pressDoneButton() {
     setState(() {
       isActive = true;
     });
-    print(coinsBloc.coinToActivate.length);
-    await coinsBloc.addMultiCoins(coinsBloc.coinToActivate).then((onValue) {
-      _closeSelectCoinsPage();
-    }).timeout(Duration(seconds: 20), onTimeout: () {
-      _closeSelectCoinsPage();
-    });
+    // widget.coinsToActivate(coinsBloc.coinToActivate);
+    coinsBloc.activateCoinsSelected(coinsBloc.coinToActivate);
+    // coinsBloc.addMultiCoins(coinsBloc.coinToActivate).then((onValue) {
+    //   _closeSelectCoinsPage();
+    // }).timeout(Duration(seconds: 20), onTimeout: () {
+    //   _closeSelectCoinsPage();
+    // });
   }
 
-  _closeSelectCoinsPage() {
-    coinsBloc.resetActivateCoin();
-    setState(() {
-      isActive = false;
-    });
-    Navigator.pop(context);
-  }
+  // _closeSelectCoinsPage() {
+  //   coinsBloc.resetActivateCoin();
+  //   if (this.mounted) {
+  //     setState(() {
+  //       isActive = false;
+  //     });
+  //     Navigator.pop(context);
+  //   }
+  // }
 
   _buildListCoin() {
     return FutureBuilder<List<Coin>>(
@@ -196,21 +232,23 @@ class LoadingCoin extends StatefulWidget {
 class _LoadingCoinState extends State<LoadingCoin> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Column(
+    return Center(
+        child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         CircularProgressIndicator(),
-        SizedBox(height: 16,),
+        SizedBox(
+          height: 16,
+        ),
         StreamBuilder<CoinToActivate>(
-          stream: coinsBloc.outcurrentActiveCoin,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data.currentStatus);
-            } else {
-               return Text(AppLocalizations.of(context).connecting);
-            }
-          }
-        )
+            stream: coinsBloc.outcurrentActiveCoin,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data.currentStatus);
+              } else {
+                return Text(AppLocalizations.of(context).connecting);
+              }
+            })
       ],
     ));
   }

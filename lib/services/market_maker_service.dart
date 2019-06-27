@@ -96,9 +96,8 @@ class MarketMakerService {
     String startParam =
         '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"${filesPath}\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
 
+    await stopmm2();
     if (Platform.isAndroid) {
-      await stopmm2();
-
       mm2Process = await Process.start('./mm2', [startParam],
           workingDirectory: '${filesPath}');
 
@@ -117,7 +116,6 @@ class MarketMakerService {
             logMm2.contains("Sending 'taker-fee") ||
             logMm2.contains("Sending 'taker-payment") ||
             logMm2.contains("Finished")) {
-          print("Update swaps from log");
           Future.delayed(const Duration(seconds: 1), () {
             swapHistoryBloc.updateSwaps(50, null).then((_) {
               ordersBloc.updateOrdersSwaps();
@@ -133,10 +131,8 @@ class MarketMakerService {
         }
       });
     } else if (Platform.isIOS) {
-      await stopmm2();
       await platformmm2
           .invokeMethod('start', {'params': startParam}); //start mm2
-
       // check when mm2 is ready then load coins
       var timerTmp = DateTime.now().millisecondsSinceEpoch;
       Timer.periodic(Duration(seconds: 2), (_) {
@@ -173,10 +169,10 @@ class MarketMakerService {
 
     coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((onValue) {
       print("ALL COINS ACTIVATES");
-      coinsBloc.loadCoin(true).then((data) {
+      coinsBloc.loadCoin().then((data) {
         print("LOADCOIN FINISHED");
-        swapHistoryBloc.updateSwaps(50, null);
-        coinsBloc.startCheckBalance();
+        // swapHistoryBloc.updateSwaps(50, null);
+        // coinsBloc.startCheckBalance();
       });
     });
   }
@@ -496,7 +492,7 @@ class MarketMakerService {
             urls: coin.serverList);
         response = await http
             .post(url, body: getEnabledCoinToJson(getActiveCoin))
-            .timeout(Duration(seconds: 15));
+            .timeout(Duration(seconds: 60));
       } else {
         getActiveCoin = new GetActiveCoin(
             userpass: userpass,
@@ -506,7 +502,7 @@ class MarketMakerService {
             servers: servers);
         response = await http
             .post(url, body: getActiveCoinToJson(getActiveCoin))
-            .timeout(Duration(seconds: 15));
+            .timeout(Duration(seconds: 60));
       }
 
       print("response Active Coin: " + response.body.toString());

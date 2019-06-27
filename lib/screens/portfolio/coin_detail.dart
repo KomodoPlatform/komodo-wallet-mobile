@@ -202,7 +202,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   @override
   void dispose() {
-    coinsBloc.loadCoin(true);
+    coinsBloc.loadCoin();
     _amountController.dispose();
     _addressController.dispose();
     _scrollController.dispose();
@@ -892,9 +892,9 @@ class _CoinDetailState extends State<CoinDetail> {
               _onWithdrawPost = false;
               coinsBloc.updateTransactions(
                   widget.coinBalance.coin, LIMIT, null);
-              coinsBloc.loadCoin(true);
+              coinsBloc.loadCoin();
               new Future.delayed(Duration(seconds: 5), () {
-                coinsBloc.loadCoin(true);
+                coinsBloc.loadCoin();
               });
               listSteps.add(Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -1116,7 +1116,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       if (value.isEmpty) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
                       }
-                      if (widget.coinBalance.coin.abbr == "ETH") {
+                      if (widget.coinBalance.coin.swap_contract_address != null) {
                         if (!isAddress(value)) {
                           return AppLocalizations.of(context)
                               .errorNotAValidAddress;

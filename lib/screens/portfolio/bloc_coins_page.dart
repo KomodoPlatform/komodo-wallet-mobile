@@ -40,7 +40,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     if (mm2.ismm2Running) {
-      coinsBloc.loadCoin(false);
+      coinsBloc.loadCoin();
     }
 
     super.initState();
@@ -284,7 +284,7 @@ class ListCoinsState extends State<ListCoins> {
   @override
   void initState() {
     if (mm2.ismm2Running) {
-      coinsBloc.loadCoin(false);
+      coinsBloc.loadCoin();
     }
     super.initState();
   }
@@ -298,7 +298,7 @@ class ListCoinsState extends State<ListCoins> {
         return RefreshIndicator(
             backgroundColor: Theme.of(context).backgroundColor,
             key: _refreshIndicatorKey,
-            onRefresh: () => coinsBloc.loadCoin(true),
+            onRefresh: () => coinsBloc.loadCoin(),
             child: Builder(builder: (context) {
               print(snapshot.connectionState);
               if (snapshot.hasData && snapshot.data.length > 0) {
@@ -317,7 +317,7 @@ class ListCoinsState extends State<ListCoins> {
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
-              } else if (snapshot.data.length == 0){
+              } else if (snapshot.data.length == 0) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -547,34 +547,62 @@ class AddCoinButton extends StatefulWidget {
 class _AddCoinButtonState extends State<AddCoinButton> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: _buildAddCoinButton(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Center(
-                  child: FloatingActionButton(
-                backgroundColor: Theme.of(context).primaryColor,
-                foregroundColor: Theme.of(context).accentColor,
-                child: Icon(
-                  Icons.add,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SelectCoinsPage()),
-                  );
-                },
-              )),
-            ),
-          );
-        } else {
-          return Container();
-        }
-      },
+    return Column(
+      children: <Widget>[
+        StreamBuilder<CoinToActivate>(
+            initialData: coinsBloc.currentActiveCoin,
+            stream: coinsBloc.outcurrentActiveCoin,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 16,
+                    ),
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(snapshot.data.currentStatus),
+                    SizedBox(
+                      height: 16,
+                    ),
+                  ],
+                );
+              } else {
+                return FutureBuilder<bool>(
+                  future: _buildAddCoinButton(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data) {
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Center(
+                              child: FloatingActionButton(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            foregroundColor: Theme.of(context).accentColor,
+                            child: Icon(
+                              Icons.add,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SelectCoinsPage()),
+                              );
+                            },
+                          )),
+                        ),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                );
+              }
+            }),
+      ],
     );
   }
 
