@@ -24,7 +24,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   void initState() {
     coinsBloc.setCloseViewSelectCoin(false);
     sub = coinsBloc.outCloseViewSelectCoin.listen((onData){
-      if (onData != null && onData == true) {
+      if (onData != null && onData == true && this.mounted) {
         Navigator.of(context).pop();
       }
     });
@@ -114,24 +114,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     setState(() {
       isActive = true;
     });
-    // widget.coinsToActivate(coinsBloc.coinToActivate);
     coinsBloc.activateCoinsSelected(coinsBloc.coinToActivate);
-    // coinsBloc.addMultiCoins(coinsBloc.coinToActivate).then((onValue) {
-    //   _closeSelectCoinsPage();
-    // }).timeout(Duration(seconds: 20), onTimeout: () {
-    //   _closeSelectCoinsPage();
-    // });
   }
-
-  // _closeSelectCoinsPage() {
-  //   coinsBloc.resetActivateCoin();
-  //   if (this.mounted) {
-  //     setState(() {
-  //       isActive = false;
-  //     });
-  //     Navigator.pop(context);
-  //   }
-  // }
 
   _buildListCoin() {
     return FutureBuilder<List<Coin>>(

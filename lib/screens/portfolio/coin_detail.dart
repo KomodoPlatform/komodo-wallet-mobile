@@ -1119,7 +1119,7 @@ class _CoinDetailState extends State<CoinDetail> {
                   child: TextFormField(
                     inputFormatters: [
                       WhitelistingTextInputFormatter(RegExp(
-                          "^\$|^(0|([1-9][0-9]{0,3}))(\\.[0-9]{0,8})?\$"))
+                          "^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"))
                     ],
                     focusNode: _focus,
                     controller: _amountController,
@@ -1142,6 +1142,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         labelText: AppLocalizations.of(context).amount),
                     // The validator receives the text the user has typed in
                     validator: (value) {
+                      value = value.replaceAll(",", ".");
                       double balance =
                           double.parse(widget.coinBalance.balance.getBalance());
 
@@ -1154,7 +1155,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       if (currentAmount > balance) {
                         return AppLocalizations.of(context).errorAmountBalance;
                       }
-                      return "";
+                      return null;
                     },
                   ),
                 ),
@@ -1217,7 +1218,7 @@ class _CoinDetailState extends State<CoinDetail> {
                               .errorNotAValidAddress;
                         }
                       }
-                      return "";
+                      return null;
                     },
                   ),
                 ),
