@@ -1,12 +1,12 @@
 // To parse this JSON data, do
 //
-//     final result = resultFromJson(jsonString);
+//     final resultSuccess = resultSuccessFromJson(jsonString);
 
 import 'dart:convert';
 
-ResultSuccess resultFromJson(String str) => ResultSuccess.fromJson(json.decode(str));
+ResultSuccess resultSuccessFromJson(String str) => ResultSuccess.fromJson(json.decode(str));
 
-String resultToJson(ResultSuccess data) => json.encode(data.toJson());
+String resultSuccessToJson(ResultSuccess data) => json.encode(data.toJson());
 
 class ResultSuccess {
     String result;
@@ -16,10 +16,10 @@ class ResultSuccess {
     });
 
     factory ResultSuccess.fromJson(Map<String, dynamic> json) => new ResultSuccess(
-        result: json["result"],
+        result: json["result"] == null ? null : json["result"],
     );
 
     Map<String, dynamic> toJson() => {
-        "result": result,
+        "result": result == null ? null : result,
     };
 }

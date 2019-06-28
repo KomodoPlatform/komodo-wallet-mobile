@@ -4,29 +4,22 @@
 
 import 'dart:convert';
 
-SendRawTransactionResponse sendRawTransactionResponseFromJson(String str) {
-  final jsonData = json.decode(str);
-  return SendRawTransactionResponse.fromJson(jsonData);
-}
+SendRawTransactionResponse sendRawTransactionResponseFromJson(String str) => SendRawTransactionResponse.fromJson(json.decode(str));
 
-String sendRawTransactionResponseToJson(SendRawTransactionResponse data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String sendRawTransactionResponseToJson(SendRawTransactionResponse data) => json.encode(data.toJson());
 
 class SendRawTransactionResponse {
-  String txHash;
+    String txHash;
 
-  SendRawTransactionResponse({
-    this.txHash,
-  });
+    SendRawTransactionResponse({
+        this.txHash,
+    });
 
-  factory SendRawTransactionResponse.fromJson(Map<String, dynamic> json) =>
-      new SendRawTransactionResponse(
-        txHash: json["tx_hash"],
-      );
+    factory SendRawTransactionResponse.fromJson(Map<String, dynamic> json) => new SendRawTransactionResponse(
+        txHash: json["tx_hash"] == null ? null : json["tx_hash"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "tx_hash": txHash,
-      };
+    Map<String, dynamic> toJson() => {
+        "tx_hash": txHash == null ? null : txHash,
+    };
 }

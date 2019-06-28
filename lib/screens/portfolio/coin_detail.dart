@@ -354,8 +354,8 @@ class _CoinDetailState extends State<CoinDetail> {
                         child: Container(),
                       ),
                       Text(widget.coinBalance.coin.swapContractAddress != null
-                          ? "Block left ${txLeft}"
-                          : "Transactions left ${txLeft}")
+                          ? "Block left $txLeft"
+                          : "Transactions left $txLeft")
                     ],
                   ),
                 );

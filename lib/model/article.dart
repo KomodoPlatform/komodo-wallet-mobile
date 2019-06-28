@@ -21,8 +21,9 @@ class Article {
   String keywords;
   DateTime creationDate;
   bool isSavedArticle;
-  String author;
+
   int v;
+  String author;
 
   Article({
     this.media,
@@ -33,34 +34,41 @@ class Article {
     this.keywords,
     this.creationDate,
     this.isSavedArticle,
-    this.author,
     this.v,
+    this.author,
   });
 
   factory Article.fromJson(Map<String, dynamic> json) => new Article(
-        media: new List<String>.from(json["media"].map((x) => x)),
-        id: json["_id"],
-        title: json["title"],
-        header: json["header"],
-        body: json["body"],
-        keywords: json["keywords"],
-        isSavedArticle: json["isSavedArticle"],
-        author: json["author"] == null ? "Komodo Platform" : json["author"],
-        creationDate: DateTime.parse(json["creation_date"]),
-        v: json["__v"],
+        media: json["media"] == null
+            ? null
+            : new List<String>.from(json["media"].map((x) => x)),
+        id: json["_id"] == null ? null : json["_id"],
+        title: json["title"] == null ? null : json["title"],
+        header: json["header"] == null ? null : json["header"],
+        body: json["body"] == null ? null : json["body"],
+        isSavedArticle:
+            json["isSavedArticle"] == null ? null : json["isSavedArticle"],
+        keywords: json["keywords"] == null ? null : json["keywords"],
+        creationDate: json["creation_date"] == null
+            ? null
+            : DateTime.parse(json["creation_date"]),
+        v: json["__v"] == null ? null : json["__v"],
+        author: json["author"] == null ? null : json["author"],
       );
 
   Map<String, dynamic> toJson() => {
-        "media": new List<dynamic>.from(media.map((x) => x)),
-        "_id": id,
-        "title": title,
-        "header": header,
-        "body": body,
-        "keywords": keywords,
-        "author": author,
-        "isSavedArticle": isSavedArticle,
-        "creation_date": creationDate.toIso8601String(),
-        "__v": v,
+        "media":
+            media == null ? null : new List<dynamic>.from(media.map((x) => x)),
+        "_id": id == null ? null : id,
+        "title": title == null ? null : title,
+        "header": header == null ? null : header,
+        "body": body == null ? null : body,
+        "keywords": keywords == null ? null : keywords,
+        "isSavedArticle": isSavedArticle == null ? null : isSavedArticle,
+        "creation_date":
+            creationDate == null ? null : creationDate.toIso8601String(),
+        "__v": v == null ? null : v,
+        "author": author == null ? null : author,
       };
 
   String getTimeFormat() {

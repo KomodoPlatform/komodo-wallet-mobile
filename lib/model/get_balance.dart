@@ -1,39 +1,33 @@
 // To parse this JSON data, do
 //
-//     final getBalanceModel = getBalanceModelFromJson(jsonString);
+//     final getBalance = getBalanceFromJson(jsonString);
 
 import 'dart:convert';
 
-GetBalance getBalanceModelFromJson(String str) {
-  final jsonData = json.decode(str);
-  return GetBalance.fromJson(jsonData);
-}
+GetBalance getBalanceFromJson(String str) => GetBalance.fromJson(json.decode(str));
 
-String getBalanceModelToJson(GetBalance data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String getBalanceToJson(GetBalance data) => json.encode(data.toJson());
 
 class GetBalance {
-  String userpass;
-  String method;
-  String coin;
+    String userpass;
+    String method;
+    String coin;
 
-  GetBalance({
-    this.userpass,
-    this.method,
-    this.coin,
-  });
+    GetBalance({
+        this.userpass,
+        this.method,
+        this.coin,
+    });
 
-  factory GetBalance.fromJson(Map<String, dynamic> json) => new GetBalance(
-        userpass: json["userpass"],
-        method: json["method"],
-        coin: json["coin"],
-      );
+    factory GetBalance.fromJson(Map<String, dynamic> json) => new GetBalance(
+        userpass: json["userpass"] == null ? null : json["userpass"],
+        method: json["method"] == null ? null : json["method"],
+        coin: json["coin"] == null ? null : json["coin"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "userpass": userpass,
-        "method": method,
-        "coin": coin,
-      };
+    Map<String, dynamic> toJson() => {
+        "userpass": userpass == null ? null : userpass,
+        "method": method == null ? null : method,
+        "coin": coin == null ? null : coin,
+    };
 }

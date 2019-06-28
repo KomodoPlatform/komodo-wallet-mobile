@@ -16,11 +16,11 @@ class ErrorCode {
     });
 
     factory ErrorCode.fromJson(Map<String, dynamic> json) => new ErrorCode(
-        error: Error.fromJson(json["error"]),
+        error: json["error"] == null ? null : Error.fromJson(json["error"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "error": error.toJson(),
+        "error": error == null ? null : error.toJson(),
     };
 }
 
@@ -34,12 +34,12 @@ class Error {
     });
 
     factory Error.fromJson(Map<String, dynamic> json) => new Error(
-        code: json["code"],
-        message: json["message"],
+        code: json["code"] == null ? null : json["code"],
+        message: json["message"] == null ? null : json["message"],
     );
 
     Map<String, dynamic> toJson() => {
-        "code": code,
-        "message": message,
+        "code": code == null ? null : code,
+        "message": message == null ? null : message,
     };
 }
