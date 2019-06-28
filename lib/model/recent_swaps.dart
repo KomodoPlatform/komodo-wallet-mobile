@@ -314,9 +314,9 @@ class Transaction {
     FeeDetails feeDetails;
     List<String> from;
     String internalId;
-    int myBalanceChange;
-    int receivedByMe;
-    int spentByMe;
+    double myBalanceChange;
+    double receivedByMe;
+    double spentByMe;
     int timestamp;
     List<String> to;
     double totalAmount;
@@ -345,9 +345,9 @@ class Transaction {
         feeDetails: json["fee_details"] == null ? null : FeeDetails.fromJson(json["fee_details"]),
         from: json["from"] == null ? null : new List<String>.from(json["from"].map((x) => x)),
         internalId: json["internal_id"] == null ? null : json["internal_id"],
-        myBalanceChange: json["my_balance_change"] == null ? null : json["my_balance_change"],
-        receivedByMe: json["received_by_me"] == null ? null : json["received_by_me"],
-        spentByMe: json["spent_by_me"] == null ? null : json["spent_by_me"],
+        myBalanceChange: json["my_balance_change"] == null ? null : json["my_balance_change"].toDouble(),
+        receivedByMe: json["received_by_me"] == null ? null : json["received_by_me"].toDouble(),
+        spentByMe: json["spent_by_me"] == null ? null : json["spent_by_me"].toDouble(),
         timestamp: json["timestamp"] == null ? null : json["timestamp"],
         to: json["to"] == null ? null : new List<String>.from(json["to"].map((x) => x)),
         totalAmount: json["total_amount"] == null ? null : json["total_amount"].toDouble(),
