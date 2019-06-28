@@ -4,52 +4,46 @@
 
 import 'dart:convert';
 
-GetSwap getSwapFromJson(String str) {
-  final jsonData = json.decode(str);
-  return GetSwap.fromJson(jsonData);
-}
+GetSwap getSwapFromJson(String str) => GetSwap.fromJson(json.decode(str));
 
-String getSwapToJson(GetSwap data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String getSwapToJson(GetSwap data) => json.encode(data.toJson());
 
 class GetSwap {
-  String userpass;
-  String method;
-  Params params;
+    String method;
+    Params params;
+    String userpass;
 
-  GetSwap({
-    this.userpass,
-    this.method,
-    this.params,
-  });
+    GetSwap({
+        this.method,
+        this.params,
+        this.userpass,
+    });
 
-  factory GetSwap.fromJson(Map<String, dynamic> json) => new GetSwap(
-        userpass: json["userpass"],
-        method: json["method"],
-        params: Params.fromJson(json["params"]),
-      );
+    factory GetSwap.fromJson(Map<String, dynamic> json) => new GetSwap(
+        method: json["method"] == null ? null : json["method"],
+        params: json["params"] == null ? null : Params.fromJson(json["params"]),
+        userpass: json["userpass"] == null ? null : json["userpass"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "userpass": userpass,
-        "method": method,
-        "params": params.toJson(),
-      };
+    Map<String, dynamic> toJson() => {
+        "method": method == null ? null : method,
+        "params": params == null ? null : params.toJson(),
+        "userpass": userpass == null ? null : userpass,
+    };
 }
 
 class Params {
-  String uuid;
+    String uuid;
 
-  Params({
-    this.uuid,
-  });
+    Params({
+        this.uuid,
+    });
 
-  factory Params.fromJson(Map<String, dynamic> json) => new Params(
-        uuid: json["uuid"],
-      );
+    factory Params.fromJson(Map<String, dynamic> json) => new Params(
+        uuid: json["uuid"] == null ? null : json["uuid"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "uuid": uuid,
-      };
+    Map<String, dynamic> toJson() => {
+        "uuid": uuid == null ? null : uuid,
+    };
 }

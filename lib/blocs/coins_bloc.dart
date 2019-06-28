@@ -176,7 +176,6 @@ class CoinsBloc implements BlocBase {
   Future<Coin> _activeCoinFuture(Coin coin) async {
     Coin coinToactivate;
     await mm2.activeCoin(coin).catchError((onError) {
-      print(onError.error);
       if (onError is ErrorString &&
           onError.error.contains("Coin ${coin.abbr} already initialized")) {
         coinToactivate = coin;
@@ -240,7 +239,7 @@ class CoinsBloc implements BlocBase {
     try {
       final file = await _localFile;
       String contents = await file.readAsString();
-      return listCoinFromJson(contents);
+      return coinFromJson(contents);
     } catch (e) {
       return new List<Coin>();
     }

@@ -16,10 +16,10 @@ class CoinToKickStart {
     });
 
     factory CoinToKickStart.fromJson(Map<String, dynamic> json) => new CoinToKickStart(
-        result: new List<String>.from(json["result"].map((x) => x)),
+        result: json["result"] == null ? null : new List<String>.from(json["result"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
-        "result": new List<dynamic>.from(result.map((x) => x)),
+        "result": result == null ? null : new List<dynamic>.from(result.map((x) => x)),
     };
 }

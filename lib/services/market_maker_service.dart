@@ -17,13 +17,13 @@ import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/error_code.dart';
+import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_enable_coin.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_active_coin.dart';
-import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
@@ -259,7 +259,7 @@ class MarketMakerService {
     try {
       return swapFromJson(response.body);
     } catch (e) {
-      return errorFromJson(response.body);
+      return errorStringFromJson(response.body);
     }
   }
 
@@ -284,7 +284,7 @@ class MarketMakerService {
     try {
       return balanceFromJson(response.body);
     } catch (e) {
-      return errorFromJson(response.body);
+      return errorStringFromJson(response.body);
     }
   }
 
@@ -312,7 +312,7 @@ class MarketMakerService {
     try {
       return buyResponseFromJson(response.body);
     } catch (e) {
-      return errorFromJson(response.body);
+      return errorStringFromJson(response.body);
     }
   }
 
@@ -340,7 +340,7 @@ class MarketMakerService {
     try {
       return buyResponseFromJson(response.body);
     } catch (e) {
-      return errorFromJson(response.body);
+      return errorStringFromJson(response.body);
     }
   }
 
@@ -363,7 +363,7 @@ class MarketMakerService {
     try {
       return setPriceResponseFromJson(response.body);
     } catch (e) {
-      return errorFromJson(response.body);
+      return errorStringFromJson(response.body);
     }
   }
 
@@ -415,7 +415,7 @@ class MarketMakerService {
     final response =
         await http.post(url, body: getCancelOrderToJson(getCancelOrder));
     print("cancel_order" + response.body.toString());
-    return resultFromJson(response.body);
+    return resultSuccessFromJson(response.body);
   }
 
   Future<CoinToKickStart> getCoinToKickStart() async {
@@ -508,14 +508,14 @@ class MarketMakerService {
         return activeCoinFromJson(response.body);
       } else {
         print(response.body);
-        throw errorFromJson(response.body);
+        throw errorStringFromJson(response.body);
       }
     } on TimeoutException catch (_) {
       throw new ErrorString(error: "Timeout on ${coin.abbr}");
     } catch (e) {
-      print("-------------------" + errorFromJson(response.body).error);
+      print("-------------------" + errorStringFromJson(response.body).error);
       print(response.body);
-      throw errorFromJson(response.body);
+      throw errorStringFromJson(response.body);
     }
   }
 }

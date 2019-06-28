@@ -127,7 +127,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              '${widget.amountToSell} ${swapBloc.orderCoin.coinRel.abbr}',
+                              '${widget.amountToSell} ${swapBloc.orderCoin?.coinRel?.abbr}',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.title,
                             ),
@@ -300,8 +300,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         double.parse(widget.amountToSell.replaceAll(",", "."));
     double amountToBuy = (amountToSell *
         (amountToSell / (amountToSell * swapBloc.orderCoin.bestPrice)));
-    Coin coinBase = swapBloc.orderCoin.coinBase;
-    Coin coinRel = swapBloc.orderCoin.coinRel;
+    Coin coinBase = swapBloc.orderCoin?.coinBase;
+    Coin coinRel = swapBloc.orderCoin?.coinRel;
     double price = swapBloc.orderCoin.bestPrice * 1.01;
     //reviewed by ca333
     if (widget.swapStatus == SwapStatus.BUY) {

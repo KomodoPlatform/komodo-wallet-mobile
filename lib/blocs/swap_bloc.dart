@@ -142,7 +142,7 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRate() {
     if (swapBloc.orderCoin != null) {
-      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${swapBloc.orderCoin.bestPrice.toStringAsFixed(8)} ${swapBloc.orderCoin.coinRel.abbr}';
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${swapBloc.orderCoin.bestPrice.toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
     } else {
       return "";
     }

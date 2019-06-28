@@ -4,117 +4,110 @@
 
 import 'dart:convert';
 
-Orderbook orderbookFromJson(String str) {
-  final jsonData = json.decode(str);
-  return Orderbook.fromJson(jsonData);
-}
+Orderbook orderbookFromJson(String str) => Orderbook.fromJson(json.decode(str));
 
-String orderbookToJson(Orderbook data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String orderbookToJson(Orderbook data) => json.encode(data.toJson());
 
 class Orderbook {
-  int askdepth;
-  List<Ask> asks;
-  String base;
-  int biddepth;
-  List<Ask> bids;
-  int netid;
-  int numasks;
-  int numbids;
-  String rel;
-  int timestamp;
+    List<Ask> bids;
+    int numbids;
+    int biddepth;
+    List<Ask> asks;
+    int numasks;
+    int askdepth;
+    String base;
+    String rel;
+    int timestamp;
+    int netid;
 
-  Orderbook({
-    this.askdepth,
-    this.asks,
-    this.base,
-    this.biddepth,
-    this.bids,
-    this.netid,
-    this.numasks,
-    this.numbids,
-    this.rel,
-    this.timestamp,
-  });
+    Orderbook({
+        this.bids,
+        this.numbids,
+        this.biddepth,
+        this.asks,
+        this.numasks,
+        this.askdepth,
+        this.base,
+        this.rel,
+        this.timestamp,
+        this.netid,
+    });
 
-  factory Orderbook.fromJson(Map<String, dynamic> json) => new Orderbook(
-        askdepth: json["askdepth"],
-        asks: new List<Ask>.from(json["asks"].map((x) => Ask.fromJson(x))),
-        base: json["base"],
-        biddepth: json["biddepth"],
-        bids: new List<Ask>.from(json["bids"].map((x) => Ask.fromJson(x))),
-        netid: json["netid"],
-        numasks: json["numasks"],
-        numbids: json["numbids"],
-        rel: json["rel"],
-        timestamp: json["timestamp"],
-      );
+    factory Orderbook.fromJson(Map<String, dynamic> json) => new Orderbook(
+        bids: json["bids"] == null ? null : new List<Ask>.from(json["bids"].map((x) => Ask.fromJson(x))),
+        numbids: json["numbids"] == null ? null : json["numbids"],
+        biddepth: json["biddepth"] == null ? null : json["biddepth"],
+        asks: json["asks"] == null ? null : new List<Ask>.from(json["asks"].map((x) => Ask.fromJson(x))),
+        numasks: json["numasks"] == null ? null : json["numasks"],
+        askdepth: json["askdepth"] == null ? null : json["askdepth"],
+        base: json["base"] == null ? null : json["base"],
+        rel: json["rel"] == null ? null : json["rel"],
+        timestamp: json["timestamp"] == null ? null : json["timestamp"],
+        netid: json["netid"] == null ? null : json["netid"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "askdepth": askdepth,
-        "asks": new List<dynamic>.from(asks.map((x) => x.toJson())),
-        "base": base,
-        "biddepth": biddepth,
-        "bids": new List<dynamic>.from(bids.map((x) => x.toJson())),
-        "netid": netid,
-        "numasks": numasks,
-        "numbids": numbids,
-        "rel": rel,
-        "timestamp": timestamp,
-      };
-
+    Map<String, dynamic> toJson() => {
+        "bids": bids == null ? null : new List<dynamic>.from(bids.map((x) => x.toJson())),
+        "numbids": numbids == null ? null : numbids,
+        "biddepth": biddepth == null ? null : biddepth,
+        "asks": asks == null ? null : new List<dynamic>.from(asks.map((x) => x.toJson())),
+        "numasks": numasks == null ? null : numasks,
+        "askdepth": askdepth == null ? null : askdepth,
+        "base": base == null ? null : base,
+        "rel": rel == null ? null : rel,
+        "timestamp": timestamp == null ? null : timestamp,
+        "netid": netid == null ? null : netid,
+    };
 }
 
 class Ask {
-  String address;
-  int age;
-  int avevolume;
-  String coin;
-  int depth;
-  double maxvolume;
-  int numutxos;
-  double price;
-  String pubkey;
-  int zcredits;
+    String coin;
+    String address;
+    double price;
+    int numutxos;
+    int avevolume;
+    double maxvolume;
+    int depth;
+    String pubkey;
+    int age;
+    int zcredits;
 
-  Ask({
-    this.address,
-    this.age,
-    this.avevolume,
-    this.coin,
-    this.depth,
-    this.maxvolume,
-    this.numutxos,
-    this.price,
-    this.pubkey,
-    this.zcredits,
-  });
+    Ask({
+        this.coin,
+        this.address,
+        this.price,
+        this.numutxos,
+        this.avevolume,
+        this.maxvolume,
+        this.depth,
+        this.pubkey,
+        this.age,
+        this.zcredits,
+    });
 
-  factory Ask.fromJson(Map<String, dynamic> json) => new Ask(
-        address: json["address"],
-        age: json["age"],
-        avevolume: json["avevolume"],
-        coin: json["coin"],
-        depth: json["depth"],
-        maxvolume: json["maxvolume"].toDouble(),
-        numutxos: json["numutxos"],
-        price: json["price"].toDouble(),
-        pubkey: json["pubkey"],
-        zcredits: json["zcredits"],
-      );
+    factory Ask.fromJson(Map<String, dynamic> json) => new Ask(
+        coin: json["coin"] == null ? null : json["coin"],
+        address: json["address"] == null ? null : json["address"],
+        price: json["price"] == null ? null : json["price"].toDouble(),
+        numutxos: json["numutxos"] == null ? null : json["numutxos"],
+        avevolume: json["avevolume"] == null ? null : json["avevolume"],
+        maxvolume: json["maxvolume"] == null ? null : json["maxvolume"].toDouble(),
+        depth: json["depth"] == null ? null : json["depth"],
+        pubkey: json["pubkey"] == null ? null : json["pubkey"],
+        age: json["age"] == null ? null : json["age"],
+        zcredits: json["zcredits"] == null ? null : json["zcredits"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "address": address,
-        "age": age,
-        "avevolume": avevolume,
-        "coin": coin,
-        "depth": depth,
-        "maxvolume": maxvolume,
-        "numutxos": numutxos,
-        "price": price,
-        "pubkey": pubkey,
-        "zcredits": zcredits,
-      };
+    Map<String, dynamic> toJson() => {
+        "coin": coin == null ? null : coin,
+        "address": address == null ? null : address,
+        "price": price == null ? null : price,
+        "numutxos": numutxos == null ? null : numutxos,
+        "avevolume": avevolume == null ? null : avevolume,
+        "maxvolume": maxvolume == null ? null : maxvolume,
+        "depth": depth == null ? null : depth,
+        "pubkey": pubkey == null ? null : pubkey,
+        "age": age == null ? null : age,
+        "zcredits": zcredits == null ? null : zcredits,
+    };
 }

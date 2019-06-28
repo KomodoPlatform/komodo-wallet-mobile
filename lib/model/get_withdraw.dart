@@ -4,10 +4,7 @@
 
 import 'dart:convert';
 
-GetWithdraw getWithdrawFromJson(String str) {
-  final jsonData = json.decode(str);
-  return GetWithdraw.fromJson(jsonData);
-}
+GetWithdraw getWithdrawFromJson(String str) => GetWithdraw.fromJson(json.decode(str));
 
 String getWithdrawToJson(GetWithdraw data) {
   var tmpJson = data.toJson();
@@ -17,37 +14,42 @@ String getWithdrawToJson(GetWithdraw data) {
   if (data.max == null || !data.max) {
     tmpJson.remove("max");
   }
-
-  print(tmpJson.toString());
   return json.encode(tmpJson);
 }
-
 class GetWithdraw {
-  String method;
-  String coin;
-  String to;
-  double amount;
-  String userpass;
-  bool max;
+    String method;
+    double amount;
+      String coin;
 
-  GetWithdraw(
-      {this.method, this.coin, this.to, this.amount, this.userpass, this.max});
+    String to;
+    bool max;
+    String userpass;
 
-  factory GetWithdraw.fromJson(Map<String, dynamic> json) => new GetWithdraw(
-      method: json["method"],
-      coin: json["coin"],
-      to: json["to"],
-      amount:
+    GetWithdraw({
+        this.method,
+        this.amount,
+        this.to,
+        this.coin,
+        this.max,
+        this.userpass,
+    });
+
+    factory GetWithdraw.fromJson(Map<String, dynamic> json) => new GetWithdraw(
+        method: json["method"] == null ? null : json["method"],
+       amount:
           json["amount"].toDouble() == null ? null : json["amount"].toDouble(),
-      userpass: json["userpass"],
-      max: json["max"]);
+        coin: json["coin"] == null ? null : json["coin"],
+        to: json["to"] == null ? null : json["to"],
+        max: json["max"] == null ? null : json["max"],
+        userpass: json["userpass"] == null ? null : json["userpass"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "method": method,
-        "coin": coin,
-        "to": to,
+    Map<String, dynamic> toJson() => {
+        "method": method == null ? null : method,
         "amount": amount == null ? null : amount,
-        "userpass": userpass,
-        "max": max
-      };
+        "to": to == null ? null : to,
+        "max": max == null ? null : max,
+        "coin": coin == null ? null : max,
+        "userpass": userpass == null ? null : userpass,
+    };
 }

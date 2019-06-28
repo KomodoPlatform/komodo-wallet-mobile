@@ -16,11 +16,11 @@ class BuyResponse {
     });
 
     factory BuyResponse.fromJson(Map<String, dynamic> json) => new BuyResponse(
-        result: Result.fromJson(json["result"]),
+        result: json["result"] == null ? null : Result.fromJson(json["result"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "result": result.toJson(),
+        "result": result == null ? null : result.toJson(),
     };
 }
 
@@ -48,26 +48,26 @@ class Result {
     });
 
     factory Result.fromJson(Map<String, dynamic> json) => new Result(
-        action: json["action"],
-        base: json["base"],
-        baseAmount: json["base_amount"],
-        destPubKey: json["dest_pub_key"],
-        method: json["method"],
-        rel: json["rel"],
-        relAmount: json["rel_amount"],
-        senderPubkey: json["sender_pubkey"],
-        uuid: json["uuid"],
+        action: json["action"] == null ? null : json["action"],
+        base: json["base"] == null ? null : json["base"],
+        baseAmount: json["base_amount"] == null ? null : json["base_amount"],
+        destPubKey: json["dest_pub_key"] == null ? null : json["dest_pub_key"],
+        method: json["method"] == null ? null : json["method"],
+        rel: json["rel"] == null ? null : json["rel"],
+        relAmount: json["rel_amount"] == null ? null : json["rel_amount"],
+        senderPubkey: json["sender_pubkey"] == null ? null : json["sender_pubkey"],
+        uuid: json["uuid"] == null ? null : json["uuid"],
     );
 
     Map<String, dynamic> toJson() => {
-        "action": action,
-        "base": base,
-        "base_amount": baseAmount,
-        "dest_pub_key": destPubKey,
-        "method": method,
-        "rel": rel,
-        "rel_amount": relAmount,
-        "sender_pubkey": senderPubkey,
-        "uuid": uuid,
+        "action": action == null ? null : action,
+        "base": base == null ? null : base,
+        "base_amount": baseAmount == null ? null : baseAmount,
+        "dest_pub_key": destPubKey == null ? null : destPubKey,
+        "method": method == null ? null : method,
+        "rel": rel == null ? null : rel,
+        "rel_amount": relAmount == null ? null : relAmount,
+        "sender_pubkey": senderPubkey == null ? null : senderPubkey,
+        "uuid": uuid == null ? null : uuid,
     };
 }

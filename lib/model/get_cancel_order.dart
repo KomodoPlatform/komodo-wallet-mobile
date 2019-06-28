@@ -20,14 +20,14 @@ class GetCancelOrder {
     });
 
     factory GetCancelOrder.fromJson(Map<String, dynamic> json) => new GetCancelOrder(
-        userpass: json["userpass"],
-        method: json["method"],
-        uuid: json["uuid"],
+        userpass: json["userpass"] == null ? null : json["userpass"],
+        method: json["method"] == null ? null : json["method"],
+        uuid: json["uuid"] == null ? null : json["uuid"],
     );
 
     Map<String, dynamic> toJson() => {
-        "userpass": userpass,
-        "method": method,
-        "uuid": uuid,
+        "userpass": userpass == null ? null : userpass,
+        "method": method == null ? null : method,
+        "uuid": uuid == null ? null : uuid,
     };
 }

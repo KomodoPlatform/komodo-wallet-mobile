@@ -134,7 +134,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         _controllerAmountSell.text.isNotEmpty) {
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
-          coinRel: swapBloc.sellCoin.coin,
+          coinRel: swapBloc.sellCoin?.coin,
           bestPrice: double.parse(_controllerAmountReceive.text.replaceAll(",", ".")) /
               double.parse(_controllerAmountSell.text.replaceAll(",", ".")),
           maxVolume: double.parse(_controllerAmountSell.text.replaceAll(",", "."))));
