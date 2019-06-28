@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:komodo_dex/blocs/swap_bloc.dart';
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -281,6 +283,15 @@ class CoinsBloc implements BlocBase {
         _.cancel();
       } else {
         loadCoin();
+      }
+    });
+    timer2 = Timer.periodic(Duration(seconds: 45), (_) {
+      if (!mm2.ismm2Running) {
+        _.cancel();
+      } else {
+        if (!onActivateCoins) {
+          swapHistoryBloc.updateSwaps(50, null);
+        }
       }
     });
   }

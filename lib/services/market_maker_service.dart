@@ -145,6 +145,7 @@ class MarketMakerService {
             _.cancel();
             print("CANCEL TIMER");
             _initCoinsAndLoad();
+            coinsBloc.startCheckBalance();
           }
         });
       });
