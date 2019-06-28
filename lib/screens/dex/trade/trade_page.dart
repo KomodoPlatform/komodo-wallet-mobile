@@ -135,15 +135,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoin.coin,
-          bestPrice: double.parse(_controllerAmountReceive.text) /
-              double.parse(_controllerAmountSell.text),
-          maxVolume: double.parse(_controllerAmountSell.text)));
+          bestPrice: double.parse(_controllerAmountReceive.text.replaceAll(",", ".")) /
+              double.parse(_controllerAmountSell.text.replaceAll(",", ".")),
+          maxVolume: double.parse(_controllerAmountSell.text.replaceAll(",", "."))));
     }
   }
 
   void onChangeSell() {
     setState(() {
-      String amountSell = _controllerAmountSell.text;
+      String amountSell = _controllerAmountSell.text.replaceAll(",", ".");
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
           if (currentCoinBalance != null &&
@@ -162,7 +162,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
                 .setReceiveAmount(
-                    swapBloc.receiveCoin, _controllerAmountSell.text)
+                    swapBloc.receiveCoin, _controllerAmountSell.text.replaceAll(",", "."))
                 .then((_) {
               _checkMaxVolume();
             });
@@ -175,7 +175,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _checkMaxVolume() {
-    if (double.parse(_controllerAmountSell.text) >=
+    if (double.parse(_controllerAmountSell.text.replaceAll(",", ".")) >=
         swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice) {
       _setMaxVolumeSell();
     }
@@ -200,11 +200,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       } else {
         fee = (txFee.toDouble() / 100000000);
       }
-      _controllerAmountSell
-          .text = ((double.parse(currentCoinBalance.balance.getBalance()) -
-                  (double.parse(currentCoinBalance.balance.getBalance()) * 0.01)) -
-              fee)
-          .toStringAsFixed(8);
+      _controllerAmountSell.text =
+          ((double.parse(currentCoinBalance.balance.getBalance()) -
+                      (double.parse(currentCoinBalance.balance.getBalance()) *
+                          0.01)) -
+                  fee)
+              .toStringAsFixed(8);
     });
     await Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {
@@ -636,10 +637,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   double.parse(orderbook.getBuyAmount(double.parse(
                           _controllerAmountSell.text.replaceAll(",", ".")))) >
                       0;
-          print("----getBuyAmount----" + orderbook.getBuyAmount(double.parse(
-                          _controllerAmountSell.text.replaceAll(",", "."))));
+          print("----getBuyAmount----" +
+              orderbook.getBuyAmount(double.parse(
+                  _controllerAmountSell.text.replaceAll(",", "."))));
           dialogItem = SimpleDialogOption(
-            onPressed: () async{
+            onPressed: () async {
               _controllerAmountReceive.clear();
               setState(() {
                 swapBloc.enabledReceiveField = false;
@@ -648,7 +650,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               swapBloc.updateReceiveCoin(orderbook.coinBase);
               _controllerAmountReceive.text = "";
               if (timerGetOrderbook != null) timerGetOrderbook.cancel();
-              
+
               _lookingForOrder();
 
               Navigator.pop(context);
@@ -758,11 +760,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   bool _checkValueMin() {
     if (_controllerAmountSell.text != null &&
         _controllerAmountSell.text.isNotEmpty &&
-        double.parse(_controllerAmountSell.text) < 3 &&
+        double.parse(_controllerAmountSell.text.replaceAll(",", ".")) < 3 &&
         swapBloc.sellCoin.coin.abbr == "QTUM") {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: Duration(seconds: 2),
-        content: Text(AppLocalizations.of(context).minValue(swapBloc.sellCoin.coin.abbr, 3)),
+        content: Text(AppLocalizations.of(context)
+            .minValue(swapBloc.sellCoin.coin.abbr, 3)),
       ));
       return false;
     } else {
@@ -775,7 +778,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       setState(() {
         _noOrderFound = false;
       });
-
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -821,8 +823,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   swapStatus: swapBloc.enabledReceiveField
                       ? SwapStatus.SELL
                       : SwapStatus.BUY,
-                  amountToSell: _controllerAmountSell.text,
-                  amountToBuy: _controllerAmountReceive.text,
+                  amountToSell: _controllerAmountSell.text.replaceAll(",", "."),
+                  amountToBuy: _controllerAmountReceive.text.replaceAll(",", "."),
                 )),
       ).then((_) {
         _controllerAmountReceive.clear();
@@ -835,7 +837,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     swapBloc.setTimeout(false);
 
     double amount = await swapBloc.setReceiveAmount(
-        swapBloc.receiveCoin, _controllerAmountSell.text);
+        swapBloc.receiveCoin, _controllerAmountSell.text.replaceAll(",", "."));
     swapBloc.setTimeout(true);
 
     if (amount == 0) {
@@ -873,7 +875,6 @@ class _DialogLookingState extends State<DialogLooking> {
 
   @override
   void initState() {
-    
     timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
       swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
     });
