@@ -692,7 +692,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                             style: Theme.of(context)
                                 .textTheme
                                 .body1
-                                .copyWith(color: Theme.of(context).errorColor),
+                                .copyWith(color: Theme.of(context).cursorColor),
                           ),
                     SizedBox(
                       width: 4,

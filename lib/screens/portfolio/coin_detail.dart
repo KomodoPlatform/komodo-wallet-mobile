@@ -349,12 +349,12 @@ class _CoinDetailState extends State<CoinDetail> {
                       SizedBox(
                         width: 8,
                       ),
-                      Text("Blockchain Sync"),
+                      Text("Loading..."),
                       Expanded(
                         child: Container(),
                       ),
                       Text(widget.coinBalance.coin.swapContractAddress != null
-                          ? "Block left $txLeft"
+                          ? "Syncing $txLeft TXs"
                           : "Transactions left $txLeft")
                     ],
                   ),

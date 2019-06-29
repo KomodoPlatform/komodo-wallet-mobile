@@ -245,12 +245,12 @@ class AppLocalizations {
   String get noFunds => Intl.message("No funds", name: 'noFunds');
   String get noFundsDetected => Intl.message("No funds available - please deposit.", name: 'noFundsDetected');
   String get goToPorfolio => Intl.message("Go to portfolio", name: 'goToPorfolio');
-  String get noOrderAvailable => Intl.message("Click to create an order", name: 'noOrderAvailable');
+  String get noOrderAvailable => Intl.message("Click to create a order", name: 'noOrderAvailable');
   String get orderCreated => Intl.message("Order created", name: 'orderCreated');
   String get orderCreatedInfo => Intl.message("Order succsessfully created", name: 'orderCreatedInfo');
   String get showMyOrders => Intl.message("SHOW MY ORDERS", name: 'showMyOrders');
   String minValue(String coinName, double number) => Intl.message(
-        'The minimun sell is ${number.toString()} $coinName',
+        'The minimun amount to sell is ${number.toString()} $coinName',
         name: 'minValue',
         args: [coinName, number],
       );
