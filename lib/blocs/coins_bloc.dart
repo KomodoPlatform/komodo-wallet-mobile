@@ -175,20 +175,23 @@ class CoinsBloc implements BlocBase {
 
   Future<Coin> _activeCoinFuture(Coin coin) async {
     Coin coinToactivate;
-    await mm2.activeCoin(coin).catchError((onError) {
+    await mm2.activeCoin(coin)
+    .then((activeCoin) {
+      coinToactivate = coin;
+      currentCoinActivate(
+          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
+    })
+    .catchError((onError) {
       if (onError is ErrorString &&
           onError.error.contains("Coin ${coin.abbr} already initialized")) {
         coinToactivate = coin;
         currentCoinActivate(
             CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
       } else {
+        print('Sorry, ${coin.abbr} not available.');
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
       }
-    }).then((activeCoin) {
-      coinToactivate = coin;
-      currentCoinActivate(
-          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
     }).timeout(Duration(seconds: 30));
 
     return coinToactivate;

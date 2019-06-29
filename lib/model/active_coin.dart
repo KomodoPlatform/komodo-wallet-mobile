@@ -11,7 +11,7 @@ String activeCoinToJson(ActiveCoin data) => json.encode(data.toJson());
 class ActiveCoin {
     String coin;
     String address;
-    int balance;
+    String balance;
     String result;
 
     ActiveCoin({

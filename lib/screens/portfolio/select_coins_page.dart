@@ -225,9 +225,10 @@ class _LoadingCoinState extends State<LoadingCoin> {
           height: 16,
         ),
         StreamBuilder<CoinToActivate>(
+            initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.hasData && snapshot.data.currentStatus != null) {
                 return Text(snapshot.data.currentStatus);
               } else {
                 return Text(AppLocalizations.of(context).connecting);
