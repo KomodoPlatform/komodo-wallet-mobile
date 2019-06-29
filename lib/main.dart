@@ -193,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           isNetworkAvailable = true;
         });
       } else {
-        setState(() {
+        setState(() { 
           if (isNetworkAvailable) {
             _runBinMm2UserAlreadyLog();
             isNetworkAvailable = false;

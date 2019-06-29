@@ -781,7 +781,11 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _buildConfirmationStep() {
-    double fee = currentCoinBalance.coin.txfee / 100000000;
+    int txFee = 0;
+    if (currentCoinBalance.coin.txfee != null) {
+      txFee = currentCoinBalance.coin.txfee;
+    } 
+    double fee = txFee / 100000000;
     double amountMinusFee = double.parse(_amountController.text);
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
     double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
@@ -901,9 +905,11 @@ class _CoinDetailState extends State<CoinDetail> {
                         _waitForInit();
                       });
                     },
-                    child: Text(
-                      AppLocalizations.of(context).cancel.toUpperCase(),
-                      style: Theme.of(context).textTheme.button,
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context).cancel.toUpperCase(),
+                        style: Theme.of(context).textTheme.button,
+                      ),
                     ),
                   ),
                 ),
@@ -945,7 +951,11 @@ class _CoinDetailState extends State<CoinDetail> {
     double amountMinusFee = double.parse(_amountController.text) -
         double.parse(currentCoinBalance.coin.getTxFeeSatoshi());
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
-    double fee = currentCoinBalance.coin.txfee / 100000000;
+    int txFee = 0;
+    if (currentCoinBalance.coin.txfee != null) {
+      txFee = currentCoinBalance.coin.txfee;
+    }
+    double fee = txFee / 100000000;
     double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
 
     listSteps.add(Container(
