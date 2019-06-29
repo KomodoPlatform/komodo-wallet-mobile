@@ -220,9 +220,11 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
         content: new Text(onError),
       ));
     }).whenComplete(() {
-      setState(() {
-        isLoading = false;
-      });
+      if (this.mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
   }
 }
