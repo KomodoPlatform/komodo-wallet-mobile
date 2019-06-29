@@ -120,21 +120,20 @@
     ]
   },
   {
-    "name": "Binance Token",
-    "address": "http://eth3.cipig.net",
-    "port": 8555,
+    "name": "Dogecoin",
+    "address": "electrum1.cipig.net",
+    "port": 10060,
     "proto": "tcp",
-    "txfee": 0,
-    "abbr": "BNB",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFF1a53f0",
+    "txfee": 200000000,
+    "abbr": "DOGE",
+    "colorCoin": "0xFFba9f33",
     "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
+      "electrum3.cipig.net:10060",
+      "electrum2.cipig.net:10060",
+      "electrum1.cipig.net:10060"
     ],
     "explorerUrl": [
-      "https://etherscan.io/"
+      "https://dogechain.info"
     ]
   },
   {

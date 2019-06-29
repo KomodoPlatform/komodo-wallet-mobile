@@ -139,10 +139,12 @@
         "rpcport": 80
     },
     {
-        "coin": "BNB",
-        "name": "Binance",
-        "etomic": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
-        "rpcport": 80,
-        "mm2": 1
+        "coin": "DOGE",
+        "name": "Dogecoin",
+        "pubtype": 30,
+        "p2shtype": 22,
+        "wiftype": 158,
+        "mm2": 1,
+        "txfee": 200000000
     }
 ]
