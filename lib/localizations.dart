@@ -221,6 +221,7 @@ class AppLocalizations {
   String get settingDialogSpan4 => Intl.message(" record your seed phrase.", name: 'settingDialogSpan4');
   String get settingDialogSpan5 => Intl.message(" In order to restore your wallet in the future.", name: 'settingDialogSpan5');
   String get backupTitle => Intl.message("Backup", name: 'backupTitle');
+  String get version => Intl.message("version", name: 'verion');
   String get viewSeed => Intl.message("View Seed", name: 'viewSeed');
   String get enterpassword => Intl.message("Please enter your password to continue.", name: 'enterpassword');
   String get clipboardCopy => Intl.message("Copy to clipboard", name: 'clipboardCopy');

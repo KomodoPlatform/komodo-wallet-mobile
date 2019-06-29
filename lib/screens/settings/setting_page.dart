@@ -74,6 +74,13 @@ class _SettingPageState extends State<SettingPage> {
                   ? _buildTitle(AppLocalizations.of(context).backupTitle)
                   : Container(),
               walletBloc.currentWallet != null ? _buildViewSeed() : Container(),
+                            SizedBox(
+                height: 1,
+              ),
+              _buildSendFeedback(),
+              walletBloc.currentWallet != null
+                  ? _buildTitle(AppLocalizations.of(context).version + "-0.1.1")
+                  : Container(),
               SizedBox(
                 height: 48,
               ),
