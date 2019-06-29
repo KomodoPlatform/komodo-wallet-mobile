@@ -4,52 +4,50 @@
 
 import 'dart:convert';
 
-GetSetPrice getSetPriceFromJson(String str) =>
-    GetSetPrice.fromJson(json.decode(str));
+GetSetPrice getSetPriceFromJson(String str) => GetSetPrice.fromJson(json.decode(str));
 
 String getSetPriceToJson(GetSetPrice data) => json.encode(data.toJson());
 
 class GetSetPrice {
-  String userpass;
-  String method;
-  String base;
-  String rel;
-  bool max;
-  bool cancelPrevious;
-  String price;
-  String volume;
+    String userpass;
+    String method;
+    String base;
+    String rel;
+    String price;
+    bool max;
+    bool cancelPrevious;
+    String volume;
 
-  GetSetPrice({
-    this.userpass,
-    this.method,
-    this.base,
-    this.rel,
-    this.max,
-    this.cancelPrevious,
-    this.price,
-    this.volume,
-  });
+    GetSetPrice({
+        this.userpass,
+        this.method,
+        this.base,
+        this.rel,
+        this.price,
+        this.max,
+        this.cancelPrevious,
+        this.volume,
+    });
 
-  factory GetSetPrice.fromJson(Map<String, dynamic> json) => new GetSetPrice(
-        userpass: json["userpass"] == null ? null : json["userpass"],
-        method: json["method"] == null ? null : json["method"],
-        base: json["base"] == null ? null : json["base"],
-        rel: json["rel"] == null ? null : json["rel"],
-        max: json["max"] == null ? null : json["max"],
-        cancelPrevious:
-            json["cancel_previous"] == null ? null : json["cancel_previous"],
-        price: json["price"] == null ? null : json["price"],
-        volume: json["volume"] == null ? null : json["volume"],
-      );
+    factory GetSetPrice.fromJson(Map<String, dynamic> json) => new GetSetPrice(
+        userpass: json["userpass"],
+        method: json["method"],
+        base: json["base"],
+        rel: json["rel"],
+        price: json["price"],
+        max: json["max"],
+        cancelPrevious: json["cancel_previous"],
+        volume: json["volume"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "userpass": userpass == null ? null : userpass,
-        "method": method == null ? null : method,
-        "base": base == null ? null : base,
-        "rel": rel == null ? null : rel,
-        "max": max == null ? null : max,
+    Map<String, dynamic> toJson() => {
+        "userpass": userpass,
+        "method": method,
+        "base": base,
+        "rel": rel,
+        "price": price,
+        "max": max,
         "cancel_previous": cancelPrevious,
-        "price": price == null ? null : price,
-        "volume": volume == null ? null : price,
-      };
+        "volume": volume,
+    };
 }
