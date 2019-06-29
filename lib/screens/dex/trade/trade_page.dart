@@ -130,7 +130,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void onChangeReceive() {
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
-        _controllerAmountSell.text.isNotEmpty &&
         _controllerAmountSell.text.isNotEmpty) {
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
@@ -166,6 +165,17 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 .then((_) {
               _checkMaxVolume();
             });
+          }
+          if (_noOrderFound &&
+          _controllerAmountReceive.text.isNotEmpty &&
+          _controllerAmountSell.text.isNotEmpty &&
+          swapBloc.receiveCoin != null) {
+            swapBloc.updateBuyCoin(OrderCoin(
+              coinBase: swapBloc.receiveCoin,
+              coinRel: swapBloc.sellCoin?.coin,
+              bestPrice: double.parse(_controllerAmountSell.text.replaceAll(",", ".")) /
+                double.parse(_controllerAmountReceive.text.replaceAll(",", ".")),
+              maxVolume: double.parse(_controllerAmountSell.text.replaceAll(",", "."))));
           }
         });
       }
