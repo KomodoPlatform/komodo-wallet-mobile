@@ -40,8 +40,8 @@ void main() async {
   runZoned<Future<Null>>(() async {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
         .then((_) {
-          startApp();
-        });
+      startApp();
+    });
   }, onError: (error, stackTrace) async {
     // Whenever an error occurs, call the `reportCrash` function. This will send
     // Dart errors to our dev console or Crashlytics depending on the environment.
@@ -178,7 +178,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       timer.cancel();
     }
     WidgetsBinding.instance.removeObserver(this);
-    subscription.cancel();
+    if (subscription != null) {
+      subscription.cancel();
+    }
     super.dispose();
   }
 
@@ -258,8 +260,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       primaryColor: Theme.of(context).accentColor,
                       textTheme: Theme.of(context).textTheme.copyWith(
                           caption: new TextStyle(
-                              color: Colors.white
-                                  .withOpacity(0.5)))),
+                              color: Colors.white.withOpacity(0.5)))),
                   child: Container(
                     color: Theme.of(context).primaryColor,
                     child: SafeArea(
