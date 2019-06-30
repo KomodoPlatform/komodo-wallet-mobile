@@ -19,8 +19,7 @@ String getWithdrawToJson(GetWithdraw data) {
 class GetWithdraw {
     String method;
     double amount;
-      String coin;
-
+    String coin;
     String to;
     bool max;
     String userpass;
@@ -49,7 +48,7 @@ class GetWithdraw {
         "amount": amount == null ? null : amount,
         "to": to == null ? null : to,
         "max": max == null ? null : max,
-        "coin": coin == null ? null : max,
+        "coin": coin == null ? null : coin,
         "userpass": userpass == null ? null : userpass,
     };
 }
