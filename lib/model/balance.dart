@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:komodo_dex/utils/utils.dart';
+
 Balance balanceFromJson(String str) => Balance.fromJson(json.decode(str));
 
 String balanceToJson(Balance data) => json.encode(data.toJson());
@@ -32,14 +34,6 @@ class Balance {
         "balance": balance == null ? null : balance,
         "coin": coin == null ? null : coin,
       };
-
-  String replaceAllTrainlingZero(String data) {
-    for (var i = 0; i < 8; i++) {
-      data = data.replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "");
-    }
-
-    return data;
-  }
 
   String getBalance() {
     return replaceAllTrainlingZero(balance);
