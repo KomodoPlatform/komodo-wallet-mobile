@@ -62,8 +62,8 @@ class OrdersBloc implements BlocBase {
           orderType: OrderType.MAKER,
           startedSwaps: entry.value.startedSwaps,
           createdAt: entry.value.createdAt ~/ 1000,
-          relAmount: (double.parse(entry.value.maxBaseVol) /
-                  double.parse(entry.value.price))
+          relAmount: (double.parse(entry.value.price) *
+                  double.parse(entry.value.maxBaseVol))
               .toString(),
           uuid: entry.key));
     }
