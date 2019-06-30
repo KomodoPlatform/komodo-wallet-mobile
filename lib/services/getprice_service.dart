@@ -36,15 +36,15 @@ class GetPriceService {
       if (coin == "USDT") {
         price = 1;
       } else if (coin == "RICK") {
-        price = 1;
+        price = 0;
       } else if (coin == "MORTY") {
-        price = 1;
+        price = 0;
       } else if (coin == "RFOX") {
-        price = 0.1;
+        price = 0.05;
       } else if (coin == "USDC") {
         price = 1;
       } else if (coin == "LABS") {
-        price = 0.05;
+        price = 0.01;
       }
       
     }
