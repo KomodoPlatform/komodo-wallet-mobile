@@ -235,10 +235,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           backgroundColor: Theme.of(context).errorColor,
           content: new Text("Your balance is to small including fee."),
         ));
+        _focusSell.unfocus();
       } else {
-        _controllerAmountSell.text = maxValue.toStringAsFixed(8);
+        _controllerAmountSell.setTextAndPosition(maxValue.toStringAsFixed(8));
+        // _controllerAmountSell.text = maxValue.toStringAsFixed(8);
       }
-      _controllerAmountSell.setTextAndPosition(_controllerAmountSell.text);
+      
     });
   }
 
