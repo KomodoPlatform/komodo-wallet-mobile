@@ -13,6 +13,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
+import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
@@ -25,7 +26,7 @@ class TradePage extends StatefulWidget {
 }
 
 class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
-  TextEditingController _controllerAmountSell = new TextEditingController();
+  TextEditingControllerWorkaroud _controllerAmountSell = new TextEditingControllerWorkaroud();
   TextEditingController _controllerAmountReceive = new TextEditingController();
   CoinBalance currentCoinBalance;
   Coin currentCoinToBuy;
@@ -93,6 +94,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
     return ListView(
       padding: EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
@@ -128,7 +130,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void onChangeReceive() {
-    swapBloc.setCurrentAmountBuy(double.parse(_controllerAmountReceive.text));
+    if (_controllerAmountReceive.text.isNotEmpty) {
+      swapBloc.setCurrentAmountBuy(double.parse(_controllerAmountReceive.text));
+    }
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
         _controllerAmountSell.text.isNotEmpty) {
@@ -144,7 +148,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void onChangeSell() {
-    swapBloc.setCurrentAmountSell(double.parse(_controllerAmountSell.text));
+    if (_controllerAmountSell.text.isNotEmpty) {
+      swapBloc.setCurrentAmountSell(double.parse(_controllerAmountSell.text));
+    }
     setState(() {
       String amountSell = _controllerAmountSell.text.replaceAll(",", ".");
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
@@ -208,7 +214,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void setMaxValue() async {
-    _focusSell.unfocus();
+    print("SET MAX BALANCE");
     setState(() {
       var txFee = currentCoinBalance.coin.txfee;
       var fee;
@@ -217,17 +223,22 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       } else {
         fee = (txFee.toDouble() / 100000000);
       }
-      _controllerAmountSell.text =
+      double maxValue =
           ((double.parse(currentCoinBalance.balance.getBalance()) -
-                      (double.parse(currentCoinBalance.balance.getBalance()) *
-                          0.01)) -
-                  fee)
-              .toStringAsFixed(8);
-    });
-    await Future.delayed(const Duration(milliseconds: 0), () {
-      setState(() {
-        FocusScope.of(context).requestFocus(_focusSell);
-      });
+                  (double.parse(currentCoinBalance.balance.getBalance()) *
+                      0.01)) -
+              fee);
+      if (maxValue < 0) {
+        _controllerAmountSell.text = "";
+        Scaffold.of(context).showSnackBar(new SnackBar(
+          duration: Duration(seconds: 2),
+          backgroundColor: Theme.of(context).errorColor,
+          content: new Text("Your balance is to small including fee."),
+        ));
+      } else {
+        _controllerAmountSell.text = maxValue.toStringAsFixed(8);
+      }
+      _controllerAmountSell.setTextAndPosition(_controllerAmountSell.text);
     });
   }
 
@@ -948,7 +959,6 @@ class _DialogLookingState extends State<DialogLooking> {
 }
 
 class ExchangeRate extends StatefulWidget {
-
   @override
   _ExchangeRateState createState() => _ExchangeRateState();
 }
