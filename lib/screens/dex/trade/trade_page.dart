@@ -128,19 +128,23 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void onChangeReceive() {
+    swapBloc.setCurrentAmountBuy(double.parse(_controllerAmountReceive.text));
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
         _controllerAmountSell.text.isNotEmpty) {
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoin?.coin,
-          bestPrice: double.parse(_controllerAmountReceive.text.replaceAll(",", ".")) /
-              double.parse(_controllerAmountSell.text.replaceAll(",", ".")),
-          maxVolume: double.parse(_controllerAmountSell.text.replaceAll(",", "."))));
+          bestPrice:
+              double.parse(_controllerAmountReceive.text.replaceAll(",", ".")) /
+                  double.parse(_controllerAmountSell.text.replaceAll(",", ".")),
+          maxVolume:
+              double.parse(_controllerAmountSell.text.replaceAll(",", "."))));
     }
   }
 
   void onChangeSell() {
+    swapBloc.setCurrentAmountSell(double.parse(_controllerAmountSell.text));
     setState(() {
       String amountSell = _controllerAmountSell.text.replaceAll(",", ".");
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
@@ -167,15 +171,18 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             });
           }
           if (_noOrderFound &&
-          _controllerAmountReceive.text.isNotEmpty &&
-          _controllerAmountSell.text.isNotEmpty &&
-          swapBloc.receiveCoin != null) {
+              _controllerAmountReceive.text.isNotEmpty &&
+              _controllerAmountSell.text.isNotEmpty &&
+              swapBloc.receiveCoin != null) {
             swapBloc.updateBuyCoin(OrderCoin(
-              coinBase: swapBloc.receiveCoin,
-              coinRel: swapBloc.sellCoin?.coin,
-              bestPrice: double.parse(_controllerAmountSell.text.replaceAll(",", ".")) /
-                double.parse(_controllerAmountReceive.text.replaceAll(",", ".")),
-              maxVolume: double.parse(_controllerAmountSell.text.replaceAll(",", "."))));
+                coinBase: swapBloc.receiveCoin,
+                coinRel: swapBloc.sellCoin?.coin,
+                bestPrice: double.parse(
+                        _controllerAmountSell.text.replaceAll(",", ".")) /
+                    double.parse(
+                        _controllerAmountReceive.text.replaceAll(",", ".")),
+                maxVolume: double.parse(
+                    _controllerAmountSell.text.replaceAll(",", "."))));
           }
         });
       }
@@ -941,6 +948,7 @@ class _DialogLookingState extends State<DialogLooking> {
 }
 
 class ExchangeRate extends StatefulWidget {
+
   @override
   _ExchangeRateState createState() => _ExchangeRateState();
 }
