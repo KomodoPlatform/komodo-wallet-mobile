@@ -54,7 +54,7 @@ class WalletBloc implements BlocBase {
   }
 
   void initCurrentWallet(String name) {
-    this.currentWallet = new Wallet(id: Uuid().v1(), name: name);
+    this.currentWallet = new Wallet(id: Uuid().v1(), name: name, isFastEncryption: false);
     _inCurrentWallet.add(this.currentWallet);
   }
 
