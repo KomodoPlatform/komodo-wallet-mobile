@@ -26,7 +26,8 @@ class TradePage extends StatefulWidget {
 }
 
 class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
-  TextEditingControllerWorkaroud _controllerAmountSell = new TextEditingControllerWorkaroud();
+  TextEditingControllerWorkaroud _controllerAmountSell =
+      new TextEditingControllerWorkaroud();
   TextEditingController _controllerAmountReceive = new TextEditingController();
   CoinBalance currentCoinBalance;
   Coin currentCoinToBuy;
@@ -94,7 +95,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView(
       padding: EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
@@ -240,7 +240,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         _controllerAmountSell.setTextAndPosition(maxValue.toStringAsFixed(8));
         // _controllerAmountSell.text = maxValue.toStringAsFixed(8);
       }
-      
     });
   }
 
@@ -805,6 +804,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         duration: Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
             .minValue(swapBloc.sellCoin.coin.abbr, 3)),
+      ));
+      return false;
+    } else if (_controllerAmountSell.text != null &&
+        _controllerAmountSell.text.isNotEmpty &&
+        double.parse(_controllerAmountSell.text) < 0.00777) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        duration: Duration(seconds: 2),
+        content: Text(AppLocalizations.of(context)
+            .minValue(swapBloc.sellCoin.coin.abbr, 0.00777)),
       ));
       return false;
     } else {
