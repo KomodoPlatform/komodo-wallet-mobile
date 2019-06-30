@@ -44,3 +44,10 @@ isChecksumAddress(String address) {
   }
   return true;
 }
+
+String replaceAllTrainlingZero(String data) {
+  for (var i = 0; i < 8; i++) {
+    data = data.replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "");
+  }
+  return data;
+}

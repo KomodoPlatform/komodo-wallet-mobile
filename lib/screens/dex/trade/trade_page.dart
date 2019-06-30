@@ -14,6 +14,7 @@ import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
@@ -26,7 +27,8 @@ class TradePage extends StatefulWidget {
 }
 
 class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
-  TextEditingControllerWorkaroud _controllerAmountSell = new TextEditingControllerWorkaroud();
+  TextEditingControllerWorkaroud _controllerAmountSell =
+      new TextEditingControllerWorkaroud();
   TextEditingController _controllerAmountReceive = new TextEditingController();
   CoinBalance currentCoinBalance;
   Coin currentCoinToBuy;
@@ -94,7 +96,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView(
       padding: EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
@@ -163,8 +164,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             if (amountSell.contains(
                 RegExp("^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"))) {
             } else {
-              _controllerAmountSell.text = tmpText;
-              _unfocusFocus();
+              // _controllerAmountSell.text = tmpText;
+              _controllerAmountSell.setTextAndPosition(replaceAllTrainlingZero(tmpText));
             }
           }
 
@@ -204,15 +205,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  void _unfocusFocus() async {
-    _focusSell.unfocus();
-    await Future.delayed(const Duration(milliseconds: 0), () {
-      setState(() {
-        FocusScope.of(context).requestFocus(_focusSell);
-      });
-    });
-  }
-
   void setMaxValue() async {
     print("SET MAX BALANCE");
     setState(() {
@@ -237,20 +229,17 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         ));
         _focusSell.unfocus();
       } else {
-        _controllerAmountSell.setTextAndPosition(maxValue.toStringAsFixed(8));
-        // _controllerAmountSell.text = maxValue.toStringAsFixed(8);
+        _controllerAmountSell.setTextAndPosition(replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
       }
-      
     });
   }
 
   void _setMaxVolumeSell() {
     setState(() {
-      _controllerAmountSell.text =
+      _controllerAmountSell.setTextAndPosition(replaceAllTrainlingZero(
           (swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice)
               .toStringAsFixed(8)
-              .replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "");
-      _unfocusFocus();
+              .replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "")));
     });
   }
 
