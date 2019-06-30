@@ -18,6 +18,7 @@ import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:package_info/package_info.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -25,9 +26,15 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  String version = "";
 
-  @override
+  @override 
   void initState() {
+    _getVersionApplication().then((onValue){
+      setState(() {
+        version = onValue;
+      });
+    });
     super.initState();
   }
 
@@ -79,7 +86,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
               _buildSendFeedback(),
               walletBloc.currentWallet != null
-                  ? _buildTitle(AppLocalizations.of(context).version + "-0.1.1")
+                  ? _buildTitle(AppLocalizations.of(context).version + " - " + version)
                   : Container(),
               SizedBox(
                 height: 48,
@@ -92,6 +99,13 @@ class _SettingPageState extends State<SettingPage> {
         ),
       ),
     );
+  }
+
+  Future<String> _getVersionApplication() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String version = packageInfo.version;
+
+    return version;
   }
 
   _buildTitle(String title) {
