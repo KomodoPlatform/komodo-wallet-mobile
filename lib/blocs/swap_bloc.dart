@@ -64,6 +64,21 @@ class SwapBloc implements BlocBase {
   Sink<int> get _inIndexTab => _indexTabController.sink;
   Stream<int> get outIndexTab => _indexTabController.stream;
 
+  double currentAmountSell;
+
+  StreamController<double> _currentAmountSellController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inCurrentAmountSellCoin => _currentAmountSellController.sink;
+  Stream<double> get outCurrentAmountSell => _currentAmountSellController.stream;
+
+  double currentAmountBuy;
+
+  StreamController<double> _currentAmountBuyController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inCurrentAmountBuyCoin => _currentAmountBuyController.sink;
+  Stream<double> get outCurrentAmountBuy => _currentAmountBuyController.stream;
+
+
   @override
   void dispose() {
     _orderCoinController.close();
@@ -74,6 +89,16 @@ class SwapBloc implements BlocBase {
     _amountReceiveController.close();
     _indexTabController.close();
     _isTimeOutController.close();
+  }
+
+  void setCurrentAmountSell(double amount) {
+    this.currentAmountSell = amount;
+    _inCurrentAmountSellCoin.add(this.currentAmountSell);
+  }
+
+  void setCurrentAmountBuy(double amount) {
+    this.currentAmountBuy = amount;
+    _inCurrentAmountBuyCoin.add(this.currentAmountBuy);
   }
 
   void setIndexTabDex(int index) {
@@ -142,7 +167,9 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRate() {
     if (swapBloc.orderCoin != null) {
-      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${swapBloc.orderCoin.bestPrice.toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
+      double rate = currentAmountSell/currentAmountBuy;
+
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${rate.toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
     } else {
       return "";
     }
