@@ -160,6 +160,7 @@ class _CoinDetailState extends State<CoinDetail> {
   bool loadingWithdrawDialog = true;
   CoinBalance currentCoinBalance;
   bool isSendIsActive;
+  var timer;
 
   @override
   void initState() {
@@ -209,6 +210,7 @@ class _CoinDetailState extends State<CoinDetail> {
     _addressController.dispose();
     _scrollController.dispose();
     coinsBloc.resetTransactions();
+    timer.cancel();
     super.dispose();
   }
 
@@ -304,6 +306,12 @@ class _CoinDetailState extends State<CoinDetail> {
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
               print(tx.result.syncStatus.state);
+              print("START TIMER");
+              if (timer == null) {
+                timer = Timer.periodic(Duration(seconds: 15), (_) {
+                  _refresh();
+                });
+              }
 
               if (tx.result.syncStatus.state == syncState) {
                 String txLeft;
@@ -315,37 +323,19 @@ class _CoinDetailState extends State<CoinDetail> {
                       .toString();
                 }
                 return Container(
-                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                  color: Theme.of(context).primaryColor,
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  color: Theme.of(context).backgroundColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Center(
-                        child: isRefresh
-                            ? Container(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 1,
-                                ),
-                              )
-                            : Center(
-                                child: InkWell(
-                                    onTap: () async {
-                                      setState(() {
-                                        isRefresh = true;
-                                      });
-                                      await _refresh();
-                                      setState(() {
-                                        isRefresh = false;
-                                      });
-                                    },
-                                    child: Container(
-                                        height: 20,
-                                        width: 20,
-                                        child: Icon(Icons.refresh))),
-                              ),
-                      ),
+                          child: Container(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1,
+                        ),
+                      )),
                       SizedBox(
                         width: 8,
                       ),
@@ -355,7 +345,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                       Text(widget.coinBalance.coin.swapContractAddress != null
                           ? "Syncing $txLeft TXs"
-                          : "Transactions left $txLeft")
+                          : "Transactions left $txLeft"),
                     ],
                   ),
                 );
@@ -784,7 +774,7 @@ class _CoinDetailState extends State<CoinDetail> {
     int txFee = 0;
     if (currentCoinBalance.coin.txfee != null) {
       txFee = currentCoinBalance.coin.txfee;
-    } 
+    }
     double fee = txFee / 100000000;
     double amountMinusFee = double.parse(_amountController.text);
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
