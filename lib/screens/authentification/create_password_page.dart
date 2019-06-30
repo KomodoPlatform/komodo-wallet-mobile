@@ -6,6 +6,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreatePasswordPage extends StatefulWidget {
   final String seed;
@@ -26,6 +27,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool isObscured = true;
+  bool isFastEncrypted = false;
 
   @override
   void initState() {
@@ -193,6 +195,19 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 ],
               );
             }),
+            Row(
+              children: <Widget>[
+                Switch(
+                  onChanged: (bool value) {
+                    setState(() {
+                      isFastEncrypted = value;
+                    });
+                  },
+                  value: isFastEncrypted,
+                ),
+                Text("Fast encryption", style: Theme.of(context).textTheme.body2,)
+              ],
+            ),
             SizedBox(
               height: 16,
             ),
@@ -208,7 +223,11 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                           : null,
                       isLoading: isLoading,
                     ),
-                    isLoading ? SizedBox(height: 8,) : Container(),
+                    isLoading
+                        ? SizedBox(
+                            height: 8,
+                          )
+                        : Container(),
                     isLoading
                         ? Text(
                             AppLocalizations.of(context).encryptingWallet,
@@ -239,8 +258,11 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     setState(() {
       isLoading = true;
     });
+
     var entryptionTool = new EncryptionTool();
     var wallet = walletBloc.currentWallet;
+    wallet.isFastEncryption = isFastEncrypted;
+    walletBloc.currentWallet = wallet;
 
     await entryptionTool.writeData(
         KeyEncryption.SEED, wallet, controller1.text, widget.seed);

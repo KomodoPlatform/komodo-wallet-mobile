@@ -42,11 +42,13 @@ class DBProvider {
           ")");
       await db.execute("CREATE TABLE Wallet ("
           "id TEXT PRIMARY KEY,"
-          "name TEXT"
+          "name TEXT,"
+          "is_fast_encryption BIT"
           ")");
       await db.execute("CREATE TABLE CurrentWallet ("
           "id TEXT PRIMARY KEY,"
-          "name TEXT"
+          "name TEXT,"
+          "is_fast_encryption BIT"
           ")");
     });
   }
@@ -120,7 +122,8 @@ class DBProvider {
 
     Map<String, dynamic> row = {
       'id': newWallet.id,
-      'name': newWallet.name
+      'name': newWallet.name,
+      'is_fast_encryption': newWallet.isFastEncryption
     };
     int res = await db.insert('Wallet ', row);
 
@@ -139,6 +142,7 @@ class DBProvider {
       return Wallet(
         id: maps[i]['id'],
         name: maps[i]['name'],
+        isFastEncryption: maps[i]['is_fast_encryption'] == 1 ? true : false
       );
     });
   }
@@ -161,7 +165,8 @@ class DBProvider {
 
     Map<String, dynamic> row = {
       'id': currentWallet.id,
-      'name': currentWallet.name
+      'name': currentWallet.name,
+      'is_fast_encryption': currentWallet.isFastEncryption
     };
     int res = await db.insert('CurrentWallet ', row);
 
@@ -177,6 +182,7 @@ class DBProvider {
       return Wallet(
         id: maps[i]['id'],
         name: maps[i]['name'],
+        isFastEncryption: maps[i]['is_fast_encryption'] == 1 ? true : false
       );
     });
     if (wallets.length == 0) {

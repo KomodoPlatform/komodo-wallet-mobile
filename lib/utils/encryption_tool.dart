@@ -6,20 +6,38 @@ import 'package:password/password.dart';
 class EncryptionTool {
   final storage = new FlutterSecureStorage();
 
-  Future<void> writeData(KeyEncryption key, Wallet wallet, String password, String data) async{
-    await storage.write(key: '${key.toString()}${await convertToPbkdf2(password)}${wallet.name}${wallet.id}', value: data);
+  Future<void> writeData(
+      KeyEncryption key, Wallet wallet, String password, String data) async {
+    await storage.write(
+        key:
+            '${key.toString()}${await convertToPbkdf2(password, wallet)}${wallet.name}${wallet.id}',
+        value: data);
   }
 
-  Future<String> readData(KeyEncryption key, Wallet wallet, String password) async{
-    return await storage.read(key:'${key.toString()}${await convertToPbkdf2(password)}${wallet.name}${wallet.id}');
+  Future<String> readData(
+      KeyEncryption key, Wallet wallet, String password) async {
+    return await storage.read(
+        key:
+            '${key.toString()}${await convertToPbkdf2(password, wallet)}${wallet.name}${wallet.id}');
   }
 
-  Future<void> deleteData(KeyEncryption key, Wallet wallet, String password) async {
-    await storage.delete(key: '${key.toString()}${await convertToPbkdf2(password)}${wallet.name}${wallet.id}');
+  Future<void> deleteData(
+      KeyEncryption key, Wallet wallet, String password) async {
+    await storage.delete(
+        key:
+            '${key.toString()}${await convertToPbkdf2(password, wallet)}${wallet.name}${wallet.id}');
   }
 
-  Future<String> convertToPbkdf2(String data) async{
-    var res = await compute(_computeHash, data);
+  Future<String> convertToPbkdf2(String data, Wallet wallet) async {
+    var res;
+    if (wallet.isFastEncryption) {
+      print("FAST ENCRYPTION");
+      res = await compute(_computeHashFastEncryption, data);
+    } else {
+      print("SLOW ENCRYPTION");
+      res = await compute(_computeHash, data);
+    }
+
     return res;
   }
 
@@ -27,22 +45,21 @@ class EncryptionTool {
     return Password.hash(data, new PBKDF2());
   }
 
-  Future<void> write(String key, String data) async{
+  static String _computeHashFastEncryption(String data) {
+    return Password.hash(data, new PBKDF2(iterationCount: 50));
+  }
+
+  Future<void> write(String key, String data) async {
     await storage.write(key: key, value: data);
   }
 
-  Future<String> read(String key) async{
+  Future<String> read(String key) async {
     return await storage.read(key: key);
   }
 
   Future<void> delete(String key) async {
     await storage.delete(key: key);
   }
-
 }
 
-enum KeyEncryption{
-  SEED,
-  PIN
-}
-
+enum KeyEncryption { SEED, PIN }
