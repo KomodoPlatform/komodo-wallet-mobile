@@ -47,7 +47,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
               icon: Icon(Icons.open_in_browser),
               onPressed: () {
                 _launchURL(widget.coinBalance.coin.explorerUrl[0] +
-                    "tx/" +
+                    "tx/0x" +
                     widget.transaction.txHash);
               },
             )
