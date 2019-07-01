@@ -35,9 +35,9 @@ class CoinDetail extends StatefulWidget {
   @override
   _CoinDetailState createState() => _CoinDetailState();
 
-  showDialogClaim(BuildContext context) {
+  showDialogClaim(BuildContext mContext) {
     dialogBloc.dialog = showDialog(
-        context: context,
+        context: mContext,
         builder: (BuildContext context) {
           return Dialog(
             child: Padding(
@@ -66,12 +66,12 @@ class CoinDetail extends StatefulWidget {
                 coinBalance.coin.txfee / 100000000,
             true)
         .then((data) {
-      Navigator.of(context).pop();
+      Navigator.of(mContext).pop();
       if (data is WithdrawResponse) {
         print(data.myBalanceChange);
         if (data.myBalanceChange > 0) {
           dialogBloc.dialog = showDialog(
-            context: context,
+            context: mContext,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(AppLocalizations.of(context).claimTitle),
@@ -124,15 +124,15 @@ class CoinDetail extends StatefulWidget {
             dialogBloc.dialog = null;
           });
         } else {
-          Scaffold.of(context).showSnackBar(new SnackBar(
+          Scaffold.of(mContext).showSnackBar(new SnackBar(
             duration: Duration(seconds: 2),
-            content: new Text(AppLocalizations.of(context).noRewardYet),
+            content: new Text(AppLocalizations.of(mContext).noRewardYet),
           ));
         }
       } else {
-        Scaffold.of(context).showSnackBar(new SnackBar(
+        Scaffold.of(mContext).showSnackBar(new SnackBar(
           duration: Duration(seconds: 2),
-          content: new Text(AppLocalizations.of(context).errorTryLater),
+          content: new Text(AppLocalizations.of(mContext).errorTryLater),
         ));
       }
     });
@@ -629,7 +629,7 @@ class _CoinDetailState extends State<CoinDetail> {
             ),
             currentCoinBalance.coin.abbr == "KMD" &&
                     double.parse(currentCoinBalance.balance.getBalance()) >= 10
-                ? _buildButtonLight(StatusButton.CLAIM, context)
+                ? _buildButtonLight(StatusButton.CLAIM, mContext)
                 : Container(),
             SizedBox(
               width: 8,
