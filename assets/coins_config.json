@@ -188,6 +188,23 @@
     ]
   },
   {
+    "name": "VerusCoin",
+    "address": "electrum1.cipig.net",
+    "port": 10021,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "VRSC",
+    "colorCoin": "0xFF659dda",
+    "serverList": [
+      "electrum3.cipig.net:10021",
+      "electrum2.cipig.net:10021",
+      "electrum1.cipig.net:10021"
+    ],
+    "explorerUrl": [
+      "https://vrsc.kmdexplorer.io/"
+    ]
+  },
+  {
     "name": "BAT",
     "address": "http://eth1.cipig.net",
     "port": 8555,
