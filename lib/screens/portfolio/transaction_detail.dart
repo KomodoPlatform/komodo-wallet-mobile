@@ -169,7 +169,14 @@ class _TransactionDetailState extends State<TransactionDetail> {
     } else {
       fee = widget.transaction.feeDetails.amount.toString();
     }
-    return fee + " ETH";
+
+    if (widget.transaction.coin == "ETH" || widget.transaction.coin == "BAT" || widget.transaction.coin == "USDC") {C
+      return fee + " ETH";
+    } else {
+          return fee +
+                " " +
+                widget.transaction.coin;
+    }
   }
 }
 
