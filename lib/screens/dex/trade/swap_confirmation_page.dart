@@ -330,11 +330,14 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     timeSecondeLeft = timeSecondeLeft.substring(
         timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
     print(timeSecondeLeft);
+    String errorDisplay = error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
+    if (error.error.contains("is too low, required")) {
+      errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
+    }
     Scaffold.of(mContext).showSnackBar(new SnackBar(
       duration: Duration(seconds: 4),
       backgroundColor: Theme.of(context).errorColor,
-      content: new Text(
-          error.error.substring(error.error.lastIndexOf(r']') + 1).trim()),
+      content: new Text(errorDisplay),
     ));
   }
 
