@@ -86,12 +86,21 @@ class _TransactionDetailState extends State<TransactionDetail> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
-                      child: AutoSizeText(
-                        tx.myBalanceChange.toString() + " " + tx.coin,
-                        style: Theme.of(context).textTheme.title,
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                      ),
+                      child: Builder(builder: (context) {
+                        String amount =
+                            widget.coinBalance.coin.swapContractAddress != null
+                                ? replaceAllTrainlingZeroERC(
+                                    tx.myBalanceChange.toStringAsFixed(16))
+                                : replaceAllTrainlingZero(
+                                    tx.myBalanceChange.toStringAsFixed(8));
+
+                        return AutoSizeText(
+                          amount + " " + tx.coin,
+                          style: Theme.of(context).textTheme.title,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                        );
+                      }),
                     ),
                   ),
                   Text(
@@ -175,6 +184,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
     } else {
       return fee + " " + widget.transaction.coin;
     }
+
   }
 }
 
