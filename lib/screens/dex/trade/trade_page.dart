@@ -165,7 +165,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 RegExp("^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$"))) {
             } else {
               // _controllerAmountSell.text = tmpText;
-              _controllerAmountSell.setTextAndPosition(replaceAllTrainlingZero(tmpText));
+              _controllerAmountSell
+                  .setTextAndPosition(replaceAllTrainlingZero(tmpText));
             }
           }
 
@@ -229,7 +230,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         ));
         _focusSell.unfocus();
       } else {
-        _controllerAmountSell.setTextAndPosition(replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
+        _controllerAmountSell.setTextAndPosition(
+            replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
       }
     });
   }
@@ -632,7 +634,20 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                               _createListDialog(context, market, snapshot.data),
                         );
                       } else {
-                        return DialogLooking();
+                        return DialogLooking(
+                          noOrderFind: () {
+                            dialogBloc.dialog = showDialog<List<CoinBalance>>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SimpleDialog(
+                                    title: Text(AppLocalizations.of(context)
+                                        .receiveLower),
+                                    children: _createListDialog(
+                                        context, market, snapshot.data),
+                                  );
+                                });
+                          },
+                        );
                       }
                     } else {
                       return DialogLooking();
@@ -923,6 +938,10 @@ enum Market {
 }
 
 class DialogLooking extends StatefulWidget {
+  final Function noOrderFind;
+
+  const DialogLooking({Key key, this.noOrderFind}) : super(key: key);
+
   @override
   _DialogLookingState createState() => _DialogLookingState();
 }
@@ -932,8 +951,19 @@ class _DialogLookingState extends State<DialogLooking> {
 
   @override
   void initState() {
+    var timerEnd = 10;
+    var timerCurrent = 0;
+
     timerGetOrderbook = Timer.periodic(Duration(seconds: 5), (_) {
-      swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+      timerCurrent += 5;
+      if (timerCurrent >= timerEnd) {
+        timerGetOrderbook.cancel();
+        if (this.mounted)
+          Navigator.of(context).pop();
+        widget.noOrderFind();
+      } else {
+        swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+      }
     });
     super.initState();
   }
