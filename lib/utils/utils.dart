@@ -51,3 +51,10 @@ String replaceAllTrainlingZero(String data) {
   }
   return data;
 }
+
+String replaceAllTrainlingZeroERC(String data) {
+  for (var i = 0; i < 16; i++) {
+    data = data.replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "");
+  }
+  return data;
+}

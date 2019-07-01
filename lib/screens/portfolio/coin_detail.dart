@@ -444,6 +444,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
   Widget _buildItemTransaction(Transaction transaction, BuildContext context) {
     this.fromId = transaction.internalId;
+
     TextStyle subtitle = Theme.of(context)
         .textTheme
         .subtitle
@@ -500,12 +501,22 @@ class _CoinDetailState extends State<CoinDetail> {
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, top: 8),
-                            child: AutoSizeText(
-                              '${transaction.myBalanceChange > 0 ? "+" : ""}${transaction.myBalanceChange.toString()} ${currentCoinBalance.coin.abbr}',
-                              maxLines: 1,
-                              style: subtitle,
-                              textAlign: TextAlign.end,
-                            ),
+                            child: Builder(builder: (context) {
+                              String amount =
+                                  widget.coinBalance.coin.swapContractAddress !=
+                                          null
+                                      ? replaceAllTrainlingZeroERC(transaction.myBalanceChange
+                                          .toStringAsFixed(16))
+                                      : replaceAllTrainlingZero(transaction.myBalanceChange
+                                          .toStringAsFixed(8));
+
+                              return AutoSizeText(
+                                '${transaction.myBalanceChange > 0 ? "+" : ""}$amount ${currentCoinBalance.coin.abbr}',
+                                maxLines: 1,
+                                style: subtitle,
+                                textAlign: TextAlign.end,
+                              );
+                            }),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(

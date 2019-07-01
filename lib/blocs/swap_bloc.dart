@@ -89,6 +89,8 @@ class SwapBloc implements BlocBase {
     _amountReceiveController.close();
     _indexTabController.close();
     _isTimeOutController.close();
+    _currentAmountSellController.close();
+    _currentAmountBuyController.close();
   }
 
   void setCurrentAmountSell(double amount) {

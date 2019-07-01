@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
