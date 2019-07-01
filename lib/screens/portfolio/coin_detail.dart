@@ -505,13 +505,13 @@ class _CoinDetailState extends State<CoinDetail> {
                               String amount =
                                   widget.coinBalance.coin.swapContractAddress !=
                                           null
-                                      ? transaction.myBalanceChange
-                                          .toStringAsFixed(16)
-                                      : transaction.myBalanceChange
-                                          .toStringAsFixed(8);
+                                      ? replaceAllTrainlingZeroERC(transaction.myBalanceChange
+                                          .toStringAsFixed(16))
+                                      : replaceAllTrainlingZero(transaction.myBalanceChange
+                                          .toStringAsFixed(8));
 
                               return AutoSizeText(
-                                '${transaction.myBalanceChange > 0 ? "+" : ""}${replaceAllTrainlingZero(amount)} ${currentCoinBalance.coin.abbr}',
+                                '${transaction.myBalanceChange > 0 ? "+" : ""}$amount ${currentCoinBalance.coin.abbr}',
                                 maxLines: 1,
                                 style: subtitle,
                                 textAlign: TextAlign.end,
