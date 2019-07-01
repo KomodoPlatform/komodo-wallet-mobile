@@ -6,7 +6,6 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CreatePasswordPage extends StatefulWidget {
   final String seed;
