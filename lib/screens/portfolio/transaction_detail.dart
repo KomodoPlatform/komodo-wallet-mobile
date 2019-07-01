@@ -46,8 +46,12 @@ class _TransactionDetailState extends State<TransactionDetail> {
             IconButton(
               icon: Icon(Icons.open_in_browser),
               onPressed: () {
+                String urlPostTx = "tx/";
+                if(widget.coinBalance.coin.swapContractAddress != null) {
+                  urlPostTx = "tx/0x";
+                }
                 _launchURL(widget.coinBalance.coin.explorerUrl[0] +
-                    "tx/" +
+                    urlPostTx +
                     widget.transaction.txHash);
               },
             )
