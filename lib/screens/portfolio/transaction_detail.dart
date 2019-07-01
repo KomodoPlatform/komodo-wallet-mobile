@@ -167,8 +167,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
       fee = widget.transaction.feeDetails.amount.toString();
     }
     return fee +
-                " " +
-                widget.transaction.coin;
+                " ETH";
   }
 }
 
