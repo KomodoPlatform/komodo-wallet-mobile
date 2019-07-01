@@ -305,16 +305,40 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     double price = swapBloc.orderCoin.bestPrice * 1.01;
     //reviewed by ca333
     if (widget.swapStatus == SwapStatus.BUY) {
-      mm2.postBuy(coinBase, coinRel, amountToBuy, price).then((onValue) =>
-          _goToNextScreen(mContext, onValue, amountToSell, amountToBuy));
+      mm2
+          .postBuy(coinBase, coinRel, amountToBuy, price)
+          .then((onValue) =>
+              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
+          .catchError((onError) => _catchErrorSwap(mContext, onError));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      print("buying: "+amountToBuy.toString());
+      print("buying: " + amountToBuy.toString());
       mm2
           .postSetPrice(coinRel, coinBase, amountToSell,
               swapBloc.orderCoin.bestPrice, false, false)
           .then((onValue) =>
-              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy));
+              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
+          .catchError((onError) => _catchErrorSwap(mContext, onError));
     }
+  }
+
+  _catchErrorSwap(BuildContext mContext, ErrorString error) {
+    setState(() {
+      isSwapMaking = false;
+    });
+    String timeSecondeLeft = error.error;
+    print(timeSecondeLeft);
+    timeSecondeLeft = timeSecondeLeft.substring(
+        timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
+    print(timeSecondeLeft);
+    String errorDisplay = error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
+    if (error.error.contains("is too low, required")) {
+      errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
+    }
+    Scaffold.of(mContext).showSnackBar(new SnackBar(
+      duration: Duration(seconds: 4),
+      backgroundColor: Theme.of(context).errorColor,
+      content: new Text(errorDisplay),
+    ));
   }
 
   _goToNextScreen(BuildContext mContext, dynamic onValue, double amountToSell,
@@ -345,23 +369,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         Navigator.of(context).pop();
         widget.orderSuccess();
       }
-    } else {
-      ErrorString error = onValue;
-      
-      setState(() {
-        isSwapMaking = false;
-      });
-      String timeSecondeLeft = onValue.error;
-      print(timeSecondeLeft);
-      timeSecondeLeft = timeSecondeLeft.substring(
-          timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
-      print(timeSecondeLeft);
-      Scaffold.of(mContext).showSnackBar(new SnackBar(
-        duration: Duration(seconds: 4),
-        backgroundColor: Theme.of(context).errorColor,
-        content: new Text(error.error
-            .substring(error.error.lastIndexOf(r']') + 1).trim()),
-      ));
     }
   }
 }

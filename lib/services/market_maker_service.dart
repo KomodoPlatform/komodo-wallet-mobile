@@ -290,7 +290,7 @@ class MarketMakerService {
 
   Future<dynamic> postBuy(
       Coin base, Coin rel, double volume, double price) async {
-    print(">>>>>>>>>>>>>>>>> SWAPPARAM: base: " +
+    print("postBuy>>>>>>>>>>>>>>>>> SWAPPARAM: base: " +
         base.abbr +
         " rel: " +
         rel.abbr.toString() +
@@ -309,16 +309,17 @@ class MarketMakerService {
     final response = await http.post(url, body: json.encode(getBuy));
 
     print(response.body.toString());
-    try {
-      return buyResponseFromJson(response.body);
-    } catch (e) {
-      return errorStringFromJson(response.body);
+    BuyResponse buyResponse = buyResponseFromJson(response.body);
+    if (buyResponse != null && buyResponse.result != null) {
+      return buyResponse;
+    } else {
+      throw errorStringFromJson(response.body);
     }
   }
 
   Future<dynamic> postSell(
       Coin base, Coin rel, double volume, double price) async {
-    print("SWAPPARAM: base: " +
+    print("postSellSWAPPARAM: base: " +
         base.abbr +
         " rel: " +
         rel.abbr.toString() +
@@ -356,14 +357,15 @@ class MarketMakerService {
         volume: volume.toStringAsFixed(8),
         price: price.toStringAsFixed(8));
 
-    print(getSetPriceToJson(getSetPrice));
+    print("postSetPrice" + getSetPriceToJson(getSetPrice));
     final response = await http.post(url, body: getSetPriceToJson(getSetPrice));
 
     print(response.body.toString());
-    try {
-      return setPriceResponseFromJson(response.body);
-    } catch (e) {
-      return errorStringFromJson(response.body);
+    SetPriceResponse setPriceResponse = setPriceResponseFromJson(response.body);
+    if (setPriceResponse != null) {
+      return setPriceResponse;
+    } else {
+      throw errorStringFromJson(response.body);
     }
   }
 

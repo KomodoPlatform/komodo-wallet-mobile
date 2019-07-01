@@ -351,6 +351,8 @@ class AppLocalizations {
       Intl.message("Encrypting wallet", name: 'encryptingWallet');
   String get decryptingWallet =>
       Intl.message("Decrypting wallet", name: 'decryptingWallet');
+  String get notEnoughtBalanceForFee =>
+      Intl.message("Not enough balance for fees - trade a smaller amount", name: 'notEnoughtBalanceForFee');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
