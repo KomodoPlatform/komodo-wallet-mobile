@@ -178,7 +178,13 @@ class _TransactionDetailState extends State<TransactionDetail> {
     } else {
       fee = widget.transaction.feeDetails.amount.toString();
     }
-    return fee + " " + widget.transaction.coin;
+
+    if (widget.coinBalance.coin.swapContractAddress != null) {
+      return fee + " ETH";
+    } else {
+      return fee + " " + widget.transaction.coin;
+    }
+
   }
 }
 
