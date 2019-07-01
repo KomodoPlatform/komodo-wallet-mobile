@@ -22,7 +22,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
   @override
   Widget build(BuildContext context) {
     return LockScreen(
-          child: Scaffold(
+      child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           actions: <Widget>[
@@ -33,7 +33,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     ? '${AppLocalizations.of(context).from}: ${widget.transaction.from[0]}'
                     : '${AppLocalizations.of(context).to} ${widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]}';
                 String fee = "";
-                if (widget.transaction.feeDetails != null && widget.transaction.feeDetails.amount != null) {
+                if (widget.transaction.feeDetails != null &&
+                    widget.transaction.feeDetails.amount != null) {
                   fee = widget.transaction.feeDetails.amount.toString();
                 }
                 String dataToShare =
@@ -85,12 +86,21 @@ class _TransactionDetailState extends State<TransactionDetail> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
-                      child: AutoSizeText(
-                        tx.myBalanceChange.toString() + " " + tx.coin,
-                        style: Theme.of(context).textTheme.title,
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                      ),
+                      child: Builder(builder: (context) {
+                        String amount =
+                            widget.coinBalance.coin.swapContractAddress != null
+                                ? replaceAllTrainlingZeroERC(
+                                    tx.myBalanceChange.toStringAsFixed(16))
+                                : replaceAllTrainlingZero(
+                                    tx.myBalanceChange.toStringAsFixed(8));
+
+                        return AutoSizeText(
+                          amount + " " + tx.coin,
+                          style: Theme.of(context).textTheme.title,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                        );
+                      }),
                     ),
                   ),
                   Text(
@@ -137,17 +147,18 @@ class _TransactionDetailState extends State<TransactionDetail> {
       children: <Widget>[
         widget.transaction.blockHeight > 0
             ? ItemTransationDetail(
-                title: AppLocalizations.of(context).txBlock, data: widget.transaction.blockHeight.toString())
+                title: AppLocalizations.of(context).txBlock,
+                data: widget.transaction.blockHeight.toString())
             : Container(),
         ItemTransationDetail(
             title: AppLocalizations.of(context).txConfirmations,
             data: widget.transaction.confirmations.toString()),
         ItemTransationDetail(
-            title: AppLocalizations.of(context).txFee,
-            data: _getFee()),
+            title: AppLocalizations.of(context).txFee, data: _getFee()),
         widget.transaction.myBalanceChange > 0
             ? ItemTransationDetail(
-                title: AppLocalizations.of(context).from, data: widget.transaction.from[0])
+                title: AppLocalizations.of(context).from,
+                data: widget.transaction.from[0])
             : ItemTransationDetail(
                 title: AppLocalizations.of(context).to,
                 data: widget.transaction.to.length > 1
@@ -161,14 +172,13 @@ class _TransactionDetailState extends State<TransactionDetail> {
   String _getFee() {
     String fee = "";
 
-    if (widget.transaction.feeDetails != null && widget.transaction.feeDetails.amount == null) {
+    if (widget.transaction.feeDetails != null &&
+        widget.transaction.feeDetails.amount == null) {
       fee = widget.transaction.feeDetails.totalFee.toString();
     } else {
       fee = widget.transaction.feeDetails.amount.toString();
     }
-    return fee +
-                " " +
-                widget.transaction.coin;
+    return fee + " " + widget.transaction.coin;
   }
 }
 
