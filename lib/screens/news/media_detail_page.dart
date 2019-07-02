@@ -72,8 +72,8 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
                 borderRadius: BorderRadius.all(Radius.circular(0.0)),
                 child: Image.network(
                   widget.article.media[0],
-                  fit: BoxFit.cover,
-                  width: 1000.0,
+                  fit: BoxFit.contain,
+                  width: double.infinity,
                 ),
               ),
             ),
@@ -102,8 +102,8 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
                         borderRadius: BorderRadius.all(Radius.circular(0.0)),
                         child: Image.network(
                           i,
-                          fit: BoxFit.cover,
-                          width: 1000.0,
+                          fit: BoxFit.contain,
+                          width: double.infinity,
                         ),
                       ),
                     );
