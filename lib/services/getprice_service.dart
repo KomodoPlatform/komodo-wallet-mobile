@@ -20,17 +20,28 @@ class GetPriceService {
     coinUrl += coin;
     double price = 0.0;
 
-    if (coin != "RICK" && coin != "MORTY" && coin != "RFOX" && coin != "USDC" && coin != "LABS" && coin != "VRSC") {
-      final response = await http.get(fiatUrl);
-      Map decoded = jsonDecode(response.body);
-      price = double.parse(decoded['data']['amount']);
-      if (coin == "BTC") return price;
-      final response2 = await http.get(coinUrl);
+    if (coin != "RICK" &&
+        coin != "MORTY" &&
+        coin != "RFOX" &&
+        coin != "USDC" &&
+        coin != "LABS" &&
+        coin != "VRSC") {
       try {
+        final response = await http.get(fiatUrl);
+        Map decoded = jsonDecode(response.body);
+        price = double.parse(decoded['data']['amount']);
+        if (coin == "BTC") return price;
+      } catch (e) {
+        print(e.toString());
+        price = 0;
+      }
+      try {
+        final response2 = await http.get(coinUrl);
         Map decoded2 = jsonDecode(response2.body);
         price *= decoded2['result']['Last'];
       } catch (e) {
-        print(e);
+        print(e.toString());
+        price = 0;
       }
     } else {
       if (coin == "RICK") {
@@ -44,16 +55,22 @@ class GetPriceService {
         // final response = await http.get(geckoUrl);
         // Map decoded = jsonDecode(response.body);
         // print(decoded.toString());
-        // price = double.parse(decoded['usd-coin']['usd'].toString()); 
-        price = 1;       
+        // price = double.parse(decoded['usd-coin']['usd'].toString());
+        price = 1;
       } else if (coin == "LABS") {
         price = 0.01;
-      } else if (coin == "VRSC"){
-        String geckoUrl = "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=USD";
-        final response = await http.get(geckoUrl);
-        Map decoded = jsonDecode(response.body);
-        print(decoded.toString());
-        price = double.parse(decoded['verus-coin']['usd'].toString());
+      } else if (coin == "VRSC") {
+        try {
+          String geckoUrl =
+              "https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=USD";
+          final response = await http.get(geckoUrl);
+          Map decoded = jsonDecode(response.body);
+          print(decoded.toString());
+          price = double.parse(decoded['verus-coin']['usd'].toString());
+        } catch (e) {
+          print(e.toString());
+          price = 0;
+        }
       }
     }
     return price;
