@@ -312,7 +312,7 @@ class CoinsBloc implements BlocBase {
       });
       await Future.wait(getAllBalances).then((onValue) {
         onValue.forEach((balance) {
-          if (balance is CoinBalance) {
+          if (balance is CoinBalance && balance.balance.address != null && balance.balance.address.isNotEmpty) {
             updateOneCoin(balance);
           }
         });
