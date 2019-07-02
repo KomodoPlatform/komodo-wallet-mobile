@@ -285,7 +285,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                             _controllerAmountReceive.text.length > 0 &&
                             sellCoin.hasData &&
                             receiveCoin.hasData
-                        ? _confirmSwap
+                        ? () => _confirmSwap(context)
                         : null,
                     text: AppLocalizations.of(context).trade,
                   );
@@ -834,13 +834,20 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  _confirmSwap() {
+  _confirmSwap(BuildContext mContext) {
     _controllerAmountSell.text =
         _controllerAmountSell.text.replaceAll(",", ".");
     _controllerAmountReceive.text =
         _controllerAmountReceive.text.replaceAll(",", ".");
 
-    if (_checkValueMin()) {
+    if (mainBloc.isNetworkOffline) {
+      Scaffold.of(mContext).showSnackBar(new SnackBar(
+        duration: Duration(seconds: 2),
+        backgroundColor: Theme.of(context).errorColor,
+        content: new Text(AppLocalizations.of(context).noInternet),
+      ));
+    }
+    if (_checkValueMin() && !mainBloc.isNetworkOffline) {
       setState(() {
         _noOrderFound = false;
       });
@@ -958,8 +965,7 @@ class _DialogLookingState extends State<DialogLooking> {
       timerCurrent += 5;
       if (timerCurrent >= timerEnd) {
         timerGetOrderbook.cancel();
-        if (this.mounted)
-          Navigator.of(context).pop();
+        if (this.mounted) Navigator.of(context).pop();
         widget.noOrderFind();
       } else {
         swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
