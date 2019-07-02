@@ -353,6 +353,9 @@ class AppLocalizations {
       Intl.message("Decrypting wallet", name: 'decryptingWallet');
   String get notEnoughtBalanceForFee =>
       Intl.message("Not enough balance for fees - trade a smaller amount", name: 'notEnoughtBalanceForFee');
+  String get noInternet =>
+      Intl.message("No Internet Connection", name: 'noInternet');
+     
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

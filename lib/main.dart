@@ -153,7 +153,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   var timer;
-  bool isNetworkAvailable = false;
   var subscription;
 
   final List<Widget> _children = [
@@ -188,17 +187,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
+      
       if (result == ConnectivityResult.none) {
-        setState(() {
-          isNetworkAvailable = true;
-        });
+        mainBloc.setIsNetworkAvailable(true);
       } else {
-        setState(() { 
-          if (isNetworkAvailable) {
-            _runBinMm2UserAlreadyLog();
-            isNetworkAvailable = false;
-          }
-        });
+        if (mainBloc.isNetworkAvailable) {
+          _runBinMm2UserAlreadyLog();
+          mainBloc.setIsNetworkAvailable(false);
+        }
       }
     });
   }
@@ -264,49 +260,56 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   child: Container(
                     color: Theme.of(context).primaryColor,
                     child: SafeArea(
-                      child: SizedBox(
-                        height: isNetworkAvailable ? 80 : 56,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            if (isNetworkAvailable)
-                              Expanded(
-                                child: Center(
-                                  child: Container(
-                                      height: double.infinity,
-                                      width: double.infinity,
-                                      color: Colors.redAccent,
-                                      child: Center(
-                                          child:
-                                              Text("No Internet Connection"))),
-                                ),
-                              ),
-                            BottomNavigationBar(
-                              elevation: 0,
-                              type: BottomNavigationBarType.fixed,
-                              onTap: onTabTapped,
-                              currentIndex: snapshot.data,
-                              items: [
-                                BottomNavigationBarItem(
-                                    icon: Icon(Icons.account_balance_wallet),
-                                    title: Text(AppLocalizations.of(context)
-                                        .portfolio)),
-                                BottomNavigationBarItem(
-                                    icon: Icon(Icons.swap_vert),
-                                    title:
-                                        Text(AppLocalizations.of(context).dex)),
-                                BottomNavigationBarItem(
-                                    icon: Icon(Icons.library_books),
-                                    title: Text(
-                                        AppLocalizations.of(context).media)),
-                                BottomNavigationBarItem(
-                                    icon: Icon(Icons.settings),
-                                    title: Text(
-                                        AppLocalizations.of(context).settings)),
+                      child: StreamBuilder<bool>(
+                        initialData: mainBloc.isNetworkAvailable,
+                        stream: mainBloc.outIsNetworkAvailable,
+                        builder: (context, netWork) {
+                          bool isNetworkAvailable = netWork.data;
+                          return SizedBox(
+                            height: isNetworkAvailable ? 80 : 56,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                if (isNetworkAvailable)
+                                  Expanded(
+                                    child: Center(
+                                      child: Container(
+                                          height: double.infinity,
+                                          width: double.infinity,
+                                          color: Colors.redAccent,
+                                          child: Center(
+                                              child:
+                                                  Text(AppLocalizations.of(context).noInternet))),
+                                    ),
+                                  ),
+                                BottomNavigationBar(
+                                  elevation: 0,
+                                  type: BottomNavigationBarType.fixed,
+                                  onTap: onTabTapped,
+                                  currentIndex: snapshot.data,
+                                  items: [
+                                    BottomNavigationBarItem(
+                                        icon: Icon(Icons.account_balance_wallet),
+                                        title: Text(AppLocalizations.of(context)
+                                            .portfolio)),
+                                    BottomNavigationBarItem(
+                                        icon: Icon(Icons.swap_vert),
+                                        title:
+                                            Text(AppLocalizations.of(context).dex)),
+                                    BottomNavigationBarItem(
+                                        icon: Icon(Icons.library_books),
+                                        title: Text(
+                                            AppLocalizations.of(context).media)),
+                                    BottomNavigationBarItem(
+                                        icon: Icon(Icons.settings),
+                                        title: Text(
+                                            AppLocalizations.of(context).settings)),
+                                  ],
+                                )
                               ],
-                            )
-                          ],
-                        ),
+                            ),
+                          );
+                        }
                       ),
                     ),
                   ),
