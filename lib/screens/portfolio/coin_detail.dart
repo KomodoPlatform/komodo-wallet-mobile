@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
@@ -505,9 +506,11 @@ class _CoinDetailState extends State<CoinDetail> {
                               String amount =
                                   widget.coinBalance.coin.swapContractAddress !=
                                           null
-                                      ? replaceAllTrainlingZeroERC(transaction.myBalanceChange
+                                      ? replaceAllTrainlingZeroERC(transaction
+                                          .myBalanceChange
                                           .toStringAsFixed(16))
-                                      : replaceAllTrainlingZero(transaction.myBalanceChange
+                                      : replaceAllTrainlingZero(transaction
+                                          .myBalanceChange
                                           .toStringAsFixed(8));
 
                               return AutoSizeText(
@@ -921,20 +924,24 @@ class _CoinDetailState extends State<CoinDetail> {
               Expanded(
                 child: Container(
                   height: 50,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0)),
-                    color: Theme.of(context).buttonColor,
-                    disabledColor: Theme.of(context).disabledColor,
-                    child: Text(
-                      AppLocalizations.of(context).confirm.toUpperCase(),
-                      style: Theme.of(context).textTheme.button,
-                    ),
-                    onPressed: amountMinusFee > 0
-                        ? () {
-                            _onPressedConfirmWithdraw(context);
-                          }
-                        : null,
+                  child: Builder(
+                    builder: (context) {
+                      return RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.0)),
+                        color: Theme.of(context).buttonColor,
+                        disabledColor: Theme.of(context).disabledColor,
+                        child: Text(
+                          AppLocalizations.of(context).confirm.toUpperCase(),
+                          style: Theme.of(context).textTheme.button,
+                        ),
+                        onPressed: amountMinusFee > 0
+                            ? () {
+                                _onPressedConfirmWithdraw(context);
+                              }
+                            : null,
+                      );
+                    }
                   ),
                 ),
               ),
@@ -945,99 +952,108 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _onPressedConfirmWithdraw(BuildContext context) {
-    setState(() {
-      isSendIsActive = false;
-    });
-    double amountMinusFee = double.parse(_amountController.text) -
-        double.parse(currentCoinBalance.coin.getTxFeeSatoshi());
-    amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
-    int txFee = 0;
-    if (currentCoinBalance.coin.txfee != null) {
-      txFee = currentCoinBalance.coin.txfee;
-    }
-    double fee = txFee / 100000000;
-    double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
-
-    listSteps.add(Container(
-        height: 100,
-        width: double.infinity,
-        child: Center(
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-          ),
-        )));
-    setState(() {
-      currentIndex = 2;
-    });
-
-    mm2
-        .postWithdraw(
-            currentCoinBalance.coin,
-            _addressController.text.toString(),
-            sendamount,
-            double.parse(widget.coinBalance.balance.getBalance()) ==
-                double.parse(_amountController.text))
-        .then((data) {
-      if (data is WithdrawResponse) {
-        mm2
-            .postRawTransaction(widget.coinBalance.coin, data.txHex)
-            .then((dataRawTx) {
-          if (dataRawTx is SendRawTransactionResponse) {
-            setState(() {
-              _onWithdrawPost = false;
-              coinsBloc.updateTransactions(
-                  widget.coinBalance.coin, limit, null);
-              coinsBloc.loadCoin();
-              new Future.delayed(Duration(seconds: 5), () {
-                coinsBloc.loadCoin();
-              });
-              listSteps.add(Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  width: double.infinity,
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                          child: InkWell(
-                        onTap: () {
-                          _copyToClipBoard(context, dataRawTx.txHash);
-                        },
-                        child: Column(
-                          children: <Widget>[
-                            Text(AppLocalizations.of(context).success),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Icon(
-                              Icons.check_circle_outline,
-                              color: Theme.of(context).hintColor,
-                              size: 60,
-                            )
-                          ],
-                        ),
-                      )),
-                      SizedBox(
-                        height: 16,
-                      ),
-                    ],
-                  ),
-                ),
-              ));
-              currentIndex = 3;
-            });
-          }
-        });
-      } else {
-        setState(() {
-          _onWithdrawPost = false;
-        });
-        Scaffold.of(context).showSnackBar(new SnackBar(
-          duration: Duration(seconds: 2),
-          content: new Text(AppLocalizations.of(context).errorTryLater),
-        ));
+  _onPressedConfirmWithdraw(BuildContext mContext) {
+    if (mainBloc.isNetworkAvailable) {
+      Scaffold.of(mContext).showSnackBar(new SnackBar(
+        duration: Duration(seconds: 2),
+        backgroundColor: Theme.of(context).errorColor,
+        content: new Text(AppLocalizations.of(context).noInternet),
+      ));
+    } else {
+      setState(() {
+        isSendIsActive = false;
+      });
+      double amountMinusFee = double.parse(_amountController.text) -
+          double.parse(currentCoinBalance.coin.getTxFeeSatoshi());
+      amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
+      int txFee = 0;
+      if (currentCoinBalance.coin.txfee != null) {
+        txFee = currentCoinBalance.coin.txfee;
       }
-    });
+      double fee = txFee / 100000000;
+      double sendamount =
+          double.parse((amountMinusFee + fee).toStringAsFixed(8));
+
+      listSteps.add(Container(
+          height: 100,
+          width: double.infinity,
+          child: Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+          )));
+      setState(() {
+        currentIndex = 2;
+      });
+
+      mm2
+          .postWithdraw(
+              currentCoinBalance.coin,
+              _addressController.text.toString(),
+              sendamount,
+              double.parse(widget.coinBalance.balance.getBalance()) ==
+                  double.parse(_amountController.text))
+          .then((data) {
+        if (data is WithdrawResponse) {
+          mm2
+              .postRawTransaction(widget.coinBalance.coin, data.txHex)
+              .then((dataRawTx) {
+            if (dataRawTx is SendRawTransactionResponse) {
+              setState(() {
+                _onWithdrawPost = false;
+                coinsBloc.updateTransactions(
+                    widget.coinBalance.coin, limit, null);
+                coinsBloc.loadCoin();
+                new Future.delayed(Duration(seconds: 5), () {
+                  coinsBloc.loadCoin();
+                });
+                listSteps.add(Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    width: double.infinity,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                            child: InkWell(
+                          onTap: () {
+                            _copyToClipBoard(context, dataRawTx.txHash);
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              Text(AppLocalizations.of(context).success),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Icon(
+                                Icons.check_circle_outline,
+                                color: Theme.of(context).hintColor,
+                                size: 60,
+                              )
+                            ],
+                          ),
+                        )),
+                        SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ));
+                currentIndex = 3;
+              });
+            }
+          });
+        } else {
+          setState(() {
+            _onWithdrawPost = false;
+          });
+          Scaffold.of(mContext).showSnackBar(new SnackBar(
+            duration: Duration(seconds: 2),
+            content: new Text(AppLocalizations.of(context).errorTryLater),
+          ));
+        }
+      });
+    }
   }
 
   _closeAfterAWait() async {

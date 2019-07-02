@@ -488,8 +488,8 @@ class _ItemCoinState extends State<ItemCoin> {
                                 );
                               }),
                               widget.coinBalance.coin.abbr == "KMD" &&
-                                      double.parse(widget
-                                              .coinBalance.balance.getBalance()) >=
+                                      double.parse(widget.coinBalance.balance
+                                              .getBalance()) >=
                                           10
                                   ? Padding(
                                       padding: EdgeInsets.only(top: 8),
@@ -585,11 +585,20 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                               Icons.add,
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SelectCoinsPage()),
-                              );
+                              if (mainBloc.isNetworkAvailable) {
+                                Scaffold.of(context).showSnackBar(new SnackBar(
+                                  duration: Duration(seconds: 2),
+                                  backgroundColor: Theme.of(context).errorColor,
+                                  content: new Text(
+                                      AppLocalizations.of(context).noInternet),
+                                ));
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectCoinsPage()),
+                                );
+                              }
                             },
                           )),
                         ),
