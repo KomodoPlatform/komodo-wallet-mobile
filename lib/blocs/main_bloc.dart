@@ -14,23 +14,23 @@ class MainBloc implements BlocBase{
   Sink<int> get _inCurrentIndex => _currentIndexTabController.sink;
   Stream<int> get outCurrentIndex => _currentIndexTabController.stream;
 
-  bool isNetworkAvailable = false;
+  bool isNetworkOffline = false;
   
-  StreamController<bool> _isNetworkAvailableController =
+  StreamController<bool> _isNetworkOffline =
       StreamController<bool>.broadcast();
-  Sink<bool> get _inIsNetworkAvailable => _isNetworkAvailableController.sink;
-  Stream<bool> get outIsNetworkAvailable => _isNetworkAvailableController.stream;
+  Sink<bool> get _inIsNetworkOffline => _isNetworkOffline.sink;
+  Stream<bool> get outIsNetworkOffline => _isNetworkOffline.stream;
 
 
   @override
   void dispose() {
     _currentIndexTabController.close();
-    _isNetworkAvailableController.close();
+    _isNetworkOffline.close();
   }
 
-  void setIsNetworkAvailable(bool isNetworkAvailable) {
-    this.isNetworkAvailable = isNetworkAvailable;
-    _inIsNetworkAvailable.add(this.isNetworkAvailable);
+  void setIsNetworkOffline(bool isNetworkAvailable) {
+    this.isNetworkOffline = isNetworkAvailable;
+    _inIsNetworkOffline.add(this.isNetworkOffline);
   }
   
   void setCurrentIndexTab(int index) {

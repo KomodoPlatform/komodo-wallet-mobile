@@ -585,7 +585,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                               Icons.add,
                             ),
                             onPressed: () {
-                              if (mainBloc.isNetworkAvailable) {
+                              if (mainBloc.isNetworkOffline) {
                                 Scaffold.of(context).showSnackBar(new SnackBar(
                                   duration: Duration(seconds: 2),
                                   backgroundColor: Theme.of(context).errorColor,

@@ -211,7 +211,9 @@ class _CoinDetailState extends State<CoinDetail> {
     _addressController.dispose();
     _scrollController.dispose();
     coinsBloc.resetTransactions();
-    timer.cancel();
+    if (timer != null) {
+      timer.cancel();
+    }
     super.dispose();
   }
 
@@ -924,25 +926,23 @@ class _CoinDetailState extends State<CoinDetail> {
               Expanded(
                 child: Container(
                   height: 50,
-                  child: Builder(
-                    builder: (context) {
-                      return RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0)),
-                        color: Theme.of(context).buttonColor,
-                        disabledColor: Theme.of(context).disabledColor,
-                        child: Text(
-                          AppLocalizations.of(context).confirm.toUpperCase(),
-                          style: Theme.of(context).textTheme.button,
-                        ),
-                        onPressed: amountMinusFee > 0
-                            ? () {
-                                _onPressedConfirmWithdraw(context);
-                              }
-                            : null,
-                      );
-                    }
-                  ),
+                  child: Builder(builder: (context) {
+                    return RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0)),
+                      color: Theme.of(context).buttonColor,
+                      disabledColor: Theme.of(context).disabledColor,
+                      child: Text(
+                        AppLocalizations.of(context).confirm.toUpperCase(),
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: amountMinusFee > 0
+                          ? () {
+                              _onPressedConfirmWithdraw(context);
+                            }
+                          : null,
+                    );
+                  }),
                 ),
               ),
             ],
@@ -953,7 +953,7 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   _onPressedConfirmWithdraw(BuildContext mContext) {
-    if (mainBloc.isNetworkAvailable) {
+    if (mainBloc.isNetworkOffline) {
       Scaffold.of(mContext).showSnackBar(new SnackBar(
         duration: Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,

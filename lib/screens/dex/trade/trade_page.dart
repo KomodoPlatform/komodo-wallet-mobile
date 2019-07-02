@@ -840,14 +840,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     _controllerAmountReceive.text =
         _controllerAmountReceive.text.replaceAll(",", ".");
 
-    if (mainBloc.isNetworkAvailable) {
+    if (mainBloc.isNetworkOffline) {
       Scaffold.of(mContext).showSnackBar(new SnackBar(
         duration: Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,
         content: new Text(AppLocalizations.of(context).noInternet),
       ));
     }
-    if (_checkValueMin() && !mainBloc.isNetworkAvailable) {
+    if (_checkValueMin() && !mainBloc.isNetworkOffline) {
       setState(() {
         _noOrderFound = false;
       });
