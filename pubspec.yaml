@@ -50,11 +50,13 @@ dev_dependencies:
   flutter_slidable: ^0.5.3
   password: ^1.0.0
   package_info: ^0.4.0+4
+  flutter_launcher_icons: ^0.7.2+1
 
 flutter_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
-  image_path: "assets/logo_kmd.png"
+  image_path_ios: "assets/logo_kmd.png"
+  image_path_android: "assets/logo_kmd.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
