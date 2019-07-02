@@ -139,13 +139,14 @@ class SwapBloc implements BlocBase {
         if (orderbook.base == coin.abbr) {
           double bestPrice = 0;
           double maxVolume = 0;
+          // find the best price AND volume
           int i = 0;
           orderbook.asks.forEach((ask) {
             print("ask" + ask.price.toString());
             if (i == 0) {
               maxVolume = ask.maxvolume;
               bestPrice = ask.price;
-            } else if (ask.price < bestPrice) {
+            } else if (ask.price <= bestPrice && ask.maxvolume > maxVolume) {
               maxVolume = ask.maxvolume;
               bestPrice = ask.price;
             }
