@@ -8,6 +8,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
@@ -28,9 +29,9 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   String version = "";
 
-  @override 
+  @override
   void initState() {
-    _getVersionApplication().then((onValue){
+    _getVersionApplication().then((onValue) {
       setState(() {
         version = onValue;
       });
@@ -81,12 +82,14 @@ class _SettingPageState extends State<SettingPage> {
                   ? _buildTitle(AppLocalizations.of(context).backupTitle)
                   : Container(),
               walletBloc.currentWallet != null ? _buildViewSeed() : Container(),
-                            SizedBox(
+              SizedBox(
                 height: 1,
               ),
-              _buildSendFeedback(),
+              _buildTitle(AppLocalizations.of(context).legalTitle),
+              _buildDisclaimerToS(),
               walletBloc.currentWallet != null
-                  ? _buildTitle(AppLocalizations.of(context).version + " - " + version)
+                  ? _buildTitle(
+                      AppLocalizations.of(context).version + " - " + version)
                   : Container(),
               SizedBox(
                 height: 48,
@@ -280,6 +283,29 @@ class _SettingPageState extends State<SettingPage> {
         ),
       ),
     );
+  }
+
+  _buildDisclaimerToS() {
+    return CustomTile(
+      child: ListTile(
+        trailing:
+            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        title: Text(
+          AppLocalizations.of(context).disclaimerAndTos,
+          style: Theme.of(context).textTheme.body1.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
+      ),
+      onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => DislaimerPage(
+                  readOnly: true,
+                )),
+      );
+    });
   }
 
   _buildLogout() {
@@ -522,31 +548,31 @@ class _SettingPageState extends State<SettingPage> {
         context: context,
         builder: (context) {
           return StreamBuilder<Object>(
-            initialData: settingsBloc.isDeleteLoading,
-            stream: settingsBloc.outIsDeleteLoading,
-            builder: (context, snapshot) {
-              if (snapshot.hasData && !snapshot.data) {
-                Navigator.of(context).pop();
-              }
-              return SimpleDialog(
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                children: <Widget>[
-                  Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      CircularProgressIndicator(),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Text("Deleting wallet...")
-                    ],
-                  ))
-                ],
-              );
-            }
-          );
+              initialData: settingsBloc.isDeleteLoading,
+              stream: settingsBloc.outIsDeleteLoading,
+              builder: (context, snapshot) {
+                if (snapshot.hasData && !snapshot.data) {
+                  Navigator.of(context).pop();
+                }
+                return SimpleDialog(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  children: <Widget>[
+                    Center(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        CircularProgressIndicator(),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Text("Deleting wallet...")
+                      ],
+                    ))
+                  ],
+                );
+              });
         }).then((_) {
       dialogBloc.dialog = null;
     });
