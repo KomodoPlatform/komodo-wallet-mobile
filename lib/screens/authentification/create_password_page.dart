@@ -271,12 +271,11 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     await coinsBloc.resetCoinDefault();
 
     await authBloc
-        .loginUI(true, widget.seed, controller1.text)
+        .loginUI(false, widget.seed, controller1.text)
         .then((onValue) {
       setState(() {
         isLoading = true;
       });
-      mainBloc.setCurrentIndexTab(0);
       Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false,
           arguments: ScreenArguments(controller1.text));
     });
