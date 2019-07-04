@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:komodo_dex/main.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 final mainBloc = MainBloc();
