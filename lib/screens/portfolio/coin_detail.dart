@@ -401,18 +401,18 @@ class _CoinDetailState extends State<CoinDetail> {
                         ));
                       }
                     }
-                  } else if (snapshot.data is ErrorCode) {
+                  } else if (snapshot.data is ErrorCode && snapshot.data.error != null) {
                     return Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Center(
-                          child: Text(
-                        (snapshot.data as ErrorCode).error.message,
+                          child: Text(snapshot.data.error.message,
                         style: Theme.of(context).textTheme.body2,
                         textAlign: TextAlign.center,
                       )),
                     );
+                  } else {
+                    return Container();
                   }
-                  return Container();
                 })
           ],
         ),
