@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/services/db/database.dart';
@@ -270,12 +271,12 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     await coinsBloc.resetCoinDefault();
 
     await authBloc
-        .loginUI(false, widget.seed, controller1.text)
+        .loginUI(true, widget.seed, controller1.text)
         .then((onValue) {
       setState(() {
         isLoading = true;
       });
-
+      mainBloc.setCurrentIndexTab(0);
       Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false,
           arguments: ScreenArguments(controller1.text));
     });

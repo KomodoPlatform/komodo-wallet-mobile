@@ -410,9 +410,8 @@ class _CoinDetailState extends State<CoinDetail> {
                         textAlign: TextAlign.center,
                       )),
                     );
-                  } else {
-                    return Container();
                   }
+                  return Container();
                 })
           ],
         ),

@@ -41,7 +41,10 @@ class AuthenticateBloc extends BlocBase {
   }
 
   void init() async {
-    if (await new EncryptionTool().read("passphrase") != null) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (prefs.getBool("isPassphraseIsSaved") != null &&
+        prefs.getBool("isPassphraseIsSaved")) {
       this.isLogin = true;
       _inIsLogin.add(true);
     } else {
@@ -66,6 +69,7 @@ class AuthenticateBloc extends BlocBase {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await _checkPINStatus(password);
     await new EncryptionTool().write("passphrase", passphrase);
+    prefs.setBool("isPassphraseIsSaved", true);
     await initSwitchPref();
 
     await prefs.setBool("isPinIsSet", false);
@@ -76,20 +80,19 @@ class AuthenticateBloc extends BlocBase {
     _inIsLogin.add(true);
   }
 
-  initSwitchPref() async{
+  initSwitchPref() async {
     await initSwitch('switch_pin', true);
     await initSwitch('switch_pin_biometric', false);
   }
 
-  initSwitch(String key, bool defaultSwitch) async{
+  initSwitch(String key, bool defaultSwitch) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.getBool(key) != null ?
-      await prefs.setBool(key, prefs.getBool(key)) :
-      await prefs.setBool(key, defaultSwitch);
-    
+    prefs.getBool(key) != null
+        ? await prefs.setBool(key, prefs.getBool(key))
+        : await prefs.setBool(key, defaultSwitch);
   }
 
-  _checkPINStatus(String password) async{
+  _checkPINStatus(String password) async {
     var wallet = await DBProvider.db.getCurrentWallet();
     var entryptionTool = new EncryptionTool();
 
@@ -116,6 +119,8 @@ class AuthenticateBloc extends BlocBase {
   Future<void> loginUI(bool isLogin, String passphrase, String password) async {
     await _checkPINStatus(password);
     await new EncryptionTool().write("passphrase", passphrase);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isPassphraseIsSaved", true);
     this.isLogin = isLogin;
     _inIsLogin.add(isLogin);
   }
@@ -126,7 +131,7 @@ class AuthenticateBloc extends BlocBase {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await new EncryptionTool().delete("passphrase");
     await prefs.setBool("isPinIsSet", false);
-    
+
     updateStatusPin(PinStatus.NORMAL_PIN);
     await new EncryptionTool().delete("pin");
     coinsBloc.resetCoinBalance();
@@ -135,7 +140,7 @@ class AuthenticateBloc extends BlocBase {
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);
     await DBProvider.db.deleteCurrentWallet();
-    
+
     this.isLogin = false;
     _inIsLogin.add(false);
   }
@@ -156,6 +161,13 @@ class AuthenticateBloc extends BlocBase {
   }
 }
 
-enum PinStatus { CREATE_PIN, CONFIRM_PIN, DISABLED_PIN, CHANGE_PIN, NORMAL_PIN, DISABLED_PIN_BIOMETRIC }
+enum PinStatus {
+  CREATE_PIN,
+  CONFIRM_PIN,
+  DISABLED_PIN,
+  CHANGE_PIN,
+  NORMAL_PIN,
+  DISABLED_PIN_BIOMETRIC
+}
 
 final authBloc = AuthenticateBloc();

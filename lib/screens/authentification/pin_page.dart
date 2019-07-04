@@ -111,7 +111,8 @@ class _PinPageState extends State<PinPage> {
                                   code.toString());
                             }
 
-                            await new EncryptionTool().write("pin", code.toString());
+                            await new EncryptionTool()
+                                .write("pin", code.toString());
                             authBloc.showPin(false);
                             authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
                             if (!widget.isFromChangingPin)
@@ -131,7 +132,8 @@ class _PinPageState extends State<PinPage> {
                             authBloc.showPin(false);
                             if (!mm2.ismm2Running) {
                               await authBloc.login(
-                                  await new EncryptionTool().read("passphrase"), null);
+                                  await new EncryptionTool().read("passphrase"),
+                                  null);
                             }
                             if (widget.onSuccess != null) {
                               widget.onSuccess();

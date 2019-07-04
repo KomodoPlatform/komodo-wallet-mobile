@@ -92,8 +92,9 @@ class MarketMakerService {
     String startParam =
         '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"$filesPath\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
 
-    await stopmm2();
+
     if (Platform.isAndroid) {
+      await stopmm2();
       mm2Process = await Process.start('./mm2', [startParam],
           workingDirectory: '$filesPath');
 
