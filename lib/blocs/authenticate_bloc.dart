@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -64,6 +65,7 @@ class AuthenticateBloc extends BlocBase {
 
   Future<void> login(String passphrase, String password) async {
     await DBProvider.db.initDB();
+    mainBloc.setCurrentIndexTab(0);
     walletBloc.setCurrentWallet(await DBProvider.db.getCurrentWallet());
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -104,10 +106,10 @@ class AuthenticateBloc extends BlocBase {
       await entryptionTool.write("pin", pin);
       updateStatusPin(PinStatus.NORMAL_PIN);
     } else {
-      String passphrase = await entryptionTool.read("passphrase");
-      if (passphrase != null && passphrase.isNotEmpty) {
-        // prefs.setString("pin", prefs.getString("pin"));
-        // await entryptionTool.write("pin",  await entryptionTool.read("pin"));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      if (prefs.getBool("isPassphraseIsSaved") != null &&
+        prefs.getBool("isPassphraseIsSaved")) {
         updateStatusPin(PinStatus.NORMAL_PIN);
       } else {
         updateStatusPin(PinStatus.CREATE_PIN);

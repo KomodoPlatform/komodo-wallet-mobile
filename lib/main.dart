@@ -201,9 +201,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.inactive:
         print("inactive");
-        // if (Platform.isIOS) {
-        //   await mm2.stopmm2();
-        // }
+        if (Platform.isIOS) {
+          await mm2.stopmm2();
+        }
         break;
       case AppLifecycleState.paused:
         print("paused");
@@ -216,12 +216,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.resumed:
         print("resumed");
-        // if (Platform.isIOS) {
-        //   await mm2.stopmm2();
-        //   await new Future.delayed(const Duration(seconds: 6), () {
-        //     _runBinMm2UserAlreadyLog();
-        //   });
-        // }
+        if (Platform.isIOS) {
+          if (!mm2.ismm2Running) {
+            _runBinMm2UserAlreadyLog();
+          }
+        }
         break;
       case AppLifecycleState.suspending:
         print("suspending");

@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
@@ -205,7 +200,10 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                   },
                   value: isFastEncrypted,
                 ),
-                Text("Fast encryption", style: Theme.of(context).textTheme.body2,)
+                Text(
+                  "Fast encryption",
+                  style: Theme.of(context).textTheme.body2,
+                )
               ],
             ),
             SizedBox(
@@ -223,17 +221,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                           : null,
                       isLoading: isLoading,
                     ),
-                    isLoading
-                        ? SizedBox(
-                            height: 8,
-                          )
-                        : Container(),
-                    isLoading
-                        ? Text(
-                            AppLocalizations.of(context).encryptingWallet,
-                            style: Theme.of(context).textTheme.body1,
-                          )
-                        : Container()
                   ],
                 ),
               );
@@ -255,30 +242,19 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   }
 
   _nextPage() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    var entryptionTool = new EncryptionTool();
-    var wallet = walletBloc.currentWallet;
-    wallet.isFastEncryption = isFastEncrypted;
-    walletBloc.currentWallet = wallet;
-
-    await entryptionTool.writeData(
-        KeyEncryption.SEED, wallet, controller1.text, widget.seed);
-    await DBProvider.db.saveWallet(wallet);
-    await DBProvider.db.saveCurrentWallet(wallet);
-    await coinsBloc.resetCoinDefault();
-
-    await authBloc
-        .loginUI(false, widget.seed, controller1.text)
-        .then((onValue) {
-      setState(() {
-        isLoading = true;
-      });
-      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false,
-          arguments: ScreenArguments(controller1.text));
-    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => DislaimerPage(
+                isFastEncrypted: isFastEncrypted,
+                password: controller1.text,
+                seed: widget.seed,
+                onSuccess: () {
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false,
+                      arguments: ScreenArguments(controller1.text));
+                },
+              )),
+    );
   }
 
   _showError(BuildContext context, String data) {
