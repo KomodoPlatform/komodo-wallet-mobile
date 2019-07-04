@@ -133,7 +133,8 @@ class AuthenticateBloc extends BlocBase {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await new EncryptionTool().delete("passphrase");
     await prefs.setBool("isPinIsSet", false);
-
+    await prefs.setBool("isPassphraseIsSaved", false);
+    
     updateStatusPin(PinStatus.NORMAL_PIN);
     await new EncryptionTool().delete("pin");
     coinsBloc.resetCoinBalance();
