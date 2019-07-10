@@ -73,10 +73,6 @@ Future<void> _runBinMm2UserAlreadyLog() async {
     if (!(authBloc.isPinShow && prefs.getBool("switch_pin"))) {
       print("login isPinShow");
       await authBloc.login(await new EncryptionTool().read("passphrase"), null);
-    } else {
-      if (Platform.isIOS) {
-        await mm2.runBin();
-      }
     }
   } else {
     print("loadJsonCoinsDefault");
@@ -202,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.inactive:
         print("inactive");
         if (Platform.isIOS) {
-          await mm2.stopmm2();
+          exit(0);
         }
         break;
       case AppLifecycleState.paused:
@@ -225,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.suspending:
         print("suspending");
         if (Platform.isIOS) {
-          await mm2.stopmm2();
+          exit(0);
         }
         break;
     }
