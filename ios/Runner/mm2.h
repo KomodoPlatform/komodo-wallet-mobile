@@ -14,4 +14,9 @@ void start_mm2 (const char* mm2_conf);
 /// 3 .. RPC is up.
 int8_t mm2_main_status (void);
 
+// Defined in "common/for_c.rs".
+uint8_t is_loopback_ip (const char* ip);
+// Defined in "mm2_lib.rs".
+int8_t mm2_main (const char* conf, void (*log_cb) (const char* line));
+
 #endif /* mm2_h */

@@ -11,8 +11,12 @@ uint8_t is_loopback_ip (const char* ip);
 int8_t mm2_main (const char* conf, void (*log_cb) (const char* line));
 
 void log_cb (const char* line) {
-    os_log (OS_LOG_DEFAULT, "mm2] %{public}s", line);
-    printf ("mm2] %s\n", line);
+   os_log (OS_LOG_DEFAULT, "mm2] %{public}s", line);
+    
+    // printf("mm2] %s\n", line);
+
+    NSDictionary *myData = @{@"log" : [NSString stringWithFormat:@"mm2] %s\n", line]};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"logMM2" object:nil userInfo:myData];
 }
 
 char* writeable_dir() {
