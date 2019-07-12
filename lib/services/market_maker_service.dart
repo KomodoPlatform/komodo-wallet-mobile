@@ -4,7 +4,8 @@ import 'dart:io';
 import 'dart:io' show File, Platform, Process, ProcessResult;
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/services.dart' show ByteData, MethodChannel, rootBundle;
+import 'package:flutter/services.dart'
+    show ByteData, EventChannel, MethodChannel, rootBundle;
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -57,6 +58,7 @@ class MarketMakerService {
   String filesPath = "";
   var sink;
   static const platformmm2 = const MethodChannel('mm2');
+  static const EventChannel eventChannel = EventChannel('streamLogMM2');
 
   MarketMakerService() {
     if (Platform.isAndroid) {
@@ -92,32 +94,18 @@ class MarketMakerService {
     String startParam =
         '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"$filesPath\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
 
+    var file = new File('${filesPath}log.txt');
+    sink = file.openWrite();
+
     if (Platform.isAndroid) {
       await stopmm2();
       mm2Process = await Process.start('./mm2', [startParam],
           workingDirectory: '$filesPath');
 
-      var file = new File('$filesPath/log.txt');
-      sink = file.openWrite();
-
       mm2Process.stdout.listen((onData) {
-        String logMm2 = utf8.decoder.convert(onData).trim() + "\n";
-        sink.write(logMm2);
-        print("mm2: " + logMm2);
+        String logMm2 = utf8.decoder.convert(onData).trim();
 
-        if (logMm2.contains("CONNECTED") ||
-            logMm2.contains("Entering the taker_swap_loop") ||
-            logMm2.contains("Received 'negotiation") ||
-            logMm2.contains("Got maker payment") ||
-            logMm2.contains("Sending 'taker-fee") ||
-            logMm2.contains("Sending 'taker-payment") ||
-            logMm2.contains("Finished")) {
-          Future.delayed(const Duration(seconds: 1), () {
-            swapHistoryBloc.updateSwaps(50, null).then((_) {
-              ordersBloc.updateOrdersSwaps();
-            });
-          });
-        }
+        _onLogsmm2(logMm2);
         if (logMm2.contains("DEX stats API enabled at")) {
           print("DEX stats API enabled at");
 
@@ -127,8 +115,10 @@ class MarketMakerService {
         }
       });
     } else if (Platform.isIOS) {
+      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
       await platformmm2
           .invokeMethod('start', {'params': startParam}); //start mm2
+
       // check when mm2 is ready then load coins
       var timerTmp = DateTime.now().millisecondsSinceEpoch;
       Timer.periodic(Duration(seconds: 2), (_) {
@@ -150,6 +140,32 @@ class MarketMakerService {
         });
       });
     }
+  }
+
+  void _onLogsmm2(String log) {
+    print(log);
+    if (log.contains("CONNECTED") ||
+        log.contains("Entering the taker_swap_loop") ||
+        log.contains("Received 'negotiation") ||
+        log.contains("Got maker payment") ||
+        log.contains("Sending 'taker-fee") ||
+        log.contains("Sending 'taker-payment") ||
+        log.contains("Finished")) {
+      Future.delayed(const Duration(seconds: 1), () {
+        swapHistoryBloc.updateSwaps(50, null).then((_) {
+          ordersBloc.updateOrdersSwaps();
+        });
+      });
+    }
+  }
+
+  void _onEvent(Object event) {
+    sink.write(event.toString() + "\n");
+    _onLogsmm2(event);
+  }
+
+  void _onError(Object error) {
+    print(error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
