@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,8 +62,9 @@ startApp() {
 }
 
 Future<void> _runBinMm2UserAlreadyLog() async {
-  String passphrase = await new EncryptionTool().read("passphrase");
-  if (passphrase != null && passphrase.isNotEmpty) {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool("isPassphraseIsSaved") != null &&
+      prefs.getBool("isPassphraseIsSaved") == true) {
     print("readJsonCoin");
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
@@ -195,6 +197,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.inactive:
         print("inactive");
+        if (Platform.isIOS) {
+          exit(0);
+        }
         break;
       case AppLifecycleState.paused:
         print("paused");
@@ -207,10 +212,17 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.resumed:
         print("resumed");
+        if (Platform.isIOS) {
+          if (!mm2.ismm2Running) {
+            _runBinMm2UserAlreadyLog();
+          }
+        }
         break;
       case AppLifecycleState.suspending:
         print("suspending");
-        await mm2.stopmm2();
+        if (Platform.isIOS) {
+          exit(0);
+        }
         break;
     }
   }

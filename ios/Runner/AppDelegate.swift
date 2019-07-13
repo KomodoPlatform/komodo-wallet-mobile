@@ -10,7 +10,7 @@ import Firebase
 
         let controllerMain : FlutterViewController = window?.rootViewController as! FlutterViewController
         let mm2main = FlutterMethodChannel(name: "mm2",
-                                           binaryMessenger: controllerMain)
+                                           binaryMessenger: controllerMain as! FlutterBinaryMessenger)
         
         mm2main.setMethodCallHandler({
             (call: FlutterMethodCall, result: FlutterResult) -> Void in
