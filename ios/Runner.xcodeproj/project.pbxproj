@@ -18,7 +18,6 @@
 		843659582248F59A00B1ECB8 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 843659572248F59A00B1ECB8 /* libc++.tbd */; };
 		8436595A2248F5B900B1ECB8 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 843659592248F5B900B1ECB8 /* libresolv.tbd */; };
 		8436595D2248F7CA00B1ECB8 /* libmm2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8436595C2248F7CA00B1ECB8 /* libmm2.a */; };
-		848FEF64224A59FB0016EFEC /* mm2.m in Sources */ = {isa = PBXBuildFile; fileRef = 848FEF63224A59FB0016EFEC /* mm2.m */; };
 		8FD4255822CE051A004C05B8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8FD4255722CE051A004C05B8 /* GoogleService-Info.plist */; };
 		9705A1C61CF904A100538489 /* Flutter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; };
 		9705A1C71CF904A300538489 /* Flutter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9740EEBA1CF902C7004384FC /* Flutter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -58,7 +57,6 @@
 		843659572248F59A00B1ECB8 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		843659592248F5B900B1ECB8 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		8436595C2248F7CA00B1ECB8 /* libmm2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmm2.a; sourceTree = "<group>"; };
-		848FEF63224A59FB0016EFEC /* mm2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = mm2.m; sourceTree = "<group>"; };
 		848FEF66224A613C0016EFEC /* mm2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mm2.h; sourceTree = "<group>"; };
 		8FD4255722CE051A004C05B8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
@@ -139,7 +137,6 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
-				848FEF63224A59FB0016EFEC /* mm2.m */,
 				848FEF66224A613C0016EFEC /* mm2.h */,
 			);
 			path = Runner;
@@ -376,7 +373,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				848FEF64224A59FB0016EFEC /* mm2.m in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);
