@@ -9,37 +9,37 @@ ErrorCode errorCodeFromJson(String str) => ErrorCode.fromJson(json.decode(str));
 String errorCodeToJson(ErrorCode data) => json.encode(data.toJson());
 
 class ErrorCode {
-    Error error;
+  ErrorCode({
+    this.error,
+  });
 
-    ErrorCode({
-        this.error,
-    });
+  factory ErrorCode.fromJson(Map<String, dynamic> json) => ErrorCode(
+        error: json['error'] ?? Error(),
+      );
 
-    factory ErrorCode.fromJson(Map<String, dynamic> json) => new ErrorCode(
-        error: json["error"] == null ? null : Error.fromJson(json["error"]),
-    );
+  Error error;
 
-    Map<String, dynamic> toJson() => {
-        "error": error == null ? null : error.toJson(),
-    };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'error': error ?? '',
+      };
 }
 
 class Error {
-    int code;
-    String message;
+  Error({
+    this.code = 0,
+    this.message = '',
+  });
 
-    Error({
-        this.code,
-        this.message,
-    });
+  factory Error.fromJson(Map<String, dynamic> json) => Error(
+        code: json['code'] ?? 0,
+        message: json['message'] ?? '',
+      );
 
-    factory Error.fromJson(Map<String, dynamic> json) => new Error(
-        code: json["code"] == null ? null : json["code"],
-        message: json["message"] == null ? null : json["message"],
-    );
+  int code;
+  String message;
 
-    Map<String, dynamic> toJson() => {
-        "code": code == null ? null : code,
-        "message": message == null ? null : message,
-    };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'code': code ?? 0,
+        'message': message ?? '',
+      };
 }

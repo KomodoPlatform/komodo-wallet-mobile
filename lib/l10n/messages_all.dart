@@ -11,13 +11,12 @@ import 'package:intl/src/intl_helpers.dart';
 
 import 'messages_messages.dart' as messages_messages;
 
-typedef Future<dynamic> LibraryLoader();
-Map<String, LibraryLoader> _deferredLibraries = {
-// ignore: unnecessary_new
-  'messages': () => new Future.value(null),
+typedef LibraryLoader = Future<dynamic> Function();
+Map<String, LibraryLoader> _deferredLibraries = <String, LibraryLoader>{
+  'messages': () => Future<dynamic>.value(null),
 };
 
-MessageLookupByLibrary _findExact(localeName) {
+MessageLookupByLibrary _findExact(dynamic localeName) {
   switch (localeName) {
     case 'messages':
       return messages_messages.messages;
@@ -28,22 +27,21 @@ MessageLookupByLibrary _findExact(localeName) {
 
 /// User programs should call this before using [localeName] for messages.
 Future<bool> initializeMessages(String localeName) async {
-  var availableLocale = Intl.verifiedLocale(
-    localeName,
-    (locale) => _deferredLibraries[locale] != null,
-    onFailure: (_) => null);
+  final String availableLocale = Intl.verifiedLocale(
+      localeName, (dynamic locale) => _deferredLibraries[locale] != null,
+      onFailure: (dynamic _) => null);
   if (availableLocale == null) {
     // ignore: unnecessary_new
-    return new Future.value(false);
+    return new Future<bool>.value(false);
   }
-  var lib = _deferredLibraries[availableLocale];
+  final Future<dynamic> Function() lib = _deferredLibraries[availableLocale];
   // ignore: unnecessary_new
-  await (lib == null ? new Future.value(false) : lib());
+  await (lib == null ? new Future<bool>.value(false) : lib());
   // ignore: unnecessary_new
   initializeInternalMessageLookup(() => new CompositeMessageLookup());
   messageLookup.addLocale(availableLocale, _findGeneratedMessagesFor);
   // ignore: unnecessary_new
-  return new Future.value(true);
+  return new Future<bool>.value(true);
 }
 
 bool _messagesExistFor(String locale) {
@@ -54,9 +52,11 @@ bool _messagesExistFor(String locale) {
   }
 }
 
-MessageLookupByLibrary _findGeneratedMessagesFor(locale) {
-  var actualLocale = Intl.verifiedLocale(locale, _messagesExistFor,
-      onFailure: (_) => null);
-  if (actualLocale == null) return null;
+MessageLookupByLibrary _findGeneratedMessagesFor(dynamic locale) {
+  final String actualLocale = Intl.verifiedLocale(locale, _messagesExistFor,
+      onFailure: (dynamic _) => null);
+  if (actualLocale == null) {
+    return null;
+  }
   return _findExact(actualLocale);
 }

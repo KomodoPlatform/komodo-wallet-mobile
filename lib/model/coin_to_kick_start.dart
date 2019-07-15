@@ -9,17 +9,17 @@ CoinToKickStart coinToKickStartFromJson(String str) => CoinToKickStart.fromJson(
 String coinToKickStartToJson(CoinToKickStart data) => json.encode(data.toJson());
 
 class CoinToKickStart {
-    List<String> result;
-
-    CoinToKickStart({
+      CoinToKickStart({
         this.result,
     });
 
-    factory CoinToKickStart.fromJson(Map<String, dynamic> json) => new CoinToKickStart(
-        result: json["result"] == null ? null : new List<String>.from(json["result"].map((x) => x)),
+    factory CoinToKickStart.fromJson(Map<String, dynamic> json) => CoinToKickStart(
+        result: json['result'] ?? <String>[]
     );
 
-    Map<String, dynamic> toJson() => {
-        "result": result == null ? null : new List<dynamic>.from(result.map((x) => x)),
+    List<String> result;
+
+    Map<String, dynamic> toJson() => <String, dynamic>{
+        'result': result ?? <String>[]
     };
 }

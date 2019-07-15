@@ -2,27 +2,27 @@ import 'dart:async';
 
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
-final checkPassphrasePage = CheckPassphrasePage();
+CheckPassphrasePage checkPassphrasePage = CheckPassphrasePage();
 
 class CheckPassphrasePage extends BlocBase {
 
-  String word = "";
+  String word = '';
 
-  StreamController<String> _wordController =
+  final StreamController<String> _wordController =
       StreamController<String>.broadcast();
   Sink<String> get _inWordLogin => _wordController.sink;
   Stream<String> get outWordLogin => _wordController.stream;
 
   bool isWordGood = false;
   
-  StreamController<bool> _isWordGoodController =
+  final StreamController<bool> _isWordGoodController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsWordGoodLogin => _isWordGoodController.sink;
   Stream<bool> get outIsWordGoodLogin => _isWordGoodController.stream;
 
   bool isResetText = false;
   
-  StreamController<bool> _isResetTextController =
+  final StreamController<bool> _isResetTextController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsResetTextLogin => _isResetTextController.sink;
   Stream<bool> get outIsResetTextLogin => _isResetTextController.stream;

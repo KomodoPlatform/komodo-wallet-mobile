@@ -4,24 +4,12 @@
 
 import 'dart:convert';
 
-List<CoinInit> coinInitFromJson(String str) => new List<CoinInit>.from(json.decode(str).map((x) => CoinInit.fromJson(x)));
+List<CoinInit> coinInitFromJson(String str) => List<CoinInit>.from(json.decode(str).map((dynamic x) => CoinInit.fromJson(x)));
 
-String coinInitToJson(List<CoinInit> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
+String coinInitToJson(List<CoinInit> data) => json.encode(List<dynamic>.from(data.map<dynamic>((dynamic x) => x.toJson())));
 
 class CoinInit {
-    String coin;
-    String name;
-    String fname;
-    int rpcport;
-    int pubtype;
-    int p2Shtype;
-    int wiftype;
-    int txfee;
-    int mm2;
-    String asset;
-    String etomic;
-
-    CoinInit({
+      CoinInit({
         this.coin,
         this.name,
         this.fname,
@@ -35,31 +23,43 @@ class CoinInit {
         this.etomic,
     });
 
-    factory CoinInit.fromJson(Map<String, dynamic> json) => new CoinInit(
-        coin: json["coin"],
-        name: json["name"] == null ? null : json["name"],
-        fname: json["fname"] == null ? null : json["fname"],
-        rpcport: json["rpcport"] == null ? null : json["rpcport"],
-        pubtype: json["pubtype"] == null ? null : json["pubtype"],
-        p2Shtype: json["p2shtype"] == null ? null : json["p2shtype"],
-        wiftype: json["wiftype"] == null ? null : json["wiftype"],
-        txfee: json["txfee"] == null ? null : json["txfee"],
-        mm2: json["mm2"] == null ? null : json["mm2"],
-        asset: json["asset"] == null ? null : json["asset"],
-        etomic: json["etomic"] == null ? null : json["etomic"],
+    factory CoinInit.fromJson(Map<String, dynamic> json) => CoinInit(
+        coin: json['coin'] ?? '',
+        name: json['name'] ?? '',
+        fname: json['fname'] ?? '',
+        rpcport: json['rpcport'] ?? 0,
+        pubtype: json['pubtype'] ?? 0,
+        p2Shtype: json['p2shtype'] ?? 0,
+        wiftype: json['wiftype'] ?? 0,
+        txfee: json['txfee'] ?? 0,
+        mm2: json['mm2'] ?? 0,
+        asset: json['asset'] ?? '',
+        etomic: json['etomic'] ?? '',
     );
 
-    Map<String, dynamic> toJson() => {
-        "coin": coin,
-        "name": name == null ? null : name,
-        "fname": fname == null ? null : fname,
-        "rpcport": rpcport == null ? null : rpcport,
-        "pubtype": pubtype == null ? null : pubtype,
-        "p2shtype": p2Shtype == null ? null : p2Shtype,
-        "wiftype": wiftype == null ? null : wiftype,
-        "txfee": txfee == null ? null : txfee,
-        "mm2": mm2 == null ? null : mm2,
-        "asset": asset == null ? null : asset,
-        "etomic": etomic == null ? null : etomic,
+    String coin;
+    String name;
+    String fname;
+    int rpcport;
+    int pubtype;
+    int p2Shtype;
+    int wiftype;
+    int txfee;
+    int mm2;
+    String asset;
+    String etomic;
+
+    Map<String, dynamic> toJson() => <String, dynamic>{
+        'coin': coin,
+        'name': name ?? '',
+        'fname': fname ?? '',
+        'rpcport': rpcport ?? 0,
+        'pubtype': pubtype ?? 0,
+        'p2shtype': p2Shtype ?? 0,
+        'wiftype': wiftype ?? 0,
+        'txfee': txfee ?? 0,
+        'mm2': mm2 ?? 0,
+        'asset': asset ?? '',
+        'etomic': etomic ?? '',
     };
 }
