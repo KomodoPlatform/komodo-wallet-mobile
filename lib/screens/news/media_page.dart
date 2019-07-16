@@ -133,7 +133,7 @@ class _BrowseNewsState extends State<BrowseNews> {
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: const CircularProgressIndicator());
           } else {
-            return Container();
+            return Center(child: Container(child: Text('No news'),));
           }
         });
   }

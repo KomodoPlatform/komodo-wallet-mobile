@@ -30,11 +30,11 @@ class MediaBloc implements BlocBase {
     _articlesSavedController.close();
   }
 
+
   Future<void> getArticles() async {
     final Response response =
-        await http.get('https://genesis.kmd.dev/api/dex/news/all');
-    final List<Article> articlesSaved =
-        await DBProvider.db.getAllArticlesSaved();
+        await http.get('https://composer.kmd.io/api/dex/news/all');
+    final List<Article> articlesSaved = await DBProvider.db.getAllArticlesSaved();
     final List<Article> articles = articleFromJson(response.body);
 
     for (Article article in articles) {

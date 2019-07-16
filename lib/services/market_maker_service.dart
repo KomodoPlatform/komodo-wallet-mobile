@@ -94,9 +94,10 @@ class MarketMakerService {
     final String coinsInitParam = coinInitToJson(await readJsonCoinInit());
 
     final String startParam =
-        '{\'gui\':\'atomicDEX\',\'netid\':9999,\'client\':1,\'userhome\':\'$filesPath\',\'passphrase\':\'$passphrase\',\'rpc_password\':\'$userpass\',\'coins\':$coinsInitParam,\'dbdir\':\'$filesPath\'}';
+        '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"$filesPath\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
 
     final File file =  File('$filesPath/log.txt');
+
     sink = file.openWrite();
 
     if (Platform.isAndroid) {
@@ -146,7 +147,7 @@ class MarketMakerService {
 
   void _onLogsmm2(String log) {
     print(log);
-    sink.write(log.toString() + '\n');
+    sink.write(log + '\n');
     if (log.contains('CONNECTED') ||
         log.contains('Entering the taker_swap_loop') ||
         log.contains('Received \'negotiation') ||
@@ -155,6 +156,7 @@ class MarketMakerService {
         log.contains('Sending \'taker-payment') ||
         log.contains('Finished')) {
       Future<dynamic>.delayed(const Duration(seconds: 1), () {
+
         swapHistoryBloc.updateSwaps(50, null).then((_) {
           ordersBloc.updateOrdersSwaps();
         });
