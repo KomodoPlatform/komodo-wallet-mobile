@@ -14,13 +14,13 @@ class Orders {
   });
 
   factory Orders.fromJson(Map<String, dynamic> json) => Orders(
-        result: json['result'] ?? Result(),
+        result: Result.fromJson(json['result']) ?? Result(),
       );
 
   Result result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result ?? '',
+        'result': result.toJson() ?? '',
       };
 }
 
@@ -31,16 +31,28 @@ class Result {
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        makerOrders: json['maker_orders'] ?? <String, MakerOrder>{},
-        takerOrders: json['taker_orders'] ?? <String, TakerOrder>{},
+        makerOrders: Map<dynamic, dynamic>.from(json['maker_orders']).map(
+                (dynamic k, dynamic v) =>
+                    MapEntry<String, MakerOrder>(k, MakerOrder.fromJson(v))) ??
+            <String, MakerOrder>{},
+        takerOrders: Map<dynamic, dynamic>.from(json['taker_orders']).map(
+                (dynamic k, dynamic v) =>
+                    MapEntry<String, TakerOrder>(k, TakerOrder.fromJson(v))) ??
+            <String, TakerOrder>{},
       );
 
   Map<String, MakerOrder> makerOrders;
   Map<String, TakerOrder> takerOrders;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'maker_orders': makerOrders ?? <String, MakerOrder>{},
-        'taker_orders': takerOrders ?? <String, TakerOrder>{},
+        'maker_orders': Map<dynamic, dynamic>.from(makerOrders)
+                .map<dynamic, dynamic>((dynamic k, dynamic v) =>
+                    MapEntry<String, dynamic>(k, v.toJson())) ??
+            <String, MakerOrder>{},
+        'taker_orders': Map<dynamic, dynamic>.from(takerOrders)
+                .map<dynamic, dynamic>((dynamic k, dynamic v) =>
+                    MapEntry<String, dynamic>(k, v.toJson())) ??
+            <String, TakerOrder>{},
       };
 }
 
@@ -64,12 +76,14 @@ class MakerOrder {
         createdAt: json['created_at'] ?? 0,
         availableAmount: json['available_amount'] ?? '',
         cancellable: json['cancellable'] ?? false,
-        matches: json['matches'] ?? <String, Match>{},
+        matches: Map<String, Match>.from(json['matches']).map<String, Match>((dynamic k,dynamic v) => MapEntry<String, Match>(k, Match.fromJson(v))) ?? <String, Match>{},
         maxBaseVol: json['max_base_vol'] ?? '',
         minBaseVol: json['min_base_vol'] ?? '',
         price: json['price'] ?? '',
         rel: json['rel'] ?? '',
-        startedSwaps: json['started_swaps'] ?? <String>[],
+        startedSwaps: List<String>.from(
+                json['started_swaps'].map<dynamic>((dynamic x) => x)) ??
+            <String>[],
         uuid: json['uuid'] ?? '',
       );
 
@@ -90,12 +104,14 @@ class MakerOrder {
         'created_at': createdAt ?? 0,
         'available_amount': availableAmount ?? '',
         'cancellable': cancellable ?? false,
-        'matches': matches ?? <String, Match>{},
+        'matches':  Map<dynamic, dynamic>.from(matches).map<dynamic, dynamic>((dynamic k,dynamic v) => MapEntry<String, dynamic>(k, v.toJson())) ?? <String, Match>{},
         'max_base_vol': maxBaseVol ?? '',
         'min_base_vol': minBaseVol ?? '',
         'price': price ?? '',
         'rel': rel ?? '',
-        'started_swaps': startedSwaps ?? <String>[],
+        'started_swaps':
+            List<dynamic>.from(startedSwaps.map<dynamic>((dynamic x) => x)) ??
+                <String>[],
         'uuid': uuid ?? '',
       };
 }
@@ -110,11 +126,11 @@ class Match {
   });
 
   factory Match.fromJson(Map<String, dynamic> json) => Match(
-        connect: json['connect'] ?? Connect(),
-        connected: json['connected'] ?? Connect(),
+        connect: Connect.fromJson(json['connect']) ?? Connect(),
+        connected: Connect.fromJson(json['connected']) ?? Connect(),
         lastUpdated: json['last_updated'] ?? 0,
-        request: json['request'] ?? Request(),
-        reserved: json['reserved'] ?? Request(),
+        request: Request.fromJson(json['request']) ?? Request(),
+        reserved: Request.fromJson(json['reserved']) ?? Request(),
       );
 
   Connect connect;
@@ -124,11 +140,11 @@ class Match {
   Request reserved;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'connect': connect ??  Connect(),
-        'connected': connected ?? Connect(),
+        'connect': connect.toJson() ?? Connect(),
+        'connected': connected.toJson() ?? Connect(),
         'last_updated': lastUpdated ?? 0,
-        'request': request ?? Request(),
-        'reserved': reserved ?? Request(),
+        'request': request.toJson() ?? Request(),
+        'reserved': reserved.toJson() ?? Request(),
       };
 }
 
@@ -231,8 +247,8 @@ class TakerOrder {
   factory TakerOrder.fromJson(Map<String, dynamic> json) => TakerOrder(
         createdAt: json['created_at'] ?? 0,
         cancellable: json['cancellable'] ?? false,
-        matches: json['matches'] ?? <String, Match>{},
-        request: json['request'] ?? Request(),
+        matches: Map<String, Match>.from(json['matches']).map<String, Match>((dynamic k,dynamic v) => MapEntry<String, Match>(k, Match.fromJson(v))) ?? <String, Match>{},
+        request: Request.fromJson(json['request'])?? Request(),
       );
 
   int createdAt;
@@ -243,8 +259,8 @@ class TakerOrder {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'created_at': createdAt ?? 0,
         'cancellable': cancellable ?? false,
-        'matches': matches ?? <String, Match>{},
-        'request': request ?? Request(),
+        'matches': Map<dynamic, dynamic>.from(matches).map<dynamic, dynamic>((dynamic k,dynamic v) => MapEntry<String, dynamic>(k, v.toJson())) ?? <String, Match>{},
+        'request': request.toJson() ?? Request(),
       };
 }
 

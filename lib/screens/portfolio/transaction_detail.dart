@@ -47,7 +47,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
               icon: Icon(Icons.open_in_browser),
               onPressed: () {
                 String urlPostTx = 'tx/';
-                if(widget.coinBalance.coin.swapContractAddress != null) {
+                if(widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
                   urlPostTx = 'tx/0x';
                 }
                 _launchURL(widget.coinBalance.coin.explorerUrl[0] +
@@ -92,7 +92,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     child: Center(
                       child: Builder(builder: (BuildContext context) {
                         final String amount =
-                            widget.coinBalance.coin.swapContractAddress != null
+                            widget.coinBalance.coin.swapContractAddress.isNotEmpty
                                 ? replaceAllTrainlingZeroERC(
                                     tx.myBalanceChange.toStringAsFixed(16))
                                 : replaceAllTrainlingZero(
@@ -183,7 +183,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
       fee = widget.transaction.feeDetails.amount.toString();
     }
 
-    if (widget.coinBalance.coin.swapContractAddress != null) {
+    if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
       return fee + ' ETH';
     } else {
       return fee + ' ' + widget.transaction.coin;

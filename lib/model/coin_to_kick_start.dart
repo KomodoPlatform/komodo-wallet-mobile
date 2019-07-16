@@ -14,12 +14,12 @@ class CoinToKickStart {
     });
 
     factory CoinToKickStart.fromJson(Map<String, dynamic> json) => CoinToKickStart(
-        result: json['result'] ?? <String>[]
+        result: List<String>.from(json['result'].map((dynamic x) => x))  ?? <String>[]
     );
 
     List<String> result;
 
     Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result ?? <String>[]
+        'result': List<dynamic>.from(result.map<dynamic>((dynamic x) => x)) ?? <String>[]
     };
 }

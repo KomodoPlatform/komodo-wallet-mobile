@@ -9,7 +9,7 @@ GetEnabledCoin getEnabledCoinFromJson(String str) =>
 
 String getEnabledCoinToJson(GetEnabledCoin data) {
   final Map<String, dynamic> dyn = data.toJson();
-  if (data.swapContractAddress == null) {
+  if (data.swapContractAddress.isEmpty) {
     dyn.remove('swap_contract_address');
   }
   return json.encode(dyn);
@@ -31,7 +31,7 @@ class GetEnabledCoin {
         method: json['method'] ?? '',
         coin: json['coin'] ?? '',
         txHistory: json['tx_history'] ?? false,
-        urls: json['urls'] ?? <String>[],
+        urls: List<String>.from(json['urls'].map((dynamic x) => x)) ?? <String>[],
         swapContractAddress: json['swap_contract_address'] ?? '',
       );
 
@@ -47,7 +47,7 @@ class GetEnabledCoin {
         'method': method ?? '',
         'coin': coin ?? '',
         'tx_history': txHistory ?? false,
-        'urls': urls ?? <String>[],
+        'urls': List<dynamic>.from(urls.map<dynamic>((String x) => x)) ?? <String>[],
         'swap_contract_address': swapContractAddress ?? '',
       };
 }

@@ -317,7 +317,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
               if (tx.result.syncStatus.state == syncState) {
                 String txLeft;
-                if (widget.coinBalance.coin.swapContractAddress != null) {
+                if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
                   txLeft =
                       tx.result.syncStatus.additionalInfo.blocksLeft.toString();
                 } else {
@@ -345,7 +345,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       Expanded(
                         child: Container(),
                       ),
-                      Text(widget.coinBalance.coin.swapContractAddress != null
+                      Text(widget.coinBalance.coin.swapContractAddress.isNotEmpty
                           ? 'Syncing $txLeft TXs'
                           : 'Transactions left $txLeft'),
                     ],
@@ -504,8 +504,7 @@ class _CoinDetailState extends State<CoinDetail> {
                                 left: 16, right: 16, top: 8),
                             child: Builder(builder: (BuildContext context) {
                               final String amount =
-                                  widget.coinBalance.coin.swapContractAddress !=
-                                          null
+                                  widget.coinBalance.coin.swapContractAddress.isNotEmpty
                                       ? replaceAllTrainlingZeroERC(transaction
                                           .myBalanceChange
                                           .toStringAsFixed(16))
@@ -1229,7 +1228,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       if (value.isEmpty) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
                       }
-                      if (widget.coinBalance.coin.swapContractAddress != null) {
+                      if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
                         if (!isAddress(value)) {
                           return AppLocalizations.of(context)
                               .errorNotAValidAddress;

@@ -21,7 +21,7 @@ class GetActiveCoin {
       method: json['method'] ?? '',
       coin: json['coin'] ?? '',
       txHistory: json['tx_history'] ?? false,
-      servers: json['servers'] ?? <Server>[]);
+      servers: List<Server>.from(json['servers'].map<dynamic>((dynamic x) => Server.fromJson(x))) ?? <Server>[]);
   String userpass;
   String method;
   String coin;
@@ -33,7 +33,7 @@ class GetActiveCoin {
         'method': method ?? '',
         'coin': coin ?? '',
         'tx_history': txHistory ?? false,
-        'servers': servers ?? <Server>[]
+        'servers': List<dynamic>.from(servers.map<dynamic>((dynamic x) => x.toJson())) ?? <Server>[]
       };
 }
 

@@ -22,9 +22,9 @@ class Orderbook {
   });
 
   factory Orderbook.fromJson(Map<String, dynamic> json) => Orderbook(
-        bids: json['bids'] ?? <Ask>[],
+        bids: List<Ask>.from(json['bids'].map<dynamic>((dynamic x) => Ask.fromJson(x))) ?? <Ask>[],
         numbids: json['numbids'] ?? 0,
-        asks: json['asks'] ?? <Ask>[],
+        asks: List<Ask>.from(json['asks'].map<dynamic>((dynamic x) => Ask.fromJson(x))) ?? <Ask>[],
         numasks: json['numasks'] ?? 0,
         askdepth: json['askdepth'] ?? 0,
         base: json['base'] ?? '',
@@ -44,9 +44,9 @@ class Orderbook {
   int netid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'bids': bids ?? <Ask>[],
+        'bids': List<dynamic>.from(bids.map<dynamic>((dynamic x) => x.toJson())) ?? <Ask>[],
         'numbids': numbids ?? 0,
-        'asks': asks ?? <Ask>[],
+        'asks': List<dynamic>.from(asks.map<dynamic>((dynamic x) => x.toJson())) ?? <Ask>[],
         'numasks': numasks ?? 0,
         'askdepth': askdepth ?? 0,
         'base': base ?? '',
@@ -70,8 +70,8 @@ class Ask {
   factory Ask.fromJson(Map<String, dynamic> json) => Ask(
         coin: json['coin'] ?? '',
         address: json['address'] ?? '',
-        price: json['price'] ?? 0.0,
-        maxvolume: json['maxvolume'] ?? 0.0,
+        price: json['price'].toDouble() ?? 0.0,
+        maxvolume: json['maxvolume'].toDouble() ?? 0.0,
         pubkey: json['pubkey'] ?? '',
         age: json['age'] ?? 0,
         zcredits: json['zcredits'] ?? 0,

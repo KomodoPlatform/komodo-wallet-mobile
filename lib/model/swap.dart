@@ -30,14 +30,14 @@ class Swap {
   Swap({this.result, this.status});
 
   factory Swap.fromJson(Map<String, dynamic> json) => Swap(
-        result: ResultSwap.fromJson(json['result']),
+        result: ResultSwap.fromJson(json['result']) ?? ResultSwap(),
       );
 
   ResultSwap result;
   Status status;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson(),
+        'result': result.toJson() ?? ResultSwap().toJson(),
       };
 
   int compareToSwap(Swap other) {

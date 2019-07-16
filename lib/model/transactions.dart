@@ -17,13 +17,13 @@ class Transactions {
   });
 
   factory Transactions.fromJson(Map<String, dynamic> json) => Transactions(
-        result: Result.fromJson(json['result']),
+        result: Result.fromJson(json['result']) ?? Result(),
       );
 
   Result result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson(),
+        'result': result.toJson() ?? Result().toJson(),
       };
 }
 
@@ -39,12 +39,12 @@ class Result {
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        fromId: json['from_id'] ?? 0,
+        fromId: json['from_id'],
         limit: json['limit'] ?? 0,
         skipped: json['skipped'] ?? 0,
         total: json['total'] ?? 0,
         currentBlock: json['current_block'] ?? 0,
-        syncStatus: json['sync_status'] ?? SyncStatus(),
+        syncStatus: SyncStatus.fromJson(json['sync_status']) ?? SyncStatus(),
         transactions: List<Transaction>.from(json['transactions']
                 .map((dynamic x) => Transaction.fromJson(x))) ??
             <Transaction>[],
@@ -59,12 +59,12 @@ class Result {
   List<Transaction> transactions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'from_id': fromId ?? 0,
+        'from_id': fromId,
         'current_block': currentBlock ?? 0,
         'limit': limit ?? 0,
         'skipped': skipped ?? 0,
         'total': total ?? 0,
-        'sync_status': syncStatus ?? SyncStatus(),
+        'sync_status': syncStatus.toJson() ?? SyncStatus().toJson(),
         'transactions': List<dynamic>.from(
                 transactions.map<dynamic>((dynamic x) => x.toJson())) ??
             <Transaction>[],

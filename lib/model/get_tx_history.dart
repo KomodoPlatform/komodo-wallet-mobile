@@ -23,7 +23,7 @@ class GetTxHistory {
         method: json['method'] ?? '',
         coin: json['coin'] ?? '',
         limit: json['limit'] ?? 0,
-        fromId: json['from_id'] ?? '',
+        fromId: json['from_id'],
       );
 
   String userpass;
@@ -37,6 +37,6 @@ class GetTxHistory {
         'method': method ?? '',
         'coin': coin ?? '',
         'limit': limit ?? 0,
-        'from_id': fromId ?? '',
+        'from_id': fromId,
       };
 }

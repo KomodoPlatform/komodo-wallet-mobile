@@ -130,7 +130,7 @@ class CoinsBloc implements BlocBase {
     final dynamic transactions = await mm2.getTransactions(coin, limit, fromId);
 
     if (transactions is Transactions) {
-      if (fromId == null) {
+      if (fromId == null || fromId.isEmpty) {
         this.transactions = transactions;
       } else {
         this.transactions.result.fromId = transactions.result.fromId;
@@ -369,8 +369,7 @@ class CoinsBloc implements BlocBase {
       coinBalance = CoinBalance(
           coin, Balance(address: '', balance: '0', coin: coin.abbr));
       coinBalance.priceForOne = price;
-      coinBalance.balanceUSD = coinBalance.priceForOne *
-          double.parse(coinBalance.balance.getBalance());
+      coinBalance.balanceUSD = 0.0;
     }
 
     if (balance is Balance && balance.coin == 'KMD') {

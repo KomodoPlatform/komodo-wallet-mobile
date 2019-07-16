@@ -31,12 +31,14 @@ class WithdrawResponse {
       WithdrawResponse(
         blockHeight: json['block_height'] ?? 0,
         coin: json['coin'] ?? '',
-        feeDetails: json['fee_details'] ?? FeeDetails(),
-        from: json['from'] ?? <String>[],
+        feeDetails: FeeDetails.fromJson(json['fee_details']) ?? FeeDetails(),
+        from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
+            <String>[],
         myBalanceChange: json['my_balance_change'] ?? 0.0,
         receivedByMe: json['received_by_me'] ?? 0.0,
         spentByMe: json['spent_by_me'] ?? 0.0,
-        to: json['to'] ?? <String>[],
+        to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
+            <String>[],
         totalAmount: json['total_amount'] ?? 0.0,
         txHash: json['tx_hash'] ?? '',
         txHex: json['tx_hex'] ?? '',
@@ -57,12 +59,14 @@ class WithdrawResponse {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
-        'fee_details': feeDetails ?? FeeDetails(),
-        'from': from ?? <String>[],
+        'fee_details': feeDetails.toJson() ?? FeeDetails().toJson(),
+        'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
+            <String>[],
         'my_balance_change': myBalanceChange ?? 0.0,
         'received_by_me': receivedByMe ?? 0.0,
         'spent_by_me': spentByMe ?? 0.0,
-        'to': to ?? <String>[],
+        'to':
+            List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
         'total_amount': totalAmount ?? 0.0,
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',

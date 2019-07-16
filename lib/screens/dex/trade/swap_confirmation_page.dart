@@ -319,7 +319,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
               swapBloc.orderCoin.bestPrice, false, false)
           .then((dynamic onValue) =>
               _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
-          .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
+          .catchError((dynamic onError)
+           => _catchErrorSwap(mContext, onError));
     }
   }
 

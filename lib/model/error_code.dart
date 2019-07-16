@@ -14,13 +14,13 @@ class ErrorCode {
   });
 
   factory ErrorCode.fromJson(Map<String, dynamic> json) => ErrorCode(
-        error: json['error'] ?? Error(),
+        error: Error.fromJson(json['error']) ?? Error(),
       );
 
   Error error;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'error': error ?? '',
+        'error': error.toJson() ?? '',
       };
 }
 

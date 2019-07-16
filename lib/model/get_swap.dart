@@ -17,7 +17,7 @@ class GetSwap {
 
   factory GetSwap.fromJson(Map<String, dynamic> json) => GetSwap(
         method: json['method'] ?? '',
-        params: json['params'] ?? Params(),
+        params: Params.fromJson(json['params']) ?? Params(),
         userpass: json['userpass'] ?? '',
       );
 

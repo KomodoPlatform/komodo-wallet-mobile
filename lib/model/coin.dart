@@ -37,8 +37,8 @@ class Coin {
         abbr: json['abbr'] ?? '',
         swapContractAddress: json['swap_contract_address'] ?? '',
         colorCoin: json['colorCoin'] ?? '',
-        serverList: json['serverList'] ?? <String>[],
-        explorerUrl: json['explorerUrl'] ?? <String>[],
+        serverList: List<String>.from(json['serverList'].map((dynamic x) => x)) ?? <String>[],
+        explorerUrl: List<String>.from(json['explorerUrl'].map((dynamic x) => x)) ?? <String>[],
       );
 
   String name;
@@ -66,8 +66,8 @@ class Coin {
         'swap_contract_address':
             swapContractAddress ?? '',
         'colorCoin': colorCoin ?? '',
-        'serverList': serverList ?? <String>[],
-        'explorerUrl': explorerUrl ?? <String>[],
+        'serverList': List<dynamic>.from(serverList.map<String>((dynamic x) => x)) ?? <String>[],
+        'explorerUrl': List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ?? <String>[],
       };
 
   String getTxFeeSatoshi() {

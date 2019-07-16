@@ -8,6 +8,7 @@ List<CoinInit> coinInitFromJson(String str) => List<CoinInit>.from(json.decode(s
 
 String coinInitToJson(List<CoinInit> data) => json.encode(List<dynamic>.from(data.map<dynamic>((dynamic x) => x.toJson())));
 
+
 class CoinInit {
       CoinInit({
         this.coin,
@@ -34,7 +35,7 @@ class CoinInit {
         txfee: json['txfee'] ?? 0,
         mm2: json['mm2'] ?? 0,
         asset: json['asset'] ?? '',
-        etomic: json['etomic'] ?? '',
+        etomic: json['etomic'],
     );
 
     String coin;
@@ -60,6 +61,6 @@ class CoinInit {
         'txfee': txfee ?? 0,
         'mm2': mm2 ?? 0,
         'asset': asset ?? '',
-        'etomic': etomic ?? '',
+        'etomic': etomic,
     };
 }

@@ -19,7 +19,7 @@ class GetRecentSwap {
     factory GetRecentSwap.fromJson(Map<String, dynamic> json) => GetRecentSwap(
         userpass: json['userpass'] ?? '',
         method: json['method'] ?? '',
-        fromUuid: json['from_uuid'] ?? '',
+        fromUuid: json['from_uuid'],
         limit: json['limit'] ?? 0,
     );
 
@@ -31,7 +31,7 @@ class GetRecentSwap {
     Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',
         'method': method ?? '',
-        'from_uuid': fromUuid ?? '',
+        'from_uuid': fromUuid,
         'limit': limit ?? 0,
     };
 }

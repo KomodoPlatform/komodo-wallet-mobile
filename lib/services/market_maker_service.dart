@@ -396,7 +396,7 @@ class MarketMakerService {
         fromId: fromId);
     print(json.encode(getTxHistory));
     print(url);
-    final Response response = await http.post(url, body: json.encode(getTxHistory));
+    final Response response = await http.post(url, body: getTxHistoryToJson(getTxHistory));
     print('RESULT: ' + response.body.toString());
     try {
       return transactionsFromJson(response.body);
@@ -499,7 +499,7 @@ class MarketMakerService {
     Response response;
 
     try {
-      if (coin.swapContractAddress != null) {
+      if (coin.swapContractAddress.isNotEmpty) {
         getActiveCoin =  GetEnabledCoin(
             userpass: userpass,
             method: 'enable',
@@ -523,7 +523,7 @@ class MarketMakerService {
       }
 
       print('response Active Coin: ' + response.body.toString());
-
+      
       if (activeCoinFromJson(response.body).result != null) {
         return activeCoinFromJson(response.body);
       } else {

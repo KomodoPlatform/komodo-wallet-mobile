@@ -15,13 +15,13 @@ class BuyResponse {
   });
 
   factory BuyResponse.fromJson(Map<String, dynamic> json) => BuyResponse(
-        result: json['result'] ?? Result(),
+        result: Result.fromJson(json['result']) ?? Result(),
       );
 
   Result result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result ?? Result(),
+        'result': result.toJson() ?? Result(),
       };
 }
 
