@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
@@ -10,6 +11,16 @@ import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PinPage extends StatefulWidget {
+  const PinPage(
+      {this.firstCreationPin,
+      this.title,
+      this.subTitle,
+      this.isConfirmPin,
+      this.isFromChangingPin,
+      this.password,
+      this.onSuccess,
+      this.code});
+
   final bool firstCreationPin;
   @required
   final String title;
@@ -24,20 +35,10 @@ class PinPage extends StatefulWidget {
 
   @override
   _PinPageState createState() => _PinPageState();
-
-  const PinPage(
-      {this.firstCreationPin,
-      this.title,
-      this.subTitle,
-      this.isConfirmPin,
-      this.isFromChangingPin,
-      this.password,
-      this.onSuccess,
-      this.code});
 }
 
 class _PinPageState extends State<PinPage> {
-  String _error = "";
+  String _error = '';
   bool isLoading = false;
 
   @override
@@ -48,6 +49,7 @@ class _PinPageState extends State<PinPage> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -55,7 +57,7 @@ class _PinPageState extends State<PinPage> {
         body: !isLoading
             ? Stack(
                 children: <Widget>[
-                  new PinCode(
+                  PinCode(
                     obscurePin: true,
                     title: Text(
                       widget.title,
@@ -70,54 +72,58 @@ class _PinPageState extends State<PinPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                     codeLength: 6,
-                    onCodeEntered: (code) async {
-                      SharedPreferences prefs =
+                    onCodeEntered: (dynamic code) async {
+                      final SharedPreferences prefs =
                           await SharedPreferences.getInstance();
 
                       switch (widget.isConfirmPin) {
                         case PinStatus.CREATE_PIN:
-                          await prefs.setString("pin_create", code);
-                          MaterialPageRoute materialPage = MaterialPageRoute(
-                              builder: (context) => PinPage(
-                                    title:
-                                        AppLocalizations.of(context).confirmPin,
-                                    subTitle: AppLocalizations.of(context)
-                                        .enterPinCode,
-                                    code: code,
-                                    isConfirmPin: PinStatus.CONFIRM_PIN,
-                                    password: widget.password,
-                                    isFromChangingPin: widget.isFromChangingPin,
-                                  ));
+                          await prefs.setString('pin_create', code);
+                          final MaterialPageRoute<dynamic> materialPage =
+                              MaterialPageRoute<dynamic>(
+                                  builder: (BuildContext context) => PinPage(
+                                        title: AppLocalizations.of(context)
+                                            .confirmPin,
+                                        subTitle: AppLocalizations.of(context)
+                                            .enterPinCode,
+                                        code: code,
+                                        isConfirmPin: PinStatus.CONFIRM_PIN,
+                                        password: widget.password,
+                                        isFromChangingPin:
+                                            widget.isFromChangingPin,
+                                      ));
 
                           if (widget.firstCreationPin != null &&
                               widget.firstCreationPin) {
-                            Navigator.push(context, materialPage);
+                            Navigator.push<dynamic>(context, materialPage);
                           } else {
-                            Navigator.pushReplacement(context, materialPage);
+                            Navigator.pushReplacement<dynamic, dynamic>(
+                                context, materialPage);
                           }
                           break;
                         case PinStatus.CONFIRM_PIN:
                           if (prefs.getString('pin_create') ==
                               code.toString()) {
-                            var wallet = await DBProvider.db.getCurrentWallet();
+                            final Wallet wallet =
+                                await DBProvider.db.getCurrentWallet();
                             setState(() {
                               isLoading = true;
                             });
                             if (wallet != null) {
-                              await new EncryptionTool().writeData(
+                              await EncryptionTool().writeData(
                                   KeyEncryption.PIN,
                                   wallet,
                                   widget.password,
                                   code.toString());
                             }
 
-                            await new EncryptionTool()
-                                .write("pin", code.toString());
+                            await EncryptionTool()
+                                .write('pin', code.toString());
                             authBloc.showPin(false);
                             authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
                             if (!widget.isFromChangingPin)
                               await authBloc.login(
-                                  await new EncryptionTool().read("passphrase"),
+                                  await EncryptionTool().read('passphrase'),
                                   widget.password);
                             Navigator.pop(context);
                             setState(() {
@@ -132,7 +138,7 @@ class _PinPageState extends State<PinPage> {
                             authBloc.showPin(false);
                             if (!mm2.ismm2Running) {
                               await authBloc.login(
-                                  await new EncryptionTool().read("passphrase"),
+                                  await EncryptionTool().read('passphrase'),
                                   null);
                             }
                             if (widget.onSuccess != null) {
@@ -144,8 +150,9 @@ class _PinPageState extends State<PinPage> {
                           break;
                         case PinStatus.DISABLED_PIN:
                           if (await _isPinCorrect(code)) {
-                            SharedPreferences.getInstance().then((data) {
-                              data.setBool("switch_pin", false);
+                            SharedPreferences.getInstance()
+                                .then((SharedPreferences data) {
+                              data.setBool('switch_pin', false);
                             });
                             Navigator.pop(context);
                           } else {
@@ -154,8 +161,9 @@ class _PinPageState extends State<PinPage> {
                           break;
                         case PinStatus.DISABLED_PIN_BIOMETRIC:
                           if (await _isPinCorrect(code)) {
-                            SharedPreferences.getInstance().then((data) {
-                              data.setBool("switch_pin_biometric", false);
+                            SharedPreferences.getInstance()
+                                .then((SharedPreferences data) {
+                              data.setBool('switch_pin_biometric', false);
                             });
                             Navigator.pop(context);
                           } else {
@@ -164,10 +172,10 @@ class _PinPageState extends State<PinPage> {
                           break;
                         case PinStatus.CHANGE_PIN:
                           if (await _isPinCorrect(code)) {
-                            Navigator.pushReplacement(
+                            Navigator.pushReplacement<dynamic, dynamic>(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => PinPage(
+                                MaterialPageRoute<dynamic>(
+                                    builder: (BuildContext context) => PinPage(
                                           title: AppLocalizations.of(context)
                                               .createPin,
                                           subTitle: AppLocalizations.of(context)
@@ -207,28 +215,28 @@ class _PinPageState extends State<PinPage> {
             : _buildLoading());
   }
 
-  _buildLoading() {
+  Widget _buildLoading() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: const <Widget>[
           CircularProgressIndicator(),
           SizedBox(
             height: 8,
           ),
-          Text("Configuring your wallet, please wait...")
+          Text('Configuring your wallet, please wait...')
         ],
       ),
     );
   }
 
-  _errorPin() {
+  void _errorPin() {
     setState(() {
       _error = AppLocalizations.of(context).errorTryAgain;
     });
   }
 
   Future<bool> _isPinCorrect(String code) async {
-    return await new EncryptionTool().read("pin") == code.toString();
+    return await EncryptionTool().read('pin') == code.toString();
   }
 }

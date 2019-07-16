@@ -9,29 +9,29 @@ GetRecentSwap getRecentSwapFromJson(String str) => GetRecentSwap.fromJson(json.d
 String getRecentSwapToJson(GetRecentSwap data) => json.encode(data.toJson());
 
 class GetRecentSwap {
-    String userpass;
-    String method;
-    String fromUuid;
-    int limit;
-
-    GetRecentSwap({
+      GetRecentSwap({
         this.userpass,
         this.method,
         this.fromUuid,
         this.limit,
     });
 
-    factory GetRecentSwap.fromJson(Map<String, dynamic> json) => new GetRecentSwap(
-        userpass: json["userpass"] == null ? null : json["userpass"],
-        method: json["method"] == null ? null : json["method"],
-        fromUuid: json["from_uuid"] == null ? null : json["from_uuid"],
-        limit: json["limit"] == null ? null : json["limit"],
+    factory GetRecentSwap.fromJson(Map<String, dynamic> json) => GetRecentSwap(
+        userpass: json['userpass'] ?? '',
+        method: json['method'] ?? '',
+        fromUuid: json['from_uuid'] ?? '',
+        limit: json['limit'] ?? 0,
     );
 
-    Map<String, dynamic> toJson() => {
-        "userpass": userpass == null ? null : userpass,
-        "method": method == null ? null : method,
-        "from_uuid": fromUuid == null ? null : fromUuid,
-        "limit": limit == null ? null : limit,
+    String userpass;
+    String method;
+    String fromUuid;
+    int limit;
+    
+    Map<String, dynamic> toJson() => <String, dynamic>{
+        'userpass': userpass ?? '',
+        'method': method ?? '',
+        'from_uuid': fromUuid ?? '',
+        'limit': limit ?? 0,
     };
 }

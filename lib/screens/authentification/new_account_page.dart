@@ -11,7 +11,7 @@ class NewAccountPage extends StatefulWidget {
 }
 
 class _NewAccountPageState extends State<NewAccountPage> {
-  String seed = "";
+  String seed = '';
 
   @override
   void initState() {
@@ -37,10 +37,10 @@ class _NewAccountPageState extends State<NewAccountPage> {
         ));
   }
 
-  _buildTitle() {
+  Widget _buildTitle() {
     return Column(
       children: <Widget>[
-        SizedBox(
+        const SizedBox(
           height: 56,
         ),
         Text(
@@ -48,21 +48,21 @@ class _NewAccountPageState extends State<NewAccountPage> {
           style: Theme.of(context).textTheme.title,
           textAlign: TextAlign.center,
         ),
-        SizedBox(
+        const SizedBox(
           height: 56,
         ),
       ],
     );
   }
 
-  _buildSeedGenerator() {
+  Widget _buildSeedGenerator() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               color: Colors.red.withOpacity(0.15),
               border: Border.all(color: Colors.red)),
           padding: const EdgeInsets.all(8.0),
@@ -70,7 +70,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
           child: Row(
             children: <Widget>[
               InkWell(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Icon(
@@ -84,7 +84,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                   });
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 width: 6,
               ),
               Expanded(
@@ -96,13 +96,13 @@ class _NewAccountPageState extends State<NewAccountPage> {
                     .copyWith(color: Colors.red),
                 textAlign: TextAlign.center,
               )),
-              SizedBox(
+              const SizedBox(
                 width: 6,
               ),
               InkWell(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                   onTap: () {
-                    Clipboard.setData(new ClipboardData(text: seed));
+                    Clipboard.setData(ClipboardData(text: seed));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -118,19 +118,19 @@ class _NewAccountPageState extends State<NewAccountPage> {
     );
   }
 
-  _buildWarningSaveSeed() {
+  Widget _buildWarningSaveSeed() {
     return Padding(
       padding: const EdgeInsets.all(32.0),
       child: Row(
         children: <Widget>[
           ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
             child: Container(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
+                  colors: <Color>[
                     Colors.pink,
                     Colors.red.withOpacity(0.4),
                   ],
@@ -144,7 +144,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                   ),
                 )),
           ),
-          SizedBox(
+          const SizedBox(
             width: 16,
           ),
           Expanded(
@@ -158,7 +158,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                       .body1
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 6,
                 ),
                 Text(
@@ -173,7 +173,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
     );
   }
 
-  _buildNextButton() {
+  Widget _buildNextButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       child: Container(
@@ -182,9 +182,9 @@ class _NewAccountPageState extends State<NewAccountPage> {
         child: PrimaryButton(
           text: AppLocalizations.of(context).next,
             onPressed: () {
-            Navigator.push(
+            Navigator.push<dynamic>(
               context,
-              MaterialPageRoute(builder: (context) => CheckPassphrasePage(seed: seed,)),
+              MaterialPageRoute<dynamic>(builder: (BuildContext context) => CheckPassphrasePage(seed: seed,)),
             );
           },
         )

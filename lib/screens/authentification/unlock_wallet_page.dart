@@ -7,23 +7,23 @@ import 'package:komodo_dex/screens/settings/restore_seed_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class UnlockWalletPage extends StatefulWidget {
-  final Wallet wallet;
-  final Function(String seed, String password) onSuccess;
-  final bool isSignWithSeedIsEnabled;
-  final String textButton;
-
-  UnlockWalletPage(
+  const UnlockWalletPage(
       {@required this.wallet,
       this.onSuccess,
       this.isSignWithSeedIsEnabled = true,
       @required this.textButton});
+
+  final Wallet wallet;
+  final Function(String seed, String password) onSuccess;
+  final bool isSignWithSeedIsEnabled;
+  final String textButton;
 
   @override
   _UnlockWalletPageState createState() => _UnlockWalletPageState();
 }
 
 class _UnlockWalletPageState extends State<UnlockWalletPage> {
-  TextEditingController controller = new TextEditingController();
+  TextEditingController controller = TextEditingController();
   bool isLoading = false;
   bool isButtonLoginEnabled = false;
   bool isObscured = true;
@@ -41,29 +41,29 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
         children: <Widget>[
           Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(150)),
+              borderRadius: const BorderRadius.all(Radius.circular(150)),
               child: Container(
                 color: Theme.of(context).primaryColor,
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
-                  child: SvgPicture.asset("assets/lock.svg",
+                  child: SvgPicture.asset('assets/lock.svg',
                       semanticsLabel: 'Lock'),
                 ),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Center(
             child: Text(
-              "UNLOCK",
+              'UNLOCK',
               style: Theme.of(context).textTheme.title.copyWith(fontSize: 48),
             ),
           ),
           Center(
             child: Text(
-              "your wallet",
+              'your wallet',
               style: Theme.of(context)
                   .textTheme
                   .body1
@@ -73,7 +73,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
-              child: Builder(builder: (context) {
+              child: Builder(builder: (BuildContext context) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -81,8 +81,8 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       child: TextField(
                           maxLength: 40,
                           controller: controller,
-                          onChanged: (str) {
-                            if (str.length == 0 || str.length > 40) {
+                          onChanged: (String str) {
+                            if (str.isEmpty || str.length > 40) {
                               setState(() {
                                 isButtonLoginEnabled = false;
                               });
@@ -92,7 +92,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                               });
                             }
                           },
-                          onSubmitted: (data) {
+                          onSubmitted: (String data) {
                             _login(context);
                           },
                           autocorrect: false,
@@ -114,7 +114,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                                   .hintEnterPassword,
                               labelText: null)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     InkWell(
@@ -125,7 +125,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       },
                       child: Container(
                           height: 60,
-                          padding: EdgeInsets.only(right: 16, left: 16),
+                          padding: const EdgeInsets.only(right: 16, left: 16),
                           child: isObscured
                               ? Icon(Icons.visibility)
                               : Icon(Icons.visibility_off)),
@@ -143,10 +143,10 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                         Container(
                             height: 52,
                             child: Center(
-                              child: CircularProgressIndicator(),
+                              child: const CircularProgressIndicator(),
                             )),
                         isLoading
-                            ? SizedBox(
+                            ? const SizedBox(
                                 height: 8,
                               )
                             : Container(),
@@ -172,12 +172,12 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
                       onTap: () {
-                        Navigator.push(
+                        Navigator.push<dynamic>(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => RestoreSeedPage()),
+                          MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => RestoreSeedPage()),
                         );
                       },
                       child: Padding(
@@ -193,7 +193,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   ),
                 )
               : Container(),
-          SizedBox(
+          const SizedBox(
             height: 16,
           )
         ],
@@ -201,26 +201,26 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
     );
   }
 
-  _login(BuildContext context) async {
+  Future<void>_login(BuildContext context) async {
     setState(() {
       isLoading = true;
     });
 
     walletBloc
         .loginWithPassword(context, controller.text, widget.wallet)
-        .then((data) async {
+        .then((String data) async {
       await widget.onSuccess(data, controller.text);
       setState(() {
         isLoading = false;
       });
-    }).catchError((onError) {
-      Scaffold.of(context).showSnackBar(new SnackBar(
+    }).catchError((dynamic onError) {
+      Scaffold.of(context).showSnackBar(SnackBar(
         duration: Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,
-        content: new Text(onError),
+        content: Text(onError),
       ));
     }).whenComplete(() {
-      if (this.mounted) {
+      if (mounted) {
         setState(() {
           isLoading = false;
         });

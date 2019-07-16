@@ -19,7 +19,7 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
   TabController _controllerTabs;
   @override
   void initState() {
-    _controllerTabs = new TabController(length: 2, vsync: this);
+    _controllerTabs = TabController(length: 2, vsync: this);
     _controllerTabs.addListener(_getIndex);
     mediaBloc.getArticles();
     mediaBloc.getArticlesSaved();
@@ -32,7 +32,7 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  _getIndex() {
+  void _getIndex() {
     print(_controllerTabs.index);
   }
 
@@ -47,19 +47,19 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
           style: Theme.of(context).textTheme.subtitle,
         )),
         bottom: PreferredSize(
-          preferredSize: new Size(200.0, 70.0),
+          preferredSize:  const Size(200.0, 70.0),
           child: Container(
             width: 200.0,
             height: 70,
-            padding: EdgeInsets.only(bottom: 16, top: 16),
+            padding: const EdgeInsets.only(bottom: 16, top: 16),
             child: Container(
               height: 46,
-              decoration: new BoxDecoration(
+              decoration:  BoxDecoration(
                   shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(32)),
-                  border: new Border.all(color: Colors.grey, width: 1)),
+                  borderRadius: const BorderRadius.all(Radius.circular(32)),
+                  border:  Border.all(color: Colors.grey, width: 1)),
               child: TabBar(
-                labelPadding: EdgeInsets.symmetric(horizontal: 16),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 16),
                 indicator: CustomTabIndicator(context: context),
                 controller: _controllerTabs,
                 tabs: <Widget>[
@@ -93,11 +93,11 @@ class _BrowseNewsState extends State<BrowseNews> {
     return StreamBuilder<List<Article>>(
         stream: mediaBloc.outArticles,
         initialData: mediaBloc.articles,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data.length > 0) {
-            List<Article> articles = snapshot.data;
+        builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+            final List<Article> articles = snapshot.data;
 
-            if (articles.length == 0) {
+            if (articles.isEmpty) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -106,7 +106,7 @@ class _BrowseNewsState extends State<BrowseNews> {
                     color: Colors.grey,
                     size: 48,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Text(
@@ -131,20 +131,20 @@ class _BrowseNewsState extends State<BrowseNews> {
             );
           
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: const CircularProgressIndicator());
           } else {
             return Container();
           }
         });
   }
 
-  _buildHeader(Article article) {
+  Widget _buildHeader(Article article) {
     return InkWell(
       onTap: () {
-        Navigator.push(
+        Navigator.push<dynamic>(
           context,
-          MaterialPageRoute(
-              builder: (context) => MediaDetailPage(
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => MediaDetailPage(
                     article: article,
                   )),
         );
@@ -193,28 +193,29 @@ class _BrowseNewsState extends State<BrowseNews> {
 }
 
 class ArticleItem extends StatefulWidget {
+  const ArticleItem({this.article, this.savedArticle});
+
   final Article article;
   final bool savedArticle;
 
-  ArticleItem({this.article, this.savedArticle});
 
   @override
   _ArticleItemState createState() => _ArticleItemState();
 }
 
 class _ArticleItemState extends State<ArticleItem> {
-  var _heightCard = 130.0;
+  final double _heightCard = 130.0;
 
   @override
   Widget build(BuildContext context) {
-    Article article = widget.article;
+    final Article article = widget.article;
 
     return InkWell(
       onTap: () {
-        Navigator.push(
+        Navigator.push<dynamic>(
           context,
-          MaterialPageRoute(
-              builder: (context) => MediaDetailPage(
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => MediaDetailPage(
                     article: article,
                   )),
         );
@@ -236,7 +237,7 @@ class _ArticleItemState extends State<ArticleItem> {
                   Expanded(
                     child: Container(
                       height: _heightCard,
-                      padding: EdgeInsets.only(left: 16),
+                      padding: const EdgeInsets.only(left: 16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,10 +285,11 @@ class _ArticleItemState extends State<ArticleItem> {
 }
 
 class IconsArticle extends StatefulWidget {
+  const IconsArticle({this.article, this.savedArticle});
+
   final Article article;
   final bool savedArticle;
 
-  IconsArticle({this.article, this.savedArticle});
 
   @override
   _IconsArticleState createState() => _IconsArticleState();
@@ -299,7 +301,7 @@ class _IconsArticleState extends State<IconsArticle> {
     return Row(
       children: <Widget>[
         InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(2)),
+          borderRadius: const BorderRadius.all(Radius.circular(2)),
           child: Icon(
             widget.article.isSavedArticle
                 ? Icons.bookmark
@@ -324,11 +326,11 @@ class _IconsArticleState extends State<IconsArticle> {
             }
           },
         ),
-        SizedBox(
+        const SizedBox(
           width: 8,
         ),
         InkWell(
-            borderRadius: BorderRadius.all(Radius.circular(2)),
+            borderRadius: const BorderRadius.all(Radius.circular(2)),
             onTap: () {
               Share.share(
                   '${AppLocalizations.of(context).articleFrom}:\n\n${widget.article.title}\nBy ${widget.article.author}\n${timeago.format(widget.article.creationDate)}\n\n${widget.article.body}');
@@ -340,18 +342,19 @@ class _IconsArticleState extends State<IconsArticle> {
 }
 
 class SavedNews extends StatelessWidget {
+  const SavedNews({this.tabController});
+
   final TabController tabController;
 
-  SavedNews({this.tabController});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Article>>(
         stream: mediaBloc.outArticlesSaved,
         initialData: mediaBloc.articlesSaved,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data.length > 0) {
-            List<Article> articles = snapshot.data;
+        builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+            final List<Article> articles = snapshot.data;
             return ListView.builder(
               itemCount: articles.length,
               itemBuilder: (BuildContext context, int index) {
@@ -359,12 +362,12 @@ class SavedNews extends StatelessWidget {
                     article: articles[index], savedArticle: true);
               },
             );
-          } else if (snapshot.hasData && snapshot.data.length == 0) {
+          } else if (snapshot.hasData && snapshot.data.isEmpty) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SvgPicture.asset("assets/icon_not_saved.svg"),
-                SizedBox(
+                SvgPicture.asset('assets/icon_not_saved.svg'),
+                const SizedBox(
                   height: 16,
                 ),
                 Text(
@@ -372,11 +375,11 @@ class SavedNews extends StatelessWidget {
                   style: Theme.of(context).textTheme.title,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 32,
                 ),
                 RaisedButton(
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32.0)),
                   color: Theme.of(context).accentColor,
@@ -395,7 +398,7 @@ class SavedNews extends StatelessWidget {
               ],
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: const CircularProgressIndicator());
           }
         });
   }

@@ -1,16 +1,6 @@
 import 'package:komodo_dex/model/swap.dart';
 
 class Order {
-  String base;
-  String baseAmount;
-  String rel;
-  OrderType orderType;
-  String relAmount;
-  String uuid;
-  int createdAt;
-  bool cancelable;
-  List<String> startedSwaps;
-
   Order(
       {this.base,
       this.orderType,
@@ -22,9 +12,21 @@ class Order {
       this.createdAt,
       this.cancelable});
 
+  String base;
+  String baseAmount;
+  String rel;
+  OrderType orderType;
+  String relAmount;
+  String uuid;
+  int createdAt;
+  bool cancelable;
+  List<String> startedSwaps;
+
   int compareToOrder(Order other) {
     int order = other.createdAt.compareTo(createdAt);
-    if (order == 0) order = (createdAt ~/ 1000).compareTo(other.createdAt);
+    if (order == 0) {
+      order = (createdAt ~/ 1000).compareTo(other.createdAt);
+    }
     return order;
   }
 

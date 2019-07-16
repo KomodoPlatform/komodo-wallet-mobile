@@ -17,27 +17,27 @@ enum Status {
 }
 
 Swap swapFromJson(String str) {
-  final jsonData = json.decode(str);
+  final dynamic jsonData = json.decode(str);
   return Swap.fromJson(jsonData);
 }
 
 String swapToJson(Swap data) {
-  final dyn = data.toJson();
+  final Map<String, dynamic> dyn = data.toJson();
   return json.encode(dyn);
 }
 
 class Swap {
+  Swap({this.result, this.status});
+
+  factory Swap.fromJson(Map<String, dynamic> json) => Swap(
+        result: ResultSwap.fromJson(json['result']),
+      );
+
   ResultSwap result;
   Status status;
 
-  Swap({this.result, this.status});
-
-  factory Swap.fromJson(Map<String, dynamic> json) => new Swap(
-        result: ResultSwap.fromJson(json["result"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "result": result.toJson(),
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'result': result.toJson(),
       };
 
   int compareToSwap(Swap other) {

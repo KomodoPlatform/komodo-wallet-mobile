@@ -18,14 +18,14 @@ class MediaDetailPage extends StatefulWidget {
 class _MediaDetailPageState extends State<MediaDetailPage> {
   @override
   Widget build(BuildContext context) {
-    TextStyle body2Light = Theme.of(context)
+    final TextStyle body2Light = Theme.of(context)
         .textTheme
         .body1
         .copyWith(color: Colors.black.withOpacity(0.7), fontSize: 14);
-    String splitText1 =
-        widget.article.body.substring(0, (widget.article.body.length ~/ 2));
-    String splitText2 =
-        widget.article.body.substring((widget.article.body.length ~/ 2));
+    final String splitText1 =
+        widget.article.body.substring(0, widget.article.body.length ~/ 2);
+    final String splitText2 =
+        widget.article.body.substring(widget.article.body.length ~/ 2);
 
     return LockScreen(
       child: Scaffold(
@@ -36,13 +36,13 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
             style: Theme.of(context).textTheme.subtitle,
           ),
           bottom: PreferredSize(
-            preferredSize: new Size(0.0, 36.0),
+            preferredSize: Size(0.0, 36.0),
             child: Container(
               height: 36,
               color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   Text(
@@ -69,7 +69,7 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
             Container(
               height: 250,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(0.0)),
                 child: Image.network(
                   widget.article.media[0],
                   fit: BoxFit.contain,
@@ -94,12 +94,12 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
                 style: body2Light,
               ),
             ),
-            Builder(builder: (context) {
+            Builder(builder: (BuildContext context) {
               if (widget.article.media.length > 1) {
-                List<Widget> medias = widget.article.media.map((i) {
+                final List<Widget> medias = widget.article.media.map((String i) {
                     return Container(
                       child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                        borderRadius: const BorderRadius.all(Radius.circular(0.0)),
                         child: Image.network(
                           i,
                           fit: BoxFit.contain,

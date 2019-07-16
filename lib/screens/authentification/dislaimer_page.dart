@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
+import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/localizations.dart';
 
 class DislaimerPage extends StatefulWidget {
-  final String password;
-  final bool isFastEncrypted;
-  final String seed;
-  final Function onSuccess;
-  final bool readOnly;
 
   const DislaimerPage(
       {Key key,
@@ -22,13 +18,19 @@ class DislaimerPage extends StatefulWidget {
       this.onSuccess,
       this.readOnly = false})
       : super(key: key);
+  final String password;
+  final bool isFastEncrypted;
+  final String seed;
+  final Function onSuccess;
+  final bool readOnly;
+
 
   @override
   _DislaimerPageState createState() => _DislaimerPageState();
 }
 
 class _DislaimerPageState extends State<DislaimerPage> {
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController =  ScrollController();
   bool isEndOfScroll = false;
   bool isLoading = false;
   bool _checkBoxEULA = false;
@@ -49,7 +51,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<TextSpan> disclaimerToS = [
+    final List<TextSpan> disclaimerToS = <TextSpan>[
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle1,
           style: Theme.of(context).textTheme.title),
@@ -258,7 +260,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
                       isLoading: isLoading,
                     ),
                     isLoading
-                        ? SizedBox(
+                        ? const SizedBox(
                             height: 8,
                           )
                         : Container(),
@@ -276,7 +278,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
         ));
   }
 
-  _nextPage() async {
+  Future<void> _nextPage() async {
     if (widget.readOnly) {
       Navigator.of(context).pop();
     } else {
@@ -284,8 +286,8 @@ class _DislaimerPageState extends State<DislaimerPage> {
         isLoading = true;
       });
 
-      var entryptionTool = new EncryptionTool();
-      var wallet = walletBloc.currentWallet;
+      final EncryptionTool entryptionTool =  EncryptionTool();
+      final Wallet wallet = walletBloc.currentWallet;
       wallet.isFastEncryption = widget.isFastEncrypted;
       walletBloc.currentWallet = wallet;
 
@@ -297,7 +299,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
 
       await authBloc
           .loginUI(true, widget.seed, widget.password)
-          .then((onValue) {
+          .then((_) {
         setState(() {
           isLoading = false;
         });
