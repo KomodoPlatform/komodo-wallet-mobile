@@ -94,7 +94,7 @@ class MarketMakerService {
     String startParam =
         '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"$filesPath\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
 
-    var file = new File('${filesPath}log.txt');
+    var file = new File('$filesPath/log.txt');
     sink = file.openWrite();
 
     if (Platform.isAndroid) {
@@ -144,6 +144,7 @@ class MarketMakerService {
 
   void _onLogsmm2(String log) {
     print(log);
+    sink.write(log + "\n");
     if (log.contains("CONNECTED") ||
         log.contains("Entering the taker_swap_loop") ||
         log.contains("Received 'negotiation") ||
@@ -160,7 +161,6 @@ class MarketMakerService {
   }
 
   void _onEvent(Object event) {
-    sink.write(event.toString() + "\n");
     _onLogsmm2(event);
   }
 
