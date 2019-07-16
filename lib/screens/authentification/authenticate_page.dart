@@ -285,7 +285,7 @@ class _CreateWalletButtonState extends State<CreateWalletButton> {
       onPressed: () {
         Navigator.push<dynamic>(
           context,
-          MaterialPageRoute<dynamic>(builder: (BuildContext context) => WelcomePage()),
+          MaterialPageRoute<dynamic>(builder: (BuildContext context) => const WelcomePage()),
         );
       },
     );
@@ -307,7 +307,7 @@ class _RestoreButtonState extends State<RestoreButton> {
         Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => WelcomePage(
+              builder: (BuildContext context) => const WelcomePage(
                     isFromRestore: true,
                   )),
         );

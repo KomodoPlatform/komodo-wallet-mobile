@@ -338,7 +338,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
     }
     Scaffold.of(mContext).showSnackBar(SnackBar(
-      duration: Duration(seconds: 4),
+      duration: const Duration(seconds: 4),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(errorDisplay),
     ));
@@ -354,8 +354,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         Navigator.pushReplacement<dynamic, dynamic>(
           context,
           MaterialPageRoute<dynamic>(
-              builder: (context) => SwapDetailPage(
-                    swap: new Swap(
+              builder: (BuildContext context) => SwapDetailPage(
+                    swap: Swap(
                         status: Status.ORDER_MATCHING,
                         result: ResultSwap(
                           uuid: onValue.result.uuid,

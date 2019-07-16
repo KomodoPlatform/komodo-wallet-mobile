@@ -27,11 +27,11 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  String version = "";
+  String version = '';
 
   @override
   void initState() {
-    _getVersionApplication().then((onValue) {
+    _getVersionApplication().then((String onValue) {
       setState(() {
         version = onValue;
       });
@@ -60,21 +60,21 @@ class _SettingPageState extends State<SettingPage> {
             children: <Widget>[
               _buildTitle(AppLocalizations.of(context).logoutsettings),
               _buildLogout(),
-              SizedBox(
+              const SizedBox(
                 height: 1,
               ),
               _buildLogOutOnExit(),
               _buildTitle(AppLocalizations.of(context).security),
               _buildActivatePIN(),
-              SizedBox(
+              const SizedBox(
                 height: 1,
               ),
               _buildActivateBiometric(),
-              SizedBox(
+              const SizedBox(
                 height: 1,
               ),
               _buildChangePIN(),
-              SizedBox(
+              const SizedBox(
                 height: 1,
               ),
               _buildSendFeedback(),
@@ -82,16 +82,16 @@ class _SettingPageState extends State<SettingPage> {
                   ? _buildTitle(AppLocalizations.of(context).backupTitle)
                   : Container(),
               walletBloc.currentWallet != null ? _buildViewSeed() : Container(),
-              SizedBox(
+              const SizedBox(
                 height: 1,
               ),
               _buildTitle(AppLocalizations.of(context).legalTitle),
               _buildDisclaimerToS(),
               walletBloc.currentWallet != null
                   ? _buildTitle(
-                      AppLocalizations.of(context).version + " - " + version)
+                      AppLocalizations.of(context).version + ' - ' + version)
                   : Container(),
-              SizedBox(
+              const SizedBox(
                 height: 48,
               ),
               walletBloc.currentWallet != null
@@ -105,13 +105,13 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<String> _getVersionApplication() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String version = packageInfo.version;
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final String version = packageInfo.version;
 
     return version;
   }
 
-  _buildTitle(String title) {
+  Widget _buildTitle(String title) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Text(
@@ -121,7 +121,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _buildActivatePIN() {
+  Widget _buildActivatePIN() {
     return CustomTile(
       child: ListTile(
         title: Row(
@@ -135,26 +135,28 @@ class _SettingPageState extends State<SettingPage> {
                     color: Colors.white.withOpacity(0.7)),
               ),
             ),
-            SharedPreferencesBuilder(
+            SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin',
-              builder: (context, snapshot) {
-                print("switch_pin pref " + snapshot.data.toString());
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                print('switch_pin pref ' + snapshot.data.toString());
                 return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
-                        onChanged: (dataSwitch) {
-                          print("dataSwitch" + dataSwitch.toString());
+                        onChanged: (bool dataSwitch) {
+                          print('dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
-                              Navigator.push(
+                              Navigator.push<dynamic>(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LockScreen(
+                                  MaterialPageRoute<dynamic>(
+                                      builder: (BuildContext context) =>
+                                          const LockScreen(
                                             pinStatus: PinStatus.DISABLED_PIN,
                                           )));
                             } else {
-                              SharedPreferences.getInstance().then((data) {
-                                data.setBool("switch_pin", dataSwitch);
+                              SharedPreferences.getInstance()
+                                  .then((SharedPreferences data) {
+                                data.setBool('switch_pin', dataSwitch);
                               });
                             }
                           });
@@ -168,7 +170,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _buildActivateBiometric() {
+  Widget _buildActivateBiometric() {
     return CustomTile(
       child: ListTile(
         title: Row(
@@ -182,26 +184,28 @@ class _SettingPageState extends State<SettingPage> {
                     color: Colors.white.withOpacity(0.7)),
               ),
             ),
-            SharedPreferencesBuilder(
+            SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin_biometric',
-              builder: (context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
-                        onChanged: (dataSwitch) {
+                        onChanged: (bool dataSwitch) {
                           setState(() {
                             if (snapshot.data) {
-                              Navigator.push(
+                              Navigator.push<dynamic>(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LockScreen(
+                                  MaterialPageRoute<dynamic>(
+                                      builder: (BuildContext context) =>
+                                          const LockScreen(
                                             pinStatus: PinStatus
                                                 .DISABLED_PIN_BIOMETRIC,
                                           )));
                             } else {
-                              SharedPreferences.getInstance().then((data) {
+                              SharedPreferences.getInstance()
+                                  .then((SharedPreferences data) {
                                 data.setBool(
-                                    "switch_pin_biometric", dataSwitch);
+                                    'switch_pin_biometric', dataSwitch);
                               });
                             }
                           });
@@ -215,20 +219,20 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _buildChangePIN() {
+  Widget _buildChangePIN() {
     return CustomTile(
-      onPressed: () => Navigator.push(
+      onPressed: () => Navigator.push<dynamic>(
           context,
-          MaterialPageRoute(
-              builder: (context) => UnlockWalletPage(
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => UnlockWalletPage(
                     textButton: AppLocalizations.of(context).unlock,
                     wallet: walletBloc.currentWallet,
                     isSignWithSeedIsEnabled: false,
-                    onSuccess: (_, password) {
-                      Navigator.push(
+                    onSuccess: (_, String password) {
+                      Navigator.push<dynamic>(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => PinPage(
+                          MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => PinPage(
                                   title:
                                       AppLocalizations.of(context).lockScreen,
                                   subTitle:
@@ -250,7 +254,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _buildSendFeedback() {
+  Widget _buildSendFeedback() {
     return CustomTile(
       onPressed: () => _shareFile(),
       child: ListTile(
@@ -266,11 +270,13 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _buildViewSeed() {
+  Widget _buildViewSeed() {
     return CustomTile(
       onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ViewSeedUnlockPage()));
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => ViewSeedUnlockPage()));
       },
       child: ListTile(
         trailing:
@@ -285,42 +291,42 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _buildDisclaimerToS() {
+  Widget _buildDisclaimerToS() {
     return CustomTile(
-      child: ListTile(
-        trailing:
-            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
-        title: Text(
-          AppLocalizations.of(context).disclaimerAndTos,
-          style: Theme.of(context).textTheme.body1.copyWith(
-              fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
+        child: ListTile(
+          trailing:
+              Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+          title: Text(
+            AppLocalizations.of(context).disclaimerAndTos,
+            style: Theme.of(context).textTheme.body1.copyWith(
+                fontWeight: FontWeight.w300,
+                color: Colors.white.withOpacity(0.7)),
+          ),
         ),
-      ),
-      onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => DislaimerPage(
-                  readOnly: true,
-                )),
-      );
-    });
+        onPressed: () {
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => const DislaimerPage(
+                      readOnly: true,
+                    )),
+          );
+        });
   }
 
-  _buildLogout() {
+  Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        print("PRESSED");
-        authBloc.logout().then((onValue) {
-          print("PRESSED");
-          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        print('PRESSED');
+        authBloc.logout().then((_) {
+          print('PRESSED');
+          SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset("assets/logout_setting.svg"),
+          child: SvgPicture.asset('assets/logout_setting.svg'),
         ),
         title: Text(AppLocalizations.of(context).logout,
             style: Theme.of(context).textTheme.body1.copyWith(
@@ -330,7 +336,7 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _buildLogOutOnExit() {
+  Widget _buildLogOutOnExit() {
     return CustomTile(
       child: ListTile(
         title: Row(
@@ -344,17 +350,18 @@ class _SettingPageState extends State<SettingPage> {
                     color: Colors.white.withOpacity(0.7)),
               ),
             ),
-            SharedPreferencesBuilder(
+            SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin_log_out_on_exit',
-              builder: (context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
-                        onChanged: (dataSwitch) {
+                        onChanged: (bool dataSwitch) {
                           setState(() {
-                            SharedPreferences.getInstance().then((data) {
+                            SharedPreferences.getInstance()
+                                .then((SharedPreferences data) {
                               data.setBool(
-                                  "switch_pin_log_out_on_exit", dataSwitch);
+                                  'switch_pin_log_out_on_exit', dataSwitch);
                             });
                           });
                         })
@@ -367,14 +374,14 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _buildDeleteWallet() {
+  Widget _buildDeleteWallet() {
     return CustomTile(
       onPressed: () => _showDialogDeleteWallet(),
       backgroundColor: Theme.of(context).errorColor.withOpacity(0.8),
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset("assets/delete_setting.svg"),
+          child: SvgPicture.asset('assets/delete_setting.svg'),
         ),
         title: Text(AppLocalizations.of(context).deleteWallet,
             style: Theme.of(context).textTheme.body1.copyWith(
@@ -384,28 +391,29 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _showDialogDeleteWallet() {
-    Navigator.push(
+  void _showDialogDeleteWallet() {
+    Navigator.push<dynamic>(
       context,
-      MaterialPageRoute(
-          builder: (context) => UnlockWalletPage(
+      MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => UnlockWalletPage(
                 textButton: AppLocalizations.of(context).unlock,
                 wallet: walletBloc.currentWallet,
                 isSignWithSeedIsEnabled: false,
-                onSuccess: (_, password) {
+                onSuccess: (_, String password) {
                   Navigator.of(context).pop();
-                  dialogBloc.dialog = showDialog(
+                  dialogBloc.dialog = showDialog<dynamic>(
                       context: context,
-                      builder: (context) {
+                      builder: (BuildContext context) {
                         return SimpleDialog(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0)),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)),
                           backgroundColor: Colors.white,
                           title: Column(
                             children: <Widget>[
-                              SvgPicture.asset("assets/delete_wallet.svg"),
-                              SizedBox(
+                              SvgPicture.asset('assets/delete_wallet.svg'),
+                              const SizedBox(
                                 height: 16,
                               ),
                               Text(
@@ -418,7 +426,7 @@ class _SettingPageState extends State<SettingPage> {
                                     .copyWith(
                                         color: Theme.of(context).errorColor),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 24,
                               ),
                             ],
@@ -426,7 +434,7 @@ class _SettingPageState extends State<SettingPage> {
                           children: <Widget>[
                             RichText(
                               textAlign: TextAlign.center,
-                              text: TextSpan(children: [
+                              text: TextSpan(children: <InlineSpan>[
                                 TextSpan(
                                     text: AppLocalizations.of(context)
                                         .settingDialogSpan1,
@@ -456,13 +464,13 @@ class _SettingPageState extends State<SettingPage> {
                                                 .primaryColor)),
                               ]),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                             Center(
                               child: RichText(
                                 textAlign: TextAlign.center,
-                                text: TextSpan(children: [
+                                text: TextSpan(children: <InlineSpan>[
                                   TextSpan(
                                       text: AppLocalizations.of(context)
                                           .settingDialogSpan3,
@@ -494,7 +502,7 @@ class _SettingPageState extends State<SettingPage> {
                                 ]),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 24,
                             ),
                             Row(
@@ -507,7 +515,7 @@ class _SettingPageState extends State<SettingPage> {
                                     isDarkMode: false,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 8,
                                 ),
                                 Expanded(
@@ -530,12 +538,12 @@ class _SettingPageState extends State<SettingPage> {
                                 )
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 24,
                             ),
                           ],
                         );
-                      }).then((_) {
+                      }).then((dynamic _) {
                     dialogBloc.dialog = null;
                   });
                 },
@@ -543,54 +551,53 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  _showLoadingDelete() {
-    dialogBloc.dialog = showDialog(
+  void _showLoadingDelete() {
+    dialogBloc.dialog = showDialog<dynamic>(
         context: context,
-        builder: (context) {
+        builder: (BuildContext context) {
           return StreamBuilder<Object>(
               initialData: settingsBloc.isDeleteLoading,
               stream: settingsBloc.outIsDeleteLoading,
-              builder: (context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
                 if (snapshot.hasData && !snapshot.data) {
                   Navigator.of(context).pop();
                 }
                 return SimpleDialog(
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   children: <Widget>[
                     Center(
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
+                      children: const <Widget>[
                         CircularProgressIndicator(),
                         SizedBox(
                           width: 16,
                         ),
-                        Text("Deleting wallet...")
+                        Text('Deleting wallet...')
                       ],
                     ))
                   ],
                 );
               });
-        }).then((_) {
+        }).then((dynamic _) {
       dialogBloc.dialog = null;
     });
   }
 
   void _shareFile() {
-    File file = new File('${mm2.filesPath}log.txt');
-    Share.shareFile(file,
-        subject: "My logs for the ${DateTime.now().toIso8601String()}");
+    Share.shareFile(File('${mm2.filesPath}log.txt'),
+        subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 }
 
 class CustomTile extends StatefulWidget {
+  const CustomTile({this.child, this.onPressed, this.backgroundColor});
+
   final Widget child;
   final Function onPressed;
   final Color backgroundColor;
-
-  CustomTile({this.child, this.onPressed, this.backgroundColor});
 
   @override
   _CustomTileState createState() => _CustomTileState();

@@ -215,7 +215,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
       });
     }).catchError((dynamic onError) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,
         content: Text(onError),
       ));

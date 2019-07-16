@@ -9,6 +9,7 @@ class PhotoHero extends StatelessWidget {
   final String tag;
   final double radius;
 
+  @override
   Widget build(BuildContext context) {
     return Hero(
       tag: tag,

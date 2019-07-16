@@ -1,5 +1,6 @@
-import 'package:flutter/services.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/services.dart';
 
 class DecimalTextInputFormatter extends TextInputFormatter {
   DecimalTextInputFormatter({this.decimalRange})
@@ -16,14 +17,14 @@ class DecimalTextInputFormatter extends TextInputFormatter {
     String truncated = newValue.text;
 
     if (decimalRange != null) {
-      String value = newValue.text;
+      final String value = newValue.text;
 
-      if (value.contains(".") &&
-          value.substring(value.indexOf(".") + 1).length > decimalRange) {
+      if (value.contains('.') &&
+          value.substring(value.indexOf('.') + 1).length > decimalRange) {
         truncated = oldValue.text;
         newSelection = oldValue.selection;
-      } else if (value == ".") {
-        truncated = "0.";
+      } else if (value == '.') {
+        truncated = '0.';
 
         newSelection = newValue.selection.copyWith(
           baseOffset: math.min(truncated.length, truncated.length + 1),

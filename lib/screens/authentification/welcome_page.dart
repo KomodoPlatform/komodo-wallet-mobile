@@ -81,7 +81,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     });
                   }
                 },
-                onSubmitted: (data) {
+                onSubmitted: (String data) {
                   _newPage();
                 },
                 autocorrect: false,

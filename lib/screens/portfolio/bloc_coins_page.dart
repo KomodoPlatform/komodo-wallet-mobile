@@ -600,7 +600,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                   context,
                                   MaterialPageRoute<dynamic>(
                                       builder: (BuildContext context) =>
-                                          SelectCoinsPage()),
+                                          const SelectCoinsPage()),
                                 );
                               }
                             },

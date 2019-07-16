@@ -280,7 +280,7 @@ class _CoinDetailState extends State<CoinDetail> {
           centerTitle: false,
           backgroundColor: Color(int.parse(currentCoinBalance.coin.colorCoin)),
         ),
-        body: Builder(builder: (context) {
+        body: Builder(builder: (BuildContext context) {
           return Column(
             children: <Widget>[
               _buildForm(),
@@ -502,8 +502,8 @@ class _CoinDetailState extends State<CoinDetail> {
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, top: 8),
-                            child: Builder(builder: (context) {
-                              String amount =
+                            child: Builder(builder: (BuildContext context) {
+                              final String amount =
                                   widget.coinBalance.coin.swapContractAddress !=
                                           null
                                       ? replaceAllTrainlingZeroERC(transaction
@@ -559,14 +559,14 @@ class _CoinDetailState extends State<CoinDetail> {
                         child: Container(),
                       ),
                       Builder(
-                        builder: (context) {
+                        builder: (BuildContext context) {
                           return transaction.confirmations > 0
                               ? Container(
                                   height: 12,
                                   width: 12,
                                   decoration: BoxDecoration(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(16)),
+                                          const BorderRadius.all(Radius.circular(16)),
                                       color: Colors.green),
                                 )
                               : Container(
@@ -574,7 +574,7 @@ class _CoinDetailState extends State<CoinDetail> {
                                   width: 12,
                                   decoration: BoxDecoration(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(16)),
+                                          const BorderRadius.all(Radius.circular(16)),
                                       color: Colors.red),
                                 );
                         },
@@ -588,7 +588,7 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _buildHeaderCoinDetail(BuildContext mContext) {
+  Widget _buildHeaderCoinDetail(BuildContext mContext) {
     return Column(
       children: <Widget>[
         Padding(
@@ -596,13 +596,14 @@ class _CoinDetailState extends State<CoinDetail> {
           child: StreamBuilder<List<CoinBalance>>(
               initialData: coinsBloc.coinBalance,
               stream: coinsBloc.outCoins,
-              builder: (BuildContext context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
                 if (snapshot.hasData) {
-                  snapshot.data.forEach((coinBalance) {
+                  for (CoinBalance coinBalance in snapshot.data) {
                     if (coinBalance.coin.abbr == currentCoinBalance.coin.abbr) {
                       currentCoinBalance = coinBalance;
                     }
-                  });
+                  }
+
                   return Column(
                     children: <Widget>[
                       Text(
@@ -652,13 +653,13 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _buildButtonLight(StatusButton statusButton, BuildContext mContext) {
+  Widget _buildButtonLight(StatusButton statusButton, BuildContext mContext) {
     if (currentIndex == 3 && statusButton == StatusButton.SEND) {
       _closeAfterAWait();
     }
     return Expanded(
       child: InkWell(
-        borderRadius: BorderRadius.all(Radius.circular(32)),
+        borderRadius: const BorderRadius.all(Radius.circular(32)),
         onTap: () {
           switch (statusButton) {
             case StatusButton.RECEIVE:
@@ -680,19 +681,19 @@ class _CoinDetailState extends State<CoinDetail> {
               }
               break;
             case StatusButton.CLAIM:
-              widget.showDialog<dynamic>Claim(mContext);
+              widget.showDialogClaim(mContext);
               break;
             default:
           }
         },
         child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(32)),
+                borderRadius: const BorderRadius.all(Radius.circular(32)),
                 border:
                     Border.all(color: Theme.of(context).textSelectionColor)),
             child: Center(child: Builder(
-              builder: (context) {
+              builder: (BuildContext context) {
                 switch (statusButton) {
                   case StatusButton.RECEIVE:
                     return Text(
@@ -724,21 +725,21 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _buildForm() {
+  Widget _buildForm() {
     return AnimatedCrossFade(
       crossFadeState:
           isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       firstChild: Container(),
       secondChild: Card(
-          margin: EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
+          margin: const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
           elevation: 8.0,
           color: Theme.of(context).primaryColor,
           child: listSteps[currentIndex]),
     );
   }
 
-  _buildWithdrawButton(BuildContext context) {
+  Widget _buildWithdrawButton(BuildContext context) {
     if (_onWithdrawPost) {
       return Center(
         child: Container(
@@ -753,7 +754,7 @@ class _CoinDetailState extends State<CoinDetail> {
         width: double.infinity,
         height: 50,
         child: Builder(
-          builder: (context) {
+          builder: (BuildContext context) {
             return RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6.0)),
@@ -784,15 +785,15 @@ class _CoinDetailState extends State<CoinDetail> {
     }
   }
 
-  _buildConfirmationStep() {
+  Widget _buildConfirmationStep() {
     int txFee = 0;
     if (currentCoinBalance.coin.txfee != null) {
       txFee = currentCoinBalance.coin.txfee;
     }
-    double fee = txFee / 100000000;
+    final double fee = txFee / 100000000;
     double amountMinusFee = double.parse(_amountController.text);
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
-    double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
+    final double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -902,7 +903,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 child: Container(
                   height: 50,
                   child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                     onTap: () {
                       setState(() {
                         isExpanded = false;
@@ -924,7 +925,7 @@ class _CoinDetailState extends State<CoinDetail> {
               Expanded(
                 child: Container(
                   height: 50,
-                  child: Builder(builder: (context) {
+                  child: Builder(builder: (BuildContext context) {
                     return RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6.0)),
@@ -950,10 +951,10 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  _onPressedConfirmWithdraw(BuildContext mContext) {
+  void _onPressedConfirmWithdraw(BuildContext mContext) {
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mContext).showSnackBar( SnackBar(
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,
         content:  Text(AppLocalizations.of(context).noInternet),
       ));
@@ -968,8 +969,8 @@ class _CoinDetailState extends State<CoinDetail> {
       if (currentCoinBalance.coin.txfee != null) {
         txFee = currentCoinBalance.coin.txfee;
       }
-      double fee = txFee / 100000000;
-      double sendamount =
+      final double fee = txFee / 100000000;
+      final double sendamount =
           double.parse((amountMinusFee + fee).toStringAsFixed(8));
 
       listSteps.add(Container(
@@ -991,18 +992,18 @@ class _CoinDetailState extends State<CoinDetail> {
               sendamount,
               double.parse(widget.coinBalance.balance.getBalance()) ==
                   double.parse(_amountController.text))
-          .then((data) {
+          .then((dynamic data) {
         if (data is WithdrawResponse) {
           mm2
               .postRawTransaction(widget.coinBalance.coin, data.txHex)
-              .then((dataRawTx) {
+              .then((dynamic dataRawTx) {
             if (dataRawTx is SendRawTransactionResponse) {
               setState(() {
                 _onWithdrawPost = false;
                 coinsBloc.updateTransactions(
                     widget.coinBalance.coin, limit, null);
                 coinsBloc.loadCoin();
-                 Future.delayed(Duration(seconds: 5), () {
+                 Future<dynamic>.delayed(const Duration(seconds: 5), () {
                   coinsBloc.loadCoin();
                 });
                 listSteps.add(Padding(
@@ -1046,7 +1047,7 @@ class _CoinDetailState extends State<CoinDetail> {
             _onWithdrawPost = false;
           });
           Scaffold.of(mContext).showSnackBar( SnackBar(
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
             content:  Text(AppLocalizations.of(context).errorTryLater),
           ));
         }
@@ -1054,8 +1055,8 @@ class _CoinDetailState extends State<CoinDetail> {
     }
   }
 
-  _closeAfterAWait() async {
-    Timer(Duration(milliseconds: 3000), () {
+  Future<void> _closeAfterAWait() async {
+    Timer(const Duration(milliseconds: 3000), () {
       setState(() {
         isExpanded = false;
         _waitForInit();
@@ -1063,8 +1064,8 @@ class _CoinDetailState extends State<CoinDetail> {
     });
   }
 
-  _waitForInit() async {
-    Timer(Duration(milliseconds: 500), () {
+  Future<void> _waitForInit() async {
+    Timer(const Duration(milliseconds: 500), () {
       setState(() {
         currentIndex = 0;
         initSteps();
@@ -1072,9 +1073,9 @@ class _CoinDetailState extends State<CoinDetail> {
     });
   }
 
-  _copyToClipBoard(BuildContext context, String str) {
+  void _copyToClipBoard(BuildContext context, String str) {
     Scaffold.of(context).showSnackBar( SnackBar(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       content:  Text(AppLocalizations.of(context).clipboard),
     ));
     Clipboard.setData( ClipboardData(text: str));
@@ -1082,26 +1083,26 @@ class _CoinDetailState extends State<CoinDetail> {
 
   /// Open a activity for scan QRCode example usage:
   /// MaterialButton(onPressed: scan, child:  Text('SEND'))
-  Future scan() async {
+  Future<void> scan() async {
     authBloc.setIsQrCodeActive(true);
     try {
-      String barcode = await BarcodeScanner.scan();
+      final String barcode = await BarcodeScanner.scan();
       setState(() {
         _addressController.text = barcode;
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          this.barcode = 'The user did not grant the camera permission!';
+          barcode = 'The user did not grant the camera permission!';
         });
       } else {
-        setState(() => this.barcode = 'Unknown error: $e');
+        setState(() => barcode = 'Unknown error: $e');
       }
     } on FormatException {
-      setState(() => this.barcode =
-          'null (User returned using the 'back'-button before scanning anything. Result)');
+      setState(() => barcode =
+          'null (User returned using the "back"-button before scanning anything. Result)');
     } catch (e) {
-      setState(() => this.barcode = 'Unknown error: $e');
+      setState(() => barcode = 'Unknown error: $e');
     }
     authBloc.setIsQrCodeActive(false);
   }
@@ -1111,7 +1112,7 @@ class _CoinDetailState extends State<CoinDetail> {
     _addressController.clear();
     listSteps.clear();
     listSteps.add(Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Form(
         key: _formKey,
         child: Column(
@@ -1142,7 +1143,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 ),
                 Expanded(
                   child: TextFormField(
-                    inputFormatters: [
+                    inputFormatters: <TextInputFormatter>[
                       WhitelistingTextInputFormatter(RegExp(
                           '^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))
                     ],
@@ -1151,7 +1152,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     autofocus: isSendIsActive,
                     textInputAction: TextInputAction.done,
                     keyboardType:
-                        TextInputType.numberWithOptions(decimal: true),
+                        const TextInputType.numberWithOptions(decimal: true),
                     style: Theme.of(context).textTheme.body1,
                     textAlign: TextAlign.end,
                     decoration: InputDecoration(
@@ -1166,16 +1167,16 @@ class _CoinDetailState extends State<CoinDetail> {
                         labelStyle: Theme.of(context).textTheme.body1,
                         labelText: AppLocalizations.of(context).amount),
                     // The validator receives the text the user has typed in
-                    validator: (value) {
+                    validator: (String value) {
                       value = value.replaceAll(',', '.');
-                      double balance =
+                      final double balance =
                           double.parse(widget.coinBalance.balance.getBalance());
 
                       if (value.isEmpty || double.parse(value) <= 0) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
                       }
 
-                      double currentAmount = double.parse(value);
+                      final double currentAmount = double.parse(value);
 
                       if (currentAmount > balance) {
                         return AppLocalizations.of(context).errorAmountBalance;
@@ -1224,7 +1225,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         labelStyle: Theme.of(context).textTheme.body1,
                         labelText: AppLocalizations.of(context).addressSend),
                     // The validator receives the text the user has typed in
-                    validator: (value) {
+                    validator: (String value) {
                       if (value.isEmpty) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
                       }
@@ -1235,7 +1236,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         }
                       } else {
                         try {
-                          Uint8List decoded = bs58check.decode(value);
+                          final Uint8List decoded = bs58check.decode(value);
                           print(bs58check.encode(decoded));
                         } catch (e) {
                           print(e);
@@ -1262,14 +1263,14 @@ class _CoinDetailState extends State<CoinDetail> {
 
 enum StatusButton { SEND, RECEIVE, CLAIM }
 
-showAddressDialog(BuildContext mContext, String address) {
+void showAddressDialog(BuildContext mContext, String address) {
   dialogBloc.dialog = showDialog<dynamic>(
     context: mContext,
     builder: (BuildContext context) {
       // return object of type Dialog
       return AlertDialog(
-        contentPadding: EdgeInsets.all(16),
-        titlePadding: EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.all(16),
+        titlePadding: const EdgeInsets.all(0),
         shape: RoundedRectangleBorder(
             side: BorderSide(color: Colors.white),
             borderRadius: BorderRadius.circular(6.0)),
@@ -1315,7 +1316,7 @@ showAddressDialog(BuildContext mContext, String address) {
         ],
       );
     },
-  ).then((data) {
+  ).then((dynamic data) {
     dialogBloc.dialog = null;
   });
 }

@@ -259,7 +259,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
 
   void _showError(BuildContext context, String data) {
     Scaffold.of(context).showSnackBar(SnackBar(
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
       content: Text(data),
     ));

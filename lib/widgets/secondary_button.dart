@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SecondaryButton extends StatefulWidget {
-  final VoidCallback onPressed;
-  final String text;
-  final Widget child;
-  final bool isDarkMode;
-  final Color borderColor;
-  final Color textColor;
-  final double height;
-  final double width;
-
-  SecondaryButton(
+  const SecondaryButton(
       {@required this.onPressed,
       this.text,
       this.child,
@@ -19,6 +10,15 @@ class SecondaryButton extends StatefulWidget {
       this.height,
       this.width,
       this.textColor = Colors.black});
+
+  final VoidCallback onPressed;
+  final String text;
+  final Widget child;
+  final bool isDarkMode;
+  final Color borderColor;
+  final Color textColor;
+  final double height;
+  final double width;
 
   @override
   _SecondaryButtonState createState() => _SecondaryButtonState();
@@ -45,7 +45,7 @@ class _SecondaryButtonState extends State<SecondaryButton> {
             color: widget.isDarkMode ? Colors.white : widget.borderColor),
         highlightedBorderColor:
             widget.isDarkMode ? Colors.white : widget.borderColor,
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         onPressed: widget.onPressed,

@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
-  final Key key;
+  const CustomTextField(
+      {Key key,
+      this.controller,
+      this.labelText,
+      this.textInputType,
+      this.hintText,
+      this.onChanged,
+      this.errorText})
+      : super(key: key);
+
   final TextEditingController controller;
   final String labelText;
   final TextInputType textInputType;
@@ -11,18 +20,9 @@ class CustomTextField extends StatefulWidget {
 
   @override
   CustomTextFieldState createState() {
-    return new CustomTextFieldState();
+    return CustomTextFieldState();
   }
 
-  const CustomTextField(
-      {this.key,
-      this.controller,
-      this.labelText,
-      this.textInputType,
-      this.hintText,
-      this.onChanged,
-      this.errorText})
-      : super(key: key);
 }
 
 class CustomTextFieldState extends State<CustomTextField> {

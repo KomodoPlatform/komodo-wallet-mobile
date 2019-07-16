@@ -7,9 +7,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'media_page.dart';
 
 class MediaDetailPage extends StatefulWidget {
-  final Article article;
+  const MediaDetailPage({this.article});
 
-  MediaDetailPage({this.article});
+  final Article article;
 
   @override
   _MediaDetailPageState createState() => _MediaDetailPageState();
@@ -36,7 +36,7 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
             style: Theme.of(context).textTheme.subtitle,
           ),
           bottom: PreferredSize(
-            preferredSize: Size(0.0, 36.0),
+            preferredSize: const Size(0.0, 36.0),
             child: Container(
               height: 36,
               color: Colors.white,

@@ -102,7 +102,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
   void initState() {
     super.initState();
     animationController = AnimationController(
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
 
@@ -201,8 +201,8 @@ class _ProgressSwapState extends State<ProgressSwap>
     with SingleTickerProviderStateMixin {
   AnimationController _radialProgressAnimationController;
   Animation<double> _progressAnimation;
-  final Duration fadeInDuration = Duration(milliseconds: 500);
-  final Duration fillDuration = Duration(seconds: 1);
+  final Duration fadeInDuration = const Duration(milliseconds: 500);
+  final Duration fillDuration = const Duration(seconds: 1);
 
   double progressDegrees = 0;
   int count = 0;

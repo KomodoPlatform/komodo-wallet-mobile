@@ -116,7 +116,7 @@ class _LockScreenState extends State<LockScreen> {
   }
 
   Future<bool> _authenticateBiometrics() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('switch_pin_biometric')) {
       final LocalAuthentication localAuth = LocalAuthentication();
 

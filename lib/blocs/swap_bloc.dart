@@ -221,8 +221,7 @@ class SwapBloc implements BlocBase {
     );
     _inOrderCoin.add(orderCoin);
 
-    amountReceive = double.parse(this
-        .orderCoin
+    amountReceive = double.parse(orderCoin
         .getBuyAmount(double.parse(amountSell.replaceAll(',', '.'))));
 
     _inAmountReceiveCoin.add(amountReceive);

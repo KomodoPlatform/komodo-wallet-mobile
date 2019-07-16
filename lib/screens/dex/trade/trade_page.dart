@@ -28,7 +28,7 @@ class TradePage extends StatefulWidget {
 }
 
 class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
-  TextEditingControllerWorkaroud _controllerAmountSell =
+  final TextEditingControllerWorkaroud _controllerAmountSell =
       TextEditingControllerWorkaroud();
   final TextEditingController _controllerAmountReceive =
       TextEditingController();
@@ -677,7 +677,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     if (orderbooks != null && market == Market.RECEIVE) {
       for (OrderCoin orderbook in orderbooks) {
-                SimpleDialogOption dialogItem;
+        SimpleDialogOption dialogItem;
         if (orderbook.coinBase.abbr != swapBloc.sellCoin.coin.abbr) {
           final bool isOrderAvailable = orderbook.coinBase.abbr !=
                   swapBloc.sellCoin.coin.abbr &&
@@ -695,7 +695,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               });
               swapBloc.updateReceiveCoin(orderbook.coinBase);
               _controllerAmountReceive.text = '';
-              if (timerGetOrderbook != null) {timerGetOrderbook.cancel();}
+              if (timerGetOrderbook != null) {
+                timerGetOrderbook.cancel();
+              }
 
               _lookingForOrder();
 
@@ -747,7 +749,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       }
     } else if (market == Market.SELL) {
       for (CoinBalance coin in coinsBloc.coinBalance) {
-                if (double.parse(coin.balance.getBalance()) > 0) {
+        if (double.parse(coin.balance.getBalance()) > 0) {
           final SimpleDialogOption dialogItem = SimpleDialogOption(
             onPressed: () {
               swapBloc.updateBuyCoin(null);
@@ -865,11 +867,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             builder: (BuildContext context) => SwapConfirmation(
                   orderSuccess: () {
                     dialogBloc.dialog = showDialog<dynamic>(
-                            builder: (context) {
+                            builder: (BuildContext context) {
                               return SimpleDialog(
                                 title: Text(
                                     AppLocalizations.of(context).orderCreated),
-                                contentPadding: EdgeInsets.all(24),
+                                contentPadding: const EdgeInsets.all(24),
                                 children: <Widget>[
                                   Text(AppLocalizations.of(context)
                                       .orderCreatedInfo),
@@ -973,7 +975,9 @@ class _DialogLookingState extends State<DialogLooking> {
       timerCurrent += 5;
       if (timerCurrent >= timerEnd) {
         timerGetOrderbook.cancel();
-        if (mounted) {Navigator.of(context).pop();}
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
         widget.noOrderFind();
       } else {
         swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
@@ -984,7 +988,9 @@ class _DialogLookingState extends State<DialogLooking> {
 
   @override
   void dispose() {
-    if (timerGetOrderbook != null) {timerGetOrderbook.cancel();}
+    if (timerGetOrderbook != null) {
+      timerGetOrderbook.cancel();
+    }
     super.dispose();
   }
 

@@ -9,9 +9,9 @@ import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class CheckPassphrasePage extends StatefulWidget {
-  final String seed;
+  const CheckPassphrasePage({this.seed});
 
-  CheckPassphrasePage({this.seed});
+  final String seed;
 
   @override
   _CheckPassphrasePageState createState() => _CheckPassphrasePageState();
@@ -160,7 +160,7 @@ class _SeedRandomState extends State<SeedRandom> {
                 onChanged: (String text) {
                   checkPassphrasePage.setWord(text);
                   checkPassphrasePage.setIsWordGood(
-                      CheckPassphrasePage().checkSeedWord(widget.data));
+                      const CheckPassphrasePage().checkSeedWord(widget.data));
                 },
                 hintText: AppLocalizations.of(context)
                     .checkSeedPhraseHint((widget.data.index + 1).toString()),
