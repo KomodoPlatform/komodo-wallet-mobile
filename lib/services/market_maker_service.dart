@@ -22,6 +22,7 @@ import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_enable_coin.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
+import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -40,6 +41,7 @@ import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
@@ -607,6 +609,22 @@ class MarketMakerService {
       print('-------------------' + errorStringFromJson(response.body).error);
       print(response.body);
       throw errorStringFromJson(response.body);
+    }
+  }
+
+  Future<TradeFee> getTradeFee(Coin coin) async {
+    final GetTradeFee getTradeFee = GetTradeFee(
+        userpass: userpass,
+        method: 'get_trade_fee',
+        coin: coin.abbr);
+
+    try {
+      final Response response =
+          await http.post(url, body: getTradeFeeToJson(getTradeFee));
+      return tradeFeeFromJson(response.body);
+    } catch (e) {
+      print(e);
+      rethrow;
     }
   }
 }
