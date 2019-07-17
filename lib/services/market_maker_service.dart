@@ -295,14 +295,18 @@ class MarketMakerService {
         method: 'my_swap_status',
         params: Params(uuid: uuid));
 
-    final Response response =
-        await http.post(url, body: getSwapToJson(getSwap));
-
     try {
-      return swapFromJson(response.body);
+      final Response response =
+          await http.post(url, body: getSwapToJson(getSwap));
+      try {
+        return swapFromJson(response.body);
+      } catch (e) {
+        print(e);
+        return errorStringFromJson(response.body);
+      }
     } catch (e) {
       print(e);
-      return errorStringFromJson(response.body);
+      rethrow;
     }
   }
 
@@ -327,16 +331,22 @@ class MarketMakerService {
   Future<dynamic> getBalance(Coin coin) async {
     final GetBalance getBalance =
         GetBalance(userpass: userpass, method: 'my_balance', coin: coin.abbr);
-    final Response response =
-        await http.post(url, body: json.encode(getBalance));
-
-    print('getBalance' + response.body.toString());
 
     try {
-      return balanceFromJson(response.body);
+      final Response response =
+          await http.post(url, body: json.encode(getBalance));
+
+      print('getBalance' + response.body.toString());
+
+      try {
+        return balanceFromJson(response.body);
+      } catch (e) {
+        print(e);
+        return errorStringFromJson(response.body);
+      }
     } catch (e) {
       print(e);
-      return errorStringFromJson(response.body);
+      rethrow;
     }
   }
 
@@ -423,16 +433,21 @@ class MarketMakerService {
         price: price.toStringAsFixed(8));
 
     print('postSetPrice' + getSetPriceToJson(getSetPrice));
-    final Response response =
-        await http.post(url, body: getSetPriceToJson(getSetPrice));
+    try {
+      final Response response =
+          await http.post(url, body: getSetPriceToJson(getSetPrice));
 
-    print(response.body.toString());
-    final SetPriceResponse setPriceResponse =
-        setPriceResponseFromJson(response.body);
-    if (setPriceResponse != null) {
-      return setPriceResponse;
-    } else {
-      throw errorStringFromJson(response.body);
+      print(response.body.toString());
+      final SetPriceResponse setPriceResponse =
+          setPriceResponseFromJson(response.body);
+      if (setPriceResponse != null) {
+        return setPriceResponse;
+      } else {
+        throw errorStringFromJson(response.body);
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
     }
   }
 
@@ -445,14 +460,19 @@ class MarketMakerService {
         fromId: fromId);
     print(json.encode(getTxHistory));
     print(url);
-    final Response response =
-        await http.post(url, body: getTxHistoryToJson(getTxHistory));
-    print('RESULT: ' + response.body.toString());
     try {
-      return transactionsFromJson(response.body);
+      final Response response =
+          await http.post(url, body: getTxHistoryToJson(getTxHistory));
+      print('RESULT: ' + response.body.toString());
+      try {
+        return transactionsFromJson(response.body);
+      } catch (e) {
+        print(e);
+        return errorCodeFromJson(response.body);
+      }
     } catch (e) {
       print(e);
-      return errorCodeFromJson(response.body);
+      rethrow;
     }
   }
 
@@ -614,9 +634,7 @@ class MarketMakerService {
 
   Future<TradeFee> getTradeFee(Coin coin) async {
     final GetTradeFee getTradeFee = GetTradeFee(
-        userpass: userpass,
-        method: 'get_trade_fee',
-        coin: coin.abbr);
+        userpass: userpass, method: 'get_trade_fee', coin: coin.abbr);
 
     try {
       final Response response =

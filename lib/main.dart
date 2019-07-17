@@ -201,13 +201,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.inactive:
         print('inactive');
-        // if (Platform.isIOS) {
-        //   exit(0);
-        // }
         break;
       case AppLifecycleState.paused:
         print('paused');
-        if (Platform.isIOS) {
+        if (Platform.isIOS && !authBloc.isQrCodeActive) {
           exit(0);
         }
         dialogBloc.closeDialog(context);
