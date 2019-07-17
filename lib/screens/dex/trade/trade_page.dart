@@ -11,7 +11,9 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_coin.dart';
+import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -162,19 +164,24 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
-          if (currentCoinBalance != null &&
-              double.parse(amountSell) >
-                  double.parse(currentCoinBalance.balance.getBalance())) {
-            setMaxValue();
-          } else {
-            if (amountSell.contains(
-                RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))) {
+          getTradeFee().then((double tradeFee) {
+            print(double.parse(currentCoinBalance.balance.getBalance()));
+            print(double.parse(amountSell) + tradeFee);
+            print(tradeFee);
+            if (currentCoinBalance != null &&
+                double.parse(amountSell) + tradeFee + (double.parse(currentCoinBalance.balance.getBalance()) * 0.01) >
+                    double.parse(currentCoinBalance.balance.getBalance())) {
+              setMaxValue();
             } else {
-              // _controllerAmountSell.text = tmpText;
-              _controllerAmountSell
-                  .setTextAndPosition(replaceAllTrainlingZero(tmpText));
+              if (amountSell.contains(
+                  RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))) {
+              } else {
+                // _controllerAmountSell.text = tmpText;
+                _controllerAmountSell
+                    .setTextAndPosition(replaceAllTrainlingZero(tmpText));
+              }
             }
-          }
+          });
 
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
@@ -212,32 +219,43 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
+  Future<double> getTradeFee() async {
+    try {
+      final TradeFee tradeFeeResponse =
+          await mm2.getTradeFee(currentCoinBalance.coin);
+      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
+
+      return (2 * tradeFee) +
+          ((1 / 777) * double.parse(_controllerAmountSell.text));
+    } catch (e) {
+      print(e);
+      return 0;
+    }
+  }
+
   Future<void> setMaxValue() async {
-    setState(() {
-      final int txFee = currentCoinBalance.coin.txfee;
-      dynamic fee;
-      if (txFee == null) {
-        fee = 0;
-      } else {
-        fee = txFee.toDouble() / 100000000;
-      }
-      final double maxValue =
-          double.parse(currentCoinBalance.balance.getBalance()) -
-              (double.parse(currentCoinBalance.balance.getBalance()) * 0.01) -
-              fee;
-      if (maxValue < 0) {
-        _controllerAmountSell.text = '';
-        Scaffold.of(context).showSnackBar(SnackBar(
-          duration: const Duration(seconds: 2),
-          backgroundColor: Theme.of(context).errorColor,
-          content: const Text('Your balance is to small including fee.'),
-        ));
-        _focusSell.unfocus();
-      } else {
-        _controllerAmountSell.setTextAndPosition(
-            replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
-      }
-    });
+    try {
+      setState(() async {
+        final double maxValue =
+            double.parse(currentCoinBalance.balance.getBalance()) -
+                (double.parse(currentCoinBalance.balance.getBalance()) * 0.01) -
+                await getTradeFee();
+        if (maxValue < 0) {
+          _controllerAmountSell.text = '';
+          Scaffold.of(context).showSnackBar(SnackBar(
+            duration: const Duration(seconds: 2),
+            backgroundColor: Theme.of(context).errorColor,
+            content: const Text('Your balance is to small including fee.'),
+          ));
+          _focusSell.unfocus();
+        } else {
+          _controllerAmountSell.setTextAndPosition(
+              replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _setMaxVolumeSell() {
