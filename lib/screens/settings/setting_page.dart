@@ -8,6 +8,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
@@ -586,7 +587,14 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
 
-  void _shareFile() {
+  Future<void> _shareFile() async{
+    final RecentSwaps recentSwap = await mm2.getRecentSwaps(100, null);
+
+    if (mm2.sink != null) {
+      await mm2.sink.write('\n\nMy recent swaps: \n\n');
+      await mm2.sink.write(recentSwapsToJson(recentSwap) + '\n');
+    }
+
     Share.shareFile(File('${mm2.filesPath}log.txt'),
         subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }

@@ -297,16 +297,15 @@ class Data {
         'taker_pubkey': takerPubkey ?? '',
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
-        'fee_details': feeDetails.toJson() ?? FeeDetails().toJson(),
-        'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
-            <String>[],
+        'fee_details': feeDetails == null ? null : feeDetails.toJson(),
+        'from':  from == null ? null : List<dynamic>.from(from.map<dynamic>((String x) => x)),
         'internal_id': internalId ?? '',
         'my_balance_change': myBalanceChange ?? 0.0,
         'received_by_me': receivedByMe ?? 0.0,
         'spent_by_me': spentByMe ?? 0.0,
         'timestamp': timestamp ?? 0,
         'to':
-            List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
+            to == null ? null : List<dynamic>.from(to.map<dynamic>((String x) => x)),
         'total_amount': totalAmount ?? 0.0,
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',
@@ -316,7 +315,7 @@ class Data {
         'maker_payment_locktime': makerPaymentLocktime ?? 0,
         'maker_pubkey': makerPubkey ?? '',
         'secret_hash': secretHash ?? '',
-        'transaction': transaction ?? Transaction(),
+        'transaction': transaction == null ? null : transaction.toJson(),
       };
 }
 
