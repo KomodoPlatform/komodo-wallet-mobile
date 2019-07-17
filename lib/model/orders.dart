@@ -126,11 +126,11 @@ class Match {
   });
 
   factory Match.fromJson(Map<String, dynamic> json) => Match(
-        connect: Connect.fromJson(json['connect']) ?? Connect(),
-        connected: Connect.fromJson(json['connected']) ?? Connect(),
+        connect: json['connect'] == null ? null : Connect.fromJson(json['connect']),
+        connected: json['connected'] == null ? null : Connect.fromJson(json['connected']),
         lastUpdated: json['last_updated'] ?? 0,
-        request: Request.fromJson(json['request']) ?? Request(),
-        reserved: Request.fromJson(json['reserved']) ?? Request(),
+        request: json['request'] == null ? null : Request.fromJson(json['request']),
+        reserved: json['reserved'] == null ? null : Request.fromJson(json['reserved']),
       );
 
   Connect connect;
@@ -140,11 +140,11 @@ class Match {
   Request reserved;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'connect': connect.toJson() ?? Connect(),
-        'connected': connected.toJson() ?? Connect(),
+        'connect': connect == null ? null : connect.toJson(),
+        'connected': connected == null ? null : connected.toJson(),
         'last_updated': lastUpdated ?? 0,
-        'request': request.toJson() ?? Request(),
-        'reserved': reserved.toJson() ?? Request(),
+        'request': request == null ? null : request.toJson(),
+        'reserved': reserved == null ? null : reserved.toJson(),
       };
 }
 

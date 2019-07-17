@@ -24,10 +24,14 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
     ordersBloc.updateOrdersSwaps();
 
     swapBloc.outIndexTab.listen((int onData) {
-      tabController.index = onData;
+      setState(() {
+        tabController.index = onData;
+      });
     });
     if (swapHistoryBloc.isSwapsOnGoing) {
-      tabController.index = 1;
+      setState(() {
+        tabController.index = 1;
+      });
     }
   }
 
