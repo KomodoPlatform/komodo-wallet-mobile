@@ -30,28 +30,33 @@ class MediaBloc implements BlocBase {
     _articlesSavedController.close();
   }
 
-
   Future<void> getArticles() async {
-    final Response response =
-        await http.get('https://composer.kmd.io/api/dex/news/all');
-    final List<Article> articlesSaved = await DBProvider.db.getAllArticlesSaved();
-    final List<Article> articles = articleFromJson(response.body);
+    try {
+      final Response response =
+          await http.get('https://composer.kmd.io/api/dex/news/all');
+      final List<Article> articlesSaved =
+          await DBProvider.db.getAllArticlesSaved();
+      final List<Article> articles = articleFromJson(response.body);
 
-    for (Article article in articles) {
-      article.isSavedArticle = false;
+      for (Article article in articles) {
+        article.isSavedArticle = false;
 
-      for (Article savedArticle in articlesSaved) {
-        if (savedArticle.id == article.id) {
-          article.isSavedArticle = true;
+        for (Article savedArticle in articlesSaved) {
+          if (savedArticle.id == article.id) {
+            article.isSavedArticle = true;
+          }
         }
       }
+      this.articles = articles;
+      _inArticles.add(this.articles);
+    } catch (e) {
+      print(e);
     }
-    this.articles = articles;
-    _inArticles.add(this.articles);
   }
 
   Future<List<Article>> getArticlesSaved() async {
-    final List<Article> articlesSaved = await DBProvider.db.getAllArticlesSaved();
+    final List<Article> articlesSaved =
+        await DBProvider.db.getAllArticlesSaved();
     this.articlesSaved = articlesSaved;
     _inArticlesSaved.add(this.articlesSaved);
     return articlesSaved;
@@ -73,7 +78,7 @@ class MediaBloc implements BlocBase {
 
   void updateSavedArticle(Article article) {
     for (Article _article in articles) {
-            if (_article.id == article.id) {
+      if (_article.id == article.id) {
         _article.isSavedArticle = article.isSavedArticle;
       }
     }

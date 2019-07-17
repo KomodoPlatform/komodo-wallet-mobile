@@ -102,10 +102,7 @@ class MarketMakerService {
 
     if (Platform.isAndroid) {
       await stopmm2();
-      // mm2Process = await Process.start('./mm2', <String>[startParam],
-      //     workingDirectory: '$filesPath');
-      
-      mm2Process = await Process.start('./mm2', <String>['panic'],
+      mm2Process = await Process.start('./mm2', <String>[startParam],
           workingDirectory: '$filesPath');
 
       mm2Process.stderr.listen((List<int> onData){
