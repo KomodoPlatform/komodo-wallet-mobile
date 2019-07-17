@@ -74,13 +74,17 @@ class MarketMakerService {
     filesPath = directory.path + '/';
 
     if (Platform.isAndroid) {
-      final ProcessResult checkmm2 =
-          await Process.run('ls', <String>['${filesPath}mm2']);
+      try {
+        final ProcessResult checkmm2 =
+            await Process.run('ls', <String>['${filesPath}mm2']);
 
-      if (checkmm2.stdout.toString().trim() != '${filesPath}mm2') {
-        final ByteData resultmm2 = await rootBundle.load('assets/mm2');
-        await writeData(resultmm2.buffer.asUint8List());
-        await Process.run('chmod', <String>['777', '${filesPath}mm2']);
+        if (checkmm2.stdout.toString().trim() != '${filesPath}mm2') {
+          final ByteData resultmm2 = await rootBundle.load('assets/mm2');
+          await writeData(resultmm2.buffer.asUint8List());
+          await Process.run('chmod', <String>['777', '${filesPath}mm2']);
+        }
+      } catch (e) {
+        print(e);
       }
     }
   }
@@ -102,51 +106,61 @@ class MarketMakerService {
 
     if (Platform.isAndroid) {
       await stopmm2();
-      mm2Process = await Process.start('./mm2', <String>[startParam],
-          workingDirectory: '$filesPath');
+      try {
+        mm2Process = await Process.start('./mm2', <String>[startParam],
+            workingDirectory: '$filesPath');
 
-      mm2Process.stderr.listen((List<int> onData) {
-        final String logMm2 = utf8.decoder.convert(onData).trim();
-        print(logMm2);
-        sink.write(logMm2 + '\n');
-      });
-      mm2Process.stdout.listen((List<int> onData) {
-        final String logMm2 = utf8.decoder.convert(onData).trim();
+        mm2Process.stderr.listen((List<int> onData) {
+          final String logMm2 = utf8.decoder.convert(onData).trim();
+          print(logMm2);
+          sink.write(logMm2 + '\n');
+        });
+        mm2Process.stdout.listen((List<int> onData) {
+          final String logMm2 = utf8.decoder.convert(onData).trim();
 
-        _onLogsmm2(logMm2);
-        if (logMm2.contains('DEX stats API enabled at')) {
-          print('DEX stats API enabled at');
+          _onLogsmm2(logMm2);
+          if (logMm2.contains('DEX stats API enabled at')) {
+            print('DEX stats API enabled at');
 
-          ismm2Running = true;
-
-          _initCoinsAndLoad();
-        }
-      });
-    } else if (Platform.isIOS) {
-      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
-      await platformmm2.invokeMethod<dynamic>(
-          'start', <String, String>{'params': startParam}); //start mm2
-
-      // check when mm2 is ready then load coins
-      final int timerTmp = DateTime.now().millisecondsSinceEpoch;
-      Timer.periodic(const Duration(seconds: 2), (_) {
-        final int t1 = timerTmp + 20000;
-        final int t2 = DateTime.now().millisecondsSinceEpoch;
-        if (t1 <= t2) {
-          _.cancel();
-        }
-
-        checkStatusmm2().then((int onValue) {
-          print('STATUS MM2: ' + onValue.toString());
-          if (onValue == 3) {
             ismm2Running = true;
-            _.cancel();
-            print('CANCEL TIMER');
+
             _initCoinsAndLoad();
-            coinsBloc.startCheckBalance();
           }
         });
-      });
+      } catch (e) {
+        print(e);
+        rethrow;
+      }
+    } else if (Platform.isIOS) {
+      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+      try {
+        await platformmm2.invokeMethod<dynamic>(
+            'start', <String, String>{'params': startParam}); //start mm2
+
+        // check when mm2 is ready then load coins
+        final int timerTmp = DateTime.now().millisecondsSinceEpoch;
+        Timer.periodic(const Duration(seconds: 2), (_) {
+          final int t1 = timerTmp + 20000;
+          final int t2 = DateTime.now().millisecondsSinceEpoch;
+          if (t1 <= t2) {
+            _.cancel();
+          }
+
+          checkStatusmm2().then((int onValue) {
+            print('STATUS MM2: ' + onValue.toString());
+            if (onValue == 3) {
+              ismm2Running = true;
+              _.cancel();
+              print('CANCEL TIMER');
+              _initCoinsAndLoad();
+              coinsBloc.startCheckBalance();
+            }
+          });
+        });
+      } catch (e) {
+        print(e);
+        rethrow;
+      }
     }
   }
 

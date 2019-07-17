@@ -53,13 +53,16 @@ Future<void> main() async {
   });
 }
 
-void startApp() {
-  mm2.initMarketMaker().then((_) {
-    _runBinMm2UserAlreadyLog().then((_) {
-      runApp(BlocProvider<AuthenticateBloc>(
-          bloc: AuthenticateBloc(), child: const MyApp()));
-    });
-  });
+Future<void> startApp() async {
+  try {
+    await mm2.initMarketMaker();
+    await _runBinMm2UserAlreadyLog();
+    runApp(BlocProvider<AuthenticateBloc>(
+        bloc: AuthenticateBloc(), child: const MyApp()));
+  } catch (e) {
+    print(e);
+    rethrow;
+  }
 }
 
 Future<void> _runBinMm2UserAlreadyLog() async {
@@ -261,15 +264,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       canvasColor: Theme.of(context).primaryColor,
                       primaryColor: Theme.of(context).accentColor,
                       textTheme: Theme.of(context).textTheme.copyWith(
-                          caption: TextStyle(
-                              color: Colors.white.withOpacity(0.5)))),
+                          caption:
+                              TextStyle(color: Colors.white.withOpacity(0.5)))),
                   child: Container(
                     color: Theme.of(context).primaryColor,
                     child: SafeArea(
                       child: StreamBuilder<bool>(
                           initialData: mainBloc.isNetworkOffline,
                           stream: mainBloc.outIsNetworkOffline,
-                          builder: (BuildContext context, AsyncSnapshot<bool> netWork) {
+                          builder: (BuildContext context,
+                              AsyncSnapshot<bool> netWork) {
                             final bool isNetworkAvailable = netWork.data;
                             return SizedBox(
                               height: isNetworkAvailable ? 80 : 56,
