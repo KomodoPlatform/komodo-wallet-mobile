@@ -201,12 +201,15 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.inactive:
         print('inactive');
-        if (Platform.isIOS) {
-          exit(0);
-        }
+        // if (Platform.isIOS) {
+        //   exit(0);
+        // }
         break;
       case AppLifecycleState.paused:
         print('paused');
+        if (Platform.isIOS) {
+          exit(0);
+        }
         dialogBloc.closeDialog(context);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         if (prefs.getBool('switch_pin_log_out_on_exit')) {
@@ -226,9 +229,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.suspending:
         print('suspending');
-        if (Platform.isIOS) {
-          exit(0);
-        }
         break;
     }
   }
