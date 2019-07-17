@@ -169,7 +169,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             print(double.parse(amountSell) + tradeFee);
             print(tradeFee);
             if (currentCoinBalance != null &&
-                double.parse(amountSell) + tradeFee + (double.parse(currentCoinBalance.balance.getBalance()) * 0.01) >
+                double.parse(amountSell) + tradeFee >
                     double.parse(currentCoinBalance.balance.getBalance())) {
               setMaxValue();
             } else {
@@ -238,7 +238,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       setState(() async {
         final double maxValue =
             double.parse(currentCoinBalance.balance.getBalance()) -
-                (double.parse(currentCoinBalance.balance.getBalance()) * 0.01) -
                 await getTradeFee();
         if (maxValue < 0) {
           _controllerAmountSell.text = '';
