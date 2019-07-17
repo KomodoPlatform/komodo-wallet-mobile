@@ -244,7 +244,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
             backgroundColor: Theme.of(context).errorColor,
-            content: const Text('Your balance is to small including fee.'),
+            content: const Text('Not enough balance or fee too high.'),
           ));
           _focusSell.unfocus();
         } else {
