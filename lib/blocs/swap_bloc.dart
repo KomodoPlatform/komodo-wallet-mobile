@@ -194,38 +194,43 @@ class SwapBloc implements BlocBase {
   }
 
   Future<double> setReceiveAmount(Coin coin, String amountSell) async {
-    final Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
-    double bestPrice = 0;
-    double maxVolume = 0;
-    int i = 0;
+    try {
+      final Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
+      double bestPrice = 0;
+      double maxVolume = 0;
+      int i = 0;
 
-    for (Ask ask in orderbook.asks) {
-            if (ask.address != swapBloc.sellCoin.balance.address) {
-        if (i == 0) {
-          maxVolume = ask.maxvolume;
-          bestPrice = ask.price;
-        } else if (ask.price <= bestPrice && ask.maxvolume > maxVolume) {
-          maxVolume = ask.maxvolume;
-          bestPrice = ask.price;
+      for (Ask ask in orderbook.asks) {
+        if (ask.address != swapBloc.sellCoin.balance.address) {
+          if (i == 0) {
+            maxVolume = ask.maxvolume;
+            bestPrice = ask.price;
+          } else if (ask.price <= bestPrice && ask.maxvolume > maxVolume) {
+            maxVolume = ask.maxvolume;
+            bestPrice = ask.price;
+          }
+          i++;
         }
-        i++;
       }
+
+      orderCoin = OrderCoin(
+        coinRel: sellCoin.coin,
+        coinBase: coin,
+        orderbook: orderbook,
+        maxVolume: maxVolume,
+        bestPrice: bestPrice,
+      );
+      _inOrderCoin.add(orderCoin);
+
+      amountReceive = double.parse(orderCoin
+          .getBuyAmount(double.parse(amountSell.replaceAll(',', '.'))));
+
+      _inAmountReceiveCoin.add(amountReceive);
+      return amountReceive;
+    } catch (e) {
+      print(e);
+      return 0;
     }
-
-    orderCoin = OrderCoin(
-      coinRel: sellCoin.coin,
-      coinBase: coin,
-      orderbook: orderbook,
-      maxVolume: maxVolume,
-      bestPrice: bestPrice,
-    );
-    _inOrderCoin.add(orderCoin);
-
-    amountReceive = double.parse(orderCoin
-        .getBuyAmount(double.parse(amountSell.replaceAll(',', '.'))));
-
-    _inAmountReceiveCoin.add(amountReceive);
-    return amountReceive;
   }
 
   void setTimeout(bool time) {

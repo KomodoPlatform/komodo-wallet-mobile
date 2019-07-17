@@ -78,7 +78,7 @@ class SyncStatus {
   });
 
   factory SyncStatus.fromJson(Map<String, dynamic> json) => SyncStatus(
-        additionalInfo: json['additional_info'] ?? AdditionalInfo(),
+        additionalInfo: json['additional_info'] == null ? null : AdditionalInfo.fromJson(json['additional_info']),
         state: json['state'] ?? '',
       );
 
@@ -86,7 +86,7 @@ class SyncStatus {
   String state;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'additional_info': additionalInfo ?? AdditionalInfo(),
+        'additional_info': additionalInfo == null ? null : additionalInfo.toJson(),
         'state': state ?? '',
       };
 }

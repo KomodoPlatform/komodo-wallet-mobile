@@ -33,36 +33,41 @@ class SwapHistoryBloc implements BlocBase {
   }
 
   Future<List<Swap>> fetchSwaps(int limit, String fromUuid) async {
-    final RecentSwaps recentSwaps = await mm2.getRecentSwaps(limit, fromUuid);
-    final List<Swap> newSwaps = <Swap>[];
+    try {
+      final RecentSwaps recentSwaps = await mm2.getRecentSwaps(limit, fromUuid);
+      final List<Swap> newSwaps = <Swap>[];
 
-    for (ResultSwap swap in recentSwaps.result.swaps) {
-      final dynamic nSwap = Swap(result: swap, status: getStatusSwap(swap));
-      if (nSwap is Swap) {
-        if (swap.myInfo != null &&
-            swap.myInfo.startedAt + 3600 <
-                DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
-            getStatusSwap(swap) != Status.SWAP_SUCCESSFUL) {
-          nSwap.status = Status.TIME_OUT;
-        }
-        newSwaps.add(nSwap);
-        if (nSwap.status == Status.ORDER_MATCHED ||
-            nSwap.status == Status.ORDER_MATCHING ||
-            nSwap.status == Status.SWAP_ONGOING) {
-          isSwapsOnGoing = true;
-        }
-      } else if (nSwap is ErrorString) {
-        if (swap.myInfo != null &&
-            swap.myInfo.startedAt + 600 <
-                DateTime.now().millisecondsSinceEpoch ~/ 1000) {
-          newSwaps.add(Swap(
-            status: Status.TIME_OUT,
-            result: swap,
-          ));
+      for (ResultSwap swap in recentSwaps.result.swaps) {
+        final dynamic nSwap = Swap(result: swap, status: getStatusSwap(swap));
+        if (nSwap is Swap) {
+          if (swap.myInfo != null &&
+              swap.myInfo.startedAt + 3600 <
+                  DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
+              getStatusSwap(swap) != Status.SWAP_SUCCESSFUL) {
+            nSwap.status = Status.TIME_OUT;
+          }
+          newSwaps.add(nSwap);
+          if (nSwap.status == Status.ORDER_MATCHED ||
+              nSwap.status == Status.ORDER_MATCHING ||
+              nSwap.status == Status.SWAP_ONGOING) {
+            isSwapsOnGoing = true;
+          }
+        } else if (nSwap is ErrorString) {
+          if (swap.myInfo != null &&
+              swap.myInfo.startedAt + 600 <
+                  DateTime.now().millisecondsSinceEpoch ~/ 1000) {
+            newSwaps.add(Swap(
+              status: Status.TIME_OUT,
+              result: swap,
+            ));
+          }
         }
       }
+      return newSwaps;
+    } catch (e) {
+      print(e);
+      return <Swap>[];
     }
-    return newSwaps;
   }
 
   void setSwaps(List<Swap> newSwaps) {
@@ -96,7 +101,7 @@ class SwapHistoryBloc implements BlocBase {
     Status status = Status.ORDER_MATCHING;
 
     for (EventElement event in resultSwap.events) {
-            print(event.event.type);
+      print(event.event.type);
       switch (event.event.type) {
         case 'Started':
           status = Status.ORDER_MATCHED;

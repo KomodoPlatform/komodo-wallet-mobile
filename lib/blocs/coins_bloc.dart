@@ -127,26 +127,31 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
-    final dynamic transactions = await mm2.getTransactions(coin, limit, fromId);
-
-    if (transactions is Transactions) {
-      if (fromId == null || fromId.isEmpty) {
-        this.transactions = transactions;
-      } else {
-        this.transactions.result.fromId = transactions.result.fromId;
-        this.transactions.result.limit = transactions.result.limit;
-        this.transactions.result.skipped = transactions.result.skipped;
-        this.transactions.result.total = transactions.result.total;
-        this
-            .transactions
-            .result
-            .transactions
-            .addAll(transactions.result.transactions);
+    try {
+      final dynamic transactions =
+          await mm2.getTransactions(coin, limit, fromId);
+      if (transactions is Transactions) {
+        if (fromId == null || fromId.isEmpty) {
+          this.transactions = transactions;
+        } else {
+          this.transactions.result.fromId = transactions.result.fromId;
+          this.transactions.result.limit = transactions.result.limit;
+          this.transactions.result.skipped = transactions.result.skipped;
+          this.transactions.result.total = transactions.result.total;
+          this
+              .transactions
+              .result
+              .transactions
+              .addAll(transactions.result.transactions);
+        }
+        _inTransactions.add(this.transactions);
+      } else if (transactions is ErrorCode) {
+        _inTransactions.add(transactions);
+        return transactions;
       }
-      _inTransactions.add(this.transactions);
-    } else if (transactions is ErrorCode) {
-      _inTransactions.add(transactions);
-      return transactions;
+    } catch (e) {
+      print(e);
+      rethrow;
     }
   }
 
@@ -326,15 +331,20 @@ class CoinsBloc implements BlocBase {
         getAllBalances.add(_getBalanceForCoin(coin));
       }
 
-      await Future.wait<dynamic>(getAllBalances).then((List<dynamic> onValue) {
-        for (dynamic balance in onValue) {
-          if (balance is CoinBalance &&
-              balance.balance.address != null &&
-              balance.balance.address.isNotEmpty) {
-            updateOneCoin(balance);
+      try {
+        await Future.wait<dynamic>(getAllBalances)
+            .then((List<dynamic> onValue) {
+          for (dynamic balance in onValue) {
+            if (balance is CoinBalance &&
+                balance.balance.address != null &&
+                balance.balance.address.isNotEmpty) {
+              updateOneCoin(balance);
+            }
           }
-        }
-      });
+        });
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -345,8 +355,14 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
-    final dynamic balance =
-        await mm2.getBalance(coin).timeout(Duration(seconds: 15));
+    dynamic balance;
+    try {
+      balance = await mm2.getBalance(coin).timeout(Duration(seconds: 15));
+    } catch (e) {
+      print(e);
+      balance = null;
+    }
+
     if (balance is ErrorString) {
       print(balance.error);
     }
@@ -382,17 +398,21 @@ class CoinsBloc implements BlocBase {
     final List<Coin> coinsToSave = await readJsonCoin();
     final List<Coin> coinsAll = await getAllNotActiveCoins();
 
-    await mm2.getCoinToKickStart().then((CoinToKickStart coinsToKickStart) {
-      for (Coin coin in coinsAll) {
-        for (String coinToKickStart in coinsToKickStart.result) {
-          if (coin.abbr == coinToKickStart.toString()) {
-            coinsToSave.add(coin);
+    try {
+      await mm2.getCoinToKickStart().then((CoinToKickStart coinsToKickStart) {
+        for (Coin coin in coinsAll) {
+          for (String coinToKickStart in coinsToKickStart.result) {
+            if (coin.abbr == coinToKickStart.toString()) {
+              coinsToSave.add(coin);
+            }
           }
         }
-      }
-    });
-
-    await writeJsonCoin(coinsToSave);
+      });
+      await writeJsonCoin(coinsToSave);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 }
 

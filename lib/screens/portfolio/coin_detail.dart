@@ -42,7 +42,7 @@ class CoinDetail extends StatefulWidget {
         builder: (BuildContext context) {
           return Dialog(
             child: Padding(
-              padding:  const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -115,6 +115,12 @@ class CoinDetail extends StatefulWidget {
                             dialogBloc.dialog = null;
                           });
                         }
+                      }).catchError((dynamic onError) {
+                        Scaffold.of(mContext).showSnackBar(SnackBar(
+                          duration: const Duration(seconds: 2),
+                          content:
+                              Text(AppLocalizations.of(mContext).errorTryLater),
+                        ));
                       });
                     },
                   )
@@ -125,17 +131,22 @@ class CoinDetail extends StatefulWidget {
             dialogBloc.dialog = null;
           });
         } else {
-          Scaffold.of(mContext).showSnackBar( SnackBar(
+          Scaffold.of(mContext).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
-            content:  Text(AppLocalizations.of(mContext).noRewardYet),
+            content: Text(AppLocalizations.of(mContext).noRewardYet),
           ));
         }
       } else {
-        Scaffold.of(mContext).showSnackBar( SnackBar(
+        Scaffold.of(mContext).showSnackBar(SnackBar(
           duration: const Duration(seconds: 2),
-          content:  Text(AppLocalizations.of(mContext).errorTryLater),
+          content: Text(AppLocalizations.of(mContext).errorTryLater),
         ));
       }
+    }).catchError((dynamic onError) {
+      Scaffold.of(mContext).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Text(AppLocalizations.of(mContext).errorTryLater),
+      ));
     });
   }
 }
@@ -145,15 +156,15 @@ class _CoinDetailState extends State<CoinDetail> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   bool _onWithdrawPost = false;
-  NumberFormat f =  NumberFormat('###,###.0#');
+  NumberFormat f = NumberFormat('###,###.0#');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isExpanded = false;
   int currentIndex = 0;
   List<Widget> listSteps = <Widget>[];
-  final ScrollController _scrollController =  ScrollController();
+  final ScrollController _scrollController = ScrollController();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-       GlobalKey<RefreshIndicatorState>();
-  final FocusNode _focus =  FocusNode();
+      GlobalKey<RefreshIndicatorState>();
+  final FocusNode _focus = FocusNode();
   String fromId;
   int limit = 10;
   bool isLoading = false;
@@ -310,10 +321,9 @@ class _CoinDetailState extends State<CoinDetail> {
                 tx.result.syncStatus.state != null) {
               print(tx.result.syncStatus.state);
               print('START TIMER');
-                timer ??= Timer.periodic(const Duration(seconds: 15), (_) {
-                  _refresh();
-                });
-              
+              timer ??= Timer.periodic(const Duration(seconds: 15), (_) {
+                _refresh();
+              });
 
               if (tx.result.syncStatus.state == syncState) {
                 String txLeft;
@@ -325,7 +335,8 @@ class _CoinDetailState extends State<CoinDetail> {
                       .toString();
                 }
                 return Container(
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   color: Theme.of(context).backgroundColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -345,9 +356,10 @@ class _CoinDetailState extends State<CoinDetail> {
                       Expanded(
                         child: Container(),
                       ),
-                      Text(widget.coinBalance.coin.swapContractAddress.isNotEmpty
-                          ? 'Syncing $txLeft TXs'
-                          : 'Transactions left $txLeft'),
+                      Text(
+                          widget.coinBalance.coin.swapContractAddress.isNotEmpty
+                              ? 'Syncing $txLeft TXs'
+                              : 'Transactions left $txLeft'),
                     ],
                   ),
                 );
@@ -371,7 +383,8 @@ class _CoinDetailState extends State<CoinDetail> {
             StreamBuilder<dynamic>(
                 stream: coinsBloc.outTransactions,
                 initialData: coinsBloc.transactions,
-                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: const CircularProgressIndicator());
                   }
@@ -385,8 +398,8 @@ class _CoinDetailState extends State<CoinDetail> {
                         transactions.result.transactions != null) {
                       if (transactions.result.transactions.isNotEmpty) {
                         return Padding(
-                          padding:
-                              const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 8),
                           child: _buildTransactions(
                               context, transactions.result.transactions),
                         );
@@ -400,11 +413,13 @@ class _CoinDetailState extends State<CoinDetail> {
                         ));
                       }
                     }
-                  } else if (snapshot.data is ErrorCode && snapshot.data.error != null) {
+                  } else if (snapshot.data is ErrorCode &&
+                      snapshot.data.error != null) {
                     return Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Center(
-                          child: Text(snapshot.data.error.message,
+                          child: Text(
+                        snapshot.data.error.message,
                         style: Theme.of(context).textTheme.body2,
                         textAlign: TextAlign.center,
                       )),
@@ -423,17 +438,19 @@ class _CoinDetailState extends State<CoinDetail> {
         currentCoinBalance.coin, limit, null);
   }
 
-  Widget _buildTransactions(BuildContext context, List<Transaction> transactionsData) {
+  Widget _buildTransactions(
+      BuildContext context, List<Transaction> transactionsData) {
     final List<Widget> transactionsWidget = transactionsData
-        .map((Transaction transaction) => _buildItemTransaction(transaction, context))
+        .map((Transaction transaction) =>
+            _buildItemTransaction(transaction, context))
         .toList();
 
     transactionsWidget.add(Padding(
       padding: const EdgeInsets.all(8.0),
-      child:  Center(
-        child:  Opacity(
+      child: Center(
+        child: Opacity(
           opacity: isLoading ? 1.0 : 00,
-          child:  const CircularProgressIndicator(),
+          child: const CircularProgressIndicator(),
         ),
       ),
     ));
@@ -477,9 +494,9 @@ class _CoinDetailState extends State<CoinDetail> {
                       padding: const EdgeInsets.all(16.0),
                       child: Container(
                           padding: const EdgeInsets.all(8.0),
-                          decoration:  BoxDecoration(
+                          decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border:  Border.all(
+                              border: Border.all(
                                   color: transaction.myBalanceChange > 0
                                       ? Colors.green
                                       : Colors.redAccent,
@@ -503,14 +520,14 @@ class _CoinDetailState extends State<CoinDetail> {
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, top: 8),
                             child: Builder(builder: (BuildContext context) {
-                              final String amount =
-                                  widget.coinBalance.coin.swapContractAddress.isNotEmpty
-                                      ? replaceAllTrainlingZeroERC(transaction
-                                          .myBalanceChange
-                                          .toStringAsFixed(16))
-                                      : replaceAllTrainlingZero(transaction
-                                          .myBalanceChange
-                                          .toStringAsFixed(8));
+                              final String amount = widget.coinBalance.coin
+                                      .swapContractAddress.isNotEmpty
+                                  ? replaceAllTrainlingZeroERC(transaction
+                                      .myBalanceChange
+                                      .toStringAsFixed(16))
+                                  : replaceAllTrainlingZero(transaction
+                                      .myBalanceChange
+                                      .toStringAsFixed(8));
 
                               return AutoSizeText(
                                 '${transaction.myBalanceChange > 0 ? '+' : ''}$amount ${currentCoinBalance.coin.abbr}',
@@ -564,16 +581,16 @@ class _CoinDetailState extends State<CoinDetail> {
                                   height: 12,
                                   width: 12,
                                   decoration: BoxDecoration(
-                                      borderRadius:
-                                          const BorderRadius.all(Radius.circular(16)),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(16)),
                                       color: Colors.green),
                                 )
                               : Container(
                                   height: 12,
                                   width: 12,
                                   decoration: BoxDecoration(
-                                      borderRadius:
-                                          const BorderRadius.all(Radius.circular(16)),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(16)),
                                       color: Colors.red),
                                 );
                         },
@@ -595,7 +612,8 @@ class _CoinDetailState extends State<CoinDetail> {
           child: StreamBuilder<List<CoinBalance>>(
               initialData: coinsBloc.coinBalance,
               stream: coinsBloc.outCoins,
-              builder: (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<CoinBalance>> snapshot) {
                 if (snapshot.hasData) {
                   for (CoinBalance coinBalance in snapshot.data) {
                     if (coinBalance.coin.abbr == currentCoinBalance.coin.abbr) {
@@ -792,7 +810,8 @@ class _CoinDetailState extends State<CoinDetail> {
     final double fee = txFee / 100000000;
     double amountMinusFee = double.parse(_amountController.text);
     amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
-    final double sendamount = double.parse((amountMinusFee + fee).toStringAsFixed(8));
+    final double sendamount =
+        double.parse((amountMinusFee + fee).toStringAsFixed(8));
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -952,10 +971,10 @@ class _CoinDetailState extends State<CoinDetail> {
 
   void _onPressedConfirmWithdraw(BuildContext mContext) {
     if (mainBloc.isNetworkOffline) {
-      Scaffold.of(mContext).showSnackBar( SnackBar(
+      Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,
-        content:  Text(AppLocalizations.of(context).noInternet),
+        content: Text(AppLocalizations.of(context).noInternet),
       ));
     } else {
       setState(() {
@@ -1002,7 +1021,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 coinsBloc.updateTransactions(
                     widget.coinBalance.coin, limit, null);
                 coinsBloc.loadCoin();
-                 Future<dynamic>.delayed(const Duration(seconds: 5), () {
+                Future<dynamic>.delayed(const Duration(seconds: 5), () {
                   coinsBloc.loadCoin();
                 });
                 listSteps.add(Padding(
@@ -1040,16 +1059,26 @@ class _CoinDetailState extends State<CoinDetail> {
                 currentIndex = 3;
               });
             }
+          }).catchError((dynamic onError) {
+            Scaffold.of(mContext).showSnackBar(SnackBar(
+              duration: const Duration(seconds: 2),
+              content: Text(AppLocalizations.of(context).errorTryLater),
+            ));
           });
         } else {
           setState(() {
             _onWithdrawPost = false;
           });
-          Scaffold.of(mContext).showSnackBar( SnackBar(
+          Scaffold.of(mContext).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
-            content:  Text(AppLocalizations.of(context).errorTryLater),
+            content: Text(AppLocalizations.of(context).errorTryLater),
           ));
         }
+      }).catchError((dynamic onError) {
+        Scaffold.of(mContext).showSnackBar(SnackBar(
+          duration: const Duration(seconds: 2),
+          content: Text(AppLocalizations.of(context).errorTryLater),
+        ));
       });
     }
   }
@@ -1073,11 +1102,11 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   void _copyToClipBoard(BuildContext context, String str) {
-    Scaffold.of(context).showSnackBar( SnackBar(
+    Scaffold.of(context).showSnackBar(SnackBar(
       duration: const Duration(milliseconds: 300),
-      content:  Text(AppLocalizations.of(context).clipboard),
+      content: Text(AppLocalizations.of(context).clipboard),
     ));
-    Clipboard.setData( ClipboardData(text: str));
+    Clipboard.setData(ClipboardData(text: str));
   }
 
   /// Open a activity for scan QRCode example usage:
@@ -1228,7 +1257,8 @@ class _CoinDetailState extends State<CoinDetail> {
                       if (value.isEmpty) {
                         return AppLocalizations.of(context).errorValueNotEmpty;
                       }
-                      if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+                      if (widget
+                          .coinBalance.coin.swapContractAddress.isNotEmpty) {
                         if (!isAddress(value)) {
                           return AppLocalizations.of(context)
                               .errorNotAValidAddress;
@@ -1306,8 +1336,8 @@ void showAddressDialog(BuildContext mContext, String address) {
         ),
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
-           FlatButton(
-            child:  Text(AppLocalizations.of(context).close.toUpperCase()),
+          FlatButton(
+            child: Text(AppLocalizations.of(context).close.toUpperCase()),
             onPressed: () {
               Navigator.of(context).pop();
             },
