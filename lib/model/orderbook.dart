@@ -22,9 +22,9 @@ class Orderbook {
   });
 
   factory Orderbook.fromJson(Map<String, dynamic> json) => Orderbook(
-        bids: List<Ask>.from(json['bids'].map<dynamic>((dynamic x) => Ask.fromJson(x))) ?? <Ask>[],
+        bids: json['bids'] == null ? null : List<Ask>.from(json['bids'].map((dynamic x) => Ask.fromJson(x))),
         numbids: json['numbids'] ?? 0,
-        asks: List<Ask>.from(json['asks'].map<dynamic>((dynamic x) => Ask.fromJson(x))) ?? <Ask>[],
+        asks: json['asks'] == null ? null : List<Ask>.from(json['asks'].map((dynamic x) => Ask.fromJson(x))),
         numasks: json['numasks'] ?? 0,
         askdepth: json['askdepth'] ?? 0,
         base: json['base'] ?? '',
@@ -44,9 +44,9 @@ class Orderbook {
   int netid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'bids': List<dynamic>.from(bids.map<dynamic>((dynamic x) => x.toJson())) ?? <Ask>[],
+        'bids': bids == null ? null : List<dynamic>.from(bids.map<dynamic>((Ask x) => x.toJson())),
         'numbids': numbids ?? 0,
-        'asks': List<dynamic>.from(asks.map<dynamic>((dynamic x) => x.toJson())) ?? <Ask>[],
+        'asks': asks == null ? null : List<dynamic>.from(asks.map<dynamic>((Ask x) => x.toJson())),
         'numasks': numasks ?? 0,
         'askdepth': askdepth ?? 0,
         'base': base ?? '',

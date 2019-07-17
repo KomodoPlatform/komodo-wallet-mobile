@@ -38,7 +38,10 @@ class Result {
         fromUuid: json['from_uuid'],
         limit: json['limit'] ?? 0,
         skipped: json['skipped'] ?? 0,
-        swaps: json["swaps"] == null ? null : new List<ResultSwap>.from(json["swaps"].map((dynamic x) => ResultSwap.fromJson(x))),
+        swaps: json['swaps'] == null
+            ? null
+            : List<ResultSwap>.from(
+                json['swaps'].map((dynamic x) => ResultSwap.fromJson(x))),
         total: json['total'] ?? 0,
       );
 
@@ -52,7 +55,10 @@ class Result {
         'from_uuid': fromUuid,
         'limit': limit ?? 0,
         'skipped': skipped ?? 0,
-        "swaps": swaps == null ? null : new List<dynamic>.from(swaps.map<dynamic>((x) => x.toJson())),
+        'swaps': swaps == null
+            ? null
+            : List<dynamic>.from(
+                swaps.map<dynamic>((ResultSwap x) => x.toJson())),
         'total': total ?? 0,
       };
 }
@@ -71,8 +77,11 @@ class ResultSwap {
         errorEvents: List<String>.from(
                 json['error_events'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
-        events: List<EventElement>.from(json['events'].map((dynamic x) => EventElement.fromJson(x))) ?? <EventElement>[],
-        myInfo: json["my_info"] == null ? null : MyInfo.fromJson(json["my_info"]),
+        events: List<EventElement>.from(
+                json['events'].map((dynamic x) => EventElement.fromJson(x))) ??
+            <EventElement>[],
+        myInfo:
+            json['my_info'] == null ? null : MyInfo.fromJson(json['my_info']),
         successEvents: List<String>.from(
                 json['success_events'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
@@ -89,12 +98,15 @@ class ResultSwap {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'error_events':
-            List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ?? <String>[],
-        'events': List<dynamic>.from(events.map<dynamic>((dynamic x) => x.toJson())) ??
+            List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ??
+                <String>[],
+        'events': List<dynamic>.from(
+                events.map<dynamic>((dynamic x) => x.toJson())) ??
             <EventElement>[],
         'my_info': myInfo ?? MyInfo(),
         'success_events':
-            List<dynamic>.from(successEvents.map<dynamic>((dynamic x) => x)) ?? <String>[],
+            List<dynamic>.from(successEvents.map<dynamic>((dynamic x) => x)) ??
+                <String>[],
         'type': type ?? '',
         'uuid': uuid ?? '',
       };
@@ -127,7 +139,7 @@ class EventEvent {
   });
 
   factory EventEvent.fromJson(Map<String, dynamic> json) => EventEvent(
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json['data'] == null ? null : Data.fromJson(json['data']),
         type: json['type'] ?? '',
       );
 
@@ -182,7 +194,7 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        lockDuration: json["lock_duration"] == null ? null : json["lock_duration"],
+        lockDuration: json['lock_duration'],
         makerAmount: json['maker_amount'] ?? '',
         makerCoin: json['maker_coin'] ?? '',
         makerCoinStartBlock: json['maker_coin_start_block'] ?? 0,
@@ -201,16 +213,20 @@ class Data {
         takerPubkey: json['taker_pubkey'] ?? '',
         blockHeight: json['block_height'] ?? 0,
         coin: json['coin'] ?? '',
-        feeDetails: json["fee_details"] == null ? null : FeeDetails.fromJson(json["fee_details"]),
-        from: json['from'] != null ? List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) : null ??
-            <String>[],
+        feeDetails: json['fee_details'] == null
+            ? null
+            : FeeDetails.fromJson(json['fee_details']),
+        from: json['from'] == null
+            ? null
+            : List<String>.from(json['from'].map((dynamic x) => x)),
         internalId: json['internal_id'] ?? '',
         myBalanceChange: json['my_balance_change'] ?? 0.0,
         receivedByMe: json['received_by_me'] ?? 0.0,
         spentByMe: json['spent_by_me'] ?? 0.0,
         timestamp: json['timestamp'] ?? 0,
-        to: json['to'] != null ? List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) : null ??
-            <String>[],
+        to: json['to'] == null
+            ? null
+            : List<String>.from(json['to'].map((dynamic x) => x)),
         totalAmount: json['total_amount'] ?? 0.0,
         txHash: json['tx_hash'] ?? '',
         txHex: json['tx_hex'] ?? '',
@@ -220,7 +236,7 @@ class Data {
         makerPaymentLocktime: json['maker_payment_locktime'] ?? 0,
         makerPubkey: json['maker_pubkey'] ?? '',
         secretHash: json['secret_hash'] ?? '',
-        transaction: json['transaction'] ?? Transaction(),
+        transaction: json['transaction'] == null ? null : Transaction.fromJson(json['transaction']),
       );
 
   int lockDuration;
@@ -282,13 +298,15 @@ class Data {
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
         'fee_details': feeDetails.toJson() ?? FeeDetails().toJson(),
-        'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ?? <String>[],
+        'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
+            <String>[],
         'internal_id': internalId ?? '',
         'my_balance_change': myBalanceChange ?? 0.0,
         'received_by_me': receivedByMe ?? 0.0,
         'spent_by_me': spentByMe ?? 0.0,
         'timestamp': timestamp ?? 0,
-        'to': List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
+        'to':
+            List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
         'total_amount': totalAmount ?? 0.0,
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',
@@ -303,20 +321,19 @@ class Data {
 }
 
 class FeeDetails {
+  FeeDetails({
+    this.amount,
+  });
 
-    FeeDetails({
-        this.amount,
-    });
+  factory FeeDetails.fromJson(Map<String, dynamic> json) => FeeDetails(
+        amount: json['amount'] == null ? null : json['amount'].toDouble(),
+      );
 
-    double amount;
+  double amount;
 
-    factory FeeDetails.fromJson(Map<String, dynamic> json) => new FeeDetails(
-        amount: json["amount"] == null ? null : json["amount"].toDouble(),
-    );
-
-    Map<String, dynamic> toJson() => <String, dynamic>{
-        "amount": amount == null ? null : amount,
-    };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'amount': amount,
+      };
 }
 
 class Transaction {
@@ -372,13 +389,15 @@ class Transaction {
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
         'fee_details': feeDetails.toJson() ?? FeeDetails().toJson(),
-        'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ?? <String>[],
+        'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
+            <String>[],
         'internal_id': internalId ?? '',
         'my_balance_change': myBalanceChange ?? 0.0,
         'received_by_me': receivedByMe ?? 0.0,
         'spent_by_me': spentByMe ?? 0.0,
         'timestamp': timestamp ?? 0,
-        'to': List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
+        'to':
+            List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
         'total_amount': totalAmount ?? 0.0,
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',

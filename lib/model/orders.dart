@@ -247,7 +247,7 @@ class TakerOrder {
   factory TakerOrder.fromJson(Map<String, dynamic> json) => TakerOrder(
         createdAt: json['created_at'] ?? 0,
         cancellable: json['cancellable'] ?? false,
-        matches: Map<String, Match>.from(json['matches']).map<String, Match>((dynamic k,dynamic v) => MapEntry<String, Match>(k, Match.fromJson(v))) ?? <String, Match>{},
+        matches: json['matches'] == null ? null : Map<dynamic, dynamic>.from(json['matches']).map((dynamic k,dynamic v) => MapEntry<String, Match>(k, Match.fromJson(v))),
         request: Request.fromJson(json['request'])?? Request(),
       );
 
@@ -259,7 +259,7 @@ class TakerOrder {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'created_at': createdAt ?? 0,
         'cancellable': cancellable ?? false,
-        'matches': Map<dynamic, dynamic>.from(matches).map<dynamic, dynamic>((dynamic k,dynamic v) => MapEntry<String, dynamic>(k, v.toJson())) ?? <String, Match>{},
+        'matches': matches == null ? null : Map<dynamic, dynamic>.from(matches).map<dynamic, dynamic>((dynamic k,dynamic v) => MapEntry<String, dynamic>(k, v.toJson())),
         'request': request.toJson() ?? Request(),
       };
 }
