@@ -20,8 +20,11 @@ enum SwapStatus { BUY, SELL }
 
 class SwapConfirmation extends StatefulWidget {
   const SwapConfirmation(
-      {this.amountToSell,
-      this.amountToBuy,
+      {@required this.bestPrice,
+      @required this.coinBase,
+      @required this.coinRel,
+      @required this.amountToSell,
+      @required this.amountToBuy,
       @required this.swapStatus,
       this.orderSuccess});
 
@@ -29,6 +32,9 @@ class SwapConfirmation extends StatefulWidget {
   final String amountToSell;
   final String amountToBuy;
   final Function orderSuccess;
+  final double bestPrice;
+  final Coin coinBase;
+  final Coin coinRel;
 
   @override
   _SwapConfirmationState createState() => _SwapConfirmationState();
@@ -128,7 +134,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              '${widget.amountToSell} ${swapBloc.orderCoin?.coinRel?.abbr}',
+                              '${widget.amountToSell} ${widget?.coinRel?.abbr}',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.title,
                             ),
@@ -159,7 +165,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              '${widget.amountToBuy} ${swapBloc.orderCoin.coinBase.abbr}',
+                              '${widget.amountToBuy} ${widget.coinBase.abbr}',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.title,
                             ),
@@ -299,13 +305,15 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     setState(() {
       isSwapMaking = true;
     });
+
     final double amountToSell =
         double.parse(widget.amountToSell.replaceAll(',', '.'));
     final double amountToBuy = amountToSell *
-        (amountToSell / (amountToSell * swapBloc.orderCoin.bestPrice));
-    final Coin coinBase = swapBloc.orderCoin?.coinBase;
-    final Coin coinRel = swapBloc.orderCoin?.coinRel;
-    final double price = swapBloc.orderCoin.bestPrice * 1.01;
+        (amountToSell / (amountToSell * widget.bestPrice));
+    final Coin coinBase = widget.coinBase;
+    final Coin coinRel = widget.coinRel;
+    final double price = widget.bestPrice * 1.01;
+
     //reviewed by ca333
     if (widget.swapStatus == SwapStatus.BUY) {
       mm2
@@ -317,11 +325,10 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       print('buying: ' + amountToBuy.toString());
       mm2
           .postSetPrice(coinRel, coinBase, amountToSell,
-              swapBloc.orderCoin.bestPrice, false, false)
+              widget.bestPrice, false, false)
           .then((dynamic onValue) =>
               _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
-          .catchError((dynamic onError)
-           => _catchErrorSwap(mContext, onError));
+          .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     }
   }
 
