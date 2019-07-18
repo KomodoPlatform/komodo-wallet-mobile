@@ -48,6 +48,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   String amountToBuy;
   dynamic timerGetOrderbook;
   bool _noOrderFound = false;
+  bool isMaxActive = false;
 
   @override
   void initState() {
@@ -165,25 +166,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
-          getTradeFee().then((double tradeFee) {
-            print(double.parse(currentCoinBalance.balance.getBalance()));
-            print(double.parse(amountSell) + tradeFee);
-            print(tradeFee);
-            if (currentCoinBalance != null &&
-                double.parse(amountSell) + tradeFee >
-                    double.parse(currentCoinBalance.balance.getBalance())) {
-              setMaxValue();
-            } else {
-              if (amountSell.contains(
-                  RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))) {
-              } else {
-                // _controllerAmountSell.text = tmpText;
-                _controllerAmountSell
-                    .setTextAndPosition(replaceAllTrainlingZero(tmpText));
-              }
-            }
-          });
-
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
                 .setReceiveAmount(
@@ -206,6 +188,24 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 maxVolume: double.parse(
                     _controllerAmountSell.text.replaceAll(',', '.'))));
           }
+
+          getTradeFee().then((double tradeFee) {
+            if (currentCoinBalance != null &&
+                double.parse(amountSell) + tradeFee >
+                    double.parse(currentCoinBalance.balance.getBalance())) {
+              if (!isMaxActive) {
+                setMaxValue();
+              }
+              isMaxActive = false;
+            } else {
+              if (amountSell.contains(
+                  RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))) {
+              } else {
+                _controllerAmountSell
+                    .setTextAndPosition(replaceAllTrainlingZero(tmpText));
+              }
+            }
+          });
         });
       }
 
@@ -441,8 +441,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                     ? Container(
                                                         width: 70,
                                                         child: FlatButton(
-                                                          onPressed: () {
-                                                            setMaxValue();
+                                                          onPressed: () async{
+                                                            setState(() {
+                                                              isMaxActive =
+                                                                  true;
+                                                            });
+                                                            await setMaxValue();
                                                           },
                                                           child: Text(
                                                             AppLocalizations.of(
