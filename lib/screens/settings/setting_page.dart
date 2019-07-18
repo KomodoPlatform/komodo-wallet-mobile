@@ -9,6 +9,7 @@ import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
@@ -89,8 +90,7 @@ class _SettingPageState extends State<SettingPage> {
               _buildTitle(AppLocalizations.of(context).legalTitle),
               _buildDisclaimerToS(),
               walletBloc.currentWallet != null
-                  ? _buildTitle(
-                      AppLocalizations.of(context).version + ' - ' + version)
+                  ? _buildTitle(version)
                   : Container(),
               const SizedBox(
                 height: 48,
@@ -98,6 +98,9 @@ class _SettingPageState extends State<SettingPage> {
               walletBloc.currentWallet != null
                   ? _buildDeleteWallet()
                   : Container(),
+                            const SizedBox(
+                height: 24,
+              ),
             ],
           ),
         ),
@@ -107,8 +110,17 @@ class _SettingPageState extends State<SettingPage> {
 
   Future<String> _getVersionApplication() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    final String version = packageInfo.version;
+    String version =
+        AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
+    try {
+      final ResultSuccess versionmm2 = await mm2.getVersionMM2();
+      version +=
+          ' - ${versionmm2.result}';
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
     return version;
   }
 
@@ -587,7 +599,7 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
 
-  Future<void> _shareFile() async{
+  Future<void> _shareFile() async {
     final RecentSwaps recentSwap = await mm2.getRecentSwaps(100, null);
 
     if (mm2.sink != null) {
