@@ -25,16 +25,16 @@ class CoinInit {
     });
 
     factory CoinInit.fromJson(Map<String, dynamic> json) => CoinInit(
-        coin: json['coin'] ?? '',
-        name: json['name'] ?? '',
-        fname: json['fname'] ?? '',
-        rpcport: json['rpcport'] ?? 0,
-        pubtype: json['pubtype'] ?? 0,
-        p2Shtype: json['p2shtype'] ?? 0,
-        wiftype: json['wiftype'] ?? 0,
-        txfee: json['txfee'] ?? 0,
-        mm2: json['mm2'] ?? 0,
-        asset: json['asset'] ?? '',
+        coin: json['coin'],
+        name: json['name'],
+        fname: json['fname'],
+        rpcport: json['rpcport'],
+        pubtype: json['pubtype'],
+        p2Shtype: json['p2shtype'],
+        wiftype: json['wiftype'],
+        txfee: json['txfee'],
+        mm2: json['mm2'],
+        asset: json['asset'],
         etomic: json['etomic'],
     );
 
@@ -52,15 +52,15 @@ class CoinInit {
 
     Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin,
-        'name': name ?? '',
-        'fname': fname ?? '',
-        'rpcport': rpcport ?? 0,
-        'pubtype': pubtype ?? 0,
-        'p2shtype': p2Shtype ?? 0,
-        'wiftype': wiftype ?? 0,
-        'txfee': txfee ?? 0,
-        'mm2': mm2 ?? 0,
-        'asset': asset ?? '',
+        'name': name,
+        'fname': fname,
+        'rpcport': rpcport,
+        'pubtype': pubtype,
+        'p2shtype': p2Shtype,
+        'wiftype': wiftype,
+        'txfee': txfee,
+        'mm2': mm2,
+        'asset': asset,
         'etomic': etomic,
     };
 }
