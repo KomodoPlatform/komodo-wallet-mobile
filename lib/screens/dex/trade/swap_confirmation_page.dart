@@ -42,6 +42,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
     swapBloc.updateReceiveCoin(null);
+    swapBloc.setEnabledSellField(false);
     super.dispose();
   }
 

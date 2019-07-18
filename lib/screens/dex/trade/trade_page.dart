@@ -47,7 +47,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   String amountToBuy;
   dynamic timerGetOrderbook;
   bool _noOrderFound = false;
-  bool enabledSellField = false;
 
   @override
   void initState() {
@@ -317,7 +316,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _animCoin(Market market) {
-    if (!enabledSellField && market == Market.SELL) {
+    if (!swapBloc.enabledSellField && market == Market.SELL) {
       controllerAnimationCoinSell.reset();
       controllerAnimationCoinSell.forward();
     }
@@ -392,7 +391,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                               : _controllerAmountReceive,
                                           enabled: market == Market.RECEIVE
                                               ? swapBloc.enabledReceiveField
-                                              : enabledSellField,
+                                              : swapBloc.enabledSellField,
                                           keyboardType: const TextInputType
                                               .numberWithOptions(decimal: true),
                                           style:
@@ -474,7 +473,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       onTap: () async {
         if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
           setState(() {
-            if (enabledSellField) {
+            if (swapBloc.enabledSellField) {
               FocusScope.of(context).requestFocus(_focusSell);
               controllerAnimationInputSell.reset();
               controllerAnimationInputSell.forward();
@@ -779,7 +778,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 _controllerAmountSell.text = '';
                 _controllerAmountSell.text = tmp;
                 _controllerAmountReceive.text = '';
-                enabledSellField = true;
+                swapBloc.setEnabledSellField(true);
               });
               swapBloc.updateSellCoin(coin);
               swapBloc.updateBuyCoin(null);

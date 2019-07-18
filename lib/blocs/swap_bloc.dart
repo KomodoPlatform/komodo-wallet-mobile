@@ -12,7 +12,6 @@ class SwapBloc implements BlocBase {
   OrderCoin orderCoin;
   CoinBalance sellCoin;
   bool enabledReceiveField;
-  bool enabledSellField;
 
   final StreamController<OrderCoin> _orderCoinController =
       StreamController<OrderCoin>.broadcast();
@@ -81,6 +80,14 @@ class SwapBloc implements BlocBase {
   Sink<double> get _inCurrentAmountBuyCoin => _currentAmountBuyController.sink;
   Stream<double> get outCurrentAmountBuy => _currentAmountBuyController.stream;
 
+
+  bool enabledSellField = false;
+
+  final StreamController<bool> _enabledSellFieldController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inEnabledSellField => _enabledSellFieldController.sink;
+  Stream<bool> get outEnabledSellField => _enabledSellFieldController.stream;
+
   @override
   void dispose() {
     _orderCoinController.close();
@@ -93,6 +100,12 @@ class SwapBloc implements BlocBase {
     _isTimeOutController.close();
     _currentAmountSellController.close();
     _currentAmountBuyController.close();
+    _enabledSellFieldController.close();
+  }
+
+  void setEnabledSellField(bool enabledSellField) {
+    this.enabledSellField = enabledSellField;
+    _inEnabledSellField.add(this.enabledSellField);
   }
 
   void setCurrentAmountSell(double amount) {
