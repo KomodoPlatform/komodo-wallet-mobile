@@ -312,7 +312,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         (amountToSell / (amountToSell * widget.bestPrice));
     final Coin coinBase = widget.coinBase;
     final Coin coinRel = widget.coinRel;
-    final double price = widget.bestPrice * 1.01;
+    final double price = widget.bestPrice;
 
     //reviewed by ca333
     if (widget.swapStatus == SwapStatus.BUY) {
