@@ -19,25 +19,25 @@ class Transaction {
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-        blockHeight: json['block_height'] ?? 0,
+        blockHeight: json['block_height'].toDouble() ?? 0,
         coin: json['coin'] ?? '',
         confirmations: json['confirmations'] ?? 0,
         feeDetails: FeeDetails.fromJson(json['fee_details']) ?? FeeDetails(),
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
         internalId: json['internal_id'] ?? '',
-        myBalanceChange: json['my_balance_change'] ?? 0.0,
-        receivedByMe: json['received_by_me'] ?? 0.0,
-        spentByMe: json['spent_by_me'] ?? 0.0,
+        myBalanceChange: json['my_balance_change'].toDouble() ?? 0.0,
+        receivedByMe: json['received_by_me'].toDouble() ?? 0.0,
+        spentByMe: json['spent_by_me'].toDouble() ?? 0.0,
         timestamp: json['timestamp'] ?? 0,
         to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
-        totalAmount: json['total_amount'] ?? '',
+        totalAmount: json['total_amount'].toDouble() ?? 0.0,
         txHash: json['tx_hash'] ?? '',
         txHex: json['tx_hex'] ?? '',
       );
 
-  int blockHeight;
+  double blockHeight;
   String coin;
   int confirmations;
   FeeDetails feeDetails;
@@ -53,7 +53,7 @@ class Transaction {
   String txHex;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'block_height': blockHeight ?? 0,
+        'block_height': blockHeight ?? 0.0,
         'coin': coin ?? '',
         'confirmations': confirmations ?? 0,
         'fee_details': feeDetails.toJson() ?? FeeDetails().toJson(),

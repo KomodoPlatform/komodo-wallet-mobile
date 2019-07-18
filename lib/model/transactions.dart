@@ -17,13 +17,13 @@ class Transactions {
   });
 
   factory Transactions.fromJson(Map<String, dynamic> json) => Transactions(
-        result: Result.fromJson(json['result']) ?? Result(),
+        result: Result.fromJson(json['result']),
       );
 
   Result result;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson() ?? Result().toJson(),
+        'result': result.toJson(),
       };
 }
 
@@ -45,9 +45,8 @@ class Result {
         total: json['total'] ?? 0,
         currentBlock: json['current_block'] ?? 0,
         syncStatus: SyncStatus.fromJson(json['sync_status']) ?? SyncStatus(),
-        transactions: List<Transaction>.from(json['transactions']
-                .map((dynamic x) => Transaction.fromJson(x))) ??
-            <Transaction>[],
+        transactions: List<Transaction>.from(
+            json['transactions'].map((dynamic x) => Transaction.fromJson(x))),
       );
 
   dynamic fromId;
@@ -65,9 +64,7 @@ class Result {
         'skipped': skipped ?? 0,
         'total': total ?? 0,
         'sync_status': syncStatus.toJson() ?? SyncStatus().toJson(),
-        'transactions': List<dynamic>.from(
-                transactions.map<dynamic>((dynamic x) => x.toJson())) ??
-            <Transaction>[],
+        'transactions': List<dynamic>.from(transactions.map<dynamic>((dynamic x) => x.toJson())),
       };
 }
 
@@ -78,7 +75,9 @@ class SyncStatus {
   });
 
   factory SyncStatus.fromJson(Map<String, dynamic> json) => SyncStatus(
-        additionalInfo: json['additional_info'] == null ? null : AdditionalInfo.fromJson(json['additional_info']),
+        additionalInfo: json['additional_info'] == null
+            ? null
+            : AdditionalInfo.fromJson(json['additional_info']),
         state: json['state'] ?? '',
       );
 
@@ -86,7 +85,8 @@ class SyncStatus {
   String state;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'additional_info': additionalInfo == null ? null : additionalInfo.toJson(),
+        'additional_info':
+            additionalInfo == null ? null : additionalInfo.toJson(),
         'state': state ?? '',
       };
 }
