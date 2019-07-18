@@ -67,6 +67,13 @@
         "txfee": 10000
     },
     {
+        "coin": "ZILLA",
+        "asset": "Chainzilla",
+        "rpcport": 10041,
+        "mm2": 1,
+        "txfee": 10000
+    },
+    {
         "coin": "VRSC",
         "asset": "VerusCoin",
         "rpcport": 27486,

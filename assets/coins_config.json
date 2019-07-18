@@ -188,6 +188,23 @@
     ]
   },
   {
+    "name": "ZILLA",
+    "address": "electrum1.cipig.net",
+    "port": 10028,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "RFOX",
+    "colorCoin": "0xFF000032",
+    "serverList": [
+      "electrum3.cipig.net:10028",
+      "electrum2.cipig.net:10028",
+      "electrum1.cipig.net:10028"
+    ],
+    "explorerUrl": [
+      "https://zillaexplorer.io/"
+    ]
+  },
+  {
     "name": "VerusCoin",
     "address": "electrum1.cipig.net",
     "port": 10021,
