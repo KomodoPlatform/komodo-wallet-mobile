@@ -920,6 +920,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       dialogBloc.dialog = null;
                     });
                   },
+                  bestPrice: swapBloc.orderCoin.bestPrice,
+                  coinBase: swapBloc.orderCoin?.coinBase,
+                  coinRel: swapBloc.orderCoin?.coinRel,
                   swapStatus: swapBloc.enabledReceiveField
                       ? SwapStatus.SELL
                       : SwapStatus.BUY,
