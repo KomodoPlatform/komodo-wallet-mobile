@@ -785,13 +785,16 @@ class _CoinDetailState extends State<CoinDetail> {
                 AppLocalizations.of(context).withdraw.toUpperCase(),
                 style: Theme.of(context).textTheme.button,
               ),
-              onPressed: () {
+              onPressed: () async {
                 // Validate will return true if the form is valid, or false if
                 // the form is invalid.
                 if (_formKey.currentState.validate()) {
+                  final Widget buildConfirmationStep =
+                      await _buildConfirmationStep();
+
                   setState(() {
                     isExpanded = false;
-                    listSteps.add(_buildConfirmationStep());
+                    listSteps.add(buildConfirmationStep);
                   });
                   setState(() {
                     currentIndex = 1;
@@ -806,7 +809,7 @@ class _CoinDetailState extends State<CoinDetail> {
     }
   }
 
-  Widget _buildConfirmationStep() {
+  Future<Widget> _buildConfirmationStep() async {
     // int txFee = 0;
     // if (currentCoinBalance.coin.txfee != null) {
     //   txFee = currentCoinBalance.coin.txfee;
@@ -816,12 +819,27 @@ class _CoinDetailState extends State<CoinDetail> {
     // amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
     // final double sendamount =
     //     double.parse((amountMinusFee + fee).toStringAsFixed(8));
-    double amountMinusFee = double.parse(_amountController.text);
-    getFee().then((double onValue) {
-      setState(() {
-        amountMinusFee = double.parse(_amountController.text) - onValue;
-      });
-    });
+    // double amountMinusFee = double.parse(_amountController.text);
+    // getFee().then((double onValue) {
+    //   setState(() {
+    //     amountMinusFee = double.parse(_amountController.text) - onValue;
+    //   });
+    // });
+    double fee = 0;
+    try {
+      fee = await getFee();
+    } catch (e) {
+      print(e);
+    }
+    double amountToPay = double.parse(_amountController.text) + fee;
+    final double feeToPay = fee;
+    double amountUserReceive = double.parse(_amountController.text);
+
+    if (double.parse(widget.coinBalance.balance.getBalance()) ==
+        double.parse(_amountController.text)) {
+      amountToPay = amountUserReceive;
+      amountUserReceive -= feeToPay;
+    }
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -840,7 +858,7 @@ class _CoinDetailState extends State<CoinDetail> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Text(
-                double.parse(_amountController.text).toStringAsFixed(8),
+                amountToPay.toStringAsFixed(8),
                 style: Theme.of(context).textTheme.subtitle,
               ),
               const SizedBox(
@@ -859,19 +877,9 @@ class _CoinDetailState extends State<CoinDetail> {
                 '- ',
                 style: Theme.of(context).textTheme.body2,
               ),
-              FutureBuilder<double>(
-                future: getFee(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    return Text(
-                      snapshot.data.toString(),
-                      style: Theme.of(context).textTheme.body2,
-                    );
-                  } else {
-                    return const Text('');
-                  }
-                },
+              Text(
+                feeToPay.toStringAsFixed(8),
+                style: Theme.of(context).textTheme.body2,
               ),
               const SizedBox(
                 width: 4,
@@ -894,25 +902,10 @@ class _CoinDetailState extends State<CoinDetail> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              FutureBuilder<double>(
-                  future: getFee(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<double> snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      return Text(
-                        (double.parse(_amountController.text) - snapshot.data)
-                            .toStringAsFixed(8),
-                        style: amountMinusFee > 0
-                            ? Theme.of(context).textTheme.title
-                            : Theme.of(context)
-                                .textTheme
-                                .title
-                                .copyWith(color: Colors.red),
-                      );
-                    } else {
-                      return Container();
-                    }
-                  }),
+              Text(
+                amountUserReceive.toStringAsFixed(8),
+                style: Theme.of(context).textTheme.title,
+              ),
               const SizedBox(
                 width: 4,
               ),
@@ -983,7 +976,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         AppLocalizations.of(context).confirm.toUpperCase(),
                         style: Theme.of(context).textTheme.button,
                       ),
-                      onPressed: amountMinusFee > 0
+                      onPressed: amountToPay > 0
                           ? () {
                               _onPressedConfirmWithdraw(context);
                             }
@@ -1021,9 +1014,6 @@ class _CoinDetailState extends State<CoinDetail> {
       setState(() {
         isSendIsActive = false;
       });
-      double amountMinusFee =
-          double.parse(_amountController.text) - await getFee();
-      amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
       listSteps.add(Container(
           height: 100,
           width: double.infinity,
@@ -1040,7 +1030,7 @@ class _CoinDetailState extends State<CoinDetail> {
           .postWithdraw(
               currentCoinBalance.coin,
               _addressController.text.toString(),
-              amountMinusFee,
+              double.parse(_amountController.text),
               double.parse(widget.coinBalance.balance.getBalance()) ==
                   double.parse(_amountController.text))
           .then((dynamic data) {
