@@ -25,7 +25,7 @@ class _OrdersPageState extends State<OrdersPage> {
         initialData: ordersBloc.orderSwaps,
         stream: ordersBloc.outOrderSwaps,
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+          if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
             List<dynamic> orderSwaps = snapshot.data;
             orderSwaps = snapshot.data.reversed.toList();
             return ListView.builder(

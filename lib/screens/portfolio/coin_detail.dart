@@ -312,7 +312,7 @@ class _CoinDetailState extends State<CoinDetail> {
         stream: coinsBloc.outTransactions,
         initialData: coinsBloc.transactions,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.hasData && snapshot.data is Transactions) {
+          if (snapshot.hasData && snapshot.data != null  && snapshot.data is Transactions) {
             final Transactions tx = snapshot.data;
             final String syncState =
                 '${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}';
@@ -393,7 +393,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     final String syncState =
                         '${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}';
 
-                    if (snapshot.hasData &&
+                    if (snapshot.hasData && snapshot.data != null  &&
                         transactions.result != null &&
                         transactions.result.transactions != null) {
                       if (transactions.result.transactions.isNotEmpty) {
@@ -614,7 +614,7 @@ class _CoinDetailState extends State<CoinDetail> {
               stream: coinsBloc.outCoins,
               builder: (BuildContext context,
                   AsyncSnapshot<List<CoinBalance>> snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.hasData && snapshot.data != null ) {
                   for (CoinBalance coinBalance in snapshot.data) {
                     if (coinBalance.coin.abbr == currentCoinBalance.coin.abbr) {
                       currentCoinBalance = coinBalance;

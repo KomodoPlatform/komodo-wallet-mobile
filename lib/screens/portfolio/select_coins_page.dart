@@ -62,10 +62,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: StreamBuilder<CoinToActivate>(
+            initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
             builder:
                 (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.data != null) {
                 return LoadingCoin();
               } else {
                 return SafeArea(
@@ -101,7 +102,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                                           text:
                                               AppLocalizations.of(context).done,
                                           isLoading: isActive,
-                                          onPressed: snapshot.hasData &&
+                                          onPressed: snapshot.hasData && snapshot.data != null  &&
                                                   snapshot.data.isNotEmpty
                                               ? _pressDoneButton
                                               : null,
@@ -128,7 +129,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     return FutureBuilder<List<Coin>>(
       future: coinsBloc.getAllNotActiveCoins(),
       builder: (BuildContext context, AsyncSnapshot<List<Coin>> snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data != null  && snapshot.data != null) {
           final List<Widget> coinsToActivate = <Widget>[];
 
           for (Coin coin in snapshot.data) {
@@ -236,7 +237,7 @@ class _LoadingCoinState extends State<LoadingCoin> {
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
             builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-              if (snapshot.hasData && snapshot.data.currentStatus != null) {
+              if (snapshot.hasData && snapshot.data != null  && snapshot.data != null && snapshot.data.currentStatus != null) {
                 return Text(snapshot.data.currentStatus);
               } else {
                 return Text(AppLocalizations.of(context).connecting);

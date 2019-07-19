@@ -61,7 +61,7 @@ class _LockScreenState extends State<LockScreen> {
                                   future: _checkBiometrics(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<dynamic> snapshot) {
-                                    if (snapshot.hasData && snapshot.data && widget.pinStatus == PinStatus.NORMAL_PIN) {
+                                    if (snapshot.hasData && snapshot.data != null  && snapshot.data && widget.pinStatus == PinStatus.NORMAL_PIN) {
                                       print(snapshot.data);
                                       _authenticateBiometrics();
                                       return Container();

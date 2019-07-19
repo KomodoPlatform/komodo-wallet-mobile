@@ -151,8 +151,7 @@ class _SettingPageState extends State<SettingPage> {
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin',
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                print('switch_pin pref ' + snapshot.data.toString());
-                return snapshot.hasData
+                return snapshot.hasData && snapshot.data != null 
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
@@ -200,7 +199,7 @@ class _SettingPageState extends State<SettingPage> {
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin_biometric',
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData
+                return snapshot.hasData && snapshot.data != null 
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
@@ -366,7 +365,7 @@ class _SettingPageState extends State<SettingPage> {
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin_log_out_on_exit',
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData
+                return snapshot.hasData && snapshot.data != null 
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
@@ -572,7 +571,7 @@ class _SettingPageState extends State<SettingPage> {
               initialData: settingsBloc.isDeleteLoading,
               stream: settingsBloc.outIsDeleteLoading,
               builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-                if (snapshot.hasData && !snapshot.data) {
+                if (snapshot.hasData && snapshot.data != null  && !snapshot.data) {
                   Navigator.of(context).pop();
                 }
                 return SimpleDialog(
