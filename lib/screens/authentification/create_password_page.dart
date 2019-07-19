@@ -119,6 +119,13 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       },
                       style: Theme.of(context).textTheme.body1,
                       decoration: InputDecoration(
+                          errorMaxLines: 6,
+                          errorStyle: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(
+                                  fontSize: 12,
+                                  color: Theme.of(context).errorColor),
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
