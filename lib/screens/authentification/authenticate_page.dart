@@ -26,8 +26,8 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
     return StreamBuilder<List<Wallet>>(
         initialData: walletBloc.wallets,
         stream: walletBloc.outWallets,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data.length > 0) {
+        builder: (BuildContext context, AsyncSnapshot<List<Wallet>> snapshot) {
+          if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
             return BuildScreenAuthMultiWallets(
               wallets: snapshot.data,
             );
@@ -39,16 +39,17 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
 }
 
 class BoxButton extends StatelessWidget {
+  const BoxButton(
+      {Key key, this.text, this.assetPath, @required this.onPressed})
+      : super(key: key);
+
   final String text;
   final String assetPath;
   final Function onPressed;
-  final Key key;
-
-  BoxButton({this.key, this.text, this.assetPath, @required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    BorderRadius borderRadius = BorderRadius.all(Radius.circular(8));
+    const BorderRadius borderRadius = BorderRadius.all(Radius.circular(8));
 
     return InkWell(
       borderRadius: borderRadius,
@@ -67,7 +68,7 @@ class BoxButton extends StatelessWidget {
                 child: Column(
               children: <Widget>[
                 Container(height: 40, child: SvgPicture.asset(assetPath)),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Text(
@@ -84,9 +85,9 @@ class BoxButton extends StatelessWidget {
 }
 
 class BuildScreenAuthMultiWallets extends StatefulWidget {
-  final List<Wallet> wallets;
+  const BuildScreenAuthMultiWallets({this.wallets});
 
-  BuildScreenAuthMultiWallets({this.wallets});
+  final List<Wallet> wallets;
 
   @override
   _BuildScreenAuthMultiWalletsState createState() =>
@@ -102,21 +103,21 @@ class _BuildScreenAuthMultiWalletsState
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Center(
             child: Container(
                 height: 200,
                 width: 200,
-                child: Image.asset("assets/mark_and_text_vertical_light.png")),
+                child: Image.asset('assets/mark_and_text_vertical_light.png')),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: <Widget>[
                 Expanded(child: CreateWalletButton()),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Expanded(child: RestoreButton())
@@ -135,19 +136,19 @@ class _BuildScreenAuthMultiWalletsState
     );
   }
 
-  _buildItemWallet(Wallet wallet) {
+  Widget _buildItemWallet(Wallet wallet) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: InkWell(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         onTap: () {
-          Navigator.push(
+          Navigator.push<dynamic>(
             context,
-            MaterialPageRoute(
-                builder: (context) => UnlockWalletPage(
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => UnlockWalletPage(
                       textButton: AppLocalizations.of(context).login,
                       wallet: wallet,
-                      onSuccess: (seed, password) async {
+                      onSuccess: (String seed, String password) async {
                         await coinsBloc.resetCoinDefault();
                         authBloc.showPin(false);
                         if (!mm2.ismm2Running) {
@@ -161,7 +162,7 @@ class _BuildScreenAuthMultiWalletsState
         child: Container(
             child: Row(
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   width: 16,
                 ),
                 Padding(
@@ -180,7 +181,7 @@ class _BuildScreenAuthMultiWalletsState
                     backgroundColor: Colors.white.withOpacity(0.6),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 16,
                 ),
                 Expanded(
@@ -197,7 +198,7 @@ class _BuildScreenAuthMultiWalletsState
                     ),
                     width: 30,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(6),
                           bottomRight: Radius.circular(6),
                           bottomLeft: Radius.elliptical(10, 50),
@@ -208,7 +209,7 @@ class _BuildScreenAuthMultiWalletsState
             ),
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.white.withOpacity(0.3)),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
                 color: Colors.transparent)),
       ),
     );
@@ -239,10 +240,10 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                   height: 240,
                   width: 240,
                   child:
-                      Image.asset("assets/mark_and_text_vertical_light.png")),
+                      Image.asset('assets/mark_and_text_vertical_light.png')),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Center(
@@ -252,7 +253,7 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   CreateWalletButton(),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   RestoreButton(),
@@ -278,13 +279,13 @@ class _CreateWalletButtonState extends State<CreateWalletButton> {
   @override
   Widget build(BuildContext context) {
     return BoxButton(
-      key: Key('createWalletButton'),
+      key: const Key('createWalletButton'),
       text: AppLocalizations.of(context).createAWallet,
-      assetPath: "assets/create_wallet.svg",
+      assetPath: 'assets/create_wallet.svg',
       onPressed: () {
-        Navigator.push(
+        Navigator.push<dynamic>(
           context,
-          MaterialPageRoute(builder: (context) => WelcomePage()),
+          MaterialPageRoute<dynamic>(builder: (BuildContext context) => const WelcomePage()),
         );
       },
     );
@@ -301,12 +302,12 @@ class _RestoreButtonState extends State<RestoreButton> {
   Widget build(BuildContext context) {
     return BoxButton(
       text: AppLocalizations.of(context).restoreWallet,
-      assetPath: "assets/lock_off.svg",
+      assetPath: 'assets/lock_off.svg',
       onPressed: () {
-        Navigator.push(
+        Navigator.push<dynamic>(
           context,
-          MaterialPageRoute(
-              builder: (context) => WelcomePage(
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => const WelcomePage(
                     isFromRestore: true,
                   )),
         );

@@ -8,9 +8,9 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class SelectCoinsPage extends StatefulWidget {
-  final Function(List<Coin>) coinsToActivate;
+  const SelectCoinsPage({this.coinsToActivate});
 
-  SelectCoinsPage({this.coinsToActivate});
+  final Function(List<Coin>) coinsToActivate;
 
   @override
   _SelectCoinsPageState createState() => _SelectCoinsPageState();
@@ -18,26 +18,26 @@ class SelectCoinsPage extends StatefulWidget {
 
 class _SelectCoinsPageState extends State<SelectCoinsPage> {
   bool isActive = false;
-    StreamSubscription<bool> sub;
+  StreamSubscription<bool> sub;
 
   @override
   void initState() {
     coinsBloc.setCloseViewSelectCoin(false);
-    sub = coinsBloc.outCloseViewSelectCoin.listen((onData){
-      if (onData != null && onData == true && this.mounted) {
+    sub = coinsBloc.outCloseViewSelectCoin.listen((dynamic onData) {
+      if (onData != null && onData == true && mounted) {
         Navigator.of(context).pop();
       }
     });
     super.initState();
   }
-  
+
   @override
   void dispose() {
     sub.cancel();
     coinsBloc.resetActivateCoin();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,91 +62,100 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: StreamBuilder<CoinToActivate>(
+            initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
+            builder:
+                (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+              if (snapshot.data != null) {
                 return LoadingCoin();
               } else {
                 return SafeArea(
-                  child: isActive ? LoadingCoin() : Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: <Widget>[
-                      ListView(
-                        padding: EdgeInsets.only(bottom: 100, top: 32),
-                        children: <Widget>[
-                          _buildHeader(),
-                          SizedBox(
-                            height: 32,
-                          ),
-                          _buildListCoin(),
-                        ],
-                      ),
-                      Container(
-                        height: 100,
-                        color: Theme.of(context).primaryColor,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: StreamBuilder<List<Coin>>(
-                                initialData: coinsBloc.coinToActivate,
-                                stream: coinsBloc.outCoinToActivate,
-                                builder: (context, snapshot) {
-                                  return PrimaryButton(
-                                    text: AppLocalizations.of(context).done,
-                                    isLoading: isActive,
-                                    onPressed: snapshot.hasData &&
-                                            snapshot.data.length > 0
-                                        ? _pressDoneButton
-                                        : null,
-                                  );
-                                }),
-                          ),
+                  child: isActive
+                      ? LoadingCoin()
+                      : Stack(
+                          alignment: AlignmentDirectional.bottomCenter,
+                          children: <Widget>[
+                            ListView(
+                              padding:
+                                  const EdgeInsets.only(bottom: 100, top: 32),
+                              children: <Widget>[
+                                _buildHeader(),
+                                const SizedBox(
+                                  height: 32,
+                                ),
+                                _buildListCoin(),
+                              ],
+                            ),
+                            Container(
+                              height: 100,
+                              color: Theme.of(context).primaryColor,
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: StreamBuilder<List<Coin>>(
+                                      initialData: coinsBloc.coinToActivate,
+                                      stream: coinsBloc.outCoinToActivate,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<List<Coin>> snapshot) {
+                                        return PrimaryButton(
+                                          text:
+                                              AppLocalizations.of(context).done,
+                                          isLoading: isActive,
+                                          onPressed: snapshot.hasData && snapshot.data != null  &&
+                                                  snapshot.data.isNotEmpty
+                                              ? _pressDoneButton
+                                              : null,
+                                        );
+                                      }),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
                 );
               }
             }));
   }
 
-  _pressDoneButton() {
+  void _pressDoneButton() {
     setState(() {
       isActive = true;
     });
     coinsBloc.activateCoinsSelected(coinsBloc.coinToActivate);
   }
 
-  _buildListCoin() {
+  Widget _buildListCoin() {
     return FutureBuilder<List<Coin>>(
       future: coinsBloc.getAllNotActiveCoins(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List<Widget> coinsToActivate = new List<Widget>();
-          snapshot.data.forEach((coin) {
+      builder: (BuildContext context, AsyncSnapshot<List<Coin>> snapshot) {
+        if (snapshot.hasData && snapshot.data != null  && snapshot.data != null) {
+          final List<Widget> coinsToActivate = <Widget>[];
+
+          for (Coin coin in snapshot.data) {
             coinsToActivate.add(BuildItemCoin(
               coin: coin,
             ));
-          });
+          }
           return Column(
             children: coinsToActivate,
           );
         } else {
           return Center(
-            child: CircularProgressIndicator(),
+            child: const CircularProgressIndicator(),
           );
         }
       },
     );
   }
 
-  _buildHeader() {
+  Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.only(left: 32, right: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Text(
@@ -160,9 +169,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 }
 
 class BuildItemCoin extends StatefulWidget {
-  final Coin coin;
+  const BuildItemCoin({this.coin});
 
-  BuildItemCoin({this.coin});
+  final Coin coin;
 
   @override
   _BuildItemCoinState createState() => _BuildItemCoinState();
@@ -193,13 +202,13 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
                   ? Theme.of(context).accentColor
                   : Theme.of(context).primaryColor,
             ),
-            SizedBox(width: 24),
+            const SizedBox(width: 24),
             Image.asset(
-              "assets/${widget.coin.abbr.toLowerCase()}.png",
+              'assets/${widget.coin.abbr.toLowerCase()}.png',
               height: 40,
               width: 40,
             ),
-            SizedBox(width: 24),
+            const SizedBox(width: 24),
             Text('${widget.coin.name} (${widget.coin.abbr})')
           ],
         ),
@@ -220,15 +229,15 @@ class _LoadingCoinState extends State<LoadingCoin> {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        CircularProgressIndicator(),
-        SizedBox(
+        const CircularProgressIndicator(),
+        const SizedBox(
           height: 16,
         ),
         StreamBuilder<CoinToActivate>(
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data.currentStatus != null) {
+            builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+              if (snapshot.hasData && snapshot.data != null  && snapshot.data != null && snapshot.data.currentStatus != null) {
                 return Text(snapshot.data.currentStatus);
               } else {
                 return Text(AppLocalizations.of(context).connecting);

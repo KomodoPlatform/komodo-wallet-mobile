@@ -27,9 +27,9 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
   ScrollController _scrollController;
   double _heightFactor = 7;
   BuildContext contextMain;
-  NumberFormat f = new NumberFormat("###,##0.0#");
+  NumberFormat f = NumberFormat('###,##0.0#');
 
-  _scrollListener() {
+  void _scrollListener() {
     setState(() {
       _heightFactor = (exp(-_scrollController.offset / 60) * 6) + 1;
     });
@@ -48,8 +48,8 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
 
   @override
   Widget build(BuildContext context) {
-    double _heightScreen = MediaQuery.of(context).size.height;
-    double _widthScreen = MediaQuery.of(context).size.width;
+    final double _heightScreen = MediaQuery.of(context).size.height;
+    final double _widthScreen = MediaQuery.of(context).size.width;
     contextMain = context;
 
     return Scaffold(
@@ -63,7 +63,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                   expandedHeight: _heightScreen * 0.25,
                   pinned: true,
                   flexibleSpace: Builder(
-                    builder: (context) {
+                    builder: (BuildContext context) {
                       return FlexibleSpaceBar(
                           collapseMode: CollapseMode.parallax,
                           centerTitle: true,
@@ -74,15 +74,19 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                               child: StreamBuilder<List<CoinBalance>>(
                                   initialData: coinsBloc.coinBalance,
                                   stream: coinsBloc.outCoins,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<CoinBalance>>
+                                          snapshot) {
+                                    if (snapshot.hasData && snapshot.data != null ) {
                                       double totalBalanceUSD = 0;
-                                      snapshot.data.forEach((coinBalance) {
+
+                                      for (CoinBalance coinBalance
+                                          in snapshot.data) {
                                         totalBalanceUSD +=
                                             coinBalance.balanceUSD;
-                                      });
+                                      }
                                       return AutoSizeText(
-                                        "\$${f.format(totalBalanceUSD)} USD",
+                                        '\$${f.format(totalBalanceUSD)} USD',
                                         maxFontSize: 18,
                                         minFontSize: 12,
                                         style:
@@ -92,7 +96,8 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                                     } else {
                                       return Center(
                                           child: Container(
-                                        child: CircularProgressIndicator(),
+                                        child:
+                                            const CircularProgressIndicator(),
                                       ));
                                     }
                                   }),
@@ -105,8 +110,8 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  LoadAsset(),
-                                  SizedBox(
+                                  const LoadAsset(),
+                                  const SizedBox(
                                     height: 14,
                                   ),
                                   BarGraph()
@@ -118,9 +123,9 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                                 gradient: LinearGradient(
                               begin: Alignment.bottomLeft,
                               end: Alignment.topRight,
-                              stops: [0.01, 1],
-                              colors: [
-                                Color.fromRGBO(39, 71, 110, 1),
+                              stops: const <double>[0.01, 1],
+                              colors: <Color>[
+                                const Color.fromRGBO(39, 71, 110, 1),
                                 Theme.of(context).accentColor,
                               ],
                             )),
@@ -131,45 +136,47 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
               ];
             },
             body: Container(
-                color: Theme.of(context).backgroundColor, child: ListCoins())));
+                color: Theme.of(context).backgroundColor,
+                child: const ListCoins())));
   }
 }
 
 class BarGraph extends StatefulWidget {
   @override
   BarGraphState createState() {
-    return new BarGraphState();
+    return BarGraphState();
   }
 }
 
 class BarGraphState extends State<BarGraph> {
   @override
   Widget build(BuildContext context) {
-    double _widthScreen = MediaQuery.of(context).size.width;
-    double _widthBar = _widthScreen - 32;
+    final double _widthScreen = MediaQuery.of(context).size.width;
+    final double _widthBar = _widthScreen - 32;
 
     return StreamBuilder<List<CoinBalance>>(
       initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
-      builder: (context, snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         bool _isVisible = true;
 
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data != null ) {
           _isVisible = true;
         } else {
           _isVisible = false;
         }
 
-        List<Container> barItem = List<Container>();
+        final List<Container> barItem = <Container>[];
 
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data != null ) {
           double sumOfAllBalances = 0;
 
-          snapshot.data.forEach((coinBalance) {
+          for (CoinBalance coinBalance in snapshot.data) {
             sumOfAllBalances += coinBalance.balanceUSD;
-          });
+          }
 
-          snapshot.data.forEach((coinBalance) {
+          for (CoinBalance coinBalance in snapshot.data) {
             if (coinBalance.balanceUSD > 0) {
               barItem.add(Container(
                 color: Color(int.parse(coinBalance.coin.colorCoin)),
@@ -177,14 +184,14 @@ class BarGraphState extends State<BarGraph> {
                     (((coinBalance.balanceUSD * 100) / sumOfAllBalances) / 100),
               ));
             }
-          });
+          }
         }
 
         return AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
             child: Container(
               width: _widthBar,
               height: 16,
@@ -206,31 +213,27 @@ class LoadAsset extends StatefulWidget {
 
   @override
   LoadAssetState createState() {
-    return new LoadAssetState();
+    return LoadAssetState();
   }
 }
 
 class LoadAssetState extends State<LoadAsset> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<CoinBalance>>(
       initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
-      builder: (context, snapshot) {
-        List<Widget> listRet = List<Widget>();
-        if (snapshot.hasData) {
+      builder:
+          (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
+        final List<Widget> listRet = <Widget>[];
+        if (snapshot.hasData && snapshot.data != null ) {
           int assetNumber = 0;
 
-          snapshot.data.forEach((coinBalance) {
+          for (CoinBalance coinBalance in snapshot.data) {
             if (double.parse(coinBalance.balance.getBalance()) > 0) {
               assetNumber++;
             }
-          });
+          }
 
           listRet.add(Icon(
             Icons.show_chart,
@@ -248,7 +251,7 @@ class LoadAssetState extends State<LoadAsset> {
           listRet.add(Container(
               height: 10,
               width: 10,
-              child: CircularProgressIndicator(
+              child: const CircularProgressIndicator(
                 strokeWidth: 1.0,
               )));
         }
@@ -272,13 +275,13 @@ class ListCoins extends StatefulWidget {
 
   @override
   ListCoinsState createState() {
-    return new ListCoinsState();
+    return ListCoinsState();
   }
 }
 
 class ListCoinsState extends State<ListCoins> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
   final SlidableController slidableController = SlidableController();
 
   @override
@@ -294,21 +297,21 @@ class ListCoinsState extends State<ListCoins> {
     return StreamBuilder<List<CoinBalance>>(
       initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         return RefreshIndicator(
             backgroundColor: Theme.of(context).backgroundColor,
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.loadCoin(),
-            child: Builder(builder: (context) {
+            child: Builder(builder: (BuildContext context) {
               print(snapshot.connectionState);
-              if (snapshot.hasData && snapshot.data.length > 0) {
-                List<dynamic> datas = new List<dynamic>();
+              if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
+                final List<dynamic> datas = <dynamic>[];
                 datas.addAll(snapshot.data);
                 datas.add(true);
                 return ListView(
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   children: datas
-                      .map((data) => ItemCoin(
+                      .map((dynamic data) => ItemCoin(
                             mContext: context,
                             coinBalance: data,
                             slidableController: slidableController,
@@ -317,12 +320,12 @@ class ListCoinsState extends State<ListCoins> {
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
-              } else if (snapshot.data.length == 0) {
+              } else if (snapshot.data.isEmpty) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     AddCoinButton(),
-                    Text("Please Add A Coin"),
+                    const Text('Please Add A Coin'),
                   ],
                 );
               } else {
@@ -356,20 +359,20 @@ class _ItemCoinState extends State<ItemCoin> {
     if (widget.coinBalance is bool) {
       return AddCoinButton();
     } else {
-      Coin coin = widget.coinBalance.coin;
-      Balance balance = widget.coinBalance.balance;
-      NumberFormat f = new NumberFormat("###,##0.########");
-      List<Widget> actions = new List<Widget>();
+      final Coin coin = widget.coinBalance.coin;
+      final Balance balance = widget.coinBalance.balance;
+      final NumberFormat f = NumberFormat('###,##0.########');
+      final List<Widget> actions = <Widget>[];
       if (double.parse(balance.getBalance()) > 0) {
         actions.add(IconSlideAction(
           caption: AppLocalizations.of(context).send,
           color: Colors.white,
           icon: Icons.arrow_upward,
           onTap: () {
-            Navigator.push(
+            Navigator.push<dynamic>(
               context,
-              MaterialPageRoute(
-                  builder: (context) => CoinDetail(
+              MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => CoinDetail(
                         coinBalance: widget.coinBalance,
                         isSendIsActive: true,
                       )),
@@ -393,7 +396,7 @@ class _ItemCoinState extends State<ItemCoin> {
           onTap: () {
             mainBloc.setCurrentIndexTab(1);
             swapHistoryBloc.isSwapsOnGoing = false;
-            Future.delayed(const Duration(milliseconds: 100), () {
+            Future<dynamic>.delayed(const Duration(milliseconds: 100), () {
               swapBloc.updateSellCoin(widget.coinBalance);
               swapBloc.setFocusTextField(true);
             });
@@ -405,12 +408,12 @@ class _ItemCoinState extends State<ItemCoin> {
         children: <Widget>[
           Slidable(
             controller: widget.slidableController,
-            actionPane: SlidableDrawerActionPane(),
+            actionPane: const SlidableDrawerActionPane(),
             actionExtentRatio: 0.25,
             actions: actions,
-            child: Builder(builder: (context) {
+            child: Builder(builder: (BuildContext context) {
               return InkWell(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
                 onLongPress: () {
                   Slidable.of(context)
                       .open(actionType: SlideActionType.primary);
@@ -420,10 +423,10 @@ class _ItemCoinState extends State<ItemCoin> {
                       widget.slidableController.activeState != null) {
                     widget.slidableController.activeState.close();
                   }
-                  Navigator.push(
+                  Navigator.push<dynamic>(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) =>
+                    MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
                             CoinDetail(coinBalance: widget.coinBalance)),
                   );
                 },
@@ -436,20 +439,20 @@ class _ItemCoinState extends State<ItemCoin> {
                         color: Color(int.parse(coin.colorCoin)),
                         width: 8,
                       ),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       Container(
                         width: 100,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Builder(builder: (context) {
+                            Builder(builder: (BuildContext context) {
                               return PhotoHero(
                                 radius: 28,
-                                tag: "assets/${balance.coin.toLowerCase()}.png",
+                                tag: 'assets/${balance.coin.toLowerCase()}.png',
                               );
                             }),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Text(
                               coin.name.toUpperCase(),
                               style: Theme.of(context)
@@ -467,38 +470,38 @@ class _ItemCoinState extends State<ItemCoin> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                               Container(
                                 child: AutoSizeText(
-                                  "${f.format(double.parse(balance.getBalance()))} ${coin.abbr}",
+                                  '${f.format(double.parse(balance.getBalance()))} ${coin.abbr}',
                                   maxLines: 1,
                                   style: Theme.of(context).textTheme.subtitle,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
-                              Builder(builder: (context) {
-                                NumberFormat f = new NumberFormat("###,##0.##");
+                              Builder(builder: (BuildContext context) {
+                                final NumberFormat f = NumberFormat('###,##0.##');
                                 return Text(
-                                  "\$${f.format(widget.coinBalance.balanceUSD)} USD",
+                                  '\$${f.format(widget.coinBalance.balanceUSD)} USD',
                                   style: Theme.of(context).textTheme.body2,
                                 );
                               }),
-                              widget.coinBalance.coin.abbr == "KMD" &&
+                              widget.coinBalance.coin.abbr == 'KMD' &&
                                       double.parse(widget.coinBalance.balance
                                               .getBalance()) >=
                                           10
                                   ? Padding(
-                                      padding: EdgeInsets.only(top: 8),
+                                      padding: const EdgeInsets.only(top: 8),
                                       child: OutlineButton(
                                         borderSide: BorderSide(
                                             color:
                                                 Theme.of(context).accentColor),
                                         highlightedBorderColor: Colors.white,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             vertical: 6, horizontal: 16),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -510,7 +513,7 @@ class _ItemCoinState extends State<ItemCoin> {
                                               .showDialogClaim(context);
                                         },
                                         child: Text(
-                                          "CLAIM YOUR REWARDS",
+                                          'CLAIM YOUR REWARDS',
                                           style: Theme.of(context)
                                               .textTheme
                                               .body1
@@ -529,7 +532,7 @@ class _ItemCoinState extends State<ItemCoin> {
               );
             }),
           ),
-          Divider(
+          const Divider(
             height: 0,
           ),
         ],
@@ -551,19 +554,19 @@ class _AddCoinButtonState extends State<AddCoinButton> {
         StreamBuilder<CoinToActivate>(
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
+            builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
                 return Column(
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
-                    CircularProgressIndicator(),
-                    SizedBox(
+                    const CircularProgressIndicator(),
+                    const SizedBox(
                       height: 8,
                     ),
                     Text(snapshot.data.currentStatus),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
                   ],
@@ -571,8 +574,8 @@ class _AddCoinButtonState extends State<AddCoinButton> {
               } else {
                 return FutureBuilder<bool>(
                   future: _buildAddCoinButton(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data) {
+                  builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    if (snapshot.hasData && snapshot.data != null  && snapshot.data) {
                       return Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Padding(
@@ -586,17 +589,18 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                             ),
                             onPressed: () {
                               if (mainBloc.isNetworkOffline) {
-                                Scaffold.of(context).showSnackBar(new SnackBar(
-                                  duration: Duration(seconds: 2),
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  duration: const Duration(seconds: 2),
                                   backgroundColor: Theme.of(context).errorColor,
-                                  content: new Text(
+                                  content: Text(
                                       AppLocalizations.of(context).noInternet),
                                 ));
                               } else {
-                                Navigator.push(
+                                Navigator.push<dynamic>(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SelectCoinsPage()),
+                                  MaterialPageRoute<dynamic>(
+                                      builder: (BuildContext context) =>
+                                          const SelectCoinsPage()),
                                 );
                               }
                             },
@@ -615,10 +619,10 @@ class _AddCoinButtonState extends State<AddCoinButton> {
   }
 
   Future<bool> _buildAddCoinButton() async {
-    var allCoins =
+    final List<Coin> allCoins =
         await mm2.loadJsonCoins(await mm2.loadElectrumServersAsset());
-    var allCoinsActivate = await coinsBloc.readJsonCoin();
+    final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
 
-    return allCoins.length == allCoinsActivate.length ? false : true;
+    return !(allCoins.length == allCoinsActivate.length);
   }
 }

@@ -1,23 +1,24 @@
 import 'dart:async';
 
+import 'package:http/http.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:http/http.dart' as http;
 
-final mediaBloc = MediaBloc();
+MediaBloc mediaBloc = MediaBloc();
 
 class MediaBloc implements BlocBase {
-  List<Article> articles = new List<Article>();
-  List<Article> articlesSaved = new List<Article>();
+  List<Article> articles = <Article>[];
+  List<Article> articlesSaved = <Article>[];
 
-  StreamController<List<Article>> _articlesController =
+  final StreamController<List<Article>> _articlesController =
       StreamController<List<Article>>.broadcast();
 
   Sink<List<Article>> get _inArticles => _articlesController.sink;
   Stream<List<Article>> get outArticles => _articlesController.stream;
 
-  StreamController<List<Article>> _articlesSavedController =
+  final StreamController<List<Article>> _articlesSavedController =
       StreamController<List<Article>>.broadcast();
 
   Sink<List<Article>> get _inArticlesSaved => _articlesSavedController.sink;
@@ -29,57 +30,62 @@ class MediaBloc implements BlocBase {
     _articlesSavedController.close();
   }
 
-  void getArticles() async {
-    final response =
-        await http.get("https://composer.kmd.io/api/dex/news/all");
-    List<Article> articlesSaved = await DBProvider.db.getAllArticlesSaved();
-    List<Article> articles = articleFromJson(response.body);
+  Future<void> getArticles() async {
+    try {
+      final Response response =
+          await http.get('https://composer.kmd.io/api/dex/news/all');
+      final List<Article> articlesSaved =
+          await DBProvider.db.getAllArticlesSaved();
+      final List<Article> articles = articleFromJson(response.body);
 
-    articles.forEach((article) {
-      article.isSavedArticle = false;
-      articlesSaved.forEach((savedArticle) {
-        if (savedArticle.id == article.id) {
-          article.isSavedArticle = true;
+      for (Article article in articles) {
+        article.isSavedArticle = false;
+
+        for (Article savedArticle in articlesSaved) {
+          if (savedArticle.id == article.id) {
+            article.isSavedArticle = true;
+          }
         }
-      });
-    });
-    this.articles = articles;
-    _inArticles.add(this.articles);
+      }
+      this.articles = articles;
+      _inArticles.add(this.articles);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<List<Article>> getArticlesSaved() async {
-    List<Article> articlesSaved = await DBProvider.db.getAllArticlesSaved();
+    final List<Article> articlesSaved =
+        await DBProvider.db.getAllArticlesSaved();
     this.articlesSaved = articlesSaved;
     _inArticlesSaved.add(this.articlesSaved);
     return articlesSaved;
   }
 
-  deleteArticle(Article article) async {
-    print("deleteArticle");
+  Future<void> deleteArticle(Article article) async {
     await DBProvider.db.deleteArticle(article);
     article.isSavedArticle = false;
     updateSavedArticle(article);
     getArticlesSaved();
   }
 
-  addArticle(Article article) async {
-    print("addarticle");
+  Future<void> addArticle(Article article) async {
     article.isSavedArticle = true;
     await DBProvider.db.saveArticle(article);
     updateSavedArticle(article);
     getArticlesSaved();
   }
 
-  updateSavedArticle(Article article) {
-    this.articles.forEach((_article) {
+  void updateSavedArticle(Article article) {
+    for (Article _article in articles) {
       if (_article.id == article.id) {
         _article.isSavedArticle = article.isSavedArticle;
       }
-    });
-    _inArticles.add(this.articles);
+    }
+    _inArticles.add(articles);
   }
 
-  deleteAllArticles() async {
+  Future<void> deleteAllArticles() async {
     await DBProvider.db.deleteAllArticles();
   }
 }

@@ -19,15 +19,19 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    tabController = new TabController(length: 3, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
     swapHistoryBloc.updateSwaps(50, null);
     ordersBloc.updateOrdersSwaps();
 
-    swapBloc.outIndexTab.listen((onData) {
-      tabController.index = onData;
+    swapBloc.outIndexTab.listen((int onData) {
+      setState(() {
+        tabController.index = onData;
+      });
     });
     if (swapHistoryBloc.isSwapsOnGoing) {
-      tabController.index = 1;
+      setState(() {
+        tabController.index = 1;
+      });
     }
   }
 
@@ -41,7 +45,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: DefaultTabController(
         length: 3,
@@ -54,21 +58,21 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
               style: Theme.of(context).textTheme.subtitle,
             )),
             bottom: PreferredSize(
-              preferredSize: new Size(200.0, 70.0),
+              preferredSize: const Size(200.0, 70.0),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                 child: Container(
                   height: 40,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(32)),
-                      border: new Border.all(color: Colors.grey, width: 1)),
+                      borderRadius: const BorderRadius.all(Radius.circular(32)),
+                      border: Border.all(color: Colors.grey, width: 1)),
                   child: TabBar(
-                    labelPadding: EdgeInsets.symmetric(horizontal: 16),
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 16),
                     indicator: CustomTabIndicator(context: context),
                     controller: tabController,
-                    tabs: [
+                    tabs: <Widget>[
                       Tab(
                         text: AppLocalizations.of(context).create.toUpperCase(),
                       ),
@@ -87,7 +91,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             ),
           ),
           backgroundColor: Theme.of(context).backgroundColor,
-          body: Builder(builder: (context) {
+          body: Builder(builder: (BuildContext context) {
             return TabBarView(
               controller: tabController,
               children: <Widget>[

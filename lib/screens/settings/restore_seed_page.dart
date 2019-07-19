@@ -12,7 +12,7 @@ class RestoreSeedPage extends StatefulWidget {
 }
 
 class _RestoreSeedPageState extends State<RestoreSeedPage> {
-  TextEditingController controllerSeed = new TextEditingController();
+  TextEditingController controllerSeed =  TextEditingController();
   bool _isButtonDisabled = false;
   bool _isLogin;
   bool _isSeedShow = true;
@@ -50,10 +50,10 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     );
   }
 
-  _buildTitle() {
+  Widget _buildTitle() {
     return Column(
       children: <Widget>[
-        SizedBox(
+        const SizedBox(
           height: 56,
         ),
         Center(
@@ -63,14 +63,14 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
             textAlign: TextAlign.center,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 56,
         ),
       ],
     );
   }
 
-  _buildInputSeed() {
+  Widget _buildInputSeed() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
       child: Row(
@@ -78,7 +78,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
           Expanded(
             child: TextField(
               controller: controllerSeed,
-              onChanged: (str) {
+              onChanged: (String str) {
                 _checkSeed(str);
               },
               autocorrect: false,
@@ -101,7 +101,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                   labelText: null),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           InkWell(
@@ -122,9 +122,9 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     );
   }
 
-  _checkSeed(String str) {
+  void _checkSeed(String str) {
     if (checkBox) {
-      if (str.length > 0) {
+      if (str.isNotEmpty) {
         setState(() {
           _isButtonDisabled = false;
         });
@@ -146,12 +146,12 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     }
   }
 
-  _buildCheckBoxCustomSeed() {
+  Widget _buildCheckBoxCustomSeed() {
     return Row(
       children: <Widget>[
         Checkbox(
           value: checkBox,
-          onChanged: (data) {
+          onChanged: (bool data) {
             setState(() {
               checkBox = !checkBox;
               _checkSeed(controllerSeed.text);
@@ -166,14 +166,14 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     );
   }
 
-  _buildConfirmButton() {
+  Widget _buildConfirmButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
       child: Container(
         width: double.infinity,
         height: 50,
         child: _isLogin
-            ? Center(child: CircularProgressIndicator())
+            ? Center(child: const CircularProgressIndicator())
             : PrimaryButton(
                 text: AppLocalizations.of(context).confirm,
                 onPressed: _isButtonDisabled ? null : _onLoginPressed),
@@ -181,16 +181,16 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     );
   }
 
-  _onLoginPressed() {
+  void _onLoginPressed() {
     setState(() {
       _isButtonDisabled = true;
       _isLogin = true;
     });
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).requestFocus( FocusNode());
 
-    Navigator.pushReplacement(
+    Navigator.pushReplacement<dynamic, dynamic>(
       context,
-      MaterialPageRoute(builder: (context) => CreatePasswordPage(
+      MaterialPageRoute<dynamic>(builder: (BuildContext context) => CreatePasswordPage(
         seed: controllerSeed.text.toString(),
       )),
     );

@@ -4,7 +4,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:password/password.dart';
 
 class EncryptionTool {
-  final storage = new FlutterSecureStorage();
+  FlutterSecureStorage storage = FlutterSecureStorage();
 
   Future<void> writeData(
       KeyEncryption key, Wallet wallet, String password, String data) async {
@@ -29,12 +29,12 @@ class EncryptionTool {
   }
 
   Future<String> convertToPbkdf2(String data, Wallet wallet) async {
-    var res;
+    dynamic res;
     if (wallet.isFastEncryption) {
-      print("FAST ENCRYPTION");
+      print('FAST ENCRYPTION');
       res = await compute(_computeHashFastEncryption, data);
     } else {
-      print("SLOW ENCRYPTION");
+      print('SLOW ENCRYPTION');
       res = await compute(_computeHash, data);
     }
 
@@ -42,11 +42,11 @@ class EncryptionTool {
   }
 
   static String _computeHash(String data) {
-    return Password.hash(data, new PBKDF2());
+    return Password.hash(data, PBKDF2());
   }
 
   static String _computeHashFastEncryption(String data) {
-    return Password.hash(data, new PBKDF2(iterationCount: 50));
+    return Password.hash(data, PBKDF2(iterationCount: 50));
   }
 
   Future<void> write(String key, String data) async {

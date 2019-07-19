@@ -9,41 +9,41 @@ GetSwap getSwapFromJson(String str) => GetSwap.fromJson(json.decode(str));
 String getSwapToJson(GetSwap data) => json.encode(data.toJson());
 
 class GetSwap {
-    String method;
-    Params params;
-    String userpass;
+  GetSwap({
+    this.method,
+    this.params,
+    this.userpass,
+  });
 
-    GetSwap({
-        this.method,
-        this.params,
-        this.userpass,
-    });
+  factory GetSwap.fromJson(Map<String, dynamic> json) => GetSwap(
+        method: json['method'] ?? '',
+        params: Params.fromJson(json['params']) ?? Params(),
+        userpass: json['userpass'] ?? '',
+      );
 
-    factory GetSwap.fromJson(Map<String, dynamic> json) => new GetSwap(
-        method: json["method"] == null ? null : json["method"],
-        params: json["params"] == null ? null : Params.fromJson(json["params"]),
-        userpass: json["userpass"] == null ? null : json["userpass"],
-    );
+  String method;
+  Params params;
+  String userpass;
 
-    Map<String, dynamic> toJson() => {
-        "method": method == null ? null : method,
-        "params": params == null ? null : params.toJson(),
-        "userpass": userpass == null ? null : userpass,
-    };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'method': method ?? '',
+        'params': params ?? '',
+        'userpass': userpass ?? '',
+      };
 }
 
 class Params {
-    String uuid;
+  Params({
+    this.uuid,
+  });
 
-    Params({
-        this.uuid,
-    });
+  factory Params.fromJson(Map<String, dynamic> json) => Params(
+        uuid: json['uuid'] ?? '',
+      );
 
-    factory Params.fromJson(Map<String, dynamic> json) => new Params(
-        uuid: json["uuid"] == null ? null : json["uuid"],
-    );
+  String uuid;
 
-    Map<String, dynamic> toJson() => {
-        "uuid": uuid == null ? null : uuid,
-    };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'uuid': uuid ?? '',
+      };
 }

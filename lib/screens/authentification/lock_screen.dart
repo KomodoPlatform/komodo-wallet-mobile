@@ -14,11 +14,12 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LockScreen extends StatefulWidget {
+  const LockScreen(
+      {this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.onSuccess});
+
   final PinStatus pinStatus;
   final Widget child;
   final Function onSuccess;
-
-  LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.onSuccess});
 
   @override
   _LockScreenState createState() => _LockScreenState();
@@ -35,32 +36,42 @@ class _LockScreenState extends State<LockScreen> {
     return StreamBuilder<bool>(
       stream: authBloc.outIsLogin,
       initialData: authBloc.isLogin,
-      builder: (context, isLogin) {
-        return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot<bool> isLogin) {
+        return StreamBuilder<PinStatus>(
           initialData: authBloc.pinStatus,
           stream: authBloc.outpinStatus,
-          builder: (context, outShowCreatePin) {
+          builder:
+              (BuildContext context, AsyncSnapshot<dynamic> outShowCreatePin) {
             if (outShowCreatePin.hasData &&
-                (outShowCreatePin.data == PinStatus.NORMAL_PIN)) {
-              if (isLogin.hasData && isLogin.data) {
-                return StreamBuilder(
+                outShowCreatePin.data != null &&
+                outShowCreatePin.data == PinStatus.NORMAL_PIN) {
+              if (isLogin.hasData && isLogin.data != null && isLogin.data) {
+                return StreamBuilder<bool>(
                     initialData: authBloc.isPinShow,
                     stream: authBloc.outShowPin,
-                    builder: (context, outShowPin) {
-                      return SharedPreferencesBuilder(
+                    builder:
+                        (BuildContext context, AsyncSnapshot<bool> outShowPin) {
+                      return SharedPreferencesBuilder<dynamic>(
                         pref: 'switch_pin',
-                        builder: (context, switchPinData){
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> switchPinData) {
                           if (outShowPin.hasData &&
+                              outShowPin.data != null &&
                               outShowPin.data &&
                               switchPinData.hasData &&
+                              switchPinData.data != null &&
                               switchPinData.data) {
                             return Stack(
                               children: <Widget>[
-                                FutureBuilder(
+                                FutureBuilder<bool>(
                                   future: _checkBiometrics(),
                                   builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    if (snapshot.hasData && snapshot.data) {
+                                      AsyncSnapshot<dynamic> snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null &&
+                                        snapshot.data &&
+                                        widget.pinStatus ==
+                                            PinStatus.NORMAL_PIN) {
                                       print(snapshot.data);
                                       _authenticateBiometrics();
                                       return Container();
@@ -80,15 +91,17 @@ class _LockScreenState extends State<LockScreen> {
                               ],
                             );
                           } else {
-                            if (widget.child == null && (widget.pinStatus == PinStatus.DISABLED_PIN || widget.pinStatus == PinStatus.DISABLED_PIN_BIOMETRIC))
+                            if (widget.child == null &&
+                                (widget.pinStatus == PinStatus.DISABLED_PIN ||
+                                    widget.pinStatus ==
+                                        PinStatus.DISABLED_PIN_BIOMETRIC))
                               return PinPage(
-                                  title:
-                                      AppLocalizations.of(context).lockScreen,
-                                  subTitle:
-                                      AppLocalizations.of(context).enterPinCode,
-                                  isConfirmPin: widget.pinStatus,
-                                  isFromChangingPin: false,
-                                );
+                                title: AppLocalizations.of(context).lockScreen,
+                                subTitle:
+                                    AppLocalizations.of(context).enterPinCode,
+                                isConfirmPin: widget.pinStatus,
+                                isFromChangingPin: false,
+                              );
                             else
                               return widget.child;
                           }
@@ -115,23 +128,23 @@ class _LockScreenState extends State<LockScreen> {
   }
 
   Future<bool> _authenticateBiometrics() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool("switch_pin_biometric")) {
-      var localAuth = LocalAuthentication();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('switch_pin_biometric')) {
+      final LocalAuthentication localAuth = LocalAuthentication();
 
-      bool didAuthenticate = await localAuth.authenticateWithBiometrics(
+      final bool didAuthenticate = await localAuth.authenticateWithBiometrics(
           stickyAuth: true,
           localizedReason: AppLocalizations.of(context).lockScreenAuth);
       if (didAuthenticate) {
         if (widget.pinStatus == PinStatus.DISABLED_PIN) {
-          SharedPreferences.getInstance().then((data) {
-            data.setBool("switch_pin", false);
+          SharedPreferences.getInstance().then((SharedPreferences data) {
+            data.setBool('switch_pin', false);
           });
           Navigator.pop(context);
         }
         authBloc.showPin(false);
         if (widget.pinStatus == PinStatus.NORMAL_PIN && !mm2.ismm2Running) {
-          await authBloc.login(await new EncryptionTool().read("passphrase"), null);
+          await authBloc.login(await EncryptionTool().read('passphrase'), null);
         }
       }
       return didAuthenticate;

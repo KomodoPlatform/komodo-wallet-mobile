@@ -7,16 +7,16 @@ import 'package:komodo_dex/screens/settings/restore_seed_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class WelcomePage extends StatefulWidget {
-  final bool isFromRestore;
+  const WelcomePage({this.isFromRestore = false});
 
-  WelcomePage({this.isFromRestore = false});
+  final bool isFromRestore;
 
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  TextEditingController controller = new TextEditingController();
+  TextEditingController controller = TextEditingController();
   bool isButtonLoginEnabled = false;
 
   @override
@@ -30,10 +30,10 @@ class _WelcomePageState extends State<WelcomePage> {
       ),
       body: ListView(
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
-          SvgPicture.asset("assets/welcome_wallet.svg"),
+          SvgPicture.asset('assets/welcome_wallet.svg'),
           Center(
             child: Text(
               AppLocalizations.of(context).welcomeTitle,
@@ -44,11 +44,11 @@ class _WelcomePageState extends State<WelcomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                AppLocalizations.of(context).to + " ",
+                AppLocalizations.of(context).to + ' ',
                 style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
               ),
               Text(
-                AppLocalizations.of(context).welcomeName + " ",
+                AppLocalizations.of(context).welcomeName + ' ',
                 style: Theme.of(context).textTheme.body1.copyWith(
                     fontSize: 18, color: Theme.of(context).accentColor),
               ),
@@ -70,8 +70,8 @@ class _WelcomePageState extends State<WelcomePage> {
             child: TextField(
                 maxLength: 40,
                 controller: controller,
-                onChanged: (str) {
-                  if (str.length == 0 || str.length > 40) {
+                onChanged: (String str) {
+                  if (str.isEmpty || str.length > 40) {
                     setState(() {
                       isButtonLoginEnabled = false;
                     });
@@ -81,7 +81,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     });
                   }
                 },
-                onSubmitted: (data) {
+                onSubmitted: (String data) {
                   _newPage();
                 },
                 autocorrect: false,
@@ -107,7 +107,7 @@ class _WelcomePageState extends State<WelcomePage> {
               text: AppLocalizations.of(context).welcomeLetSetUp,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           )
         ],
@@ -115,18 +115,18 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  _newPage() {
+  void _newPage() {
     if (isButtonLoginEnabled) {
       walletBloc.initCurrentWallet(controller.text);
       if (widget.isFromRestore) {
-        Navigator.push(
+        Navigator.push<dynamic>(
           context,
-          MaterialPageRoute(builder: (context) => RestoreSeedPage()),
+          MaterialPageRoute<dynamic>(builder: (BuildContext context) => RestoreSeedPage()),
         );
       } else {
-        Navigator.push(
+        Navigator.push<dynamic>(
           context,
-          MaterialPageRoute(builder: (context) => NewAccountPage()),
+          MaterialPageRoute<dynamic>(builder: (BuildContext context) => NewAccountPage()),
         );
       }
     }

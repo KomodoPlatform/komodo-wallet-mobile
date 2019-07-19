@@ -7,19 +7,23 @@ import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
 // ignore: unnecessary_new
-final messages = new MessageLookup();
+MessageLookup messages = new MessageLookup();
 
 // ignore: unused_element
-final _keepAnalysisHappy = Intl.defaultLocale;
+String _keepAnalysisHappy = Intl.defaultLocale;
 
 // ignore: non_constant_identifier_names
-typedef MessageIfAbsent(String message_str, List args);
+// typedef MessageIfAbsent(String message_str, List args);
+
+typedef MessageIfAbsent = Future<dynamic> Function(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  get localeName => 'messages';
+  @override
+  String get localeName => 'messages';
 
-  final messages = _notInlinedMessages(_notInlinedMessages);
-  static _notInlinedMessages(_) => <String, Function> {
+  @override
+  Map<String, Function> messages = _notInlinedMessages(_notInlinedMessages);
+  static dynamic _notInlinedMessages(dynamic _) => <String, Function> {
 
   };
 }

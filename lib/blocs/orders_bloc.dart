@@ -7,25 +7,25 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
-final ordersBloc = OrdersBloc();
+OrdersBloc ordersBloc = OrdersBloc();
 
 class OrdersBloc implements BlocBase {
   List<Order> orders;
 
-  StreamController<List<Order>> _ordersController =
+  final StreamController<List<Order>> _ordersController =
       StreamController<List<Order>>.broadcast();
   Sink<List<Order>> get _inOrders => _ordersController.sink;
   Stream<List<Order>> get outOrders => _ordersController.stream;
 
   Orders currentOrders;
 
-  StreamController<Orders> _currentOrdersController =
+  final StreamController<Orders> _currentOrdersController =
       StreamController<Orders>.broadcast();
   Sink<Orders> get _inCurrentOrders => _currentOrdersController.sink;
   Stream<Orders> get outCurrentOrders => _currentOrdersController.stream;
 
-  List<dynamic> orderSwaps = new List<dynamic>();
-  StreamController<List<dynamic>> _orderSwapsController =
+  List<dynamic> orderSwaps = <dynamic>[];
+  final StreamController<List<dynamic>> _orderSwapsController =
       StreamController<List<dynamic>>.broadcast();
   Sink<List<dynamic>> get _inOrderSwaps => _orderSwapsController.sink;
   Stream<List<dynamic>> get outOrderSwaps => _orderSwapsController.stream;
@@ -38,72 +38,81 @@ class OrdersBloc implements BlocBase {
   }
 
   Future<void> updateOrders() async {
-    Orders newOrders = await mm2.getMyOrders();
-    List<Order> orders = new List<Order>();
+    try {
+      final Orders newOrders = await mm2.getMyOrders();
+      final List<Order> orders = <Order>[];
 
-    for (var entry in newOrders.result.takerOrders.entries) {
-      orders.add(Order(
-          cancelable: entry.value.cancellable,
-          base: entry.value.request.base,
-          rel: entry.value.request.rel,
-          orderType: OrderType.TAKER,
-          createdAt: entry.value.createdAt ~/ 1000,
-          baseAmount: entry.value.request.baseAmount,
-          relAmount: entry.value.request.relAmount,
-          uuid: entry.key));
+      for (MapEntry<String, TakerOrder> entry
+          in newOrders.result.takerOrders.entries) {
+        orders.add(Order(
+            cancelable: entry.value.cancellable,
+            base: entry.value.request.base,
+            rel: entry.value.request.rel,
+            orderType: OrderType.TAKER,
+            createdAt: entry.value.createdAt ~/ 1000,
+            baseAmount: entry.value.request.baseAmount,
+            relAmount: entry.value.request.relAmount,
+            uuid: entry.key));
+      }
+
+      for (MapEntry<String, MakerOrder> entry
+          in newOrders.result.makerOrders.entries) {
+        orders.add(Order(
+            cancelable: entry.value.cancellable,
+            baseAmount: entry.value.maxBaseVol,
+            base: entry.value.base,
+            rel: entry.value.rel,
+            orderType: OrderType.MAKER,
+            startedSwaps: entry.value.startedSwaps,
+            createdAt: entry.value.createdAt ~/ 1000,
+            relAmount: (double.parse(entry.value.price) *
+                    double.parse(entry.value.maxBaseVol))
+                .toString(),
+            uuid: entry.key));
+      }
+      this.orders = orders;
+      _inOrders.add(this.orders);
+
+      currentOrders = newOrders;
+      _inCurrentOrders.add(currentOrders);
+    } catch (e) {
+      print(e);
+      rethrow;
     }
-
-    for (var entry in newOrders.result.makerOrders.entries) {
-      orders.add(Order(
-          cancelable: entry.value.cancellable,
-          baseAmount: entry.value.maxBaseVol,
-          base: entry.value.base,
-          rel: entry.value.rel,
-          orderType: OrderType.MAKER,
-          startedSwaps: entry.value.startedSwaps,
-          createdAt: entry.value.createdAt ~/ 1000,
-          relAmount: (double.parse(entry.value.price) *
-                  double.parse(entry.value.maxBaseVol))
-              .toString(),
-          uuid: entry.key));
-    }
-    this.orders = orders;
-    _inOrders.add(this.orders);
-
-    this.currentOrders = newOrders;
-    _inCurrentOrders.add(this.currentOrders);
   }
 
-  void updateOrdersSwaps() async {
-    List<dynamic> ordersSwaps = new List<dynamic>();
+  Future<void> updateOrdersSwaps() async {
+    final List<dynamic> ordersSwaps = <dynamic>[];
 
     await updateOrders();
-    List<Swap> swaps = await swapHistoryBloc.fetchSwaps(50, null);
+    final List<Swap> swaps = await swapHistoryBloc.fetchSwaps(50, null);
 
-    swaps.removeWhere((swap) =>
+    swaps.removeWhere((Swap swap) =>
         swap.status == Status.SWAP_FAILED ||
         swap.status == Status.SWAP_SUCCESSFUL ||
         swap.status == Status.TIME_OUT);
 
-    List<Order> orders = this.orders;
+    final List<Order> orders = this.orders;
 
-    swaps.forEach((swap) => orders.removeWhere((order) {
-          bool isSwapUUIDExist = false;
-          if (order.uuid == swap.result.uuid) {
-            isSwapUUIDExist = true;
-          } else {
-            order.startedSwaps.forEach(((startedSwap) {
-              if (startedSwap == swap.result.uuid) {
-                isSwapUUIDExist = true;
-              }
-            }));
+    for (Swap swap in swaps) {
+      orders.removeWhere((Order order) {
+        bool isSwapUUIDExist = false;
+        if (order.uuid == swap.result.uuid) {
+          isSwapUUIDExist = true;
+        } else {
+          for (String startedSwap in order.startedSwaps) {
+            if (startedSwap == swap.result.uuid) {
+              isSwapUUIDExist = true;
+            }
           }
-          return isSwapUUIDExist;
-        }));
+        }
+        return isSwapUUIDExist;
+      });
+    }
 
     ordersSwaps.addAll(orders);
     ordersSwaps.addAll(swaps);
-    ordersSwaps.sort((a, b) {
+    ordersSwaps.sort((dynamic a, dynamic b) {
       if (a is Order && b is Order) {
         return b.compareToOrder(a);
       } else if (a is Order && b is Swap) {
@@ -114,19 +123,24 @@ class OrdersBloc implements BlocBase {
         return b.compareToSwap(a);
       }
     });
-    this.orderSwaps = ordersSwaps;
+    orderSwaps = ordersSwaps;
     _inOrderSwaps.add(ordersSwaps);
   }
 
   Future<void> cancelOrder(String uuid) async {
-    await mm2.cancelOrder(uuid);
-    this.orderSwaps.removeWhere((orderSwap) {
-      if (orderSwap is Order) {
-        return orderSwap.uuid == uuid;
-      } else {
-        return false;
-      }
-    });
-    _inOrderSwaps.add(this.orderSwaps);
+    try {
+      await mm2.cancelOrder(uuid);
+      orderSwaps.removeWhere((dynamic orderSwap) {
+        if (orderSwap is Order) {
+          return orderSwap.uuid == uuid;
+        } else {
+          return false;
+        }
+      });
+      _inOrderSwaps.add(orderSwaps);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 }

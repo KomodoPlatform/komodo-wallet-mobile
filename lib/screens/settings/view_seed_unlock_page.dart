@@ -37,27 +37,26 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
             )
           ],
         ),
-        body: Builder(builder: (context) {
+        body: Builder(builder: (BuildContext context) {
           return passwordSuccess
               ? ViewSeed(
                   seed: seed,
                   context: context,
                 )
               : UnlockPassword(
-                  icon: SvgPicture.asset("assets/seed_logo.svg"),
-                  onSuccess: (data) {
+                  icon: SvgPicture.asset('assets/seed_logo.svg'),
+                  onSuccess: (String data) {
                     setState(() {
                       seed = data;
                       passwordSuccess = true;
                     });
                   },
-                  onError: (data) {
-                    Scaffold.of(context).showSnackBar(new SnackBar(
-                      duration: Duration(seconds: 2),
+                  onError: (String data) {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      duration: const Duration(seconds: 2),
                       backgroundColor: Theme.of(context).errorColor,
-                      content: new Text(data),
+                      content: Text(data),
                     ));
-                    print("error password");
                   },
                 );
         }),
@@ -67,27 +66,27 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
 }
 
 class ViewSeed extends StatefulWidget {
+  const ViewSeed({this.seed, this.context});
+
   final String seed;
   final BuildContext context;
-
-  ViewSeed({this.seed, this.context});
 
   @override
   _ViewSeedState createState() => _ViewSeedState();
 }
 
 class _ViewSeedState extends State<ViewSeed> {
-  List<Widget> seedWord = new List<Widget>();
+  List<Widget> seedWord = <Widget>[];
 
   @override
   void initState() {
     int i = 1;
-    widget.seed.split(" ").forEach((word) {
+    for (String word in widget.seed.split(' ')) {
       seedWord.add(RichText(
         text: TextSpan(
             style:
                 Theme.of(widget.context).textTheme.body1.copyWith(fontSize: 22),
-            children: [
+            children: <InlineSpan>[
               TextSpan(
                   text: i.toString().padLeft(2, '0'),
                   style: Theme.of(widget.context)
@@ -100,7 +99,8 @@ class _ViewSeedState extends State<ViewSeed> {
             ]),
       ));
       i++;
-    });
+    }
+
     super.initState();
   }
 
@@ -108,7 +108,7 @@ class _ViewSeedState extends State<ViewSeed> {
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: false,
-      padding: EdgeInsets.only(top: 50, bottom: 32, right: 16, left: 16),
+      padding: const EdgeInsets.only(top: 50, bottom: 32, right: 16, left: 16),
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 50),
@@ -122,7 +122,7 @@ class _ViewSeedState extends State<ViewSeed> {
             crossAxisSpacing: 4.0,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 24,
         ),
         Center(
@@ -142,18 +142,18 @@ class _ViewSeedState extends State<ViewSeed> {
 }
 
 class UnlockPassword extends StatefulWidget {
+  const UnlockPassword({this.onSuccess, this.onError, this.icon});
+
   final Function(String) onSuccess;
   final Function(String) onError;
   final SvgPicture icon;
-
-  UnlockPassword({this.onSuccess, this.onError, this.icon});
 
   @override
   _UnlockPasswordState createState() => _UnlockPasswordState();
 }
 
 class _UnlockPasswordState extends State<UnlockPassword> {
-  TextEditingController controller = new TextEditingController();
+  TextEditingController controller = TextEditingController();
   bool isContinueEnabled = false;
   bool isObscured = true;
   bool isLoading = false;
@@ -161,16 +161,16 @@ class _UnlockPasswordState extends State<UnlockPassword> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       children: <Widget>[
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         widget.icon,
-        SizedBox(height: 100),
+        const SizedBox(height: 100),
         Text(
           AppLocalizations.of(context).enterpassword,
           style: Theme.of(context).textTheme.body1,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -179,10 +179,10 @@ class _UnlockPasswordState extends State<UnlockPassword> {
                   maxLength: 40,
                   controller: controller,
                   textInputAction: TextInputAction.done,
-                  onSubmitted: (data) {
+                  onSubmitted: (String data) {
                     _checkPassword(data);
                   },
-                  onChanged: (data) {
+                  onChanged: (String data) {
                     setState(() {
                       data.isNotEmpty
                           ? isContinueEnabled = true
@@ -207,7 +207,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
                           AppLocalizations.of(context).hintCurrentPassword,
                       labelText: null)),
             ),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             InkWell(
@@ -218,33 +218,36 @@ class _UnlockPasswordState extends State<UnlockPassword> {
               },
               child: Container(
                   height: 60,
-                  padding: EdgeInsets.only(right: 16, left: 16),
+                  padding: const EdgeInsets.only(right: 16, left: 16),
                   child: isObscured
                       ? Icon(Icons.visibility)
                       : Icon(Icons.visibility_off)),
             )
           ],
         ),
-        SizedBox(height: 50),
+        const SizedBox(height: 50),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 60),
-          child: isLoading ? Center(child: CircularProgressIndicator()) : PrimaryButton(
-            text: AppLocalizations.of(context).checkSeedPhraseButton1,
-            onPressed: isContinueEnabled
-                ? () => _checkPassword(controller.text)
-                : null,
-          ),
+          child: isLoading
+              ? Center(child: const CircularProgressIndicator())
+              : PrimaryButton(
+                  text: AppLocalizations.of(context).checkSeedPhraseButton1,
+                  onPressed: isContinueEnabled
+                      ? () => _checkPassword(controller.text)
+                      : null,
+                ),
         )
       ],
     );
   }
 
-  _checkPassword(String data) async {
-    var entryptionTool = new EncryptionTool();
+  Future<void>_checkPassword(String data) async {
+    final EncryptionTool entryptionTool = EncryptionTool();
+
     setState(() {
       isLoading = true;
     });
-    String seed = await entryptionTool.readData(
+    final String seed = await entryptionTool.readData(
         KeyEncryption.SEED, walletBloc.currentWallet, data);
     setState(() {
       isLoading = false;

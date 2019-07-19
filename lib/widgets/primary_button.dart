@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatefulWidget {
+  const PrimaryButton({@required this.onPressed, @required this.text, this.isLoading = false, this.isDarkMode = true, this.backgroundColor});
+
   final VoidCallback onPressed;
   final String text;
-  final isLoading;
-  final isDarkMode;
+  final bool isLoading;
+  final bool isDarkMode;
   final Color backgroundColor;
-
-  PrimaryButton({@required this.onPressed, @required this.text, this.isLoading = false, this.isDarkMode = true, this.backgroundColor});
 
   @override
   _PrimaryButtonState createState() => _PrimaryButtonState();
@@ -26,8 +26,8 @@ class _PrimaryButtonState extends State<PrimaryButton> {
 
     return Container(
       width: double.infinity,
-      child: widget.isLoading ? Center(child: CircularProgressIndicator(),) : RaisedButton(
-        padding: EdgeInsets.symmetric(vertical: 12,),
+      child: widget.isLoading ? Center(child: const CircularProgressIndicator(),) : RaisedButton(
+        padding: const EdgeInsets.symmetric(vertical: 12,),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0),),
         onPressed: widget.onPressed,

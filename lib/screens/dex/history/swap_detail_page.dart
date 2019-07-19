@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -8,31 +9,30 @@ import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SwapDetailPage extends StatefulWidget {
-  final Swap swap;
+  const SwapDetailPage({@required this.swap});
 
-  SwapDetailPage({@required this.swap});
+  final Swap swap;
 
   @override
   _SwapDetailPageState createState() => _SwapDetailPageState();
 }
 
 class _SwapDetailPageState extends State<SwapDetailPage> {
-  Swap swapData = new Swap();
+  Swap swapData = Swap();
 
   @override
   void initState() {
-
     swapHistoryBloc.updateSwaps(50, null);
     if (widget.swap.status != null &&
         widget.swap.status == Status.SWAP_SUCCESSFUL)
       swapHistoryBloc.isAnimationStepFinalIsFinish = true;
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return LockScreen(
-      onSuccess: (){
+      onSuccess: () {
         swapHistoryBloc.updateSwaps(50, null);
       },
       child: Scaffold(
@@ -44,15 +44,16 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
         body: StreamBuilder<List<Swap>>(
             stream: swapHistoryBloc.outSwaps,
             initialData: swapHistoryBloc.swaps,
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data.length > 0) {
-                snapshot.data.forEach((swap) {
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Swap>> snapshot) {
+              if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
+                for (Swap swap in snapshot.data) {
                   if (swap.result.uuid == widget.swap.result.uuid) {
                     swapData = swap;
                     print(swap.status);
                   }
-                });
-                print("SWAP STATUS" + swapData.status.toString());
+                }
+
                 if (swapData.result == null) {
                   swapData = widget.swap;
                 }
@@ -70,12 +71,12 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
                 }
               } else {
                 return StepperTrade(
-                      swap: widget.swap,
-                      onStepFinish: () {
-                        setState(() {
-                          swapHistoryBloc.isAnimationStepFinalIsFinish = true;
-                        });
+                    swap: widget.swap,
+                    onStepFinish: () {
+                      setState(() {
+                        swapHistoryBloc.isAnimationStepFinalIsFinish = true;
                       });
+                    });
               }
             }),
       ),
@@ -84,9 +85,9 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
 }
 
 class FinalTradeSuccess extends StatefulWidget {
-  final Swap swap;
+  const FinalTradeSuccess({@required this.swap});
 
-  FinalTradeSuccess({@required this.swap});
+  final Swap swap;
 
   @override
   _FinalTradeSuccessState createState() => _FinalTradeSuccessState();
@@ -95,17 +96,17 @@ class FinalTradeSuccess extends StatefulWidget {
 class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
-  Animation animation;
+  Animation<dynamic> animation;
 
   @override
   void initState() {
     super.initState();
     animationController = AnimationController(
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
 
-    animation = Tween(begin: -0.5, end: 0.0).animate(CurvedAnimation(
+    animation = Tween<double>(begin: -0.5, end: 0.0).animate(CurvedAnimation(
         parent: animationController, curve: Curves.fastOutSlowIn));
     animationController.forward();
   }
@@ -117,15 +118,15 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
       child: Center(
         child: ListView(
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             Container(
               height: 200,
-              child: SvgPicture.asset("assets/trade_success.svg",
+              child: SvgPicture.asset('assets/trade_success.svg',
                   semanticsLabel: 'Trade Success'),
             ),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             Column(
@@ -141,11 +142,11 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             Container(
-              color: Color.fromARGB(255, 52, 62, 76),
+              color: const Color.fromARGB(255, 52, 62, 76),
               height: 1,
               width: double.infinity,
             ),
@@ -160,10 +161,10 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
 }
 
 class StepperTrade extends StatefulWidget {
+  const StepperTrade({this.swap, this.onStepFinish});
+
   final Swap swap;
   final Function onStepFinish;
-
-  StepperTrade({this.swap, this.onStepFinish});
 
   @override
   _StepperTradeState createState() => _StepperTradeState();
@@ -177,9 +178,7 @@ class _StepperTradeState extends State<StepperTrade> {
     }
     return ListView(
       children: <Widget>[
-        ProgressSwap(
-            swap: widget.swap,
-            onStepFinish: widget.onStepFinish),
+        ProgressSwap(swap: widget.swap, onStepFinish: widget.onStepFinish),
         DetailSwap(
           swap: widget.swap,
         )
@@ -189,10 +188,10 @@ class _StepperTradeState extends State<StepperTrade> {
 }
 
 class ProgressSwap extends StatefulWidget {
+  const ProgressSwap({this.swap, this.onStepFinish});
+
   final Swap swap;
   final Function onStepFinish;
-
-  ProgressSwap({this.swap, this.onStepFinish});
 
   @override
   _ProgressSwapState createState() => _ProgressSwapState();
@@ -202,12 +201,12 @@ class _ProgressSwapState extends State<ProgressSwap>
     with SingleTickerProviderStateMixin {
   AnimationController _radialProgressAnimationController;
   Animation<double> _progressAnimation;
-  final Duration fadeInDuration = Duration(milliseconds: 500);
-  final Duration fillDuration = Duration(seconds: 1);
+  final Duration fadeInDuration = const Duration(milliseconds: 500);
+  final Duration fillDuration = const Duration(seconds: 1);
 
   double progressDegrees = 0;
-  var count = 0;
-  Swap swapTmp = new Swap();
+  int count = 0;
+  Swap swapTmp = Swap();
 
   @override
   void initState() {
@@ -218,9 +217,9 @@ class _ProgressSwapState extends State<ProgressSwap>
     _initAnimation(0.0);
   }
 
-  _initAnimation(double begin) {
+  void _initAnimation(double begin) {
     _progressAnimation = null;
-    _progressAnimation = Tween(begin: begin, end: 360.0).animate(
+    _progressAnimation = Tween<double>(begin: begin, end: 360.0).animate(
         CurvedAnimation(
             parent: _radialProgressAnimationController, curve: Curves.easeIn))
       ..addListener(() {
@@ -229,7 +228,9 @@ class _ProgressSwapState extends State<ProgressSwap>
               (swapHistoryBloc.getStepStatusNumber(widget.swap.status) /
                       swapHistoryBloc.getNumberStep()) *
                   _progressAnimation.value;
-          if (progressDegrees == 360) widget.onStepFinish();
+          if (progressDegrees == 360) {
+            widget.onStepFinish();
+          }
         });
       });
 
@@ -304,9 +305,9 @@ class _ProgressSwapState extends State<ProgressSwap>
 }
 
 class DetailSwap extends StatefulWidget {
-  final Swap swap;
+  const DetailSwap({@required this.swap});
 
-  DetailSwap({@required this.swap});
+  final Swap swap;
 
   @override
   _DetailSwapState createState() => _DetailSwapState();
@@ -314,17 +315,12 @@ class DetailSwap extends StatefulWidget {
 
 class _DetailSwapState extends State<DetailSwap> {
   @override
-  void initState() { 
-    super.initState();
-    
-  }
-  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          color: Color.fromARGB(255, 52, 62, 76),
+          color: const Color.fromARGB(255, 52, 62, 76),
           height: 1,
           width: double.infinity,
         ),
@@ -341,7 +337,7 @@ class _DetailSwapState extends State<DetailSwap> {
           padding:
               const EdgeInsets.only(top: 16, left: 24, right: 24, bottom: 4),
           child: Text(
-            "${AppLocalizations.of(context).requestedTrade}:",
+            '${AppLocalizations.of(context).requestedTrade}:',
             style: Theme.of(context)
                 .textTheme
                 .body2
@@ -353,18 +349,18 @@ class _DetailSwapState extends State<DetailSwap> {
             padding: const EdgeInsets.only(top: 24),
             child: _buildInfo(
                 AppLocalizations.of(context).swapID, widget.swap.result.uuid)),
-        widget.swap.status == Status.SWAP_SUCCESSFUL 
-        && swapHistoryBloc.isAnimationStepFinalIsFinish
+        widget.swap.status == Status.SWAP_SUCCESSFUL &&
+                swapHistoryBloc.isAnimationStepFinalIsFinish
             ? _buildInfosDetail()
             : Container(),
-        SizedBox(
+        const SizedBox(
           height: 32,
         )
       ],
     );
   }
 
-  _buildInfosDetail() {
+  Widget _buildInfosDetail() {
     return Column(
       children: <Widget>[
         Padding(
@@ -380,26 +376,27 @@ class _DetailSwapState extends State<DetailSwap> {
   }
 
   String _getTakerpaymentID(Swap swap) {
-    String takerpaymentID = "";
-    swap.result.events.forEach((event) {
-      if (event.event.type == "TakerPaymentSent") {
+    String takerpaymentID = '';
+    for (EventElement event in swap.result.events) {
+      if (event.event.type == 'TakerPaymentSent') {
         takerpaymentID = event.event.data.txHash;
       }
-    });
+    }
+
     return takerpaymentID;
   }
 
   String _getMakerpaymentID(Swap swap) {
-    String makepaymentID = "";
-    swap.result.events.forEach((event) {
-      if (event.event.type == "MakerPaymentSpent") {
+    String makepaymentID = '';
+    for (EventElement event in swap.result.events) {
+      if (event.event.type == 'MakerPaymentSpent') {
         makepaymentID = event.event.data.txHash;
       }
-    });
+    }
     return makepaymentID;
   }
 
-  _buildInfo(String title, String id) {
+  Widget _buildInfo(String title, String id) {
     return InkWell(
       onTap: () {
         copyToClipBoard(context, id);
@@ -430,7 +427,7 @@ class _DetailSwapState extends State<DetailSwap> {
     );
   }
 
-  _buildAmountSwap() {
+  Widget _buildAmountSwap() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
@@ -440,8 +437,8 @@ class _DetailSwapState extends State<DetailSwap> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildTextAmount(
-                  widget.swap.result.myInfo.myCoin, widget.swap.result.myInfo.myAmount),
+              _buildTextAmount(widget.swap.result.myInfo.myCoin,
+                  widget.swap.result.myInfo.myAmount),
               Text(
                 AppLocalizations.of(context).sell,
                 style: Theme.of(context)
@@ -483,7 +480,7 @@ class _DetailSwapState extends State<DetailSwap> {
     );
   }
 
-  _buildTextAmount(String coin, String amount) {
+  Widget _buildTextAmount(String coin, String amount) {
     return Text(
       '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
       style: Theme.of(context)
@@ -493,12 +490,12 @@ class _DetailSwapState extends State<DetailSwap> {
     );
   }
 
-  _buildIcon(String coin) {
+  Widget _buildIcon(String coin) {
     return Container(
       height: 25,
       width: 25,
       child: Image.asset(
-        "assets/${coin.toLowerCase()}.png",
+        'assets/${coin.toLowerCase()}.png',
         fit: BoxFit.cover,
       ),
     );
@@ -506,25 +503,25 @@ class _DetailSwapState extends State<DetailSwap> {
 }
 
 class RadialPainter extends CustomPainter {
+  const RadialPainter({@required this.context, this.progressInDegrees});
+
   final double progressInDegrees;
   final BuildContext context;
 
-  RadialPainter({@required this.context, this.progressInDegrees});
-
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
-      ..color = Color.fromARGB(255, 52, 62, 76)
+    final Paint paint = Paint()
+      ..color = const Color.fromARGB(255, 52, 62, 76)
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = 30.0;
 
-    Offset center = Offset(size.width / 2, size.height / 2);
+    final Offset center = Offset(size.width / 2, size.height / 2);
     canvas.drawCircle(center, size.width / 2, paint);
 
-    Paint progressPaint = Paint()
-      ..shader = LinearGradient(colors: [
-        Color.fromARGB(255, 40, 80, 114),
+    final Paint progressPaint = Paint()
+      ..shader = LinearGradient(colors: <Color>[
+        const Color.fromARGB(255, 40, 80, 114),
         Theme.of(context).accentColor
       ]).createShader(Rect.fromCircle(center: center, radius: size.width / 2))
       ..strokeCap = StrokeCap.round

@@ -4,34 +4,37 @@
 
 import 'dart:convert';
 
-GetSendRawTransaction getSendRawTransactionFromJson(String str) => GetSendRawTransaction.fromJson(json.decode(str));
+GetSendRawTransaction getSendRawTransactionFromJson(String str) =>
+    GetSendRawTransaction.fromJson(json.decode(str));
 
-String getSendRawTransactionToJson(GetSendRawTransaction data) => json.encode(data.toJson());
+String getSendRawTransactionToJson(GetSendRawTransaction data) =>
+    json.encode(data.toJson());
 
 class GetSendRawTransaction {
-    String method;
-    String coin;
-    String txHex;
-    String userpass;
+  GetSendRawTransaction({
+    this.method,
+    this.coin,
+    this.txHex,
+    this.userpass,
+  });
 
-    GetSendRawTransaction({
-        this.method,
-        this.coin,
-        this.txHex,
-        this.userpass,
-    });
+  factory GetSendRawTransaction.fromJson(Map<String, dynamic> json) =>
+      GetSendRawTransaction(
+        method: json['method'] ?? '',
+        coin: json['coin'] ?? '',
+        txHex: json['tx_hex'] ?? '',
+        userpass: json['userpass'] ?? '',
+      );
 
-    factory GetSendRawTransaction.fromJson(Map<String, dynamic> json) => new GetSendRawTransaction(
-        method: json["method"] == null ? null : json["method"],
-        coin: json["coin"] == null ? null : json["coin"],
-        txHex: json["tx_hex"] == null ? null : json["tx_hex"],
-        userpass: json["userpass"] == null ? null : json["userpass"],
-    );
+  String method;
+  String coin;
+  String txHex;
+  String userpass;
 
-    Map<String, dynamic> toJson() => {
-        "method": method == null ? null : method,
-        "coin": coin == null ? null : coin,
-        "tx_hex": txHex == null ? null : txHex,
-        "userpass": userpass == null ? null : userpass,
-    };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'method': method ?? '',
+        'coin': coin ?? '',
+        'tx_hex': txHex ?? '',
+        'userpass': userpass ?? '',
+      };
 }

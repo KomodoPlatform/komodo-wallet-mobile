@@ -9,9 +9,9 @@ import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class CheckPassphrasePage extends StatefulWidget {
-  final String seed;
+  const CheckPassphrasePage({this.seed});
 
-  CheckPassphrasePage({this.seed});
+  final String seed;
 
   @override
   _CheckPassphrasePageState createState() => _CheckPassphrasePageState();
@@ -22,26 +22,26 @@ class CheckPassphrasePage extends StatefulWidget {
 }
 
 class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
-  List<Widget> wordsWidget = List<Widget>();
-  List<WordData> wordsDataRandom = List<WordData>();
+  List<Widget> wordsWidget = <Widget>[];
+  List<WordData> wordsDataRandom = <WordData>[];
   int stepper = 0;
   TextEditingController _controller;
 
   @override
   void initState() {
     checkPassphrasePage.setIsWordGood(false);
-    List<WordData> wordsData = new List<WordData>();
-    List<String> wordsSeed = widget.seed.split(" ");
+    final List<WordData> wordsData = <WordData>[];
+    final List<String> wordsSeed = widget.seed.split(' ');
 
     int i = 0;
-    wordsSeed.forEach((word) {
-      wordsData.add(WordData(word: word, index: i));
+    for (String word in wordsSeed) {
+            wordsData.add(WordData(word: word, index: i));
       i++;
-    });
-    final _random = new Random();
+    }
+    final Random _random = Random();
 
-    for (var i = 0; i < 3; i++) {
-      int res = _random.nextInt(wordsData.length);
+    for (int i = 0; i < 3; i++) {
+      final int res = _random.nextInt(wordsData.length);
       wordsWidget.add(SeedRandom(data: wordsData[res]));
       wordsDataRandom.add(wordsData[res]);
       wordsData.removeAt(res);
@@ -65,30 +65,30 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
             AppLocalizations.of(context).checkSeedPhraseTitle,
             style: Theme.of(context).textTheme.title,
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Text(
             AppLocalizations.of(context).checkSeedPhraseInfo,
             style: Theme.of(context).textTheme.body2,
           ),
-          SizedBox(
+          const SizedBox(
             height: 48,
           ),
           wordsWidget[stepper],
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           StreamBuilder<bool>(
               initialData: checkPassphrasePage.isWordGood,
               stream: checkPassphrasePage.outIsWordGoodLogin,
-              builder: (context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                 return PrimaryButton(
                   text: AppLocalizations.of(context).checkSeedPhraseButton1,
                   onPressed: snapshot.data ? _onPressedNext : null,
                 );
               }),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           SecondaryButton(
@@ -102,16 +102,17 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
     );
   }
 
-  _onPressedNext() {
+  void _onPressedNext() {
     if (widget.checkSeedWord(wordsDataRandom[stepper])) {
       checkPassphrasePage.setIsResetText(true);
       if (stepper == 2) {
-        Navigator.pushReplacement(
+        Navigator.pushReplacement<dynamic, dynamic>(
           context,
-          MaterialPageRoute(
-              builder: (context) => CreatePasswordPage(
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => CreatePasswordPage(
                     seed: widget.seed,
                   )),
+                  
         );
       } else {
         checkPassphrasePage.setIsWordGood(false);
@@ -124,15 +125,16 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 }
 
 class SeedRandom extends StatefulWidget {
+  const SeedRandom({this.data});
+
   final WordData data;
 
-  SeedRandom({this.data});
   @override
   _SeedRandomState createState() => _SeedRandomState();
 }
 
 class _SeedRandomState extends State<SeedRandom> {
-  TextEditingController _controller = new TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -143,22 +145,22 @@ class _SeedRandomState extends State<SeedRandom> {
               .checkSeedPhraseSubtile((widget.data.index + 1).toString()),
           style: Theme.of(context).textTheme.body1,
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         StreamBuilder<bool>(
             initialData: checkPassphrasePage.isResetText,
             stream: checkPassphrasePage.outIsResetTextLogin,
-            builder: (context, snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
               if (snapshot.data) {
-                _controller.text = "";
+                _controller.text = '';
               }
               return CustomTextField(
                 controller: _controller,
-                onChanged: (text) {
+                onChanged: (String text) {
                   checkPassphrasePage.setWord(text);
                   checkPassphrasePage.setIsWordGood(
-                      CheckPassphrasePage().checkSeedWord(widget.data));
+                      const CheckPassphrasePage().checkSeedWord(widget.data));
                 },
                 hintText: AppLocalizations.of(context)
                     .checkSeedPhraseHint((widget.data.index + 1).toString()),
@@ -170,8 +172,9 @@ class _SeedRandomState extends State<SeedRandom> {
 }
 
 class WordData {
+  WordData({this.index, this.word});
+
   int index;
   String word;
 
-  WordData({this.index, this.word});
 }

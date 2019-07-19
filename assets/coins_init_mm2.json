@@ -67,6 +67,18 @@
         "txfee": 10000
     },
     {
+        "coin": "ZILLA",
+        "name": "ZILLA",
+        "rpcport": 10041,
+        "pubtype": 60,
+        "p2shtype": 85,
+        "wiftype": 188,
+        "mm2": 1,
+        "txfee": 10000,
+        "txversion": 1,
+        "overwintered": 0
+    },
+    {   
         "coin": "VRSC",
         "asset": "VerusCoin",
         "rpcport": 27486,
@@ -157,5 +169,15 @@
         "rpcport": 22555,
         "mm2": 1,
         "txfee": 200000000
-    }
+    },
+    {
+        "coin": "RVN",
+        "name": "raven",
+        "rpcport": 8766,
+        "pubtype": 60,
+        "p2shtype": 122,
+        "wiftype": 128,
+        "txfee": 100000,
+        "mm2": 1
+      }
 ]

@@ -4,17 +4,17 @@ import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
-  final String seed;
+  const CreatePasswordPage({@required this.seed});
 
-  CreatePasswordPage({@required this.seed});
+  final String seed;
 
   @override
   _CreatePasswordPageState createState() => _CreatePasswordPageState();
 }
 
 class _CreatePasswordPageState extends State<CreatePasswordPage> {
-  TextEditingController controller1 = new TextEditingController();
-  TextEditingController controller2 = new TextEditingController();
+  TextEditingController controller1 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
   final FocusNode _focus1 = FocusNode();
   final FocusNode _focus2 = FocusNode();
   bool isLoading = false;
@@ -32,8 +32,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   }
 
   void _onChange() {
-    String text = controller1.text;
-    String text2 = controller2.text;
+    final String text = controller1.text;
+    final String text2 = controller2.text;
     if (text.isEmpty ||
         text2.isEmpty ||
         !_formKey.currentState.validate() ||
@@ -74,23 +74,23 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
         key: _formKey,
         autovalidate: _autoValidate,
         child: ListView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Text(
-              "CREATE A PASSWORD",
+              'CREATE A PASSWORD',
               style: Theme.of(context).textTheme.title,
             ),
-            SizedBox(
+            const SizedBox(
               height: 24,
             ),
             Text(
               AppLocalizations.of(context).infoWalletPassword,
               style: Theme.of(context).textTheme.body2,
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Row(
@@ -101,7 +101,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       maxLength: 40,
                       focusNode: _focus1,
                       controller: controller1,
-                      onFieldSubmitted: (term) {
+                      onFieldSubmitted: (String term) {
                         _fieldFocusChange(context, _focus1, _focus2);
                         _validateInputs();
                       },
@@ -110,7 +110,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       enableInteractiveSelection: true,
                       obscureText: isObscured,
                       validator: (String arg) {
-                        RegExp exp = RegExp(
+                        final RegExp exp = RegExp(
                             r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
                         if (!arg.contains(exp))
                           return 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.';
@@ -119,7 +119,13 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       },
                       style: Theme.of(context).textTheme.body1,
                       decoration: InputDecoration(
-                          errorMaxLines: 3,
+                          errorMaxLines: 6,
+                          errorStyle: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(
+                                  fontSize: 12,
+                                  color: Theme.of(context).errorColor),
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -132,7 +138,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                           hintText: AppLocalizations.of(context).hintPassword,
                           labelText: null)),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 InkWell(
@@ -143,17 +149,17 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                   },
                   child: Container(
                       height: 60,
-                      padding: EdgeInsets.only(right: 16, left: 16),
+                      padding: const EdgeInsets.only(right: 16, left: 16),
                       child: isObscured
                           ? Icon(Icons.visibility)
                           : Icon(Icons.visibility_off)),
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
-            Builder(builder: (context) {
+            Builder(builder: (BuildContext context) {
               return Row(
                 children: <Widget>[
                   Expanded(
@@ -165,7 +171,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                         focusNode: _focus2,
                         obscureText: isObscured,
                         enableInteractiveSelection: true,
-                        onFieldSubmitted: (data) {
+                        onFieldSubmitted: (String data) {
                           _checkValidation(context);
                         },
                         style: Theme.of(context).textTheme.body1,
@@ -184,7 +190,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                                 .hintConfirmPassword,
                             labelText: null)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 72,
                   ),
                 ],
@@ -201,15 +207,15 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                   value: isFastEncrypted,
                 ),
                 Text(
-                  "Fast encryption",
+                  'Fast encryption',
                   style: Theme.of(context).textTheme.body2,
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            Builder(builder: (context) {
+            Builder(builder: (BuildContext context) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
@@ -231,7 +237,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     );
   }
 
-  _checkValidation(BuildContext context) {
+  void _checkValidation(BuildContext context) {
     if (_validateInputs()) {
       if (controller1.text == controller2.text) {
         _nextPage();
@@ -241,11 +247,11 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     }
   }
 
-  _nextPage() async {
-    Navigator.push(
+  Future<void> _nextPage() async {
+    Navigator.push<dynamic>(
       context,
-      MaterialPageRoute(
-          builder: (context) => DislaimerPage(
+      MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => DislaimerPage(
                 isFastEncrypted: isFastEncrypted,
                 password: controller1.text,
                 seed: widget.seed,
@@ -257,15 +263,15 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     );
   }
 
-  _showError(BuildContext context, String data) {
-    Scaffold.of(context).showSnackBar(new SnackBar(
-      duration: Duration(seconds: 2),
+  void _showError(BuildContext context, String data) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
-      content: new Text(data),
+      content: Text(data),
     ));
   }
 
-  _fieldFocusChange(
+  void _fieldFocusChange(
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
@@ -273,9 +279,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
 }
 
 class ScreenArguments {
-  final String password;
-
   ScreenArguments(
     this.password,
   );
+  final String password;
 }
