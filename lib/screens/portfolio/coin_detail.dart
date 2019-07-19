@@ -16,6 +16,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
+import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
@@ -806,15 +807,21 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Widget _buildConfirmationStep() {
-    int txFee = 0;
-    if (currentCoinBalance.coin.txfee != null) {
-      txFee = currentCoinBalance.coin.txfee;
-    }
-    final double fee = txFee / 100000000;
+    // int txFee = 0;
+    // if (currentCoinBalance.coin.txfee != null) {
+    //   txFee = currentCoinBalance.coin.txfee;
+    // }
+    // final double fee = txFee / 100000000;
+    // double amountMinusFee = double.parse(_amountController.text);
+    // amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
+    // final double sendamount =
+    //     double.parse((amountMinusFee + fee).toStringAsFixed(8));
     double amountMinusFee = double.parse(_amountController.text);
-    amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
-    final double sendamount =
-        double.parse((amountMinusFee + fee).toStringAsFixed(8));
+    getFee().then((double onValue) {
+      setState(() {
+        amountMinusFee = double.parse(_amountController.text) - onValue;
+      });
+    });
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -833,7 +840,7 @@ class _CoinDetailState extends State<CoinDetail> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Text(
-                sendamount.toString(),
+                double.parse(_amountController.text).toStringAsFixed(8),
                 style: Theme.of(context).textTheme.subtitle,
               ),
               const SizedBox(
@@ -852,9 +859,19 @@ class _CoinDetailState extends State<CoinDetail> {
                 '- ',
                 style: Theme.of(context).textTheme.body2,
               ),
-              Text(
-                currentCoinBalance.coin.getTxFeeSatoshi(),
-                style: Theme.of(context).textTheme.body2,
+              FutureBuilder<double>(
+                future: getFee(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    return Text(
+                      snapshot.data.toString(),
+                      style: Theme.of(context).textTheme.body2,
+                    );
+                  } else {
+                    return const Text('');
+                  }
+                },
               ),
               const SizedBox(
                 width: 4,
@@ -877,15 +894,25 @@ class _CoinDetailState extends State<CoinDetail> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text(
-                amountMinusFee.toString(),
-                style: amountMinusFee > 0
-                    ? Theme.of(context).textTheme.title
-                    : Theme.of(context)
-                        .textTheme
-                        .title
-                        .copyWith(color: Colors.red),
-              ),
+              FutureBuilder<double>(
+                  future: getFee(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<double> snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return Text(
+                        (double.parse(_amountController.text) - snapshot.data)
+                            .toStringAsFixed(8),
+                        style: amountMinusFee > 0
+                            ? Theme.of(context).textTheme.title
+                            : Theme.of(context)
+                                .textTheme
+                                .title
+                                .copyWith(color: Colors.red),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }),
               const SizedBox(
                 width: 4,
               ),
@@ -972,7 +999,18 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  void _onPressedConfirmWithdraw(BuildContext mContext) {
+  Future<double> getFee() async {
+    try {
+      final TradeFee tradeFeeResponse =
+          await mm2.getTradeFee(currentCoinBalance.coin);
+      return double.parse(tradeFeeResponse.result.amount);
+    } catch (e) {
+      print(e);
+      return 0;
+    }
+  }
+
+  Future<void> _onPressedConfirmWithdraw(BuildContext mContext) async {
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
@@ -983,17 +1021,9 @@ class _CoinDetailState extends State<CoinDetail> {
       setState(() {
         isSendIsActive = false;
       });
-      double amountMinusFee = double.parse(_amountController.text) -
-          double.parse(currentCoinBalance.coin.getTxFeeSatoshi());
+      double amountMinusFee =
+          double.parse(_amountController.text) - await getFee();
       amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
-      int txFee = 0;
-      if (currentCoinBalance.coin.txfee != null) {
-        txFee = currentCoinBalance.coin.txfee;
-      }
-      final double fee = txFee / 100000000;
-      final double sendamount =
-          double.parse((amountMinusFee + fee).toStringAsFixed(8));
-
       listSteps.add(Container(
           height: 100,
           width: double.infinity,
@@ -1010,7 +1040,7 @@ class _CoinDetailState extends State<CoinDetail> {
           .postWithdraw(
               currentCoinBalance.coin,
               _addressController.text.toString(),
-              sendamount,
+              amountMinusFee,
               double.parse(widget.coinBalance.balance.getBalance()) ==
                   double.parse(_amountController.text))
           .then((dynamic data) {
