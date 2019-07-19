@@ -189,7 +189,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     _controllerAmountSell.text.replaceAll(',', '.'))));
           }
 
-          getTradeFee().then((double tradeFee) {
+          getTradeFee(false).then((double tradeFee) {
+            print(double.parse(amountSell) + tradeFee);
             if (currentCoinBalance != null &&
                 double.parse(amountSell) + tradeFee >
                     double.parse(currentCoinBalance.balance.getBalance())) {
@@ -220,14 +221,19 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  Future<double> getTradeFee() async {
+  Future<double> getTradeFee(bool isMax) async {
     try {
       final TradeFee tradeFeeResponse =
           await mm2.getTradeFee(currentCoinBalance.coin);
-      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
+      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
+      print(tradeFee);
+      double amount = double.parse(_controllerAmountSell.text);
+      if (isMax) {
+        amount = double.parse(currentCoinBalance.balance.getBalance());
+      }
       return (2 * tradeFee) +
-          ((1 / 777) * double.parse(_controllerAmountSell.text));
+          ((1 / 777) * amount);
     } catch (e) {
       print(e);
       return 0;
@@ -239,7 +245,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       setState(() async {
         final double maxValue =
             double.parse(currentCoinBalance.balance.getBalance()) -
-                await getTradeFee();
+                await getTradeFee(true);
+        print(maxValue);
         if (maxValue < 0) {
           _controllerAmountSell.text = '';
           Scaffold.of(context).showSnackBar(SnackBar(
