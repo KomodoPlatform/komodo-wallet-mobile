@@ -825,11 +825,10 @@ class _CoinDetailState extends State<CoinDetail> {
         double.parse(widget.coinBalance.balance.getBalance());
 
     if (amountToPay > userBalance) {
-      amountToPay = userBalance;
-      amountUserReceive = userBalance - fee;
+      amountUserReceive = userBalance;
     }
 
-    if (userBalance == double.parse(_amountController.text)) {
+    if (userBalance == amountUserReceive) {
       amountToPay = amountUserReceive;
       amountUserReceive -= feeToPay;
     }
