@@ -555,7 +555,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
             builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-              if (snapshot.hasData && snapshot.data != null  && snapshot.data != null) {
+              if (snapshot.hasData && snapshot.data != null) {
                 return Column(
                   children: <Widget>[
                     const SizedBox(

@@ -14,12 +14,12 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LockScreen extends StatefulWidget {
-  const LockScreen({this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.onSuccess});
+  const LockScreen(
+      {this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.onSuccess});
 
   final PinStatus pinStatus;
   final Widget child;
   final Function onSuccess;
-
 
   @override
   _LockScreenState createState() => _LockScreenState();
@@ -40,20 +40,26 @@ class _LockScreenState extends State<LockScreen> {
         return StreamBuilder<PinStatus>(
           initialData: authBloc.pinStatus,
           stream: authBloc.outpinStatus,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> outShowCreatePin) {
+          builder:
+              (BuildContext context, AsyncSnapshot<dynamic> outShowCreatePin) {
             if (outShowCreatePin.hasData &&
-                (outShowCreatePin.data == PinStatus.NORMAL_PIN)) {
-              if (isLogin.hasData && isLogin.data) {
+                outShowCreatePin.data != null &&
+                outShowCreatePin.data == PinStatus.NORMAL_PIN) {
+              if (isLogin.hasData && isLogin.data != null && isLogin.data) {
                 return StreamBuilder<bool>(
                     initialData: authBloc.isPinShow,
                     stream: authBloc.outShowPin,
-                    builder: (BuildContext context, AsyncSnapshot<bool> outShowPin) {
+                    builder:
+                        (BuildContext context, AsyncSnapshot<bool> outShowPin) {
                       return SharedPreferencesBuilder<dynamic>(
                         pref: 'switch_pin',
-                        builder: (BuildContext context, AsyncSnapshot<dynamic> switchPinData){
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> switchPinData) {
                           if (outShowPin.hasData &&
+                              outShowPin.data != null &&
                               outShowPin.data &&
                               switchPinData.hasData &&
+                              switchPinData.data != null &&
                               switchPinData.data) {
                             return Stack(
                               children: <Widget>[
@@ -61,7 +67,11 @@ class _LockScreenState extends State<LockScreen> {
                                   future: _checkBiometrics(),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<dynamic> snapshot) {
-                                    if (snapshot.hasData && snapshot.data != null  && snapshot.data && widget.pinStatus == PinStatus.NORMAL_PIN) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null &&
+                                        snapshot.data &&
+                                        widget.pinStatus ==
+                                            PinStatus.NORMAL_PIN) {
                                       print(snapshot.data);
                                       _authenticateBiometrics();
                                       return Container();
@@ -81,15 +91,17 @@ class _LockScreenState extends State<LockScreen> {
                               ],
                             );
                           } else {
-                            if (widget.child == null && (widget.pinStatus == PinStatus.DISABLED_PIN || widget.pinStatus == PinStatus.DISABLED_PIN_BIOMETRIC))
+                            if (widget.child == null &&
+                                (widget.pinStatus == PinStatus.DISABLED_PIN ||
+                                    widget.pinStatus ==
+                                        PinStatus.DISABLED_PIN_BIOMETRIC))
                               return PinPage(
-                                  title:
-                                      AppLocalizations.of(context).lockScreen,
-                                  subTitle:
-                                      AppLocalizations.of(context).enterPinCode,
-                                  isConfirmPin: widget.pinStatus,
-                                  isFromChangingPin: false,
-                                );
+                                title: AppLocalizations.of(context).lockScreen,
+                                subTitle:
+                                    AppLocalizations.of(context).enterPinCode,
+                                isConfirmPin: widget.pinStatus,
+                                isFromChangingPin: false,
+                              );
                             else
                               return widget.child;
                           }

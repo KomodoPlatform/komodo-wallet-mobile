@@ -315,8 +315,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   return PrimaryButton(
                     onPressed: _controllerAmountSell.text.isNotEmpty &&
                             _controllerAmountReceive.text.isNotEmpty &&
-                            sellCoin.hasData &&
-                            receiveCoin.hasData
+                            sellCoin.hasData && sellCoin.data != null &&
+                            receiveCoin.hasData && receiveCoin.data != null
                         ? () => _confirmSwap(context)
                         : null,
                     text: AppLocalizations.of(context).trade,
@@ -1117,7 +1117,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
         initialData: swapBloc.orderCoin,
         stream: swapBloc.outOrderCoin,
         builder: (BuildContext context, AsyncSnapshot<OrderCoin> snapshot) {
-          if (snapshot.hasData && snapshot.data != null  && snapshot.data != null && snapshot.data.bestPrice > 0) {
+          if (snapshot.hasData && snapshot.data != null && snapshot.data.bestPrice > 0) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(
