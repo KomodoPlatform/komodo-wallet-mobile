@@ -35,6 +35,7 @@ class CoinInit {
         p2Shtype: json['p2shtype'],
         wiftype: json['wiftype'],
         txfee: json['txfee'],
+        mm2: json['mm2'],
         txversion: json['txversion'],
         overwintered: json['overwintered'],
         asset: json['asset'],
