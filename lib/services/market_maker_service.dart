@@ -375,10 +375,11 @@ class MarketMakerService {
 
       print(response.body.toString());
 
-      final BuyResponse buyResponse = buyResponseFromJson(response.body);
-      if (buyResponse != null && buyResponse.result != null) {
+      try {
+        final BuyResponse buyResponse = buyResponseFromJson(response.body);
         return buyResponse;
-      } else {
+      } catch (e) {
+        print(e);
         throw errorStringFromJson(response.body);
       }
     } catch (e) {
@@ -439,11 +440,12 @@ class MarketMakerService {
           await http.post(url, body: getSetPriceToJson(getSetPrice));
 
       print(response.body.toString());
-      final SetPriceResponse setPriceResponse =
-          setPriceResponseFromJson(response.body);
-      if (setPriceResponse != null) {
+
+      try {
+        final SetPriceResponse setPriceResponse =
+            setPriceResponseFromJson(response.body);
         return setPriceResponse;
-      } else {
+      } catch (e) {
         throw errorStringFromJson(response.body);
       }
     } catch (e) {
@@ -647,9 +649,9 @@ class MarketMakerService {
     }
   }
 
-    Future<ResultSuccess> getVersionMM2() async {
-    final BaseService baseService = BaseService(
-        userpass: userpass, method: 'version');
+  Future<ResultSuccess> getVersionMM2() async {
+    final BaseService baseService =
+        BaseService(userpass: userpass, method: 'version');
 
     try {
       final Response response =

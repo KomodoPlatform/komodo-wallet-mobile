@@ -190,14 +190,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           }
 
           getTradeFee(false).then((double tradeFee) {
-            print(double.parse(amountSell) + tradeFee);
             if (currentCoinBalance != null &&
                 double.parse(amountSell) + tradeFee >
                     double.parse(currentCoinBalance.balance.getBalance())) {
               if (!isMaxActive) {
                 setMaxValue();
               }
-              isMaxActive = false;
             } else {
               if (amountSell.contains(
                   RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))) {
@@ -211,6 +209,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       }
 
       tmpAmountSell = amountSell;
+    });
+    setState(() {
+      isMaxActive = false;
     });
   }
 
@@ -227,13 +228,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           await mm2.getTradeFee(currentCoinBalance.coin);
 
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
-      print(tradeFee);
       double amount = double.parse(_controllerAmountSell.text);
       if (isMax) {
         amount = double.parse(currentCoinBalance.balance.getBalance());
       }
-      return (2 * tradeFee) +
-          ((1 / 777) * amount);
+      return (2 * tradeFee) + ((1 / 777) * amount);
     } catch (e) {
       print(e);
       return 0;
@@ -448,7 +447,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                     ? Container(
                                                         width: 70,
                                                         child: FlatButton(
-                                                          onPressed: () async{
+                                                          onPressed: () async {
                                                             setState(() {
                                                               isMaxActive =
                                                                   true;
