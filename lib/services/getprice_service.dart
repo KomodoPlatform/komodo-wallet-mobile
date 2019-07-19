@@ -15,18 +15,13 @@ class GetPriceService {
 
   Future<double> getPrice(String coin, String currency) async {
     String coinUrl =
-        'https://api.bittrex.com/api/v1.1/public/getticker?market=BTC-';
-    String fiatUrl = 'https://api.coinbase.com/v2/prices/spot?currency=';
-    fiatUrl += currency;
-    coinUrl += coin;
+        'https://api.coingecko.com/api/v3/simple/price?ids=';
+    final String coinUrlEnd = '&vs_currencies=' + currency;
+    String fiatUrl = 'https://api.coinbase.com/v2/prices/spot?currency='+currency;
+    String fiatUrl2 = 'https://api.coingecko.com/api/v3/simple/price?ids=BTC&vs_currencies='+currency.toLowerCase();
     double price = 0.0;
 
-    if (coin != 'RICK' &&
-        coin != 'MORTY' &&
-        coin != 'RFOX' &&
-        coin != 'USDC' &&
-        coin != 'LABS' &&
-        coin != 'VRSC') {
+      //fetch btc usd value
       try {
         final Response response = await http.get(fiatUrl);
         final Map<dynamic, dynamic> decoded = jsonDecode(response.body);
@@ -34,48 +29,41 @@ class GetPriceService {
         if (coin == 'BTC') {
           return price;
         }
+        else if (coin == 'RICK') {
+        return 0;
+        } else if (coin == 'MORTY') {
+        return 0;
+        }
       } catch (e) {
         print(e.toString());
         price = 0;
       }
+      String base;
+      if(coin == "VRSC") base = 'verus-coin';
+      else if(coin =="KMD") base = 'komodo';
+      else if(coin =="ZILLA") base = 'chainzilla';
+      else if(coin =="RFOX") base = 'redfox-labs';
+      else if(coin =="USDC") base = 'usd-coin';
+      else if(coin =="LTC") base = 'litecoin';
+      else if(coin =="DGB") base = 'digibyte';
+      else if(coin =="QTUM") base = 'qtum';
+      else if(coin =="BAT") base = 'basic-attention-token';
+      else if(coin =="ETH") base = 'ethereum';
+      else if(coin =="DOGE") base = 'dogecoin';
+      else if(coin =="DASH") base = 'dash';
+      else if(coin =="BCH") base = 'bitcoin-cash';
+      
+      coinUrl += base + coinUrlEnd;
+
       try {
         final Response response2 = await http.get(coinUrl);
         final Map<dynamic, dynamic> decoded2 = jsonDecode(response2.body);
-        price *= decoded2['result']['Last'];
+        price = double.parse(decoded2[base][currency.toLowerCase()].toString());
       } catch (e) {
         print(e.toString());
         price = 0;
       }
-    } else {
-      if (coin == 'RICK') {
-        price = 0;
-      } else if (coin == 'MORTY') {
-        price = 0;
-      } else if (coin == 'RFOX') {
-        price = 0.05;
-      } else if (coin == 'USDC') {
-        // String geckoUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=usd-coin&vs_currencies=USD';
-        // final response = await http.get(geckoUrl);
-        // Map decoded = jsonDecode(response.body);
-        // print(decoded.toString());
-        // price = double.parse(decoded['usd-coin']['usd'].toString());
-        price = 1;
-      } else if (coin == 'LABS') {
-        price = 0.01;
-      } else if (coin == 'VRSC') {
-        try {
-          const String geckoUrl =
-              'https://api.coingecko.com/api/v3/simple/price?ids=verus-coin&vs_currencies=USD';
-          final Response response = await http.get(geckoUrl);
-          final Map<dynamic, dynamic> decoded = jsonDecode(response.body);
-          print(decoded.toString());
-          price = double.parse(decoded['verus-coin']['usd'].toString());
-        } catch (e) {
-          print(e.toString());
-          price = 0;
-        }
-      }
-    }
+
     return price;
   }
 }
