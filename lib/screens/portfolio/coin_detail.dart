@@ -174,6 +174,7 @@ class _CoinDetailState extends State<CoinDetail> {
   CoinBalance currentCoinBalance;
   bool isSendIsActive;
   Timer timer;
+  BuildContext mainContext;
 
   @override
   void initState() {
@@ -293,6 +294,7 @@ class _CoinDetailState extends State<CoinDetail> {
           backgroundColor: Color(int.parse(currentCoinBalance.coin.colorCoin)),
         ),
         body: Builder(builder: (BuildContext context) {
+          mainContext = context;
           return Column(
             children: <Widget>[
               _buildForm(),
@@ -775,7 +777,7 @@ class _CoinDetailState extends State<CoinDetail> {
         width: double.infinity,
         height: 50,
         child: Builder(
-          builder: (BuildContext context) {
+          builder: (BuildContext mContext) {
             return RaisedButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6.0)),
@@ -790,7 +792,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 // the form is invalid.
                 if (_formKey.currentState.validate()) {
                   final Widget buildConfirmationStep =
-                      await _buildConfirmationStep();
+                      await _buildConfirmationStep(mContext);
 
                   setState(() {
                     isExpanded = false;
@@ -809,22 +811,7 @@ class _CoinDetailState extends State<CoinDetail> {
     }
   }
 
-  Future<Widget> _buildConfirmationStep() async {
-    // int txFee = 0;
-    // if (currentCoinBalance.coin.txfee != null) {
-    //   txFee = currentCoinBalance.coin.txfee;
-    // }
-    // final double fee = txFee / 100000000;
-    // double amountMinusFee = double.parse(_amountController.text);
-    // amountMinusFee = double.parse(amountMinusFee.toStringAsFixed(8));
-    // final double sendamount =
-    //     double.parse((amountMinusFee + fee).toStringAsFixed(8));
-    // double amountMinusFee = double.parse(_amountController.text);
-    // getFee().then((double onValue) {
-    //   setState(() {
-    //     amountMinusFee = double.parse(_amountController.text) - onValue;
-    //   });
-    // });
+  Future<Widget> _buildConfirmationStep(BuildContext mContext) async {
     double fee = 0;
     try {
       fee = await getFee();
@@ -834,9 +821,15 @@ class _CoinDetailState extends State<CoinDetail> {
     double amountToPay = double.parse(_amountController.text) + fee;
     final double feeToPay = fee;
     double amountUserReceive = double.parse(_amountController.text);
+    final double userBalance =
+        double.parse(widget.coinBalance.balance.getBalance());
 
-    if (double.parse(widget.coinBalance.balance.getBalance()) ==
-        double.parse(_amountController.text)) {
+    if (amountToPay > userBalance) {
+      amountToPay = userBalance;
+      amountUserReceive = userBalance - fee;
+    }
+
+    if (userBalance == double.parse(_amountController.text)) {
       amountToPay = amountUserReceive;
       amountUserReceive -= feeToPay;
     }
@@ -978,7 +971,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                       onPressed: amountToPay > 0
                           ? () {
-                              _onPressedConfirmWithdraw(context);
+                              _onPressedConfirmWithdraw(mContext, amountUserReceive);
                             }
                           : null,
                     );
@@ -1003,12 +996,12 @@ class _CoinDetailState extends State<CoinDetail> {
     }
   }
 
-  Future<void> _onPressedConfirmWithdraw(BuildContext mContext) async {
+  Future<void> _onPressedConfirmWithdraw(BuildContext mContext, double sendAmount) async {
     if (mainBloc.isNetworkOffline) {
-      Scaffold.of(mContext).showSnackBar(SnackBar(
+      Scaffold.of(mainContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,
-        content: Text(AppLocalizations.of(context).noInternet),
+        content: Text(AppLocalizations.of(mainContext).noInternet),
       ));
     } else {
       setState(() {
@@ -1030,7 +1023,7 @@ class _CoinDetailState extends State<CoinDetail> {
           .postWithdraw(
               currentCoinBalance.coin,
               _addressController.text.toString(),
-              double.parse(_amountController.text),
+              sendAmount,
               double.parse(widget.coinBalance.balance.getBalance()) ==
                   double.parse(_amountController.text))
           .then((dynamic data) {
@@ -1083,27 +1076,38 @@ class _CoinDetailState extends State<CoinDetail> {
               });
             }
           }).catchError((dynamic onError) {
-            Scaffold.of(mContext).showSnackBar(SnackBar(
+            resetSend();
+            Scaffold.of(mainContext).showSnackBar(SnackBar(
               duration: const Duration(seconds: 2),
-              content: Text(AppLocalizations.of(context).errorTryLater),
+              backgroundColor: Theme.of(context).errorColor,
+              content: Text(AppLocalizations.of(mainContext).errorTryLater),
             ));
           });
         } else {
-          setState(() {
-            _onWithdrawPost = false;
-          });
-          Scaffold.of(mContext).showSnackBar(SnackBar(
+          resetSend();
+          Scaffold.of(mainContext).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
-            content: Text(AppLocalizations.of(context).errorTryLater),
+            backgroundColor: Theme.of(context).errorColor,
+            content: Text(AppLocalizations.of(mainContext).errorTryLater),
           ));
         }
       }).catchError((dynamic onError) {
-        Scaffold.of(mContext).showSnackBar(SnackBar(
+        resetSend();
+        Scaffold.of(mainContext).showSnackBar(SnackBar(
           duration: const Duration(seconds: 2),
-          content: Text(AppLocalizations.of(context).errorTryLater),
+          backgroundColor: Theme.of(context).errorColor,
+          content: Text(AppLocalizations.of(mainContext).errorTryLater),
         ));
       });
     }
+  }
+
+  void resetSend() {
+    setState(() {
+      currentIndex = 0;
+      isExpanded = false;
+      initSteps();
+    });
   }
 
   Future<void> _closeAfterAWait() async {
