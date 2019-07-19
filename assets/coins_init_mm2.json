@@ -68,10 +68,12 @@
     },
     {
         "coin": "ZILLA",
-        "asset": "Chainzilla",
+        "asset": "ChainZilla",
         "rpcport": 10041,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 1,
+        "overwintered": 0
     },
     {
         "coin": "VRSC",

@@ -188,12 +188,12 @@
     ]
   },
   {
-    "name": "ZILLA",
+    "name": "ChainZilla",
     "address": "electrum1.cipig.net",
     "port": 10028,
     "proto": "tcp",
     "txfee": 10000,
-    "abbr": "RFOX",
+    "abbr": "ZILLA",
     "colorCoin": "0xFF000032",
     "serverList": [
       "electrum3.cipig.net:10028",
