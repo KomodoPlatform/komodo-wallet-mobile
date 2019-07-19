@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -147,12 +146,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
         _controllerAmountSell.text.isNotEmpty) {
+      final double bestPrice =
+          double.parse(_controllerAmountSell.text.replaceAll(',', '.')) /
+              double.parse(_controllerAmountReceive.text.replaceAll(',', '.'));
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoin?.coin,
-          bestPrice:
-              double.parse(_controllerAmountReceive.text.replaceAll(',', '.')) /
-                  double.parse(_controllerAmountSell.text.replaceAll(',', '.')),
+          bestPrice: bestPrice,
           maxVolume:
               double.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
     }
@@ -1114,6 +1114,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
         initialData: swapBloc.orderCoin,
         stream: swapBloc.outOrderCoin,
         builder: (BuildContext context, AsyncSnapshot<OrderCoin> snapshot) {
+          print(snapshot.data.bestPrice);
           if (snapshot.hasData && snapshot.data.bestPrice > 0) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),

@@ -42,7 +42,6 @@ import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
-import 'package:komodo_dex/model/result.dart' as result;
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';

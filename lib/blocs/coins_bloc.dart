@@ -201,7 +201,7 @@ class CoinsBloc implements BlocBase {
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
       }
-    }).timeout(Duration(seconds: 30));
+    }).timeout(const Duration(seconds: 30));
 
     return coinToactivate;
   }
@@ -295,14 +295,14 @@ class CoinsBloc implements BlocBase {
   }
 
   void startCheckBalance() {
-    timer = Timer.periodic(Duration(seconds: 45), (_) {
+    timer = Timer.periodic(const Duration(seconds: 45), (_) {
       if (!mm2.ismm2Running) {
         _.cancel();
       } else {
         loadCoin();
       }
     });
-    timer2 = Timer.periodic(Duration(seconds: 45), (_) {
+    timer2 = Timer.periodic(const Duration(seconds: 45), (_) {
       if (!mm2.ismm2Running) {
         _.cancel();
       } else {
@@ -357,7 +357,7 @@ class CoinsBloc implements BlocBase {
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
     dynamic balance;
     try {
-      balance = await mm2.getBalance(coin).timeout(Duration(seconds: 15));
+      balance = await mm2.getBalance(coin).timeout(const Duration(seconds: 15));
     } catch (e) {
       print(e);
       balance = null;
@@ -368,7 +368,7 @@ class CoinsBloc implements BlocBase {
     }
     final double price = await getPriceObj
         .getPrice(coin.abbr, 'USD')
-        .timeout(Duration(seconds: 15), onTimeout: () => 0);
+        .timeout(const Duration(seconds: 15), onTimeout: () => 0);
 
     dynamic coinBalance;
     if (balance is Balance && coin.abbr == balance.coin) {
