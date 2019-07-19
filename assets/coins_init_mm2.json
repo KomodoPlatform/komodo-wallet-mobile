@@ -166,5 +166,15 @@
         "rpcport": 22555,
         "mm2": 1,
         "txfee": 200000000
-    }
+    },
+    {
+        "coin": "RVN",
+        "name": "raven",
+        "rpcport": 8766,
+        "pubtype": 60,
+        "p2shtype": 122,
+        "wiftype": 128,
+        "txfee": 100000,
+        "mm2": 1
+      }
 ]
