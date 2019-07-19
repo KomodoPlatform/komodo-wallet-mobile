@@ -20,6 +20,8 @@ class CoinInit {
         this.wiftype,
         this.txfee,
         this.mm2,
+        this.txversion,
+        this.overwintered,
         this.asset,
         this.etomic,
     });
@@ -33,7 +35,8 @@ class CoinInit {
         p2Shtype: json['p2shtype'],
         wiftype: json['wiftype'],
         txfee: json['txfee'],
-        mm2: json['mm2'],
+        txversion: json['txversion'],
+        overwintered: json['overwintered'],
         asset: json['asset'],
         etomic: json['etomic'],
     );
@@ -47,6 +50,8 @@ class CoinInit {
     int wiftype;
     int txfee;
     int mm2;
+    int txversion;
+    int overwintered;
     String asset;
     String etomic;
 
@@ -60,6 +65,8 @@ class CoinInit {
         'wiftype': wiftype,
         'txfee': txfee,
         'mm2': mm2,
+        'txversion': txversion,
+        'overwintered': overwintered,
         'asset': asset,
         'etomic': etomic,
     };
