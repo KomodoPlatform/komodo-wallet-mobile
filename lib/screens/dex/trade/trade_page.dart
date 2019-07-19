@@ -156,6 +156,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           maxVolume:
               double.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
     }
+    setState(() {
+      
+    });
   }
 
   void onChangeSell() {
