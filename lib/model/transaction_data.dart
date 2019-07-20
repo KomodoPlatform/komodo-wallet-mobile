@@ -22,7 +22,7 @@ class Transaction {
         blockHeight: json['block_height'].toDouble() ?? 0,
         coin: json['coin'] ?? '',
         confirmations: json['confirmations'] ?? 0,
-        feeDetails: FeeDetails.fromJson(json['fee_details']) ?? FeeDetails(),
+        feeDetails: json['fee_details'] == null ? null : FeeDetails.fromJson(json['fee_details']),
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
         internalId: json['internal_id'] ?? '',
@@ -56,7 +56,7 @@ class Transaction {
         'block_height': blockHeight ?? 0.0,
         'coin': coin ?? '',
         'confirmations': confirmations ?? 0,
-        'fee_details': feeDetails.toJson() ?? FeeDetails().toJson(),
+        'fee_details': feeDetails == null ? null : feeDetails.toJson(),
         'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'internal_id': internalId ?? '',
@@ -93,11 +93,11 @@ class FeeDetails {
   });
 
   factory FeeDetails.fromJson(Map<String, dynamic> json) => FeeDetails(
-        amount: json['amount'] ?? 0.0,
+        amount: json['amount'] == null ? null : json['amount'].toDouble(),
         coin: json['coin'] ?? '',
         gas: json['gas'] ?? 0,
-        gasPrice: json['gas_price'] ?? 0.0,
-        totalFee: json['total_fee'] ?? 0.0,
+        gasPrice: json['gas_price'] == null ? null : json['gas_price'].toDouble(),
+        totalFee: json['total_fee'] == null ? null : json['total_fee'].toDouble(),
       );
 
   double amount;
