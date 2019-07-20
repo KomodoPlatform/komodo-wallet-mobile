@@ -127,6 +127,7 @@ class MarketMakerService {
             ismm2Running = true;
 
             _initCoinsAndLoad();
+            coinsBloc.startCheckBalance();
           }
         });
       } catch (e) {
