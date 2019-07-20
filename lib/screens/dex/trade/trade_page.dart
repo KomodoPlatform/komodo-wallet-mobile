@@ -160,17 +160,18 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void onChangeSell() {
+    final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
+
     if (_controllerAmountSell.text.isNotEmpty) {
-      swapBloc.setCurrentAmountSell(double.parse(_controllerAmountSell.text));
+      swapBloc.setCurrentAmountSell(double.parse(amountSell));
     }
     setState(() {
-      final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
                 .setReceiveAmount(
-                    swapBloc.receiveCoin, _controllerAmountSell.text)
+                    swapBloc.receiveCoin, amountSell)
                 .then((_) {
               _checkMaxVolume();
             });
@@ -183,11 +184,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 coinBase: swapBloc.receiveCoin,
                 coinRel: swapBloc.sellCoin?.coin,
                 bestPrice: double.parse(
-                        _controllerAmountSell.text.replaceAll(',', '.')) /
+                        amountSell) /
                     double.parse(
                         _controllerAmountReceive.text.replaceAll(',', '.')),
                 maxVolume: double.parse(
-                    _controllerAmountSell.text.replaceAll(',', '.'))));
+                    amountSell)));
           }
 
           getTradeFee(false).then((double tradeFee) {
