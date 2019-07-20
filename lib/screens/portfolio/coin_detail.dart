@@ -234,7 +234,8 @@ class _CoinDetailState extends State<CoinDetail> {
     final String text = _amountController.text.replaceAll(',', '.');
     if (text.isNotEmpty) {
       setState(() {
-        if (currentCoinBalance != null && text.isNotEmpty &&
+        if (currentCoinBalance != null &&
+            text.isNotEmpty &&
             double.parse(text) >
                 double.parse(currentCoinBalance.balance.getBalance())) {
           setMaxValue();
@@ -791,7 +792,8 @@ class _CoinDetailState extends State<CoinDetail> {
                 // Validate will return true if the form is valid, or false if
                 // the form is invalid.
                 setState(() {
-                  _amountController.text = _amountController.text.replaceAll(',', '.');
+                  _amountController.text =
+                      _amountController.text.replaceAll(',', '.');
                 });
                 if (_formKey.currentState.validate()) {
                   final Widget buildConfirmationStep =
@@ -973,7 +975,8 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                       onPressed: amountToPay > 0
                           ? () {
-                              _onPressedConfirmWithdraw(mContext, amountUserReceive);
+                              _onPressedConfirmWithdraw(
+                                  mContext, amountUserReceive);
                             }
                           : null,
                     );
@@ -998,7 +1001,8 @@ class _CoinDetailState extends State<CoinDetail> {
     }
   }
 
-  Future<void> _onPressedConfirmWithdraw(BuildContext mContext, double sendAmount) async {
+  Future<void> _onPressedConfirmWithdraw(
+      BuildContext mContext, double sendAmount) async {
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mainContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
@@ -1027,13 +1031,14 @@ class _CoinDetailState extends State<CoinDetail> {
               _addressController.text.toString(),
               sendAmount,
               double.parse(widget.coinBalance.balance.getBalance()) ==
-                  double.parse(_amountController.text))
+                  sendAmount)
           .then((dynamic data) {
         if (data is WithdrawResponse) {
           mm2
               .postRawTransaction(widget.coinBalance.coin, data.txHex)
               .then((dynamic dataRawTx) {
-            if (dataRawTx is SendRawTransactionResponse) {
+            if (dataRawTx is SendRawTransactionResponse &&
+                dataRawTx.txHash.isNotEmpty) {
               setState(() {
                 _onWithdrawPost = false;
                 coinsBloc.updateTransactions(
@@ -1076,32 +1081,28 @@ class _CoinDetailState extends State<CoinDetail> {
                 ));
                 currentIndex = 3;
               });
+            } else {
+              catchError(mainContext);
             }
           }).catchError((dynamic onError) {
-            resetSend();
-            Scaffold.of(mainContext).showSnackBar(SnackBar(
-              duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).errorColor,
-              content: Text(AppLocalizations.of(mainContext).errorTryLater),
-            ));
+            catchError(mainContext);
           });
         } else {
-          resetSend();
-          Scaffold.of(mainContext).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 2),
-            backgroundColor: Theme.of(context).errorColor,
-            content: Text(AppLocalizations.of(mainContext).errorTryLater),
-          ));
+          catchError(mainContext);
         }
       }).catchError((dynamic onError) {
-        resetSend();
-        Scaffold.of(mainContext).showSnackBar(SnackBar(
-          duration: const Duration(seconds: 2),
-          backgroundColor: Theme.of(context).errorColor,
-          content: Text(AppLocalizations.of(mainContext).errorTryLater),
-        ));
+        catchError(mainContext);
       });
     }
+  }
+
+  void catchError(BuildContext mContext) {
+    resetSend();
+    Scaffold.of(mContext).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
+      backgroundColor: Theme.of(context).errorColor,
+      content: Text(AppLocalizations.of(mContext).errorTryLater),
+    ));
   }
 
   void resetSend() {
