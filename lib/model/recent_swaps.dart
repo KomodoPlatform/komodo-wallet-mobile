@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:komodo_dex/model/transaction_data.dart';
+
 RecentSwaps recentSwapsFromJson(String str) =>
     RecentSwaps.fromJson(json.decode(str));
 
@@ -319,22 +321,6 @@ class Data {
       };
 }
 
-class FeeDetails {
-  FeeDetails({
-    this.amount,
-  });
-
-  factory FeeDetails.fromJson(Map<String, dynamic> json) => FeeDetails(
-        amount: json['amount'] == null ? null : json['amount'].toDouble(),
-      );
-
-  double amount;
-
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'amount': amount,
-      };
-}
-
 class Transaction {
   Transaction({
     this.blockHeight,
@@ -355,7 +341,7 @@ class Transaction {
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
         blockHeight: json['block_height'] ?? 0,
         coin: json['coin'] ?? '',
-        feeDetails: FeeDetails.fromJson(json['fee_details']) ?? FeeDetails(),
+        feeDetails: json['fee_details'] == null ? null : FeeDetails.fromJson(json['fee_details']),
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
         internalId: json['internal_id'] ?? '',
@@ -387,7 +373,7 @@ class Transaction {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
-        'fee_details': feeDetails.toJson() ?? FeeDetails().toJson(),
+        'fee_details': feeDetails == null ? null : feeDetails.toJson(),
         'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'internal_id': internalId ?? '',

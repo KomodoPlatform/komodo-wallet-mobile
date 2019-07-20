@@ -231,10 +231,10 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   void onChange() {
-    final String text = _amountController.text;
+    final String text = _amountController.text.replaceAll(',', '.');
     if (text.isNotEmpty) {
       setState(() {
-        if (currentCoinBalance != null &&
+        if (currentCoinBalance != null && text.isNotEmpty &&
             double.parse(text) >
                 double.parse(currentCoinBalance.balance.getBalance())) {
           setMaxValue();
@@ -790,6 +790,9 @@ class _CoinDetailState extends State<CoinDetail> {
               onPressed: () async {
                 // Validate will return true if the form is valid, or false if
                 // the form is invalid.
+                setState(() {
+                  _amountController.text = _amountController.text.replaceAll(',', '.');
+                });
                 if (_formKey.currentState.validate()) {
                   final Widget buildConfirmationStep =
                       await _buildConfirmationStep(mContext);

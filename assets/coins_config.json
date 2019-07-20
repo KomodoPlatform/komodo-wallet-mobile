@@ -124,7 +124,7 @@
     "address": "electrum1.cipig.net",
     "port": 10060,
     "proto": "tcp",
-    "txfee": 200000000,
+    "txfee": 500000000,
     "abbr": "DOGE",
     "colorCoin": "0xFFba9f33",
     "serverList": [
