@@ -231,10 +231,10 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   void onChange() {
-    final String text = _amountController.text;
+    final String text = _amountController.text.replaceAll(',', '.');
     if (text.isNotEmpty) {
       setState(() {
-        if (currentCoinBalance != null &&
+        if (currentCoinBalance != null && text.isNotEmpty &&
             double.parse(text) >
                 double.parse(currentCoinBalance.balance.getBalance())) {
           setMaxValue();
