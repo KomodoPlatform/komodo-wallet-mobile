@@ -168,7 +168,7 @@
         "wiftype": 158,
         "rpcport": 22555,
         "mm2": 1,
-        "txfee": 200000000
+        "txfee": 500000000
     },
     {
         "coin": "RVN",
