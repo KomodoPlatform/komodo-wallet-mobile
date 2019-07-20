@@ -387,7 +387,7 @@ class Transaction {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'block_height': blockHeight ?? 0,
         'coin': coin ?? '',
-        'fee_details': feeDetails.toJson() ?? FeeDetails().toJson(),
+        'fee_details': feeDetails == null ? null : feeDetails.toJson(),
         'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'internal_id': internalId ?? '',
