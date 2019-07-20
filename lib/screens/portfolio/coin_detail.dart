@@ -790,6 +790,9 @@ class _CoinDetailState extends State<CoinDetail> {
               onPressed: () async {
                 // Validate will return true if the form is valid, or false if
                 // the form is invalid.
+                setState(() {
+                  _amountController.text = _amountController.text.replaceAll(',', '.');
+                });
                 if (_formKey.currentState.validate()) {
                   final Widget buildConfirmationStep =
                       await _buildConfirmationStep(mContext);

@@ -102,7 +102,6 @@ class CoinsBloc implements BlocBase {
     bool isExist = false;
     int currentIndex = 0;
 
-    print("=========" + coin.balance.balance.toString());
     coinBalance.asMap().forEach((int index, CoinBalance coinBalance) {
       if (coinBalance.coin.abbr == coin.coin.abbr) {
         isExist = true;
