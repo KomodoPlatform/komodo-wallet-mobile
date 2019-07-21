@@ -117,7 +117,8 @@ class CoinDetail extends StatefulWidget {
                           });
                         }
                       }).catchError((dynamic onError) {
-                        generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
+                        generateSnackBar(mContext,
+                            AppLocalizations.of(mContext).errorTryLater);
                       });
                     },
                   )
@@ -139,7 +140,7 @@ class CoinDetail extends StatefulWidget {
   }
 
   void generateSnackBar(BuildContext mContext, String text) {
-     Scaffold.of(mContext).showSnackBar(SnackBar(
+    Scaffold.of(mContext).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       content: Text(text),
     ));
@@ -310,8 +311,7 @@ class _CoinDetailState extends State<CoinDetail> {
         stream: coinsBloc.outTransactions,
         initialData: coinsBloc.transactions,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.hasData &&
-              snapshot.data is Transactions) {
+          if (snapshot.hasData && snapshot.data is Transactions) {
             final Transactions tx = snapshot.data;
             final String syncState =
                 '${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}';
@@ -396,6 +396,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         transactions.result != null &&
                         transactions.result.transactions != null) {
                       if (transactions.result.transactions.isNotEmpty) {
+                        //@Slyris plz clean up
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 8),
