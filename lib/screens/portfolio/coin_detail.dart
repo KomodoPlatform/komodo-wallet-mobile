@@ -117,11 +117,7 @@ class CoinDetail extends StatefulWidget {
                           });
                         }
                       }).catchError((dynamic onError) {
-                        Scaffold.of(mContext).showSnackBar(SnackBar(
-                          duration: const Duration(seconds: 2),
-                          content:
-                              Text(AppLocalizations.of(mContext).errorTryLater),
-                        ));
+                        generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
                       });
                     },
                   )
@@ -132,23 +128,21 @@ class CoinDetail extends StatefulWidget {
             dialogBloc.dialog = null;
           });
         } else {
-          Scaffold.of(mContext).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 2),
-            content: Text(AppLocalizations.of(mContext).noRewardYet),
-          ));
+          generateSnackBar(mContext, AppLocalizations.of(mContext).noRewardYet);
         }
       } else {
-        Scaffold.of(mContext).showSnackBar(SnackBar(
-          duration: const Duration(seconds: 2),
-          content: Text(AppLocalizations.of(mContext).errorTryLater),
-        ));
+        generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
       }
     }).catchError((dynamic onError) {
-      Scaffold.of(mContext).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Text(AppLocalizations.of(mContext).errorTryLater),
-      ));
+      generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
     });
+  }
+
+  void generateSnackBar(BuildContext mContext, String text) {
+     Scaffold.of(mContext).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
+      content: Text(text),
+    ));
   }
 }
 
