@@ -94,7 +94,7 @@ class _BrowseNewsState extends State<BrowseNews> {
         stream: mediaBloc.outArticles,
         initialData: mediaBloc.articles,
         builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-          if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
+          if (snapshot.hasData) {
             final List<Article> articles = snapshot.data;
 
             if (articles.isEmpty) {
@@ -353,7 +353,7 @@ class SavedNews extends StatelessWidget {
         stream: mediaBloc.outArticlesSaved,
         initialData: mediaBloc.articlesSaved,
         builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-          if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
+          if (snapshot.hasData) {
             final List<Article> articles = snapshot.data;
             return ListView.builder(
               itemCount: articles.length,
@@ -362,7 +362,7 @@ class SavedNews extends StatelessWidget {
                     article: articles[index], savedArticle: true);
               },
             );
-          } else if (snapshot.hasData && snapshot.data != null  && snapshot.data.isEmpty) {
+          } else if (snapshot.hasData) {//paradox condition cleaned up
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
