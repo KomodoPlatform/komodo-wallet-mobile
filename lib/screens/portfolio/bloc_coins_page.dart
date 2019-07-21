@@ -297,7 +297,7 @@ class ListCoinsState extends State<ListCoins> {
             onRefresh: () => coinsBloc.loadCoin(),
             child: Builder(builder: (BuildContext context) {
               print(snapshot.connectionState);
-              if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
+              if (snapshot.hasData && snapshot.data.isNotEmpty) {
                 final List<dynamic> datas = <dynamic>[];
                 datas.addAll(snapshot.data);
                 datas.add(true);
