@@ -334,7 +334,6 @@ class CoinsBloc implements BlocBase {
             .then((List<dynamic> onValue) {
           for (dynamic balance in onValue) {
             if (balance is CoinBalance &&
-                balance.balance.address != null &&
                 balance.balance.address.isNotEmpty) {
               updateOneCoin(balance);
             }
