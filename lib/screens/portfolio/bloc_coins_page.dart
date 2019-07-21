@@ -159,14 +159,7 @@ class BarGraphState extends State<BarGraph> {
       stream: coinsBloc.outCoins,
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
-        bool _isVisible = true;
-
-        if (snapshot.hasData && snapshot.data != null ) {
-          _isVisible = true;
-        } else {
-          _isVisible = false;
-        }
-
+        final bool _isVisible = snapshot.hasData && snapshot.data != null;
         final List<Container> barItem = <Container>[];
 
         if (snapshot.hasData && snapshot.data != null ) {
