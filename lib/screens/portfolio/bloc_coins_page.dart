@@ -162,7 +162,7 @@ class BarGraphState extends State<BarGraph> {
         final bool _isVisible = snapshot.hasData && snapshot.data != null;
         final List<Container> barItem = <Container>[];
 
-        if (snapshot.hasData && snapshot.data != null ) {
+        if (snapshot.hasData) {
           double sumOfAllBalances = 0;
 
           for (CoinBalance coinBalance in snapshot.data) {
@@ -219,7 +219,7 @@ class LoadAssetState extends State<LoadAsset> {
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         final List<Widget> listRet = <Widget>[];
-        if (snapshot.hasData && snapshot.data != null ) {
+        if (snapshot.hasData) {
           int assetNumber = 0;
 
           for (CoinBalance coinBalance in snapshot.data) {
