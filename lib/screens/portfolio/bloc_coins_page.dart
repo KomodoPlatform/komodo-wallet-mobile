@@ -548,7 +548,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
             builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-              if (snapshot.hasData && snapshot.data != null) {
+              if (snapshot.hasData) {
                 return Column(
                   children: <Widget>[
                     const SizedBox(
@@ -568,7 +568,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                 return FutureBuilder<bool>(
                   future: _buildAddCoinButton(),
                   builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                    if (snapshot.hasData && snapshot.data != null  && snapshot.data) {
+                    if (snapshot.hasData) {
                       return Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Padding(
