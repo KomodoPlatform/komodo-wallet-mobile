@@ -199,7 +199,7 @@ class _SettingPageState extends State<SettingPage> {
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin_biometric',
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData && snapshot.data != null 
+                return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
@@ -365,7 +365,7 @@ class _SettingPageState extends State<SettingPage> {
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin_log_out_on_exit',
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData && snapshot.data != null 
+                return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
