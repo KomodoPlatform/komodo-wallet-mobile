@@ -296,7 +296,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "MORTY",
-    "coingeckoId": "basic-attention-token",
+    "coingeckoId": "test-token",
     "colorCoin": "0xFFf8f277",
     "serverList": [
       "electrum3.cipig.net:10018",

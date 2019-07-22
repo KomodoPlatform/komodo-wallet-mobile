@@ -111,8 +111,8 @@ class CoinsBloc implements BlocBase {
     if (!isExist) {
       coinBalance.add(coin);
     } else {
-        coinBalance.removeAt(currentIndex);
-        coinBalance.add(coin);
+      coinBalance.removeAt(currentIndex);
+      coinBalance.add(coin);
     }
     coinBalance.sort((CoinBalance b, CoinBalance a) {
       if (a.balanceUSD != null && b.balanceUSD != null) {
@@ -333,7 +333,8 @@ class CoinsBloc implements BlocBase {
         await Future.wait<dynamic>(getAllBalances)
             .then((List<dynamic> onValue) {
           for (dynamic balance in onValue) {
-            if (balance is CoinBalance && balance.balance.address != null &&
+            if (balance is CoinBalance &&
+                balance.balance.address != null &&
                 balance.balance.address.isNotEmpty) {
               updateOneCoin(balance);
             }
@@ -364,7 +365,7 @@ class CoinsBloc implements BlocBase {
       print(balance.error);
     }
     final double price = await getPriceObj
-        .getPrice(coin.abbr, 'USD')
+        .getPrice(coin.abbr, coin.coingeckoId, 'USD')
         .timeout(const Duration(seconds: 15), onTimeout: () => 0);
 
     dynamic coinBalance;
