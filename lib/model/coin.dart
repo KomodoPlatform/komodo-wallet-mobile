@@ -20,6 +20,7 @@ class Coin {
     this.priceUsd,
     this.mm2,
     this.abbr,
+    this.coingeckoId,
     this.swapContractAddress,
     this.colorCoin,
     this.serverList,
@@ -35,6 +36,7 @@ class Coin {
         priceUsd: json['priceUSD'] ?? 0.0,
         mm2: json['mm2'] ?? 0,
         abbr: json['abbr'] ?? '',
+        coingeckoId: json['coingeckoId'] ?? '',
         swapContractAddress: json['swap_contract_address'] ?? '',
         colorCoin: json['colorCoin'] ?? '',
         serverList: List<String>.from(json['serverList'].map((dynamic x) => x)) ?? <String>[],
@@ -49,6 +51,7 @@ class Coin {
   double priceUsd;
   int mm2;
   String abbr;
+  String coingeckoId;
   String colorCoin;
   List<String> serverList;
   List<String> explorerUrl;
@@ -63,6 +66,7 @@ class Coin {
         'priceUSD': priceUsd ?? 0.0,
         'mm2': mm2 ?? 0,
         'abbr': abbr ?? '',
+        'coingeckoId': coingeckoId ?? '',
         'swap_contract_address':
             swapContractAddress ?? '',
         'colorCoin': colorCoin ?? '',

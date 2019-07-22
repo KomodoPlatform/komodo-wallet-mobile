@@ -12,7 +12,6 @@ class GetPriceService {
   String coin = '';
   bool coinAvailable = false;
   double price = 0.0;
-
   Future<double> getPrice(String coin, String currency) async {
     String coinUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=';
     final String coinUrlEnd = '&vs_currencies=' + currency;
@@ -40,6 +39,7 @@ class GetPriceService {
       price = 0;
     }
     String base;
+
     if (coin == 'VRSC')
       base = 'verus-coin';
     else if (coin == 'KMD')
@@ -66,8 +66,7 @@ class GetPriceService {
       base = 'dash';
     else if (coin == 'BCH')
       base = 'bitcoin-cash';
-    else if (coin == 'RVN') 
-      base = 'ravencoin';
+    else if (coin == 'RVN') base = 'ravencoin';
 
     coinUrl += base + coinUrlEnd;
 
