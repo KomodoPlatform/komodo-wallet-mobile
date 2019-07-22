@@ -810,14 +810,21 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Future<Widget> _buildConfirmationStep(BuildContext mContext) async {
+    final bool isErcCoin =
+        widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
+    bool notEnoughEth = false;
+    bool isEthActive = false;
     double fee = 0;
     try {
       fee = await getFee();
     } catch (e) {
       print(e);
     }
-    double amountToPay = double.parse(_amountController.text) + fee;
-    final double feeToPay = fee;
+
+    double amountToPay = double.parse(_amountController.text);
+    if (!isErcCoin) {
+      amountToPay += fee;
+    }
     double amountUserReceive = double.parse(_amountController.text);
     final double userBalance =
         double.parse(widget.coinBalance.balance.getBalance());
@@ -828,7 +835,21 @@ class _CoinDetailState extends State<CoinDetail> {
 
     if (userBalance == amountUserReceive) {
       amountToPay = amountUserReceive;
-      amountUserReceive -= feeToPay;
+      if (!isErcCoin) {
+        amountUserReceive -= fee;
+      }
+    }
+    CoinBalance ethCoin;
+    for (CoinBalance coinBalance in coinsBloc.coinBalance) {
+      if (coinBalance.coin.abbr == 'ETH') {
+        ethCoin = coinBalance;
+      }
+    }
+
+    isEthActive = !(ethCoin == null);
+
+    if (ethCoin != null && fee > double.parse(ethCoin.balance.balance)) {
+      notEnoughEth = true;
     }
 
     return Padding(
@@ -868,18 +889,46 @@ class _CoinDetailState extends State<CoinDetail> {
                 style: Theme.of(context).textTheme.body2,
               ),
               Text(
-                feeToPay.toStringAsFixed(8),
+                fee.toStringAsFixed(8),
                 style: Theme.of(context).textTheme.body2,
               ),
               const SizedBox(
                 width: 4,
               ),
               Text(
-                AppLocalizations.of(context).networkFee,
+                isErcCoin ? AppLocalizations.of(context).ethFee : AppLocalizations.of(context).networkFee,
                 style: Theme.of(context).textTheme.body2,
               ),
             ],
           ),
+          notEnoughEth && isEthActive
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context).notEnoughEth,
+                      style: Theme.of(context)
+                          .textTheme
+                          .body2
+                          .copyWith(color: Theme.of(context).errorColor),
+                    ),
+                  ],
+                )
+              : Container(),
+          !isEthActive
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context).ethNotActive,
+                      style: Theme.of(context)
+                          .textTheme
+                          .body2
+                          .copyWith(color: Theme.of(context).errorColor),
+                    ),
+                  ],
+                )
+              : Container(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Container(
@@ -966,7 +1015,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         AppLocalizations.of(context).confirm.toUpperCase(),
                         style: Theme.of(context).textTheme.button,
                       ),
-                      onPressed: amountToPay > 0
+                      onPressed: amountToPay > 0 && !notEnoughEth && isEthActive
                           ? () {
                               _onPressedConfirmWithdraw(
                                   mContext, amountUserReceive);
