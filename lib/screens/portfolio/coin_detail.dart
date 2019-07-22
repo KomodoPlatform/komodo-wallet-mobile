@@ -817,10 +817,10 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Future<Widget> _buildConfirmationStep(BuildContext mContext) async {
-    final bool isERCcoin =
+    final bool isErcCoin =
         widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
-    bool notEnoughtETH = false;
-    bool isETHisActive = false;
+    bool notEnoughEth = false;
+    bool isEthActive = false;
     double fee = 0;
     try {
       fee = await getFee();
@@ -829,7 +829,7 @@ class _CoinDetailState extends State<CoinDetail> {
     }
 
     double amountToPay = double.parse(_amountController.text);
-    if (!isERCcoin) {
+    if (!isErcCoin) {
       amountToPay += fee;
     }
     double amountUserReceive = double.parse(_amountController.text);
@@ -842,7 +842,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
     if (userBalance == amountUserReceive) {
       amountToPay = amountUserReceive;
-      if (!isERCcoin) {
+      if (!isErcCoin) {
         amountUserReceive -= fee;
       }
     }
@@ -852,14 +852,11 @@ class _CoinDetailState extends State<CoinDetail> {
         ethCoin = coinBalance;
       }
     }
-    if (ethCoin == null) {
-      isETHisActive = false;
-    } else {
-      isETHisActive = true;
-    }
+
+    isEthActive = !(ethCoin == null);
 
     if (ethCoin != null && fee > double.parse(ethCoin.balance.balance)) {
-      notEnoughtETH = true;
+      notEnoughEth = true;
     }
 
     return Padding(
@@ -906,17 +903,17 @@ class _CoinDetailState extends State<CoinDetail> {
                 width: 4,
               ),
               Text(
-                isERCcoin ? AppLocalizations.of(context).ethFee : AppLocalizations.of(context).networkFee,
+                isErcCoin ? AppLocalizations.of(context).ethFee : AppLocalizations.of(context).networkFee,
                 style: Theme.of(context).textTheme.body2,
               ),
             ],
           ),
-          notEnoughtETH && isETHisActive
+          notEnoughEth && isEthActive
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      AppLocalizations.of(context).notEnoughtETH,
+                      AppLocalizations.of(context).notEnoughEth,
                       style: Theme.of(context)
                           .textTheme
                           .body2
@@ -925,12 +922,12 @@ class _CoinDetailState extends State<CoinDetail> {
                   ],
                 )
               : Container(),
-          !isETHisActive
+          !isEthActive
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      AppLocalizations.of(context).ethNotActivate,
+                      AppLocalizations.of(context).ethNotActive,
                       style: Theme.of(context)
                           .textTheme
                           .body2
@@ -1025,7 +1022,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         AppLocalizations.of(context).confirm.toUpperCase(),
                         style: Theme.of(context).textTheme.button,
                       ),
-                      onPressed: amountToPay > 0 && !notEnoughtETH && isETHisActive
+                      onPressed: amountToPay > 0 && !notEnoughEth && isEthActive
                           ? () {
                               _onPressedConfirmWithdraw(
                                   mContext, amountUserReceive);
