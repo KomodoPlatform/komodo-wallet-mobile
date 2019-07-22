@@ -1120,7 +1120,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
         stream: swapBloc.outOrderCoin,
         builder: (BuildContext context, AsyncSnapshot<OrderCoin> snapshot) {
           if (snapshot.data != null &&
-              snapshot.data.bestPrice > 0) {
+              snapshot.data.bestPrice > 0) { //hasData not working as expected @Slyris
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(
