@@ -70,6 +70,7 @@ class MarketMakerService {
   dynamic sink;
   static const MethodChannel platformmm2 = MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
+  final String versionMm2 = 'db6ded6e';
 
   Future<void> initMarketMaker() async {
     final Directory directory = await getApplicationDocumentsDirectory();
@@ -78,12 +79,32 @@ class MarketMakerService {
     if (Platform.isAndroid) {
       try {
         final ProcessResult checkmm2 =
-            await Process.run('ls', <String>['${filesPath}mm2']);
+            await Process.run('ls', <String>['${filesPath}mm2_$versionMm2']);
 
-        if (checkmm2.stdout.toString().trim() != '${filesPath}mm2') {
-          final ByteData resultmm2 = await rootBundle.load('assets/mm2');
+        if (checkmm2.stdout.toString().trim() !=
+            '${filesPath}mm2_$versionMm2') {
+          final ByteData resultmm2 =
+              await rootBundle.load('assets/mm2_$versionMm2');
           await writeData(resultmm2.buffer.asUint8List());
-          await Process.run('chmod', <String>['777', '${filesPath}mm2']);
+          await Process.run(
+              'chmod', <String>['777', '${filesPath}mm2_$versionMm2']);
+        } else {
+          await Process.run('find', <String>[
+            '$filesPath',
+            '!',
+            '-name',
+            'mm2_$versionMm2',
+            '!',
+            '-name',
+            '*.json',
+            '-type',
+            'f',
+            '-exec',
+            'rm',
+            '-f',
+            '{}',
+            '+'
+          ]); //rm all files expect current mm2 and json files
         }
       } catch (e) {
         print(e);
@@ -109,7 +130,7 @@ class MarketMakerService {
     if (Platform.isAndroid) {
       await stopmm2();
       try {
-        mm2Process = await Process.start('./mm2', <String>[startParam],
+        mm2Process = await Process.start('./mm2_$versionMm2', <String>[startParam],
             workingDirectory: '$filesPath');
 
         mm2Process.stderr.listen((List<int> onData) {
@@ -222,7 +243,7 @@ class MarketMakerService {
   }
 
   Future<File> get _localFile async {
-    return File('${filesPath}mm2');
+    return File('${filesPath}mm2_$versionMm2');
   }
 
   Future<File> writeData(List<int> data) async {
