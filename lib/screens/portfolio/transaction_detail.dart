@@ -177,11 +177,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
   String _getFee() {
     String fee = '';
 
-    if (widget.transaction.feeDetails != null &&
-        widget.transaction.feeDetails.amount == null) {
-      fee = widget.transaction.feeDetails.totalFee.toString();
+    if (widget.transaction.feeDetails.amount == null) {
+      fee = widget.transaction.feeDetails?.totalFee.toString();
     } else {
-      fee = widget.transaction.feeDetails.amount.toString();
+      fee = widget.transaction.feeDetails?.amount.toString();
     }
 
     if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
