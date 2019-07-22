@@ -206,15 +206,16 @@
   },
   {
     "name": "Ravencoin",
-    "address": "rvn.satoshi.org.uk",
-    "port": 50001,
+    "address": "electrum2.cipig.net:10051",
+    "port": 10051,
     "proto": "tcp",
     "txfee": 200000000,
     "abbr": "RVN",
     "colorCoin": "0xFFf15b22",
     "serverList": [
-      "rvn.satoshi.org.uk:50001",
-      "electrum-rvn.minermore.com:50001"
+      "electrum3.cipig.net:10051",
+      "electrum2.cipig.net:10051",
+      "electrum1.cipig.net:10051"
     ],
     "explorerUrl": [
       "https://ravencoin.network/"

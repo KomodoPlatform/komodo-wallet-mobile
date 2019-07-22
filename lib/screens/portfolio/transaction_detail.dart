@@ -47,7 +47,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
               icon: Icon(Icons.open_in_browser),
               onPressed: () {
                 String urlPostTx = 'tx/';
-                if(widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+                if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
                   urlPostTx = 'tx/0x';
                 }
                 _launchURL(widget.coinBalance.coin.explorerUrl[0] +
@@ -91,12 +91,12 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
                       child: Builder(builder: (BuildContext context) {
-                        final String amount =
-                            widget.coinBalance.coin.swapContractAddress.isNotEmpty
-                                ? replaceAllTrainlingZeroERC(
-                                    tx.myBalanceChange.toStringAsFixed(16))
-                                : replaceAllTrainlingZero(
-                                    tx.myBalanceChange.toStringAsFixed(8));
+                        final String amount = widget
+                                .coinBalance.coin.swapContractAddress.isNotEmpty
+                            ? replaceAllTrainlingZeroERC(
+                                tx.myBalanceChange.toStringAsFixed(16))
+                            : replaceAllTrainlingZero(
+                                tx.myBalanceChange.toStringAsFixed(8));
 
                         return AutoSizeText(
                           amount + ' ' + tx.coin,
@@ -133,7 +133,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
                         ? Colors.lightGreen
                         : Colors.red.shade500,
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   child: tx.confirmations > 0
                       ? Text(AppLocalizations.of(context).txConfirmed)
                       : Text(AppLocalizations.of(context).txNotConfirmed),
@@ -188,7 +189,6 @@ class _TransactionDetailState extends State<TransactionDetail> {
     } else {
       return fee + ' ' + widget.transaction.coin;
     }
-
   }
 }
 

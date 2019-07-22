@@ -333,8 +333,7 @@ class CoinsBloc implements BlocBase {
         await Future.wait<dynamic>(getAllBalances)
             .then((List<dynamic> onValue) {
           for (dynamic balance in onValue) {
-            if (balance is CoinBalance &&
-                balance.balance.address != null &&
+            if (balance is CoinBalance && balance.balance.address != null &&
                 balance.balance.address.isNotEmpty) {
               updateOneCoin(balance);
             }

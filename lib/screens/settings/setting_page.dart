@@ -98,7 +98,7 @@ class _SettingPageState extends State<SettingPage> {
               walletBloc.currentWallet != null
                   ? _buildDeleteWallet()
                   : Container(),
-                            const SizedBox(
+              const SizedBox(
                 height: 24,
               ),
             ],
@@ -115,8 +115,7 @@ class _SettingPageState extends State<SettingPage> {
 
     try {
       final ResultSuccess versionmm2 = await mm2.getVersionMM2();
-      version +=
-          ' - ${versionmm2.result}';
+      version += ' - ${versionmm2.result}';
     } catch (e) {
       print(e);
       rethrow;
@@ -151,7 +150,7 @@ class _SettingPageState extends State<SettingPage> {
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin',
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData && snapshot.data != null 
+                return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
@@ -199,7 +198,7 @@ class _SettingPageState extends State<SettingPage> {
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin_biometric',
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData && snapshot.data != null 
+                return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
@@ -365,7 +364,7 @@ class _SettingPageState extends State<SettingPage> {
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin_log_out_on_exit',
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData && snapshot.data != null 
+                return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
@@ -571,7 +570,7 @@ class _SettingPageState extends State<SettingPage> {
               initialData: settingsBloc.isDeleteLoading,
               stream: settingsBloc.outIsDeleteLoading,
               builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-                if (snapshot.hasData && snapshot.data != null  && !snapshot.data) {
+                if (snapshot.hasData) {
                   Navigator.of(context).pop();
                 }
                 return SimpleDialog(
