@@ -46,7 +46,7 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
             initialData: swapHistoryBloc.swaps,
             builder:
                 (BuildContext context, AsyncSnapshot<List<Swap>> snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.data != null  && snapshot.data.isNotEmpty) {
                 for (Swap swap in snapshot.data) {
                   if (swap.result.uuid == widget.swap.result.uuid) {
                     swapData = swap;
