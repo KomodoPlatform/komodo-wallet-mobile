@@ -102,8 +102,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                                           text:
                                               AppLocalizations.of(context).done,
                                           isLoading: isActive,
-                                          onPressed: snapshot.hasData && snapshot.data != null  &&
-                                                  snapshot.data.isNotEmpty
+                                          onPressed: snapshot.hasData
                                               ? _pressDoneButton
                                               : null,
                                         );
@@ -129,7 +128,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     return FutureBuilder<List<Coin>>(
       future: coinsBloc.getAllNotActiveCoins(),
       builder: (BuildContext context, AsyncSnapshot<List<Coin>> snapshot) {
-        if (snapshot.hasData && snapshot.data != null  && snapshot.data != null) {
+        if (snapshot.hasData) {
           final List<Widget> coinsToActivate = <Widget>[];
 
           for (Coin coin in snapshot.data) {
@@ -236,7 +235,8 @@ class _LoadingCoinState extends State<LoadingCoin> {
         StreamBuilder<CoinToActivate>(
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
-            builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
               if (snapshot.hasData && snapshot.data.currentStatus != null) {
                 return Text(snapshot.data.currentStatus);
               } else {

@@ -308,8 +308,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
 
     final double amountToSell =
         double.parse(widget.amountToSell.replaceAll(',', '.'));
-    final double amountToBuy = amountToSell *
-        (amountToSell / (amountToSell * widget.bestPrice));
+    final double amountToBuy =
+        amountToSell * (amountToSell / (amountToSell * widget.bestPrice));
     final Coin coinBase = widget.coinBase;
     final Coin coinRel = widget.coinRel;
     final double price = widget.bestPrice;
@@ -324,8 +324,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     } else if (widget.swapStatus == SwapStatus.SELL) {
       print('buying: ' + amountToBuy.toString());
       mm2
-          .postSetPrice(coinRel, coinBase, amountToSell,
-              widget.bestPrice, false, false)
+          .postSetPrice(
+              coinRel, coinBase, amountToSell, widget.bestPrice, false, false)
           .then((dynamic onValue) =>
               _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
