@@ -13,11 +13,11 @@ class GetPriceService {
   double price = 0.0;
   Future<double> getPrice(
       String coin, String coingeckoId, String currency) async {
-    print("getprice " + coingeckoId + "    /  " + currency);
-    String coinUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=' +
-        coingeckoId +
-        '&vs_currencies=' +
-        currency.toLowerCase();
+    final String coinUrl =
+        'https://api.coingecko.com/api/v3/simple/price?ids=' +
+            coingeckoId +
+            '&vs_currencies=' +
+            currency.toLowerCase();
     final String fiatUrl =
         'https://api.coinbase.com/v2/prices/spot?currency=' + currency;
     double price = 0.0;
@@ -36,10 +36,8 @@ class GetPriceService {
       price = 0;
     }
     try {
-      print('--------------------getting ' + coinUrl);
       final Response response2 = await http.get(coinUrl);
       final Map<dynamic, dynamic> decoded2 = jsonDecode(response2.body);
-      print(decoded2.toString());
       price = double.parse(
           decoded2[coingeckoId][currency.toLowerCase()].toString());
     } catch (e) {
