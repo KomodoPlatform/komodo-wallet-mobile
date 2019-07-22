@@ -25,7 +25,7 @@ class _OrdersPageState extends State<OrdersPage> {
         initialData: ordersBloc.orderSwaps,
         stream: ordersBloc.outOrderSwaps,
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.data != null  && snapshot.data.isNotEmpty) {
             List<dynamic> orderSwaps = snapshot.data;
             orderSwaps = snapshot.data.reversed.toList();
             return ListView.builder(
@@ -44,8 +44,7 @@ class _OrdersPageState extends State<OrdersPage> {
             );
           } else {
             return Container(
-              child:
-                  Center(child: const Text('No orders, please go to trade.')),
+              child: Center(child: const Text('No orders, please go to trade.')),
             );
           }
         });
