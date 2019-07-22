@@ -468,8 +468,8 @@ class AppLocalizations {
       'We might be required to retain and use personal data to meet our internal and external audit requirements, for data security purposes and as we believe to be necessary or appropriate: \n(a) to comply with our obligations under applicable law and regulations, which may include laws and regulations outside your country of residence;\n(b) to respond to requests from courts, law enforcement agencies, regulatory agencies, and other public and government authorities, which may include such authorities outside your country of residence; \n(c) to monitor compliance with and enforce our Platform terms and conditions;\n(d) to carry out anti-money laundering, sanctions or Know Your Customer checks as required by applicable laws and regulations; \n(e) to protect our rights, privacy, safety, property, or those of other persons. We may also be required to use and retain personal data after You have closed your account for legal, regulatory and compliance reasons, such as the prevention, detection or investigation of a crime; loss prevention; or fraud prevention. \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on July 3, 2019\n\n',
       name: 'eulaParagraphe19');
   String get ethFee => Intl.message('ETH fee', name: 'ethFee');
-  String get notEnoughETH =>
-      Intl.message('Not enough ETH for transaction!', name: 'notEnoughETH');
+  String get notEnoughEth =>
+      Intl.message('Not enough ETH for transaction!', name: 'notEnoughEth');
   String get ethNotActive =>
       Intl.message('Please activate ETH.',
           name: 'ethNotActive');
