@@ -51,11 +51,7 @@ MarketMakerService mm2 = MarketMakerService();
 
 class MarketMakerService {
   MarketMakerService() {
-    if (Platform.isAndroid) {
       url = 'http://localhost:7783';
-    } else if (Platform.isIOS) {
-      url = 'http://localhost:7783';
-    }
   }
 
   List<dynamic> balances = <dynamic>[];
