@@ -352,7 +352,8 @@ class SavedNews extends StatelessWidget {
         stream: mediaBloc.outArticlesSaved,
         initialData: mediaBloc.articlesSaved,
         builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-          if (snapshot.hasData) {
+          print('snapshot.data' + snapshot.data.isEmpty.toString());
+          if (snapshot.data.isNotEmpty) {
             final List<Article> articles = snapshot.data;
             return ListView.builder(
               itemCount: articles.length,
