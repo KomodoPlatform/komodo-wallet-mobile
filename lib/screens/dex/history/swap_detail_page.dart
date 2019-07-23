@@ -375,14 +375,14 @@ class _DetailSwapState extends State<DetailSwap> {
   }
 
   String _getTakerpaymentID(Swap swap) {
-    return fillPaymentID(swap, 'TakerPaymentSent');
+    return _fillPaymentID(swap, 'TakerPaymentSent');
   }
 
   String _getMakerpaymentID(Swap swap) {
-    return fillPaymentID(swap, 'MakerPaymentSpent');
+    return _fillPaymentID(swap, 'MakerPaymentSpent');
   }
 
-  String fillPaymentID(Swap swap, String eventType) {
+  String _fillPaymentID(Swap swap, String eventType) {
     String makepaymentID = '';
     for (EventElement event in swap.result.events) {
       if (event.event.type == eventType) {
