@@ -27,13 +27,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
         initialData: walletBloc.wallets,
         stream: walletBloc.outWallets,
         builder: (BuildContext context, AsyncSnapshot<List<Wallet>> snapshot) {
-          if (snapshot.hasData) {
-            return BuildScreenAuthMultiWallets(
-              wallets: snapshot.data,
-            );
-          } else {
-            return BuildScreenAuth();
-          }
+          return snapshot.hasData ? BuildScreenAuthMultiWallets(wallets: snapshot.data,) : BuildScreenAuth();
         });
   }
 }
