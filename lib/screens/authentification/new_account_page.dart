@@ -1,4 +1,4 @@
-  import 'package:bip39/bip39.dart' as bip39;
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -177,18 +177,20 @@ class _NewAccountPageState extends State<NewAccountPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       child: Container(
-        width: double.infinity,
-        height: 50,
-        child: PrimaryButton(
-          text: AppLocalizations.of(context).next,
+          width: double.infinity,
+          height: 50,
+          child: PrimaryButton(
+            text: AppLocalizations.of(context).next,
             onPressed: () {
-            Navigator.push<dynamic>(
-              context,
-              MaterialPageRoute<dynamic>(builder: (BuildContext context) => CheckPassphrasePage(seed: seed,)),
-            );
-          },
-        )
-      ),
+              Navigator.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) => CheckPassphrasePage(
+                          seed: seed,
+                        )),
+              );
+            },
+          )),
     );
   }
 }
