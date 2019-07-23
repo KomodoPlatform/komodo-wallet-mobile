@@ -23,7 +23,8 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
   @override
   void initState() {
     swapHistoryBloc.updateSwaps(50, null);
-    if (widget.swap.status == Status.SWAP_SUCCESSFUL)
+    if (widget.swap.status != null &&
+        widget.swap.status == Status.SWAP_SUCCESSFUL)
       swapHistoryBloc.isAnimationStepFinalIsFinish = true;
     super.initState();
   }
@@ -365,19 +366,30 @@ class _DetailSwapState extends State<DetailSwap> {
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: _buildInfo(AppLocalizations.of(context).takerpaymentsID,
-                _getPaymentID(widget.swap, 'TakerPaymentSent'))),
+                _getTakerpaymentID(widget.swap))),
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: _buildInfo(AppLocalizations.of(context).makerpaymentID,
-                _getPaymentID(widget.swap, 'MakerPaymentSpent'))),
+                _getMakerpaymentID(widget.swap))),
       ],
     );
   }
 
-  String _getPaymentID(Swap swap, String eventType) {
+  String _getTakerpaymentID(Swap swap) {
+    String takerpaymentID = '';
+    for (EventElement event in swap.result.events) {
+      if (event.event.type == 'TakerPaymentSent') {
+        takerpaymentID = event.event.data.txHash;
+      }
+    }
+
+    return takerpaymentID;
+  }
+
+  String _getMakerpaymentID(Swap swap) {
     String makepaymentID = '';
     for (EventElement event in swap.result.events) {
-      if (event.event.type == eventType) {
+      if (event.event.type == 'MakerPaymentSpent') {
         makepaymentID = event.event.data.txHash;
       }
     }
