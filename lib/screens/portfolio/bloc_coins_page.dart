@@ -77,8 +77,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                                   builder: (BuildContext context,
                                       AsyncSnapshot<List<CoinBalance>>
                                           snapshot) {
-                                    if (snapshot.hasData &&
-                                        snapshot.data != null) {
+                                    if (snapshot.data != null) {
                                       double totalBalanceUSD = 0;
 
                                       for (CoinBalance coinBalance
@@ -160,10 +159,10 @@ class BarGraphState extends State<BarGraph> {
       stream: coinsBloc.outCoins,
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
-        final bool _isVisible = snapshot.hasData && snapshot.data != null;
+        final bool _isVisible = snapshot.data != null;
         final List<Container> barItem = <Container>[];
 
-        if (snapshot.hasData && snapshot.data != null) {
+        if (snapshot.data != null) {
           double sumOfAllBalances = 0;
 
           for (CoinBalance coinBalance in snapshot.data) {
@@ -220,7 +219,7 @@ class LoadAssetState extends State<LoadAsset> {
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         final List<Widget> listRet = <Widget>[];
-        if (snapshot.hasData && snapshot.data != null) {
+        if (snapshot.data != null) {
           int assetNumber = 0;
 
           for (CoinBalance coinBalance in snapshot.data) {
@@ -414,7 +413,10 @@ class _ItemCoinState extends State<ItemCoin> {
                       .open(actionType: SlideActionType.primary);
                 },
                 onTap: () {
-                  widget.slidableController?.activeState?.close();
+                  if (widget.slidableController != null &&
+                      widget.slidableController.activeState != null) {
+                    widget.slidableController.activeState.close();
+                  }
                   Navigator.push<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
