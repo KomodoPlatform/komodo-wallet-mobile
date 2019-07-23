@@ -629,7 +629,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<void> _openDialogCoinWithBalance(Market market) async {
     if (market == Market.RECEIVE) {
       if (swapBloc.sellCoin.coin != null) {
-        swapBloc.getBuyCoins(swapBloc.sellCoin?.coin);
+        swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
       }
     }
     final List<SimpleDialogOption> listDialogCoins =
