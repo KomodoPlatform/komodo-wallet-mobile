@@ -788,32 +788,35 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     child: Image.asset(
                       'assets/${orderbook.coinBase.abbr.toLowerCase()}.png',
                     )),
-                Expanded(
-                  child: Container(),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    isOrderAvailable
-                        ? Text(orderbook.getBuyAmount(
-                            double.parse(_controllerAmountSell.text)))
-                        : Text(
-                            AppLocalizations.of(context).noOrderAvailable,
-                            style: Theme.of(context)
-                                .textTheme
-                                .body1
-                                .copyWith(color: Theme.of(context).cursorColor),
-                          ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    isOrderAvailable
-                        ? Text(
-                            orderbook.coinBase.abbr,
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        : Container()
-                  ],
+                Flexible(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Flexible(
+                        child: isOrderAvailable
+                            ? Text(orderbook.getBuyAmount(
+                                double.parse(_controllerAmountSell.text)))
+                            : Text(
+                                AppLocalizations.of(context).noOrderAvailable,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .body1
+                                    .copyWith(
+                                        color: Theme.of(context).cursorColor),
+                              ),
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      isOrderAvailable
+                          ? Text(
+                              orderbook.coinBase.abbr,
+                              style: Theme.of(context).textTheme.caption,
+                            )
+                          : Container()
+                    ],
+                  ),
                 )
               ],
             ),
