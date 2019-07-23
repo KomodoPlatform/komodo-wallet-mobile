@@ -1,4 +1,4 @@
-import 'package:bip39/bip39.dart' as bip39;
+  import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/localizations.dart';
