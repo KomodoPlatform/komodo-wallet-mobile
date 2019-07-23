@@ -560,11 +560,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 initialData: swapBloc.receiveCoin,
                 stream: swapBloc.outReceiveCoin,
                 builder: (BuildContext context, AsyncSnapshot<Coin> snapshot) {
-                  if (snapshot.data != null) {
-                    return _buildSelectorCoin(snapshot.data);
-                  } else {
-                    return _buildSelectorCoin(null);
-                  }
+                  return _buildSelectorCoin(snapshot.data);
                 },
               ),
             )
@@ -636,8 +632,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _openDialogCoinWithBalance(Market market) async {
     if (market == Market.RECEIVE) {
-      if (swapBloc.sellCoin != null && swapBloc.sellCoin.coin != null) {
-        swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+      if (swapBloc.sellCoin.coin != null) {
+        swapBloc.getBuyCoins(swapBloc.sellCoin?.coin);
       }
     }
     final List<SimpleDialogOption> listDialogCoins =
@@ -782,9 +778,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               });
               swapBloc.updateReceiveCoin(orderbook.coinBase);
               _controllerAmountReceive.text = '';
-              if (timerGetOrderbook != null) {
-                timerGetOrderbook.cancel();
-              }
+              timerGetOrderbook?.cancel();
 
               _lookingForOrder();
 
