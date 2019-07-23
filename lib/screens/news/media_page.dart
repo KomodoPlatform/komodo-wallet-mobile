@@ -362,7 +362,7 @@ class SavedNews extends StatelessWidget {
                     article: articles[index], savedArticle: true);
               },
             );
-          } else if (snapshot.hasData) {//paradox condition cleaned up
+          } else if (snapshot.data.isEmpty) {//paradox condition cleaned up
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

@@ -42,9 +42,9 @@ class _LockScreenState extends State<LockScreen> {
           stream: authBloc.outpinStatus,
           builder:
               (BuildContext context, AsyncSnapshot<dynamic> outShowCreatePin) {
-            if (outShowCreatePin.hasData &&
+            if (
                 outShowCreatePin.data == PinStatus.NORMAL_PIN) {
-              if (isLogin.hasData && isLogin.data) {
+              if (isLogin.data) {
                 return StreamBuilder<bool>(
                     initialData: authBloc.isPinShow,
                     stream: authBloc.outShowPin,
@@ -54,9 +54,7 @@ class _LockScreenState extends State<LockScreen> {
                         pref: 'switch_pin',
                         builder: (BuildContext context,
                             AsyncSnapshot<dynamic> switchPinData) {
-                          if (outShowPin.hasData &&
-                              outShowPin.data &&
-                              switchPinData.hasData &&
+                          if (outShowPin.data &&
                               switchPinData.data) {
                             return Stack(
                               children: <Widget>[
