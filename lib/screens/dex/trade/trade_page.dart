@@ -1072,9 +1072,7 @@ class _DialogLookingState extends State<DialogLooking> {
 
   @override
   void dispose() {
-    if (timerGetOrderbook != null) {
-      timerGetOrderbook.cancel();
-    }
+    timerGetOrderbook?.cancel();
     super.dispose();
   }
 
