@@ -77,6 +77,8 @@ class CoinDetail extends StatefulWidget {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(AppLocalizations.of(context).claimTitle),
+                content: Text(AppLocalizations.of(context).youWillReceiveClaim(
+                    data.myBalanceChange.toString(), coinBalance.coin.abbr)),
                 actions: <Widget>[
                   FlatButton(
                     child:
@@ -896,7 +898,9 @@ class _CoinDetailState extends State<CoinDetail> {
                 width: 4,
               ),
               Text(
-                isErcCoin ? AppLocalizations.of(context).ethFee : AppLocalizations.of(context).networkFee,
+                isErcCoin
+                    ? AppLocalizations.of(context).ethFee
+                    : AppLocalizations.of(context).networkFee,
                 style: Theme.of(context).textTheme.body2,
               ),
             ],
