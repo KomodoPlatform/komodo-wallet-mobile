@@ -170,8 +170,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         setState(() {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
-                .setReceiveAmount(
-                    swapBloc.receiveCoin, amountSell)
+                .setReceiveAmount(swapBloc.receiveCoin, amountSell)
                 .then((_) {
               _checkMaxVolume();
             });
@@ -183,12 +182,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             swapBloc.updateBuyCoin(OrderCoin(
                 coinBase: swapBloc.receiveCoin,
                 coinRel: swapBloc.sellCoin?.coin,
-                bestPrice: double.parse(
-                        amountSell) /
+                bestPrice: double.parse(amountSell) /
                     double.parse(
                         _controllerAmountReceive.text.replaceAll(',', '.')),
-                maxVolume: double.parse(
-                    amountSell)));
+                maxVolume: double.parse(amountSell)));
           }
 
           getTradeFee(false).then((double tradeFee) {
@@ -560,11 +557,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 initialData: swapBloc.receiveCoin,
                 stream: swapBloc.outReceiveCoin,
                 builder: (BuildContext context, AsyncSnapshot<Coin> snapshot) {
-                  if (snapshot.data != null) {
-                    return _buildSelectorCoin(snapshot.data);
-                  } else {
-                    return _buildSelectorCoin(null);
-                  }
+                  return _buildSelectorCoin(snapshot.data);
                 },
               ),
             )
@@ -575,8 +568,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   stream: swapBloc.outSellCoin,
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.data != null &&
-                        snapshot.data is CoinBalance) {
+                    if (snapshot.data != null && snapshot.data is CoinBalance) {
                       final CoinBalance coinBalance = snapshot.data;
                       currentCoinBalance = coinBalance;
                       return _buildSelectorCoin(coinBalance.coin);
@@ -636,7 +628,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _openDialogCoinWithBalance(Market market) async {
     if (market == Market.RECEIVE) {
-      if (swapBloc.sellCoin != null && swapBloc.sellCoin.coin != null) {
+      if (swapBloc.sellCoin.coin != null) {
         swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
       }
     }
@@ -714,8 +706,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   builder: (BuildContext context,
                       AsyncSnapshot<List<OrderCoin>> snapshot) {
                     bool orderHasAsks = false;
-                    if (snapshot.data != null &&
-                        snapshot.data.isNotEmpty) {
+                    if (snapshot.data != null && snapshot.data.isNotEmpty) {
                       for (OrderCoin orderbook in snapshot.data) {
                         if (orderbook.orderbook.asks.isNotEmpty) {
                           orderHasAsks = true;
@@ -782,9 +773,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               });
               swapBloc.updateReceiveCoin(orderbook.coinBase);
               _controllerAmountReceive.text = '';
-              if (timerGetOrderbook != null) {
-                timerGetOrderbook.cancel();
-              }
+              timerGetOrderbook?.cancel();
 
               _lookingForOrder();
 
@@ -1078,9 +1067,7 @@ class _DialogLookingState extends State<DialogLooking> {
 
   @override
   void dispose() {
-    if (timerGetOrderbook != null) {
-      timerGetOrderbook.cancel();
-    }
+    timerGetOrderbook?.cancel();
     super.dispose();
   }
 
@@ -1119,8 +1106,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
         initialData: swapBloc.orderCoin,
         stream: swapBloc.outOrderCoin,
         builder: (BuildContext context, AsyncSnapshot<OrderCoin> snapshot) {
-          if (snapshot.data != null &&
-              snapshot.data.bestPrice > 0) {
+          if (snapshot.data != null && snapshot.data.bestPrice > 0) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(

@@ -53,7 +53,7 @@ MarketMakerService mm2 = MarketMakerService();
 
 class MarketMakerService {
   MarketMakerService() {
-      url = 'http://localhost:7783';
+    url = 'http://localhost:7783';
   }
 
   List<dynamic> balances = <dynamic>[];
@@ -91,8 +91,7 @@ class MarketMakerService {
 
           final ByteData resultmm2 = await rootBundle.load('assets/mm2');
           await writeData(resultmm2.buffer.asUint8List());
-          await Process.run('chmod', <String>['777', '${filesPath}mm2']);
-          print('WRITE MM2');
+          await Process.run('chmod', <String>['644', '${filesPath}mm2']);
         }
       } catch (e) {
         print(e);

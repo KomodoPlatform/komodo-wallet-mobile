@@ -27,13 +27,11 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
         initialData: walletBloc.wallets,
         stream: walletBloc.outWallets,
         builder: (BuildContext context, AsyncSnapshot<List<Wallet>> snapshot) {
-          if (snapshot.hasData) {
-            return BuildScreenAuthMultiWallets(
-              wallets: snapshot.data,
-            );
-          } else {
-            return BuildScreenAuth();
-          }
+          return snapshot.hasData
+              ? BuildScreenAuthMultiWallets(
+                  wallets: snapshot.data,
+                )
+              : BuildScreenAuth();
         });
   }
 }
@@ -285,7 +283,8 @@ class _CreateWalletButtonState extends State<CreateWalletButton> {
       onPressed: () {
         Navigator.push<dynamic>(
           context,
-          MaterialPageRoute<dynamic>(builder: (BuildContext context) => const WelcomePage()),
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => const WelcomePage()),
         );
       },
     );
