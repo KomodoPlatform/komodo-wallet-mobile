@@ -22,11 +22,17 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
         .textTheme
         .body1
         .copyWith(color: Colors.black.withOpacity(0.7), fontSize: 14);
-    final String splitText1 =
-        widget.article.body.substring(0, widget.article.body.length ~/ 2);
-    final String splitText2 =
-        widget.article.body.substring(widget.article.body.length ~/ 2);
-
+    int splitIndex = widget.article.body
+            .indexOf(RegExp('[!?.]'), widget.article.body.length ~/ 2) +
+        1;
+    print(splitIndex);
+    if (splitIndex == -1) {
+      splitIndex = widget.article.body.length ~/ 2;
+    }
+    final String splitText1 = widget.article.body.substring(0, splitIndex);
+    splitText1.trim();
+    String splitText2 = widget.article.body.substring(splitIndex);
+    splitText2 = splitText2.trim();
     return LockScreen(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -96,18 +102,20 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
             ),
             Builder(builder: (BuildContext context) {
               if (widget.article.media.length > 1) {
-                final List<Widget> medias = widget.article.media.map((String i) {
-                    return Container(
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(0.0)),
-                        child: Image.network(
-                          i,
-                          fit: BoxFit.contain,
-                          width: double.infinity,
-                        ),
+                final List<Widget> medias =
+                    widget.article.media.map((String i) {
+                  return Container(
+                    child: ClipRRect(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(0.0)),
+                      child: Image.network(
+                        i,
+                        fit: BoxFit.contain,
+                        width: double.infinity,
                       ),
-                    );
-                  }).toList();
+                    ),
+                  );
+                }).toList();
                 medias.removeAt(0);
                 return CarouselSlider(
                   autoPlay: true,
