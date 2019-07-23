@@ -365,24 +365,16 @@ class _DetailSwapState extends State<DetailSwap> {
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: _buildInfo(AppLocalizations.of(context).takerpaymentsID,
-                _getTakerpaymentID(widget.swap))),
+                _getPaymentID(widget.swap, 'TakerPaymentSent'))),
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: _buildInfo(AppLocalizations.of(context).makerpaymentID,
-                _getMakerpaymentID(widget.swap))),
+                _getPaymentID(widget.swap, 'MakerPaymentSpent'))),
       ],
     );
   }
 
-  String _getTakerpaymentID(Swap swap) {
-    return _fillPaymentID(swap, 'TakerPaymentSent');
-  }
-
-  String _getMakerpaymentID(Swap swap) {
-    return _fillPaymentID(swap, 'MakerPaymentSpent');
-  }
-
-  String _fillPaymentID(Swap swap, String eventType) {
+  String _getPaymentID(Swap swap, String eventType) {
     String makepaymentID = '';
     for (EventElement event in swap.result.events) {
       if (event.event.type == eventType) {
