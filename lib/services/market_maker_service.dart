@@ -79,7 +79,7 @@ class MarketMakerService {
         if (checkmm2.stdout.toString().trim() != '${filesPath}mm2') {
           final ByteData resultmm2 = await rootBundle.load('assets/mm2');
           await writeData(resultmm2.buffer.asUint8List());
-          await Process.run('chmod', <String>['777', '${filesPath}mm2']);
+          await Process.run('chmod', <String>['644', '${filesPath}mm2']);
         }
       } catch (e) {
         print(e);
