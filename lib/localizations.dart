@@ -471,8 +471,12 @@ class AppLocalizations {
   String get notEnoughEth =>
       Intl.message('Not enough ETH for transaction!', name: 'notEnoughEth');
   String get ethNotActive =>
-      Intl.message('Please activate ETH.',
-          name: 'ethNotActive');
+      Intl.message('Please activate ETH.', name: 'ethNotActive');
+  String youWillReceiveClaim(String amount, String coin) => Intl.message(
+        'You will receive $amount $coin',
+        name: 'youWillReceiveClaim',
+        args: <Object>[amount, coin],
+      );
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
