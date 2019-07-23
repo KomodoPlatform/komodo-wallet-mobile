@@ -112,7 +112,9 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       validator: (String arg) {
                         final RegExp exp = RegExp(
                             r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
-                        return !arg.contains(exp) ? 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.' : null;
+                        return !arg.contains(exp)
+                            ? 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.'
+                            : null;
                       },
                       style: Theme.of(context).textTheme.body1,
                       decoration: InputDecoration(

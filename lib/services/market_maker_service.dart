@@ -53,7 +53,7 @@ MarketMakerService mm2 = MarketMakerService();
 
 class MarketMakerService {
   MarketMakerService() {
-      url = 'http://localhost:7783';
+    url = 'http://localhost:7783';
   }
 
   List<dynamic> balances = <dynamic>[];
