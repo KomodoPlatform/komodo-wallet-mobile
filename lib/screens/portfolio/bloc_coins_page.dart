@@ -297,7 +297,7 @@ class ListCoinsState extends State<ListCoins> {
             onRefresh: () => coinsBloc.loadCoin(),
             child: Builder(builder: (BuildContext context) {
               print(snapshot.connectionState);
-              if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
+              if (snapshot.data != null  && snapshot.data.isNotEmpty) {
                 final List<dynamic> datas = <dynamic>[];
                 datas.addAll(snapshot.data);
                 datas.add(true);
@@ -412,10 +412,7 @@ class _ItemCoinState extends State<ItemCoin> {
                       .open(actionType: SlideActionType.primary);
                 },
                 onTap: () {
-                  if (widget.slidableController != null &&
-                      widget.slidableController.activeState != null) {
-                    widget.slidableController.activeState.close();
-                  }
+                  widget.slidableController?.activeState?.close();
                   Navigator.push<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
@@ -548,7 +545,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
             builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-              if (snapshot.hasData && snapshot.data != null) {
+              if (snapshot.data != null) {
                 return Column(
                   children: <Widget>[
                     const SizedBox(
@@ -568,7 +565,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                 return FutureBuilder<bool>(
                   future: _buildAddCoinButton(),
                   builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                    if (snapshot.hasData && snapshot.data != null  && snapshot.data) {
+                    if (snapshot.data != null && snapshot.data) {
                       return Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Padding(
