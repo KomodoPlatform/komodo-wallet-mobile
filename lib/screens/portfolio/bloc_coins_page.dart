@@ -77,7 +77,8 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                                   builder: (BuildContext context,
                                       AsyncSnapshot<List<CoinBalance>>
                                           snapshot) {
-                                    if (snapshot.hasData && snapshot.data != null ) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
                                       double totalBalanceUSD = 0;
 
                                       for (CoinBalance coinBalance
@@ -162,7 +163,7 @@ class BarGraphState extends State<BarGraph> {
         final bool _isVisible = snapshot.hasData && snapshot.data != null;
         final List<Container> barItem = <Container>[];
 
-        if (snapshot.hasData && snapshot.data != null ) {
+        if (snapshot.hasData && snapshot.data != null) {
           double sumOfAllBalances = 0;
 
           for (CoinBalance coinBalance in snapshot.data) {
@@ -219,7 +220,7 @@ class LoadAssetState extends State<LoadAsset> {
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         final List<Widget> listRet = <Widget>[];
-        if (snapshot.hasData && snapshot.data != null ) {
+        if (snapshot.hasData && snapshot.data != null) {
           int assetNumber = 0;
 
           for (CoinBalance coinBalance in snapshot.data) {
@@ -290,14 +291,15 @@ class ListCoinsState extends State<ListCoins> {
     return StreamBuilder<List<CoinBalance>>(
       initialData: coinsBloc.coinBalance,
       stream: coinsBloc.outCoins,
-      builder: (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         return RefreshIndicator(
             backgroundColor: Theme.of(context).backgroundColor,
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.loadCoin(),
             child: Builder(builder: (BuildContext context) {
               print(snapshot.connectionState);
-              if (snapshot.data != null  && snapshot.data.isNotEmpty) {
+              if (snapshot.data != null && snapshot.data.isNotEmpty) {
                 final List<dynamic> datas = <dynamic>[];
                 datas.addAll(snapshot.data);
                 datas.add(true);
@@ -474,7 +476,8 @@ class _ItemCoinState extends State<ItemCoin> {
                                 height: 4,
                               ),
                               Builder(builder: (BuildContext context) {
-                                final NumberFormat f = NumberFormat('###,##0.##');
+                                final NumberFormat f =
+                                    NumberFormat('###,##0.##');
                                 return Text(
                                   '\$${f.format(widget.coinBalance.balanceUSD)} USD',
                                   style: Theme.of(context).textTheme.body2,
@@ -544,7 +547,8 @@ class _AddCoinButtonState extends State<AddCoinButton> {
         StreamBuilder<CoinToActivate>(
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
-            builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
               if (snapshot.data != null) {
                 return Column(
                   children: <Widget>[
@@ -564,7 +568,8 @@ class _AddCoinButtonState extends State<AddCoinButton> {
               } else {
                 return FutureBuilder<bool>(
                   future: _buildAddCoinButton(),
-                  builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  builder:
+                      (BuildContext context, AsyncSnapshot<bool> snapshot) {
                     if (snapshot.data != null && snapshot.data) {
                       return Padding(
                         padding: const EdgeInsets.all(16.0),
