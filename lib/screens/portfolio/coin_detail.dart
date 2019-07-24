@@ -854,6 +854,17 @@ class _CoinDetailState extends State<CoinDetail> {
       notEnoughEth = true;
     }
 
+    bool isButtonActive = false;
+    if (widget.coinBalance.coin.swapContractAddress.isEmpty) {
+      if (amountToPay > 0) {
+        isButtonActive = true;
+      }
+    } else {
+      if (amountToPay > 0 && !notEnoughEth && isEthActive) {
+        isButtonActive = true;
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -905,7 +916,9 @@ class _CoinDetailState extends State<CoinDetail> {
               ),
             ],
           ),
-          widget.coinBalance.coin.swapContractAddress.isNotEmpty && notEnoughEth && isEthActive
+          widget.coinBalance.coin.swapContractAddress.isNotEmpty &&
+                  notEnoughEth &&
+                  isEthActive
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
@@ -1019,7 +1032,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         AppLocalizations.of(context).confirm.toUpperCase(),
                         style: Theme.of(context).textTheme.button,
                       ),
-                      onPressed: amountToPay > 0 && !notEnoughEth && isEthActive
+                      onPressed: isButtonActive
                           ? () {
                               _onPressedConfirmWithdraw(
                                   mContext, amountUserReceive);
