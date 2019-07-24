@@ -166,9 +166,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 data: widget.transaction.from[0])
             : ItemTransationDetail(
                 title: AppLocalizations.of(context).to,
-                data: widget.transaction.to.length > 1
-                    ? widget.transaction.to[1]
-                    : widget.transaction.to[0]),
+                data: widget.transaction.getToAddress().isNotEmpty ? widget.transaction.getToAddress()[0] : ''),
         ItemTransationDetail(title: 'Tx Hash', data: widget.transaction.txHash),
       ],
     );
