@@ -1081,7 +1081,7 @@ class _CoinDetailState extends State<CoinDetail> {
               _addressController.text.toString(),
               sendAmount,
               double.parse(widget.coinBalance.balance.getBalance()) ==
-                  sendAmount)
+                  double.parse(_amountController.text))
           .then((dynamic data) {
         if (data is WithdrawResponse) {
           mm2
