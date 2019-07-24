@@ -854,16 +854,7 @@ class _CoinDetailState extends State<CoinDetail> {
       notEnoughEth = true;
     }
 
-    bool isButtonActive = false;
-    if (widget.coinBalance.coin.swapContractAddress.isEmpty) {
-      if (amountToPay > 0) {
-        isButtonActive = true;
-      }
-    } else {
-      if (amountToPay > 0 && !notEnoughEth && isEthActive) {
-        isButtonActive = true;
-      }
-    }
+    final bool isButtonActive = (widget.coinBalance.coin.swapContractAddress.isEmpty && amountToPay > 0) || (amountToPay > 0 && !notEnoughEth && isEthActive)
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
