@@ -197,7 +197,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               }
             } else {
               if (amountSell.contains(
-                  RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))) {
+                  RegExp('^\$|^(0|([1-9][0-9]{0,24}))([.,]{1}[0-9]{0,8})?\$'))) {
               } else {
                 _controllerAmountSell
                     .setTextAndPosition(replaceAllTrainlingZero(tmpText));
