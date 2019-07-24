@@ -854,11 +854,6 @@ class _CoinDetailState extends State<CoinDetail> {
       notEnoughEth = true;
     }
 
-    if (widget.coinBalance.coin.swapContractAddress.isEmpty) {
-      notEnoughEth = false;
-      isEthActive = true;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
