@@ -43,7 +43,6 @@ class AuthenticateBloc extends BlocBase {
 
   Future<void> init() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     if (prefs.getBool('isPassphraseIsSaved') != null &&
         prefs.getBool('isPassphraseIsSaved')) {
       isLogin = true;

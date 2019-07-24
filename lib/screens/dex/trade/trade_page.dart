@@ -111,7 +111,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             initialData: false,
             stream: swapBloc.outIsTimeOut,
             builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-              if (snapshot.hasData && snapshot.data != null && snapshot.data) {
+              if (snapshot.data != null && snapshot.data) {
                 return ExchangeRate();
               } else {
                 return Container(
@@ -170,8 +170,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         setState(() {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
-                .setReceiveAmount(
-                    swapBloc.receiveCoin, amountSell)
+                .setReceiveAmount(swapBloc.receiveCoin, amountSell)
                 .then((_) {
               _checkMaxVolume();
             });
@@ -183,12 +182,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             swapBloc.updateBuyCoin(OrderCoin(
                 coinBase: swapBloc.receiveCoin,
                 coinRel: swapBloc.sellCoin?.coin,
-                bestPrice: double.parse(
-                        amountSell) /
+                bestPrice: double.parse(amountSell) /
                     double.parse(
                         _controllerAmountReceive.text.replaceAll(',', '.')),
-                maxVolume: double.parse(
-                    amountSell)));
+                maxVolume: double.parse(amountSell)));
           }
 
           getTradeFee(false).then((double tradeFee) {
@@ -200,7 +197,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               }
             } else {
               if (amountSell.contains(
-                  RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))) {
+                  RegExp('^\$|^(0|([1-9][0-9]{0,24}))([.,]{1}[0-9]{0,8})?\$'))) {
               } else {
                 _controllerAmountSell
                     .setTextAndPosition(replaceAllTrainlingZero(tmpText));
@@ -314,9 +311,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   return PrimaryButton(
                     onPressed: _controllerAmountSell.text.isNotEmpty &&
                             _controllerAmountReceive.text.isNotEmpty &&
-                            sellCoin.hasData &&
                             sellCoin.data != null &&
-                            receiveCoin.hasData &&
                             receiveCoin.data != null
                         ? () => _confirmSwap(context)
                         : null,
@@ -562,11 +557,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 initialData: swapBloc.receiveCoin,
                 stream: swapBloc.outReceiveCoin,
                 builder: (BuildContext context, AsyncSnapshot<Coin> snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    return _buildSelectorCoin(snapshot.data);
-                  } else {
-                    return _buildSelectorCoin(null);
-                  }
+                  return _buildSelectorCoin(snapshot.data);
                 },
               ),
             )
@@ -577,14 +568,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   stream: swapBloc.outSellCoin,
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.hasData &&
-                        snapshot.data != null &&
-                        snapshot.data is CoinBalance) {
+                    if (snapshot.data != null && snapshot.data is CoinBalance) {
                       final CoinBalance coinBalance = snapshot.data;
                       currentCoinBalance = coinBalance;
                       return _buildSelectorCoin(coinBalance.coin);
-                    } else if (snapshot.hasData &&
-                        snapshot.data != null &&
+                    } else if (snapshot.data != null &&
                         snapshot.data is OrderCoin) {
                       final OrderCoin orderCoin = snapshot.data;
                       return _buildSelectorCoin(orderCoin.coinBase);
@@ -640,7 +628,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _openDialogCoinWithBalance(Market market) async {
     if (market == Market.RECEIVE) {
-      if (swapBloc.sellCoin != null && swapBloc.sellCoin.coin != null) {
+      if (swapBloc.sellCoin.coin != null) {
         swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
       }
     }
@@ -718,9 +706,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   builder: (BuildContext context,
                       AsyncSnapshot<List<OrderCoin>> snapshot) {
                     bool orderHasAsks = false;
-                    if (snapshot.hasData &&
-                        snapshot.data != null &&
-                        snapshot.data.isNotEmpty) {
+                    if (snapshot.data != null && snapshot.data.isNotEmpty) {
                       for (OrderCoin orderbook in snapshot.data) {
                         if (orderbook.orderbook.asks.isNotEmpty) {
                           orderHasAsks = true;
@@ -787,9 +773,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               });
               swapBloc.updateReceiveCoin(orderbook.coinBase);
               _controllerAmountReceive.text = '';
-              if (timerGetOrderbook != null) {
-                timerGetOrderbook.cancel();
-              }
+              timerGetOrderbook?.cancel();
 
               _lookingForOrder();
 
@@ -804,32 +788,35 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     child: Image.asset(
                       'assets/${orderbook.coinBase.abbr.toLowerCase()}.png',
                     )),
-                Expanded(
-                  child: Container(),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    isOrderAvailable
-                        ? Text(orderbook.getBuyAmount(
-                            double.parse(_controllerAmountSell.text)))
-                        : Text(
-                            AppLocalizations.of(context).noOrderAvailable,
-                            style: Theme.of(context)
-                                .textTheme
-                                .body1
-                                .copyWith(color: Theme.of(context).cursorColor),
-                          ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    isOrderAvailable
-                        ? Text(
-                            orderbook.coinBase.abbr,
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        : Container()
-                  ],
+                Flexible(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Flexible(
+                        child: isOrderAvailable
+                            ? Text(orderbook.getBuyAmount(
+                                double.parse(_controllerAmountSell.text)))
+                            : Text(
+                                AppLocalizations.of(context).noOrderAvailable,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .body1
+                                    .copyWith(
+                                        color: Theme.of(context).cursorColor),
+                              ),
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      isOrderAvailable
+                          ? Text(
+                              orderbook.coinBase.abbr,
+                              style: Theme.of(context).textTheme.caption,
+                            )
+                          : Container()
+                    ],
+                  ),
                 )
               ],
             ),
@@ -1083,9 +1070,7 @@ class _DialogLookingState extends State<DialogLooking> {
 
   @override
   void dispose() {
-    if (timerGetOrderbook != null) {
-      timerGetOrderbook.cancel();
-    }
+    timerGetOrderbook?.cancel();
     super.dispose();
   }
 
@@ -1124,9 +1109,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
         initialData: swapBloc.orderCoin,
         stream: swapBloc.outOrderCoin,
         builder: (BuildContext context, AsyncSnapshot<OrderCoin> snapshot) {
-          if (snapshot.hasData &&
-              snapshot.data != null &&
-              snapshot.data.bestPrice > 0) {
+          if (snapshot.data != null && snapshot.data.bestPrice > 0) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(

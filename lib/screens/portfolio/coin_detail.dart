@@ -77,6 +77,8 @@ class CoinDetail extends StatefulWidget {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(AppLocalizations.of(context).claimTitle),
+                content: Text(AppLocalizations.of(context).youWillReceiveClaim(
+                    data.myBalanceChange.toString(), coinBalance.coin.abbr)),
                 actions: <Widget>[
                   FlatButton(
                     child:
@@ -117,11 +119,8 @@ class CoinDetail extends StatefulWidget {
                           });
                         }
                       }).catchError((dynamic onError) {
-                        Scaffold.of(mContext).showSnackBar(SnackBar(
-                          duration: const Duration(seconds: 2),
-                          content:
-                              Text(AppLocalizations.of(mContext).errorTryLater),
-                        ));
+                        generateSnackBar(mContext,
+                            AppLocalizations.of(mContext).errorTryLater);
                       });
                     },
                   )
@@ -132,23 +131,21 @@ class CoinDetail extends StatefulWidget {
             dialogBloc.dialog = null;
           });
         } else {
-          Scaffold.of(mContext).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 2),
-            content: Text(AppLocalizations.of(mContext).noRewardYet),
-          ));
+          generateSnackBar(mContext, AppLocalizations.of(mContext).noRewardYet);
         }
       } else {
-        Scaffold.of(mContext).showSnackBar(SnackBar(
-          duration: const Duration(seconds: 2),
-          content: Text(AppLocalizations.of(mContext).errorTryLater),
-        ));
+        generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
       }
     }).catchError((dynamic onError) {
-      Scaffold.of(mContext).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Text(AppLocalizations.of(mContext).errorTryLater),
-      ));
+      generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
     });
+  }
+
+  void generateSnackBar(BuildContext mContext, String text) {
+    Scaffold.of(mContext).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
+      content: Text(text),
+    ));
   }
 }
 
@@ -234,7 +231,8 @@ class _CoinDetailState extends State<CoinDetail> {
     final String text = _amountController.text.replaceAll(',', '.');
     if (text.isNotEmpty) {
       setState(() {
-        if (currentCoinBalance != null && text.isNotEmpty &&
+        if (currentCoinBalance != null &&
+            text.isNotEmpty &&
             double.parse(text) >
                 double.parse(currentCoinBalance.balance.getBalance())) {
           setMaxValue();
@@ -315,9 +313,7 @@ class _CoinDetailState extends State<CoinDetail> {
         stream: coinsBloc.outTransactions,
         initialData: coinsBloc.transactions,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.hasData &&
-              snapshot.data != null &&
-              snapshot.data is Transactions) {
+          if (snapshot.hasData && snapshot.data is Transactions) {
             final Transactions tx = snapshot.data;
             final String syncState =
                 '${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}';
@@ -399,10 +395,10 @@ class _CoinDetailState extends State<CoinDetail> {
                         '${StateOfSync.InProgress.toString().substring(StateOfSync.InProgress.toString().indexOf('.') + 1)}';
 
                     if (snapshot.hasData &&
-                        snapshot.data != null &&
                         transactions.result != null &&
                         transactions.result.transactions != null) {
                       if (transactions.result.transactions.isNotEmpty) {
+                        //@Slyris plz clean up
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 8),
@@ -620,7 +616,7 @@ class _CoinDetailState extends State<CoinDetail> {
               stream: coinsBloc.outCoins,
               builder: (BuildContext context,
                   AsyncSnapshot<List<CoinBalance>> snapshot) {
-                if (snapshot.hasData && snapshot.data != null) {
+                if (snapshot.hasData) {
                   for (CoinBalance coinBalance in snapshot.data) {
                     if (coinBalance.coin.abbr == currentCoinBalance.coin.abbr) {
                       currentCoinBalance = coinBalance;
@@ -791,7 +787,8 @@ class _CoinDetailState extends State<CoinDetail> {
                 // Validate will return true if the form is valid, or false if
                 // the form is invalid.
                 setState(() {
-                  _amountController.text = _amountController.text.replaceAll(',', '.');
+                  _amountController.text =
+                      _amountController.text.replaceAll(',', '.');
                 });
                 if (_formKey.currentState.validate()) {
                   final Widget buildConfirmationStep =
@@ -815,14 +812,21 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Future<Widget> _buildConfirmationStep(BuildContext mContext) async {
+    final bool isErcCoin =
+        widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
+    bool notEnoughEth = false;
+    bool isEthActive = false;
     double fee = 0;
     try {
       fee = await getFee();
     } catch (e) {
       print(e);
     }
-    double amountToPay = double.parse(_amountController.text) + fee;
-    final double feeToPay = fee;
+
+    double amountToPay = double.parse(_amountController.text);
+    if (!isErcCoin) {
+      amountToPay += fee;
+    }
     double amountUserReceive = double.parse(_amountController.text);
     final double userBalance =
         double.parse(widget.coinBalance.balance.getBalance());
@@ -833,8 +837,24 @@ class _CoinDetailState extends State<CoinDetail> {
 
     if (userBalance == amountUserReceive) {
       amountToPay = amountUserReceive;
-      amountUserReceive -= feeToPay;
+      if (!isErcCoin) {
+        amountUserReceive -= fee;
+      }
     }
+    CoinBalance ethCoin;
+    for (CoinBalance coinBalance in coinsBloc.coinBalance) {
+      if (coinBalance.coin.abbr == 'ETH') {
+        ethCoin = coinBalance;
+      }
+    }
+
+    isEthActive = !(ethCoin == null);
+
+    if (ethCoin != null && fee > double.parse(ethCoin.balance.balance)) {
+      notEnoughEth = true;
+    }
+
+    final bool isButtonActive = (widget.coinBalance.coin.swapContractAddress.isEmpty && amountToPay > 0) || (amountToPay > 0 && !notEnoughEth && isEthActive)
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -873,18 +893,50 @@ class _CoinDetailState extends State<CoinDetail> {
                 style: Theme.of(context).textTheme.body2,
               ),
               Text(
-                feeToPay.toStringAsFixed(8),
+                fee.toStringAsFixed(8),
                 style: Theme.of(context).textTheme.body2,
               ),
               const SizedBox(
                 width: 4,
               ),
               Text(
-                AppLocalizations.of(context).networkFee,
+                isErcCoin
+                    ? AppLocalizations.of(context).ethFee
+                    : AppLocalizations.of(context).networkFee,
                 style: Theme.of(context).textTheme.body2,
               ),
             ],
           ),
+          widget.coinBalance.coin.swapContractAddress.isNotEmpty &&
+                  notEnoughEth &&
+                  isEthActive
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context).notEnoughEth,
+                      style: Theme.of(context)
+                          .textTheme
+                          .body2
+                          .copyWith(color: Theme.of(context).errorColor),
+                    ),
+                  ],
+                )
+              : Container(),
+          widget.coinBalance.coin.swapContractAddress.isNotEmpty && !isEthActive
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context).ethNotActive,
+                      style: Theme.of(context)
+                          .textTheme
+                          .body2
+                          .copyWith(color: Theme.of(context).errorColor),
+                    ),
+                  ],
+                )
+              : Container(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Container(
@@ -971,9 +1023,10 @@ class _CoinDetailState extends State<CoinDetail> {
                         AppLocalizations.of(context).confirm.toUpperCase(),
                         style: Theme.of(context).textTheme.button,
                       ),
-                      onPressed: amountToPay > 0
+                      onPressed: isButtonActive
                           ? () {
-                              _onPressedConfirmWithdraw(mContext, amountUserReceive);
+                              _onPressedConfirmWithdraw(
+                                  mContext, amountUserReceive);
                             }
                           : null,
                     );
@@ -998,7 +1051,8 @@ class _CoinDetailState extends State<CoinDetail> {
     }
   }
 
-  Future<void> _onPressedConfirmWithdraw(BuildContext mContext, double sendAmount) async {
+  Future<void> _onPressedConfirmWithdraw(
+      BuildContext mContext, double sendAmount) async {
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mainContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
@@ -1033,7 +1087,8 @@ class _CoinDetailState extends State<CoinDetail> {
           mm2
               .postRawTransaction(widget.coinBalance.coin, data.txHex)
               .then((dynamic dataRawTx) {
-            if (dataRawTx is SendRawTransactionResponse) {
+            if (dataRawTx is SendRawTransactionResponse &&
+                dataRawTx.txHash.isNotEmpty) {
               setState(() {
                 _onWithdrawPost = false;
                 coinsBloc.updateTransactions(
@@ -1076,32 +1131,28 @@ class _CoinDetailState extends State<CoinDetail> {
                 ));
                 currentIndex = 3;
               });
+            } else {
+              catchError(mainContext);
             }
           }).catchError((dynamic onError) {
-            resetSend();
-            Scaffold.of(mainContext).showSnackBar(SnackBar(
-              duration: const Duration(seconds: 2),
-              backgroundColor: Theme.of(context).errorColor,
-              content: Text(AppLocalizations.of(mainContext).errorTryLater),
-            ));
+            catchError(mainContext);
           });
         } else {
-          resetSend();
-          Scaffold.of(mainContext).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 2),
-            backgroundColor: Theme.of(context).errorColor,
-            content: Text(AppLocalizations.of(mainContext).errorTryLater),
-          ));
+          catchError(mainContext);
         }
       }).catchError((dynamic onError) {
-        resetSend();
-        Scaffold.of(mainContext).showSnackBar(SnackBar(
-          duration: const Duration(seconds: 2),
-          backgroundColor: Theme.of(context).errorColor,
-          content: Text(AppLocalizations.of(mainContext).errorTryLater),
-        ));
+        catchError(mainContext);
       });
     }
+  }
+
+  void catchError(BuildContext mContext) {
+    resetSend();
+    Scaffold.of(mContext).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
+      backgroundColor: Theme.of(context).errorColor,
+      content: Text(AppLocalizations.of(mContext).errorTryLater),
+    ));
   }
 
   void resetSend() {

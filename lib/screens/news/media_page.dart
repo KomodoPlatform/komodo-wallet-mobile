@@ -47,17 +47,17 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
           style: Theme.of(context).textTheme.subtitle,
         )),
         bottom: PreferredSize(
-          preferredSize:  const Size(200.0, 70.0),
+          preferredSize: const Size(200.0, 70.0),
           child: Container(
             width: 200.0,
             height: 70,
             padding: const EdgeInsets.only(bottom: 16, top: 16),
             child: Container(
               height: 46,
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  border:  Border.all(color: Colors.grey, width: 1)),
+                  border: Border.all(color: Colors.grey, width: 1)),
               child: TabBar(
                 labelPadding: const EdgeInsets.symmetric(horizontal: 16),
                 indicator: CustomTabIndicator(context: context),
@@ -94,7 +94,7 @@ class _BrowseNewsState extends State<BrowseNews> {
         stream: mediaBloc.outArticles,
         initialData: mediaBloc.articles,
         builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-          if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
+          if (snapshot.hasData) {
             final List<Article> articles = snapshot.data;
 
             if (articles.isEmpty) {
@@ -129,11 +129,13 @@ class _BrowseNewsState extends State<BrowseNews> {
                   );
               },
             );
-          
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: const CircularProgressIndicator());
           } else {
-            return Center(child: Container(child: const Text('No news'),));
+            return Center(
+                child: Container(
+              child: const Text('No news'),
+            ));
           }
         });
   }
@@ -197,7 +199,6 @@ class ArticleItem extends StatefulWidget {
 
   final Article article;
   final bool savedArticle;
-
 
   @override
   _ArticleItemState createState() => _ArticleItemState();
@@ -290,7 +291,6 @@ class IconsArticle extends StatefulWidget {
   final Article article;
   final bool savedArticle;
 
-
   @override
   _IconsArticleState createState() => _IconsArticleState();
 }
@@ -346,14 +346,13 @@ class SavedNews extends StatelessWidget {
 
   final TabController tabController;
 
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Article>>(
         stream: mediaBloc.outArticlesSaved,
         initialData: mediaBloc.articlesSaved,
         builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-          if (snapshot.hasData && snapshot.data != null  && snapshot.data.isNotEmpty) {
+          if (snapshot.data.isNotEmpty) {
             final List<Article> articles = snapshot.data;
             return ListView.builder(
               itemCount: articles.length,
@@ -362,7 +361,8 @@ class SavedNews extends StatelessWidget {
                     article: articles[index], savedArticle: true);
               },
             );
-          } else if (snapshot.hasData && snapshot.data != null  && snapshot.data.isEmpty) {
+          } else if (snapshot.data.isEmpty) {
+            //paradox condition cleaned up
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -379,7 +379,8 @@ class SavedNews extends StatelessWidget {
                   height: 32,
                 ),
                 RaisedButton(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32.0)),
                   color: Theme.of(context).accentColor,

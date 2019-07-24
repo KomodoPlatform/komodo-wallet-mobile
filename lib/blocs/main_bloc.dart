@@ -20,6 +20,7 @@ class MainBloc implements BlocBase{
   Sink<bool> get _inIsNetworkOffline => _isNetworkOffline.sink;
   Stream<bool> get outIsNetworkOffline => _isNetworkOffline.stream;
 
+  bool isUrlLaucherIsOpen = false;
 
   @override
   void dispose() {

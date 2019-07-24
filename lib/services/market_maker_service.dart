@@ -45,17 +45,15 @@ import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 MarketMakerService mm2 = MarketMakerService();
 
 class MarketMakerService {
   MarketMakerService() {
-    if (Platform.isAndroid) {
-      url = 'http://localhost:7783';
-    } else if (Platform.isIOS) {
-      url = 'http://localhost:7783';
-    }
+    url = 'http://localhost:7783';
   }
 
   List<dynamic> balances = <dynamic>[];
@@ -76,14 +74,24 @@ class MarketMakerService {
     filesPath = directory.path + '/';
 
     if (Platform.isAndroid) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      final String newBuildNumber = packageInfo.buildNumber;
+
       try {
         final ProcessResult checkmm2 =
             await Process.run('ls', <String>['${filesPath}mm2']);
+        final String currentBuildNumber = prefs.getString('version');
 
-        if (checkmm2.stdout.toString().trim() != '${filesPath}mm2') {
+        if (checkmm2.stdout.toString().trim() != '${filesPath}mm2' ||
+            currentBuildNumber == null ||
+            currentBuildNumber.isEmpty ||
+            currentBuildNumber != newBuildNumber) {
+          await prefs.setString('version', newBuildNumber);
+
           final ByteData resultmm2 = await rootBundle.load('assets/mm2');
           await writeData(resultmm2.buffer.asUint8List());
-          await Process.run('chmod', <String>['777', '${filesPath}mm2']);
+          await Process.run('chmod', <String>['544', '${filesPath}mm2']);
         }
       } catch (e) {
         print(e);

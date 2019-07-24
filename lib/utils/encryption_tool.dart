@@ -29,15 +29,8 @@ class EncryptionTool {
   }
 
   Future<String> convertToPbkdf2(String data, Wallet wallet) async {
-    dynamic res;
-    if (wallet.isFastEncryption) {
-      print('FAST ENCRYPTION');
-      res = await compute(_computeHashFastEncryption, data);
-    } else {
-      print('SLOW ENCRYPTION');
-      res = await compute(_computeHash, data);
-    }
-
+    print(wallet.isFastEncryption ? 'FAST ENCRYPTION': 'SLOW ENCRYPTION');
+    final dynamic res = await compute(wallet.isFastEncryption ? _computeHashFastEncryption : _computeHash, data);
     return res;
   }
 

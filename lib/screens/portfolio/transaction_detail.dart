@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
@@ -47,7 +48,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
               icon: Icon(Icons.open_in_browser),
               onPressed: () {
                 String urlPostTx = 'tx/';
-                if(widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+                if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
                   urlPostTx = 'tx/0x';
                 }
                 _launchURL(widget.coinBalance.coin.explorerUrl[0] +
@@ -68,7 +69,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
   Future<void> _launchURL(String url) async {
     print(url);
     if (await canLaunch(url)) {
+      mainBloc.isUrlLaucherIsOpen = true;
       await launch(url);
+      mainBloc.isUrlLaucherIsOpen = false;
     } else {
       throw 'Could not launch $url';
     }
@@ -91,12 +94,12 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
                       child: Builder(builder: (BuildContext context) {
-                        final String amount =
-                            widget.coinBalance.coin.swapContractAddress.isNotEmpty
-                                ? replaceAllTrainlingZeroERC(
-                                    tx.myBalanceChange.toStringAsFixed(16))
-                                : replaceAllTrainlingZero(
-                                    tx.myBalanceChange.toStringAsFixed(8));
+                        final String amount = widget
+                                .coinBalance.coin.swapContractAddress.isNotEmpty
+                            ? replaceAllTrainlingZeroERC(
+                                tx.myBalanceChange.toStringAsFixed(16))
+                            : replaceAllTrainlingZero(
+                                tx.myBalanceChange.toStringAsFixed(8));
 
                         return AutoSizeText(
                           amount + ' ' + tx.coin,
@@ -133,7 +136,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
                         ? Colors.lightGreen
                         : Colors.red.shade500,
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   child: tx.confirmations > 0
                       ? Text(AppLocalizations.of(context).txConfirmed)
                       : Text(AppLocalizations.of(context).txNotConfirmed),
@@ -165,9 +169,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 data: widget.transaction.from[0])
             : ItemTransationDetail(
                 title: AppLocalizations.of(context).to,
-                data: widget.transaction.to.length > 1
-                    ? widget.transaction.to[1]
-                    : widget.transaction.to[0]),
+                data: widget.transaction.getToAddress().isNotEmpty ? widget.transaction.getToAddress()[0] : ''),
         ItemTransationDetail(title: 'Tx Hash', data: widget.transaction.txHash),
       ],
     );
@@ -176,11 +178,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
   String _getFee() {
     String fee = '';
 
-    if (widget.transaction.feeDetails != null &&
-        widget.transaction.feeDetails.amount == null) {
-      fee = widget.transaction.feeDetails.totalFee.toString();
+    if (widget.transaction.feeDetails.amount == null) {
+      fee = widget.transaction.feeDetails?.totalFee.toString();
     } else {
-      fee = widget.transaction.feeDetails.amount.toString();
+      fee = widget.transaction.feeDetails?.amount.toString();
     }
 
     if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
@@ -188,7 +189,6 @@ class _TransactionDetailState extends State<TransactionDetail> {
     } else {
       return fee + ' ' + widget.transaction.coin;
     }
-
   }
 }
 
