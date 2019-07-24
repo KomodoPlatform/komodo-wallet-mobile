@@ -854,6 +854,11 @@ class _CoinDetailState extends State<CoinDetail> {
       notEnoughEth = true;
     }
 
+    if (widget.coinBalance.coin.swapContractAddress.isEmpty) {
+      notEnoughEth = false;
+      isEthActive = true;
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -905,7 +910,7 @@ class _CoinDetailState extends State<CoinDetail> {
               ),
             ],
           ),
-          notEnoughEth && isEthActive
+          widget.coinBalance.coin.swapContractAddress.isNotEmpty && notEnoughEth && isEthActive
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
@@ -919,7 +924,7 @@ class _CoinDetailState extends State<CoinDetail> {
                   ],
                 )
               : Container(),
-          !isEthActive
+          widget.coinBalance.coin.swapContractAddress.isNotEmpty && !isEthActive
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
