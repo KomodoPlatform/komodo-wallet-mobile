@@ -88,6 +88,7 @@ class MarketMakerService {
             currentBuildNumber.isEmpty ||
             currentBuildNumber != newBuildNumber) {
           await prefs.setString('version', newBuildNumber);
+          await coinsBloc.resetCoinDefault();
 
           final ByteData resultmm2 = await rootBundle.load('assets/mm2');
           await writeData(resultmm2.buffer.asUint8List());
