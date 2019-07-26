@@ -4,36 +4,34 @@
 
 import 'dart:convert';
 
-ActiveCoin activeCoinFromJson(String str) {
-  final jsonData = json.decode(str);
-  return ActiveCoin.fromJson(jsonData);
-}
+ActiveCoin activeCoinFromJson(String str) =>
+    ActiveCoin.fromJson(json.decode(str));
 
-String activeCoinToJson(ActiveCoin data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String activeCoinToJson(ActiveCoin data) => json.encode(data.toJson());
 
 class ActiveCoin {
-  String address;
-  String balance;
-  String result;
-
   ActiveCoin({
+    this.coin,
     this.address,
     this.balance,
     this.result,
   });
 
-  factory ActiveCoin.fromJson(Map<String, dynamic> json) => new ActiveCoin(
-        address: json["address"],
-        balance: json["balance"],
-        result: json["result"],
-      );
+  factory ActiveCoin.fromJson(Map<String, dynamic> json) => ActiveCoin(
+      coin: json['coin'] ?? '',
+      address: json['address'] ?? '',
+      balance: json['balance'] ?? '',
+      result: json['result'] ?? '');
 
-  Map<String, dynamic> toJson() => {
-        "address": address,
-        "balance": balance,
-        "result": result,
+  String coin;
+  String address;
+  String balance;
+  String result;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'coin': coin ?? '',
+        'address': address ?? '',
+        'balance': balance ?? '',
+        'result': result ?? ''
       };
 }

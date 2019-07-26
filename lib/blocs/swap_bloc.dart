@@ -12,27 +12,26 @@ class SwapBloc implements BlocBase {
   OrderCoin orderCoin;
   CoinBalance sellCoin;
   bool enabledReceiveField;
-  bool enabledSellField;
 
-  StreamController<OrderCoin> _orderCoinController =
+  final StreamController<OrderCoin> _orderCoinController =
       StreamController<OrderCoin>.broadcast();
   Sink<OrderCoin> get _inOrderCoin => _orderCoinController.sink;
   Stream<OrderCoin> get outOrderCoin => _orderCoinController.stream;
 
   Coin receiveCoin;
-  StreamController<Coin> _receiveCoinController =
+  final StreamController<Coin> _receiveCoinController =
       StreamController<Coin>.broadcast();
   Sink<Coin> get _inReceiveCoin => _receiveCoinController.sink;
   Stream<Coin> get outReceiveCoin => _receiveCoinController.stream;
 
-  StreamController<CoinBalance> _sellCoinController =
+  final StreamController<CoinBalance> _sellCoinController =
       StreamController<CoinBalance>.broadcast();
   Sink<CoinBalance> get _inSellCoin => _sellCoinController.sink;
   Stream<CoinBalance> get outSellCoin => _sellCoinController.stream;
 
-  List<OrderCoin> orderCoins = new List<OrderCoin>();
+  List<OrderCoin> orderCoins = <OrderCoin>[];
 
-  StreamController<List<OrderCoin>> _listOrderCoinController =
+  final StreamController<List<OrderCoin>> _listOrderCoinController =
       StreamController<List<OrderCoin>>.broadcast();
   Sink<List<OrderCoin>> get _inListOrderCoin => _listOrderCoinController.sink;
   Stream<List<OrderCoin>> get outListOrderCoin =>
@@ -40,29 +39,54 @@ class SwapBloc implements BlocBase {
 
   bool focusTextField = false;
 
-  StreamController<bool> _focusTextFieldController =
+  final StreamController<bool> _focusTextFieldController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inFocusTextField => _focusTextFieldController.sink;
   Stream<bool> get outFocusTextField => _focusTextFieldController.stream;
 
   double amountReceive;
 
-  StreamController<double> _amountReceiveController =
+  final StreamController<double> _amountReceiveController =
       StreamController<double>.broadcast();
   Sink<double> get _inAmountReceiveCoin => _amountReceiveController.sink;
   Stream<double> get outAmountReceive => _amountReceiveController.stream;
 
   bool isTimeOut = false;
 
-  StreamController<bool> _isTimeOutController =
+  final StreamController<bool> _isTimeOutController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsTimeOut => _isTimeOutController.sink;
   Stream<bool> get outIsTimeOut => _isTimeOutController.stream;
 
   int indexTab = 0;
-  StreamController<int> _indexTabController = StreamController<int>.broadcast();
+  final StreamController<int> _indexTabController =
+      StreamController<int>.broadcast();
   Sink<int> get _inIndexTab => _indexTabController.sink;
   Stream<int> get outIndexTab => _indexTabController.stream;
+
+  double currentAmountSell;
+
+  final StreamController<double> _currentAmountSellController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inCurrentAmountSellCoin =>
+      _currentAmountSellController.sink;
+  Stream<double> get outCurrentAmountSell =>
+      _currentAmountSellController.stream;
+
+  double currentAmountBuy;
+
+  final StreamController<double> _currentAmountBuyController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inCurrentAmountBuyCoin => _currentAmountBuyController.sink;
+  Stream<double> get outCurrentAmountBuy => _currentAmountBuyController.stream;
+
+
+  bool enabledSellField = false;
+
+  final StreamController<bool> _enabledSellFieldController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inEnabledSellField => _enabledSellFieldController.sink;
+  Stream<bool> get outEnabledSellField => _enabledSellFieldController.stream;
 
   @override
   void dispose() {
@@ -73,11 +97,30 @@ class SwapBloc implements BlocBase {
     _receiveCoinController.close();
     _amountReceiveController.close();
     _indexTabController.close();
+    _isTimeOutController.close();
+    _currentAmountSellController.close();
+    _currentAmountBuyController.close();
+    _enabledSellFieldController.close();
+  }
+
+  void setEnabledSellField(bool enabledSellField) {
+    this.enabledSellField = enabledSellField;
+    _inEnabledSellField.add(this.enabledSellField);
+  }
+
+  void setCurrentAmountSell(double amount) {
+    currentAmountSell = amount;
+    _inCurrentAmountSellCoin.add(currentAmountSell);
+  }
+
+  void setCurrentAmountBuy(double amount) {
+    currentAmountBuy = amount;
+    _inCurrentAmountBuyCoin.add(currentAmountBuy);
   }
 
   void setIndexTabDex(int index) {
-    this.indexTab = index;
-    _indexTabController.add(this.indexTab);
+    indexTab = index;
+    _inIndexTab.add(indexTab);
   }
 
   void updateBuyCoin(OrderCoin orderCoin) {
@@ -96,34 +139,34 @@ class SwapBloc implements BlocBase {
   }
 
   Future<void> getBuyCoins(Coin rel) async {
-    orderCoins = new List<OrderCoin>();
+    orderCoins = <OrderCoin>[];
 
-    List<Coin> coins = await coinsBloc.readJsonCoin();
-    List<Future<Orderbook>> futureOrderbook = new List<Future<Orderbook>>();
+    final List<Coin> coins = await coinsBloc.readJsonCoin();
+    final List<Future<Orderbook>> futureOrderbook = <Future<Orderbook>>[];
 
-    coins.forEach((coin) {
+    for (Coin coin in coins) {
       futureOrderbook.add(mm2.getOrderbook(coin, rel));
-    });
-    List<Orderbook> orderbooks = await Future.wait(futureOrderbook);
+    }
 
-    orderbooks.forEach((orderbook) {
-      coins.forEach((coin) {
+    final List<Orderbook> orderbooks = await Future.wait(futureOrderbook);
+
+    for (Orderbook orderbook in orderbooks) {
+      for (Coin coin in coins) {
         if (orderbook.base == coin.abbr) {
           double bestPrice = 0;
           double maxVolume = 0;
+          // find the best price AND volume
           int i = 0;
-          orderbook.asks.forEach((ask) {
-            print("ask" + ask.price.toString());
+          for (Ask ask in orderbook.asks) {
             if (i == 0) {
               maxVolume = ask.maxvolume;
               bestPrice = ask.price;
-            } else if (ask.price < bestPrice) {
+            } else if (ask.price <= bestPrice && ask.maxvolume > maxVolume) {
               maxVolume = ask.maxvolume;
               bestPrice = ask.price;
             }
             i++;
-          });
-          print("BEST PRICE" + bestPrice.toString());
+          }
           orderCoins.add(OrderCoin(
             coinRel: rel,
             coinBase: coin,
@@ -132,79 +175,81 @@ class SwapBloc implements BlocBase {
             bestPrice: bestPrice,
           ));
         }
-      });
-    });
-    this.orderCoins = orderCoins;
-    print("this.orderCoins.length" + this.orderCoins.length.toString());
-    _inListOrderCoin.add(this.orderCoins);
+      }
+    }
+    orderCoins = orderCoins;
+    _inListOrderCoin.add(orderCoins);
   }
 
   String getExchangeRate() {
     if (swapBloc.orderCoin != null) {
-      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${swapBloc.orderCoin.bestPrice.toStringAsFixed(8)} ${swapBloc.orderCoin.coinRel.abbr}';
+      final double rate = currentAmountSell / currentAmountBuy;
+
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${rate.toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
     } else {
-      return "";
+      return '';
     }
   }
 
   String getExchangeRateUSD() {
-    if (swapBloc.orderCoin != null && this.sellCoin.priceForOne != null) {
-      String res = (this.sellCoin.priceForOne * swapBloc.orderCoin.bestPrice)
+    if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
+      final String res = (sellCoin.priceForOne * swapBloc.orderCoin.bestPrice)
           .toStringAsFixed(2);
       return '($res USD)';
     } else {
-      return "";
+      return '';
     }
   }
 
   void setFocusTextField(bool focus) {
-    this.focusTextField = focus;
-    _inFocusTextField.add(this.focusTextField);
+    focusTextField = focus;
+    _inFocusTextField.add(focusTextField);
   }
 
-  Future<double> setReceiveAmount(
-      Coin coin, String amountSell) async {
-    Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
-    double bestPrice = 0;
-    double maxVolume = 0;
-    int i = 0;
-    orderbook.asks.forEach((ask) {
-      if (ask.address != swapBloc.sellCoin.balance.address) {
-        if (i == 0) {
-          maxVolume = ask.maxvolume;
-          bestPrice = ask.price;
-        } else if (ask.price <= bestPrice && ask.maxvolume > maxVolume) {
-          maxVolume = ask.maxvolume;
-          bestPrice = ask.price;
+  Future<double> setReceiveAmount(Coin coin, String amountSell) async {
+    try {
+      final Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
+      double bestPrice = 0;
+      double maxVolume = 0;
+      int i = 0;
+
+      for (Ask ask in orderbook.asks) {
+        if (ask.address != swapBloc.sellCoin.balance.address) {
+          if (i == 0) {
+            maxVolume = ask.maxvolume;
+            bestPrice = ask.price;
+          } else if (ask.price <= bestPrice && ask.maxvolume > maxVolume) {
+            maxVolume = ask.maxvolume;
+            bestPrice = ask.price;
+          }
+          i++;
         }
-        i++;
       }
-    });
-    print("BEST PRICE" + bestPrice.toString());
-    print("MAXVOLUME" + maxVolume.toString());
 
-    this.orderCoin = OrderCoin(
-      coinRel: sellCoin.coin,
-      coinBase: coin,
-      orderbook: orderbook,
-      maxVolume: maxVolume,
-      bestPrice: bestPrice,
-    );
-    _inOrderCoin.add(this.orderCoin);
+      orderCoin = OrderCoin(
+        coinRel: sellCoin.coin,
+        coinBase: coin,
+        orderbook: orderbook,
+        maxVolume: maxVolume,
+        bestPrice: bestPrice,
+      );
+      _inOrderCoin.add(orderCoin);
 
+      amountReceive = double.parse(orderCoin
+          .getBuyAmount(double.parse(amountSell.replaceAll(',', '.'))));
 
-    this.amountReceive = double.parse(this
-          .orderCoin
-          .getBuyAmount(double.parse(amountSell.replaceAll(",", "."))));
-
-    _inAmountReceiveCoin.add(this.amountReceive);
-    return this.amountReceive;
+      _inAmountReceiveCoin.add(amountReceive);
+      return amountReceive;
+    } catch (e) {
+      print(e);
+      return 0;
+    }
   }
 
   void setTimeout(bool time) {
-    this.isTimeOut = time;
-    _inIsTimeOut.add(this.isTimeOut);
+    isTimeOut = time;
+    _inIsTimeOut.add(isTimeOut);
   }
 }
 
-final swapBloc = SwapBloc();
+SwapBloc swapBloc = SwapBloc();

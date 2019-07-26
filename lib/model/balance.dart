@@ -4,36 +4,36 @@
 
 import 'dart:convert';
 
-Balance balanceFromJson(String str) {
-  final jsonData = json.decode(str);
-  return Balance.fromJson(jsonData);
-}
+import 'package:komodo_dex/utils/utils.dart';
 
-String balanceToJson(Balance data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+Balance balanceFromJson(String str) => Balance.fromJson(json.decode(str));
+
+String balanceToJson(Balance data) => json.encode(data.toJson());
 
 class Balance {
-  String address;
-  String balance;
-  String coin;
-
   Balance({
     this.address,
     this.balance,
     this.coin,
   });
 
-  factory Balance.fromJson(Map<String, dynamic> json) => new Balance(
-        address: json["address"],
-        balance: json["balance"],
-        coin: json["coin"],
+  factory Balance.fromJson(Map<String, dynamic> json) => Balance(
+        address: json['address'] ?? '',
+        balance: double.parse(json['balance']).toStringAsFixed(8) ?? double.parse('0').toStringAsFixed(8),
+        coin: json['coin'] ?? '',
       );
 
-  Map<String, dynamic> toJson() => {
-        "address": address,
-        "balance": balance,
-        "coin": coin,
+  String address;
+  String balance;
+  String coin;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'address': address ?? '',
+        'balance': balance ?? double.parse('0').toStringAsFixed(8),
+        'coin': coin ?? '',
       };
+
+  String getBalance() {
+    return replaceAllTrainlingZero(balance);
+  }
 }

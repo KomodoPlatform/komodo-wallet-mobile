@@ -26,16 +26,27 @@
         "pubtype": 30,
         "rpcport": 14022,
         "txfee": 100000,
-        "p2shtype": 5,
+        "p2shtype": 63,
         "wiftype": 128,
         "mm2": 1
     },
     {
         "coin": "BTC",
         "name": "Bitcoin",
+        "rpcport": 8332,
         "pubtype": 0,
         "p2shtype": 5,
         "wiftype": 128,
+        "mm2": 1
+    },
+    {
+        "coin": "BCH",
+        "name": "Bitcoin Cash",
+        "pubtype": 0,
+        "rpcport": 33333,
+        "p2shtype": 5,
+        "wiftype": 128,
+        "txfee": 1000,
         "mm2": 1
     },
     {
@@ -56,6 +67,25 @@
         "txfee": 10000
     },
     {
+        "coin": "ZILLA",
+        "name": "ZILLA",
+        "rpcport": 10041,
+        "pubtype": 60,
+        "p2shtype": 85,
+        "wiftype": 188,
+        "mm2": 1,
+        "txfee": 10000,
+        "txversion": 1,
+        "overwintered": 0
+    },
+    {   
+        "coin": "VRSC",
+        "asset": "VerusCoin",
+        "rpcport": 27486,
+        "mm2": 1,
+        "txfee": 10000
+    },
+    {
         "coin": "LABS",
         "asset": "LABS",
         "mm2": 1,
@@ -65,6 +95,7 @@
     {
         "coin": "KMD",
         "asset": "KMD",
+        "rpcport": 7771,
         "mm2": 1,
         "txfee": 10000
     },
@@ -130,10 +161,23 @@
         "rpcport": 80
     },
     {
-        "coin": "BNB",
-        "name": "Binance",
-        "etomic": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
-        "rpcport": 80,
+        "coin": "DOGE",
+        "name": "Dogecoin",
+        "pubtype": 30,
+        "p2shtype": 22,
+        "wiftype": 158,
+        "rpcport": 22555,
+        "mm2": 1,
+        "txfee": 500000000
+    },
+    {
+        "coin": "RVN",
+        "name": "raven",
+        "rpcport": 8766,
+        "pubtype": 60,
+        "p2shtype": 122,
+        "wiftype": 128,
+        "txfee": 100000,
         "mm2": 1
-    }
+      }
 ]

@@ -6,51 +6,59 @@ import 'dart:convert';
 
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/uuid.dart';
 
 enum Status {
   ORDER_MATCHING,
   ORDER_MATCHED,
   SWAP_ONGOING,
   SWAP_SUCCESSFUL,
+  SWAP_FAILED,
   TIME_OUT
 }
 
 Swap swapFromJson(String str) {
-  final jsonData = json.decode(str);
+  final dynamic jsonData = json.decode(str);
   return Swap.fromJson(jsonData);
 }
 
 String swapToJson(Swap data) {
-  final dyn = data.toJson();
+  final Map<String, dynamic> dyn = data.toJson();
   return json.encode(dyn);
 }
 
 class Swap {
+  Swap({this.result, this.status});
+
+  factory Swap.fromJson(Map<String, dynamic> json) => Swap(
+        result: ResultSwap.fromJson(json['result']) ?? ResultSwap(),
+      );
+
   ResultSwap result;
   Status status;
 
-  Swap({this.result, this.status});
-
-  factory Swap.fromJson(Map<String, dynamic> json) => new Swap(
-        result: ResultSwap.fromJson(json["result"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "result": result.toJson(),
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'result': result.toJson() ?? ResultSwap().toJson(),
       };
 
-
   int compareToSwap(Swap other) {
-    int order = other.result.myInfo.startedAt.compareTo(result.myInfo.startedAt);
-    if (order == 0) order = result.myInfo.startedAt.compareTo(other.result.myInfo.startedAt);
+    int order = 0;
+    if (other.result.myInfo != null && result.myInfo != null) {
+      order = other.result.myInfo.startedAt.compareTo(result.myInfo.startedAt);
+      if (order == 0)
+        order =
+            result.myInfo.startedAt.compareTo(other.result.myInfo.startedAt);
+    }
     return order;
   }
 
   int compareToOrder(Order other) {
-    int order = other.createdAt.compareTo(result.myInfo.startedAt);
-    if (order == 0) order = result.myInfo.startedAt.compareTo(other.createdAt);
+    int order = 0;
+    if (result.myInfo != null) {
+      order = other.createdAt.compareTo(result.myInfo.startedAt);
+      if (order == 0)
+        order = result.myInfo.startedAt.compareTo(other.createdAt);
+    }
+
     return order;
   }
-
 }

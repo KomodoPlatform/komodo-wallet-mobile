@@ -7,6 +7,7 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -18,16 +19,22 @@ import 'package:komodo_dex/services/market_maker_service.dart';
 enum SwapStatus { BUY, SELL }
 
 class SwapConfirmation extends StatefulWidget {
+  const SwapConfirmation(
+      {@required this.bestPrice,
+      @required this.coinBase,
+      @required this.coinRel,
+      @required this.amountToSell,
+      @required this.amountToBuy,
+      @required this.swapStatus,
+      this.orderSuccess});
+
   final SwapStatus swapStatus;
   final String amountToSell;
   final String amountToBuy;
   final Function orderSuccess;
-
-  SwapConfirmation(
-      {this.amountToSell,
-      this.amountToBuy,
-      @required this.swapStatus,
-      this.orderSuccess});
+  final double bestPrice;
+  final Coin coinBase;
+  final Coin coinRel;
 
   @override
   _SwapConfirmationState createState() => _SwapConfirmationState();
@@ -41,6 +48,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
     swapBloc.updateReceiveCoin(null);
+    swapBloc.setEnabledSellField(false);
     super.dispose();
   }
 
@@ -51,6 +59,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         onWillPop: () {
           _resetSwapPage();
           Navigator.pop(context);
+          return;
         },
         child: Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
@@ -76,17 +85,17 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     );
   }
 
-  _resetSwapPage() {
+  void _resetSwapPage() {
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
     swapBloc.updateReceiveCoin(null);
     swapBloc.enabledReceiveField = false;
   }
 
-  _buildTitle() {
+  Widget _buildTitle() {
     return Column(
       children: <Widget>[
-        SizedBox(
+        const SizedBox(
           height: 24,
         ),
         Text(
@@ -97,14 +106,14 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
               .title
               .copyWith(color: Theme.of(context).accentColor),
         ),
-        SizedBox(
+        const SizedBox(
           height: 24,
         )
       ],
     );
   }
 
-  _buildCoinSwapDetail() {
+  Widget _buildCoinSwapDetail() {
     return Column(
       children: <Widget>[
         Stack(
@@ -112,9 +121,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(8),
                         topRight: Radius.circular(8)),
                     child: Container(
@@ -125,7 +134,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              '${widget.amountToSell} ${swapBloc.orderCoin.coinRel.abbr}',
+                              '${widget.amountToSell} ${widget?.coinRel?.abbr}',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.title,
                             ),
@@ -139,13 +148,13 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                         )),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(8),
                         bottomRight: Radius.circular(8)),
                     child: Container(
@@ -156,7 +165,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              '${widget.amountToBuy} ${swapBloc.orderCoin.coinBase.abbr}',
+                              '${widget.amountToBuy} ${widget.coinBase.abbr}',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.title,
                             ),
@@ -183,11 +192,12 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 left: (MediaQuery.of(context).size.width / 2) - 43,
                 top: 100,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(32)),
+                  borderRadius: const BorderRadius.all(Radius.circular(32)),
                   child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 4),
                       color: Theme.of(context).backgroundColor,
-                      child: SvgPicture.asset("assets/icon_swap.svg")),
+                      child: SvgPicture.asset('assets/icon_swap.svg')),
                 ))
           ],
         )
@@ -195,7 +205,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     );
   }
 
-  _buildInfoSwap() {
+  Widget _buildInfoSwap() {
     return Column(
       children: <Widget>[
         Stack(
@@ -207,19 +217,19 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                   height: 32,
                 ),
                 ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(32)),
+                  borderRadius: const BorderRadius.all(Radius.circular(32)),
                   child: Container(
                     color: Theme.of(context).primaryColor,
                     child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 32, horizontal: 32),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 32, horizontal: 32),
                       child: Column(
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).infoTrade1,
                             style: Theme.of(context).textTheme.subtitle,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           Text(
@@ -237,7 +247,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 left: 32,
                 top: 8,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(52)),
+                  borderRadius: const BorderRadius.all(Radius.circular(52)),
                   child: Container(
                     height: 52,
                     width: 52,
@@ -254,71 +264,107 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     );
   }
 
-  _buildButtons() {
-    return Column(
-      children: <Widget>[
-        SizedBox(
-          height: 16,
-        ),
-        isSwapMaking
-            ? CircularProgressIndicator()
-            : RaisedButton(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 52),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                child: Text(AppLocalizations.of(context).confirm.toUpperCase()),
-                onPressed: isSwapMaking ? null : _makeASwap,
-              ),
-        SizedBox(
-          height: 8,
-        ),
-        FlatButton(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 56),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-          child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
-          onPressed: () {
-            swapBloc.updateSellCoin(null);
-            swapBloc.updateBuyCoin(null);
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
+  Widget _buildButtons() {
+    return Builder(builder: (BuildContext context) {
+      return Column(
+        children: <Widget>[
+          const SizedBox(
+            height: 16,
+          ),
+          isSwapMaking
+              ? const CircularProgressIndicator()
+              : RaisedButton(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 52),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                  child:
+                      Text(AppLocalizations.of(context).confirm.toUpperCase()),
+                  onPressed: isSwapMaking ? null : () => _makeASwap(context),
+                ),
+          const SizedBox(
+            height: 8,
+          ),
+          FlatButton(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 56),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)),
+            child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
+            onPressed: () {
+              swapBloc.updateSellCoin(null);
+              swapBloc.updateBuyCoin(null);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    });
   }
 
-  _makeASwap() {
+  void _makeASwap(BuildContext mContext) {
     setState(() {
       isSwapMaking = true;
     });
-    double amountToSell =
-        double.parse(widget.amountToSell.replaceAll(",", "."));
-    double amountToBuy = (amountToSell *
-        (amountToSell / (amountToSell * swapBloc.orderCoin.bestPrice)));
-    Coin coinBase = swapBloc.orderCoin.coinBase;
-    Coin coinRel = swapBloc.orderCoin.coinRel;
-    double price = swapBloc.orderCoin.bestPrice * 1.01;
 
+    final double amountToSell =
+        double.parse(widget.amountToSell.replaceAll(',', '.'));
+    final double amountToBuy =
+        amountToSell * (amountToSell / (amountToSell * widget.bestPrice));
+    final Coin coinBase = widget.coinBase;
+    final Coin coinRel = widget.coinRel;
+    final double price = widget.bestPrice;
+
+    //reviewed by ca333
     if (widget.swapStatus == SwapStatus.BUY) {
-      mm2.postBuy(coinBase, coinRel, amountToBuy, price).then(
-          (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
+      mm2
+          .postBuy(coinBase, coinRel, amountToBuy, price)
+          .then((dynamic onValue) =>
+              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
+          .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      mm2.postSetPrice(coinRel, coinBase, amountToSell, swapBloc.orderCoin.bestPrice, false, false).then(
-          (onValue) => _goToNextScreen(onValue, amountToSell, amountToBuy));
+      print('buying: ' + amountToBuy.toString());
+      mm2
+          .postSetPrice(
+              coinRel, coinBase, amountToSell, widget.bestPrice, false, false)
+          .then((dynamic onValue) =>
+              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
+          .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     }
   }
 
-  _goToNextScreen(dynamic onValue, double amountToSell, double amountToBuy) {
+  void _catchErrorSwap(BuildContext mContext, ErrorString error) {
+    setState(() {
+      isSwapMaking = false;
+    });
+    String timeSecondeLeft = error.error;
+    print(timeSecondeLeft);
+    timeSecondeLeft = timeSecondeLeft.substring(
+        timeSecondeLeft.lastIndexOf(' '), timeSecondeLeft.length);
+    print(timeSecondeLeft);
+    String errorDisplay =
+        error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
+    if (error.error.contains('is too low, required')) {
+      errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
+    }
+    Scaffold.of(mContext).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 4),
+      backgroundColor: Theme.of(context).errorColor,
+      content: Text(errorDisplay),
+    ));
+  }
+
+  void _goToNextScreen(BuildContext mContext, dynamic onValue,
+      double amountToSell, double amountToBuy) {
     ordersBloc.updateOrdersSwaps();
     swapHistoryBloc.updateSwaps(50, null);
 
     if (onValue is SetPriceResponse || onValue is BuyResponse) {
       if (widget.swapStatus == SwapStatus.BUY) {
-        Navigator.pushReplacement(
+        Navigator.pushReplacement<dynamic, dynamic>(
           context,
-          MaterialPageRoute(
-              builder: (context) => SwapDetailPage(
-                    swap: new Swap(
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => SwapDetailPage(
+                    swap: Swap(
                         status: Status.ORDER_MATCHING,
                         result: ResultSwap(
                           uuid: onValue.result.uuid,
@@ -335,20 +381,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         Navigator.of(context).pop();
         widget.orderSuccess();
       }
-    } else {
-      setState(() {
-        isSwapMaking = false;
-      });
-      String timeSecondeLeft = onValue.error;
-      print(timeSecondeLeft);
-      timeSecondeLeft = timeSecondeLeft.substring(
-          timeSecondeLeft.lastIndexOf(" "), timeSecondeLeft.length);
-      print(timeSecondeLeft);
-      Scaffold.of(context).showSnackBar(new SnackBar(
-        duration: Duration(seconds: 2),
-        content: new Text(AppLocalizations.of(context)
-            .buySuccessWaitingError(timeSecondeLeft)),
-      ));
     }
   }
 }

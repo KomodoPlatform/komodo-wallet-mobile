@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/orders.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class OrdersPage extends StatefulWidget {
   @override
@@ -16,43 +13,44 @@ class OrdersPage extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-
   @override
-  void initState() { 
+  void initState() {
     ordersBloc.updateOrdersSwaps();
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<dynamic>>(
         initialData: ordersBloc.orderSwaps,
         stream: ordersBloc.outOrderSwaps,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data.length > 0) {
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.data != null  && snapshot.data.isNotEmpty) {
             List<dynamic> orderSwaps = snapshot.data;
             orderSwaps = snapshot.data.reversed.toList();
             return ListView.builder(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               itemCount: orderSwaps.length,
-              itemBuilder: (context, index) {
+              itemBuilder: (BuildContext context, int index) {
                 if (orderSwaps[index] is Swap) {
                   return BuildItemSwap(
                       context: context, swap: orderSwaps[index]);
                 } else if (orderSwaps[index] is Order) {
                   return _buildItemOrder(orderSwaps[index]);
+                } else {
+                  return Container();
                 }
               },
             );
           } else {
             return Container(
-              child: Center(child: Text("No orders, please go to trade.")),
+              child: Center(child: const Text('No orders, please go to trade.')),
             );
           }
         });
   }
 
-  _buildItemOrder(Order order) {
+  Widget _buildItemOrder(Order order) {
     return Card(
       color: Theme.of(context).primaryColor,
       child: Padding(
@@ -79,15 +77,15 @@ class _OrdersPageState extends State<OrdersPage> {
                 _buildTextAmount(order.rel, order.relAmount),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             AutoSizeText(
-              "UUID: " + order.uuid,
+              'UUID: ' + order.uuid,
               maxLines: 2,
               style: Theme.of(context).textTheme.body2,
             ),
-            SizedBox(
+            const SizedBox(
               height: 4,
             ),
             Row(
@@ -112,16 +110,15 @@ class _OrdersPageState extends State<OrdersPage> {
                         child: Container(
                           height: 30,
                           child: OutlineButton(
-                            
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0)),
                             borderSide: BorderSide(color: Colors.white),
                             child: Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 12),
                               decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(24)),
+                                    const BorderRadius.all(Radius.circular(24)),
                                 color: Colors.transparent,
                               ),
                               child: Row(
@@ -139,7 +136,8 @@ class _OrdersPageState extends State<OrdersPage> {
                                           ))
                                 ],
                               ),
-                            ), onPressed: () {
+                            ),
+                            onPressed: () {
                               ordersBloc.cancelOrder(order.uuid);
                             },
                           ),
@@ -154,23 +152,23 @@ class _OrdersPageState extends State<OrdersPage> {
     );
   }
 
-  _buildTextAmount(String coin, String amount) {
+  Widget _buildTextAmount(String coin, String amount) {
     if (amount != null && amount.isNotEmpty) {
       return Text(
         '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
         style: Theme.of(context).textTheme.body1,
       );
     } else {
-      return Text("");
+      return const Text('');
     }
   }
 
-  _buildIcon(String coin) {
+  Widget _buildIcon(String coin) {
     return Container(
       height: 25,
       width: 25,
       child: Image.asset(
-        "assets/${coin.toLowerCase()}.png",
+        'assets/${coin.toLowerCase()}.png',
         fit: BoxFit.cover,
       ),
     );

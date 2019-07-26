@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,68 +23,72 @@ import 'package:connectivity/connectivity.dart';
 
 import 'blocs/coins_bloc.dart';
 
-void main() => runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
+void main() {
+  // runZoned<Future<void>>(() async {
+  //   SystemChrome.setPreferredOrientations(
+  //       <DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {
+  // _checkNetworkStatus();
+  // await mm2.initMarketMaker();
+  // await _runBinMm2UserAlreadyLog();
+  return runApp(BlocProvider<AuthenticateBloc>(
+      bloc: AuthenticateBloc(), child: const MyApp()));
+  // });
+  // }, onError: (dynamic error, dynamic stackTrace) async {
+  //   // Whenever an error occurs, call the `reportCrash` function. This will send
+  //   // Dart errors to our dev console or Crashlytics depending on the environment.
+  //   print(stackTrace);
+  //   await FlutterCrashlytics()
+  //       .reportCrash(error, stackTrace, forceCrash: false);
+  // });
+}
 
-// void main() async {
-// runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
-// bool isInDebugMode = false;
-
-// FlutterError.onError = (FlutterErrorDetails details) {
-//   if (isInDebugMode) {
-//     // In development mode simply print to console.
-//     FlutterError.dumpErrorToConsole(details);
-//   } else {
-//     // In production mode report to the application zone to report to
-//     // Crashlytics.
-//     Zone.current.handleUncaughtError(details.exception, details.stack);
-//   }
-// };
-// await FlutterCrashlytics().initialize();
-
-// runZoned<Future<Null>>(() async {
-//   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-//       .then((_) {
-//         startApp();
-//       });
-// }, onError: (error, stackTrace) async {
-//   // Whenever an error occurs, call the `reportCrash` function. This will send
-//   // Dart errors to our dev console or Crashlytics depending on the environment.
-//   print(stackTrace);
-//   await FlutterCrashlytics()
-//       .reportCrash(error, stackTrace, forceCrash: false);
-// });
-// }
-
-// startApp() {
-//   mm2.initMarketMaker().then((_) {
-//     _runBinMm2UserAlreadyLog().then((onValue) {
-//       runApp(BlocProvider(bloc: AuthenticateBloc(), child: MyApp()));
-//     });
-//   });
-// }
+Future<void> startApp() async {
+  try {
+    await mm2.initMarketMaker();
+    await _runBinMm2UserAlreadyLog();
+    return runApp(BlocProvider<AuthenticateBloc>(
+        bloc: AuthenticateBloc(), child: const MyApp()));
+  } catch (e) {
+    print(e);
+    rethrow;
+  }
+}
 
 Future<void> _runBinMm2UserAlreadyLog() async {
-  String passphrase = await new EncryptionTool().read("passphrase");
-  if (passphrase != null && passphrase.isNotEmpty) {
-    print("readJsonCoin");
-    // await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool('isPassphraseIsSaved') != null &&
+      prefs.getBool('isPassphraseIsSaved') == true) {
+    print('readJsonCoin');
+    await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (!(authBloc.isPinShow && prefs.getBool("switch_pin"))) {
-      print("login isPinShow");
-      await authBloc.login(await new EncryptionTool().read("passphrase"), null);
+    if (!(authBloc.isPinShow && prefs.getBool('switch_pin'))) {
+      print('login isPinShow');
+      await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
-    print("loadJsonCoinsDefault");
+    print('loadJsonCoinsDefault');
     await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
   }
 }
 
-class MyApp extends StatefulWidget {
-  final String password;
+void _checkNetworkStatus() {
+  Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    if (result == ConnectivityResult.none) {
+      mainBloc.setIsNetworkOffline(true);
+    } else {
+      if (mainBloc.isNetworkOffline) {
+        _runBinMm2UserAlreadyLog();
+        mainBloc.setIsNetworkOffline(false);
+      }
+    }
+  });
+}
 
-  MyApp({this.password});
+class MyApp extends StatefulWidget {
+  const MyApp({this.password});
+
+  final String password;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -94,62 +99,39 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    bool isInDebugMode = false;
-
-    FlutterError.onError = (FlutterErrorDetails details) {
-      if (isInDebugMode) {
-        // In development mode simply print to console.
-        FlutterError.dumpErrorToConsole(details);
-      } else {
-        // In production mode report to the application zone to report to
-        // Crashlytics.
-        Zone.current.handleUncaughtError(details.exception, details.stack);
-      }
-    };
-    FlutterCrashlytics().initialize().then((_) {
-      runZoned<Future<Null>>(() async {
-        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-            .then((_) async {
-          await mm2.initMarketMaker();
-          await _runBinMm2UserAlreadyLog();
-        });
-      }, onError: (error, stackTrace) async {
-        // Whenever an error occurs, call the `reportCrash` function. This will send
-        // Dart errors to our dev console or Crashlytics depending on the environment.
-        print(stackTrace);
-        await FlutterCrashlytics()
-            .reportCrash(error, stackTrace, forceCrash: false);
-      });
+    _checkNetworkStatus();
+    mm2.initMarketMaker().then((_){
+      _runBinMm2UserAlreadyLog();
     });
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "atomicDEX",
-        localizationsDelegates: [
-          AppLocalizationsDelegate(),
+        title: 'atomicDEX',
+        localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+          const AppLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        supportedLocales: [Locale("en")],
+        supportedLocales: const <Locale>[Locale('en')],
         theme: ThemeData(
           brightness: Brightness.dark,
-          primaryColor: Color.fromRGBO(42, 54, 71, 1),
-          backgroundColor: Color.fromRGBO(30, 42, 58, 1),
-          primaryColorDark: Color.fromRGBO(42, 54, 71, 1),
-          accentColor: Color.fromRGBO(65, 234, 213, 1),
-          textSelectionColor: Color.fromRGBO(65, 234, 213, 1).withOpacity(0.3),
-          dialogBackgroundColor: Color.fromRGBO(42, 54, 71, 1),
+          primaryColor: const Color.fromRGBO(42, 54, 71, 1),
+          backgroundColor: const Color.fromRGBO(30, 42, 58, 1),
+          primaryColorDark: const Color.fromRGBO(42, 54, 71, 1),
+          accentColor: const Color.fromRGBO(65, 234, 213, 1),
+          textSelectionColor:
+              const Color.fromRGBO(65, 234, 213, 1).withOpacity(0.3),
+          dialogBackgroundColor: const Color.fromRGBO(42, 54, 71, 1),
           fontFamily: 'Ubuntu',
           hintColor: Colors.white,
-          errorColor: Color.fromRGBO(220, 3, 51, 1),
-          disabledColor: Color.fromRGBO(201, 201, 201, 1),
-          buttonColor: Color.fromRGBO(39, 68, 108, 1),
-          cursorColor: Color.fromRGBO(65, 234, 213, 1),
-          textSelectionHandleColor: Color.fromRGBO(65, 234, 213, 1),
+          errorColor: const Color.fromRGBO(220, 3, 51, 1),
+          disabledColor: const Color.fromRGBO(201, 201, 201, 1),
+          buttonColor: const Color.fromRGBO(39, 68, 108, 1),
+          cursorColor: const Color.fromRGBO(65, 234, 213, 1),
+          textSelectionHandleColor: const Color.fromRGBO(65, 234, 213, 1),
           textTheme: TextTheme(
               headline: TextStyle(
                   fontSize: 40,
@@ -173,9 +155,9 @@ class _MyAppState extends State<MyApp> {
                   fontWeight: FontWeight.w400)),
         ),
         initialRoute: '/',
-        routes: {
-          // When we navigate to the "/" route, build the FirstScreen Widget
-          '/': (context) => LockScreen(
+        routes: <String, Widget Function(BuildContext)>{
+          // When we navigate to the '/' route, build the FirstScreen Widget
+          '/': (BuildContext context) => LockScreen(
                 child: MyHomePage(),
               ),
         });
@@ -188,11 +170,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
-  var timer;
-  bool isNetworkAvailable = false;
-  var subscription;
+  Timer timer;
 
-  final List<Widget> _children = [
+  final List<Widget> _children = <Widget>[
     BlocCoinsPage(),
     SwapPage(),
     Media(),
@@ -202,62 +182,48 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    new Future.delayed(Duration.zero, () {
-      _checkNetworkStatus(context);
-    });
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    if (timer != null) {
-      timer.cancel();
-    }
+    timer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-    subscription.cancel();
-  }
-
-  _checkNetworkStatus(BuildContext context) {
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.none) {
-        setState(() {
-          isNetworkAvailable = true;
-        });
-      } else {
-        setState(() {
-          if (isNetworkAvailable) {
-            _runBinMm2UserAlreadyLog();
-            isNetworkAvailable = false;
-          }
-        });
-      }
-    });
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
-        print("inactive");
+        print('inactive');
         break;
       case AppLifecycleState.paused:
-        print("paused");
+        print('paused');
+        if (Platform.isIOS &&
+            !authBloc.isQrCodeActive &&
+            !mainBloc.isUrlLaucherIsOpen) {
+          exit(0);
+        }
         dialogBloc.closeDialog(context);
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        if (prefs.getBool("switch_pin_log_out_on_exit")) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        if (prefs.getBool('switch_pin_log_out_on_exit')) {
           authBloc.logout();
         }
-        if (!authBloc.isQrCodeActive) authBloc.showPin(true);
+        if (!authBloc.isQrCodeActive) {
+          authBloc.showPin(true);
+        }
         break;
       case AppLifecycleState.resumed:
-        print("resumed");
+        print('resumed');
+        if (Platform.isIOS) {
+          if (!mm2.ismm2Running) {
+            _runBinMm2UserAlreadyLog();
+          }
+        }
         break;
       case AppLifecycleState.suspending:
-        print("suspending");
-        await mm2.stopmm2();
+        print('suspending');
         break;
     }
   }
@@ -267,14 +233,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     return StreamBuilder<int>(
         initialData: mainBloc.currentIndexTab,
         stream: mainBloc.outCurrentIndex,
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           return Scaffold(
             resizeToAvoidBottomPadding: false,
             backgroundColor: Theme.of(context).backgroundColor,
             body: _children[snapshot.data],
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
-                boxShadow: [
+                boxShadow: const <BoxShadow>[
                   BoxShadow(
                     color: Colors.black,
                     blurRadius: 10.0, // has the effect of softening the shadow
@@ -293,55 +259,68 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       canvasColor: Theme.of(context).primaryColor,
                       primaryColor: Theme.of(context).accentColor,
                       textTheme: Theme.of(context).textTheme.copyWith(
-                          caption: new TextStyle(
-                              color: Colors.white.withOpacity(0.5)))),
+                          caption:
+                              TextStyle(color: Colors.white.withOpacity(0.5)))),
                   child: Container(
                     color: Theme.of(context).primaryColor,
                     child: SafeArea(
-                      child: SizedBox(
-                        height: isNetworkAvailable ? 80 : 56,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            if (isNetworkAvailable)
-                              Expanded(
-                                child: Center(
-                                  child: Container(
-                                      height: double.infinity,
-                                      width: double.infinity,
-                                      color: Colors.redAccent,
+                      child: StreamBuilder<bool>(
+                          initialData: mainBloc.isNetworkOffline,
+                          stream: mainBloc.outIsNetworkOffline,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<bool> netWork) {
+                            final bool isNetworkAvailable = netWork.data;
+                            return SizedBox(
+                              height: isNetworkAvailable ? 80 : 56,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  if (isNetworkAvailable)
+                                    Expanded(
                                       child: Center(
-                                          child:
-                                              Text("No Internet Connection"))),
-                                ),
+                                        child: Container(
+                                            height: double.infinity,
+                                            width: double.infinity,
+                                            color: Colors.redAccent,
+                                            child: Center(
+                                                child: Text(
+                                                    AppLocalizations.of(context)
+                                                        .noInternet))),
+                                      ),
+                                    ),
+                                  BottomNavigationBar(
+                                    elevation: 0,
+                                    type: BottomNavigationBarType.fixed,
+                                    onTap: onTabTapped,
+                                    currentIndex: snapshot.data,
+                                    items: <BottomNavigationBarItem>[
+                                      BottomNavigationBarItem(
+                                          icon: Icon(
+                                              Icons.account_balance_wallet),
+                                          title: Text(
+                                              AppLocalizations.of(context)
+                                                  .portfolio)),
+                                      BottomNavigationBarItem(
+                                          icon: Icon(Icons.swap_vert),
+                                          title: Text(
+                                              AppLocalizations.of(context)
+                                                  .dex)),
+                                      BottomNavigationBarItem(
+                                          icon: Icon(Icons.library_books),
+                                          title: Text(
+                                              AppLocalizations.of(context)
+                                                  .media)),
+                                      BottomNavigationBarItem(
+                                          icon: Icon(Icons.settings),
+                                          title: Text(
+                                              AppLocalizations.of(context)
+                                                  .settings)),
+                                    ],
+                                  )
+                                ],
                               ),
-                            BottomNavigationBar(
-                              elevation: 0,
-                              type: BottomNavigationBarType.fixed,
-                              onTap: onTabTapped,
-                              currentIndex: snapshot.data,
-                              items: [
-                                BottomNavigationBarItem(
-                                    icon: Icon(Icons.account_balance_wallet),
-                                    title: Text(AppLocalizations.of(context)
-                                        .portfolio)),
-                                BottomNavigationBarItem(
-                                    icon: Icon(Icons.swap_vert),
-                                    title:
-                                        Text(AppLocalizations.of(context).dex)),
-                                BottomNavigationBarItem(
-                                    icon: Icon(Icons.library_books),
-                                    title: Text(
-                                        AppLocalizations.of(context).media)),
-                                BottomNavigationBarItem(
-                                    icon: Icon(Icons.settings),
-                                    title: Text(
-                                        AppLocalizations.of(context).settings)),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
+                            );
+                          }),
                     ),
                   ),
                 ),

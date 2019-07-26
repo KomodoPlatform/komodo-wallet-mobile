@@ -4,32 +4,27 @@
 
 import 'dart:convert';
 
-BaseService baseServiceFromJson(String str) {
-  final jsonData = json.decode(str);
-  return BaseService.fromJson(jsonData);
-}
+BaseService baseServiceFromJson(String str) =>
+    BaseService.fromJson(json.decode(str));
 
-String baseServiceToJson(BaseService data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String baseServiceToJson(BaseService data) => json.encode(data.toJson());
 
 class BaseService {
-  String userpass;
-  String method;
-
   BaseService({
     this.userpass,
     this.method,
   });
 
-  factory BaseService.fromJson(Map<String, dynamic> json) => new BaseService(
-        userpass: json["userpass"],
-        method: json["method"],
+  factory BaseService.fromJson(Map<String, dynamic> json) => BaseService(
+        userpass: json['userpass'] ?? '',
+        method: json['method'] ?? '',
       );
 
-  Map<String, dynamic> toJson() => {
-        "userpass": userpass,
-        "method": method,
+  String userpass;
+  String method;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'userpass': userpass ?? '',
+        'method': method ?? '',
       };
 }

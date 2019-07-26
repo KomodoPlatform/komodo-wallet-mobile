@@ -6,6 +6,7 @@
     "proto": "tcp",
     "txfee": 10000,
     "abbr": "KMD",
+    "coingeckoId": "komodo",
     "colorCoin": "0xFF326464",
     "serverList": [
       "electrum1.cipig.net:10001",
@@ -23,6 +24,7 @@
     "port": 50001,
     "proto": "tcp",
     "abbr": "BTC",
+    "coingeckoId": "bitcoin",
     "colorCoin": "0xFFf7931a",
     "serverList": [
       "electrum1.cipig.net:10000"

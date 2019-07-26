@@ -7,9 +7,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'media_page.dart';
 
 class MediaDetailPage extends StatefulWidget {
-  final Article article;
+  const MediaDetailPage({this.article});
 
-  MediaDetailPage({this.article});
+  final Article article;
 
   @override
   _MediaDetailPageState createState() => _MediaDetailPageState();
@@ -18,16 +18,21 @@ class MediaDetailPage extends StatefulWidget {
 class _MediaDetailPageState extends State<MediaDetailPage> {
   @override
   Widget build(BuildContext context) {
-    TextStyle body2Light = Theme.of(context)
+    final TextStyle body2Light = Theme.of(context)
         .textTheme
         .body1
         .copyWith(color: Colors.black.withOpacity(0.7), fontSize: 14);
-    String splitText1 =
-        widget.article.body.substring(0, (widget.article.body.length ~/ 2));
-    String splitText2 =
-        widget.article.body.substring((widget.article.body.length ~/ 2));
-    int index = 0;
-
+    int splitIndex = widget.article.body
+            .indexOf(RegExp('[!?.]'), widget.article.body.length ~/ 2) +
+        1;
+    print(splitIndex);
+    if (splitIndex == -1) {
+      splitIndex = widget.article.body.length ~/ 2;
+    }
+    final String splitText1 = widget.article.body.substring(0, splitIndex);
+    splitText1.trim();
+    String splitText2 = widget.article.body.substring(splitIndex);
+    splitText2 = splitText2.trim();
     return LockScreen(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -37,13 +42,13 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
             style: Theme.of(context).textTheme.subtitle,
           ),
           bottom: PreferredSize(
-            preferredSize: new Size(0.0, 36.0),
+            preferredSize: const Size(0.0, 36.0),
             child: Container(
               height: 36,
               color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   Text(
@@ -70,11 +75,11 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
             Container(
               height: 250,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(0.0)),
                 child: Image.network(
                   widget.article.media[0],
-                  fit: BoxFit.cover,
-                  width: 1000.0,
+                  fit: BoxFit.contain,
+                  width: double.infinity,
                 ),
               ),
             ),
@@ -95,20 +100,22 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
                 style: body2Light,
               ),
             ),
-            Builder(builder: (context) {
+            Builder(builder: (BuildContext context) {
               if (widget.article.media.length > 1) {
-                List<Widget> medias = widget.article.media.map((i) {
-                    return Container(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                        child: Image.network(
-                          i,
-                          fit: BoxFit.cover,
-                          width: 1000.0,
-                        ),
+                final List<Widget> medias =
+                    widget.article.media.map((String i) {
+                  return Container(
+                    child: ClipRRect(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(0.0)),
+                      child: Image.network(
+                        i,
+                        fit: BoxFit.contain,
+                        width: double.infinity,
                       ),
-                    );
-                  }).toList();
+                    ),
+                  );
+                }).toList();
                 medias.removeAt(0);
                 return CarouselSlider(
                   autoPlay: true,

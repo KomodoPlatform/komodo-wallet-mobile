@@ -4,78 +4,81 @@
 
 import 'dart:convert';
 
-Coin coinFromJson(String str) {
-  final jsonData = json.decode(str);
-  return Coin.fromJson(jsonData);
-}
+List<Coin> coinFromJson(String str) =>
+    List<Coin>.from(json.decode(str).map((dynamic x) => Coin.fromJson(x)));
 
-List<Coin> listCoinFromJson(String str) {
-  final jsonData = json.decode(str);
-  return new List<Coin>.from(jsonData.map((x) => Coin.fromJson(x)));
-}
-
-String coinToJson(Coin data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String coinToJson(List<Coin> data) =>
+    json.encode(List<dynamic>.from(data.map<dynamic>((dynamic x) => x.toJson())));
 
 class Coin {
+  Coin({
+    this.name,
+    this.address,
+    this.port,
+    this.proto,
+    this.txfee,
+    this.priceUsd,
+    this.mm2,
+    this.abbr,
+    this.coingeckoId,
+    this.swapContractAddress,
+    this.colorCoin,
+    this.serverList,
+    this.explorerUrl,
+  });
+
+  factory Coin.fromJson(Map<String, dynamic> json) => Coin(
+        name: json['name'] ?? '',
+        address: json['address'] ?? '',
+        port: json['port'] ?? 0,
+        proto: json['proto'] ?? '',
+        txfee: json['txfee'] ?? 0,
+        priceUsd: json['priceUSD'] ?? 0.0,
+        mm2: json['mm2'] ?? 0,
+        abbr: json['abbr'] ?? '',
+        coingeckoId: json['coingeckoId'] ?? '',
+        swapContractAddress: json['swap_contract_address'] ?? '',
+        colorCoin: json['colorCoin'] ?? '',
+        serverList: List<String>.from(json['serverList'].map((dynamic x) => x)) ?? <String>[],
+        explorerUrl: List<String>.from(json['explorerUrl'].map((dynamic x) => x)) ?? <String>[],
+      );
+
   String name;
   String address;
   int port;
   String proto;
   int txfee;
-  String abbr;
+  double priceUsd;
   int mm2;
-  String swap_contract_address;
+  String abbr;
+  String coingeckoId;
+  String colorCoin;
   List<String> serverList;
   List<String> explorerUrl;
-  String colorCoin;
-  double priceUSD;
+  String swapContractAddress;
 
-  Coin(
-      {this.name,
-      this.address,
-      this.port,
-      this.proto,
-      this.txfee,
-      this.abbr,
-      this.mm2,
-      this.priceUSD,
-      this.swap_contract_address,
-      this.serverList,
-      this.explorerUrl,
-      this.colorCoin});
-
-  factory Coin.fromJson(Map<String, dynamic> json) => new Coin(
-        name: json["name"],
-        address: json["address"],
-        port: json["port"],
-        proto: json["proto"],
-        txfee: json["txfee"],
-        abbr: json["abbr"],
-        mm2: json["mm2"],
-        swap_contract_address: json["swap_contract_address"],
-        colorCoin: json["colorCoin"],
-        serverList: new List<String>.from(json["serverList"].map((x) => x)),
-        explorerUrl: new List<String>.from(json["explorerUrl"].map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "address": address,
-        "port": port,
-        "proto": proto,
-        "txfee": txfee,
-        "abbr": abbr,
-        "mm2": mm2,
-        "swap_contract_address": swap_contract_address,
-        "colorCoin": colorCoin,
-        "serverList": new List<dynamic>.from(serverList.map((x) => x)),
-        "explorerUrl": new List<dynamic>.from(explorerUrl.map((x) => x)),
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name ?? '',
+        'address': address ?? '',
+        'port': port ?? 0,
+        'proto': proto ?? '',
+        'txfee': txfee ?? 0,
+        'priceUSD': priceUsd ?? 0.0,
+        'mm2': mm2 ?? 0,
+        'abbr': abbr ?? '',
+        'coingeckoId': coingeckoId ?? '',
+        'swap_contract_address':
+            swapContractAddress ?? '',
+        'colorCoin': colorCoin ?? '',
+        'serverList': List<dynamic>.from(serverList.map<String>((dynamic x) => x)) ?? <String>[],
+        'explorerUrl': List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ?? <String>[],
       };
 
   String getTxFeeSatoshi() {
-    return (txfee / 100000000).toString();
+    int txFeeRes = 0;
+    if (txfee != null) {
+      txFeeRes = txfee;
+    }
+    return (txFeeRes / 100000000).toString();
   }
 }

@@ -7,32 +7,32 @@ import 'package:keccak/keccak.dart';
 
 import '../localizations.dart';
 
-copyToClipBoard(BuildContext context, String str) {
-  Scaffold.of(context).showSnackBar(new SnackBar(
-    duration: Duration(milliseconds: 300),
-    content: new Text(AppLocalizations.of(context).clipboard),
+void copyToClipBoard(BuildContext context, String str) {
+  Scaffold.of(context).showSnackBar( SnackBar(
+    duration: const Duration(milliseconds: 300),
+    content:  Text(AppLocalizations.of(context).clipboard),
   ));
-  Clipboard.setData(new ClipboardData(text: str));
+  Clipboard.setData( ClipboardData(text: str));
 }
 
-isAddress(String address) {
-  if (RegExp("!/^(0x)?[0-9a-f]{40}\$/i").hasMatch(address)) {
+bool isAddress(String address) {
+  if (RegExp('!/^(0x)?[0-9a-f]{40}\$/i').hasMatch(address)) {
     return false;
-  } else if (RegExp("/^(0x)?[0-9a-f]{40}\$/").hasMatch(address) ||
-      RegExp("/^(0x)?[0-9A-F]{40}\$/").hasMatch(address)) {
+  } else if (RegExp('/^(0x)?[0-9a-f]{40}\$/').hasMatch(address) ||
+      RegExp('/^(0x)?[0-9A-F]{40}\$/').hasMatch(address)) {
     return true;
   } else {
     return isChecksumAddress(address);
   }
 }
 
-isChecksumAddress(String address) {
+bool isChecksumAddress(String address) {
   // Check each case
-  address = address.replaceFirst("0x", "");
-  var inputData = Uint8List.fromList(address.toLowerCase().codeUnits);
-  var addressHash = keccak(inputData);
-  var output = hex.encode(addressHash);
-  for (var i = 0; i < 40; i++) {
+  address = address.replaceFirst('0x', '');
+  final Uint8List inputData = Uint8List.fromList(address.toLowerCase().codeUnits);
+  final Uint8List addressHash = keccak(inputData);
+  final String output = hex.encode(addressHash);
+  for (int i = 0; i < 40; i++) {
     // the nth letter should be uppercase if the nth digit of casemap is 1
     // int.parse(addressHash[i].toString(), radix: 16)
     if ((int.parse(output[i].toString(), radix: 16) > 7 &&
@@ -43,4 +43,18 @@ isChecksumAddress(String address) {
     }
   }
   return true;
+}
+
+String replaceAllTrainlingZero(String data) {
+  for (int i = 0; i < 8; i++) {
+    data = data.replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
+  }
+  return data;
+}
+
+String replaceAllTrainlingZeroERC(String data) {
+  for (int i = 0; i < 16; i++) {
+    data = data.replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
+  }
+  return data;
 }

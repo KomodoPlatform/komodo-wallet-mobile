@@ -4,117 +4,94 @@
 
 import 'dart:convert';
 
-Orderbook orderbookFromJson(String str) {
-  final jsonData = json.decode(str);
-  return Orderbook.fromJson(jsonData);
-}
+Orderbook orderbookFromJson(String str) => Orderbook.fromJson(json.decode(str));
 
-String orderbookToJson(Orderbook data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String orderbookToJson(Orderbook data) => json.encode(data.toJson());
 
 class Orderbook {
-  int askdepth;
-  List<Ask> asks;
-  String base;
-  int biddepth;
-  List<Ask> bids;
-  int netid;
-  int numasks;
-  int numbids;
-  String rel;
-  int timestamp;
-
   Orderbook({
-    this.askdepth,
-    this.asks,
-    this.base,
-    this.biddepth,
     this.bids,
-    this.netid,
-    this.numasks,
     this.numbids,
+    this.asks,
+    this.numasks,
+    this.askdepth,
+    this.base,
     this.rel,
     this.timestamp,
+    this.netid,
   });
 
-  factory Orderbook.fromJson(Map<String, dynamic> json) => new Orderbook(
-        askdepth: json["askdepth"],
-        asks: new List<Ask>.from(json["asks"].map((x) => Ask.fromJson(x))),
-        base: json["base"],
-        biddepth: json["biddepth"],
-        bids: new List<Ask>.from(json["bids"].map((x) => Ask.fromJson(x))),
-        netid: json["netid"],
-        numasks: json["numasks"],
-        numbids: json["numbids"],
-        rel: json["rel"],
-        timestamp: json["timestamp"],
+  factory Orderbook.fromJson(Map<String, dynamic> json) => Orderbook(
+        bids: json['bids'] == null ? null : List<Ask>.from(json['bids'].map((dynamic x) => Ask.fromJson(x))),
+        numbids: json['numbids'] ?? 0,
+        asks: json['asks'] == null ? null : List<Ask>.from(json['asks'].map((dynamic x) => Ask.fromJson(x))),
+        numasks: json['numasks'] ?? 0,
+        askdepth: json['askdepth'] ?? 0,
+        base: json['base'] ?? '',
+        rel: json['rel'] ?? '',
+        timestamp: json['timestamp'] ?? DateTime.now().millisecond,
+        netid: json['netid'] ?? 0,
       );
 
-  Map<String, dynamic> toJson() => {
-        "askdepth": askdepth,
-        "asks": new List<dynamic>.from(asks.map((x) => x.toJson())),
-        "base": base,
-        "biddepth": biddepth,
-        "bids": new List<dynamic>.from(bids.map((x) => x.toJson())),
-        "netid": netid,
-        "numasks": numasks,
-        "numbids": numbids,
-        "rel": rel,
-        "timestamp": timestamp,
-      };
+  List<Ask> bids;
+  int numbids;
+  List<Ask> asks;
+  int numasks;
+  int askdepth;
+  String base;
+  String rel;
+  int timestamp;
+  int netid;
 
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'bids': bids == null ? null : List<dynamic>.from(bids.map<dynamic>((Ask x) => x.toJson())),
+        'numbids': numbids ?? 0,
+        'asks': asks == null ? null : List<dynamic>.from(asks.map<dynamic>((Ask x) => x.toJson())),
+        'numasks': numasks ?? 0,
+        'askdepth': askdepth ?? 0,
+        'base': base ?? '',
+        'rel': rel ?? '',
+        'timestamp': timestamp ?? DateTime.now().millisecond,
+        'netid': netid ?? 0,
+      };
 }
 
 class Ask {
-  String address;
-  int age;
-  int avevolume;
-  String coin;
-  int depth;
-  double maxvolume;
-  int numutxos;
-  double price;
-  String pubkey;
-  int zcredits;
-
   Ask({
-    this.address,
-    this.age,
-    this.avevolume,
     this.coin,
-    this.depth,
-    this.maxvolume,
-    this.numutxos,
+    this.address,
     this.price,
+    this.maxvolume,
     this.pubkey,
+    this.age,
     this.zcredits,
   });
 
-  factory Ask.fromJson(Map<String, dynamic> json) => new Ask(
-        address: json["address"],
-        age: json["age"],
-        avevolume: json["avevolume"],
-        coin: json["coin"],
-        depth: json["depth"],
-        maxvolume: json["maxvolume"].toDouble(),
-        numutxos: json["numutxos"],
-        price: json["price"].toDouble(),
-        pubkey: json["pubkey"],
-        zcredits: json["zcredits"],
+  factory Ask.fromJson(Map<String, dynamic> json) => Ask(
+        coin: json['coin'] ?? '',
+        address: json['address'] ?? '',
+        price: json['price'].toDouble() ?? 0.0,
+        maxvolume: json['maxvolume'].toDouble() ?? 0.0,
+        pubkey: json['pubkey'] ?? '',
+        age: json['age'] ?? 0,
+        zcredits: json['zcredits'] ?? 0,
       );
 
-  Map<String, dynamic> toJson() => {
-        "address": address,
-        "age": age,
-        "avevolume": avevolume,
-        "coin": coin,
-        "depth": depth,
-        "maxvolume": maxvolume,
-        "numutxos": numutxos,
-        "price": price,
-        "pubkey": pubkey,
-        "zcredits": zcredits,
+  String coin;
+  String address;
+  double price;
+  double maxvolume;
+  String pubkey;
+  int age;
+  int zcredits;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'coin': coin ?? '',
+        'address': address ?? '',
+        'price': price ?? 0.0,
+        'maxvolume': maxvolume ?? 0.0,
+        'pubkey': pubkey ?? '',
+        'age': age ?? 0,
+        'zcredits': zcredits ?? 0,
       };
 }

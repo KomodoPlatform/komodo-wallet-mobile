@@ -16,7 +16,7 @@ class SwapHistory extends StatefulWidget {
 class _SwapHistoryState extends State<SwapHistory> {
   int limit = 50;
   String fromUUID;
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = ScrollController();
   bool isLoadingNewSwaps = false;
 
   @override
@@ -29,7 +29,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         setState(() {
           isLoadingNewSwaps = true;
         });
-        swapHistoryBloc.updateSwaps(limit, fromUUID).then((onValue) {
+        swapHistoryBloc.updateSwaps(limit, fromUUID).then((List<Swap> onValue) {
           setState(() {
             isLoadingNewSwaps = false;
           });
@@ -44,16 +44,18 @@ class _SwapHistoryState extends State<SwapHistory> {
     return StreamBuilder<List<Swap>>(
         stream: swapHistoryBloc.outSwaps,
         initialData: swapHistoryBloc.swaps,
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<Swap>> snapshot) {
           print(snapshot.data.length);
           print(snapshot.connectionState);
-          List<Swap> swaps = snapshot.data;
+          final List<Swap> swaps = snapshot.data;
 
-          swaps.removeWhere((swap) =>
-                swap.status != Status.SWAP_SUCCESSFUL &&
-                swap.status != Status.TIME_OUT);
-          if (snapshot.hasData &&
-              swaps.length == 0 &&
+          swaps.removeWhere((Swap swap) =>
+              swap.result.myInfo == null ||
+              (swap.status != Status.SWAP_FAILED &&
+                  swap.status != Status.SWAP_SUCCESSFUL &&
+                  swap.status != Status.TIME_OUT));
+          if (snapshot.data != null  &&
+              swaps.isEmpty &&
               snapshot.connectionState == ConnectionState.active) {
             return Center(
               child: Text(
@@ -61,34 +63,33 @@ class _SwapHistoryState extends State<SwapHistory> {
                 style: Theme.of(context).textTheme.body2,
               ),
             );
-          } else if (snapshot.hasData && swaps.length > 0) {
-
-
-            swaps.sort((b, a) {
+          } else if (snapshot.data != null  && swaps.isNotEmpty) {
+            swaps.sort((Swap b, Swap a) {
               if (b is Swap && a is Swap) {
                 if (a.result.myInfo.startedAt != null) {
                   return a.result.myInfo.startedAt
                       .compareTo(b.result.myInfo.startedAt);
                 }
               }
+              return 0;
             });
 
-            List<Widget> swapsWidget = swaps
-                .map((swap) => BuildItemSwap(context: context, swap: swap))
+            final List<Widget> swapsWidget = swaps
+                .map((Swap swap) => BuildItemSwap(context: context, swap: swap))
                 .toList();
 
             return RefreshIndicator(
               backgroundColor: Theme.of(context).backgroundColor,
               onRefresh: _onRefresh,
               child: ListView(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 controller: _scrollController,
                 children: swapsWidget,
               ),
             );
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: const CircularProgressIndicator(),
             );
           }
         });
@@ -100,10 +101,10 @@ class _SwapHistoryState extends State<SwapHistory> {
 }
 
 class BuildItemSwap extends StatefulWidget {
+  const BuildItemSwap({this.context, this.swap});
+
   final BuildContext context;
   final Swap swap;
-
-  BuildItemSwap({this.context, this.swap});
 
   @override
   _BuildItemSwapState createState() => _BuildItemSwapState();
@@ -112,20 +113,20 @@ class BuildItemSwap extends StatefulWidget {
 class _BuildItemSwapState extends State<BuildItemSwap> {
   @override
   Widget build(BuildContext context) {
-    String swapStatus =
+    final String swapStatus =
         swapHistoryBloc.getSwapStatusString(context, widget.swap.status);
-    Color colorStatus = swapHistoryBloc.getColorStatus(widget.swap.status);
-    String stepStatus = swapHistoryBloc.getStepStatus(widget.swap.status);
+    final Color colorStatus = swapHistoryBloc.getColorStatus(widget.swap.status);
+    final String stepStatus = swapHistoryBloc.getStepStatus(widget.swap.status);
 
     return Card(
         color: Theme.of(context).primaryColor,
         child: InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
           onTap: () {
-            Navigator.push(
+            Navigator.push<dynamic>(
               context,
-              MaterialPageRoute(
-                  builder: (context) => SwapDetailPage(
+              MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => SwapDetailPage(
                         swap: widget.swap,
                       )),
             );
@@ -133,7 +134,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 16, left: 16, right: 16),
+                padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -164,9 +165,9 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     AutoSizeText(
-                      "UUID: " +
+                      'UUID: ' +
                           widget.swap.result.uuid.substring(0, 5) +
-                          "..." +
+                          '...' +
                           widget.swap.result.uuid.substring(
                               widget.swap.result.uuid.length - 5,
                               widget.swap.result.uuid.length),
@@ -202,9 +203,9 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                         padding: const EdgeInsets.only(bottom: 16, right: 16),
                         child: Container(
                           padding:
-                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                              const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(24)),
+                            borderRadius: const BorderRadius.all(Radius.circular(24)),
                             color: colorStatus,
                           ),
                           child: Row(
@@ -215,7 +216,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                       .textTheme
                                       .caption
                                       .copyWith(color: Colors.white)),
-                              SizedBox(
+                              const SizedBox(
                                 width: 4,
                               ),
                               Text(swapStatus,
@@ -238,18 +239,18 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
         ));
   }
 
-  _buildIcon(String coin) {
+  Widget _buildIcon(String coin) {
     return Container(
       height: 25,
       width: 25,
       child: Image.asset(
-        "assets/${coin.toLowerCase()}.png",
+        'assets/${coin.toLowerCase()}.png',
         fit: BoxFit.cover,
       ),
     );
   }
 
-  _buildTextAmount(String coin, String amount) {
+  Widget _buildTextAmount(String coin, String amount) {
     return Text(
       '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
       style: Theme.of(context).textTheme.body1,

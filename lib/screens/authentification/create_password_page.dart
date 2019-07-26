@@ -1,36 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/main.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
-  final String seed;
+  const CreatePasswordPage({@required this.seed});
 
-  CreatePasswordPage({@required this.seed});
+  final String seed;
 
   @override
   _CreatePasswordPageState createState() => _CreatePasswordPageState();
 }
 
 class _CreatePasswordPageState extends State<CreatePasswordPage> {
-  TextEditingController controller1 = new TextEditingController();
-  TextEditingController controller2 = new TextEditingController();
+  TextEditingController controller1 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
   final FocusNode _focus1 = FocusNode();
   final FocusNode _focus2 = FocusNode();
   bool isLoading = false;
   bool isValidPassword = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-  String _password;
   bool isObscured = true;
+  bool isFastEncrypted = false;
 
   @override
   void initState() {
@@ -40,8 +32,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   }
 
   void _onChange() {
-    String text = controller1.text;
-    String text2 = controller2.text;
+    final String text = controller1.text;
+    final String text2 = controller2.text;
     if (text.isEmpty ||
         text2.isEmpty ||
         !_formKey.currentState.validate() ||
@@ -82,23 +74,23 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
         key: _formKey,
         autovalidate: _autoValidate,
         child: ListView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Text(
               AppLocalizations.of(context).titleCreatePassword,
               style: Theme.of(context).textTheme.title,
             ),
-            SizedBox(
+            const SizedBox(
               height: 24,
             ),
             Text(
               AppLocalizations.of(context).infoWalletPassword,
               style: Theme.of(context).textTheme.body2,
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Row(
@@ -106,11 +98,11 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               children: <Widget>[
                 Expanded(
                   child: TextFormField(
-                    key: Key("create-password-field"),
+                    key: const Key('create-password-field'),
                       maxLength: 40,
                       focusNode: _focus1,
                       controller: controller1,
-                      onFieldSubmitted: (term) {
+                      onFieldSubmitted: (String term) {
                         _fieldFocusChange(context, _focus1, _focus2);
                         _validateInputs();
                       },
@@ -119,19 +111,21 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                       enableInteractiveSelection: true,
                       obscureText: isObscured,
                       validator: (String arg) {
-                        RegExp exp = RegExp(
+                        final RegExp exp = RegExp(
                             r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
-                        if (!arg.contains(exp))
-                          return 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.';
-                        else
-                          return null;
-                      },
-                      onSaved: (String val) {
-                        _password = val;
+                        return !arg.contains(exp)
+                            ? 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.'
+                            : null;
                       },
                       style: Theme.of(context).textTheme.body1,
                       decoration: InputDecoration(
-                          errorMaxLines: 3,
+                          errorMaxLines: 6,
+                          errorStyle: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(
+                                  fontSize: 12,
+                                  color: Theme.of(context).errorColor),
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -144,7 +138,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                           hintText: AppLocalizations.of(context).hintPassword,
                           labelText: null)),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 InkWell(
@@ -155,22 +149,22 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                   },
                   child: Container(
                       height: 60,
-                      padding: EdgeInsets.only(right: 16, left: 16),
+                      padding: const EdgeInsets.only(right: 16, left: 16),
                       child: isObscured
                           ? Icon(Icons.visibility)
                           : Icon(Icons.visibility_off)),
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
-            Builder(builder: (context) {
+            Builder(builder: (BuildContext context) {
               return Row(
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
-                      key: Key("create-password-field-confirm"),
+                      key: const Key('create-password-field-confirm'),
                         maxLength: 40,
                         controller: controller2,
                         textInputAction: TextInputAction.done,
@@ -178,7 +172,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                         focusNode: _focus2,
                         obscureText: isObscured,
                         enableInteractiveSelection: true,
-                        onFieldSubmitted: (data) {
+                        onFieldSubmitted: (String data) {
                           _checkValidation(context);
                         },
                         style: Theme.of(context).textTheme.body1,
@@ -197,23 +191,44 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                                 .hintConfirmPassword,
                             labelText: null)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 72,
                   ),
                 ],
               );
             }),
-            SizedBox(
+            Row(
+              children: <Widget>[
+                Switch(
+                  onChanged: (bool value) {
+                    setState(() {
+                      isFastEncrypted = value;
+                    });
+                  },
+                  value: isFastEncrypted,
+                ),
+                Text(
+                  'Fast encryption',
+                  style: Theme.of(context).textTheme.body2,
+                )
+              ],
+            ),
+            const SizedBox(
               height: 16,
             ),
-            Builder(builder: (context) {
+            Builder(builder: (BuildContext context) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: PrimaryButton(
-                  text: AppLocalizations.of(context).confirmPassword,
-                  onPressed:
-                      isValidPassword ? () => _checkValidation(context) : null,
-                  isLoading: isLoading,
+                child: Column(
+                  children: <Widget>[
+                    PrimaryButton(
+                      text: AppLocalizations.of(context).confirmPassword,
+                      onPressed: isValidPassword
+                          ? () => _checkValidation(context)
+                          : null,
+                      isLoading: isLoading,
+                    ),
+                  ],
                 ),
               );
             }),
@@ -223,7 +238,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     );
   }
 
-  _checkValidation(BuildContext context) {
+  void _checkValidation(BuildContext context) {
     if (_validateInputs()) {
       if (controller1.text == controller2.text) {
         _nextPage();
@@ -233,40 +248,31 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     }
   }
 
-  _nextPage() async {
-    setState(() {
-      isLoading = true;
-    });
-    var entryptionTool = new EncryptionTool();
-    var wallet = walletBloc.currentWallet;
-
-    await entryptionTool.writeData(
-        KeyEncryption.SEED, wallet, controller1.text, widget.seed);
-    await DBProvider.db.saveWallet(wallet);
-    await DBProvider.db.saveCurrentWallet(wallet);
-    await coinsBloc.resetCoinDefault();
-
-    await authBloc
-        .loginUI(false, widget.seed, controller1.text)
-        .then((onValue) {
-      setState(() {
-        isLoading = true;
-      });
-
-      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false,
-          arguments: ScreenArguments(controller1.text));
-    });
+  Future<void> _nextPage() async {
+    Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => DislaimerPage(
+                isFastEncrypted: isFastEncrypted,
+                password: controller1.text,
+                seed: widget.seed,
+                onSuccess: () {
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false,
+                      arguments: ScreenArguments(controller1.text));
+                },
+              )),
+    );
   }
 
-  _showError(BuildContext context, String data) {
-    Scaffold.of(context).showSnackBar(new SnackBar(
-      duration: Duration(seconds: 2),
+  void _showError(BuildContext context, String data) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
       backgroundColor: Theme.of(context).errorColor,
-      content: new Text(data),
+      content: Text(data),
     ));
   }
 
-  _fieldFocusChange(
+  void _fieldFocusChange(
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
@@ -274,9 +280,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
 }
 
 class ScreenArguments {
-  final String password;
-
   ScreenArguments(
     this.password,
   );
+  final String password;
 }

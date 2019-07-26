@@ -10,12 +10,6 @@ GetTxHistory getTxHistoryFromJson(String str) =>
 String getTxHistoryToJson(GetTxHistory data) => json.encode(data.toJson());
 
 class GetTxHistory {
-  String userpass;
-  String method;
-  String coin;
-  int limit;
-  String fromId;
-
   GetTxHistory({
     this.userpass,
     this.method,
@@ -24,19 +18,25 @@ class GetTxHistory {
     this.fromId,
   });
 
-  factory GetTxHistory.fromJson(Map<String, dynamic> json) => new GetTxHistory(
-        userpass: json["userpass"],
-        method: json["method"],
-        coin: json["coin"],
-        limit: json["limit"],
-        fromId: json["from_id"],
+  factory GetTxHistory.fromJson(Map<String, dynamic> json) => GetTxHistory(
+        userpass: json['userpass'] ?? '',
+        method: json['method'] ?? '',
+        coin: json['coin'] ?? '',
+        limit: json['limit'] ?? 0,
+        fromId: json['from_id'],
       );
 
-  Map<String, dynamic> toJson() => {
-        "userpass": userpass,
-        "method": method,
-        "coin": coin,
-        "limit": limit,
-        "from_id": fromId,
+  String userpass;
+  String method;
+  String coin;
+  int limit;
+  String fromId;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'userpass': userpass ?? '',
+        'method': method ?? '',
+        'coin': coin ?? '',
+        'limit': limit ?? 0,
+        'from_id': fromId,
       };
 }

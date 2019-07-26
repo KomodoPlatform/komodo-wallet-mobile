@@ -4,24 +4,11 @@
 
 import 'dart:convert';
 
-GetBuy getBuyFromJson(String str) {
-  final jsonData = json.decode(str);
-  return GetBuy.fromJson(jsonData);
-}
+GetBuy getBuyFromJson(String str) => GetBuy.fromJson(json.decode(str));
 
-String getBuyToJson(GetBuy data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String getBuyToJson(GetBuy data) => json.encode(data.toJson());
 
 class GetBuy {
-  String userpass;
-  String method;
-  String base;
-  String rel;
-  String volume;
-  String price;
-
   GetBuy({
     this.userpass,
     this.method,
@@ -31,21 +18,28 @@ class GetBuy {
     this.price,
   });
 
-  factory GetBuy.fromJson(Map<String, dynamic> json) => new GetBuy(
-        userpass: json["userpass"],
-        method: json["method"],
-        base: json["base"],
-        rel: json["rel"],
-        volume: json["volume"],
-        price: json["price"],
+  factory GetBuy.fromJson(Map<String, dynamic> json) => GetBuy(
+        userpass: json['userpass'] ?? '',
+        method: json['method'] ?? '',
+        base: json['base'] ?? '',
+        rel: json['rel'] ?? '',
+        volume: json['volume'] ?? '',
+        price: json['price'] ?? '',
       );
 
-  Map<String, dynamic> toJson() => {
-        "userpass": userpass,
-        "method": method,
-        "base": base,
-        "rel": rel,
-        "volume": volume,
-        "price": price,
+  String userpass;
+  String method;
+  String base;
+  String rel;
+  String volume;
+  String price;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'userpass': userpass ?? '',
+        'method': method ?? '',
+        'base': base ?? '',
+        'rel': rel ?? '',
+        'volume': volume ?? '',
+        'price': price ?? '',
       };
 }

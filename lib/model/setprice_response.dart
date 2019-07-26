@@ -3,81 +3,85 @@
 //     final setPriceResponse = setPriceResponseFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:komodo_dex/model/orders.dart';
 
-SetPriceResponse setPriceResponseFromJson(String str) => SetPriceResponse.fromJson(json.decode(str));
+SetPriceResponse setPriceResponseFromJson(String str) =>
+    SetPriceResponse.fromJson(json.decode(str));
 
-String setPriceResponseToJson(SetPriceResponse data) => json.encode(data.toJson());
+String setPriceResponseToJson(SetPriceResponse data) =>
+    json.encode(data.toJson());
 
 class SetPriceResponse {
-    Result result;
+  SetPriceResponse({
+    this.result,
+  });
 
-    SetPriceResponse({
-        this.result,
-    });
+  factory SetPriceResponse.fromJson(Map<String, dynamic> json) =>
+      SetPriceResponse(
+        result: Result.fromJson(json['result']) ?? Result(),
+      );
 
-    factory SetPriceResponse.fromJson(Map<String, dynamic> json) => new SetPriceResponse(
-        result: Result.fromJson(json["result"]),
-    );
+  Result result;
 
-    Map<String, dynamic> toJson() => {
-        "result": result.toJson(),
-    };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'result': result.toJson() ?? Result().toJson(),
+      };
 }
 
 class Result {
-    String base;
-    String rel;
-    String maxBaseVol;
-    String minBaseVol;
-    int createdAt;
-    Matches matches;
-    String price;
-    List<dynamic> startedSwaps;
-    String uuid;
+  Result({
+    this.base,
+    this.rel,
+    this.maxBaseVol,
+    this.minBaseVol,
+    this.createdAt,
+    this.matches,
+    this.price,
+    this.startedSwaps,
+    this.uuid,
+  });
 
-    Result({
-        this.base,
-        this.rel,
-        this.maxBaseVol,
-        this.minBaseVol,
-        this.createdAt,
-        this.matches,
-        this.price,
-        this.startedSwaps,
-        this.uuid,
-    });
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
+        base: json['base'] ?? '',
+        rel: json['rel'] ?? '',
+        maxBaseVol: json['max_base_vol'] ?? '',
+        minBaseVol: json['min_base_vol'] ?? '',
+        createdAt: json['created_at'] ?? 0,
+        matches: Map<String, Match>.from(json['matches'])
+                .map<String, Match>((dynamic k, dynamic v) =>
+                    MapEntry<String, Match>(k, Match.fromJson(v))) ??
+            <String, Match>{},
+        price: json['price'] ?? '',
+        startedSwaps: List<String>.from(
+                json['started_swaps'].map<dynamic>((dynamic x) => x)) ??
+            <String>[],
+        uuid: json['uuid'] ?? '',
+      );
 
-    factory Result.fromJson(Map<String, dynamic> json) => new Result(
-        base: json["base"],
-        rel: json["rel"],
-        maxBaseVol: json["max_base_vol"],
-        minBaseVol: json["min_base_vol"],
-        createdAt: json["created_at"],
-        matches: Matches.fromJson(json["matches"]),
-        price: json["price"],
-        startedSwaps: new List<dynamic>.from(json["started_swaps"].map((x) => x)),
-        uuid: json["uuid"],
-    );
+  String base;
+  String rel;
+  String maxBaseVol;
+  String minBaseVol;
+  int createdAt;
+  Map<String, Match> matches;
+  String price;
+  List<String> startedSwaps;
+  String uuid;
 
-    Map<String, dynamic> toJson() => {
-        "base": base,
-        "rel": rel,
-        "max_base_vol": maxBaseVol,
-        "min_base_vol": minBaseVol,
-        "created_at": createdAt,
-        "matches": matches.toJson(),
-        "price": price,
-        "started_swaps": new List<dynamic>.from(startedSwaps.map((x) => x)),
-        "uuid": uuid,
-    };
-}
-
-class Matches {
-    Matches();
-
-    factory Matches.fromJson(Map<String, dynamic> json) => new Matches(
-    );
-
-    Map<String, dynamic> toJson() => {
-    };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'base': base ?? '',
+        'rel': rel ?? '',
+        'max_base_vol': maxBaseVol ?? '',
+        'min_base_vol': minBaseVol ?? '',
+        'created_at': createdAt ?? 0,
+        'matches': Map<dynamic, dynamic>.from(matches).map<dynamic, dynamic>(
+                (dynamic k, dynamic v) =>
+                    MapEntry<String, dynamic>(k, v.toJson())) ??
+            <String, Match>{},
+        'price': price ?? '',
+        'started_swaps':
+            List<dynamic>.from(startedSwaps.map<dynamic>((dynamic x) => x)) ??
+                <String>[],
+        'uuid': uuid ?? '',
+      };
 }

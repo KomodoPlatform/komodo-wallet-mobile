@@ -4,52 +4,46 @@
 
 import 'dart:convert';
 
-GetSwap getSwapFromJson(String str) {
-  final jsonData = json.decode(str);
-  return GetSwap.fromJson(jsonData);
-}
+GetSwap getSwapFromJson(String str) => GetSwap.fromJson(json.decode(str));
 
-String getSwapToJson(GetSwap data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String getSwapToJson(GetSwap data) => json.encode(data.toJson());
 
 class GetSwap {
-  String userpass;
-  String method;
-  Params params;
-
   GetSwap({
-    this.userpass,
     this.method,
     this.params,
+    this.userpass,
   });
 
-  factory GetSwap.fromJson(Map<String, dynamic> json) => new GetSwap(
-        userpass: json["userpass"],
-        method: json["method"],
-        params: Params.fromJson(json["params"]),
+  factory GetSwap.fromJson(Map<String, dynamic> json) => GetSwap(
+        method: json['method'] ?? '',
+        params: Params.fromJson(json['params']) ?? Params(),
+        userpass: json['userpass'] ?? '',
       );
 
-  Map<String, dynamic> toJson() => {
-        "userpass": userpass,
-        "method": method,
-        "params": params.toJson(),
+  String method;
+  Params params;
+  String userpass;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'method': method ?? '',
+        'params': params ?? '',
+        'userpass': userpass ?? '',
       };
 }
 
 class Params {
-  String uuid;
-
   Params({
     this.uuid,
   });
 
-  factory Params.fromJson(Map<String, dynamic> json) => new Params(
-        uuid: json["uuid"],
+  factory Params.fromJson(Map<String, dynamic> json) => Params(
+        uuid: json['uuid'] ?? '',
       );
 
-  Map<String, dynamic> toJson() => {
-        "uuid": uuid,
+  String uuid;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'uuid': uuid ?? '',
       };
 }

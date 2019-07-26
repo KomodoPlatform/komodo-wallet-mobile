@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final dialogBloc = DialogBloc();
+DialogBloc dialogBloc = DialogBloc();
 
 class DialogBloc {
   

@@ -4,22 +4,12 @@
 
 import 'dart:convert';
 
-GetOrderbook getOrderbookFromJson(String str) {
-  final jsonData = json.decode(str);
-  return GetOrderbook.fromJson(jsonData);
-}
+GetOrderbook getOrderbookFromJson(String str) =>
+    GetOrderbook.fromJson(json.decode(str));
 
-String getOrderbookToJson(GetOrderbook data) {
-  final dyn = data.toJson();
-  return json.encode(dyn);
-}
+String getOrderbookToJson(GetOrderbook data) => json.encode(data.toJson());
 
 class GetOrderbook {
-  String userpass;
-  String method;
-  String base;
-  String rel;
-
   GetOrderbook({
     this.userpass,
     this.method,
@@ -27,17 +17,22 @@ class GetOrderbook {
     this.rel,
   });
 
-  factory GetOrderbook.fromJson(Map<String, dynamic> json) => new GetOrderbook(
-        userpass: json["userpass"],
-        method: json["method"],
-        base: json["base"],
-        rel: json["rel"],
+  factory GetOrderbook.fromJson(Map<String, dynamic> json) => GetOrderbook(
+        userpass: json['userpass'] ?? '',
+        method: json['method'] ?? '',
+        base: json['base'] ?? '',
+        rel: json['rel'] ?? '',
       );
 
-  Map<String, dynamic> toJson() => {
-        "userpass": userpass,
-        "method": method,
-        "base": base,
-        "rel": rel,
+  String userpass;
+  String method;
+  String base;
+  String rel;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'userpass': userpass ?? '',
+        'method': method ?? '',
+        'base': base ?? '',
+        'rel': rel ?? '',
       };
 }
