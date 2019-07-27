@@ -17,29 +17,14 @@ import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
 import 'blocs/coins_bloc.dart';
 
 void main() {
-  // runZoned<Future<void>>(() async {
-  //   SystemChrome.setPreferredOrientations(
-  //       <DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {
-  // _checkNetworkStatus();
-  // await mm2.initMarketMaker();
-  // await _runBinMm2UserAlreadyLog();
   return runApp(BlocProvider<AuthenticateBloc>(
       bloc: AuthenticateBloc(), child: const MyApp()));
-  // });
-  // }, onError: (dynamic error, dynamic stackTrace) async {
-  //   // Whenever an error occurs, call the `reportCrash` function. This will send
-  //   // Dart errors to our dev console or Crashlytics depending on the environment.
-  //   print(stackTrace);
-  //   await FlutterCrashlytics()
-  //       .reportCrash(error, stackTrace, forceCrash: false);
-  // });
 }
 
 Future<void> startApp() async {

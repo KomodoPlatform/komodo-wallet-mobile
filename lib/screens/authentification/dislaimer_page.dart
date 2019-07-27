@@ -197,7 +197,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
                         ),
                       ),
                     ),
-                    const Text('', key: const Key('end-list-disclaimer'),),
+                    const Text('', key: Key('end-list-disclaimer'),),
                   ],
                 ),
               ),
