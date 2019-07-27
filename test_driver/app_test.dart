@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
   FlutterDriver driver;
+  final Map<String, String> envVars = Platform.environment;
 
   setUpAll(() async {
     driver = await FlutterDriver.connect();
@@ -13,6 +16,7 @@ void main() {
       driver.close();
     }
   });
+
   group('Restore wallet', () {
     test('Name Wallet', () async {
       final SerializableFinder createWalletText = find.text('CREATE A WALLET');
@@ -36,7 +40,7 @@ void main() {
 
     test('Restore seed', () async {
       await driver.tap(find.byValueKey('restore-seed-field'));
-      await driver.enterText('test');
+      await driver.enterText(envVars['SEED']);
       await driver.tap(find.byValueKey('checkbox-custom-seed'));
       await Future<void>.delayed(const Duration(milliseconds: 500), () {});
       await driver.tap(find.byValueKey('confirm-seed-button'));
