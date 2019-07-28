@@ -88,6 +88,7 @@ class MarketMakerService {
             currentBuildNumber.isEmpty ||
             currentBuildNumber != newBuildNumber) {
           await prefs.setString('version', newBuildNumber);
+          await coinsBloc.resetCoinDefault();
 
           final ByteData resultmm2 = await rootBundle.load('assets/mm2');
           await writeData(resultmm2.buffer.asUint8List());
@@ -374,8 +375,8 @@ class MarketMakerService {
         method: 'buy',
         base: base.abbr,
         rel: rel.abbr,
-        volume: volume.toStringAsFixed(8),
-        price: price.toStringAsFixed(8));
+        volume: volume.toString(),
+        price: price.toString());
     print(json.encode(getBuy));
 
     try {
