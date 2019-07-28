@@ -1,0 +1,101 @@
+[
+    {
+        "bids": [],
+        "numbids": 0,
+        "biddepth": 0,
+        "asks": [
+          {
+            "coin": "MORTY",
+            "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
+            "price": 0.89999998,
+            "numutxos": 0,
+            "avevolume": 0,
+            "maxvolume": 10855.85028615,
+            "depth": 0,
+            "pubkey": "5a2f1c468b7083c4f7649bf68a50612ffe7c38b1d62e1ece3829ca88e7e7fd12",
+            "age": 11,
+            "zcredits": 0
+          },
+          {
+            "coin": "MORTY",
+            "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
+            "price": 2.4,
+            "numutxos": 0,
+            "avevolume": 0,
+            "maxvolume": 10855.85028615,
+            "depth": 0,
+            "pubkey": "5a2f1c468b7083c4f7649bf68a50612ffe7c38b1d62e1ece3829ca88e7e7fd12",
+            "age": 11,
+            "zcredits": 0
+          },
+          {
+            "coin": "MORTY",
+            "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
+            "price": 10,
+            "numutxos": 0,
+            "avevolume": 0,
+            "maxvolume": 10855.85028615,
+            "depth": 0,
+            "pubkey": "5a2f1c468b7083c4f7649bf68a50612ffe7c38b1d62e1ece3829ca88e7e7fd12",
+            "age": 11,
+            "zcredits": 0
+          }
+        ],
+        "numasks": 1,
+        "askdepth": 0,
+        "base": "MORTY",
+        "rel": "RICK",
+        "timestamp": 1549327944,
+        "netid": 9999
+      },
+      {
+        "bids": [],
+        "numbids": 0,
+        "biddepth": 0,
+        "asks": [
+          {
+            "coin": "KMD",
+            "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
+            "price": 3.5,
+            "numutxos": 0,
+            "avevolume": 0,
+            "maxvolume": 10855.85028615,
+            "depth": 0,
+            "pubkey": "5a2f1c468b7083c4f7649bf68a50612ffe7c38b1d62e1ece3829ca88e7e7fd12",
+            "age": 11,
+            "zcredits": 0
+          },
+          {
+            "coin": "KMD",
+            "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
+            "price": 10.4,
+            "numutxos": 0,
+            "avevolume": 0,
+            "maxvolume": 10855.85028615,
+            "depth": 0,
+            "pubkey": "5a2f1c468b7083c4f7649bf68a50612ffe7c38b1d62e1ece3829ca88e7e7fd12",
+            "age": 11,
+            "zcredits": 0
+          }
+        ],
+        "numasks": 1,
+        "askdepth": 0,
+        "base": "KMD",
+        "rel": "RICK",
+        "timestamp": 1549327944,
+        "netid": 9999
+      },
+      {
+        "bids": [],
+        "numbids": 0,
+        "biddepth": 0,
+        "asks": [],
+        "numasks": 1,
+        "askdepth": 0,
+        "base": "BTC",
+        "rel": "RICK",
+        "timestamp": 1549327944,
+        "netid": 9999
+      }
+]
+
