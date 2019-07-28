@@ -37,6 +37,7 @@ class _WelcomePageState extends State<WelcomePage> {
           Center(
             child: Text(
               AppLocalizations.of(context).welcomeTitle,
+              key: const Key('titleCreateWallet'),
               style: Theme.of(context).textTheme.title.copyWith(fontSize: 32),
             ),
           ),
@@ -68,6 +69,7 @@ class _WelcomePageState extends State<WelcomePage> {
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: TextField(
+              key: const Key('name-wallet-field'),
                 maxLength: 40,
                 controller: controller,
                 onChanged: (String str) {

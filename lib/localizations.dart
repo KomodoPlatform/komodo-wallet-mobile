@@ -342,6 +342,8 @@ class AppLocalizations {
         name: 'minValue',
         args: <Object>[coinName, number],
       );
+  String get titleCreatePassword =>
+      Intl.message('CREATE A PASSWORD', name: 'titleCreatePassword');
   String minValueBuy(String coinName, double number) => Intl.message(
         'The minimun amount to buy is ${number.toString()} $coinName',
         name: 'minValue',
@@ -477,6 +479,13 @@ class AppLocalizations {
         name: 'youWillReceiveClaim',
         args: <Object>[amount, coin],
       );
+    String seeOrders(String amount) => Intl.message(
+        'Click to see $amount orders',
+        name: 'seeOrders',
+        args: <Object>[amount],
+      );
+    String get clickToSee =>
+      Intl.message('Click to see ', name: 'clickToSee');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

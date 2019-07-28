@@ -185,6 +185,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
             children: <Widget>[
               Expanded(
                 child: ListView(
+                  key: const Key('scroll-disclaimer'),
                   controller: _scrollController,
                   children: <Widget>[
                     Padding(
@@ -196,6 +197,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
                         ),
                       ),
                     ),
+                    const Text('', key: Key('end-list-disclaimer'),),
                   ],
                 ),
               ),
@@ -210,6 +212,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
                               Row(
                                 children: <Widget>[
                                   Checkbox(
+                                    key: const Key('checkbox-eula'),
                                     value: _checkBoxEULA,
                                     onChanged: (bool value) {
                                       setState(() {
@@ -225,6 +228,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
                               Row(
                                 children: <Widget>[
                                   Checkbox(
+                                    key: const Key('checkbox-toc'),
                                     value: _checkBoxTOC,
                                     onChanged: (bool value) {
                                       setState(() {
@@ -249,6 +253,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
                             ],
                           ),
                     PrimaryButton(
+                      key: const Key('next-disclaimer'),
                       onPressed: (widget.readOnly
                               ? isEndOfScroll
                               : isEndOfScroll && _checkBoxEULA && _checkBoxTOC)

@@ -17,47 +17,21 @@ import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:flutter_crashlytics/flutter_crashlytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
 import 'blocs/coins_bloc.dart';
 
-Future<void> main() async {
-  const bool isInDebugMode = false;
-
-  FlutterError.onError = (FlutterErrorDetails details) {
-    if (isInDebugMode) {
-      // In development mode simply print to console.
-      FlutterError.dumpErrorToConsole(details);
-    } else {
-      // In production mode report to the application zone to report to
-      // Crashlytics.
-      Zone.current.handleUncaughtError(details.exception, details.stack);
-    }
-  };
-  await FlutterCrashlytics().initialize();
-
-  runZoned<Future<void>>(() async {
-    SystemChrome.setPreferredOrientations(
-        <DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {
-      _checkNetworkStatus();
-      startApp();
-    });
-  }, onError: (dynamic error, dynamic stackTrace) async {
-    // Whenever an error occurs, call the `reportCrash` function. This will send
-    // Dart errors to our dev console or Crashlytics depending on the environment.
-    print(stackTrace);
-    await FlutterCrashlytics()
-        .reportCrash(error, stackTrace, forceCrash: false);
-  });
+void main() {
+  return runApp(BlocProvider<AuthenticateBloc>(
+      bloc: AuthenticateBloc(), child: const MyApp()));
 }
 
 Future<void> startApp() async {
   try {
     await mm2.initMarketMaker();
     await _runBinMm2UserAlreadyLog();
-    runApp(BlocProvider<AuthenticateBloc>(
+    return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));
   } catch (e) {
     print(e);
@@ -107,6 +81,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final LocalAuthentication auth = LocalAuthentication();
+
+  @override
+  void initState() {
+    _checkNetworkStatus();
+    mm2.initMarketMaker().then((_){
+      _runBinMm2UserAlreadyLog();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +185,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.paused:
         print('paused');
-        if (Platform.isIOS && !authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
+        if (Platform.isIOS &&
+            !authBloc.isQrCodeActive &&
+            !mainBloc.isUrlLaucherIsOpen) {
           exit(0);
         }
         dialogBloc.closeDialog(context);
