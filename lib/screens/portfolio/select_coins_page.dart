@@ -99,10 +99,12 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                                       builder: (BuildContext context,
                                           AsyncSnapshot<List<Coin>> snapshot) {
                                         return PrimaryButton(
+                                          key: const Key('done-activate-coins'),
                                           text:
                                               AppLocalizations.of(context).done,
                                           isLoading: isActive,
-                                          onPressed: snapshot.hasData && snapshot.data != null  &&
+                                          onPressed: snapshot.hasData &&
+                                                  snapshot.data != null &&
                                                   snapshot.data.isNotEmpty
                                               ? _pressDoneButton
                                               : null,
@@ -129,11 +131,14 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     return FutureBuilder<List<Coin>>(
       future: coinsBloc.getAllNotActiveCoins(),
       builder: (BuildContext context, AsyncSnapshot<List<Coin>> snapshot) {
-        if (snapshot.hasData && snapshot.data != null  && snapshot.data != null) {
+        if (snapshot.hasData &&
+            snapshot.data != null &&
+            snapshot.data != null) {
           final List<Widget> coinsToActivate = <Widget>[];
 
           for (Coin coin in snapshot.data) {
             coinsToActivate.add(BuildItemCoin(
+              key: Key('coin-activate-${coin.abbr}'),
               coin: coin,
             ));
           }
@@ -169,7 +174,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 }
 
 class BuildItemCoin extends StatefulWidget {
-  const BuildItemCoin({this.coin});
+  const BuildItemCoin({Key key, this.coin}) : super(key: key);
 
   final Coin coin;
 
@@ -236,8 +241,10 @@ class _LoadingCoinState extends State<LoadingCoin> {
         StreamBuilder<CoinToActivate>(
             initialData: coinsBloc.currentActiveCoin,
             stream: coinsBloc.outcurrentActiveCoin,
-            builder: (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
-              if (snapshot.data != null  && snapshot.data.currentStatus != null) {
+            builder:
+                (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+              if (snapshot.data != null &&
+                  snapshot.data.currentStatus != null) {
                 return Text(snapshot.data.currentStatus);
               } else {
                 return Text(AppLocalizations.of(context).connecting);

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -12,7 +11,7 @@ class RestoreSeedPage extends StatefulWidget {
 }
 
 class _RestoreSeedPageState extends State<RestoreSeedPage> {
-  TextEditingController controllerSeed =  TextEditingController();
+  TextEditingController controllerSeed = TextEditingController();
   bool _isButtonDisabled = false;
   bool _isLogin;
   bool _isSeedShow = true;
@@ -77,6 +76,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         children: <Widget>[
           Expanded(
             child: TextField(
+              key: const Key('restore-seed-field'),
               controller: controllerSeed,
               onChanged: (String str) {
                 _checkSeed(str);
@@ -150,6 +150,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
     return Row(
       children: <Widget>[
         Checkbox(
+          key: const Key('checkbox-custom-seed'),
           value: checkBox,
           onChanged: (bool data) {
             setState(() {
@@ -175,6 +176,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         child: _isLogin
             ? Center(child: const CircularProgressIndicator())
             : PrimaryButton(
+                key: const Key('confirm-seed-button'),
                 text: AppLocalizations.of(context).confirm,
                 onPressed: _isButtonDisabled ? null : _onLoginPressed),
       ),
@@ -186,13 +188,14 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
       _isButtonDisabled = true;
       _isLogin = true;
     });
-    FocusScope.of(context).requestFocus( FocusNode());
+    FocusScope.of(context).requestFocus(FocusNode());
 
     Navigator.pushReplacement<dynamic, dynamic>(
       context,
-      MaterialPageRoute<dynamic>(builder: (BuildContext context) => CreatePasswordPage(
-        seed: controllerSeed.text.toString(),
-      )),
+      MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => CreatePasswordPage(
+                seed: controllerSeed.text.toString(),
+              )),
     );
   }
 }
