@@ -24,6 +24,8 @@ dependencies:
 dev_dependencies:
   flutter_driver:
     sdk: flutter
+  flutter_test:
+    sdk: flutter
   test: any
   http: ^0.12.0
   qr_flutter: ^2.0.0+51
@@ -68,6 +70,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - assets/
+  - assets/mocks/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -100,9 +100,11 @@ class OrdersBloc implements BlocBase {
         if (order.uuid == swap.result.uuid) {
           isSwapUUIDExist = true;
         } else {
-          for (String startedSwap in order.startedSwaps) {
-            if (startedSwap == swap.result.uuid) {
-              isSwapUUIDExist = true;
+          if (order.startedSwaps != null) {
+            for (String startedSwap in order.startedSwaps) {
+              if (startedSwap == swap.result.uuid) {
+                isSwapUUIDExist = true;
+              }
             }
           }
         }

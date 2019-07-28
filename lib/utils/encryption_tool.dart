@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:password/password.dart';
+
+import 'mode.dart';
 
 class EncryptionTool {
   FlutterSecureStorage storage = FlutterSecureStorage();
@@ -29,12 +32,19 @@ class EncryptionTool {
 
   Future<String> convertToPbkdf2(String data, Wallet wallet) async {
     print(wallet.isFastEncryption ? 'FAST ENCRYPTION': 'SLOW ENCRYPTION');
-    final dynamic res = wallet.isFastEncryption ? _computeHashFastEncryption(data) : _computeHash(data);
+
+    // Workarround for run this in debug mode for driver testing https://github.com/flutter/flutter/issues/24703
+    dynamic res;
+    if (!isInDebugMode) {
+      res = wallet.isFastEncryption ? compute(_computeHashFastEncryption, data) : compute(_computeHash, DataCompute(data: data, iteration: 10000));
+    } else {
+      res = wallet.isFastEncryption ? _computeHashFastEncryption(data) : _computeHash(DataCompute(data: data, iteration: 500));
+    }
     return res;
   }
 
-  static String _computeHash(String data) {
-    return Password.hash(data, PBKDF2(iterationCount: 500));
+  static String _computeHash(DataCompute dataCompute) {
+    return Password.hash(dataCompute.data, PBKDF2(iterationCount: dataCompute.iteration));
   }
 
   static String _computeHashFastEncryption(String data) {
@@ -53,5 +63,9 @@ class EncryptionTool {
     await storage.delete(key: key);
   }
 }
-
+class DataCompute {
+  DataCompute({this.data, this.iteration});
+  String data;
+  int iteration;
+}
 enum KeyEncryption { SEED, PIN }

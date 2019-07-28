@@ -479,6 +479,13 @@ class AppLocalizations {
         name: 'youWillReceiveClaim',
         args: <Object>[amount, coin],
       );
+    String seeOrders(String amount) => Intl.message(
+        'Click to see $amount orders',
+        name: 'seeOrders',
+        args: <Object>[amount],
+      );
+    String get clickToSee =>
+      Intl.message('Click to see ', name: 'clickToSee');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
