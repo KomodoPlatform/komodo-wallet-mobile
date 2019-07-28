@@ -81,6 +81,12 @@ class Transaction {
           .format(DateTime.fromMillisecondsSinceEpoch(timestamp * 1000));
     }
   }
+
+  List<String> getToAddress() {
+    final List<String> toAddress = to;
+    toAddress.removeWhere((String toItem) => toItem == from[0]);
+    return toAddress;
+  }
 }
 
 class FeeDetails {

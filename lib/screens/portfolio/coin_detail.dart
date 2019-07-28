@@ -854,6 +854,8 @@ class _CoinDetailState extends State<CoinDetail> {
       notEnoughEth = true;
     }
 
+    final bool isButtonActive = (widget.coinBalance.coin.swapContractAddress.isEmpty && amountToPay > 0) || (amountToPay > 0 && !notEnoughEth && isEthActive);
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -905,7 +907,9 @@ class _CoinDetailState extends State<CoinDetail> {
               ),
             ],
           ),
-          notEnoughEth && isEthActive
+          widget.coinBalance.coin.swapContractAddress.isNotEmpty &&
+                  notEnoughEth &&
+                  isEthActive
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
@@ -919,7 +923,7 @@ class _CoinDetailState extends State<CoinDetail> {
                   ],
                 )
               : Container(),
-          !isEthActive
+          widget.coinBalance.coin.swapContractAddress.isNotEmpty && !isEthActive
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
@@ -1019,7 +1023,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         AppLocalizations.of(context).confirm.toUpperCase(),
                         style: Theme.of(context).textTheme.button,
                       ),
-                      onPressed: amountToPay > 0 && !notEnoughEth && isEthActive
+                      onPressed: isButtonActive
                           ? () {
                               _onPressedConfirmWithdraw(
                                   mContext, amountUserReceive);
@@ -1077,7 +1081,7 @@ class _CoinDetailState extends State<CoinDetail> {
               _addressController.text.toString(),
               sendAmount,
               double.parse(widget.coinBalance.balance.getBalance()) ==
-                  sendAmount)
+                  double.parse(_amountController.text))
           .then((dynamic data) {
         if (data is WithdrawResponse) {
           mm2
