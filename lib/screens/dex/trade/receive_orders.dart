@@ -190,43 +190,12 @@ class _AsksOrderState extends State<AsksOrder> {
                       ))
                     ],
                     rows: asksWidget,
+                  ),
+                  CreateOrder(
+                    onCreateNoOrder: widget.onCreateNoOrder,
+                    baseCoin: widget.baseCoin,
                   )
                 ],
-              ),
-            ),
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {
-                    widget.onCreateNoOrder(widget.baseCoin);
-                    Navigator.of(context).pop();
-                  },
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(32)),
-                    child: Container(
-                      color: Theme.of(context).accentColor,
-                      width: 275,
-                      height: 46,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.add,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          Text(
-                            AppLocalizations.of(context)
-                                .noOrderAvailable
-                                .toUpperCase(),
-                            style: Theme.of(context).textTheme.button.copyWith(
-                                color: Theme.of(context).primaryColor),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
               ),
             ),
           ],
@@ -347,30 +316,34 @@ class CreateOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).accentColor,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: InkWell(
-          onTap: () {
-            onCreateNoOrder(baseCoin);
-            Navigator.of(context).pop();
-          },
-          child: SafeArea(
-            child: Container(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: Text(
-                    AppLocalizations.of(context).noOrderAvailable.toUpperCase(),
-                    style: Theme.of(context).textTheme.body1.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: InkWell(
+        onTap: () {
+          onCreateNoOrder(baseCoin);
+          Navigator.of(context).pop();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.add_circle,
+                size: 30,
+                color: Theme.of(context).accentColor,
               ),
-            ),
+              const SizedBox(
+                width: 16,
+              ),
+              Text(
+                AppLocalizations.of(context).noOrderAvailable,
+                style: Theme.of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(color: Theme.of(context).accentColor),
+              )
+            ],
           ),
         ),
       ),
