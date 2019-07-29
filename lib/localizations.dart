@@ -489,7 +489,7 @@ class AppLocalizations {
     String get price =>
       Intl.message('price', name: 'price');
     String get availableVolume =>
-      Intl.message('max volume', name: 'availableVolume');
+      Intl.message('max vol', name: 'availableVolume');
       
 }
 

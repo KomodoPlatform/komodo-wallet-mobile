@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
 
 class ReceiveOrders extends StatefulWidget {
   const ReceiveOrders(
@@ -24,23 +25,16 @@ class ReceiveOrders extends StatefulWidget {
 class _ReceiveOrdersState extends State<ReceiveOrders> {
   @override
   Widget build(BuildContext context) {
-    return LockScreen(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context).receiveLower,),
-        ),
-        body: ListView(
-          children: widget.orderbooks
-              .map((Orderbook orderbook) => OrderbookItem(
-                  key: Key('orderbook-item-${orderbook.base.toLowerCase()}'),
-                  orderbook: orderbook,
-                  onCreateNoOrder: widget.onCreateNoOrder,
-                  onCreateOrder: widget.onCreateOrder,
-                  sellAmount: widget.sellAmount))
-              .toList(),
-        ),
-      ),
+    return SimpleDialog(
+      title: Text(AppLocalizations.of(context).receiveLower),
+      children: widget.orderbooks
+          .map((Orderbook orderbook) => OrderbookItem(
+              key: Key('orderbook-item-${orderbook.base.toLowerCase()}'),
+              orderbook: orderbook,
+              onCreateNoOrder: widget.onCreateNoOrder,
+              onCreateOrder: widget.onCreateOrder,
+              sellAmount: widget.sellAmount))
+          .toList(),
     );
   }
 }
@@ -178,7 +172,6 @@ class _AsksOrderState extends State<AsksOrder> {
                   DataTable(
                     columnSpacing: 0,
                     horizontalMargin: 12,
-                    dataRowHeight: 32,
                     columns: <DataColumn>[
                       DataColumn(
                           label: Text(
@@ -197,13 +190,14 @@ class _AsksOrderState extends State<AsksOrder> {
                       ))
                     ],
                     rows: asksWidget,
+                  ),
+                  CreateOrder(
+                    onCreateNoOrder: widget.onCreateNoOrder,
+                    baseCoin: widget.baseCoin,
                   )
                 ],
               ),
             ),
-            CreateOrder(
-                onCreateNoOrder: widget.onCreateNoOrder,
-                baseCoin: widget.baseCoin)
           ],
         ),
       ),
@@ -211,37 +205,44 @@ class _AsksOrderState extends State<AsksOrder> {
   }
 
   DataRow tableRow(Ask ask, int index) {
-    return DataRow(key: Key('ask-item-$index'), cells: <DataCell>[
-      DataCell(
-          Container(
-            child: Text(
-              ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
-            ),
-          ),
-          onTap: () => createOrder(ask)),
-      DataCell(
-          Container(
-            child: Text(
-              ask.maxvolume.toStringAsFixed(8) + ' ' + ask.coin.toUpperCase(),
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
-            ),
-          ),
-          onTap: () => createOrder(ask)),
-      DataCell(
-          Container(
-            child: Text(
-              ask.getReceiveAmount(widget.sellAmount) +
-                  ' ' +
-                  ask.coin.toUpperCase(),
-              style: Theme.of(context)
-                  .textTheme
-                  .body1
-                  .copyWith(fontWeight: FontWeight.bold, fontSize: 12),
-            ),
-          ),
-          onTap: () => createOrder(ask))
-    ]);
+    return DataRow(
+        selected: index % 2 == 1,
+        key: Key('ask-item-$index'),
+        cells: <DataCell>[
+          DataCell(
+              Container(
+                child: Text(
+                  ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
+                  style:
+                      Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+                ),
+              ),
+              onTap: () => createOrder(ask)),
+          DataCell(
+              Container(
+                child: Text(
+                  ask.maxvolume.toStringAsFixed(8) +
+                      ' ' +
+                      ask.coin.toUpperCase(),
+                  style:
+                      Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+                ),
+              ),
+              onTap: () => createOrder(ask)),
+          DataCell(
+              Container(
+                child: Text(
+                  ask.getReceiveAmount(widget.sellAmount) +
+                      ' ' +
+                      ask.coin.toUpperCase(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              ),
+              onTap: () => createOrder(ask))
+        ]);
   }
 
   void createOrder(Ask ask) {
@@ -315,30 +316,34 @@ class CreateOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).accentColor,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: InkWell(
-          onTap: () {
-            onCreateNoOrder(baseCoin);
-            Navigator.of(context).pop();
-          },
-          child: SafeArea(
-            child: Container(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: Text(
-                    AppLocalizations.of(context).noOrderAvailable.toUpperCase(),
-                    style: Theme.of(context).textTheme.body1.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: InkWell(
+        onTap: () {
+          onCreateNoOrder(baseCoin);
+          Navigator.of(context).pop();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.add_circle,
+                size: 30,
+                color: Theme.of(context).accentColor,
               ),
-            ),
+              const SizedBox(
+                width: 16,
+              ),
+              Text(
+                AppLocalizations.of(context).noOrderAvailable,
+                style: Theme.of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(color: Theme.of(context).accentColor),
+              )
+            ],
           ),
         ),
       ),

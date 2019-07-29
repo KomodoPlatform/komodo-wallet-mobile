@@ -584,10 +584,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void pushNewScreenChoiseOrder(List<Orderbook> orderbooks) {
-    Navigator.push<dynamic>(
-      context,
-      MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => ReceiveOrders(
+    dialogBloc.dialog = showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return ReceiveOrders(
               orderbooks: orderbooks,
               sellAmount: double.parse(_controllerAmountSell.text),
               onCreateNoOrder: (String coin) {
@@ -595,8 +595,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               },
               onCreateOrder: (String coin, String amount) {
                 _createOrder(Coin(abbr: coin), amount);
-              })),
-    );
+              });
+      }
+    ).then((_){
+      dialogBloc.dialog = null;
+    });
   }
 
   Future<void> _openDialogCoinWithBalance(Market market) async {
