@@ -268,10 +268,12 @@ class _CoinDetailState extends State<CoinDetail> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.share),
-              onPressed: () {
-                Share.share(AppLocalizations.of(context).shareAddress(
+              onPressed: () async {
+                mainBloc.isUrlLaucherIsOpen = true;
+                await Share.share(AppLocalizations.of(context).shareAddress(
                     currentCoinBalance.coin.name,
                     currentCoinBalance.balance.address));
+                mainBloc.isUrlLaucherIsOpen = false;
               },
             )
           ],
@@ -854,7 +856,10 @@ class _CoinDetailState extends State<CoinDetail> {
       notEnoughEth = true;
     }
 
-    final bool isButtonActive = (widget.coinBalance.coin.swapContractAddress.isEmpty && amountToPay > 0) || (amountToPay > 0 && !notEnoughEth && isEthActive);
+    final bool isButtonActive =
+        (widget.coinBalance.coin.swapContractAddress.isEmpty &&
+                amountToPay > 0) ||
+            (amountToPay > 0 && !notEnoughEth && isEthActive);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
