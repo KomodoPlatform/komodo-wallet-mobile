@@ -3,6 +3,7 @@
 //     final orderbook = orderbookFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:decimal/decimal.dart';
 
 Orderbook orderbookFromJson(String str) => Orderbook.fromJson(json.decode(str));
 
@@ -119,5 +120,9 @@ class Ask {
       buyAmount = maxvolume.toString();
     }
     return buyAmount;
+  }
+
+  String getReceivePrice() {
+    return (Decimal.parse('1') / Decimal.parse(price.toString())).toStringAsFixed(8);
   }
 }

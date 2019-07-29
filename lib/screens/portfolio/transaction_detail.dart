@@ -20,6 +20,13 @@ class TransactionDetail extends StatefulWidget {
 }
 
 class _TransactionDetailState extends State<TransactionDetail> {
+
+  @override
+  void dispose() {
+                      mainBloc.isUrlLaucherIsOpen = false;
+
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return LockScreen(
@@ -40,6 +47,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 }
                 final String dataToShare =
                     'Transaction detail:\nAmount: ${widget.transaction.myBalanceChange} ${widget.transaction.coin}\nDate: ${widget.transaction.getTimeFormat()}\nBlock: ${widget.transaction.blockHeight}\nConfirmations: ${widget.transaction.confirmations}\nFee: $fee ${widget.transaction.coin}\n$fromOrTo\nTx Hash: ${widget.transaction.txHash}';
+                  mainBloc.isUrlLaucherIsOpen = true;
 
                 Share.share(dataToShare);
               },
