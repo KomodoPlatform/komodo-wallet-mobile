@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
 
 class ReceiveOrders extends StatefulWidget {
   const ReceiveOrders(
@@ -24,23 +25,16 @@ class ReceiveOrders extends StatefulWidget {
 class _ReceiveOrdersState extends State<ReceiveOrders> {
   @override
   Widget build(BuildContext context) {
-    return LockScreen(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context).receiveLower,),
-        ),
-        body: ListView(
-          children: widget.orderbooks
-              .map((Orderbook orderbook) => OrderbookItem(
-                  key: Key('orderbook-item-${orderbook.base.toLowerCase()}'),
-                  orderbook: orderbook,
-                  onCreateNoOrder: widget.onCreateNoOrder,
-                  onCreateOrder: widget.onCreateOrder,
-                  sellAmount: widget.sellAmount))
-              .toList(),
-        ),
-      ),
+    return SimpleDialog(
+      title: Text(AppLocalizations.of(context).receiveLower),
+      children: widget.orderbooks
+          .map((Orderbook orderbook) => OrderbookItem(
+              key: Key('orderbook-item-${orderbook.base.toLowerCase()}'),
+              orderbook: orderbook,
+              onCreateNoOrder: widget.onCreateNoOrder,
+              onCreateOrder: widget.onCreateOrder,
+              sellAmount: widget.sellAmount))
+          .toList(),
     );
   }
 }
@@ -170,6 +164,13 @@ class _AsksOrderState extends State<AsksOrder> {
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            widget.onCreateNoOrder(widget.baseCoin);
+            Navigator.of(context).pop();
+          },
+        ),
         body: Column(
           children: <Widget>[
             Expanded(
@@ -178,7 +179,6 @@ class _AsksOrderState extends State<AsksOrder> {
                   DataTable(
                     columnSpacing: 0,
                     horizontalMargin: 12,
-                    dataRowHeight: 32,
                     columns: <DataColumn>[
                       DataColumn(
                           label: Text(
@@ -201,9 +201,6 @@ class _AsksOrderState extends State<AsksOrder> {
                 ],
               ),
             ),
-            CreateOrder(
-                onCreateNoOrder: widget.onCreateNoOrder,
-                baseCoin: widget.baseCoin)
           ],
         ),
       ),
@@ -211,7 +208,9 @@ class _AsksOrderState extends State<AsksOrder> {
   }
 
   DataRow tableRow(Ask ask, int index) {
-    return DataRow(key: Key('ask-item-$index'), cells: <DataCell>[
+    return DataRow(
+      selected: index % 2 == 1,
+      key: Key('ask-item-$index'), cells: <DataCell>[
       DataCell(
           Container(
             child: Text(
@@ -237,7 +236,7 @@ class _AsksOrderState extends State<AsksOrder> {
               style: Theme.of(context)
                   .textTheme
                   .body1
-                  .copyWith(fontWeight: FontWeight.bold, fontSize: 12),
+                  .copyWith(fontWeight: FontWeight.bold, fontSize: 14),
             ),
           ),
           onTap: () => createOrder(ask))
