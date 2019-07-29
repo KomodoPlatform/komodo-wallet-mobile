@@ -583,127 +583,105 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
+  void pushNewScreenChoiseOrder(List<Orderbook> orderbooks) {
+    Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => ReceiveOrders(
+              orderbooks: orderbooks,
+              sellAmount: double.parse(_controllerAmountSell.text),
+              onCreateNoOrder: (String coin) {
+                _noOrders(coin);
+              },
+              onCreateOrder: (String coin, String amount) {
+                _createOrder(Coin(abbr: coin), amount);
+              })),
+    );
+  }
+
   Future<void> _openDialogCoinWithBalance(Market market) async {
     if (market == Market.RECEIVE) {
-      if (swapBloc.sellCoin.coin != null) {
-        swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
-      }
-    }
-    final List<SimpleDialogOption> listDialogCoins =
-        _createListDialog(context, market, null);
+      dialogBloc.dialog = showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return DialogLooking(
+              onDone: () {
+                Navigator.of(context).pop();
+                pushNewScreenChoiseOrder(swapBloc.orderCoins);
+              },
+            );
+          }).then((dynamic _) => dialogBloc.dialog = null);
+    } else {
+      final List<SimpleDialogOption> listDialogCoins =
+          _createListDialog(context, market, null);
 
-    dialogBloc.dialog = showDialog<List<CoinBalance>>(
-        context: context,
-        builder: (BuildContext context) {
-          return market == Market.SELL
-              ? listDialogCoins.isNotEmpty
-                  ? SimpleDialog(
-                      title: Text(AppLocalizations.of(context).sell),
-                      children: listDialogCoins,
-                    )
-                  : SimpleDialog(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      backgroundColor: Colors.white,
-                      title: Column(
+      dialogBloc.dialog = showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return listDialogCoins.isNotEmpty
+                ? SimpleDialog(
+                    title: Text(AppLocalizations.of(context).sell),
+                    children: listDialogCoins,
+                  )
+                : SimpleDialog(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0)),
+                    backgroundColor: Colors.white,
+                    title: Column(
+                      children: <Widget>[
+                        Icon(
+                          Icons.info_outline,
+                          color: Theme.of(context).accentColor,
+                          size: 48,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          AppLocalizations.of(context).noFunds,
+                          style: Theme.of(context)
+                              .textTheme
+                              .title
+                              .copyWith(color: Theme.of(context).accentColor),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        )
+                      ],
+                    ),
+                    children: <Widget>[
+                      Text(AppLocalizations.of(context).noFundsDetected,
+                          style: Theme.of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(color: Theme.of(context).primaryColor)),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Row(
                         children: <Widget>[
-                          Icon(
-                            Icons.info_outline,
-                            color: Theme.of(context).accentColor,
-                            size: 48,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            AppLocalizations.of(context).noFunds,
-                            style: Theme.of(context)
-                                .textTheme
-                                .title
-                                .copyWith(color: Theme.of(context).accentColor),
-                          ),
-                          const SizedBox(
-                            height: 16,
+                          Expanded(
+                            flex: 2,
+                            child: PrimaryButton(
+                              text: AppLocalizations.of(context).goToPorfolio,
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                mainBloc.setCurrentIndexTab(0);
+                              },
+                              backgroundColor: Theme.of(context).accentColor,
+                              isDarkMode: false,
+                            ),
                           )
                         ],
                       ),
-                      children: <Widget>[
-                        Text(AppLocalizations.of(context).noFundsDetected,
-                            style: Theme.of(context).textTheme.body1.copyWith(
-                                color: Theme.of(context).primaryColor)),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              flex: 2,
-                              child: PrimaryButton(
-                                text: AppLocalizations.of(context).goToPorfolio,
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  mainBloc.setCurrentIndexTab(0);
-                                },
-                                backgroundColor: Theme.of(context).accentColor,
-                                isDarkMode: false,
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                      ],
-                    )
-              : StreamBuilder<List<Orderbook>>(
-                  initialData: swapBloc.orderCoins,
-                  stream: swapBloc.outListOrderCoin,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Orderbook>> snapshot) {
-                    bool orderHasAsks = false;
-                    if (snapshot.data != null && snapshot.data.isNotEmpty) {
-                      for (Orderbook orderbook in snapshot.data) {
-                        if (orderbook.asks != null &&
-                            orderbook.asks.isNotEmpty) {
-                          orderHasAsks = true;
-                        }
-                      }
-                      if (orderHasAsks) {
-                        return ReceiveOrders(
-                            orderbooks: snapshot.data,
-                            sellAmount:
-                                double.parse(_controllerAmountSell.text),
-                            onCreateNoOrder: (String coin) {
-                              _noOrders(coin);
-                            },
-                            onCreateOrder: (String coin, String amount) {
-                              _createOrder(Coin(abbr: coin), amount);
-                            });
-                      } else {
-                        return DialogLooking(
-                          noOrderFind: () {
-                            dialogBloc.dialog = showDialog<List<CoinBalance>>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ReceiveOrders(
-                                    orderbooks: snapshot.data,
-                                    sellAmount: double.parse(
-                                        _controllerAmountSell.text),
-                                  );
-                                });
-                          },
-                        );
-                      }
-                    } else {
-                      return const DialogLooking();
-                    }
-                  },
-                );
-        }).then((_) {
-      dialogBloc.dialog = null;
-    });
+                      const SizedBox(
+                        height: 24,
+                      ),
+                    ],
+                  );
+          }).then((dynamic _) => dialogBloc.dialog = null);
+    }
   }
 
   Future<void> _noOrders(String coin) async {
@@ -1008,9 +986,9 @@ enum Market {
 }
 
 class DialogLooking extends StatefulWidget {
-  const DialogLooking({Key key, this.noOrderFind}) : super(key: key);
+  const DialogLooking({Key key, this.onDone}) : super(key: key);
 
-  final Function noOrderFind;
+  final Function onDone;
 
   @override
   _DialogLookingState createState() => _DialogLookingState();
@@ -1021,22 +999,41 @@ class _DialogLookingState extends State<DialogLooking> {
 
   @override
   void initState() {
+    startLooking();
+    super.initState();
+  }
+
+  bool checkIfAsks() {
+    bool orderHasAsks = false;
+    if (swapBloc.orderCoins != null && swapBloc.orderCoins.isNotEmpty) {
+      for (Orderbook orderbook in swapBloc.orderCoins) {
+        if (orderbook.asks != null && orderbook.asks.isNotEmpty) {
+          orderHasAsks = true;
+        }
+      }
+    }
+    return orderHasAsks;
+  }
+
+  Future<void> startLooking() async {
     const int timerEnd = 10;
     int timerCurrent = 0;
+    await swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+    if (checkIfAsks()) {
+      widget.onDone();
+    } else {
+      timerGetOrderbook = Timer.periodic(const Duration(seconds: 5), (_) {
+        timerCurrent += 5;
 
-    timerGetOrderbook = Timer.periodic(const Duration(seconds: 5), (_) {
-      timerCurrent += 5;
-      if (timerCurrent >= timerEnd) {
-        timerGetOrderbook.cancel();
-        if (mounted) {
-          Navigator.of(context).pop();
+        if (timerCurrent >= timerEnd || checkIfAsks()) {
+          timerGetOrderbook.cancel();
+
+          widget.onDone();
+        } else {
+          swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
         }
-        widget.noOrderFind();
-      } else {
-        swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
-      }
-    });
-    super.initState();
+      });
+    }
   }
 
   @override
