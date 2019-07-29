@@ -486,6 +486,11 @@ class AppLocalizations {
       );
     String get clickToSee =>
       Intl.message('Click to see ', name: 'clickToSee');
+    String get price =>
+      Intl.message('price', name: 'price');
+    String get availableVolume =>
+      Intl.message('max volume', name: 'availableVolume');
+      
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -30,7 +30,7 @@ void main() {
       locale: locale,
       home: Builder(builder: (BuildContext context) {
         mContext = context;
-        return Scaffold(body: widgetToTest);
+        return widgetToTest;
       }),
     ));
     await tester.idle();
@@ -80,11 +80,13 @@ void main() {
           AsksOrder(
             asks: orderbook.asks,
             sellAmount: 10.0,
+            baseCoin: 'MORTY',
           ));
 
       final Finder titleFinder =
           find.text(AppLocalizations.of(mContext).receiveLower);
       expect(titleFinder, findsOneWidget);
+      expect(find.byType(Image), findsOneWidget);
     });
   });
 
@@ -101,6 +103,7 @@ void main() {
           AsksOrder(
             asks: orderbook.asks,
             sellAmount: 10.0,
+            baseCoin: 'BTC',
           ));
 
       expect(find.byKey(const Key('ask-item-0')), findsNothing);
@@ -117,11 +120,17 @@ void main() {
       const double sellAmount = 10.0;
 
       await createWidget(
-          tester, AsksOrder(asks: orderbook.asks, sellAmount: sellAmount));
+          tester, AsksOrder(asks: orderbook.asks, sellAmount: sellAmount, baseCoin: 'MORTY',));
+
+      expect(find.text(AppLocalizations.of(mContext).price), findsOneWidget);
+      expect(find.text(AppLocalizations.of(mContext).availableVolume), findsOneWidget);
+      expect(find.text(AppLocalizations.of(mContext).receive.toLowerCase()), findsOneWidget);
 
       for (int i = 0; i < orderbook.asks.length; i++) {
         expect(find.byKey(Key('ask-item-$i')), findsOneWidget);
-        expect(find.byType(Image), findsNWidgets(3));
+        expect(find.text(orderbook.asks[i].getReceivePrice() + ' ' + orderbook.asks[i].coin.toUpperCase()), findsOneWidget);
+        expect(find.text(orderbook.asks[i].maxvolume.toString() + ' ' + orderbook.asks[i].coin.toUpperCase()), findsOneWidget);
+        expect(find.text(orderbook.asks[i].getReceiveAmount(sellAmount) + ' ' + orderbook.asks[i].coin.toUpperCase()), findsOneWidget);
       }
 
       expect(find.byIcon(Icons.add_circle), findsOneWidget);
