@@ -224,6 +224,7 @@ class _CoinDetailState extends State<CoinDetail> {
     if (timer != null) {
       timer.cancel();
     }
+    mainBloc.isUrlLaucherIsOpen = false;
     super.dispose();
   }
 
@@ -273,7 +274,6 @@ class _CoinDetailState extends State<CoinDetail> {
                 await Share.share(AppLocalizations.of(context).shareAddress(
                     currentCoinBalance.coin.name,
                     currentCoinBalance.balance.address));
-                mainBloc.isUrlLaucherIsOpen = false;
               },
             )
           ],

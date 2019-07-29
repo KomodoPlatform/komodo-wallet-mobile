@@ -43,6 +43,12 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   @override
+  void dispose() {
+    mainBloc.isUrlLaucherIsOpen = false;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -606,14 +612,8 @@ class _SettingPageState extends State<SettingPage> {
       await mm2.sink.write(recentSwapsToJson(recentSwap) + '\n');
     }
     mainBloc.isUrlLaucherIsOpen = true;
-    print('BEFORE' + mainBloc.isUrlLaucherIsOpen.toString());
-
     Share.shareFile(File('${mm2.filesPath}log.txt'),
-            subject: 'My logs for the ${DateTime.now().toIso8601String()}')
-        .then((_) {
-      mainBloc.isUrlLaucherIsOpen = false;
-      print('AFTER' + mainBloc.isUrlLaucherIsOpen.toString());
-    });
+        subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 }
 
