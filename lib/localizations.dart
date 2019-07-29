@@ -330,7 +330,7 @@ class AppLocalizations {
   String get goToPorfolio =>
       Intl.message('Go to portfolio', name: 'goToPorfolio');
   String get noOrderAvailable =>
-      Intl.message('create an order', name: 'noOrderAvailable');
+      Intl.message('Click to create an order', name: 'noOrderAvailable');
   String get orderCreated =>
       Intl.message('Order created', name: 'orderCreated');
   String get orderCreatedInfo =>
