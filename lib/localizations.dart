@@ -330,7 +330,7 @@ class AppLocalizations {
   String get goToPorfolio =>
       Intl.message('Go to portfolio', name: 'goToPorfolio');
   String get noOrderAvailable =>
-      Intl.message('Click to create an order', name: 'noOrderAvailable');
+      Intl.message('create an order', name: 'noOrderAvailable');
   String get orderCreated =>
       Intl.message('Order created', name: 'orderCreated');
   String get orderCreatedInfo =>
@@ -486,6 +486,11 @@ class AppLocalizations {
       );
     String get clickToSee =>
       Intl.message('Click to see ', name: 'clickToSee');
+    String get price =>
+      Intl.message('price', name: 'price');
+    String get availableVolume =>
+      Intl.message('max volume', name: 'availableVolume');
+      
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

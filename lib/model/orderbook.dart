@@ -120,4 +120,8 @@ class Ask {
     }
     return buyAmount;
   }
+
+  String getReceivePrice() {
+    return (1 / price).toStringAsFixed(8);
+  }
 }
