@@ -584,10 +584,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void pushNewScreenChoiseOrder(List<Orderbook> orderbooks) {
+    replaceAllCommas();
     dialogBloc.dialog = showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return ReceiveOrders(
+        context: context,
+        builder: (BuildContext context) {
+          return ReceiveOrders(
               orderbooks: orderbooks,
               sellAmount: double.parse(_controllerAmountSell.text),
               onCreateNoOrder: (String coin) {
@@ -596,10 +597,17 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               onCreateOrder: (String coin, String amount) {
                 _createOrder(Coin(abbr: coin), amount);
               });
-      }
-    ).then((_){
+        }).then((_) {
       dialogBloc.dialog = null;
     });
+  }
+
+  void replaceAllCommas() {
+    _controllerAmountSell.text =
+        _controllerAmountSell.text.replaceAll(',', '.');
+    _controllerAmountReceive.text =
+        _controllerAmountReceive.text.replaceAll(',', '.');
+
   }
 
   Future<void> _openDialogCoinWithBalance(Market market) async {
@@ -689,10 +697,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _noOrders(String coin) async {
     swapBloc.updateBuyCoin(null);
-    _controllerAmountSell.text =
-        _controllerAmountSell.text.replaceAll(',', '.');
-    _controllerAmountReceive.text =
-        _controllerAmountReceive.text.replaceAll(',', '.');
+    replaceAllCommas();
     swapBloc.updateReceiveCoin(Coin(abbr: coin));
     setState(() {
       _noOrderFound = true;
@@ -705,11 +710,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<void> _createOrder(Coin coin, String amount) async {
-    _controllerAmountSell.text =
-        _controllerAmountSell.text.replaceAll(',', '.');
-    _controllerAmountReceive.text =
-        _controllerAmountReceive.text.replaceAll(',', '.');
-
+    replaceAllCommas();
     _controllerAmountReceive.clear();
     setState(() {
       swapBloc.enabledReceiveField = false;
@@ -907,10 +908,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _confirmSwap(BuildContext mContext) {
-    _controllerAmountSell.text =
-        _controllerAmountSell.text.replaceAll(',', '.');
-    _controllerAmountReceive.text =
-        _controllerAmountReceive.text.replaceAll(',', '.');
+    replaceAllCommas();
 
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mContext).showSnackBar(SnackBar(
