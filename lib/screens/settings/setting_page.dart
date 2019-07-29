@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -39,6 +40,12 @@ class _SettingPageState extends State<SettingPage> {
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    mainBloc.isUrlLaucherIsOpen = false;
+    super.dispose();
   }
 
   @override
@@ -604,7 +611,7 @@ class _SettingPageState extends State<SettingPage> {
       await mm2.sink.write('\n\nMy recent swaps: \n\n');
       await mm2.sink.write(recentSwapsToJson(recentSwap) + '\n');
     }
-
+    mainBloc.isUrlLaucherIsOpen = true;
     Share.shareFile(File('${mm2.filesPath}log.txt'),
         subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }

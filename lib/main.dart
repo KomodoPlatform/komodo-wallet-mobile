@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _checkNetworkStatus();
-    mm2.initMarketMaker().then((_){
+    mm2.initMarketMaker().then((_) {
       _runBinMm2UserAlreadyLog();
     });
     super.initState();
@@ -188,6 +188,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         if (Platform.isIOS &&
             !authBloc.isQrCodeActive &&
             !mainBloc.isUrlLaucherIsOpen) {
+          print("EXIT APPLICATION" + mainBloc.isUrlLaucherIsOpen.toString());
           exit(0);
         }
         dialogBloc.closeDialog(context);

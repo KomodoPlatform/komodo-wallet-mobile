@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/article.dart';
@@ -297,6 +298,11 @@ class IconsArticle extends StatefulWidget {
 
 class _IconsArticleState extends State<IconsArticle> {
   @override
+  void dispose() {
+                      mainBloc.isUrlLaucherIsOpen = false;
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
@@ -332,6 +338,8 @@ class _IconsArticleState extends State<IconsArticle> {
         InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(2)),
             onTap: () {
+                  mainBloc.isUrlLaucherIsOpen = true;
+
               Share.share(
                   '${AppLocalizations.of(context).articleFrom}:\n\n${widget.article.title}\nBy ${widget.article.author}\n${timeago.format(widget.article.creationDate)}\n\n${widget.article.body}');
             },
