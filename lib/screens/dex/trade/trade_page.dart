@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -148,9 +149,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
         _controllerAmountSell.text.isNotEmpty) {
-      final double bestPrice =
-          double.parse(_controllerAmountReceive.text.replaceAll(',', '.')) /
-              double.parse(_controllerAmountSell.text.replaceAll(',', '.'));
+      final String bestPrice =
+          (Decimal.parse(_controllerAmountReceive.text.replaceAll(',', '.')) / Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.'))).toString();
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoin?.coin,
@@ -184,9 +184,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             swapBloc.updateBuyCoin(OrderCoin(
                 coinBase: swapBloc.receiveCoin,
                 coinRel: swapBloc.sellCoin?.coin,
-                bestPrice: double.parse(amountSell) /
-                    double.parse(
-                        _controllerAmountReceive.text.replaceAll(',', '.')),
+                bestPrice: (Decimal.parse(amountSell) / Decimal.parse(_controllerAmountReceive.text.replaceAll(',', '.'))).toString(),
                 maxVolume: double.parse(amountSell)));
           }
 
@@ -217,8 +215,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _checkMaxVolume() {
-    if (double.parse(_controllerAmountSell.text) >=
-        swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice) {
+    if (Decimal.parse(_controllerAmountSell.text) >=
+        Decimal.parse(swapBloc.orderCoin.maxVolume.toString()) * Decimal.parse(swapBloc.orderCoin.bestPrice)) {
       _setMaxVolumeSell();
     }
   }
@@ -268,7 +266,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void _setMaxVolumeSell() {
     setState(() {
       _controllerAmountSell.setTextAndPosition(replaceAllTrainlingZero(
-          (swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice)
+          (Decimal.parse(swapBloc.orderCoin.maxVolume.toString()) * Decimal.parse(swapBloc.orderCoin.bestPrice))
               .toStringAsFixed(8)
               .replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '')));
     });
@@ -724,8 +722,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     swapBloc.updateBuyCoin(OrderCoin(
         coinBase: swapBloc.receiveCoin,
         coinRel: swapBloc.sellCoin?.coin,
-        bestPrice: double.parse(_controllerAmountSell.text) /
-            double.parse(_controllerAmountReceive.text.replaceAll(',', '.')),
+        bestPrice: (Decimal.parse(_controllerAmountSell.text) /
+            Decimal.parse(_controllerAmountReceive.text.replaceAll(',', '.'))).toString(),
         maxVolume: double.parse(_controllerAmountSell.text)));
   }
 
@@ -744,10 +742,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           final bool isOrderAvailable = orderbook.coinBase.abbr !=
                   swapBloc.sellCoin.coin.abbr &&
               double.parse(orderbook
-                      .getBuyAmount(double.parse(_controllerAmountSell.text))) >
+                      .getBuyAmount(_controllerAmountSell.text)) >
                   0;
           print('----getBuyAmount----' +
-              orderbook.getBuyAmount(double.parse(_controllerAmountSell.text)));
+              orderbook.getBuyAmount(_controllerAmountSell.text));
           dialogItem = SimpleDialogOption(
             onPressed: () async {
               _controllerAmountReceive.clear();
@@ -779,8 +777,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     children: <Widget>[
                       Flexible(
                         child: isOrderAvailable
-                            ? Text(orderbook.getBuyAmount(
-                                double.parse(_controllerAmountSell.text)))
+                            ? Text(orderbook.getBuyAmount(_controllerAmountSell.text))
                             : Text(
                                 AppLocalizations.of(context).noOrderAvailable,
                                 style: Theme.of(context)
@@ -1078,7 +1075,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
         initialData: swapBloc.orderCoin,
         stream: swapBloc.outOrderCoin,
         builder: (BuildContext context, AsyncSnapshot<OrderCoin> snapshot) {
-          if (snapshot.data != null && snapshot.data.bestPrice > 0) {
+          if (snapshot.data != null && Decimal.parse(snapshot.data.bestPrice) > Decimal.parse('0')) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(

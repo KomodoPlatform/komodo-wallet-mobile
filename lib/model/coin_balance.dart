@@ -7,7 +7,7 @@ class CoinBalance {
   Coin coin;
   Balance balance;
   double balanceUSD;
-  double priceForOne;
+  String priceForOne;
 
   String getBalanceUSD() {
     return balanceUSD.toStringAsFixed(2);

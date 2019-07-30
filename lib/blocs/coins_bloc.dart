@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -373,17 +374,17 @@ class CoinsBloc implements BlocBase {
       coinBalance = CoinBalance(coin, balance);
       if (coinBalance.balanceUSD == null &&
           double.parse(coinBalance.balance.getBalance()) > 0) {
-        coinBalance.priceForOne = price;
+        coinBalance.priceForOne = price.toString();
       } else {
-        coinBalance.priceForOne = 0.0;
+        coinBalance.priceForOne = '0';
       }
-      coinBalance.balanceUSD = coinBalance.priceForOne *
-          double.parse(coinBalance.balance.getBalance());
+      coinBalance.balanceUSD = (Decimal.parse(coinBalance.priceForOne) *
+          Decimal.parse(coinBalance.balance.getBalance())).toString();
     } else if (balance is ErrorString) {
       coinBalance = CoinBalance(
           coin, Balance(address: '', balance: '0', coin: coin.abbr));
-      coinBalance.priceForOne = price;
-      coinBalance.balanceUSD = 0.0;
+      coinBalance.priceForOne = price.toString();
+      coinBalance.balanceUSD = '0';
     }
 
     if (balance is Balance && balance.coin == 'KMD') {

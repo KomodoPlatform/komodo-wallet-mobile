@@ -188,7 +188,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         if (Platform.isIOS &&
             !authBloc.isQrCodeActive &&
             !mainBloc.isUrlLaucherIsOpen) {
-          print("EXIT APPLICATION" + mainBloc.isUrlLaucherIsOpen.toString());
           exit(0);
         }
         dialogBloc.closeDialog(context);
