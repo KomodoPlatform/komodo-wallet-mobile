@@ -379,12 +379,12 @@ class CoinsBloc implements BlocBase {
         coinBalance.priceForOne = '0';
       }
       coinBalance.balanceUSD = (Decimal.parse(coinBalance.priceForOne) *
-          Decimal.parse(coinBalance.balance.getBalance())).toString();
+          Decimal.parse(coinBalance.balance.getBalance())).toDouble();
     } else if (balance is ErrorString) {
       coinBalance = CoinBalance(
           coin, Balance(address: '', balance: '0', coin: coin.abbr));
       coinBalance.priceForOne = price.toString();
-      coinBalance.balanceUSD = '0';
+      coinBalance.balanceUSD = 0.0;
     }
 
     if (balance is Balance && balance.coin == 'KMD') {

@@ -36,9 +36,9 @@ class EncryptionTool {
     // Workarround for run this in debug mode for driver testing https://github.com/flutter/flutter/issues/24703
     dynamic res;
     if (!isInDebugMode) {
-      res = wallet.isFastEncryption ? compute(_computeHashFastEncryption, data) : compute(_computeHash, DataCompute(data: data, iteration: 10000));
+      res = wallet.isFastEncryption ? compute(_computeHashFastEncryption, DataCompute(data: data, iteration: 50)) : compute(_computeHash, DataCompute(data: data, iteration: 10000));
     } else {
-      res = wallet.isFastEncryption ? _computeHashFastEncryption(data) : _computeHash(DataCompute(data: data, iteration: 500));
+      res = wallet.isFastEncryption ? _computeHashFastEncryption(DataCompute(data: data, iteration: 1)) : _computeHash(DataCompute(data: data, iteration: 1));
     }
     return res;
   }
@@ -47,8 +47,8 @@ class EncryptionTool {
     return Password.hash(dataCompute.data, PBKDF2(iterationCount: dataCompute.iteration));
   }
 
-  static String _computeHashFastEncryption(String data) {
-    return Password.hash(data, PBKDF2(iterationCount: 50));
+  static String _computeHashFastEncryption(DataCompute dataCompute) {
+    return Password.hash(dataCompute.data, PBKDF2(iterationCount:  dataCompute.iteration));
   }
 
   Future<void> write(String key, String data) async {
