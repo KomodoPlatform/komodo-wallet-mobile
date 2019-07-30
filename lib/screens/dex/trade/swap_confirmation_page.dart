@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,7 +33,7 @@ class SwapConfirmation extends StatefulWidget {
   final String amountToSell;
   final String amountToBuy;
   final Function orderSuccess;
-  final double bestPrice;
+  final String bestPrice;
   final Coin coinBase;
   final Coin coinRel;
 
@@ -306,13 +307,12 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       isSwapMaking = true;
     });
 
-    final double amountToSell =
-        double.parse(widget.amountToSell.replaceAll(',', '.'));
-    final double amountToBuy =
-        amountToSell * (amountToSell / (amountToSell * widget.bestPrice));
+    final String amountToSell = widget.amountToSell.replaceAll(',', '.');
+    final Decimal amountToBuy =
+        Decimal.parse(amountToSell) * (Decimal.parse(amountToSell) / (Decimal.parse(amountToSell) * Decimal.parse(widget.bestPrice)));
     final Coin coinBase = widget.coinBase;
     final Coin coinRel = widget.coinRel;
-    final double price = widget.bestPrice;
+    final String price = widget.bestPrice;
 
     //reviewed by ca333
     if (widget.swapStatus == SwapStatus.BUY) {
@@ -354,7 +354,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   void _goToNextScreen(BuildContext mContext, dynamic onValue,
-      double amountToSell, double amountToBuy) {
+      String amountToSell, Decimal amountToBuy) {
     ordersBloc.updateOrdersSwaps();
     swapHistoryBloc.updateSwaps(50, null);
 

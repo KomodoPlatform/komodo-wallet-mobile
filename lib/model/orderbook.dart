@@ -85,7 +85,7 @@ class Ask {
   factory Ask.fromJson(Map<String, dynamic> json) => Ask(
         coin: json['coin'] ?? '',
         address: json['address'] ?? '',
-        price: json['price'].toDouble() ?? 0.0,
+        price: json['price'] ?? 0.0,
         maxvolume: json['maxvolume'].toDouble() ?? 0.0,
         pubkey: json['pubkey'] ?? '',
         age: json['age'] ?? 0,
@@ -94,7 +94,7 @@ class Ask {
 
   String coin;
   String address;
-  double price;
+  String price;
   double maxvolume;
   String pubkey;
   int age;
@@ -112,7 +112,7 @@ class Ask {
 
   String getReceiveAmount(double amountToSell) {
     String buyAmount = 0.toString();
-    buyAmount = (amountToSell / price).toStringAsFixed(8);
+    buyAmount = (Decimal.parse(amountToSell.toString()) / Decimal.parse(price)).toStringAsFixed(8);
     if (double.parse(buyAmount) == 0) {
       buyAmount = 0.toStringAsFixed(0);
     }

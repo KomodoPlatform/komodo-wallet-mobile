@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -165,7 +166,7 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRateUSD() {
     if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
-      final String res = (sellCoin.priceForOne * swapBloc.orderCoin.bestPrice)
+      final String res = (Decimal.parse(sellCoin.priceForOne) * Decimal.parse(swapBloc.orderCoin.bestPrice))
           .toStringAsFixed(2);
       return '($res USD)';
     } else {
@@ -181,7 +182,7 @@ class SwapBloc implements BlocBase {
   Future<double> setReceiveAmount(Coin coin, String amountSell) async {
     try {
       final Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
-      double bestPrice = 0;
+      String bestPrice = '0';
       double maxVolume = 0;
       int i = 0;
 
@@ -190,7 +191,7 @@ class SwapBloc implements BlocBase {
           if (i == 0) {
             maxVolume = ask.maxvolume;
             bestPrice = ask.price;
-          } else if (ask.price <= bestPrice && ask.maxvolume > maxVolume) {
+          } else if (Decimal.parse(ask.price) <= Decimal.parse(bestPrice) && ask.maxvolume > maxVolume) {
             maxVolume = ask.maxvolume;
             bestPrice = ask.price;
           }
@@ -208,7 +209,7 @@ class SwapBloc implements BlocBase {
       _inOrderCoin.add(orderCoin);
 
       amountReceive = double.parse(orderCoin
-          .getBuyAmount(double.parse(amountSell.replaceAll(',', '.'))));
+          .getBuyAmount(amountSell.replaceAll(',', '.')));
 
       _inAmountReceiveCoin.add(amountReceive);
       return amountReceive;
