@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:bs58check/bs58check.dart' as bs58check;
+import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -545,8 +546,8 @@ class _CoinDetailState extends State<CoinDetail> {
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, bottom: 16, top: 8),
                             child: Text(
-                              (currentCoinBalance.priceForOne *
-                                          transaction.myBalanceChange)
+                              (Decimal.parse(currentCoinBalance.priceForOne) *
+                                          Decimal.parse(transaction.myBalanceChange.toString()))
                                       .toStringAsFixed(2) +
                                   ' USD',
                               style: Theme.of(context).textTheme.body2,
