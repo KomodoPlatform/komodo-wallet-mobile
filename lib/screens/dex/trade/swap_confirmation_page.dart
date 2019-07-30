@@ -312,7 +312,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         Decimal.parse(amountToSell) * (Decimal.parse(amountToSell) / (Decimal.parse(amountToSell) * Decimal.parse(widget.bestPrice)));
     final Coin coinBase = widget.coinBase;
     final Coin coinRel = widget.coinRel;
-    final String price = (Decimal.parse(widget.bestPrice) *  Decimal.parse('1.001')).toString();
+    final String price = widget.bestPrice;
 
     //reviewed by ca333
     if (widget.swapStatus == SwapStatus.BUY) {
