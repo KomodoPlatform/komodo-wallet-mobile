@@ -169,7 +169,7 @@ class _AsksOrderState extends State<AsksOrder> {
               child: ListView(
                 children: <Widget>[
                   DataTable(
-                    columnSpacing: 0,
+                    columnSpacing: 4,
                     horizontalMargin: 12,
                     columns: <DataColumn>[
                       DataColumn(
