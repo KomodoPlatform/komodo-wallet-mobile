@@ -3,10 +3,17 @@
 //     final orderbook = orderbookFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:decimal/decimal.dart';
 
 Orderbook orderbookFromJson(String str) => Orderbook.fromJson(json.decode(str));
 
 String orderbookToJson(Orderbook data) => json.encode(data.toJson());
+
+List<Orderbook> orderbooksFromJson(String str) => List<Orderbook>.from(
+    json.decode(str).map((dynamic x) => Orderbook.fromJson(x)));
+
+String orderbooksToJson(List<Orderbook> data) => json
+    .encode(List<dynamic>.from(data.map<dynamic>((Orderbook x) => x.toJson())));
 
 class Orderbook {
   Orderbook({
@@ -22,9 +29,13 @@ class Orderbook {
   });
 
   factory Orderbook.fromJson(Map<String, dynamic> json) => Orderbook(
-        bids: json['bids'] == null ? null : List<Ask>.from(json['bids'].map((dynamic x) => Ask.fromJson(x))),
+        bids: json['bids'] == null
+            ? null
+            : List<Ask>.from(json['bids'].map((dynamic x) => Ask.fromJson(x))),
         numbids: json['numbids'] ?? 0,
-        asks: json['asks'] == null ? null : List<Ask>.from(json['asks'].map((dynamic x) => Ask.fromJson(x))),
+        asks: json['asks'] == null
+            ? null
+            : List<Ask>.from(json['asks'].map((dynamic x) => Ask.fromJson(x))),
         numasks: json['numasks'] ?? 0,
         askdepth: json['askdepth'] ?? 0,
         base: json['base'] ?? '',
@@ -44,9 +55,13 @@ class Orderbook {
   int netid;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'bids': bids == null ? null : List<dynamic>.from(bids.map<dynamic>((Ask x) => x.toJson())),
+        'bids': bids == null
+            ? null
+            : List<dynamic>.from(bids.map<dynamic>((Ask x) => x.toJson())),
         'numbids': numbids ?? 0,
-        'asks': asks == null ? null : List<dynamic>.from(asks.map<dynamic>((Ask x) => x.toJson())),
+        'asks': asks == null
+            ? null
+            : List<dynamic>.from(asks.map<dynamic>((Ask x) => x.toJson())),
         'numasks': numasks ?? 0,
         'askdepth': askdepth ?? 0,
         'base': base ?? '',
@@ -70,7 +85,7 @@ class Ask {
   factory Ask.fromJson(Map<String, dynamic> json) => Ask(
         coin: json['coin'] ?? '',
         address: json['address'] ?? '',
-        price: json['price'].toDouble() ?? 0.0,
+        price: json['price'] ?? 0.0,
         maxvolume: json['maxvolume'].toDouble() ?? 0.0,
         pubkey: json['pubkey'] ?? '',
         age: json['age'] ?? 0,
@@ -79,7 +94,7 @@ class Ask {
 
   String coin;
   String address;
-  double price;
+  String price;
   double maxvolume;
   String pubkey;
   int age;
@@ -94,4 +109,20 @@ class Ask {
         'age': age ?? 0,
         'zcredits': zcredits ?? 0,
       };
+
+  String getReceiveAmount(double amountToSell) {
+    String buyAmount = 0.toString();
+    buyAmount = (Decimal.parse(amountToSell.toString()) / Decimal.parse(price)).toStringAsFixed(8);
+    if (double.parse(buyAmount) == 0) {
+      buyAmount = 0.toStringAsFixed(0);
+    }
+    if (double.parse(buyAmount) >= maxvolume) {
+      buyAmount = maxvolume.toString();
+    }
+    return buyAmount;
+  }
+
+  String getReceivePrice() {
+    return (Decimal.parse('1') / Decimal.parse(price.toString())).toStringAsFixed(8);
+  }
 }

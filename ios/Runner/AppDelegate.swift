@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import Firebase
 import Foundation
 import CoreLocation
 import os.log
@@ -55,7 +54,6 @@ extension OSLog {
             }
         })
         
-        FirebaseApp.configure()
         GeneratedPluginRegistrant.register(with: self)
         
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)

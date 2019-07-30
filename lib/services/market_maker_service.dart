@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:io' show File, Platform, Process, ProcessResult;
 
 import 'package:crypto/crypto.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/services.dart'
     show ByteData, EventChannel, MethodChannel, rootBundle;
 import 'package:flutter/services.dart' show ByteData, rootBundle;
@@ -88,6 +89,7 @@ class MarketMakerService {
             currentBuildNumber.isEmpty ||
             currentBuildNumber != newBuildNumber) {
           await prefs.setString('version', newBuildNumber);
+          await coinsBloc.resetCoinDefault();
 
           final ByteData resultmm2 = await rootBundle.load('assets/mm2');
           await writeData(resultmm2.buffer.asUint8List());
@@ -329,7 +331,7 @@ class MarketMakerService {
     try {
       final Response response =
           await http.post(url, body: json.encode(getOrderbook));
-      print(response.body.toString());
+      print('orderbook' + response.body.toString());
       return orderbookFromJson(response.body);
     } catch (e) {
       print(e);
@@ -360,7 +362,7 @@ class MarketMakerService {
   }
 
   Future<dynamic> postBuy(
-      Coin base, Coin rel, double volume, double price) async {
+      Coin base, Coin rel, Decimal volume, String price) async {
     print('postBuy>>>>>>>>>>>>>>>>> SWAPPARAM: base: ' +
         base.abbr +
         ' rel: ' +
@@ -375,7 +377,7 @@ class MarketMakerService {
         base: base.abbr,
         rel: rel.abbr,
         volume: volume.toString(),
-        price: price.toString());
+        price: price);
     print(json.encode(getBuy));
 
     try {
@@ -430,7 +432,7 @@ class MarketMakerService {
     }
   }
 
-  Future<dynamic> postSetPrice(Coin base, Coin rel, double volume, double price,
+  Future<dynamic> postSetPrice(Coin base, Coin rel, String volume, String price,
       bool cancelPrevious, bool max) async {
     final GetSetPrice getSetPrice = GetSetPrice(
         userpass: userpass,
@@ -439,8 +441,8 @@ class MarketMakerService {
         rel: rel.abbr,
         cancelPrevious: cancelPrevious,
         max: max,
-        volume: volume.toStringAsFixed(8),
-        price: price.toStringAsFixed(8));
+        volume: volume,
+        price: price);
 
     print('postSetPrice' + getSetPriceToJson(getSetPrice));
     try {

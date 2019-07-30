@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -20,6 +21,13 @@ class TransactionDetail extends StatefulWidget {
 }
 
 class _TransactionDetailState extends State<TransactionDetail> {
+
+  @override
+  void dispose() {
+                      mainBloc.isUrlLaucherIsOpen = false;
+
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return LockScreen(
@@ -40,6 +48,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 }
                 final String dataToShare =
                     'Transaction detail:\nAmount: ${widget.transaction.myBalanceChange} ${widget.transaction.coin}\nDate: ${widget.transaction.getTimeFormat()}\nBlock: ${widget.transaction.blockHeight}\nConfirmations: ${widget.transaction.confirmations}\nFee: $fee ${widget.transaction.coin}\n$fromOrTo\nTx Hash: ${widget.transaction.txHash}';
+                  mainBloc.isUrlLaucherIsOpen = true;
 
                 Share.share(dataToShare);
               },
@@ -111,7 +120,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     ),
                   ),
                   Text(
-                    (widget.coinBalance.priceForOne * tx.myBalanceChange)
+                    (Decimal.parse(widget.coinBalance.priceForOne) * Decimal.parse(tx.myBalanceChange.toString()))
                             .toStringAsFixed(2) +
                         ' USD',
                     style: Theme.of(context).textTheme.body2,
