@@ -309,7 +309,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
 
     final String amountToSell = widget.amountToSell.replaceAll(',', '.');
     final Decimal amountToBuy =
-        Decimal.parse(amountToSell) * (Decimal.parse(amountToSell) / (Decimal.parse(amountToSell) * Decimal.parse(widget.bestPrice)));
+        Decimal.parse(amountToSell) / Decimal.parse(widget.bestPrice);
     final Coin coinBase = widget.coinBase;
     final Coin coinRel = widget.coinRel;
     final String price = widget.bestPrice;
