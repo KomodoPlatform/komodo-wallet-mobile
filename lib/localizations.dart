@@ -254,7 +254,7 @@ class AppLocalizations {
   String get hintNameYourWallet =>
       Intl.message('Name your wallet', name: 'hintNameYourWallet');
   String get infoWalletPassword => Intl.message(
-      'You can choose to encrypt your wallet with a password. If you choose not to use a password, you will need to enter your seed every time you want to access your wallet.',
+      'You have to provide a password for the wallet encryption due to security reasons.',
       name: 'infoWalletPassword');
   String get confirmPassword =>
       Intl.message('Confirm password', name: 'confirmPassword');
@@ -262,7 +262,7 @@ class AppLocalizations {
       Intl.message('I don\'t want a password', name: 'dontWantPassword');
   String get areYouSure => Intl.message('ARE YOU SURE?', name: 'areYouSure');
   String get infoPasswordDialog => Intl.message(
-      'If you do not enter a password, you will need to enter your seed phrase every time you want to access your wallet.',
+      'Use a secure password and do not store it on the same device',
       name: 'infoPasswordDialog');
   String get setUpPassword =>
       Intl.message('SET UP A PASSWORD', name: 'setUpPassword');
