@@ -84,14 +84,6 @@ class MarketMakerService {
             await Process.run('ls', <String>['${filesPath}mm2']);
         final String currentBuildNumber = prefs.getString('version');
 
-        print(checkmm2.stdout.toString().trim() != '${filesPath}mm2');
-        print(currentBuildNumber);
-        print(newBuildNumber);
-        print(checkmm2.stdout.toString().trim() != '${filesPath}mm2' ||
-            currentBuildNumber == null ||
-            currentBuildNumber.isEmpty ||
-            currentBuildNumber != newBuildNumber);
-
         if (checkmm2.stdout.toString().trim() != '${filesPath}mm2' ||
             currentBuildNumber == null ||
             currentBuildNumber.isEmpty ||
