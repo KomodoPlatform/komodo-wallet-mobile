@@ -97,7 +97,7 @@ class AppLocalizations {
       );
   String buySuccessWaitingError(String seconde) => Intl.message(
         'Ordermatch ongoing, please wait $seconde seconds!',
-        name: 'buySuccessWaiting',
+        name: 'buySuccessWaitingError',
         args: <Object>[seconde],
       );
   String get networkFee => Intl.message('Network fee', name: 'networkFee');
@@ -132,7 +132,7 @@ class AppLocalizations {
   String get commingsoon =>
       Intl.message('TX details coming soon!', name: 'commingsoon');
   String get history => Intl.message('history', name: 'history');
-  String get create => Intl.message('trade', name: 'trade');
+  String get create => Intl.message('trade', name: 'create');
   String get commingsoonGeneral =>
       Intl.message('Details coming soon!', name: 'commingsoonGeneral');
   String get orderMatching =>
@@ -166,12 +166,12 @@ class AppLocalizations {
   String get from => Intl.message('From', name: 'from');
   String get to => Intl.message('To', name: 'to');
   String get txConfirmed => Intl.message('CONFIRMED', name: 'txConfirmed');
-  String get txNotConfirmed => Intl.message('UNCONFIRMED', name: 'txConfirmed');
+  String get txNotConfirmed => Intl.message('UNCONFIRMED', name: 'txNotConfirmed');
   String get txBlock => Intl.message('Block', name: 'txBlock');
   String get txConfirmations =>
       Intl.message('Confirmations', name: 'txConfirmations');
   String get txFee => Intl.message('Fee', name: 'txFee');
-  String get txHash => Intl.message('Transaction ID', name: 'Tx Hash');
+  String get txHash => Intl.message('Transaction ID', name: 'txHash');
   String get noSwaps => Intl.message('No history.', name: 'noSwaps');
   String get trade => Intl.message('TRADE', name: 'trade');
   String get tradeCompleted =>
@@ -182,13 +182,13 @@ class AppLocalizations {
       Intl.message('Requested Trade', name: 'requestedTrade');
   String get swapID => Intl.message('Swap ID', name: 'swapID');
   String get mediaBrowse => Intl.message('BROWSE', name: 'mediaBrowse');
-  String get mediaSaved => Intl.message('SAVED', name: 'saved');
+  String get mediaSaved => Intl.message('SAVED', name: 'mediaSaved');
   String get articleFrom => Intl.message('AtomicDEX NEWS', name: 'articleFrom');
   String get mediaNotSavedDescription =>
       Intl.message('YOU HAVE NO SAVED ARTICLES',
           name: 'mediaNotSavedDescription');
   String get mediaBrowseFeed =>
-      Intl.message('BROWSE FEED', name: 'mediaNotSavedDescription');
+      Intl.message('BROWSE FEED', name: 'mediaBrowseFeed');
   String get mediaBy => Intl.message('By', name: 'mediaBy');
   String get lockScreenAuth =>
       Intl.message('Please authenticate!', name: 'lockScreenAuth');
@@ -294,7 +294,7 @@ class AppLocalizations {
       Intl.message(' In order to restore your wallet in the future.',
           name: 'settingDialogSpan5');
   String get backupTitle => Intl.message('Backup', name: 'backupTitle');
-  String get version => Intl.message('version', name: 'verion');
+  String get version => Intl.message('version', name: 'version');
   String get viewSeed => Intl.message('View Seed', name: 'viewSeed');
   String get enterpassword =>
       Intl.message('Please enter your password to continue.',
@@ -337,16 +337,16 @@ class AppLocalizations {
       Intl.message('Order succsessfully created', name: 'orderCreatedInfo');
   String get showMyOrders =>
       Intl.message('SHOW MY ORDERS', name: 'showMyOrders');
-  String minValue(String coinName, double number) => Intl.message(
-        'The minimun amount to sell is ${number.toString()} $coinName',
+  String minValue(String coinName, String number) => Intl.message(
+        'The minimun amount to sell is $number $coinName',
         name: 'minValue',
         args: <Object>[coinName, number],
       );
   String get titleCreatePassword =>
       Intl.message('CREATE A PASSWORD', name: 'titleCreatePassword');
-  String minValueBuy(String coinName, double number) => Intl.message(
-        'The minimun amount to buy is ${number.toString()} $coinName',
-        name: 'minValue',
+  String minValueBuy(String coinName, String number) => Intl.message(
+        'The minimun amount to buy is $number $coinName',
+        name: 'minValueBuy',
         args: <Object>[coinName, number],
       );
   String get encryptingWallet =>

@@ -878,7 +878,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoin.coin.abbr, 3)),
+            .minValue(swapBloc.sellCoin.coin.abbr, 3.toString())),
       ));
       return false;
     } else if (_controllerAmountSell.text != null &&
@@ -887,7 +887,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoin.coin.abbr, 0.00777)),
+            .minValue(swapBloc.sellCoin.coin.abbr, 0.00777.toString())),
       ));
       return false;
     } else if (_controllerAmountReceive.text != null &&
@@ -896,7 +896,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValueBuy(swapBloc.receiveCoin.abbr, 0.00777)),
+            .minValueBuy(swapBloc.receiveCoin.abbr, 0.00777.toString())),
       ));
       return false;
     } else {
