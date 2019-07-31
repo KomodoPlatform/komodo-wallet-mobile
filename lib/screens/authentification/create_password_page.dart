@@ -86,13 +86,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
             const SizedBox(
               height: 24,
             ),
-            Text(
-              AppLocalizations.of(context).infoWalletPassword,
-              style: Theme.of(context).textTheme.body2,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

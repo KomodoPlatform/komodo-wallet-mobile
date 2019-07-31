@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        supportedLocales: const <Locale>[Locale('en')],
+        supportedLocales: const <Locale>[Locale('en'), Locale('fr'), Locale('de')],
         theme: ThemeData(
           brightness: Brightness.dark,
           primaryColor: const Color.fromRGBO(42, 54, 71, 1),

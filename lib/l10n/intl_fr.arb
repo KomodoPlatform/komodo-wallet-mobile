@@ -1,0 +1,1226 @@
+{
+  "createPin": "Créer un code PIN",
+  "@createPin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterPinCode": "Entrez votre code PIN",
+  "@enterPinCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "se connecter",
+  "@login": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newAccount": "nouveau compte",
+  "@newAccount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newAccountUpper": "Nouveau compte",
+  "@newAccountUpper": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addingCoinSuccess": "{name} activé avec succès!",
+  "@addingCoinSuccess": {
+    "type": "text",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "connecting": "Connection...",
+  "@connecting": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCoin": "Activer la crypto-monnaie",
+  "@addCoin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "numberAssets": "{assets} Actifs",
+  "@numberAssets": {
+    "type": "text",
+    "placeholders": {
+      "assets": {}
+    }
+  },
+  "enterSeedPhrase": "Entrez votre passphrase",
+  "@enterSeedPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exampleHintSeed": "Exemple: build case level ...",
+  "@exampleHintSeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirm": "confirmer",
+  "@confirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "buy": "Acheter",
+  "@buy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sell": "Vendre",
+  "@sell": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "shareAddress": "Mon adresse {coinName} : {address}",
+  "@shareAddress": {
+    "type": "text",
+    "placeholders": {
+      "coinName": {},
+      "address": {}
+    }
+  },
+  "withdraw": "Envoyer",
+  "@withdraw": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorValueEmpty": "La valeur est trop élevée ou trop basse",
+  "@errorValueEmpty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "Montant",
+  "@amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addressSend": "Adresse du destinataire",
+  "@addressSend": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "withdrawValue": "ENVOYER {amount} {coinName}",
+  "@withdrawValue": {
+    "type": "text",
+    "placeholders": {
+      "amount": {},
+      "coinName": {}
+    }
+  },
+  "withdrawConfirm": "Confirmer le retrait",
+  "@withdrawConfirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "close": "Fermer",
+  "@close": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmSeed": "Confirmer la passphrase",
+  "@confirmSeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "seedPhraseTitle": "Votre nouvelle passphrase",
+  "@seedPhraseTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "getBackupPhrase": "Important: sauvegardez votre passphrase avant de continuer!",
+  "@getBackupPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recommendSeedMessage": "Nous vous recommandons de la stocker hors ligne.",
+  "@recommendSeedMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "next": "suivant",
+  "@next": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmPin": "Confirmer le code PIN",
+  "@confirmPin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTryAgain": "Erreur, veuillez réessayer",
+  "@errorTryAgain": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "Réglages",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "security": "Sécurité",
+  "@security": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "activateAccessPin": "Activer la protection par code PIN",
+  "@activateAccessPin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lockScreen": "L'écran est verrouillé",
+  "@lockScreen": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "changePin": "Changer le code PIN",
+  "@changePin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "Se Déconnecter",
+  "@logout": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "max": "MAX",
+  "@max": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountToSell": "Montant à vendre",
+  "@amountToSell": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "youWillReceived": "Vous allez recevoir: ",
+  "@youWillReceived": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoinToSell": "Sélectionnez la crypto-monnaie que vous souhaitez vendre",
+  "@selectCoinToSell": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoinToBuy": "Sélectionnez la crypto-monnaie que vous souhaitez acheter",
+  "@selectCoinToBuy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swap": "échanger",
+  "@swap": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "buySuccessWaiting": "Échange émis, veuillez patienter!",
+  "@buySuccessWaiting": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "buySuccessWaitingError": "Ordre en cours, veuillez patienter {seconde} secondes!",
+  "@buySuccessWaitingError": {
+    "type": "text",
+    "placeholders": {
+      "seconde": {}
+    }
+  },
+  "networkFee": "Frais de réseau",
+  "@networkFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "commissionFee": "frais de commission",
+  "@commissionFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "portfolio": "Portefeuille",
+  "@portfolio": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkOut": "Check-out",
+  "@checkOut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "estimateValue": "Valeur totale estimée",
+  "@estimateValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectPaymentMethod": "Sélectionnez votre méthode de paiement",
+  "@selectPaymentMethod": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "volumes": "Les volumes",
+  "@volumes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "placeOrder": "Passer votre ordre",
+  "@placeOrder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "comingSoon": "Arrive bientôt...",
+  "@comingSoon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketplace": "Marché",
+  "@marketplace": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "youAreSending": "Vous envoyez:",
+  "@youAreSending": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "code": "Code: ",
+  "@code": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "value": "Valeur: ",
+  "@value": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paidWith": "Payé avec ",
+  "@paidWith": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorValueNotEmpty": "S'il vous plaît entrer des données",
+  "@errorValueNotEmpty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAmountBalance": "Solde insuffisant",
+  "@errorAmountBalance": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNotAValidAddress": "Adresse non valide",
+  "@errorNotAValidAddress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "toAddress": "Adresse de destination:",
+  "@toAddress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "receive": "RECEVOIR",
+  "@receive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "send": "ENVOYER",
+  "@send": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "back": "retour",
+  "@back": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "commingsoon": "Détails TX à venir bientôt!",
+  "@commingsoon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "history": "historique",
+  "@history": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "create": "Échange",
+  "@create": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "commingsoonGeneral": "Détails à venir bientôt!",
+  "@commingsoonGeneral": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderMatching": "Recherche d'ordre",
+  "@orderMatching": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderMatched": "Ordre trouvé",
+  "@orderMatched": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapOngoing": "Echange en cours",
+  "@swapOngoing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapSucceful": "Échange réussi",
+  "@swapSucceful": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "timeOut": "Temps écoulé",
+  "@timeOut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapFailed": "L'échange a échoué",
+  "@swapFailed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTryLater": "Erreur, merci d'essayer plus tard",
+  "@errorTryLater": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedback": "Envoyer des commentaires",
+  "@feedback": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingOrderbook": "Chargement des ordres ...",
+  "@loadingOrderbook": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "claim": "réclamer",
+  "@claim": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "claimTitle": "Réclamer votre récompense KMD?",
+  "@claimTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "success": "Succès!",
+  "@success": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noRewardYet": "Aucune récompense ne peut être demandée - veuillez réessayer dans 1h.",
+  "@noRewardYet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "Chargement...",
+  "@loading": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dex": "DEX",
+  "@dex": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "media": "Média",
+  "@media": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newsFeed": "Fil d'actualité",
+  "@newsFeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "appName": "atomicDEX",
+  "@appName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clipboard": "Copié dans le presse-papier",
+  "@clipboard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "from": "De",
+  "@from": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "to": "À",
+  "@to": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txConfirmed": "CONFIRMÉ",
+  "@txConfirmed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txNotConfirmed": "NON CONFIRMÉ",
+  "@txNotConfirmed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txBlock": "Bloc",
+  "@txBlock": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txConfirmations": "Confirmations",
+  "@txConfirmations": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txFee": "Frais",
+  "@txFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txHash": "Identifiant de transaction",
+  "@txHash": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noSwaps": "Pas d'historique.",
+  "@noSwaps": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "trade": "COMMERCE",
+  "@trade": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tradeCompleted": "ECHANGE TERMINÉ!",
+  "@tradeCompleted": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "step": "Étape",
+  "@step": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tradeDetail": "DÉTAILS DE L'ÉCHANGE",
+  "@tradeDetail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestedTrade": "Commerce demandé",
+  "@requestedTrade": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapID": "Echange ID",
+  "@swapID": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaBrowse": "FEUILLETER",
+  "@mediaBrowse": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaSaved": "ENREGISTRÉ",
+  "@mediaSaved": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "articleFrom": "AtomicDEX NOUVELLES",
+  "@articleFrom": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaNotSavedDescription": "VOUS N'AVEZ PAS D'ARTICLES ENREGISTRÉS",
+  "@mediaNotSavedDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaBrowseFeed": "PARCOURIR",
+  "@mediaBrowseFeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaBy": "Par",
+  "@mediaBy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lockScreenAuth": "S'il vous plaît authentifiez vous!",
+  "@lockScreenAuth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noTxs": "Aucune transactions",
+  "@noTxs": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "done": "Terminé",
+  "@done": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoinTitle": "Activer les crypto-monnaie:",
+  "@selectCoinTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoinInfo": "Sélectionnez les crypto-monnaie que vous souhaitez ajouter à votre portefeuille.",
+  "@selectCoinInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noArticles": "Pas d'articles - s'il vous plaît revenez plus tard!",
+  "@noArticles": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "infoTrade1": "La demande d'échange ne peut pas être annulée et constitue un événement final!",
+  "@infoTrade1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "infoTrade2": "Cette transaction peut prendre jusqu'à 10 minutes. NE FERMEZ PAS cette application!",
+  "@infoTrade2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapDetailTitle": "CONFIRMEZ LES DÉTAILS DE L’ÉCHANGE",
+  "@swapDetailTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhrase": "Vérifier la passphrase",
+  "@checkSeedPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhraseTitle": "VERIFIONS UNE NOUVELLE FOIS VOTRE PASSPHRASE",
+  "@checkSeedPhraseTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhraseInfo": "Votre pass-phrase est importante - c'est pourquoi nous voulons nous assurer qu'elle est correcte. Nous vous poserons trois questions différentes sur votre passphrase pour vous assurer que vous pourrez facilement restaurer votre portefeuille à tout moment.",
+  "@checkSeedPhraseInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhraseSubtile": "Quel est le {index} . mot dans votre passphrase?",
+  "@checkSeedPhraseSubtile": {
+    "type": "text",
+    "placeholders": {
+      "index": {}
+    }
+  },
+  "checkSeedPhraseHint": "Entrez le {index} . mot",
+  "@checkSeedPhraseHint": {
+    "type": "text",
+    "placeholders": {
+      "index": {}
+    }
+  },
+  "checkSeedPhraseButton1": "CONTINUER",
+  "@checkSeedPhraseButton1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhraseButton2": "RETOURNEZ ET VÉRIFIEZ À NOUVEAU",
+  "@checkSeedPhraseButton2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "takerpaymentsID": "Identifiant du preneur d'ordre",
+  "@takerpaymentsID": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "makerpaymentID": "Identifiant du créateur d'ordre",
+  "@makerpaymentID": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "activateAccessBiometric": "Activer la protection biométrique",
+  "@activateAccessBiometric": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "allowCustomSeed": "Autoriser les passphrases personnalisées",
+  "@allowCustomSeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintEnterPassword": "Tapez votre mot de passe",
+  "@hintEnterPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInWithSeedPhrase": "Connectez-vous avec la passphrase",
+  "@signInWithSeedPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInWithPassword": "Se connecter avec mot de passe",
+  "@signInWithPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintEnterSeedPhrase": "Entrez votre passphrase",
+  "@hintEnterSeedPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wrongPassword": "Le mot de passe ne correspond pas. Veuillez réessayer.",
+  "@wrongPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintNameYourWallet": "Nommez votre portefeuille",
+  "@hintNameYourWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "infoWalletPassword": "Vous pouvez choisir de chiffrer votre portefeuille avec un mot de passe. Si vous choisissez de ne pas utiliser de mot de passe, vous devrez entrer votre passphrase chaque fois que vous souhaitez accéder à votre portefeuille.",
+  "@infoWalletPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmPassword": "Confirmez le mot de passe",
+  "@confirmPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dontWantPassword": "Je ne veux pas de mot de passe",
+  "@dontWantPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "areYouSure": "ÊTES-VOUS SÛR?",
+  "@areYouSure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "infoPasswordDialog": "Si vous n'entrez pas de mot de passe, vous devrez entrer votre passphrase chaque fois que vous souhaitez accéder à votre portefeuille.",
+  "@infoPasswordDialog": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "setUpPassword": "CONFIGURER UN MOT DE PASSE",
+  "@setUpPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "createAWallet": "CRÉER UN PORTEFEUILLE",
+  "@createAWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "restoreWallet": "RESTAURER",
+  "@restoreWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintPassword": "Mot de passe",
+  "@hintPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintConfirmPassword": "Confirmez le mot de passe",
+  "@hintConfirmPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintCurrentPassword": "Mot de passe actuel",
+  "@hintCurrentPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logoutsettings": "Paramètres de déconnexion",
+  "@logoutsettings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logoutOnExit": "Déconnexion à la sortie",
+  "@logoutOnExit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteWallet": "Supprimer le portefeuille",
+  "@deleteWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "delete": "Effacer",
+  "@delete": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan1": "Etes-vous sûr que vous voulez supprimer ",
+  "@settingDialogSpan1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan2": " portefeuille?",
+  "@settingDialogSpan2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan3": "Si oui, assurez-vous de ",
+  "@settingDialogSpan3": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan4": " enregistrez votre passphrase.",
+  "@settingDialogSpan4": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan5": " Afin de restaurer votre portefeuille à l'avenir.",
+  "@settingDialogSpan5": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "backupTitle": "Sauvegarde",
+  "@backupTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "version": "version",
+  "@version": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewSeed": "Voir la passphrase",
+  "@viewSeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterpassword": "Veuillez entrer votre mot de passe pour continuer.",
+  "@enterpassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clipboardCopy": "Copier dans le presse-papier",
+  "@clipboardCopy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeTitle": "BIENVENUE",
+  "@welcomeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeName": "AtomicDEX",
+  "@welcomeName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeWallet": "portefeuille",
+  "@welcomeWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeInfo": "AtomicDEX mobile est un portefeuille multi crypto-monnaies de nouvelle génération doté de la fonctionnalité DEX native de troisième génération et encore bien plus.",
+  "@welcomeInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeLetSetUp": "CONFIGURONS!",
+  "@welcomeLetSetUp": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "unlock": "ouvrir",
+  "@unlock": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noOrder": "Aucun ordre {coinName} disponible - réessayez ultérieurement ou créez un ordre.",
+  "@noOrder": {
+    "type": "text",
+    "placeholders": {
+      "coinName": {}
+    }
+  },
+  "bestAvailableRate": "Meilleur tarif disponible",
+  "@bestAvailableRate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "receiveLower": "Recevoir",
+  "@receiveLower": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "makeAorder": "creer un ordre",
+  "@makeAorder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exchangeTitle": "ÉCHANGE",
+  "@exchangeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orders": "ordres",
+  "@orders": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoin": "Sélectionnez une crypto-monnaie",
+  "@selectCoin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noFunds": "Pas de fonds",
+  "@noFunds": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noFundsDetected": "Pas de fonds disponibles - faire un dépot s'il vous plaît.",
+  "@noFundsDetected": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "goToPorfolio": "Aller au portefeuille",
+  "@goToPorfolio": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noOrderAvailable": "Cliquez pour créer un ordre",
+  "@noOrderAvailable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderCreated": "Ordre créée",
+  "@orderCreated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderCreatedInfo": "Ordre créée avec succès",
+  "@orderCreatedInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showMyOrders": "MONTRER MES COMMANDES",
+  "@showMyOrders": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "minValue": "Le montant minimum à vendre est {number} {coinName}",
+  "@minValue": {
+    "type": "text",
+    "placeholders": {
+      "coinName": {},
+      "number": {}
+    }
+  },
+  "titleCreatePassword": "CRÉER UN MOT DE PASSE",
+  "@titleCreatePassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "minValueBuy": "Le montant minimum à acheter est {number} {coinName}",
+  "@minValueBuy": {
+    "type": "text",
+    "placeholders": {
+      "coinName": {},
+      "number": {}
+    }
+  },
+  "encryptingWallet": "Chiffrement du portefeuille...",
+  "@encryptingWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "decryptingWallet": "Décryptage du portefeuille...",
+  "@decryptingWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notEnoughtBalanceForFee": "Pas assez de solde pour les frais - échangez un montant inférieur",
+  "@notEnoughtBalanceForFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noInternet": "Pas de connexion Internet",
+  "@noInternet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "legalTitle": "Légal",
+  "@legalTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "disclaimerAndTos": "Avertissement et Conditions d'utilisation",
+  "@disclaimerAndTos": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "accepteula": "Accepter le EULA",
+  "@accepteula": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "accepttac": "Accepter les termes et conditions",
+  "@accepttac": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmeula": "En cliquant sur les boutons ci-dessous, vous confirmez avoir pris connaissance du 'EULA' et des 'Conditions générales' et les accepter.",
+  "@confirmeula": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle1": "Contrat de licence utilisateur final (EULA) d’atomicDEX mobile:\n\n",
+  "@eulaTitle1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle2": "TERMES ET CONDITIONS: (CONTRAT D'UTILISATEUR DE L'APPLICATION)\n\n",
+  "@eulaTitle2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle3": "TERMES ET CONDITIONS D'UTILISATION ET LIMITATION DE RESPONSABILITÉ\n\n",
+  "@eulaTitle3": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle4": "USAGE GÉNÉRAL\n\n",
+  "@eulaTitle4": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle5": "MODIFICATIONS\n\n",
+  "@eulaTitle5": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle6": "LIMITES D'UTILISATION\n\n",
+  "@eulaTitle6": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle7": "Comptes et abonnement\n\n",
+  "@eulaTitle7": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle8": "Des sauvegardes\n\n",
+  "@eulaTitle8": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle9": "AVERTISSEMENT GÉNÉRAL\n\n",
+  "@eulaTitle9": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle10": "ACCÈS ET SÉCURITÉ\n\n",
+  "@eulaTitle10": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle11": "DROITS DE PROPRIÉTÉ INTELLECTUELLE\n\n",
+  "@eulaTitle11": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle12": "AVERTISSEMENT\n\n",
+  "@eulaTitle12": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle13": "REPRÉSENTATIONS ET GARANTIES, INDEMNISATION ET LIMITATION DE RESPONSABILITÉ\n\n",
+  "@eulaTitle13": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle14": "FACTEURS DE RISQUE GÉNÉRAUX\n\n",
+  "@eulaTitle14": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle15": "INDEMNITÉ\n\n",
+  "@eulaTitle15": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle16": "INFORMATIONS SUR LES RISQUES LIÉS AU PORTEFEUILLE\n\n",
+  "@eulaTitle16": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle17": "AUCUN CONSEIL D'INVESTISSEMENT OU DE COURTAGE\n\n",
+  "@eulaTitle17": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle18": "RÉSILIATION\n\n",
+  "@eulaTitle18": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle19": "DROITS DE TIERCE PARTIE\n\n",
+  "@eulaTitle19": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle20": "NOS OBLIGATIONS LEGALES\n\n",
+  "@eulaTitle20": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe1": "Le présent contrat de licence d'utilisateur final ('EULA') est un contrat légal entre vous et Komodo Platform. Cet accord de EULA régit votre acquisition et votre utilisation de notre logiciel mobile atomicDEX («Logiciel», «Application mobile», «Application» ou «Application») directement de Komodo Platform ou indirectement via une entité autorisée, revendeur ou distributeur Komodo Platform Distributeur'). Veuillez lire attentivement cet accord de EULA avant de terminer le processus d'installation et d'utiliser le logiciel atomicDEX mobile. Il fournit une licence d'utilisation du logiciel atomicDEX mobile et contient des informations sur la garantie et des exclusions de responsabilité. Si vous vous inscrivez au programme bêta du logiciel atomicDEX mobile, cet accord de EULA régira également cet essai. En cliquant sur 'accepter' ou en installant et / ou en utilisant le logiciel atomicDEX mobile, vous confirmez votre acceptation du logiciel et acceptez d'être lié par les termes du présent contrat de EULA. Si vous concluez ce contrat de licence utilisateur final au nom d'une société ou d'une autre entité juridique, vous déclarez que vous avez le pouvoir de lier cette entité et ses sociétés affiliées aux présentes conditions générales. Si vous ne disposez pas de cette autorité ou si vous n'êtes pas d'accord avec les termes et conditions de ce contrat de EULA, n'installez ni n'utilisez le logiciel, et vous ne devez pas accepter ce contrat de EULA. Le présent contrat de EULA ne s'applique qu'au logiciel fourni par Komodo Platform, que d'autres logiciels soient mentionnés ou décrits dans les présentes. Les conditions s'appliquent également aux mises à jour, aux suppléments, aux services Internet et aux services d'assistance du logiciel Komodo Platform, à moins que d'autres conditions ne les accompagnent à la livraison. Dans l'affirmative, ces termes s'appliquent. License Grant Komodo Platform vous accorde par la présente une licence personnelle, non transférable et non exclusive vous permettant d'utiliser le logiciel atomicDEX mobile sur vos appareils conformément aux termes de cet accord de EULA. Vous êtes autorisé à charger le logiciel atomicDEX mobile (par exemple, un PC, un ordinateur portable, un téléphone portable ou une tablette) sous votre contrôle. Vous devez vous assurer que votre appareil répond aux exigences minimales en matière de sécurité et de ressources du logiciel atomicDEX mobile. Vous n'êtes pas autorisé à: Editer, altérer, modifier, adapter, traduire ou modifier de quelque manière que ce soit tout ou partie du Logiciel, ni permettre que tout ou partie du Logiciel soit combiné ou intégré à un autre logiciel, ni décompilé , désassembler ou désosser le logiciel ou tenter de faire de telles choses. Reproduire, copier, distribuer, revendre ou utiliser le logiciel à des fins commerciales. Utiliser le logiciel de manière à enfreindre les lois locales, nationales ou internationales applicables. Utiliser le logiciel à des fins commerciales. Komodo Platform conserve à tout moment la propriété du logiciel tel que téléchargé à l'origine et de tous les téléchargements ultérieurs du logiciel que vous avez effectués. Le logiciel (ainsi que les droits d'auteur et autres droits de propriété intellectuelle de quelque nature que ce soit, y compris les modifications qui y sont apportées) sont et resteront la propriété de Komodo Platform. Komodo Platform se réserve le droit d'octroyer des licences d'utilisation du logiciel à des tiers. Résiliation Le présent contrat de EULA entre en vigueur à compter de la date à laquelle vous utilisez le logiciel pour la première fois et reste en vigueur jusqu'à sa résiliation. Vous pouvez le résilier à tout moment en envoyant un avis écrit à Komodo Platform. Il sera également mis fin immédiatement si vous ne respectez aucune des conditions de cet accord de EULA. En cas de résiliation, les licences accordées par le présent contrat de EULA seront immédiatement résiliées et vous acceptez d'arrêter tout accès et utilisation du logiciel. Les dispositions qui, de par leur nature, persistent et survivent survivront à toute résiliation de cet accord de EULA. Loi applicable Le présent contrat de EULA et tout litige né de ou en relation avec le présent contrat de EULA sont régis et interprétés conformément à la législation du Vietnam. Ce document a été mis à jour le 3 juillet 2019\n\n",
+  "@eulaParagraphe1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe2": "Cet avis de non-responsabilité s'applique au contenu et aux services de l'application AtomicDEX et est valable pour tous les utilisateurs de «l'application» («logiciel», «application mobile», «application» ou «application»). L'application appartient à Komodo Platform. Nous nous réservons le droit de modifier les conditions générales suivantes (régissant l'utilisation de l'application «atomicDEX mobile») à tout moment, sans préavis et à notre seule discrétion. Il est de votre responsabilité de vérifier périodiquement les présentes conditions d'utilisation pour toute mise à jour de celles-ci, qui entrera en vigueur une fois publiée. Votre utilisation continue de l'application sera considérée comme une acceptation des Conditions suivantes. Nous sommes une société constituée au Vietnam et les présentes conditions générales sont régies et soumises aux lois vietnamiennes. Si vous n'acceptez pas ces conditions générales, vous ne devez pas utiliser ou accéder à ce logiciel.\n\n",
+  "@eulaParagraphe2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe3": "En signant cet accord (chaque sujet accédant ou utilisant le site) Accord (en écriture) Vous déclarez que vous êtes un individu majeur (au moins 18 ans) et que vous avez la capacité de signer cet accord d’utilisateur et acceptez d'être légalement lié par les termes et conditions du présent contrat d'utilisation, tels qu'ils sont incorporés ici et modifiés de temps à autre. Afin de pouvoir utiliser les services fournis par Komodo Platform, vous devrez peut-être fournir certains détails d'identification conformément à notre programme de conformité «Connaissez votre client» et «Anti-blanchiment d'argent».\n\n",
+  "@eulaParagraphe3": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe4": "Nous pouvons modifier les termes de cet accord d'utilisateur à tout moment. De telles modifications prendront effet lors de la publication dans l'application ou lors de l'utilisation des services. Lisez attentivement le contrat d'utilisation chaque fois que vous utilisez nos services. Votre utilisation continue des services signifiera que vous acceptez d'être lié par le présent contrat d'utilisation. Notre échec ou retard à appliquer ou à appliquer partiellement toute disposition de cet accord d'utilisateur ne doit pas être interprété comme une renonciation à tout.\n\n",
+  "@eulaParagraphe4": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe5": "Vous n'êtes pas autorisé à décompiler, décoder, désassembler, louer, louer, prêter, vendre, concéder en sous-licence ou créer des travaux dérivés de l'application mobile atomicDEX ou du contenu de l'utilisateur. Vous n'êtes pas non plus autorisé à utiliser un logiciel de surveillance ou de détection de réseau pour déterminer l'architecture logicielle ou extraire des informations sur l'utilisation ou l'identité des personnes ou des utilisateurs. Vous n'êtes pas autorisé à copier, modifier, reproduire, republier, distribuer, afficher ou transmettre à des fins commerciales, à but non lucratif ou publiques tout ou partie de l'application ou du contenu de l'utilisateur sans notre autorisation écrite préalable.\n\n",
+  "@eulaParagraphe5": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe6": "Si vous créez un compte dans l'application mobile, vous êtes responsable de la sécurité de votre compte et de toutes les activités qui s'y déroulent, ainsi que de toute autre action effectuée en rapport avec celui-ci. Vous devez nous informer immédiatement de toute utilisation non autorisée de votre compte ou de toute autre violation de la sécurité. Nous ne serons pas tenus responsables d'actes ou d'omissions de votre part, y compris des dommages de toute nature résultant de tels actes ou omissions.\n\n",
+  "@eulaParagraphe6": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe7": "Nous ne sommes pas responsables des passphrases résidant dans l'application mobile. En aucun cas, nous ne serons tenus responsables de quelque perte que ce soit. Il est de votre entière responsabilité de conserver une copie de sauvegarde appropriée de vos comptes / passphrases.\n\n",
+  "@eulaParagraphe7": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe8": "Vous ne devez pas agir ou vous abstenir d'agir uniquement sur la base du contenu de cette application. Votre accès à cette application ne crée pas en soi une relation conseiller-client entre vous et nous. Le contenu de cette application ne constitue pas une sollicitation ni une incitation à investir dans des produits ou services financiers proposés par nous. Tous les conseils inclus dans cette application ont été préparés sans tenir compte de vos objectifs, de votre situation financière ou de vos besoins. Vous devez prendre en compte notre avis de divulgation des risques avant de prendre une décision quant à l’acquisition du produit décrit dans ce document.\n\n",
+  "@eulaParagraphe8": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe9": "Nous ne garantissons pas votre accès continu à l'application, ni que votre accès ou votre utilisation sera sans erreur. Nous ne serons pas responsables en cas d'indisponibilité de l'application pour quelque raison que ce soit (par exemple, en raison de temps d'arrêt de l'ordinateur imputables à des dysfonctionnements, des mises à niveau, des problèmes de serveur, des activités de maintenance préventive ou corrective ou une interruption des fournitures de télécommunication). Nous nous réservons le droit à tout moment de: - refuser ou mettre fin à tout ou partie de votre accès à l'application alors que, à notre avis, il existe des problèmes d'utilisation déraisonnable, de problèmes de sécurité, d'accès non autorisé ou de violation de l'une de ces conditions; - bloquez ou suspendez votre compte, en tout ou en partie, supprimez vos paramètres par défaut, ou une partie de ceux-ci, sans préavis.\n\n\n",
+  "@eulaParagraphe9": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe10": "Komodo Platform est le propriétaire et / ou l'utilisateur autorisé de toutes les marques, marques de service, marques de design, brevets, droits d'auteur, droits de la base de données et toute autre propriété intellectuelle apparaissant sur ou contenus dans l'application, sauf indication contraire. Toutes les informations, textes, matériels, graphiques, logiciels et publicités figurant sur l'interface de l'application sont la propriété de Komodo Platform, de ses fournisseurs et de ses concédants de licence, sauf indication contraire expresse de Komodo Platform. Sauf dans les cas prévus dans les Conditions, l'utilisation de l'application ne vous octroie aucun droit, titre, intérêt ou licence sur une telle propriété intellectuelle. Vous pouvez y avoir accès sur l'application. Nous possédons les droits ou avons la permission d'utiliser les marques de commerce énumérées dans notre application. Vous n'êtes pas autorisé à utiliser ces marques de commerce sans notre autorisation écrite - cela constituerait une violation des droits de propriété intellectuelle de notre société ou d'une autre partie. Alternativement, nous pouvons vous autoriser à utiliser le contenu de notre application si vous nous avez déjà contacté et que nous acceptons par écrit.\n\n",
+  "@eulaParagraphe10": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe11": "Komodo Platform ne peut garantir la sécurité de vos systèmes informatiques. Nous déclinons toute responsabilité en cas de perte ou d'altération des données stockées électroniquement ou de tout dommage causé à un système informatique en relation avec l'utilisation de l'application ou du contenu de l'utilisateur. Komodo Platform ne fait aucune déclaration et ne donne aucune garantie d'aucune sorte, expresse ou implicite, quant au fonctionnement de l'application ou du contenu de l'utilisateur. Vous acceptez expressément que votre utilisation de l'application est entièrement à vos risques et périls. Vous acceptez que le contenu fourni dans l'application et le contenu de l'utilisateur ne constituent pas un conseil financier, juridique ou fiscal, et vous vous engagez à ne pas représenter le contenu de l'utilisateur ou l'application en tant que tels. Dans la mesure permise par la législation en vigueur, la demande est fournie «telle quelle, selon la disponibilité». Komodo Platform décline expressément toute responsabilité pour toute perte, blessure, réclamation, responsabilité ou dommage, ou pour tout dommage indirect, accessoire, spécial ou consécutif ou perte de profit de quelque nature que ce soit résultant, ou résultant de, de quelque manière que ce soit, de: (a) toute erreur ou omission dans l'application et / ou dans le contenu de l'utilisateur, y compris mais sans s'y limiter, des inexactitudes techniques et des erreurs typographiques; (b) tout site Web, application ou contenu tiers, auquel on accède directement ou indirectement par des liens dans l'application, y compris, sans limitation, toute erreur ou omission; c) l'indisponibilité totale ou partielle de l'application; (d) votre utilisation de l'application; (e) votre utilisation de tout équipement ou logiciel en rapport avec l'application. Tous les services offerts dans le cadre de la plate-forme sont fournis «tels quels», sans aucune représentation ni garantie, expresse, implicite ou légale. Dans les limites maximales permises par la loi applicable, nous déclinons expressément toute garantie implicite de titre, de qualité marchande, d'adéquation à un usage particulier et / ou de non-violation. Nous ne faisons aucune déclaration ou garantie que l'utilisation de la plate-forme sera continue, ininterrompue, rapide et sans erreur. Nous ne garantissons pas que toute plate-forme sera exempte de virus, de logiciels malveillants ou de tout autre matériel nuisible et que votre capacité à accéder à toute plate-forme sera ininterrompue. Tout défaut ou dysfonctionnement du produit doit être adressé à la tierce partie proposant la Plateforme, et non à Komodo. Nous ne serons pas responsables envers vous de toute perte de quelque nature que ce soit, à la suite de mesures prises ou fondées sur le matériel ou les informations contenus dans ou via la Plateforme. C'est un logiciel expérimental et inachevé. À utiliser à vos risques et périls. Aucune garantie pour tout type de dommage. En utilisant cette application, vous acceptez ces termes et conditions.\n\n",
+  "@eulaParagraphe11": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe12": "Lorsque vous accédez aux services ou les utilisez, vous reconnaissez que vous êtes seul responsable de votre conduite lorsque vous accédez à et utilisez nos services. Sans limiter la portée générale de ce qui précède, vous acceptez de ne pas: (a) utiliser les services de manière à interférer avec, perturber, nuire ou empêcher les autres utilisateurs de profiter pleinement des services, ou à risquer d'endommager, désactiver, surcharger ou nuire au fonctionnement de nos services de quelque manière que ce soit; (b) utiliser les services pour payer, soutenir ou se livrer de toute autre manière à des activités illégales, y compris, sans toutefois s'y limiter, les jeux d'argent illégaux, la fraude, le blanchiment d'argent ou les activités terroristes; (c) utiliser un robot, une araignée, un robot d'exploration, un grattoir ou tout autre moyen automatisé ou interface que nous ne fournissons pas pour accéder à nos services ou pour extraire des données; (d) utiliser ou tenter d'utiliser le portefeuille ou les identifiants d'un autre utilisateur sans autorisation; (e) Essayez de contourner les techniques de filtrage de contenu que nous employons ou tentez d'accéder à tout service ou domaine de nos services auquel vous n'êtes pas autorisé à accéder; (f) Introduisez dans les Services tout virus, cheval de Troie, vers, bombes logiques ou autre matériel nuisible; (g) développer des applications tierces qui interagissent avec nos services sans notre consentement écrit préalable; (h) Fournir des informations fausses, inexactes ou trompeuses; (i) Encourager ou inciter toute autre personne à se livrer à l'une des activités interdites par la présente section.\n\n\n",
+  "@eulaParagraphe12": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe13": "Vous acceptez et comprenez qu'il existe des risques liés à l'utilisation de services impliquant des devises virtuelles, notamment, le risque de défaillance du matériel, des logiciels et des connexions Internet, le risque d'introduction de logiciels malveillants et le risque que des tiers obtiennent des informations non autorisées. accès aux informations stockées dans votre portefeuille, y compris, sans toutefois s'y limiter, vos clés publique et privée. Vous acceptez et comprenez que Komodo Platform ne sera pas responsable des défaillances de communication, des perturbations, des erreurs, des distorsions ou des retards que vous pourriez rencontrer lors de l'utilisation des Services, quelle qu'en soit la cause. Vous acceptez et reconnaissez qu'il existe des risques associés à l'utilisation de tout réseau monétaire virtuel, y compris, sans toutefois s'y limiter, le risque de vulnérabilités inconnues ou de modifications imprévues du protocole réseau. Vous reconnaissez et acceptez que Komodo Platform n'exerce aucun contrôle sur les réseaux de crypto-monnaie et ne saurait être tenu responsable des dommages résultant de tels risques, notamment de l'impossibilité d'annuler une transaction et des pertes associées. en raison d'actions erronées ou frauduleuses. Le risque de perte lié à l'utilisation de services impliquant des devises virtuelles peut être considérable et des pertes peuvent se produire sur une courte période. De plus, le prix et la liquidité sont soumis à des fluctuations importantes qui peuvent être imprévisibles. Les monnaies virtuelles n'ont pas de cours légal et ne sont soutenues par aucun gouvernement souverain. En outre, le paysage législatif et réglementaire autour des monnaies virtuelles change constamment et peut affecter votre capacité à utiliser, transférer ou échanger des monnaies virtuelles. Les CFD sont des instruments complexes et présentent un risque élevé de perdre de l'argent rapidement en raison d'un effet de levier. 80,6% des comptes d’investisseurs privés perdent de l’argent lorsqu’ils échangent des CFD avec ce fournisseur. Vous devez vous demander si vous comprenez le fonctionnement des CFD et si vous pouvez vous permettre de prendre le risque élevé de perdre votre argent.\n\n",
+  "@eulaParagraphe13": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe14": "Vous acceptez d'indemniser, de défendre et de tenir indemne Komodo Platform, ses dirigeants, administrateurs, employés, agents, concédants de licence, fournisseurs et tout fournisseur d'informations tiers à l'application de et contre toutes pertes, dépenses, dommages et frais, y compris les honoraires raisonnables d'avocat, résultant d'une violation des Conditions de votre part. Vous acceptez également d’indemniser Komodo Platform contre toute prétention selon laquelle les informations ou le matériel que vous avez soumis à Komodo Platform contreviennent à la loi ou aux droits de tiers (y compris, mais sans s'y limiter, les actions en diffamation, invasion respect de la vie privée, abus de confiance, violation du droit d'auteur ou violation de tout autre droit de propriété intellectuelle).\n\n",
+  "@eulaParagraphe14": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe15": "Afin d'être complétée, toute transaction de devise virtuelle créée avec la plate-forme Komodo doit être confirmée et enregistrée dans le livre de devise virtuelle associé au réseau de devise virtuelle correspondant. Ces réseaux sont décentralisés, réseaux peer-to-peer, soutenus par des tiers indépendants, qui ne sont ni détenus, ni contrôlés, ni exploités par Komodo Platform. Komodo Platform n'a aucun contrôle sur aucun réseau Virtual Currency et ne peut donc garantir et ne garantit pas que les détails de transaction que vous soumettez via nos Services seront confirmés sur le réseau Virtual Currency correspondant. Vous acceptez et comprenez que les détails de la transaction que vous soumettez via nos Services pourraient ne pas être complétés ou pourraient être considérablement retardés par le réseau Virtual Currency utilisé pour traiter la transaction. Nous ne garantissons pas que le portefeuille puisse transférer le titre ou les droits sur une devise virtuelle ou offrir quelque garantie que ce soit en ce qui concerne le titre. Une fois que les détails de la transaction ont été soumis à un réseau de devise virtuelle, nous ne pouvons pas vous aider à annuler ou à modifier autrement votre transaction ou ses détails. Komodo Platform n’a aucun contrôle sur les réseaux Virtual Currency et n’a pas la capacité de faciliter les demandes d’annulation ou de modification. Dans le cas d'une fourchette, Komodo Platform pourrait ne pas être en mesure de prendre en charge les activités liées à votre devise virtuelle. Vous acceptez et comprenez que, dans le cas d'une fourchette, les transactions pourraient ne pas être complétées, complétées partiellement, mal complétées ou considérablement retardées. Komodo Platform n'est pas responsable des pertes que Vous avez causées, en tout ou en partie, directement ou indirectement, par une Fourche. En aucun cas, Komodo Platform, ses sociétés affiliées et ses prestataires de services, ou l’un de leurs dirigeants, administrateurs, agents, employés ou représentants respectifs, ne peuvent être tenus pour responsables de tout manque à gagner ou de tout dommage spécial, accessoire, indirect, immatériel ou consécutif, sur un contrat, un délit, une négligence, une responsabilité stricte ou autre, découlant de ou liée à une utilisation autorisée ou non des services, ou du présent contrat, même si un représentant autorisé de Komodo Platform a été informé de, ou aurait dû connaître la possibilité de tels dommages. Par exemple (et sans limiter la portée de la phrase précédente), vous ne pouvez pas récupérer vos pertes de profits, vos opportunités commerciales ou tout autre type de dommages spéciaux, accessoires, indirects, immatériels ou consécutifs. Certaines juridictions n'autorisant pas l'exclusion ou la limitation des dommages accessoires ou indirects, il est possible que la limitation ci-dessus ne vous concerne pas. Nous ne pourrons être tenus responsables de toute perte ni assumer aucune responsabilité pour des dommages ou des réclamations découlant en tout ou en partie, directement ou indirectement: (a) d'une erreur de l'utilisateur, telle que des mots de passe oubliés, des transactions mal construites ou une devise virtuelle erronée les adresses; (b) défaillance du serveur ou perte de données; (c) des portefeuilles ou des fichiers de portefeuille corrompus ou non performants; (d) accès non autorisé aux applications; (e) toute activité non autorisée, y compris, sans limitation, l'utilisation de piratage, de virus, de phishing, de forçage brutal ou d'autres moyens d'attaque contre les Services.\n\n",
+  "@eulaParagraphe15": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe16": "Afin d'éviter toute confusion, Komodo Platform ne fournit aucun conseil en investissement, fiscal ou juridique, et Komodo Platform ne négocie pas pour vous. Toutes les transactions de Komodo Platform sont exécutées automatiquement, en fonction des paramètres de vos instructions de commande et conformément aux procédures d'exécution des transactions enregistrées. Vous êtes seul responsable de la détermination de la pertinence d'un investissement, d'une stratégie d'investissement ou d'une transaction connexe en fonction de votre investissement personnel objectifs, la situation financière et la tolérance au risque. Vous devez consulter votre conseiller juridique ou fiscal en fonction de votre situation spécifique. Ni Komodo, ni ses propriétaires, membres, dirigeants, administrateurs, associés, consultants, ni toute personne impliquée dans la publication de la présente demande, ne sont des conseillers en investissement, des courtiers ou des personne avec un conseiller en investissement inscrit ou un courtier-négociant et aucune de ce qui précède ne recommande que l'achat ou la vente d'actifs cryptographiques ou de titres d'une société présentée dans l'Application mobile soit approprié ou conseillé pour toute personne ou qu'un investissement ou une transaction dans ces crypto-actifs ou valeurs sera rentable. Les informations contenues dans l'application mobile ne constituent pas, et ne constitueront pas, une offre de vente ou la sollicitation d'une offre d'achat de tout crypto-actif ou de toute valeur. Les informations présentées dans l'application mobile sont fournies à des fins d'information uniquement et ne doivent pas être traitées comme des conseils ou des recommandations en vue d'un investissement ou d'une transaction spécifique. Veuillez consulter un professionnel qualifié avant de prendre toute décision. Les opinions et l'analyse incluses dans cette candidature sont basées sur des informations provenant de sources considérées comme fiables et sont fournies «en l'état» de bonne foi. Komodo ne fait aucune déclaration et ne donne aucune garantie, explicite, implicite ou légale, quant à l'exactitude ou à l'exhaustivité de ces informations, qui peuvent être modifiées sans préavis. Komodo ne peut être tenu responsable des erreurs ni des actions entreprises en relation avec ce qui précède. Les déclarations d'opinion et de conviction sont celles des auteurs et / ou des éditeurs qui contribuent à cette application, et sont basées uniquement sur les informations que possèdent ces auteurs et / ou éditeurs. Il ne faut en aucun cas en déduire que Komodo ou ses auteurs ou éditeurs ont une connaissance particulière ou une connaissance plus approfondie des actifs cryptographiques ou des sociétés décrites, ni une expertise particulière dans les secteurs ou marchés dans lesquels les actifs cryptographiques et les sociétés opèrent et se font concurrence. cette application provient de sources réputées fiables; Toutefois, Komodo n'assume aucune responsabilité quant à la vérification de l'exactitude de ces informations et ne déclare aucunement que ces informations sont exactes ou complètes. Certaines déclarations incluses dans cette application peuvent être des déclarations prospectives basées sur les attentes actuelles. Komodo ne fait aucune déclaration et n'assure aucune garantie quant à l'exactitude de ces déclarations prospectives.Les personnes utilisant l'application Komodo sont priées de consulter un professionnel qualifié en ce qui concerne un investissement ou une transaction dans un crypto-actif ou une entreprise profilée. ci-dessous. De plus, les personnes utilisant cette application déclarent expressément que le contenu de cette application n'est pas et ne sera pas pris en compte dans les décisions d'investissement ou de transaction de ces personnes. Les commerçants doivent vérifier de manière indépendante les informations fournies dans l’application Komodo en complétant leur propre devoir de vigilance à l’égard de tout crypto-actif ou entreprise dans laquelle ils envisagent un investissement ou une transaction de quelque nature que ce soit et examiner un ensemble complet d’informations sur cet crypto-actif ou entreprise, qui devrait inclure, sans toutefois s'y limiter, les mises à jour de blogs et les communiqués de presse associés. Les performances passées des actifs et des titres cryptographiques profilés ne préjugent pas des résultats futurs. Les actifs cryptographiques et les entreprises figurant sur ce site peuvent ne pas disposer d'un marché de négociation actif et investir dans un actif cryptographique ou un titre qui ne dispose pas d'un marché de négociation actif ou des échanges sur certains supports, plates-formes et marchés sont considérés comme hautement spéculatifs et comportent un degré de risque élevé . Toute personne détenant de tels actifs cryptographiques et de tels titres devrait être financièrement capable et disposée à supporter le risque de perte et de la perte réelle de l’ensemble de sa transaction. Les informations contenues dans cette application ne sont pas conçues pour servir de base à une décision d'investissement. Les personnes utilisant l'application Komodo doivent confirmer, à leur entière satisfaction, la véracité de toute information avant de procéder à un investissement ou d'effectuer une transaction. La décision d'acheter ou de vendre tout crypto-actif ou toute sécurité susceptible d'être présentée par Komodo est prise aux risques propres du lecteur. En tant que lecteur et utilisateur de cette application, vous acceptez qu'en aucun cas, vous ne cherchiez à engager la responsabilité du propriétaire, des membres, des dirigeants, des administrateurs, des associés, des consultants ou des autres personnes impliquées dans la publication de cette application, pour tout dommage résultant de l'utilisation informations contenues dans la présente demandeKomodo, ses contractants et ses sociétés affiliées, peuvent tirer profit de l’augmentation ou de la diminution de la valeur des actifs cryptographiques et des valeurs mobilières. De tels crypto-actifs et titres peuvent être achetés ou vendus de temps à autre, même après que Komodo ait diffusé des informations positives sur les crypto-actifs et les sociétés. Komodo n’a aucune obligation d’informer les lecteurs de ses activités commerciales ou des activités commerciales de ses propriétaires, membres, dirigeants, administrateurs, sous-traitants et sociétés affiliées et / ou de toute société affiliée aux propriétaires, membres, dirigeants, administrateurs, sous-traitants et relations de BC Relations. affiliés.Komodo et ses affiliés peuvent de temps à autre conclure des accords d'achat d'actifs cryptographiques ou de valeurs mobilières afin de constituer une méthode permettant d'atteindre leurs objectifs.\n\n",
+  "@eulaParagraphe16": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe17": "Les Conditions sont en vigueur jusqu'à leur résiliation par Komodo Platform. En cas de résiliation, vous n'êtes plus autorisé à accéder à l'Application, mais toutes les restrictions qui vous sont imposées ainsi que les renonciations et limitations de responsabilité énoncées dans les Conditions resteront en vigueur après la résiliation. Cette résiliation ne porte pas atteinte aux droits légaux que Komodo Platform pourrait avoir acquis contre Vous jusqu’à la date de la résiliation. Komodo Platform peut également supprimer l’application dans son ensemble, ainsi que toute section ou fonctionnalité de l’application, à tout moment. \n\n",
+  "@eulaParagraphe17": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe18": "Les dispositions des paragraphes précédents sont à l'avantage de Komodo Platform et de ses dirigeants, administrateurs, employés, agents, concédants de licence, fournisseurs et de tout fournisseur d'informations tiers à l'Application. Chacune de ces personnes ou entités a le droit de revendiquer et de faire appliquer ces dispositions directement contre vous en son propre nom.\n\n",
+  "@eulaParagraphe18": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe19": "Nous pourrions être tenus de conserver et d’utiliser des données à caractère personnel pour répondre à nos obligations d’audit interne et externe, à des fins de sécurité des données et selon ce que nous estimons nécessaire ou approprié: (a) de nous conformer à nos obligations en vertu de la législation et de la réglementation applicables, notamment: lois et règlements en dehors de votre pays de résidence; (b) pour répondre aux demandes des tribunaux, des organismes chargés de l'application de la loi, des organismes de réglementation et des autres autorités publiques et gouvernementales, qui peuvent inclure de telles autorités en dehors de votre pays de résidence; (c) surveiller le respect et appliquer les termes et conditions de notre plateforme; (d) effectuer des contrôles anti-blanchiment d'argent, sanctionner ou «connaître votre client» conformément aux lois et réglementations en vigueur; (e) protéger nos droits, notre vie privée, notre sécurité, nos biens ou ceux d'autres personnes. Nous pouvons également être tenus d'utiliser et de conserver des données personnelles après la fermeture de votre compte pour des raisons légales, réglementaires et de conformité, telles que la prévention, la détection ou l'investigation d'un crime; la prévention des pertes; ou prévention de la fraude. Nous collectons et traitons également des données anonymes non personnelles et personnelles à des fins statistiques et d'analyse, afin de nous aider à fournir un meilleur service. Ce document a été mis à jour le 3 juillet 2019\n\n",
+  "@eulaParagraphe19": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ethFee": "Taxe ETH",
+  "@ethFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notEnoughEth": "Pas assez d'ETH pour la transaction!",
+  "@notEnoughEth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ethNotActive": "S'il vous plaît activer ETH.",
+  "@ethNotActive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "youWillReceiveClaim": "Vous recevrez {amount} {coin}",
+  "@youWillReceiveClaim": {
+    "type": "text",
+    "placeholders": {
+      "amount": {},
+      "coin": {}
+    }
+  },
+  "seeOrders": "Cliquez pour voir {amount} orders",
+  "@seeOrders": {
+    "type": "text",
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "clickToSee": "Cliquez pour voir ",
+  "@clickToSee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "price": "prix",
+  "@price": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "availableVolume": "vol max",
+  "@availableVolume": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

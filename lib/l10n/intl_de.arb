@@ -1,0 +1,1173 @@
+{
+  "createPin": "PIN erstellen",
+  "@createPin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterPinCode": "Geben Sie Ihren PIN-Code ein",
+  "@enterPinCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "Anmeldung",
+  "@login": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newAccount": "neues Konto",
+  "@newAccount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newAccountUpper": "Neues Konto",
+  "@newAccountUpper": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addingCoinSuccess": "{name} erfolgreich aktiviert!",
+  "@addingCoinSuccess": {
+    "type": "text",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "connecting": "Verbindung wird hergestellt ...",
+  "@connecting": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCoin": "Coin aktivieren",
+  "@addCoin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "numberAssets": "{assets} Assets",
+  "@numberAssets": {
+    "type": "text",
+    "placeholders": {
+      "assets": {}
+    }
+  },
+  "enterSeedPhrase": "Geben Sie Ihren Seed ein",
+  "@enterSeedPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exampleHintSeed": "Beispiel: build case level ...",
+  "@exampleHintSeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirm": "bestätigen",
+  "@confirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "buy": "Kaufen",
+  "@buy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sell": "Verkaufen",
+  "@sell": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "shareAddress": "Meine {coinName} Adresse: {address}",
+  "@shareAddress": {
+    "type": "text",
+    "placeholders": {
+      "coinName": {},
+      "address": {}
+    }
+  },
+  "withdraw": "Senden",
+  "@withdraw": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorValueEmpty": "Wert ist zu hoch oder zu niedrig",
+  "@errorValueEmpty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amount": "Betrag",
+  "@amount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addressSend": "Empfängeradresse",
+  "@addressSend": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "withdrawValue": "SENDEN {amount} {coinName}",
+  "@withdrawValue": {
+    "type": "text",
+    "placeholders": {
+      "amount": {},
+      "coinName": {}
+    }
+  },
+  "withdrawConfirm": "Auszahlung bestätigen",
+  "@withdrawConfirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "close": "Schließen",
+  "@close": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmSeed": "Seed Phrase bestätigen",
+  "@confirmSeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "seedPhraseTitle": "Ihr neuer Seed",
+  "@seedPhraseTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "getBackupPhrase": "Wichtig: Sichern Sie Ihren Seed bevor Sie fortfahren!",
+  "@getBackupPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "recommendSeedMessage": "Wir empfehlen die Offline-Sicherung.",
+  "@recommendSeedMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "next": "Weiter",
+  "@next": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmPin": "PIN-Code bestätigen",
+  "@confirmPin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTryAgain": "Fehler, bitte versuchen Sie es erneut",
+  "@errorTryAgain": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "Einstellungen",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "security": "Sicherheit",
+  "@security": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "activateAccessPin": "PIN-Schutz aktivieren",
+  "@activateAccessPin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lockScreen": "Bildschirm ist gesperrt",
+  "@lockScreen": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "changePin": "PIN Code ändern",
+  "@changePin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "Ausloggen",
+  "@logout": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "max": "Max",
+  "@max": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "amountToSell": "Zu verkaufender Betrag",
+  "@amountToSell": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "youWillReceived": "Sie erhalten: ",
+  "@youWillReceived": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoinToSell": "Wählen Sie den zu verkaufenden Coin",
+  "@selectCoinToSell": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoinToBuy": "Wählen Sie den zu kaufenden Coin aus",
+  "@selectCoinToBuy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swap": "swap",
+  "@swap": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "buySuccessWaiting": "Trade gestartet, bitte warten!",
+  "@buySuccessWaiting": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "networkFee": "Netzwerkgebühr",
+  "@networkFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "commissionFee": "Provision",
+  "@commissionFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "portfolio": "Portfolio",
+  "@portfolio": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkOut": "Bezahlen",
+  "@checkOut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "estimateValue": "Gesamtwert",
+  "@estimateValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectPaymentMethod": "Wählen Sie eine Bezahlart",
+  "@selectPaymentMethod": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "volumes": "Volumen",
+  "@volumes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "placeOrder": "Platzieren Sie Ihre Order",
+  "@placeOrder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "comingSoon": "Demnächst...",
+  "@comingSoon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketplace": "Marktplatz",
+  "@marketplace": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "youAreSending": "Sie senden:",
+  "@youAreSending": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "code": "Code: ",
+  "@code": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "value": "Wert: ",
+  "@value": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paidWith": "Bezahlt mit ",
+  "@paidWith": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorValueNotEmpty": "Bitte Daten eintippen",
+  "@errorValueNotEmpty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAmountBalance": "Guthaben unzureichend",
+  "@errorAmountBalance": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNotAValidAddress": "Keine gültige Adresse",
+  "@errorNotAValidAddress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "toAddress": "An Adresse:",
+  "@toAddress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "receive": "ERHALTEN",
+  "@receive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "send": "SENDEN",
+  "@send": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "back": "zurück",
+  "@back": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "stornieren",
+  "@cancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "commingsoon": "TX Details folgen in Kürze!",
+  "@commingsoon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "history": "Historie",
+  "@history": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "commingsoonGeneral": "Details folgen in Kürze!",
+  "@commingsoonGeneral": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderMatching": "Warte auf Bestätigung",
+  "@orderMatching": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderMatched": "Order bestätigt!",
+  "@orderMatched": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapOngoing": "Swap läuft",
+  "@swapOngoing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapSucceful": "Swap erfolgreich",
+  "@swapSucceful": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "timeOut": "Timeout",
+  "@timeOut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapFailed": "Swap fehlgeschlagen",
+  "@swapFailed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTryLater": "Fehler, bitte versuchen Sie es später",
+  "@errorTryLater": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedback": "Feedback übermitteln",
+  "@feedback": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingOrderbook": "Auftragsbuch wird geladen",
+  "@loadingOrderbook": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "claim": "Anfordern",
+  "@claim": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "claimTitle": "KMD Prämie anfordern?",
+  "@claimTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "success": "Transaktion erfolgreich!",
+  "@success": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noRewardYet": "Keine Prämie verfügbar. Bitte versuchen Sie es in 1 Stunde erneut.",
+  "@noRewardYet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "Wird geladen...",
+  "@loading": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dex": "DEX",
+  "@dex": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "media": "News",
+  "@media": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newsFeed": "Neuigkeiten",
+  "@newsFeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "appName": "atomicDEX",
+  "@appName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clipboard": "In die Zwischenablage kopiert",
+  "@clipboard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "from": "Von",
+  "@from": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "to": "An",
+  "@to": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txConfirmed": "BESTÄTIGT",
+  "@txConfirmed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txBlock": "Block",
+  "@txBlock": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txConfirmations": "Bestätigungen",
+  "@txConfirmations": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txFee": "Gebühr",
+  "@txFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noSwaps": "Keine Historie",
+  "@noSwaps": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "trade": "HANDEL",
+  "@trade": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tradeCompleted": "Handel abgeschlossen!",
+  "@tradeCompleted": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "step": "Schritt",
+  "@step": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tradeDetail": "HANDELSDETAILS",
+  "@tradeDetail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "requestedTrade": "Angeforderter Handel",
+  "@requestedTrade": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapID": "Swap ID",
+  "@swapID": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaBrowse": "Stöbern",
+  "@mediaBrowse": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "articleFrom": "AtomicDEX NEWS",
+  "@articleFrom": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaNotSavedDescription": "SIE HABEN KEINE GESPEICHERTEN ARTIKEL",
+  "@mediaNotSavedDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaBy": "Von",
+  "@mediaBy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lockScreenAuth": "Bitte authentifizieren!",
+  "@lockScreenAuth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noTxs": "Keine Transaktionen",
+  "@noTxs": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "done": "Erledigt",
+  "@done": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoinTitle": "Coins aktivieren:",
+  "@selectCoinTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoinInfo": "Wählen Sie die Coins aus, die Sie Ihrem Portfolio hinzufügen möchten.",
+  "@selectCoinInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noArticles": "Keine Neuigkeiten - bitte versuchen Sie es später erneut!",
+  "@noArticles": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "infoTrade1": "Dieser Handel kann nicht rückgängig gemacht werden!",
+  "@infoTrade1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "infoTrade2": "Diese Anwendung während aktiver Handelstransaktionen NICHT schließen!",
+  "@infoTrade2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapDetailTitle": "BESTÄTIGEN SIE DIESEN HANDEL",
+  "@swapDetailTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhrase": "Überprüfen Sie Ihren Seed",
+  "@checkSeedPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhraseTitle": "LASSEN SIE UNS IHREN SEED DOPPELT ÜBERPRÜFEN",
+  "@checkSeedPhraseTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhraseInfo": "Ihr Seed ist wichtig - deshalb stellen wir Ihnen drei verschiedene Fragen, um sicherzustellen, dass dieser korrekt ist und Sie Ihr Wallet jederzeit problemlos wiederherstellen können.",
+  "@checkSeedPhraseInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhraseSubtile": "Was ist das {index} . Wort in Ihrem Seed?",
+  "@checkSeedPhraseSubtile": {
+    "type": "text",
+    "placeholders": {
+      "index": {}
+    }
+  },
+  "checkSeedPhraseHint": "Wie lautet das {index} . Wort",
+  "@checkSeedPhraseHint": {
+    "type": "text",
+    "placeholders": {
+      "index": {}
+    }
+  },
+  "checkSeedPhraseButton1": "WEITER",
+  "@checkSeedPhraseButton1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkSeedPhraseButton2": "ZURÜCK",
+  "@checkSeedPhraseButton2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "takerpaymentsID": "Taker Payment ID\n",
+  "@takerpaymentsID": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "makerpaymentID": "Maker Payment ID\n",
+  "@makerpaymentID": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "activateAccessBiometric": "Aktivieren Sie den biometrischen Schutz",
+  "@activateAccessBiometric": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "allowCustomSeed": "Erlaube benutzerdefinierten Seed",
+  "@allowCustomSeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintEnterPassword": "Geben Sie Ihr Passwort ein",
+  "@hintEnterPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInWithSeedPhrase": "Melden Sie sich mit dem Seed an",
+  "@signInWithSeedPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInWithPassword": "Mit Passwort anmelden",
+  "@signInWithPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintEnterSeedPhrase": "Geben Sie Ihren Seed ein",
+  "@hintEnterSeedPhrase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wrongPassword": "Die Passwörter stimmen nicht überein. Bitte versuche es erneut.",
+  "@wrongPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintNameYourWallet": "Benennen Sie Ihre digitale Geldbörse",
+  "@hintNameYourWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "infoWalletPassword": "Sie müssten aus Sicherheitsgründen Ihr Wallet mit einem Passwort sichern.",
+  "@infoWalletPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmPassword": "Passwort bestätigen",
+  "@confirmPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dontWantPassword": "Ich möchte kein Passwort",
+  "@dontWantPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "areYouSure": "BIST DU SICHER?",
+  "@areYouSure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "infoPasswordDialog": "Verwenden Sie ein sicheres Passwort und speichern Sie es nicht auf diesem Gerät!",
+  "@infoPasswordDialog": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "setUpPassword": "PASSWORT EINRICHTEN",
+  "@setUpPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "createAWallet": "Erstellen Sie ein Wallet",
+  "@createAWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "restoreWallet": "WIEDERHERSTELLEN",
+  "@restoreWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintPassword": "Passwort",
+  "@hintPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintConfirmPassword": "Passwort bestätigen",
+  "@hintConfirmPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintCurrentPassword": "Aktuelles Passwort",
+  "@hintCurrentPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logoutsettings": "Abmelde-Einstellungen",
+  "@logoutsettings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logoutOnExit": "Beim Beenden abmelden",
+  "@logoutOnExit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteWallet": "Wallet löschen",
+  "@deleteWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "delete": "Löschen",
+  "@delete": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan1": "Sind Sie sicher, dass Sie löschen möchten ",
+  "@settingDialogSpan1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan2": " Wallet?",
+  "@settingDialogSpan2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan3": "Wenn ja, stellen Sie sicher, dass Sie ",
+  "@settingDialogSpan3": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan4": " Ihren Seed sichern.",
+  "@settingDialogSpan4": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingDialogSpan5": " Um Ihre Wallet in Zukunft wiederherzustellen.",
+  "@settingDialogSpan5": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "backupTitle": "Backup",
+  "@backupTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewSeed": "Seed anzeigen",
+  "@viewSeed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterpassword": "Bitte Passwort eingeben um fortzufahren.",
+  "@enterpassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "clipboardCopy": "In die Zwischenablage kopieren",
+  "@clipboardCopy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeTitle": "WILLKOMMEN",
+  "@welcomeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeName": "AtomicDEX",
+  "@welcomeName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeWallet": "Wallet",
+  "@welcomeWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeInfo": "AtomicDEX mobile ist eine digitale Geldbörse mit nativer DEX-Funktion der dritten Generation und vielem mehr.",
+  "@welcomeInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeLetSetUp": "Wallet einrichten!",
+  "@welcomeLetSetUp": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "unlock": "Freischalten",
+  "@unlock": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noOrder": "Keine {coinName} Order verfügbar - versuchen Sie es später oder erstellen Sie einen Auftrag.",
+  "@noOrder": {
+    "type": "text",
+    "placeholders": {
+      "coinName": {}
+    }
+  },
+  "bestAvailableRate": "Günstigster Preis",
+  "@bestAvailableRate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "receiveLower": "Erhalten",
+  "@receiveLower": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "makeAorder": "Eine Order erstellen",
+  "@makeAorder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exchangeTitle": "HANDEL",
+  "@exchangeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orders": "Orders",
+  "@orders": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCoin": "Coin auswählen",
+  "@selectCoin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noFunds": "Kein Guthaben",
+  "@noFunds": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noFundsDetected": "Kein Guthaben vorhanden - bitte zuerst einzahlen.",
+  "@noFundsDetected": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "goToPorfolio": "Zum Portfolio gehen",
+  "@goToPorfolio": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noOrderAvailable": "Klicken Sie hier, um eine Order zu erstellen",
+  "@noOrderAvailable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderCreated": "Auftrag erstellt",
+  "@orderCreated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderCreatedInfo": "Bestellung erfolgreich erstellt",
+  "@orderCreatedInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showMyOrders": "MEINE BESTELLUNGEN ANZEIGEN",
+  "@showMyOrders": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCreatePassword": "ERSTELLE EIN PASSWORT",
+  "@titleCreatePassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "encryptingWallet": "Wallet verschlüsseln",
+  "@encryptingWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "decryptingWallet": "Wallet entschlüsseln",
+  "@decryptingWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notEnoughtBalanceForFee": "Nicht genügend Guthaben für Gebühren - handeln Sie einen kleineren Betrag",
+  "@notEnoughtBalanceForFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noInternet": "Keine Internetverbindung",
+  "@noInternet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "legalTitle": "Legal",
+  "@legalTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "disclaimerAndTos": "Haftungsausschluss & AGB",
+  "@disclaimerAndTos": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "accepteula": "EULA akzeptieren",
+  "@accepteula": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "accepttac": "Nutzungsbedingungen akzeptieren",
+  "@accepttac": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmeula": "Durch Klicken auf die folgenden Schaltflächen bestätigen Sie, dass Sie die \"EULA\" und die \"Allgemeinen Geschäftsbedingungen\" gelesen haben und diese akzeptieren",
+  "@confirmeula": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle1": "Endbenutzer-Lizenzvertrag (EULA) von atomicDEX mobile:\n\n",
+  "@eulaTitle1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle2": "ALLGEMEINE GESCHÄFTSBEDINGUNGEN: (APPLICATION USER AGREEMENT)\n\n",
+  "@eulaTitle2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle3": "NUTZUNGSBEDINGUNGEN UND HAFTUNGSAUSSCHLUSS\n\n",
+  "@eulaTitle3": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle4": "ALLGEMEINER GEBRAUCH\n\n",
+  "@eulaTitle4": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle5": "ÄNDERUNGEN\n\n",
+  "@eulaTitle5": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle6": "GEBRAUCHSBESCHRÄNKUNGEN\n\n",
+  "@eulaTitle6": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle7": "Konten und Mitgliedschaft\n\n",
+  "@eulaTitle7": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle8": "Backups\n\n",
+  "@eulaTitle8": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle9": "ALLGEMEINE WARNUNG\n\n",
+  "@eulaTitle9": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle10": "ZUGANG UND SICHERHEIT\n\n",
+  "@eulaTitle10": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle11": "RECHTE AN GEISTIGEM EIGENTUM\n\n",
+  "@eulaTitle11": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle12": "HAFTUNGSAUSSCHLUSS\n\n",
+  "@eulaTitle12": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle13": "Zusicherungen und Gewährleistungen, Freistellung und Haftungsbeschränkung\n\n",
+  "@eulaTitle13": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle14": "ALLGEMEINE RISIKOFAKTOREN\n\n",
+  "@eulaTitle14": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle15": "Entschädigung\n\n",
+  "@eulaTitle15": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle16": "RISIKOANGABEN DIESER ANWENDUNG\n\n",
+  "@eulaTitle16": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle17": "KEINE ANLAGEBERATUNG ODER BROKERAGE\n\n",
+  "@eulaTitle17": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle18": "BEENDIGUNG\n\n",
+  "@eulaTitle18": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle19": "Rechte Dritter\n\n",
+  "@eulaTitle19": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaTitle20": "UNSERE RECHTLICHEN VERPFLICHTUNGEN\n\n",
+  "@eulaTitle20": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe1": "Diese Endbenutzer-Lizenzvereinbarung (EULA) ist eine rechtliche Vereinbarung zwischen Ihnen und der Komodo-Plattform. Diese EULA-Vereinbarung regelt den Erwerb und die Nutzung unserer atomicDEX-Mobilsoftware (\"Software\", \"Mobile Application\", \"Application\" oder \"App\") direkt von der Komodo-Plattform oder indirekt über eine von der Komodo-Plattform autorisierte Stelle, einen Reseller oder Distributor (a). Verteiler'). Bitte lesen Sie diese EULA-Vereinbarung sorgfältig durch, bevor Sie den Installationsvorgang abschließen und die atomicDEX mobile-Software verwenden. Es bietet eine Lizenz zur Nutzung der atomicDEX Mobile-Software und enthält Garantieinformationen und Haftungsausschlüsse. Wenn Sie sich für das Betaprogramm der atomicDEX-Mobilsoftware registrieren, gilt diese EULA-Vereinbarung auch für diese Testversion. Durch Klicken auf \"Akzeptieren\" oder Installieren und / oder Verwenden der atomicDEX Mobile-Software bestätigen Sie Ihre Akzeptanz der Software und stimmen zu, an die Bedingungen dieser EULA-Vereinbarung gebunden zu sein. Wenn Sie diese EULA-Vereinbarung im Namen eines Unternehmens oder einer anderen juristischen Person abschließen, erklären Sie, dass Sie befugt sind, dieses Unternehmen und seine verbundenen Unternehmen an diese Allgemeinen Geschäftsbedingungen zu binden. Wenn Sie nicht über eine solche Berechtigung verfügen oder mit den Bedingungen dieser EULA-Vereinbarung nicht einverstanden sind, dürfen Sie die Software nicht installieren oder verwenden und diese EULA-Vereinbarung nicht akzeptieren. Diese EULA-Vereinbarung gilt nur für die hiermit von Komodo Platform bereitgestellte Software, unabhängig davon, ob auf andere Software verwiesen oder hierin beschrieben wird. Die Bedingungen gelten auch für alle Komodo Platform-Aktualisierungen, Ergänzungen, internetbasierten Dienste und Support-Dienste für die Software, sofern diese Artikel nicht mit anderen Bedingungen geliefert werden. In diesem Fall gelten diese Bedingungen. Lizenzgewährung Komodo Platform gewährt Ihnen hiermit eine persönliche, nicht übertragbare, nicht exklusive Lizenz zur Nutzung der atomicDEX-Mobilsoftware auf Ihren Geräten gemäß den Bestimmungen dieser EULA-Vereinbarung. Sie dürfen die atomicDEX mobile Software (zum Beispiel einen PC, Laptop, Handy oder Tablet) unter Ihrer Kontrolle laden. Sie sind dafür verantwortlich, dass Ihr Gerät die Mindestsicherheits- und Ressourcenanforderungen der atomicDEX mobile-Software erfüllt. Es ist Ihnen nicht gestattet: die gesamte oder einen Teil der Software zu bearbeiten, zu ändern, anzupassen, zu übersetzen oder auf andere Weise zu ändern oder zuzulassen, dass die gesamte oder ein Teil der Software mit einer anderen Software kombiniert oder in eine andere Software aufgenommen oder dekompiliert wird Vervielfältigen, Kopieren, Verteilen, Weiterverkaufen oder anderweitige Verwendung der Software für kommerzielle Zwecke. Verwenden Sie die Software auf eine Weise, die gegen geltendes lokales, nationales oder internationales Recht verstößt, für das die Software verwendet wird Jeder Zweck, den die Komodo-Plattform für einen Verstoß gegen diese EULA-Vereinbarung hält, ist geistiges Eigentum und Eigentum. Die Komodo-Plattform behält jederzeit das Eigentum an der Software, wie sie ursprünglich von Ihnen heruntergeladen wurde, und an allen nachfolgenden Downloads der Software durch Sie. Die Software (und das Urheberrecht sowie andere geistige Eigentumsrechte jeglicher Art an der Software, einschließlich etwaiger daran vorgenommener Änderungen) sind und bleiben Eigentum der Komodo Platform. Komodo Platform behält sich das Recht vor, Lizenzen zur Nutzung der Software an Dritte zu vergeben. Kündigung Diese EULA-Vereinbarung gilt ab dem Datum, an dem Sie die Software zum ersten Mal verwenden, und gilt bis zu ihrer Kündigung. Sie können es jederzeit nach schriftlicher Mitteilung an Komodo Platform kündigen. Es wird auch sofort beendet, wenn Sie eine Bestimmung dieser EULA-Vereinbarung nicht einhalten. Nach einer solchen Kündigung erlöschen die durch diese EULA-Vereinbarung gewährten Lizenzen sofort und Sie stimmen zu, den gesamten Zugriff und die Nutzung der Software zu sperren. Die Bestimmungen, die von Natur aus fortbestehen und fortbestehen, gelten auch nach Beendigung dieses EULA-Vertrags. Anwendbares Recht Diese EULA-Vereinbarung und alle Streitigkeiten, die sich aus oder im Zusammenhang mit dieser EULA-Vereinbarung ergeben, unterliegen den Gesetzen Vietnams und werden gemäß diesen ausgelegt. Dieses Dokument wurde zuletzt am 3. Juli 2019 aktualisiert\n\n",
+  "@eulaParagraphe1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe2": "Dieser Haftungsausschluss gilt für die Inhalte und Dienste der App AtomicDEX und gilt für alle Nutzer der „Anwendung“ („Software“, „Mobile Anwendung“, „Anwendung“ oder „App“). Die Anwendung gehört der Komodo-Plattform. Wir behalten uns das Recht vor, die folgenden Allgemeinen Geschäftsbedingungen (für die Verwendung der Anwendung \"atomicDEX mobile\") jederzeit ohne vorherige Ankündigung und nach eigenem Ermessen zu ändern. Es liegt in Ihrer Verantwortung, diese Allgemeinen Geschäftsbedingungen regelmäßig auf Aktualisierungen zu überprüfen, die nach ihrer Veröffentlichung in Kraft treten. Ihre fortgesetzte Nutzung der Anwendung gilt als Anerkennung der folgenden Bedingungen. Wir sind ein Unternehmen mit Sitz in Vietnam und diese Allgemeinen Geschäftsbedingungen unterliegen den Gesetzen Vietnams. Wenn Sie diesen Nutzungsbedingungen nicht zustimmen, dürfen Sie diese Software nicht verwenden oder darauf zugreifen.\n\n",
+  "@eulaParagraphe2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe3": "Durch das Eingeben dieser Nutzungsvereinbarung (jeder Betreff, der auf die Website zugreift oder diese nutzt) (diese Schrift) erklären Sie, dass Sie eine Person sind, die älter als die Volljährigkeit ist (mindestens 18 Jahre oder älter) und befugt ist, diese Nutzungsvereinbarung einzugeben und zu akzeptieren rechtlich gebunden zu sein durch die Bedingungen und Konditionen dieser Nutzervereinbarung, wie sie hierin enthalten sind und von Zeit zu Zeit geändert werden. Um die von der Komodo-Plattform bereitgestellten Dienste nutzen zu können, müssen Sie möglicherweise bestimmte Identifikationsdaten gemäß unserem Know-Your-Customer- und Anti-Geldwäsche-Compliance-Programm angeben.\n\n",
+  "@eulaParagraphe3": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe4": "Wir können die Bedingungen dieser Benutzervereinbarung jederzeit ändern. Solche Änderungen werden wirksam, wenn sie in der Anwendung veröffentlicht werden oder wenn Sie die Dienste nutzen. Lesen Sie die Nutzungsbedingungen jedes Mal, wenn Sie unsere Dienste nutzen, sorgfältig durch. Ihre fortgesetzte Nutzung der Dienste bedeutet, dass Sie akzeptieren, dass Sie an die aktuelle Benutzervereinbarung gebunden sind. Unser Versäumnis oder unsere Verzögerung bei der Durchsetzung oder teilweisen Durchsetzung einer Bestimmung dieser Benutzervereinbarung gilt nicht als Verzicht auf eine Bestimmung.\n\n",
+  "@eulaParagraphe4": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe5": "Es ist Ihnen nicht gestattet, Werke aus der atomicDEX-Mobilanwendung oder dem Benutzerinhalt zu dekompilieren, zu dekodieren, zu disassemblieren, zu vermieten, zu leasen, zu verleihen, zu verkaufen, in Unterlizenz zu vergeben oder davon abgeleitete Werke zu erstellen. Sie dürfen auch keine Netzwerküberwachungs- oder -erkennungssoftware verwenden, um die Softwarearchitektur zu bestimmen oder Informationen über die Nutzung oder die Identität von Personen oder Benutzern zu extrahieren. Ohne unsere vorherige schriftliche Genehmigung ist es Ihnen nicht gestattet, die Anwendung oder den Benutzerinhalt ganz oder teilweise zu kopieren, zu ändern, zu reproduzieren, erneut zu veröffentlichen, zu verbreiten, anzuzeigen oder für kommerzielle, gemeinnützige oder öffentliche Zwecke zu übertragen.\n\n",
+  "@eulaParagraphe5": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe6": "Wenn Sie in der Mobilanwendung ein Konto erstellen, sind Sie für die Aufrechterhaltung der Sicherheit Ihres Kontos verantwortlich und Sie sind voll verantwortlich für alle Aktivitäten, die unter dem Konto stattfinden, sowie für alle anderen im Zusammenhang damit ergriffenen Maßnahmen. Sie müssen uns unverzüglich über jede nicht autorisierte Nutzung Ihres Kontos oder sonstige Sicherheitsverletzungen informieren. Wir haften nicht für Handlungen oder Unterlassungen von Ihnen, einschließlich Schäden jeglicher Art, die aufgrund solcher Handlungen oder Unterlassungen entstehen.\n\n",
+  "@eulaParagraphe6": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe7": "Wir sind nicht verantwortlich für die in der Mobilanwendung enthaltenen Ausgangssätze. In keinem Fall können wir für Verluste jeglicher Art haftbar gemacht werden. Es liegt in Ihrer alleinigen Verantwortung, eine angemessene Sicherung Ihrer Konten / Ausgangssätze zu führen.\n\n",
+  "@eulaParagraphe7": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe8": "Sie sollten nicht nur auf der Grundlage des Inhalts dieser Anwendung handeln oder davon Abstand nehmen. Ihr Zugriff auf diese Anwendung stellt selbst keine Berater-Kunden-Beziehung zwischen Ihnen und uns her. Der Inhalt dieses Antrags stellt keine Aufforderung oder Aufforderung dar, in von uns angebotene Finanzprodukte oder -dienstleistungen zu investieren. Alle in diesem Antrag enthaltenen Ratschläge wurden erstellt, ohne Ihre Ziele, Ihre finanzielle Situation oder Ihre Bedürfnisse zu berücksichtigen. Sie sollten unsere Risikohinweise beachten, bevor Sie eine Entscheidung über den Erwerb des in diesem Dokument beschriebenen Produkts treffen.\n\n",
+  "@eulaParagraphe8": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe9": "Wir garantieren nicht, dass Sie ständig auf die Anwendung zugreifen oder dass Ihr Zugriff oder Ihre Verwendung fehlerfrei sind. Wir haften nicht für den Fall, dass die Anwendung aus irgendeinem Grund für Sie nicht verfügbar ist (z. B. aufgrund von Computerausfällen, die auf Fehlfunktionen, Upgrades, Serverprobleme, vorsorgliche oder korrigierende Wartungsmaßnahmen oder Unterbrechungen der Telekommunikationsversorgung zurückzuführen sind). Wir behalten uns das Recht vor, jederzeit: - Ihren Zugriff auf die Anwendung ganz oder teilweise zu verweigern oder zu sperren, obwohl unserer Meinung nach Bedenken hinsichtlich unangemessener Verwendung, Sicherheitsbedenken oder unbefugtem Zugriff bestehen oder Sie gegen eine dieser Bedingungen verstoßen haben; - Ihr Konto ganz oder teilweise sperren oder sperren, Ihre Standardeinstellungen oder einen Teil davon entfernen, ohne Sie vorher zu benachrichtigen.\n\n\n",
+  "@eulaParagraphe9": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe10": "Komodo Platform ist der Eigentümer und / oder autorisierte Benutzer aller Marken, Dienstleistungsmarken, Designmarken, Patente, Urheberrechte, Datenbankrechte und aller anderen geistigen Eigentumsrechte, die in der Anwendung erscheinen oder enthalten sind, sofern nicht anders angegeben. Alle Informationen, Texte, Materialien, Grafiken, Software und Anzeigen auf der Anwendungsoberfläche unterliegen dem Urheberrecht von Komodo Platform, seinen Lieferanten und Lizenzgebern, sofern von Komodo Platform nicht ausdrücklich anders angegeben. Sofern in den Nutzungsbedingungen nicht anders angegeben, gewährt Ihnen die Nutzung der Anwendung keinerlei Rechte, Titel, Interessen oder Lizenzen an solchen geistigen Eigentumsrechten, auf die Sie möglicherweise Zugriff haben. Wir besitzen die Rechte oder haben die Erlaubnis, die in unserer Anwendung aufgeführten Marken zu verwenden. Sie sind nicht berechtigt, eine dieser Marken ohne unsere schriftliche Genehmigung zu verwenden. Dies würde eine Verletzung der Rechte an geistigem Eigentum von uns oder einer anderen Partei darstellen. Alternativ können wir Sie zur Verwendung des Inhalts in unserer Anwendung ermächtigen, wenn Sie uns zuvor kontaktiert haben und wir schriftlich zustimmen.\n\n",
+  "@eulaParagraphe10": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe11": "Komodo Platform kann die Sicherheit Ihrer Computersysteme nicht garantieren. Wir übernehmen keine Haftung für den Verlust oder die Beschädigung elektronisch gespeicherter Daten oder für Schäden an Computersystemen, die im Zusammenhang mit der Verwendung der Anwendung oder des Benutzerinhalts entstanden sind. Komodo Platform gibt keinerlei ausdrückliche oder stillschweigende Zusicherungen oder Garantien in Bezug auf den Betrieb der Anwendung oder des Benutzerinhalts ab. Sie erklären sich ausdrücklich damit einverstanden, dass Sie die Anwendung ausschließlich auf eigenes Risiko nutzen. Sie erklären sich damit einverstanden, dass der in der Anwendung bereitgestellte Inhalt und der Benutzerinhalt keine Finanzprodukt-, Rechts- oder Steuerberatung darstellen, und Sie erklären sich damit einverstanden, den Benutzerinhalt oder die Anwendung nicht als solchen darzustellen. Soweit dies nach geltendem Recht zulässig ist, erfolgt die Antragstellung \"wie sie vorliegt\". Komodo Platform lehnt ausdrücklich jede Verantwortung für Verluste, Verletzungen, Ansprüche, Haftungen oder Schäden sowie für indirekte, zufällige, spezielle oder Folgeschäden oder Gewinneinbußen ab, die sich aus Folgendem ergeben oder in irgendeiner Weise im Zusammenhang mit Folgendem stehen: Fehler in oder Auslassungen der Anwendung und / oder des Benutzerinhalts, einschließlich, aber nicht beschränkt auf technische Ungenauigkeiten und typografische Fehler; (b) Websites, Anwendungen oder Inhalte Dritter, auf die direkt oder indirekt über Links in der Anwendung zugegriffen wird, einschließlich, aber nicht beschränkt auf Fehler oder Auslassungen; (c) die Nichtverfügbarkeit des Antrags oder eines Teils davon; (d) Ihre Nutzung der Anwendung; (e) Ihre Verwendung von Geräten oder Software in Verbindung mit der Anwendung. Alle im Zusammenhang mit der Plattform angebotenen Dienste werden ohne Mängelgewähr und ohne ausdrückliche, stillschweigende oder gesetzliche Zusicherung oder Gewährleistung angeboten. Im Rahmen des gesetzlich zulässigen Höchstmaßes lehnen wir ausdrücklich alle stillschweigenden Garantien in Bezug auf das Eigentum, die Handelsfähigkeit, die Eignung für einen bestimmten Zweck und / oder die Nichtverletzung ab. Wir geben keine Zusicherungen oder Gewährleistungen dafür, dass die Nutzung der Plattform kontinuierlich, ununterbrochen, zeitnah oder fehlerfrei erfolgt. Wir übernehmen keine Garantie dafür, dass eine Plattform frei von Viren, Malware oder anderen schädlichen Inhalten ist und dass Ihr Zugriff auf eine Plattform ohne Unterbrechungen möglich ist. Jegliche Mängel oder Fehlfunktionen des Produkts sollten an den Dritten gerichtet werden, der die Plattform anbietet, nicht an Komodo. Wir sind Ihnen gegenüber nicht verantwortlich oder haftbar für Verluste jeglicher Art aufgrund von Maßnahmen, die in Abhängigkeit von den in oder über die Plattform enthaltenen Materialien oder Informationen ergriffen wurden. Dies ist experimentelle und unfertige Software. Benutzung auf eigene Gefahr. Keine Garantie für Schäden jeglicher Art. Durch die Nutzung dieser Anwendung stimmen Sie diesen Nutzungsbedingungen zu.\n\n",
+  "@eulaParagraphe11": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe12": "Mit dem Zugriff auf oder der Nutzung der Dienste erklären Sie sich damit einverstanden, dass Sie allein für Ihr Verhalten beim Zugriff auf und bei der Nutzung unserer Dienste verantwortlich sind. Ohne die Allgemeingültigkeit des Vorstehenden einzuschränken, erklären Sie sich damit einverstanden, dass Sie (a) die Dienste nicht auf eine Weise nutzen, die andere Benutzer in vollem Umfang in den Genuss der Dienste bringen, stören, negativ beeinflussen oder daran hindern könnte, sie zu beschädigen, zu deaktivieren, das Funktionieren unserer Dienste in irgendeiner Weise zu überlasten oder zu beeinträchtigen; (b) die Dienste nutzen, um illegale Aktivitäten zu bezahlen, zu unterstützen oder anderweitig zu betreiben, einschließlich, aber nicht beschränkt auf illegales Glücksspiel, Betrug, Geldwäsche oder terroristische Aktivitäten; (c) Verwenden Sie Roboter, Spider, Crawler, Scraper oder andere automatisierte Mittel oder Schnittstellen, die wir nicht zur Verfügung gestellt haben, um auf unsere Dienste zuzugreifen oder Daten zu extrahieren. (d) Brieftasche oder Anmeldeinformationen eines anderen Benutzers unbefugt verwenden oder zu verwenden versuchen; (e) Sie versuchen, alle von uns verwendeten Techniken zur Inhaltsfilterung zu umgehen oder versuchen, auf Dienste oder Bereiche unserer Dienste zuzugreifen, auf die Sie keinen Zugriff haben. (f) in die Dienste Viren, Trojaner, Würmer, Logikbomben oder anderes schädliches Material einzuführen; (g) Entwicklung von Anwendungen von Drittanbietern, die ohne unsere vorherige schriftliche Zustimmung mit unseren Diensten interagieren; (h) falsche, ungenaue oder irreführende Angaben machen; (i) Ermutigen oder veranlassen Sie andere Personen, sich an Aktivitäten zu beteiligen, die nach diesem Abschnitt verboten sind.\n\n\n",
+  "@eulaParagraphe12": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe13": "Sie stimmen zu und verstehen, dass mit der Nutzung von Diensten mit virtuellen Währungen Risiken verbunden sind, einschließlich, aber nicht beschränkt auf das Risiko des Ausfalls von Hardware-, Software- und Internetverbindungen, das Risiko der Einführung schädlicher Software und das Risiko, dass Dritte nicht autorisiert werden Zugriff auf Informationen, die in Ihrer Brieftasche gespeichert sind, einschließlich, aber nicht beschränkt auf Ihre öffentlichen und privaten Schlüssel. Sie stimmen zu und verstehen, dass Komodo Platform nicht für Kommunikationsfehler, -störungen, -fehler, -verzerrungen oder -verzögerungen verantwortlich ist, die bei der Nutzung der Dienste auftreten können, wie auch immer diese verursacht werden. Sie akzeptieren und erkennen an, dass mit der Nutzung eines Netzwerks für virtuelle Währungen Risiken verbunden sind, einschließlich des Risikos unbekannter Schwachstellen oder unerwarteter Änderungen des Netzwerkprotokolls. Sie erkennen an und akzeptieren, dass Komodo Platform keine Kontrolle über ein Kryptowährungsnetzwerk hat und nicht für Schäden verantwortlich ist, die durch solche Risiken entstehen, einschließlich, aber nicht beschränkt auf die Unfähigkeit, eine Transaktion rückgängig zu machen, und damit verbundene Verluste aufgrund fehlerhafter oder betrügerischer Handlungen. Das Risiko eines Verlusts bei der Nutzung von Diensten mit virtuellen Währungen kann erheblich sein und innerhalb kurzer Zeit zu Verlusten führen. Darüber hinaus unterliegen Preis und Liquidität erheblichen Schwankungen, die möglicherweise nicht vorhersehbar sind. Virtuelle Währungen sind kein gesetzliches Zahlungsmittel und werden von keiner souveränen Regierung unterstützt. Darüber hinaus ändert sich die Gesetzgebungs- und Regulierungslandschaft für virtuelle Währungen ständig und kann sich auf Ihre Fähigkeit auswirken, virtuelle Währungen zu verwenden, zu übertragen oder umzutauschen. CFDs sind komplexe Instrumente und bergen aufgrund der Hebelwirkung ein hohes Risiko, schnell Geld zu verlieren. 80,6% der Privatanlegerkonten verlieren beim Handel mit CFDs bei diesem Anbieter Geld. Sie sollten überlegen, ob Sie wissen, wie CFDs funktionieren und ob Sie es sich leisten können, das hohe Risiko einzugehen, Ihr Geld zu verlieren.\n\n",
+  "@eulaParagraphe13": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe14": "Sie erklären sich damit einverstanden, Komodo Platform, seine leitenden Angestellten, Mitarbeiter, Vertreter, Lizenzgeber, Zulieferer und alle anderen Informationsanbieter für die Anwendung von und gegen alle Verluste, Aufwendungen, Schäden und Kosten, einschließlich angemessener Anwaltsgebühren, zu entschädigen, zu verteidigen und schadlos zu halten. aus einer Verletzung der Nutzungsbedingungen durch Sie resultieren. Sie verpflichten sich auch, Komodo Platform von jeglichen Ansprüchen freizustellen, wenn Informationen oder Materialien, die Sie an Komodo Platform übermittelt haben, gegen Gesetze oder Rechte Dritter verstoßen (einschließlich, aber nicht beschränkt auf Ansprüche in Bezug auf Diffamierung, Invasion) Verletzung der Privatsphäre, des Vertrauens, der Urheberrechte oder sonstiger Rechte des geistigen Eigentums).\n\n",
+  "@eulaParagraphe14": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe15": "Um den Vorgang abzuschließen, muss jede mit der Komodo-Plattform erstellte virtuelle Währungstransaktion bestätigt und im Hauptbuch der virtuellen Währung erfasst werden, das dem entsprechenden Netzwerk der virtuellen Währung zugeordnet ist. Bei solchen Netzwerken handelt es sich um dezentrale Peer-to-Peer-Netzwerke, die von unabhängigen Dritten unterstützt werden, die nicht Eigentum der Komodo Platform sind, von dieser kontrolliert oder betrieben werden. Komodo Platform hat keine Kontrolle über ein Netzwerk für virtuelle Währungen und kann daher nicht sicherstellen, dass alle Transaktionsdetails, die Sie über unsere Services übermitteln, im entsprechenden Netzwerk für virtuelle Währungen bestätigt werden. Sie stimmen zu und verstehen, dass die Transaktionsdetails, die Sie über unsere Services übermitteln, möglicherweise nicht vollständig sind oder durch das zur Abwicklung der Transaktion verwendete Netzwerk für virtuelle Währungen erheblich verzögert werden. Wir können nicht garantieren, dass die Brieftasche Titel oder Rechte in einer virtuellen Währung überträgt oder Garantien in Bezug auf den Titel abgibt. Nachdem die Transaktionsdetails an ein Netzwerk für virtuelle Währungen übermittelt wurden, können wir Ihnen nicht helfen, Ihre Transaktion oder Transaktionsdetails abzubrechen oder anderweitig zu ändern. Komodo Platform hat keine Kontrolle über ein virtuelles Währungsnetzwerk und kann keine Stornierungs- oder Änderungsanforderungen vereinfachen. Im Falle einer Gabelung kann die Komodo-Plattform möglicherweise keine Aktivitäten in Bezug auf Ihre virtuelle Währung unterstützen. Sie stimmen zu und verstehen, dass im Falle einer Gabelung die Transaktionen möglicherweise nicht abgeschlossen, teilweise abgeschlossen, falsch abgeschlossen oder wesentlich verzögert werden. Komodo Platform haftet nicht für Verluste, die Ihnen ganz oder teilweise direkt oder indirekt durch eine Gabel entstehen. In keinem Fall haften Komodo Platform, ihre verbundenen Unternehmen und Dienstleister oder ihre jeweiligen leitenden Angestellten, Direktoren, Vertreter, Angestellten oder Vertreter für entgangenen Gewinn oder besondere, zufällige, indirekte, immaterielle oder Folgeschäden, gleich aus welchem Grund bei vertraglicher, unerlaubter Handlung, Fahrlässigkeit, verschuldensunabhängiger Haftung oder in sonstiger Weise, die sich aus oder im Zusammenhang mit der autorisierten oder nicht autorisierten Nutzung der Dienste oder dieser Vereinbarung ergeben, selbst wenn ein autorisierter Vertreter von Komodo Platform davon in Kenntnis gesetzt wurde, davon Kenntnis hat oder hätte von der Möglichkeit solcher Schäden wissen müssen. Zum Beispiel (und ohne den Geltungsbereich des vorstehenden Satzes einzuschränken) können Sie keinen Ersatz für entgangenen Gewinn, entgangene Geschäftsmöglichkeiten oder andere Arten von besonderen, zufälligen, indirekten, immateriellen oder Folgeschäden leisten. In einigen Gerichtsbarkeiten ist der Ausschluss oder die Beschränkung von Neben- oder Folgeschäden nicht zulässig. Daher gilt die oben genannte Beschränkung möglicherweise nicht für Sie. Wir sind nicht verantwortlich oder haftbar für Verluste und übernehmen keine Verantwortung für Schäden oder Ansprüche, die ganz oder teilweise direkt oder indirekt entstehen aus: (a) Benutzerfehlern wie vergessenen Passwörtern, falsch konstruierten Transaktionen oder falsch getippten virtuellen Währungen Adressen; (b) Serverausfall oder Datenverlust; (c) beschädigte oder anderweitig fehlerhafte Wallets oder Wallet-Dateien; (d) unbefugter Zugriff auf Anwendungen; (e) alle nicht autorisierten Aktivitäten, einschließlich, jedoch nicht beschränkt auf die Verwendung von Hacking, Viren, Phishing, Brute Forcing oder anderen Mitteln zum Angriff auf die Dienste.\n\n",
+  "@eulaParagraphe15": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe16": "Um Zweifel auszuschließen, bietet Komodo Platform weder Anlage-, Steuer- oder Rechtsberatung an, noch handelt der Komodo Platform-Broker in Ihrem Namen. Alle Komodo Platform-Trades werden automatisch ausgeführt, basierend auf den Parametern Ihrer Orderinstruktionen und in Übereinstimmung mit den Ausführungsverfahren für veröffentlichte Trades. Sie sind allein dafür verantwortlich, basierend auf Ihrer persönlichen Investition zu bestimmen, ob eine Investition, eine Anlagestrategie oder eine damit verbundene Transaktion für Sie geeignet ist Ziele, finanzielle Verhältnisse und Risikotoleranz. Weder Komodo noch seine Eigentümer, Mitglieder, leitenden Angestellten, Direktoren, Partner, Berater oder Personen, die an der Veröffentlichung dieses Antrags beteiligt sind, sind eingetragene Anlageberater, Makler, Händler oder verbundene Unternehmen Eine Person mit einem registrierten Anlageberater oder Broker-Händler und keiner der oben genannten Personen spricht eine Empfehlung aus, wonach der Kauf oder Verkauf von Krypto-Assets oder Wertpapieren eines in der Mobilanwendung profilierten Unternehmens für eine Person oder eine Anlage oder Transaktion geeignet oder empfehlenswert ist in solchen Krypto-Assets oder Wertpapieren wird rentabel sein. Die in der Mobilanwendung enthaltenen Informationen sind weder als Verkaufsangebot noch als Aufforderung zum Kauf eines Krypto-Assets oder einer Sicherheit gedacht und stellen kein solches dar. Die Informationen in der Mobilanwendung dienen nur zu Informationszwecken und stellen keine Beratung oder Empfehlung für eine bestimmte Investition oder Transaktion dar. Bitte konsultieren Sie einen qualifizierten Fachmann, bevor Sie eine Entscheidung treffen. Die in diesem Antrag enthaltenen Meinungen und Analysen basieren auf Informationen aus Quellen, die als zuverlässig gelten, und werden nach bestem Wissen und Gewissen „wie sie sind“ bereitgestellt. Komodo gibt keine ausdrückliche, implizite oder gesetzliche Zusicherung oder Garantie in Bezug auf die Richtigkeit oder Vollständigkeit solcher Informationen, die ohne vorherige Ankündigung geändert werden können. Komodo haftet nicht für Fehler oder Maßnahmen in Bezug auf die oben genannten Punkte. Meinungs- und Glaubensbekundungen sind diejenigen der Autoren und / oder Herausgeber, die zu dieser Anwendung beitragen, und basieren ausschließlich auf den Informationen, über die diese Autoren und / oder Herausgeber verfügen. Es sollte keine Schlussfolgerung gezogen werden, dass Komodo oder solche Autoren oder Herausgeber spezielle oder umfassendere Kenntnisse über die Crypto-Assets oder Unternehmen mit Profilen oder besondere Fachkenntnisse in den Branchen oder Märkten haben, in denen die Crypto-Assets und Unternehmen mit Profilen tätig sind und im Wettbewerb stehen Dieser Antrag stammt aus Quellen, die als zuverlässig gelten. Komodo übernimmt jedoch keine Verantwortung für die Überprüfung der Richtigkeit dieser Informationen und übernimmt keine Gewähr für die Richtigkeit oder Vollständigkeit dieser Informationen. Bestimmte Aussagen in diesem Antrag können zukunftsgerichtete Aussagen sein, die auf den gegenwärtigen Erwartungen beruhen. Komodo gibt keine Zusicherung oder Garantie dafür ab, dass solche zukunftsgerichteten Aussagen zutreffend sind. Personen, die die Komodo-Anwendung verwenden, werden dringend gebeten, sich bezüglich einer Investition oder einer Transaktion in einen Krypto-Vermögenswert oder ein Unternehmen mit Profil an einen qualifizierten Fachmann zu wenden hierin. Darüber hinaus erklären Personen, die diese Anwendung verwenden, ausdrücklich, dass der Inhalt dieser Anwendung bei Investitions- oder Transaktionsentscheidungen dieser Personen nicht berücksichtigt wird. Händler sollten die in der Komodo-Anwendung bereitgestellten Informationen unabhängig überprüfen, indem sie ihre eigene Due Diligence für Krypto-Assets oder Unternehmen durchführen, bei denen sie eine Investition oder Transaktion jeglicher Art in Betracht ziehen, und ein vollständiges Informationspaket über diese Krypto-Assets oder Unternehmen durchsehen, die Dies sollte unter anderem Blog-Aktualisierungen und Pressemitteilungen umfassen. Die frühere Wertentwicklung von Crypto-Assets und Wertpapieren mit Profil ist kein Hinweis auf zukünftige Ergebnisse. Krypto-Assets und Unternehmen, die auf dieser Website vorgestellt werden, verfügen möglicherweise nicht über einen aktiven Handelsmarkt und investieren in Krypto-Assets oder Wertpapiere, für die es keinen aktiven Handelsmarkt gibt oder die auf bestimmten Medien, Plattformen und Märkten gehandelt werden. Dies wird als äußerst spekulativ eingestuft und birgt ein hohes Risiko . Jeder, der über solche Krypto-Vermögenswerte und Wertpapiere verfügt, sollte finanziell in der Lage und bereit sein, das Verlustrisiko und den tatsächlichen Verlust seines gesamten Handels zu tragen. Die Informationen in diesem Antrag sind nicht als Grundlage für eine Investitionsentscheidung gedacht. Personen, die die Komodo-Anwendung verwenden, sollten zu ihrer eigenen Zufriedenheit die Richtigkeit von Informationen bestätigen, bevor sie eine Investition tätigen oder eine Transaktion tätigen. Die Entscheidung über den Kauf oder Verkauf von Krypto-Assets oder Sicherheiten, die von Komodo angeboten werden, erfolgt ausschließlich auf eigenes Risiko des Lesers. Als Leser und Benutzer dieser Anwendung erklären Sie sich damit einverstanden, unter keinen Umständen haftbare Eigentümer, Mitglieder, leitende Angestellte, Direktoren, Partner, Berater oder andere Personen, die an der Veröffentlichung dieser Anwendung beteiligt sind, für Verluste zu haften, die durch die Verwendung von entstehen In dieser Anwendung enthaltene InformationenKomodo und seine Auftragnehmer und verbundenen Unternehmen können im Falle einer Wertsteigerung oder Wertminderung der Krypto-Vermögenswerte und Wertpapiere profitieren. Solche Crypto-Assets und Wertpapiere können von Zeit zu Zeit gekauft oder verkauft werden, auch nachdem Komodo positive Informationen über die Crypto-Assets und Unternehmen verbreitet hat. Komodo ist nicht verpflichtet, die Leser über seine Handelsaktivitäten oder die Handelsaktivitäten seiner Eigentümer, Mitglieder, leitenden Angestellten, Direktoren, Auftragnehmer und verbundenen Unternehmen und / oder mit den Eigentümern, Mitgliedern, leitenden Angestellten, Direktoren, Auftragnehmern und verbundenen Unternehmen von BC Relations zu informieren affiliates.Komodo und seine verbundenen Unternehmen können von Zeit zu Zeit Vereinbarungen zum Kauf von Krypto-Assets oder Wertpapieren abschließen, um eine Methode zur Erreichung ihrer Ziele bereitzustellen.\n\n",
+  "@eulaParagraphe16": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe17": "Die Bedingungen gelten bis zur Kündigung durch Komodo Platform. Im Falle einer Kündigung haben Sie keine Berechtigung mehr, auf die Anwendung zuzugreifen. Alle Ihnen auferlegten Einschränkungen und Haftungsausschlüsse sowie Haftungsbeschränkungen, die in den Nutzungsbedingungen festgelegt sind, bleiben jedoch nach der Kündigung bestehen. Eine solche Kündigung berührt nicht das Recht, das Komodo Platform bis zum Datum der Kündigung gegen Sie eingeräumt hat. Komodo Platform kann die Anwendung auch jederzeit als Ganzes oder in Teilen oder Funktionen der Anwendung entfernen. \n\n",
+  "@eulaParagraphe17": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe18": "Die Bestimmungen der vorstehenden Absätze gelten für die Komodo Platform und ihre leitenden Angestellten, Direktoren, Mitarbeiter, Vertreter, Lizenzgeber, Lieferanten und alle Drittanbieter von Informationen für die Anwendung. Jede dieser Personen oder Körperschaften hat das Recht, diese Bestimmungen in eigenem Namen direkt gegen Sie geltend zu machen und durchzusetzen.\n\n",
+  "@eulaParagraphe18": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eulaParagraphe19": "Es kann erforderlich sein, dass wir personenbezogene Daten aufbewahren und verwenden, um unsere internen und externen Prüfungsanforderungen zu erfüllen, um die Datensicherheit zu gewährleisten und wenn wir dies für notwendig oder angemessen halten: Gesetze und Vorschriften außerhalb Ihres Wohnsitzlandes; (b) auf Anfragen von Gerichten, Strafverfolgungsbehörden, Aufsichtsbehörden und anderen öffentlichen und staatlichen Behörden zu antworten, zu denen auch solche Behörden außerhalb Ihres Wohnsitzlandes gehören können; (c) um die Einhaltung und Durchsetzung unserer Plattformbedingungen zu überwachen; (d) um Geldwäsche, Sanktionen oder Überprüfungen Ihres Kunden durchzuführen, wie dies durch geltende Gesetze und Vorschriften vorgeschrieben ist; (e) um unsere Rechte, Privatsphäre, Sicherheit, Eigentum oder die anderer Personen zu schützen. Es kann auch erforderlich sein, dass wir personenbezogene Daten verwenden und aufbewahren, nachdem Sie Ihr Konto aus rechtlichen, behördlichen und Compliance-Gründen geschlossen haben, z. B. zur Verhütung, Aufdeckung oder Ermittlung einer Straftat. Schadensverhütung; oder Betrugsprävention. Wir erheben und verarbeiten auch nicht personenbezogene, anonymisierte Daten für statistische Zwecke und Analysen und helfen uns, einen besseren Service zu bieten. Dieses Dokument wurde zuletzt am 3. Juli 2019 aktualisiert\n\n",
+  "@eulaParagraphe19": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ethFee": "ETH Gebühr",
+  "@ethFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notEnoughEth": "Nicht genug ETH für die Transaktion!",
+  "@notEnoughEth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ethNotActive": "Bitte aktivieren Sie ETH.",
+  "@ethNotActive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "youWillReceiveClaim": "Sie erhalten {amount} {coin}",
+  "@youWillReceiveClaim": {
+    "type": "text",
+    "placeholders": {
+      "amount": {},
+      "coin": {}
+    }
+  },
+  "seeOrders": "Klicken Sie hier, um {amount} Orders zu sehen",
+  "@seeOrders": {
+    "type": "text",
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "clickToSee": "Zum Anzeigen klicken ",
+  "@clickToSee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "price": "Preis",
+  "@price": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "availableVolume": "max vol",
+  "@availableVolume": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
