@@ -84,14 +84,24 @@ class MarketMakerService {
             await Process.run('ls', <String>['${filesPath}mm2']);
         final String currentBuildNumber = prefs.getString('version');
 
+        print(checkmm2.stdout.toString().trim() != '${filesPath}mm2');
+        print(currentBuildNumber);
+        print(newBuildNumber);
+        print(checkmm2.stdout.toString().trim() != '${filesPath}mm2' ||
+            currentBuildNumber == null ||
+            currentBuildNumber.isEmpty ||
+            currentBuildNumber != newBuildNumber);
+
         if (checkmm2.stdout.toString().trim() != '${filesPath}mm2' ||
             currentBuildNumber == null ||
             currentBuildNumber.isEmpty ||
             currentBuildNumber != newBuildNumber) {
           await prefs.setString('version', newBuildNumber);
           await coinsBloc.resetCoinDefault();
-
           final ByteData resultmm2 = await rootBundle.load('assets/mm2');
+          if (checkmm2.stdout.toString().trim() == '${filesPath}mm2') {
+            await deletemm2File();
+          }
           await writeData(resultmm2.buffer.asUint8List());
           await Process.run('chmod', <String>['544', '${filesPath}mm2']);
         }
@@ -238,6 +248,11 @@ class MarketMakerService {
   Future<File> writeData(List<int> data) async {
     final File file = await _localFile;
     return file.writeAsBytes(data);
+  }
+
+  Future<void> deletemm2File() async{
+    final File file = await _localFile;
+    await file.delete();
   }
 
   Future<dynamic> stopmm2() async {
