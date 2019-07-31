@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-07-29T18:40:28.408505",
+  "@@last_modified": "2019-07-31T13:29:06.046544",
   "createPin": "Create PIN",
   "@createPin": {
     "type": "text",
@@ -220,6 +220,13 @@
     "type": "text",
     "placeholders": {}
   },
+  "buySuccessWaitingError": "Ordermatch ongoing, please wait {seconde} seconds!",
+  "@buySuccessWaitingError": {
+    "type": "text",
+    "placeholders": {
+      "seconde": {}
+    }
+  },
   "networkFee": "Network fee",
   "@networkFee": {
     "type": "text",
@@ -340,6 +347,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "create": "trade",
+  "@create": {
+    "type": "text",
+    "placeholders": {}
+  },
   "commingsoonGeneral": "Details coming soon!",
   "@commingsoonGeneral": {
     "type": "text",
@@ -455,6 +467,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "txNotConfirmed": "UNCONFIRMED",
+  "@txNotConfirmed": {
+    "type": "text",
+    "placeholders": {}
+  },
   "txBlock": "Block",
   "@txBlock": {
     "type": "text",
@@ -467,6 +484,11 @@
   },
   "txFee": "Fee",
   "@txFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txHash": "Transaction ID",
+  "@txHash": {
     "type": "text",
     "placeholders": {}
   },
@@ -510,6 +532,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "mediaSaved": "SAVED",
+  "@mediaSaved": {
+    "type": "text",
+    "placeholders": {}
+  },
   "articleFrom": "AtomicDEX NEWS",
   "@articleFrom": {
     "type": "text",
@@ -517,6 +544,11 @@
   },
   "mediaNotSavedDescription": "YOU HAVE NO SAVED ARTICLES",
   "@mediaNotSavedDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaBrowseFeed": "BROWSE FEED",
+  "@mediaBrowseFeed": {
     "type": "text",
     "placeholders": {}
   },
@@ -764,6 +796,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "version": "version",
+  "@version": {
+    "type": "text",
+    "placeholders": {}
+  },
   "viewSeed": "View Seed",
   "@viewSeed": {
     "type": "text",
@@ -881,10 +918,26 @@
     "type": "text",
     "placeholders": {}
   },
+  "minValue": "The minimun amount to sell is {number} {coinName}",
+  "@minValue": {
+    "type": "text",
+    "placeholders": {
+      "coinName": {},
+      "number": {}
+    }
+  },
   "titleCreatePassword": "CREATE A PASSWORD",
   "@titleCreatePassword": {
     "type": "text",
     "placeholders": {}
+  },
+  "minValueBuy": "The minimun amount to buy is {number} {coinName}",
+  "@minValueBuy": {
+    "type": "text",
+    "placeholders": {
+      "coinName": {},
+      "number": {}
+    }
   },
   "encryptingWallet": "Encrypting wallet",
   "@encryptingWallet": {
@@ -1166,7 +1219,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "availableVolume": "max volume",
+  "availableVolume": "max vol",
   "@availableVolume": {
     "type": "text",
     "placeholders": {}
