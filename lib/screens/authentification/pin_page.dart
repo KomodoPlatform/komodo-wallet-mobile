@@ -57,7 +57,6 @@ class _PinPageState extends State<PinPage> {
 
   Future<void> _initCorrectPin(PinStatus pinStatus) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(pinStatus);
     if (pinStatus == PinStatus.CREATE_PIN) {
       setState(() {
         _correctPin = null;
@@ -70,7 +69,6 @@ class _PinPageState extends State<PinPage> {
     } else {
       await setNormalPin();
     }
-    print(_correctPin);
   }
 
   Future<void> _onCodeSuccess(PinStatus pinStatus, String code) async {

@@ -58,8 +58,6 @@ class AuthenticateBloc extends BlocBase {
       pinStatus = PinStatus.CREATE_PIN;
       _inpinStatus.add(PinStatus.CREATE_PIN);
     }
-    print(prefs.getBool('isPinIsCreated'));
-    print('pinStatus' + pinStatus.toString());
   }
 
   @override
