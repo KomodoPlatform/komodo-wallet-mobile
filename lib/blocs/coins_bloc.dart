@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -67,7 +66,6 @@ class CoinsBloc implements BlocBase {
       _closeViewSelectCoinController.stream;
 
   Timer timer;
-  Timer timer2;
   bool onActivateCoins = false;
 
   @override
@@ -301,23 +299,11 @@ class CoinsBloc implements BlocBase {
         loadCoin();
       }
     });
-    timer2 = Timer.periodic(const Duration(seconds: 45), (_) {
-      if (!mm2.ismm2Running) {
-        _.cancel();
-      } else {
-        if (!onActivateCoins) {
-          swapHistoryBloc.updateSwaps(50, null);
-        }
-      }
-    });
   }
 
   void stopCheckBalance() {
     if (timer != null) {
       timer.cancel();
-    }
-    if (timer2 != null) {
-      timer2.cancel();
     }
   }
 
