@@ -33,7 +33,7 @@ dev_dependencies:
   barcode_scan: ^1.0.0
   shared_preferences: ^0.5.1+1
   bip39: ^1.0.3
-  pin_code_view: 0.1.1
+  pin_code_view: 0.2.1
   # share: ^0.6.0+1
   crypto: ^2.0.6
   path_provider: ^1.1.0

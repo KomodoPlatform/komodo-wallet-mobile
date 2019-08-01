@@ -490,7 +490,8 @@ class AppLocalizations {
       Intl.message('price', name: 'price');
     String get availableVolume =>
       Intl.message('max vol', name: 'availableVolume');
-      
+    String get configureWallet =>
+      Intl.message('Configuring your wallet, please wait...', name: 'configureWallet');      
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

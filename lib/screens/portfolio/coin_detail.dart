@@ -262,6 +262,7 @@ class _CoinDetailState extends State<CoinDetail> {
     }
 
     return LockScreen(
+      context: context,
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         backgroundColor: Theme.of(context).backgroundColor,

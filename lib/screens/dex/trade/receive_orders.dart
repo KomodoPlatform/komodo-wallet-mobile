@@ -148,6 +148,7 @@ class _AsksOrderState extends State<AsksOrder> {
         .forEach((int index, Ask ask) => asksWidget.add(tableRow(ask, index)));
 
     return LockScreen(
+      context: context,
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(

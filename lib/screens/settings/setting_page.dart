@@ -168,7 +168,8 @@ class _SettingPageState extends State<SettingPage> {
                                   context,
                                   MaterialPageRoute<dynamic>(
                                       builder: (BuildContext context) =>
-                                          const LockScreen(
+                                          LockScreen(
+                                            context: context,
                                             pinStatus: PinStatus.DISABLED_PIN,
                                           )));
                             } else {
@@ -215,7 +216,8 @@ class _SettingPageState extends State<SettingPage> {
                                   context,
                                   MaterialPageRoute<dynamic>(
                                       builder: (BuildContext context) =>
-                                          const LockScreen(
+                                          LockScreen(
+                                            context: context,
                                             pinStatus: PinStatus
                                                 .DISABLED_PIN_BIOMETRIC,
                                           )));
@@ -255,7 +257,7 @@ class _SettingPageState extends State<SettingPage> {
                                       AppLocalizations.of(context).lockScreen,
                                   subTitle:
                                       AppLocalizations.of(context).enterPinCode,
-                                  isConfirmPin: PinStatus.CHANGE_PIN,
+                                  pinStatus: PinStatus.CHANGE_PIN,
                                   password: password)));
                     },
                   ))),

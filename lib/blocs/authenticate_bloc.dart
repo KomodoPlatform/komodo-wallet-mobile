@@ -51,7 +51,15 @@ class AuthenticateBloc extends BlocBase {
       isLogin = false;
       _inIsLogin.add(false);
     }
+    pinStatus = PinStatus.NORMAL_PIN;
     _inpinStatus.add(PinStatus.NORMAL_PIN);
+
+    if(prefs.getBool('isPinIsCreated') != null && prefs.getBool('isPinIsCreated')){
+      pinStatus = PinStatus.CREATE_PIN;
+      _inpinStatus.add(PinStatus.CREATE_PIN);
+    }
+    print(prefs.getBool('isPinIsCreated'));
+    print('pinStatus' + pinStatus.toString());
   }
 
   @override
