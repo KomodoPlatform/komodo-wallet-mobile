@@ -32,6 +32,7 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
   @override
   Widget build(BuildContext context) {
     return LockScreen(
+      context: context,
       onSuccess: () {
         swapHistoryBloc.updateSwaps(50, null);
       },

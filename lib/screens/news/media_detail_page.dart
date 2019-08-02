@@ -34,6 +34,7 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
     String splitText2 = widget.article.body.substring(splitIndex);
     splitText2 = splitText2.trim();
     return LockScreen(
+      context: context,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

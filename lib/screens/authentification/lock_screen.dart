@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
+import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
@@ -15,11 +18,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LockScreen extends StatefulWidget {
   const LockScreen(
-      {this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.onSuccess});
+      {this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.onSuccess, @required this.context});
 
   final PinStatus pinStatus;
   final Widget child;
   final Function onSuccess;
+  final BuildContext context;
 
   @override
   _LockScreenState createState() => _LockScreenState();
@@ -28,11 +32,45 @@ class LockScreen extends StatefulWidget {
 class _LockScreenState extends State<LockScreen> {
   final LocalAuthentication auth = LocalAuthentication();
   String password;
+  bool isInitPassword = false;
+
+  Future<void> _initScreen() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool isPinIsCreated = prefs.getBool('isPinIsCreated');
+    final Wallet currentWallet = await DBProvider.db.getCurrentWallet();
+
+    if (password == null &&
+        isPinIsCreated != null &&
+        isPinIsCreated == true &&
+        currentWallet != null) {
+      Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => UnlockWalletPage(
+                  isCreatedPin: true,
+                  textButton: AppLocalizations.of(context).login,
+                  wallet: currentWallet,
+                  onSuccess: (String seed, String password) async {
+                    setState(() {
+                      this.password = password;
+                    });
+                    Navigator.of(context).pop();
+                  },
+                )),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    final ScreenArguments args = ModalRoute.of(widget.context).settings.arguments;
+    password = args?.password;
+    _initScreen();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
-    password = args?.password;
     return StreamBuilder<bool>(
       stream: authBloc.outIsLogin,
       initialData: authBloc.isLogin,
@@ -80,7 +118,7 @@ class _LockScreenState extends State<LockScreen> {
                                       AppLocalizations.of(context).lockScreen,
                                   subTitle:
                                       AppLocalizations.of(context).enterPinCode,
-                                  isConfirmPin: widget.pinStatus,
+                                  pinStatus: widget.pinStatus,
                                   isFromChangingPin: false,
                                   onSuccess: widget.onSuccess,
                                 ),
@@ -92,10 +130,10 @@ class _LockScreenState extends State<LockScreen> {
                                     widget.pinStatus ==
                                         PinStatus.DISABLED_PIN_BIOMETRIC))
                               return PinPage(
-                                title: AppLocalizations.of(context).lockScreen,
-                                subTitle:
-                                    AppLocalizations.of(context).enterPinCode,
-                                isConfirmPin: widget.pinStatus,
+                                title:
+                                    AppLocalizations.of(context).lockScreen,
+                                subTitle: AppLocalizations.of(context).enterPinCode,
+                                pinStatus: widget.pinStatus,
                                 isFromChangingPin: false,
                               );
                             else
@@ -112,7 +150,7 @@ class _LockScreenState extends State<LockScreen> {
                 title: AppLocalizations.of(context).createPin,
                 subTitle: AppLocalizations.of(context).enterPinCode,
                 firstCreationPin: true,
-                isConfirmPin: PinStatus.CREATE_PIN,
+                pinStatus: PinStatus.CREATE_PIN,
                 password: password,
                 isFromChangingPin: false,
               );

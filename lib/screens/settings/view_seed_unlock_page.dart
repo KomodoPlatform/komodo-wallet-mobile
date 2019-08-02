@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -20,6 +21,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
   @override
   Widget build(BuildContext context) {
     return LockScreen(
+      context: context,
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
@@ -44,6 +46,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                   context: context,
                 )
               : UnlockPassword(
+                currentWallet: walletBloc.currentWallet,
                   icon: SvgPicture.asset('assets/seed_logo.svg'),
                   onSuccess: (String data) {
                     setState(() {
@@ -142,11 +145,12 @@ class _ViewSeedState extends State<ViewSeed> {
 }
 
 class UnlockPassword extends StatefulWidget {
-  const UnlockPassword({this.onSuccess, this.onError, this.icon});
+  const UnlockPassword({this.onSuccess, this.onError, this.icon, this.currentWallet});
 
   final Function(String) onSuccess;
   final Function(String) onError;
   final SvgPicture icon;
+  final Wallet currentWallet;
 
   @override
   _UnlockPasswordState createState() => _UnlockPasswordState();
@@ -248,7 +252,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
       isLoading = true;
     });
     final String seed = await entryptionTool.readData(
-        KeyEncryption.SEED, walletBloc.currentWallet, data);
+        KeyEncryption.SEED, widget.currentWallet, data);
     setState(() {
       isLoading = false;
     });

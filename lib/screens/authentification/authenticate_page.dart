@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
   @override
@@ -18,7 +19,13 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
   @override
   void initState() {
     walletBloc.getWalletsSaved();
+    initPinCreated();
     super.initState();
+  }
+
+  Future<void> initPinCreated() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isPinIsCreated', false);
   }
 
   @override
