@@ -47,17 +47,11 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
             builder:
                 (BuildContext context, AsyncSnapshot<List<Swap>> snapshot) {
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
+                swapData = widget.swap;
                 for (Swap swap in snapshot.data) {
                   if (swap.result.uuid == widget.swap.result.uuid) {
                     swapData = swap;
-                    print(swap.status);
                   }
-                }
-
-                if (swapData.result == null ||
-                    swapData.result.myInfo == null ||
-                    swapData.result.myInfo.myCoin.isEmpty) {
-                  swapData = widget.swap;
                 }
                 if (swapData.status == Status.SWAP_SUCCESSFUL &&
                     swapHistoryBloc.isAnimationStepFinalIsFinish) {
