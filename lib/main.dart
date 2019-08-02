@@ -148,6 +148,7 @@ class _MyAppState extends State<MyApp> {
         routes: <String, Widget Function(BuildContext)>{
           // When we navigate to the '/' route, build the FirstScreen Widget
           '/': (BuildContext context) => LockScreen(
+              context: context,
                 child: MyHomePage(),
               ),
         });
