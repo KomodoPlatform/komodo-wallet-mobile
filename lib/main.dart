@@ -105,7 +105,18 @@ class _MyAppState extends State<MyApp> {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        supportedLocales: const <Locale>[Locale('en'), Locale('fr'), Locale('de')],
+        supportedLocales: const <Locale>[
+          Locale('en'),
+          Locale('fr'),
+          Locale('de'),
+          Locale.fromSubtags(languageCode: 'zh'), // generic Chinese 'zh'
+          Locale.fromSubtags(
+              languageCode: 'zh',
+              scriptCode: 'Hans'), // generic simplified Chinese 'zh_Hans'
+          Locale.fromSubtags(
+              languageCode: 'zh',
+              scriptCode: 'Hant'), // generic traditional Chinese 'zh_Hant'
+        ],
         theme: ThemeData(
           brightness: Brightness.dark,
           primaryColor: const Color.fromRGBO(42, 54, 71, 1),
@@ -148,7 +159,7 @@ class _MyAppState extends State<MyApp> {
         routes: <String, Widget Function(BuildContext)>{
           // When we navigate to the '/' route, build the FirstScreen Widget
           '/': (BuildContext context) => LockScreen(
-              context: context,
+                context: context,
                 child: MyHomePage(),
               ),
         });

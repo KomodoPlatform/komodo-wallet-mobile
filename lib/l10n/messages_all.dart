@@ -12,6 +12,8 @@ import 'package:intl/src/intl_helpers.dart';
 import 'messages_de.dart' as messages_de;
 import 'messages_fr.dart' as messages_fr;
 import 'messages_messages.dart' as messages_messages;
+import 'messages_zh.dart' as messages_zh;
+import 'messages_zh_hant.dart' as messages_zh_hant;
 
 typedef LibraryLoader = void Function();
 
@@ -22,6 +24,10 @@ Map<String, LibraryLoader> _deferredLibraries = <String, LibraryLoader>{
   'de': () => new Future<dynamic>.value(null),
 // ignore: unnecessary_new
   'messages': () => new Future<dynamic>.value(null),
+  // ignore: unnecessary_new
+  'zh': () => new Future<dynamic>.value(null),
+// ignore: unnecessary_new
+  'zh_hant': () => new Future<dynamic>.value(null),
 };
 
 MessageLookupByLibrary _findExact(dynamic localeName) {
@@ -32,6 +38,10 @@ MessageLookupByLibrary _findExact(dynamic localeName) {
       return messages_de.messages;
     case 'messages':
       return messages_messages.messages;
+          case 'zh':
+      return messages_zh.messages;
+    case 'zh_hant':
+      return messages_zh_hant.messages;
     default:
       return null;
   }
@@ -72,3 +82,4 @@ MessageLookupByLibrary _findGeneratedMessagesFor(dynamic locale) {
     return null;
   return _findExact(actualLocale);
 }
+
