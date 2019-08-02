@@ -318,7 +318,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     if (widget.swapStatus == SwapStatus.BUY) {
       mm2
           .postBuy(coinBase, coinRel, amountToBuy, price)
-          .then((dynamic onValue) =>
+          .then((BuyResponse onValue) =>
               _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     } else if (widget.swapStatus == SwapStatus.SELL) {
@@ -326,7 +326,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       mm2
           .postSetPrice(
               coinRel, coinBase, amountToSell, widget.bestPrice, false, false)
-          .then((dynamic onValue) =>
+          .then((SetPriceResponse onValue) =>
               _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     }
@@ -358,29 +358,27 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     ordersBloc.updateOrdersSwaps();
     swapHistoryBloc.updateSwaps(50, null);
 
-    if (onValue is SetPriceResponse || onValue is BuyResponse) {
-      if (widget.swapStatus == SwapStatus.BUY) {
-        Navigator.pushReplacement<dynamic, dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => SwapDetailPage(
-                    swap: Swap(
-                        status: Status.ORDER_MATCHING,
-                        result: ResultSwap(
-                          uuid: onValue.result.uuid,
-                          myInfo: MyInfo(
-                              myAmount: amountToSell.toString(),
-                              otherAmount: amountToBuy.toString(),
-                              myCoin: onValue.result.rel,
-                              otherCoin: onValue.result.base,
-                              startedAt: DateTime.now().millisecondsSinceEpoch),
-                        )),
-                  )),
-        );
-      } else if (widget.swapStatus == SwapStatus.SELL) {
-        Navigator.of(context).pop();
-        widget.orderSuccess();
-      }
+    if (widget.swapStatus == SwapStatus.BUY) {
+      Navigator.pushReplacement<dynamic, dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => SwapDetailPage(
+                  swap: Swap(
+                      status: Status.ORDER_MATCHING,
+                      result: ResultSwap(
+                        uuid: onValue.result.uuid,
+                        myInfo: MyInfo(
+                            myAmount: amountToSell.toString(),
+                            otherAmount: amountToBuy.toString(),
+                            myCoin: onValue.result.rel,
+                            otherCoin: onValue.result.base,
+                            startedAt: DateTime.now().millisecondsSinceEpoch),
+                      )),
+                )),
+      );
+    } else if (widget.swapStatus == SwapStatus.SELL) {
+      Navigator.of(context).pop();
+      widget.orderSuccess();
     }
   }
 }

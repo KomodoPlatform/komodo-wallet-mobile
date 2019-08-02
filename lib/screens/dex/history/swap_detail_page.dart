@@ -54,7 +54,9 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
                   }
                 }
 
-                if (swapData.result == null) {
+                if (swapData.result == null ||
+                    swapData.result.myInfo == null ||
+                    swapData.result.myInfo.myCoin.isEmpty) {
                   swapData = widget.swap;
                 }
                 if (swapData.status == Status.SWAP_SUCCESSFUL &&
