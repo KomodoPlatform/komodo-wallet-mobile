@@ -315,7 +315,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     final Coin coinRel = widget.coinRel;
     final String price = widget.bestPrice;
 
-    //reviewed by ca333
     if (widget.swapStatus == SwapStatus.BUY) {
       mm2
           .postBuy(coinBase, coinRel, amountToBuy, price)
