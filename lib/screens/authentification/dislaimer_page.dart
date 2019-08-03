@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -7,9 +9,9 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DislaimerPage extends StatefulWidget {
-
   const DislaimerPage(
       {Key key,
       this.password,
@@ -24,29 +26,76 @@ class DislaimerPage extends StatefulWidget {
   final Function onSuccess;
   final bool readOnly;
 
-
   @override
   _DislaimerPageState createState() => _DislaimerPageState();
 }
 
-class _DislaimerPageState extends State<DislaimerPage> {
-  final ScrollController _scrollController =  ScrollController();
+class _DislaimerPageState extends State<DislaimerPage>
+    with TickerProviderStateMixin {
+  final ScrollController _scrollController = ScrollController();
   bool isEndOfScroll = false;
   bool isLoading = false;
   bool _checkBoxEULA = false;
   bool _checkBoxTOC = false;
+  Animation<Offset> _offsetFloat;
+  AnimationController _controller;
+  Animation<double> _scaleTransition;
+  AnimationController _controllerScale;
+  double _scrollPosition = 0.0;
+  Timer timer;
 
   @override
   void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _offsetFloat = Tween<Offset>(begin: const Offset(0, 0.01), end: Offset.zero)
+        .animate(_controller);
+
+    _offsetFloat.addListener(() {
+      setState(() {});
+    });
+
+    _controller.forward();
+    timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
+      if (_controller.value == 0) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+
+    _controllerScale = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _scaleTransition =
+        CurvedAnimation(parent: _controllerScale, curve: Curves.ease);
+    _controllerScale.forward();
+
     _scrollController.addListener(() {
+      setState(() {
+        _scrollPosition = _scrollController.position.pixels;
+      });
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         setState(() {
           isEndOfScroll = true;
+          _controllerScale.reverse();
+          timer.cancel();                
         });
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _controllerScale.dispose();
+    timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -184,20 +233,51 @@ class _DislaimerPageState extends State<DislaimerPage> {
           child: Column(
             children: <Widget>[
               Expanded(
-                child: ListView(
-                  key: const Key('scroll-disclaimer'),
-                  controller: _scrollController,
+                child: Stack(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: RichText(
-                        text: TextSpan(
-                          style: Theme.of(context).textTheme.body1,
-                          children: disclaimerToS,
+                    ListView(
+                      key: const Key('scroll-disclaimer'),
+                      controller: _scrollController,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: RichText(
+                            text: TextSpan(
+                              style: Theme.of(context).textTheme.body1,
+                              children: disclaimerToS,
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          '',
+                          key: Key('end-list-disclaimer'),
+                        ),
+                      ],
+                    ),
+                    SlideTransition(
+                      position: _offsetFloat,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: ScaleTransition(
+                            scale: _scaleTransition,
+                            child: FloatingActionButton(
+                              child: Icon(Icons.arrow_downward),
+                              onPressed: () {
+                                if (isEndOfScroll) {
+                                  timer.cancel();
+                                  _controllerScale.reverse();
+                                }
+                                _scrollController.animateTo(_scrollPosition + 300,
+                                    duration: const Duration(seconds: 1),
+                                    curve: Curves.ease);
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    const Text('', key: Key('end-list-disclaimer'),),
+                    )
                   ],
                 ),
               ),
@@ -256,7 +336,9 @@ class _DislaimerPageState extends State<DislaimerPage> {
                       key: const Key('next-disclaimer'),
                       onPressed: (widget.readOnly
                               ? isEndOfScroll
-                              : isEndOfScroll && _checkBoxEULA && _checkBoxTOC)
+                              : isEndOfScroll &&
+                                  _checkBoxEULA &&
+                                  _checkBoxTOC)
                           ? _nextPage
                           : null,
                       text: widget.readOnly
@@ -291,7 +373,7 @@ class _DislaimerPageState extends State<DislaimerPage> {
         isLoading = true;
       });
 
-      final EncryptionTool entryptionTool =  EncryptionTool();
+      final EncryptionTool entryptionTool = EncryptionTool();
       final Wallet wallet = walletBloc.currentWallet;
       wallet.isFastEncryption = widget.isFastEncrypted;
       walletBloc.currentWallet = wallet;
@@ -300,11 +382,11 @@ class _DislaimerPageState extends State<DislaimerPage> {
           KeyEncryption.SEED, wallet, widget.password, widget.seed);
       await DBProvider.db.saveWallet(wallet);
       await DBProvider.db.saveCurrentWallet(wallet);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('isPinIsCreated', true);
       await coinsBloc.resetCoinDefault();
 
-      await authBloc
-          .loginUI(true, widget.seed, widget.password)
-          .then((_) {
+      await authBloc.loginUI(true, widget.seed, widget.password).then((_) {
         setState(() {
           isLoading = false;
         });

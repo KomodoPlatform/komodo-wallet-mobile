@@ -9,17 +9,39 @@ import 'package:intl/message_lookup_by_library.dart';
 // ignore: implementation_imports
 import 'package:intl/src/intl_helpers.dart';
 
+import 'messages_de.dart' as messages_de;
+import 'messages_fr.dart' as messages_fr;
 import 'messages_messages.dart' as messages_messages;
+import 'messages_zh.dart' as messages_zh;
+import 'messages_zh_hant.dart' as messages_zh_hant;
 
-typedef LibraryLoader = Future<dynamic> Function();
+typedef LibraryLoader = void Function();
+
 Map<String, LibraryLoader> _deferredLibraries = <String, LibraryLoader>{
-  'messages': () => Future<dynamic>.value(null),
+// ignore: unnecessary_new
+  'fr': () => new Future<dynamic>.value(null),
+// ignore: unnecessary_new
+  'de': () => new Future<dynamic>.value(null),
+// ignore: unnecessary_new
+  'messages': () => new Future<dynamic>.value(null),
+  // ignore: unnecessary_new
+  'zh': () => new Future<dynamic>.value(null),
+// ignore: unnecessary_new
+  'zh_hant': () => new Future<dynamic>.value(null),
 };
 
 MessageLookupByLibrary _findExact(dynamic localeName) {
   switch (localeName) {
+    case 'fr':
+      return messages_fr.messages;
+    case 'de':
+      return messages_de.messages;
     case 'messages':
       return messages_messages.messages;
+          case 'zh':
+      return messages_zh.messages;
+    case 'zh_hant':
+      return messages_zh_hant.messages;
     default:
       return null;
   }
@@ -28,13 +50,14 @@ MessageLookupByLibrary _findExact(dynamic localeName) {
 /// User programs should call this before using [localeName] for messages.
 Future<bool> initializeMessages(String localeName) async {
   final String availableLocale = Intl.verifiedLocale(
-      localeName, (dynamic locale) => _deferredLibraries[locale] != null,
-      onFailure: (dynamic _) => null);
+    localeName,
+    (dynamic locale) => _deferredLibraries[locale] != null,
+    onFailure: (dynamic _) => null);
   if (availableLocale == null) {
     // ignore: unnecessary_new
     return new Future<bool>.value(false);
   }
-  final Future<dynamic> Function() lib = _deferredLibraries[availableLocale];
+  final Function lib = _deferredLibraries[availableLocale];
   // ignore: unnecessary_new
   await (lib == null ? new Future<bool>.value(false) : lib());
   // ignore: unnecessary_new
@@ -55,8 +78,8 @@ bool _messagesExistFor(String locale) {
 MessageLookupByLibrary _findGeneratedMessagesFor(dynamic locale) {
   final String actualLocale = Intl.verifiedLocale(locale, _messagesExistFor,
       onFailure: (dynamic _) => null);
-  if (actualLocale == null) {
+  if (actualLocale == null) 
     return null;
-  }
   return _findExact(actualLocale);
 }
+

@@ -74,15 +74,12 @@ void main() {
 
     test('Create PIN', () async {
       await driver.waitFor(find.text('Create PIN'));
-      expect(await driver.getText(find.text('Create PIN')), 'Create PIN');
 
       for (int i = 0; i < 6; i++) {
         await driver.tap(find.text('2'));
       }
 
       await driver.waitFor(find.text('Confirm PIN code'));
-      expect(await driver.getText(find.text('Confirm PIN code')),
-          'Confirm PIN code');
 
       for (int i = 0; i < 6; i++) {
         await driver.tap(find.text('2'));

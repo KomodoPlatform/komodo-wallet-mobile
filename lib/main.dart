@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,6 +15,7 @@ import 'package:komodo_dex/screens/portfolio/bloc_coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/utils/mode.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,8 +24,12 @@ import 'package:connectivity/connectivity.dart';
 import 'blocs/coins_bloc.dart';
 
 void main() {
-  return runApp(BlocProvider<AuthenticateBloc>(
-      bloc: AuthenticateBloc(), child: const MyApp()));
+  if (isInDebugMode) {
+    return runApp(BlocProvider<AuthenticateBloc>(
+        bloc: AuthenticateBloc(), child: const MyApp()));
+  } else {
+    startApp();
+  }
 }
 
 Future<void> startApp() async {
@@ -99,9 +103,21 @@ class _MyAppState extends State<MyApp> {
         localizationsDelegates: <LocalizationsDelegate<dynamic>>[
           const AppLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
         ],
-        supportedLocales: const <Locale>[Locale('en')],
+        supportedLocales: const <Locale>[
+          Locale('en'),
+          Locale('fr'),
+          Locale('de'),
+          Locale.fromSubtags(languageCode: 'zh'), // generic Chinese 'zh'
+          Locale.fromSubtags(
+              languageCode: 'zh',
+              scriptCode: 'Hans'), // generic simplified Chinese 'zh_Hans'
+          Locale.fromSubtags(
+              languageCode: 'zh',
+              scriptCode: 'Hant'), // generic traditional Chinese 'zh_Hant'
+        ],
         theme: ThemeData(
           brightness: Brightness.dark,
           primaryColor: const Color.fromRGBO(42, 54, 71, 1),
@@ -144,6 +160,7 @@ class _MyAppState extends State<MyApp> {
         routes: <String, Widget Function(BuildContext)>{
           // When we navigate to the '/' route, build the FirstScreen Widget
           '/': (BuildContext context) => LockScreen(
+                context: context,
                 child: MyHomePage(),
               ),
         });

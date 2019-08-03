@@ -9,6 +9,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -56,6 +57,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   @override
   Widget build(BuildContext context) {
     return LockScreen(
+      context: context,
       child: WillPopScope(
         onWillPop: () {
           _resetSwapPage();
@@ -302,32 +304,73 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     });
   }
 
-  void _makeASwap(BuildContext mContext) {
+  Future<void> _makeASwap(BuildContext mContext) async {
     setState(() {
       isSwapMaking = true;
     });
 
-    final String amountToSell = widget.amountToSell.replaceAll(',', '.');
-    final Decimal amountToBuy =
-        Decimal.parse(amountToSell) * (Decimal.parse(amountToSell) / (Decimal.parse(amountToSell) * Decimal.parse(widget.bestPrice)));
     final Coin coinBase = widget.coinBase;
     final Coin coinRel = widget.coinRel;
-    final String price = widget.bestPrice;
+    String price = '0';
 
-    //reviewed by ca333
+    try {
+      final Orderbook orderbook = await mm2.getOrderbook(coinBase, coinRel);
+      double maxVolume = 0;
+      int i = 0;
+
+      for (Ask ask in orderbook.asks) {
+        if (ask.address != swapBloc.sellCoin.balance.address) {
+          if (i == 0) {
+            maxVolume = ask.maxvolume;
+            price = ask.price;
+          } else if (Decimal.parse(ask.price) <= Decimal.parse(price) &&
+              ask.maxvolume > maxVolume) {
+            maxVolume = ask.maxvolume;
+            price = ask.price;
+          }
+          i++;
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+    final String amountToSell = widget.amountToSell.replaceAll(',', '.');
+    final Decimal satoshi = Decimal.parse('100000000');
+    final Decimal satoshiSellAmount =
+        Decimal.parse(widget.amountToSell.replaceAll(',', '.')) * satoshi;
+    Decimal satoshiBuyAmount = Decimal.parse(
+            (Decimal.parse(amountToSell) / Decimal.parse(price))
+                .toStringAsFixed(8)) *
+        satoshi;
+    final Decimal satoshiPrice =
+        Decimal.parse(Decimal.parse(price).toStringAsFixed(8)) * satoshi;
+
+    //if the desired sellamount != calculated sellamount this loop fixes the precision errors caused by the above division
+    //this is considered a dirty quickfix until a final decision is made ref. num handling - likely should follow @ArtemGr's
+    //advice ref. utilizing rational datatype IF we need divisions. We do assume sellamount slightly > calculated_sell_amount isnt an issue
+    //since swap is going to match - the other way around its problematic
+    //this code needs a full refactor
+    while (Decimal.parse(
+            (satoshiBuyAmount * satoshiPrice / satoshi).toStringAsFixed(0)) <
+        satoshiSellAmount) {
+      satoshiBuyAmount += Decimal.parse('1');
+    }
+
     if (widget.swapStatus == SwapStatus.BUY) {
       mm2
-          .postBuy(coinBase, coinRel, amountToBuy, price)
-          .then((dynamic onValue) =>
-              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
+          .postBuy(coinBase, coinRel, satoshiBuyAmount / satoshi,
+              (satoshiPrice / satoshi).toString())
+          .then((BuyResponse onValue) => _goToNextScreen(
+              mContext, onValue, amountToSell, satoshiBuyAmount / satoshi))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      print('buying: ' + amountToBuy.toString());
+      print('buying: ' + (satoshiBuyAmount / satoshi).toString());
       mm2
-          .postSetPrice(
-              coinRel, coinBase, amountToSell, widget.bestPrice, false, false)
-          .then((dynamic onValue) =>
-              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
+          .postSetPrice(coinRel, coinBase, amountToSell,
+              (satoshiPrice / satoshi).toString(), false, false)
+          .then((SetPriceResponse onValue) => _goToNextScreen(
+              mContext, onValue, amountToSell, satoshiBuyAmount / satoshi))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     }
   }
@@ -358,29 +401,27 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     ordersBloc.updateOrdersSwaps();
     swapHistoryBloc.updateSwaps(50, null);
 
-    if (onValue is SetPriceResponse || onValue is BuyResponse) {
-      if (widget.swapStatus == SwapStatus.BUY) {
-        Navigator.pushReplacement<dynamic, dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => SwapDetailPage(
-                    swap: Swap(
-                        status: Status.ORDER_MATCHING,
-                        result: ResultSwap(
-                          uuid: onValue.result.uuid,
-                          myInfo: MyInfo(
-                              myAmount: amountToSell.toString(),
-                              otherAmount: amountToBuy.toString(),
-                              myCoin: onValue.result.rel,
-                              otherCoin: onValue.result.base,
-                              startedAt: DateTime.now().millisecondsSinceEpoch),
-                        )),
-                  )),
-        );
-      } else if (widget.swapStatus == SwapStatus.SELL) {
-        Navigator.of(context).pop();
-        widget.orderSuccess();
-      }
+    if (widget.swapStatus == SwapStatus.BUY) {
+      Navigator.pushReplacement<dynamic, dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => SwapDetailPage(
+                  swap: Swap(
+                      status: Status.ORDER_MATCHING,
+                      result: ResultSwap(
+                        uuid: onValue.result.uuid,
+                        myInfo: MyInfo(
+                            myAmount: amountToSell.toString(),
+                            otherAmount: amountToBuy.toString(),
+                            myCoin: onValue.result.rel,
+                            otherCoin: onValue.result.base,
+                            startedAt: DateTime.now().millisecondsSinceEpoch),
+                      )),
+                )),
+      );
+    } else if (widget.swapStatus == SwapStatus.SELL) {
+      Navigator.of(context).pop();
+      widget.orderSuccess();
     }
   }
 }

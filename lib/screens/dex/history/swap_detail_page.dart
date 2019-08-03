@@ -32,6 +32,7 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
   @override
   Widget build(BuildContext context) {
     return LockScreen(
+      context: context,
       onSuccess: () {
         swapHistoryBloc.updateSwaps(50, null);
       },
@@ -47,15 +48,11 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
             builder:
                 (BuildContext context, AsyncSnapshot<List<Swap>> snapshot) {
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
+                swapData = widget.swap;
                 for (Swap swap in snapshot.data) {
                   if (swap.result.uuid == widget.swap.result.uuid) {
                     swapData = swap;
-                    print(swap.status);
                   }
-                }
-
-                if (swapData.result == null) {
-                  swapData = widget.swap;
                 }
                 if (swapData.status == Status.SWAP_SUCCESSFUL &&
                     swapHistoryBloc.isAnimationStepFinalIsFinish) {
@@ -173,15 +170,18 @@ class StepperTrade extends StatefulWidget {
 class _StepperTradeState extends State<StepperTrade> {
   @override
   Widget build(BuildContext context) {
-    if (widget.swap.result.myInfo == null) {
+    if (widget.swap.result != null && widget.swap.result.myInfo == null) {
       widget.swap.status = Status.SWAP_FAILED;
     }
+
     return ListView(
       children: <Widget>[
         ProgressSwap(swap: widget.swap, onStepFinish: widget.onStepFinish),
-        DetailSwap(
-          swap: widget.swap,
-        )
+        widget.swap != null
+            ? DetailSwap(
+                swap: widget.swap,
+              )
+            : Container()
       ],
     );
   }

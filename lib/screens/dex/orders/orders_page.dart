@@ -25,7 +25,7 @@ class _OrdersPageState extends State<OrdersPage> {
         initialData: ordersBloc.orderSwaps,
         stream: ordersBloc.outOrderSwaps,
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-          if (snapshot.data != null  && snapshot.data.isNotEmpty) {
+          if (snapshot.data != null && snapshot.data.isNotEmpty) {
             List<dynamic> orderSwaps = snapshot.data;
             orderSwaps = snapshot.data.reversed.toList();
             return ListView.builder(
@@ -44,7 +44,8 @@ class _OrdersPageState extends State<OrdersPage> {
             );
           } else {
             return Container(
-              child: Center(child: const Text('No orders, please go to trade.')),
+              child:
+                  Center(child: const Text('No orders, please go to trade.')),
             );
           }
         });
@@ -153,7 +154,7 @@ class _OrdersPageState extends State<OrdersPage> {
   }
 
   Widget _buildTextAmount(String coin, String amount) {
-    if (amount != null && amount.isNotEmpty) {
+    if (coin != null && amount != null && amount.isNotEmpty) {
       return Text(
         '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
         style: Theme.of(context).textTheme.body1,
