@@ -9,6 +9,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -303,18 +304,39 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     });
   }
 
-  void _makeASwap(BuildContext mContext) {
+  Future _makeASwap(BuildContext mContext) async {
     setState(() {
       isSwapMaking = true;
     });
 
     final String amountToSell = widget.amountToSell.replaceAll(',', '.');
-    final Decimal amountToBuy =
-        Decimal.parse(amountToSell) / Decimal.parse(widget.bestPrice);
     final Coin coinBase = widget.coinBase;
     final Coin coinRel = widget.coinRel;
-    final String price = widget.bestPrice;
+    String price = '0';
 
+    try {
+      final Orderbook orderbook = await mm2.getOrderbook(coinBase, coinRel);
+      double maxVolume = 0;
+      int i = 0;
+
+      for (Ask ask in orderbook.asks) {
+        if (ask.address != swapBloc.sellCoin.balance.address) {
+          if (i == 0) {
+            maxVolume = ask.maxvolume;
+            price = ask.price;
+          } else if (Decimal.parse(ask.price) <= Decimal.parse(price) &&
+              ask.maxvolume > maxVolume) {
+            maxVolume = ask.maxvolume;
+            price = ask.price;
+          }
+          i++;
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    final Decimal amountToBuy =
+        Decimal.parse(amountToSell) / Decimal.parse(price);
     if (widget.swapStatus == SwapStatus.BUY) {
       mm2
           .postBuy(coinBase, coinRel, amountToBuy, price)
