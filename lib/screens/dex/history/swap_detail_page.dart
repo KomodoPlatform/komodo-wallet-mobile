@@ -173,16 +173,17 @@ class _StepperTradeState extends State<StepperTrade> {
     if (widget.swap.result != null && widget.swap.result.myInfo == null) {
       widget.swap.status = Status.SWAP_FAILED;
     }
-    if (widget.swap != null) {
-      return ListView(
-        children: <Widget>[
-          ProgressSwap(swap: widget.swap, onStepFinish: widget.onStepFinish),
-          DetailSwap(
-            swap: widget.swap,
-          )
-        ],
-      );
-    }
+
+    return ListView(
+      children: <Widget>[
+        ProgressSwap(swap: widget.swap, onStepFinish: widget.onStepFinish),
+        widget.swap != null
+            ? DetailSwap(
+                swap: widget.swap,
+              )
+            : Container()
+      ],
+    );
   }
 }
 
