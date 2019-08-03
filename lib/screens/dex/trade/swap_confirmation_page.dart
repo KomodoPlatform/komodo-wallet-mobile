@@ -310,8 +310,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     });
 
     final String amountToSell = widget.amountToSell.replaceAll(',', '.');
-    final Decimal amountToBuy =
-        Decimal.parse(amountToSell) / Decimal.parse(widget.bestPrice);
     final Coin coinBase = widget.coinBase;
     final Coin coinRel = widget.coinRel;
     String price = '0';
@@ -337,7 +335,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     } catch (e) {
       print(e.toString());
     }
-
+    final Decimal amountToBuy =
+        Decimal.parse(amountToSell) / Decimal.parse(price);
     if (widget.swapStatus == SwapStatus.BUY) {
       mm2
           .postBuy(coinBase, coinRel, amountToBuy, price)
