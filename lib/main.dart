@@ -103,7 +103,8 @@ class _MyAppState extends State<MyApp> {
         localizationsDelegates: <LocalizationsDelegate<dynamic>>[
           const AppLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
         ],
         supportedLocales: const <Locale>[
           Locale('en'),
