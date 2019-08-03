@@ -170,17 +170,19 @@ class StepperTrade extends StatefulWidget {
 class _StepperTradeState extends State<StepperTrade> {
   @override
   Widget build(BuildContext context) {
-    if (widget.swap.result.myInfo == null) {
+    if (widget.swap.result != null && widget.swap.result.myInfo == null) {
       widget.swap.status = Status.SWAP_FAILED;
     }
-    return ListView(
-      children: <Widget>[
-        ProgressSwap(swap: widget.swap, onStepFinish: widget.onStepFinish),
-        DetailSwap(
-          swap: widget.swap,
-        )
-      ],
-    );
+    if (widget.swap != null) {
+      return ListView(
+        children: <Widget>[
+          ProgressSwap(swap: widget.swap, onStepFinish: widget.onStepFinish),
+          DetailSwap(
+            swap: widget.swap,
+          )
+        ],
+      );
+    }
   }
 }
 
