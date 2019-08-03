@@ -326,14 +326,15 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           if (i == 0) {
             maxVolume = ask.maxvolume;
             price = ask.price;
-          } else if (Decimal.parse(ask.price) <= Decimal.parse(price) && ask.maxvolume > maxVolume) {
+          } else if (Decimal.parse(ask.price) <= Decimal.parse(price) &&
+              ask.maxvolume > maxVolume) {
             maxVolume = ask.maxvolume;
             price = ask.price;
           }
           i++;
         }
-      }   
-    }catch(e){
+      }
+    } catch (e) {
       print(e.toString());
     }
 
