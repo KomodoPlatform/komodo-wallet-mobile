@@ -13,6 +13,7 @@ import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
@@ -309,9 +310,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       isSwapMaking = true;
     });
 
-    final String amountToSell = widget.amountToSell.replaceAll(',', '.');
-    final Decimal amountToBuy =
-        Decimal.parse(amountToSell) / Decimal.parse(widget.bestPrice);
     final Coin coinBase = widget.coinBase;
     final Coin coinRel = widget.coinRel;
     String price = '0';
@@ -338,19 +336,34 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       print(e.toString());
     }
 
+    final String amountToSell = widget.amountToSell.replaceAll(',', '.');
+    final Decimal satoshi = Decimal.parse('100000000');
+    final Decimal satoshiSellAmount = Decimal.parse(widget.amountToSell.replaceAll(',', '.')) * satoshi;
+    Decimal satoshiBuyAmount = Decimal.parse((Decimal.parse(amountToSell) / Decimal.parse(price)).toStringAsFixed(8)) * satoshi;
+    final Decimal satoshiPrice = Decimal.parse(Decimal.parse(price).toStringAsFixed(8)) * satoshi;
+    
+    //if the desired sellamount != calculated sellamount this loop fixes the precision errors caused by the above division
+    //this is considered a dirty quickfix until a final decision is made ref. num handling - likely should follow @ArtemGr's 
+    //advice ref. utilizing rational datatype IF we need divisions. We do assume sellamount slightly > calculated_sell_amount isnt an issue 
+    //since swap is going to match - the other way around its problematic
+    //this code needs a full refactor
+    while(Decimal.parse((satoshiBuyAmount * satoshiPrice/satoshi).toStringAsFixed(0)) < satoshiSellAmount){
+      satoshiBuyAmount += Decimal.parse('1'); 
+    }
+
     if (widget.swapStatus == SwapStatus.BUY) {
       mm2
-          .postBuy(coinBase, coinRel, amountToBuy, price)
+          .postBuy(coinBase, coinRel, satoshiBuyAmount/satoshi, (satoshiPrice/satoshi).toString())
           .then((BuyResponse onValue) =>
-              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
+              _goToNextScreen(mContext, onValue, amountToSell, satoshiBuyAmount/satoshi))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      print('buying: ' + amountToBuy.toString());
+      print('buying: ' + (satoshiBuyAmount/satoshi).toString());
       mm2
           .postSetPrice(
-              coinRel, coinBase, amountToSell, widget.bestPrice, false, false)
+              coinRel, coinBase, amountToSell, (satoshiPrice/satoshi).toString(), false, false)
           .then((SetPriceResponse onValue) =>
-              _goToNextScreen(mContext, onValue, amountToSell, amountToBuy))
+              _goToNextScreen(mContext, onValue, amountToSell, satoshiBuyAmount/satoshi))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     }
   }
