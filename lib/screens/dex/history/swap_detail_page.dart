@@ -177,10 +177,9 @@ class _StepperTradeState extends State<StepperTrade> {
       return ListView(
         children: <Widget>[
           ProgressSwap(swap: widget.swap, onStepFinish: widget.onStepFinish),
-          widget.swap.result.myInfo != null ?
           DetailSwap(
             swap: widget.swap,
-          ) : Container()
+          )
         ],
       );
     }
