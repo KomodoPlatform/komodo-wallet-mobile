@@ -13,7 +13,6 @@ import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
@@ -305,7 +304,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     });
   }
 
-  Future _makeASwap(BuildContext mContext) async {
+  Future<void> _makeASwap(BuildContext mContext) async {
     setState(() {
       isSwapMaking = true;
     });
