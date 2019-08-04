@@ -77,6 +77,7 @@ bool _messagesExistFor(String locale) {
 MessageLookupByLibrary _findGeneratedMessagesFor(dynamic locale) {
   final String actualLocale = Intl.verifiedLocale(locale, _messagesExistFor,
       onFailure: (dynamic _) => null);
-  if (actualLocale == null) return null;
+  if (actualLocale == null) 
+    return null;
   return _findExact(actualLocale);
 }
