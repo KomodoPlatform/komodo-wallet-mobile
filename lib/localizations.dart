@@ -166,7 +166,8 @@ class AppLocalizations {
   String get from => Intl.message('From', name: 'from');
   String get to => Intl.message('To', name: 'to');
   String get txConfirmed => Intl.message('CONFIRMED', name: 'txConfirmed');
-  String get txNotConfirmed => Intl.message('UNCONFIRMED', name: 'txNotConfirmed');
+  String get txNotConfirmed =>
+      Intl.message('UNCONFIRMED', name: 'txNotConfirmed');
   String get txBlock => Intl.message('Block', name: 'txBlock');
   String get txConfirmations =>
       Intl.message('Confirmations', name: 'txConfirmations');
@@ -312,7 +313,7 @@ class AppLocalizations {
       Intl.message('LET\'S GET SET UP!', name: 'welcomeLetSetUp');
   String get unlock => Intl.message('unlock', name: 'unlock');
   String noOrder(String coinName) => Intl.message(
-        'No $coinName orders available - please try again later, or create an order.',
+        'Please enter the $coinName amount.',
         name: 'noOrder',
         args: <Object>[coinName],
       );
@@ -479,19 +480,18 @@ class AppLocalizations {
         name: 'youWillReceiveClaim',
         args: <Object>[amount, coin],
       );
-    String seeOrders(String amount) => Intl.message(
+  String seeOrders(String amount) => Intl.message(
         'Click to see $amount orders',
         name: 'seeOrders',
         args: <Object>[amount],
       );
-    String get clickToSee =>
-      Intl.message('Click to see ', name: 'clickToSee');
-    String get price =>
-      Intl.message('price', name: 'price');
-    String get availableVolume =>
+  String get clickToSee => Intl.message('Click to see ', name: 'clickToSee');
+  String get price => Intl.message('price', name: 'price');
+  String get availableVolume =>
       Intl.message('max vol', name: 'availableVolume');
-    String get configureWallet =>
-      Intl.message('Configuring your wallet, please wait...', name: 'configureWallet');      
+  String get configureWallet =>
+      Intl.message('Configuring your wallet, please wait...',
+          name: 'configureWallet');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -499,7 +499,8 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return <String>['en', 'fr', 'de', 'zh', 'zh_Hans', 'zh_Hant'].contains(locale.languageCode);
+    return <String>['en', 'fr', 'de', 'zh', 'zh_Hans', 'zh_Hant']
+        .contains(locale.languageCode);
   }
 
   @override

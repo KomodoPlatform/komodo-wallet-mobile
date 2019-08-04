@@ -38,7 +38,7 @@ MessageLookupByLibrary _findExact(dynamic localeName) {
       return messages_de.messages;
     case 'messages':
       return messages_messages.messages;
-          case 'zh':
+    case 'zh':
       return messages_zh.messages;
     case 'zh_hant':
       return messages_zh_hant.messages;
@@ -50,9 +50,8 @@ MessageLookupByLibrary _findExact(dynamic localeName) {
 /// User programs should call this before using [localeName] for messages.
 Future<bool> initializeMessages(String localeName) async {
   final String availableLocale = Intl.verifiedLocale(
-    localeName,
-    (dynamic locale) => _deferredLibraries[locale] != null,
-    onFailure: (dynamic _) => null);
+      localeName, (dynamic locale) => _deferredLibraries[locale] != null,
+      onFailure: (dynamic _) => null);
   if (availableLocale == null) {
     // ignore: unnecessary_new
     return new Future<bool>.value(false);
@@ -82,4 +81,3 @@ MessageLookupByLibrary _findGeneratedMessagesFor(dynamic locale) {
     return null;
   return _findExact(actualLocale);
 }
-
