@@ -54,7 +54,7 @@ class _SwapHistoryState extends State<SwapHistory> {
               (swap.status != Status.SWAP_FAILED &&
                   swap.status != Status.SWAP_SUCCESSFUL &&
                   swap.status != Status.TIME_OUT));
-          if (snapshot.data != null  &&
+          if (snapshot.data != null &&
               swaps.isEmpty &&
               snapshot.connectionState == ConnectionState.active) {
             return Center(
@@ -63,7 +63,7 @@ class _SwapHistoryState extends State<SwapHistory> {
                 style: Theme.of(context).textTheme.body2,
               ),
             );
-          } else if (snapshot.data != null  && swaps.isNotEmpty) {
+          } else if (snapshot.data != null && swaps.isNotEmpty) {
             swaps.sort((Swap b, Swap a) {
               if (b is Swap && a is Swap) {
                 if (a.result.myInfo.startedAt != null) {
@@ -115,7 +115,8 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
   Widget build(BuildContext context) {
     final String swapStatus =
         swapHistoryBloc.getSwapStatusString(context, widget.swap.status);
-    final Color colorStatus = swapHistoryBloc.getColorStatus(widget.swap.status);
+    final Color colorStatus =
+        swapHistoryBloc.getColorStatus(widget.swap.status);
     final String stepStatus = swapHistoryBloc.getStepStatus(widget.swap.status);
 
     return Card(
@@ -202,10 +203,11 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 16, right: 16),
                         child: Container(
-                          padding:
-                              const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 12),
                           decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(24)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(24)),
                             color: colorStatus,
                           ),
                           child: Row(
