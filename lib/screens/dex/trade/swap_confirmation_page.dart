@@ -339,21 +339,26 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     final Decimal satoshi = Decimal.parse('100000000');
     final Decimal satoshiSellAmount =
         Decimal.parse(widget.amountToSell.replaceAll(',', '.')) * satoshi;
-    Decimal satoshiBuyAmount = Decimal.parse(
-            (Decimal.parse(amountToSell) / Decimal.parse(price))
+    Decimal satoshiBuyAmount = price != '0'
+        ? Decimal.parse((Decimal.parse(amountToSell) / Decimal.parse(price))
                 .toStringAsFixed(8)) *
-        satoshi;
-    final Decimal satoshiPrice =
-        Decimal.parse(Decimal.parse(price).toStringAsFixed(8)) * satoshi;
+            satoshi
+        : Decimal.parse(Decimal.parse(widget.amountToBuy).toStringAsFixed(8)) *
+            satoshi;
+    final Decimal satoshiPrice = price != '0'
+        ? Decimal.parse(Decimal.parse(price).toStringAsFixed(8)) * satoshi
+        : Decimal.parse(Decimal.parse(widget.bestPrice).toStringAsFixed(8)) *
+            satoshi;
 
     //if the desired sellamount != calculated sellamount this loop fixes the precision errors caused by the above division
     //this is considered a dirty quickfix until a final decision is made ref. num handling - likely should follow @ArtemGr's
     //advice ref. utilizing rational datatype IF we need divisions. We do assume sellamount slightly > calculated_sell_amount isnt an issue
     //since swap is going to match - the other way around its problematic
     //this code needs a full refactor
-    while (Decimal.parse(
-            (satoshiBuyAmount * satoshiPrice / satoshi).toStringAsFixed(0)) <
-        satoshiSellAmount) {
+    while (price != '0' &&
+        Decimal.parse((satoshiBuyAmount * satoshiPrice / satoshi)
+                .toStringAsFixed(0)) <
+            satoshiSellAmount) {
       satoshiBuyAmount += Decimal.parse('1');
     }
 
