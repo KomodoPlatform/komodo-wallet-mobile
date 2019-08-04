@@ -846,7 +846,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "noOrder": "No {coinName} orders available - please try again later, or create an order.",
+  "noOrder": "Please enter the {coinName} amount.",
   "@noOrder": {
     "type": "text",
     "placeholders": {
