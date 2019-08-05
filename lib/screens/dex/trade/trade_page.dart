@@ -318,6 +318,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 builder:
                     (BuildContext context, AsyncSnapshot<Coin> receiveCoin) {
                   return PrimaryButton(
+                    key: const Key('trade-button'),
                     onPressed: _controllerAmountSell.text.isNotEmpty &&
                             _controllerAmountReceive.text.isNotEmpty &&
                             sellCoin.data != null &&
@@ -401,6 +402,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                     children: <Widget>[
                                       Expanded(
                                         child: TextFormField(
+                                          key: Key('input-text-${market.toString().toLowerCase()}'),
                                             scrollPadding:
                                                 const EdgeInsets.only(left: 35),
                                             inputFormatters: <
@@ -497,7 +499,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildCoinSelect(Market market) {
+    print('coin-select-${market.toString().toLowerCase()}');
     return InkWell(
+      key: Key('coin-select-${market.toString().toLowerCase()}'),
       borderRadius: BorderRadius.circular(4),
       onTap: () async {
         if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
@@ -755,7 +759,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   0;
           print('----getBuyAmount----' +
               orderbook.getBuyAmount(_controllerAmountSell.text));
+          print('item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
+            key: Key('item-dialog-${orderbook.coinBase.abbr}-${market.toString().toLowerCase()}'),
             onPressed: () async {
               _controllerAmountReceive.clear();
               setState(() {
@@ -821,6 +827,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       for (CoinBalance coin in coinsBloc.coinBalance) {
         if (double.parse(coin.balance.getBalance()) > 0) {
           final SimpleDialogOption dialogItem = SimpleDialogOption(
+            key: Key('item-dialog-${coin.coin.abbr.toLowerCase()}-${market.toString().toLowerCase()}'),
             onPressed: () {
               swapBloc.updateBuyCoin(null);
               swapBloc.updateReceiveCoin(null);

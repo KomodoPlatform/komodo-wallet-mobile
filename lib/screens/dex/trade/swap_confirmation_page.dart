@@ -103,6 +103,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         ),
         Text(
           AppLocalizations.of(context).swapDetailTitle,
+          key: const Key('swap-detail-title'),
           textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
@@ -277,6 +278,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           isSwapMaking
               ? const CircularProgressIndicator()
               : RaisedButton(
+                key: const Key('confirm-swap-button'),
                   padding:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 52),
                   shape: RoundedRectangleBorder(
