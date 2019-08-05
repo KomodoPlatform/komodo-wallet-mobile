@@ -126,9 +126,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 return Container();
               }
             }),
-        CurrentAskInfo(
-          currentAsk: currentAsk,
-        ),
       ],
     );
   }
@@ -234,6 +231,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _checkMaxVolume() {
+    print('_checkMaxVolume');
     if (Decimal.parse(_controllerAmountSell.text) >=
         Decimal.parse(swapBloc.orderCoin.maxVolume.toString()) *
             Decimal.parse(swapBloc.orderCoin.bestPrice)) {
@@ -625,12 +623,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     Coin(abbr: ask.coin),
                     ask.getReceiveAmount(
                         double.parse(_controllerAmountSell.text)));
-                if (Decimal.parse(_controllerAmountSell.text) *
-                        Decimal.parse(ask.price.toString()) >
-                    Decimal.parse(ask.maxvolume.toString())) {
-                  _controllerAmountSell.text = (Decimal.parse(ask.price) *
-                          Decimal.parse(ask.maxvolume.toString()))
-                      .toString();
+
+                final Decimal askPrice = Decimal.parse(ask.price.toString());
+                final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
+                final Decimal maxVolume = Decimal.parse(ask.maxvolume.toString());
+
+                if (amountSell / askPrice > maxVolume) {
+                  _controllerAmountSell.text = (maxVolume * askPrice).toStringAsFixed(8);
                 }
               });
         }).then((_) {
@@ -1151,78 +1150,5 @@ class _ExchangeRateState extends State<ExchangeRate> {
             return Container();
           }
         });
-  }
-}
-
-class CurrentAskInfo extends StatefulWidget {
-  const CurrentAskInfo({this.currentAsk});
-
-  final Ask currentAsk;
-
-  @override
-  _CurrentAskInfoState createState() => _CurrentAskInfoState();
-}
-
-class _CurrentAskInfoState extends State<CurrentAskInfo> {
-  @override
-  Widget build(BuildContext context) {
-    if (widget.currentAsk != null) {
-      final List<DataRow> asksWidget = <DataRow>[];
-      asksWidget.add(tableRow(widget.currentAsk, 0));
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
-            child: Text(
-              AppLocalizations.of(context).titleCurrentAsk,
-              style: Theme.of(context).textTheme.body2,
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            child: DataTable(
-              columnSpacing: 8,
-              horizontalMargin: 12,
-              columns: <DataColumn>[
-                DataColumn(
-                    label: Expanded(
-                  child: Text(
-                    AppLocalizations.of(context).price,
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                )),
-                DataColumn(
-                    label: Text(
-                  AppLocalizations.of(context).availableVolume,
-                  style: Theme.of(context).textTheme.caption,
-                )),
-              ],
-              rows: asksWidget,
-            ),
-          ),
-        ],
-      );
-    } else {
-      return Container();
-    }
-  }
-
-  DataRow tableRow(Ask ask, int index) {
-    return DataRow(
-        selected: index % 2 == 1,
-        key: Key('ask-item-$index'),
-        cells: <DataCell>[
-          DataCell(Text(
-            ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
-            style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
-            textAlign: TextAlign.center,
-          )),
-          DataCell(Text(
-            ask.maxvolume.toStringAsFixed(8) + ' ' + ask.coin.toUpperCase(),
-            style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
-            textAlign: TextAlign.center,
-          )),
-        ]);
   }
 }
