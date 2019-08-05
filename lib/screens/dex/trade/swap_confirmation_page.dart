@@ -370,12 +370,15 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
               mContext, onValue, amountToSell, satoshiBuyAmount / satoshi))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      print('buying: ' + (satoshiBuyAmount / satoshi).toString());
       mm2
           .postSetPrice(coinRel, coinBase, amountToSell,
-              (satoshiPrice / satoshi).toString(), false, false)
+              Decimal.parse(widget.bestPrice).toStringAsFixed(8), false, false)
           .then((SetPriceResponse onValue) => _goToNextScreen(
-              mContext, onValue, amountToSell, satoshiBuyAmount / satoshi))
+              mContext,
+              onValue,
+              amountToSell,
+              Decimal.parse(
+                  Decimal.parse(widget.amountToBuy).toStringAsFixed(8))))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     }
   }
