@@ -79,7 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'back': MessageLookupByLibrary.simpleMessage('back'),
         'backupTitle': MessageLookupByLibrary.simpleMessage('Backup'),
         'bestAvailableRate':
-            MessageLookupByLibrary.simpleMessage('Best available rate'),
+            MessageLookupByLibrary.simpleMessage('Exchange rate'),
         'buy': MessageLookupByLibrary.simpleMessage('Buy'),
         'buySuccessWaiting':
             MessageLookupByLibrary.simpleMessage('Swap issued, please wait!'),
