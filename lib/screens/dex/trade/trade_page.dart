@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -231,7 +230,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _checkMaxVolume() {
-    print('_checkMaxVolume');
     if (Decimal.parse(_controllerAmountSell.text) >=
         Decimal.parse(swapBloc.orderCoin.maxVolume.toString()) *
             Decimal.parse(swapBloc.orderCoin.bestPrice)) {
@@ -609,30 +607,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           return ReceiveOrders(
               orderbooks: orderbooks,
               sellAmount: double.parse(_controllerAmountSell.text),
-              onCreateNoOrder: (String coin) {
-                setState(() {
-                  currentAsk = null;
-                });
-                _noOrders(coin);
-              },
-              onCreateOrder: (Ask ask) {
-                setState(() {
-                  currentAsk = ask;
-                });
-                _createOrder(
-                    Coin(abbr: ask.coin),
-                    ask.getReceiveAmount(
-                        double.parse(_controllerAmountSell.text)));
-
-                final Decimal askPrice = Decimal.parse(ask.price.toString());
-                final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
-                final Decimal amountReceive = Decimal.parse(_controllerAmountReceive.text);
-                final Decimal maxVolume = Decimal.parse(ask.maxvolume.toString());
-
-                if (amountReceive < (amountSell / askPrice)) {
-                  _controllerAmountSell.text = (maxVolume * askPrice).toStringAsFixed(8);
-                }
-              });
+              onCreateNoOrder: (String coin) => _noOrders(coin),
+              onCreateOrder: (Ask ask) => _createOrder(ask));
         }).then((_) {
       dialogBloc.dialog = null;
     });
@@ -731,6 +707,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<void> _noOrders(String coin) async {
+    setState(() {
+      currentAsk = null;
+    });
     swapBloc.updateBuyCoin(null);
     replaceAllCommas();
     swapBloc.updateReceiveCoin(Coin(abbr: coin));
@@ -744,17 +723,21 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     });
   }
 
-  Future<void> _createOrder(Coin coin, String amount) async {
+  Future<void> _createOrder(Ask ask) async {
+    setState(() {
+      currentAsk = ask;
+    });
     replaceAllCommas();
     _controllerAmountReceive.clear();
     setState(() {
       swapBloc.enabledReceiveField = false;
       _noOrderFound = false;
     });
-    swapBloc.updateReceiveCoin(coin);
+    swapBloc.updateReceiveCoin(Coin(abbr: ask.coin));
     _controllerAmountReceive.text = '';
     timerGetOrderbook?.cancel();
-    _controllerAmountReceive.text = amount;
+    _controllerAmountReceive.text =
+        ask.getReceiveAmount(double.parse(_controllerAmountSell.text));
 
     swapBloc.updateBuyCoin(OrderCoin(
         coinBase: swapBloc.receiveCoin,
@@ -764,6 +747,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     _controllerAmountReceive.text.replaceAll(',', '.')))
             .toString(),
         maxVolume: double.parse(_controllerAmountSell.text)));
+
+    final Decimal askPrice = Decimal.parse(ask.price.toString());
+    final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
+    final Decimal amountReceive = Decimal.parse(_controllerAmountReceive.text);
+    final Decimal maxVolume = Decimal.parse(ask.maxvolume.toString());
+
+    if (amountReceive < (amountSell / askPrice) &&
+        amountSell > maxVolume * askPrice) {
+      _controllerAmountSell.text = (maxVolume * askPrice).toStringAsFixed(8);
+    }
   }
 
   List<SimpleDialogOption> _createListDialog(
