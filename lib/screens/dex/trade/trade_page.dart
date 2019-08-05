@@ -1010,6 +1010,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       _controllerAmountReceive.text.replaceAll(',', '.'),
                 )),
       ).then((dynamic _) {
+        setState(() {
+          currentAsk = null;
+        });
         _controllerAmountReceive.clear();
         _controllerAmountSell.clear();
       });
@@ -1191,9 +1194,9 @@ class _CurrentAskInfoState extends State<CurrentAskInfo> {
                 )),
                 DataColumn(
                     label: Text(
-                      AppLocalizations.of(context).availableVolume,
-                      style: Theme.of(context).textTheme.caption,
-                    )),
+                  AppLocalizations.of(context).availableVolume,
+                  style: Theme.of(context).textTheme.caption,
+                )),
               ],
               rows: asksWidget,
             ),
