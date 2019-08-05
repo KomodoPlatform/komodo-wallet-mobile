@@ -318,7 +318,7 @@ class AppLocalizations {
         args: <Object>[coinName],
       );
   String get bestAvailableRate =>
-      Intl.message('Best available rate', name: 'bestAvailableRate');
+      Intl.message('Exchange rate', name: 'bestAvailableRate');
   String get receiveLower => Intl.message('Receive', name: 'receiveLower');
   String get makeAorder => Intl.message('make an order', name: 'makeAorder');
   String get exchangeTitle => Intl.message('EXCHANGE', name: 'exchangeTitle');

@@ -853,7 +853,7 @@
       "coinName": {}
     }
   },
-  "bestAvailableRate": "Best available rate",
+  "bestAvailableRate": "Exchange rate",
   "@bestAvailableRate": {
     "type": "text",
     "placeholders": {}
