@@ -192,9 +192,10 @@ class SwapBloc implements BlocBase {
 
       if (currentAsk == null) {
         for (Ask ask in orderbook.asks) {
-          if (ask.address != swapBloc.sellCoin.balance.address && i == 0 ||
-              (Decimal.parse(ask.price) <= Decimal.parse(bestPrice) &&
-                  ask.maxvolume > maxVolume)) {
+          if (ask.address != swapBloc.sellCoin.balance.address &&
+              (i == 0 ||
+                  (Decimal.parse(ask.price) <= Decimal.parse(bestPrice) &&
+                      ask.maxvolume > maxVolume))) {
             maxVolume = ask.maxvolume;
             bestPrice = ask.price;
           }
