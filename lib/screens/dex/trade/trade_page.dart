@@ -51,6 +51,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   dynamic timerGetOrderbook;
   bool _noOrderFound = false;
   bool isMaxActive = false;
+  Ask currentAsk;
 
   @override
   void initState() {
