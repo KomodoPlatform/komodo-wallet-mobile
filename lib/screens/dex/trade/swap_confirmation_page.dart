@@ -28,7 +28,7 @@ class SwapConfirmation extends StatefulWidget {
       @required this.amountToSell,
       @required this.amountToBuy,
       @required this.swapStatus,
-      this.orderSuccess});
+      this.orderSuccess, this.order});
 
   final SwapStatus swapStatus;
   final String amountToSell;
@@ -37,6 +37,7 @@ class SwapConfirmation extends StatefulWidget {
   final String bestPrice;
   final Coin coinBase;
   final Coin coinRel;
+  final Ask order;
 
   @override
   _SwapConfirmationState createState() => _SwapConfirmationState();
