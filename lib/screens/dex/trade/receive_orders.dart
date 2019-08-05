@@ -26,6 +26,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
   Widget build(BuildContext context) {
     return SimpleDialog(
       title: Text(AppLocalizations.of(context).receiveLower),
+      key: const Key('receive-list-coins'),
       children: widget.orderbooks
           .map((Orderbook orderbook) => OrderbookItem(
               key: Key('orderbook-item-${orderbook.base.toLowerCase()}'),
@@ -207,10 +208,10 @@ class _AsksOrderState extends State<AsksOrder> {
   DataRow tableRow(Ask ask, int index) {
     return DataRow(
         selected: index % 2 == 1,
-        key: Key('ask-item-$index'),
         cells: <DataCell>[
           DataCell(
               Container(
+                key: Key('ask-item-$index'),
                 child: Text(
                   ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
                   style:
