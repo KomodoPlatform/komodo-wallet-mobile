@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -51,6 +52,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   dynamic timerGetOrderbook;
   bool _noOrderFound = false;
   bool isMaxActive = false;
+  Ask currentAsk;
 
   @override
   void initState() {
@@ -110,6 +112,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
         _buildExchange(),
+        const SizedBox(
+          height: 8,
+        ),
+        _buildButton(),
         StreamBuilder<Object>(
             initialData: false,
             stream: swapBloc.outIsTimeOut,
@@ -117,12 +123,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               if (snapshot.data != null && snapshot.data) {
                 return ExchangeRate();
               } else {
-                return Container(
-                  height: 84,
-                );
+                return Container();
               }
             }),
-        _buildButton()
+        CurrentAskInfo(
+          currentAsk: currentAsk,
+        ),
       ],
     );
   }
@@ -174,23 +180,30 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         setState(() {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
-                .setReceiveAmount(swapBloc.receiveCoin, amountSell)
+                .setReceiveAmount(swapBloc.receiveCoin, amountSell, currentAsk)
                 .then((_) {
               _checkMaxVolume();
             });
           }
-          if (_noOrderFound &&
-              _controllerAmountReceive.text.isNotEmpty &&
+          if (_controllerAmountReceive.text.isNotEmpty &&
               _controllerAmountSell.text.isNotEmpty &&
               swapBloc.receiveCoin != null) {
+            String price = (Decimal.parse(amountSell) /
+                    Decimal.parse(
+                        _controllerAmountReceive.text.replaceAll(',', '.')))
+                .toString();
+            double maxVolume = double.parse(amountSell);
+
+            if (currentAsk != null) {
+              price = currentAsk.price;
+              maxVolume = currentAsk.maxvolume;
+            }
+
             swapBloc.updateBuyCoin(OrderCoin(
                 coinBase: swapBloc.receiveCoin,
                 coinRel: swapBloc.sellCoin?.coin,
-                bestPrice: (Decimal.parse(amountSell) /
-                        Decimal.parse(
-                            _controllerAmountReceive.text.replaceAll(',', '.')))
-                    .toString(),
-                maxVolume: double.parse(amountSell)));
+                bestPrice: price,
+                maxVolume: maxVolume));
           }
 
           getTradeFee(false).then((double tradeFee) {
@@ -599,10 +612,26 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               orderbooks: orderbooks,
               sellAmount: double.parse(_controllerAmountSell.text),
               onCreateNoOrder: (String coin) {
+                setState(() {
+                  currentAsk = null;
+                });
                 _noOrders(coin);
               },
-              onCreateOrder: (String coin, String amount) {
-                _createOrder(Coin(abbr: coin), amount);
+              onCreateOrder: (Ask ask) {
+                setState(() {
+                  currentAsk = ask;
+                });
+                _createOrder(
+                    Coin(abbr: ask.coin),
+                    ask.getReceiveAmount(
+                        double.parse(_controllerAmountSell.text)));
+                if (Decimal.parse(_controllerAmountSell.text) *
+                        Decimal.parse(ask.price.toString()) >
+                    Decimal.parse(ask.maxvolume.toString())) {
+                  _controllerAmountSell.text = (Decimal.parse(ask.price) *
+                          Decimal.parse(ask.maxvolume.toString()))
+                      .toString();
+                }
               });
         }).then((_) {
       dialogBloc.dialog = null;
@@ -1089,15 +1118,12 @@ class _ExchangeRateState extends State<ExchangeRate> {
           if (snapshot.data != null &&
               Decimal.parse(snapshot.data.bestPrice) > Decimal.parse('0')) {
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.only(top: 16),
               child: Column(
                 children: <Widget>[
                   Text(
                     AppLocalizations.of(context).bestAvailableRate,
-                    style: Theme.of(context)
-                        .textTheme
-                        .body2
-                        .copyWith(fontSize: 12),
+                    style: Theme.of(context).textTheme.body2,
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1120,10 +1146,81 @@ class _ExchangeRateState extends State<ExchangeRate> {
               ),
             );
           } else {
-            return Container(
-              height: 84,
-            );
+            return Container();
           }
         });
+  }
+}
+
+class CurrentAskInfo extends StatefulWidget {
+  const CurrentAskInfo({this.currentAsk});
+
+  final Ask currentAsk;
+
+  @override
+  _CurrentAskInfoState createState() => _CurrentAskInfoState();
+}
+
+class _CurrentAskInfoState extends State<CurrentAskInfo> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.currentAsk != null) {
+      final List<DataRow> asksWidget = <DataRow>[];
+      asksWidget.add(tableRow(widget.currentAsk, 0));
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
+            child: Text(
+              AppLocalizations.of(context).titleCurrentAsk,
+              style: Theme.of(context).textTheme.body2,
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            child: DataTable(
+              columnSpacing: 8,
+              horizontalMargin: 12,
+              columns: <DataColumn>[
+                DataColumn(
+                    label: Expanded(
+                  child: Text(
+                    AppLocalizations.of(context).price,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                )),
+                DataColumn(
+                    label: Text(
+                      AppLocalizations.of(context).availableVolume,
+                      style: Theme.of(context).textTheme.caption,
+                    )),
+              ],
+              rows: asksWidget,
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  DataRow tableRow(Ask ask, int index) {
+    return DataRow(
+        selected: index % 2 == 1,
+        key: Key('ask-item-$index'),
+        cells: <DataCell>[
+          DataCell(Text(
+            ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
+            style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+            textAlign: TextAlign.center,
+          )),
+          DataCell(Text(
+            ask.maxvolume.toStringAsFixed(8) + ' ' + ask.coin.toUpperCase(),
+            style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+            textAlign: TextAlign.center,
+          )),
+        ]);
   }
 }

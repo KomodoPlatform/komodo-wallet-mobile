@@ -15,7 +15,7 @@ class ReceiveOrders extends StatefulWidget {
   final List<Orderbook> orderbooks;
   final double sellAmount;
   final Function(String) onCreateNoOrder;
-  final Function(String, String) onCreateOrder;
+  final Function(Ask) onCreateOrder;
 
   @override
   _ReceiveOrdersState createState() => _ReceiveOrdersState();
@@ -50,7 +50,7 @@ class OrderbookItem extends StatelessWidget {
   final Orderbook orderbook;
   final double sellAmount;
   final Function(String) onCreateNoOrder;
-  final Function(String, String) onCreateOrder;
+  final Function(Ask) onCreateOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +130,7 @@ class AsksOrder extends StatefulWidget {
       : super(key: key);
   final List<Ask> asks;
   final double sellAmount;
-  final Function(String, String) onCreateOrder;
+  final Function(Ask) onCreateOrder;
   final Function(String) onCreateNoOrder;
   final String baseCoin;
 
@@ -247,7 +247,7 @@ class _AsksOrderState extends State<AsksOrder> {
 
   void createOrder(Ask ask) {
     Navigator.of(context).pop();
-    widget.onCreateOrder(ask.coin, ask.getReceiveAmount(widget.sellAmount));
+    widget.onCreateOrder(ask);
   }
 }
 
@@ -256,14 +256,14 @@ class AskItem extends StatelessWidget {
       : super(key: key);
   final Ask ask;
   final double sellAmount;
-  final Function(String, String) onCreateOrder;
+  final Function(Ask) onCreateOrder;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.of(context).pop();
-        onCreateOrder(ask.coin, ask.getReceiveAmount(sellAmount));
+        onCreateOrder(ask);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
