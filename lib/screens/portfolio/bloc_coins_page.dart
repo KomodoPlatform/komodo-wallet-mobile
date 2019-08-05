@@ -411,6 +411,7 @@ class _ItemCoinState extends State<ItemCoin> {
           Future<dynamic>.delayed(const Duration(milliseconds: 100), () {
             swapBloc.updateSellCoin(widget.coinBalance);
             swapBloc.setFocusTextField(true);
+            swapBloc.setEnabledSellField(true);
           });
         },
       ));
