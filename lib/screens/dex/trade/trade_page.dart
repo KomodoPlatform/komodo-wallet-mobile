@@ -51,6 +51,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   dynamic timerGetOrderbook;
   bool _noOrderFound = false;
   bool isMaxActive = false;
+  Ask currentAsk;
 
   @override
   void initState() {
@@ -172,25 +173,32 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     setState(() {
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
-          if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
-            swapBloc
-                .setReceiveAmount(swapBloc.receiveCoin, amountSell)
-                .then((_) {
-              _checkMaxVolume();
-            });
-          }
-          if (_noOrderFound &&
-              _controllerAmountReceive.text.isNotEmpty &&
+          // if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
+          //   swapBloc
+          //       .setReceiveAmount(swapBloc.receiveCoin, amountSell)
+          //       .then((_) {
+          //     _checkMaxVolume();
+          //   });
+          // }
+          if (_controllerAmountReceive.text.isNotEmpty &&
               _controllerAmountSell.text.isNotEmpty &&
               swapBloc.receiveCoin != null) {
+            String price = (Decimal.parse(amountSell) /
+                    Decimal.parse(
+                        _controllerAmountReceive.text.replaceAll(',', '.')))
+                .toString();
+            double maxVolume = double.parse(amountSell);
+
+            if (currentAsk != null) {
+              price = currentAsk.price;
+              maxVolume = currentAsk.maxvolume;
+            }
+
             swapBloc.updateBuyCoin(OrderCoin(
                 coinBase: swapBloc.receiveCoin,
                 coinRel: swapBloc.sellCoin?.coin,
-                bestPrice: (Decimal.parse(amountSell) /
-                        Decimal.parse(
-                            _controllerAmountReceive.text.replaceAll(',', '.')))
-                    .toString(),
-                maxVolume: double.parse(amountSell)));
+                bestPrice: price,
+                maxVolume: maxVolume));
           }
 
           getTradeFee(false).then((double tradeFee) {
@@ -599,10 +607,27 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               orderbooks: orderbooks,
               sellAmount: double.parse(_controllerAmountSell.text),
               onCreateNoOrder: (String coin) {
+                setState(() {
+                  currentAsk = null;
+                });
                 _noOrders(coin);
               },
-              onCreateOrder: (String coin, String amount) {
-                _createOrder(Coin(abbr: coin), amount);
+              onCreateOrder: (Ask ask) {
+                setState(() {
+                  currentAsk = ask;
+                });
+                print('amount' +
+                    ask.getReceiveAmount(
+                        double.parse(_controllerAmountSell.text)));
+
+                _createOrder(
+                    Coin(abbr: ask.coin),
+                    ask.getReceiveAmount(
+                        double.parse(_controllerAmountSell.text)));
+                if (Decimal.parse(currentCoinBalance.balance.balance) >
+                    Decimal.parse(ask.maxvolume.toString())) {
+                  _controllerAmountSell.text = ask.maxvolume.toString();
+                }
               });
         }).then((_) {
       dialogBloc.dialog = null;
