@@ -50,13 +50,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   String amountToBuy;
   dynamic timerGetOrderbook;
   bool _noOrderFound = false;
-  bool isMaxActive = false;
 
   @override
   void initState() {
     super.initState();
     swapBloc.outFocusTextField.listen((bool onData) {
-      FocusScope.of(context).requestFocus(_focusSell);
+      if (widget.mContext != null) {
+        FocusScope.of(widget.mContext).requestFocus(_focusSell);
+      }
     });
     _noOrderFound = false;
     initListenerAmountReceive();
@@ -198,7 +199,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             if (currentCoinBalance != null &&
                 double.parse(amountSell) + tradeFee >
                     double.parse(currentCoinBalance.balance.getBalance())) {
-              if (!isMaxActive) {
+              if (!swapBloc.isMaxActive) {
                 setMaxValue();
               }
             } else {
@@ -215,9 +216,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
       tmpAmountSell = amountSell;
     });
-    setState(() {
-      isMaxActive = false;
-    });
+    swapBloc.setIsMaxActive(false);
   }
 
   void _checkMaxVolume() {
@@ -351,6 +350,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           } else {
             paddingRight = 24;
           }
+
           return Container(
             width: double.infinity,
             child: Card(
@@ -446,9 +446,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                               width: 70,
                                               child: FlatButton(
                                                 onPressed: () async {
-                                                  setState(() {
-                                                    isMaxActive = true;
-                                                  });
+                                                  swapBloc.setIsMaxActive(true);
                                                   await setMaxValue();
                                                 },
                                                 child: Text(
