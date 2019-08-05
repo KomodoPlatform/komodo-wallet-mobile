@@ -28,7 +28,8 @@ class SwapConfirmation extends StatefulWidget {
       @required this.amountToSell,
       @required this.amountToBuy,
       @required this.swapStatus,
-      this.orderSuccess, this.order});
+      this.orderSuccess,
+      this.order});
 
   final SwapStatus swapStatus;
   final String amountToSell;
@@ -314,26 +315,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     final Coin coinRel = widget.coinRel;
     String price = '0';
 
-    try {
-      final Orderbook orderbook = await mm2.getOrderbook(coinBase, coinRel);
-      double maxVolume = 0;
-      int i = 0;
-
-      for (Ask ask in orderbook.asks) {
-        if (ask.address != swapBloc.sellCoin.balance.address) {
-          if (i == 0) {
-            maxVolume = ask.maxvolume;
-            price = ask.price;
-          } else if (Decimal.parse(ask.price) <= Decimal.parse(price) &&
-              ask.maxvolume > maxVolume) {
-            maxVolume = ask.maxvolume;
-            price = ask.price;
-          }
-          i++;
-        }
-      }
-    } catch (e) {
-      print(e.toString());
+    if (widget.order != null) {
+      price = widget.order.price;
     }
 
     final String amountToSell = widget.amountToSell.replaceAll(',', '.');
