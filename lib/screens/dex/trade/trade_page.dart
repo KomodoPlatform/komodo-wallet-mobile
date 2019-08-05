@@ -626,9 +626,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
                 final Decimal askPrice = Decimal.parse(ask.price.toString());
                 final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
+                final Decimal amountReceive = Decimal.parse(_controllerAmountReceive.text);
                 final Decimal maxVolume = Decimal.parse(ask.maxvolume.toString());
 
-                if (amountSell / askPrice > maxVolume) {
+                if (amountReceive < (amountSell / askPrice)) {
                   _controllerAmountSell.text = (maxVolume * askPrice).toStringAsFixed(8);
                 }
               });
