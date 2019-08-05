@@ -91,7 +91,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               children: <Widget>[
                 Expanded(
                   child: TextFormField(
-                    key: const Key('create-password-field'),
+                      key: const Key('create-password-field'),
                       maxLength: 40,
                       focusNode: _focus1,
                       controller: controller1,
@@ -107,7 +107,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                         final RegExp exp = RegExp(
                             r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
                         return !arg.contains(exp)
-                            ? 'Password must be more than 12 charaters, with one lower-case, one upper-case and one special symbol.'
+                            ? 'Password must contain at least 12 characters, with one lower-case, one upper-case and one special symbol.'
                             : null;
                       },
                       style: Theme.of(context).textTheme.body1,
@@ -157,7 +157,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
-                      key: const Key('create-password-field-confirm'),
+                        key: const Key('create-password-field-confirm'),
                         maxLength: 40,
                         controller: controller2,
                         textInputAction: TextInputAction.done,
