@@ -299,22 +299,29 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                     items: <BottomNavigationBarItem>[
                                       BottomNavigationBarItem(
                                           icon: Icon(
-                                              Icons.account_balance_wallet),
+                                            Icons.account_balance_wallet,
+                                            key: const Key(
+                                                'icon-bloc-coins-page'),
+                                          ),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .portfolio)),
                                       BottomNavigationBarItem(
-                                          icon: Icon(Icons.swap_vert),
+                                          icon: Icon(Icons.swap_vert,
+                                              key: const Key('icon-swap-page')),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .dex)),
                                       BottomNavigationBarItem(
-                                          icon: Icon(Icons.library_books),
+                                          icon: Icon(Icons.library_books,
+                                              key: const Key('icon-media')),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .media)),
                                       BottomNavigationBarItem(
-                                          icon: Icon(Icons.settings),
+                                          icon: Icon(Icons.settings,
+                                              key: const Key(
+                                                  'icon-setting-page')),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .settings)),

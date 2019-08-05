@@ -28,7 +28,8 @@ class SwapConfirmation extends StatefulWidget {
       @required this.amountToSell,
       @required this.amountToBuy,
       @required this.swapStatus,
-      this.orderSuccess});
+      this.orderSuccess,
+      this.order});
 
   final SwapStatus swapStatus;
   final String amountToSell;
@@ -37,6 +38,7 @@ class SwapConfirmation extends StatefulWidget {
   final String bestPrice;
   final Coin coinBase;
   final Coin coinRel;
+  final Ask order;
 
   @override
   _SwapConfirmationState createState() => _SwapConfirmationState();
@@ -103,6 +105,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         ),
         Text(
           AppLocalizations.of(context).swapDetailTitle,
+          key: const Key('swap-detail-title'),
           textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
@@ -277,6 +280,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           isSwapMaking
               ? const CircularProgressIndicator()
               : RaisedButton(
+                key: const Key('confirm-swap-button'),
                   padding:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 52),
                   shape: RoundedRectangleBorder(
@@ -313,26 +317,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     final Coin coinRel = widget.coinRel;
     String price = '0';
 
-    try {
-      final Orderbook orderbook = await mm2.getOrderbook(coinBase, coinRel);
-      double maxVolume = 0;
-      int i = 0;
-
-      for (Ask ask in orderbook.asks) {
-        if (ask.address != swapBloc.sellCoin.balance.address) {
-          if (i == 0) {
-            maxVolume = ask.maxvolume;
-            price = ask.price;
-          } else if (Decimal.parse(ask.price) <= Decimal.parse(price) &&
-              ask.maxvolume > maxVolume) {
-            maxVolume = ask.maxvolume;
-            price = ask.price;
-          }
-          i++;
-        }
-      }
-    } catch (e) {
-      print(e.toString());
+    if (widget.order != null) {
+      price = widget.order.price;
     }
 
     final String amountToSell = widget.amountToSell.replaceAll(',', '.');

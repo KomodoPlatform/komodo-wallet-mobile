@@ -88,6 +88,14 @@ class SwapBloc implements BlocBase {
   Sink<bool> get _inEnabledSellField => _enabledSellFieldController.sink;
   Stream<bool> get outEnabledSellField => _enabledSellFieldController.stream;
 
+  bool isMaxActive = false;
+
+  final StreamController<bool> _isMaxActiveController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inIsMaxActive => _isMaxActiveController.sink;
+  Stream<bool> get outIsMaxActive => _isMaxActiveController.stream;
+
+
   @override
   void dispose() {
     _orderCoinController.close();
@@ -101,6 +109,12 @@ class SwapBloc implements BlocBase {
     _currentAmountSellController.close();
     _currentAmountBuyController.close();
     _enabledSellFieldController.close();
+    _isMaxActiveController.close();
+  }
+
+  void setIsMaxActive(bool isMaxActive) {
+    this.isMaxActive = isMaxActive;
+    _inIsMaxActive.add(this.isMaxActive);
   }
 
   void setEnabledSellField(bool enabledSellField) {
@@ -168,8 +182,9 @@ class SwapBloc implements BlocBase {
     if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
       final double rate = currentAmountSell / currentAmountBuy;
 
-      final String res = (Decimal.parse(rate.toString()) * Decimal.parse(sellCoin.priceForOne))
-          .toStringAsFixed(2);
+      final String res =
+          (Decimal.parse(rate.toString()) * Decimal.parse(sellCoin.priceForOne))
+              .toStringAsFixed(2);
       return '($res USD)';
     } else {
       return '';
@@ -181,24 +196,28 @@ class SwapBloc implements BlocBase {
     _inFocusTextField.add(focusTextField);
   }
 
-  Future<double> setReceiveAmount(Coin coin, String amountSell) async {
+  Future<double> setReceiveAmount(
+      Coin coin, String amountSell, Ask currentAsk) async {
     try {
       final Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
       String bestPrice = '0';
       double maxVolume = 0;
       int i = 0;
 
-      for (Ask ask in orderbook.asks) {
-        if (ask.address != swapBloc.sellCoin.balance.address) {
-          if (i == 0) {
-            maxVolume = ask.maxvolume;
-            bestPrice = ask.price;
-          } else if (Decimal.parse(ask.price) <= Decimal.parse(bestPrice) && ask.maxvolume > maxVolume) {
+      if (currentAsk == null) {
+        for (Ask ask in orderbook.asks) {
+          if (ask.address != swapBloc.sellCoin.balance.address &&
+              (i == 0 ||
+                  (Decimal.parse(ask.price) <= Decimal.parse(bestPrice) &&
+                      ask.maxvolume > maxVolume))) {
             maxVolume = ask.maxvolume;
             bestPrice = ask.price;
           }
           i++;
         }
+      } else {
+        bestPrice = currentAsk.price;
+        maxVolume = currentAsk.maxvolume;
       }
 
       orderCoin = OrderCoin(
@@ -210,8 +229,8 @@ class SwapBloc implements BlocBase {
       );
       _inOrderCoin.add(orderCoin);
 
-      amountReceive = double.parse(orderCoin
-          .getBuyAmount(amountSell.replaceAll(',', '.')));
+      amountReceive =
+          double.parse(orderCoin.getBuyAmount(amountSell.replaceAll(',', '.')));
 
       _inAmountReceiveCoin.add(amountReceive);
       return amountReceive;

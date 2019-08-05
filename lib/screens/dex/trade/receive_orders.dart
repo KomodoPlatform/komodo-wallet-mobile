@@ -15,7 +15,7 @@ class ReceiveOrders extends StatefulWidget {
   final List<Orderbook> orderbooks;
   final double sellAmount;
   final Function(String) onCreateNoOrder;
-  final Function(String, String) onCreateOrder;
+  final Function(Ask) onCreateOrder;
 
   @override
   _ReceiveOrdersState createState() => _ReceiveOrdersState();
@@ -26,6 +26,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
   Widget build(BuildContext context) {
     return SimpleDialog(
       title: Text(AppLocalizations.of(context).receiveLower),
+      key: const Key('receive-list-coins'),
       children: widget.orderbooks
           .map((Orderbook orderbook) => OrderbookItem(
               key: Key('orderbook-item-${orderbook.base.toLowerCase()}'),
@@ -50,7 +51,7 @@ class OrderbookItem extends StatelessWidget {
   final Orderbook orderbook;
   final double sellAmount;
   final Function(String) onCreateNoOrder;
-  final Function(String, String) onCreateOrder;
+  final Function(Ask) onCreateOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +131,7 @@ class AsksOrder extends StatefulWidget {
       : super(key: key);
   final List<Ask> asks;
   final double sellAmount;
-  final Function(String, String) onCreateOrder;
+  final Function(Ask) onCreateOrder;
   final Function(String) onCreateNoOrder;
   final String baseCoin;
 
@@ -207,10 +208,10 @@ class _AsksOrderState extends State<AsksOrder> {
   DataRow tableRow(Ask ask, int index) {
     return DataRow(
         selected: index % 2 == 1,
-        key: Key('ask-item-$index'),
         cells: <DataCell>[
           DataCell(
               Container(
+                key: Key('ask-item-$index'),
                 child: Text(
                   ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
                   style:
@@ -247,7 +248,7 @@ class _AsksOrderState extends State<AsksOrder> {
 
   void createOrder(Ask ask) {
     Navigator.of(context).pop();
-    widget.onCreateOrder(ask.coin, ask.getReceiveAmount(widget.sellAmount));
+    widget.onCreateOrder(ask);
   }
 }
 
@@ -256,14 +257,14 @@ class AskItem extends StatelessWidget {
       : super(key: key);
   final Ask ask;
   final double sellAmount;
-  final Function(String, String) onCreateOrder;
+  final Function(Ask) onCreateOrder;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.of(context).pop();
-        onCreateOrder(ask.coin, ask.getReceiveAmount(sellAmount));
+        onCreateOrder(ask);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
