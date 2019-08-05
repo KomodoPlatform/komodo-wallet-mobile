@@ -492,6 +492,9 @@ class AppLocalizations {
   String get configureWallet =>
       Intl.message('Configuring your wallet, please wait...',
           name: 'configureWallet');
+    String get titleCurrentAsk =>
+      Intl.message('Order selected',
+          name: 'titleCurrentAsk');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

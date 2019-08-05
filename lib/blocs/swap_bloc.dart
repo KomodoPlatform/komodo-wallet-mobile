@@ -179,25 +179,31 @@ class SwapBloc implements BlocBase {
     _inFocusTextField.add(focusTextField);
   }
 
-  Future<double> setReceiveAmount(Coin coin, String amountSell) async {
+  Future<double> setReceiveAmount(Coin coin, String amountSell, Ask currentAsk) async {
     try {
       final Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
       String bestPrice = '0';
       double maxVolume = 0;
       int i = 0;
 
-      for (Ask ask in orderbook.asks) {
-        if (ask.address != swapBloc.sellCoin.balance.address) {
-          if (i == 0) {
-            maxVolume = ask.maxvolume;
-            bestPrice = ask.price;
-          } else if (Decimal.parse(ask.price) <= Decimal.parse(bestPrice) && ask.maxvolume > maxVolume) {
-            maxVolume = ask.maxvolume;
-            bestPrice = ask.price;
+      if (currentAsk == null) {
+        for (Ask ask in orderbook.asks) {
+          if (ask.address != swapBloc.sellCoin.balance.address) {
+            if (i == 0) {
+              maxVolume = ask.maxvolume;
+              bestPrice = ask.price;
+            } else if (Decimal.parse(ask.price) <= Decimal.parse(bestPrice) && ask.maxvolume > maxVolume) {
+              maxVolume = ask.maxvolume;
+              bestPrice = ask.price;
+            }
+            i++;
           }
-          i++;
         }
+      } else {
+        bestPrice = currentAsk.price;
+        maxVolume = currentAsk.maxvolume;
       }
+
 
       orderCoin = OrderCoin(
         coinRel: sellCoin.coin,
