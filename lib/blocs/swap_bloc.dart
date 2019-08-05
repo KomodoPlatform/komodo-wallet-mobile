@@ -88,6 +88,14 @@ class SwapBloc implements BlocBase {
   Sink<bool> get _inEnabledSellField => _enabledSellFieldController.sink;
   Stream<bool> get outEnabledSellField => _enabledSellFieldController.stream;
 
+  bool isMaxActive = false;
+
+  final StreamController<bool> _isMaxActiveController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inIsMaxActive => _isMaxActiveController.sink;
+  Stream<bool> get outIsMaxActive => _isMaxActiveController.stream;
+
+
   @override
   void dispose() {
     _orderCoinController.close();
@@ -101,6 +109,12 @@ class SwapBloc implements BlocBase {
     _currentAmountSellController.close();
     _currentAmountBuyController.close();
     _enabledSellFieldController.close();
+    _isMaxActiveController.close();
+  }
+
+  void setIsMaxActive(bool isMaxActive) {
+    this.isMaxActive = isMaxActive;
+    _inIsMaxActive.add(this.isMaxActive);
   }
 
   void setEnabledSellField(bool enabledSellField) {

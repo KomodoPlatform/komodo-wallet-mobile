@@ -55,6 +55,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
             title: Center(
                 child: Text(
               AppLocalizations.of(context).exchangeTitle,
+              key: const Key('exchange-title'),
               style: Theme.of(context).textTheme.subtitle,
             )),
             bottom: PreferredSize(

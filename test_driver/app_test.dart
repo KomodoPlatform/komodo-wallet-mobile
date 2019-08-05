@@ -155,4 +155,41 @@ void main() {
     });
   });
 
+  group('Make Swaps', (){
+
+    test('Swap MORTY for RICK', () async{
+      await driver.tap(find.byValueKey('icon-swap-page'));
+      await driver.waitFor(find.byValueKey('exchange-title'));
+
+      await driver.tap(find.byValueKey('coin-select-market.sell'));
+      await driver.waitFor(find.byValueKey('item-dialog-morty-market.sell'));
+      await driver.tap(find.byValueKey('item-dialog-morty-market.sell'));
+
+      await driver.tap(find.byValueKey('input-text-market.sell'));
+      await driver.enterText('0.02');
+
+      await driver.tap(find.byValueKey('coin-select-market.receive'));
+
+      await driver.scrollUntilVisible(find.byValueKey('receive-list-coins'),
+          find.byValueKey('orderbook-item-rick'),
+          dyScroll: -300);
+      await driver.scrollIntoView(find.byValueKey('orderbook-item-rick'));
+
+      await driver.waitFor(find.byValueKey('orderbook-item-rick'));
+      await driver.tap(find.byValueKey('orderbook-item-rick'));
+
+      await driver.tap(find.byValueKey('ask-item-0'));
+      await driver.waitFor(find.byValueKey('exchange-title'));
+
+      await driver.tap(find.byValueKey('trade-button'));
+
+      await driver.waitFor(find.byValueKey('swap-detail-title'));
+      
+      await driver.tap(find.byValueKey('confirm-swap-button'));
+
+      await driver.waitFor(find.text('Order matched'));
+      await driver.waitFor(find.text('Swap successful'), timeout: const Duration(minutes: 10));
+
+    }, timeout: Timeout.none);
+  });
 }
