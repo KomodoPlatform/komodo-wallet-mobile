@@ -166,7 +166,9 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRateUSD() {
     if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
-      final String res = (Decimal.parse(sellCoin.priceForOne) * Decimal.parse(swapBloc.orderCoin.bestPrice))
+      final double rate = currentAmountSell / currentAmountBuy;
+
+      final String res = (Decimal.parse(rate.toString()) * Decimal.parse(sellCoin.priceForOne))
           .toStringAsFixed(2);
       return '($res USD)';
     } else {
