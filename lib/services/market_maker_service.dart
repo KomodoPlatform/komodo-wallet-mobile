@@ -124,10 +124,22 @@ class MarketMakerService {
 
     if (Platform.isAndroid) {
       await stopmm2();
+      
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (prefs.getInt('mm2ProcessPID') != null) {
+        for (int i = 0; i < 100; i++) {
+          final ProcessResult checkmm2process = await Process.run(
+            'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
+          if (!checkmm2process.stdout.toString().contains(prefs.getInt('mm2ProcessPID').toString()))
+            break;
+          await Future<dynamic>.delayed(const Duration(milliseconds: 500));
+        }
+      }
 
       try {
         mm2Process = await Process.start('./mm2', <String>[startParam],
             workingDirectory: '$filesPath');
+        prefs.setInt('mm2ProcessPID', mm2Process.pid);
 
         mm2Process.stderr.listen((List<int> onData) {
           final String logMm2 = utf8.decoder.convert(onData).trim();
@@ -259,7 +271,8 @@ class MarketMakerService {
           BaseService(userpass: userpass, method: 'stop');
       final Response response =
           await http.post(url, body: baseServiceToJson(baseService));
-      await Future<dynamic>.delayed(const Duration(seconds: 1));
+      // await Future<dynamic>.delayed(const Duration(seconds: 1));
+
       return baseServiceFromJson(response.body);
     } catch (e) {
       print(e);
