@@ -242,7 +242,7 @@ class MarketMakerService {
     return file.writeAsBytes(data);
   }
 
-  Future<void> deletemm2File() async{
+  Future<void> deletemm2File() async {
     final File file = await _localFile;
     await file.delete();
   }
@@ -403,7 +403,7 @@ class MarketMakerService {
   }
 
   Future<dynamic> postSell(
-      Coin base, Coin rel, double volume, double price) async {
+      Coin base, Coin rel, Decimal volume, Decimal price) async {
     print('postSellSWAPPARAM: base: ' +
         base.abbr +
         ' rel: ' +
@@ -436,8 +436,8 @@ class MarketMakerService {
     }
   }
 
-  Future<SetPriceResponse> postSetPrice(Coin base, Coin rel, String volume, String price,
-      bool cancelPrevious, bool max) async {
+  Future<SetPriceResponse> postSetPrice(Coin base, Coin rel, String volume,
+      String price, bool cancelPrevious, bool max) async {
     final GetSetPrice getSetPrice = GetSetPrice(
         userpass: userpass,
         method: 'setprice',
@@ -571,7 +571,7 @@ class MarketMakerService {
   }
 
   Future<dynamic> postWithdraw(
-      Coin coin, String addressTo, double amount, bool isMax) async {
+      Coin coin, String addressTo, Decimal amount, bool isMax) async {
     final GetWithdraw getWithdraw = GetWithdraw(
       userpass: userpass,
       method: 'withdraw',
