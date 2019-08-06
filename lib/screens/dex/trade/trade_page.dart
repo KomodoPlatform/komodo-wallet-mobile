@@ -132,12 +132,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void initListenerAmountReceive() {
-    swapBloc.outAmountReceive.listen((double onData) {
+    swapBloc.outAmountReceive.listen((Decimal onData) {
       if (!mounted) {
         return;
       }
       setState(() {
-        if (onData != 0) {
+        if (onData != Decimal.parse('0')) {
           _controllerAmountReceive.text = onData.toString();
         } else {
           _controllerAmountReceive.text = '';
@@ -148,7 +148,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   void onChangeReceive() {
     if (_controllerAmountReceive.text.isNotEmpty) {
-      swapBloc.setCurrentAmountBuy(double.parse(_controllerAmountReceive.text));
+      swapBloc
+          .setCurrentAmountBuy(Decimal.parse(_controllerAmountReceive.text));
     }
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
@@ -162,7 +163,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           coinRel: swapBloc.sellCoin?.coin,
           bestPrice: bestPrice,
           maxVolume:
-              double.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
+              Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
     }
     setState(() {});
   }
@@ -171,7 +172,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
 
     if (_controllerAmountSell.text.isNotEmpty) {
-      swapBloc.setCurrentAmountSell(double.parse(amountSell));
+      swapBloc.setCurrentAmountSell(Decimal.parse(amountSell));
     }
     setState(() {
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
@@ -190,7 +191,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     Decimal.parse(
                         _controllerAmountReceive.text.replaceAll(',', '.')))
                 .toString();
-            double maxVolume = double.parse(amountSell);
+            Decimal maxVolume = Decimal.parse(amountSell);
 
             if (currentAsk != null) {
               price = currentAsk.price;
@@ -412,7 +413,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                     children: <Widget>[
                                       Expanded(
                                         child: TextFormField(
-                                          key: Key('input-text-${market.toString().toLowerCase()}'),
+                                            key: Key(
+                                                'input-text-${market.toString().toLowerCase()}'),
                                             scrollPadding:
                                                 const EdgeInsets.only(left: 35),
                                             inputFormatters: <
@@ -431,9 +433,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                             enabled: market == Market.RECEIVE
                                                 ? swapBloc.enabledReceiveField
                                                 : swapBloc.enabledSellField,
-                                            keyboardType: const TextInputType
-                                                    .numberWithOptions(
-                                                decimal: true),
+                                            keyboardType:
+                                                const TextInputType.numberWithOptions(
+                                                    decimal: true),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .title,
@@ -609,7 +611,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         builder: (BuildContext context) {
           return ReceiveOrders(
               orderbooks: orderbooks,
-              sellAmount: double.parse(_controllerAmountSell.text),
+              sellAmount: Decimal.parse(_controllerAmountSell.text),
               onCreateNoOrder: (String coin) => _noOrders(coin),
               onCreateOrder: (Ask ask) => _createOrder(ask));
         }).then((_) {
@@ -740,7 +742,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     _controllerAmountReceive.text = '';
     timerGetOrderbook?.cancel();
     _controllerAmountReceive.text =
-        ask.getReceiveAmount(double.parse(_controllerAmountSell.text));
+        ask.getReceiveAmount(Decimal.parse(_controllerAmountSell.text));
 
     swapBloc.updateBuyCoin(OrderCoin(
         coinBase: swapBloc.receiveCoin,
@@ -749,7 +751,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 Decimal.parse(
                     _controllerAmountReceive.text.replaceAll(',', '.')))
             .toString(),
-        maxVolume: double.parse(_controllerAmountSell.text)));
+        maxVolume: Decimal.parse(_controllerAmountSell.text)));
 
     final Decimal askPrice = Decimal.parse(ask.price.toString());
     final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
@@ -780,9 +782,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   0;
           print('----getBuyAmount----' +
               orderbook.getBuyAmount(_controllerAmountSell.text));
-          print('item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
+          print(
+              'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
-            key: Key('item-dialog-${orderbook.coinBase.abbr}-${market.toString().toLowerCase()}'),
+            key: Key(
+                'item-dialog-${orderbook.coinBase.abbr}-${market.toString().toLowerCase()}'),
             onPressed: () async {
               _controllerAmountReceive.clear();
               setState(() {
@@ -848,7 +852,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       for (CoinBalance coin in coinsBloc.coinBalance) {
         if (double.parse(coin.balance.getBalance()) > 0) {
           final SimpleDialogOption dialogItem = SimpleDialogOption(
-            key: Key('item-dialog-${coin.coin.abbr.toLowerCase()}-${market.toString().toLowerCase()}'),
+            key: Key(
+                'item-dialog-${coin.coin.abbr.toLowerCase()}-${market.toString().toLowerCase()}'),
             onPressed: () {
               swapBloc.updateBuyCoin(null);
               swapBloc.updateReceiveCoin(null);

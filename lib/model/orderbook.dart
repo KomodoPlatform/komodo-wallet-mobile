@@ -86,7 +86,8 @@ class Ask {
         coin: json['coin'] ?? '',
         address: json['address'] ?? '',
         price: json['price'] ?? 0.0,
-        maxvolume: json['maxvolume'].toDouble() ?? 0.0,
+        maxvolume:
+            Decimal.parse(json['maxvolume'].toString()) ?? Decimal.parse('0.0'),
         pubkey: json['pubkey'] ?? '',
         age: json['age'] ?? 0,
         zcredits: json['zcredits'] ?? 0,
@@ -95,7 +96,7 @@ class Ask {
   String coin;
   String address;
   String price;
-  double maxvolume;
+  Decimal maxvolume;
   String pubkey;
   int age;
   int zcredits;
@@ -104,25 +105,27 @@ class Ask {
         'coin': coin ?? '',
         'address': address ?? '',
         'price': price ?? 0.0,
-        'maxvolume': maxvolume ?? 0.0,
+        'maxvolume': maxvolume ?? Decimal.parse('0.0'),
         'pubkey': pubkey ?? '',
         'age': age ?? 0,
         'zcredits': zcredits ?? 0,
       };
 
-  String getReceiveAmount(double amountToSell) {
+  String getReceiveAmount(Decimal amountToSell) {
     String buyAmount = 0.toString();
-    buyAmount = (Decimal.parse(amountToSell.toString()) / Decimal.parse(price)).toStringAsFixed(8);
-    if (double.parse(buyAmount) == 0) {
+    buyAmount = (Decimal.parse(amountToSell.toString()) / Decimal.parse(price))
+        .toStringAsFixed(8);
+    if (Decimal.parse(buyAmount) == Decimal.parse('0')) {
       buyAmount = 0.toStringAsFixed(0);
     }
-    if (double.parse(buyAmount) >= maxvolume) {
+    if (Decimal.parse(buyAmount) >= maxvolume) {
       buyAmount = maxvolume.toString();
     }
     return buyAmount;
   }
 
   String getReceivePrice() {
-    return (Decimal.parse('1') / Decimal.parse(price.toString())).toStringAsFixed(8);
+    return (Decimal.parse('1') / Decimal.parse(price.toString()))
+        .toStringAsFixed(8);
   }
 }
