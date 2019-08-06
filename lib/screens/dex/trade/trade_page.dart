@@ -240,7 +240,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<double> getTradeFee(bool isMax) async {
     try {
       final TradeFee tradeFeeResponse =
-          await mm2.getTradeFee(currentCoinBalance.coin);
+          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
 
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
       double amount = double.parse(_controllerAmountSell.text);

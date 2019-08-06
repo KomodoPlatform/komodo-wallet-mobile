@@ -349,14 +349,14 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     }
 
     if (widget.swapStatus == SwapStatus.BUY) {
-      mm2
+      MarketMakerService()
           .postBuy(coinBase, coinRel, satoshiBuyAmount / satoshi,
               (satoshiPrice / satoshi).toString())
           .then((BuyResponse onValue) => _goToNextScreen(
               mContext, onValue, amountToSell, satoshiBuyAmount / satoshi))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      mm2
+      MarketMakerService()
           .postSetPrice(coinRel, coinBase, amountToSell,
               Decimal.parse(widget.bestPrice).toStringAsFixed(8), false, false)
           .then((SetPriceResponse onValue) => _goToNextScreen(

@@ -41,7 +41,7 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    if (mm2.ismm2Running) {
+    if (MarketMakerService().ismm2Running) {
       coinsBloc.loadCoin();
     }
 
@@ -280,7 +280,7 @@ class ListCoinsState extends State<ListCoins> {
 
   @override
   void initState() {
-    if (mm2.ismm2Running) {
+    if (MarketMakerService().ismm2Running) {
       coinsBloc.loadCoin();
     }
     super.initState();
@@ -634,7 +634,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
 
   Future<bool> _buildAddCoinButton() async {
     final List<Coin> allCoins =
-        await mm2.loadJsonCoins(await mm2.loadElectrumServersAsset());
+        await MarketMakerService().loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
 
     return !(allCoins.length == allCoinsActivate.length);

@@ -158,7 +158,7 @@ class SwapBloc implements BlocBase {
 
     for (Coin coin in coins) {
       if (coin.abbr != rel.abbr) {
-        futureOrderbook.add(mm2.getOrderbook(coin, rel));
+        futureOrderbook.add(MarketMakerService().getOrderbook(coin, rel));
       }
     }
 
@@ -199,7 +199,7 @@ class SwapBloc implements BlocBase {
   Future<double> setReceiveAmount(
       Coin coin, String amountSell, Ask currentAsk) async {
     try {
-      final Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
+      final Orderbook orderbook = await MarketMakerService().getOrderbook(coin, sellCoin.coin);
       String bestPrice = '0';
       double maxVolume = 0;
       int i = 0;

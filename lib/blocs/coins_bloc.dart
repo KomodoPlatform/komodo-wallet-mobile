@@ -126,7 +126,7 @@ class CoinsBloc implements BlocBase {
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
       final dynamic transactions =
-          await mm2.getTransactions(coin, limit, fromId);
+          await MarketMakerService().getTransactions(coin, limit, fromId);
       if (transactions is Transactions) {
         if (fromId == null || fromId.isEmpty) {
           this.transactions = transactions;
@@ -183,7 +183,7 @@ class CoinsBloc implements BlocBase {
 
   Future<Coin> _activeCoinFuture(Coin coin) async {
     Coin coinToactivate;
-    await mm2.activeCoin(coin).then((ActiveCoin activeCoin) {
+    await MarketMakerService().activeCoin(coin).then((ActiveCoin activeCoin) {
       coinToactivate = coin;
       currentCoinActivate(
           CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
@@ -242,7 +242,7 @@ class CoinsBloc implements BlocBase {
 
   Future<File> resetCoinDefault() async {
     final File file = await _localFile;
-    return file.writeAsString(json.encode(await mm2.loadJsonCoinsDefault()));
+    return file.writeAsString(json.encode(await MarketMakerService().loadJsonCoinsDefault()));
   }
 
   Future<List<Coin>> readJsonCoin() async {
@@ -257,7 +257,7 @@ class CoinsBloc implements BlocBase {
 
   Future<List<Coin>> getAllNotActiveCoins() async {
     final List<Coin> allCoins =
-        await mm2.loadJsonCoins(await mm2.loadElectrumServersAsset());
+        await MarketMakerService().loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
     final List<Coin> coinsNotActivated = <Coin>[];
 
@@ -293,7 +293,7 @@ class CoinsBloc implements BlocBase {
 
   void startCheckBalance() {
     timer = Timer.periodic(const Duration(seconds: 45), (_) {
-      if (!mm2.ismm2Running) {
+      if (!MarketMakerService().ismm2Running) {
         _.cancel();
       } else {
         loadCoin();
@@ -308,7 +308,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> loadCoin() async {
-    if (mm2.ismm2Running && !onActivateCoins) {
+    if (MarketMakerService().ismm2Running && !onActivateCoins) {
       final List<Coin> coins = await coinsBloc.readJsonCoin();
       final List<Future<dynamic>> getAllBalances = <Future<dynamic>>[];
 
@@ -342,7 +342,7 @@ class CoinsBloc implements BlocBase {
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
     dynamic balance;
     try {
-      balance = await mm2.getBalance(coin).timeout(const Duration(seconds: 15));
+      balance = await MarketMakerService().getBalance(coin).timeout(const Duration(seconds: 15));
     } catch (e) {
       print(e);
       balance = null;
@@ -374,7 +374,7 @@ class CoinsBloc implements BlocBase {
     }
 
     if (balance is Balance && balance.coin == 'KMD') {
-      mm2.pubkey = balance.address;
+      MarketMakerService().pubkey = balance.address;
     }
     return coinBalance;
   }
@@ -384,7 +384,7 @@ class CoinsBloc implements BlocBase {
     final List<Coin> coinsAll = await getAllNotActiveCoins();
 
     try {
-      await mm2.getCoinToKickStart().then((CoinToKickStart coinsToKickStart) {
+      await MarketMakerService().getCoinToKickStart().then((CoinToKickStart coinsToKickStart) {
         for (Coin coin in coinsAll) {
           for (String coinToKickStart in coinsToKickStart.result) {
             if (coin.abbr == coinToKickStart.toString()) {
