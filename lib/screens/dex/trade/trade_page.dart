@@ -204,11 +204,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 maxVolume: maxVolume));
           }
 
-          getTradeFee(false).then((Decimal tradeFee) {
+          getTradeFee(false).then((double tradeFee) {
             print(tradeFee);
             if (currentCoinBalance != null &&
-                Decimal.parse(amountSell) + tradeFee >
-                    Decimal.parse(currentCoinBalance.balance.getBalance())) {
+                double.parse(amountSell) + tradeFee >
+                    double.parse(currentCoinBalance.balance.getBalance())) {
               if (!swapBloc.isMaxActive) {
                 setMaxValue();
               }
@@ -237,32 +237,35 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  Future<Decimal> getTradeFee(bool isMax) async {
+  Future<double> getTradeFee(bool isMax) async {
     try {
       final TradeFee tradeFeeResponse =
           await mm2.getTradeFee(currentCoinBalance.coin);
 
-      final Decimal tradeFee = Decimal.parse(tradeFeeResponse.result.amount);
-      Decimal amount = Decimal.parse(_controllerAmountSell.text);
+      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
+      double amount = double.parse(_controllerAmountSell.text);
       if (isMax) {
-        amount = Decimal.parse(currentCoinBalance.balance.getBalance());
+        amount = double.parse(currentCoinBalance.balance.getBalance());
       }
-      return Decimal.parse('2') * tradeFee +
-          Decimal.parse('1') / Decimal.parse('777') * amount;
+      return (Decimal.parse('2') * Decimal.parse(tradeFee.toString()) +
+              Decimal.parse('1') /
+                  Decimal.parse('777') *
+                  Decimal.parse(amount.toString()))
+          .toDouble();
     } catch (e) {
       print(e);
-      return Decimal.parse('0');
+      return 0;
     }
   }
 
   Future<void> setMaxValue() async {
     try {
       setState(() async {
-        final Decimal tradeFee = await getTradeFee(true);
-        final Decimal maxValue =
-            Decimal.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
+        final double tradeFee = await getTradeFee(true);
+        final double maxValue =
+            double.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
         print(maxValue);
-        if (maxValue < Decimal.parse('0')) {
+        if (maxValue < 0) {
           _controllerAmountSell.text = '';
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
@@ -753,22 +756,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             .toString(),
         maxVolume: double.parse(_controllerAmountSell.text)));
 
-    final double askPrice = double.parse(ask.price.toString());
-    final double amountSell = double.parse(_controllerAmountSell.text);
-    final double amountReceive = double.parse(_controllerAmountReceive.text);
-    final double maxVolume = double.parse(ask.maxvolume.toString());
+    final Decimal askPrice = Decimal.parse(ask.price.toString());
+    final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
+    final Decimal amountReceive = Decimal.parse(_controllerAmountReceive.text);
+    final Decimal maxVolume = Decimal.parse(ask.maxvolume.toString());
 
-    if (amountReceive <
-            (Decimal.parse(amountSell.toString()) /
-                    Decimal.parse(askPrice.toString()))
-                .toDouble() &&
-        amountSell >
-            (Decimal.parse(maxVolume.toString()) *
-                    Decimal.parse(askPrice.toString()))
-                .toDouble()) {
-      _controllerAmountSell.text = (Decimal.parse(maxVolume.toString()) *
-              Decimal.parse(askPrice.toString()))
-          .toStringAsFixed(8);
+    if (amountReceive < (amountSell / askPrice) &&
+        amountSell > maxVolume * askPrice) {
+      _controllerAmountSell.text = (maxVolume * askPrice).toStringAsFixed(8);
     }
   }
 
