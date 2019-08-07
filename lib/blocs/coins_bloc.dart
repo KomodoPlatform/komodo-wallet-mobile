@@ -165,14 +165,21 @@ class CoinsBloc implements BlocBase {
         .then((List<dynamic> onValue) {
           for (dynamic coinActivate in onValue) {
             if (coinActivate is Coin && coinActivate != null) {
+              print('coinActivate--------------' + coinActivate.abbr);
               coinsReadJson.add(coinActivate);
             }
           }
         })
         .catchError((dynamic onError) {
           print(onError);
+          print('timeout2--------------');
         })
-        .then((_) async => await writeJsonCoin(coinsReadJson))
+        .then((_) async {
+          for (var coin in coinsReadJson) {
+            print('writeJsonCoin' + coin.abbr);
+          }
+          await writeJsonCoin(coinsReadJson);
+        })
         .then((_) => onActivateCoins = false)
         .then((_) async {
           onActivateCoins = false;
@@ -183,22 +190,36 @@ class CoinsBloc implements BlocBase {
 
   Future<Coin> _activeCoinFuture(Coin coin) async {
     Coin coinToactivate;
+    currentCoinActivate(
+          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
     await mm2.activeCoin(coin).then((ActiveCoin activeCoin) {
       coinToactivate = coin;
       currentCoinActivate(
-          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
-    }).catchError((dynamic onError) {
+          CoinToActivate(currentStatus: '${coin.name} activate.'));
+    }).catchError((dynamic onError) async{
+      coinToactivate = null;
+
       if (onError is ErrorString &&
           onError.error.contains('Coin ${coin.abbr} already initialized')) {
-        coinToactivate = coin;
-        currentCoinActivate(
-            CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
+        currentCoinActivate(CoinToActivate(
+            currentStatus: 'Coin ${coin.abbr} already initialized'));
       } else {
         print('Sorry, ${coin.abbr} not available.');
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
       }
-    }).timeout(const Duration(seconds: 30));
+      await Future<dynamic>.delayed(const Duration(seconds: 2)).then((dynamic _){
+        currentCoinActivate(null);
+      });
+    }).timeout(const Duration(seconds: 10), onTimeout: () async{
+      coinToactivate = null;
+      print('Sorry, ${coin.abbr} not available.');
+      currentCoinActivate(
+          CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
+      await Future<dynamic>.delayed(const Duration(seconds: 2)).then((dynamic _){
+        currentCoinActivate(null);
+      });
+    });
 
     return coinToactivate;
   }

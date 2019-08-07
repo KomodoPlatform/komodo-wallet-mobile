@@ -632,11 +632,11 @@ class MarketMakerService {
       }
 
       print('response Active Coin: ' + response.body.toString());
-
-      if (activeCoinFromJson(response.body).result != null) {
-        return activeCoinFromJson(response.body);
+      
+      final ActiveCoin activeCoin = activeCoinFromJson(response.body);
+      if (activeCoin != null && activeCoin.coin.isNotEmpty) {
+        return activeCoin;
       } else {
-        print(response.body);
         throw errorStringFromJson(response.body);
       }
     } on TimeoutException catch (_) {
