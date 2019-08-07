@@ -156,7 +156,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       final String bestPrice = (Decimal.parse(
                   _controllerAmountReceive.text.replaceAll(',', '.')) /
               Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.')))
-          .toString();
+          .toStringAsFixed(8);
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoin?.coin,
@@ -247,7 +247,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       if (isMax) {
         amount = double.parse(currentCoinBalance.balance.getBalance());
       }
-      return (2 * tradeFee) + ((1 / 777) * amount);
+      return (Decimal.parse('2') * Decimal.parse(tradeFee.toString()) +
+              Decimal.parse('1') /
+                  Decimal.parse('777') *
+                  Decimal.parse(amount.toString()))
+          .toDouble();
     } catch (e) {
       print(e);
       return 0;
@@ -412,7 +416,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                     children: <Widget>[
                                       Expanded(
                                         child: TextFormField(
-                                          key: Key('input-text-${market.toString().toLowerCase()}'),
+                                            key: Key(
+                                                'input-text-${market.toString().toLowerCase()}'),
                                             scrollPadding:
                                                 const EdgeInsets.only(left: 35),
                                             inputFormatters: <
@@ -431,9 +436,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                             enabled: market == Market.RECEIVE
                                                 ? swapBloc.enabledReceiveField
                                                 : swapBloc.enabledSellField,
-                                            keyboardType: const TextInputType
-                                                    .numberWithOptions(
-                                                decimal: true),
+                                            keyboardType:
+                                                const TextInputType.numberWithOptions(
+                                                    decimal: true),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .title,
@@ -780,9 +785,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   0;
           print('----getBuyAmount----' +
               orderbook.getBuyAmount(_controllerAmountSell.text));
-          print('item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
+          print(
+              'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
-            key: Key('item-dialog-${orderbook.coinBase.abbr}-${market.toString().toLowerCase()}'),
+            key: Key(
+                'item-dialog-${orderbook.coinBase.abbr}-${market.toString().toLowerCase()}'),
             onPressed: () async {
               _controllerAmountReceive.clear();
               setState(() {
@@ -848,7 +855,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       for (CoinBalance coin in coinsBloc.coinBalance) {
         if (double.parse(coin.balance.getBalance()) > 0) {
           final SimpleDialogOption dialogItem = SimpleDialogOption(
-            key: Key('item-dialog-${coin.coin.abbr.toLowerCase()}-${market.toString().toLowerCase()}'),
+            key: Key(
+                'item-dialog-${coin.coin.abbr.toLowerCase()}-${market.toString().toLowerCase()}'),
             onPressed: () {
               swapBloc.updateBuyCoin(null);
               swapBloc.updateReceiveCoin(null);

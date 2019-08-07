@@ -353,7 +353,7 @@ class CoinsBloc implements BlocBase {
     }
     final double price = await getPriceObj
         .getPrice(coin.abbr, coin.coingeckoId, 'USD')
-        .timeout(const Duration(seconds: 15), onTimeout: () => 0);
+        .timeout(const Duration(seconds: 15), onTimeout: () => 0.0);
 
     dynamic coinBalance;
     if (balance is Balance && coin.abbr == balance.coin) {
@@ -365,7 +365,8 @@ class CoinsBloc implements BlocBase {
         coinBalance.priceForOne = '0';
       }
       coinBalance.balanceUSD = (Decimal.parse(coinBalance.priceForOne) *
-          Decimal.parse(coinBalance.balance.getBalance())).toDouble();
+              Decimal.parse(coinBalance.balance.getBalance()))
+          .toDouble();
     } else if (balance is ErrorString) {
       coinBalance = CoinBalance(
           coin, Balance(address: '', balance: '0', coin: coin.abbr));

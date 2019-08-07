@@ -7,10 +7,9 @@ import 'package:http/http.dart';
 GetPriceService getPriceObj = GetPriceService();
 
 class GetPriceService {
-  int calc = 100000000;
-  String coin = '';
-  bool coinAvailable = false;
-  double price = 0.0;
+  final double nil = 0.0;
+  double price;
+
   Future<double> getPrice(
       String coin, String coingeckoId, String currency) async {
     final String coinUrl =
@@ -20,9 +19,9 @@ class GetPriceService {
             currency.toLowerCase();
     final String fiatUrl =
         'https://api.coinbase.com/v2/prices/spot?currency=' + currency;
-    double price = 0.0;
+    price = nil;
     if (coingeckoId == 'test-token') {
-      return 0;
+      return nil;
     }
     try {
       final Response response = await http.get(fiatUrl);
@@ -33,7 +32,7 @@ class GetPriceService {
       }
     } catch (e) {
       print(e.toString());
-      price = 0;
+      price = nil;
     }
     try {
       final Response response2 = await http.get(coinUrl);
@@ -42,7 +41,7 @@ class GetPriceService {
           decoded2[coingeckoId][currency.toLowerCase()].toString());
     } catch (e) {
       print(e.toString());
-      price = 0;
+      price = nil;
     }
     return price;
   }

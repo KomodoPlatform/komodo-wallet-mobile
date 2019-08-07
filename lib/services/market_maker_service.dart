@@ -242,7 +242,7 @@ class MarketMakerService {
     return file.writeAsBytes(data);
   }
 
-  Future<void> deletemm2File() async{
+  Future<void> deletemm2File() async {
     final File file = await _localFile;
     await file.delete();
   }
@@ -436,8 +436,8 @@ class MarketMakerService {
     }
   }
 
-  Future<SetPriceResponse> postSetPrice(Coin base, Coin rel, String volume, String price,
-      bool cancelPrevious, bool max) async {
+  Future<SetPriceResponse> postSetPrice(Coin base, Coin rel, String volume,
+      String price, bool cancelPrevious, bool max) async {
     final GetSetPrice getSetPrice = GetSetPrice(
         userpass: userpass,
         method: 'setprice',
@@ -583,7 +583,7 @@ class MarketMakerService {
       getWithdraw.amount = amount;
     }
 
-    print('sending: ' + amount.toString());
+    print('<<<<<<<<<<<<<<<<<<sending: ' + amount.toString());
     print(getWithdrawToJson(getWithdraw));
 
     try {
@@ -592,6 +592,7 @@ class MarketMakerService {
       print('response.body postWithdraw' + response.body.toString());
       return withdrawResponseFromJson(response.body);
     } catch (e) {
+      print(e.toString());
       return e;
     }
   }

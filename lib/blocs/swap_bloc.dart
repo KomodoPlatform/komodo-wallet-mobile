@@ -95,7 +95,6 @@ class SwapBloc implements BlocBase {
   Sink<bool> get _inIsMaxActive => _isMaxActiveController.sink;
   Stream<bool> get outIsMaxActive => _isMaxActiveController.stream;
 
-
   @override
   void dispose() {
     _orderCoinController.close();
@@ -170,9 +169,7 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRate() {
     if (swapBloc.orderCoin != null) {
-      final double rate = currentAmountSell / currentAmountBuy;
-
-      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${rate.toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${(Decimal.parse(currentAmountSell.toString()) / Decimal.parse(currentAmountBuy.toString())).toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
     } else {
       return '';
     }
@@ -180,11 +177,10 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRateUSD() {
     if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
-      final double rate = currentAmountSell / currentAmountBuy;
-
-      final String res =
-          (Decimal.parse(rate.toString()) * Decimal.parse(sellCoin.priceForOne))
-              .toStringAsFixed(2);
+      final String res = ((Decimal.parse(currentAmountSell.toString()) /
+                  Decimal.parse(currentAmountBuy.toString())) *
+              Decimal.parse(sellCoin.priceForOne))
+          .toStringAsFixed(2);
       return '($res USD)';
     } else {
       return '';

@@ -112,7 +112,8 @@ class Ask {
 
   String getReceiveAmount(double amountToSell) {
     String buyAmount = 0.toString();
-    buyAmount = (Decimal.parse(amountToSell.toString()) / Decimal.parse(price)).toStringAsFixed(8);
+    buyAmount = (Decimal.parse(amountToSell.toString()) / Decimal.parse(price))
+        .toStringAsFixed(8);
     if (double.parse(buyAmount) == 0) {
       buyAmount = 0.toStringAsFixed(0);
     }
@@ -123,6 +124,7 @@ class Ask {
   }
 
   String getReceivePrice() {
-    return (Decimal.parse('1') / Decimal.parse(price.toString())).toStringAsFixed(8);
+    return (Decimal.parse('1') / Decimal.parse(price.toString()))
+        .toStringAsFixed(8);
   }
 }

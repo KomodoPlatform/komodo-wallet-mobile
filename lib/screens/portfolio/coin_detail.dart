@@ -65,8 +65,10 @@ class CoinDetail extends StatefulWidget {
         .postWithdraw(
             coinBalance.coin,
             coinBalance.balance.address,
-            double.parse(coinBalance.balance.getBalance()) -
-                coinBalance.coin.txfee / 100000000,
+            (Decimal.parse(coinBalance.balance.getBalance()) -
+                    (Decimal.parse(coinBalance.coin.txfee.toString()) /
+                        Decimal.parse('100000000')))
+                .toDouble(),
             true)
         .then((dynamic data) {
       Navigator.of(mContext).pop();
@@ -548,7 +550,9 @@ class _CoinDetailState extends State<CoinDetail> {
                                 left: 16, right: 16, bottom: 16, top: 8),
                             child: Text(
                               (Decimal.parse(currentCoinBalance.priceForOne) *
-                                          Decimal.parse(transaction.myBalanceChange.toString()))
+                                          Decimal.parse(transaction
+                                              .myBalanceChange
+                                              .toString()))
                                       .toStringAsFixed(2) +
                                   ' USD',
                               style: Theme.of(context).textTheme.body2,
