@@ -598,7 +598,7 @@ class MarketMakerService {
       getWithdraw.amount = amount;
     }
 
-    print('sending: ' + amount.toString());
+    print('<<<<<<<<<<<<<<<<<<sending: ' + amount.toString());
     print(getWithdrawToJson(getWithdraw));
 
     try {
@@ -607,6 +607,7 @@ class MarketMakerService {
       print('response.body postWithdraw' + response.body.toString());
       return withdrawResponseFromJson(response.body);
     } catch (e) {
+      print(e.toString());
       return e;
     }
   }
@@ -646,11 +647,11 @@ class MarketMakerService {
       }
 
       print('response Active Coin: ' + response.body.toString());
-
-      if (activeCoinFromJson(response.body).result != null) {
-        return activeCoinFromJson(response.body);
+      
+      final ActiveCoin activeCoin = activeCoinFromJson(response.body);
+      if (activeCoin != null && activeCoin.coin.isNotEmpty) {
+        return activeCoin;
       } else {
-        print(response.body);
         throw errorStringFromJson(response.body);
       }
     } on TimeoutException catch (_) {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
@@ -65,8 +66,8 @@ class OrdersBloc implements BlocBase {
             orderType: OrderType.MAKER,
             startedSwaps: entry.value.startedSwaps,
             createdAt: entry.value.createdAt ~/ 1000,
-            relAmount: (double.parse(entry.value.price) *
-                    double.parse(entry.value.maxBaseVol))
+            relAmount: (Decimal.parse(entry.value.price) *
+                    Decimal.parse(entry.value.maxBaseVol))
                 .toString(),
             uuid: entry.key));
       }

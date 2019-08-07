@@ -165,14 +165,18 @@ class CoinsBloc implements BlocBase {
         .then((List<dynamic> onValue) {
           for (dynamic coinActivate in onValue) {
             if (coinActivate is Coin && coinActivate != null) {
+              print('coinActivate--------------' + coinActivate.abbr);
               coinsReadJson.add(coinActivate);
             }
           }
         })
         .catchError((dynamic onError) {
           print(onError);
+          print('timeout2--------------');
         })
-        .then((_) async => await writeJsonCoin(coinsReadJson))
+        .then((_) async {
+          await writeJsonCoin(coinsReadJson);
+        })
         .then((_) => onActivateCoins = false)
         .then((_) async {
           onActivateCoins = false;
@@ -183,22 +187,37 @@ class CoinsBloc implements BlocBase {
 
   Future<Coin> _activeCoinFuture(Coin coin) async {
     Coin coinToactivate;
+
+    currentCoinActivate(
+          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
     await MarketMakerService().activeCoin(coin).then((ActiveCoin activeCoin) {
       coinToactivate = coin;
       currentCoinActivate(
-          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
-    }).catchError((dynamic onError) {
+          CoinToActivate(currentStatus: '${coin.name} activate.'));
+    }).catchError((dynamic onError) async{
+      coinToactivate = null;
+
       if (onError is ErrorString &&
           onError.error.contains('Coin ${coin.abbr} already initialized')) {
-        coinToactivate = coin;
-        currentCoinActivate(
-            CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
+        currentCoinActivate(CoinToActivate(
+            currentStatus: 'Coin ${coin.abbr} already initialized'));
       } else {
         print('Sorry, ${coin.abbr} not available.');
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
       }
-    }).timeout(const Duration(seconds: 30));
+      await Future<dynamic>.delayed(const Duration(seconds: 2)).then((dynamic _){
+        currentCoinActivate(null);
+      });
+    }).timeout(const Duration(seconds: 10), onTimeout: () async{
+      coinToactivate = null;
+      print('Sorry, ${coin.abbr} not available.');
+      currentCoinActivate(
+          CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
+      await Future<dynamic>.delayed(const Duration(seconds: 2)).then((dynamic _){
+        currentCoinActivate(null);
+      });
+    });
 
     return coinToactivate;
   }
@@ -353,7 +372,7 @@ class CoinsBloc implements BlocBase {
     }
     final double price = await getPriceObj
         .getPrice(coin.abbr, coin.coingeckoId, 'USD')
-        .timeout(const Duration(seconds: 15), onTimeout: () => 0);
+        .timeout(const Duration(seconds: 15), onTimeout: () => 0.0);
 
     dynamic coinBalance;
     if (balance is Balance && coin.abbr == balance.coin) {
@@ -365,7 +384,8 @@ class CoinsBloc implements BlocBase {
         coinBalance.priceForOne = '0';
       }
       coinBalance.balanceUSD = (Decimal.parse(coinBalance.priceForOne) *
-          Decimal.parse(coinBalance.balance.getBalance())).toDouble();
+              Decimal.parse(coinBalance.balance.getBalance()))
+          .toDouble();
     } else if (balance is ErrorString) {
       coinBalance = CoinBalance(
           coin, Balance(address: '', balance: '0', coin: coin.abbr));
