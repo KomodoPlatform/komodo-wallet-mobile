@@ -264,14 +264,17 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         final double tradeFee = await getTradeFee(true);
         final double maxValue =
             double.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
-        print(maxValue);
+        print('setting max: ' + maxValue.toString());
         if (maxValue < 0) {
           _controllerAmountSell.text = '';
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
             backgroundColor: Theme.of(context).errorColor,
-            content: Text(
-                'Not enough balance or fee too high. Minimum sell is ${tradeFee.toStringAsFixed(8)}'),
+            content: tradeFee < 0.00777
+                ? Text(AppLocalizations.of(context).minValueBuy(
+                    currentCoinBalance.coin.abbr, 0.00777.toString()))
+                : Text(AppLocalizations.of(context).minValueBuy(
+                    currentCoinBalance.coin.abbr, tradeFee.toStringAsFixed(8))),
           ));
           _focusSell.unfocus();
         } else {
