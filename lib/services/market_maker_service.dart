@@ -403,7 +403,7 @@ class MarketMakerService {
   }
 
   Future<dynamic> postSell(
-      Coin base, Coin rel, Decimal volume, Decimal price) async {
+      Coin base, Coin rel, double volume, double price) async {
     print('postSellSWAPPARAM: base: ' +
         base.abbr +
         ' rel: ' +

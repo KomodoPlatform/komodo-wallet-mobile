@@ -26,7 +26,7 @@ class GetPriceService {
     try {
       final Response response = await http.get(fiatUrl);
       final Map<dynamic, dynamic> decoded = jsonDecode(response.body);
-      price = double.parse(decoded['data']['amount'].toString());
+      price = double.parse(decoded['data']['amount']);
       if (coin == 'BTC') {
         return price;
       }
@@ -37,7 +37,8 @@ class GetPriceService {
     try {
       final Response response2 = await http.get(coinUrl);
       final Map<dynamic, dynamic> decoded2 = jsonDecode(response2.body);
-      price = double.parse(decoded2[coingeckoId][currency.toLowerCase()]);
+      price = double.parse(
+          decoded2[coingeckoId][currency.toLowerCase()].toString());
     } catch (e) {
       print(e.toString());
       price = nil;
