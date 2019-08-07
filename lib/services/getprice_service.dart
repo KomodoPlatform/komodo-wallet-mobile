@@ -8,7 +8,7 @@ GetPriceService getPriceObj = GetPriceService();
 
 class GetPriceService {
   final double nil = 0.0;
-  double price = 0.0;
+  double price;
 
   Future<double> getPrice(
       String coin, String coingeckoId, String currency) async {

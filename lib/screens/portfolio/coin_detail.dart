@@ -824,7 +824,7 @@ class _CoinDetailState extends State<CoinDetail> {
         widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
     bool notEnoughEth = false;
     bool isEthActive = false;
-    double fee = 0.0;
+    double fee = 0;
     try {
       fee = await getFee();
     } catch (e) {
@@ -1058,7 +1058,7 @@ class _CoinDetailState extends State<CoinDetail> {
       return double.parse(tradeFeeResponse.result.amount);
     } catch (e) {
       print(e);
-      return double.parse('0');
+      return 0;
     }
   }
 
