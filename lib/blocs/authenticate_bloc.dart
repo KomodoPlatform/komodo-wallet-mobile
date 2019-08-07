@@ -82,7 +82,7 @@ class AuthenticateBloc extends BlocBase {
     await prefs.setBool('isPinIsSet', false);
     await prefs.setBool('switch_pin_log_out_on_exit', false);
 
-    await mm2.runBin();
+    await MarketMakerService().runBin();
     isLogin = true;
     _inIsLogin.add(true);
   }
@@ -134,7 +134,7 @@ class AuthenticateBloc extends BlocBase {
 
   Future<void> logout() async {
     coinsBloc.stopCheckBalance();
-    await mm2.stopmm2();
+    await MarketMakerService().stopmm2();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await EncryptionTool().delete('passphrase');
     await prefs.setBool('isPinIsSet', false);
@@ -144,7 +144,7 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().delete('pin');
     coinsBloc.resetCoinBalance();
     await coinsBloc.resetCoinDefault();
-    mm2.balances = <Balance>[];
+    MarketMakerService().balances = <Balance>[];
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);
     await DBProvider.db.deleteCurrentWallet();

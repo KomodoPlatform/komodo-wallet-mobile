@@ -50,18 +50,22 @@ import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-MarketMakerService mm2 = MarketMakerService();
+// MarketMakerService mm2 = MarketMakerService();
 
 class MarketMakerService {
-  MarketMakerService() {
-    url = 'http://localhost:7783';
+  factory MarketMakerService() {
+    return _singleton;
   }
+
+  MarketMakerService._internal();
+
+  static final MarketMakerService _singleton = MarketMakerService._internal();
 
   List<dynamic> balances = <dynamic>[];
   Process mm2Process;
   List<Coin> coins = <Coin>[];
   bool ismm2Running = false;
-  String url = 'http://10.0.2.2:7783';
+  String url = 'http://localhost:7783';
   String userpass = '';
   Stream<List<int>> streamSubscriptionStdout;
   String pubkey = '';
@@ -120,9 +124,22 @@ class MarketMakerService {
 
     if (Platform.isAndroid) {
       await stopmm2();
+      
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (prefs.getInt('mm2ProcessPID') != null) {
+        for (int i = 0; i < 100; i++) {
+          final ProcessResult checkmm2process = await Process.run(
+            'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
+          if (!checkmm2process.stdout.toString().contains(prefs.getInt('mm2ProcessPID').toString()))
+            break;
+          await Future<dynamic>.delayed(const Duration(milliseconds: 500));
+        }
+      }
+
       try {
         mm2Process = await Process.start('./mm2', <String>[startParam],
             workingDirectory: '$filesPath');
+        prefs.setInt('mm2ProcessPID', mm2Process.pid);
 
         mm2Process.stderr.listen((List<int> onData) {
           final String logMm2 = utf8.decoder.convert(onData).trim();
@@ -248,21 +265,19 @@ class MarketMakerService {
   }
 
   Future<dynamic> stopmm2() async {
-    // int res = await checkStatusmm2();
-    // print('STATUS RES' + res.toString());
     ismm2Running = false;
-    // if (res == 3) {
     try {
       final BaseService baseService =
           BaseService(userpass: userpass, method: 'stop');
       final Response response =
           await http.post(url, body: baseServiceToJson(baseService));
+      // await Future<dynamic>.delayed(const Duration(seconds: 1));
+
       return baseServiceFromJson(response.body);
     } catch (e) {
       print(e);
       return null;
     }
-    // }
   }
 
   Future<List<Coin>> loadJsonCoins(String loadFile) async {

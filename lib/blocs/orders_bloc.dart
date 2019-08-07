@@ -40,7 +40,7 @@ class OrdersBloc implements BlocBase {
 
   Future<void> updateOrders() async {
     try {
-      final Orders newOrders = await mm2.getMyOrders();
+      final Orders newOrders = await MarketMakerService().getMyOrders();
       final List<Order> orders = <Order>[];
 
       for (MapEntry<String, TakerOrder> entry
@@ -132,7 +132,7 @@ class OrdersBloc implements BlocBase {
 
   Future<void> cancelOrder(String uuid) async {
     try {
-      await mm2.cancelOrder(uuid);
+      await MarketMakerService().cancelOrder(uuid);
       orderSwaps.removeWhere((dynamic orderSwap) {
         if (orderSwap is Order) {
           return orderSwap.uuid == uuid;
