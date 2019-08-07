@@ -132,12 +132,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void initListenerAmountReceive() {
-    swapBloc.outAmountReceive.listen((Decimal onData) {
+    swapBloc.outAmountReceive.listen((double onData) {
       if (!mounted) {
         return;
       }
       setState(() {
-        if (onData != Decimal.parse('0')) {
+        if (onData != 0) {
           _controllerAmountReceive.text = onData.toString();
         } else {
           _controllerAmountReceive.text = '';
@@ -148,8 +148,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   void onChangeReceive() {
     if (_controllerAmountReceive.text.isNotEmpty) {
-      swapBloc
-          .setCurrentAmountBuy(Decimal.parse(_controllerAmountReceive.text));
+      swapBloc.setCurrentAmountBuy(double.parse(_controllerAmountReceive.text));
     }
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
@@ -157,13 +156,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       final String bestPrice = (Decimal.parse(
                   _controllerAmountReceive.text.replaceAll(',', '.')) /
               Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.')))
-          .toString();
+          .toStringAsFixed(8);
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoin?.coin,
           bestPrice: bestPrice,
           maxVolume:
-              Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
+              double.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
     }
     setState(() {});
   }
@@ -172,7 +171,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
 
     if (_controllerAmountSell.text.isNotEmpty) {
-      swapBloc.setCurrentAmountSell(Decimal.parse(amountSell));
+      swapBloc.setCurrentAmountSell(double.parse(amountSell));
     }
     setState(() {
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
@@ -191,7 +190,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     Decimal.parse(
                         _controllerAmountReceive.text.replaceAll(',', '.')))
                 .toString();
-            Decimal maxVolume = Decimal.parse(amountSell);
+            double maxVolume = double.parse(amountSell);
 
             if (currentAsk != null) {
               price = currentAsk.price;
@@ -752,7 +751,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 Decimal.parse(
                     _controllerAmountReceive.text.replaceAll(',', '.')))
             .toString(),
-        maxVolume: Decimal.parse(_controllerAmountSell.text)));
+        maxVolume: double.parse(_controllerAmountSell.text)));
 
     final double askPrice = double.parse(ask.price.toString());
     final double amountSell = double.parse(_controllerAmountSell.text);

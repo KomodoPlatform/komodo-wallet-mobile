@@ -45,12 +45,12 @@ class SwapBloc implements BlocBase {
   Sink<bool> get _inFocusTextField => _focusTextFieldController.sink;
   Stream<bool> get outFocusTextField => _focusTextFieldController.stream;
 
-  Decimal amountReceive;
+  double amountReceive;
 
-  final StreamController<Decimal> _amountReceiveController =
-      StreamController<Decimal>.broadcast();
-  Sink<Decimal> get _inAmountReceiveCoin => _amountReceiveController.sink;
-  Stream<Decimal> get outAmountReceive => _amountReceiveController.stream;
+  final StreamController<double> _amountReceiveController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inAmountReceiveCoin => _amountReceiveController.sink;
+  Stream<double> get outAmountReceive => _amountReceiveController.stream;
 
   bool isTimeOut = false;
 
@@ -65,21 +65,21 @@ class SwapBloc implements BlocBase {
   Sink<int> get _inIndexTab => _indexTabController.sink;
   Stream<int> get outIndexTab => _indexTabController.stream;
 
-  Decimal currentAmountSell;
+  double currentAmountSell;
 
-  final StreamController<Decimal> _currentAmountSellController =
-      StreamController<Decimal>.broadcast();
-  Sink<Decimal> get _inCurrentAmountSellCoin =>
+  final StreamController<double> _currentAmountSellController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inCurrentAmountSellCoin =>
       _currentAmountSellController.sink;
-  Stream<Decimal> get outCurrentAmountSell =>
+  Stream<double> get outCurrentAmountSell =>
       _currentAmountSellController.stream;
 
-  Decimal currentAmountBuy;
+  double currentAmountBuy;
 
-  final StreamController<Decimal> _currentAmountBuyController =
-      StreamController<Decimal>.broadcast();
-  Sink<Decimal> get _inCurrentAmountBuyCoin => _currentAmountBuyController.sink;
-  Stream<Decimal> get outCurrentAmountBuy => _currentAmountBuyController.stream;
+  final StreamController<double> _currentAmountBuyController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inCurrentAmountBuyCoin => _currentAmountBuyController.sink;
+  Stream<double> get outCurrentAmountBuy => _currentAmountBuyController.stream;
 
   bool enabledSellField = false;
 
@@ -121,12 +121,12 @@ class SwapBloc implements BlocBase {
     _inEnabledSellField.add(this.enabledSellField);
   }
 
-  void setCurrentAmountSell(Decimal amount) {
+  void setCurrentAmountSell(double amount) {
     currentAmountSell = amount;
     _inCurrentAmountSellCoin.add(currentAmountSell);
   }
 
-  void setCurrentAmountBuy(Decimal amount) {
+  void setCurrentAmountBuy(double amount) {
     currentAmountBuy = amount;
     _inCurrentAmountBuyCoin.add(currentAmountBuy);
   }
@@ -169,9 +169,7 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRate() {
     if (swapBloc.orderCoin != null) {
-      final Decimal rate = currentAmountSell / currentAmountBuy;
-
-      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${rate.toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${(Decimal.parse(currentAmountSell.toString()) / Decimal.parse(currentAmountBuy.toString())).toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
     } else {
       return '';
     }
@@ -179,11 +177,10 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRateUSD() {
     if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
-      final Decimal rate = currentAmountSell / currentAmountBuy;
-
-      final String res =
-          (Decimal.parse(rate.toString()) * Decimal.parse(sellCoin.priceForOne))
-              .toStringAsFixed(2);
+      final String res = ((Decimal.parse(currentAmountSell.toString()) /
+                  Decimal.parse(currentAmountBuy.toString())) *
+              Decimal.parse(sellCoin.priceForOne))
+          .toStringAsFixed(2);
       return '($res USD)';
     } else {
       return '';
@@ -195,12 +192,12 @@ class SwapBloc implements BlocBase {
     _inFocusTextField.add(focusTextField);
   }
 
-  Future<Decimal> setReceiveAmount(
+  Future<double> setReceiveAmount(
       Coin coin, String amountSell, Ask currentAsk) async {
     try {
       final Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
       String bestPrice = '0';
-      Decimal maxVolume = Decimal.parse('0.0');
+      double maxVolume = 0;
       int i = 0;
 
       if (currentAsk == null) {
@@ -228,14 +225,14 @@ class SwapBloc implements BlocBase {
       );
       _inOrderCoin.add(orderCoin);
 
-      amountReceive = Decimal.parse(
-          orderCoin.getBuyAmount(amountSell.replaceAll(',', '.')));
+      amountReceive =
+          double.parse(orderCoin.getBuyAmount(amountSell.replaceAll(',', '.')));
 
       _inAmountReceiveCoin.add(amountReceive);
       return amountReceive;
     } catch (e) {
       print(e);
-      return Decimal.parse('0.0');
+      return 0;
     }
   }
 
