@@ -351,10 +351,9 @@ class CoinsBloc implements BlocBase {
     if (balance is ErrorString) {
       print(balance.error);
     }
-    final Decimal price = await getPriceObj
+    final double price = await getPriceObj
         .getPrice(coin.abbr, coin.coingeckoId, 'USD')
-        .timeout(const Duration(seconds: 15),
-            onTimeout: () => Decimal.parse('0.0'));
+        .timeout(const Duration(seconds: 15), onTimeout: () => 0.0);
 
     dynamic coinBalance;
     if (balance is Balance && coin.abbr == balance.coin) {

@@ -1,17 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:decimal/decimal.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 GetPriceService getPriceObj = GetPriceService();
 
 class GetPriceService {
-  final Decimal nil = Decimal.parse('0.0');
-  Decimal price = Decimal.parse('0.0');
+  final double nil = 0.0;
+  double price = 0.0;
 
-  Future<Decimal> getPrice(
+  Future<double> getPrice(
       String coin, String coingeckoId, String currency) async {
     final String coinUrl =
         'https://api.coingecko.com/api/v3/simple/price?ids=' +
@@ -27,7 +26,7 @@ class GetPriceService {
     try {
       final Response response = await http.get(fiatUrl);
       final Map<dynamic, dynamic> decoded = jsonDecode(response.body);
-      price = Decimal.parse(decoded['data']['amount'].toString());
+      price = double.parse(decoded['data']['amount'].toString());
       if (coin == 'BTC') {
         return price;
       }
@@ -38,8 +37,7 @@ class GetPriceService {
     try {
       final Response response2 = await http.get(coinUrl);
       final Map<dynamic, dynamic> decoded2 = jsonDecode(response2.body);
-      price = Decimal.parse(
-          decoded2[coingeckoId][currency.toLowerCase()].toString());
+      price = double.parse(decoded2[coingeckoId][currency.toLowerCase()]);
     } catch (e) {
       print(e.toString());
       price = nil;
