@@ -334,6 +334,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     key: const Key('trade-button'),
                     onPressed: _controllerAmountSell.text.isNotEmpty &&
                             _controllerAmountReceive.text.isNotEmpty &&
+                            double.parse(_controllerAmountSell.text) > 0 &&
+                            double.parse(_controllerAmountReceive.text) > 0 &&
                             sellCoin.data != null &&
                             receiveCoin.data != null
                         ? () => _confirmSwap(context)
