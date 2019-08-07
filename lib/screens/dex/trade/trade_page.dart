@@ -612,7 +612,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         builder: (BuildContext context) {
           return ReceiveOrders(
               orderbooks: orderbooks,
-              sellAmount: Decimal.parse(_controllerAmountSell.text),
+              sellAmount: double.parse(_controllerAmountSell.text),
               onCreateNoOrder: (String coin) => _noOrders(coin),
               onCreateOrder: (Ask ask) => _createOrder(ask));
         }).then((_) {
@@ -743,7 +743,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     _controllerAmountReceive.text = '';
     timerGetOrderbook?.cancel();
     _controllerAmountReceive.text =
-        ask.getReceiveAmount(Decimal.parse(_controllerAmountSell.text));
+        ask.getReceiveAmount(double.parse(_controllerAmountSell.text));
 
     swapBloc.updateBuyCoin(OrderCoin(
         coinBase: swapBloc.receiveCoin,
@@ -754,14 +754,22 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             .toString(),
         maxVolume: Decimal.parse(_controllerAmountSell.text)));
 
-    final Decimal askPrice = Decimal.parse(ask.price.toString());
-    final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
-    final Decimal amountReceive = Decimal.parse(_controllerAmountReceive.text);
-    final Decimal maxVolume = Decimal.parse(ask.maxvolume.toString());
+    final double askPrice = double.parse(ask.price.toString());
+    final double amountSell = double.parse(_controllerAmountSell.text);
+    final double amountReceive = double.parse(_controllerAmountReceive.text);
+    final double maxVolume = double.parse(ask.maxvolume.toString());
 
-    if (amountReceive < (amountSell / askPrice) &&
-        amountSell > maxVolume * askPrice) {
-      _controllerAmountSell.text = (maxVolume * askPrice).toStringAsFixed(8);
+    if (amountReceive <
+            (Decimal.parse(amountSell.toString()) /
+                    Decimal.parse(askPrice.toString()))
+                .toDouble() &&
+        amountSell >
+            (Decimal.parse(maxVolume.toString()) *
+                    Decimal.parse(askPrice.toString()))
+                .toDouble()) {
+      _controllerAmountSell.text = (Decimal.parse(maxVolume.toString()) *
+              Decimal.parse(askPrice.toString()))
+          .toStringAsFixed(8);
     }
   }
 

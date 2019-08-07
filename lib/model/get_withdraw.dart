@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:decimal/decimal.dart';
-
 GetWithdraw getWithdrawFromJson(String str) =>
     GetWithdraw.fromJson(json.decode(str));
 
@@ -32,7 +30,7 @@ class GetWithdraw {
 
   factory GetWithdraw.fromJson(Map<String, dynamic> json) => GetWithdraw(
         method: json['method'] ?? '',
-        amount: Decimal.parse(json['amount']) ?? Decimal.parse('0.0'),
+        amount: json['amount'].toDouble() ?? 0.0,
         coin: json['coin'] ?? '',
         to: json['to'] ?? '',
         max: json['max'] ?? false,
@@ -40,7 +38,7 @@ class GetWithdraw {
       );
 
   String method;
-  Decimal amount;
+  double amount;
   String coin;
   String to;
   bool max;
@@ -48,7 +46,7 @@ class GetWithdraw {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method ?? '',
-        'amount': amount ?? Decimal.parse('0.0'),
+        'amount': amount ?? 0.0,
         'to': to ?? '',
         'max': max ?? false,
         'coin': coin ?? '',

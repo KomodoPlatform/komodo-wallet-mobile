@@ -111,7 +111,7 @@ class Ask {
         'zcredits': zcredits ?? 0,
       };
 
-  String getReceiveAmount(Decimal amountToSell) {
+  String getReceiveAmount(double amountToSell) {
     String buyAmount = 0.toString();
     buyAmount = (Decimal.parse(amountToSell.toString()) / Decimal.parse(price))
         .toStringAsFixed(8);

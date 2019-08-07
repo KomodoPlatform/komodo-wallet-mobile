@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
@@ -14,7 +13,7 @@ class ReceiveOrders extends StatefulWidget {
       : super(key: key);
 
   final List<Orderbook> orderbooks;
-  final Decimal sellAmount;
+  final double sellAmount;
   final Function(String) onCreateNoOrder;
   final Function(Ask) onCreateOrder;
 
@@ -50,7 +49,7 @@ class OrderbookItem extends StatelessWidget {
       : super(key: key);
 
   final Orderbook orderbook;
-  final Decimal sellAmount;
+  final double sellAmount;
   final Function(String) onCreateNoOrder;
   final Function(Ask) onCreateOrder;
 
@@ -131,7 +130,7 @@ class AsksOrder extends StatefulWidget {
       this.baseCoin})
       : super(key: key);
   final List<Ask> asks;
-  final Decimal sellAmount;
+  final double sellAmount;
   final Function(Ask) onCreateOrder;
   final Function(String) onCreateNoOrder;
   final String baseCoin;
@@ -251,7 +250,7 @@ class AskItem extends StatelessWidget {
   const AskItem({Key key, this.ask, this.sellAmount, this.onCreateOrder})
       : super(key: key);
   final Ask ask;
-  final Decimal sellAmount;
+  final double sellAmount;
   final Function(Ask) onCreateOrder;
 
   @override

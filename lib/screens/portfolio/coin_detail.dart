@@ -65,9 +65,10 @@ class CoinDetail extends StatefulWidget {
         .postWithdraw(
             coinBalance.coin,
             coinBalance.balance.address,
-            Decimal.parse(coinBalance.balance.getBalance()) -
-                (Decimal.parse(coinBalance.coin.txfee.toString()) /
-                    Decimal.parse('100000000')),
+            (Decimal.parse(coinBalance.balance.getBalance()) -
+                    (Decimal.parse(coinBalance.coin.txfee.toString()) /
+                        Decimal.parse('100000000')))
+                .toDouble(),
             true)
         .then((dynamic data) {
       Navigator.of(mContext).pop();
@@ -823,20 +824,20 @@ class _CoinDetailState extends State<CoinDetail> {
         widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
     bool notEnoughEth = false;
     bool isEthActive = false;
-    Decimal fee = Decimal.parse('0.0');
+    double fee = 0.0;
     try {
       fee = await getFee();
     } catch (e) {
       print(e);
     }
 
-    Decimal amountToPay = Decimal.parse(_amountController.text);
+    double amountToPay = double.parse(_amountController.text);
     if (!isErcCoin) {
       amountToPay += fee;
     }
-    Decimal amountUserReceive = Decimal.parse(_amountController.text);
-    final Decimal userBalance =
-        Decimal.parse(widget.coinBalance.balance.getBalance());
+    double amountUserReceive = double.parse(_amountController.text);
+    final double userBalance =
+        double.parse(widget.coinBalance.balance.getBalance());
 
     if (amountToPay > userBalance) {
       amountUserReceive = userBalance;
@@ -857,14 +858,14 @@ class _CoinDetailState extends State<CoinDetail> {
 
     isEthActive = !(ethCoin == null);
 
-    if (ethCoin != null && fee > Decimal.parse(ethCoin.balance.balance)) {
+    if (ethCoin != null && fee > double.parse(ethCoin.balance.balance)) {
       notEnoughEth = true;
     }
 
-    final bool isButtonActive = (widget
-                .coinBalance.coin.swapContractAddress.isEmpty &&
-            amountToPay > Decimal.parse('0.0')) ||
-        (amountToPay > Decimal.parse('0.0') && !notEnoughEth && isEthActive);
+    final bool isButtonActive =
+        (widget.coinBalance.coin.swapContractAddress.isEmpty &&
+                amountToPay > 0) ||
+            (amountToPay > 0 && !notEnoughEth && isEthActive);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -1050,19 +1051,19 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  Future<Decimal> getFee() async {
+  Future<double> getFee() async {
     try {
       final TradeFee tradeFeeResponse =
           await mm2.getTradeFee(currentCoinBalance.coin);
-      return Decimal.parse(tradeFeeResponse.result.amount);
+      return double.parse(tradeFeeResponse.result.amount);
     } catch (e) {
       print(e);
-      return Decimal.parse('0');
+      return double.parse('0');
     }
   }
 
   Future<void> _onPressedConfirmWithdraw(
-      BuildContext mContext, Decimal sendAmount) async {
+      BuildContext mContext, double sendAmount) async {
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mainContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),

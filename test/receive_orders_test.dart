@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -80,7 +79,7 @@ void main() {
           tester,
           AsksOrder(
             asks: orderbook.asks,
-            sellAmount: Decimal.parse('10.0'),
+            sellAmount: 10.0,
             baseCoin: 'MORTY',
           ));
 
@@ -103,7 +102,7 @@ void main() {
           tester,
           AsksOrder(
             asks: orderbook.asks,
-            sellAmount: Decimal.parse('10.0'),
+            sellAmount: 10.0,
             baseCoin: 'BTC',
           ));
 
@@ -118,7 +117,7 @@ void main() {
           .where((Orderbook orderbook) => orderbook.base == 'MORTY')
           .toList()
           .first;
-      final Decimal sellAmount = Decimal.parse('10.0');
+      const double sellAmount = 10.0;
 
       await createWidget(
           tester,
