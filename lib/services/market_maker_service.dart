@@ -19,6 +19,7 @@ import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
+import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_enable_coin.dart';
@@ -74,6 +75,28 @@ class MarketMakerService {
   static const MethodChannel platformmm2 = MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
 
+  Future<void> init(String passphrase) async {
+    if (Platform.isAndroid) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final ProcessResult checkmm2process = await Process.run(
+          'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
+      if (!checkmm2process.stdout
+          .toString()
+          .contains(prefs.getInt('mm2ProcessPID').toString())) {
+        await MarketMakerService().runBin();
+      } else {
+        MarketMakerService().initUsername(passphrase);
+        MarketMakerService().ismm2Running = true;
+        await MarketMakerService().initCheckLogs();
+        coinsBloc.currentCoinActivate(null);
+        coinsBloc.loadCoin();
+        coinsBloc.startCheckBalance();
+      }
+    } else {
+      await MarketMakerService().runBin();
+    }
+  }
+
   Future<void> initMarketMaker() async {
     final Directory directory = await getApplicationDocumentsDirectory();
     filesPath = directory.path + '/';
@@ -107,58 +130,84 @@ class MarketMakerService {
     }
   }
 
-  Future<void> runBin() async {
-    final String passphrase = await EncryptionTool().read('passphrase');
-
+  void initUsername(String passphrase) {
     final List<int> bytes = utf8.encode(passphrase); // data being hashed
     userpass = sha256.convert(bytes).toString();
+  }
 
-    final String coinsInitParam = coinInitToJson(await readJsonCoinInit());
+  Future<void> initCheckLogs() async {
+    final File fileLog = File('${filesPath}log');
+    if (!fileLog.existsSync()) {
+      await fileLog.create();
+    }
+    int offset = await fileLog.length();
 
-    final String startParam =
-        '{\"gui\":\"atomicDEX\",\"netid\":9999,\"client\":1,\"userhome\":\"$filesPath\",\"passphrase\":\"$passphrase\",\"rpc_password\":\"$userpass\",\"coins\":$coinsInitParam,\"dbdir\":\"$filesPath\"}';
+    Timer.periodic(const Duration(seconds: 1), (_) {
+      fileLog
+          .openRead(offset)
+          .transform(utf8.decoder)
+          .transform(const LineSplitter())
+          .listen((String data) {
+        if (data.contains('DEX stats API enabled at')) {
+          ismm2Running = true;
+          initCoinsAndLoad();
+          coinsBloc.startCheckBalance();
+        }
+        _onLogsmm2(data);
+      }).onDone(() async {
+        offset = await fileLog.length();
+      });
+    });
+  }
 
-    final File file = File('$filesPath/log.txt');
+  Future<void> waitUntilMM2isStop() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getInt('mm2ProcessPID') != null) {
+      for (int i = 0; i < 100; i++) {
+        final ProcessResult checkmm2process = await Process.run(
+            'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
+        if (!checkmm2process.stdout
+            .toString()
+            .contains(prefs.getInt('mm2ProcessPID').toString())) 
+            break;
+        await Future<dynamic>.delayed(const Duration(milliseconds: 500));
+      }
+    }
+  }
 
-    sink = file.openWrite();
+  Future<void> runBin() async {
+    final String passphrase = await EncryptionTool().read('passphrase');
+    initUsername(passphrase);
+
+    final String startParam = configMm2ToJson(ConfigMm2(
+      gui: 'atomicDEX',
+      netid: 9999,
+      client: 1,
+      userhome: filesPath,
+      passphrase: passphrase,
+      rpcPassword: userpass,
+      coins: await readJsonCoinInit(),
+      dbdir: filesPath
+    ));
 
     if (Platform.isAndroid) {
       await stopmm2();
-      
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      if (prefs.getInt('mm2ProcessPID') != null) {
-        for (int i = 0; i < 100; i++) {
-          final ProcessResult checkmm2process = await Process.run(
-            'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
-          if (!checkmm2process.stdout.toString().contains(prefs.getInt('mm2ProcessPID').toString()))
-            break;
-          await Future<dynamic>.delayed(const Duration(milliseconds: 500));
-        }
+      await waitUntilMM2isStop();
+      final File fileLog = File('${filesPath}log');
+      if (fileLog.existsSync()) {
+        await fileLog.delete();
       }
+      await File('${filesPath}MM2.json').writeAsString(startParam);
 
       try {
-        mm2Process = await Process.start('./mm2', <String>[startParam],
-            workingDirectory: '$filesPath');
+        await initCheckLogs();
+        File('${filesPath}log');
+
+        mm2Process = await Process.start(
+            '/system/bin/sh', <String>['-c', './mm2 > log 2>&1'],
+            mode: ProcessStartMode.detached, workingDirectory: filesPath);
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setInt('mm2ProcessPID', mm2Process.pid);
-
-        mm2Process.stderr.listen((List<int> onData) {
-          final String logMm2 = utf8.decoder.convert(onData).trim();
-          print(logMm2);
-          sink.write(logMm2 + '\n');
-        });
-        mm2Process.stdout.listen((List<int> onData) {
-          final String logMm2 = utf8.decoder.convert(onData).trim();
-
-          _onLogsmm2(logMm2);
-          if (logMm2.contains('DEX stats API enabled at')) {
-            print('DEX stats API enabled at');
-
-            ismm2Running = true;
-
-            _initCoinsAndLoad();
-            coinsBloc.startCheckBalance();
-          }
-        });
       } catch (e) {
         print(e);
         rethrow;
@@ -184,7 +233,7 @@ class MarketMakerService {
               ismm2Running = true;
               _.cancel();
               print('CANCEL TIMER');
-              _initCoinsAndLoad();
+              initCoinsAndLoad();
               coinsBloc.startCheckBalance();
             }
           });
@@ -198,7 +247,6 @@ class MarketMakerService {
 
   void _onLogsmm2(String log) {
     print(log);
-    sink.write(log + '\n');
     if (log.contains('CONNECTED') ||
         log.contains('Entering the taker_swap_loop') ||
         log.contains('Received \'negotiation') ||
@@ -231,7 +279,7 @@ class MarketMakerService {
     }
   }
 
-  Future<void> _initCoinsAndLoad() async {
+  Future<void> initCoinsAndLoad() async {
     try {
       await coinsBloc.activateCoinKickStart();
 
@@ -647,7 +695,7 @@ class MarketMakerService {
       }
 
       print('response Active Coin: ' + response.body.toString());
-      
+
       final ActiveCoin activeCoin = activeCoinFromJson(response.body);
       if (activeCoin != null && activeCoin.coin.isNotEmpty) {
         return activeCoin;
