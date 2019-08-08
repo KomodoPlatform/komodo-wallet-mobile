@@ -204,7 +204,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 maxVolume: maxVolume));
           }
 
-          getTradeFee(false).then((double tradeFee) {
+          getFee(false).then((double tradeFee) {
             print(tradeFee);
             if (currentCoinBalance != null &&
                 double.parse(amountSell) + tradeFee >
@@ -237,31 +237,41 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  Future<double> getTradeFee(bool isMax) async {
+  Future<double> getFee(bool isMax) async {
     try {
-      final TradeFee tradeFeeResponse =
-          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
-
-      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
-      double amount = double.parse(_controllerAmountSell.text);
-      if (isMax) {
-        amount = double.parse(currentCoinBalance.balance.getBalance());
-      }
-      return (Decimal.parse('2') * Decimal.parse(tradeFee.toString()) +
-              Decimal.parse('1') /
-                  Decimal.parse('777') *
-                  Decimal.parse(amount.toString()))
-          .toDouble();
+      return (await getTxFee() + await getTradeFee(isMax)).toDouble();
     } catch (e) {
       print(e);
       return 0;
     }
   }
 
+  Future<Decimal> getTradeFee(bool isMax) async {
+    double amount = double.parse(_controllerAmountSell.text);
+    if (isMax) {
+      amount = double.parse(currentCoinBalance.balance.getBalance());
+    }
+    return Decimal.parse('1') /
+        Decimal.parse('777') *
+        Decimal.parse(amount.toString());
+  }
+
+  Future<Decimal> getTxFee() async {
+    try {
+      final TradeFee tradeFeeResponse =
+          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
+      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
+      return Decimal.parse('2') * Decimal.parse(tradeFee.toString());
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<void> setMaxValue() async {
     try {
       setState(() async {
-        final double tradeFee = await getTradeFee(true);
+        final double tradeFee = await getFee(true);
         final double maxValue =
             double.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
         print('setting max: ' + maxValue.toString());
@@ -298,6 +308,18 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildExchange() {
+    final bool sellEmpty = _controllerAmountSell.text.isEmpty;
+
+    Widget swapIcon = Container(
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(32)),
+          color: Theme.of(context).backgroundColor,
+        ),
+        child: SvgPicture.asset(
+          'assets/icon_swap.svg',
+          height: 40,
+        ));
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
@@ -307,16 +329,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             _buildCard(Market.RECEIVE)
           ],
         ),
-        Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(32)),
-              color: Theme.of(context).backgroundColor,
-            ),
-            child: SvgPicture.asset(
-              'assets/icon_swap.svg',
-              height: 40,
-            ))
+        sellEmpty
+            ? swapIcon
+            : Positioned(
+                top: 194,
+                left: MediaQuery.of(context).size.width / 2 - 60,
+                child: swapIcon,
+              )
       ],
     );
   }
@@ -382,115 +401,189 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   Padding(
                     padding: EdgeInsets.only(
                         left: 24, right: paddingRight, top: 32, bottom: 52),
-                    child: Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: <Widget>[
-                            Text(
-                              AppLocalizations.of(context).selectCoin,
-                              style: Theme.of(context).textTheme.body2,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  AppLocalizations.of(context).selectCoin,
+                                  style: Theme.of(context).textTheme.body2,
+                                ),
+                                Container(
+                                  width: 130,
+                                  child: _buildCoinSelect(market),
+                                ),
+                              ],
                             ),
-                            Container(
-                              width: 130,
-                              child: _buildCoinSelect(market),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    market == Market.SELL
+                                        ? AppLocalizations.of(context).sell
+                                        : AppLocalizations.of(context)
+                                            .receiveLower,
+                                    style: Theme.of(context).textTheme.body2,
+                                  ),
+                                  FadeTransition(
+                                    opacity: animationInputSell,
+                                    child: GestureDetector(
+                                      behavior: HitTestBehavior.translucent,
+                                      onTap: () => _animCoin(market),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: TextFormField(
+                                                key: Key(
+                                                    'input-text-${market.toString().toLowerCase()}'),
+                                                scrollPadding: const EdgeInsets.only(
+                                                    left: 35),
+                                                inputFormatters: <
+                                                    TextInputFormatter>[
+                                                  DecimalTextInputFormatter(
+                                                      decimalRange: 8),
+                                                  WhitelistingTextInputFormatter(
+                                                      RegExp(
+                                                          '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
+                                                ],
+                                                focusNode: market == Market.SELL
+                                                    ? _focusSell
+                                                    : _focusReceive,
+                                                controller: market == Market.SELL
+                                                    ? _controllerAmountSell
+                                                    : _controllerAmountReceive,
+                                                enabled: market == Market.RECEIVE
+                                                    ? swapBloc
+                                                        .enabledReceiveField
+                                                    : swapBloc.enabledSellField,
+                                                keyboardType:
+                                                    const TextInputType.numberWithOptions(
+                                                        decimal: true),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle,
+                                                textInputAction:
+                                                    TextInputAction.done,
+                                                decoration: InputDecoration(
+                                                    hintStyle: Theme.of(context)
+                                                        .textTheme
+                                                        .body2
+                                                        .copyWith(
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight
+                                                                .w400),
+                                                    hintText: market == Market.SELL
+                                                        ? AppLocalizations.of(context).amountToSell
+                                                        : '')),
+                                          ),
+                                          market == Market.SELL &&
+                                                  enabledSellFieldStream.data
+                                              ? Container(
+                                                  child: FlatButton(
+                                                    onPressed: () async {
+                                                      swapBloc
+                                                          .setIsMaxActive(true);
+                                                      await setMaxValue();
+                                                    },
+                                                    child: Text(
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .max,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .body1
+                                                          .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .accentColor),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                market == Market.SELL
-                                    ? AppLocalizations.of(context).sell
-                                    : AppLocalizations.of(context).receiveLower,
-                                style: Theme.of(context).textTheme.body2,
-                              ),
-                              FadeTransition(
-                                opacity: animationInputSell,
-                                child: GestureDetector(
-                                  behavior: HitTestBehavior.translucent,
-                                  onTap: () => _animCoin(market),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: TextFormField(
-                                            key: Key(
-                                                'input-text-${market.toString().toLowerCase()}'),
-                                            scrollPadding:
-                                                const EdgeInsets.only(left: 35),
-                                            inputFormatters: <
-                                                TextInputFormatter>[
-                                              DecimalTextInputFormatter(
-                                                  decimalRange: 8),
-                                              WhitelistingTextInputFormatter(RegExp(
-                                                  '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
-                                            ],
-                                            focusNode: market == Market.SELL
-                                                ? _focusSell
-                                                : _focusReceive,
-                                            controller: market == Market.SELL
-                                                ? _controllerAmountSell
-                                                : _controllerAmountReceive,
-                                            enabled: market == Market.RECEIVE
-                                                ? swapBloc.enabledReceiveField
-                                                : swapBloc.enabledSellField,
-                                            keyboardType:
-                                                const TextInputType.numberWithOptions(
-                                                    decimal: true),
+                        market == Market.SELL &&
+                                _controllerAmountSell.text.isNotEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 16, left: 0, right: 86, bottom: 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                            AppLocalizations.of(context)
+                                                .txFeeTitle,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .subtitle,
-                                            textInputAction:
-                                                TextInputAction.done,
-                                            decoration: InputDecoration(
-                                                hintStyle: Theme.of(context)
+                                                .body2),
+                                        FutureBuilder<Decimal>(
+                                          future: getTxFee(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<Decimal> snapshot) {
+                                            if (snapshot.hasData) {
+                                              return Text(
+                                                snapshot.data.toString(),
+                                                style: Theme.of(context)
                                                     .textTheme
-                                                    .body2
-                                                    .copyWith(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                hintText: market == Market.SELL
-                                                    ? AppLocalizations.of(context)
-                                                        .amountToSell
-                                                    : '')),
-                                      ),
-                                      market == Market.SELL &&
-                                              enabledSellFieldStream.data
-                                          ? Container(
-                                              child: FlatButton(
-                                                onPressed: () async {
-                                                  swapBloc.setIsMaxActive(true);
-                                                  await setMaxValue();
-                                                },
-                                                child: Text(
-                                                  AppLocalizations.of(context)
-                                                      .max,
+                                                    .body2,
+                                              );
+                                            }
+                                            return Container();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                            AppLocalizations.of(context)
+                                                .tradingFee,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .body2),
+                                        FutureBuilder<Decimal>(
+                                          future: getTradeFee(isMaxActive),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<Decimal> snapshot) {
+                                            if (snapshot.hasData) {
+                                              return Text(
+                                                  snapshot.data.toString(),
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .body1
-                                                      .copyWith(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .accentColor),
-                                                ),
-                                              ),
-                                            )
-                                          : Container()
-                                    ],
-                                  ),
+                                                      .body2);
+                                            }
+                                            return Container();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               )
-                            ],
-                          ),
-                        ),
+                            : Container()
                       ],
                     ),
                   ),
@@ -543,7 +636,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 child: StreamBuilder<Coin>(
                   initialData: swapBloc.receiveCoin,
                   stream: swapBloc.outReceiveCoin,
-                  builder: (BuildContext context, AsyncSnapshot<Coin> snapshot) {
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Coin> snapshot) {
                     return _buildSelectorCoin(snapshot.data);
                   },
                 ),
@@ -553,9 +647,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 child: StreamBuilder<dynamic>(
                     initialData: swapBloc.sellCoin,
                     stream: swapBloc.outSellCoin,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                      if (snapshot.data != null && snapshot.data is CoinBalance) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.data != null &&
+                          snapshot.data is CoinBalance) {
                         final CoinBalance coinBalance = snapshot.data;
                         currentCoinBalance = coinBalance;
                         return _buildSelectorCoin(coinBalance.coin);

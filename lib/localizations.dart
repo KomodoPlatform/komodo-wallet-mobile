@@ -495,6 +495,12 @@ class AppLocalizations {
     String get titleCurrentAsk =>
       Intl.message('Order selected',
           name: 'titleCurrentAsk');
+    String get txFeeTitle =>
+      Intl.message('transaction fee:',
+          name: 'txFeeTitle');
+    String get tradingFee =>
+      Intl.message('trading fee:',
+          name: 'tradingFee');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
