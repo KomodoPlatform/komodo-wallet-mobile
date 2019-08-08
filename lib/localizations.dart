@@ -501,6 +501,11 @@ class AppLocalizations {
     String get tradingFee =>
       Intl.message('trading fee:',
           name: 'tradingFee');
+      String swapErcAmount(String amount) => Intl.message(
+        'This swap requires $amount ETH for transaction fees',
+        name: 'swapErcAmount',
+        args: <Object>[amount],
+      );
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

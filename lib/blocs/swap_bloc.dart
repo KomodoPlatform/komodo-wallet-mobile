@@ -142,7 +142,15 @@ class SwapBloc implements BlocBase {
   }
 
   void updateReceiveCoin(Coin receiveCoin) {
-    this.receiveCoin = receiveCoin;
+    Coin coin = receiveCoin;
+    if (receiveCoin != null && receiveCoin.abbr != null && receiveCoin.abbr.isNotEmpty) {
+      for (CoinBalance coinBalance in coinsBloc.coinBalance) {
+        if (coinBalance.coin.abbr == receiveCoin.abbr) {
+          coin = coinBalance.coin;
+        }
+      }
+    }
+    this.receiveCoin = coin;
     _inReceiveCoin.add(this.receiveCoin);
   }
 
@@ -195,7 +203,8 @@ class SwapBloc implements BlocBase {
   Future<double> setReceiveAmount(
       Coin coin, String amountSell, Ask currentAsk) async {
     try {
-      final Orderbook orderbook = await MarketMakerService().getOrderbook(coin, sellCoin.coin);
+      final Orderbook orderbook =
+          await MarketMakerService().getOrderbook(coin, sellCoin.coin);
       String bestPrice = '0';
       double maxVolume = 0;
       int i = 0;

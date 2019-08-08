@@ -261,11 +261,24 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       final TradeFee tradeFeeResponse =
           await MarketMakerService().getTradeFee(currentCoinBalance.coin);
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
-      return Decimal.parse('2') * Decimal.parse(tradeFee.toString());
+
+      Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
+      if (swapBloc.receiveCoin != null) {
+        if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
+          txFee += await getERCfee(swapBloc.receiveCoin);
+        }
+      }
+      return txFee;
     } catch (e) {
       print(e);
       rethrow;
     }
+  }
+
+  Future<Decimal> getERCfee(Coin coin) async {
+    final TradeFee tradeFeeResponseERC =
+        await MarketMakerService().getTradeFee(coin);
+    return Decimal.parse(tradeFeeResponseERC.result.amount);
   }
 
   Future<void> setMaxValue() async {
@@ -1052,9 +1065,27 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  void _confirmSwap(BuildContext mContext) {
+  Future<void> _confirmSwap(BuildContext mContext) async {
     replaceAllCommas();
 
+    if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
+      final CoinBalance coinBalanceERC = coinsBloc.coinBalance.firstWhere(
+          (CoinBalance test) => test.coin.abbr == swapBloc.receiveCoin.abbr);
+      final Decimal balanceERC = Decimal.parse(coinBalanceERC.balance.balance);
+      final Decimal feeERC = await getERCfee(coinBalanceERC.coin);
+
+      if (balanceERC < feeERC) {
+        Scaffold.of(mContext).showSnackBar(SnackBar(
+          duration: const Duration(seconds: 2),
+          backgroundColor: Theme.of(context).primaryColor,
+          content: Text(
+            AppLocalizations.of(context).swapErcAmount(feeERC.toString()),
+            style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+          ),
+        ));
+        return;
+      }
+    }
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
