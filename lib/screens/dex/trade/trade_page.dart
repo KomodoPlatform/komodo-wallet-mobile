@@ -446,7 +446,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                     decimal: true),
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .title,
+                                                .subtitle,
                                             textInputAction:
                                                 TextInputAction.done,
                                             decoration: InputDecoration(
@@ -454,7 +454,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                     .textTheme
                                                     .body2
                                                     .copyWith(
-                                                        fontSize: 18,
+                                                        fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.w400),
                                                 hintText: market == Market.SELL
@@ -465,7 +465,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                       market == Market.SELL &&
                                               enabledSellFieldStream.data
                                           ? Container(
-                                              width: 70,
                                               child: FlatButton(
                                                 onPressed: () async {
                                                   swapBloc.setIsMaxActive(true);
@@ -518,55 +517,58 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Widget _buildCoinSelect(Market market) {
     print('coin-select-${market.toString().toLowerCase()}');
-    return InkWell(
-      key: Key('coin-select-${market.toString().toLowerCase()}'),
-      borderRadius: BorderRadius.circular(4),
-      onTap: () async {
-        if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
-          setState(() {
-            if (swapBloc.enabledSellField) {
-              FocusScope.of(context).requestFocus(_focusSell);
-              controllerAnimationInputSell.reset();
-              controllerAnimationInputSell.forward();
-            } else {
-              controllerAnimationCoinSell.reset();
-              controllerAnimationCoinSell.forward();
-            }
-          });
-        } else {
-          _openDialogCoinWithBalance(market);
-        }
-      },
-      child: market == Market.RECEIVE
-          ? Container(
-              child: StreamBuilder<Coin>(
-                initialData: swapBloc.receiveCoin,
-                stream: swapBloc.outReceiveCoin,
-                builder: (BuildContext context, AsyncSnapshot<Coin> snapshot) {
-                  return _buildSelectorCoin(snapshot.data);
-                },
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: InkWell(
+        key: Key('coin-select-${market.toString().toLowerCase()}'),
+        borderRadius: BorderRadius.circular(4),
+        onTap: () async {
+          if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
+            setState(() {
+              if (swapBloc.enabledSellField) {
+                FocusScope.of(context).requestFocus(_focusSell);
+                controllerAnimationInputSell.reset();
+                controllerAnimationInputSell.forward();
+              } else {
+                controllerAnimationCoinSell.reset();
+                controllerAnimationCoinSell.forward();
+              }
+            });
+          } else {
+            _openDialogCoinWithBalance(market);
+          }
+        },
+        child: market == Market.RECEIVE
+            ? Container(
+                child: StreamBuilder<Coin>(
+                  initialData: swapBloc.receiveCoin,
+                  stream: swapBloc.outReceiveCoin,
+                  builder: (BuildContext context, AsyncSnapshot<Coin> snapshot) {
+                    return _buildSelectorCoin(snapshot.data);
+                  },
+                ),
+              )
+            : FadeTransition(
+                opacity: animationCoinSell,
+                child: StreamBuilder<dynamic>(
+                    initialData: swapBloc.sellCoin,
+                    stream: swapBloc.outSellCoin,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.data != null && snapshot.data is CoinBalance) {
+                        final CoinBalance coinBalance = snapshot.data;
+                        currentCoinBalance = coinBalance;
+                        return _buildSelectorCoin(coinBalance.coin);
+                      } else if (snapshot.data != null &&
+                          snapshot.data is OrderCoin) {
+                        final OrderCoin orderCoin = snapshot.data;
+                        return _buildSelectorCoin(orderCoin.coinBase);
+                      } else {
+                        return _buildSelectorCoin(null);
+                      }
+                    }),
               ),
-            )
-          : FadeTransition(
-              opacity: animationCoinSell,
-              child: StreamBuilder<dynamic>(
-                  initialData: swapBloc.sellCoin,
-                  stream: swapBloc.outSellCoin,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.data != null && snapshot.data is CoinBalance) {
-                      final CoinBalance coinBalance = snapshot.data;
-                      currentCoinBalance = coinBalance;
-                      return _buildSelectorCoin(coinBalance.coin);
-                    } else if (snapshot.data != null &&
-                        snapshot.data is OrderCoin) {
-                      final OrderCoin orderCoin = snapshot.data;
-                      return _buildSelectorCoin(orderCoin.coinBase);
-                    } else {
-                      return _buildSelectorCoin(null);
-                    }
-                  }),
-            ),
+      ),
     );
   }
 
@@ -576,7 +578,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       child: Column(
         children: <Widget>[
           const SizedBox(
-            height: 19,
+            height: 8,
           ),
           Row(
             children: <Widget>[
@@ -600,7 +602,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             ],
           ),
           const SizedBox(
-            height: 12,
+            height: 6,
           ),
           Container(
             color: Colors.grey,
