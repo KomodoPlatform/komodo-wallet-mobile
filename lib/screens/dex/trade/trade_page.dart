@@ -52,6 +52,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   bool _noOrderFound = false;
   bool isMaxActive = false;
   Ask currentAsk;
+  bool isLoadingMax = false;
 
   @override
   void initState() {
@@ -203,14 +204,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 bestPrice: price,
                 maxVolume: maxVolume));
           }
-
-          getFee(false).then((double tradeFee) {
+          getFee(false).then((double tradeFee) async {
             print(tradeFee);
             if (currentCoinBalance != null &&
                 double.parse(amountSell) + tradeFee >
                     double.parse(currentCoinBalance.balance.getBalance())) {
               if (!swapBloc.isMaxActive) {
-                setMaxValue();
+                await setMaxValue();
               }
             } else {
               if (amountSell.contains(RegExp(
@@ -238,8 +238,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<double> getFee(bool isMax) async {
+    setState(() {
+      isLoadingMax = true;
+    });
     try {
-      return (await getTxFee() + await getTradeFee(isMax)).toDouble();
+      double fee = (await getTxFee() + await getTradeFee(isMax)).toDouble();
+      setState(() {
+        isLoadingMax = false;
+      });
+      return fee;
     } catch (e) {
       print(e);
       return 0;
@@ -275,6 +282,30 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
+  Future<String> getTxFeeErc() async{
+    try {
+      final TradeFee tradeFeeResponse =
+          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
+      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
+
+      Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
+      Decimal txErcFee;
+      if (swapBloc.receiveCoin != null) {
+        if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
+          txErcFee = await getERCfee(swapBloc.receiveCoin);
+        }
+      }
+      if (txErcFee != null) {
+        return txErcFee.toString() + ' ' + 'ETH + ' + txFee.toString() + ' ' + swapBloc.sellCoin.coin.abbr;
+      } else {
+        return txFee.toString() + ' ' + swapBloc.sellCoin.coin.abbr;
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<Decimal> getERCfee(Coin coin) async {
     final TradeFee tradeFeeResponseERC =
         await MarketMakerService().getTradeFee(coin);
@@ -288,7 +319,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         final double maxValue =
             double.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
         print('setting max: ' + maxValue.toString());
+
         if (maxValue < 0) {
+          setState(() {
+            isLoadingMax = false;
+          });
           _controllerAmountSell.text = '';
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
@@ -301,6 +336,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ));
           _focusSell.unfocus();
         } else {
+          print('----------------_controllerAmountSell');
           _controllerAmountSell.setTextAndPosition(
               replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
         }
@@ -506,6 +542,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                     onPressed: () async {
                                                       swapBloc
                                                           .setIsMaxActive(true);
+                                                      setState(() {
+                                                        isLoadingMax = true;
+                                                      });
                                                       await setMaxValue();
                                                     },
                                                     child: Text(
@@ -536,7 +575,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                 _controllerAmountSell.text.isNotEmpty
                             ? Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 16, left: 0, right: 86, bottom: 0),
+                                    top: 16, left: 0, right: 16, bottom: 0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -550,13 +589,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .body2),
-                                        FutureBuilder<Decimal>(
-                                          future: getTxFee(),
+                                        FutureBuilder<String>(
+                                          future: getTxFeeErc(),
                                           builder: (BuildContext context,
-                                              AsyncSnapshot<Decimal> snapshot) {
+                                              AsyncSnapshot<String> snapshot) {
                                             if (snapshot.hasData) {
                                               return Text(
-                                                snapshot.data.toString(),
+                                                snapshot.data,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .body2,
@@ -583,7 +622,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                               AsyncSnapshot<Decimal> snapshot) {
                                             if (snapshot.hasData) {
                                               return Text(
-                                                  snapshot.data.toString(),
+                                                  snapshot.data.toString() + ' ' + swapBloc.sellCoin.coin.abbr,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .body2);
@@ -746,16 +785,22 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _openDialogCoinWithBalance(Market market) async {
     if (market == Market.RECEIVE) {
-      dialogBloc.dialog = showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return DialogLooking(
-              onDone: () {
-                Navigator.of(context).pop();
-                pushNewScreenChoiseOrder(swapBloc.orderCoins);
-              },
-            );
-          }).then((dynamic _) => dialogBloc.dialog = null);
+      if (_controllerAmountSell.text.isNotEmpty &&
+          isNumeric(_controllerAmountSell.text) &&
+          !isLoadingMax &&
+          double.parse(_controllerAmountSell.text) > 0) {
+        print(isLoadingMax);
+        dialogBloc.dialog = showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return DialogLooking(
+                onDone: () {
+                  Navigator.of(context).pop();
+                  pushNewScreenChoiseOrder(swapBloc.orderCoins);
+                },
+              );
+            }).then((dynamic _) => dialogBloc.dialog = null);
+      }
     } else {
       final List<SimpleDialogOption> listDialogCoins =
           _createListDialog(context, market, null);
@@ -1208,7 +1253,6 @@ class _DialogLookingState extends State<DialogLooking> {
 
         if (timerCurrent >= timerEnd || checkIfAsks()) {
           timerGetOrderbook.cancel();
-
           widget.onDone();
         } else {
           swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
