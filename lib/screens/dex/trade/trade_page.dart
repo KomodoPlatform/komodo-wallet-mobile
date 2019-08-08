@@ -242,7 +242,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       isLoadingMax = true;
     });
     try {
-      final double fee = (await getTxFee() + await getTradeFee(isMax)).toDouble();
+      final double fee =
+          (await getTxFee() + await getTradeFee(isMax)).toDouble();
       setState(() {
         isLoadingMax = false;
       });
@@ -258,9 +259,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     if (isMax) {
       amount = double.parse(currentCoinBalance.balance.getBalance());
     }
-    return Decimal.parse('1') /
-        Decimal.parse('777') *
-        Decimal.parse(amount.toString());
+
+    return currentCoinBalance.coin.swapContractAddress.isEmpty
+        ? Decimal.parse((Decimal.parse('1') /
+                Decimal.parse('777') *
+                Decimal.parse(amount.toString()))
+            .toStringAsFixed(8))
+        : Decimal.parse((Decimal.parse('1') /
+                Decimal.parse('777') *
+                Decimal.parse(amount.toString()))
+            .toStringAsFixed(18));
   }
 
   Future<Decimal> getTxFee() async {
@@ -282,13 +290,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  Future<String> getTxFeeErc() async{
+  Future<String> getTxFeeErc() async {
     try {
       final TradeFee tradeFeeResponse =
           await MarketMakerService().getTradeFee(currentCoinBalance.coin);
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
-      final Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
+      final Decimal txFee =
+          Decimal.parse('2') * Decimal.parse(tradeFee.toString());
       Decimal txErcFee;
       if (swapBloc.receiveCoin != null) {
         if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
@@ -296,7 +305,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         }
       }
       if (txErcFee != null) {
-        return txErcFee.toString() + ' ' + 'ETH + ' + txFee.toString() + ' ' + swapBloc.sellCoin.coin.abbr;
+        return txFee.toString() +
+            ' ' +
+            swapBloc.sellCoin.coin.abbr +
+            ' ' +
+            txErcFee.toString() +
+            ' ETH';
       } else {
         return txFee.toString() + ' ' + swapBloc.sellCoin.coin.abbr;
       }
@@ -622,7 +636,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                               AsyncSnapshot<Decimal> snapshot) {
                                             if (snapshot.hasData) {
                                               return Text(
-                                                  snapshot.data.toString() + ' ' + swapBloc.sellCoin.coin.abbr,
+                                                  snapshot.data.toString() +
+                                                      ' ' +
+                                                      swapBloc
+                                                          .sellCoin.coin.abbr,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .body2);
