@@ -614,7 +614,7 @@ class _SettingPageState extends State<SettingPage> {
       await MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
     }
     mainBloc.isUrlLaucherIsOpen = true;
-    Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
+    Share.shareFile(File('${MarketMakerService().filesPath}log'),
         subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 }

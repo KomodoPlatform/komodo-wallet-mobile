@@ -54,7 +54,8 @@ class AuthenticateBloc extends BlocBase {
     pinStatus = PinStatus.NORMAL_PIN;
     _inpinStatus.add(PinStatus.NORMAL_PIN);
 
-    if(prefs.getBool('isPinIsCreated') != null && prefs.getBool('isPinIsCreated')){
+    if (prefs.getBool('isPinIsCreated') != null &&
+        prefs.getBool('isPinIsCreated')) {
       pinStatus = PinStatus.CREATE_PIN;
       _inpinStatus.add(PinStatus.CREATE_PIN);
     }
@@ -82,7 +83,8 @@ class AuthenticateBloc extends BlocBase {
     await prefs.setBool('isPinIsSet', false);
     await prefs.setBool('switch_pin_log_out_on_exit', false);
 
-    await MarketMakerService().runBin();
+    await MarketMakerService().init(passphrase);
+
     isLogin = true;
     _inIsLogin.add(true);
   }
