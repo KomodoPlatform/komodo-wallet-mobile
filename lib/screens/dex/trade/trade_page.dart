@@ -242,7 +242,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       isLoadingMax = true;
     });
     try {
-      double fee = (await getTxFee() + await getTradeFee(isMax)).toDouble();
+      final double fee = (await getTxFee() + await getTradeFee(isMax)).toDouble();
       setState(() {
         isLoadingMax = false;
       });
@@ -288,7 +288,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           await MarketMakerService().getTradeFee(currentCoinBalance.coin);
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
-      Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
+      final Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
       Decimal txErcFee;
       if (swapBloc.receiveCoin != null) {
         if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
@@ -359,7 +359,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Widget _buildExchange() {
     final bool sellEmpty = _controllerAmountSell.text.isEmpty;
 
-    Widget swapIcon = Container(
+    final Widget swapIcon = Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(32)),
