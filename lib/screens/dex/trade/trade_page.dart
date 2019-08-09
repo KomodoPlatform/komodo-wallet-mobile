@@ -308,7 +308,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         return txFee.toString() +
             ' ' +
             swapBloc.sellCoin.coin.abbr +
-            ' ' +
+            ' + ' +
             txErcFee.toString() +
             ' ETH';
       } else {
@@ -1143,10 +1143,23 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               swapBloc.receiveCoin.swapContractAddress.isNotEmpty
                   ? swapBloc.receiveCoin
                   : swapBloc.sellCoin.coin) *
-          (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                  swapBloc.sellCoin.coin.swapContractAddress.isEmpty
-              ? Decimal.parse('1')
-              : Decimal.parse('2'));
+          ((swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
+                  swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty)
+              ? Decimal.parse('3')
+              : (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
+                      swapBloc.sellCoin.coin.swapContractAddress.isEmpty
+                  ? Decimal.parse('1')
+                  : Decimal.parse('2')));
+
+      print(((swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
+                  swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty)
+              ? Decimal.parse('3')
+              : (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
+                      swapBloc.sellCoin.coin.swapContractAddress.isEmpty
+                  ? Decimal.parse('1')
+                  : Decimal.parse('2')))
+          .toString());
+      print(feeERC.toString());
 
       if (Decimal.parse(ethBalance.balance.balance) < feeERC) {
         Scaffold.of(mContext).showSnackBar(SnackBar(
