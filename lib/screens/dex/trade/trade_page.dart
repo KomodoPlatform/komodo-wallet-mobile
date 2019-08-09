@@ -170,7 +170,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   void onChangeSell() {
     final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
-
+    
     if (_controllerAmountSell.text.isNotEmpty) {
       swapBloc.setCurrentAmountSell(double.parse(amountSell));
     }
@@ -255,7 +255,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<Decimal> getTradeFee(bool isMax) async {
-    double amount = double.parse(_controllerAmountSell.text);
+    double amount = double.parse(_controllerAmountSell.text.replaceAll(',', '.'));
     if (isMax) {
       amount = double.parse(currentCoinBalance.balance.getBalance());
     }
@@ -692,6 +692,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         key: Key('coin-select-${market.toString().toLowerCase()}'),
         borderRadius: BorderRadius.circular(4),
         onTap: () async {
+           _controllerAmountSell.text = _controllerAmountSell.text.replaceAll(',', '.');
           if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
             setState(() {
               if (swapBloc.enabledSellField) {
