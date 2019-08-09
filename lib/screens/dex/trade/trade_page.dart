@@ -312,7 +312,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             txErcFee.toString() +
             ' ETH';
       } else {
-        return txFee.toString() + ' ' + swapBloc.sellCoin.coin.abbr;
+        return txFee.toString() +
+            ' ' +
+            (swapBloc.sellCoin.coin.swapContractAddress.isEmpty
+                ? swapBloc.sellCoin.coin.abbr
+                : 'ETH');
       }
     } catch (e) {
       print(e);
@@ -1140,8 +1144,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   ? swapBloc.receiveCoin
                   : swapBloc.sellCoin.coin) *
           (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                  swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty
-              ? Decimal.parse('3')
+                  swapBloc.sellCoin.coin.swapContractAddress.isEmpty
+              ? Decimal.parse('1')
               : Decimal.parse('2'));
 
       if (Decimal.parse(ethBalance.balance.balance) < feeERC) {
