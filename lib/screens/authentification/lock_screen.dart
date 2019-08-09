@@ -177,7 +177,7 @@ class _LockScreenState extends State<LockScreen> {
           Navigator.pop(context);
         }
         authBloc.showPin(false);
-        if (widget.pinStatus == PinStatus.NORMAL_PIN && !mm2.ismm2Running) {
+        if (widget.pinStatus == PinStatus.NORMAL_PIN && !MarketMakerService().ismm2Running) {
           await authBloc.login(await EncryptionTool().read('passphrase'), null);
         }
       }

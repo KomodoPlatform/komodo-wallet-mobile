@@ -120,17 +120,36 @@ void main() {
       const double sellAmount = 10.0;
 
       await createWidget(
-          tester, AsksOrder(asks: orderbook.asks, sellAmount: sellAmount, baseCoin: 'MORTY',));
+          tester,
+          AsksOrder(
+            asks: orderbook.asks,
+            sellAmount: sellAmount,
+            baseCoin: 'MORTY',
+          ));
 
       expect(find.text(AppLocalizations.of(mContext).price), findsOneWidget);
-      expect(find.text(AppLocalizations.of(mContext).availableVolume), findsOneWidget);
-      expect(find.text(AppLocalizations.of(mContext).receive.toLowerCase()), findsOneWidget);
+      expect(find.text(AppLocalizations.of(mContext).availableVolume),
+          findsOneWidget);
+      expect(find.text(AppLocalizations.of(mContext).receive.toLowerCase()),
+          findsOneWidget);
 
       for (int i = 0; i < orderbook.asks.length; i++) {
         expect(find.byKey(Key('ask-item-$i')), findsOneWidget);
-        expect(find.text(orderbook.asks[i].getReceivePrice() + ' ' + orderbook.asks[i].coin.toUpperCase()), findsOneWidget);
-        expect(find.text(orderbook.asks[i].maxvolume.toString() + ' ' + orderbook.asks[i].coin.toUpperCase()), findsOneWidget);
-        expect(find.text(orderbook.asks[i].getReceiveAmount(sellAmount) + ' ' + orderbook.asks[i].coin.toUpperCase()), findsOneWidget);
+        expect(
+            find.text(orderbook.asks[i].getReceivePrice() +
+                ' ' +
+                orderbook.asks[i].coin.toUpperCase()),
+            findsOneWidget);
+        expect(
+            find.text(orderbook.asks[i].maxvolume.toString() +
+                ' ' +
+                orderbook.asks[i].coin.toUpperCase()),
+            findsOneWidget);
+        expect(
+            find.text(orderbook.asks[i].getReceiveAmount(sellAmount) +
+                ' ' +
+                orderbook.asks[i].coin.toUpperCase()),
+            findsOneWidget);
       }
 
       expect(find.byIcon(Icons.add_circle), findsOneWidget);

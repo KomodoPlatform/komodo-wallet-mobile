@@ -206,44 +206,38 @@ class _AsksOrderState extends State<AsksOrder> {
   }
 
   DataRow tableRow(Ask ask, int index) {
-    return DataRow(
-        selected: index % 2 == 1,
-        cells: <DataCell>[
-          DataCell(
-              Container(
-                key: Key('ask-item-$index'),
-                child: Text(
-                  ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
-                  style:
-                      Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
-                ),
-              ),
-              onTap: () => createOrder(ask)),
-          DataCell(
-              Container(
-                child: Text(
-                  ask.maxvolume.toStringAsFixed(8) +
-                      ' ' +
-                      ask.coin.toUpperCase(),
-                  style:
-                      Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
-                ),
-              ),
-              onTap: () => createOrder(ask)),
-          DataCell(
-              Container(
-                child: Text(
-                  ask.getReceiveAmount(widget.sellAmount) +
-                      ' ' +
-                      ask.coin.toUpperCase(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .body1
-                      .copyWith(fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-              ),
-              onTap: () => createOrder(ask))
-        ]);
+    return DataRow(selected: index % 2 == 1, cells: <DataCell>[
+      DataCell(
+          Container(
+            key: Key('ask-item-$index'),
+            child: Text(
+              ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+            ),
+          ),
+          onTap: () => createOrder(ask)),
+      DataCell(
+          Container(
+            child: Text(
+              ask.maxvolume.toStringAsFixed(8) + ' ' + ask.coin.toUpperCase(),
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+            ),
+          ),
+          onTap: () => createOrder(ask)),
+      DataCell(
+          Container(
+            child: Text(
+              ask.getReceiveAmount(widget.sellAmount) +
+                  ' ' +
+                  ask.coin.toUpperCase(),
+              style: Theme.of(context)
+                  .textTheme
+                  .body1
+                  .copyWith(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+          ),
+          onTap: () => createOrder(ask))
+    ]);
   }
 
   void createOrder(Ask ask) {

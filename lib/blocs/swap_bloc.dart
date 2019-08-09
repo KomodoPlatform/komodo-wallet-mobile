@@ -95,7 +95,6 @@ class SwapBloc implements BlocBase {
   Sink<bool> get _inIsMaxActive => _isMaxActiveController.sink;
   Stream<bool> get outIsMaxActive => _isMaxActiveController.stream;
 
-
   @override
   void dispose() {
     _orderCoinController.close();
@@ -143,7 +142,15 @@ class SwapBloc implements BlocBase {
   }
 
   void updateReceiveCoin(Coin receiveCoin) {
-    this.receiveCoin = receiveCoin;
+    Coin coin = receiveCoin;
+    if (receiveCoin != null && receiveCoin.abbr != null && receiveCoin.abbr.isNotEmpty) {
+      for (CoinBalance coinBalance in coinsBloc.coinBalance) {
+        if (coinBalance.coin.abbr == receiveCoin.abbr) {
+          coin = coinBalance.coin;
+        }
+      }
+    }
+    this.receiveCoin = coin;
     _inReceiveCoin.add(this.receiveCoin);
   }
 
@@ -158,7 +165,7 @@ class SwapBloc implements BlocBase {
 
     for (Coin coin in coins) {
       if (coin.abbr != rel.abbr) {
-        futureOrderbook.add(mm2.getOrderbook(coin, rel));
+        futureOrderbook.add(MarketMakerService().getOrderbook(coin, rel));
       }
     }
 
@@ -170,9 +177,7 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRate() {
     if (swapBloc.orderCoin != null) {
-      final double rate = currentAmountSell / currentAmountBuy;
-
-      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${rate.toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${(Decimal.parse(currentAmountSell.toString()) / Decimal.parse(currentAmountBuy.toString())).toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
     } else {
       return '';
     }
@@ -180,11 +185,10 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRateUSD() {
     if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
-      final double rate = currentAmountSell / currentAmountBuy;
-
-      final String res =
-          (Decimal.parse(rate.toString()) * Decimal.parse(sellCoin.priceForOne))
-              .toStringAsFixed(2);
+      final String res = ((Decimal.parse(currentAmountSell.toString()) /
+                  Decimal.parse(currentAmountBuy.toString())) *
+              Decimal.parse(sellCoin.priceForOne))
+          .toStringAsFixed(2);
       return '($res USD)';
     } else {
       return '';
@@ -199,7 +203,8 @@ class SwapBloc implements BlocBase {
   Future<double> setReceiveAmount(
       Coin coin, String amountSell, Ask currentAsk) async {
     try {
-      final Orderbook orderbook = await mm2.getOrderbook(coin, sellCoin.coin);
+      final Orderbook orderbook =
+          await MarketMakerService().getOrderbook(coin, sellCoin.coin);
       String bestPrice = '0';
       double maxVolume = 0;
       int i = 0;

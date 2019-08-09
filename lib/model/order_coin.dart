@@ -18,7 +18,8 @@ class OrderCoin {
 
   String getBuyAmount(String amountToSell) {
     String buyAmount = 0.toString();
-    buyAmount = (Decimal.parse(amountToSell) / Decimal.parse(bestPrice)).toStringAsFixed(8);
+    buyAmount = (Decimal.parse(amountToSell) / Decimal.parse(bestPrice))
+        .toStringAsFixed(8);
     if (double.parse(buyAmount) == 0) {
       buyAmount = 0.toStringAsFixed(0);
     }

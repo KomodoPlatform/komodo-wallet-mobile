@@ -34,7 +34,7 @@ void main() {
 
 Future<void> startApp() async {
   try {
-    await mm2.initMarketMaker();
+    await MarketMakerService().initMarketMaker();
     await _runBinMm2UserAlreadyLog();
     return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));
@@ -58,7 +58,7 @@ Future<void> _runBinMm2UserAlreadyLog() async {
     }
   } else {
     print('loadJsonCoinsDefault');
-    await coinsBloc.writeJsonCoin(await mm2.loadJsonCoinsDefault());
+    await coinsBloc.writeJsonCoin(await MarketMakerService().loadJsonCoinsDefault());
   }
 }
 
@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _checkNetworkStatus();
-    mm2.initMarketMaker().then((_) {
+    MarketMakerService().initMarketMaker().then((_) {
       _runBinMm2UserAlreadyLog();
     });
     super.initState();
@@ -220,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.resumed:
         print('resumed');
         if (Platform.isIOS) {
-          if (!mm2.ismm2Running) {
+          if (!MarketMakerService().ismm2Running) {
             _runBinMm2UserAlreadyLog();
           }
         }

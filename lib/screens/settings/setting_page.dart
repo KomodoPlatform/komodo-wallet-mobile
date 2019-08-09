@@ -121,7 +121,7 @@ class _SettingPageState extends State<SettingPage> {
         AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
     try {
-      final ResultSuccess versionmm2 = await mm2.getVersionMM2();
+      final ResultSuccess versionmm2 = await MarketMakerService().getVersionMM2();
       version += ' - ${versionmm2.result}';
     } catch (e) {
       print(e);
@@ -607,14 +607,14 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<void> _shareFile() async {
-    final RecentSwaps recentSwap = await mm2.getRecentSwaps(100, null);
+    final RecentSwaps recentSwap = await MarketMakerService().getRecentSwaps(100, null);
 
-    if (mm2.sink != null) {
-      await mm2.sink.write('\n\nMy recent swaps: \n\n');
-      await mm2.sink.write(recentSwapsToJson(recentSwap) + '\n');
+    if (MarketMakerService().sink != null) {
+      await MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
+      await MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
     }
     mainBloc.isUrlLaucherIsOpen = true;
-    Share.shareFile(File('${mm2.filesPath}log.txt'),
+    Share.shareFile(File('${MarketMakerService().filesPath}log'),
         subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 }

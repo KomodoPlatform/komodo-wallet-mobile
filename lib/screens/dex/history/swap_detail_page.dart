@@ -260,35 +260,49 @@ class _ProgressSwapState extends State<ProgressSwap>
       }
     }
 
+    final double heightScreen = MediaQuery.of(context).size.height * 0.06;
+    double widthScreen = MediaQuery.of(context).size.width * 0.6;
+
+    if (widthScreen > 250) {
+      widthScreen = 250;
+    }
     return Container(
-      height: 350,
+      height: 300,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          CustomPaint(
-            painter: RadialPainter(
-                context: context, progressInDegrees: progressDegrees),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.6,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    '${AppLocalizations.of(context).step} ',
-                    style: Theme.of(context).textTheme.subtitle,
-                  ),
-                  Text(
-                    swapHistoryBloc
-                        .getStepStatusNumber(widget.swap.status)
-                        .toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle
-                        .copyWith(color: Theme.of(context).accentColor),
-                  ),
-                  Text('/${swapHistoryBloc.getNumberStep().toInt().toString()}',
-                      style: Theme.of(context).textTheme.subtitle)
-                ],
+          const SizedBox(
+            height: 16,
+          ),
+          Container(
+            height: heightScreen,
+            width: widthScreen,
+            child: CustomPaint(
+              painter: RadialPainter(
+                  context: context, progressInDegrees: progressDegrees),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${AppLocalizations.of(context).step} ',
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
+                    Text(
+                      swapHistoryBloc
+                          .getStepStatusNumber(widget.swap.status)
+                          .toString(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle
+                          .copyWith(color: Theme.of(context).accentColor),
+                    ),
+                    Text(
+                        '/${swapHistoryBloc.getNumberStep().toInt().toString()}',
+                        style: Theme.of(context).textTheme.subtitle)
+                  ],
+                ),
               ),
             ),
           ),

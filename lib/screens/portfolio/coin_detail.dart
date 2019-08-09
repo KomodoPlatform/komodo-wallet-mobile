@@ -61,12 +61,14 @@ class CoinDetail extends StatefulWidget {
       dialogBloc.dialog = null;
     });
 
-    mm2
+    MarketMakerService()
         .postWithdraw(
             coinBalance.coin,
             coinBalance.balance.address,
-            double.parse(coinBalance.balance.getBalance()) -
-                coinBalance.coin.txfee / 100000000,
+            (Decimal.parse(coinBalance.balance.getBalance()) -
+                    (Decimal.parse(coinBalance.coin.txfee.toString()) /
+                        Decimal.parse('100000000')))
+                .toDouble(),
             true)
         .then((dynamic data) {
       Navigator.of(mContext).pop();
@@ -93,7 +95,7 @@ class CoinDetail extends StatefulWidget {
                         AppLocalizations.of(context).confirm.toUpperCase(),
                         style: Theme.of(context).textTheme.button),
                     onPressed: () {
-                      mm2
+                      MarketMakerService()
                           .postRawTransaction(coinBalance.coin, data.txHex)
                           .then((dynamic dataRawTx) {
                         if (dataRawTx is SendRawTransactionResponse) {
@@ -548,7 +550,9 @@ class _CoinDetailState extends State<CoinDetail> {
                                 left: 16, right: 16, bottom: 16, top: 8),
                             child: Text(
                               (Decimal.parse(currentCoinBalance.priceForOne) *
-                                          Decimal.parse(transaction.myBalanceChange.toString()))
+                                          Decimal.parse(transaction
+                                              .myBalanceChange
+                                              .toString()))
                                       .toStringAsFixed(2) +
                                   ' USD',
                               style: Theme.of(context).textTheme.body2,
@@ -1050,7 +1054,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Future<double> getFee() async {
     try {
       final TradeFee tradeFeeResponse =
-          await mm2.getTradeFee(currentCoinBalance.coin);
+          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
       return double.parse(tradeFeeResponse.result.amount);
     } catch (e) {
       print(e);
@@ -1082,7 +1086,7 @@ class _CoinDetailState extends State<CoinDetail> {
         currentIndex = 2;
       });
 
-      mm2
+      MarketMakerService()
           .postWithdraw(
               currentCoinBalance.coin,
               _addressController.text.toString(),
@@ -1091,7 +1095,7 @@ class _CoinDetailState extends State<CoinDetail> {
                   double.parse(_amountController.text))
           .then((dynamic data) {
         if (data is WithdrawResponse) {
-          mm2
+          MarketMakerService()
               .postRawTransaction(widget.coinBalance.coin, data.txHex)
               .then((dynamic dataRawTx) {
             if (dataRawTx is SendRawTransactionResponse &&

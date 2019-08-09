@@ -54,7 +54,8 @@ class AuthenticateBloc extends BlocBase {
     pinStatus = PinStatus.NORMAL_PIN;
     _inpinStatus.add(PinStatus.NORMAL_PIN);
 
-    if(prefs.getBool('isPinIsCreated') != null && prefs.getBool('isPinIsCreated')){
+    if (prefs.getBool('isPinIsCreated') != null &&
+        prefs.getBool('isPinIsCreated')) {
       pinStatus = PinStatus.CREATE_PIN;
       _inpinStatus.add(PinStatus.CREATE_PIN);
     }
@@ -82,7 +83,8 @@ class AuthenticateBloc extends BlocBase {
     await prefs.setBool('isPinIsSet', false);
     await prefs.setBool('switch_pin_log_out_on_exit', false);
 
-    await mm2.runBin();
+    await MarketMakerService().init(passphrase);
+
     isLogin = true;
     _inIsLogin.add(true);
   }
@@ -134,7 +136,7 @@ class AuthenticateBloc extends BlocBase {
 
   Future<void> logout() async {
     coinsBloc.stopCheckBalance();
-    await mm2.stopmm2();
+    await MarketMakerService().stopmm2();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await EncryptionTool().delete('passphrase');
     await prefs.setBool('isPinIsSet', false);
@@ -144,7 +146,7 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().delete('pin');
     coinsBloc.resetCoinBalance();
     await coinsBloc.resetCoinDefault();
-    mm2.balances = <Balance>[];
+    MarketMakerService().balances = <Balance>[];
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);
     await DBProvider.db.deleteCurrentWallet();

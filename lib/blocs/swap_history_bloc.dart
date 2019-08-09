@@ -34,7 +34,7 @@ class SwapHistoryBloc implements BlocBase {
 
   Future<List<Swap>> fetchSwaps(int limit, String fromUuid) async {
     try {
-      final RecentSwaps recentSwaps = await mm2.getRecentSwaps(limit, fromUuid);
+      final RecentSwaps recentSwaps = await MarketMakerService().getRecentSwaps(limit, fromUuid);
       final List<Swap> newSwaps = <Swap>[];
 
       for (ResultSwap swap in recentSwaps.result.swaps) {

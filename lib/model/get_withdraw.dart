@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-GetWithdraw getWithdrawFromJson(String str) => GetWithdraw.fromJson(json.decode(str));
+GetWithdraw getWithdrawFromJson(String str) =>
+    GetWithdraw.fromJson(json.decode(str));
 
 String getWithdrawToJson(GetWithdraw data) {
   final Map<String, dynamic> tmpJson = data.toJson();
@@ -18,38 +19,37 @@ String getWithdrawToJson(GetWithdraw data) {
 }
 
 class GetWithdraw {
-      GetWithdraw({
-        this.method,
-        this.amount,
-        this.to,
-        this.coin,
-        this.max,
-        this.userpass,
-    });
+  GetWithdraw({
+    this.method,
+    this.amount,
+    this.to,
+    this.coin,
+    this.max,
+    this.userpass,
+  });
 
-    factory GetWithdraw.fromJson(Map<String, dynamic> json) => GetWithdraw(
+  factory GetWithdraw.fromJson(Map<String, dynamic> json) => GetWithdraw(
         method: json['method'] ?? '',
-       amount:
-          json['amount'].toDouble() ?? 0.0,
+        amount: json['amount'].toDouble() ?? 0.0,
         coin: json['coin'] ?? '',
         to: json['to'] ?? '',
         max: json['max'] ?? false,
         userpass: json['userpass'] ?? '',
-    );
+      );
 
-    String method;
-    double amount;
-    String coin;
-    String to;
-    bool max;
-    String userpass;
+  String method;
+  double amount;
+  String coin;
+  String to;
+  bool max;
+  String userpass;
 
-    Map<String, dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method ?? '',
         'amount': amount ?? 0.0,
         'to': to ?? '',
         'max': max ?? false,
         'coin': coin ?? '',
         'userpass': userpass ?? '',
-    };
+      };
 }

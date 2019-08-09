@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
@@ -39,7 +40,7 @@ class OrdersBloc implements BlocBase {
 
   Future<void> updateOrders() async {
     try {
-      final Orders newOrders = await mm2.getMyOrders();
+      final Orders newOrders = await MarketMakerService().getMyOrders();
       final List<Order> orders = <Order>[];
 
       for (MapEntry<String, TakerOrder> entry
@@ -65,8 +66,8 @@ class OrdersBloc implements BlocBase {
             orderType: OrderType.MAKER,
             startedSwaps: entry.value.startedSwaps,
             createdAt: entry.value.createdAt ~/ 1000,
-            relAmount: (double.parse(entry.value.price) *
-                    double.parse(entry.value.maxBaseVol))
+            relAmount: (Decimal.parse(entry.value.price) *
+                    Decimal.parse(entry.value.maxBaseVol))
                 .toString(),
             uuid: entry.key));
       }
@@ -131,7 +132,7 @@ class OrdersBloc implements BlocBase {
 
   Future<void> cancelOrder(String uuid) async {
     try {
-      await mm2.cancelOrder(uuid);
+      await MarketMakerService().cancelOrder(uuid);
       orderSwaps.removeWhere((dynamic orderSwap) {
         if (orderSwap is Order) {
           return orderSwap.uuid == uuid;
