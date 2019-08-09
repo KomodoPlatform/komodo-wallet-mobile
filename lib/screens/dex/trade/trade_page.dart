@@ -260,15 +260,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       amount = double.parse(currentCoinBalance.balance.getBalance());
     }
 
-    return currentCoinBalance.coin.swapContractAddress.isEmpty
-        ? Decimal.parse((Decimal.parse('1') /
-                Decimal.parse('777') *
-                Decimal.parse(amount.toString()))
-            .toStringAsFixed(8))
-        : Decimal.parse((Decimal.parse('1') /
-                Decimal.parse('777') *
-                Decimal.parse(amount.toString()))
-            .toStringAsFixed(18));
+    return Decimal.parse((Decimal.parse('1') /
+            Decimal.parse('777') *
+            Decimal.parse(amount.toString()))
+        .toStringAsFixed(8));
   }
 
   Future<Decimal> getTxFee() async {
@@ -296,23 +291,31 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           await MarketMakerService().getTradeFee(currentCoinBalance.coin);
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
-      final Decimal txFee =
-          Decimal.parse('2') * Decimal.parse(tradeFee.toString());
+      final Decimal txFee = Decimal.parse(tradeFee.toString());
+
       Decimal txErcFee;
       if (swapBloc.receiveCoin != null) {
         if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
           txErcFee = await getERCfee(swapBloc.receiveCoin);
         }
       }
-      if (txErcFee != null) {
-        return txFee.toString() +
+
+      if (txErcFee != null &&
+          swapBloc.sellCoin?.coin.swapContractAddress.isEmpty) {
+        return (Decimal.parse('2') * txFee).toStringAsFixed(5) +
             ' ' +
             swapBloc.sellCoin.coin.abbr +
             ' + ' +
-            txErcFee.toString() +
+            txErcFee.toStringAsFixed(5) +
             ' ETH';
       } else {
-        return txFee.toString() +
+        Decimal factor = Decimal.parse('2');
+        if (swapBloc.receiveCoin != null &&
+            swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty &&
+            swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
+          factor = Decimal.parse('3');
+        }
+        return (factor * txFee).toStringAsFixed(8) +
             ' ' +
             (swapBloc.sellCoin.coin.swapContractAddress.isEmpty
                 ? swapBloc.sellCoin.coin.abbr
@@ -1150,16 +1153,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       swapBloc.sellCoin.coin.swapContractAddress.isEmpty
                   ? Decimal.parse('1')
                   : Decimal.parse('2')));
-
-      print(((swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                  swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty)
-              ? Decimal.parse('3')
-              : (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                      swapBloc.sellCoin.coin.swapContractAddress.isEmpty
-                  ? Decimal.parse('1')
-                  : Decimal.parse('2')))
-          .toString());
-      print(feeERC.toString());
 
       if (Decimal.parse(ethBalance.balance.balance) < feeERC) {
         Scaffold.of(mContext).showSnackBar(SnackBar(
