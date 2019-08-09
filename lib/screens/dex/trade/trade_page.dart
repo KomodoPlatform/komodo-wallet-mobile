@@ -1130,13 +1130,21 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<void> _confirmSwap(BuildContext mContext) async {
     replaceAllCommas();
 
-    if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
-      final CoinBalance coinBalanceERC = coinsBloc.coinBalance.firstWhere(
-          (CoinBalance test) => test.coin.abbr == swapBloc.receiveCoin.abbr);
-      final Decimal balanceERC = Decimal.parse(coinBalanceERC.balance.balance);
-      final Decimal feeERC = await getERCfee(coinBalanceERC.coin);
+    if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty ||
+        swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty) {
+      final CoinBalance ethBalance = coinsBloc.coinBalance
+          .singleWhere((CoinBalance coin) => coin.coin.abbr == 'ETH');
 
-      if (balanceERC < feeERC) {
+      final Decimal feeERC = await getERCfee(
+              swapBloc.receiveCoin.swapContractAddress.isNotEmpty
+                  ? swapBloc.receiveCoin
+                  : swapBloc.sellCoin.coin) *
+          (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
+                  swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty
+              ? Decimal.parse('3')
+              : Decimal.parse('2'));
+
+      if (Decimal.parse(ethBalance.balance.balance) < feeERC) {
         Scaffold.of(mContext).showSnackBar(SnackBar(
           duration: const Duration(seconds: 2),
           backgroundColor: Theme.of(context).primaryColor,
