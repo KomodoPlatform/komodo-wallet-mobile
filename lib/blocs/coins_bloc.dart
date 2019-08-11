@@ -189,12 +189,12 @@ class CoinsBloc implements BlocBase {
     Coin coinToactivate;
 
     currentCoinActivate(
-          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
+        CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
     await MarketMakerService().activeCoin(coin).then((ActiveCoin activeCoin) {
       coinToactivate = coin;
       currentCoinActivate(
-          CoinToActivate(currentStatus: '${coin.name} activate.'));
-    }).catchError((dynamic onError) async{
+          CoinToActivate(currentStatus: '${coin.name} activated.'));
+    }).catchError((dynamic onError) async {
       coinToactivate = null;
 
       if (onError is ErrorString &&
@@ -206,15 +206,17 @@ class CoinsBloc implements BlocBase {
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
       }
-      await Future<dynamic>.delayed(const Duration(seconds: 2)).then((dynamic _){
+      await Future<dynamic>.delayed(const Duration(seconds: 2))
+          .then((dynamic _) {
         currentCoinActivate(null);
       });
-    }).timeout(const Duration(seconds: 10), onTimeout: () async{
+    }).timeout(const Duration(seconds: 10), onTimeout: () async {
       coinToactivate = null;
       print('Sorry, ${coin.abbr} not available.');
       currentCoinActivate(
           CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
-      await Future<dynamic>.delayed(const Duration(seconds: 2)).then((dynamic _){
+      await Future<dynamic>.delayed(const Duration(seconds: 2))
+          .then((dynamic _) {
         currentCoinActivate(null);
       });
     });
@@ -261,7 +263,8 @@ class CoinsBloc implements BlocBase {
 
   Future<File> resetCoinDefault() async {
     final File file = await _localFile;
-    return file.writeAsString(json.encode(await MarketMakerService().loadJsonCoinsDefault()));
+    return file.writeAsString(
+        json.encode(await MarketMakerService().loadJsonCoinsDefault()));
   }
 
   Future<List<Coin>> readJsonCoin() async {
@@ -275,8 +278,8 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<List<Coin>> getAllNotActiveCoins() async {
-    final List<Coin> allCoins =
-        await MarketMakerService().loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
+    final List<Coin> allCoins = await MarketMakerService()
+        .loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
     final List<Coin> coinsNotActivated = <Coin>[];
 
@@ -361,7 +364,9 @@ class CoinsBloc implements BlocBase {
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
     dynamic balance;
     try {
-      balance = await MarketMakerService().getBalance(coin).timeout(const Duration(seconds: 15));
+      balance = await MarketMakerService()
+          .getBalance(coin)
+          .timeout(const Duration(seconds: 15));
     } catch (e) {
       print(e);
       balance = null;
@@ -404,7 +409,9 @@ class CoinsBloc implements BlocBase {
     final List<Coin> coinsAll = await getAllNotActiveCoins();
 
     try {
-      await MarketMakerService().getCoinToKickStart().then((CoinToKickStart coinsToKickStart) {
+      await MarketMakerService()
+          .getCoinToKickStart()
+          .then((CoinToKickStart coinsToKickStart) {
         for (Coin coin in coinsAll) {
           for (String coinToKickStart in coinsToKickStart.result) {
             if (coin.abbr == coinToKickStart.toString()) {
