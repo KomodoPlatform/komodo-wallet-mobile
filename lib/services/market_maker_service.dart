@@ -136,7 +136,7 @@ class MarketMakerService {
   }
 
   Future<void> initCheckLogs() async {
-    final File fileLog = File('${filesPath}log');
+    final File fileLog = File('${filesPath}log.txt');
     if (!fileLog.existsSync()) {
       await fileLog.create();
     }
@@ -190,10 +190,12 @@ class MarketMakerService {
       dbdir: filesPath
     ));
 
+    final File fileLog = File('${filesPath}log.txt');
+    sink = fileLog.openWrite();
+
     if (Platform.isAndroid) {
       await stopmm2();
       await waitUntilMM2isStop();
-      final File fileLog = File('${filesPath}log');
       if (fileLog.existsSync()) {
         await fileLog.delete();
       }
@@ -201,10 +203,9 @@ class MarketMakerService {
 
       try {
         await initCheckLogs();
-        File('${filesPath}log');
 
         mm2Process = await Process.start(
-            '/system/bin/sh', <String>['-c', './mm2 > log 2>&1'],
+            '/system/bin/sh', <String>['-c', './mm2 > log.txt 2>&1'],
             mode: ProcessStartMode.detached, workingDirectory: filesPath);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setInt('mm2ProcessPID', mm2Process.pid);
@@ -213,6 +214,7 @@ class MarketMakerService {
         rethrow;
       }
     } else if (Platform.isIOS) {
+      print('fileLog-------------');
       eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
       try {
         await platformmm2.invokeMethod<dynamic>(
@@ -247,6 +249,9 @@ class MarketMakerService {
 
   void _onLogsmm2(String log) {
     print(log);
+    if (!Platform.isAndroid) {
+      sink.write(log + '\n');
+    }
     if (log.contains('CONNECTED') ||
         log.contains('Entering the taker_swap_loop') ||
         log.contains('Received \'negotiation') ||
