@@ -214,7 +214,6 @@ class MarketMakerService {
         rethrow;
       }
     } else if (Platform.isIOS) {
-      print('fileLog-------------');
       eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
       try {
         await platformmm2.invokeMethod<dynamic>(
