@@ -298,6 +298,16 @@ class CoinsBloc implements BlocBase {
     return coinsNotActivated;
   }
 
+  Future<List<Coin>> getAllNotActiveCoinsWithFilter(String query) async {
+    List<Coin> coinsActivate = await getAllNotActiveCoins();
+    coinsActivate = coinsActivate
+        .where((Coin item) =>
+            item.abbr.toLowerCase().contains(query.toLowerCase()) ||
+            item.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return coinsActivate;
+  }
+
   void addActivateCoin(Coin coin) {
     coinToActivate.add(coin);
     _inCoinToActivate.add(coinToActivate);

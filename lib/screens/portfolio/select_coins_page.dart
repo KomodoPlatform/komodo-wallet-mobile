@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -19,6 +20,7 @@ class SelectCoinsPage extends StatefulWidget {
 class _SelectCoinsPageState extends State<SelectCoinsPage> {
   bool isActive = false;
   StreamSubscription<bool> sub;
+  List<Coin> currentCoins = <Coin>[];
 
   @override
   void initState() {
@@ -28,7 +30,15 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         Navigator.of(context).pop();
       }
     });
+    initCurrentCoins();
     super.initState();
+  }
+
+  Future<void> initCurrentCoins() async {
+    final List<Coin> getCoins = await coinsBloc.getAllNotActiveCoins();
+    setState(() {
+      currentCoins = getCoins;
+    });
   }
 
   @override
@@ -69,53 +79,63 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
               if (snapshot.data != null) {
                 return LoadingCoin();
               } else {
-                return SafeArea(
-                  child: isActive
-                      ? LoadingCoin()
-                      : Stack(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          children: <Widget>[
-                            ListView(
-                              padding:
-                                  const EdgeInsets.only(bottom: 100, top: 32),
-                              children: <Widget>[
-                                _buildHeader(),
-                                const SizedBox(
-                                  height: 32,
-                                ),
-                                _buildListCoin(),
-                              ],
-                            ),
-                            Container(
-                              height: 100,
-                              color: Theme.of(context).primaryColor,
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: StreamBuilder<List<Coin>>(
-                                      initialData: coinsBloc.coinToActivate,
-                                      stream: coinsBloc.outCoinToActivate,
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<List<Coin>> snapshot) {
-                                        return PrimaryButton(
-                                          key: const Key('done-activate-coins'),
-                                          text:
-                                              AppLocalizations.of(context).done,
-                                          isLoading: isActive,
-                                          onPressed: snapshot.hasData &&
-                                                  snapshot.data != null &&
-                                                  snapshot.data.isNotEmpty
-                                              ? _pressDoneButton
-                                              : null,
-                                        );
-                                      }),
+                return isActive
+                    ? LoadingCoin()
+                    : Stack(
+                        alignment: AlignmentDirectional.bottomCenter,
+                        children: <Widget>[
+                          ListView(
+                            padding:
+                                const EdgeInsets.only(bottom: 100, top: 32),
+                            children: <Widget>[
+                              const SizedBox(
+                                height: 32,
+                              ),
+                              _buildListCoin(),
+                            ],
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                                height: 75,
+                                color: Theme.of(context).backgroundColor,
+                                child: _buildHeader()),
+                          ),
+                          Container(
+                            color: Theme.of(context).primaryColor,
+                            child: SafeArea(
+                              child: Container(
+                                height: 60,
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: StreamBuilder<List<Coin>>(
+                                        initialData: coinsBloc.coinToActivate,
+                                        stream: coinsBloc.outCoinToActivate,
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<List<Coin>>
+                                                snapshot) {
+                                          return PrimaryButton(
+                                            key: const Key(
+                                                'done-activate-coins'),
+                                            text: AppLocalizations.of(context)
+                                                .done,
+                                            isLoading: isActive,
+                                            onPressed: snapshot.hasData &&
+                                                    snapshot.data != null &&
+                                                    snapshot.data.isNotEmpty
+                                                ? _pressDoneButton
+                                                : null,
+                                          );
+                                        }),
+                                  ),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                );
+                            ),
+                          )
+                        ],
+                      );
               }
             }));
   }
@@ -128,45 +148,40 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   Widget _buildListCoin() {
-    return FutureBuilder<List<Coin>>(
-      future: coinsBloc.getAllNotActiveCoins(),
-      builder: (BuildContext context, AsyncSnapshot<List<Coin>> snapshot) {
-        if (snapshot.hasData &&
-            snapshot.data != null &&
-            snapshot.data != null) {
-          final List<Widget> coinsToActivate = <Widget>[];
+    final List<Widget> coinsToActivate = <Widget>[];
 
-          for (Coin coin in snapshot.data) {
-            coinsToActivate.add(BuildItemCoin(
-              key: Key('coin-activate-${coin.abbr}'),
-              coin: coin,
-            ));
-          }
-          return Column(
-            children: coinsToActivate,
-          );
-        } else {
-          return Center(
-            child: const CircularProgressIndicator(),
-          );
-        }
-      },
+    for (Coin coin in currentCoins) {
+      coinsToActivate.add(BuildItemCoin(
+        key: Key('coin-activate-${coin.abbr}'),
+        coin: coin,
+      ));
+    }
+    return Column(
+      children: coinsToActivate,
     );
   }
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.only(left: 32, right: 32),
+      padding: const EdgeInsets.only(left: 16, right: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              AppLocalizations.of(context).selectCoinInfo,
+              style: Theme.of(context).textTheme.body2,
+            ),
+          ),
           const SizedBox(
             height: 8,
           ),
-          Text(
-            AppLocalizations.of(context).selectCoinInfo,
-            style: Theme.of(context).textTheme.body2,
-          )
+          SearchFieldFilterCoin(onFilterCoins: (List<Coin> coinsFiltered) {
+            setState(() {
+              currentCoins = coinsFiltered;
+            });
+          }),
         ],
       ),
     );
@@ -252,5 +267,61 @@ class _LoadingCoinState extends State<LoadingCoin> {
             })
       ],
     ));
+  }
+}
+
+class SearchFieldFilterCoin extends StatefulWidget {
+  const SearchFieldFilterCoin({Key key, this.onFilterCoins}) : super(key: key);
+
+  final Function(List<Coin>) onFilterCoins;
+
+  @override
+  _SearchFieldFilterCoinState createState() => _SearchFieldFilterCoinState();
+}
+
+class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
+  final FocusNode _focus = FocusNode();
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        FocusScope.of(context).requestFocus(_focus);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(32),
+          color: Theme.of(context).primaryColor,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextFormField(
+                focusNode: _focus,
+                maxLength: 50,
+                maxLines: 1,
+                cursorColor: Theme.of(context).accentColor,
+                decoration: InputDecoration(
+                    counterText: '',
+                    border: InputBorder.none,
+                    hintStyle: Theme.of(context).textTheme.body1,
+                    labelStyle: Theme.of(context).textTheme.body1,
+                    hintText: AppLocalizations.of(context).searchFilterCoin,
+                    labelText: null),
+                onChanged: (String query) async {
+                  widget.onFilterCoins(
+                      await coinsBloc.getAllNotActiveCoinsWithFilter(query));
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Icon(Icons.search),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
