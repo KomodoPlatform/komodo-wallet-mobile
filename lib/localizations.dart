@@ -502,6 +502,9 @@ class AppLocalizations {
         args: <Object>[amount],
       );
   String get searchFilterCoin => Intl.message('Search a coin', name: 'searchFilterCoin');
+  String get searchFilterSubtitleSmartChain => Intl.message('Select all SmartChains', name: 'searchFilterSubtitleSmartChain');
+  String get searchFilterSubtitleERC => Intl.message('Select all ERC', name: 'searchFilterSubtitleERC');
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
