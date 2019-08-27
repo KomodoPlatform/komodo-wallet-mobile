@@ -97,10 +97,8 @@ void main() {
   group('Activates coins', () {
     final List<String> coinsToActivate = <String>[
       'BCH',
-      'ETH',
       'DASH',
       'LTC',
-      'USDC',
       'DOGE',
       'DGB',
       'QTUM',
@@ -108,9 +106,11 @@ void main() {
       'ZILLA',
       'RVN',
       'VRSC',
-      'BAT',
       'RICK',
-      'MORTY'
+      'MORTY',
+      'ETH',
+      'USDC',
+      'BAT',
     ];
 
     test('Activates all coins', () async {

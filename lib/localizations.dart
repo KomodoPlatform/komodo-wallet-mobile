@@ -492,23 +492,21 @@ class AppLocalizations {
   String get configureWallet =>
       Intl.message('Configuring your wallet, please wait...',
           name: 'configureWallet');
-    String get titleCurrentAsk =>
-      Intl.message('Order selected',
-          name: 'titleCurrentAsk');
-    String get txFeeTitle =>
-      Intl.message('transaction fee:',
-          name: 'txFeeTitle');
-    String get tradingFee =>
-      Intl.message('trading fee:',
-          name: 'tradingFee');
-      String swapErcAmount(String amount) => Intl.message(
+  String get titleCurrentAsk =>
+      Intl.message('Order selected', name: 'titleCurrentAsk');
+  String get txFeeTitle => Intl.message('transaction fee:', name: 'txFeeTitle');
+  String get tradingFee => Intl.message('trading fee:', name: 'tradingFee');
+  String swapErcAmount(String amount) => Intl.message(
         'This swap requires $amount ETH for transaction fees',
         name: 'swapErcAmount',
         args: <Object>[amount],
       );
-      String get remove =>
+  String get remove =>
       Intl.message('Remove',
           name: 'remove');
+  String get searchFilterCoin => Intl.message('Search a coin', name: 'searchFilterCoin');
+  String get searchFilterSubtitleSmartChain => Intl.message('Select all SmartChains', name: 'searchFilterSubtitleSmartChain');
+  String get searchFilterSubtitleERC => Intl.message('Select all ERC', name: 'searchFilterSubtitleERC');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
