@@ -1,32 +1,31 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:bs58check/bs58check.dart' as bs58check;
 import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
+import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
-import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_address_step.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
 import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share/share.dart';
 
 class CoinDetail extends StatefulWidget {
@@ -62,19 +61,19 @@ class CoinDetail extends StatefulWidget {
     });
 
     MarketMakerService()
-        .postWithdraw(
-            coinBalance.coin,
-            coinBalance.balance.address,
-            (Decimal.parse(coinBalance.balance.getBalance()) -
+        .postWithdraw(GetWithdraw(
+            coin: coinBalance.coin.abbr,
+            to: coinBalance.balance.address,
+            amount: (Decimal.parse(coinBalance.balance.getBalance()) -
                     (Decimal.parse(coinBalance.coin.txfee.toString()) /
                         Decimal.parse('100000000')))
-                .toDouble(),
-            true)
+                .toString(),
+            max: true))
         .then((dynamic data) {
       Navigator.of(mContext).pop();
       if (data is WithdrawResponse) {
         print(data.myBalanceChange);
-        if (data.myBalanceChange > 0) {
+        if (double.parse(data.myBalanceChange) > 0) {
           dialogBloc.dialog = showDialog<dynamic>(
             context: mContext,
             builder: (BuildContext context) {
@@ -153,28 +152,25 @@ class CoinDetail extends StatefulWidget {
 }
 
 class _CoinDetailState extends State<CoinDetail> {
-  String barcode = '';
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  bool _onWithdrawPost = false;
-  NumberFormat f = NumberFormat('###,###.0#');
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool isExpanded = false;
-  int currentIndex = 0;
-  List<Widget> listSteps = <Widget>[];
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   final FocusNode _focus = FocusNode();
-  String fromId;
-  int limit = 10;
-  bool isLoading = false;
-  double elevationHeader = 0.0;
-  bool loadingWithdrawDialog = true;
-  CoinBalance currentCoinBalance;
-  bool isSendIsActive;
-  Timer timer;
   BuildContext mainContext;
+  String fromId;
+  bool isExpanded = false;
+  bool isLoading = false;
+  bool loadingWithdrawDialog = true;
+  bool isSendIsActive;
+  double elevationHeader = 0.0;
+  int currentIndex = 0;
+  int limit = 10;
+  CoinBalance currentCoinBalance;
+  NumberFormat f = NumberFormat('###,###.0#');
+  List<Widget> listSteps = <Widget>[];
+  Timer timer;
 
   @override
   void initState() {
@@ -505,11 +501,13 @@ class _CoinDetailState extends State<CoinDetail> {
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                  color: transaction.myBalanceChange > 0
+                                  color: double.parse(
+                                              transaction.myBalanceChange) >
+                                          0
                                       ? Colors.green
                                       : Colors.redAccent,
                                   width: 2)),
-                          child: transaction.myBalanceChange > 0
+                          child: double.parse(transaction.myBalanceChange) > 0
                               ? Icon(
                                   Icons.arrow_downward,
                                   color: Colors.white,
@@ -530,15 +528,15 @@ class _CoinDetailState extends State<CoinDetail> {
                             child: Builder(builder: (BuildContext context) {
                               final String amount = widget.coinBalance.coin
                                       .swapContractAddress.isNotEmpty
-                                  ? replaceAllTrainlingZeroERC(transaction
-                                      .myBalanceChange
-                                      .toStringAsFixed(16))
-                                  : replaceAllTrainlingZero(transaction
-                                      .myBalanceChange
-                                      .toStringAsFixed(8));
+                                  ? replaceAllTrainlingZeroERC(
+                                      double.parse(transaction.myBalanceChange)
+                                          .toStringAsFixed(16))
+                                  : replaceAllTrainlingZero(
+                                      double.parse(transaction.myBalanceChange)
+                                          .toStringAsFixed(8));
 
                               return AutoSizeText(
-                                '${transaction.myBalanceChange > 0 ? '+' : ''}$amount ${currentCoinBalance.coin.abbr}',
+                                '${double.parse(transaction.myBalanceChange) > 0 ? '+' : ''}$amount ${currentCoinBalance.coin.abbr}',
                                 maxLines: 1,
                                 style: subtitle,
                                 textAlign: TextAlign.end,
@@ -766,397 +764,6 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
-  Widget _buildWithdrawButton(BuildContext context) {
-    if (_onWithdrawPost) {
-      return Center(
-        child: Container(
-            height: 30,
-            width: 30,
-            child: const CircularProgressIndicator(
-              strokeWidth: 2,
-            )),
-      );
-    } else {
-      return Container(
-        width: double.infinity,
-        height: 50,
-        child: Builder(
-          builder: (BuildContext mContext) {
-            return RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0)),
-              color: Theme.of(context).buttonColor,
-              disabledColor: Theme.of(context).disabledColor,
-              child: Text(
-                AppLocalizations.of(context).withdraw.toUpperCase(),
-                style: Theme.of(context).textTheme.button,
-              ),
-              onPressed: () async {
-                // Validate will return true if the form is valid, or false if
-                // the form is invalid.
-                setState(() {
-                  _amountController.text =
-                      _amountController.text.replaceAll(',', '.');
-                });
-                if (_formKey.currentState.validate()) {
-                  final Widget buildConfirmationStep =
-                      await _buildConfirmationStep(mContext);
-
-                  setState(() {
-                    isExpanded = false;
-                    listSteps.add(buildConfirmationStep);
-                  });
-                  setState(() {
-                    currentIndex = 1;
-                    isExpanded = true;
-                  });
-                }
-              },
-            );
-          },
-        ),
-      );
-    }
-  }
-
-  Future<Widget> _buildConfirmationStep(BuildContext mContext) async {
-    final bool isErcCoin =
-        widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
-    bool notEnoughEth = false;
-    bool isEthActive = false;
-    double fee = 0;
-    try {
-      fee = await getFee();
-    } catch (e) {
-      print(e);
-    }
-
-    double amountToPay = double.parse(_amountController.text);
-    if (!isErcCoin) {
-      amountToPay += fee;
-    }
-    double amountUserReceive = double.parse(_amountController.text);
-    final double userBalance =
-        double.parse(widget.coinBalance.balance.getBalance());
-
-    if (amountToPay > userBalance) {
-      amountUserReceive = userBalance;
-    }
-
-    if (userBalance == amountUserReceive) {
-      amountToPay = amountUserReceive;
-      if (!isErcCoin) {
-        amountUserReceive -= fee;
-      }
-    }
-    CoinBalance ethCoin;
-    for (CoinBalance coinBalance in coinsBloc.coinBalance) {
-      if (coinBalance.coin.abbr == 'ETH') {
-        ethCoin = coinBalance;
-      }
-    }
-
-    isEthActive = !(ethCoin == null);
-
-    if (ethCoin != null && fee > double.parse(ethCoin.balance.balance)) {
-      notEnoughEth = true;
-    }
-
-    final bool isButtonActive =
-        (widget.coinBalance.coin.swapContractAddress.isEmpty &&
-                amountToPay > 0) ||
-            (amountToPay > 0 && !notEnoughEth && isEthActive);
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            AppLocalizations.of(context).youAreSending,
-            style: Theme.of(context).textTheme.subtitle,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Text(
-                amountToPay.toStringAsFixed(8),
-                style: Theme.of(context).textTheme.subtitle,
-              ),
-              const SizedBox(
-                width: 4,
-              ),
-              Text(
-                currentCoinBalance.coin.abbr,
-                style: Theme.of(context).textTheme.body1,
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Text(
-                '- ',
-                style: Theme.of(context).textTheme.body2,
-              ),
-              Text(
-                fee.toStringAsFixed(8),
-                style: Theme.of(context).textTheme.body2,
-              ),
-              const SizedBox(
-                width: 4,
-              ),
-              Text(
-                isErcCoin
-                    ? AppLocalizations.of(context).ethFee
-                    : AppLocalizations.of(context).networkFee,
-                style: Theme.of(context).textTheme.body2,
-              ),
-            ],
-          ),
-          widget.coinBalance.coin.swapContractAddress.isNotEmpty &&
-                  notEnoughEth &&
-                  isEthActive
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of(context).notEnoughEth,
-                      style: Theme.of(context)
-                          .textTheme
-                          .body2
-                          .copyWith(color: Theme.of(context).errorColor),
-                    ),
-                  ],
-                )
-              : Container(),
-          widget.coinBalance.coin.swapContractAddress.isNotEmpty && !isEthActive
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of(context).ethNotActive,
-                      style: Theme.of(context)
-                          .textTheme
-                          .body2
-                          .copyWith(color: Theme.of(context).errorColor),
-                    ),
-                  ],
-                )
-              : Container(),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Container(
-              height: 1,
-              width: double.infinity,
-              color: Theme.of(context).textSelectionColor.withOpacity(0.4),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Text(
-                amountUserReceive.toStringAsFixed(8),
-                style: Theme.of(context).textTheme.title,
-              ),
-              const SizedBox(
-                width: 4,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 2),
-                child: Text(
-                  currentCoinBalance.coin.abbr,
-                  style: Theme.of(context).textTheme.subtitle,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(
-            AppLocalizations.of(context).toAddress,
-            style: Theme.of(context).textTheme.subtitle,
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          Container(
-            child: AutoSizeText(
-              _addressController.text,
-              style: Theme.of(context).textTheme.body1,
-              maxLines: 1,
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  height: 50,
-                  child: InkWell(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    onTap: () {
-                      setState(() {
-                        isExpanded = false;
-                        _waitForInit();
-                      });
-                    },
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context).cancel.toUpperCase(),
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Expanded(
-                child: Container(
-                  height: 50,
-                  child: Builder(builder: (BuildContext context) {
-                    return RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0)),
-                      color: Theme.of(context).buttonColor,
-                      disabledColor: Theme.of(context).disabledColor,
-                      child: Text(
-                        AppLocalizations.of(context).confirm.toUpperCase(),
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                      onPressed: isButtonActive
-                          ? () {
-                              _onPressedConfirmWithdraw(
-                                  mContext, amountUserReceive);
-                            }
-                          : null,
-                    );
-                  }),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Future<double> getFee() async {
-    try {
-      final TradeFee tradeFeeResponse =
-          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
-      return double.parse(tradeFeeResponse.result.amount);
-    } catch (e) {
-      print(e);
-      return 0;
-    }
-  }
-
-  Future<void> _onPressedConfirmWithdraw(
-      BuildContext mContext, double sendAmount) async {
-    if (mainBloc.isNetworkOffline) {
-      Scaffold.of(mainContext).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        backgroundColor: Theme.of(context).errorColor,
-        content: Text(AppLocalizations.of(mainContext).noInternet),
-      ));
-    } else {
-      setState(() {
-        isSendIsActive = false;
-      });
-      listSteps.add(Container(
-          height: 100,
-          width: double.infinity,
-          child: Center(
-            child: const CircularProgressIndicator(
-              strokeWidth: 2,
-            ),
-          )));
-      setState(() {
-        currentIndex = 2;
-      });
-
-      MarketMakerService()
-          .postWithdraw(
-              currentCoinBalance.coin,
-              _addressController.text.toString(),
-              sendAmount,
-              double.parse(widget.coinBalance.balance.getBalance()) ==
-                  double.parse(_amountController.text))
-          .then((dynamic data) {
-        if (data is WithdrawResponse) {
-          MarketMakerService()
-              .postRawTransaction(widget.coinBalance.coin, data.txHex)
-              .then((dynamic dataRawTx) {
-            if (dataRawTx is SendRawTransactionResponse &&
-                dataRawTx.txHash.isNotEmpty) {
-              setState(() {
-                _onWithdrawPost = false;
-                coinsBloc.updateTransactions(
-                    widget.coinBalance.coin, limit, null);
-                coinsBloc.loadCoin();
-                Future<dynamic>.delayed(const Duration(seconds: 5), () {
-                  coinsBloc.loadCoin();
-                });
-                listSteps.add(Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Container(
-                    width: double.infinity,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                            child: InkWell(
-                          onTap: () {
-                            _copyToClipBoard(context, dataRawTx.txHash);
-                          },
-                          child: Column(
-                            children: <Widget>[
-                              Text(AppLocalizations.of(context).success),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              Icon(
-                                Icons.check_circle_outline,
-                                color: Theme.of(context).hintColor,
-                                size: 60,
-                              )
-                            ],
-                          ),
-                        )),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                ));
-                currentIndex = 3;
-              });
-            } else {
-              catchError(mainContext);
-            }
-          }).catchError((dynamic onError) {
-            catchError(mainContext);
-          });
-        } else {
-          catchError(mainContext);
-        }
-      }).catchError((dynamic onError) {
-        catchError(mainContext);
-      });
-    }
-  }
-
   void catchError(BuildContext mContext) {
     resetSend();
     Scaffold.of(mContext).showSnackBar(SnackBar(
@@ -1194,251 +801,129 @@ class _CoinDetailState extends State<CoinDetail> {
     });
   }
 
-  void _copyToClipBoard(BuildContext context, String str) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      duration: const Duration(milliseconds: 300),
-      content: Text(AppLocalizations.of(context).clipboard),
-    ));
-    Clipboard.setData(ClipboardData(text: str));
-  }
-
-  /// Open a activity for scan QRCode example usage:
-  /// MaterialButton(onPressed: scan, child:  Text('SEND'))
-  Future<void> scan() async {
-    authBloc.setIsQrCodeActive(true);
-    try {
-      final String barcode = await BarcodeScanner.scan();
-      setState(() {
-        _addressController.text = barcode;
-      });
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-        setState(() {
-          barcode = 'The user did not grant the camera permission!';
-        });
-      } else {
-        setState(() => barcode = 'Unknown error: $e');
-      }
-    } on FormatException {
-      setState(() => barcode =
-          'null (User returned using the "back"-button before scanning anything. Result)');
-    } catch (e) {
-      setState(() => barcode = 'Unknown error: $e');
-    }
-    authBloc.setIsQrCodeActive(false);
-  }
-
   void initSteps() {
     _amountController.clear();
     _addressController.clear();
     listSteps.clear();
-    listSteps.add(Container(
-      padding: const EdgeInsets.all(16),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 16),
-            Row(
-              children: <Widget>[
-                Container(
-                  height: 60,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0)),
-                    child: Text(
-                      AppLocalizations.of(context).max,
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(color: Theme.of(context).accentColor),
+    listSteps.add(AmountAddressStep(
+      isERCToken: widget.coinBalance.coin.swapContractAddress.isNotEmpty,
+      onConfirm: () async {
+        setState(() {
+          isExpanded = false;
+          listSteps.add(BuildConfirmationStep(
+            coinBalance: currentCoinBalance,
+            amountToPay: _amountController.text,
+            addressToSend: _addressController.text,
+            onCancel: () {
+              setState(() {
+                isExpanded = false;
+                _waitForInit();
+              });
+            },
+            onNoInternet: () {
+              Scaffold.of(mainContext).showSnackBar(SnackBar(
+                duration: const Duration(seconds: 2),
+                backgroundColor: Theme.of(context).errorColor,
+                content: Text(AppLocalizations.of(mainContext).noInternet),
+              ));
+            },
+            onStepChange: (int step) {
+              setState(() {
+                currentIndex = step;
+              });
+            },
+            onLoadingStep: () {
+              setState(() {
+                isSendIsActive = false;
+              });
+              listSteps.add(Container(
+                  height: 100,
+                  width: double.infinity,
+                  child: Center(
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 2,
                     ),
-                    onPressed: () {
-                      setMaxValue();
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: TextFormField(
-                    inputFormatters: <TextInputFormatter>[
-                      WhitelistingTextInputFormatter(RegExp(
-                          '^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))
-                    ],
-                    focusNode: _focus,
-                    controller: _amountController,
-                    autofocus: isSendIsActive,
-                    textInputAction: TextInputAction.done,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    style: Theme.of(context).textTheme.body1,
-                    textAlign: TextAlign.end,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColorLight)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).accentColor)),
-                        hintStyle: Theme.of(context).textTheme.body1,
-                        labelStyle: Theme.of(context).textTheme.body1,
-                        labelText: AppLocalizations.of(context).amount),
-                    // The validator receives the text the user has typed in
-                    validator: (String value) {
-                      value = value.replaceAll(',', '.');
-                      final double balance =
-                          double.parse(widget.coinBalance.balance.getBalance());
+                  )));
+              setState(() {
+                currentIndex = 2;
+              });
 
-                      if (value.isEmpty || double.parse(value) <= 0) {
-                        return AppLocalizations.of(context).errorValueNotEmpty;
-                      }
-
-                      final double currentAmount = double.parse(value);
-
-                      if (currentAmount > balance) {
-                        return AppLocalizations.of(context).errorAmountBalance;
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: <Widget>[
-                Container(
-                  height: 60,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0)),
-                    onPressed: scan,
-                    child: Icon(
-                      Icons.add_a_photo,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: TextFormField(
-                    controller: _addressController,
-                    autofocus: false,
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.text,
-                    style: Theme.of(context).textTheme.body1,
-                    textAlign: TextAlign.end,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColorLight)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).accentColor)),
-                        hintStyle: Theme.of(context).textTheme.body1,
-                        labelStyle: Theme.of(context).textTheme.body1,
-                        labelText: AppLocalizations.of(context).addressSend),
-                    // The validator receives the text the user has typed in
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return AppLocalizations.of(context).errorValueNotEmpty;
-                      }
-                      if (widget
-                          .coinBalance.coin.swapContractAddress.isNotEmpty) {
-                        if (!isAddress(value)) {
-                          return AppLocalizations.of(context)
-                              .errorNotAValidAddress;
-                        }
-                      } else {
-                        try {
-                          final Uint8List decoded = bs58check.decode(value);
-                          print(bs58check.encode(decoded));
-                        } catch (e) {
-                          print(e);
-                          return AppLocalizations.of(context)
-                              .errorNotAValidAddress;
-                        }
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            _buildWithdrawButton(context)
-          ],
-        ),
-      ),
+              final Fee fee = Fee();
+              if (coinsDetailBloc.customFee != null) {
+                if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+                  fee.type = 'EthGas';
+                  fee.gas = coinsDetailBloc.customFee.gas;
+                  fee.gasPrice = coinsDetailBloc.customFee.gasPrice;
+                } else {
+                  fee.type = 'UtxoFixed';
+                  fee.amount = coinsDetailBloc.customFee.amount;
+                }
+              }
+              MarketMakerService()
+                  .postWithdraw(GetWithdraw(
+                      fee: fee,
+                      coin: widget.coinBalance.coin.abbr,
+                      to: _addressController.text,
+                      amount: _amountController.text,
+                      max: double.parse(
+                              widget.coinBalance.balance.getBalance()) ==
+                          double.parse(_amountController.text)))
+                  .then((dynamic data) {
+                if (data is WithdrawResponse) {
+                  MarketMakerService()
+                      .postRawTransaction(widget.coinBalance.coin, data.txHex)
+                      .then((dynamic dataRawTx) {
+                    if (dataRawTx is SendRawTransactionResponse &&
+                        dataRawTx.txHash.isNotEmpty) {
+                      setState(() {
+                        coinsBloc.updateTransactions(
+                            widget.coinBalance.coin, 10, null);
+                        coinsBloc.loadCoin();
+                        Future<dynamic>.delayed(const Duration(seconds: 5), () {
+                          coinsBloc.loadCoin();
+                        });
+                        listSteps.add(SuccessStep(
+                          txHash: dataRawTx.txHash,
+                        ));
+                        setState(() {
+                          currentIndex = 3;
+                        });
+                      });
+                    } else {
+                      catchError(mainContext);
+                    }
+                  }).catchError((dynamic onError) {
+                    catchError(mainContext);
+                  });
+                } else {
+                  catchError(mainContext);
+                }
+              }).catchError((dynamic onError) {
+                catchError(mainContext);
+              });
+            },
+            onError: () {
+              catchError(mainContext);
+            },
+            onSuccessStep: (String txHash) {
+              listSteps.add(SuccessStep(
+                txHash: txHash,
+              ));
+            },
+          ));
+        });
+        setState(() {
+          currentIndex = 1;
+          isExpanded = true;
+        });
+      },
+      onMaxValue: setMaxValue,
+      focusNode: _focus,
+      addressController: _addressController,
+      amountController: _amountController,
+      balance: double.parse(widget.coinBalance.balance.getBalance()),
     ));
   }
 }
 
 enum StatusButton { SEND, RECEIVE, CLAIM }
-
-void showAddressDialog(BuildContext mContext, String address) {
-  dialogBloc.dialog = showDialog<dynamic>(
-    context: mContext,
-    builder: (BuildContext context) {
-      // return object of type Dialog
-      return AlertDialog(
-        contentPadding: const EdgeInsets.all(16),
-        titlePadding: const EdgeInsets.all(0),
-        shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.circular(6.0)),
-        content: InkWell(
-          onTap: () {
-            copyToClipBoard(mContext, address);
-          },
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.4,
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: QrImage(
-                    foregroundColor: Colors.white,
-                    data: address,
-                  ),
-                ),
-                Container(
-                  child: Center(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-                    child: AutoSizeText(
-                      address,
-                      style: Theme.of(context).textTheme.body1,
-                      maxLines: 2,
-                    ),
-                  )),
-                )
-              ],
-            ),
-          ),
-        ),
-        actions: <Widget>[
-          // usually buttons at the bottom of the dialog
-          FlatButton(
-            child: Text(AppLocalizations.of(context).close.toUpperCase()),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  ).then((dynamic data) {
-    dialogBloc.dialog = null;
-  });
-}

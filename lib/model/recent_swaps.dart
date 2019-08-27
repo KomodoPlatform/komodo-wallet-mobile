@@ -217,7 +217,7 @@ class Data {
         coin: json['coin'] ?? '',
         feeDetails: json['fee_details'] == null
             ? null
-            : FeeDetails.fromJson(json['fee_details']),
+            : FeeDetailsString.fromJson(json['fee_details']),
         from: json['from'] == null
             ? null
             : List<String>.from(json['from'].map((dynamic x) => x)),
@@ -260,7 +260,7 @@ class Data {
   String takerPubkey;
   int blockHeight;
   String coin;
-  FeeDetails feeDetails;
+  FeeDetailsString feeDetails;
   List<String> from;
   String internalId;
   double myBalanceChange;
@@ -341,7 +341,7 @@ class Transaction {
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
         blockHeight: json['block_height'] ?? 0,
         coin: json['coin'] ?? '',
-        feeDetails: json['fee_details'] == null ? null : FeeDetails.fromJson(json['fee_details']),
+        feeDetails: json['fee_details'] == null ? null : FeeDetailsString.fromJson(json['fee_details']),
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
         internalId: json['internal_id'] ?? '',
@@ -358,7 +358,7 @@ class Transaction {
 
   int blockHeight;
   String coin;
-  FeeDetails feeDetails;
+  FeeDetailsString feeDetails;
   List<String> from;
   String internalId;
   double myBalanceChange;

@@ -637,20 +637,11 @@ class MarketMakerService {
     }
   }
 
-  Future<dynamic> postWithdraw(
-      Coin coin, String addressTo, double amount, bool isMax) async {
-    final GetWithdraw getWithdraw = GetWithdraw(
-      userpass: userpass,
-      method: 'withdraw',
-      coin: coin.abbr,
-      to: addressTo,
-      max: isMax,
-    );
-    if (!isMax) {
-      getWithdraw.amount = amount;
-    }
+  Future<dynamic> postWithdraw(GetWithdraw getWithdraw) async {
+    getWithdraw.userpass = userpass;
+    // getWithdraw.fee = null;
 
-    print('<<<<<<<<<<<<<<<<<<sending: ' + amount.toString());
+    print('<<<<<<<<<<<<<<<<<<sending: ' + getWithdraw.amount.toString());
     print(getWithdrawToJson(getWithdraw));
 
     try {
