@@ -35,15 +35,6 @@ class CoinsBloc implements BlocBase {
   Sink<dynamic> get _inTransactions => _transactionsController.sink;
   Stream<dynamic> get outTransactions => _transactionsController.stream;
 
-  List<Coin> coinToActivate = <Coin>[];
-
-  // Streams to handle the list coin to activate
-  final StreamController<List<Coin>> _coinToActivateController =
-      StreamController<List<Coin>>.broadcast();
-
-  Sink<List<Coin>> get _inCoinToActivate => _coinToActivateController.sink;
-  Stream<List<Coin>> get outCoinToActivate => _coinToActivateController.stream;
-
   CoinToActivate currentActiveCoin = CoinToActivate();
 
   // Streams to handle the list coin
@@ -65,6 +56,35 @@ class CoinsBloc implements BlocBase {
   Stream<bool> get outCloseViewSelectCoin =>
       _closeViewSelectCoinController.stream;
 
+  bool isAllSmartChainActive = false;
+
+  final StreamController<bool> _isAllSmartChainActiveController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inIsAllSmartChainActive =>
+      _isAllSmartChainActiveController.sink;
+  Stream<bool> get outIsAllSmartChainActive =>
+      _isAllSmartChainActiveController.stream;
+
+  bool isERCActive = false;
+
+  final StreamController<bool> _isERCActiveController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inIsERCActive => _isERCActiveController.sink;
+  Stream<bool> get outIsERCActive => _isERCActiveController.stream;
+
+  List<CoinToActivate> coinBeforeActivation = <CoinToActivate>[];
+
+  // Streams to handle the list coin to activate
+  final StreamController<List<CoinToActivate>> _coinBeforeActivationController =
+      StreamController<List<CoinToActivate>>.broadcast();
+
+  Sink<List<CoinToActivate>> get _inCoinBeforeActivation =>
+      _coinBeforeActivationController.sink;
+  Stream<List<CoinToActivate>> get outCoinBeforeActivation =>
+      _coinBeforeActivationController.stream;
+
   Timer timer;
   bool onActivateCoins = false;
 
@@ -72,9 +92,40 @@ class CoinsBloc implements BlocBase {
   void dispose() {
     _coinsController.close();
     _transactionsController.close();
-    _coinToActivateController.close();
     _currentActiveCoinController.close();
     _closeViewSelectCoinController.close();
+    _isAllSmartChainActiveController.close();
+    _coinBeforeActivationController.close();
+  }
+
+  Future<void> initCoinBeforeActivation() async {
+    final List<CoinToActivate> coinBeforeActivation = <CoinToActivate>[];
+
+    for (Coin coin in await getAllNotActiveCoins()) {
+      coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
+    }
+    this.coinBeforeActivation = coinBeforeActivation;
+    _inCoinBeforeActivation.add(this.coinBeforeActivation);
+  }
+
+  void setCoinBeforeActivation(Coin coin, bool isActive) {
+    coinBeforeActivation
+        .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
+    coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
+    coinBeforeActivation.sort((CoinToActivate a, CoinToActivate b) =>
+        a.coin.swapContractAddress.compareTo(b.coin.swapContractAddress));
+
+    _inCoinBeforeActivation.add(coinBeforeActivation);
+  }
+
+  void setIsERCActive(bool isERCActive) {
+    this.isERCActive = isERCActive;
+    _inIsERCActive.add(this.isERCActive);
+  }
+
+  void setIsAllSmartChainActive(bool isAllSmartChainActive) {
+    this.isAllSmartChainActive = isAllSmartChainActive;
+    _inIsAllSmartChainActive.add(this.isAllSmartChainActive);
   }
 
   void setCloseViewSelectCoin(bool closeViewSelectCoin) {
@@ -295,22 +346,19 @@ class CoinsBloc implements BlocBase {
       }
     }
 
+    coinsNotActivated.sort((Coin a, Coin b) =>
+        a.swapContractAddress.compareTo(b.swapContractAddress));
     return coinsNotActivated;
   }
 
-  void addActivateCoin(Coin coin) {
-    coinToActivate.add(coin);
-    _inCoinToActivate.add(coinToActivate);
-  }
-
-  void removeActivateCoin(Coin coin) {
-    coinToActivate.remove(coin);
-    _inCoinToActivate.add(coinToActivate);
-  }
-
-  void resetActivateCoin() {
-    coinToActivate.clear();
-    _inCoinToActivate.add(coinToActivate);
+  Future<List<Coin>> getAllNotActiveCoinsWithFilter(String query) async {
+    List<Coin> coinsActivate = await getAllNotActiveCoins();
+    coinsActivate = coinsActivate
+        .where((Coin item) =>
+            item.abbr.toLowerCase().contains(query.toLowerCase()) ||
+            item.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return coinsActivate;
   }
 
   void startCheckBalance() {
@@ -355,8 +403,14 @@ class CoinsBloc implements BlocBase {
     }
   }
 
-  Future<void> activateCoinsSelected(List<Coin> coinToActivate) async {
-    coinsBloc.addMultiCoins(coinToActivate).then((_) {
+  Future<void> activateCoinsSelected() async {
+    final List<Coin> coins = <Coin>[];
+    for (CoinToActivate coinToActivate in coinBeforeActivation) {
+      if (coinToActivate.isActive) {
+        coins.add(coinToActivate.coin);
+      }
+    }
+    coinsBloc.addMultiCoins(coins).then((_) {
       coinsBloc.setCloseViewSelectCoin(true);
     });
   }
