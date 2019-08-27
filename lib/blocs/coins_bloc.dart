@@ -97,6 +97,15 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
+  void removeCoins(List<Coin> coins) {
+    coins.forEach(removeCoin);
+    _inCoins.add(coinBalance);
+  }
+
+  void removeCoin(Coin coin) {
+    coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
+  }
+
   void updateOneCoin(CoinBalance coin) {
     bool isExist = false;
     int currentIndex = 0;
@@ -152,6 +161,12 @@ class CoinsBloc implements BlocBase {
     }
   }
 
+  Future<void> removeMultiCoins(List<Coin> coinsToRemove) async {
+    await removeJsonCoin(coinsToRemove);
+    removeCoins(coinsToRemove);
+    await loadCoin();
+  }
+
   Future<void> addMultiCoins(List<Coin> coins) async {
     onActivateCoins = true;
     final List<Coin> coinsReadJson = await readJsonCoin();
@@ -195,7 +210,7 @@ class CoinsBloc implements BlocBase {
       currentCoinActivate(
           CoinToActivate(currentStatus: '${coin.name} activated.'));
     }).catchError((dynamic onError) async {
-      coinToactivate = null;
+      coinToactivate = coin;
 
       if (onError is ErrorString &&
           onError.error.contains('Coin ${coin.abbr} already initialized')) {
@@ -249,6 +264,18 @@ class CoinsBloc implements BlocBase {
           .every((Coin currentCoin) => currentCoin.abbr != newCoin.abbr)) {
         currentCoins.add(newCoin);
       }
+    }
+    return file.writeAsString(json.encode(currentCoins));
+  }
+
+  Future<File> removeJsonCoin(List<Coin> coinsToRemove) async {
+    final File file = await _localFile;
+    
+    final List<Coin> currentCoins = await readJsonCoin();
+    for (Coin newCoin in coinsToRemove) {
+      currentCoins.removeWhere((Coin item) => 
+      item.abbr == newCoin.abbr
+      );
     }
     return file.writeAsString(json.encode(currentCoins));
   }

@@ -60,80 +60,80 @@ class _BlocCoinsPageState extends State<BlocCoinsPage> {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
-                    backgroundColor: Theme.of(context).backgroundColor,
-                    expandedHeight: _heightScreen * 0.25,
-                    pinned: true,
-                    flexibleSpace: Builder(
-                      builder: (BuildContext context) {
-                        return FlexibleSpaceBar(
-                            collapseMode: CollapseMode.pin,
-                            centerTitle: true,
-                            title: Container(
-                              width: _widthScreen * 0.5,
-                              child: Center(
-                                heightFactor: _heightFactor,
-                                child: StreamBuilder<List<CoinBalance>>(
-                                    initialData: coinsBloc.coinBalance,
-                                    stream: coinsBloc.outCoins,
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<List<CoinBalance>>
-                                            snapshot) {
-                                      if (snapshot.data != null) {
-                                        double totalBalanceUSD = 0;
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  expandedHeight: _heightScreen * 0.25,
+                  pinned: true,
+                  flexibleSpace: Builder(
+                    builder: (BuildContext context) {
+                      return FlexibleSpaceBar(
+                          collapseMode: CollapseMode.pin,
+                          centerTitle: true,
+                          title: Container(
+                            width: _widthScreen * 0.5,
+                            child: Center(
+                              heightFactor: _heightFactor,
+                              child: StreamBuilder<List<CoinBalance>>(
+                                  initialData: coinsBloc.coinBalance,
+                                  stream: coinsBloc.outCoins,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<CoinBalance>>
+                                          snapshot) {
+                                    if (snapshot.data != null) {
+                                      double totalBalanceUSD = 0;
 
-                                        for (CoinBalance coinBalance
-                                            in snapshot.data) {
-                                          totalBalanceUSD +=
-                                              coinBalance.balanceUSD;
-                                        }
-                                        return AutoSizeText(
-                                          '\$${f.format(totalBalanceUSD)} USD',
-                                          maxFontSize: 18,
-                                          minFontSize: 12,
-                                          style:
-                                              Theme.of(context).textTheme.title,
-                                          maxLines: 1,
-                                        );
-                                      } else {
-                                        return Center(
-                                            child: Container(
-                                          child:
-                                              const CircularProgressIndicator(),
-                                        ));
+                                      for (CoinBalance coinBalance
+                                          in snapshot.data) {
+                                        totalBalanceUSD +=
+                                            coinBalance.balanceUSD;
                                       }
-                                    }),
+                                      return AutoSizeText(
+                                        '\$${f.format(totalBalanceUSD)} USD',
+                                        maxFontSize: 18,
+                                        minFontSize: 12,
+                                        style:
+                                            Theme.of(context).textTheme.title,
+                                        maxLines: 1,
+                                      );
+                                    } else {
+                                      return Center(
+                                          child: Container(
+                                        child:
+                                            const CircularProgressIndicator(),
+                                      ));
+                                    }
+                                  }),
+                            ),
+                          ),
+                          background: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  const LoadAsset(),
+                                  const SizedBox(
+                                    height: 14,
+                                  ),
+                                  BarGraph()
+                                ],
                               ),
                             ),
-                            background: Container(
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 16),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    const LoadAsset(),
-                                    const SizedBox(
-                                      height: 14,
-                                    ),
-                                    BarGraph()
-                                  ],
-                                ),
-                              ),
-                              height: _heightScreen * 0.35,
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: const <double>[0.01, 1],
-                                colors: <Color>[
-                                  const Color.fromRGBO(39, 71, 110, 1),
-                                  Theme.of(context).accentColor,
-                                ],
-                              )),
-                            ));
-                      },
-                    ),
+                            height: _heightScreen * 0.35,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topRight,
+                              stops: const <double>[0.01, 1],
+                              colors: <Color>[
+                                const Color.fromRGBO(39, 71, 110, 1),
+                                Theme.of(context).accentColor,
+                              ],
+                            )),
+                          ));
+                    },
                   ),
+                ),
               ];
             },
             body: Container(
@@ -320,19 +320,6 @@ class ListCoinsState extends State<ListCoins> {
                     }
                   },
                 );
-                // return ListView(
-
-                //   key: const Key('list-view-coins'),
-                //   padding: const EdgeInsets.all(0),
-                //   children: datas
-                //       .map((dynamic data) => ItemCoin(
-                //         key: data is CoinBalance ? Key('coin-list-${data.coin.abbr}') : null,
-                //             mContext: context,
-                //             coinBalance: data,
-                //             slidableController: slidableController,
-                //           ))
-                //       .toList(),
-                // );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
               } else if (snapshot.data.isEmpty) {
@@ -424,6 +411,16 @@ class _ItemCoinState extends State<ItemCoin> {
           actionPane: const SlidableDrawerActionPane(),
           actionExtentRatio: 0.25,
           actions: actions,
+          secondaryActions: <Widget>[
+            IconSlideAction(
+              caption: AppLocalizations.of(context).remove.toUpperCase(),
+              color: Theme.of(context).errorColor,
+              icon: Icons.delete,
+              onTap: () {
+                coinsBloc.removeMultiCoins(<Coin>[coin]);
+              },
+            )
+          ],
           child: Builder(builder: (BuildContext context) {
             return InkWell(
               borderRadius: const BorderRadius.all(Radius.circular(4)),
@@ -633,8 +630,8 @@ class _AddCoinButtonState extends State<AddCoinButton> {
   }
 
   Future<bool> _buildAddCoinButton() async {
-    final List<Coin> allCoins =
-        await MarketMakerService().loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
+    final List<Coin> allCoins = await MarketMakerService()
+        .loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
 
     return !(allCoins.length == allCoinsActivate.length);

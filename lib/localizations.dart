@@ -506,6 +506,9 @@ class AppLocalizations {
         name: 'swapErcAmount',
         args: <Object>[amount],
       );
+      String get remove =>
+      Intl.message('Remove',
+          name: 'remove');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

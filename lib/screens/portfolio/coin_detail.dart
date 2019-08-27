@@ -14,6 +14,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
@@ -271,6 +272,13 @@ class _CoinDetailState extends State<CoinDetail> {
         appBar: AppBar(
           elevation: elevationHeader,
           actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () async {
+                coinsBloc.removeMultiCoins(<Coin>[widget.coinBalance.coin]);
+                Navigator.of(context).pop();
+              },
+            ),
             IconButton(
               icon: Icon(Icons.share),
               onPressed: () async {
