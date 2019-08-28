@@ -31,28 +31,28 @@ class WithdrawResponse {
       WithdrawResponse(
         blockHeight: json['block_height'] ?? 0,
         coin: json['coin'] ?? '',
-        feeDetails: FeeDetails.fromJson(json['fee_details']) ?? FeeDetails(),
+        feeDetails: FeeDetailsString.fromJson(json['fee_details']) ?? FeeDetailsString(),
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
-        myBalanceChange: json['my_balance_change'] ?? 0.0,
-        receivedByMe: json['received_by_me'] ?? 0.0,
-        spentByMe: json['spent_by_me'] ?? 0.0,
+        myBalanceChange: json['my_balance_change'] ?? '',
+        receivedByMe: json['received_by_me'] ?? '',
+        spentByMe: json['spent_by_me'] ?? '',
         to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
-        totalAmount: json['total_amount'] ?? 0.0,
+        totalAmount: json['total_amount'] ?? '',
         txHash: json['tx_hash'] ?? '',
         txHex: json['tx_hex'] ?? '',
       );
 
   int blockHeight;
   String coin;
-  FeeDetails feeDetails;
+  FeeDetailsString feeDetails;
   List<String> from;
-  double myBalanceChange;
-  double receivedByMe;
-  double spentByMe;
+  String myBalanceChange;
+  String receivedByMe;
+  String spentByMe;
   List<String> to;
-  double totalAmount;
+  String totalAmount;
   String txHash;
   String txHex;
 
@@ -62,12 +62,12 @@ class WithdrawResponse {
         'fee_details': feeDetails == null ? null : feeDetails.toJson(),
         'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
             <String>[],
-        'my_balance_change': myBalanceChange ?? 0.0,
-        'received_by_me': receivedByMe ?? 0.0,
-        'spent_by_me': spentByMe ?? 0.0,
+        'my_balance_change': myBalanceChange ?? '',
+        'received_by_me': receivedByMe ?? '',
+        'spent_by_me': spentByMe ?? '',
         'to':
             List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
-        'total_amount': totalAmount ?? 0.0,
+        'total_amount': totalAmount ?? '',
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',
       };

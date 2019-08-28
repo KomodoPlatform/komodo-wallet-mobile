@@ -504,7 +504,11 @@ class AppLocalizations {
   String get searchFilterCoin => Intl.message('Search a coin', name: 'searchFilterCoin');
   String get searchFilterSubtitleSmartChain => Intl.message('Select all SmartChains', name: 'searchFilterSubtitleSmartChain');
   String get searchFilterSubtitleERC => Intl.message('Select all ERC', name: 'searchFilterSubtitleERC');
-
+  String get customFee => Intl.message('Custom fee', name: 'customFee');
+  String get gas => Intl.message('Gas', name: 'gas');
+  String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
+  String get customFeeWarning => Intl.message('Only use custom fees if you know what you are doing!', name: 'customFeeWarning');
+  
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -301,7 +301,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       }
 
       if (txErcFee != null &&
-          swapBloc.sellCoin?.coin.swapContractAddress.isEmpty) {
+          swapBloc.sellCoin.coin.swapContractAddress.isEmpty) {
         return (Decimal.parse('2') * txFee).toStringAsFixed(5) +
             ' ' +
             swapBloc.sellCoin.coin.abbr +
