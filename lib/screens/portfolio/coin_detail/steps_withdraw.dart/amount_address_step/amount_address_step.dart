@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class AmountAddressStep extends StatefulWidget {
   const AmountAddressStep(
@@ -17,9 +19,11 @@ class AmountAddressStep extends StatefulWidget {
       this.autoFocus = false,
       this.balance,
       this.isERCToken = false,
-      this.onConfirm})
+      this.onConfirm,
+      this.onCancel})
       : super(key: key);
 
+  final Function onCancel;
   final Function onMaxValue;
   final FocusNode focusNode;
   final Function onConfirm;
@@ -62,7 +66,18 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               amount: widget.amountController.text,
               isERCToken: widget.isERCToken,
             ),
-            _buildWithdrawButton(context)
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: SecondaryButton(
+                    text: AppLocalizations.of(context).cancel,
+                    onPressed: widget.onCancel,
+                  ),
+                ),
+                const SizedBox(width: 16,),
+                Expanded(child: _buildWithdrawButton(context)),
+              ],
+            ),
           ],
         ),
       ),
@@ -70,34 +85,23 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   }
 
   Widget _buildWithdrawButton(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      child: Builder(
-        builder: (BuildContext mContext) {
-          return RaisedButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6.0)),
-            color: Theme.of(context).buttonColor,
-            disabledColor: Theme.of(context).disabledColor,
-            child: Text(
-              AppLocalizations.of(context).withdraw.toUpperCase(),
-              style: Theme.of(context).textTheme.button,
-            ),
-            onPressed: () async {
-              // Validate will return true if the form is valid, or false if
-              // the form is invalid.
-              setState(() {
-                widget.amountController.text =
-                    widget.amountController.text.replaceAll(',', '.');
-              });
-              if (formKey.currentState.validate()) {
-                widget.onConfirm();
-              }
-            },
-          );
-        },
-      ),
+    return Builder(
+      builder: (BuildContext mContext) {
+        return PrimaryButton(
+          text: AppLocalizations.of(context).withdraw.toUpperCase(),
+          onPressed: () async {
+            // Validate will return true if the form is valid, or false if
+            // the form is invalid.
+            setState(() {
+              widget.amountController.text =
+                  widget.amountController.text.replaceAll(',', '.');
+            });
+            if (formKey.currentState.validate()) {
+              widget.onConfirm();
+            }
+          },
+        );
+      },
     );
   }
 

@@ -47,12 +47,23 @@ class _CustomFeeState extends State<CustomFee> {
                 : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 200),
             firstChild: Container(),
-            secondChild: widget.isERCToken
-                ? CustomFeeFieldERC(
-                    isCustomFeeActive: isCustomFeeActive,
-                  )
-                : CustomFeeFieldSmartChain(
-                    isCustomFeeActive: isCustomFeeActive),
+            secondChild: Column(
+              children: <Widget>[
+                Text(
+                  AppLocalizations.of(context).customFeeWarning,
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(color: Theme.of(context).errorColor),
+                ),
+                widget.isERCToken
+                    ? CustomFeeFieldERC(
+                        isCustomFeeActive: isCustomFeeActive,
+                      )
+                    : CustomFeeFieldSmartChain(
+                        isCustomFeeActive: isCustomFeeActive),
+              ],
+            ),
           )
         ],
       ),

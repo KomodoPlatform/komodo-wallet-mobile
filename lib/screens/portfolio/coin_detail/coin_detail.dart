@@ -26,6 +26,7 @@ import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
+import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:share/share.dart';
 
 class CoinDetail extends StatefulWidget {
@@ -682,10 +683,25 @@ class _CoinDetailState extends State<CoinDetail> {
     if (currentIndex == 3 && statusButton == StatusButton.SEND) {
       _closeAfterAWait();
     }
+
+    String text = '';
+    switch (statusButton) {
+      case StatusButton.RECEIVE:
+        text = AppLocalizations.of(context).receive;
+        break;
+      case StatusButton.SEND:
+        text = isExpanded
+            ? AppLocalizations.of(context).close.toUpperCase()
+            : AppLocalizations.of(context).send.toUpperCase();
+        break;
+      case StatusButton.CLAIM:
+        text = AppLocalizations.of(context).claim.toUpperCase();
+        break;
+    }
     return Expanded(
-      child: InkWell(
-        borderRadius: const BorderRadius.all(Radius.circular(32)),
-        onTap: () {
+      child: SecondaryButton(
+        text: text,
+        onPressed: () {
           switch (statusButton) {
             case StatusButton.RECEIVE:
               showAddressDialog(mContext, currentCoinBalance.balance.address);
@@ -711,41 +727,6 @@ class _CoinDetailState extends State<CoinDetail> {
             default:
           }
         },
-        child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(32)),
-                border:
-                    Border.all(color: Theme.of(context).textSelectionColor)),
-            child: Center(child: Builder(
-              builder: (BuildContext context) {
-                switch (statusButton) {
-                  case StatusButton.RECEIVE:
-                    return Text(
-                      AppLocalizations.of(context).receive,
-                      style: Theme.of(context).textTheme.body1,
-                    );
-                    break;
-                  case StatusButton.SEND:
-                    return isExpanded
-                        ? Text(
-                            AppLocalizations.of(context).close.toUpperCase(),
-                            style: Theme.of(context).textTheme.body1,
-                          )
-                        : Text(
-                            AppLocalizations.of(context).send.toUpperCase(),
-                            style: Theme.of(context).textTheme.body1,
-                          );
-                  case StatusButton.CLAIM:
-                    return Text(
-                      AppLocalizations.of(context).claim.toUpperCase(),
-                      style: Theme.of(context).textTheme.body1,
-                    );
-                    break;
-                }
-                return Container();
-              },
-            ))),
       ),
     );
   }
@@ -756,11 +737,17 @@ class _CoinDetailState extends State<CoinDetail> {
           isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       duration: const Duration(milliseconds: 200),
       firstChild: Container(),
-      secondChild: Card(
-          margin: const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
-          elevation: 8.0,
-          color: Theme.of(context).primaryColor,
-          child: listSteps[currentIndex]),
+      secondChild: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Card(
+            margin:
+                const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
+            elevation: 8.0,
+            color: Theme.of(context).primaryColor,
+            child: SingleChildScrollView(child: listSteps[currentIndex])),
+      ),
     );
   }
 
@@ -806,6 +793,12 @@ class _CoinDetailState extends State<CoinDetail> {
     _addressController.clear();
     listSteps.clear();
     listSteps.add(AmountAddressStep(
+      onCancel: () {
+        setState(() {
+          isExpanded = false;
+          _waitForInit();
+        });
+      },
       isERCToken: widget.coinBalance.coin.swapContractAddress.isNotEmpty,
       onConfirm: () async {
         setState(() {

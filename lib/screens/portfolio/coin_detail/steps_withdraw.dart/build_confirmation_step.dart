@@ -6,6 +6,8 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class BuildConfirmationStep extends StatefulWidget {
   const BuildConfirmationStep(
@@ -240,48 +242,28 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: Container(
-                        height: 50,
-                        child: InkWell(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(4)),
-                          onTap: widget.onCancel,
-                          child: Center(
-                            child: Text(
-                              AppLocalizations.of(context).cancel.toUpperCase(),
-                              style: Theme.of(context).textTheme.button,
-                            ),
-                          ),
-                        ),
+                      child: SecondaryButton(
+                        text: AppLocalizations.of(context).cancel.toUpperCase(),
+                        onPressed: widget.onCancel,
                       ),
                     ),
                     const SizedBox(
                       width: 16,
                     ),
                     Expanded(
-                      child: Container(
-                        height: 50,
-                        child: Builder(builder: (BuildContext context) {
-                          return RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.0)),
-                            color: Theme.of(context).buttonColor,
-                            disabledColor: Theme.of(context).disabledColor,
-                            child: Text(
-                              AppLocalizations.of(context)
-                                  .confirm
-                                  .toUpperCase(),
-                              style: Theme.of(context).textTheme.button,
-                            ),
-                            onPressed: isButtonActive
-                                ? () {
-                                    _onPressedConfirmWithdraw(
-                                        amountUserReceive);
-                                  }
-                                : null,
-                          );
-                        }),
-                      ),
+                      child: Builder(builder: (BuildContext context) {
+                        return PrimaryButton(
+                          text: AppLocalizations.of(context)
+                                .confirm
+                                .toUpperCase(),
+                          onPressed: isButtonActive
+                              ? () {
+                                  _onPressedConfirmWithdraw(
+                                      amountUserReceive);
+                                }
+                              : null,
+                        );
+                      }),
                     ),
                   ],
                 )
