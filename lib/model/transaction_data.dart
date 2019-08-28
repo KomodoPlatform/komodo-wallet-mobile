@@ -22,7 +22,7 @@ class Transaction {
         blockHeight: json['block_height'].toDouble() ?? 0,
         coin: json['coin'] ?? '',
         confirmations: json['confirmations'] ?? 0,
-        feeDetails: json['fee_details'] == null ? null : FeeDetailsDouble.fromJson(json['fee_details']),
+        feeDetails: json['fee_details'] == null ? null : FeeDetails.fromJson(json['fee_details']),
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
         internalId: json['internal_id'] ?? '',
@@ -40,7 +40,7 @@ class Transaction {
   double blockHeight;
   String coin;
   int confirmations;
-  FeeDetailsDouble feeDetails;
+  FeeDetails feeDetails;
   List<String> from;
   String internalId;
   String myBalanceChange;
@@ -89,8 +89,8 @@ class Transaction {
   }
 }
 
-class FeeDetailsDouble {
-  FeeDetailsDouble({
+class FeeDetails {
+  FeeDetails({
     this.amount,
     this.coin,
     this.gas,
@@ -98,39 +98,7 @@ class FeeDetailsDouble {
     this.totalFee,
   });
 
-  factory FeeDetailsDouble.fromJson(Map<String, dynamic> json) => FeeDetailsDouble(
-        amount: json['amount'] != null ? json['amount'].toDouble() : 0.0,
-        coin: json['coin'] ?? '',
-        gas: json['gas'] ?? 0,
-        gasPrice: json['gas_price'] ?? '',
-        totalFee: json['total_fee'] ?? '',
-      );
-
-  double amount;
-  String coin;
-  int gas;
-  String gasPrice;
-  String totalFee;
-
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'amount': amount ?? 0.0,
-        'coin': coin ?? '',
-        'gas': gas ?? 0,
-        'gas_price': gasPrice ?? '',
-        'total_fee': totalFee ?? '',
-      };
-}
-
-class FeeDetailsString {
-  FeeDetailsString({
-    this.amount,
-    this.coin,
-    this.gas,
-    this.gasPrice,
-    this.totalFee,
-  });
-
-  factory FeeDetailsString.fromJson(Map<String, dynamic> json) => FeeDetailsString(
+  factory FeeDetails.fromJson(Map<String, dynamic> json) => FeeDetails(
         amount: json['amount'] ?? '',
         coin: json['coin'] ?? '',
         gas: json['gas'] ?? 0,

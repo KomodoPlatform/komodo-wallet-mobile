@@ -31,7 +31,7 @@ class WithdrawResponse {
       WithdrawResponse(
         blockHeight: json['block_height'] ?? 0,
         coin: json['coin'] ?? '',
-        feeDetails: FeeDetailsString.fromJson(json['fee_details']) ?? FeeDetailsString(),
+        feeDetails: FeeDetails.fromJson(json['fee_details']) ?? FeeDetails(),
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
         myBalanceChange: json['my_balance_change'] ?? '',
@@ -46,7 +46,7 @@ class WithdrawResponse {
 
   int blockHeight;
   String coin;
-  FeeDetailsString feeDetails;
+  FeeDetails feeDetails;
   List<String> from;
   String myBalanceChange;
   String receivedByMe;
