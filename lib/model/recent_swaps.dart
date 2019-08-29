@@ -217,19 +217,19 @@ class Data {
         coin: json['coin'] ?? '',
         feeDetails: json['fee_details'] == null
             ? null
-            : FeeDetailsString.fromJson(json['fee_details']),
+            : FeeDetails.fromJson(json['fee_details']),
         from: json['from'] == null
             ? null
             : List<String>.from(json['from'].map((dynamic x) => x)),
         internalId: json['internal_id'] ?? '',
-        myBalanceChange: json['my_balance_change'] ?? 0.0,
-        receivedByMe: json['received_by_me'] ?? 0.0,
-        spentByMe: json['spent_by_me'] ?? 0.0,
+        myBalanceChange: json['my_balance_change'] ?? '',
+        receivedByMe: json['received_by_me'] ?? '',
+        spentByMe: json['spent_by_me'] ?? '',
         timestamp: json['timestamp'] ?? 0,
         to: json['to'] == null
             ? null
             : List<String>.from(json['to'].map((dynamic x) => x)),
-        totalAmount: json['total_amount'] ?? 0.0,
+        totalAmount: json['total_amount'] ?? '',
         txHash: json['tx_hash'] ?? '',
         txHex: json['tx_hex'] ?? '',
         maker: json['maker'] ?? '',
@@ -260,15 +260,15 @@ class Data {
   String takerPubkey;
   int blockHeight;
   String coin;
-  FeeDetailsString feeDetails;
+  FeeDetails feeDetails;
   List<String> from;
   String internalId;
-  double myBalanceChange;
-  double receivedByMe;
-  double spentByMe;
+  String myBalanceChange;
+  String receivedByMe;
+  String spentByMe;
   int timestamp;
   List<String> to;
-  double totalAmount;
+  String totalAmount;
   String txHash;
   String txHex;
   String maker;
@@ -302,13 +302,13 @@ class Data {
         'fee_details': feeDetails == null ? null : feeDetails.toJson(),
         'from':  from == null ? null : List<dynamic>.from(from.map<dynamic>((String x) => x)),
         'internal_id': internalId ?? '',
-        'my_balance_change': myBalanceChange ?? 0.0,
-        'received_by_me': receivedByMe ?? 0.0,
-        'spent_by_me': spentByMe ?? 0.0,
+        'my_balance_change': myBalanceChange ?? '',
+        'received_by_me': receivedByMe ?? '',
+        'spent_by_me': spentByMe ?? '',
         'timestamp': timestamp ?? 0,
         'to':
             to == null ? null : List<dynamic>.from(to.map<dynamic>((String x) => x)),
-        'total_amount': totalAmount ?? 0.0,
+        'total_amount': totalAmount ?? '',
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',
         'maker': maker ?? '',
@@ -341,32 +341,32 @@ class Transaction {
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
         blockHeight: json['block_height'] ?? 0,
         coin: json['coin'] ?? '',
-        feeDetails: json['fee_details'] == null ? null : FeeDetailsString.fromJson(json['fee_details']),
+        feeDetails: json['fee_details'] == null ? null : FeeDetails.fromJson(json['fee_details']),
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
         internalId: json['internal_id'] ?? '',
-        myBalanceChange: json['my_balance_change'] ?? 0.0,
-        receivedByMe: json['received_by_me'] ?? 0.0,
-        spentByMe: json['spent_by_me'] ?? 0.0,
+        myBalanceChange: json['my_balance_change'] ?? '',
+        receivedByMe: json['received_by_me'] ?? '',
+        spentByMe: json['spent_by_me'] ?? '',
         timestamp: json['timestamp'] ?? 0,
         to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
-        totalAmount: json['total_amount'] ?? 0.0,
+        totalAmount: json['total_amount'] ?? '',
         txHash: json['tx_hash'] ?? '',
         txHex: json['tx_hex'] ?? '',
       );
 
   int blockHeight;
   String coin;
-  FeeDetailsString feeDetails;
+  FeeDetails feeDetails;
   List<String> from;
   String internalId;
-  double myBalanceChange;
-  double receivedByMe;
-  double spentByMe;
+  String myBalanceChange;
+  String receivedByMe;
+  String spentByMe;
   int timestamp;
   List<String> to;
-  double totalAmount;
+  String totalAmount;
   String txHash;
   String txHex;
 
@@ -377,13 +377,13 @@ class Transaction {
         'from': List<dynamic>.from(from.map<dynamic>((dynamic x) => x)) ??
             <String>[],
         'internal_id': internalId ?? '',
-        'my_balance_change': myBalanceChange ?? 0.0,
-        'received_by_me': receivedByMe ?? 0.0,
-        'spent_by_me': spentByMe ?? 0.0,
+        'my_balance_change': myBalanceChange ?? '',
+        'received_by_me': receivedByMe ?? '',
+        'spent_by_me': spentByMe ?? '',
         'timestamp': timestamp ?? 0,
         'to':
             List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
-        'total_amount': totalAmount ?? 0.0,
+        'total_amount': totalAmount ?? '',
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',
       };
