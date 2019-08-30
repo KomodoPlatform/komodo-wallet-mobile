@@ -74,6 +74,14 @@ class CoinsBloc implements BlocBase {
   Sink<bool> get _inIsERCActive => _isERCActiveController.sink;
   Stream<bool> get outIsERCActive => _isERCActiveController.stream;
 
+  bool isutxoActive = false;
+
+  final StreamController<bool> _isutxoActiveController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inIsutxoActive => _isutxoActiveController.sink;
+  Stream<bool> get outIsutxoActive => _isutxoActiveController.stream;
+
   List<CoinToActivate> coinBeforeActivation = <CoinToActivate>[];
 
   // Streams to handle the list coin to activate
@@ -96,6 +104,7 @@ class CoinsBloc implements BlocBase {
     _closeViewSelectCoinController.close();
     _isAllSmartChainActiveController.close();
     _coinBeforeActivationController.close();
+    _isutxoActiveController.close();
   }
 
   Future<void> initCoinBeforeActivation() async {
@@ -112,12 +121,17 @@ class CoinsBloc implements BlocBase {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
     coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
-    coinBeforeActivation.sort((CoinToActivate a, CoinToActivate b) =>
-        a.coin.swapContractAddress.compareTo(b.coin.swapContractAddress));
+    // coinBeforeActivation.sort((CoinToActivate a, CoinToActivate b) =>
+    //     a.coin.swapContractAddress.compareTo(b.coin.swapContractAddress));
 
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
+  void setIsutxoActive(bool isutxoActive) {
+    this.isutxoActive = isutxoActive;
+    _inIsutxoActive.add(this.isutxoActive);
+  }
+  
   void setIsERCActive(bool isERCActive) {
     this.isERCActive = isERCActive;
     _inIsERCActive.add(this.isERCActive);

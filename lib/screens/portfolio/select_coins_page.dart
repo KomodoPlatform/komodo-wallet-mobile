@@ -161,34 +161,36 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   Widget _buildListCoin() {
     final List<Widget> coinsToActivate = <Widget>[];
-    bool headerSmartChain = true;
-    bool headerERC = true;
 
-    if (currentCoins.length == 1) {
-      headerSmartChain = false;
-      headerERC = false;
-    }
-    for (Coin coin in currentCoins) {
-      if (coin.swapContractAddress.isEmpty && headerSmartChain) {
-        coinsToActivate.add(const BuildHeaderChain(
-          isSmartChainHeader: true,
+    if (currentCoins.isNotEmpty) { 
+      currentCoins.sort((Coin a, Coin b) => b.type.compareTo(a.type));
+
+      String tmpType = currentCoins.first.type;
+      if (tmpType != null && tmpType.isNotEmpty && currentCoins.length > 1) {
+        coinsToActivate.add(BuildHeaderChain(
+          type: tmpType,
         ));
-        headerSmartChain = false;
       }
-      if (coin.swapContractAddress.isNotEmpty && headerERC) {
-        coinsToActivate.add(const BuildHeaderChain(
-          isSmartChainHeader: false,
+      for (Coin coin in currentCoins) {
+        if (coin.type != tmpType) {
+          coinsToActivate.add(BuildHeaderChain(
+            type: coin.type,
+          ));
+        }
+        tmpType = coin.type;
+
+        coinsToActivate.add(BuildItemCoin(
+          key: Key('coin-activate-${coin.abbr}'),
+          coin: coin,
         ));
-        headerERC = false;
       }
-      coinsToActivate.add(BuildItemCoin(
-        key: Key('coin-activate-${coin.abbr}'),
-        coin: coin,
-      ));
+      return Column(
+        children: coinsToActivate,
+      );
+    } else {
+      return Center(child: Text('No coin found', style: Theme.of(context).textTheme.body2,));
     }
-    return Column(
-      children: coinsToActivate,
-    );
+
   }
 
   Widget _buildHeader() {
@@ -221,9 +223,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 }
 
 class BuildHeaderChain extends StatefulWidget {
-  const BuildHeaderChain({Key key, this.isSmartChainHeader}) : super(key: key);
+  const BuildHeaderChain({Key key, this.type}) : super(key: key);
 
-  final bool isSmartChainHeader;
+  final String type;
 
   @override
   _BuildHeaderChainState createState() => _BuildHeaderChainState();
@@ -232,6 +234,22 @@ class BuildHeaderChain extends StatefulWidget {
 class _BuildHeaderChainState extends State<BuildHeaderChain> {
   bool isActive = false;
 
+  String getTitleText() {
+    switch (widget.type) {
+      case 'erc':
+        return AppLocalizations.of(context).searchFilterSubtitleERC;
+        break;
+      case 'utxo':
+        return AppLocalizations.of(context).searchFilterSubtitleutxo;
+        break;
+      case 'smartChain':
+        return AppLocalizations.of(context).searchFilterSubtitleSmartChain;
+        break;
+      default:
+        return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -239,14 +257,23 @@ class _BuildHeaderChainState extends State<BuildHeaderChain> {
         setState(() {
           isActive = !isActive;
         });
-        if (widget.isSmartChainHeader) {
-          isActive
-              ? coinsBloc.setIsAllSmartChainActive(true)
-              : coinsBloc.setIsAllSmartChainActive(false);
-        } else {
-          isActive
-              ? coinsBloc.setIsERCActive(true)
-              : coinsBloc.setIsERCActive(false);
+        switch (widget.type) {
+          case 'erc':
+            isActive
+                ? coinsBloc.setIsERCActive(true)
+                : coinsBloc.setIsERCActive(false);
+            break;
+          case 'utxo':
+            isActive
+                ? coinsBloc.setIsutxoActive(true)
+                : coinsBloc.setIsutxoActive(false);
+            break;
+          case 'smartChain':
+            isActive
+                ? coinsBloc.setIsAllSmartChainActive(true)
+                : coinsBloc.setIsAllSmartChainActive(false);
+            break;
+          default:
         }
       },
       child: Padding(
@@ -261,13 +288,10 @@ class _BuildHeaderChainState extends State<BuildHeaderChain> {
                   : Theme.of(context).primaryColor,
             ),
             const SizedBox(width: 24),
-            widget.isSmartChainHeader
-                ? Text(
-                    AppLocalizations.of(context).searchFilterSubtitleSmartChain,
-                    style: Theme.of(context).textTheme.subtitle,
-                  )
-                : Text(AppLocalizations.of(context).searchFilterSubtitleERC,
-                    style: Theme.of(context).textTheme.subtitle)
+            Text(
+              getTitleText(),
+              style: Theme.of(context).textTheme.subtitle,
+            )
           ],
         ),
       ),
@@ -290,33 +314,39 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
   @override
   void initState() {
     isActive = false;
-
-    if (widget.coin.swapContractAddress.isNotEmpty) {
-      isActive = !coinsBloc.isAllSmartChainActive;
-
-      coinsBloc.outIsERCActive.listen((bool onData) {
-        if (!mounted) {
-          return;
-        }
-        setState(() {
-          isActive = onData;
+    switch (widget.coin.type) {
+      case 'erc':
+        isActive = !coinsBloc.isERCActive;
+        coinsBloc.outIsERCActive.listen((bool onData) {
+          listenActiveCoin(onData);
         });
-        activeCoin(isActive);
-      });
-    } else {
-      isActive = !coinsBloc.isERCActive;
-      coinsBloc.outIsAllSmartChainActive.listen((bool onData) {
-        if (!mounted) {
-          return;
-        }
-        setState(() {
-          isActive = onData;
+        break;
+      case 'utxo':
+        isActive = !coinsBloc.isutxoActive;
+        coinsBloc.outIsutxoActive.listen((bool onData) {
+          listenActiveCoin(onData);
         });
-        activeCoin(isActive);
-      });
+        break;
+      case 'smartChain':
+        isActive = !coinsBloc.isAllSmartChainActive;
+
+        coinsBloc.outIsAllSmartChainActive.listen((bool onData) {
+          listenActiveCoin(onData);
+        });
+        break;
+      default:
     }
-
     super.initState();
+  }
+
+  void listenActiveCoin(bool onData) {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      isActive = onData;
+    });
+    activeCoin(isActive);
   }
 
   void activeCoin(bool forceActive) {
@@ -325,11 +355,10 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
           .firstWhere(
               (CoinToActivate item) => item.coin.abbr == widget.coin.abbr);
       if (forceActive != null) {
-      coinsBloc.setCoinBeforeActivation(widget.coin, forceActive);
-
+        coinsBloc.setCoinBeforeActivation(widget.coin, forceActive);
       } else {
-              coinsBloc.setCoinBeforeActivation(widget.coin, !coinToActivate.isActive);
-
+        coinsBloc.setCoinBeforeActivation(
+            widget.coin, !coinToActivate.isActive);
       }
     });
   }
