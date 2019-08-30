@@ -510,6 +510,9 @@ class AppLocalizations {
   String get customFeeWarning => Intl.message('Only use custom fees if you know what you are doing!', name: 'customFeeWarning');
   String get searchFilterSubtitleutxo => Intl.message('Select all UTXO', name: 'searchFilterSubtitleutxo');
 
+  String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
+  String get tagKMD => Intl.message('KMD', name: 'tagKMD');
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
