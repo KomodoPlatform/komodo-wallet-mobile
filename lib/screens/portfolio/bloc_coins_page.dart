@@ -476,7 +476,9 @@ class _ItemCoinState extends State<ItemCoin> {
                         ],
                       ),
                     ),
-                    Expanded(child: Container(),),
+                    Expanded(
+                      child: Container(),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(right: 16),
                       child: Column(
@@ -533,8 +535,11 @@ class _ItemCoinState extends State<ItemCoin> {
                                   ),
                                 )
                               : Container(),
-                          widget.coinBalance.coin.type == 'erc' ||
-                                  widget.coinBalance.coin.type == 'smartChain'
+                          (widget.coinBalance.coin.type == 'erc' ||
+                                      widget.coinBalance.coin.type ==
+                                          'smartChain') &&
+                                  widget.coinBalance.coin.abbr != 'KMD' &&
+                                  widget.coinBalance.coin.abbr != 'ETH'
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: ClipRRect(
@@ -545,21 +550,17 @@ class _ItemCoinState extends State<ItemCoin> {
                                                 'erc'
                                             ? const Color.fromRGBO(
                                                 20, 117, 186, 1)
-                                            : Theme.of(context)
-                                                .backgroundColor,
+                                            : Theme.of(context).backgroundColor,
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 4, horizontal: 8),
-                                          child: widget.coinBalance.coin
-                                                      .type ==
+                                          child: widget.coinBalance.coin.type ==
                                                   'erc'
                                               ? Row(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .center,
+                                                      CrossAxisAlignment.center,
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .center,
+                                                      MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Text(
                                                       AppLocalizations.of(
@@ -573,11 +574,9 @@ class _ItemCoinState extends State<ItemCoin> {
                                                 )
                                               : Row(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .center,
+                                                      CrossAxisAlignment.center,
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .center,
+                                                      MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Image.asset(
                                                       'assets/kmd.png',
