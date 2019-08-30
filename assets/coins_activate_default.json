@@ -1,6 +1,7 @@
 [
   {
     "name": "Komodo",
+    "type": "smartChain",
     "address": "electrum1.cipig.net",
     "port": 10001,
     "proto": "tcp",
@@ -20,6 +21,7 @@
   },
   {
     "name": "Bitcoin",
+    "type": "utxo",
     "address": "e-x.not.fyi",
     "port": 50001,
     "proto": "tcp",

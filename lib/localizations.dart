@@ -508,7 +508,8 @@ class AppLocalizations {
   String get gas => Intl.message('Gas', name: 'gas');
   String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
   String get customFeeWarning => Intl.message('Only use custom fees if you know what you are doing!', name: 'customFeeWarning');
-  
+  String get searchFilterSubtitleutxo => Intl.message('Select all UTXO', name: 'searchFilterSubtitleutxo');
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
