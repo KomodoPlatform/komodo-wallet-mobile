@@ -508,7 +508,7 @@ class _ItemCoinState extends State<ItemCoin> {
                           widget.coinBalance.coin.abbr == 'KMD' &&
                                   double.parse(widget.coinBalance.balance
                                           .getBalance()) >=
-                                      0
+                                      10
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: OutlineButton(
