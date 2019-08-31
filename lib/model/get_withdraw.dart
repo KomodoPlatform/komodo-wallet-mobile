@@ -39,7 +39,7 @@ class GetWithdraw {
         to: json['to'] ?? '',
         max: json['max'] ?? false,
         userpass: json['userpass'] ?? '',
-        fee: Fee.fromJson(json['fee']),
+        fee: Fee.fromJson(json['fee']) ?? Fee(),
       );
 
   String method;
@@ -57,7 +57,7 @@ class GetWithdraw {
         'max': max ?? false,
         'coin': coin ?? '',
         'userpass': userpass ?? '',
-        'fee': fee.toJson() ?? '',
+        'fee': fee != null ? fee.toJson() : '',
       };
 }
 

@@ -63,6 +63,7 @@ class CoinDetail extends StatefulWidget {
 
     MarketMakerService()
         .postWithdraw(GetWithdraw(
+          fee: null,
             coin: coinBalance.coin.abbr,
             to: coinBalance.balance.address,
             amount: (Decimal.parse(coinBalance.balance.getBalance()) -
