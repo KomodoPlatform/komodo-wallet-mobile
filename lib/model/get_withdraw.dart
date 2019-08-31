@@ -15,10 +15,10 @@ String getWithdrawToJson(GetWithdraw data) {
   if (data.max == null || !data.max) {
     tmpJson.remove('max');
   }
-  if (data.fee == null) {
+  if (data.fee == null || data.fee.type == null) {
     tmpJson.remove('fee');
   }
-  return json.encode(data );
+  return json.encode(tmpJson);
 }
 
 class GetWithdraw {
@@ -39,7 +39,7 @@ class GetWithdraw {
         to: json['to'] ?? '',
         max: json['max'] ?? false,
         userpass: json['userpass'] ?? '',
-        fee: Fee.fromJson(json['fee']) ?? Fee(),
+        fee: Fee.fromJson(json['fee']),
       );
 
   String method;

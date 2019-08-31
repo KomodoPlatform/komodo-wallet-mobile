@@ -225,6 +225,7 @@ class _CoinDetailState extends State<CoinDetail> {
       timer.cancel();
     }
     mainBloc.isUrlLaucherIsOpen = false;
+    coinsDetailBloc.resetCustomFee();
     super.dispose();
   }
 
@@ -893,6 +894,8 @@ class _CoinDetailState extends State<CoinDetail> {
                 }
               }).catchError((dynamic onError) {
                 catchError(mainContext);
+              }).then((_){
+                coinsDetailBloc.resetCustomFee();
               });
             },
             onError: () {

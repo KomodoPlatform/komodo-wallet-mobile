@@ -121,9 +121,6 @@ class CoinsBloc implements BlocBase {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
     coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
-    // coinBeforeActivation.sort((CoinToActivate a, CoinToActivate b) =>
-    //     a.coin.swapContractAddress.compareTo(b.coin.swapContractAddress));
-
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
