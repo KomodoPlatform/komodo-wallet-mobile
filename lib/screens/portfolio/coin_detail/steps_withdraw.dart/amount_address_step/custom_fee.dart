@@ -131,10 +131,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                       }
 
                       coinsDetailBloc.setCustomFee(Fee(
-                          gas: (Decimal.parse(_gasController.text
-                                      .replaceAll(',', '.')) *
-                                  Decimal.parse('100000000'))
-                              .toInt(),
+                          gas: int.parse(_gasController.text.replaceAll(',', '.')),
                           gasPrice:
                               _gasPriceController.text.replaceAll(',', '.')));
                     }
@@ -183,10 +180,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                   return AppLocalizations.of(context).errorValueNotEmpty;
                 }
                 coinsDetailBloc.setCustomFee(Fee(
-                    gas: (Decimal.parse(
-                                _gasController.text.replaceAll(',', '.')) *
-                            Decimal.parse('100000000'))
-                        .toInt(),
+                    gas: int.parse(_gasController.text.replaceAll(',', '.')),
                     gasPrice: _gasPriceController.text.replaceAll(',', '.')));
               }
               return null;
