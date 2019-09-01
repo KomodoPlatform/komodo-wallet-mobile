@@ -784,6 +784,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Future<void> _waitForInit() async {
     Timer(const Duration(milliseconds: 500), () {
       setState(() {
+        coinsDetailBloc.resetCustomFee();
         currentIndex = 0;
         initSteps();
       });
@@ -795,6 +796,7 @@ class _CoinDetailState extends State<CoinDetail> {
     _addressController.clear();
     listSteps.clear();
     listSteps.add(AmountAddressStep(
+      coin: widget.coinBalance.coin,
       onCancel: () {
         setState(() {
           isExpanded = false;
@@ -895,8 +897,6 @@ class _CoinDetailState extends State<CoinDetail> {
                 }
               }).catchError((dynamic onError) {
                 catchError(mainContext);
-              }).then((_){
-                coinsDetailBloc.resetCustomFee();
               });
             },
             onError: () {

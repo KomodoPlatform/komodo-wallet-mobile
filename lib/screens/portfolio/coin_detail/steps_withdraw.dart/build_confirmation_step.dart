@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -50,11 +51,6 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   }
 
   @override
-  void dispose() {
-    print('DISPOSEEEE--------------');
-    super.dispose();
-  }
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Object>(
         future: getFee(),
@@ -63,13 +59,22 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
           bool notEnoughEth = false;
           bool isEthActive = false;
+
           double fee = 0;
-          if (snapshot.hasData) {
+          if (snapshot.hasData && coinsDetailBloc.customFee == null) {
             try {
               fee = snapshot.data;
             } catch (e) {
               print(e);
             }
+          }
+
+          if (coinsDetailBloc.customFee != null && widget.coinBalance.coin.type != 'erc') {
+            fee = double.parse(coinsDetailBloc.customFee.amount);
+          }
+
+          if (coinsDetailBloc.customFee != null && widget.coinBalance.coin.type == 'erc') {
+            fee = (coinsDetailBloc.customFee.gas / 100000000) * double.parse(coinsDetailBloc.customFee.gasPrice);
           }
 
           double amountToPay = double.parse(widget.amountToPay);
