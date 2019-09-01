@@ -541,7 +541,7 @@ class _ItemCoinState extends State<ItemCoin> {
                                   widget.coinBalance.coin.abbr != 'KMD' &&
                                   widget.coinBalance.coin.abbr != 'ETH'
                               ? Padding(
-                                  padding: const EdgeInsets.only(top: 8),
+                                  padding: const EdgeInsets.only(top: 14),
                                   child: ClipRRect(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(16)),
