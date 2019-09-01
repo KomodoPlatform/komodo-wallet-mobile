@@ -69,12 +69,15 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
             }
           }
 
-          if (coinsDetailBloc.customFee != null && widget.coinBalance.coin.type != 'erc') {
+          if (coinsDetailBloc.customFee != null &&
+              widget.coinBalance.coin.type != 'erc') {
             fee = double.parse(coinsDetailBloc.customFee.amount);
           }
 
-          if (coinsDetailBloc.customFee != null && widget.coinBalance.coin.type == 'erc') {
-            fee = double.parse(coinsDetailBloc.customFee.gas) * double.parse(coinsDetailBloc.customFee.gasPrice);
+          if (coinsDetailBloc.customFee != null &&
+              widget.coinBalance.coin.type == 'erc') {
+            fee = coinsDetailBloc.customFee.gas *
+                double.parse(coinsDetailBloc.customFee.gasPrice);
           }
 
           double amountToPay = double.parse(widget.amountToPay);
@@ -259,12 +262,11 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       child: Builder(builder: (BuildContext context) {
                         return PrimaryButton(
                           text: AppLocalizations.of(context)
-                                .confirm
-                                .toUpperCase(),
+                              .confirm
+                              .toUpperCase(),
                           onPressed: isButtonActive
                               ? () {
-                                  _onPressedConfirmWithdraw(
-                                      amountUserReceive);
+                                  _onPressedConfirmWithdraw(amountUserReceive);
                                 }
                               : null,
                         );

@@ -4,7 +4,6 @@ import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
-import 'package:decimal/decimal.dart';
 
 class CustomFee extends StatefulWidget {
   const CustomFee({Key key, this.amount, this.isERCToken = false, this.coin})
@@ -131,7 +130,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                       }
 
                       coinsDetailBloc.setCustomFee(Fee(
-                          gas: int.parse(_gasController.text.replaceAll(',', '.')),
+                          gas: int.parse(
+                              _gasController.text.replaceAll(',', '.')),
                           gasPrice:
                               _gasPriceController.text.replaceAll(',', '.')));
                     }
