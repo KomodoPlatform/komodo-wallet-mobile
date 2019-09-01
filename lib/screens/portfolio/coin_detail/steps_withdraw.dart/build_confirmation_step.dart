@@ -74,7 +74,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           }
 
           if (coinsDetailBloc.customFee != null && widget.coinBalance.coin.type == 'erc') {
-            fee = (coinsDetailBloc.customFee.gas / 100000000) * double.parse(coinsDetailBloc.customFee.gasPrice);
+            fee = double.parse(coinsDetailBloc.customFee.gas) * double.parse(coinsDetailBloc.customFee.gasPrice);
           }
 
           double amountToPay = double.parse(widget.amountToPay);
