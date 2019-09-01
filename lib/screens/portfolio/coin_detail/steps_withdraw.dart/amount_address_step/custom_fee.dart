@@ -103,7 +103,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                   controller: _gasController,
                   inputFormatters: <TextInputFormatter>[
                     WhitelistingTextInputFormatter(RegExp(
-                        '^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))
+                        '^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
                   ],
                   textInputAction: TextInputAction.done,
                   keyboardType:
@@ -120,7 +120,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                               BorderSide(color: Theme.of(context).accentColor)),
                       hintStyle: Theme.of(context).textTheme.body1,
                       labelStyle: Theme.of(context).textTheme.body1,
-                      labelText: AppLocalizations.of(context).gas),
+                      labelText: AppLocalizations.of(context).gas + ' [Gwei]'),
                   validator: (String value) {
                     if (widget.isCustomFeeActive) {
                       value = value.replaceAll(',', '.');
@@ -141,10 +141,6 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
               ),
               const SizedBox(
                 width: 8,
-              ),
-              Text(
-                widget.coin.abbr,
-                style: Theme.of(context).textTheme.subtitle,
               )
             ],
           ),
@@ -155,7 +151,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
             controller: _gasPriceController,
             inputFormatters: <TextInputFormatter>[
               WhitelistingTextInputFormatter(
-                  RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))
+                  RegExp('^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
             ],
             textInputAction: TextInputAction.done,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -171,7 +167,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                         BorderSide(color: Theme.of(context).accentColor)),
                 hintStyle: Theme.of(context).textTheme.body1,
                 labelStyle: Theme.of(context).textTheme.body1,
-                labelText: AppLocalizations.of(context).gasPrice),
+                labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]'),
             validator: (String value) {
               if (widget.isCustomFeeActive) {
                 value = value.replaceAll(',', '.');
@@ -215,7 +211,7 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
             child: TextFormField(
               inputFormatters: <TextInputFormatter>[
                 WhitelistingTextInputFormatter(
-                    RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))
+                    RegExp('^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
               ],
               textInputAction: TextInputAction.done,
               keyboardType:
@@ -232,7 +228,10 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
                           BorderSide(color: Theme.of(context).accentColor)),
                   hintStyle: Theme.of(context).textTheme.body1,
                   labelStyle: Theme.of(context).textTheme.body1,
-                  labelText: AppLocalizations.of(context).customFee),
+                  labelText: AppLocalizations.of(context).customFee +
+                      ' [' +
+                      widget.coin.abbr +
+                      ']'),
               // The validator receives the text the user has typed in
               validator: (String value) {
                 if (widget.isCustomFeeActive) {
@@ -256,10 +255,6 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
           ),
           const SizedBox(
             width: 8,
-          ),
-          Text(
-            widget.coin.abbr,
-            style: Theme.of(context).textTheme.subtitle,
           )
         ],
       ),

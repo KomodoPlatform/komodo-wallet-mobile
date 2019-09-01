@@ -9,6 +9,7 @@ import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:decimal/decimal.dart';
 
 class BuildConfirmationStep extends StatefulWidget {
   const BuildConfirmationStep(
@@ -61,6 +62,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           bool isEthActive = false;
 
           double fee = 0;
+          double ethfee = 0;
           if (snapshot.hasData && coinsDetailBloc.customFee == null) {
             try {
               fee = snapshot.data;
@@ -98,6 +100,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               amountUserReceive -= fee;
             }
           }
+
           CoinBalance ethCoin;
           for (CoinBalance coinBalance in coinsBloc.coinBalance) {
             if (coinBalance.coin.abbr == 'ETH') {
@@ -106,8 +109,11 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           }
 
           isEthActive = !(ethCoin == null);
+          ethfee = (Decimal.parse(fee.toString()) / Decimal.parse('1000000000'))
+              .toDouble();
 
-          if (ethCoin != null && fee > double.parse(ethCoin.balance.balance)) {
+          if (ethCoin != null &&
+              ethfee > double.parse(ethCoin.balance.balance)) {
             notEnoughEth = true;
           }
 
@@ -153,7 +159,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       style: Theme.of(context).textTheme.body2,
                     ),
                     Text(
-                      fee.toStringAsFixed(8),
+                      !isErcCoin ? fee.toStringAsFixed(8) : ethfee.toString(),
                       style: Theme.of(context).textTheme.body2,
                     ),
                     const SizedBox(
