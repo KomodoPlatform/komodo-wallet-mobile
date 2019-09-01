@@ -114,7 +114,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
               if (widget.isCustomFeeActive) {
                 value = value.replaceAll(',', '.');
 
-                if (value.isEmpty || double.parse(value) <= 0) {
+                if (value.isEmpty || double.parse(value) < 0) {
                   return AppLocalizations.of(context).errorValueNotEmpty;
                 }
 
