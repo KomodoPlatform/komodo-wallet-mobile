@@ -519,6 +519,9 @@ class AppLocalizations {
 
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
+  String errorNotEnoughtGas(String gas) =>
+      Intl.message('Not enough gas - use at least $gas Gwei',
+          name: 'errorNotEnoughtGas', args: <Object>[gas]);
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

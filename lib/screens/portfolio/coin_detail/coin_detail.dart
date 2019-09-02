@@ -13,6 +13,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
@@ -63,7 +64,7 @@ class CoinDetail extends StatefulWidget {
 
     MarketMakerService()
         .postWithdraw(GetWithdraw(
-          fee: null,
+            fee: null,
             coin: coinBalance.coin.abbr,
             to: coinBalance.balance.address,
             amount: (Decimal.parse(coinBalance.balance.getBalance()) -
@@ -784,6 +785,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Future<void> _waitForInit() async {
     Timer(const Duration(milliseconds: 500), () {
       setState(() {
+        coinsDetailBloc.resetCustomFee();
         currentIndex = 0;
         initSteps();
       });
@@ -795,6 +797,7 @@ class _CoinDetailState extends State<CoinDetail> {
     _addressController.clear();
     listSteps.clear();
     listSteps.add(AmountAddressStep(
+      coin: widget.coinBalance.coin,
       onCancel: () {
         setState(() {
           isExpanded = false;
@@ -884,6 +887,25 @@ class _CoinDetailState extends State<CoinDetail> {
                           currentIndex = 3;
                         });
                       });
+                    } else if (dataRawTx is ErrorString &&
+                        dataRawTx.error.contains('gas is too low')) {
+                      resetSend();
+                      final String gas = dataRawTx.error
+                          .substring(
+                              dataRawTx.error.indexOf(
+                                      r':', dataRawTx.error.indexOf(r'"')) +
+                                  1,
+                              dataRawTx.error
+                                  .indexOf(r',', dataRawTx.error.indexOf(r'"')))
+                          .trim();
+                      Scaffold.of(mainContext).showSnackBar(SnackBar(
+                        duration: const Duration(seconds: 2),
+                        backgroundColor: Theme.of(context).errorColor,
+                        content: Text(
+                          AppLocalizations.of(mainContext)
+                              .errorNotEnoughtGas(gas),
+                        ),
+                      ));
                     } else {
                       catchError(mainContext);
                     }
@@ -895,8 +917,6 @@ class _CoinDetailState extends State<CoinDetail> {
                 }
               }).catchError((dynamic onError) {
                 catchError(mainContext);
-              }).then((_){
-                coinsDetailBloc.resetCustomFee();
               });
             },
             onError: () {

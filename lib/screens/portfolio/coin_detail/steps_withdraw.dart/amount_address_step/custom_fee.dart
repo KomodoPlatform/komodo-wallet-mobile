@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 
 class CustomFee extends StatefulWidget {
-  const CustomFee({Key key, this.amount, this.isERCToken = false})
+  const CustomFee({Key key, this.amount, this.isERCToken = false, this.coin})
       : super(key: key);
 
   final String amount;
   final bool isERCToken;
+  final Coin coin;
 
   @override
   _CustomFeeState createState() => _CustomFeeState();
@@ -58,9 +60,11 @@ class _CustomFeeState extends State<CustomFee> {
                 ),
                 widget.isERCToken
                     ? CustomFeeFieldERC(
+                        coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,
                       )
                     : CustomFeeFieldSmartChain(
+                        coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive),
               ],
             ),
@@ -72,9 +76,11 @@ class _CustomFeeState extends State<CustomFee> {
 }
 
 class CustomFeeFieldERC extends StatefulWidget {
-  const CustomFeeFieldERC({Key key, this.isCustomFeeActive}) : super(key: key);
+  const CustomFeeFieldERC({Key key, this.isCustomFeeActive, this.coin})
+      : super(key: key);
 
   final bool isCustomFeeActive;
+  final Coin coin;
 
   @override
   _CustomFeeFieldERCState createState() => _CustomFeeFieldERCState();
@@ -90,40 +96,50 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: TextFormField(
-            controller: _gasController,
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter(RegExp('[0-9]'))
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: TextFormField(
+                  controller: _gasController,
+                  inputFormatters: <TextInputFormatter>[
+                    WhitelistingTextInputFormatter(RegExp(
+                        '^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
+                  ],
+                  textInputAction: TextInputAction.done,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  style: Theme.of(context).textTheme.body1,
+                  textAlign: TextAlign.end,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorLight)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor)),
+                      hintStyle: Theme.of(context).textTheme.body1,
+                      labelStyle: Theme.of(context).textTheme.body1,
+                      labelText: AppLocalizations.of(context).gas + ' [Gwei]'),
+                  validator: (String value) {
+                    if (widget.isCustomFeeActive) {
+                      value = value.replaceAll(',', '.');
+
+                      if (value.isEmpty || double.parse(value) < 0) {
+                        return AppLocalizations.of(context).errorValueNotEmpty;
+                      }
+
+                      coinsDetailBloc.setCustomFee(Fee(
+                          gas: int.parse(
+                              _gasController.text.replaceAll(',', '.')),
+                          gasPrice:
+                              _gasPriceController.text.replaceAll(',', '.')));
+                    }
+                    return null;
+                  },
+                ),
+              ),
             ],
-            textInputAction: TextInputAction.done,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            style: Theme.of(context).textTheme.body1,
-            textAlign: TextAlign.end,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).primaryColorLight)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Theme.of(context).accentColor)),
-                hintStyle: Theme.of(context).textTheme.body1,
-                labelStyle: Theme.of(context).textTheme.body1,
-                labelText: AppLocalizations.of(context).gas),
-            validator: (String value) {
-              if (widget.isCustomFeeActive) {
-                value = value.replaceAll(',', '.');
-
-                if (value.isEmpty || double.parse(value) < 0) {
-                  return AppLocalizations.of(context).errorValueNotEmpty;
-                }
-
-                coinsDetailBloc.setCustomFee(Fee(
-                    gas: int.parse(_gasController.text.replaceAll(',', '.')),
-                    gasPrice: _gasPriceController.text.replaceAll(',', '.')));
-              }
-              return null;
-            },
           ),
         ),
         Padding(
@@ -132,7 +148,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
             controller: _gasPriceController,
             inputFormatters: <TextInputFormatter>[
               WhitelistingTextInputFormatter(
-                  RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))
+                  RegExp('^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
             ],
             textInputAction: TextInputAction.done,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -148,7 +164,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                         BorderSide(color: Theme.of(context).accentColor)),
                 hintStyle: Theme.of(context).textTheme.body1,
                 labelStyle: Theme.of(context).textTheme.body1,
-                labelText: AppLocalizations.of(context).gasPrice),
+                labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]'),
             validator: (String value) {
               if (widget.isCustomFeeActive) {
                 value = value.replaceAll(',', '.');
@@ -156,7 +172,6 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                 if (value.isEmpty || double.parse(value) < 0) {
                   return AppLocalizations.of(context).errorValueNotEmpty;
                 }
-
                 coinsDetailBloc.setCustomFee(Fee(
                     gas: int.parse(_gasController.text.replaceAll(',', '.')),
                     gasPrice: _gasPriceController.text.replaceAll(',', '.')));
@@ -171,10 +186,11 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
 }
 
 class CustomFeeFieldSmartChain extends StatefulWidget {
-  const CustomFeeFieldSmartChain({Key key, this.isCustomFeeActive})
+  const CustomFeeFieldSmartChain({Key key, this.isCustomFeeActive, this.coin})
       : super(key: key);
 
   final bool isCustomFeeActive;
+  final Coin coin;
 
   @override
   _CustomFeeFieldSmartChainState createState() =>
@@ -186,43 +202,58 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        inputFormatters: <TextInputFormatter>[
-          WhitelistingTextInputFormatter(
-              RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: TextFormField(
+              inputFormatters: <TextInputFormatter>[
+                WhitelistingTextInputFormatter(
+                    RegExp('^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
+              ],
+              textInputAction: TextInputAction.done,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              style: Theme.of(context).textTheme.body1,
+              textAlign: TextAlign.end,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorLight)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Theme.of(context).accentColor)),
+                  hintStyle: Theme.of(context).textTheme.body1,
+                  labelStyle: Theme.of(context).textTheme.body1,
+                  labelText: AppLocalizations.of(context).customFee +
+                      ' [' +
+                      widget.coin.abbr +
+                      ']'),
+              // The validator receives the text the user has typed in
+              validator: (String value) {
+                if (widget.isCustomFeeActive) {
+                  value = value.replaceAll(',', '.');
+
+                  if (value.isEmpty || double.parse(value) < 0) {
+                    return AppLocalizations.of(context).errorValueNotEmpty;
+                  }
+
+                  final double currentAmount = double.parse(value);
+
+                  if (currentAmount >
+                      double.parse(coinsDetailBloc.amountToSend)) {
+                    return AppLocalizations.of(context).errorAmountBalance;
+                  }
+                  coinsDetailBloc.setCustomFee(Fee(amount: value));
+                }
+                return null;
+              },
+            ),
+          ),
+          const SizedBox(
+            width: 8,
+          )
         ],
-        textInputAction: TextInputAction.done,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        style: Theme.of(context).textTheme.body1,
-        textAlign: TextAlign.end,
-        decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).primaryColorLight)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor)),
-            hintStyle: Theme.of(context).textTheme.body1,
-            labelStyle: Theme.of(context).textTheme.body1,
-            labelText: AppLocalizations.of(context).customFee),
-        // The validator receives the text the user has typed in
-        validator: (String value) {
-          if (widget.isCustomFeeActive) {
-            value = value.replaceAll(',', '.');
-
-            if (value.isEmpty || double.parse(value) < 0) {
-              return AppLocalizations.of(context).errorValueNotEmpty;
-            }
-
-            final double currentAmount = double.parse(value);
-
-            if (currentAmount > double.parse(coinsDetailBloc.amountToSend)) {
-              return AppLocalizations.of(context).errorAmountBalance;
-            }
-            coinsDetailBloc.setCustomFee(Fee(amount: value));
-          }
-          return null;
-        },
       ),
     );
   }

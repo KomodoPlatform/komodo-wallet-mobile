@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
@@ -20,7 +21,7 @@ class AmountAddressStep extends StatefulWidget {
       this.balance,
       this.isERCToken = false,
       this.onConfirm,
-      this.onCancel})
+      this.onCancel, this.coin})
       : super(key: key);
 
   final Function onCancel;
@@ -32,6 +33,7 @@ class AmountAddressStep extends StatefulWidget {
   final bool autoFocus;
   final double balance;
   final bool isERCToken;
+  final Coin coin;
 
   @override
   _AmountAddressStepState createState() => _AmountAddressStepState();
@@ -63,6 +65,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               onScan: scan,
             ),
             CustomFee(
+              coin: widget.coin,
               amount: widget.amountController.text,
               isERCToken: widget.isERCToken,
             ),

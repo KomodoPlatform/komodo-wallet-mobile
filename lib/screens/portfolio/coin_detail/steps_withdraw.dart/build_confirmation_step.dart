@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -8,6 +9,7 @@ import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:decimal/decimal.dart';
 
 class BuildConfirmationStep extends StatefulWidget {
   const BuildConfirmationStep(
@@ -50,11 +52,6 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   }
 
   @override
-  void dispose() {
-    print('DISPOSEEEE--------------');
-    super.dispose();
-  }
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Object>(
         future: getFee(),
@@ -63,13 +60,26 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
           bool notEnoughEth = false;
           bool isEthActive = false;
+
           double fee = 0;
-          if (snapshot.hasData) {
+          double ethfee = 0;
+          if (snapshot.hasData && coinsDetailBloc.customFee == null) {
             try {
               fee = snapshot.data;
             } catch (e) {
               print(e);
             }
+          }
+
+          if (coinsDetailBloc.customFee != null &&
+              widget.coinBalance.coin.type != 'erc') {
+            fee = double.parse(coinsDetailBloc.customFee.amount);
+          }
+
+          if (coinsDetailBloc.customFee != null &&
+              widget.coinBalance.coin.type == 'erc') {
+            fee = coinsDetailBloc.customFee.gas *
+                double.parse(coinsDetailBloc.customFee.gasPrice);
           }
 
           double amountToPay = double.parse(widget.amountToPay);
@@ -90,6 +100,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               amountUserReceive -= fee;
             }
           }
+
           CoinBalance ethCoin;
           for (CoinBalance coinBalance in coinsBloc.coinBalance) {
             if (coinBalance.coin.abbr == 'ETH') {
@@ -98,8 +109,16 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           }
 
           isEthActive = !(ethCoin == null);
+          ethfee = (Decimal.parse(fee.toString()) / Decimal.parse('1000000000'))
+              .toDouble();
 
-          if (ethCoin != null && fee > double.parse(ethCoin.balance.balance)) {
+          if ((ethCoin != null &&
+                  ethfee > double.parse(ethCoin.balance.balance)) ||
+              (ethCoin != null &&
+                  widget.coinBalance.coin.abbr == 'ETH' &&
+                  Decimal.parse(ethfee.toString()) +
+                          Decimal.parse(widget.amountToPay) >
+                      Decimal.parse(ethCoin.balance.balance))) {
             notEnoughEth = true;
           }
 
@@ -145,7 +164,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       style: Theme.of(context).textTheme.body2,
                     ),
                     Text(
-                      fee.toStringAsFixed(8),
+                      !isErcCoin ? fee.toStringAsFixed(8) : ethfee.toString(),
                       style: Theme.of(context).textTheme.body2,
                     ),
                     const SizedBox(
@@ -254,12 +273,11 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       child: Builder(builder: (BuildContext context) {
                         return PrimaryButton(
                           text: AppLocalizations.of(context)
-                                .confirm
-                                .toUpperCase(),
+                              .confirm
+                              .toUpperCase(),
                           onPressed: isButtonActive
                               ? () {
-                                  _onPressedConfirmWithdraw(
-                                      amountUserReceive);
+                                  _onPressedConfirmWithdraw(amountUserReceive);
                                 }
                               : null,
                         );
