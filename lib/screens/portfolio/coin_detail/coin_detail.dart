@@ -891,8 +891,12 @@ class _CoinDetailState extends State<CoinDetail> {
                         dataRawTx.error.contains('gas is too low')) {
                       resetSend();
                       final String gas = dataRawTx.error
-                          .substring(dataRawTx.error.indexOf(r':') + 1,
-                              dataRawTx.error.indexOf(r','))
+                          .substring(
+                              dataRawTx.error.indexOf(
+                                      r':', dataRawTx.error.indexOf(r'"')) +
+                                  1,
+                              dataRawTx.error
+                                  .indexOf(r',', dataRawTx.error.indexOf(r'"')))
                           .trim();
                       Scaffold.of(mainContext).showSnackBar(SnackBar(
                         duration: const Duration(seconds: 2),
