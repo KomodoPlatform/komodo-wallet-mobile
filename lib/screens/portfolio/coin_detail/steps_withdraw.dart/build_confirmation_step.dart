@@ -116,8 +116,9 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                   ethfee > double.parse(ethCoin.balance.balance)) ||
               (ethCoin != null &&
                   widget.coinBalance.coin.abbr == 'ETH' &&
-                  ethfee + double.parse(widget.amountToPay) >
-                      double.parse(ethCoin.balance.balance))) {
+                  Decimal.parse(ethfee.toString()) +
+                          Decimal.parse(widget.amountToPay) >
+                      Decimal.parse(ethCoin.balance.balance))) {
             notEnoughEth = true;
           }
 
