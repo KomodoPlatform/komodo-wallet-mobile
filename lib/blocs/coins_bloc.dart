@@ -35,15 +35,6 @@ class CoinsBloc implements BlocBase {
   Sink<dynamic> get _inTransactions => _transactionsController.sink;
   Stream<dynamic> get outTransactions => _transactionsController.stream;
 
-  List<Coin> coinToActivate = <Coin>[];
-
-  // Streams to handle the list coin to activate
-  final StreamController<List<Coin>> _coinToActivateController =
-      StreamController<List<Coin>>.broadcast();
-
-  Sink<List<Coin>> get _inCoinToActivate => _coinToActivateController.sink;
-  Stream<List<Coin>> get outCoinToActivate => _coinToActivateController.stream;
-
   CoinToActivate currentActiveCoin = CoinToActivate();
 
   // Streams to handle the list coin
@@ -65,6 +56,43 @@ class CoinsBloc implements BlocBase {
   Stream<bool> get outCloseViewSelectCoin =>
       _closeViewSelectCoinController.stream;
 
+  bool isAllSmartChainActive = false;
+
+  final StreamController<bool> _isAllSmartChainActiveController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inIsAllSmartChainActive =>
+      _isAllSmartChainActiveController.sink;
+  Stream<bool> get outIsAllSmartChainActive =>
+      _isAllSmartChainActiveController.stream;
+
+  bool isERCActive = false;
+
+  final StreamController<bool> _isERCActiveController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inIsERCActive => _isERCActiveController.sink;
+  Stream<bool> get outIsERCActive => _isERCActiveController.stream;
+
+  bool isutxoActive = false;
+
+  final StreamController<bool> _isutxoActiveController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inIsutxoActive => _isutxoActiveController.sink;
+  Stream<bool> get outIsutxoActive => _isutxoActiveController.stream;
+
+  List<CoinToActivate> coinBeforeActivation = <CoinToActivate>[];
+
+  // Streams to handle the list coin to activate
+  final StreamController<List<CoinToActivate>> _coinBeforeActivationController =
+      StreamController<List<CoinToActivate>>.broadcast();
+
+  Sink<List<CoinToActivate>> get _inCoinBeforeActivation =>
+      _coinBeforeActivationController.sink;
+  Stream<List<CoinToActivate>> get outCoinBeforeActivation =>
+      _coinBeforeActivationController.stream;
+
   Timer timer;
   bool onActivateCoins = false;
 
@@ -72,9 +100,43 @@ class CoinsBloc implements BlocBase {
   void dispose() {
     _coinsController.close();
     _transactionsController.close();
-    _coinToActivateController.close();
     _currentActiveCoinController.close();
     _closeViewSelectCoinController.close();
+    _isAllSmartChainActiveController.close();
+    _coinBeforeActivationController.close();
+    _isutxoActiveController.close();
+  }
+
+  Future<void> initCoinBeforeActivation() async {
+    final List<CoinToActivate> coinBeforeActivation = <CoinToActivate>[];
+
+    for (Coin coin in await getAllNotActiveCoins()) {
+      coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: false));
+    }
+    this.coinBeforeActivation = coinBeforeActivation;
+    _inCoinBeforeActivation.add(this.coinBeforeActivation);
+  }
+
+  void setCoinBeforeActivation(Coin coin, bool isActive) {
+    coinBeforeActivation
+        .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
+    coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
+    _inCoinBeforeActivation.add(coinBeforeActivation);
+  }
+
+  void setIsutxoActive(bool isutxoActive) {
+    this.isutxoActive = isutxoActive;
+    _inIsutxoActive.add(this.isutxoActive);
+  }
+  
+  void setIsERCActive(bool isERCActive) {
+    this.isERCActive = isERCActive;
+    _inIsERCActive.add(this.isERCActive);
+  }
+
+  void setIsAllSmartChainActive(bool isAllSmartChainActive) {
+    this.isAllSmartChainActive = isAllSmartChainActive;
+    _inIsAllSmartChainActive.add(this.isAllSmartChainActive);
   }
 
   void setCloseViewSelectCoin(bool closeViewSelectCoin) {
@@ -189,12 +251,12 @@ class CoinsBloc implements BlocBase {
     Coin coinToactivate;
 
     currentCoinActivate(
-          CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
+        CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
     await MarketMakerService().activeCoin(coin).then((ActiveCoin activeCoin) {
       coinToactivate = coin;
       currentCoinActivate(
-          CoinToActivate(currentStatus: '${coin.name} activate.'));
-    }).catchError((dynamic onError) async{
+          CoinToActivate(currentStatus: '${coin.name} activated.'));
+    }).catchError((dynamic onError) async {
       coinToactivate = null;
 
       if (onError is ErrorString &&
@@ -206,15 +268,17 @@ class CoinsBloc implements BlocBase {
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
       }
-      await Future<dynamic>.delayed(const Duration(seconds: 2)).then((dynamic _){
+      await Future<dynamic>.delayed(const Duration(seconds: 2))
+          .then((dynamic _) {
         currentCoinActivate(null);
       });
-    }).timeout(const Duration(seconds: 10), onTimeout: () async{
+    }).timeout(const Duration(seconds: 10), onTimeout: () async {
       coinToactivate = null;
       print('Sorry, ${coin.abbr} not available.');
       currentCoinActivate(
           CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
-      await Future<dynamic>.delayed(const Duration(seconds: 2)).then((dynamic _){
+      await Future<dynamic>.delayed(const Duration(seconds: 2))
+          .then((dynamic _) {
         currentCoinActivate(null);
       });
     });
@@ -261,7 +325,8 @@ class CoinsBloc implements BlocBase {
 
   Future<File> resetCoinDefault() async {
     final File file = await _localFile;
-    return file.writeAsString(json.encode(await MarketMakerService().loadJsonCoinsDefault()));
+    return file.writeAsString(
+        json.encode(await MarketMakerService().loadJsonCoinsDefault()));
   }
 
   Future<List<Coin>> readJsonCoin() async {
@@ -275,8 +340,8 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<List<Coin>> getAllNotActiveCoins() async {
-    final List<Coin> allCoins =
-        await MarketMakerService().loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
+    final List<Coin> allCoins = await MarketMakerService()
+        .loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
     final List<Coin> coinsNotActivated = <Coin>[];
 
@@ -292,22 +357,19 @@ class CoinsBloc implements BlocBase {
       }
     }
 
+    coinsNotActivated.sort((Coin a, Coin b) =>
+        a.swapContractAddress.compareTo(b.swapContractAddress));
     return coinsNotActivated;
   }
 
-  void addActivateCoin(Coin coin) {
-    coinToActivate.add(coin);
-    _inCoinToActivate.add(coinToActivate);
-  }
-
-  void removeActivateCoin(Coin coin) {
-    coinToActivate.remove(coin);
-    _inCoinToActivate.add(coinToActivate);
-  }
-
-  void resetActivateCoin() {
-    coinToActivate.clear();
-    _inCoinToActivate.add(coinToActivate);
+  Future<List<Coin>> getAllNotActiveCoinsWithFilter(String query) async {
+    List<Coin> coinsActivate = await getAllNotActiveCoins();
+    coinsActivate = coinsActivate
+        .where((Coin item) =>
+            item.abbr.toLowerCase().contains(query.toLowerCase()) ||
+            item.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return coinsActivate;
   }
 
   void startCheckBalance() {
@@ -352,8 +414,14 @@ class CoinsBloc implements BlocBase {
     }
   }
 
-  Future<void> activateCoinsSelected(List<Coin> coinToActivate) async {
-    coinsBloc.addMultiCoins(coinToActivate).then((_) {
+  Future<void> activateCoinsSelected() async {
+    final List<Coin> coins = <Coin>[];
+    for (CoinToActivate coinToActivate in coinBeforeActivation) {
+      if (coinToActivate.isActive) {
+        coins.add(coinToActivate.coin);
+      }
+    }
+    coinsBloc.addMultiCoins(coins).then((_) {
       coinsBloc.setCloseViewSelectCoin(true);
     });
   }
@@ -361,7 +429,9 @@ class CoinsBloc implements BlocBase {
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
     dynamic balance;
     try {
-      balance = await MarketMakerService().getBalance(coin).timeout(const Duration(seconds: 15));
+      balance = await MarketMakerService()
+          .getBalance(coin)
+          .timeout(const Duration(seconds: 15));
     } catch (e) {
       print(e);
       balance = null;
@@ -404,7 +474,9 @@ class CoinsBloc implements BlocBase {
     final List<Coin> coinsAll = await getAllNotActiveCoins();
 
     try {
-      await MarketMakerService().getCoinToKickStart().then((CoinToKickStart coinsToKickStart) {
+      await MarketMakerService()
+          .getCoinToKickStart()
+          .then((CoinToKickStart coinsToKickStart) {
         for (Coin coin in coinsAll) {
           for (String coinToKickStart in coinsToKickStart.result) {
             if (coin.abbr == coinToKickStart.toString()) {

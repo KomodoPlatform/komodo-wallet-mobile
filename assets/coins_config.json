@@ -1,6 +1,7 @@
 [
   {
     "name": "Komodo",
+    "type": "smartChain",
     "address": "electrum1.cipig.net",
     "port": 10001,
     "proto": "tcp",
@@ -20,6 +21,7 @@
   },
   {
     "name": "Bitcoin",
+    "type": "utxo",
     "address": "e-x.not.fyi",
     "port": 50001,
     "proto": "tcp",
@@ -35,6 +37,7 @@
   },
   {
     "name": "Bitcoin Cash",
+    "type": "utxo",
     "address": "bch.imaginary.cash",
     "port": 50001,
     "proto": "tcp",
@@ -54,6 +57,7 @@
   },
   {
     "name": "Ethereum",
+    "type": "erc",
     "address": "http://eth2.cipig.net",
     "port": 8555,
     "proto": "tcp",
@@ -73,6 +77,7 @@
   },
   {
     "name": "DASH",
+    "type": "utxo",
     "address": "electrum3.cipig.net",
     "port": 10061,
     "proto": "tcp",
@@ -91,6 +96,7 @@
   },
   {
     "name": "Litecoin",
+    "type": "utxo",
     "address": "electrum-ltc.bysh.me",
     "port": 50001,
     "proto": "tcp",
@@ -109,6 +115,7 @@
   },
   {
     "name": "USDC",
+    "type": "erc",
     "address": "http://eth1.cipig.net",
     "port": 8555,
     "proto": "tcp",
@@ -128,6 +135,7 @@
   },
   {
     "name": "Dogecoin",
+    "type": "utxo",
     "address": "electrum1.cipig.net",
     "port": 10060,
     "proto": "tcp",
@@ -146,6 +154,7 @@
   },
   {
     "name": "Digibyte",
+    "type": "utxo",
     "address": "electrum1.cipig.net",
     "port": 10059,
     "proto": "tcp",
@@ -164,6 +173,7 @@
   },
   {
     "name": "QTUM",
+    "type": "utxo",
     "address": "s1.qtum.info",
     "port": 50001,
     "proto": "tcp",
@@ -182,6 +192,7 @@
   },
   {
     "name": "RedFOX",
+    "type": "smartChain",
     "address": "electrum1.cipig.net",
     "port": 10034,
     "proto": "tcp",
@@ -200,6 +211,7 @@
   },
   {
     "name": "ChainZilla",
+    "type": "smartChain",
     "address": "electrum1.cipig.net",
     "port": 10028,
     "proto": "tcp",
@@ -218,6 +230,7 @@
   },
   {
     "name": "Ravencoin",
+    "type": "utxo",
     "address": "electrum2.cipig.net:10051",
     "port": 10051,
     "proto": "tcp",
@@ -236,6 +249,7 @@
   },
   {
     "name": "VerusCoin",
+    "type": "utxo",
     "address": "electrum1.cipig.net",
     "port": 10021,
     "proto": "tcp",
@@ -254,6 +268,7 @@
   },
   {
     "name": "BAT",
+    "type": "erc",
     "address": "http://eth1.cipig.net",
     "port": 8555,
     "proto": "tcp",
@@ -273,6 +288,7 @@
   },
   {
     "name": "Rick",
+    "type": "smartChain",
     "address": "electrum3.cipig.net",
     "port": 10017,
     "proto": "tcp",
@@ -291,6 +307,7 @@
   },
   {
     "name": "Morty",
+    "type": "smartChain",
     "address": "electrum1.cipig.net",
     "port": 10018,
     "proto": "tcp",

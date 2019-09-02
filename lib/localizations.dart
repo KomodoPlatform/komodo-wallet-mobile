@@ -492,20 +492,36 @@ class AppLocalizations {
   String get configureWallet =>
       Intl.message('Configuring your wallet, please wait...',
           name: 'configureWallet');
-    String get titleCurrentAsk =>
-      Intl.message('Order selected',
-          name: 'titleCurrentAsk');
-    String get txFeeTitle =>
-      Intl.message('transaction fee:',
-          name: 'txFeeTitle');
-    String get tradingFee =>
-      Intl.message('trading fee:',
-          name: 'tradingFee');
-      String swapErcAmount(String amount) => Intl.message(
+  String get titleCurrentAsk =>
+      Intl.message('Order selected', name: 'titleCurrentAsk');
+  String get txFeeTitle => Intl.message('transaction fee:', name: 'txFeeTitle');
+  String get tradingFee => Intl.message('trading fee:', name: 'tradingFee');
+  String swapErcAmount(String amount) => Intl.message(
         'This swap requires $amount ETH for transaction fees',
         name: 'swapErcAmount',
         args: <Object>[amount],
       );
+  String get searchFilterCoin =>
+      Intl.message('Search a coin', name: 'searchFilterCoin');
+  String get searchFilterSubtitleSmartChain =>
+      Intl.message('Select all SmartChains',
+          name: 'searchFilterSubtitleSmartChain');
+  String get searchFilterSubtitleERC =>
+      Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
+  String get customFee => Intl.message('Custom fee', name: 'customFee');
+  String get gas => Intl.message('Gas', name: 'gas');
+  String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
+  String get customFeeWarning =>
+      Intl.message('Only use custom fees if you know what you are doing!',
+          name: 'customFeeWarning');
+  String get searchFilterSubtitleutxo =>
+      Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
+
+  String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
+  String get tagKMD => Intl.message('KMD', name: 'tagKMD');
+  String errorNotEnoughtGas(String gas) =>
+      Intl.message('Not enough gas - use at least $gas Gwei',
+          name: 'errorNotEnoughtGas', args: <Object>[gas]);
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

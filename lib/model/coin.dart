@@ -25,9 +25,11 @@ class Coin {
     this.colorCoin,
     this.serverList,
     this.explorerUrl,
+    this.type
   });
 
   factory Coin.fromJson(Map<String, dynamic> json) => Coin(
+      type: json['type'] ?? '',
         name: json['name'] ?? '',
         address: json['address'] ?? '',
         port: json['port'] ?? 0,
@@ -43,6 +45,7 @@ class Coin {
         explorerUrl: List<String>.from(json['explorerUrl'].map((dynamic x) => x)) ?? <String>[],
       );
 
+  String type; // 'other', 'erc' or 'smartChain'
   String name;
   String address;
   int port;
@@ -58,6 +61,7 @@ class Coin {
   String swapContractAddress;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
+        'type': type ?? '',
         'name': name ?? '',
         'address': address ?? '',
         'port': port ?? 0,

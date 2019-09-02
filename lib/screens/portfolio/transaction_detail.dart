@@ -39,7 +39,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
             IconButton(
               icon: Icon(Icons.share),
               onPressed: () {
-                final String fromOrTo = widget.transaction.myBalanceChange > 0
+                final String fromOrTo = double.parse(widget.transaction.myBalanceChange) > 0
                     ? '${AppLocalizations.of(context).from}: ${widget.transaction.from[0]}'
                     : '${AppLocalizations.of(context).to} ${widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]}';
                 String fee = '';
@@ -107,9 +107,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
                         final String amount = widget
                                 .coinBalance.coin.swapContractAddress.isNotEmpty
                             ? replaceAllTrainlingZeroERC(
-                                tx.myBalanceChange.toStringAsFixed(16))
+                                double.parse(tx.myBalanceChange).toStringAsFixed(16))
                             : replaceAllTrainlingZero(
-                                tx.myBalanceChange.toStringAsFixed(8));
+                                double.parse(tx.myBalanceChange).toStringAsFixed(8));
 
                         return AutoSizeText(
                           amount + ' ' + tx.coin,
@@ -173,7 +173,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
             data: widget.transaction.confirmations.toString()),
         ItemTransationDetail(
             title: AppLocalizations.of(context).txFee, data: _getFee()),
-        widget.transaction.myBalanceChange > 0
+        double.parse(widget.transaction.myBalanceChange) > 0
             ? ItemTransationDetail(
                 title: AppLocalizations.of(context).from,
                 data: widget.transaction.from[0])

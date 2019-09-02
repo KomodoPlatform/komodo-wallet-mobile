@@ -136,7 +136,7 @@ class MarketMakerService {
   }
 
   Future<void> initCheckLogs() async {
-    final File fileLog = File('${filesPath}log');
+    final File fileLog = File('${filesPath}log.txt');
     if (!fileLog.existsSync()) {
       await fileLog.create();
     }
@@ -168,8 +168,7 @@ class MarketMakerService {
             'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
         if (!checkmm2process.stdout
             .toString()
-            .contains(prefs.getInt('mm2ProcessPID').toString())) 
-            break;
+            .contains(prefs.getInt('mm2ProcessPID').toString())) break;
         await Future<dynamic>.delayed(const Duration(milliseconds: 500));
       }
     }
@@ -180,20 +179,21 @@ class MarketMakerService {
     initUsername(passphrase);
 
     final String startParam = configMm2ToJson(ConfigMm2(
-      gui: 'atomicDEX',
-      netid: 9999,
-      client: 1,
-      userhome: filesPath,
-      passphrase: passphrase,
-      rpcPassword: userpass,
-      coins: await readJsonCoinInit(),
-      dbdir: filesPath
-    ));
+        gui: 'atomicDEX',
+        netid: 9999,
+        client: 1,
+        userhome: filesPath,
+        passphrase: passphrase,
+        rpcPassword: userpass,
+        coins: await readJsonCoinInit(),
+        dbdir: filesPath));
+
+    final File fileLog = File('${filesPath}log.txt');
+    sink = fileLog.openWrite();
 
     if (Platform.isAndroid) {
       await stopmm2();
       await waitUntilMM2isStop();
-      final File fileLog = File('${filesPath}log');
       if (fileLog.existsSync()) {
         await fileLog.delete();
       }
@@ -201,10 +201,9 @@ class MarketMakerService {
 
       try {
         await initCheckLogs();
-        File('${filesPath}log');
 
         mm2Process = await Process.start(
-            '/system/bin/sh', <String>['-c', './mm2 > log 2>&1'],
+            '/system/bin/sh', <String>['-c', './mm2 > log.txt 2>&1'],
             mode: ProcessStartMode.detached, workingDirectory: filesPath);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setInt('mm2ProcessPID', mm2Process.pid);
@@ -247,6 +246,9 @@ class MarketMakerService {
 
   void _onLogsmm2(String log) {
     print(log);
+    if (!Platform.isAndroid) {
+      sink.write(log + '\n');
+    }
     if (log.contains('CONNECTED') ||
         log.contains('Entering the taker_swap_loop') ||
         log.contains('Received \'negotiation') ||
@@ -564,7 +566,7 @@ class MarketMakerService {
     try {
       final Response response =
           await http.post(url, body: getRecentSwapToJson(getRecentSwap));
-      print(response.body.toString());
+      print('my_recent_swaps' + response.body.toString());
       return recentSwapsFromJson(response.body);
     } catch (e) {
       print(e);
@@ -627,33 +629,37 @@ class MarketMakerService {
     try {
       final Response response =
           await http.post(url, body: json.encode(getSendRawTransaction));
-      return sendRawTransactionResponseFromJson(response.body);
+
+      try {
+        final SendRawTransactionResponse sendRawTransactionResponse = sendRawTransactionResponseFromJson(response.body);
+        if (sendRawTransactionResponse.txHash.isEmpty) {
+          return errorStringFromJson(response.body);
+        }
+        return sendRawTransactionResponse;
+      } catch (e) {
+        return errorStringFromJson(response.body);
+      }
     } catch (e) {
       return e;
     }
   }
 
-  Future<dynamic> postWithdraw(
-      Coin coin, String addressTo, double amount, bool isMax) async {
-    final GetWithdraw getWithdraw = GetWithdraw(
-      userpass: userpass,
-      method: 'withdraw',
-      coin: coin.abbr,
-      to: addressTo,
-      max: isMax,
-    );
-    if (!isMax) {
-      getWithdraw.amount = amount;
-    }
+  Future<dynamic> postWithdraw(GetWithdraw getWithdraw) async {
+    getWithdraw.userpass = userpass;
+    // getWithdraw.fee = null;
 
-    print('<<<<<<<<<<<<<<<<<<sending: ' + amount.toString());
+    print('<<<<<<<<<<<<<<<<<<sending: ' + getWithdraw.amount.toString());
     print(getWithdrawToJson(getWithdraw));
 
     try {
       final Response response =
           await http.post(url, body: getWithdrawToJson(getWithdraw));
       print('response.body postWithdraw' + response.body.toString());
-      return withdrawResponseFromJson(response.body);
+      try {
+        return withdrawResponseFromJson(response.body);
+      } catch (e) {
+        return errorCodeFromJson(response.body);
+      }
     } catch (e) {
       print(e.toString());
       return e;

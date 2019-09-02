@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -24,6 +25,7 @@ import 'package:connectivity/connectivity.dart';
 import 'blocs/coins_bloc.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   if (isInDebugMode) {
     return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));
