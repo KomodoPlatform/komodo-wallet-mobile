@@ -890,12 +890,17 @@ class _CoinDetailState extends State<CoinDetail> {
                     } else if (dataRawTx is ErrorString &&
                         dataRawTx.error.contains('gas is too low')) {
                       resetSend();
+                      final String gas = dataRawTx.error
+                          .substring(dataRawTx.error.indexOf(r':') + 1,
+                              dataRawTx.error.indexOf(r','))
+                          .trim();
                       Scaffold.of(mainContext).showSnackBar(SnackBar(
                         duration: const Duration(seconds: 2),
-                        
                         backgroundColor: Theme.of(context).errorColor,
-                        content: Text(AppLocalizations.of(mainContext)
-                            .errorNotEnoughtGas,),
+                        content: Text(
+                          AppLocalizations.of(mainContext)
+                              .errorNotEnoughtGas(gas),
+                        ),
                       ));
                     } else {
                       catchError(mainContext);
