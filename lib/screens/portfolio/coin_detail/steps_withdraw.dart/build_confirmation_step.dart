@@ -112,8 +112,12 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           ethfee = (Decimal.parse(fee.toString()) / Decimal.parse('1000000000'))
               .toDouble();
 
-          if (ethCoin != null &&
-              ethfee > double.parse(ethCoin.balance.balance)) {
+          if ((ethCoin != null &&
+                  ethfee > double.parse(ethCoin.balance.balance)) ||
+              (ethCoin != null &&
+                  widget.coinBalance.coin.abbr == 'ETH' &&
+                  ethfee + double.parse(widget.amountToPay) >
+                      double.parse(ethCoin.balance.balance))) {
             notEnoughEth = true;
           }
 

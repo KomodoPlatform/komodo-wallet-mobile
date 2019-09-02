@@ -892,9 +892,10 @@ class _CoinDetailState extends State<CoinDetail> {
                       resetSend();
                       Scaffold.of(mainContext).showSnackBar(SnackBar(
                         duration: const Duration(seconds: 2),
+                        
                         backgroundColor: Theme.of(context).errorColor,
                         content: Text(AppLocalizations.of(mainContext)
-                            .errorNotEnoughtGas),
+                            .errorNotEnoughtGas,),
                       ));
                     } else {
                       catchError(mainContext);
