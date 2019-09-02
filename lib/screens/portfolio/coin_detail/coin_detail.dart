@@ -13,6 +13,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
@@ -63,7 +64,7 @@ class CoinDetail extends StatefulWidget {
 
     MarketMakerService()
         .postWithdraw(GetWithdraw(
-          fee: null,
+            fee: null,
             coin: coinBalance.coin.abbr,
             to: coinBalance.balance.address,
             amount: (Decimal.parse(coinBalance.balance.getBalance()) -
@@ -886,6 +887,15 @@ class _CoinDetailState extends State<CoinDetail> {
                           currentIndex = 3;
                         });
                       });
+                    } else if (dataRawTx is ErrorString &&
+                        dataRawTx.error.contains('gas is too low')) {
+                      resetSend();
+                      Scaffold.of(mainContext).showSnackBar(SnackBar(
+                        duration: const Duration(seconds: 2),
+                        backgroundColor: Theme.of(context).errorColor,
+                        content: Text(AppLocalizations.of(mainContext)
+                            .errorNotEnoughtGas),
+                      ));
                     } else {
                       catchError(mainContext);
                     }

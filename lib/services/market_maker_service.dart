@@ -168,8 +168,7 @@ class MarketMakerService {
             'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
         if (!checkmm2process.stdout
             .toString()
-            .contains(prefs.getInt('mm2ProcessPID').toString())) 
-            break;
+            .contains(prefs.getInt('mm2ProcessPID').toString())) break;
         await Future<dynamic>.delayed(const Duration(milliseconds: 500));
       }
     }
@@ -180,15 +179,14 @@ class MarketMakerService {
     initUsername(passphrase);
 
     final String startParam = configMm2ToJson(ConfigMm2(
-      gui: 'atomicDEX',
-      netid: 9999,
-      client: 1,
-      userhome: filesPath,
-      passphrase: passphrase,
-      rpcPassword: userpass,
-      coins: await readJsonCoinInit(),
-      dbdir: filesPath
-    ));
+        gui: 'atomicDEX',
+        netid: 9999,
+        client: 1,
+        userhome: filesPath,
+        passphrase: passphrase,
+        rpcPassword: userpass,
+        coins: await readJsonCoinInit(),
+        dbdir: filesPath));
 
     final File fileLog = File('${filesPath}log.txt');
     sink = fileLog.openWrite();
@@ -631,7 +629,16 @@ class MarketMakerService {
     try {
       final Response response =
           await http.post(url, body: json.encode(getSendRawTransaction));
-      return sendRawTransactionResponseFromJson(response.body);
+
+      try {
+        final SendRawTransactionResponse sendRawTransactionResponse = sendRawTransactionResponseFromJson(response.body);
+        if (sendRawTransactionResponse.txHash.isEmpty) {
+          return errorStringFromJson(response.body);
+        }
+        return sendRawTransactionResponse;
+      } catch (e) {
+        return errorStringFromJson(response.body);
+      }
     } catch (e) {
       return e;
     }
@@ -648,7 +655,11 @@ class MarketMakerService {
       final Response response =
           await http.post(url, body: getWithdrawToJson(getWithdraw));
       print('response.body postWithdraw' + response.body.toString());
-      return withdrawResponseFromJson(response.body);
+      try {
+        return withdrawResponseFromJson(response.body);
+      } catch (e) {
+        return errorCodeFromJson(response.body);
+      }
     } catch (e) {
       print(e.toString());
       return e;

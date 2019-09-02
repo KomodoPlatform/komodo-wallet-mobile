@@ -139,9 +139,6 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                   },
                 ),
               ),
-              const SizedBox(
-                width: 8,
-              )
             ],
           ),
         ),
