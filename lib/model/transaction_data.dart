@@ -26,13 +26,13 @@ class Transaction {
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
         internalId: json['internal_id'] ?? '',
-        myBalanceChange: json['my_balance_change'].toDouble() ?? 0.0,
-        receivedByMe: json['received_by_me'].toDouble() ?? 0.0,
-        spentByMe: json['spent_by_me'].toDouble() ?? 0.0,
+        myBalanceChange: json['my_balance_change'] ?? 0.0,
+        receivedByMe: json['received_by_me'] ?? 0.0,
+        spentByMe: json['spent_by_me'] ?? 0.0,
         timestamp: json['timestamp'] ?? 0,
         to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
-        totalAmount: json['total_amount'].toDouble() ?? 0.0,
+        totalAmount: json['total_amount'] ?? '',
         txHash: json['tx_hash'] ?? '',
         txHex: json['tx_hex'] ?? '',
       );
@@ -43,12 +43,12 @@ class Transaction {
   FeeDetails feeDetails;
   List<String> from;
   String internalId;
-  double myBalanceChange;
-  double receivedByMe;
-  double spentByMe;
+  String myBalanceChange;
+  String receivedByMe;
+  String spentByMe;
   int timestamp;
   List<String> to;
-  double totalAmount;
+  String totalAmount;
   String txHash;
   String txHex;
 
@@ -66,7 +66,7 @@ class Transaction {
         'timestamp': timestamp ?? 0,
         'to':
             List<dynamic>.from(to.map<dynamic>((dynamic x) => x)) ?? <String>[],
-        'total_amount': totalAmount ?? 0.0,
+        'total_amount': totalAmount ?? '',
         'tx_hash': txHash ?? '',
         'tx_hex': txHex ?? '',
       };
@@ -99,24 +99,24 @@ class FeeDetails {
   });
 
   factory FeeDetails.fromJson(Map<String, dynamic> json) => FeeDetails(
-        amount: json['amount'] == null ? null : json['amount'].toDouble(),
+        amount: json['amount'] ?? '',
         coin: json['coin'] ?? '',
         gas: json['gas'] ?? 0,
-        gasPrice: json['gas_price'] == null ? null : json['gas_price'].toDouble(),
-        totalFee: json['total_fee'] == null ? null : json['total_fee'].toDouble(),
+        gasPrice: json['gas_price'] ?? '',
+        totalFee: json['total_fee'] ?? '',
       );
 
-  double amount;
+  String amount;
   String coin;
   int gas;
-  double gasPrice;
-  double totalFee;
+  String gasPrice;
+  String totalFee;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'amount': amount ?? 0.0,
         'coin': coin ?? '',
         'gas': gas ?? 0,
-        'gas_price': gasPrice ?? 0.0,
-        'total_fee': totalFee ?? 0.0,
+        'gas_price': gasPrice ?? '',
+        'total_fee': totalFee ?? '',
       };
 }

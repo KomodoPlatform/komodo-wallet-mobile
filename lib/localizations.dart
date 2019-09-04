@@ -501,12 +501,40 @@ class AppLocalizations {
         name: 'swapErcAmount',
         args: <Object>[amount],
       );
-  String get remove =>
-      Intl.message('Remove',
-          name: 'remove');
-  String get searchFilterCoin => Intl.message('Search a coin', name: 'searchFilterCoin');
-  String get searchFilterSubtitleSmartChain => Intl.message('Select all SmartChains', name: 'searchFilterSubtitleSmartChain');
-  String get searchFilterSubtitleERC => Intl.message('Select all ERC', name: 'searchFilterSubtitleERC');
+  String get remove => Intl.message('Remove', name: 'remove');
+  String get searchFilterCoin =>
+      Intl.message('Search a coin', name: 'searchFilterCoin');
+  String get searchFilterSubtitleSmartChain =>
+      Intl.message('Select all SmartChains',
+          name: 'searchFilterSubtitleSmartChain');
+  String get searchFilterSubtitleERC =>
+      Intl.message('Select all ERC', name: 'searchFilterSubtitleERC');
+  String get customFee => Intl.message('Custom fee', name: 'customFee');
+  String get gas => Intl.message('Gas', name: 'gas');
+  String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
+  String get customFeeWarning =>
+      Intl.message('Only use custom fees if you know what you are doing!',
+          name: 'customFeeWarning');
+  String get searchFilterSubtitleutxo =>
+      Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
+
+  String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
+  String get tagKMD => Intl.message('KMD', name: 'tagKMD');
+  String errorNotEnoughtGas(String gas) =>
+      Intl.message('Not enough gas - use at least $gas Gwei',
+          name: 'errorNotEnoughtGas', args: <Object>[gas]);
+  String orderCancel(String coin) =>
+      Intl.message('All $coin orders are canceled.',
+          name: 'orderCancel', args: <Object>[coin]);
+
+  String get deleteConfirm =>
+      Intl.message('Confirm DELETE', name: 'deleteConfirm');
+
+  String  get deleteSpan1 =>
+      Intl.message('Are you sure to delete ', name: 'deleteSpan1');
+  String get deleteSpan2 => Intl.message(
+      ' from your portfolio? All current orders not matched will be cancel.',
+      name: 'deleteSpan2');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

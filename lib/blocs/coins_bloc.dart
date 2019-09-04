@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
+import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/transactions.dart';
@@ -74,6 +75,14 @@ class CoinsBloc implements BlocBase {
   Sink<bool> get _inIsERCActive => _isERCActiveController.sink;
   Stream<bool> get outIsERCActive => _isERCActiveController.stream;
 
+  bool isutxoActive = false;
+
+  final StreamController<bool> _isutxoActiveController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inIsutxoActive => _isutxoActiveController.sink;
+  Stream<bool> get outIsutxoActive => _isutxoActiveController.stream;
+
   List<CoinToActivate> coinBeforeActivation = <CoinToActivate>[];
 
   // Streams to handle the list coin to activate
@@ -96,6 +105,7 @@ class CoinsBloc implements BlocBase {
     _closeViewSelectCoinController.close();
     _isAllSmartChainActiveController.close();
     _coinBeforeActivationController.close();
+    _isutxoActiveController.close();
   }
 
   Future<void> initCoinBeforeActivation() async {
@@ -112,10 +122,12 @@ class CoinsBloc implements BlocBase {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
     coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
-    coinBeforeActivation.sort((CoinToActivate a, CoinToActivate b) =>
-        a.coin.swapContractAddress.compareTo(b.coin.swapContractAddress));
-
     _inCoinBeforeActivation.add(coinBeforeActivation);
+  }
+
+  void setIsutxoActive(bool isutxoActive) {
+    this.isutxoActive = isutxoActive;
+    _inIsutxoActive.add(this.isutxoActive);
   }
 
   void setIsERCActive(bool isERCActive) {
@@ -153,8 +165,17 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  void removeCoin(Coin coin) {
-    coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
+  Future<void> removeCoin(Coin coin) async{
+    return await MarketMakerService().disableCoin(coin).then((dynamic onValue) async{
+      if (onValue is DisableCoin) {
+        await removeJsonCoin(<Coin>[coin]);
+        coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
+        _inCoins.add(coinBalance);
+        return onValue;
+      } else {
+        return onValue;
+      }
+    });
   }
 
   void updateOneCoin(CoinBalance coin) {
@@ -210,12 +231,6 @@ class CoinsBloc implements BlocBase {
       print(e);
       rethrow;
     }
-  }
-
-  Future<void> removeMultiCoins(List<Coin> coinsToRemove) async {
-    await removeJsonCoin(coinsToRemove);
-    removeCoins(coinsToRemove);
-    await loadCoin();
   }
 
   Future<void> addMultiCoins(List<Coin> coins) async {
@@ -321,12 +336,10 @@ class CoinsBloc implements BlocBase {
 
   Future<File> removeJsonCoin(List<Coin> coinsToRemove) async {
     final File file = await _localFile;
-    
+
     final List<Coin> currentCoins = await readJsonCoin();
     for (Coin newCoin in coinsToRemove) {
-      currentCoins.removeWhere((Coin item) => 
-      item.abbr == newCoin.abbr
-      );
+      currentCoins.removeWhere((Coin item) => item.abbr == newCoin.abbr);
     }
     return file.writeAsString(json.encode(currentCoins));
   }

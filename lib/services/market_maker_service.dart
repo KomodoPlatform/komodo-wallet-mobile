@@ -22,6 +22,7 @@ import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_balance.dart';
+import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_enable_coin.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
@@ -46,6 +47,7 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -74,6 +76,7 @@ class MarketMakerService {
   dynamic sink;
   static const MethodChannel platformmm2 = MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
+  final Client client = http.Client();
 
   Future<void> init(String passphrase) async {
     if (Platform.isAndroid) {
@@ -168,8 +171,9 @@ class MarketMakerService {
             'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
         if (!checkmm2process.stdout
             .toString()
-            .contains(prefs.getInt('mm2ProcessPID').toString())) 
-            break;
+            .contains(prefs.getInt('mm2ProcessPID').toString())) {
+          break;
+        }
         await Future<dynamic>.delayed(const Duration(milliseconds: 500));
       }
     }
@@ -180,15 +184,14 @@ class MarketMakerService {
     initUsername(passphrase);
 
     final String startParam = configMm2ToJson(ConfigMm2(
-      gui: 'atomicDEX',
-      netid: 9999,
-      client: 1,
-      userhome: filesPath,
-      passphrase: passphrase,
-      rpcPassword: userpass,
-      coins: await readJsonCoinInit(),
-      dbdir: filesPath
-    ));
+        gui: 'atomicDEX',
+        netid: 9999,
+        client: 1,
+        userhome: filesPath,
+        passphrase: passphrase,
+        rpcPassword: userpass,
+        coins: await readJsonCoinInit(),
+        dbdir: filesPath));
 
     final File fileLog = File('${filesPath}log.txt');
     sink = fileLog.openWrite();
@@ -568,7 +571,7 @@ class MarketMakerService {
     try {
       final Response response =
           await http.post(url, body: getRecentSwapToJson(getRecentSwap));
-      print(response.body.toString());
+      print('my_recent_swaps' + response.body.toString());
       return recentSwapsFromJson(response.body);
     } catch (e) {
       print(e);
@@ -631,33 +634,38 @@ class MarketMakerService {
     try {
       final Response response =
           await http.post(url, body: json.encode(getSendRawTransaction));
-      return sendRawTransactionResponseFromJson(response.body);
+
+      try {
+        final SendRawTransactionResponse sendRawTransactionResponse =
+            sendRawTransactionResponseFromJson(response.body);
+        if (sendRawTransactionResponse.txHash.isEmpty) {
+          return errorStringFromJson(response.body);
+        }
+        return sendRawTransactionResponse;
+      } catch (e) {
+        return errorStringFromJson(response.body);
+      }
     } catch (e) {
       return e;
     }
   }
 
-  Future<dynamic> postWithdraw(
-      Coin coin, String addressTo, double amount, bool isMax) async {
-    final GetWithdraw getWithdraw = GetWithdraw(
-      userpass: userpass,
-      method: 'withdraw',
-      coin: coin.abbr,
-      to: addressTo,
-      max: isMax,
-    );
-    if (!isMax) {
-      getWithdraw.amount = amount;
-    }
+  Future<dynamic> postWithdraw(GetWithdraw getWithdraw) async {
+    getWithdraw.userpass = userpass;
+    // getWithdraw.fee = null;
 
-    print('<<<<<<<<<<<<<<<<<<sending: ' + amount.toString());
+    print('<<<<<<<<<<<<<<<<<<sending: ' + getWithdraw.amount.toString());
     print(getWithdrawToJson(getWithdraw));
 
     try {
       final Response response =
           await http.post(url, body: getWithdrawToJson(getWithdraw));
       print('response.body postWithdraw' + response.body.toString());
-      return withdrawResponseFromJson(response.body);
+      try {
+        return withdrawResponseFromJson(response.body);
+      } catch (e) {
+        return errorCodeFromJson(response.body);
+      }
     } catch (e) {
       print(e.toString());
       return e;
@@ -741,5 +749,12 @@ class MarketMakerService {
       print(e);
       rethrow;
     }
+  }
+
+  Future<dynamic> disableCoin(Coin coin) async {
+    final GetDisableCoin getDisableCoin = GetDisableCoin(
+        userpass: userpass, method: 'disable_coin', coin: coin.abbr);
+
+    return await ApiProvider().disableCoin(client, coin, getDisableCoin);
   }
 }

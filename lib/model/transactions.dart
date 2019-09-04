@@ -39,7 +39,7 @@ class Result {
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        fromId: json['from_id'],
+        fromId: json['from_id'] ?? '',
         limit: json['limit'] ?? 0,
         skipped: json['skipped'] ?? 0,
         total: json['total'] ?? 0,
@@ -49,7 +49,7 @@ class Result {
             json['transactions'].map((dynamic x) => Transaction.fromJson(x))),
       );
 
-  dynamic fromId;
+  String fromId;
   int currentBlock;
   SyncStatus syncStatus;
   int limit;

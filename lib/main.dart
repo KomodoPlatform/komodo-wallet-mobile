@@ -25,6 +25,7 @@ import 'package:connectivity/connectivity.dart';
 import 'blocs/coins_bloc.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   if (isInDebugMode) {
     return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));

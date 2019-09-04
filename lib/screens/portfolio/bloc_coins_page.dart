@@ -13,9 +13,10 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/screens/portfolio/coin_detail.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class BlocCoinsPage extends StatefulWidget {
@@ -343,7 +344,7 @@ class ItemCoin extends StatefulWidget {
   const ItemCoin(
       {Key key,
       @required this.mContext,
-      @required this.coinBalance,
+      this.coinBalance,
       this.slidableController})
       : super(key: key);
 
@@ -417,7 +418,7 @@ class _ItemCoinState extends State<ItemCoin> {
               color: Theme.of(context).errorColor,
               icon: Icons.delete,
               onTap: () {
-                coinsBloc.removeMultiCoins(<Coin>[coin]);
+                showConfirmationRemoveCoin(widget.mContext, coin);
               },
             )
           ],
@@ -473,64 +474,130 @@ class _ItemCoinState extends State<ItemCoin> {
                       ),
                     ),
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            const SizedBox(
-                              height: 4,
+                      child: Container(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Container(
+                            child: AutoSizeText(
+                              '${f.format(double.parse(balance.getBalance()))} ${coin.abbr}',
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.subtitle,
                             ),
-                            Container(
-                              child: AutoSizeText(
-                                '${f.format(double.parse(balance.getBalance()))} ${coin.abbr}',
-                                maxLines: 1,
-                                style: Theme.of(context).textTheme.subtitle,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Builder(builder: (BuildContext context) {
-                              final NumberFormat f = NumberFormat('###,##0.##');
-                              return Text(
-                                '\$${f.format(widget.coinBalance.balanceUSD)} USD',
-                                style: Theme.of(context).textTheme.body2,
-                              );
-                            }),
-                            widget.coinBalance.coin.abbr == 'KMD' &&
-                                    double.parse(widget.coinBalance.balance
-                                            .getBalance()) >=
-                                        10
-                                ? Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: OutlineButton(
-                                      borderSide: BorderSide(
-                                          color: Theme.of(context).accentColor),
-                                      highlightedBorderColor: Colors.white,
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 6, horizontal: 16),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30.0)),
-                                      onPressed: () {
-                                        CoinDetail(
-                                                coinBalance: widget.coinBalance)
-                                            .showDialogClaim(context);
-                                      },
-                                      child: Text(
-                                        'CLAIM YOUR REWARDS',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .body1
-                                            .copyWith(fontSize: 12),
-                                      ),
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Builder(builder: (BuildContext context) {
+                            final NumberFormat f = NumberFormat('###,##0.##');
+                            return Text(
+                              '\$${f.format(widget.coinBalance.balanceUSD)} USD',
+                              style: Theme.of(context).textTheme.body2,
+                            );
+                          }),
+                          widget.coinBalance.coin.abbr == 'KMD' &&
+                                  double.parse(widget.coinBalance.balance
+                                          .getBalance()) >=
+                                      10
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: OutlineButton(
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).accentColor),
+                                    highlightedBorderColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 6, horizontal: 16),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0)),
+                                    onPressed: () {
+                                      CoinDetail(
+                                              coinBalance: widget.coinBalance)
+                                          .showDialogClaim(context);
+                                    },
+                                    child: Text(
+                                      'CLAIM YOUR REWARDS',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body1
+                                          .copyWith(fontSize: 12),
                                     ),
-                                  )
-                                : Container()
-                          ],
-                        ),
+                                  ),
+                                )
+                              : Container(),
+                          (widget.coinBalance.coin.type == 'erc' ||
+                                      widget.coinBalance.coin.type ==
+                                          'smartChain') &&
+                                  widget.coinBalance.coin.abbr != 'KMD' &&
+                                  widget.coinBalance.coin.abbr != 'ETH'
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 14),
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(16)),
+                                    child: Container(
+                                        color: widget.coinBalance.coin.type ==
+                                                'erc'
+                                            ? const Color.fromRGBO(
+                                                20, 117, 186, 1)
+                                            : Theme.of(context).backgroundColor,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 8),
+                                          child: widget.coinBalance.coin.type ==
+                                                  'erc'
+                                              ? Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .tagERC20,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .subtitle,
+                                                    ),
+                                                  ],
+                                                )
+                                              : Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Image.asset(
+                                                      'assets/kmd.png',
+                                                      width: 18,
+                                                      height: 18,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 8,
+                                                    ),
+                                                    Text(
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .tagKMD,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .subtitle,
+                                                    ),
+                                                  ],
+                                                ),
+                                        )),
+                                  ),
+                                )
+                              : Container()
+                        ],
                       ),
                     ),
                   ],

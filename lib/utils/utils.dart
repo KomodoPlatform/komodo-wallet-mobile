@@ -4,6 +4,13 @@ import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keccak/keccak.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/disable_coin.dart';
+import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import '../localizations.dart';
 
@@ -65,3 +72,123 @@ bool isNumeric(String s) {
   }
   return double.tryParse(s) != null;
 }
+
+void showAddressDialog(BuildContext mContext, String address) {
+  dialogBloc.dialog = showDialog<dynamic>(
+    context: mContext,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return AlertDialog(
+        contentPadding: const EdgeInsets.all(16),
+        titlePadding: const EdgeInsets.all(0),
+        shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(6.0)),
+        content: InkWell(
+          onTap: () {
+            copyToClipBoard(mContext, address);
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.4,
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: QrImage(
+                    foregroundColor: Colors.white,
+                    data: address,
+                  ),
+                ),
+                Container(
+                  child: Center(
+                      child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+                    child: AutoSizeText(
+                      address,
+                      style: Theme.of(context).textTheme.body1,
+                      maxLines: 2,
+                    ),
+                  )),
+                )
+              ],
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          FlatButton(
+            child: Text(AppLocalizations.of(context).close.toUpperCase()),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  ).then((dynamic data) {
+    dialogBloc.dialog = null;
+  });
+}
+
+  void showMessage(BuildContext mContext, String error) {
+    Scaffold.of(mContext).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
+      backgroundColor: Theme.of(mContext).primaryColor,
+      content: Text(
+        error,
+        style: Theme.of(mContext).textTheme.body1,
+      ),
+    ));
+  }
+
+  Future<void> showConfirmationRemoveCoin(BuildContext mContext, Coin coin) async {
+    return dialogBloc.dialog = showDialog<void>(
+        context: mContext,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context).deleteConfirm),
+            content: RichText(
+                text: TextSpan(
+                    style: Theme.of(context).textTheme.body1,
+                    children: <TextSpan>[
+                  TextSpan(text: AppLocalizations.of(context).deleteSpan1),
+                  TextSpan(
+                      text: '${coin.name}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(fontWeight: FontWeight.bold)),
+                  TextSpan(text: AppLocalizations.of(context).deleteSpan2),
+                ])),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(AppLocalizations.of(context).cancel),
+                onPressed: () {
+                  Navigator.of(mContext).pop();
+                },
+              ),
+              RaisedButton(
+                color: Theme.of(context).errorColor,
+                child: Text(AppLocalizations.of(context).confirm),
+                onPressed: () {
+                  coinsBloc.removeCoin(coin).then((dynamic value) {
+                    if (value is ErrorDisableCoinActiveSwap) {
+                      showMessage(mContext, value.error);
+                    }
+                    if (value is DisableCoin) {
+                      if (value.result.cancelledOrders.isNotEmpty) {
+                        showMessage(mContext, AppLocalizations.of(context)
+                            .orderCancel(value.result.coin));
+                      }
+                    }
+                  });
+                  Navigator.of(mContext).pop();
+                },
+              )
+            ],
+          );
+        }).then((_) {
+      dialogBloc.dialog = null;
+    });
+  }
