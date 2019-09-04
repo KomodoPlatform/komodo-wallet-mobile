@@ -501,6 +501,7 @@ class AppLocalizations {
         name: 'swapErcAmount',
         args: <Object>[amount],
       );
+  String get remove => Intl.message('Disable', name: 'remove');
   String get searchFilterCoin =>
       Intl.message('Search a coin', name: 'searchFilterCoin');
   String get searchFilterSubtitleSmartChain =>
@@ -522,6 +523,18 @@ class AppLocalizations {
   String errorNotEnoughtGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
           name: 'errorNotEnoughtGas', args: <Object>[gas]);
+  String orderCancel(String coin) =>
+      Intl.message('All $coin orders will be canceled.',
+          name: 'orderCancel', args: <Object>[coin]);
+
+  String get deleteConfirm =>
+      Intl.message('Confirm deactivation', name: 'deleteConfirm');
+
+  String  get deleteSpan1 =>
+      Intl.message('Do you want to remove ', name: 'deleteSpan1');
+  String get deleteSpan2 => Intl.message(
+      ' from your portfolio? All unmatched orders will be canceled.',
+      name: 'deleteSpan2');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

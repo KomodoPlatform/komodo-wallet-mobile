@@ -27,6 +27,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   test: any
+  mockito: ^4.1.0
   http: ^0.12.0
   qr_flutter: ^2.0.0+51
   auto_size_text: ^1.0.0

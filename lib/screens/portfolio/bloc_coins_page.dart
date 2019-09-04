@@ -321,19 +321,6 @@ class ListCoinsState extends State<ListCoins> {
                     }
                   },
                 );
-                // return ListView(
-
-                //   key: const Key('list-view-coins'),
-                //   padding: const EdgeInsets.all(0),
-                //   children: datas
-                //       .map((dynamic data) => ItemCoin(
-                //         key: data is CoinBalance ? Key('coin-list-${data.coin.abbr}') : null,
-                //             mContext: context,
-                //             coinBalance: data,
-                //             slidableController: slidableController,
-                //           ))
-                //       .toList(),
-                // );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LoadingCoin();
               } else if (snapshot.data.isEmpty) {
@@ -357,7 +344,7 @@ class ItemCoin extends StatefulWidget {
   const ItemCoin(
       {Key key,
       @required this.mContext,
-      @required this.coinBalance,
+      this.coinBalance,
       this.slidableController})
       : super(key: key);
 
@@ -425,6 +412,16 @@ class _ItemCoinState extends State<ItemCoin> {
           actionPane: const SlidableDrawerActionPane(),
           actionExtentRatio: 0.25,
           actions: actions,
+          secondaryActions: <Widget>[
+            IconSlideAction(
+              caption: AppLocalizations.of(context).remove.toUpperCase(),
+              color: Theme.of(context).errorColor,
+              icon: Icons.delete,
+              onTap: () {
+                showConfirmationRemoveCoin(widget.mContext, coin);
+              },
+            )
+          ],
           child: Builder(builder: (BuildContext context) {
             return InkWell(
               borderRadius: const BorderRadius.all(Radius.circular(4)),
