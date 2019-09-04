@@ -201,6 +201,7 @@ class MarketMakerService {
 
       try {
         await initCheckLogs();
+        await Future<dynamic>.delayed(const Duration(seconds: 2));
 
         mm2Process = await Process.start(
             '/system/bin/sh', <String>['-c', './mm2 > log.txt 2>&1'],
