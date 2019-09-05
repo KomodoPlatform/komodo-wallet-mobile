@@ -139,7 +139,7 @@ class MarketMakerService {
   }
 
   Future<void> initCheckLogs() async {
-    final File fileLog = File('${filesPath}log.txt');
+    final File fileLog = File('${filesPath}mm.log');
     if (!fileLog.existsSync()) {
       await fileLog.create();
     }
@@ -193,7 +193,7 @@ class MarketMakerService {
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
-    final File fileLog = File('${filesPath}log.txt');
+    final File fileLog = File('${filesPath}mm.log');
     sink = fileLog.openWrite();
 
     if (Platform.isAndroid) {
@@ -202,17 +202,18 @@ class MarketMakerService {
       if (fileLog.existsSync()) {
         await fileLog.delete();
       }
+      fileLog.create();
       await File('${filesPath}MM2.json').writeAsString(startParam);
 
       try {
         await initCheckLogs();
-        await Future<dynamic>.delayed(const Duration(seconds: 2));
-
-        mm2Process = await Process.start(
-            '/system/bin/sh', <String>['-c', './mm2 > log.txt 2>&1'],
-            mode: ProcessStartMode.detached, workingDirectory: filesPath);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setInt('mm2ProcessPID', mm2Process.pid);
+        Process.run('./mm2', <String>[],
+                environment: <String, String>{'MM_LOG': '${filesPath}mm.log'},
+                workingDirectory: filesPath)
+            .then((ProcessResult onValue) {
+          prefs.setInt('mm2ProcessPID', onValue.pid);
+        });
       } catch (e) {
         print(e);
         rethrow;
