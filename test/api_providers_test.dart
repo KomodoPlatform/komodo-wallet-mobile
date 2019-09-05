@@ -51,8 +51,6 @@ void main() {
         () async {
       final MockClient client = MockClient();
 
-      // Use Mockito to return a successful response when it calls the
-      // provided http.Client.
       final GetDisableCoin getDisableCoin =
           GetDisableCoin(userpass: 'test', method: 'disable_coin', coin: 'KMD');
 
@@ -71,8 +69,6 @@ void main() {
         () async {
       final MockClient client = MockClient();
 
-      // Use Mockito to return a successful response when it calls the
-      // provided http.Client.
       final GetDisableCoin getDisableCoin =
           GetDisableCoin(userpass: 'test', method: 'disable_coin', coin: 'KMD');
 
@@ -91,8 +87,6 @@ void main() {
         () async {
       final MockClient client = MockClient();
 
-      // Use Mockito to return a successful response when it calls the
-      // provided http.Client.
       final GetDisableCoin getDisableCoin =
           GetDisableCoin(userpass: 'test', method: 'disable_coin', coin: 'KMD');
 

@@ -32,12 +32,12 @@ dev_dependencies:
   qr_flutter: ^2.0.0+51
   auto_size_text: ^1.0.0
   barcode_scan: ^1.0.0
-  shared_preferences: ^0.5.1+1
+  shared_preferences: ^0.5.3+4
   bip39: ^1.0.3
   pin_code_view: 0.2.1
   # share: ^0.6.0+1
   crypto: ^2.0.6
-  path_provider: ^1.1.0
+  path_provider: ^1.2.2
   intl_translation: ^0.17.1
   bs58check: ^1.0.1
   url_launcher: ^5.0.2
