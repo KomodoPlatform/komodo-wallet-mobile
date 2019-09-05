@@ -206,13 +206,13 @@ class MarketMakerService {
 
       try {
         await initCheckLogs();
-        await Future<dynamic>.delayed(const Duration(seconds: 4));
-
-        mm2Process = await Process.start(
-            '/system/bin/sh', <String>['-c', './mm2 > log.txt 2>&1'],
-            mode: ProcessStartMode.detached, workingDirectory: filesPath);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setInt('mm2ProcessPID', mm2Process.pid);
+
+        Process.run('/system/bin/sh', <String>['-c', './mm2 > log.txt 2>&1'],
+                workingDirectory: filesPath)
+            .then((ProcessResult onValue) {
+          prefs.setInt('mm2ProcessPID', onValue.pid);
+        });
       } catch (e) {
         print(e);
         rethrow;

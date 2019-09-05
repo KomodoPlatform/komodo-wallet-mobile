@@ -31,24 +31,24 @@ class EncryptionTool {
   }
 
   Future<String> convertToPbkdf2(String data, Wallet wallet) async {
-    print(wallet.isFastEncryption ? 'FAST ENCRYPTION': 'SLOW ENCRYPTION');
+    print(wallet.isFastEncryption ? 'FAST ENCRYPTION' : 'SLOW ENCRYPTION');
 
     // Workarround for run this in debug mode for driver testing https://github.com/flutter/flutter/issues/24703
     dynamic res;
     if (!isInDebugMode) {
-      res = wallet.isFastEncryption ? compute(_computeHashFastEncryption, DataCompute(data: data, iteration: 50)) : compute(_computeHash, DataCompute(data: data, iteration: 10000));
+      res = wallet.isFastEncryption
+          ? await compute(_computeHash, DataCompute(data: data, iteration: 50))
+          : await compute(
+              _computeHash, DataCompute(data: data, iteration: 10000));
     } else {
-      res = wallet.isFastEncryption ? _computeHashFastEncryption(DataCompute(data: data, iteration: 1)) : _computeHash(DataCompute(data: data, iteration: 1));
+      res = _computeHash(DataCompute(data: data, iteration: 1));
     }
     return res;
   }
 
   static String _computeHash(DataCompute dataCompute) {
-    return Password.hash(dataCompute.data, PBKDF2(iterationCount: dataCompute.iteration));
-  }
-
-  static String _computeHashFastEncryption(DataCompute dataCompute) {
-    return Password.hash(dataCompute.data, PBKDF2(iterationCount:  dataCompute.iteration));
+    return Password.hash(
+        dataCompute.data, PBKDF2(iterationCount: dataCompute.iteration));
   }
 
   Future<void> write(String key, String data) async {
@@ -63,9 +63,11 @@ class EncryptionTool {
     await storage.delete(key: key);
   }
 }
+
 class DataCompute {
   DataCompute({this.data, this.iteration});
   String data;
   int iteration;
 }
+
 enum KeyEncryption { SEED, PIN }
