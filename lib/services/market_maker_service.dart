@@ -46,7 +46,6 @@ import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
-import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:package_info/package_info.dart';
@@ -651,28 +650,6 @@ class MarketMakerService {
     }
   }
 
-  Future<dynamic> postWithdraw(GetWithdraw getWithdraw) async {
-    getWithdraw.userpass = userpass;
-    // getWithdraw.fee = null;
-
-    print('<<<<<<<<<<<<<<<<<<sending: ' + getWithdraw.amount.toString());
-    print(getWithdrawToJson(getWithdraw));
-
-    try {
-      final Response response =
-          await http.post(url, body: getWithdrawToJson(getWithdraw));
-      print('response.body postWithdraw' + response.body.toString());
-      try {
-        return withdrawResponseFromJson(response.body);
-      } catch (e) {
-        return errorCodeFromJson(response.body);
-      }
-    } catch (e) {
-      print(e.toString());
-      return e;
-    }
-  }
-
   Future<ActiveCoin> activeCoin(Coin coin) async {
     print('activate coin :' + coin.abbr);
     final List<Server> servers = <Server>[];
@@ -724,38 +701,24 @@ class MarketMakerService {
     }
   }
 
-  Future<TradeFee> getTradeFee(Coin coin) async {
-    final GetTradeFee getTradeFee = GetTradeFee(
-        userpass: userpass, method: 'get_trade_fee', coin: coin.abbr);
+  Future<dynamic> postWithdraw(GetWithdraw getWithdraw) async =>
+      await ApiProvider().postWithdraw(client, getWithdraw);
 
-    try {
-      final Response response =
-          await http.post(url, body: getTradeFeeToJson(getTradeFee));
-      return tradeFeeFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
+  Future<TradeFee> getTradeFee(Coin coin) async =>
+      await ApiProvider().getTradeFee(
+          client,
+          coin,
+          GetTradeFee(
+              userpass: userpass, method: 'get_trade_fee', coin: coin.abbr));
 
-  Future<ResultSuccess> getVersionMM2() async {
-    final BaseService baseService =
-        BaseService(userpass: userpass, method: 'version');
+  Future<ResultSuccess> getVersionMM2() async =>
+      await ApiProvider().getVersionMM2(
+          client, BaseService(userpass: userpass, method: 'version'));
 
-    try {
-      final Response response =
-          await http.post(url, body: baseServiceToJson(baseService));
-      return resultSuccessFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> disableCoin(Coin coin) async {
-    final GetDisableCoin getDisableCoin = GetDisableCoin(
-        userpass: userpass, method: 'disable_coin', coin: coin.abbr);
-
-    return await ApiProvider().disableCoin(client, coin, getDisableCoin);
-  }
+  Future<dynamic> disableCoin(Coin coin) async =>
+      await ApiProvider().disableCoin(
+          client,
+          coin,
+          GetDisableCoin(
+              userpass: userpass, method: 'disable_coin', coin: coin.abbr));
 }

@@ -64,6 +64,7 @@ class CoinDetail extends StatefulWidget {
 
     MarketMakerService()
         .postWithdraw(GetWithdraw(
+            userpass: MarketMakerService().userpass,
             fee: null,
             coin: coinBalance.coin.abbr,
             to: coinBalance.balance.address,
@@ -274,7 +275,8 @@ class _CoinDetailState extends State<CoinDetail> {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () async {
-                showConfirmationRemoveCoin(context, widget.coinBalance.coin).then((_){
+                showConfirmationRemoveCoin(context, widget.coinBalance.coin)
+                    .then((_) {
                   Navigator.of(context).pop();
                 });
               },
@@ -867,6 +869,7 @@ class _CoinDetailState extends State<CoinDetail> {
               }
               MarketMakerService()
                   .postWithdraw(GetWithdraw(
+                      userpass: MarketMakerService().userpass,
                       fee: fee,
                       coin: widget.coinBalance.coin.abbr,
                       to: _addressController.text,
