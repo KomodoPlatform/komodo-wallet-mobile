@@ -14,6 +14,7 @@ import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
+import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
@@ -213,8 +214,10 @@ class CoinsBloc implements BlocBase {
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
-      final dynamic transactions =
-          await MarketMakerService().getTransactions(coin, limit, fromId);
+      final dynamic transactions = await ApiProvider().getTransactions(
+          http.Client(),
+          GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+
       if (transactions is Transactions) {
         if (fromId == null || fromId.isEmpty) {
           this.transactions = transactions;
@@ -510,9 +513,9 @@ class CoinsBloc implements BlocBase {
     final List<Coin> coinsAll = await getAllNotActiveCoins();
 
     try {
-      await ApiProvider().getCoinToKickStart(
-          http.Client(),
-          BaseService(method: 'coins_needed_for_kick_start'))
+      await ApiProvider()
+          .getCoinToKickStart(
+              http.Client(), BaseService(method: 'coins_needed_for_kick_start'))
           .then((CoinToKickStart coinsToKickStart) {
         for (Coin coin in coinsAll) {
           for (String coinToKickStart in coinsToKickStart.result) {

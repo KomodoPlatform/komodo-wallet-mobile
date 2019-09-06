@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
+import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
@@ -15,6 +16,7 @@ import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
+import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
@@ -876,6 +878,47 @@ void main() {
             }
       ''', 200));
       expect(await ApiProvider().getTransactions(client, body),
+          const TypeMatcher<ErrorString>());
+    });
+  });
+
+
+  group('setprice', () {
+    final MockClient client = MockClient();
+
+    final GetSetPrice body = GetSetPrice(userpass: 'test');
+
+    test('returns a SetPriceResponse if the http call completes successfully',
+        () async {
+      when(client.post(url, body: getSetPriceToJson(body)))
+          .thenAnswer((_) async => http.Response('''
+            {
+              "result": {
+                "base": "BASE",
+                "rel": "REL",
+                "max_base_vol": "1",
+                "min_base_vol": "0",
+                "created_at": 1559052299258,
+                "matches": {},
+                "price": "1",
+                "started_swaps": [],
+                "uuid": "6a242691-6c05-474a-85c1-5b3f42278f41"
+              }
+            }
+      ''', 200));
+      expect(await ApiProvider().postSetPrice(client, body),
+          const TypeMatcher<SetPriceResponse>());
+    });
+
+    test('returns a ErrorString if the http call completes with error',
+        () async {
+      when(client.post(url, body: getSetPriceToJson(body)))
+          .thenAnswer((_) async => http.Response('''
+            {
+              "error": "Rel coin REL is not found"
+            }
+      ''', 200));
+      expect(await ApiProvider().postSetPrice(client, body),
           const TypeMatcher<ErrorString>());
     });
   });

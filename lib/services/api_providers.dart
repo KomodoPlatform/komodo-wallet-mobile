@@ -11,6 +11,7 @@ import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
+import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
@@ -18,6 +19,7 @@ import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
+import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
@@ -46,6 +48,15 @@ class ApiProvider {
         : body.userpass;
     return UserpassBody(body: body, client: client);
   }
+
+  Future<dynamic> postSetPrice(http.Client client, GetSetPrice body) async =>
+      await assertUserpass(client, body).then<dynamic>(
+          (UserpassBody userBody) => userBody.client
+              .post(url, body: getSetPriceToJson(userBody.body))
+              .then(printResponse)
+              .then<dynamic>(
+                  (Response res) => setPriceResponseFromJson(res.body))
+              .catchError((dynamic e) => errorStringFromJson(res.body)));
 
   Future<dynamic> getTransactions(
           http.Client client, GetTxHistory body) async =>

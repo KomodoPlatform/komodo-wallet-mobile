@@ -20,26 +20,19 @@ import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
-import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_enable_coin.dart';
-import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/get_swap.dart';
-import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-// MarketMakerService mm2 = MarketMakerService();
 
 class MarketMakerService {
   factory MarketMakerService() {
@@ -486,61 +479,6 @@ class MarketMakerService {
         return buyResponseFromJson(response.body);
       } catch (e) {
         return errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<SetPriceResponse> postSetPrice(Coin base, Coin rel, String volume,
-      String price, bool cancelPrevious, bool max) async {
-    final GetSetPrice getSetPrice = GetSetPrice(
-        userpass: userpass,
-        method: 'setprice',
-        base: base.abbr,
-        rel: rel.abbr,
-        cancelPrevious: cancelPrevious,
-        max: max,
-        volume: volume,
-        price: price);
-
-    print('postSetPrice' + getSetPriceToJson(getSetPrice));
-    try {
-      final Response response =
-          await http.post(url, body: getSetPriceToJson(getSetPrice));
-
-      print(response.body.toString());
-
-      try {
-        return setPriceResponseFromJson(response.body);
-      } catch (e) {
-        throw errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> getTransactions(Coin coin, int limit, String fromId) async {
-    final GetTxHistory getTxHistory = GetTxHistory(
-        userpass: userpass,
-        method: 'my_tx_history',
-        coin: coin.abbr,
-        limit: limit,
-        fromId: fromId);
-    print(json.encode(getTxHistory));
-    print(url);
-    try {
-      final Response response =
-          await http.post(url, body: getTxHistoryToJson(getTxHistory));
-      print('RESULT: ' + response.body.toString());
-      try {
-        return transactionsFromJson(response.body);
-      } catch (e) {
-        print(e);
-        return errorCodeFromJson(response.body);
       }
     } catch (e) {
       print(e);
