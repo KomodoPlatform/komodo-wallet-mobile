@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:http/http.dart' as http;
 
 SwapHistoryBloc swapHistoryBloc = SwapHistoryBloc();
 
@@ -34,7 +36,8 @@ class SwapHistoryBloc implements BlocBase {
 
   Future<List<Swap>> fetchSwaps(int limit, String fromUuid) async {
     try {
-      final RecentSwaps recentSwaps = await MarketMakerService().getRecentSwaps(limit, fromUuid);
+      final RecentSwaps recentSwaps = await ApiProvider().getRecentSwaps(
+          http.Client(), GetRecentSwap(limit: limit, fromUuid: fromUuid));
       final List<Swap> newSwaps = <Swap>[];
 
       for (ResultSwap swap in recentSwaps.result.swaps) {

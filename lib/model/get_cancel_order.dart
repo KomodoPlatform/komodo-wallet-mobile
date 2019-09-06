@@ -11,7 +11,7 @@ String getCancelOrderToJson(GetCancelOrder data) => json.encode(data.toJson());
 class GetCancelOrder {
       GetCancelOrder({
         this.userpass,
-        this.method,
+        this.method = 'cancel_order',
         this.uuid,
     });
 

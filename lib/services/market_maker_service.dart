@@ -22,31 +22,18 @@ import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_balance.dart';
-import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_enable_coin.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
-import 'package:komodo_dex/model/get_trade_fee.dart';
-import 'package:komodo_dex/model/result.dart';
-import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/model/get_buy.dart';
-import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
-import 'package:komodo_dex/model/get_recent_swap.dart';
-import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/get_swap.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
-import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/orders.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
-import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -561,95 +548,6 @@ class MarketMakerService {
     }
   }
 
-  Future<RecentSwaps> getRecentSwaps(int limit, String fromUuid) async {
-    final GetRecentSwap getRecentSwap = GetRecentSwap(
-        userpass: userpass,
-        method: 'my_recent_swaps',
-        limit: limit,
-        fromUuid: fromUuid);
-
-    try {
-      final Response response =
-          await http.post(url, body: getRecentSwapToJson(getRecentSwap));
-      print('my_recent_swaps' + response.body.toString());
-      return recentSwapsFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<Orders> getMyOrders() async {
-    final GetRecentSwap getRecentSwap =
-        GetRecentSwap(userpass: userpass, method: 'my_orders');
-
-    try {
-      final Response response =
-          await http.post(url, body: getRecentSwapToJson(getRecentSwap));
-      print('my_orders' + response.body.toString());
-      return ordersFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<ResultSuccess> cancelOrder(String uuid) async {
-    final GetCancelOrder getCancelOrder =
-        GetCancelOrder(userpass: userpass, method: 'cancel_order', uuid: uuid);
-
-    try {
-      final Response response =
-          await http.post(url, body: getCancelOrderToJson(getCancelOrder));
-      print('cancel_order' + response.body.toString());
-      return resultSuccessFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<CoinToKickStart> getCoinToKickStart() async {
-    final GetRecentSwap getRecentSwap = GetRecentSwap(
-        userpass: userpass, method: 'coins_needed_for_kick_start');
-
-    try {
-      final Response response =
-          await http.post(url, body: getRecentSwapToJson(getRecentSwap));
-      print('coins_needed_for_kick_start' + response.body.toString());
-      return coinToKickStartFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> postRawTransaction(Coin coin, String txHex) async {
-    final GetSendRawTransaction getSendRawTransaction = GetSendRawTransaction(
-        userpass: userpass,
-        method: 'send_raw_transaction',
-        coin: coin.abbr,
-        txHex: txHex);
-
-    try {
-      final Response response =
-          await http.post(url, body: json.encode(getSendRawTransaction));
-
-      try {
-        final SendRawTransactionResponse sendRawTransactionResponse =
-            sendRawTransactionResponseFromJson(response.body);
-        if (sendRawTransactionResponse.txHash.isEmpty) {
-          return errorStringFromJson(response.body);
-        }
-        return sendRawTransactionResponse;
-      } catch (e) {
-        return errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      return e;
-    }
-  }
-
   Future<ActiveCoin> activeCoin(Coin coin) async {
     print('activate coin :' + coin.abbr);
     final List<Server> servers = <Server>[];
@@ -701,24 +599,4 @@ class MarketMakerService {
     }
   }
 
-  Future<dynamic> postWithdraw(GetWithdraw getWithdraw) async =>
-      await ApiProvider().postWithdraw(client, getWithdraw);
-
-  Future<TradeFee> getTradeFee(Coin coin) async =>
-      await ApiProvider().getTradeFee(
-          client,
-          coin,
-          GetTradeFee(
-              userpass: userpass, method: 'get_trade_fee', coin: coin.abbr));
-
-  Future<ResultSuccess> getVersionMM2() async =>
-      await ApiProvider().getVersionMM2(
-          client, BaseService(userpass: userpass, method: 'version'));
-
-  Future<dynamic> disableCoin(Coin coin) async =>
-      await ApiProvider().disableCoin(
-          client,
-          coin,
-          GetDisableCoin(
-              userpass: userpass, method: 'disable_coin', coin: coin.abbr));
 }

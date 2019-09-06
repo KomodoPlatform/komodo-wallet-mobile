@@ -76,7 +76,7 @@ class MakerOrder {
         createdAt: json['created_at'] ?? 0,
         availableAmount: json['available_amount'] ?? '',
         cancellable: json['cancellable'] ?? false,
-        matches: Map<String, Match>.from(json['matches']).map<String, Match>((dynamic k,dynamic v) => MapEntry<String, Match>(k, Match.fromJson(v))) ?? <String, Match>{},
+        matches: Map<String, dynamic>.from(json['matches']).map((dynamic k,dynamic v) => MapEntry<String, Match>(k, Match.fromJson(v))) ?? <String, Match>{},
         maxBaseVol: json['max_base_vol'] ?? '',
         minBaseVol: json['min_base_vol'] ?? '',
         price: json['price'] ?? '',

@@ -14,6 +14,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
@@ -24,11 +25,13 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amo
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
 import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:share/share.dart';
+import 'package:http/http.dart' as http;
 
 class CoinDetail extends StatefulWidget {
   const CoinDetail({this.coinBalance, this.isSendIsActive = false});
@@ -62,17 +65,19 @@ class CoinDetail extends StatefulWidget {
       dialogBloc.dialog = null;
     });
 
-    MarketMakerService()
-        .postWithdraw(GetWithdraw(
-            userpass: MarketMakerService().userpass,
-            fee: null,
-            coin: coinBalance.coin.abbr,
-            to: coinBalance.balance.address,
-            amount: (Decimal.parse(coinBalance.balance.getBalance()) -
-                    (Decimal.parse(coinBalance.coin.txfee.toString()) /
-                        Decimal.parse('100000000')))
-                .toString(),
-            max: true))
+    ApiProvider()
+        .postWithdraw(
+            http.Client(),
+            GetWithdraw(
+                userpass: MarketMakerService().userpass,
+                fee: null,
+                coin: coinBalance.coin.abbr,
+                to: coinBalance.balance.address,
+                amount: (Decimal.parse(coinBalance.balance.getBalance()) -
+                        (Decimal.parse(coinBalance.coin.txfee.toString()) /
+                            Decimal.parse('100000000')))
+                    .toString(),
+                max: true))
         .then((dynamic data) {
       Navigator.of(mContext).pop();
       if (data is WithdrawResponse) {
@@ -98,8 +103,13 @@ class CoinDetail extends StatefulWidget {
                         AppLocalizations.of(context).confirm.toUpperCase(),
                         style: Theme.of(context).textTheme.button),
                     onPressed: () {
-                      MarketMakerService()
-                          .postRawTransaction(coinBalance.coin, data.txHex)
+                      ApiProvider()
+                          .postRawTransaction(
+                              http.Client(),
+                              GetSendRawTransaction(
+                                  method: 'send_raw_transaction',
+                                  coin: coinBalance.coin.abbr,
+                                  txHex: data.txHex))
                           .then((dynamic dataRawTx) {
                         if (dataRawTx is SendRawTransactionResponse) {
                           Navigator.of(context).pop();
@@ -867,20 +877,26 @@ class _CoinDetailState extends State<CoinDetail> {
                   fee.amount = coinsDetailBloc.customFee.amount;
                 }
               }
-              MarketMakerService()
-                  .postWithdraw(GetWithdraw(
-                      userpass: MarketMakerService().userpass,
-                      fee: fee,
-                      coin: widget.coinBalance.coin.abbr,
-                      to: _addressController.text,
-                      amount: _amountController.text,
-                      max: double.parse(
-                              widget.coinBalance.balance.getBalance()) ==
-                          double.parse(_amountController.text)))
+              ApiProvider()
+                  .postWithdraw(
+                      http.Client(),
+                      GetWithdraw(
+                          userpass: MarketMakerService().userpass,
+                          fee: fee,
+                          coin: widget.coinBalance.coin.abbr,
+                          to: _addressController.text,
+                          amount: _amountController.text,
+                          max: double.parse(
+                                  widget.coinBalance.balance.getBalance()) ==
+                              double.parse(_amountController.text)))
                   .then((dynamic data) {
                 if (data is WithdrawResponse) {
-                  MarketMakerService()
-                      .postRawTransaction(widget.coinBalance.coin, data.txHex)
+                  ApiProvider()
+                      .postRawTransaction(
+                          http.Client(),
+                          GetSendRawTransaction(
+                              coin: widget.coinBalance.coin.abbr,
+                              txHex: data.txHex))
                       .then((dynamic dataRawTx) {
                     if (dataRawTx is SendRawTransactionResponse &&
                         dataRawTx.txHash.isNotEmpty) {

@@ -1,17 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/transactions.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -165,11 +169,14 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  Future<void> removeCoin(Coin coin) async{
-    return await MarketMakerService().disableCoin(coin).then((dynamic onValue) async{
+  Future<void> removeCoin(Coin coin) async {
+    return await ApiProvider()
+        .disableCoin(http.Client(), GetDisableCoin(coin: coin.abbr))
+        .then((dynamic onValue) async {
       if (onValue is DisableCoin) {
         await removeJsonCoin(<Coin>[coin]);
-        coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
+        coinBalance
+            .removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
         _inCoins.add(coinBalance);
         return onValue;
       } else {
@@ -503,8 +510,9 @@ class CoinsBloc implements BlocBase {
     final List<Coin> coinsAll = await getAllNotActiveCoins();
 
     try {
-      await MarketMakerService()
-          .getCoinToKickStart()
+      await ApiProvider().getCoinToKickStart(
+          http.Client(),
+          BaseService(method: 'coins_needed_for_kick_start'))
           .then((CoinToKickStart coinsToKickStart) {
         for (Coin coin in coinsAll) {
           for (String coinToKickStart in coinsToKickStart.result) {

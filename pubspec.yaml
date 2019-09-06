@@ -27,7 +27,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   test: any
-  mockito: ^4.1.0
+  mockito: ^4.1.1
   http: ^0.12.0
   qr_flutter: ^2.0.0+51
   auto_size_text: ^1.0.0
@@ -43,7 +43,7 @@ dev_dependencies:
   url_launcher: ^5.0.2
   share:
     path: ../plugins/packages/share
-  local_auth: ^0.4.0+1
+  local_auth: any
   flutter_svg: ^0.13.1
   keccak: ^1.0.3
   timeago: ^2.0.14

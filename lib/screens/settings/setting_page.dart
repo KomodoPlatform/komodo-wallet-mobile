@@ -9,6 +9,8 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/base_service.dart';
+import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
@@ -16,6 +18,7 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
@@ -23,6 +26,7 @@ import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info/package_info.dart';
+import 'package:http/http.dart' as http;
 
 class SettingPage extends StatefulWidget {
   @override
@@ -121,8 +125,8 @@ class _SettingPageState extends State<SettingPage> {
         AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
     try {
-      final ResultSuccess versionmm2 =
-          await MarketMakerService().getVersionMM2();
+      final ResultSuccess versionmm2 = await ApiProvider()
+          .getVersionMM2(http.Client(), BaseService(method: 'version'));
       if (versionmm2 != null) {
         version += ' - ${versionmm2.result}';
       }
@@ -610,8 +614,8 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<void> _shareFile() async {
-    final RecentSwaps recentSwap =
-        await MarketMakerService().getRecentSwaps(100, null);
+    final RecentSwaps recentSwap = await ApiProvider().getRecentSwaps(
+        http.Client(), GetRecentSwap(limit: 100, fromUuid: null));
 
     if (MarketMakerService().sink != null) {
       await MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');

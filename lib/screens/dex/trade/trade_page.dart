@@ -11,17 +11,19 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:http/http.dart' as http;
 
 class TradePage extends StatefulWidget {
   const TradePage({this.mContext});
@@ -170,7 +172,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   void onChangeSell() {
     final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
-    
+
     if (_controllerAmountSell.text.isNotEmpty) {
       swapBloc.setCurrentAmountSell(double.parse(amountSell));
     }
@@ -255,7 +257,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<Decimal> getTradeFee(bool isMax) async {
-    double amount = double.parse(_controllerAmountSell.text.replaceAll(',', '.'));
+    double amount =
+        double.parse(_controllerAmountSell.text.replaceAll(',', '.'));
     if (isMax) {
       amount = double.parse(currentCoinBalance.balance.getBalance());
     }
@@ -268,8 +271,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<Decimal> getTxFee() async {
     try {
-      final TradeFee tradeFeeResponse =
-          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
+      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
+          http.Client(), GetTradeFee(coin: currentCoinBalance.coin.abbr));
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
       Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
@@ -287,8 +290,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<String> getTxFeeErc() async {
     try {
-      final TradeFee tradeFeeResponse =
-          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
+      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
+          http.Client(), GetTradeFee(coin: currentCoinBalance.coin.abbr));
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
       final Decimal txFee = Decimal.parse(tradeFee.toString());
@@ -329,7 +332,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<Decimal> getERCfee(Coin coin) async {
     final TradeFee tradeFeeResponseERC =
-        await MarketMakerService().getTradeFee(coin);
+        await ApiProvider().getTradeFee(
+          http.Client(), GetTradeFee(coin: coin.abbr));
     return Decimal.parse(tradeFeeResponseERC.result.amount);
   }
 
@@ -692,7 +696,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         key: Key('coin-select-${market.toString().toLowerCase()}'),
         borderRadius: BorderRadius.circular(4),
         onTap: () async {
-           _controllerAmountSell.text = _controllerAmountSell.text.replaceAll(',', '.');
+          _controllerAmountSell.text =
+              _controllerAmountSell.text.replaceAll(',', '.');
           if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
             setState(() {
               if (swapBloc.enabledSellField) {
