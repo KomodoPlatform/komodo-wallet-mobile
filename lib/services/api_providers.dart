@@ -4,7 +4,6 @@ import 'package:komodo_dex/model/base_service.dart';
 
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
-import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
 import 'package:komodo_dex/model/error_disable_coin_order_is_matched.dart';
 import 'package:komodo_dex/model/error_string.dart';
