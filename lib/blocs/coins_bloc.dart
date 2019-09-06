@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
+import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/transactions.dart';
@@ -128,7 +129,7 @@ class CoinsBloc implements BlocBase {
     this.isutxoActive = isutxoActive;
     _inIsutxoActive.add(this.isutxoActive);
   }
-  
+
   void setIsERCActive(bool isERCActive) {
     this.isERCActive = isERCActive;
     _inIsERCActive.add(this.isERCActive);
@@ -157,6 +158,24 @@ class CoinsBloc implements BlocBase {
   void updateCoins(List<CoinBalance> coins) {
     coinBalance = coins;
     _inCoins.add(coinBalance);
+  }
+
+  void removeCoins(List<Coin> coins) {
+    coins.forEach(removeCoin);
+    _inCoins.add(coinBalance);
+  }
+
+  Future<void> removeCoin(Coin coin) async{
+    return await MarketMakerService().disableCoin(coin).then((dynamic onValue) async{
+      if (onValue is DisableCoin) {
+        await removeJsonCoin(<Coin>[coin]);
+        coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
+        _inCoins.add(coinBalance);
+        return onValue;
+      } else {
+        return onValue;
+      }
+    });
   }
 
   void updateOneCoin(CoinBalance coin) {
@@ -257,7 +276,7 @@ class CoinsBloc implements BlocBase {
       currentCoinActivate(
           CoinToActivate(currentStatus: '${coin.name} activated.'));
     }).catchError((dynamic onError) async {
-      coinToactivate = null;
+      coinToactivate = coin;
 
       if (onError is ErrorString &&
           onError.error.contains('Coin ${coin.abbr} already initialized')) {
@@ -311,6 +330,16 @@ class CoinsBloc implements BlocBase {
           .every((Coin currentCoin) => currentCoin.abbr != newCoin.abbr)) {
         currentCoins.add(newCoin);
       }
+    }
+    return file.writeAsString(json.encode(currentCoins));
+  }
+
+  Future<File> removeJsonCoin(List<Coin> coinsToRemove) async {
+    final File file = await _localFile;
+
+    final List<Coin> currentCoins = await readJsonCoin();
+    for (Coin newCoin in coinsToRemove) {
+      currentCoins.removeWhere((Coin item) => item.abbr == newCoin.abbr);
     }
     return file.writeAsString(json.encode(currentCoins));
   }

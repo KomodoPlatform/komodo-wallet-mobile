@@ -272,6 +272,14 @@ class _CoinDetailState extends State<CoinDetail> {
           elevation: elevationHeader,
           actions: <Widget>[
             IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () async {
+                showConfirmationRemoveCoin(context, widget.coinBalance.coin).then((_){
+                  Navigator.of(context).pop();
+                });
+              },
+            ),
+            IconButton(
               icon: Icon(Icons.share),
               onPressed: () async {
                 mainBloc.isUrlLaucherIsOpen = true;

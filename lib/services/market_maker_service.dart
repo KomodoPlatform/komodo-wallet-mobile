@@ -22,6 +22,7 @@ import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_balance.dart';
+import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_enable_coin.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
@@ -46,6 +47,7 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -74,6 +76,7 @@ class MarketMakerService {
   dynamic sink;
   static const MethodChannel platformmm2 = MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
+  final Client client = http.Client();
 
   Future<void> init(String passphrase) async {
     if (Platform.isAndroid) {
@@ -136,7 +139,7 @@ class MarketMakerService {
   }
 
   Future<void> initCheckLogs() async {
-    final File fileLog = File('${filesPath}log.txt');
+    final File fileLog = File('${filesPath}mm.log');
     if (!fileLog.existsSync()) {
       await fileLog.create();
     }
@@ -168,7 +171,9 @@ class MarketMakerService {
             'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
         if (!checkmm2process.stdout
             .toString()
-            .contains(prefs.getInt('mm2ProcessPID').toString())) break;
+            .contains(prefs.getInt('mm2ProcessPID').toString())) {
+          break;
+        }
         await Future<dynamic>.delayed(const Duration(milliseconds: 500));
       }
     }
@@ -188,7 +193,7 @@ class MarketMakerService {
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
-    final File fileLog = File('${filesPath}log.txt');
+    final File fileLog = File('${filesPath}mm.log');
     sink = fileLog.openWrite();
 
     if (Platform.isAndroid) {
@@ -197,16 +202,18 @@ class MarketMakerService {
       if (fileLog.existsSync()) {
         await fileLog.delete();
       }
+      fileLog.create();
       await File('${filesPath}MM2.json').writeAsString(startParam);
 
       try {
         await initCheckLogs();
-
-        mm2Process = await Process.start(
-            '/system/bin/sh', <String>['-c', './mm2 > log.txt 2>&1'],
-            mode: ProcessStartMode.detached, workingDirectory: filesPath);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setInt('mm2ProcessPID', mm2Process.pid);
+        Process.run('./mm2', <String>[],
+                environment: <String, String>{'MM_LOG': '${filesPath}mm.log'},
+                workingDirectory: filesPath)
+            .then((ProcessResult onValue) {
+          prefs.setInt('mm2ProcessPID', onValue.pid);
+        });
       } catch (e) {
         print(e);
         rethrow;
@@ -631,7 +638,8 @@ class MarketMakerService {
           await http.post(url, body: json.encode(getSendRawTransaction));
 
       try {
-        final SendRawTransactionResponse sendRawTransactionResponse = sendRawTransactionResponseFromJson(response.body);
+        final SendRawTransactionResponse sendRawTransactionResponse =
+            sendRawTransactionResponseFromJson(response.body);
         if (sendRawTransactionResponse.txHash.isEmpty) {
           return errorStringFromJson(response.body);
         }
@@ -743,5 +751,12 @@ class MarketMakerService {
       print(e);
       rethrow;
     }
+  }
+
+  Future<dynamic> disableCoin(Coin coin) async {
+    final GetDisableCoin getDisableCoin = GetDisableCoin(
+        userpass: userpass, method: 'disable_coin', coin: coin.abbr);
+
+    return await ApiProvider().disableCoin(client, coin, getDisableCoin);
   }
 }
