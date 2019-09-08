@@ -624,7 +624,7 @@ class _SettingPageState extends State<SettingPage> {
           .write(recentSwapsToJson(recentSwap) + '\n');
     }
     mainBloc.isUrlLaucherIsOpen = true;
-    Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
+    Share.shareFile(File('${MarketMakerService().filesPath}mm.log'),
         subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 }
