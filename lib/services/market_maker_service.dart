@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:io' show File, Platform, Process, ProcessResult;
 
 import 'package:crypto/crypto.dart';
-import 'package:decimal/decimal.dart';
 import 'package:flutter/services.dart'
     show ByteData, EventChannel, MethodChannel, rootBundle;
 import 'package:flutter/services.dart' show ByteData, rootBundle;
@@ -13,22 +12,12 @@ import 'package:http/http.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/model/active_coin.dart';
-import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
-import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
-import 'package:komodo_dex/model/get_enable_coin.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_active_coin.dart';
-import 'package:komodo_dex/model/get_buy.dart';
-import 'package:komodo_dex/model/get_orderbook.dart';
-import 'package:komodo_dex/model/get_swap.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
@@ -340,7 +329,8 @@ class MarketMakerService {
       final List<Future<dynamic>> futureBalances = <Future<dynamic>>[];
 
       for (Coin coin in coins) {
-        futureBalances.add(getBalance(coin));
+        futureBalances.add(ApiProvider()
+            .getBalance(http.Client(), GetBalance(coin: coin.abbr)));
       }
       balances = await Future.wait<dynamic>(futureBalances);
       balances = balances;
@@ -357,185 +347,4 @@ class MarketMakerService {
   Future<String> loadDefaultActivateCoin() async {
     return await rootBundle.loadString('assets/coins_activate_default.json');
   }
-
-  Future<dynamic> getSwapStatus(String uuid) async {
-    final GetSwap getSwap = GetSwap(
-        userpass: userpass,
-        method: 'my_swap_status',
-        params: Params(uuid: uuid));
-
-    try {
-      final Response response =
-          await http.post(url, body: getSwapToJson(getSwap));
-      try {
-        return swapFromJson(response.body);
-      } catch (e) {
-        print(e);
-        return errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<Orderbook> getOrderbook(Coin coinBase, Coin coinRel) async {
-    final GetOrderbook getOrderbook = GetOrderbook(
-        userpass: userpass,
-        method: 'orderbook',
-        base: coinBase.abbr,
-        rel: coinRel.abbr);
-
-    try {
-      final Response response =
-          await http.post(url, body: json.encode(getOrderbook));
-      print('orderbook' + response.body.toString());
-      return orderbookFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> getBalance(Coin coin) async {
-    final GetBalance getBalance =
-        GetBalance(userpass: userpass, method: 'my_balance', coin: coin.abbr);
-
-    try {
-      final Response response =
-          await http.post(url, body: json.encode(getBalance));
-
-      print('getBalance' + response.body.toString());
-
-      try {
-        return balanceFromJson(response.body);
-      } catch (e) {
-        print(e);
-        return errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<BuyResponse> postBuy(
-      Coin base, Coin rel, Decimal volume, String price) async {
-    print('postBuy>>>>>>>>>>>>>>>>> SWAPPARAM: base: ' +
-        base.abbr +
-        ' rel: ' +
-        rel.abbr.toString() +
-        ' relvol: ' +
-        volume.toString() +
-        ' price: ' +
-        price.toString());
-    final GetBuy getBuy = GetBuy(
-        userpass: userpass,
-        method: 'buy',
-        base: base.abbr,
-        rel: rel.abbr,
-        volume: volume.toString(),
-        price: price);
-    print(json.encode(getBuy));
-
-    try {
-      final Response response = await http.post(url, body: json.encode(getBuy));
-      print(response.body.toString());
-      try {
-        return buyResponseFromJson(response.body);
-      } catch (e) {
-        print(e);
-        throw errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> postSell(
-      Coin base, Coin rel, double volume, double price) async {
-    print('postSellSWAPPARAM: base: ' +
-        base.abbr +
-        ' rel: ' +
-        rel.abbr.toString() +
-        ' relvol: ' +
-        volume.toString() +
-        ' price: ' +
-        price.toString());
-    final GetBuy getBuy = GetBuy(
-        userpass: userpass,
-        method: 'sell',
-        base: base.abbr,
-        rel: rel.abbr,
-        volume: volume.toStringAsFixed(8),
-        price: price.toStringAsFixed(8));
-    print(json.encode(getBuy));
-
-    try {
-      final Response response = await http.post(url, body: json.encode(getBuy));
-
-      print(response.body.toString());
-      try {
-        return buyResponseFromJson(response.body);
-      } catch (e) {
-        return errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<ActiveCoin> activeCoin(Coin coin) async {
-    print('activate coin :' + coin.abbr);
-    final List<Server> servers = <Server>[];
-    for (String url in coin.serverList) {
-      servers.add(
-          Server(url: url, protocol: 'TCP', disableCertVerification: false));
-    }
-    dynamic getActiveCoin;
-    Response response;
-
-    try {
-      if (coin.swapContractAddress.isNotEmpty) {
-        getActiveCoin = GetEnabledCoin(
-            userpass: userpass,
-            method: 'enable',
-            coin: coin.abbr,
-            txHistory: true,
-            swapContractAddress: coin.swapContractAddress,
-            urls: coin.serverList);
-        response = await http
-            .post(url, body: getEnabledCoinToJson(getActiveCoin))
-            .timeout(const Duration(seconds: 60));
-      } else {
-        getActiveCoin = GetActiveCoin(
-            userpass: userpass,
-            method: 'electrum',
-            coin: coin.abbr,
-            txHistory: true,
-            servers: servers);
-        response = await http
-            .post(url, body: getActiveCoinToJson(getActiveCoin))
-            .timeout(const Duration(seconds: 60));
-      }
-
-      print('response Active Coin: ' + response.body.toString());
-
-      final ActiveCoin activeCoin = activeCoinFromJson(response.body);
-      if (activeCoin != null && activeCoin.coin.isNotEmpty) {
-        return activeCoin;
-      } else {
-        throw errorStringFromJson(response.body);
-      }
-    } on TimeoutException catch (_) {
-      throw ErrorString(error: 'Timeout on ${coin.abbr}');
-    } catch (e) {
-      print('-------------------' + errorStringFromJson(response.body).error);
-      print(response.body);
-      throw errorStringFromJson(response.body);
-    }
-  }
-
 }

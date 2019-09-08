@@ -14,7 +14,7 @@ String getActiveCoinToJson(GetActiveCoin data) {
 
 class GetActiveCoin {
   GetActiveCoin(
-      {this.userpass, this.method, this.coin, this.servers, this.txHistory});
+      {this.userpass, this.method = 'electrum', this.coin, this.servers, this.txHistory});
 
   factory GetActiveCoin.fromJson(Map<String, dynamic> json) => GetActiveCoin(
       userpass: json['userpass'] ?? '',

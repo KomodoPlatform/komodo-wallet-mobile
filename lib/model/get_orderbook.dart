@@ -12,7 +12,7 @@ String getOrderbookToJson(GetOrderbook data) => json.encode(data.toJson());
 class GetOrderbook {
   GetOrderbook({
     this.userpass,
-    this.method,
+    this.method = 'orderbook',
     this.base,
     this.rel,
   });

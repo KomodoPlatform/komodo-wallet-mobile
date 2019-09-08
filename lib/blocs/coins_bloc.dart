@@ -13,6 +13,7 @@ import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/transactions.dart';
@@ -281,10 +282,18 @@ class CoinsBloc implements BlocBase {
 
     currentCoinActivate(
         CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
-    await MarketMakerService().activeCoin(coin).then((ActiveCoin activeCoin) {
-      coinToactivate = coin;
-      currentCoinActivate(
-          CoinToActivate(currentStatus: '${coin.name} activated.'));
+    print(coin.abbr);
+    await ApiProvider()
+        .activeCoin(http.Client(), coin)
+        .then((dynamic activeCoin) {
+      if (activeCoin is ActiveCoin) {
+        coinToactivate = coin;
+        currentCoinActivate(
+            CoinToActivate(currentStatus: '${coin.name} activated.'));
+      } else {
+        currentCoinActivate(CoinToActivate(
+            currentStatus: 'Sorry, ${coin.abbr} not available.'));
+      }
     }).catchError((dynamic onError) async {
       coinToactivate = coin;
 
@@ -468,8 +477,8 @@ class CoinsBloc implements BlocBase {
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
     dynamic balance;
     try {
-      balance = await MarketMakerService()
-          .getBalance(coin)
+      balance = await ApiProvider()
+          .getBalance(http.Client(), GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
       print(e);
