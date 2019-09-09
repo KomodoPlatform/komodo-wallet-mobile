@@ -55,6 +55,7 @@ class _SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context).settings.toUpperCase(),
+           key: const Key('settings-title'),
         ),
         centerTitle: true,
         backgroundColor: Theme.of(context).backgroundColor,
@@ -278,6 +279,7 @@ class _SettingPageState extends State<SettingPage> {
     return CustomTile(
       onPressed: () => _shareFile(),
       child: ListTile(
+        key: const Key('setting-title-feedback'),
         trailing:
             Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
         title: Text(
@@ -614,17 +616,18 @@ class _SettingPageState extends State<SettingPage> {
       await MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
     }
     mainBloc.isUrlLaucherIsOpen = true;
-    Share.shareFile(File('${MarketMakerService().filesPath}mm.log'),
+    Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
         subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 }
 
 class CustomTile extends StatefulWidget {
-  const CustomTile({this.child, this.onPressed, this.backgroundColor});
+  const CustomTile({Key key, this.onPressed, this.backgroundColor, this.child}) : super(key: key);
 
   final Widget child;
   final Function onPressed;
   final Color backgroundColor;
+
 
   @override
   _CustomTileState createState() => _CustomTileState();

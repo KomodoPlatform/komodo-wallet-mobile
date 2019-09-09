@@ -100,7 +100,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                           Align(
                             alignment: Alignment.topCenter,
                             child: Container(
-                                height: 75,
+                                height: MediaQuery.of(context).size.height * 0.11,
                                 color: Theme.of(context).backgroundColor,
                                 child: _buildHeader()),
                           ),

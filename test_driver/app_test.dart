@@ -189,7 +189,14 @@ void main() {
 
       await driver.waitFor(find.text('Order matched'));
       await driver.waitFor(find.text('Swap successful'), timeout: const Duration(minutes: 10));
-
+      await driver.tap(find.byValueKey('swap-detail-back-button'));
     }, timeout: Timeout.none);
+  });
+
+  group('Settings', () {
+    test('Send feedback', () async {
+      await driver.tap(find.byValueKey('icon-setting-page'));
+      await driver.tap(find.byValueKey('setting-title-feedback'));
+    });
   });
 }
