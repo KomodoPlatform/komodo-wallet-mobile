@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/screens/news/media_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class SelectCoinsPage extends StatefulWidget {
@@ -100,7 +101,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                           Align(
                             alignment: Alignment.topCenter,
                             child: Container(
-                                height: 75,
+                                height: MediaQuery.of(context).size.height * 0.11,
                                 color: Theme.of(context).backgroundColor,
                                 child: _buildHeader()),
                           ),

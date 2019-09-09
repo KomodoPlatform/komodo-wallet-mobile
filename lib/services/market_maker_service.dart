@@ -56,6 +56,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // MarketMakerService mm2 = MarketMakerService();
 
 class MarketMakerService {
+  
   factory MarketMakerService() {
     return _singleton;
   }
@@ -203,6 +204,7 @@ class MarketMakerService {
         await fileLog.delete();
       }
       fileLog.create();
+      sink = fileLog.openWrite();
       await File('${filesPath}MM2.json').writeAsString(startParam);
 
       try {
