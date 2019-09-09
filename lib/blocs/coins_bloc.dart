@@ -175,15 +175,6 @@ class CoinsBloc implements BlocBase {
       .then((_) => updateCoins(coinBalance))
       .then((_) => removeJsonCoin(<Coin>[coin]));
 
-  // MarketMakerService()
-  //     .disableCoin(coin)
-  //     .then((dynamic _) => coinBalance
-  //         .removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr))
-  //     .then((_) => print('remove from coinBalance' + coin.abbr + coinBalance.length.toString()))
-  //     .then((_) => updateCoins(coinBalance))
-  //     .then((_) => removeJsonCoin(<Coin>[coin]))
-  //     .then((_) => print('remove from JsonCoin' + coin.abbr));
-
   void updateOneCoin(CoinBalance coin) {
     bool isExist = false;
     int currentIndex = 0;

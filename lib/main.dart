@@ -36,7 +36,6 @@ void main() {
 
 Future<void> startApp() async {
   try {
-    print('initMarketMaker ----------');
     await MarketMakerService().initMarketMaker();
     await _runBinMm2UserAlreadyLog();
     return runApp(BlocProvider<AuthenticateBloc>(
