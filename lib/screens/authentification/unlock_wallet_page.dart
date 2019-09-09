@@ -34,6 +34,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
       onWillPop: () async => !widget.isCreatedPin,
       child: Scaffold(
@@ -227,7 +228,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
     );
   }
 
-  Future<void> _login(BuildContext context) async {
+  Future<void> _login(BuildContext mContext) async {
     setState(() {
       isLoading = true;
     });
@@ -240,9 +241,9 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
         isLoading = false;
       });
     }).catchError((dynamic onError) {
-      Scaffold.of(context).showSnackBar(SnackBar(
+      Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
-        backgroundColor: Theme.of(context).errorColor,
+        backgroundColor: Theme.of(mContext).errorColor,
         content: Text(onError),
       ));
     }).whenComplete(() {
