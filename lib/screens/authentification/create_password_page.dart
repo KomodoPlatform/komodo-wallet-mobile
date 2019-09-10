@@ -22,7 +22,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool isObscured = true;
-  bool isFastEncrypted = false;
 
   @override
   void initState() {
@@ -190,22 +189,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 ],
               );
             }),
-            Row(
-              children: <Widget>[
-                Switch(
-                  onChanged: (bool value) {
-                    setState(() {
-                      isFastEncrypted = value;
-                    });
-                  },
-                  value: isFastEncrypted,
-                ),
-                Text(
-                  'Fast encryption',
-                  style: Theme.of(context).textTheme.body2,
-                )
-              ],
-            ),
             const SizedBox(
               height: 16,
             ),
@@ -246,7 +229,6 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
       context,
       MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => DislaimerPage(
-                isFastEncrypted: isFastEncrypted,
                 password: controller1.text,
                 seed: widget.seed,
                 onSuccess: () {

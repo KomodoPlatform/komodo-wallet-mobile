@@ -5,7 +5,7 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 SettingsBloc settingsBloc = SettingsBloc();
 
 class SettingsBloc implements BlocBase{
-  bool isDeleteLoading;
+  bool isDeleteLoading = true;
 
   final StreamController<bool> _isDeleteLoadingController =
       StreamController<bool>.broadcast();

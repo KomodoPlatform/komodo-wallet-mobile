@@ -58,6 +58,7 @@ dev_dependencies:
   package_info: ^0.4.0+4
   flutter_launcher_icons: ^0.7.2+1
   decimal: ^0.3.0
+  flutter_sodium: ^0.0.10
 
 flutter_icons:
   android: true
