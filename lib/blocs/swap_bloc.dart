@@ -4,10 +4,12 @@ import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:http/http.dart' as http;
 
 class SwapBloc implements BlocBase {
   OrderCoin orderCoin;
@@ -143,7 +145,9 @@ class SwapBloc implements BlocBase {
 
   void updateReceiveCoin(Coin receiveCoin) {
     Coin coin = receiveCoin;
-    if (receiveCoin != null && receiveCoin.abbr != null && receiveCoin.abbr.isNotEmpty) {
+    if (receiveCoin != null &&
+        receiveCoin.abbr != null &&
+        receiveCoin.abbr.isNotEmpty) {
       for (CoinBalance coinBalance in coinsBloc.coinBalance) {
         if (coinBalance.coin.abbr == receiveCoin.abbr) {
           coin = coinBalance.coin;
@@ -165,7 +169,8 @@ class SwapBloc implements BlocBase {
 
     for (Coin coin in coins) {
       if (coin.abbr != rel.abbr) {
-        futureOrderbook.add(MarketMakerService().getOrderbook(coin, rel));
+        futureOrderbook.add(ApiProvider().getOrderbook(
+            http.Client(), GetOrderbook(base: coin.abbr, rel: rel.abbr)));
       }
     }
 
@@ -203,8 +208,9 @@ class SwapBloc implements BlocBase {
   Future<double> setReceiveAmount(
       Coin coin, String amountSell, Ask currentAsk) async {
     try {
-      final Orderbook orderbook =
-          await MarketMakerService().getOrderbook(coin, sellCoin.coin);
+      final Orderbook orderbook = await ApiProvider().getOrderbook(
+          http.Client(),
+          GetOrderbook(base: coin.abbr, rel: sellCoin.coin.abbr));
       String bestPrice = '0';
       double maxVolume = 0;
       int i = 0;

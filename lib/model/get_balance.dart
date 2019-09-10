@@ -11,7 +11,7 @@ String getBalanceToJson(GetBalance data) => json.encode(data.toJson());
 class GetBalance {
       GetBalance({
         this.userpass,
-        this.method,
+        this.method = 'my_balance',
         this.coin,
     });
 

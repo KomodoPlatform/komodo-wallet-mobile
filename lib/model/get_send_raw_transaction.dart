@@ -12,7 +12,7 @@ String getSendRawTransactionToJson(GetSendRawTransaction data) =>
 
 class GetSendRawTransaction {
   GetSendRawTransaction({
-    this.method,
+    this.method = 'send_raw_transaction',
     this.coin,
     this.txHex,
     this.userpass,
