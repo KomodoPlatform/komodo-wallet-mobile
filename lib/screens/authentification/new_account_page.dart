@@ -27,7 +27,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
         appBar: AppBar(
           title: Text(AppLocalizations.of(context).newAccountUpper),
         ),
-        body: Column(
+        body: ListView(
           children: <Widget>[
             _buildTitle(),
             _buildSeedGenerator(),
