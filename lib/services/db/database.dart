@@ -130,7 +130,6 @@ class DBProvider {
     final Map<String, dynamic> row = <String, dynamic>{
       'id': newWallet.id,
       'name': newWallet.name,
-      'is_fast_encryption': newWallet.isFastEncryption
     };
 
     return await db.insert('Wallet ', row);
@@ -147,8 +146,7 @@ class DBProvider {
     return List<Wallet>.generate(maps.length, (int i) {
       return Wallet(
           id: maps[i]['id'],
-          name: maps[i]['name'],
-          isFastEncryption: maps[i]['is_fast_encryption'] == 1);
+          name: maps[i]['name'],);
     });
   }
 
@@ -171,7 +169,6 @@ class DBProvider {
     final Map<String, dynamic> row = <String, dynamic>{
       'id': currentWallet.id,
       'name': currentWallet.name,
-      'is_fast_encryption': currentWallet.isFastEncryption
     };
 
     return await db.insert('CurrentWallet ', row);
@@ -185,8 +182,7 @@ class DBProvider {
     final List<Wallet> wallets = List<Wallet>.generate(maps.length, (int i) {
       return Wallet(
           id: maps[i]['id'],
-          name: maps[i]['name'],
-          isFastEncryption: maps[i]['is_fast_encryption'] == 1);
+          name: maps[i]['name'],);
     });
     if (wallets.isEmpty) {
       return null;

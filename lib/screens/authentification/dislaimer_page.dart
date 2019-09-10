@@ -15,13 +15,11 @@ class DislaimerPage extends StatefulWidget {
   const DislaimerPage(
       {Key key,
       this.password,
-      this.isFastEncrypted,
       this.seed,
       this.onSuccess,
       this.readOnly = false})
       : super(key: key);
   final String password;
-  final bool isFastEncrypted;
   final String seed;
   final Function onSuccess;
   final bool readOnly;
@@ -375,7 +373,6 @@ class _DislaimerPageState extends State<DislaimerPage>
 
       final EncryptionTool entryptionTool = EncryptionTool();
       final Wallet wallet = walletBloc.currentWallet;
-      wallet.isFastEncryption = widget.isFastEncrypted;
       walletBloc.currentWallet = wallet;
 
       await entryptionTool.writeData(

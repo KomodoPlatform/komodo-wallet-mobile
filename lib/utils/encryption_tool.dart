@@ -5,34 +5,54 @@ import 'package:flutter_sodium/flutter_sodium.dart';
 class EncryptionTool {
   FlutterSecureStorage storage = FlutterSecureStorage();
 
-  Future<void> writeData(
-      KeyEncryption key, Wallet wallet, String password, String data) async {
-    print(key);
-    await storage.write(
-        key:
-            '${key.toString()}${await _computeHash(password)}${wallet.name}${wallet.id}',
-        value: data);
+  String keyPassword(KeyEncryption key, Wallet wallet) =>
+      'password${key.toString()}${wallet.name}${wallet.id}';
+
+  String keyData(KeyEncryption key, Wallet wallet, String password) =>
+      '${key.toString()}$password${wallet.name}${wallet.id}';
+
+  Future<bool> isPasswordValid(
+      KeyEncryption key, Wallet wallet, String password) async {
+    if (key == KeyEncryption.SEED) {
+      return await PasswordHash.verifyStorage(
+              await storage.read(key: keyPassword(key, wallet)), password)
+          .then((bool onValue) =>
+              onValue ? onValue : throw Exception('Invalid password.'));
+    } else {
+      return true;
+    }
   }
 
+  Future<String> _computeHash(String data) async =>
+      await PasswordHash.hashStorage(data);
+
+  Future<void> writeData(KeyEncryption key, Wallet wallet, String password,
+          String data) async =>
+      await storage
+          .write(key: keyData(key, wallet, password), value: data)
+          .then((_) async {
+        if (key == KeyEncryption.SEED) {
+          await storage.write(
+              key: keyPassword(key, wallet),
+              value: await _computeHash(password));
+        }
+      });
+
   Future<String> readData(
-      KeyEncryption key, Wallet wallet, String password) async {
-    print(key);
-    return await storage.read(
-        key:
-            '${key.toString()}${await _computeHash(password)}${wallet.name}${wallet.id}');
-  }
+          KeyEncryption key, Wallet wallet, String password) async =>
+      await isPasswordValid(key, wallet, password)
+          .catchError((dynamic e) => throw e)
+          .then((bool onValue) async =>
+              await storage.read(key: keyData(key, wallet, password)));
 
   Future<void> deleteData(
           KeyEncryption key, Wallet wallet, String password) async =>
-      await storage.delete(
-          key:
-              '${key.toString()}${await _computeHash(password)}${wallet.name}${wallet.id}');
-
-  Future<String> _computeHash(String data) async {
-    String hashed = await PasswordHash.hashStorage(data);
-    print(hashed);
-    return hashed;
-  }
+      await isPasswordValid(key, wallet, password)
+          .catchError((dynamic e) => throw e)
+          .then((bool res) async {
+        await storage.delete(key: keyPassword(key, wallet));
+      }).then((_) async =>
+              await storage.delete(key: keyData(key, wallet, password)));
 
   Future<void> write(String key, String data) async =>
       await storage.write(key: key, value: data);

@@ -244,7 +244,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
       Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(mContext).errorColor,
-        content: Text(onError),
+        content: Text(AppLocalizations.of(context).wrongPassword),
       ));
     }).whenComplete(() {
       if (mounted) {
