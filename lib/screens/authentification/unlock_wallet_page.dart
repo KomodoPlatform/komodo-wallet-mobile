@@ -210,8 +210,10 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             AppLocalizations.of(context).signInWithSeedPhrase,
+                            textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.body2.copyWith(
                                 decoration: TextDecoration.underline,
+
                                 decorationColor: Colors.white),
                           ),
                         ),
