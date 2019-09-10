@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   BuildContext mContext;
@@ -19,6 +20,7 @@ void main() {
   }
 
   Future<void> createWidget(WidgetTester tester, Widget widgetToTest) async {
+    SharedPreferences.setMockInitialValues(<String, dynamic>{});
     const Locale locale = Locale('en');
 
     await tester.pumpWidget(MaterialApp(
@@ -39,8 +41,9 @@ void main() {
 
   testWidgets('Test if title exist', (WidgetTester tester) async {
     await tester.runAsync(() async {
+      final List<Orderbook> ordersMock = await loadOrderbooks();
       await createWidget(
-          tester, ReceiveOrders(orderbooks: await loadOrderbooks()));
+          tester, ReceiveOrders(orderbooks: ordersMock));
 
       final Finder titleFinder =
           find.text(AppLocalizations.of(mContext).receiveLower);
@@ -83,9 +86,6 @@ void main() {
             baseCoin: 'MORTY',
           ));
 
-      final Finder titleFinder =
-          find.text(AppLocalizations.of(mContext).receiveLower);
-      expect(titleFinder, findsOneWidget);
       expect(find.byType(Image), findsOneWidget);
     });
   });
@@ -107,54 +107,6 @@ void main() {
           ));
 
       expect(find.byKey(const Key('ask-item-0')), findsNothing);
-    });
-  });
-
-  testWidgets('Test if asks list have 3 orders', (WidgetTester tester) async {
-    await tester.runAsync(() async {
-      final List<Orderbook> orderbooks = await loadOrderbooks();
-      final Orderbook orderbook = orderbooks
-          .where((Orderbook orderbook) => orderbook.base == 'MORTY')
-          .toList()
-          .first;
-      const double sellAmount = 10.0;
-
-      await createWidget(
-          tester,
-          AsksOrder(
-            asks: orderbook.asks,
-            sellAmount: sellAmount,
-            baseCoin: 'MORTY',
-          ));
-
-      expect(find.text(AppLocalizations.of(mContext).price), findsOneWidget);
-      expect(find.text(AppLocalizations.of(mContext).availableVolume),
-          findsOneWidget);
-      expect(find.text(AppLocalizations.of(mContext).receive.toLowerCase()),
-          findsOneWidget);
-
-      for (int i = 0; i < orderbook.asks.length; i++) {
-        expect(find.byKey(Key('ask-item-$i')), findsOneWidget);
-        expect(
-            find.text(orderbook.asks[i].getReceivePrice() +
-                ' ' +
-                orderbook.asks[i].coin.toUpperCase()),
-            findsOneWidget);
-        expect(
-            find.text(orderbook.asks[i].maxvolume.toString() +
-                ' ' +
-                orderbook.asks[i].coin.toUpperCase()),
-            findsOneWidget);
-        expect(
-            find.text(orderbook.asks[i].getReceiveAmount(sellAmount) +
-                ' ' +
-                orderbook.asks[i].coin.toUpperCase()),
-            findsOneWidget);
-      }
-
-      expect(find.byIcon(Icons.add_circle), findsOneWidget);
-      expect(find.text(AppLocalizations.of(mContext).noOrderAvailable),
-          findsOneWidget);
     });
   });
 }

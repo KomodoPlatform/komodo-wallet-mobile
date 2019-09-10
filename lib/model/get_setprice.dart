@@ -12,7 +12,7 @@ String getSetPriceToJson(GetSetPrice data) => json.encode(data.toJson());
 class GetSetPrice {
   GetSetPrice({
     this.userpass,
-    this.method,
+    this.method = 'setprice',
     this.base,
     this.rel,
     this.price,

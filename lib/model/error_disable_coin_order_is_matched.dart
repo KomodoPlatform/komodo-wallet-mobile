@@ -17,11 +17,11 @@ class ErrorDisableCoinOrderIsMatched {
 
     factory ErrorDisableCoinOrderIsMatched.fromJson(Map<String, dynamic> json) => ErrorDisableCoinOrderIsMatched(
         error: json['error'],
-        orders: Orders.fromJson(json['orders']),
+        orders: OrdersString.fromJson(json['orders']),
     );
 
     String error;
-    Orders orders;
+    OrdersString orders;
 
 
     Map<String, dynamic> toJson() => <String, dynamic>{
@@ -30,13 +30,13 @@ class ErrorDisableCoinOrderIsMatched {
     };
 }
 
-class Orders {
-    Orders({
+class OrdersString {
+    OrdersString({
         this.matching,
         this.cancelled,
     });
 
-    factory Orders.fromJson(Map<String, dynamic> json) => Orders(
+    factory OrdersString.fromJson(Map<String, dynamic> json) => OrdersString(
         matching: List<String>.from(json['matching'].map((dynamic x) => x)),
         cancelled: List<String>.from(json['cancelled'].map((dynamic x) => x)),
     );

@@ -9,6 +9,8 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_buy.dart';
+import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
@@ -16,7 +18,8 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/api_providers.dart';
+import 'package:http/http.dart' as http;
 
 enum SwapStatus { BUY, SELL }
 
@@ -280,7 +283,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           isSwapMaking
               ? const CircularProgressIndicator()
               : RaisedButton(
-                key: const Key('confirm-swap-button'),
+                  key: const Key('confirm-swap-button'),
                   padding:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 52),
                   shape: RoundedRectangleBorder(
@@ -349,22 +352,38 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     }
 
     if (widget.swapStatus == SwapStatus.BUY) {
-      MarketMakerService()
-          .postBuy(coinBase, coinRel, satoshiBuyAmount / satoshi,
-              (satoshiPrice / satoshi).toString())
-          .then((BuyResponse onValue) => _goToNextScreen(
-              mContext, onValue, amountToSell, satoshiBuyAmount / satoshi))
+      ApiProvider()
+          .postBuy(
+              http.Client(),
+              GetBuySell(
+                  base: coinBase.abbr,
+                  rel: coinRel.abbr,
+                  volume: (satoshiBuyAmount / satoshi).toString(),
+                  price: (satoshiPrice / satoshi).toString()))
+          .then((dynamic onValue) => onValue is BuyResponse
+              ? _goToNextScreen(
+                  mContext, onValue, amountToSell, satoshiBuyAmount / satoshi)
+              : _catchErrorSwap(mContext, onValue))
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      MarketMakerService()
-          .postSetPrice(coinRel, coinBase, amountToSell,
-              Decimal.parse(widget.bestPrice).toStringAsFixed(8), false, false)
-          .then((SetPriceResponse onValue) => _goToNextScreen(
-              mContext,
-              onValue,
-              amountToSell,
-              Decimal.parse(
-                  Decimal.parse(widget.amountToBuy).toStringAsFixed(8))))
+      ApiProvider()
+          .postSetPrice(
+              http.Client(),
+              GetSetPrice(
+                  base: coinRel.abbr,
+                  rel: coinBase.abbr,
+                  cancelPrevious: false,
+                  max: false,
+                  volume: amountToSell,
+                  price: Decimal.parse(widget.bestPrice).toStringAsFixed(8)))
+          .then<dynamic>((dynamic onValue) => onValue is SetPriceResponse
+              ? _goToNextScreen(
+                  mContext,
+                  onValue,
+                  amountToSell,
+                  Decimal.parse(
+                      Decimal.parse(widget.amountToBuy).toStringAsFixed(8)))
+              : throw onValue.error)
           .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
     }
   }

@@ -12,7 +12,7 @@ String getTxHistoryToJson(GetTxHistory data) => json.encode(data.toJson());
 class GetTxHistory {
   GetTxHistory({
     this.userpass,
-    this.method,
+    this.method = 'my_tx_history',
     this.coin,
     this.limit,
     this.fromId,

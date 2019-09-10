@@ -1,16 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_balance.dart';
+import 'package:komodo_dex/model/get_disable_coin.dart';
+import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/transactions.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -169,11 +175,12 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> removeCoin(Coin coin) => removeCoinBalance(coin)
-      .then<dynamic>((_) => MarketMakerService().disableCoin(coin))
+      .then<dynamic>((_) => ApiProvider()
+        .disableCoin(http.Client(), GetDisableCoin(coin: coin.abbr))
       .then((dynamic _) => coinBalance
           .removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr))
       .then((_) => updateCoins(coinBalance))
-      .then((_) => removeJsonCoin(<Coin>[coin]));
+      .then<dynamic>((_) => removeJsonCoin(<Coin>[coin])));
 
   void updateOneCoin(CoinBalance coin) {
     bool isExist = false;
@@ -203,8 +210,10 @@ class CoinsBloc implements BlocBase {
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
-      final dynamic transactions =
-          await MarketMakerService().getTransactions(coin, limit, fromId);
+      final dynamic transactions = await ApiProvider().getTransactions(
+          http.Client(),
+          GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+
       if (transactions is Transactions) {
         if (fromId == null || fromId.isEmpty) {
           this.transactions = transactions;
@@ -268,10 +277,18 @@ class CoinsBloc implements BlocBase {
 
     currentCoinActivate(
         CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
-    await MarketMakerService().activeCoin(coin).then((ActiveCoin activeCoin) {
-      coinToactivate = coin;
-      currentCoinActivate(
-          CoinToActivate(currentStatus: '${coin.name} activated.'));
+    print(coin.abbr);
+    await ApiProvider()
+        .activeCoin(http.Client(), coin)
+        .then((dynamic activeCoin) {
+      if (activeCoin is ActiveCoin) {
+        coinToactivate = coin;
+        currentCoinActivate(
+            CoinToActivate(currentStatus: '${coin.name} activated.'));
+      } else {
+        currentCoinActivate(CoinToActivate(
+            currentStatus: 'Sorry, ${coin.abbr} not available.'));
+      }
     }).catchError((dynamic onError) async {
       coinToactivate = coin;
 
@@ -459,8 +476,8 @@ class CoinsBloc implements BlocBase {
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
     dynamic balance;
     try {
-      balance = await MarketMakerService()
-          .getBalance(coin)
+      balance = await ApiProvider()
+          .getBalance(http.Client(), GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
       print(e);
@@ -504,8 +521,9 @@ class CoinsBloc implements BlocBase {
     final List<Coin> coinsAll = await getAllNotActiveCoins();
 
     try {
-      await MarketMakerService()
-          .getCoinToKickStart()
+      await ApiProvider()
+          .getCoinToKickStart(
+              http.Client(), BaseService(method: 'coins_needed_for_kick_start'))
           .then((CoinToKickStart coinsToKickStart) {
         for (Coin coin in coinsAll) {
           for (String coinToKickStart in coinsToKickStart.result) {

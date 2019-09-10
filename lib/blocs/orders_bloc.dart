@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
+import 'package:komodo_dex/model/base_service.dart';
+import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:http/http.dart' as http;
 
 OrdersBloc ordersBloc = OrdersBloc();
 
@@ -40,7 +43,10 @@ class OrdersBloc implements BlocBase {
 
   Future<void> updateOrders() async {
     try {
-      final Orders newOrders = await MarketMakerService().getMyOrders();
+      final Orders newOrders = await ApiProvider().getMyOrders(
+          http.Client(),
+          BaseService(method: 'my_orders'));
+
       final List<Order> orders = <Order>[];
 
       for (MapEntry<String, TakerOrder> entry
@@ -132,7 +138,9 @@ class OrdersBloc implements BlocBase {
 
   Future<void> cancelOrder(String uuid) async {
     try {
-      await MarketMakerService().cancelOrder(uuid);
+      await ApiProvider().cancelOrder(
+          http.Client(),
+          GetCancelOrder(uuid: uuid));
       orderSwaps.removeWhere((dynamic orderSwap) {
         if (orderSwap is Order) {
           return orderSwap.uuid == uuid;

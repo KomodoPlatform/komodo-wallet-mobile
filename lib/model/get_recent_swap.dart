@@ -11,7 +11,7 @@ String getRecentSwapToJson(GetRecentSwap data) => json.encode(data.toJson());
 class GetRecentSwap {
       GetRecentSwap({
         this.userpass,
-        this.method,
+        this.method = 'my_recent_swaps',
         this.fromUuid,
         this.limit,
     });

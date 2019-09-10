@@ -9,7 +9,7 @@ ErrorString errorStringFromJson(String str) =>
 
 String errorStringToJson(ErrorString data) => json.encode(data.toJson());
 
-class ErrorString {
+class ErrorString implements Exception{
   ErrorString({
     this.error,
   });

@@ -12,7 +12,7 @@ String getTradeFeeToJson(GetTradeFee data) => json.encode(data.toJson());
 class GetTradeFee {
   GetTradeFee({
     this.userpass,
-    this.method,
+    this.method = 'get_trade_fee',
     this.coin,
   });
 

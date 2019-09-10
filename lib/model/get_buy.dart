@@ -4,21 +4,21 @@
 
 import 'dart:convert';
 
-GetBuy getBuyFromJson(String str) => GetBuy.fromJson(json.decode(str));
+GetBuySell getBuyFromJson(String str) => GetBuySell.fromJson(json.decode(str));
 
-String getBuyToJson(GetBuy data) => json.encode(data.toJson());
+String getBuyToJson(GetBuySell data) => json.encode(data.toJson());
 
-class GetBuy {
-  GetBuy({
+class GetBuySell {
+  GetBuySell({
     this.userpass,
-    this.method,
+    this.method = 'buy',
     this.base,
     this.rel,
     this.volume,
     this.price,
   });
 
-  factory GetBuy.fromJson(Map<String, dynamic> json) => GetBuy(
+  factory GetBuySell.fromJson(Map<String, dynamic> json) => GetBuySell(
         userpass: json['userpass'] ?? '',
         method: json['method'] ?? '',
         base: json['base'] ?? '',

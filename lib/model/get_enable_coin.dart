@@ -18,7 +18,7 @@ String getEnabledCoinToJson(GetEnabledCoin data) {
 class GetEnabledCoin {
   GetEnabledCoin({
     this.userpass,
-    this.method,
+    this.method = 'enable',
     this.coin,
     this.urls,
     this.txHistory,
