@@ -54,7 +54,7 @@ class WalletBloc implements BlocBase {
   }
 
   void initCurrentWallet(String name) {
-    currentWallet = Wallet(id: Uuid().v1(), name: name, isFastEncryption: false);
+    currentWallet = Wallet(id: Uuid().v1(), name: name);
     _inCurrentWallet.add(currentWallet);
   }
 
@@ -65,7 +65,8 @@ class WalletBloc implements BlocBase {
 
   Future<void> deleteCurrentWallet() async {
     await DBProvider.db.deleteWallet(currentWallet);
-    authBloc.logout();
+                                          authBloc.logout();
+
   }
 
   Future<void> deleteSeedPhrase(String password, Wallet wallet) async {
