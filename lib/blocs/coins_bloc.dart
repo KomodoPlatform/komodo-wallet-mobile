@@ -10,7 +10,6 @@ import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
-import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_balance.dart';
@@ -171,21 +170,17 @@ class CoinsBloc implements BlocBase {
     _inCoins.add(coinBalance);
   }
 
-  Future<void> removeCoin(Coin coin) async {
-    return await ApiProvider()
-        .disableCoin(http.Client(), GetDisableCoin(coin: coin.abbr))
-        .then((dynamic onValue) async {
-      if (onValue is DisableCoin) {
-        await removeJsonCoin(<Coin>[coin]);
-        coinBalance
-            .removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
-        _inCoins.add(coinBalance);
-        return onValue;
-      } else {
-        return onValue;
-      }
-    });
+  Future<void> removeCoinBalance(Coin coin) async {
+    coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
   }
+
+  Future<void> removeCoin(Coin coin) => removeCoinBalance(coin)
+      .then<dynamic>((_) => ApiProvider()
+        .disableCoin(http.Client(), GetDisableCoin(coin: coin.abbr))
+      .then((dynamic _) => coinBalance
+          .removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr))
+      .then((_) => updateCoins(coinBalance))
+      .then<dynamic>((_) => removeJsonCoin(<Coin>[coin])));
 
   void updateOneCoin(CoinBalance coin) {
     bool isExist = false;
@@ -360,7 +355,7 @@ class CoinsBloc implements BlocBase {
     for (Coin newCoin in coinsToRemove) {
       currentCoins.removeWhere((Coin item) => item.abbr == newCoin.abbr);
     }
-    return file.writeAsString(json.encode(currentCoins));
+    return await file.writeAsString(json.encode(currentCoins));
   }
 
   Future<void> deleteJsonCoin(Coin coin) async {
@@ -373,7 +368,7 @@ class CoinsBloc implements BlocBase {
 
   Future<File> resetCoinDefault() async {
     final File file = await _localFile;
-    return file.writeAsString(
+    return await file.writeAsString(
         json.encode(await MarketMakerService().loadJsonCoinsDefault()));
   }
 
@@ -448,13 +443,17 @@ class CoinsBloc implements BlocBase {
       try {
         await Future.wait<dynamic>(getAllBalances)
             .then((List<dynamic> onValue) {
+          final List<CoinBalance> newCoinBalances = <CoinBalance>[];
+
           for (dynamic balance in onValue) {
             if (balance is CoinBalance &&
                 balance.balance.address != null &&
                 balance.balance.address.isNotEmpty) {
+              newCoinBalances.add(balance);
               updateOneCoin(balance);
             }
           }
+          updateCoins(newCoinBalances);
         });
       } catch (e) {
         print(e);

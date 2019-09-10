@@ -60,7 +60,8 @@ Future<void> _runBinMm2UserAlreadyLog() async {
     }
   } else {
     print('loadJsonCoinsDefault');
-    await coinsBloc.writeJsonCoin(await MarketMakerService().loadJsonCoinsDefault());
+    await coinsBloc
+        .writeJsonCoin(await MarketMakerService().loadJsonCoinsDefault());
   }
 }
 
@@ -70,7 +71,9 @@ void _checkNetworkStatus() {
       mainBloc.setIsNetworkOffline(true);
     } else {
       if (mainBloc.isNetworkOffline) {
-        _runBinMm2UserAlreadyLog();
+        if (!MarketMakerService().ismm2Running) {
+          _runBinMm2UserAlreadyLog();
+        }
         mainBloc.setIsNetworkOffline(false);
       }
     }
@@ -92,9 +95,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _checkNetworkStatus();
-    MarketMakerService().initMarketMaker().then((_) {
-      _runBinMm2UserAlreadyLog();
-    });
+    if (isInDebugMode) {
+      MarketMakerService()
+          .initMarketMaker()
+          .then((_) => _runBinMm2UserAlreadyLog());
+    }
     super.initState();
   }
 

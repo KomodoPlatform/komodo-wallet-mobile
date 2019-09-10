@@ -185,6 +185,7 @@ class _CoinDetailState extends State<CoinDetail> {
   NumberFormat f = NumberFormat('###,###.0#');
   List<Widget> listSteps = <Widget>[];
   Timer timer;
+  bool isDeleteLoading = false;
 
   @override
   void initState() {
@@ -203,9 +204,11 @@ class _CoinDetailState extends State<CoinDetail> {
     coinsBloc
         .updateTransactions(currentCoinBalance.coin, limit, null)
         .then((_) {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
     _amountController.addListener(onChange);
     super.initState();
@@ -229,7 +232,9 @@ class _CoinDetailState extends State<CoinDetail> {
 
   @override
   void dispose() {
-    coinsBloc.loadCoin();
+    if (!isDeleteLoading) {
+      coinsBloc.loadCoin();
+    }
     _amountController.dispose();
     _addressController.dispose();
     _scrollController.dispose();
@@ -283,11 +288,25 @@ class _CoinDetailState extends State<CoinDetail> {
           elevation: elevationHeader,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: isDeleteLoading ? Container(
+                height: 20,
+                width: 20,
+                child: const CircularProgressIndicator(
+                  strokeWidth: 1.5,
+                ),) : Icon(Icons.delete),
               onPressed: () async {
-                showConfirmationRemoveCoin(context, widget.coinBalance.coin)
+                setState(() {
+                  isDeleteLoading = true;
+                });
+                showConfirmationRemoveCoin(
+                        context, widget.coinBalance.coin)
                     .then((_) {
-                  Navigator.of(context).pop();
+                  setState(() {
+                    isDeleteLoading = false;
+                  });
+                  if (mounted) {
+                    Navigator.of(context).pop();
+                  }
                 });
               },
             ),

@@ -24,6 +24,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MarketMakerService {
+  
   factory MarketMakerService() {
     return _singleton;
   }
@@ -108,6 +109,7 @@ class MarketMakerService {
 
   Future<void> initCheckLogs() async {
     final File fileLog = File('${filesPath}mm.log');
+
     if (!fileLog.existsSync()) {
       await fileLog.create();
     }
@@ -161,16 +163,17 @@ class MarketMakerService {
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
-    final File fileLog = File('${filesPath}mm.log');
+    final File fileLog = File('${filesPath}log.txt');
+    if (fileLog.existsSync()) {
+      await fileLog.delete();
+    }
+    fileLog.create();
     sink = fileLog.openWrite();
 
     if (Platform.isAndroid) {
       await stopmm2();
       await waitUntilMM2isStop();
-      if (fileLog.existsSync()) {
-        await fileLog.delete();
-      }
-      fileLog.create();
+
       await File('${filesPath}MM2.json').writeAsString(startParam);
 
       try {
@@ -221,9 +224,7 @@ class MarketMakerService {
 
   void _onLogsmm2(String log) {
     print(log);
-    if (!Platform.isAndroid) {
-      sink.write(log + '\n');
-    }
+    sink.write(log + '\n');
     if (log.contains('CONNECTED') ||
         log.contains('Entering the taker_swap_loop') ||
         log.contains('Received \'negotiation') ||

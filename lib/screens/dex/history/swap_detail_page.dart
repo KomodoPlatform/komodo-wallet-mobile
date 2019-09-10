@@ -39,9 +39,13 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Theme.of(context).backgroundColor,
-        ),
+            elevation: 0,
+            backgroundColor: Theme.of(context).backgroundColor,
+            leading: IconButton(
+              key: const Key('swap-detail-back-button'),
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context, false),
+            )),
         body: StreamBuilder<List<Swap>>(
             stream: swapHistoryBloc.outSwaps,
             initialData: swapHistoryBloc.swaps,

@@ -15,11 +15,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import '../localizations.dart';
 
 void copyToClipBoard(BuildContext context, String str) {
-  Scaffold.of(context).showSnackBar( SnackBar(
+  Scaffold.of(context).showSnackBar(SnackBar(
     duration: const Duration(milliseconds: 300),
-    content:  Text(AppLocalizations.of(context).clipboard),
+    content: Text(AppLocalizations.of(context).clipboard),
   ));
-  Clipboard.setData( ClipboardData(text: str));
+  Clipboard.setData(ClipboardData(text: str));
 }
 
 bool isAddress(String address) {
@@ -36,7 +36,8 @@ bool isAddress(String address) {
 bool isChecksumAddress(String address) {
   // Check each case
   address = address.replaceFirst('0x', '');
-  final Uint8List inputData = Uint8List.fromList(address.toLowerCase().codeUnits);
+  final Uint8List inputData =
+      Uint8List.fromList(address.toLowerCase().codeUnits);
   final Uint8List addressHash = keccak(inputData);
   final String output = hex.encode(addressHash);
   for (int i = 0; i < 40; i++) {
@@ -67,7 +68,7 @@ String replaceAllTrainlingZeroERC(String data) {
 }
 
 bool isNumeric(String s) {
-  if(s == null) {
+  if (s == null) {
     return false;
   }
   return double.tryParse(s) != null;
@@ -131,64 +132,66 @@ void showAddressDialog(BuildContext mContext, String address) {
   });
 }
 
-  void showMessage(BuildContext mContext, String error) {
-    Scaffold.of(mContext).showSnackBar(SnackBar(
-      duration: const Duration(seconds: 2),
-      backgroundColor: Theme.of(mContext).primaryColor,
-      content: Text(
-        error,
-        style: Theme.of(mContext).textTheme.body1,
-      ),
-    ));
-  }
+void showMessage(BuildContext mContext, String error) {
+  Scaffold.of(mContext).showSnackBar(SnackBar(
+    duration: const Duration(seconds: 2),
+    backgroundColor: Theme.of(mContext).primaryColor,
+    content: Text(
+      error,
+      style: Theme.of(mContext).textTheme.body1,
+    ),
+  ));
+}
 
-  Future<void> showConfirmationRemoveCoin(BuildContext mContext, Coin coin) async {
-    return dialogBloc.dialog = showDialog<void>(
-        context: mContext,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(AppLocalizations.of(context).deleteConfirm),
-            content: RichText(
-                text: TextSpan(
-                    style: Theme.of(context).textTheme.body1,
-                    children: <TextSpan>[
-                  TextSpan(text: AppLocalizations.of(context).deleteSpan1),
-                  TextSpan(
-                      text: '${coin.name}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  TextSpan(text: AppLocalizations.of(context).deleteSpan2),
-                ])),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(AppLocalizations.of(context).cancel),
-                onPressed: () {
-                  Navigator.of(mContext).pop();
-                },
-              ),
-              RaisedButton(
-                color: Theme.of(context).errorColor,
-                child: Text(AppLocalizations.of(context).confirm),
-                onPressed: () {
-                  coinsBloc.removeCoin(coin).then((dynamic value) {
-                    if (value is ErrorDisableCoinActiveSwap) {
-                      showMessage(mContext, value.error);
+Future<void> showConfirmationRemoveCoin(
+    BuildContext mContext, Coin coin) async {
+  return dialogBloc.dialog = showDialog<void>(
+      context: mContext,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context).deleteConfirm),
+          content: RichText(
+              text: TextSpan(
+                  style: Theme.of(context).textTheme.body1,
+                  children: <TextSpan>[
+                TextSpan(text: AppLocalizations.of(context).deleteSpan1),
+                TextSpan(
+                    text: '${coin.name}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(fontWeight: FontWeight.bold)),
+                TextSpan(text: AppLocalizations.of(context).deleteSpan2),
+              ])),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(AppLocalizations.of(context).cancel),
+              onPressed: () {
+                Navigator.of(mContext).pop();
+              },
+            ),
+            RaisedButton(
+              color: Theme.of(context).errorColor,
+              child: Text(AppLocalizations.of(context).confirm),
+              onPressed: () async {
+                await coinsBloc.removeCoin(coin).then((dynamic value) {
+                  if (value is ErrorDisableCoinActiveSwap) {
+                    showMessage(mContext, value.error);
+                  }
+                  if (value is DisableCoin) {
+                    if (value.result.cancelledOrders.isNotEmpty) {
+                      showMessage(
+                          mContext,
+                          AppLocalizations.of(context)
+                              .orderCancel(value.result.coin));
                     }
-                    if (value is DisableCoin) {
-                      if (value.result.cancelledOrders.isNotEmpty) {
-                        showMessage(mContext, AppLocalizations.of(context)
-                            .orderCancel(value.result.coin));
-                      }
-                    }
-                  });
-                  Navigator.of(mContext).pop();
-                },
-              )
-            ],
-          );
-        }).then((_) {
-      dialogBloc.dialog = null;
-    });
-  }
+                  }
+                }).then((_) => Navigator.of(mContext).pop());
+              },
+            )
+          ],
+        );
+      }).then((_) {
+    dialogBloc.dialog = null;
+  });
+}
