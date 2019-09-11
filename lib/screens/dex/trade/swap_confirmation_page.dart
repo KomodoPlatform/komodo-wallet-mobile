@@ -352,6 +352,11 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     }
 
     if (widget.swapStatus == SwapStatus.BUY) {
+      print('BASE' + coinBase.abbr);
+      print('REL' + coinRel.abbr);
+      print('volume:' + (satoshiBuyAmount / satoshi).toString());
+      print('price'+ (satoshiPrice / satoshi).toString());
+      
       ApiProvider()
           .postBuy(
               http.Client(),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
@@ -174,7 +175,7 @@ class CoinsBloc implements BlocBase {
     coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
   }
 
-  Future<void> removeCoin(Coin coin) => removeCoinBalance(coin)
+  Future<void> removeCoin(Coin coin) async => await removeCoinBalance(coin)
       .then<dynamic>((_) => ApiProvider()
         .disableCoin(http.Client(), GetDisableCoin(coin: coin.abbr))
       .then((dynamic _) => coinBalance
@@ -432,7 +433,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> loadCoin() async {
-    if (MarketMakerService().ismm2Running && !onActivateCoins) {
+    if (MarketMakerService().ismm2Running && !onActivateCoins && !mainBloc.isNetworkOffline) {
       final List<Coin> coins = await coinsBloc.readJsonCoin();
       final List<Future<dynamic>> getAllBalances = <Future<dynamic>>[];
 
@@ -443,17 +444,13 @@ class CoinsBloc implements BlocBase {
       try {
         await Future.wait<dynamic>(getAllBalances)
             .then((List<dynamic> onValue) {
-          final List<CoinBalance> newCoinBalances = <CoinBalance>[];
-
           for (dynamic balance in onValue) {
             if (balance is CoinBalance &&
                 balance.balance.address != null &&
                 balance.balance.address.isNotEmpty) {
-              newCoinBalances.add(balance);
               updateOneCoin(balance);
             }
           }
-          updateCoins(newCoinBalances);
         });
       } catch (e) {
         print(e);

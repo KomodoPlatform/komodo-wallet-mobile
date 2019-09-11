@@ -1,20 +1,22 @@
 import 'dart:async';
 
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 MainBloc mainBloc = MainBloc();
 
-class MainBloc implements BlocBase{
-
+class MainBloc implements BlocBase {
   int currentIndexTab = 0;
-  
+
   final StreamController<int> _currentIndexTabController =
       StreamController<int>.broadcast();
   Sink<int> get _inCurrentIndex => _currentIndexTabController.sink;
   Stream<int> get outCurrentIndex => _currentIndexTabController.stream;
 
   bool isNetworkOffline = false;
-  
+
   final StreamController<bool> _isNetworkOffline =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsNetworkOffline => _isNetworkOffline.sink;
@@ -32,7 +34,7 @@ class MainBloc implements BlocBase{
     isNetworkOffline = isNetworkAvailable;
     _inIsNetworkOffline.add(isNetworkOffline);
   }
-  
+
   void setCurrentIndexTab(int index) {
     currentIndexTab = index;
     _inCurrentIndex.add(currentIndexTab);
