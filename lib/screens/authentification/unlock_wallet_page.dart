@@ -5,7 +5,6 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
-import 'package:komodo_dex/screens/settings/restore_seed_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
