@@ -60,7 +60,7 @@ class _SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context).settings.toUpperCase(),
-           key: const Key('settings-title'),
+          key: const Key('settings-title'),
         ),
         centerTitle: true,
         backgroundColor: Theme.of(context).backgroundColor,
@@ -557,9 +557,8 @@ class _SettingPageState extends State<SettingPage> {
                                       _showLoadingDelete();
                                       await walletBloc.deleteSeedPhrase(
                                           password, walletBloc.currentWallet);
+                                      await walletBloc.deleteCurrentWallet();
                                       settingsBloc.setDeleteLoading(false);
-
-                                      walletBloc.deleteCurrentWallet();
                                     },
                                     backgroundColor:
                                         Theme.of(context).errorColor,
@@ -584,33 +583,9 @@ class _SettingPageState extends State<SettingPage> {
   void _showLoadingDelete() {
     dialogBloc.dialog = showDialog<dynamic>(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
-          return StreamBuilder<Object>(
-              initialData: settingsBloc.isDeleteLoading,
-              stream: settingsBloc.outIsDeleteLoading,
-              builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-                if (snapshot.hasData) {
-                  Navigator.of(context).pop();
-                }
-                return SimpleDialog(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  children: <Widget>[
-                    Center(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const <Widget>[
-                        CircularProgressIndicator(),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text('Deleting wallet...')
-                      ],
-                    ))
-                  ],
-                );
-              });
+          return ShowLoadingDelete();
         }).then((dynamic _) {
       dialogBloc.dialog = null;
     });
@@ -633,12 +608,12 @@ class _SettingPageState extends State<SettingPage> {
 }
 
 class CustomTile extends StatefulWidget {
-  const CustomTile({Key key, this.onPressed, this.backgroundColor, this.child}) : super(key: key);
+  const CustomTile({Key key, this.onPressed, this.backgroundColor, this.child})
+      : super(key: key);
 
   final Widget child;
   final Function onPressed;
   final Color backgroundColor;
-
 
   @override
   _CustomTileState createState() => _CustomTileState();
@@ -663,6 +638,44 @@ class _CustomTileState extends State<CustomTile> {
           child: widget.child,
         ),
       ),
+    );
+  }
+}
+
+class ShowLoadingDelete extends StatefulWidget {
+  @override
+  _ShowLoadingDeleteState createState() => _ShowLoadingDeleteState();
+}
+
+class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
+  @override
+  void initState() {
+    super.initState();
+    settingsBloc.outIsDeleteLoading.listen((bool onData) {
+      if (!onData) {
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      children: <Widget>[
+        Center(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const <Widget>[
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 16,
+            ),
+            Text('Deleting wallet...')
+          ],
+        ))
+      ],
     );
   }
 }

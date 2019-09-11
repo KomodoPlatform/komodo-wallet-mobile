@@ -244,7 +244,7 @@ class AppLocalizations {
   String get hintEnterPassword =>
       Intl.message('Enter your password', name: 'hintEnterPassword');
   String get signInWithSeedPhrase =>
-      Intl.message('Sign in with seed phrase', name: 'signInWithSeedPhrase');
+      Intl.message('Forgot the password? Restore wallet from seed', name: 'signInWithSeedPhrase');
   String get signInWithPassword =>
       Intl.message('Sign in with password', name: 'signInWithPassword');
   String get hintEnterSeedPhrase =>

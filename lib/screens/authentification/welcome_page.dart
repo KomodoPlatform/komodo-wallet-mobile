@@ -103,7 +103,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     labelText: null)),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 100),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: PrimaryButton(
               onPressed: isButtonLoginEnabled ? () => _newPage() : null,
               text: AppLocalizations.of(context).welcomeLetSetUp,

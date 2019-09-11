@@ -4,7 +4,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
-import 'package:komodo_dex/screens/settings/restore_seed_page.dart';
+import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
@@ -34,15 +34,13 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: () async => !widget.isCreatedPin,
       child: Scaffold(
         resizeToAvoidBottomPadding: true,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: widget.isCreatedPin
-            ? 
-            AppBar(
+            ? AppBar(
                 leading: InkWell(
                     onTap: () async {
                       await DBProvider.db.deleteWallet(widget.wallet);
@@ -203,13 +201,14 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                             context,
                             MaterialPageRoute<dynamic>(
                                 builder: (BuildContext context) =>
-                                    RestoreSeedPage()),
+                                    const WelcomePage(isFromRestore: true,)),
                           );
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             AppLocalizations.of(context).signInWithSeedPhrase,
+                            textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.body2.copyWith(
                                 decoration: TextDecoration.underline,
                                 decorationColor: Colors.white),
@@ -244,7 +243,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
       Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(mContext).errorColor,
-        content: Text(onError),
+        content: Text(AppLocalizations.of(context).wrongPassword),
       ));
     }).whenComplete(() {
       if (mounted) {
