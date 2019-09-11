@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 MainBloc mainBloc = MainBloc();
