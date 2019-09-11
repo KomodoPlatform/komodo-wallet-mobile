@@ -27,6 +27,7 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/suc
 import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
@@ -81,7 +82,7 @@ class CoinDetail extends StatefulWidget {
         .then((dynamic data) {
       Navigator.of(mContext).pop();
       if (data is WithdrawResponse) {
-        print(data.myBalanceChange);
+        Log.println(data.myBalanceChange);
         if (double.parse(data.myBalanceChange) > 0) {
           dialogBloc.dialog = showDialog<dynamic>(
             context: mContext,
@@ -365,8 +366,8 @@ class _CoinDetailState extends State<CoinDetail> {
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
-              print(tx.result.syncStatus.state);
-              print('START TIMER');
+              Log.println(tx.result.syncStatus.state);
+              Log.println('START TIMER');
               timer ??= Timer.periodic(const Duration(seconds: 15), (_) {
                 _refresh();
               });

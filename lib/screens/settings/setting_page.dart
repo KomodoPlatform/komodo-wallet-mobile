@@ -20,6 +20,7 @@ import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
@@ -132,7 +133,7 @@ class _SettingPageState extends State<SettingPage> {
         version += ' - ${versionmm2.result}';
       }
     } catch (e) {
-      print(e);
+      Log.println(e);
       rethrow;
     }
     return version;
@@ -169,7 +170,7 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          print('dataSwitch' + dataSwitch.toString());
+                          Log.println('dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
@@ -346,9 +347,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        print('PRESSED');
+        Log.println('PRESSED');
         authBloc.logout().then((_) {
-          print('PRESSED');
+          Log.println('PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },
@@ -620,8 +621,8 @@ class _SettingPageState extends State<SettingPage> {
         http.Client(), GetRecentSwap(limit: 100, fromUuid: null));
 
     if (MarketMakerService().sink != null) {
-      await MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
-      await MarketMakerService()
+      MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
+      MarketMakerService()
           .sink
           .write(recentSwapsToJson(recentSwap) + '\n');
     }

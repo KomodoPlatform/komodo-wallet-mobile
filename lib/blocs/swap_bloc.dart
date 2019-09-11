@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -246,7 +247,7 @@ class SwapBloc implements BlocBase {
       _inAmountReceiveCoin.add(amountReceive);
       return amountReceive;
     } catch (e) {
-      print(e);
+      Log.println(e);
       return 0;
     }
   }

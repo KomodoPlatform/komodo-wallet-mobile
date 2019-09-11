@@ -20,6 +20,7 @@ import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/utils/log.dart';
 
 enum SwapStatus { BUY, SELL }
 
@@ -393,10 +394,10 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       isSwapMaking = false;
     });
     String timeSecondeLeft = error.error;
-    print(timeSecondeLeft);
+    Log.println(timeSecondeLeft);
     timeSecondeLeft = timeSecondeLeft.substring(
         timeSecondeLeft.lastIndexOf(' '), timeSecondeLeft.length);
-    print(timeSecondeLeft);
+    Log.println(timeSecondeLeft);
     String errorDisplay =
         error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
     if (error.error.contains('is too low, required')) {

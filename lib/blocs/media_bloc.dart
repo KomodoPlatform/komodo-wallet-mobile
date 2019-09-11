@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -50,7 +51,7 @@ class MediaBloc implements BlocBase {
       this.articles = articles;
       _inArticles.add(this.articles);
     } catch (e) {
-      print(e);
+      Log.println(e);
     }
   }
 

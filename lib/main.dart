@@ -16,6 +16,7 @@ import 'package:komodo_dex/screens/portfolio/bloc_coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/mode.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:local_auth/local_auth.dart';
@@ -41,7 +42,7 @@ Future<void> startApp() async {
     return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));
   } catch (e) {
-    print(e);
+    Log.println(e);
     rethrow;
   }
 }
@@ -50,16 +51,16 @@ Future<void> _runBinMm2UserAlreadyLog() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('isPassphraseIsSaved') != null &&
       prefs.getBool('isPassphraseIsSaved') == true) {
-    print('readJsonCoin');
+    Log.println('readJsonCoin');
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
 
     if (!(authBloc.isPinShow && prefs.getBool('switch_pin'))) {
-      print('login isPinShow');
+      Log.println('login isPinShow');
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
-    print('loadJsonCoinsDefault');
+    Log.println('loadJsonCoinsDefault');
     await coinsBloc
         .writeJsonCoin(await MarketMakerService().loadJsonCoinsDefault());
   }
@@ -98,7 +99,7 @@ class _MyAppState extends State<MyApp> {
     if (isInDebugMode) {
       MarketMakerService()
           .initMarketMaker()
-          .then((_) => _runBinMm2UserAlreadyLog());
+          .then((_) => _runBinMm2UserAlreadyLog);
     }
     super.initState();
   }
@@ -206,10 +207,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
-        print('inactive');
+        Log.println('inactive');
         break;
       case AppLifecycleState.paused:
-        print('paused');
+        Log.println('paused');
         if (Platform.isIOS &&
             !authBloc.isQrCodeActive &&
             !mainBloc.isUrlLaucherIsOpen) {
@@ -225,7 +226,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.resumed:
-        print('resumed');
+        Log.println('resumed');
         if (Platform.isIOS) {
           if (!MarketMakerService().ismm2Running) {
             _runBinMm2UserAlreadyLog();
@@ -233,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.suspending:
-        print('suspending');
+        Log.println('suspending');
         break;
     }
   }

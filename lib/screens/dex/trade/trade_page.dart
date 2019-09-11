@@ -19,6 +19,7 @@ import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -207,7 +208,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 maxVolume: maxVolume));
           }
           getFee(false).then((double tradeFee) async {
-            print(tradeFee);
+            Log.println(tradeFee);
             if (currentCoinBalance != null &&
                 double.parse(amountSell) + tradeFee >
                     double.parse(currentCoinBalance.balance.getBalance())) {
@@ -251,7 +252,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       });
       return fee;
     } catch (e) {
-      print(e);
+      Log.println(e);
       return 0;
     }
   }
@@ -283,7 +284,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       }
       return txFee;
     } catch (e) {
-      print(e);
+      Log.println(e);
       rethrow;
     }
   }
@@ -325,7 +326,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 : 'ETH');
       }
     } catch (e) {
-      print(e);
+      Log.println(e);
       rethrow;
     }
   }
@@ -343,7 +344,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         final double tradeFee = await getFee(true);
         final double maxValue =
             double.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
-        print('setting max: ' + maxValue.toString());
+        Log.println('setting max: ' + maxValue.toString());
 
         if (maxValue < 0) {
           setState(() {
@@ -361,13 +362,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ));
           _focusSell.unfocus();
         } else {
-          print('----------------_controllerAmountSell');
+          Log.println('----------------_controllerAmountSell');
           _controllerAmountSell.setTextAndPosition(
               replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
         }
       });
     } catch (e) {
-      print(e);
+      Log.println(e);
     }
   }
 
@@ -689,7 +690,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildCoinSelect(Market market) {
-    print('coin-select-${market.toString().toLowerCase()}');
+    Log.println('coin-select-${market.toString().toLowerCase()}');
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: InkWell(
@@ -819,7 +820,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           isNumeric(_controllerAmountSell.text) &&
           !isLoadingMax &&
           double.parse(_controllerAmountSell.text) > 0) {
-        print(isLoadingMax);
+        Log.println(isLoadingMax);
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -973,9 +974,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   swapBloc.sellCoin.coin.abbr &&
               double.parse(orderbook.getBuyAmount(_controllerAmountSell.text)) >
                   0;
-          print('----getBuyAmount----' +
+          Log.println('----getBuyAmount----' +
               orderbook.getBuyAmount(_controllerAmountSell.text));
-          print(
+          Log.println(
               'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
             key: Key(

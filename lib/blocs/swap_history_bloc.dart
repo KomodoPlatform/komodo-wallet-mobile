@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -68,7 +69,7 @@ class SwapHistoryBloc implements BlocBase {
       }
       return newSwaps;
     } catch (e) {
-      print(e);
+      Log.println(e);
       return <Swap>[];
     }
   }
@@ -104,7 +105,6 @@ class SwapHistoryBloc implements BlocBase {
     Status status = Status.ORDER_MATCHING;
 
     for (EventElement event in resultSwap.events) {
-      print(event.event.type);
       switch (event.event.type) {
         case 'Started':
           status = Status.ORDER_MATCHED;
@@ -175,7 +175,6 @@ class SwapHistoryBloc implements BlocBase {
         default:
       }
     }
-    print('STATUS: ' + status.toString());
     return status;
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:password/password.dart';
 
 import 'mode.dart';
@@ -31,7 +32,7 @@ class EncryptionTool {
   }
 
   Future<String> convertToPbkdf2(String data, Wallet wallet) async {
-    print(wallet.isFastEncryption ? 'FAST ENCRYPTION' : 'SLOW ENCRYPTION');
+    Log.println(wallet.isFastEncryption ? 'FAST ENCRYPTION' : 'SLOW ENCRYPTION');
 
     // Workarround for run this in debug mode for driver testing https://github.com/flutter/flutter/issues/24703
     dynamic res;

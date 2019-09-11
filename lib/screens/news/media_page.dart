@@ -6,6 +6,7 @@ import 'package:komodo_dex/blocs/media_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -34,7 +35,7 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
   }
 
   void _getIndex() {
-    print(_controllerTabs.index);
+    Log.println(_controllerTabs.index);
   }
 
   @override
@@ -318,7 +319,7 @@ class _IconsArticleState extends State<IconsArticle> {
                 : Colors.grey,
           ),
           onTap: () {
-            print(widget.article.isSavedArticle);
+            Log.println(widget.article.isSavedArticle);
             if (widget.article.isSavedArticle) {
               setState(() {
                 widget.article.isSavedArticle = false;
