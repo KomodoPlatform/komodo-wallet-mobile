@@ -590,11 +590,22 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
 
+  RecentSwaps hideSecret(RecentSwaps recentSwap) {
+    for (ResultSwap resultSwap in recentSwap.result.swaps) {
+      for (EventElement eventItem in resultSwap.events) {
+        eventItem.event.data?.secret =
+            '0000000000000000000000000000000000000000000000000000000000000000';
+      }
+    }
+    return recentSwap;
+  }
+
   Future<void> _shareFile() async {
     final RecentSwaps recentSwap = await ApiProvider().getRecentSwaps(
         http.Client(), GetRecentSwap(limit: 100, fromUuid: null));
 
     if (MarketMakerService().sink != null) {
+      hideSecret(recentSwap);
       await MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
       await MarketMakerService()
           .sink
