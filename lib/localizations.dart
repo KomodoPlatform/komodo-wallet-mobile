@@ -146,7 +146,7 @@ class AppLocalizations {
   String get swapFailed => Intl.message('Swap failed', name: 'swapFailed');
   String get errorTryLater =>
       Intl.message('Error, please try later', name: 'errorTryLater');
-  String get feedback => Intl.message('Send Feedback', name: 'feedback');
+  String get feedback => Intl.message('Share Log File', name: 'feedback');
   String get loadingOrderbook =>
       Intl.message('Loading orderbook...', name: 'loadingOrderbook');
   String get claim => Intl.message('claim', name: 'claim');
@@ -244,7 +244,8 @@ class AppLocalizations {
   String get hintEnterPassword =>
       Intl.message('Enter your password', name: 'hintEnterPassword');
   String get signInWithSeedPhrase =>
-      Intl.message('Forgot the password? Restore wallet from seed', name: 'signInWithSeedPhrase');
+      Intl.message('Forgot the password? Restore wallet from seed',
+          name: 'signInWithSeedPhrase');
   String get signInWithPassword =>
       Intl.message('Sign in with password', name: 'signInWithPassword');
   String get hintEnterSeedPhrase =>
@@ -530,11 +531,15 @@ class AppLocalizations {
   String get deleteConfirm =>
       Intl.message('Confirm deactivation', name: 'deleteConfirm');
 
-  String  get deleteSpan1 =>
+  String get deleteSpan1 =>
       Intl.message('Do you want to remove ', name: 'deleteSpan1');
   String get deleteSpan2 => Intl.message(
       ' from your portfolio? All unmatched orders will be canceled.',
       name: 'deleteSpan2');
+  String get share => Intl.message('SHARE', name: 'share');
+  String get warningShareLogs => Intl.message(
+      'Warning - in special cases this log data contains sensible information that can be used to spend coins from failed swaps!',
+      name: 'warningShareLogs');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

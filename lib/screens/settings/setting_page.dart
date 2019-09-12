@@ -285,7 +285,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildSendFeedback() {
     return CustomTile(
-      onPressed: () => _shareFile(),
+      onPressed: () => _shareFileDialog(),
       child: ListTile(
         key: const Key('setting-title-feedback'),
         trailing:
@@ -591,30 +591,42 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
 
-  RecentSwaps hideSecret(RecentSwaps recentSwap) {
-    for (ResultSwap resultSwap in recentSwap.result.swaps) {
-      for (EventElement eventItem in resultSwap.events) {
-        eventItem.event.data?.secret =
-            '0000000000000000000000000000000000000000000000000000000000000000';
-      }
-    }
-    return recentSwap;
-  }
-
   Future<void> _shareFile() async {
+    Navigator.of(context).pop();
     final RecentSwaps recentSwap = await ApiProvider().getRecentSwaps(
         http.Client(), GetRecentSwap(limit: 100, fromUuid: null));
 
     if (MarketMakerService().sink != null) {
-      hideSecret(recentSwap);
       MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
-      MarketMakerService()
-          .sink
-          .write(recentSwapsToJson(recentSwap) + '\n');
+      MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
     }
     mainBloc.isUrlLaucherIsOpen = true;
     Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
         subject: 'My logs for the ${DateTime.now().toIso8601String()}');
+  }
+
+  Future<void> _shareFileDialog() async {
+    dialogBloc.dialog = showDialog<dynamic>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context).feedback),
+            content: Text(AppLocalizations.of(context).warningShareLogs),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(AppLocalizations.of(context).cancel),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              RaisedButton(
+                child: Text(AppLocalizations.of(context).share),
+                onPressed: () => _shareFile(),
+              )
+            ],
+          );
+        }).then((dynamic _) {
+      dialogBloc.dialog = null;
+    });
   }
 }
 
