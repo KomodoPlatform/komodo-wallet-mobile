@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -83,7 +84,7 @@ class OrdersBloc implements BlocBase {
       currentOrders = newOrders;
       _inCurrentOrders.add(currentOrders);
     } catch (e) {
-      print(e);
+      Log.println(e);
       rethrow;
     }
   }
@@ -150,7 +151,7 @@ class OrdersBloc implements BlocBase {
       });
       _inOrderSwaps.add(orderSwaps);
     } catch (e) {
-      print(e);
+      Log.println(e);
       rethrow;
     }
   }

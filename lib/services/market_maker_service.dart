@@ -24,7 +24,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MarketMakerService {
-  
   factory MarketMakerService() {
     return _singleton;
   }
@@ -42,7 +41,7 @@ class MarketMakerService {
   Stream<List<int>> streamSubscriptionStdout;
   String pubkey = '';
   String filesPath = '';
-  dynamic sink;
+  IOSink sink;
   static const MethodChannel platformmm2 = MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
@@ -126,7 +125,7 @@ class MarketMakerService {
           initCoinsAndLoad();
           coinsBloc.startCheckBalance();
         }
-        _onLogsmm2(data);
+        onLogsmm2(data);
       }).onDone(() async {
         offset = await fileLog.length();
       });
@@ -222,26 +221,33 @@ class MarketMakerService {
     }
   }
 
-  void _onLogsmm2(String log) {
-    print(log);
-    sink.write(log + '\n');
-    if (log.contains('CONNECTED') ||
-        log.contains('Entering the taker_swap_loop') ||
-        log.contains('Received \'negotiation') ||
-        log.contains('Got maker payment') ||
-        log.contains('Sending \'taker-fee') ||
-        log.contains('Sending \'taker-payment') ||
-        log.contains('Finished')) {
-      Future<dynamic>.delayed(const Duration(seconds: 1), () {
-        swapHistoryBloc.updateSwaps(50, null).then((_) {
-          ordersBloc.updateOrdersSwaps();
+  void logOnFile(String log) {
+    if (sink != null) {
+      sink.write(log + '\n');
+    }
+  }
+
+  void onLogsmm2(String log) {
+    if (sink != null) {
+      sink.write(log + '\n');
+      if (log.contains('CONNECTED') ||
+          log.contains('Entering the taker_swap_loop') ||
+          log.contains('Received \'negotiation') ||
+          log.contains('Got maker payment') ||
+          log.contains('Sending \'taker-fee') ||
+          log.contains('Sending \'taker-payment') ||
+          log.contains('Finished')) {
+        Future<dynamic>.delayed(const Duration(seconds: 1), () {
+          swapHistoryBloc.updateSwaps(50, null).then((_) {
+            ordersBloc.updateOrdersSwaps();
+          });
         });
-      });
+      }
     }
   }
 
   void _onEvent(Object event) {
-    _onLogsmm2(event);
+    onLogsmm2(event);
   }
 
   void _onError(Object error) {
