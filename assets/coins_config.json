@@ -29,7 +29,9 @@
     "coingeckoId": "bitcoin",
     "colorCoin": "0xFFf7931a",
     "serverList": [
-      "electrum1.cipig.net:10000"
+      "electrum1.cipig.net:10000",
+      "electrum2.cipig.net:10000",
+      "electrum3.cipig.net:10000"
     ],
     "explorerUrl": [
       "https://insight.bitpay.com/"
@@ -46,8 +48,6 @@
     "colorCoin": "0xFF2db300",
     "serverList": [
       "bch.imaginary.cash:50001",
-      "bch.loping.net:50001",
-      "electron.coinucopia.io:50001",
       "electrumx-bch.cryptonermal.net:50001",
       "wallet.satoshiscoffeehouse.com:50001"
     ],
