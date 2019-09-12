@@ -68,6 +68,7 @@ Future<void> _runBinMm2UserAlreadyLog() async {
 
 void _checkNetworkStatus() {
   Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    print(result);
     if (result == ConnectivityResult.none) {
       mainBloc.setIsNetworkOffline(true);
     } else {

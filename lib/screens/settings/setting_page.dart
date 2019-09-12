@@ -592,18 +592,18 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<void> _shareFile() async {
-    final RecentSwaps recentSwap = await ApiProvider().getRecentSwaps(
+    final dynamic recentSwap = await ApiProvider().getRecentSwaps(
         http.Client(), GetRecentSwap(limit: 100, fromUuid: null));
 
-    if (MarketMakerService().sink != null) {
-      MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
-      MarketMakerService()
-          .sink
-          .write(recentSwapsToJson(recentSwap) + '\n');
+    if (recentSwap is RecentSwaps) {
+      if (MarketMakerService().sink != null) {
+        MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
+        MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
+      }
+      mainBloc.isUrlLaucherIsOpen = true;
+      Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
+          subject: 'My logs for the ${DateTime.now().toIso8601String()}');
     }
-    mainBloc.isUrlLaucherIsOpen = true;
-    Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
-        subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 }
 

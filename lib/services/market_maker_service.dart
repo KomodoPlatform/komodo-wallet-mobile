@@ -51,7 +51,7 @@ class MarketMakerService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final ProcessResult checkmm2process = await Process.run(
           'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
-      if (!checkmm2process.stdout
+      if (prefs.getInt('mm2ProcessPID') == null || !checkmm2process.stdout
           .toString()
           .contains(prefs.getInt('mm2ProcessPID').toString())) {
         await MarketMakerService().runBin();
