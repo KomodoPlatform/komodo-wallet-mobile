@@ -265,7 +265,7 @@ class _SettingPageState extends State<SettingPage> {
                                   title:
                                       AppLocalizations.of(context).lockScreen,
                                   subTitle:
-                                      AppLocalizations.of(context).enterPinCode,
+                                      AppLocalizations.of(context).enterOldPinCode,
                                   pinStatus: PinStatus.CHANGE_PIN,
                                   password: password)));
                     },

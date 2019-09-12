@@ -139,7 +139,7 @@ class _PinPageState extends State<PinPage> {
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => PinPage(
                       title: AppLocalizations.of(context).createPin,
-                      subTitle: AppLocalizations.of(context).enterPinCode,
+                      subTitle: AppLocalizations.of(context).enterNewPinCode,
                       pinStatus: PinStatus.CREATE_PIN,
                       password: widget.password,
                       isFromChangingPin: true,
@@ -188,7 +188,7 @@ class _PinPageState extends State<PinPage> {
             ? PinCode(
                 title: Text(
                   widget.subTitle,
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme.of(context).textTheme.subtitle,
                 ),
                 subTitle: const Text(
                   '',
