@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:bs58check/bs58check.dart' as bs58check;
 
@@ -70,9 +71,9 @@ class _AddressFieldState extends State<AddressField> {
                 } else {
                   try {
                     final Uint8List decoded = bs58check.decode(value);
-                    print(bs58check.encode(decoded));
+                    Log.println(bs58check.encode(decoded));
                   } catch (e) {
-                    print(e);
+                    Log.println(e);
                     return AppLocalizations.of(context).errorNotAValidAddress;
                   }
                 }

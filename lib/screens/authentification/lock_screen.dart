@@ -11,6 +11,7 @@ import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
@@ -106,7 +107,7 @@ class _LockScreenState extends State<LockScreen> {
                                         snapshot.data &&
                                         widget.pinStatus ==
                                             PinStatus.NORMAL_PIN) {
-                                      print(snapshot.data);
+                                      Log.println(snapshot.data);
                                       _authenticateBiometrics();
                                       return Container();
                                     }
@@ -191,9 +192,9 @@ class _LockScreenState extends State<LockScreen> {
     bool canCheckBiometrics = false;
     try {
       canCheckBiometrics = await auth.canCheckBiometrics;
-      print(canCheckBiometrics);
+      Log.println(canCheckBiometrics);
     } on PlatformException catch (e) {
-      print(e);
+      Log.println(e);
     }
     return canCheckBiometrics;
   }

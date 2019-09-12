@@ -36,6 +36,7 @@ import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 class UserpassBody {
   UserpassBody({this.body, this.client});
@@ -49,7 +50,7 @@ class ApiProvider {
   String userpass;
 
   Response _saveRes(Response res) {
-    print(res.body);
+    Log.println(res.body);
     this.res = res;
     return res;
   }
@@ -68,7 +69,7 @@ class ApiProvider {
               .then(_saveRes)
               .then<dynamic>((Response res) => swapFromJson(res.body))
               .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<Orderbook> getOrderbook(http.Client client, GetOrderbook body) async =>
       await _assertUserpass(client, body).then<dynamic>(
@@ -76,7 +77,7 @@ class ApiProvider {
               .post(url, body: getOrderbookToJson(body))
               .then(_saveRes)
               .then((Response res) => orderbookFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<dynamic> getBalance(http.Client client, GetBalance body) async =>
       await _assertUserpass(client, body).then<dynamic>(
@@ -85,7 +86,7 @@ class ApiProvider {
               .then(_saveRes)
               .then<dynamic>((Response res) => balanceFromJson(res.body))
               .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<dynamic> postBuy(http.Client client, GetBuySell body) async =>
       await _assertUserpass(client, body)
@@ -96,7 +97,7 @@ class ApiProvider {
             .then(_saveRes)
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
             .catchError((dynamic e) => errorStringFromJson(res.body))
-            .catchError((dynamic e) => print(e));
+            .catchError((dynamic e) => Log.println(e));
       });
 
   Future<dynamic> postSell(http.Client client, GetBuySell body) async =>
@@ -108,7 +109,7 @@ class ApiProvider {
             .then(_saveRes)
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
             .catchError((dynamic e) => errorStringFromJson(res.body))
-            .catchError((dynamic e) => print(e));
+            .catchError((dynamic e) => Log.println(e));
       });
 
   dynamic getBodyActiveCoin(Coin coin) {
@@ -159,7 +160,7 @@ class ApiProvider {
               .then(_saveRes)
               .then<dynamic>((Response res) => transactionsFromJson(res.body))
               .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<RecentSwaps> getRecentSwaps(
           http.Client client, GetRecentSwap body) async =>
@@ -168,7 +169,7 @@ class ApiProvider {
               .post(url, body: getRecentSwapToJson(userBody.body))
               .then(_saveRes)
               .then((Response res) => recentSwapsFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<Orders> getMyOrders(http.Client client, BaseService body) async =>
       await _assertUserpass(client, body).then((UserpassBody userBody) =>
@@ -176,7 +177,7 @@ class ApiProvider {
               .post(url, body: baseServiceToJson(userBody.body))
               .then(_saveRes)
               .then((Response res) => ordersFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<dynamic> cancelOrder(http.Client client, GetCancelOrder body) async =>
       await _assertUserpass(client, body).then<dynamic>(
@@ -186,7 +187,7 @@ class ApiProvider {
               .then((Response res) => resultSuccessFromJson(res.body))
               .then((ResultSuccess data) =>
                   data.result.isEmpty ? errorStringFromJson(res.body) : data)
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<CoinToKickStart> getCoinToKickStart(
           http.Client client, BaseService body) async =>
@@ -195,7 +196,7 @@ class ApiProvider {
               .post(url, body: baseServiceToJson(userBody.body))
               .then(_saveRes)
               .then((Response res) => coinToKickStartFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<dynamic> postRawTransaction(
           http.Client client, GetSendRawTransaction body) async =>
@@ -208,7 +209,7 @@ class ApiProvider {
               .then((SendRawTransactionResponse data) =>
                   data.txHash.isEmpty ? errorStringFromJson(res.body) : data)
               .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<dynamic> postWithdraw(http.Client client, GetWithdraw body) async =>
       await _assertUserpass(client, body).then<dynamic>(
@@ -218,7 +219,7 @@ class ApiProvider {
               .then<dynamic>(
                   (Response res) => withdrawResponseFromJson(res.body))
               .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<TradeFee> getTradeFee(http.Client client, GetTradeFee body) async =>
       await _assertUserpass(client, body).then<dynamic>(
@@ -226,7 +227,7 @@ class ApiProvider {
               .post(url, body: getTradeFeeToJson(userBody.body))
               .then(_saveRes)
               .then((Response res) => tradeFeeFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<ResultSuccess> getVersionMM2(
           http.Client client, BaseService body) async =>
@@ -235,7 +236,7 @@ class ApiProvider {
               .post(url, body: baseServiceToJson(userBody.body))
               .then(_saveRes)
               .then((Response res) => resultSuccessFromJson(res.body))
-              .catchError((dynamic e) => print(e)));
+              .catchError((dynamic e) => Log.println(e)));
 
   Future<dynamic> disableCoin(http.Client client, GetDisableCoin body) async =>
       await _assertUserpass(client, body).then<dynamic>(

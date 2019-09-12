@@ -20,6 +20,7 @@ import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -235,7 +236,7 @@ class CoinsBloc implements BlocBase {
         return transactions;
       }
     } catch (e) {
-      print(e);
+      Log.println(e);
       rethrow;
     }
   }
@@ -253,14 +254,14 @@ class CoinsBloc implements BlocBase {
         .then((List<dynamic> onValue) {
           for (dynamic coinActivate in onValue) {
             if (coinActivate is Coin && coinActivate != null) {
-              print('coinActivate--------------' + coinActivate.abbr);
+              Log.println('coinActivate--------------' + coinActivate.abbr);
               coinsReadJson.add(coinActivate);
             }
           }
         })
         .catchError((dynamic onError) {
-          print(onError);
-          print('timeout2--------------');
+          Log.println(onError);
+          Log.println('timeout2--------------');
         })
         .then((_) async {
           await writeJsonCoin(coinsReadJson);
@@ -278,7 +279,7 @@ class CoinsBloc implements BlocBase {
 
     currentCoinActivate(
         CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
-    print(coin.abbr);
+    Log.println(coin.abbr);
     await ApiProvider()
         .activeCoin(http.Client(), coin)
         .then((dynamic activeCoin) {
@@ -298,7 +299,7 @@ class CoinsBloc implements BlocBase {
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Coin ${coin.abbr} already initialized'));
       } else {
-        print('Sorry, ${coin.abbr} not available.');
+        Log.println('Sorry, ${coin.abbr} not available.');
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
       }
@@ -308,7 +309,7 @@ class CoinsBloc implements BlocBase {
       });
     }).timeout(const Duration(seconds: 10), onTimeout: () async {
       coinToactivate = null;
-      print('Sorry, ${coin.abbr} not available.');
+      Log.println('Sorry, ${coin.abbr} not available.');
       currentCoinActivate(
           CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
       await Future<dynamic>.delayed(const Duration(seconds: 2))
@@ -453,7 +454,7 @@ class CoinsBloc implements BlocBase {
           }
         });
       } catch (e) {
-        print(e);
+        Log.println(e);
       }
     }
   }
@@ -477,12 +478,12 @@ class CoinsBloc implements BlocBase {
           .getBalance(http.Client(), GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
-      print(e);
+      Log.println(e);
       balance = null;
     }
 
     if (balance is ErrorString) {
-      print(balance.error);
+      Log.println(balance.error);
     }
     final double price = await getPriceObj
         .getPrice(coin.abbr, coin.coingeckoId, 'USD')
@@ -532,7 +533,7 @@ class CoinsBloc implements BlocBase {
       });
       await writeJsonCoin(coinsToSave);
     } catch (e) {
-      print(e);
+      Log.println(e);
       rethrow;
     }
   }
