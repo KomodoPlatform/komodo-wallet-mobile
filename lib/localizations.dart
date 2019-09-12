@@ -538,7 +538,7 @@ class AppLocalizations {
       name: 'deleteSpan2');
   String get share => Intl.message('SHARE', name: 'share');
   String get warningShareLogs => Intl.message(
-      'Warning - in special cases this log data contains sensible information that can be used to spend coins from failed swaps!',
+      'Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!',
       name: 'warningShareLogs');
 }
 
