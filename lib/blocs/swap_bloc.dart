@@ -166,7 +166,7 @@ class SwapBloc implements BlocBase {
 
   Future<void> getBuyCoins(Coin rel) async {
     final List<Coin> coins = await coinsBloc.readJsonCoin();
-    final List<Future<Orderbook>> futureOrderbook = <Future<Orderbook>>[];
+    final List<Future<dynamic>> futureOrderbook = <Future<dynamic>>[];
 
     for (Coin coin in coins) {
       if (coin.abbr != rel.abbr) {
@@ -175,9 +175,16 @@ class SwapBloc implements BlocBase {
       }
     }
 
-    final List<Orderbook> orderbooks = await Future.wait(futureOrderbook);
+    final List<dynamic> orderbooks = await Future.wait<dynamic>(futureOrderbook);
 
-    orderCoins = orderbooks;
+    final List<Orderbook> orderBooksList = <Orderbook>[];
+
+    for (dynamic item in orderbooks) {
+      if (item is Orderbook) {
+        orderBooksList.add(item);
+      }
+    }
+    orderCoins = orderBooksList;
     _inListOrderCoin.add(orderCoins);
   }
 
@@ -247,7 +254,7 @@ class SwapBloc implements BlocBase {
       _inAmountReceiveCoin.add(amountReceive);
       return amountReceive;
     } catch (e) {
-      Log.println(e);
+      Log.println('', e);
       return 0;
     }
   }

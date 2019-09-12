@@ -42,7 +42,7 @@ Future<void> startApp() async {
     return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));
   } catch (e) {
-    Log.println(e);
+    Log.println('', e);
     rethrow;
   }
 }
@@ -51,16 +51,16 @@ Future<void> _runBinMm2UserAlreadyLog() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('isPassphraseIsSaved') != null &&
       prefs.getBool('isPassphraseIsSaved') == true) {
-    Log.println('readJsonCoin');
+    Log.println('', 'readJsonCoin');
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
 
     if (!(authBloc.isPinShow && prefs.getBool('switch_pin'))) {
-      Log.println('login isPinShow');
+      Log.println('', 'login isPinShow');
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
-    Log.println('loadJsonCoinsDefault');
+    Log.println('', 'loadJsonCoinsDefault');
     await coinsBloc
         .writeJsonCoin(await MarketMakerService().loadJsonCoinsDefault());
   }
@@ -68,6 +68,7 @@ Future<void> _runBinMm2UserAlreadyLog() async {
 
 void _checkNetworkStatus() {
   Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    print(result);
     if (result == ConnectivityResult.none) {
       mainBloc.setIsNetworkOffline(true);
     } else {
@@ -207,10 +208,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
-        Log.println('inactive');
+        Log.println('', 'inactive');
         break;
       case AppLifecycleState.paused:
-        Log.println('paused');
+        Log.println('', 'paused');
         if (Platform.isIOS &&
             !authBloc.isQrCodeActive &&
             !mainBloc.isUrlLaucherIsOpen) {
@@ -226,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.resumed:
-        Log.println('resumed');
+        Log.println('', 'resumed');
         if (Platform.isIOS) {
           if (!MarketMakerService().ismm2Running) {
             _runBinMm2UserAlreadyLog();
@@ -234,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.suspending:
-        Log.println('suspending');
+        Log.println('', 'suspending');
         break;
     }
   }

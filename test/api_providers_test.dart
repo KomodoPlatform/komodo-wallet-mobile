@@ -62,11 +62,10 @@ void main() {
           const TypeMatcher<DisableCoin>());
     });
 
-    test('throws an exception if the http call completes with an error', () {
+    test('throws an exception if the http call completes with an error', () async{
       when(client.post(url, body: getDisableCoinToJson(getDisableCoin)))
           .thenAnswer((_) async => http.Response('Not Found', 404));
-      expect(
-          ApiProvider().disableCoin(client, getDisableCoin), throwsException);
+      expect(await ApiProvider().disableCoin(client, getDisableCoin), const TypeMatcher<ErrorString>());
     });
 
     test(
@@ -1107,6 +1106,16 @@ void main() {
       ''', 200));
       expect(await ApiProvider().getBalance(client, body),
           const TypeMatcher<ErrorString>());
+    });
+
+    test('returns a ErrorString if the http call completes with error',
+        () async {
+      when(client.post(url, body: getBalanceToJson(body)))
+          .thenAnswer((_) async => http.Response('''
+          {"error":"rpc:284] utxo:1242] JsonRpcError { request: JsonRpcRequest { jsonrpc: \"2.0\", id: \"266\", method: \"blockchain.scripthash.get_balance\", params: [String(\"4794d6341f1730a5a4548da02b73b268ce5c99947a3ab2ecc2bf1348f602f93d\")] }, error: Transport(\"rpc_clients:688] rpc_clients:688] [\\\"rpc_clients:1256] rpc_clients:1246] send failed because receiver is gone\\\", \\\"rpc_clients:1256] rpc_clients:1246] send failed because receiver is gone\\\"]\") }"}
+      ''', 200));
+      final ErrorString error = await ApiProvider().getBalance(client, body);
+      expect(error.error, 'Error on get balance ${body.coin}');
     });
   });
 
