@@ -78,7 +78,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
   }
 
   Future<void> _launchURL(String url) async {
-    Log.println(url);
+    Log.println('', url);
     if (await canLaunch(url)) {
       mainBloc.isUrlLaucherIsOpen = true;
       await launch(url);

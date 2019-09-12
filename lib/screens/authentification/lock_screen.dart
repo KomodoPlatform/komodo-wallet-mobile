@@ -107,7 +107,7 @@ class _LockScreenState extends State<LockScreen> {
                                         snapshot.data &&
                                         widget.pinStatus ==
                                             PinStatus.NORMAL_PIN) {
-                                      Log.println(snapshot.data);
+                                      Log.println('', snapshot.data);
                                       _authenticateBiometrics();
                                       return Container();
                                     }
@@ -192,9 +192,9 @@ class _LockScreenState extends State<LockScreen> {
     bool canCheckBiometrics = false;
     try {
       canCheckBiometrics = await auth.canCheckBiometrics;
-      Log.println(canCheckBiometrics);
+      Log.println('', canCheckBiometrics);
     } on PlatformException catch (e) {
-      Log.println(e);
+      Log.println('', e);
     }
     return canCheckBiometrics;
   }

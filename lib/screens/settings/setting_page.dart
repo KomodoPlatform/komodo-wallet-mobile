@@ -127,13 +127,13 @@ class _SettingPageState extends State<SettingPage> {
         AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
     try {
-      final ResultSuccess versionmm2 = await ApiProvider()
+      final dynamic versionmm2 = await ApiProvider()
           .getVersionMM2(http.Client(), BaseService(method: 'version'));
-      if (versionmm2 != null) {
+      if (versionmm2 is ResultSuccess && versionmm2 != null) {
         version += ' - ${versionmm2.result}';
       }
     } catch (e) {
-      Log.println(e);
+      Log.println('', e);
       rethrow;
     }
     return version;
@@ -170,7 +170,7 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          Log.println('dataSwitch' + dataSwitch.toString());
+                          Log.println('', 'dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
@@ -347,9 +347,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log.println('PRESSED');
+        Log.println('', 'PRESSED');
         authBloc.logout().then((_) {
-          Log.println('PRESSED');
+          Log.println('', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },

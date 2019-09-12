@@ -49,10 +49,15 @@ class ApiProvider {
   Response res;
   String userpass;
 
-  Response _saveRes(Response res) {
-    Log.println(res.body);
+  Response _saveRes(String key, Response res) {
+    Log.println(key, res.body);
     this.res = res;
     return res;
+  }
+
+  ErrorString _catchErrorString(String key, dynamic e, String message) {
+    Log.println(key, e);
+    return ErrorString(error: message);
   }
 
   Future<UserpassBody> _assertUserpass(http.Client client, dynamic body) async {
@@ -66,27 +71,30 @@ class ApiProvider {
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getSwapToJson(body))
-              .then(_saveRes)
+              .then((Response r) => _saveRes('getSwapStatus', r))
               .then<dynamic>((Response res) => swapFromJson(res.body))
               .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .catchError((dynamic e) => _catchErrorString(
+                  'getSwapStatus', e, 'Error on get swap status')));
 
-  Future<Orderbook> getOrderbook(http.Client client, GetOrderbook body) async =>
+  Future<dynamic> getOrderbook(http.Client client, GetOrderbook body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getOrderbookToJson(body))
-              .then(_saveRes)
-              .then((Response res) => orderbookFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .then((Response r) => _saveRes('getOrderbook', r))
+              .then<dynamic>((Response res) => orderbookFromJson(res.body))
+              .catchError((dynamic e) => _catchErrorString(
+                  'getOrderbook', e, 'Error on get orderbook')));
 
   Future<dynamic> getBalance(http.Client client, GetBalance body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getBalanceToJson(body))
-              .then(_saveRes)
+              .then((Response r) => _saveRes('getBalance', r))
               .then<dynamic>((Response res) => balanceFromJson(res.body))
               .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .catchError((dynamic e) => _catchErrorString(
+                  'getBalance', e, 'Error on get balance ${body.coin}')));
 
   Future<dynamic> postBuy(http.Client client, GetBuySell body) async =>
       await _assertUserpass(client, body)
@@ -94,10 +102,11 @@ class ApiProvider {
         body.method = 'buy';
         return userBody.client
             .post(url, body: getBuyToJson(body))
-            .then(_saveRes)
+            .then((Response r) => _saveRes('postBuy', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
             .catchError((dynamic e) => errorStringFromJson(res.body))
-            .catchError((dynamic e) => Log.println(e));
+            .catchError((dynamic e) =>
+                _catchErrorString('postBuy', e, 'Error on post buy'));
       });
 
   Future<dynamic> postSell(http.Client client, GetBuySell body) async =>
@@ -106,10 +115,11 @@ class ApiProvider {
         body.method = 'sell';
         return userBody.client
             .post(url, body: getBuyToJson(body))
-            .then(_saveRes)
+            .then((Response r) => _saveRes('postSell', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
             .catchError((dynamic e) => errorStringFromJson(res.body))
-            .catchError((dynamic e) => Log.println(e));
+            .catchError((dynamic e) =>
+                _catchErrorString('postSell', e, 'Error on post sell'));
       });
 
   dynamic getBodyActiveCoin(Coin coin) {
@@ -135,120 +145,133 @@ class ApiProvider {
   Future<dynamic> activeCoin(http.Client client, Coin coin) async =>
       await client
           .post(url, body: getBodyActiveCoin(coin))
-          .then(_saveRes)
+          .then((Response r) => _saveRes('activeCoin', r))
           .then((Response res) => activeCoinFromJson(res.body))
           .then<dynamic>((ActiveCoin data) =>
               data.result.isEmpty ? errorStringFromJson(res.body) : data)
           .catchError((dynamic e) => errorStringFromJson(res.body))
+          .catchError((dynamic e) => _catchErrorString(
+              'activeCoin', e, 'Error on active ${coin.name}'))
           .timeout(const Duration(seconds: 60),
               onTimeout: () => ErrorString(error: 'Timeout on ${coin.abbr}'));
 
   Future<dynamic> postSetPrice(http.Client client, GetSetPrice body) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
+      await _assertUserpass(client, body)
+          .then<dynamic>((UserpassBody userBody) => userBody.client
               .post(url, body: getSetPriceToJson(userBody.body))
-              .then(_saveRes)
+              .then((Response r) => _saveRes('postSetPrice', r))
               .then<dynamic>(
                   (Response res) => setPriceResponseFromJson(res.body))
-              .catchError((dynamic e) => errorStringFromJson(res.body)));
+              .catchError((dynamic e) => errorStringFromJson(res.body)))
+          .catchError((dynamic e) =>
+              _catchErrorString('postSetPrice', e, 'Error on set price'));
 
   Future<dynamic> getTransactions(
           http.Client client, GetTxHistory body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getTxHistoryToJson(userBody.body))
-              .then(_saveRes)
+              .then((Response r) => _saveRes('getTransactions', r))
               .then<dynamic>((Response res) => transactionsFromJson(res.body))
               .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .catchError((dynamic e) => _catchErrorString(
+                  'getTransactions', e, 'Error on get transactions')));
 
-  Future<RecentSwaps> getRecentSwaps(
+  Future<dynamic> getRecentSwaps(
           http.Client client, GetRecentSwap body) async =>
-      await _assertUserpass(client, body).then((UserpassBody userBody) =>
+      await _assertUserpass(client, body).then<dynamic>((UserpassBody userBody) =>
           userBody.client
               .post(url, body: getRecentSwapToJson(userBody.body))
-              .then(_saveRes)
-              .then((Response res) => recentSwapsFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .then((Response r) => _saveRes('getRecentSwaps', r))
+              .then<dynamic>((Response res) => recentSwapsFromJson(res.body))
+              .catchError((dynamic e) => _catchErrorString(
+                  'getRecentSwaps', e, 'Error on get recent swaps')));
 
-  Future<Orders> getMyOrders(http.Client client, BaseService body) async =>
-      await _assertUserpass(client, body).then((UserpassBody userBody) =>
+  Future<dynamic> getMyOrders(http.Client client, BaseService body) async =>
+      await _assertUserpass(client, body).then<dynamic>((UserpassBody userBody) =>
           userBody.client
               .post(url, body: baseServiceToJson(userBody.body))
-              .then(_saveRes)
-              .then((Response res) => ordersFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .then((Response r) => _saveRes('getMyOrders', r))
+              .then<dynamic>((Response res) => ordersFromJson(res.body))
+              .catchError((dynamic e) => _catchErrorString(
+                  'getMyOrders', e, 'Error on get my orders')));
 
   Future<dynamic> cancelOrder(http.Client client, GetCancelOrder body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getCancelOrderToJson(userBody.body))
-              .then(_saveRes)
+              .then((Response r) => _saveRes('cancelOrder', r))
               .then((Response res) => resultSuccessFromJson(res.body))
               .then((ResultSuccess data) =>
                   data.result.isEmpty ? errorStringFromJson(res.body) : data)
-              .catchError((dynamic e) => Log.println(e)));
+              .catchError((dynamic e) => _catchErrorString(
+                  'cancelOrder', e, 'Error on cancel order')));
 
-  Future<CoinToKickStart> getCoinToKickStart(
+  Future<dynamic> getCoinToKickStart(
           http.Client client, BaseService body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: baseServiceToJson(userBody.body))
-              .then(_saveRes)
-              .then((Response res) => coinToKickStartFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .then((Response r) => _saveRes('getCoinToKickStart', r))
+              .then<dynamic>((Response res) => coinToKickStartFromJson(res.body))
+              .catchError((dynamic e) => _catchErrorString(
+                  'getCoinToKickStart', e, 'Error on get coin to kick start')));
 
   Future<dynamic> postRawTransaction(
           http.Client client, GetSendRawTransaction body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getSendRawTransactionToJson(userBody.body))
-              .then(_saveRes)
+              .then((Response r) => _saveRes('postRawTransaction', r))
               .then((Response res) =>
                   sendRawTransactionResponseFromJson(res.body))
               .then((SendRawTransactionResponse data) =>
                   data.txHash.isEmpty ? errorStringFromJson(res.body) : data)
               .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .catchError((dynamic e) => _catchErrorString(
+                  'postRawTransaction', e, 'Error on post raw transaction')));
 
   Future<dynamic> postWithdraw(http.Client client, GetWithdraw body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getWithdrawToJson(userBody.body))
-              .then(_saveRes)
+              .then((Response r) => _saveRes('postWithdraw', r))
               .then<dynamic>(
                   (Response res) => withdrawResponseFromJson(res.body))
               .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .catchError((dynamic e) => _catchErrorString(
+                  'postWithdraw', e, 'Error on post withdraw')));
 
-  Future<TradeFee> getTradeFee(http.Client client, GetTradeFee body) async =>
+  Future<dynamic> getTradeFee(http.Client client, GetTradeFee body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getTradeFeeToJson(userBody.body))
-              .then(_saveRes)
-              .then((Response res) => tradeFeeFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .then((Response r) => _saveRes('getTradeFee', r))
+              .then<dynamic>((Response res) => tradeFeeFromJson(res.body))
+              .catchError((dynamic e) => _catchErrorString(
+                  'getTradeFee', e, 'Error on get tradeFee')));
 
-  Future<ResultSuccess> getVersionMM2(
+  Future<dynamic> getVersionMM2(
           http.Client client, BaseService body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: baseServiceToJson(userBody.body))
-              .then(_saveRes)
-              .then((Response res) => resultSuccessFromJson(res.body))
-              .catchError((dynamic e) => Log.println(e)));
+              .then((Response r) => _saveRes('getVersionMM2', r))
+              .then<dynamic>((Response res) => resultSuccessFromJson(res.body))
+              .catchError((dynamic e) => _catchErrorString(
+                  'getVersionMM2', e, 'Error on get version MM2')));
 
   Future<dynamic> disableCoin(http.Client client, GetDisableCoin body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getDisableCoinToJson(userBody.body))
-              .then(_saveRes)
+              .then((Response r) => _saveRes('disableCoin', r))
               .then<dynamic>((Response res) => disableCoinFromJson(res.body))
               .catchError(
                   (dynamic _) => errorDisableCoinActiveSwapFromJson(res.body))
               .catchError((dynamic _) =>
                   errorDisableCoinOrderIsMatchedFromJson(res.body))
               .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError(
-                  (dynamic _) => throw Exception('Failed to disable coin')));
+              .catchError((dynamic e) => _catchErrorString(
+                  'disableCoin', e, 'Error on disable coin')));
 }

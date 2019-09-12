@@ -49,7 +49,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           http.Client(), GetTradeFee(coin: widget.coinBalance.coin.abbr));
       return double.parse(tradeFeeResponse.result.amount);
     } catch (e) {
-      Log.println(e);
+      Log.println('', e);
       return 0;
     }
   }
@@ -70,7 +70,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
             try {
               fee = snapshot.data;
             } catch (e) {
-              Log.println(e);
+              Log.println('', e);
             }
           }
 

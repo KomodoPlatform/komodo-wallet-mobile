@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -83,8 +84,10 @@ class _PinPageState extends State<PinPage> {
           isLoading = true;
         });
         if (wallet != null) {
-          await EncryptionTool().writeData(
-              KeyEncryption.PIN, wallet, widget.password, code.toString());
+          await EncryptionTool()
+              .writeData(
+                  KeyEncryption.PIN, wallet, widget.password, code.toString())
+              .catchError((dynamic e) => Log.println('', e));
         }
 
         await EncryptionTool().write('pin', code.toString());
@@ -203,8 +206,10 @@ class _PinPageState extends State<PinPage> {
                     final MaterialPageRoute<dynamic> materialPage =
                         MaterialPageRoute<dynamic>(
                             builder: (BuildContext context) => PinPage(
-                                  title: AppLocalizations.of(context).confirmPin,
-                                  subTitle: AppLocalizations.of(context).confirmPin,
+                                  title:
+                                      AppLocalizations.of(context).confirmPin,
+                                  subTitle:
+                                      AppLocalizations.of(context).confirmPin,
                                   code: code,
                                   pinStatus: PinStatus.CONFIRM_PIN,
                                   password: widget.password,

@@ -26,7 +26,7 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
     int splitIndex = widget.article.body
             .indexOf(RegExp('[!?.]'), widget.article.body.length ~/ 2) +
         1;
-    Log.println(splitIndex);
+    Log.println('', splitIndex);
     if (splitIndex == -1) {
       splitIndex = widget.article.body.length ~/ 2;
     }

@@ -35,7 +35,7 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
   }
 
   void _getIndex() {
-    Log.println(_controllerTabs.index);
+    Log.println('', _controllerTabs.index);
   }
 
   @override
@@ -319,7 +319,7 @@ class _IconsArticleState extends State<IconsArticle> {
                 : Colors.grey,
           ),
           onTap: () {
-            Log.println(widget.article.isSavedArticle);
+            Log.println('', widget.article.isSavedArticle);
             if (widget.article.isSavedArticle) {
               setState(() {
                 widget.article.isSavedArticle = false;

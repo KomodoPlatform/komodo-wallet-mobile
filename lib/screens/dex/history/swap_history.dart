@@ -46,8 +46,8 @@ class _SwapHistoryState extends State<SwapHistory> {
         stream: swapHistoryBloc.outSwaps,
         initialData: swapHistoryBloc.swaps,
         builder: (BuildContext context, AsyncSnapshot<List<Swap>> snapshot) {
-          Log.println(snapshot.data.length);
-          Log.println(snapshot.connectionState);
+          Log.println('', snapshot.data.length);
+          Log.println('', snapshot.connectionState);
           final List<Swap> swaps = snapshot.data;
 
           swaps.removeWhere((Swap swap) =>
