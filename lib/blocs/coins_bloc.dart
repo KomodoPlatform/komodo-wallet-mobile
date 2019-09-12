@@ -213,7 +213,6 @@ class CoinsBloc implements BlocBase {
         return 0;
       }
     });
-    print(coinBalance.length);
     _inCoins.add(coinBalance);
   }
 
