@@ -1,8 +1,12 @@
 import 'package:komodo_dex/services/market_maker_service.dart';
 
 class Log {
-  static void println(dynamic message) {
-    print(message.toString() + '\n');
-    MarketMakerService().logOnFile(message.toString());
+  static void println(String key, dynamic message) {
+    String messageToPrint = key + message.toString() + '\n';
+    if (key.isNotEmpty) {
+      messageToPrint = key + ' :' + message.toString() + '\n';
+    }
+    print(messageToPrint);
+    MarketMakerService().logOnFile(messageToPrint.toString());
   }
 }

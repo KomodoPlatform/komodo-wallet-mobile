@@ -17,14 +17,15 @@ class EncryptionTool {
       return await PasswordHash.verifyStorage(
               await storage.read(key: keyPassword(key, wallet)), password)
           .then((bool onValue) =>
-              onValue ? onValue : throw Exception('Invalid password.'));
+              onValue ? onValue : throw Exception('Invalid password.'))
+          .catchError((dynamic e) => true);
     } else {
       return true;
     }
   }
 
   Future<String> _computeHash(String data) async =>
-      await PasswordHash.hashStorage(data);
+      await PasswordHash.hashStorage(data).catchError((dynamic e) => data);
 
   Future<void> writeData(KeyEncryption key, Wallet wallet, String password,
           String data) async =>

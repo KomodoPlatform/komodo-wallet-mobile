@@ -88,7 +88,7 @@ class DBProvider {
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('ArticlesSaved');
-    Log.println(maps.length);
+    Log.println('', maps.length);
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List<Article>.generate(maps.length, (int i) {
       return Article(
@@ -142,7 +142,7 @@ class DBProvider {
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('Wallet');
-    Log.println(maps.length);
+    Log.println('', maps.length);
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List<Wallet>.generate(maps.length, (int i) {
       return Wallet(
@@ -157,7 +157,7 @@ class DBProvider {
   }
 
   Future<void> deleteWallet(Wallet wallet) async {
-    Log.println(wallet.id);
+    Log.println('', wallet.id);
     final Database db = await database;
     await db.delete('Wallet', where: 'id = ?', whereArgs: <dynamic>[wallet.id]);
   }

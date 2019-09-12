@@ -32,7 +32,7 @@ class GetPriceService {
         return price;
       }
     } catch (e) {
-      Log.println(e.toString());
+      Log.println('', e.toString());
       price = nil;
     }
     try {
@@ -41,7 +41,7 @@ class GetPriceService {
       price = double.parse(
           decoded2[coingeckoId][currency.toLowerCase()].toString());
     } catch (e) {
-      Log.println(e.toString());
+      Log.println('', e.toString());
       price = nil;
     }
     return price;

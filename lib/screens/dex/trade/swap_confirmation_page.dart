@@ -394,10 +394,10 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       isSwapMaking = false;
     });
     String timeSecondeLeft = error.error;
-    Log.println(timeSecondeLeft);
+    Log.println('', timeSecondeLeft);
     timeSecondeLeft = timeSecondeLeft.substring(
         timeSecondeLeft.lastIndexOf(' '), timeSecondeLeft.length);
-    Log.println(timeSecondeLeft);
+    Log.println('', timeSecondeLeft);
     String errorDisplay =
         error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
     if (error.error.contains('is too low, required')) {
