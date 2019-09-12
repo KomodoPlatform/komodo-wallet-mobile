@@ -213,6 +213,7 @@ class CoinsBloc implements BlocBase {
         return 0;
       }
     });
+    print(coinBalance.length);
     _inCoins.add(coinBalance);
   }
 
@@ -443,6 +444,7 @@ class CoinsBloc implements BlocBase {
     if (MarketMakerService().ismm2Running &&
         !onActivateCoins &&
         !mainBloc.isNetworkOffline) {
+      onActivateCoins = true;
       final List<Coin> coins = await coinsBloc.readJsonCoin();
       final List<Future<dynamic>> getAllBalances = <Future<dynamic>>[];
 
@@ -464,6 +466,7 @@ class CoinsBloc implements BlocBase {
       } catch (e) {
         Log.println('', e);
       }
+      onActivateCoins = false;
     }
   }
 
