@@ -70,7 +70,7 @@ class ApiProvider {
   Future<dynamic> getSwapStatus(http.Client client, GetSwap body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
-              .post(url, body: getSwapToJson(body))
+              .post(url, body: getSwapToJson(userBody.body))
               .then((Response r) => _saveRes('getSwapStatus', r))
               .then<dynamic>((Response res) => swapFromJson(res.body))
               .catchError((dynamic e) => errorStringFromJson(res.body))
@@ -80,7 +80,7 @@ class ApiProvider {
   Future<dynamic> getOrderbook(http.Client client, GetOrderbook body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
-              .post(url, body: getOrderbookToJson(body))
+              .post(url, body: getOrderbookToJson(userBody.body))
               .then((Response r) => _saveRes('getOrderbook', r))
               .then<dynamic>((Response res) => orderbookFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
@@ -89,7 +89,7 @@ class ApiProvider {
   Future<dynamic> getBalance(http.Client client, GetBalance body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
-              .post(url, body: getBalanceToJson(body))
+              .post(url, body: getBalanceToJson(userBody.body))
               .then((Response r) => _saveRes('getBalance', r))
               .then<dynamic>((Response res) => balanceFromJson(res.body))
               .catchError((dynamic e) => errorStringFromJson(res.body))
@@ -101,7 +101,7 @@ class ApiProvider {
           .then<dynamic>((UserpassBody userBody) {
         body.method = 'buy';
         return userBody.client
-            .post(url, body: getBuyToJson(body))
+            .post(url, body: getBuyToJson(userBody.body))
             .then((Response r) => _saveRes('postBuy', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
             .catchError((dynamic e) => errorStringFromJson(res.body))
@@ -114,7 +114,7 @@ class ApiProvider {
           .then<dynamic>((UserpassBody userBody) {
         body.method = 'sell';
         return userBody.client
-            .post(url, body: getBuyToJson(body))
+            .post(url, body: getBuyToJson(userBody.body))
             .then((Response r) => _saveRes('postSell', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
             .catchError((dynamic e) => errorStringFromJson(res.body))
