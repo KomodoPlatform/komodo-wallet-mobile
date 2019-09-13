@@ -114,6 +114,13 @@
         "txfee": 10000
     },
     {
+        "coin": "HUSH",
+        "asset": "HUSH3",
+        "rpcport": 18031,
+        "mm2": 1,
+        "txfee": 10000
+    },
+    {
         "coin": "ETH",
         "name": "ethereum",
         "etomic": "0x0000000000000000000000000000000000000000",
