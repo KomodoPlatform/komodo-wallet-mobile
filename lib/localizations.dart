@@ -540,6 +540,12 @@ class AppLocalizations {
   String get warningShareLogs => Intl.message(
       'Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!',
       name: 'warningShareLogs');
+  String get enterOldPinCode => Intl.message(
+      'Enter your old PIN',
+      name: 'enterOldPinCode');
+  String get enterNewPinCode => Intl.message(
+      'Enter your new PIN',
+      name: 'enterNewPinCode');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
