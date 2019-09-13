@@ -622,6 +622,7 @@ class _SettingPageState extends State<SettingPage> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               RaisedButton(
+                key: const Key('setting-share-button'),
                 child: Text(AppLocalizations.of(context).share),
                 onPressed: () => _shareFile(),
               )

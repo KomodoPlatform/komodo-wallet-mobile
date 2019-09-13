@@ -166,7 +166,7 @@ void main() {
       await driver.tap(find.byValueKey('item-dialog-morty-market.sell'));
 
       await driver.tap(find.byValueKey('input-text-market.sell'));
-      await driver.enterText('0.02');
+      await driver.enterText('0,02');
 
       await driver.tap(find.byValueKey('coin-select-market.receive'));
 
@@ -197,6 +197,7 @@ void main() {
     test('Send feedback', () async {
       await driver.tap(find.byValueKey('icon-setting-page'));
       await driver.tap(find.byValueKey('setting-title-feedback'));
+      await driver.tap(find.byValueKey('setting-share-button'));
     });
   });
 }
