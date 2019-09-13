@@ -4,13 +4,19 @@ import 'package:convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keccak/keccak.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../localizations.dart';
 
@@ -141,6 +147,52 @@ void showMessage(BuildContext mContext, String error) {
       style: Theme.of(mContext).textTheme.body1,
     ),
   ));
+}
+
+Future<bool> checkBiometrics() async {
+  final LocalAuthentication auth = LocalAuthentication();
+  bool canCheckBiometrics = false;
+  try {
+    canCheckBiometrics = await auth.canCheckBiometrics;
+    Log.println('', canCheckBiometrics);
+  } on PlatformException catch (e) {
+    Log.println('', e);
+  }
+  return canCheckBiometrics;
+}
+
+Future<bool> authenticateBiometrics(
+    BuildContext context, PinStatus pinStatus) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool('switch_pin_biometric')) {
+    final LocalAuthentication localAuth = LocalAuthentication();
+    bool didAuthenticate = false;
+
+    try {
+      didAuthenticate = await localAuth.authenticateWithBiometrics(
+        stickyAuth: true,
+        localizedReason: AppLocalizations.of(context).lockScreenAuth);
+    } on PlatformException catch (e) {
+      print(e.message);
+    }
+
+    if (didAuthenticate) {
+      if (pinStatus == PinStatus.DISABLED_PIN) {
+        SharedPreferences.getInstance().then((SharedPreferences data) {
+          data.setBool('switch_pin', false);
+        });
+        Navigator.pop(context);
+      }
+      authBloc.showPin(false);
+      if (pinStatus == PinStatus.NORMAL_PIN &&
+          !MarketMakerService().ismm2Running) {
+        await authBloc.login(await EncryptionTool().read('passphrase'), null);
+      }
+    }
+    return didAuthenticate;
+  } else {
+    return false;
+  }
 }
 
 Future<void> showConfirmationRemoveCoin(

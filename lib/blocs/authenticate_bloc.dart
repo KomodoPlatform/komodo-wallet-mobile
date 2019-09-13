@@ -135,6 +135,9 @@ class AuthenticateBloc extends BlocBase {
   }
 
   Future<void> logout() async {
+    isLogin = false;
+    _inIsLogin.add(false);
+
     coinsBloc.stopCheckBalance();
     await MarketMakerService().stopmm2();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -150,9 +153,6 @@ class AuthenticateBloc extends BlocBase {
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);
     await DBProvider.db.deleteCurrentWallet();
-
-    isLogin = false;
-    _inIsLogin.add(false);
   }
 
   void showPin(bool isShow) {

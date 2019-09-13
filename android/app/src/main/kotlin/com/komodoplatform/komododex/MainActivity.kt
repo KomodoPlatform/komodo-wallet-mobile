@@ -2,13 +2,13 @@ package com.komodoplatform.atomicdex
 
 import android.os.Build
 import android.os.Bundle
-import io.flutter.app.FlutterActivity
+import io.flutter.app.FlutterFragmentActivity
 import io.flutter.plugins.GeneratedPluginRegistrant
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 
-class MainActivity: FlutterActivity() {
+class MainActivity: FlutterFragmentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     //make transparent status bar

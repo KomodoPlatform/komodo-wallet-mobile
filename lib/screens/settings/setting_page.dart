@@ -21,6 +21,7 @@ import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
@@ -199,53 +200,63 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildActivateBiometric() {
-    return CustomTile(
-      child: ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                AppLocalizations.of(context).activateAccessBiometric,
-                style: Theme.of(context).textTheme.body1.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
+    return FutureBuilder<bool>(
+        initialData: false,
+        future: checkBiometrics(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData && snapshot.data) {
+            return CustomTile(
+              child: ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        AppLocalizations.of(context).activateAccessBiometric,
+                        style: Theme.of(context).textTheme.body1.copyWith(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white.withOpacity(0.7)),
+                      ),
+                    ),
+                    SharedPreferencesBuilder<dynamic>(
+                      pref: 'switch_pin_biometric',
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        return snapshot.hasData
+                            ? Switch(
+                                value: snapshot.data,
+                                onChanged: (bool dataSwitch) {
+                                  setState(() {
+                                    if (snapshot.data) {
+                                      Navigator.push<dynamic>(
+                                          context,
+                                          MaterialPageRoute<dynamic>(
+                                              builder: (BuildContext context) =>
+                                                  LockScreen(
+                                                    context: context,
+                                                    pinStatus: PinStatus
+                                                        .DISABLED_PIN_BIOMETRIC,
+                                                  )));
+                                    } else {
+                                      SharedPreferences.getInstance()
+                                          .then((SharedPreferences data) {
+                                        data.setBool(
+                                            'switch_pin_biometric', dataSwitch);
+                                      });
+                                    }
+                                  });
+                                })
+                            : Container();
+                      },
+                    )
+                  ],
+                ),
               ),
-            ),
-            SharedPreferencesBuilder<dynamic>(
-              pref: 'switch_pin_biometric',
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData
-                    ? Switch(
-                        value: snapshot.data,
-                        onChanged: (bool dataSwitch) {
-                          setState(() {
-                            if (snapshot.data) {
-                              Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          LockScreen(
-                                            context: context,
-                                            pinStatus: PinStatus
-                                                .DISABLED_PIN_BIOMETRIC,
-                                          )));
-                            } else {
-                              SharedPreferences.getInstance()
-                                  .then((SharedPreferences data) {
-                                data.setBool(
-                                    'switch_pin_biometric', dataSwitch);
-                              });
-                            }
-                          });
-                        })
-                    : Container();
-              },
-            )
-          ],
-        ),
-      ),
-    );
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 
   Widget _buildChangePIN() {
@@ -264,8 +275,8 @@ class _SettingPageState extends State<SettingPage> {
                               builder: (BuildContext context) => PinPage(
                                   title:
                                       AppLocalizations.of(context).lockScreen,
-                                  subTitle:
-                                      AppLocalizations.of(context).enterOldPinCode,
+                                  subTitle: AppLocalizations.of(context)
+                                      .enterOldPinCode,
                                   pinStatus: PinStatus.CHANGE_PIN,
                                   password: password)));
                     },
