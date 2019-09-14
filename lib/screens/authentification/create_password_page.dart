@@ -118,7 +118,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                               .copyWith(
                                   fontSize: 12,
                                   color: Theme.of(context).errorColor),
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Theme.of(context).primaryColorLight)),
@@ -169,7 +169,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                         },
                         style: Theme.of(context).textTheme.body1,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color:

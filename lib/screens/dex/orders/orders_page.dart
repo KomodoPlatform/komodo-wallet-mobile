@@ -45,7 +45,7 @@ class _OrdersPageState extends State<OrdersPage> {
           } else {
             return Container(
               child:
-                  Center(child: const Text('No orders, please go to trade.')),
+                  const Center(child: Text('No orders, please go to trade.')),
             );
           }
         });

@@ -132,7 +132,7 @@ class _BrowseNewsState extends State<BrowseNews> {
               },
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: const CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else {
             return Center(
                 child: Container(
@@ -300,9 +300,10 @@ class IconsArticle extends StatefulWidget {
 class _IconsArticleState extends State<IconsArticle> {
   @override
   void dispose() {
-                      mainBloc.isUrlLaucherIsOpen = false;
+    mainBloc.isUrlLaucherIsOpen = false;
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -339,7 +340,7 @@ class _IconsArticleState extends State<IconsArticle> {
         InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(2)),
             onTap: () {
-                  mainBloc.isUrlLaucherIsOpen = true;
+              mainBloc.isUrlLaucherIsOpen = true;
 
               Share.share(
                   '${AppLocalizations.of(context).articleFrom}:\n\n${widget.article.title}\nBy ${widget.article.author}\n${timeago.format(widget.article.creationDate)}\n\n${widget.article.body}');
@@ -408,7 +409,7 @@ class SavedNews extends StatelessWidget {
               ],
             );
           } else {
-            return Center(child: const CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         });
   }

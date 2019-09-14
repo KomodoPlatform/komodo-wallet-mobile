@@ -42,7 +42,7 @@ class MarketMakerService {
   String pubkey = '';
   String filesPath = '';
   IOSink sink;
-  static MethodChannel platformmm2 = MethodChannel('mm2');
+  static MethodChannel platformmm2 = const MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
 
@@ -51,9 +51,10 @@ class MarketMakerService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final ProcessResult checkmm2process = await Process.run(
           'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
-      if (prefs.getInt('mm2ProcessPID') == null || !checkmm2process.stdout
-          .toString()
-          .contains(prefs.getInt('mm2ProcessPID').toString())) {
+      if (prefs.getInt('mm2ProcessPID') == null ||
+          !checkmm2process.stdout
+              .toString()
+              .contains(prefs.getInt('mm2ProcessPID').toString())) {
         await MarketMakerService().runBin();
       } else {
         MarketMakerService().initUsername(passphrase);

@@ -7,8 +7,9 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:bs58check/bs58check.dart' as bs58check;
 
 class AddressField extends StatefulWidget {
-  
-  const AddressField({Key key, this.onScan, this.controller, this.isERCToken = false}) : super(key: key);
+  const AddressField(
+      {Key key, this.onScan, this.controller, this.isERCToken = false})
+      : super(key: key);
 
   final Function onScan;
   final TextEditingController controller;
@@ -49,10 +50,10 @@ class _AddressFieldState extends State<AddressField> {
               style: Theme.of(context).textTheme.body1,
               textAlign: TextAlign.end,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).primaryColorLight)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorLight)),
                   focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Theme.of(context).accentColor)),

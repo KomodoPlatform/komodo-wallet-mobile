@@ -4,8 +4,14 @@ import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 
 class AmountField extends StatefulWidget {
-  
-  const AmountField({Key key, this.onMaxValue, this.focusNode, this.controller, this.autoFocus = false, this.balance}) : super(key: key);
+  const AmountField(
+      {Key key,
+      this.onMaxValue,
+      this.focusNode,
+      this.controller,
+      this.autoFocus = false,
+      this.balance})
+      : super(key: key);
 
   final Function onMaxValue;
   final FocusNode focusNode;
@@ -52,17 +58,18 @@ class _AmountFieldState extends State<AmountField> {
               controller: widget.controller,
               autofocus: widget.autoFocus,
               textInputAction: TextInputAction.done,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               style: Theme.of(context).textTheme.body1,
               textAlign: TextAlign.end,
-              onChanged: (String amount){
+              onChanged: (String amount) {
                 coinsDetailBloc.setAmountToSend(amount);
               },
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).primaryColorLight)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorLight)),
                   focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Theme.of(context).accentColor)),
