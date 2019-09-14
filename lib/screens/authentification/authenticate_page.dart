@@ -23,7 +23,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
     super.initState();
   }
 
-  Future<void> initPinCreated() async{
+  Future<void> initPinCreated() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isPinIsCreated', false);
   }

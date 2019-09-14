@@ -42,7 +42,7 @@ class MarketMakerService {
   String pubkey = '';
   String filesPath = '';
   IOSink sink;
-  static const MethodChannel platformmm2 = MethodChannel('mm2');
+  static MethodChannel platformmm2 = MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
 

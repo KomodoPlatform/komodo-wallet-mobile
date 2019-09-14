@@ -546,6 +546,9 @@ class AppLocalizations {
   String get enterNewPinCode => Intl.message(
       'Enter your new PIN',
       name: 'enterNewPinCode');
+  String get authenticate => Intl.message(
+      'authenticate',
+      name: 'authenticate');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

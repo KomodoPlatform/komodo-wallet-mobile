@@ -9,17 +9,18 @@ import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LockScreen extends StatefulWidget {
   const LockScreen(
-      {this.pinStatus = PinStatus.NORMAL_PIN, this.child, this.onSuccess, @required this.context});
+      {this.pinStatus = PinStatus.NORMAL_PIN,
+      this.child,
+      this.onSuccess,
+      @required this.context});
 
   final PinStatus pinStatus;
   final Widget child;
@@ -64,7 +65,8 @@ class _LockScreenState extends State<LockScreen> {
 
   @override
   void initState() {
-    final ScreenArguments args = ModalRoute.of(widget.context).settings.arguments;
+    final ScreenArguments args =
+        ModalRoute.of(widget.context).settings.arguments;
     password = args?.password;
     _initScreen();
     super.initState();
@@ -93,47 +95,88 @@ class _LockScreenState extends State<LockScreen> {
                         pref: 'switch_pin',
                         builder: (BuildContext context,
                             AsyncSnapshot<dynamic> switchPinData) {
-                          if (outShowPin.hasData &&
-                              outShowPin.data &&
-                              switchPinData.hasData &&
-                              switchPinData.data) {
-                            return Stack(
-                              children: <Widget>[
-                                FutureBuilder<bool>(
-                                  future: _checkBiometrics(),
+                          if (outShowPin.hasData && outShowPin.data) {
+                            if (switchPinData.hasData && switchPinData.data) {
+                              return Stack(
+                                children: <Widget>[
+                                  FutureBuilder<bool>(
+                                    future: checkBiometrics(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<dynamic> snapshot) {
+                                      if (snapshot.hasData &&
+                                          snapshot.data &&
+                                          widget.pinStatus ==
+                                              PinStatus.NORMAL_PIN) {
+                                        Log.println('', snapshot.data);
+                                        if (isLogin.hasData && isLogin.data) {
+                                          authenticateBiometrics(
+                                              context, widget.pinStatus);
+                                        }
+                                        return Container();
+                                      }
+                                      return Container();
+                                    },
+                                  ),
+                                  PinPage(
+                                    title:
+                                        AppLocalizations.of(context).lockScreen,
+                                    subTitle: AppLocalizations.of(context)
+                                        .enterPinCode,
+                                    pinStatus: widget.pinStatus,
+                                    isFromChangingPin: false,
+                                    onSuccess: widget.onSuccess,
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return SharedPreferencesBuilder<bool>(
+                                  pref: 'switch_pin_biometric',
                                   builder: (BuildContext context,
-                                      AsyncSnapshot<dynamic> snapshot) {
-                                    if (snapshot.hasData &&
-                                        snapshot.data &&
-                                        widget.pinStatus ==
-                                            PinStatus.NORMAL_PIN) {
-                                      Log.println('', snapshot.data);
-                                      _authenticateBiometrics();
+                                      AsyncSnapshot<bool> switchPinBiometric) {
+                                    if (switchPinBiometric.hasData &&
+                                        switchPinBiometric.data) {
+                                      return Stack(
+                                        children: <Widget>[
+                                          FutureBuilder<bool>(
+                                            future: checkBiometrics(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<dynamic>
+                                                    snapshot) {
+                                              if (snapshot.hasData &&
+                                                  snapshot.data &&
+                                                  widget.pinStatus ==
+                                                      PinStatus.NORMAL_PIN) {
+                                                Log.println('', snapshot.data);
+                                                if (isLogin.hasData &&
+                                                    isLogin.data) {
+                                                  authenticateBiometrics(
+                                                      context,
+                                                      widget.pinStatus);
+                                                }
+                                                return Container();
+                                              }
+                                              return Container();
+                                            },
+                                          ),
+                                          BiometricPage(
+                                            pinStatus: widget.pinStatus,
+                                          ),
+                                        ],
+                                      );
+                                    } else {
                                       return Container();
                                     }
-                                    return Container();
-                                  },
-                                ),
-                                PinPage(
-                                  title:
-                                      AppLocalizations.of(context).lockScreen,
-                                  subTitle:
-                                      AppLocalizations.of(context).enterPinCode,
-                                  pinStatus: widget.pinStatus,
-                                  isFromChangingPin: false,
-                                  onSuccess: widget.onSuccess,
-                                ),
-                              ],
-                            );
+                                  });
+                            }
                           } else {
                             if (widget.child == null &&
                                 (widget.pinStatus == PinStatus.DISABLED_PIN ||
                                     widget.pinStatus ==
                                         PinStatus.DISABLED_PIN_BIOMETRIC))
                               return PinPage(
-                                title:
-                                    AppLocalizations.of(context).lockScreen,
-                                subTitle: AppLocalizations.of(context).enterPinCode,
+                                title: AppLocalizations.of(context).lockScreen,
+                                subTitle:
+                                    AppLocalizations.of(context).enterPinCode,
                                 pinStatus: widget.pinStatus,
                                 isFromChangingPin: false,
                               );
@@ -161,41 +204,49 @@ class _LockScreenState extends State<LockScreen> {
       },
     );
   }
+}
 
-  Future<bool> _authenticateBiometrics() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool('switch_pin_biometric')) {
-      final LocalAuthentication localAuth = LocalAuthentication();
+class BiometricPage extends StatefulWidget {
+  const BiometricPage({Key key, this.pinStatus}) : super(key: key);
 
-      final bool didAuthenticate = await localAuth.authenticateWithBiometrics(
-          stickyAuth: true,
-          localizedReason: AppLocalizations.of(context).lockScreenAuth);
-      if (didAuthenticate) {
-        if (widget.pinStatus == PinStatus.DISABLED_PIN) {
-          SharedPreferences.getInstance().then((SharedPreferences data) {
-            data.setBool('switch_pin', false);
-          });
-          Navigator.pop(context);
-        }
-        authBloc.showPin(false);
-        if (widget.pinStatus == PinStatus.NORMAL_PIN && !MarketMakerService().ismm2Running) {
-          await authBloc.login(await EncryptionTool().read('passphrase'), null);
-        }
-      }
-      return didAuthenticate;
-    } else {
-      return false;
-    }
-  }
+  final PinStatus pinStatus;
 
-  Future<bool> _checkBiometrics() async {
-    bool canCheckBiometrics = false;
-    try {
-      canCheckBiometrics = await auth.canCheckBiometrics;
-      Log.println('', canCheckBiometrics);
-    } on PlatformException catch (e) {
-      Log.println('', e);
-    }
-    return canCheckBiometrics;
+  @override
+  _BiometricPageState createState() => _BiometricPageState();
+}
+
+class _BiometricPageState extends State<BiometricPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: AppBarStatus(
+        context: context,
+        pinStatus: PinStatus.NORMAL_PIN,
+        title: 'Fingerprint',
+      ),
+      body: Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.fingerprint,
+                size: 56,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              RaisedButton(
+                child: Text(
+                    AppLocalizations.of(context).authenticate.toUpperCase()),
+                onPressed: () =>
+                    authenticateBiometrics(context, widget.pinStatus),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
