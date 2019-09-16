@@ -33,8 +33,7 @@ dev_dependencies:
   auto_size_text: ^1.0.0
   barcode_scan: ^1.0.0
   shared_preferences: ^0.5.3+4
-  bip39:
-    git: https://github.com/KomodoPlatform/bip39-dart
+  bip39: ^1.0.3
   pin_code_view:
     git: https://github.com/KomodoPlatform/pin_code_view
   # share: ^0.6.0+1
