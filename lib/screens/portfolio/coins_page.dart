@@ -19,12 +19,12 @@ import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
-class BlocCoinsPage extends StatefulWidget {
+class CoinsPage extends StatefulWidget {
   @override
-  _BlocCoinsPageState createState() => _BlocCoinsPageState();
+  _CoinsPageState createState() => _CoinsPageState();
 }
 
-class _BlocCoinsPageState extends State<BlocCoinsPage> {
+class _CoinsPageState extends State<CoinsPage> {
   ScrollController _scrollController;
   double _heightFactor = 7;
   BuildContext contextMain;
@@ -299,7 +299,6 @@ class ListCoinsState extends State<ListCoins> {
             key: _refreshIndicatorKey,
             onRefresh: () => coinsBloc.loadCoin(),
             child: Builder(builder: (BuildContext context) {
-              print(snapshot.connectionState);
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
                 final List<dynamic> datas = <dynamic>[];
                 datas.addAll(snapshot.data);
@@ -417,8 +416,8 @@ class _ItemCoinState extends State<ItemCoin> {
               caption: AppLocalizations.of(context).remove.toUpperCase(),
               color: Theme.of(context).errorColor,
               icon: Icons.delete,
-              onTap: () {
-                showConfirmationRemoveCoin(widget.mContext, coin);
+              onTap: () async{
+                await showConfirmationRemoveCoin(context, coin);
               },
             )
           ],

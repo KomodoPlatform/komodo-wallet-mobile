@@ -46,7 +46,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                   context: context,
                 )
               : UnlockPassword(
-                currentWallet: walletBloc.currentWallet,
+                  currentWallet: walletBloc.currentWallet,
                   icon: SvgPicture.asset('assets/seed_logo.svg'),
                   onSuccess: (String data) {
                     setState(() {
@@ -145,7 +145,8 @@ class _ViewSeedState extends State<ViewSeed> {
 }
 
 class UnlockPassword extends StatefulWidget {
-  const UnlockPassword({this.onSuccess, this.onError, this.icon, this.currentWallet});
+  const UnlockPassword(
+      {this.onSuccess, this.onError, this.icon, this.currentWallet});
 
   final Function(String) onSuccess;
   final Function(String) onError;
@@ -198,7 +199,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
                   enableInteractiveSelection: true,
                   style: Theme.of(context).textTheme.body1,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Theme.of(context).primaryColorLight)),
@@ -233,7 +234,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 60),
           child: isLoading
-              ? Center(child: const CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : PrimaryButton(
                   text: AppLocalizations.of(context).checkSeedPhraseButton1,
                   onPressed: isContinueEnabled
@@ -245,7 +246,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
     );
   }
 
-  Future<void>_checkPassword(String data) async {
+  Future<void> _checkPassword(String data) async {
     final EncryptionTool entryptionTool = EncryptionTool();
 
     setState(() {

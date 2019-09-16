@@ -7,6 +7,7 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,13 +16,11 @@ class DislaimerPage extends StatefulWidget {
   const DislaimerPage(
       {Key key,
       this.password,
-      this.isFastEncrypted,
       this.seed,
       this.onSuccess,
       this.readOnly = false})
       : super(key: key);
   final String password;
-  final bool isFastEncrypted;
   final String seed;
   final Function onSuccess;
   final bool readOnly;
@@ -83,7 +82,7 @@ class _DislaimerPageState extends State<DislaimerPage>
         setState(() {
           isEndOfScroll = true;
           _controllerScale.reverse();
-          timer.cancel();                
+          timer.cancel();
         });
       }
     });
@@ -269,7 +268,8 @@ class _DislaimerPageState extends State<DislaimerPage>
                                   timer.cancel();
                                   _controllerScale.reverse();
                                 }
-                                _scrollController.animateTo(_scrollPosition + 300,
+                                _scrollController.animateTo(
+                                    _scrollPosition + 300,
                                     duration: const Duration(seconds: 1),
                                     curve: Curves.ease);
                               },
@@ -336,9 +336,7 @@ class _DislaimerPageState extends State<DislaimerPage>
                       key: const Key('next-disclaimer'),
                       onPressed: (widget.readOnly
                               ? isEndOfScroll
-                              : isEndOfScroll &&
-                                  _checkBoxEULA &&
-                                  _checkBoxTOC)
+                              : isEndOfScroll && _checkBoxEULA && _checkBoxTOC)
                           ? _nextPage
                           : null,
                       text: widget.readOnly
@@ -375,11 +373,12 @@ class _DislaimerPageState extends State<DislaimerPage>
 
       final EncryptionTool entryptionTool = EncryptionTool();
       final Wallet wallet = walletBloc.currentWallet;
-      wallet.isFastEncryption = widget.isFastEncrypted;
       walletBloc.currentWallet = wallet;
 
-      await entryptionTool.writeData(
-          KeyEncryption.SEED, wallet, widget.password, widget.seed);
+      await entryptionTool
+          .writeData(KeyEncryption.SEED, wallet, widget.password, widget.seed)
+          .catchError((dynamic e) => Log.println('', e));
+      
       await DBProvider.db.saveWallet(wallet);
       await DBProvider.db.saveCurrentWallet(wallet);
       final SharedPreferences prefs = await SharedPreferences.getInstance();

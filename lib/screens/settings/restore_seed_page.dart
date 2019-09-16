@@ -88,7 +88,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
               maxLines: null,
               style: Theme.of(context).textTheme.body1,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Theme.of(context).primaryColorLight)),
@@ -174,7 +174,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         width: double.infinity,
         height: 50,
         child: _isLogin
-            ? Center(child: const CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : PrimaryButton(
                 key: const Key('confirm-seed-button'),
                 text: AppLocalizations.of(context).confirm,

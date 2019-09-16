@@ -4,12 +4,15 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:decimal/decimal.dart';
+import 'package:http/http.dart' as http;
 
 class BuildConfirmationStep extends StatefulWidget {
   const BuildConfirmationStep(
@@ -42,11 +45,11 @@ class BuildConfirmationStep extends StatefulWidget {
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   Future<double> getFee() async {
     try {
-      final TradeFee tradeFeeResponse =
-          await MarketMakerService().getTradeFee(widget.coinBalance.coin);
+      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
+          http.Client(), GetTradeFee(coin: widget.coinBalance.coin.abbr));
       return double.parse(tradeFeeResponse.result.amount);
     } catch (e) {
-      print(e);
+      Log.println('', e);
       return 0;
     }
   }
@@ -67,7 +70,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
             try {
               fee = snapshot.data;
             } catch (e) {
-              print(e);
+              Log.println('', e);
             }
           }
 

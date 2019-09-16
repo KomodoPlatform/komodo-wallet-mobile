@@ -7,7 +7,7 @@
           {
             "coin": "MORTY",
             "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
-            "price": 0.89999998,
+            "price": "0.89999998",
             "numutxos": 0,
             "avevolume": 0,
             "maxvolume": 10.85028615,
@@ -19,7 +19,7 @@
           {
             "coin": "MORTY",
             "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
-            "price": 2.4,
+            "price": "2.4",
             "numutxos": 0,
             "avevolume": 0,
             "maxvolume": 108.85028615,
@@ -31,7 +31,7 @@
           {
             "coin": "MORTY",
             "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
-            "price": 10,
+            "price": "10",
             "numutxos": 0,
             "avevolume": 0,
             "maxvolume": 1085.85028615,
@@ -56,7 +56,7 @@
           {
             "coin": "KMD",
             "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
-            "price": 3.5,
+            "price": "3.5",
             "numutxos": 0,
             "avevolume": 0,
             "maxvolume": 108355.85028615,
@@ -68,7 +68,7 @@
           {
             "coin": "KMD",
             "address": "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
-            "price": 10.4,
+            "price": "10.4",
             "numutxos": 0,
             "avevolume": 0,
             "maxvolume": 1855.85028615,

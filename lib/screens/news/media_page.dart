@@ -6,6 +6,7 @@ import 'package:komodo_dex/blocs/media_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:share/share.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -34,7 +35,7 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
   }
 
   void _getIndex() {
-    print(_controllerTabs.index);
+    Log.println('', _controllerTabs.index);
   }
 
   @override
@@ -131,7 +132,7 @@ class _BrowseNewsState extends State<BrowseNews> {
               },
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: const CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else {
             return Center(
                 child: Container(
@@ -299,9 +300,10 @@ class IconsArticle extends StatefulWidget {
 class _IconsArticleState extends State<IconsArticle> {
   @override
   void dispose() {
-                      mainBloc.isUrlLaucherIsOpen = false;
+    mainBloc.isUrlLaucherIsOpen = false;
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -318,7 +320,7 @@ class _IconsArticleState extends State<IconsArticle> {
                 : Colors.grey,
           ),
           onTap: () {
-            print(widget.article.isSavedArticle);
+            Log.println('', widget.article.isSavedArticle);
             if (widget.article.isSavedArticle) {
               setState(() {
                 widget.article.isSavedArticle = false;
@@ -338,7 +340,7 @@ class _IconsArticleState extends State<IconsArticle> {
         InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(2)),
             onTap: () {
-                  mainBloc.isUrlLaucherIsOpen = true;
+              mainBloc.isUrlLaucherIsOpen = true;
 
               Share.share(
                   '${AppLocalizations.of(context).articleFrom}:\n\n${widget.article.title}\nBy ${widget.article.author}\n${timeago.format(widget.article.creationDate)}\n\n${widget.article.body}');
@@ -407,7 +409,7 @@ class SavedNews extends StatelessWidget {
               ],
             );
           } else {
-            return Center(child: const CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         });
   }

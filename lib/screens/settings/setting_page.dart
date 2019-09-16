@@ -9,6 +9,8 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/base_service.dart';
+import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
@@ -16,13 +18,17 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info/package_info.dart';
+import 'package:http/http.dart' as http;
 
 class SettingPage extends StatefulWidget {
   @override
@@ -55,6 +61,7 @@ class _SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context).settings.toUpperCase(),
+          key: const Key('settings-title'),
         ),
         centerTitle: true,
         backgroundColor: Theme.of(context).backgroundColor,
@@ -121,10 +128,13 @@ class _SettingPageState extends State<SettingPage> {
         AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
     try {
-      final ResultSuccess versionmm2 = await MarketMakerService().getVersionMM2();
-      version += ' - ${versionmm2.result}';
+      final dynamic versionmm2 = await ApiProvider()
+          .getVersionMM2(http.Client(), BaseService(method: 'version'));
+      if (versionmm2 is ResultSuccess && versionmm2 != null) {
+        version += ' - ${versionmm2.result}';
+      }
     } catch (e) {
-      print(e);
+      Log.println('', e);
       rethrow;
     }
     return version;
@@ -161,7 +171,7 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          print('dataSwitch' + dataSwitch.toString());
+                          Log.println('', 'dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
@@ -190,53 +200,63 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildActivateBiometric() {
-    return CustomTile(
-      child: ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                AppLocalizations.of(context).activateAccessBiometric,
-                style: Theme.of(context).textTheme.body1.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
+    return FutureBuilder<bool>(
+        initialData: false,
+        future: checkBiometrics(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData && snapshot.data) {
+            return CustomTile(
+              child: ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        AppLocalizations.of(context).activateAccessBiometric,
+                        style: Theme.of(context).textTheme.body1.copyWith(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white.withOpacity(0.7)),
+                      ),
+                    ),
+                    SharedPreferencesBuilder<dynamic>(
+                      pref: 'switch_pin_biometric',
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        return snapshot.hasData
+                            ? Switch(
+                                value: snapshot.data,
+                                onChanged: (bool dataSwitch) {
+                                  setState(() {
+                                    if (snapshot.data) {
+                                      Navigator.push<dynamic>(
+                                          context,
+                                          MaterialPageRoute<dynamic>(
+                                              builder: (BuildContext context) =>
+                                                  LockScreen(
+                                                    context: context,
+                                                    pinStatus: PinStatus
+                                                        .DISABLED_PIN_BIOMETRIC,
+                                                  )));
+                                    } else {
+                                      SharedPreferences.getInstance()
+                                          .then((SharedPreferences data) {
+                                        data.setBool(
+                                            'switch_pin_biometric', dataSwitch);
+                                      });
+                                    }
+                                  });
+                                })
+                            : Container();
+                      },
+                    )
+                  ],
+                ),
               ),
-            ),
-            SharedPreferencesBuilder<dynamic>(
-              pref: 'switch_pin_biometric',
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData
-                    ? Switch(
-                        value: snapshot.data,
-                        onChanged: (bool dataSwitch) {
-                          setState(() {
-                            if (snapshot.data) {
-                              Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          LockScreen(
-                                            context: context,
-                                            pinStatus: PinStatus
-                                                .DISABLED_PIN_BIOMETRIC,
-                                          )));
-                            } else {
-                              SharedPreferences.getInstance()
-                                  .then((SharedPreferences data) {
-                                data.setBool(
-                                    'switch_pin_biometric', dataSwitch);
-                              });
-                            }
-                          });
-                        })
-                    : Container();
-              },
-            )
-          ],
-        ),
-      ),
-    );
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 
   Widget _buildChangePIN() {
@@ -255,8 +275,8 @@ class _SettingPageState extends State<SettingPage> {
                               builder: (BuildContext context) => PinPage(
                                   title:
                                       AppLocalizations.of(context).lockScreen,
-                                  subTitle:
-                                      AppLocalizations.of(context).enterPinCode,
+                                  subTitle: AppLocalizations.of(context)
+                                      .enterOldPinCode,
                                   pinStatus: PinStatus.CHANGE_PIN,
                                   password: password)));
                     },
@@ -276,8 +296,9 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget _buildSendFeedback() {
     return CustomTile(
-      onPressed: () => _shareFile(),
+      onPressed: () => _shareFileDialog(),
       child: ListTile(
+        key: const Key('setting-title-feedback'),
         trailing:
             Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
         title: Text(
@@ -337,9 +358,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        print('PRESSED');
+        Log.println('', 'PRESSED');
         authBloc.logout().then((_) {
-          print('PRESSED');
+          Log.println('', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },
@@ -547,9 +568,8 @@ class _SettingPageState extends State<SettingPage> {
                                       _showLoadingDelete();
                                       await walletBloc.deleteSeedPhrase(
                                           password, walletBloc.currentWallet);
+                                      await walletBloc.deleteCurrentWallet();
                                       settingsBloc.setDeleteLoading(false);
-
-                                      walletBloc.deleteCurrentWallet();
                                     },
                                     backgroundColor:
                                         Theme.of(context).errorColor,
@@ -574,53 +594,60 @@ class _SettingPageState extends State<SettingPage> {
   void _showLoadingDelete() {
     dialogBloc.dialog = showDialog<dynamic>(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
-          return StreamBuilder<Object>(
-              initialData: settingsBloc.isDeleteLoading,
-              stream: settingsBloc.outIsDeleteLoading,
-              builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-                if (snapshot.hasData) {
-                  Navigator.of(context).pop();
-                }
-                return SimpleDialog(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  children: <Widget>[
-                    Center(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const <Widget>[
-                        CircularProgressIndicator(),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text('Deleting wallet...')
-                      ],
-                    ))
-                  ],
-                );
-              });
+          return ShowLoadingDelete();
         }).then((dynamic _) {
       dialogBloc.dialog = null;
     });
   }
 
   Future<void> _shareFile() async {
-    final RecentSwaps recentSwap = await MarketMakerService().getRecentSwaps(100, null);
+    Navigator.of(context).pop();
 
-    if (MarketMakerService().sink != null) {
-      await MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
-      await MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
+    final dynamic recentSwap = await ApiProvider().getRecentSwaps(
+        http.Client(), GetRecentSwap(limit: 100, fromUuid: null));
+
+    if (recentSwap is RecentSwaps) {
+      if (MarketMakerService().sink != null) {
+        MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
+        MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
+      }
+      mainBloc.isUrlLaucherIsOpen = true;
+      Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
+          subject: 'My logs for the ${DateTime.now().toIso8601String()}');
     }
-    mainBloc.isUrlLaucherIsOpen = true;
-    Share.shareFile(File('${MarketMakerService().filesPath}mm.log'),
-        subject: 'My logs for the ${DateTime.now().toIso8601String()}');
+  }
+
+  Future<void> _shareFileDialog() async {
+    dialogBloc.dialog = showDialog<dynamic>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context).feedback),
+            content: Text(AppLocalizations.of(context).warningShareLogs),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(AppLocalizations.of(context).cancel),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              RaisedButton(
+                key: const Key('setting-share-button'),
+                child: Text(AppLocalizations.of(context).share),
+                onPressed: () => _shareFile(),
+              )
+            ],
+          );
+        }).then((dynamic _) {
+      dialogBloc.dialog = null;
+    });
   }
 }
 
 class CustomTile extends StatefulWidget {
-  const CustomTile({this.child, this.onPressed, this.backgroundColor});
+  const CustomTile({Key key, this.onPressed, this.backgroundColor, this.child})
+      : super(key: key);
 
   final Widget child;
   final Function onPressed;
@@ -649,6 +676,44 @@ class _CustomTileState extends State<CustomTile> {
           child: widget.child,
         ),
       ),
+    );
+  }
+}
+
+class ShowLoadingDelete extends StatefulWidget {
+  @override
+  _ShowLoadingDeleteState createState() => _ShowLoadingDeleteState();
+}
+
+class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
+  @override
+  void initState() {
+    super.initState();
+    settingsBloc.outIsDeleteLoading.listen((bool onData) {
+      if (!onData) {
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      children: <Widget>[
+        Center(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const <Widget>[
+            CircularProgressIndicator(),
+            SizedBox(
+              width: 16,
+            ),
+            Text('Deleting wallet...')
+          ],
+        ))
+      ],
     );
   }
 }

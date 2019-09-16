@@ -11,13 +11,11 @@ String walletToJson(List<Wallet> data) => json
 class Wallet {
   Wallet(
       {@required this.name,
-      @required this.id,
-      @required this.isFastEncryption});
+      @required this.id,});
 
   factory Wallet.fromJson(Map<String, dynamic> json) => Wallet(
       id: json['id'] ?? '',
-      name: json['name'] ?? '',
-      isFastEncryption: json['is_fast_encryption'] ?? false);
+      name: json['name'] ?? '',);
 
   String name;
   String id;
@@ -26,6 +24,5 @@ class Wallet {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id ?? '',
         'name': name ?? '',
-        'is_fast_encryption': isFastEncryption ?? false
       };
 }

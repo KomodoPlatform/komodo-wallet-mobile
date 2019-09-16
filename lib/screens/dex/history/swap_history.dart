@@ -7,6 +7,7 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 class SwapHistory extends StatefulWidget {
   @override
@@ -45,8 +46,8 @@ class _SwapHistoryState extends State<SwapHistory> {
         stream: swapHistoryBloc.outSwaps,
         initialData: swapHistoryBloc.swaps,
         builder: (BuildContext context, AsyncSnapshot<List<Swap>> snapshot) {
-          print(snapshot.data.length);
-          print(snapshot.connectionState);
+          Log.println('', snapshot.data.length);
+          Log.println('', snapshot.connectionState);
           final List<Swap> swaps = snapshot.data;
 
           swaps.removeWhere((Swap swap) =>
@@ -88,8 +89,8 @@ class _SwapHistoryState extends State<SwapHistory> {
               ),
             );
           } else {
-            return Center(
-              child: const CircularProgressIndicator(),
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
         });

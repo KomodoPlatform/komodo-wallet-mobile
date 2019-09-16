@@ -43,7 +43,7 @@ extension OSLog {
                     let mm2log = ["log": "mm2] " + String(cString: line!)]
                     NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
                 });
-                print(arg)
+                //print(arg)
                 result("starting mm2")
             } else if call.method == "status" {
                 let ret = Int32(mm2_main_status());

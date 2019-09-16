@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:http/http.dart' as http;
 
 SwapHistoryBloc swapHistoryBloc = SwapHistoryBloc();
 
@@ -34,38 +37,43 @@ class SwapHistoryBloc implements BlocBase {
 
   Future<List<Swap>> fetchSwaps(int limit, String fromUuid) async {
     try {
-      final RecentSwaps recentSwaps = await MarketMakerService().getRecentSwaps(limit, fromUuid);
-      final List<Swap> newSwaps = <Swap>[];
+      final dynamic recentSwaps = await ApiProvider().getRecentSwaps(
+          http.Client(), GetRecentSwap(limit: limit, fromUuid: fromUuid));
+      if (recentSwaps is RecentSwaps) {
+        final List<Swap> newSwaps = <Swap>[];
 
-      for (ResultSwap swap in recentSwaps.result.swaps) {
-        final dynamic nSwap = Swap(result: swap, status: getStatusSwap(swap));
-        if (nSwap is Swap) {
-          if (swap.myInfo != null &&
-              swap.myInfo.startedAt + 3600 <
-                  DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
-              getStatusSwap(swap) != Status.SWAP_SUCCESSFUL) {
-            nSwap.status = Status.TIME_OUT;
-          }
-          newSwaps.add(nSwap);
-          if (nSwap.status == Status.ORDER_MATCHED ||
-              nSwap.status == Status.ORDER_MATCHING ||
-              nSwap.status == Status.SWAP_ONGOING) {
-            isSwapsOnGoing = true;
-          }
-        } else if (nSwap is ErrorString) {
-          if (swap.myInfo != null &&
-              swap.myInfo.startedAt + 600 <
-                  DateTime.now().millisecondsSinceEpoch ~/ 1000) {
-            newSwaps.add(Swap(
-              status: Status.TIME_OUT,
-              result: swap,
-            ));
+        for (ResultSwap swap in recentSwaps.result.swaps) {
+          final dynamic nSwap = Swap(result: swap, status: getStatusSwap(swap));
+          if (nSwap is Swap) {
+            if (swap.myInfo != null &&
+                swap.myInfo.startedAt + 3600 <
+                    DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
+                getStatusSwap(swap) != Status.SWAP_SUCCESSFUL) {
+              nSwap.status = Status.TIME_OUT;
+            }
+            newSwaps.add(nSwap);
+            if (nSwap.status == Status.ORDER_MATCHED ||
+                nSwap.status == Status.ORDER_MATCHING ||
+                nSwap.status == Status.SWAP_ONGOING) {
+              isSwapsOnGoing = true;
+            }
+          } else if (nSwap is ErrorString) {
+            if (swap.myInfo != null &&
+                swap.myInfo.startedAt + 600 <
+                    DateTime.now().millisecondsSinceEpoch ~/ 1000) {
+              newSwaps.add(Swap(
+                status: Status.TIME_OUT,
+                result: swap,
+              ));
+            }
           }
         }
-      }
-      return newSwaps;
+        return newSwaps;
+      } else {
+        return <Swap>[];
+      } 
     } catch (e) {
-      print(e);
+      Log.println('', e);
       return <Swap>[];
     }
   }
@@ -101,7 +109,6 @@ class SwapHistoryBloc implements BlocBase {
     Status status = Status.ORDER_MATCHING;
 
     for (EventElement event in resultSwap.events) {
-      print(event.event.type);
       switch (event.event.type) {
         case 'Started':
           status = Status.ORDER_MATCHED;
@@ -172,7 +179,6 @@ class SwapHistoryBloc implements BlocBase {
         default:
       }
     }
-    print('STATUS: ' + status.toString());
     return status;
   }
 

@@ -12,7 +12,7 @@ String getDisableCoinToJson(GetDisableCoin data) => json.encode(data.toJson());
 class GetDisableCoin {
   GetDisableCoin({
     this.userpass,
-    this.method,
+    this.method = 'disable_coin',
     this.coin,
   });
 

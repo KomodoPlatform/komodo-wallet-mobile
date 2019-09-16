@@ -10,7 +10,7 @@ String getSwapToJson(GetSwap data) => json.encode(data.toJson());
 
 class GetSwap {
   GetSwap({
-    this.method,
+    this.method = 'my_swap_status',
     this.params,
     this.userpass,
   });

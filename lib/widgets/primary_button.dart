@@ -34,8 +34,8 @@ class _PrimaryButtonState extends State<PrimaryButton> {
     return Container(
       width: double.infinity,
       child: widget.isLoading
-          ? Center(
-              child: const CircularProgressIndicator(),
+          ? const Center(
+              child: CircularProgressIndicator(),
             )
           : RaisedButton(
               padding: const EdgeInsets.symmetric(

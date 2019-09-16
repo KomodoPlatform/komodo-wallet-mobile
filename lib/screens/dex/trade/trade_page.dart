@@ -11,17 +11,21 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:http/http.dart' as http;
 
 class TradePage extends StatefulWidget {
   const TradePage({this.mContext});
@@ -149,7 +153,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   void onChangeReceive() {
     if (_controllerAmountReceive.text.isNotEmpty) {
-      swapBloc.setCurrentAmountBuy(double.parse(_controllerAmountReceive.text));
+      swapBloc.setCurrentAmountBuy(
+          double.parse(_controllerAmountReceive.text.replaceAll(',', '.')));
     }
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
@@ -170,7 +175,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   void onChangeSell() {
     final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
-    
+
     if (_controllerAmountSell.text.isNotEmpty) {
       swapBloc.setCurrentAmountSell(double.parse(amountSell));
     }
@@ -205,7 +210,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 maxVolume: maxVolume));
           }
           getFee(false).then((double tradeFee) async {
-            print(tradeFee);
+            Log.println('', tradeFee);
             if (currentCoinBalance != null &&
                 double.parse(amountSell) + tradeFee >
                     double.parse(currentCoinBalance.balance.getBalance())) {
@@ -249,13 +254,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       });
       return fee;
     } catch (e) {
-      print(e);
+      Log.println('', e);
       return 0;
     }
   }
 
   Future<Decimal> getTradeFee(bool isMax) async {
-    double amount = double.parse(_controllerAmountSell.text.replaceAll(',', '.'));
+    double amount =
+        double.parse(_controllerAmountSell.text.replaceAll(',', '.'));
     if (isMax) {
       amount = double.parse(currentCoinBalance.balance.getBalance());
     }
@@ -268,27 +274,39 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<Decimal> getTxFee() async {
     try {
-      final TradeFee tradeFeeResponse =
-          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
-      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
+      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
+          http.Client(), GetTradeFee(coin: currentCoinBalance.coin.abbr));
 
-      Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
-      if (swapBloc.receiveCoin != null) {
-        if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
-          txFee += await getERCfee(swapBloc.receiveCoin);
+      if (tradeFeeResponse is TradeFee) {
+        final double tradeFee = double.parse(tradeFeeResponse.result.amount);
+
+        Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
+        if (swapBloc.receiveCoin != null) {
+          if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
+            txFee += await getERCfee(swapBloc.receiveCoin);
+          }
         }
+        return txFee;
+      } 
+      else {
+        if (tradeFeeResponse is ErrorString) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            duration: const Duration(seconds: 2),
+            content: Text(tradeFeeResponse.error),
+          ));
+        }
+        return Decimal.parse('0');
       }
-      return txFee;
     } catch (e) {
-      print(e);
+      Log.println('', e);
       rethrow;
     }
   }
 
   Future<String> getTxFeeErc() async {
     try {
-      final TradeFee tradeFeeResponse =
-          await MarketMakerService().getTradeFee(currentCoinBalance.coin);
+      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
+          http.Client(), GetTradeFee(coin: currentCoinBalance.coin.abbr));
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
       final Decimal txFee = Decimal.parse(tradeFee.toString());
@@ -322,14 +340,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 : 'ETH');
       }
     } catch (e) {
-      print(e);
+      Log.println('', e);
       rethrow;
     }
   }
 
   Future<Decimal> getERCfee(Coin coin) async {
-    final TradeFee tradeFeeResponseERC =
-        await MarketMakerService().getTradeFee(coin);
+    final TradeFee tradeFeeResponseERC = await ApiProvider()
+        .getTradeFee(http.Client(), GetTradeFee(coin: coin.abbr));
     return Decimal.parse(tradeFeeResponseERC.result.amount);
   }
 
@@ -339,7 +357,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         final double tradeFee = await getFee(true);
         final double maxValue =
             double.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
-        print('setting max: ' + maxValue.toString());
+        Log.println('', 'setting max: ' + maxValue.toString());
 
         if (maxValue < 0) {
           setState(() {
@@ -357,13 +375,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ));
           _focusSell.unfocus();
         } else {
-          print('----------------_controllerAmountSell');
+          Log.println('', '----------------_controllerAmountSell');
           _controllerAmountSell.setTextAndPosition(
               replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
         }
       });
     } catch (e) {
-      print(e);
+      Log.println('', e);
     }
   }
 
@@ -426,8 +444,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     key: const Key('trade-button'),
                     onPressed: _controllerAmountSell.text.isNotEmpty &&
                             _controllerAmountReceive.text.isNotEmpty &&
-                            double.parse(_controllerAmountSell.text) > 0 &&
-                            double.parse(_controllerAmountReceive.text) > 0 &&
+                            double.parse(_controllerAmountSell.text
+                                    .replaceAll(',', '.')) >
+                                0 &&
+                            double.parse(_controllerAmountReceive.text
+                                    .replaceAll(',', '.')) >
+                                0 &&
                             sellCoin.data != null &&
                             receiveCoin.data != null
                         ? () => _confirmSwap(context)
@@ -685,14 +707,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildCoinSelect(Market market) {
-    print('coin-select-${market.toString().toLowerCase()}');
+    Log.println('', 'coin-select-${market.toString().toLowerCase()}');
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: InkWell(
         key: Key('coin-select-${market.toString().toLowerCase()}'),
         borderRadius: BorderRadius.circular(4),
         onTap: () async {
-           _controllerAmountSell.text = _controllerAmountSell.text.replaceAll(',', '.');
+          _controllerAmountSell.text =
+              _controllerAmountSell.text.replaceAll(',', '.');
           if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
             setState(() {
               if (swapBloc.enabledSellField) {
@@ -814,7 +837,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           isNumeric(_controllerAmountSell.text) &&
           !isLoadingMax &&
           double.parse(_controllerAmountSell.text) > 0) {
-        print(isLoadingMax);
+        Log.println('', isLoadingMax);
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -968,9 +991,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   swapBloc.sellCoin.coin.abbr &&
               double.parse(orderbook.getBuyAmount(_controllerAmountSell.text)) >
                   0;
-          print('----getBuyAmount----' +
-              orderbook.getBuyAmount(_controllerAmountSell.text));
-          print(
+          Log.println(
+              '',
+              '----getBuyAmount----' +
+                  orderbook.getBuyAmount(_controllerAmountSell.text));
+          Log.println('',
               'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
             key: Key(
@@ -1140,31 +1165,45 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty ||
         swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty) {
-      final CoinBalance ethBalance = coinsBloc.coinBalance
-          .singleWhere((CoinBalance coin) => coin.coin.abbr == 'ETH');
-
-      final Decimal feeERC = await getERCfee(
-              swapBloc.receiveCoin.swapContractAddress.isNotEmpty
-                  ? swapBloc.receiveCoin
-                  : swapBloc.sellCoin.coin) *
-          ((swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                  swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty)
-              ? Decimal.parse('3')
-              : (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                      swapBloc.sellCoin.coin.swapContractAddress.isEmpty
-                  ? Decimal.parse('1')
-                  : Decimal.parse('2')));
-
-      if (Decimal.parse(ethBalance.balance.balance) < feeERC) {
+      CoinBalance ethBalance;
+      try {
+        ethBalance = coinsBloc.coinBalance
+            .singleWhere((CoinBalance coin) => coin.coin.abbr == 'ETH');
+      } catch (e) {
         Scaffold.of(mContext).showSnackBar(SnackBar(
           duration: const Duration(seconds: 2),
           backgroundColor: Theme.of(context).primaryColor,
           content: Text(
-            AppLocalizations.of(context).swapErcAmount(feeERC.toString()),
+            'Please activate ETH and top-up balance first',
             style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
           ),
         ));
         return;
+      }
+      if (ethBalance != null) {
+        final Decimal feeERC = await getERCfee(
+                swapBloc.receiveCoin.swapContractAddress.isNotEmpty
+                    ? swapBloc.receiveCoin
+                    : swapBloc.sellCoin.coin) *
+            ((swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
+                    swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty)
+                ? Decimal.parse('3')
+                : (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
+                        swapBloc.sellCoin.coin.swapContractAddress.isEmpty
+                    ? Decimal.parse('1')
+                    : Decimal.parse('2')));
+
+        if (Decimal.parse(ethBalance.balance.balance) < feeERC) {
+          Scaffold.of(mContext).showSnackBar(SnackBar(
+            duration: const Duration(seconds: 2),
+            backgroundColor: Theme.of(context).primaryColor,
+            content: Text(
+              AppLocalizations.of(context).swapErcAmount(feeERC.toString()),
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+            ),
+          ));
+          return;
+        }
       }
     }
     if (mainBloc.isNetworkOffline) {

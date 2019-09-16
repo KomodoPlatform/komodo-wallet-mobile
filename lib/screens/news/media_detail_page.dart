@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'media_page.dart';
@@ -25,7 +26,7 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
     int splitIndex = widget.article.body
             .indexOf(RegExp('[!?.]'), widget.article.body.length ~/ 2) +
         1;
-    print(splitIndex);
+    Log.println('', splitIndex);
     if (splitIndex == -1) {
       splitIndex = widget.article.body.length ~/ 2;
     }

@@ -193,6 +193,7 @@ class Data {
     this.makerPubkey,
     this.secretHash,
     this.transaction,
+    this.error
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -239,6 +240,7 @@ class Data {
         makerPubkey: json['maker_pubkey'] ?? '',
         secretHash: json['secret_hash'] ?? '',
         transaction: json['transaction'] == null ? null : Transaction.fromJson(json['transaction']),
+        error: json['error'] ?? ''
       );
 
   int lockDuration;
@@ -278,6 +280,7 @@ class Data {
   String makerPubkey;
   String secretHash;
   Transaction transaction;
+  String error;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'lock_duration': lockDuration ?? 0,
@@ -318,6 +321,7 @@ class Data {
         'maker_pubkey': makerPubkey ?? '',
         'secret_hash': secretHash ?? '',
         'transaction': transaction == null ? null : transaction.toJson(),
+        'error': error ?? ''
       };
 }
 

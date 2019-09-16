@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:io' show File, Platform, Process, ProcessResult;
 
 import 'package:crypto/crypto.dart';
-import 'package:decimal/decimal.dart';
 import 'package:flutter/services.dart'
     show ByteData, EventChannel, MethodChannel, rootBundle;
 import 'package:flutter/services.dart' show ByteData, rootBundle;
@@ -13,47 +12,16 @@ import 'package:http/http.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/model/active_coin.dart';
-import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
-import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
-import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/get_balance.dart';
-import 'package:komodo_dex/model/get_disable_coin.dart';
-import 'package:komodo_dex/model/get_enable_coin.dart';
-import 'package:komodo_dex/model/get_setprice.dart';
-import 'package:komodo_dex/model/get_trade_fee.dart';
-import 'package:komodo_dex/model/result.dart';
-import 'package:komodo_dex/model/coin_to_kick_start.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_active_coin.dart';
-import 'package:komodo_dex/model/get_buy.dart';
-import 'package:komodo_dex/model/get_cancel_order.dart';
-import 'package:komodo_dex/model/get_orderbook.dart';
-import 'package:komodo_dex/model/get_recent_swap.dart';
-import 'package:komodo_dex/model/get_send_raw_transaction.dart';
-import 'package:komodo_dex/model/get_swap.dart';
-import 'package:komodo_dex/model/get_tx_history.dart';
-import 'package:komodo_dex/model/get_withdraw.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/orders.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/send_raw_transaction_response.dart';
-import 'package:komodo_dex/model/setprice_response.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/trade_fee.dart';
-import 'package:komodo_dex/model/transactions.dart';
-import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-// MarketMakerService mm2 = MarketMakerService();
 
 class MarketMakerService {
   factory MarketMakerService() {
@@ -73,8 +41,8 @@ class MarketMakerService {
   Stream<List<int>> streamSubscriptionStdout;
   String pubkey = '';
   String filesPath = '';
-  dynamic sink;
-  static const MethodChannel platformmm2 = MethodChannel('mm2');
+  IOSink sink;
+  static MethodChannel platformmm2 = const MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
 
@@ -83,9 +51,10 @@ class MarketMakerService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final ProcessResult checkmm2process = await Process.run(
           'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
-      if (!checkmm2process.stdout
-          .toString()
-          .contains(prefs.getInt('mm2ProcessPID').toString())) {
+      if (prefs.getInt('mm2ProcessPID') == null ||
+          !checkmm2process.stdout
+              .toString()
+              .contains(prefs.getInt('mm2ProcessPID').toString())) {
         await MarketMakerService().runBin();
       } else {
         MarketMakerService().initUsername(passphrase);
@@ -140,6 +109,7 @@ class MarketMakerService {
 
   Future<void> initCheckLogs() async {
     final File fileLog = File('${filesPath}mm.log');
+
     if (!fileLog.existsSync()) {
       await fileLog.create();
     }
@@ -156,7 +126,7 @@ class MarketMakerService {
           initCoinsAndLoad();
           coinsBloc.startCheckBalance();
         }
-        _onLogsmm2(data);
+        onLogsmm2(data);
       }).onDone(() async {
         offset = await fileLog.length();
       });
@@ -193,16 +163,17 @@ class MarketMakerService {
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
-    final File fileLog = File('${filesPath}mm.log');
+    final File fileLog = File('${filesPath}log.txt');
+    if (fileLog.existsSync()) {
+      await fileLog.delete();
+    }
+    fileLog.create();
     sink = fileLog.openWrite();
 
     if (Platform.isAndroid) {
       await stopmm2();
       await waitUntilMM2isStop();
-      if (fileLog.existsSync()) {
-        await fileLog.delete();
-      }
-      fileLog.create();
+
       await File('${filesPath}MM2.json').writeAsString(startParam);
 
       try {
@@ -251,28 +222,33 @@ class MarketMakerService {
     }
   }
 
-  void _onLogsmm2(String log) {
-    print(log);
-    if (!Platform.isAndroid) {
+  void logOnFile(String log) {
+    if (sink != null) {
       sink.write(log + '\n');
     }
-    if (log.contains('CONNECTED') ||
-        log.contains('Entering the taker_swap_loop') ||
-        log.contains('Received \'negotiation') ||
-        log.contains('Got maker payment') ||
-        log.contains('Sending \'taker-fee') ||
-        log.contains('Sending \'taker-payment') ||
-        log.contains('Finished')) {
-      Future<dynamic>.delayed(const Duration(seconds: 1), () {
-        swapHistoryBloc.updateSwaps(50, null).then((_) {
-          ordersBloc.updateOrdersSwaps();
+  }
+
+  void onLogsmm2(String log) {
+    if (sink != null) {
+      sink.write(log + '\n');
+      if (log.contains('CONNECTED') ||
+          log.contains('Entering the taker_swap_loop') ||
+          log.contains('Received \'negotiation') ||
+          log.contains('Got maker payment') ||
+          log.contains('Sending \'taker-fee') ||
+          log.contains('Sending \'taker-payment') ||
+          log.contains('Finished')) {
+        Future<dynamic>.delayed(const Duration(seconds: 1), () {
+          swapHistoryBloc.updateSwaps(50, null).then((_) {
+            ordersBloc.updateOrdersSwaps();
+          });
         });
-      });
+      }
     }
   }
 
   void _onEvent(Object event) {
-    _onLogsmm2(event);
+    onLogsmm2(event);
   }
 
   void _onError(Object error) {
@@ -361,7 +337,8 @@ class MarketMakerService {
       final List<Future<dynamic>> futureBalances = <Future<dynamic>>[];
 
       for (Coin coin in coins) {
-        futureBalances.add(getBalance(coin));
+        futureBalances.add(ApiProvider()
+            .getBalance(http.Client(), GetBalance(coin: coin.abbr)));
       }
       balances = await Future.wait<dynamic>(futureBalances);
       balances = balances;
@@ -377,386 +354,5 @@ class MarketMakerService {
 
   Future<String> loadDefaultActivateCoin() async {
     return await rootBundle.loadString('assets/coins_activate_default.json');
-  }
-
-  Future<dynamic> getSwapStatus(String uuid) async {
-    final GetSwap getSwap = GetSwap(
-        userpass: userpass,
-        method: 'my_swap_status',
-        params: Params(uuid: uuid));
-
-    try {
-      final Response response =
-          await http.post(url, body: getSwapToJson(getSwap));
-      try {
-        return swapFromJson(response.body);
-      } catch (e) {
-        print(e);
-        return errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<Orderbook> getOrderbook(Coin coinBase, Coin coinRel) async {
-    final GetOrderbook getOrderbook = GetOrderbook(
-        userpass: userpass,
-        method: 'orderbook',
-        base: coinBase.abbr,
-        rel: coinRel.abbr);
-
-    try {
-      final Response response =
-          await http.post(url, body: json.encode(getOrderbook));
-      print('orderbook' + response.body.toString());
-      return orderbookFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> getBalance(Coin coin) async {
-    final GetBalance getBalance =
-        GetBalance(userpass: userpass, method: 'my_balance', coin: coin.abbr);
-
-    try {
-      final Response response =
-          await http.post(url, body: json.encode(getBalance));
-
-      print('getBalance' + response.body.toString());
-
-      try {
-        return balanceFromJson(response.body);
-      } catch (e) {
-        print(e);
-        return errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<BuyResponse> postBuy(
-      Coin base, Coin rel, Decimal volume, String price) async {
-    print('postBuy>>>>>>>>>>>>>>>>> SWAPPARAM: base: ' +
-        base.abbr +
-        ' rel: ' +
-        rel.abbr.toString() +
-        ' relvol: ' +
-        volume.toString() +
-        ' price: ' +
-        price.toString());
-    final GetBuy getBuy = GetBuy(
-        userpass: userpass,
-        method: 'buy',
-        base: base.abbr,
-        rel: rel.abbr,
-        volume: volume.toString(),
-        price: price);
-    print(json.encode(getBuy));
-
-    try {
-      final Response response = await http.post(url, body: json.encode(getBuy));
-      print(response.body.toString());
-      try {
-        return buyResponseFromJson(response.body);
-      } catch (e) {
-        print(e);
-        throw errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> postSell(
-      Coin base, Coin rel, double volume, double price) async {
-    print('postSellSWAPPARAM: base: ' +
-        base.abbr +
-        ' rel: ' +
-        rel.abbr.toString() +
-        ' relvol: ' +
-        volume.toString() +
-        ' price: ' +
-        price.toString());
-    final GetBuy getBuy = GetBuy(
-        userpass: userpass,
-        method: 'sell',
-        base: base.abbr,
-        rel: rel.abbr,
-        volume: volume.toStringAsFixed(8),
-        price: price.toStringAsFixed(8));
-    print(json.encode(getBuy));
-
-    try {
-      final Response response = await http.post(url, body: json.encode(getBuy));
-
-      print(response.body.toString());
-      try {
-        return buyResponseFromJson(response.body);
-      } catch (e) {
-        return errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<SetPriceResponse> postSetPrice(Coin base, Coin rel, String volume,
-      String price, bool cancelPrevious, bool max) async {
-    final GetSetPrice getSetPrice = GetSetPrice(
-        userpass: userpass,
-        method: 'setprice',
-        base: base.abbr,
-        rel: rel.abbr,
-        cancelPrevious: cancelPrevious,
-        max: max,
-        volume: volume,
-        price: price);
-
-    print('postSetPrice' + getSetPriceToJson(getSetPrice));
-    try {
-      final Response response =
-          await http.post(url, body: getSetPriceToJson(getSetPrice));
-
-      print(response.body.toString());
-
-      try {
-        return setPriceResponseFromJson(response.body);
-      } catch (e) {
-        throw errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> getTransactions(Coin coin, int limit, String fromId) async {
-    final GetTxHistory getTxHistory = GetTxHistory(
-        userpass: userpass,
-        method: 'my_tx_history',
-        coin: coin.abbr,
-        limit: limit,
-        fromId: fromId);
-    print(json.encode(getTxHistory));
-    print(url);
-    try {
-      final Response response =
-          await http.post(url, body: getTxHistoryToJson(getTxHistory));
-      print('RESULT: ' + response.body.toString());
-      try {
-        return transactionsFromJson(response.body);
-      } catch (e) {
-        print(e);
-        return errorCodeFromJson(response.body);
-      }
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<RecentSwaps> getRecentSwaps(int limit, String fromUuid) async {
-    final GetRecentSwap getRecentSwap = GetRecentSwap(
-        userpass: userpass,
-        method: 'my_recent_swaps',
-        limit: limit,
-        fromUuid: fromUuid);
-
-    try {
-      final Response response =
-          await http.post(url, body: getRecentSwapToJson(getRecentSwap));
-      print('my_recent_swaps' + response.body.toString());
-      return recentSwapsFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<Orders> getMyOrders() async {
-    final GetRecentSwap getRecentSwap =
-        GetRecentSwap(userpass: userpass, method: 'my_orders');
-
-    try {
-      final Response response =
-          await http.post(url, body: getRecentSwapToJson(getRecentSwap));
-      print('my_orders' + response.body.toString());
-      return ordersFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<ResultSuccess> cancelOrder(String uuid) async {
-    final GetCancelOrder getCancelOrder =
-        GetCancelOrder(userpass: userpass, method: 'cancel_order', uuid: uuid);
-
-    try {
-      final Response response =
-          await http.post(url, body: getCancelOrderToJson(getCancelOrder));
-      print('cancel_order' + response.body.toString());
-      return resultSuccessFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<CoinToKickStart> getCoinToKickStart() async {
-    final GetRecentSwap getRecentSwap = GetRecentSwap(
-        userpass: userpass, method: 'coins_needed_for_kick_start');
-
-    try {
-      final Response response =
-          await http.post(url, body: getRecentSwapToJson(getRecentSwap));
-      print('coins_needed_for_kick_start' + response.body.toString());
-      return coinToKickStartFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> postRawTransaction(Coin coin, String txHex) async {
-    final GetSendRawTransaction getSendRawTransaction = GetSendRawTransaction(
-        userpass: userpass,
-        method: 'send_raw_transaction',
-        coin: coin.abbr,
-        txHex: txHex);
-
-    try {
-      final Response response =
-          await http.post(url, body: json.encode(getSendRawTransaction));
-
-      try {
-        final SendRawTransactionResponse sendRawTransactionResponse =
-            sendRawTransactionResponseFromJson(response.body);
-        if (sendRawTransactionResponse.txHash.isEmpty) {
-          return errorStringFromJson(response.body);
-        }
-        return sendRawTransactionResponse;
-      } catch (e) {
-        return errorStringFromJson(response.body);
-      }
-    } catch (e) {
-      return e;
-    }
-  }
-
-  Future<dynamic> postWithdraw(GetWithdraw getWithdraw) async {
-    getWithdraw.userpass = userpass;
-    // getWithdraw.fee = null;
-
-    print('<<<<<<<<<<<<<<<<<<sending: ' + getWithdraw.amount.toString());
-    print(getWithdrawToJson(getWithdraw));
-
-    try {
-      final Response response =
-          await http.post(url, body: getWithdrawToJson(getWithdraw));
-      print('response.body postWithdraw' + response.body.toString());
-      try {
-        return withdrawResponseFromJson(response.body);
-      } catch (e) {
-        return errorCodeFromJson(response.body);
-      }
-    } catch (e) {
-      print(e.toString());
-      return e;
-    }
-  }
-
-  Future<ActiveCoin> activeCoin(Coin coin) async {
-    print('activate coin :' + coin.abbr);
-    final List<Server> servers = <Server>[];
-    for (String url in coin.serverList) {
-      servers.add(
-          Server(url: url, protocol: 'TCP', disableCertVerification: false));
-    }
-    dynamic getActiveCoin;
-    Response response;
-
-    try {
-      if (coin.swapContractAddress.isNotEmpty) {
-        getActiveCoin = GetEnabledCoin(
-            userpass: userpass,
-            method: 'enable',
-            coin: coin.abbr,
-            txHistory: true,
-            swapContractAddress: coin.swapContractAddress,
-            urls: coin.serverList);
-        response = await http
-            .post(url, body: getEnabledCoinToJson(getActiveCoin))
-            .timeout(const Duration(seconds: 60));
-      } else {
-        getActiveCoin = GetActiveCoin(
-            userpass: userpass,
-            method: 'electrum',
-            coin: coin.abbr,
-            txHistory: true,
-            servers: servers);
-        response = await http
-            .post(url, body: getActiveCoinToJson(getActiveCoin))
-            .timeout(const Duration(seconds: 60));
-      }
-
-      print('response Active Coin: ' + response.body.toString());
-
-      final ActiveCoin activeCoin = activeCoinFromJson(response.body);
-      if (activeCoin != null && activeCoin.coin.isNotEmpty) {
-        return activeCoin;
-      } else {
-        throw errorStringFromJson(response.body);
-      }
-    } on TimeoutException catch (_) {
-      throw ErrorString(error: 'Timeout on ${coin.abbr}');
-    } catch (e) {
-      print('-------------------' + errorStringFromJson(response.body).error);
-      print(response.body);
-      throw errorStringFromJson(response.body);
-    }
-  }
-
-  Future<TradeFee> getTradeFee(Coin coin) async {
-    final GetTradeFee getTradeFee = GetTradeFee(
-        userpass: userpass, method: 'get_trade_fee', coin: coin.abbr);
-
-    try {
-      final Response response =
-          await http.post(url, body: getTradeFeeToJson(getTradeFee));
-      return tradeFeeFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<ResultSuccess> getVersionMM2() async {
-    final BaseService baseService =
-        BaseService(userpass: userpass, method: 'version');
-
-    try {
-      final Response response =
-          await http.post(url, body: baseServiceToJson(baseService));
-      return resultSuccessFromJson(response.body);
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<dynamic> disableCoin(Coin coin) async {
-    final GetDisableCoin getDisableCoin = GetDisableCoin(
-        userpass: userpass, method: 'disable_coin', coin: coin.abbr);
-
-    return await ApiProvider().disableCoin(client, coin, getDisableCoin);
   }
 }

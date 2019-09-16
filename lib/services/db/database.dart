@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -87,7 +88,7 @@ class DBProvider {
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('ArticlesSaved');
-    print(maps.length);
+    Log.println('', maps.length);
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List<Article>.generate(maps.length, (int i) {
       return Article(
@@ -130,7 +131,6 @@ class DBProvider {
     final Map<String, dynamic> row = <String, dynamic>{
       'id': newWallet.id,
       'name': newWallet.name,
-      'is_fast_encryption': newWallet.isFastEncryption
     };
 
     return await db.insert('Wallet ', row);
@@ -142,13 +142,12 @@ class DBProvider {
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('Wallet');
-    print(maps.length);
+    Log.println('', maps.length);
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List<Wallet>.generate(maps.length, (int i) {
       return Wallet(
           id: maps[i]['id'],
-          name: maps[i]['name'],
-          isFastEncryption: maps[i]['is_fast_encryption'] == 1);
+          name: maps[i]['name'],);
     });
   }
 
@@ -158,7 +157,7 @@ class DBProvider {
   }
 
   Future<void> deleteWallet(Wallet wallet) async {
-    print(wallet.id);
+    Log.println('', wallet.id);
     final Database db = await database;
     await db.delete('Wallet', where: 'id = ?', whereArgs: <dynamic>[wallet.id]);
   }
@@ -171,7 +170,6 @@ class DBProvider {
     final Map<String, dynamic> row = <String, dynamic>{
       'id': currentWallet.id,
       'name': currentWallet.name,
-      'is_fast_encryption': currentWallet.isFastEncryption
     };
 
     return await db.insert('CurrentWallet ', row);
@@ -185,8 +183,7 @@ class DBProvider {
     final List<Wallet> wallets = List<Wallet>.generate(maps.length, (int i) {
       return Wallet(
           id: maps[i]['id'],
-          name: maps[i]['name'],
-          isFastEncryption: maps[i]['is_fast_encryption'] == 1);
+          name: maps[i]['name'],);
     });
     if (wallets.isEmpty) {
       return null;

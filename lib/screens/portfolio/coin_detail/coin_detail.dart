@@ -14,6 +14,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
@@ -24,11 +25,14 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amo
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
 import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
+import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:share/share.dart';
+import 'package:http/http.dart' as http;
 
 class CoinDetail extends StatefulWidget {
   const CoinDetail({this.coinBalance, this.isSendIsActive = false});
@@ -62,20 +66,23 @@ class CoinDetail extends StatefulWidget {
       dialogBloc.dialog = null;
     });
 
-    MarketMakerService()
-        .postWithdraw(GetWithdraw(
-            fee: null,
-            coin: coinBalance.coin.abbr,
-            to: coinBalance.balance.address,
-            amount: (Decimal.parse(coinBalance.balance.getBalance()) -
-                    (Decimal.parse(coinBalance.coin.txfee.toString()) /
-                        Decimal.parse('100000000')))
-                .toString(),
-            max: true))
+    ApiProvider()
+        .postWithdraw(
+            http.Client(),
+            GetWithdraw(
+                userpass: MarketMakerService().userpass,
+                fee: null,
+                coin: coinBalance.coin.abbr,
+                to: coinBalance.balance.address,
+                amount: (Decimal.parse(coinBalance.balance.getBalance()) -
+                        (Decimal.parse(coinBalance.coin.txfee.toString()) /
+                            Decimal.parse('100000000')))
+                    .toString(),
+                max: true))
         .then((dynamic data) {
       Navigator.of(mContext).pop();
       if (data is WithdrawResponse) {
-        print(data.myBalanceChange);
+        Log.println('', data.myBalanceChange);
         if (double.parse(data.myBalanceChange) > 0) {
           dialogBloc.dialog = showDialog<dynamic>(
             context: mContext,
@@ -97,8 +104,13 @@ class CoinDetail extends StatefulWidget {
                         AppLocalizations.of(context).confirm.toUpperCase(),
                         style: Theme.of(context).textTheme.button),
                     onPressed: () {
-                      MarketMakerService()
-                          .postRawTransaction(coinBalance.coin, data.txHex)
+                      ApiProvider()
+                          .postRawTransaction(
+                              http.Client(),
+                              GetSendRawTransaction(
+                                  method: 'send_raw_transaction',
+                                  coin: coinBalance.coin.abbr,
+                                  txHex: data.txHex))
                           .then((dynamic dataRawTx) {
                         if (dataRawTx is SendRawTransactionResponse) {
                           Navigator.of(context).pop();
@@ -174,6 +186,7 @@ class _CoinDetailState extends State<CoinDetail> {
   NumberFormat f = NumberFormat('###,###.0#');
   List<Widget> listSteps = <Widget>[];
   Timer timer;
+  bool isDeleteLoading = false;
 
   @override
   void initState() {
@@ -192,9 +205,11 @@ class _CoinDetailState extends State<CoinDetail> {
     coinsBloc
         .updateTransactions(currentCoinBalance.coin, limit, null)
         .then((_) {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
     _amountController.addListener(onChange);
     super.initState();
@@ -218,7 +233,9 @@ class _CoinDetailState extends State<CoinDetail> {
 
   @override
   void dispose() {
-    coinsBloc.loadCoin();
+    if (!isDeleteLoading) {
+      coinsBloc.loadCoin();
+    }
     _amountController.dispose();
     _addressController.dispose();
     _scrollController.dispose();
@@ -272,10 +289,27 @@ class _CoinDetailState extends State<CoinDetail> {
           elevation: elevationHeader,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: isDeleteLoading
+                  ? Container(
+                      height: 20,
+                      width: 20,
+                      child: const CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                      ),
+                    )
+                  : Icon(Icons.delete),
               onPressed: () async {
-                showConfirmationRemoveCoin(context, widget.coinBalance.coin).then((_){
-                  Navigator.of(context).pop();
+                setState(() {
+                  isDeleteLoading = true;
+                });
+                showConfirmationRemoveCoin(context, widget.coinBalance.coin)
+                    .then((_) {
+                  setState(() {
+                    isDeleteLoading = false;
+                  });
+                  if (mounted) {
+                    Navigator.of(context).pop();
+                  }
                 });
               },
             ),
@@ -334,8 +368,6 @@ class _CoinDetailState extends State<CoinDetail> {
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
-              print(tx.result.syncStatus.state);
-              print('START TIMER');
               timer ??= Timer.periodic(const Duration(seconds: 15), (_) {
                 _refresh();
               });
@@ -401,7 +433,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: const CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
                   if (snapshot.data is Transactions) {
                     final Transactions transactions = snapshot.data;
@@ -845,8 +877,8 @@ class _CoinDetailState extends State<CoinDetail> {
               listSteps.add(Container(
                   height: 100,
                   width: double.infinity,
-                  child: Center(
-                    child: const CircularProgressIndicator(
+                  child: const Center(
+                    child: CircularProgressIndicator(
                       strokeWidth: 2,
                     ),
                   )));
@@ -865,19 +897,26 @@ class _CoinDetailState extends State<CoinDetail> {
                   fee.amount = coinsDetailBloc.customFee.amount;
                 }
               }
-              MarketMakerService()
-                  .postWithdraw(GetWithdraw(
-                      fee: fee,
-                      coin: widget.coinBalance.coin.abbr,
-                      to: _addressController.text,
-                      amount: _amountController.text,
-                      max: double.parse(
-                              widget.coinBalance.balance.getBalance()) ==
-                          double.parse(_amountController.text)))
+              ApiProvider()
+                  .postWithdraw(
+                      http.Client(),
+                      GetWithdraw(
+                          userpass: MarketMakerService().userpass,
+                          fee: fee,
+                          coin: widget.coinBalance.coin.abbr,
+                          to: _addressController.text,
+                          amount: _amountController.text,
+                          max: double.parse(
+                                  widget.coinBalance.balance.getBalance()) ==
+                              double.parse(_amountController.text)))
                   .then((dynamic data) {
                 if (data is WithdrawResponse) {
-                  MarketMakerService()
-                      .postRawTransaction(widget.coinBalance.coin, data.txHex)
+                  ApiProvider()
+                      .postRawTransaction(
+                          http.Client(),
+                          GetSendRawTransaction(
+                              coin: widget.coinBalance.coin.abbr,
+                              txHex: data.txHex))
                       .then((dynamic dataRawTx) {
                     if (dataRawTx is SendRawTransactionResponse &&
                         dataRawTx.txHash.isNotEmpty) {

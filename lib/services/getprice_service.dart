@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 GetPriceService getPriceObj = GetPriceService();
 
@@ -31,7 +32,7 @@ class GetPriceService {
         return price;
       }
     } catch (e) {
-      print(e.toString());
+      Log.println('', e.toString());
       price = nil;
     }
     try {
@@ -40,7 +41,7 @@ class GetPriceService {
       price = double.parse(
           decoded2[coingeckoId][currency.toLowerCase()].toString());
     } catch (e) {
-      print(e.toString());
+      Log.println('', e.toString());
       price = nil;
     }
     return price;

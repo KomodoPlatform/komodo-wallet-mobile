@@ -6,6 +6,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -77,7 +78,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
   }
 
   Future<void> _launchURL(String url) async {
-    print(url);
+    Log.println('', url);
     if (await canLaunch(url)) {
       mainBloc.isUrlLaucherIsOpen = true;
       await launch(url);

@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -83,8 +84,10 @@ class _PinPageState extends State<PinPage> {
           isLoading = true;
         });
         if (wallet != null) {
-          await EncryptionTool().writeData(
-              KeyEncryption.PIN, wallet, widget.password, code.toString());
+          await EncryptionTool()
+              .writeData(
+                  KeyEncryption.PIN, wallet, widget.password, code.toString())
+              .catchError((dynamic e) => Log.println('', e));
         }
 
         await EncryptionTool().write('pin', code.toString());
@@ -136,7 +139,7 @@ class _PinPageState extends State<PinPage> {
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => PinPage(
                       title: AppLocalizations.of(context).createPin,
-                      subTitle: AppLocalizations.of(context).enterPinCode,
+                      subTitle: AppLocalizations.of(context).enterNewPinCode,
                       pinStatus: PinStatus.CREATE_PIN,
                       password: widget.password,
                       isFromChangingPin: true,
@@ -145,47 +148,23 @@ class _PinPageState extends State<PinPage> {
     }
   }
 
-  Widget appBarStatus() {
-    if (!(widget.pinStatus == PinStatus.CONFIRM_PIN)) {
-      return AppBar(
-        centerTitle: true,
-        leading: InkWell(
-            onTap: () async {
-              await authBloc.logout();
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/',
-                (_) => false,
-              );
-            },
-            child: Icon(
-              Icons.exit_to_app,
-              color: Colors.red,
-            )),
-        backgroundColor: Theme.of(context).backgroundColor,
-        title: Text(widget.title),
-        elevation: 0,
-      );
-    } else {
-      return AppBar(
-        centerTitle: true,
-        backgroundColor: Theme.of(context).backgroundColor,
-        title: Text(widget.title),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: !isLoading ? appBarStatus() : null,
+        appBar: !isLoading
+            ? AppBarStatus(
+                  pinStatus: widget.pinStatus,
+                  title: widget.title,
+                  context: context,
+                )
+            : null,
         backgroundColor: Theme.of(context).backgroundColor,
         resizeToAvoidBottomPadding: false,
         body: !isLoading
             ? PinCode(
                 title: Text(
                   widget.subTitle,
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme.of(context).textTheme.subtitle,
                 ),
                 subTitle: const Text(
                   '',
@@ -203,8 +182,10 @@ class _PinPageState extends State<PinPage> {
                     final MaterialPageRoute<dynamic> materialPage =
                         MaterialPageRoute<dynamic>(
                             builder: (BuildContext context) => PinPage(
-                                  title: AppLocalizations.of(context).confirmPin,
-                                  subTitle: AppLocalizations.of(context).confirmPin,
+                                  title:
+                                      AppLocalizations.of(context).confirmPin,
+                                  subTitle:
+                                      AppLocalizations.of(context).confirmPin,
                                   code: code,
                                   pinStatus: PinStatus.CONFIRM_PIN,
                                   password: widget.password,
@@ -249,4 +230,46 @@ class _PinPageState extends State<PinPage> {
       _error = AppLocalizations.of(context).errorTryAgain;
     });
   }
+}
+
+class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
+  AppBarStatus(
+      {Key key,
+      @required this.pinStatus,
+      @required this.context,
+      @required this.title})
+      : super(key: key);
+
+  final PinStatus pinStatus;
+  final BuildContext context;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!(pinStatus == PinStatus.CONFIRM_PIN)) {
+      return AppBar(
+        centerTitle: true,
+        leading: InkWell(
+            onTap: () async {
+              await authBloc.logout();
+            },
+            child: Icon(
+              Icons.exit_to_app,
+              color: Colors.red,
+            )),
+        backgroundColor: Theme.of(context).backgroundColor,
+        title: Text(title),
+        elevation: 0,
+      );
+    } else {
+      return AppBar(
+        centerTitle: true,
+        backgroundColor: Theme.of(context).backgroundColor,
+        title: Text(title),
+      );
+    }
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

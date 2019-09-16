@@ -2,11 +2,15 @@ import 'dart:async';
 
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
+import 'package:komodo_dex/model/base_service.dart';
+import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:http/http.dart' as http;
 
 OrdersBloc ordersBloc = OrdersBloc();
 
@@ -40,44 +44,47 @@ class OrdersBloc implements BlocBase {
 
   Future<void> updateOrders() async {
     try {
-      final Orders newOrders = await MarketMakerService().getMyOrders();
-      final List<Order> orders = <Order>[];
+      final Orders newOrders = await ApiProvider()
+          .getMyOrders(http.Client(), BaseService(method: 'my_orders'));
+      if (newOrders is Orders) {
+        final List<Order> orders = <Order>[];
 
-      for (MapEntry<String, TakerOrder> entry
-          in newOrders.result.takerOrders.entries) {
-        orders.add(Order(
-            cancelable: entry.value.cancellable,
-            base: entry.value.request.base,
-            rel: entry.value.request.rel,
-            orderType: OrderType.TAKER,
-            createdAt: entry.value.createdAt ~/ 1000,
-            baseAmount: entry.value.request.baseAmount,
-            relAmount: entry.value.request.relAmount,
-            uuid: entry.key));
+        for (MapEntry<String, TakerOrder> entry
+            in newOrders.result.takerOrders.entries) {
+          orders.add(Order(
+              cancelable: entry.value.cancellable,
+              base: entry.value.request.base,
+              rel: entry.value.request.rel,
+              orderType: OrderType.TAKER,
+              createdAt: entry.value.createdAt ~/ 1000,
+              baseAmount: entry.value.request.baseAmount,
+              relAmount: entry.value.request.relAmount,
+              uuid: entry.key));
+        }
+
+        for (MapEntry<String, MakerOrder> entry
+            in newOrders.result.makerOrders.entries) {
+          orders.add(Order(
+              cancelable: entry.value.cancellable,
+              baseAmount: entry.value.maxBaseVol,
+              base: entry.value.base,
+              rel: entry.value.rel,
+              orderType: OrderType.MAKER,
+              startedSwaps: entry.value.startedSwaps,
+              createdAt: entry.value.createdAt ~/ 1000,
+              relAmount: (Decimal.parse(entry.value.price) *
+                      Decimal.parse(entry.value.maxBaseVol))
+                  .toString(),
+              uuid: entry.key));
+        }
+        this.orders = orders;
+        _inOrders.add(this.orders);
+
+        currentOrders = newOrders;
+        _inCurrentOrders.add(currentOrders);
       }
-
-      for (MapEntry<String, MakerOrder> entry
-          in newOrders.result.makerOrders.entries) {
-        orders.add(Order(
-            cancelable: entry.value.cancellable,
-            baseAmount: entry.value.maxBaseVol,
-            base: entry.value.base,
-            rel: entry.value.rel,
-            orderType: OrderType.MAKER,
-            startedSwaps: entry.value.startedSwaps,
-            createdAt: entry.value.createdAt ~/ 1000,
-            relAmount: (Decimal.parse(entry.value.price) *
-                    Decimal.parse(entry.value.maxBaseVol))
-                .toString(),
-            uuid: entry.key));
-      }
-      this.orders = orders;
-      _inOrders.add(this.orders);
-
-      currentOrders = newOrders;
-      _inCurrentOrders.add(currentOrders);
     } catch (e) {
-      print(e);
+      Log.println('', e);
       rethrow;
     }
   }
@@ -132,7 +139,8 @@ class OrdersBloc implements BlocBase {
 
   Future<void> cancelOrder(String uuid) async {
     try {
-      await MarketMakerService().cancelOrder(uuid);
+      await ApiProvider()
+          .cancelOrder(http.Client(), GetCancelOrder(uuid: uuid));
       orderSwaps.removeWhere((dynamic orderSwap) {
         if (orderSwap is Order) {
           return orderSwap.uuid == uuid;
@@ -142,7 +150,7 @@ class OrdersBloc implements BlocBase {
       });
       _inOrderSwaps.add(orderSwaps);
     } catch (e) {
-      print(e);
+      Log.println('', e);
       rethrow;
     }
   }

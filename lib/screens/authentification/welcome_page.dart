@@ -69,7 +69,7 @@ class _WelcomePageState extends State<WelcomePage> {
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: TextField(
-              key: const Key('name-wallet-field'),
+                key: const Key('name-wallet-field'),
                 maxLength: 40,
                 controller: controller,
                 onChanged: (String str) {
@@ -90,7 +90,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 enableInteractiveSelection: true,
                 style: Theme.of(context).textTheme.body1,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: Theme.of(context).primaryColorLight)),
@@ -103,7 +103,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     labelText: null)),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 100),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: PrimaryButton(
               onPressed: isButtonLoginEnabled ? () => _newPage() : null,
               text: AppLocalizations.of(context).welcomeLetSetUp,
@@ -123,12 +123,14 @@ class _WelcomePageState extends State<WelcomePage> {
       if (widget.isFromRestore) {
         Navigator.push<dynamic>(
           context,
-          MaterialPageRoute<dynamic>(builder: (BuildContext context) => RestoreSeedPage()),
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => RestoreSeedPage()),
         );
       } else {
         Navigator.push<dynamic>(
           context,
-          MaterialPageRoute<dynamic>(builder: (BuildContext context) => NewAccountPage()),
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => NewAccountPage()),
         );
       }
     }
