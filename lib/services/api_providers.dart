@@ -55,6 +55,17 @@ class ApiProvider {
     return res;
   }
 
+  ErrorString checkErrorElectrumsDiconnected(dynamic value) {
+    if (value is ErrorString) {
+      if (value.error.contains('All electrums are currently disconnected')) {
+        value.error =
+            'All electrums are currently disconnected, please check your internet connection';
+        return value;
+      }
+    }
+    return value;
+  }
+  
   ErrorString _catchErrorString(String key, dynamic e, String message) {
     Log.println(key, e);
     return ErrorString(error: message);
@@ -104,7 +115,8 @@ class ApiProvider {
             .post(url, body: getBuyToJson(userBody.body))
             .then((Response r) => _saveRes('postBuy', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
-            .catchError((dynamic e) => errorStringFromJson(res.body))
+            .catchError((dynamic e) => errorStringFromJson(res.body)
+                .then(checkErrorElectrumsDiconnected))
             .catchError((dynamic e) =>
                 _catchErrorString('postBuy', e, 'Error on post buy'));
       });
@@ -179,8 +191,8 @@ class ApiProvider {
 
   Future<dynamic> getRecentSwaps(
           http.Client client, GetRecentSwap body) async =>
-      await _assertUserpass(client, body).then<dynamic>((UserpassBody userBody) =>
-          userBody.client
+      await _assertUserpass(client, body).then<dynamic>(
+          (UserpassBody userBody) => userBody.client
               .post(url, body: getRecentSwapToJson(userBody.body))
               .then((Response r) => _saveRes('getRecentSwaps', r))
               .then<dynamic>((Response res) => recentSwapsFromJson(res.body))
@@ -188,8 +200,8 @@ class ApiProvider {
                   'getRecentSwaps', e, 'Error on get recent swaps')));
 
   Future<dynamic> getMyOrders(http.Client client, BaseService body) async =>
-      await _assertUserpass(client, body).then<dynamic>((UserpassBody userBody) =>
-          userBody.client
+      await _assertUserpass(client, body).then<dynamic>(
+          (UserpassBody userBody) => userBody.client
               .post(url, body: baseServiceToJson(userBody.body))
               .then((Response r) => _saveRes('getMyOrders', r))
               .then<dynamic>((Response res) => ordersFromJson(res.body))
@@ -213,23 +225,23 @@ class ApiProvider {
           (UserpassBody userBody) => userBody.client
               .post(url, body: baseServiceToJson(userBody.body))
               .then((Response r) => _saveRes('getCoinToKickStart', r))
-              .then<dynamic>((Response res) => coinToKickStartFromJson(res.body))
+              .then<dynamic>(
+                  (Response res) => coinToKickStartFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'getCoinToKickStart', e, 'Error on get coin to kick start')));
 
   Future<dynamic> postRawTransaction(
           http.Client client, GetSendRawTransaction body) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getSendRawTransactionToJson(userBody.body))
-              .then((Response r) => _saveRes('postRawTransaction', r))
-              .then((Response res) =>
-                  sendRawTransactionResponseFromJson(res.body))
-              .then((SendRawTransactionResponse data) =>
-                  data.txHash.isEmpty ? errorStringFromJson(res.body) : data)
-              .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'postRawTransaction', e, 'Error on post raw transaction')));
+      await _assertUserpass(client, body).then<dynamic>((UserpassBody userBody) => userBody
+          .client
+          .post(url, body: getSendRawTransactionToJson(userBody.body))
+          .then((Response r) => _saveRes('postRawTransaction', r))
+          .then((Response res) => sendRawTransactionResponseFromJson(res.body))
+          .then((SendRawTransactionResponse data) =>
+              data.txHash.isEmpty ? errorStringFromJson(res.body) : data)
+          .catchError((dynamic e) => errorStringFromJson(res.body))
+          .catchError((dynamic e) => _catchErrorString(
+              'postRawTransaction', e, 'Error on post raw transaction')));
 
   Future<dynamic> postWithdraw(http.Client client, GetWithdraw body) async =>
       await _assertUserpass(client, body).then<dynamic>(
@@ -251,8 +263,7 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'getTradeFee', e, 'Error on get tradeFee')));
 
-  Future<dynamic> getVersionMM2(
-          http.Client client, BaseService body) async =>
+  Future<dynamic> getVersionMM2(http.Client client, BaseService body) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: baseServiceToJson(userBody.body))

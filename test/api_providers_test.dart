@@ -62,10 +62,12 @@ void main() {
           const TypeMatcher<DisableCoin>());
     });
 
-    test('throws an exception if the http call completes with an error', () async{
+    test('throws an exception if the http call completes with an error',
+        () async {
       when(client.post(url, body: getDisableCoinToJson(getDisableCoin)))
           .thenAnswer((_) async => http.Response('Not Found', 404));
-      expect(await ApiProvider().disableCoin(client, getDisableCoin), const TypeMatcher<ErrorString>());
+      expect(await ApiProvider().disableCoin(client, getDisableCoin),
+          const TypeMatcher<ErrorString>());
     });
 
     test(
@@ -1074,6 +1076,34 @@ void main() {
       ''', 200));
       expect(await ApiProvider().postBuy(client, body),
           const TypeMatcher<ErrorString>());
+    });
+
+    test('returns a ErrorString if the http call completes with error',
+        () async {
+      when(client.post(url, body: getBuyToJson(body)))
+          .thenAnswer((_) async => http.Response('''
+            {
+              "error":"rpc:284] utxo:1242] JsonRpcError { request: JsonRpcRequest { jsonrpc: \\"2.0\\", id: \\"415\\", method: \\"blockchain.scripthash.get_balance\\", params: [String(\\"c8c99bc205666243d60bd9a7b5bcfad37847a08297bd1cb4e7822685ede8044a\\")] }, error: Transport(\\"rpc_clients:685] All electrums are currently disconnected\\") }"
+            }
+        ''', 200));
+
+      final ErrorString error = await ApiProvider().postBuy(client, body);
+      expect(error.error,
+          'All electrums are currently disconnected, please check your internet connection');
+    });
+
+    test('returns a ErrorString if the http call completes with error',
+        () async {
+      when(client.post(url, body: getBuyToJson(body)))
+          .thenAnswer((_) async => http.Response('''
+            {
+              "error":"rpc:284] utxo:1242] JsonRpcError { request: JsonRpcRequest { jsonrpc: \"2.0\\", id: \\"415\\", method: \\"blockchain.scripthash.get_balance\\", params: [String(\\"c8c99bc205666243d60bd9a7b5bcfad37847a08297bd1cb4e7822685ede8044a\\")] }, error: Transport(\\"rpc_clients:685] All electrums are currently disconnected\\") }"
+            }
+        ''', 200));
+
+      final ErrorString error = await ApiProvider().postBuy(client, body);
+      expect(error.error,
+          'Error on post buy');
     });
   });
 
