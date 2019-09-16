@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-ErrorString errorStringFromJson(String str) =>
+Future<ErrorString> errorStringFromJson(String str) async =>
     ErrorString.fromJson(json.decode(str));
 
 String errorStringToJson(ErrorString data) => json.encode(data.toJson());
