@@ -170,8 +170,8 @@ Future<bool> authenticateBiometrics(
 
     try {
       didAuthenticate = await localAuth.authenticateWithBiometrics(
-        stickyAuth: true,
-        localizedReason: AppLocalizations.of(context).lockScreenAuth);
+          stickyAuth: true,
+          localizedReason: AppLocalizations.of(context).lockScreenAuth);
     } on PlatformException catch (e) {
       print(e.message);
     }
@@ -217,14 +217,20 @@ Future<void> showConfirmationRemoveCoin(
               ])),
           actions: <Widget>[
             FlatButton(
-              child: Text(AppLocalizations.of(context).cancel),
+              child: Text(
+                AppLocalizations.of(context).cancel.toUpperCase(),
+                style: Theme.of(context).textTheme.button,
+              ),
               onPressed: () {
-                Navigator.of(mContext).pop();
+                Navigator.of(context).pop();
               },
             ),
             RaisedButton(
               color: Theme.of(context).errorColor,
-              child: Text(AppLocalizations.of(context).confirm),
+              child: Text(
+                AppLocalizations.of(context).confirm.toUpperCase(),
+                style: Theme.of(context).textTheme.button,
+              ),
               onPressed: () async {
                 await coinsBloc.removeCoin(coin).then((dynamic value) {
                   if (value is ErrorDisableCoinActiveSwap) {
@@ -238,7 +244,8 @@ Future<void> showConfirmationRemoveCoin(
                               .orderCancel(value.result.coin));
                     }
                   }
-                }).then((_) => Navigator.of(mContext).pop());
+                });
+                Navigator.of(context).pop();
               },
             )
           ],

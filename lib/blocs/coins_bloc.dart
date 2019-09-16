@@ -177,9 +177,10 @@ class CoinsBloc implements BlocBase {
     coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
   }
 
-  Future<void> removeCoinLocal(Coin coin, dynamic disableCoinRes) async{
+  Future<void> removeCoinLocal(Coin coin, dynamic disableCoinRes) async {
     if (disableCoinRes is DisableCoin) {
-      coinBalance.removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
+      coinBalance
+          .removeWhere((CoinBalance item) => coin.abbr == item.coin.abbr);
       updateCoins(coinBalance);
       await removeJsonCoin(<Coin>[coin]);
     }
@@ -447,24 +448,29 @@ class CoinsBloc implements BlocBase {
       final List<Coin> coins = await coinsBloc.readJsonCoin();
       final List<Future<dynamic>> getAllBalances = <Future<dynamic>>[];
 
-      for (Coin coin in coins) {
-        getAllBalances.add(_getBalanceForCoin(coin));
+      if (coins.isEmpty) {
+        resetCoinBalance();
+      } else {
+        for (Coin coin in coins) {
+          getAllBalances.add(_getBalanceForCoin(coin));
+        }
+
+        try {
+          await Future.wait<dynamic>(getAllBalances)
+              .then((List<dynamic> onValue) {
+            for (dynamic balance in onValue) {
+              if (balance is CoinBalance &&
+                  balance.balance.address != null &&
+                  balance.balance.address.isNotEmpty) {
+                updateOneCoin(balance);
+              }
+            }
+          });
+        } catch (e) {
+          Log.println('', e);
+        }
       }
 
-      try {
-        await Future.wait<dynamic>(getAllBalances)
-            .then((List<dynamic> onValue) {
-          for (dynamic balance in onValue) {
-            if (balance is CoinBalance &&
-                balance.balance.address != null &&
-                balance.balance.address.isNotEmpty) {
-              updateOneCoin(balance);
-            }
-          }
-        });
-      } catch (e) {
-        Log.println('', e);
-      }
       onActivateCoins = false;
     }
   }
