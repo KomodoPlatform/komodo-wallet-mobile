@@ -124,6 +124,8 @@ class AppLocalizations {
       Intl.message('Not enough balance', name: 'errorAmountBalance');
   String get errorNotAValidAddress =>
       Intl.message('Not a valid address', name: 'errorNotAValidAddress');
+  String get errorNotAValidAddressSegWit =>
+      Intl.message('Segwit addresses are not supported (yet)', name: 'errorNotAValidAddressSegWit');
   String get toAddress => Intl.message('To address:', name: 'toAddress');
   String get receive => Intl.message('RECEIVE', name: 'receive');
   String get send => Intl.message('SEND', name: 'send');

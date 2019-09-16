@@ -368,8 +368,6 @@ class _CoinDetailState extends State<CoinDetail> {
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
-              Log.println('', tx.result.syncStatus.state);
-              Log.println('', 'START TIMER');
               timer ??= Timer.periodic(const Duration(seconds: 15), (_) {
                 _refresh();
               });
