@@ -104,7 +104,15 @@ class ApiProvider {
             .post(url, body: getBuyToJson(userBody.body))
             .then((Response r) => _saveRes('postBuy', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
-            .catchError((dynamic e) => errorStringFromJson(res.body))
+            .catchError((dynamic e) {
+              print(res.body);
+              final ErrorString errorString = errorStringFromJson(res.body);
+              if (errorString.error.contains('All electrums are currently disconnected')) {
+                errorString.error = 'All electrums are currently disconnected, please check your internet connection';
+                return errorString;
+              }
+              return errorString;
+              })
             .catchError((dynamic e) =>
                 _catchErrorString('postBuy', e, 'Error on post buy'));
       });
