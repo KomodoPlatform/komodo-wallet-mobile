@@ -3,7 +3,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 
 class EncryptionTool {
-  final FlutterSecureStorage storage = const FlutterSecureStorage();
+  final FlutterSecureStorage storage = FlutterSecureStorage();
 
   String keyPassword(KeyEncryption key, Wallet wallet) =>
       'password${key.toString()}${wallet.name}${wallet.id}';
