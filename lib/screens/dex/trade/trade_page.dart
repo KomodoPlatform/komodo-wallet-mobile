@@ -11,6 +11,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
@@ -273,17 +274,29 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<Decimal> getTxFee() async {
     try {
-      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
+      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
           http.Client(), GetTradeFee(coin: currentCoinBalance.coin.abbr));
-      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
-      Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
-      if (swapBloc.receiveCoin != null) {
-        if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
-          txFee += await getERCfee(swapBloc.receiveCoin);
+      if (tradeFeeResponse is TradeFee) {
+        final double tradeFee = double.parse(tradeFeeResponse.result.amount);
+
+        Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
+        if (swapBloc.receiveCoin != null) {
+          if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
+            txFee += await getERCfee(swapBloc.receiveCoin);
+          }
         }
+        return txFee;
+      } 
+      else {
+        if (tradeFeeResponse is ErrorString) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            duration: const Duration(seconds: 2),
+            content: Text(tradeFeeResponse.error),
+          ));
+        }
+        return Decimal.parse('0');
       }
-      return txFee;
     } catch (e) {
       Log.println('', e);
       rethrow;
