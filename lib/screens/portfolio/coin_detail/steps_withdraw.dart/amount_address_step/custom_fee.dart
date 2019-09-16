@@ -111,7 +111,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                   style: Theme.of(context).textTheme.body1,
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Theme.of(context).primaryColorLight)),
@@ -155,7 +155,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
             style: Theme.of(context).textTheme.body1,
             textAlign: TextAlign.end,
             decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 enabledBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Theme.of(context).primaryColorLight)),
@@ -216,7 +216,7 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
               style: Theme.of(context).textTheme.body1,
               textAlign: TextAlign.end,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Theme.of(context).primaryColorLight)),

@@ -22,7 +22,6 @@ class CustomTextField extends StatefulWidget {
   CustomTextFieldState createState() {
     return CustomTextFieldState();
   }
-
 }
 
 class CustomTextFieldState extends State<CustomTextField> {
@@ -37,7 +36,7 @@ class CustomTextFieldState extends State<CustomTextField> {
       style: Theme.of(context).textTheme.body1,
       decoration: InputDecoration(
           errorText: widget.errorText,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           enabledBorder: OutlineInputBorder(
               borderSide:
                   BorderSide(color: Theme.of(context).primaryColorLight)),

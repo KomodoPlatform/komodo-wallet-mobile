@@ -251,8 +251,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             backgroundColor: Theme.of(context).backgroundColor,
             body: _children[snapshot.data],
             bottomNavigationBar: Container(
-              decoration: BoxDecoration(
-                boxShadow: const <BoxShadow>[
+              decoration: const BoxDecoration(
+                boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: Colors.black,
                     blurRadius: 10.0, // has the effect of softening the shadow

@@ -3,7 +3,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 
 class EncryptionTool {
-  FlutterSecureStorage storage = const FlutterSecureStorage();
+  final storage = new FlutterSecureStorage();
 
   String keyPassword(KeyEncryption key, Wallet wallet) =>
       'password${key.toString()}${wallet.name}${wallet.id}';
@@ -25,8 +25,7 @@ class EncryptionTool {
   }
 
   Future<String> _computeHash(String data) async =>
-      await PasswordHash.hashStorage(data)
-      .catchError((dynamic e) => data);
+      await PasswordHash.hashStorage(data).catchError((dynamic e) => data);
 
   Future<void> writeData(KeyEncryption key, Wallet wallet, String password,
           String data) async =>

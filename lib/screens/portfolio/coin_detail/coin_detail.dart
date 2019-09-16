@@ -289,18 +289,20 @@ class _CoinDetailState extends State<CoinDetail> {
           elevation: elevationHeader,
           actions: <Widget>[
             IconButton(
-              icon: isDeleteLoading ? Container(
-                height: 20,
-                width: 20,
-                child: const CircularProgressIndicator(
-                  strokeWidth: 1.5,
-                ),) : Icon(Icons.delete),
+              icon: isDeleteLoading
+                  ? Container(
+                      height: 20,
+                      width: 20,
+                      child: const CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                      ),
+                    )
+                  : Icon(Icons.delete),
               onPressed: () async {
                 setState(() {
                   isDeleteLoading = true;
                 });
-                showConfirmationRemoveCoin(
-                        context, widget.coinBalance.coin)
+                showConfirmationRemoveCoin(context, widget.coinBalance.coin)
                     .then((_) {
                   setState(() {
                     isDeleteLoading = false;
@@ -433,7 +435,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: const CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
                   if (snapshot.data is Transactions) {
                     final Transactions transactions = snapshot.data;
@@ -877,8 +879,8 @@ class _CoinDetailState extends State<CoinDetail> {
               listSteps.add(Container(
                   height: 100,
                   width: double.infinity,
-                  child: Center(
-                    child: const CircularProgressIndicator(
+                  child: const Center(
+                    child: CircularProgressIndicator(
                       strokeWidth: 2,
                     ),
                   )));

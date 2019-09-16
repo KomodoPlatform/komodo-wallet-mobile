@@ -121,7 +121,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                             enableInteractiveSelection: false,
                             style: Theme.of(context).textTheme.body1,
                             decoration: InputDecoration(
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Theme.of(context)
@@ -163,8 +163,8 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                         children: <Widget>[
                           Container(
                               height: 52,
-                              child: Center(
-                                child: const CircularProgressIndicator(),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
                               )),
                           isLoading
                               ? const SizedBox(
