@@ -10,12 +10,33 @@ class NewAccountPage extends StatefulWidget {
   _NewAccountPageState createState() => _NewAccountPageState();
 }
 
+String getSeed() {
+  int i = 0;
+  String seed = '';
+  while (i == 0) {
+    seed = bip39.generateMnemonic();
+    i = 1;
+    for (String word in seed.split(' ')) {
+      try {
+        seed
+            .split(' ')
+            .singleWhere((String seedelement) => seedelement == word);
+      } catch (e) {
+        if (e.toString().contains('Too many elements')) {
+          i = 0;
+        }
+      }
+    }
+  }
+  return seed;
+}
+
 class _NewAccountPageState extends State<NewAccountPage> {
   String seed = '';
 
   @override
   void initState() {
-    seed = bip39.generateMnemonic();
+    seed = getSeed();
     super.initState();
   }
 
@@ -80,7 +101,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 ),
                 onTap: () {
                   setState(() {
-                    seed = bip39.generateMnemonic();
+                    seed = getSeed();
                   });
                 },
               ),
