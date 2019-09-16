@@ -22,10 +22,15 @@ class CoinDetailBloc implements BlocBase {
   Sink<String> get _inAmountToSend => _amountToSendController.sink;
   Stream<String> get outAmountToSend => _amountToSendController.stream;
 
+  bool isCancel = false;
 
   @override
   void dispose() {
     _customFeeController.close();
+  }
+
+  void setIsCancel(bool isCancel) {
+    this.isCancel = isCancel;
   }
 
   void setCustomFee(Fee fee) {

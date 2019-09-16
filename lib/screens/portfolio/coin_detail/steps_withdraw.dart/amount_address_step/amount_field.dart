@@ -78,6 +78,9 @@ class _AmountFieldState extends State<AmountField> {
                   labelText: AppLocalizations.of(context).amount),
               // The validator receives the text the user has typed in
               validator: (String value) {
+                if (value.isEmpty && coinsDetailBloc.isCancel) {
+                  return null;
+                }
                 value = value.replaceAll(',', '.');
 
                 if (value.isEmpty || double.parse(value) <= 0) {

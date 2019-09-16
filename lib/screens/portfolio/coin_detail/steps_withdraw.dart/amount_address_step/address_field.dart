@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -62,6 +63,10 @@ class _AddressFieldState extends State<AddressField> {
                   labelText: AppLocalizations.of(context).addressSend),
               // The validator receives the text the user has typed in
               validator: (String value) {
+                print(coinsDetailBloc.isCancel);
+                if (value.isEmpty && coinsDetailBloc.isCancel) {
+                  return null;
+                }
                 if (value.isEmpty) {
                   return AppLocalizations.of(context).errorValueNotEmpty;
                 }
@@ -75,6 +80,10 @@ class _AddressFieldState extends State<AddressField> {
                     Log.println('', bs58check.encode(decoded));
                   } catch (e) {
                     Log.println('', e);
+                    if (value.length > 3 && value.startsWith('bc1')) {
+                      return AppLocalizations.of(context)
+                          .errorNotAValidAddressSegWit;
+                    }
                     return AppLocalizations.of(context).errorNotAValidAddress;
                   }
                 }

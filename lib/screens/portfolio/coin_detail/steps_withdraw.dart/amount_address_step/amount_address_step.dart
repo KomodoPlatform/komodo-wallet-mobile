@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,8 @@ class AmountAddressStep extends StatefulWidget {
       this.balance,
       this.isERCToken = false,
       this.onConfirm,
-      this.onCancel, this.coin})
+      this.onCancel,
+      this.coin})
       : super(key: key);
 
   final Function onCancel;
@@ -42,6 +44,7 @@ class AmountAddressStep extends StatefulWidget {
 class _AmountAddressStepState extends State<AmountAddressStep> {
   String barcode = '';
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isCancel = false;
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +77,19 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                 Expanded(
                   child: SecondaryButton(
                     text: AppLocalizations.of(context).cancel,
-                    onPressed: widget.onCancel,
+                    onPressed: () {
+                      widget.amountController.clear();
+                      widget.addressController.clear();
+                      coinsDetailBloc.setIsCancel(true);
+                      formKey.currentState.validate();
+                      coinsDetailBloc.setIsCancel(false);
+                      widget.onCancel();
+                    },
                   ),
                 ),
-                const SizedBox(width: 16,),
+                const SizedBox(
+                  width: 16,
+                ),
                 Expanded(child: _buildWithdrawButton(context)),
               ],
             ),
