@@ -34,9 +34,9 @@ dev_dependencies:
   barcode_scan: ^1.0.0
   shared_preferences: ^0.5.3+4
   bip39:
-    path: ../bip39
+    git: https://github.com/KomodoPlatform/bip39-dart
   pin_code_view:
-    path: ../pin_code_view
+    git: https://github.com/KomodoPlatform/pin_code_view
   # share: ^0.6.0+1
   crypto: ^2.0.6
   path_provider: ^1.3.0
@@ -44,7 +44,9 @@ dev_dependencies:
   bs58check: ^1.0.1
   url_launcher: ^5.0.2
   share:
-    path: ../plugins/packages/share
+    git:
+      url: https://github.com/KomodoPlatform/plugins
+      path: packages/share/
   local_auth: ^0.6.0
   flutter_svg: ^0.13.1
   keccak: ^1.0.3
