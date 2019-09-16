@@ -238,11 +238,6 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
         .loginWithPassword(context, controller.text, widget.wallet)
         .then((String data) async {
       await widget.onSuccess(data, controller.text);
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/',
-        (_) => false,
-      );
       setState(() {
         isLoading = false;
       });
