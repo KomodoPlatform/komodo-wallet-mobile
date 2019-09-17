@@ -188,6 +188,7 @@ Future<bool> authenticateBiometrics(
           !MarketMakerService().ismm2Running) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
+      
     }
     return didAuthenticate;
   } else {

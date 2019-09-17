@@ -180,7 +180,7 @@ class _LockScreenState extends State<LockScreen> {
                                         ],
                                       );
                                     } else {
-                                      return Container();
+                                      return widget.child;
                                     }
                                   });
                             }
