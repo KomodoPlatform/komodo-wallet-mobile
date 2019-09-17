@@ -106,6 +106,7 @@ void main() {
       'VRSC',
       'RFOX',
       'ZILLA',
+      'HUSH',
       'RICK',
       'MORTY',
       'ETH',
