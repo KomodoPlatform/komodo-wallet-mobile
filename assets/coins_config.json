@@ -267,6 +267,25 @@
     ]
   },
   {
+    "name": "Axe",
+    "type": "utxo",
+    "address": "electrum1.cipig.net",
+    "port": 10057,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "AXE",
+    "coingeckoId": "axe",
+    "colorCoin": "0xFFe93d55",
+    "serverList": [
+      "electrum3.cipig.net:10057",
+      "electrum2.cipig.net:10057",
+      "electrum1.cipig.net:10057"
+    ],
+    "explorerUrl": [
+      "https://insight.axerunners.com/"
+    ]
+  },
+  {
     "name": "VerusCoin",
     "type": "utxo",
     "address": "electrum1.cipig.net",
