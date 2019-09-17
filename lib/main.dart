@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
     if (isInDebugMode) {
       MarketMakerService()
           .initMarketMaker()
-          .then((_) => _runBinMm2UserAlreadyLog);
+          .then((_) => _runBinMm2UserAlreadyLog());
     }
     super.initState();
   }
