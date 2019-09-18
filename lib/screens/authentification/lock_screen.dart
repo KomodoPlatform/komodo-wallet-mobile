@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -153,27 +154,6 @@ class _LockScreenState extends State<LockScreen> {
                                         switchPinBiometric.data) {
                                       return Stack(
                                         children: <Widget>[
-                                          FutureBuilder<bool>(
-                                            future: checkBiometrics(),
-                                            builder: (BuildContext context,
-                                                AsyncSnapshot<dynamic>
-                                                    snapshot) {
-                                              if (snapshot.hasData &&
-                                                  snapshot.data &&
-                                                  widget.pinStatus ==
-                                                      PinStatus.NORMAL_PIN) {
-                                                Log.println('', snapshot.data);
-                                                if (isLogin.hasData &&
-                                                    isLogin.data) {
-                                                  authenticateBiometrics(
-                                                      context,
-                                                      widget.pinStatus);
-                                                }
-                                                return Container();
-                                              }
-                                              return Container();
-                                            },
-                                          ),
                                           BiometricPage(
                                             pinStatus: widget.pinStatus,
                                           ),
@@ -223,15 +203,40 @@ class _LockScreenState extends State<LockScreen> {
 }
 
 class BiometricPage extends StatefulWidget {
-  const BiometricPage({Key key, this.pinStatus}) : super(key: key);
+  const BiometricPage({Key key, this.pinStatus, this.onSuccess})
+      : super(key: key);
 
   final PinStatus pinStatus;
+  final Function onSuccess;
 
   @override
   _BiometricPageState createState() => _BiometricPageState();
 }
 
 class _BiometricPageState extends State<BiometricPage> {
+  IconData iconData = Icons.fingerprint;
+
+  @override
+  void initState() {
+    checkBiometrics().then((bool onValue) async {
+      if (onValue && (widget.pinStatus == PinStatus.NORMAL_PIN)) {
+        final LocalAuthentication auth = LocalAuthentication();
+        final List<BiometricType> availableBiometrics =
+            await auth.getAvailableBiometrics();
+
+        if (Platform.isIOS) {
+          if (availableBiometrics.contains(BiometricType.face)) {
+            setState(() {
+              iconData = Icons.visibility;
+            });
+          }
+        }
+        authenticateBiometrics(context, widget.pinStatus);
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -247,7 +252,7 @@ class _BiometricPageState extends State<BiometricPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(
-                Icons.fingerprint,
+                iconData,
                 size: 56,
               ),
               const SizedBox(

@@ -177,6 +177,7 @@ Future<bool> authenticateBiometrics(
     }
 
     if (didAuthenticate) {
+
       if (pinStatus == PinStatus.DISABLED_PIN) {
         SharedPreferences.getInstance().then((SharedPreferences data) {
           data.setBool('switch_pin', false);
@@ -188,7 +189,6 @@ Future<bool> authenticateBiometrics(
           !MarketMakerService().ismm2Running) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
-      
     }
     return didAuthenticate;
   } else {
