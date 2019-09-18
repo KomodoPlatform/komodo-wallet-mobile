@@ -228,15 +228,20 @@ class _SettingPageState extends State<SettingPage> {
                                 onChanged: (bool dataSwitch) {
                                   setState(() {
                                     if (snapshot.data) {
-                                      Navigator.push<dynamic>(
-                                          context,
-                                          MaterialPageRoute<dynamic>(
-                                              builder: (BuildContext context) =>
-                                                  LockScreen(
-                                                    context: context,
-                                                    pinStatus: PinStatus
-                                                        .DISABLED_PIN_BIOMETRIC,
-                                                  )));
+                                      authenticateBiometrics(context,
+                                              PinStatus.DISABLED_PIN_BIOMETRIC)
+                                          .then((bool onValue) {
+                                        if (onValue) {
+                                          setState(() {
+                                            SharedPreferences.getInstance()
+                                                .then((SharedPreferences data) {
+                                              data.setBool(
+                                                  'switch_pin_biometric',
+                                                  false);
+                                            });
+                                          });
+                                        }
+                                      });
                                     } else {
                                       SharedPreferences.getInstance()
                                           .then((SharedPreferences data) {
