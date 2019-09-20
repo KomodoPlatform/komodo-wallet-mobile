@@ -149,6 +149,17 @@ void showMessage(BuildContext mContext, String error) {
   ));
 }
 
+void showErrorMessage(BuildContext mContext, String error) {
+  Scaffold.of(mContext).showSnackBar(SnackBar(
+    duration: const Duration(seconds: 2),
+    backgroundColor: Theme.of(mContext).errorColor,
+    content: Text(
+      error,
+      style: Theme.of(mContext).textTheme.body1,
+    ),
+  ));
+}
+
 Future<bool> checkBiometrics() async {
   final LocalAuthentication auth = LocalAuthentication();
   bool canCheckBiometrics = false;

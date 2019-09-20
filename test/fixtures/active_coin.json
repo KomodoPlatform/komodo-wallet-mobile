@@ -1,0 +1,8 @@
+{
+    "coin": "HELLOWORLD",
+    "address": "RQNUR7qLgPUgZxYbvU9x5Kw93f6LU898CQ",
+    "balance": "10",
+    "locked_by_swaps": "0",
+    "required_confirmations": 1,
+    "result": "success"
+}

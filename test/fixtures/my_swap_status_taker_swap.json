@@ -1,0 +1,233 @@
+{
+    "result": {
+        "error_events": [
+            "StartFailed",
+            "NegotiateFailed",
+            "TakerFeeSendFailed",
+            "MakerPaymentValidateFailed",
+            "TakerPaymentTransactionFailed",
+            "TakerPaymentDataSendFailed",
+            "TakerPaymentWaitForSpendFailed",
+            "MakerPaymentSpendFailed",
+            "TakerPaymentRefunded",
+            "TakerPaymentRefundFailed"
+        ],
+        "events": [
+            {
+                "event": {
+                    "data": {
+                        "lock_duration": 31200,
+                        "maker": "5a2f1c468b7083c4f7649bf68a50612ffe7c38b1d62e1ece3829ca88e7e7fd12",
+                        "maker_amount": "0.01",
+                        "maker_coin": "BEER",
+                        "maker_coin_start_block": 154187,
+                        "maker_payment_confirmations": 1,
+                        "maker_payment_wait": 1561492367,
+                        "my_persistent_pub": "02031d4256c4bc9f99ac88bf3dba21773132281f65f9bf23a59928bce08961e2f3",
+                        "started_at": 1561481967,
+                        "taker_amount": "0.01",
+                        "taker_coin": "BCH",
+                        "taker_coin_start_block": 588576,
+                        "taker_payment_confirmations": 1,
+                        "taker_payment_lock": 1561513167,
+                        "uuid": "491df802-43c3-4c73-85ef-1c4c49315ac6"
+                    },
+                    "type": "Started"
+                },
+                "timestamp": 1561481968393
+            },
+            {
+                "event": {
+                    "data": {
+                        "maker_payment_locktime": 1561544367,
+                        "maker_pubkey": "02631dcf1d4b1b693aa8c2751afc68e4794b1e5996566cfc701a663f8b7bbbe640",
+                        "secret_hash": "ba5128bcca5a2f7d2310054fb8ec51b80f352ef3"
+                    },
+                    "type": "Negotiated"
+                },
+                "timestamp": 1561482029079
+            },
+            {
+                "event": {
+                    "data": {
+                        "block_height": 0,
+                        "coin": "BCH",
+                        "fee_details": {
+                            "amount": "0.00001"
+                        },
+                        "from": [
+                            "1WxswvLF2HdaDr4k77e92VjaXuPQA8Uji"
+                        ],
+                        "internal_id": "9dd7c0c8124315d7884fb0c7bf8dbfd3f3bd185c62a2ee42dfbc1e3b74f21a0e",
+                        "my_balance_change": "0.00002287",
+                        "received_by_me": "0.0155402",
+                        "spent_by_me": "0.01556307",
+                        "timestamp": 0,
+                        "to": [
+                            "1KRhTPvoxyJmVALwHFXZdeeWFbcJSbkFPu",
+                            "1WxswvLF2HdaDr4k77e92VjaXuPQA8Uji"
+                        ],
+                        "total_amount": "0.01556307",
+                        "tx_hash": "9dd7c0c8124315d7884fb0c7bf8dbfd3f3bd185c62a2ee42dfbc1e3b74f21a0e",
+                        "tx_hex": "0100000001f1beda7feba9fa5c52aa38027587db50b6428bbbcc053cd4ab17461fb00b89d1000000006a473044022004ad0330210e20dea416c3ff442e50dc59970c5d1a8b4d0a7d5cc61a2edc701602204459e1ee6774f1ba8258322fff72e1e1acddeb7aed2f75657458aa3deecc9465412102031d4256c4bc9f99ac88bf3dba21773132281f65f9bf23a59928bce08961e2f3ffffffff0207050000000000001976a914ca1e04745e8ca0c60d8c5881531d51bec470743f88ac64b61700000000001976a91405aab5342166f8594baf17a7d9bef5d56744332788ac2d53125d"
+                    },
+                    "type": "TakerFeeSent"
+                },
+                "timestamp": 1561482032294
+            },
+            {
+                "event": {
+                    "data": {
+                        "block_height": 154190,
+                        "coin": "BEER",
+                        "fee_details": {
+                            "amount": "0.00001"
+                        },
+                        "from": [
+                            "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh"
+                        ],
+                        "internal_id": "ba36c890785e3e9d4b853310ad4d79ce8175e7c4184a398128b37339321672f4",
+                        "my_balance_change": "0",
+                        "received_by_me": "0",
+                        "spent_by_me": "0",
+                        "timestamp": 1561482056,
+                        "to": [
+                            "RJTYiYeJ8eVvJ53n2YbrVmxWNNMVZjDGLh",
+                            "bF2S8qwenfVZbvUU6dWyV3oXMxEP7sHLbr"
+                        ],
+                        "total_amount": "0.99999",
+                        "tx_hash": "ba36c890785e3e9d4b853310ad4d79ce8175e7c4184a398128b37339321672f4",
+                        "tx_hex": "0400008085202f890197f703d245127e5b88471791f2820d29152046f4be133907afa8ac5542911190000000006b48304502210090e1c52aa2eba12b7c71fceab83b77f1456830a3dee1b956a831ecee5b5b353602205353a48c0129eae44b7c06a1f1651b9ceb8642374a1d5224a1e907240a978ad2012102631dcf1d4b1b693aa8c2751afc68e4794b1e5996566cfc701a663f8b7bbbe640ffffffff0240420f000000000017a914192f34528c6c8cd11eefebec27f195f3894eb11187f096e605000000001976a91464ae8510aac9546d5e7704e31ce177451386455588ac4353125d000000000000000000000000000000"
+                    },
+                    "type": "MakerPaymentReceived"
+                },
+                "timestamp": 1561482073479
+            },
+            {
+                "event": {
+                    "type": "MakerPaymentWaitConfirmStarted"
+                },
+                "timestamp": 1561482073482
+            },
+            {
+                "event": {
+                    "type": "MakerPaymentValidatedAndConfirmed"
+                },
+                "timestamp": 1561482074296
+            },
+            {
+                "event": {
+                    "data": {
+                        "block_height": 0,
+                        "coin": "BCH",
+                        "fee_details": {
+                            "amount": "0.00001"
+                        },
+                        "from": [
+                            "1WxswvLF2HdaDr4k77e92VjaXuPQA8Uji"
+                        ],
+                        "internal_id": "bc98def88d93c270ae3cdb8a098d1b939ca499bf98f7a22b97be36bca13cdbc7",
+                        "my_balance_change": "-0.01001",
+                        "received_by_me": "0.0055302",
+                        "spent_by_me": "0.0155402",
+                        "timestamp": 0,
+                        "to": [
+                            "1WxswvLF2HdaDr4k77e92VjaXuPQA8Uji",
+                            "31k5nkp5G9QHq3zZFFba6Kq3m5FEHstkrd"
+                        ],
+                        "total_amount": "0.0155402",
+                        "tx_hash": "bc98def88d93c270ae3cdb8a098d1b939ca499bf98f7a22b97be36bca13cdbc7",
+                        "tx_hex": "01000000010e1af2743b1ebcdf42eea2625c18bdf3d3bf8dbfc7b04f88d7154312c8c0d79d010000006a4730440220030266d6d6435a4772cce2cebd91b6d4afffb920e23e9bc761434f105349cda002202335a050e2f28e4ca28862868141d3d7b553f3d30bceb83724ad70a32d04b0bd412102031d4256c4bc9f99ac88bf3dba21773132281f65f9bf23a59928bce08961e2f3ffffffff0240420f000000000017a9140094798ed4100852f10a9ad85990f19b364f4c2d873c700800000000001976a91405aab5342166f8594baf17a7d9bef5d56744332788ac5a53125d"
+                    },
+                    "type": "TakerPaymentSent"
+                },
+                "timestamp": 1561482078908
+            },
+            {
+                "event": {
+                    "data": {
+                        "secret": "66ed6c24bbb4892634eac4ce1e1ad0627d6379da4443b8d656b64d49ef2aa7a3",
+                        "transaction": {
+                            "block_height": 0,
+                            "coin": "BCH",
+                            "fee_details": {
+                                "amount": "0.00001"
+                            },
+                            "from": [
+                                "31k5nkp5G9QHq3zZFFba6Kq3m5FEHstkrd"
+                            ],
+                            "internal_id": "eec643315d4495aa5feb5062344fe2474223dc0f231b610afd336f908ae99ebc",
+                            "my_balance_change": "0",
+                            "received_by_me": "0",
+                            "spent_by_me": "0",
+                            "timestamp": 0,
+                            "to": [
+                                "1ABMe2m1XphME4gaZNcjQFdJc6ttu2Gbz2"
+                            ],
+                            "total_amount": "0.01",
+                            "tx_hash": "eec643315d4495aa5feb5062344fe2474223dc0f231b610afd336f908ae99ebc",
+                            "tx_hex": "0100000001c7db3ca1bc36be972ba2f798bf99a49c931b8d098adb3cae70c2938df8de98bc00000000d747304402202e344f8c61f2f49f4d620d687d02448cfba631a8ce8c0f8ee774da177230a75902201f4a175e7fa40f26896f522b5c51c7c0485e0ad18d3221c885e8b96b52ed1cab412066ed6c24bbb4892634eac4ce1e1ad0627d6379da4443b8d656b64d49ef2aa7a3004c6b6304cfcc125db1752102031d4256c4bc9f99ac88bf3dba21773132281f65f9bf23a59928bce08961e2f3ac6782012088a914ba5128bcca5a2f7d2310054fb8ec51b80f352ef3882102631dcf1d4b1b693aa8c2751afc68e4794b1e5996566cfc701a663f8b7bbbe640ac68ffffffff01583e0f00000000001976a91464ae8510aac9546d5e7704e31ce177451386455588acfd49125d"
+                        }
+                    },
+                    "type": "TakerPaymentSpent"
+                },
+                "timestamp": 1561483355081
+            },
+            {
+                "event": {
+                    "data": {
+                        "block_height": 0,
+                        "coin": "BEER",
+                        "fee_details": {
+                            "amount": "0.00001"
+                        },
+                        "from": [
+                            "bF2S8qwenfVZbvUU6dWyV3oXMxEP7sHLbr"
+                        ],
+                        "internal_id": "858f07d0a4e74318497a6e3ff4d7b68b60ad21b5c8e90b9b485f0ddaed71d0dc",
+                        "my_balance_change": "0.00999",
+                        "received_by_me": "0.00999",
+                        "spent_by_me": "0",
+                        "timestamp": 0,
+                        "to": [
+                            "R9o9xTocqr6CeEDGDH6mEYpwLoMz6jNjMW"
+                        ],
+                        "total_amount": "0.01",
+                        "tx_hash": "858f07d0a4e74318497a6e3ff4d7b68b60ad21b5c8e90b9b485f0ddaed71d0dc",
+                        "tx_hex": "0400008085202f8901f47216323973b32881394a18c4e77581ce794dad1033854b9d3e5e7890c836ba00000000d8483045022100847a65faed4bea33c5cbccff2bee7c1292871a3b130bd2f23e696bd80c07365f02202039ea02b4463afd4f1e2b20b348d64b40aaea165f8dfb483293e2b368d536fe012066ed6c24bbb4892634eac4ce1e1ad0627d6379da4443b8d656b64d49ef2aa7a3004c6b6304af46135db1752102631dcf1d4b1b693aa8c2751afc68e4794b1e5996566cfc701a663f8b7bbbe640ac6782012088a914ba5128bcca5a2f7d2310054fb8ec51b80f352ef3882102031d4256c4bc9f99ac88bf3dba21773132281f65f9bf23a59928bce08961e2f3ac68ffffffff01583e0f00000000001976a91405aab5342166f8594baf17a7d9bef5d56744332788ac4b4a125d000000000000000000000000000000"
+                    },
+                    "type": "MakerPaymentSpent"
+                },
+                "timestamp": 1561483358319
+            },
+            {
+                "event": {
+                    "type": "Finished"
+                },
+                "timestamp": 1561483358321
+            }
+        ],
+        "my_info": {
+            "my_amount": "0.01",
+            "my_coin": "BCH",
+            "other_amount": "0.01",
+            "other_coin": "BEER",
+            "started_at": 1561481967
+        },
+        "success_events": [
+            "Started",
+            "Negotiated",
+            "TakerFeeSent",
+            "MakerPaymentReceived",
+            "MakerPaymentWaitConfirmStarted",
+            "MakerPaymentValidatedAndConfirmed",
+            "TakerPaymentSent",
+            "TakerPaymentSpent",
+            "MakerPaymentSpent",
+            "Finished"
+        ],
+        "recoverable": false,
+        "type": "Taker",
+        "uuid": "491df802-43c3-4c73-85ef-1c4c49315ac6"
+    }
+}

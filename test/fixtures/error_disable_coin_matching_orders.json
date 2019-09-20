@@ -1,0 +1,11 @@
+{
+    "error": "There're currently matching orders using RICK",
+    "orders": {
+        "matching": [
+            "d88d0a0e-f8bd-40ab-8edd-fe20801ef349"
+        ],
+        "cancelled": [
+            "c88d0a0e-f8bd-40ab-8edd-fe20801ef349"
+        ]
+    }
+}
