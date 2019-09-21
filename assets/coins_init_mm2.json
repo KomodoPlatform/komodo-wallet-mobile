@@ -11,6 +11,15 @@
         "mm2": 1
     },
     {
+        "coin": "KMD",
+        "asset": "Komodo",
+        "rpcport": 7771,
+        "mm2": 1,
+        "txfee": 1000,
+        "txversion": 4,
+        "overwintered": 1
+    },
+    {
         "coin": "QTUM",
         "name": "QTUM",
         "pubtype": 58,
@@ -64,61 +73,61 @@
         "asset": "RedFOX",
         "rpcport": 32269,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "ZILLA",
-        "name": "ZILLA",
+        "asset": "ZILLA",
         "rpcport": 10041,
-        "pubtype": 60,
-        "p2shtype": 85,
-        "wiftype": 188,
         "mm2": 1,
-        "txfee": 10000,
-        "txversion": 1,
-        "overwintered": 0
+        "txfee": 10000
     },
     {   
         "coin": "VRSC",
         "asset": "VerusCoin",
         "rpcport": 27486,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "LABS",
         "asset": "LABS",
         "mm2": 1,
         "rpcport": 40265,
-        "txfee": 10000
-    },
-    {
-        "coin": "KMD",
-        "asset": "KMD",
-        "rpcport": 7771,
-        "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "RICK",
         "asset": "RICK",
         "rpcport": 28223,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "MORTY",
         "asset": "MORTY",
         "rpcport": 63812,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "HUSH",
         "asset": "HUSH3",
         "rpcport": 18031,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "AXE",
