@@ -48,6 +48,7 @@ class SwapHistoryBloc implements BlocBase {
         final List<Swap> newSwaps = <Swap>[];
 
         for (ResultSwap swap in recentSwaps.result.swaps) {
+          print(swap.recoverable);
           final dynamic nSwap = Swap(result: swap, status: getStatusSwap(swap));
           if (nSwap is Swap) {
             if (swap.myInfo != null &&
