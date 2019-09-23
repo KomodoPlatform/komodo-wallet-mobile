@@ -58,10 +58,10 @@ class ApiProvider {
   }
 
   ErrorString injectErrorString(
-      dynamic value, String errorStr, String newStrInjected) {
+      dynamic value, String errorStr) {
     if (value is ErrorString) {
       if (value.error.contains(errorStr)) {
-        value.error = newStrInjected;
+        value.error = errorStr;
         return value;
       }
     }
@@ -139,7 +139,6 @@ class ApiProvider {
             .catchError((dynamic e) => errorStringFromJson(res.body)
                 .then((ErrorString errorString) => injectErrorString(
                     errorString,
-                    'All electrums are currently disconnected',
                     'All electrums are currently disconnected')))
             .catchError((dynamic e) =>
                 _catchErrorString('postBuy', e, 'Error on post buy'));
