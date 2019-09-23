@@ -80,7 +80,10 @@ class _AddressFieldState extends State<AddressField> {
                     Log.println('', bs58check.encode(decoded));
                   } catch (e) {
                     Log.println('', e);
-                    if (value.length > 3 && (value.startsWith('bc1') || value.startsWith('3'))) {
+                    if (value.length > 3 &&
+                        (value.startsWith('bc1') ||
+                            value.startsWith('3') ||
+                            value.startsWith('M'))) {
                       return AppLocalizations.of(context)
                           .errorNotAValidAddressSegWit;
                     }
