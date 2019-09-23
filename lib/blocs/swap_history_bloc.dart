@@ -6,7 +6,6 @@ import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -48,7 +47,6 @@ class SwapHistoryBloc implements BlocBase {
         final List<Swap> newSwaps = <Swap>[];
 
         for (ResultSwap swap in recentSwaps.result.swaps) {
-          print(swap.recoverable);
           final dynamic nSwap = Swap(result: swap, status: getStatusSwap(swap));
           if (nSwap is Swap) {
             if (swap.myInfo != null &&

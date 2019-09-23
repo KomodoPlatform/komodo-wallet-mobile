@@ -6,13 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
 
 class SwapHistory extends StatefulWidget {
   @override
@@ -246,7 +244,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                 ],
               ),
               if (widget.swap.result.recoverable)
-                recoverIsLoading ?  Padding(padding: EdgeInsets.all(16),child: Container(
+                recoverIsLoading ?  Padding(padding: const EdgeInsets.all(16),child: Container(
                   height: 25,
                   width: 25,
                   child: const CircularProgressIndicator(
