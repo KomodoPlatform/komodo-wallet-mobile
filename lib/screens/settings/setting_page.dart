@@ -650,10 +650,10 @@ class _SettingPageState extends State<SettingPage> {
         MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
         MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
       }
-      mainBloc.isUrlLaucherIsOpen = true;
-      Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
-          subject: 'My logs for the ${DateTime.now().toIso8601String()}');
     }
+    mainBloc.isUrlLaucherIsOpen = true;
+    Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
+        subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 
   Future<void> _shareFileDialog() async {
