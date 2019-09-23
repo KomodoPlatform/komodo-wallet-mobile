@@ -65,6 +65,13 @@ class Result {
       };
 }
 
+
+ResultSwap resultSwapsFromJson(String str) =>
+    ResultSwap.fromJson(json.decode(str));
+
+String resultSwapsToJson(ResultSwap data) => json.encode(data.toJson());
+
+
 class ResultSwap {
   ResultSwap({
     this.errorEvents,

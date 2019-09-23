@@ -5,11 +5,20 @@
 import 'dart:convert';
 
 Future<ErrorString> errorStringFromJson(String str) async =>
-    ErrorString.fromJson(json.decode(str));
+    removeLineFromMM2(ErrorString.fromJson(json.decode(str)));
 
 String errorStringToJson(ErrorString data) => json.encode(data.toJson());
 
-class ErrorString implements Exception{
+ErrorString removeLineFromMM2(ErrorString errorString) {
+  if (errorString.error.lastIndexOf(']') != -1) {
+    errorString.error = errorString.error
+        .substring(errorString.error.lastIndexOf(']') + 1)
+        .trim();
+  }
+  return errorString;
+}
+
+class ErrorString implements Exception {
   ErrorString({
     this.error,
   });

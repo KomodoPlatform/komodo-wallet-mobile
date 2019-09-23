@@ -68,10 +68,11 @@ class SwapHistoryBloc implements BlocBase {
             }
           }
         }
+
         return newSwaps;
       } else {
         return <Swap>[];
-      } 
+      }
     } catch (e) {
       Log.println('', e);
       return <Swap>[];

@@ -112,6 +112,8 @@ class BuildItemSwap extends StatefulWidget {
 }
 
 class _BuildItemSwapState extends State<BuildItemSwap> {
+  bool recoverIsLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final String swapStatus =
@@ -134,6 +136,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
             );
           },
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
@@ -156,7 +159,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                       child: Container(),
                     ),
                     _buildTextAmount(widget.swap.result.myInfo.otherCoin,
-                        widget.swap.result.myInfo.otherAmount)
+                        widget.swap.result.myInfo.otherAmount),
                   ],
                 ),
               ),
@@ -236,7 +239,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                     ),
                   )
                 ],
-              )
+              ),
             ],
           ),
         ));

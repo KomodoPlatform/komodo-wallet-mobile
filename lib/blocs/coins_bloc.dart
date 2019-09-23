@@ -504,7 +504,6 @@ class CoinsBloc implements BlocBase {
     final double price = await getPriceObj
         .getPrice(coin.abbr, coin.coingeckoId, 'USD')
         .timeout(const Duration(seconds: 5), onTimeout: () => 0.0);
-    Log.println('getPrice for ${coin.abbr}', price);
 
     dynamic coinBalance;
     if (balance is Balance && coin.abbr == balance.coin) {
