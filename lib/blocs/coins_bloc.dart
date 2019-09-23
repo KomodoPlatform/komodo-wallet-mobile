@@ -314,7 +314,7 @@ class CoinsBloc implements BlocBase {
           .then((dynamic _) {
         currentCoinActivate(null);
       });
-    }).timeout(const Duration(seconds: 10), onTimeout: () async {
+    }).timeout(const Duration(seconds: 30), onTimeout: () async {
       coinToactivate = null;
       Log.println('', 'Sorry, ${coin.abbr} not available.');
       currentCoinActivate(
