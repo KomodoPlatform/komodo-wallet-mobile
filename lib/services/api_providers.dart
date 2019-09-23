@@ -1,6 +1,5 @@
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
-import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 
 import '../model/active_coin.dart';
 import '../model/balance.dart';
@@ -20,7 +19,6 @@ import '../model/get_disable_coin.dart';
 import '../model/get_enable_coin.dart';
 import '../model/get_orderbook.dart';
 import '../model/get_recent_swap.dart';
-import '../model/get_recover_funds_of_swap.dart';
 import '../model/get_send_raw_transaction.dart';
 import '../model/get_setprice.dart';
 import '../model/get_swap.dart';
@@ -336,21 +334,4 @@ class ApiProvider {
               .catchError((dynamic _) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'disableCoin', e, 'Error on disable coin')));
-
-  Future<dynamic> recoverFundsOfSwap(
-    http.Client client,
-    GetRecoverFundsOfSwap body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>((UserpassBody userBody) => userBody
-          .client
-          .post(url, body: getRecoverFundsOfSwapToJson(userBody.body))
-          .then((Response r) => _saveRes('recoverFundsOfSwap', r))
-          .then<dynamic>((Response res) => recoverFundsOfSwapFromJson(res.body))
-          .catchError((dynamic _) => errorStringFromJson(res.body)
-              .then((ErrorString errorString) => injectErrorString(
-                  errorString, 'Maker payment is spent, swap is not recoverable'))
-              .then((ErrorString errorString) => injectErrorString(errorString,
-                  'Swap must be finished before recover funds attempt'))
-              .then((ErrorString errorString) => injectErrorString(errorString, 'swap data is not found')))
-          .catchError((dynamic e) => _catchErrorString('recoverFundsOfSwap', e, 'Error on recover funds of swap')));
 }
