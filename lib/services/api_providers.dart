@@ -1,6 +1,7 @@
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
+import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 
 import '../model/active_coin.dart';
 import '../model/balance.dart';
