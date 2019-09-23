@@ -14,6 +14,7 @@ import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/get_recent_swap.dart';
+import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/get_swap.dart';
@@ -23,6 +24,7 @@ import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
@@ -529,6 +531,67 @@ void main() {
       expect(errorString,
           const TypeMatcher<ErrorString>());
       expect(errorString.error, 'swap data is not found');
+    });
+  });
+
+   group('recover_funds_of_swap', () {
+    final MockClient client = MockClient();
+
+    final GetRecoverFundsOfSwap body = GetRecoverFundsOfSwap(userpass: 'test');
+
+    test('returns a RecoverFundsOfSwap if the http call completes successfully',
+        () async {
+      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+          .thenAnswer((_) async =>
+              http.Response(fixture('recover_funds_of_swap/recover_funds_of_swap.json'), 200));
+      expect(await ApiProvider().recoverFundsOfSwap(client, body),
+          const TypeMatcher<RecoverFundsOfSwap>());
+    });
+
+    test(
+        'return a ErrorString if the http call completes unsuccefully, maker payment was already spent',
+        () async {
+      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+          .thenAnswer((_) async =>
+              http.Response(fixture('recover_funds_of_swap/errors/error_swap_recover_maker.json'), 200));
+      final dynamic result =
+          await ApiProvider().recoverFundsOfSwap(client, body);
+      expect(result, const TypeMatcher<ErrorString>());
+      expect(result.error, 'Maker payment is spent, swap is not recoverable');
+    });
+
+    test(
+        'return a ErrorString if the http call completes unsuccefully, swap is not finished yet',
+        () async {
+      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+          .thenAnswer((_) async =>
+              http.Response(fixture('recover_funds_of_swap/errors/error_swap_recover.json'), 200));
+      final dynamic result =
+          await ApiProvider().recoverFundsOfSwap(client, body);
+      expect(result, const TypeMatcher<ErrorString>());
+      expect(
+          result.error, 'Swap must be finished before recover funds attempt');
+    });
+
+    test('returns a ErrorString if the http call completes with a error parsing',
+        () async {
+      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+          .thenAnswer((_) async =>
+              http.Response('Error parsing', 200));
+      expect(await ApiProvider().recoverFundsOfSwap(client, body),
+          const TypeMatcher<ErrorString>());
+    });
+
+    test('returns a ErrorString if the http call completes with a swap not found',
+        () async {
+      when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
+          .thenAnswer((_) async =>
+              http.Response(fixture('recover_funds_of_swap/errors/error_recover_swap_not_found.json'), 200));
+      final dynamic result = await ApiProvider().recoverFundsOfSwap(client, body);
+
+      expect(result.error, 'swap data is not found');
+      expect(result,
+          const TypeMatcher<ErrorString>());
     });
   });
 }

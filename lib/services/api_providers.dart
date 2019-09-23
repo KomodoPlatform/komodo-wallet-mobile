@@ -1,5 +1,7 @@
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
+import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 
 import '../model/active_coin.dart';
 import '../model/balance.dart';
@@ -56,10 +58,10 @@ class ApiProvider {
   }
 
   ErrorString injectErrorString(
-      dynamic value, String errorStr, String newStrInjected) {
+      dynamic value, String errorStr) {
     if (value is ErrorString) {
       if (value.error.contains(errorStr)) {
-        value.error = newStrInjected;
+        value.error = errorStr;
         return value;
       }
     }
@@ -137,7 +139,6 @@ class ApiProvider {
             .catchError((dynamic e) => errorStringFromJson(res.body)
                 .then((ErrorString errorString) => injectErrorString(
                     errorString,
-                    'All electrums are currently disconnected',
                     'All electrums are currently disconnected')))
             .catchError((dynamic e) =>
                 _catchErrorString('postBuy', e, 'Error on post buy'));
@@ -345,4 +346,21 @@ class ApiProvider {
               .catchError((dynamic _) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'disableCoin', e, 'Error on disable coin')));
+                  
+    Future<dynamic> recoverFundsOfSwap(
+    http.Client client,
+    GetRecoverFundsOfSwap body,
+  ) async =>
+      await _assertUserpass(client, body).then<dynamic>((UserpassBody userBody) => userBody
+          .client
+          .post(url, body: getRecoverFundsOfSwapToJson(userBody.body))
+          .then((Response r) => _saveRes('recoverFundsOfSwap', r))
+          .then<dynamic>((Response res) => recoverFundsOfSwapFromJson(res.body))
+          .catchError((dynamic _) => errorStringFromJson(res.body)
+              .then((ErrorString errorString) => injectErrorString(
+                  errorString, 'Maker payment is spent, swap is not recoverable'))
+              .then((ErrorString errorString) => injectErrorString(errorString,
+                  'Swap must be finished before recover funds attempt'))
+              .then((ErrorString errorString) => injectErrorString(errorString, 'swap data is not found')))
+          .catchError((dynamic e) => _catchErrorString('recoverFundsOfSwap', e, 'Error on recover funds of swap')));
 }

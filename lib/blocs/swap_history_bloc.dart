@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_recent_swap.dart';
+import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
@@ -28,6 +29,9 @@ class SwapHistoryBloc implements BlocBase {
   void dispose() {
     _swapsController.close();
   }
+
+  Future<dynamic> recoverFund(Swap swap) async => await ApiProvider().recoverFundsOfSwap(http.Client(),
+        GetRecoverFundsOfSwap(params: Params(uuid: swap.result.uuid)));
 
   Future<List<Swap>> updateSwaps(int limit, String fromUuid) async {
     isSwapsOnGoing = false;

@@ -80,6 +80,7 @@ class ResultSwap {
     this.successEvents,
     this.type,
     this.uuid,
+    this.recoverable
   });
 
   factory ResultSwap.fromJson(Map<String, dynamic> json) => ResultSwap(
@@ -96,6 +97,7 @@ class ResultSwap {
             <String>[],
         type: json['type'] ?? '',
         uuid: json['uuid'] ?? '',
+        recoverable: json['recoverable'] ?? false
       );
 
   List<String> errorEvents;
@@ -104,6 +106,7 @@ class ResultSwap {
   List<String> successEvents;
   String type;
   String uuid;
+  bool recoverable;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'error_events':
@@ -118,6 +121,7 @@ class ResultSwap {
                 <String>[],
         'type': type ?? '',
         'uuid': uuid ?? '',
+        'recoverable' : recoverable ?? false
       };
 }
 
