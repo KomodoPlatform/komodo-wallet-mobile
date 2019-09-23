@@ -543,7 +543,7 @@ void main() {
         () async {
       when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
           .thenAnswer((_) async =>
-              http.Response(fixture('recover_funds_of_swap.json'), 200));
+              http.Response(fixture('recover_funds_of_swap/recover_funds_of_swap.json'), 200));
       expect(await ApiProvider().recoverFundsOfSwap(client, body),
           const TypeMatcher<RecoverFundsOfSwap>());
     });
@@ -553,7 +553,7 @@ void main() {
         () async {
       when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
           .thenAnswer((_) async =>
-              http.Response(fixture('error_swap_recover_maker.json'), 200));
+              http.Response(fixture('recover_funds_of_swap/errors/error_swap_recover_maker.json'), 200));
       final dynamic result =
           await ApiProvider().recoverFundsOfSwap(client, body);
       expect(result, const TypeMatcher<ErrorString>());
@@ -565,7 +565,7 @@ void main() {
         () async {
       when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
           .thenAnswer((_) async =>
-              http.Response(fixture('error_swap_recover.json'), 200));
+              http.Response(fixture('recover_funds_of_swap/errors/error_swap_recover.json'), 200));
       final dynamic result =
           await ApiProvider().recoverFundsOfSwap(client, body);
       expect(result, const TypeMatcher<ErrorString>());
@@ -586,7 +586,7 @@ void main() {
         () async {
       when(client.post(url, body: getRecoverFundsOfSwapToJson(body)))
           .thenAnswer((_) async =>
-              http.Response(fixture('error_recover_swap_not_found.json'), 200));
+              http.Response(fixture('recover_funds_of_swap/errors/error_recover_swap_not_found.json'), 200));
       final dynamic result = await ApiProvider().recoverFundsOfSwap(client, body);
 
       expect(result.error, 'swap data is not found');
