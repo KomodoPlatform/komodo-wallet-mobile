@@ -55,15 +55,23 @@ class ApiProvider {
     return res;
   }
 
-  ErrorString injectErrorString(dynamic value, String errorStr) {
+  ErrorString injectErrorString(
+      dynamic value, String errorStr, String newStrInjected) {
     if (value is ErrorString) {
       if (value.error.contains(errorStr)) {
-        value.error = errorStr;
+        value.error = newStrInjected;
         return value;
       }
     }
     return value;
   }
+
+  // ErrorString removeLineFromMM2(ErrorString errorString) {
+  //   if (errorString.error.lastIndexOf(']') != -1) {
+  //     errorString.error = errorString.error.substring(errorString.error.lastIndexOf(']') + 1).trim();
+  //   }
+  //   return errorString;
+  // }
 
   ErrorString _catchErrorString(String key, dynamic e, String message) {
     Log.println(key, e);
@@ -126,9 +134,11 @@ class ApiProvider {
             .post(url, body: getBuyToJson(userBody.body))
             .then((Response r) => _saveRes('postBuy', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
-            .catchError((dynamic e) => errorStringFromJson(res.body).then(
-                (ErrorString errorString) => injectErrorString(
-                    errorString, 'All electrums are currently disconnected')))
+            .catchError((dynamic e) => errorStringFromJson(res.body)
+                .then((ErrorString errorString) => injectErrorString(
+                    errorString,
+                    'All electrums are currently disconnected',
+                    'All electrums are currently disconnected')))
             .catchError((dynamic e) =>
                 _catchErrorString('postBuy', e, 'Error on post buy'));
       });
@@ -221,6 +231,7 @@ class ApiProvider {
               .post(url, body: getRecentSwapToJson(userBody.body))
               .then((Response r) => _saveRes('getRecentSwaps', r))
               .then<dynamic>((Response res) => recentSwapsFromJson(res.body))
+              .catchError((dynamic _) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'getRecentSwaps', e, 'Error on get recent swaps')));
 
