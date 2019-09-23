@@ -83,7 +83,8 @@ class _AddressFieldState extends State<AddressField> {
                     if (value.length > 3 &&
                         (value.startsWith('bc1') ||
                             value.startsWith('3') ||
-                            value.startsWith('M'))) {
+                            value.startsWith('M') ||
+                            value.startsWith('ltc1'))) {
                       return AppLocalizations.of(context)
                           .errorNotAValidAddressSegWit;
                     }
