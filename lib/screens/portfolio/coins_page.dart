@@ -699,7 +699,6 @@ class _AddCoinButtonState extends State<AddCoinButton> {
     final List<Coin> allCoins = await MarketMakerService()
         .loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
-
     return !(allCoins.length == allCoinsActivate.length);
   }
 }
