@@ -102,7 +102,8 @@ void showAddressDialog(BuildContext mContext, String address) {
               children: <Widget>[
                 Expanded(
                   child: QrImage(
-                    foregroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                     data: address,
                   ),
                 ),
