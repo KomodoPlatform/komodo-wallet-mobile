@@ -58,6 +58,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
     return Scaffold(
         appBar: AppBar(
+          
           titleSpacing: 6.0,
           backgroundColor: Theme.of(context).backgroundColor,
           elevation: 0,
