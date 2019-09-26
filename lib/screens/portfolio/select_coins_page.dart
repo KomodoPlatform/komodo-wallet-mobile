@@ -20,6 +20,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   bool isActive = false;
   StreamSubscription<bool> sub;
   List<Coin> currentCoins = <Coin>[];
+  bool isSearchActive = false;
 
   @override
   void initState() {
@@ -53,25 +54,64 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLoc = AppLocalizations.of(context);
+
     return Scaffold(
         appBar: AppBar(
+          titleSpacing: 6.0,
           backgroundColor: Theme.of(context).backgroundColor,
           elevation: 0,
-          title: Text(
-            AppLocalizations.of(context).selectCoinTitle.toUpperCase(),
-            style: Theme.of(context).textTheme.subtitle,
-            textAlign: TextAlign.start,
-          ),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-          ),
+          title: isSearchActive
+              ? SearchFieldFilterCoin(clear: () {
+                  initCoinList();
+                }, onFilterCoins: (List<Coin> coinsFiltered) {
+                  setState(() {
+                    currentCoins = coinsFiltered;
+                  });
+                })
+              : Text(
+                  appLoc.selectCoinTitle.toUpperCase(),
+                  style: Theme.of(context).textTheme.subtitle,
+                  textAlign: TextAlign.start,
+                ),
+          actions: <Widget>[
+            isSearchActive
+                ? CancelButton(
+                    appLoc: appLoc,
+                    onCancel: () {
+                      setState(() {
+                        isSearchActive = false;
+                      });
+                    },
+                  )
+                : IconButton(
+                    icon: Icon(
+                      Icons.search,
+                      color: Theme.of(context).accentColor,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isSearchActive = !isSearchActive;
+                      });
+                    },
+                  ),
+          ],
+          automaticallyImplyLeading: !isSearchActive,
+          leading: isSearchActive
+              ? null
+              : Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  },
+                ),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: StreamBuilder<CoinToActivate>(
@@ -88,21 +128,21 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                         alignment: AlignmentDirectional.bottomCenter,
                         children: <Widget>[
                           ListView(
-                            padding:
-                                const EdgeInsets.only(bottom: 100, top: 52),
+                            padding: const EdgeInsets.only(bottom: 100),
                             children: <Widget>[
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                child: Text(
+                                  AppLocalizations.of(context).selectCoinInfo,
+                                  style: Theme.of(context).textTheme.body2,
+                                ),
+                              ),
                               const SizedBox(
-                                height: 32,
+                                height: 8,
                               ),
                               _buildListCoin(),
                             ],
-                          ),
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Container(
-                                height: MediaQuery.of(context).size.height * 0.11,
-                                color: Theme.of(context).backgroundColor,
-                                child: _buildHeader()),
                           ),
                           Container(
                             color: Theme.of(context).primaryColor,
@@ -162,7 +202,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   Widget _buildListCoin() {
     final List<Widget> coinsToActivate = <Widget>[];
 
-    if (currentCoins.isNotEmpty) { 
+    if (currentCoins.isNotEmpty) {
       currentCoins.sort((Coin a, Coin b) => b.type.compareTo(a.type));
 
       String tmpType = currentCoins.first.type;
@@ -188,35 +228,43 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         children: coinsToActivate,
       );
     } else {
-      return Center(child: Text('No coin found', style: Theme.of(context).textTheme.body2,));
+      return Center(
+          child: Text(
+        'No coin found',
+        style: Theme.of(context).textTheme.body2,
+      ));
     }
-
   }
+}
 
-  Widget _buildHeader() {
+class CancelButton extends StatelessWidget {
+  const CancelButton({
+    Key key,
+    @required this.appLoc,
+    @required this.onCancel,
+  }) : super(key: key);
+
+  final AppLocalizations appLoc;
+  final Function onCancel;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              AppLocalizations.of(context).selectCoinInfo,
-              style: Theme.of(context).textTheme.body2,
-            ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          SearchFieldFilterCoin(clear: () {
-            initCoinList();
-          }, onFilterCoins: (List<Coin> coinsFiltered) {
-            setState(() {
-              currentCoins = coinsFiltered;
-            });
-          }),
-        ],
+      padding: const EdgeInsets.only(right: 8),
+      child: InkWell(
+        borderRadius: const BorderRadius.all(Radius.circular(32)),
+        onTap: onCancel,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+              child: Text(
+            '${appLoc.cancel[0].toUpperCase()}${appLoc.cancel.substring(1)}',
+            style: Theme.of(context)
+                .textTheme
+                .body1
+                .copyWith(color: Theme.of(context).accentColor),
+          )),
+        ),
       ),
     );
   }
@@ -442,8 +490,11 @@ class _LoadingCoinState extends State<LoadingCoin> {
 }
 
 class SearchFieldFilterCoin extends StatefulWidget {
-  const SearchFieldFilterCoin({Key key, this.onFilterCoins, this.clear})
-      : super(key: key);
+  const SearchFieldFilterCoin({
+    Key key,
+    this.onFilterCoins,
+    this.clear,
+  }) : super(key: key);
 
   final Function(List<Coin>) onFilterCoins;
   final Function clear;
@@ -470,9 +521,19 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Icon(
+              Icons.search,
+              size: 22,
+            ),
+            const SizedBox(
+              width: 8,
+            ),
             Expanded(
               child: TextFormField(
+                textInputAction: TextInputAction.search,
+                autofocus: true,
                 controller: _controller,
                 focusNode: _focus,
                 maxLength: 50,
@@ -481,7 +542,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
                 decoration: InputDecoration(
                     counterText: '',
                     border: InputBorder.none,
-                    hintStyle: Theme.of(context).textTheme.body1,
+                    hintStyle: Theme.of(context).textTheme.body2,
                     labelStyle: Theme.of(context).textTheme.body1,
                     hintText: AppLocalizations.of(context).searchFilterCoin,
                     labelText: null),
@@ -506,8 +567,11 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 8),
-                child:
-                    isEmptyQuery ? Icon(Icons.search) : const Icon(Icons.close),
+                child: isEmptyQuery
+                    ? null
+                    : RotationTransition(
+                        turns: const AlwaysStoppedAnimation<double>(45 / 360),
+                        child: Icon(Icons.add_circle)),
               ),
             )
           ],
