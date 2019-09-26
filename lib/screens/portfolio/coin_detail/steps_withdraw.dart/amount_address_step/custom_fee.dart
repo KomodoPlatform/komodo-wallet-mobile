@@ -239,7 +239,8 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
                   }
 
                   final double currentAmount = double.parse(value);
-
+                  
+                  print(coinsDetailBloc.amountToSend);
                   if (currentAmount >
                       double.parse(coinsDetailBloc.amountToSend)) {
                     return AppLocalizations.of(context).errorAmountBalance;
