@@ -61,42 +61,13 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
           titleSpacing: 6.0,
           backgroundColor: Theme.of(context).backgroundColor,
           elevation: 0,
-          title: isSearchActive
-              ? SearchFieldFilterCoin(clear: () {
+          title: SearchFieldFilterCoin(clear: () {
                   initCoinList();
                 }, onFilterCoins: (List<Coin> coinsFiltered) {
                   setState(() {
                     currentCoins = coinsFiltered;
                   });
-                })
-              : Text(
-                  appLoc.selectCoinTitle.toUpperCase(),
-                  style: Theme.of(context).textTheme.subtitle,
-                  textAlign: TextAlign.start,
-                ),
-          actions: <Widget>[
-            isSearchActive
-                ? CancelButton(
-                    appLoc: appLoc,
-                    onCancel: () {
-                      setState(() {
-                        isSearchActive = false;
-                      });
-                    },
-                  )
-                : IconButton(
-                    icon: Icon(
-                      Icons.search,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        isSearchActive = !isSearchActive;
-                      });
-                    },
-                  ),
-          ],
-          automaticallyImplyLeading: !isSearchActive,
+                }),
           leading: isSearchActive
               ? null
               : Builder(
