@@ -25,8 +25,7 @@ class BuildConfirmationStep extends StatefulWidget {
       this.onLoadingStep,
       this.onStepChange,
       this.onError,
-      this.onSuccessStep,
-      this.isMax})
+      this.onSuccessStep})
       : super(key: key);
 
   final Function onCancel;
@@ -38,7 +37,6 @@ class BuildConfirmationStep extends StatefulWidget {
   final CoinBalance coinBalance;
   final String amountToPay;
   final String addressToSend;
-  final bool isMax;
 
   @override
   _BuildConfirmationStepState createState() => _BuildConfirmationStepState();
@@ -121,14 +119,15 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           isEthActive = !(ethCoin == null);
           ethfee = Decimal.parse(fee.toString()).toDouble();
 
-          if (!widget.isMax &&
-              ((ethCoin != null &&
+          print(Decimal.parse(ethfee.toString()));
+          print(Decimal.parse(widget.amountToPay));
+          
+          if ((ethCoin != null &&
                       ethfee > double.parse(ethCoin.balance.balance)) ||
                   (ethCoin != null &&
                       widget.coinBalance.coin.abbr == 'ETH' &&
-                      Decimal.parse(ethfee.toString()) +
-                              Decimal.parse(widget.amountToPay) >
-                          Decimal.parse(ethCoin.balance.balance)))) {
+                              Decimal.parse(amountUserReceive.toString()) >
+                          Decimal.parse(ethCoin.balance.balance))) {
             notEnoughEth = true;
           }
 
