@@ -272,6 +272,7 @@ class _CoinDetailState extends State<CoinDetail> {
         FocusScope.of(context).requestFocus(_focus);
       });
     });
+    coinsDetailBloc.setAmountToSend(_amountController.text);
   }
 
   @override
