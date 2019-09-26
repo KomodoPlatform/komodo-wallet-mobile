@@ -416,7 +416,7 @@ class _ItemCoinState extends State<ItemCoin> {
               caption: AppLocalizations.of(context).remove.toUpperCase(),
               color: Theme.of(context).errorColor,
               icon: Icons.delete,
-              onTap: () async{
+              onTap: () async {
                 await showConfirmationRemoveCoin(context, coin);
               },
             )
@@ -448,9 +448,9 @@ class _ItemCoinState extends State<ItemCoin> {
                       color: Color(int.parse(coin.colorCoin)),
                       width: 8,
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 14),
                     Container(
-                      width: 100,
+                      width: 110,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -467,7 +467,7 @@ class _ItemCoinState extends State<ItemCoin> {
                             style: Theme.of(context)
                                 .textTheme
                                 .subtitle
-                                .copyWith(fontSize: 16),
+                                .copyWith(fontSize: 14),
                           ),
                         ],
                       ),

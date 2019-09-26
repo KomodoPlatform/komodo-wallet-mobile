@@ -125,7 +125,8 @@ class AppLocalizations {
   String get errorNotAValidAddress =>
       Intl.message('Not a valid address', name: 'errorNotAValidAddress');
   String get errorNotAValidAddressSegWit =>
-      Intl.message('Segwit addresses are not supported (yet)', name: 'errorNotAValidAddressSegWit');
+      Intl.message('Segwit addresses are not supported (yet)',
+          name: 'errorNotAValidAddressSegWit');
   String get toAddress => Intl.message('To address:', name: 'toAddress');
   String get receive => Intl.message('RECEIVE', name: 'receive');
   String get send => Intl.message('SEND', name: 'send');
@@ -520,7 +521,6 @@ class AppLocalizations {
           name: 'customFeeWarning');
   String get searchFilterSubtitleutxo =>
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
-
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughtGas(String gas) =>
@@ -529,10 +529,8 @@ class AppLocalizations {
   String orderCancel(String coin) =>
       Intl.message('All $coin orders will be canceled.',
           name: 'orderCancel', args: <Object>[coin]);
-
   String get deleteConfirm =>
       Intl.message('Confirm deactivation', name: 'deleteConfirm');
-
   String get deleteSpan1 =>
       Intl.message('Do you want to remove ', name: 'deleteSpan1');
   String get deleteSpan2 => Intl.message(
@@ -542,15 +540,24 @@ class AppLocalizations {
   String get warningShareLogs => Intl.message(
       'Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!',
       name: 'warningShareLogs');
-  String get enterOldPinCode => Intl.message(
-      'Enter your old PIN',
-      name: 'enterOldPinCode');
-  String get enterNewPinCode => Intl.message(
-      'Enter your new PIN',
-      name: 'enterNewPinCode');
-  String get authenticate => Intl.message(
-      'authenticate',
-      name: 'authenticate');
+  String get enterOldPinCode =>
+      Intl.message('Enter your old PIN', name: 'enterOldPinCode');
+  String get enterNewPinCode =>
+      Intl.message('Enter your new PIN', name: 'enterNewPinCode');
+  String get authenticate => Intl.message('authenticate', name: 'authenticate');
+  String get settingLanguageTitle =>
+      Intl.message('Languages', name: 'settingLanguageTitle');
+  String get englishLanguage =>
+      Intl.message('English', name: 'englishLanguage');
+  String get frenchLanguage => Intl.message('French', name: 'frenchLanguage');
+  String get deutscheLanguage =>
+      Intl.message('Deutsche', name: 'deutscheLanguage');
+  String get chineseLanguage =>
+      Intl.message('Chinese', name: 'chineseLanguage');
+  String get simplifiedChinese =>
+      Intl.message('simplified', name: 'simplifiedChinese');
+  String get traditionalChinese =>
+      Intl.message('traditional', name: 'traditionalChinese');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

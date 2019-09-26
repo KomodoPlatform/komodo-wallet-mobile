@@ -19,6 +19,7 @@ import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -230,7 +231,7 @@ class MarketMakerService {
 
   void onLogsmm2(String log) {
     if (sink != null) {
-      sink.write(log + '\n');
+      Log.println('mm2', log);
       if (log.contains('CONNECTED') ||
           log.contains('Entering the taker_swap_loop') ||
           log.contains('Received \'negotiation') ||

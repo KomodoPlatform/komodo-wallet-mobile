@@ -1,0 +1,3 @@
+{
+    "error": "rpc:284] utxo:1242] JsonRpcError { request: JsonRpcRequest { jsonrpc: \"2.0\", id: \"266\", method: \"blockchain.scripthash.get_balance\", params: [String(\"4794d6341f1730a5a4548da02b73b268ce5c99947a3ab2ecc2bf1348f602f93d\")] }, error: Transport(\"rpc_clients:688] rpc_clients:688] [\\\"rpc_clients:1256] rpc_clients:1246] send failed because receiver is gone\\\", \\\"rpc_clients:1256] rpc_clients:1246] send failed because receiver is gone\\\"]\") }"
+}

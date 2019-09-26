@@ -18,22 +18,9 @@ class GetPriceService {
             coingeckoId +
             '&vs_currencies=' +
             currency.toLowerCase();
-    final String fiatUrl =
-        'https://api.coinbase.com/v2/prices/spot?currency=' + currency;
     price = nil;
     if (coingeckoId == 'test-token') {
       return nil;
-    }
-    try {
-      final Response response = await http.get(fiatUrl);
-      final Map<dynamic, dynamic> decoded = jsonDecode(response.body);
-      price = double.parse(decoded['data']['amount']);
-      if (coin == 'BTC') {
-        return price;
-      }
-    } catch (e) {
-      Log.println('', e.toString());
-      price = nil;
     }
     try {
       final Response response2 = await http.get(coinUrl);
@@ -41,7 +28,7 @@ class GetPriceService {
       price = double.parse(
           decoded2[coingeckoId][currency.toLowerCase()].toString());
     } catch (e) {
-      Log.println('', e.toString());
+      Log.println('getPrice ERROR:', e.toString());
       price = nil;
     }
     return price;

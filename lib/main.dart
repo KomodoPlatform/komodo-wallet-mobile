@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -24,6 +23,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
 import 'blocs/coins_bloc.dart';
+import 'widgets/shared_preferences_builder.dart';
+import 'widgets/theme_data.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,82 +97,46 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    super.initState();
     _checkNetworkStatus();
     if (isInDebugMode) {
       MarketMakerService()
           .initMarketMaker()
           .then((_) => _runBinMm2UserAlreadyLog());
     }
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'atomicDEX',
-        localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-          const AppLocalizationsDelegate(),
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate
-        ],
-        supportedLocales: const <Locale>[
-          Locale('en'),
-          Locale('fr'),
-          Locale('de'),
-          Locale.fromSubtags(languageCode: 'zh'), // generic Chinese 'zh'
-          Locale.fromSubtags(
-              languageCode: 'zh',
-              scriptCode: 'Hans'), // generic simplified Chinese 'zh_Hans'
-          Locale.fromSubtags(
-              languageCode: 'zh',
-              scriptCode: 'Hant'), // generic traditional Chinese 'zh_Hant'
-        ],
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          primaryColor: const Color.fromRGBO(42, 54, 71, 1),
-          backgroundColor: const Color.fromRGBO(30, 42, 58, 1),
-          primaryColorDark: const Color.fromRGBO(42, 54, 71, 1),
-          accentColor: const Color.fromRGBO(65, 234, 213, 1),
-          textSelectionColor:
-              const Color.fromRGBO(65, 234, 213, 1).withOpacity(0.3),
-          dialogBackgroundColor: const Color.fromRGBO(42, 54, 71, 1),
-          fontFamily: 'Ubuntu',
-          hintColor: Colors.white,
-          errorColor: const Color.fromRGBO(220, 3, 51, 1),
-          disabledColor: const Color.fromRGBO(201, 201, 201, 1),
-          buttonColor: const Color.fromRGBO(39, 68, 108, 1),
-          cursorColor: const Color.fromRGBO(65, 234, 213, 1),
-          textSelectionHandleColor: const Color.fromRGBO(65, 234, 213, 1),
-          textTheme: TextTheme(
-              headline: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
-              title: TextStyle(
-                  fontSize: 26.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700),
-              subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
-              body1: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w300),
-              button: TextStyle(fontSize: 16.0, color: Colors.white),
-              body2: TextStyle(
-                  fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
-              caption: TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.white.withOpacity(0.8),
-                  fontWeight: FontWeight.w400)),
-        ),
-        initialRoute: '/',
-        routes: <String, Widget Function(BuildContext)>{
-          // When we navigate to the '/' route, build the FirstScreen Widget
-          '/': (BuildContext context) => LockScreen(
-                context: context,
-                child: MyHomePage(),
-              ),
+    return StreamBuilder<Locale>(
+        stream: mainBloc.outcurrentLocale,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> currentLocale) {
+          return SharedPreferencesBuilder<dynamic>(
+              pref: 'current_languages',
+              builder:
+                  (BuildContext context, AsyncSnapshot<dynamic> prefLocale) {
+                return MaterialApp(
+                    title: 'atomicDEX',
+                    localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+                      const AppLocalizationsDelegate(),
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate
+                    ],
+                    locale: currentLocale.hasData
+                        ? currentLocale.data
+                        : prefLocale.hasData ? Locale(prefLocale.data) : null,
+                    supportedLocales: mainBloc.supportedLocales,
+                    theme: getTheme(),
+                    initialRoute: '/',
+                    routes: <String, Widget Function(BuildContext)>{
+                      // When we navigate to the '/' route, build the FirstScreen Widget
+                      '/': (BuildContext context) => LockScreen(
+                            context: context,
+                            child: MyHomePage(),
+                          ),
+                    });
+              });
         });
   }
 }
@@ -191,10 +156,19 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     SettingPage()
   ];
 
+  Future<void> _initLanguage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('current_languages') == null) {
+      final Locale loc = Localizations.localeOf(context);
+      prefs.setString('current_languages', loc.languageCode);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _initLanguage();
   }
 
   @override

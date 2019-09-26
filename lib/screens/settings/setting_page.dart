@@ -17,6 +17,7 @@ import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
+import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
@@ -80,6 +81,8 @@ class _SettingPageState extends State<SettingPage> {
                 height: 1,
               ),
               _buildLogOutOnExit(),
+              _buildTitle(AppLocalizations.of(context).settingLanguageTitle),
+              _buildLanguages(),
               _buildTitle(AppLocalizations.of(context).security),
               _buildActivatePIN(),
               const SizedBox(
@@ -138,6 +141,35 @@ class _SettingPageState extends State<SettingPage> {
       rethrow;
     }
     return version;
+  }
+
+  Widget _buildLanguages() {
+    return CustomTile(
+      onPressed: () {
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => SelectLanguagePage(
+                      currentLoc: Localizations.localeOf(context),
+                    )));
+      },
+      child: SharedPreferencesBuilder<dynamic>(
+          pref: 'current_languages',
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            return ListTile(
+              trailing: Icon(Icons.chevron_right,
+                  color: Colors.white.withOpacity(0.7)),
+              title: Text(
+                snapshot.hasData
+                    ? settingsBloc.getNameLanguage(context, snapshot.data)
+                    : '',
+                style: Theme.of(context).textTheme.body1.copyWith(
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white.withOpacity(0.7)),
+              ),
+            );
+          }),
+    );
   }
 
   Widget _buildTitle(String title) {
@@ -228,15 +260,20 @@ class _SettingPageState extends State<SettingPage> {
                                 onChanged: (bool dataSwitch) {
                                   setState(() {
                                     if (snapshot.data) {
-                                      Navigator.push<dynamic>(
-                                          context,
-                                          MaterialPageRoute<dynamic>(
-                                              builder: (BuildContext context) =>
-                                                  LockScreen(
-                                                    context: context,
-                                                    pinStatus: PinStatus
-                                                        .DISABLED_PIN_BIOMETRIC,
-                                                  )));
+                                      authenticateBiometrics(context,
+                                              PinStatus.DISABLED_PIN_BIOMETRIC)
+                                          .then((bool onValue) {
+                                        if (onValue) {
+                                          setState(() {
+                                            SharedPreferences.getInstance()
+                                                .then((SharedPreferences data) {
+                                              data.setBool(
+                                                  'switch_pin_biometric',
+                                                  false);
+                                            });
+                                          });
+                                        }
+                                      });
                                     } else {
                                       SharedPreferences.getInstance()
                                           .then((SharedPreferences data) {
@@ -613,10 +650,10 @@ class _SettingPageState extends State<SettingPage> {
         MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
         MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
       }
-      mainBloc.isUrlLaucherIsOpen = true;
-      Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
-          subject: 'My logs for the ${DateTime.now().toIso8601String()}');
     }
+    mainBloc.isUrlLaucherIsOpen = true;
+    Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
+        subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 
   Future<void> _shareFileDialog() async {

@@ -102,7 +102,8 @@ void showAddressDialog(BuildContext mContext, String address) {
               children: <Widget>[
                 Expanded(
                   child: QrImage(
-                    foregroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                     data: address,
                   ),
                 ),
@@ -149,6 +150,17 @@ void showMessage(BuildContext mContext, String error) {
   ));
 }
 
+void showErrorMessage(BuildContext mContext, String error) {
+  Scaffold.of(mContext).showSnackBar(SnackBar(
+    duration: const Duration(seconds: 2),
+    backgroundColor: Theme.of(mContext).errorColor,
+    content: Text(
+      error,
+      style: Theme.of(mContext).textTheme.body1,
+    ),
+  ));
+}
+
 Future<bool> checkBiometrics() async {
   final LocalAuthentication auth = LocalAuthentication();
   bool canCheckBiometrics = false;
@@ -177,6 +189,7 @@ Future<bool> authenticateBiometrics(
     }
 
     if (didAuthenticate) {
+
       if (pinStatus == PinStatus.DISABLED_PIN) {
         SharedPreferences.getInstance().then((SharedPreferences data) {
           data.setBool('switch_pin', false);
@@ -188,7 +201,6 @@ Future<bool> authenticateBiometrics(
           !MarketMakerService().ismm2Running) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
-      
     }
     return didAuthenticate;
   } else {

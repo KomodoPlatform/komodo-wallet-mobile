@@ -1,0 +1,13 @@
+{
+    "result": {
+        "action": "Buy",
+        "base": "BASE",
+        "base_amount": "1",
+        "dest_pub_key": "0000000000000000000000000000000000000000000000000000000000000000",
+        "method": "request",
+        "rel": "REL",
+        "rel_amount": "1",
+        "sender_pubkey": "c213230771ebff769c58ade63e8debac1b75062ead66796c8d793594005f3920",
+        "uuid": "d14452bb-e82d-44a0-86b0-10d4cdcb8b24"
+    }
+}

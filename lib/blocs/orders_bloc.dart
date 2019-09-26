@@ -44,7 +44,7 @@ class OrdersBloc implements BlocBase {
 
   Future<void> updateOrders() async {
     try {
-      final Orders newOrders = await ApiProvider()
+      final dynamic newOrders = await ApiProvider()
           .getMyOrders(http.Client(), BaseService(method: 'my_orders'));
       if (newOrders is Orders) {
         final List<Order> orders = <Order>[];

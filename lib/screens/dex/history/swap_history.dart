@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class SwapHistory extends StatefulWidget {
   @override
@@ -112,6 +115,8 @@ class BuildItemSwap extends StatefulWidget {
 }
 
 class _BuildItemSwapState extends State<BuildItemSwap> {
+  bool recoverIsLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final String swapStatus =
@@ -134,6 +139,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
             );
           },
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
@@ -156,7 +162,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                       child: Container(),
                     ),
                     _buildTextAmount(widget.swap.result.myInfo.otherCoin,
-                        widget.swap.result.myInfo.otherAmount)
+                        widget.swap.result.myInfo.otherAmount),
                   ],
                 ),
               ),
@@ -236,7 +242,40 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                     ),
                   )
                 ],
-              )
+              ),
+              if (widget.swap.result.recoverable)
+                recoverIsLoading ?  Padding(padding: const EdgeInsets.all(16),child: Container(
+                  height: 25,
+                  width: 25,
+                  child: const CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ))) : FlatButton(
+                        child: Text(
+                          'RECOVER FUND',
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              .copyWith(color: Theme.of(context).accentColor),
+                        ),
+                        onPressed: () async {
+                          // recover call
+                          setState(() {
+                            recoverIsLoading = true;
+                          });
+                          swapHistoryBloc
+                              .recoverFund(widget.swap)
+                              .then((dynamic result) {
+                            if (result is RecoverFundsOfSwap) {
+                              showMessage(context, 'Success recover swap');
+                              swapHistoryBloc.updateSwaps(50, null);
+                            } else if (result is ErrorString) {
+                              showErrorMessage(context, result.error);
+                            }
+                          }).then((_) => setState(() {
+                                    recoverIsLoading = false;
+                                  }));
+                        },
+                      )
             ],
           ),
         ));

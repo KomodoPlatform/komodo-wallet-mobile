@@ -11,6 +11,15 @@
         "mm2": 1
     },
     {
+        "coin": "KMD",
+        "asset": "Komodo",
+        "rpcport": 7771,
+        "mm2": 1,
+        "txfee": 1000,
+        "txversion": 4,
+        "overwintered": 1
+    },
+    {
         "coin": "QTUM",
         "name": "QTUM",
         "pubtype": 58,
@@ -60,65 +69,75 @@
         "txfee": 10000
     },
     {
-        "coin": "RFOX",
-        "asset": "RedFOX",
-        "rpcport": 32269,
+        "coin": "GRS",
+        "name": "Groestlcoin",
+        "rpcport": 1441,
+        "pubtype": 36,
+        "p2shtype": 5,
+        "wiftype": 128,
         "mm2": 1,
         "txfee": 10000
     },
     {
-        "coin": "ZILLA",
-        "name": "ZILLA",
-        "rpcport": 10041,
-        "pubtype": 60,
-        "p2shtype": 85,
-        "wiftype": 188,
+        "coin": "RFOX",
+        "asset": "RedFOX",
+        "rpcport": 32269,
         "mm2": 1,
         "txfee": 10000,
-        "txversion": 1,
-        "overwintered": 0
+        "txversion": 4,
+        "overwintered": 1
+    },
+    {
+        "coin": "ZILLA",
+        "asset": "ZILLA",
+        "rpcport": 10041,
+        "mm2": 1,
+        "txfee": 10000
     },
     {   
         "coin": "VRSC",
         "asset": "VerusCoin",
         "rpcport": 27486,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "LABS",
         "asset": "LABS",
         "mm2": 1,
         "rpcport": 40265,
-        "txfee": 10000
-    },
-    {
-        "coin": "KMD",
-        "asset": "KMD",
-        "rpcport": 7771,
-        "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "RICK",
         "asset": "RICK",
         "rpcport": 28223,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "MORTY",
         "asset": "MORTY",
         "rpcport": 63812,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "HUSH",
         "asset": "HUSH3",
         "rpcport": 18031,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
     },
     {
         "coin": "AXE",
@@ -141,6 +160,13 @@
         "coin": "USDT",
         "name": "Tether",
         "etomic": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
+        "coin": "AWC",
+        "name": "AtomicWalletCoin",
+        "etomic": "0xaD22f63404f7305e4713CcBd4F296f34770513f4",
         "rpcport": 80,
         "mm2": 1
     },

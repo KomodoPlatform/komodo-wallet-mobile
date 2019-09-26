@@ -248,21 +248,48 @@ class CoinsBloc implements BlocBase {
     }
   }
 
+  Future<void> removeOneCoinFromLocal(Coin coinToRemove) async {
+    final List<Coin> readJsonCoinRes = await readJsonCoin();
+    readJsonCoinRes.removeWhere((Coin coin) => coin.abbr == coinToRemove.abbr);
+    final File file = await _localFile;
+    await file.writeAsString(json.encode(readJsonCoinRes));
+  }
+
+  Future<void> updateMultiCoinsFromLocal(List<Coin> coinsToUpdate) async {
+    final List<Coin> readJsonCoinLocal = await readJsonCoin();
+
+    for (Coin readJsonCoinLocalItem in readJsonCoinLocal) {
+      bool isExist = false;
+      for (Coin coinsReadJsonItem in coinsToUpdate) {
+        if (readJsonCoinLocalItem.abbr == coinsReadJsonItem.abbr) {
+          isExist = true;
+        }
+      }
+      if (!isExist) {
+        coinsToUpdate.add(readJsonCoinLocalItem);
+      }
+    }
+    final File file = await _localFile;
+    await file.writeAsString(json.encode(coinsToUpdate));
+  }
+
   Future<void> addMultiCoins(List<Coin> coins) async {
     onActivateCoins = true;
-    final List<Coin> coinsReadJson = await readJsonCoin();
-    final List<Future<dynamic>> listFutureActiveCoin = <Future<dynamic>>[];
+    final List<Coin> coinsReadJson = <Coin>[];
+    final List<Future<CoinToActivate>> listFutureActiveCoin =
+        <Future<CoinToActivate>>[];
 
     for (Coin coin in coins) {
       listFutureActiveCoin.add(_activeCoinFuture(coin));
     }
 
-    await Future.wait<dynamic>(listFutureActiveCoin)
-        .then((List<dynamic> onValue) {
-          for (dynamic coinActivate in onValue) {
-            if (coinActivate is Coin && coinActivate != null) {
-              Log.println('', 'coinActivate--------------' + coinActivate.abbr);
-              coinsReadJson.add(coinActivate);
+    await Future.wait<CoinToActivate>(listFutureActiveCoin)
+        .then((List<CoinToActivate> onValue) async {
+          for (CoinToActivate coinActivate in onValue) {
+            if (coinActivate.isActive) {
+              coinsReadJson.add(coinActivate.coin);
+            } else {
+              await removeOneCoinFromLocal(coinActivate.coin);
             }
           }
         })
@@ -270,62 +297,43 @@ class CoinsBloc implements BlocBase {
           Log.println('', onError);
           Log.println('', 'timeout2--------------');
         })
-        .then((_) async {
-          await writeJsonCoin(coinsReadJson);
-        })
+        .then((_) async => await updateMultiCoinsFromLocal(coinsReadJson))
         .then((_) => onActivateCoins = false)
         .then((_) async {
           onActivateCoins = false;
-          currentCoinActivate(null);
+          currentCoinActivate(CoinToActivate(currentStatus: 'Loading coins'));
           await loadCoin();
+          currentCoinActivate(null);
         });
   }
 
-  Future<Coin> _activeCoinFuture(Coin coin) async {
-    Coin coinToactivate;
-
+  Future<CoinToActivate> _activeCoinFuture(Coin coin) async {
     currentCoinActivate(
         CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
     Log.println('', coin.abbr);
-    await ApiProvider()
+    return await ApiProvider()
         .activeCoin(http.Client(), coin)
         .then((dynamic activeCoin) {
       if (activeCoin is ActiveCoin) {
-        coinToactivate = coin;
         currentCoinActivate(
             CoinToActivate(currentStatus: '${coin.name} activated.'));
-      } else {
-        currentCoinActivate(CoinToActivate(
-            currentStatus: 'Sorry, ${coin.abbr} not available.'));
-      }
-    }).catchError((dynamic onError) async {
-      coinToactivate = coin;
-
-      if (onError is ErrorString &&
-          onError.error.contains('Coin ${coin.abbr} already initialized')) {
+        return CoinToActivate(coin: coin, isActive: true);
+      } else if (activeCoin is ErrorString &&
+          activeCoin.error.contains('already initialized')) {
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Coin ${coin.abbr} already initialized'));
+        return CoinToActivate(coin: coin, isActive: true);
       } else {
-        Log.println('', 'Sorry, ${coin.abbr} not available.');
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
+        return CoinToActivate(coin: coin, isActive: false);
       }
-      await Future<dynamic>.delayed(const Duration(seconds: 2))
-          .then((dynamic _) {
-        currentCoinActivate(null);
-      });
-    }).timeout(const Duration(seconds: 10), onTimeout: () async {
-      coinToactivate = null;
+    }).timeout(const Duration(seconds: 30), onTimeout: () async {
       Log.println('', 'Sorry, ${coin.abbr} not available.');
       currentCoinActivate(
           CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
-      await Future<dynamic>.delayed(const Duration(seconds: 2))
-          .then((dynamic _) {
-        currentCoinActivate(null);
-      });
+      return CoinToActivate(coin: coin, isActive: false);
     });
-
-    return coinToactivate;
   }
 
   void currentCoinActivate(CoinToActivate coinToActivate) {
@@ -396,7 +404,7 @@ class CoinsBloc implements BlocBase {
         .loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
     final List<Coin> coinsNotActivated = <Coin>[];
-
+    
     for (Coin coin in allCoins) {
       bool isAlreadyAdded = false;
       for (Coin coinActivate in allCoinsActivate) {
@@ -503,7 +511,7 @@ class CoinsBloc implements BlocBase {
     }
     final double price = await getPriceObj
         .getPrice(coin.abbr, coin.coingeckoId, 'USD')
-        .timeout(const Duration(seconds: 15), onTimeout: () => 0.0);
+        .timeout(const Duration(seconds: 5), onTimeout: () => 0.0);
 
     dynamic coinBalance;
     if (balance is Balance && coin.abbr == balance.coin) {

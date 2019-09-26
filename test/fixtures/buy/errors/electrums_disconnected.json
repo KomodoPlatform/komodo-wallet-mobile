@@ -1,0 +1,3 @@
+{
+    "error": "rpc:284] utxo:1242] JsonRpcError { request: JsonRpcRequest { jsonrpc: \"2.0\", id: \"415\", method: \"blockchain.scripthash.get_balance\", params: [String(\"c8c99bc205666243d60bd9a7b5bcfad37847a08297bd1cb4e7822685ede8044a\")] }, error: Transport(\"rpc_clients:685] All electrums are currently disconnected\") }"
+}
