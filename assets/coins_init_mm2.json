@@ -69,6 +69,16 @@
         "txfee": 10000
     },
     {
+        "coin": "GRS",
+        "name": "Groestlcoin",
+        "rpcport": 1441,
+        "pubtype": 36,
+        "p2shtype": 5,
+        "wiftype": 128,
+        "mm2": 1,
+        "txfee": 10000
+    },
+    {
         "coin": "RFOX",
         "asset": "RedFOX",
         "rpcport": 32269,
@@ -150,6 +160,13 @@
         "coin": "USDT",
         "name": "Tether",
         "etomic": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
+        "coin": "AWC",
+        "name": "AtomicWalletCoin",
+        "etomic": "0xaD22f63404f7305e4713CcBd4F296f34770513f4",
         "rpcport": 80,
         "mm2": 1
     },
