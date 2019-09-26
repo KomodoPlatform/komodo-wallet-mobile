@@ -448,9 +448,9 @@ class _ItemCoinState extends State<ItemCoin> {
                       color: Color(int.parse(coin.colorCoin)),
                       width: 8,
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 14),
                     Container(
-                      width: 100,
+                      width: 110,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -699,6 +699,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
     final List<Coin> allCoins = await MarketMakerService()
         .loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
+
     return !(allCoins.length == allCoinsActivate.length);
   }
 }

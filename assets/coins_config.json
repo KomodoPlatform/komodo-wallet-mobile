@@ -134,6 +134,26 @@
     ]
   },
   {
+    "name": "AtomicWallet",
+    "type": "erc",
+    "address": "http://eth1.cipig.net",
+    "port": 8555,
+    "proto": "tcp",
+    "txfee": 0,
+    "abbr": "AWC",
+    "coingeckoId": "usd-coin",
+    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+    "colorCoin": "0xFF2ea5fb",
+    "serverList": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorerUrl": [
+      "https://etherscan.io/"
+    ]
+  },
+  {
     "name": "Dogecoin",
     "type": "utxo",
     "address": "electrum1.cipig.net",
