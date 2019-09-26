@@ -54,10 +54,11 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations appLoc = AppLocalizations.of(context);
+    final AppLocalizations appLoc = AppLocalizations.of(context);
 
     return Scaffold(
         appBar: AppBar(
+          titleSpacing: 6.0,
           backgroundColor: Theme.of(context).backgroundColor,
           elevation: 0,
           title: isSearchActive
@@ -233,24 +234,6 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
         style: Theme.of(context).textTheme.body2,
       ));
     }
-  }
-
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SearchFieldFilterCoin(clear: () {
-            initCoinList();
-          }, onFilterCoins: (List<Coin> coinsFiltered) {
-            setState(() {
-              currentCoins = coinsFiltered;
-            });
-          }),
-        ],
-      ),
-    );
   }
 }
 
@@ -559,7 +542,7 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
                 decoration: InputDecoration(
                     counterText: '',
                     border: InputBorder.none,
-                    hintStyle: Theme.of(context).textTheme.body1,
+                    hintStyle: Theme.of(context).textTheme.body2,
                     labelStyle: Theme.of(context).textTheme.body1,
                     hintText: AppLocalizations.of(context).searchFilterCoin,
                     labelText: null),
