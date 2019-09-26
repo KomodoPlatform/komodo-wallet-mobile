@@ -849,6 +849,7 @@ class _CoinDetailState extends State<CoinDetail> {
         setState(() {
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
+            isMax: _amountController.text == currentCoinBalance.balance.getBalance(),
             coinBalance: currentCoinBalance,
             amountToPay: _amountController.text,
             addressToSend: _addressController.text,

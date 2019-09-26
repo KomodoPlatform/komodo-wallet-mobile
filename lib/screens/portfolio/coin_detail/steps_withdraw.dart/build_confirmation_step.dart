@@ -25,7 +25,8 @@ class BuildConfirmationStep extends StatefulWidget {
       this.onLoadingStep,
       this.onStepChange,
       this.onError,
-      this.onSuccessStep})
+      this.onSuccessStep,
+      this.isMax})
       : super(key: key);
 
   final Function onCancel;
@@ -37,17 +38,23 @@ class BuildConfirmationStep extends StatefulWidget {
   final CoinBalance coinBalance;
   final String amountToPay;
   final String addressToSend;
+  final bool isMax;
 
   @override
   _BuildConfirmationStepState createState() => _BuildConfirmationStepState();
 }
 
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
+
   Future<double> getFee() async {
     try {
-      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
+      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
           http.Client(), GetTradeFee(coin: widget.coinBalance.coin.abbr));
-      return double.parse(tradeFeeResponse.result.amount);
+      if (tradeFeeResponse is TradeFee) {
+        return double.parse(tradeFeeResponse.result.amount);
+      } else {
+        return 0;
+      }
     } catch (e) {
       Log.println('', e);
       return 0;
@@ -99,7 +106,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
 
           if (userBalance == amountUserReceive) {
             amountToPay = amountUserReceive;
-            if (!isErcCoin) {
+            if (!isErcCoin || widget.coinBalance.coin.abbr == 'ETH') {
               amountUserReceive -= fee;
             }
           }
@@ -112,16 +119,16 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           }
 
           isEthActive = !(ethCoin == null);
-          ethfee = (Decimal.parse(fee.toString()) / Decimal.parse('1000000000'))
-              .toDouble();
+          ethfee = Decimal.parse(fee.toString()).toDouble();
 
-          if ((ethCoin != null &&
-                  ethfee > double.parse(ethCoin.balance.balance)) ||
-              (ethCoin != null &&
-                  widget.coinBalance.coin.abbr == 'ETH' &&
-                  Decimal.parse(ethfee.toString()) +
-                          Decimal.parse(widget.amountToPay) >
-                      Decimal.parse(ethCoin.balance.balance))) {
+          if (!widget.isMax &&
+              ((ethCoin != null &&
+                      ethfee > double.parse(ethCoin.balance.balance)) ||
+                  (ethCoin != null &&
+                      widget.coinBalance.coin.abbr == 'ETH' &&
+                      Decimal.parse(ethfee.toString()) +
+                              Decimal.parse(widget.amountToPay) >
+                          Decimal.parse(ethCoin.balance.balance)))) {
             notEnoughEth = true;
           }
 
@@ -159,28 +166,40 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      '- ',
-                      style: Theme.of(context).textTheme.body2,
-                    ),
-                    Text(
-                      !isErcCoin ? fee.toStringAsFixed(8) : ethfee.toString(),
-                      style: Theme.of(context).textTheme.body2,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      isErcCoin
-                          ? AppLocalizations.of(context).ethFee
-                          : AppLocalizations.of(context).networkFee,
-                      style: Theme.of(context).textTheme.body2,
-                    ),
-                  ],
-                ),
+                snapshot.connectionState == ConnectionState.waiting
+                    ? Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                            padding: const EdgeInsets.all(3),
+                            height: 18,
+                            width: 18,
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 1.5,
+                            )))
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            '- ',
+                            style: Theme.of(context).textTheme.body2,
+                          ),
+                          Text(
+                            !isErcCoin
+                                ? fee.toStringAsFixed(8)
+                                : ethfee.toString(),
+                            style: Theme.of(context).textTheme.body2,
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            isErcCoin
+                                ? AppLocalizations.of(context).ethFee
+                                : AppLocalizations.of(context).networkFee,
+                            style: Theme.of(context).textTheme.body2,
+                          ),
+                        ],
+                      ),
                 widget.coinBalance.coin.swapContractAddress.isNotEmpty &&
                         notEnoughEth &&
                         isEthActive
@@ -278,7 +297,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                           text: AppLocalizations.of(context)
                               .confirm
                               .toUpperCase(),
-                          onPressed: isButtonActive
+                          onPressed: isButtonActive && snapshot.hasData
                               ? () {
                                   _onPressedConfirmWithdraw(amountUserReceive);
                                 }
