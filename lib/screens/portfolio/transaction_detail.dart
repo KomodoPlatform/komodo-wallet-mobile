@@ -9,7 +9,6 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class TransactionDetail extends StatefulWidget {
   const TransactionDetail({this.transaction, this.coinBalance});
@@ -62,7 +61,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
                   urlPostTx = 'tx/0x';
                 }
-                _launchURL(widget.coinBalance.coin.explorerUrl[0] +
+                launchURL(widget.coinBalance.coin.explorerUrl[0] +
                     urlPostTx +
                     widget.transaction.txHash);
               },
@@ -75,17 +74,6 @@ class _TransactionDetailState extends State<TransactionDetail> {
         ),
       ),
     );
-  }
-
-  Future<void> _launchURL(String url) async {
-    Log.println('', url);
-    if (await canLaunch(url)) {
-      mainBloc.isUrlLaucherIsOpen = true;
-      await launch(url);
-      mainBloc.isUrlLaucherIsOpen = false;
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
   Widget _buildHeader() {

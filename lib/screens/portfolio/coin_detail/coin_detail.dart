@@ -272,6 +272,7 @@ class _CoinDetailState extends State<CoinDetail> {
         FocusScope.of(context).requestFocus(_focus);
       });
     });
+    coinsDetailBloc.setAmountToSend(_amountController.text);
   }
 
   @override
@@ -747,7 +748,7 @@ class _CoinDetailState extends State<CoinDetail> {
         onPressed: () {
           switch (statusButton) {
             case StatusButton.RECEIVE:
-              showAddressDialog(mContext, currentCoinBalance.balance.address);
+              showAddressDialog(mContext, currentCoinBalance.balance.address, widget.coinBalance.coin);
               break;
             case StatusButton.SEND:
               if (currentIndex == 3) {

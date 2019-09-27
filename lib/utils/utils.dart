@@ -7,22 +7,25 @@ import 'package:keccak/keccak.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../localizations.dart';
 
 void copyToClipBoard(BuildContext context, String str) {
   Scaffold.of(context).showSnackBar(SnackBar(
-    duration: const Duration(milliseconds: 300),
+    duration: const Duration(seconds: 2),
     content: Text(AppLocalizations.of(context).clipboard),
   ));
   Clipboard.setData(ClipboardData(text: str));
@@ -80,7 +83,7 @@ bool isNumeric(String s) {
   return double.tryParse(s) != null;
 }
 
-void showAddressDialog(BuildContext mContext, String address) {
+void showAddressDialog(BuildContext mContext, String address, Coin coin) {
   dialogBloc.dialog = showDialog<dynamic>(
     context: mContext,
     builder: (BuildContext context) {
@@ -91,23 +94,28 @@ void showAddressDialog(BuildContext mContext, String address) {
         shape: RoundedRectangleBorder(
             side: BorderSide(color: Colors.white),
             borderRadius: BorderRadius.circular(6.0)),
-        content: InkWell(
-          onTap: () {
-            copyToClipBoard(mContext, address);
-          },
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.4,
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: Column(
-              children: <Widget>[
-                Expanded(
+        content: Container(
+          height: MediaQuery.of(context).size.height * 0.4,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    copyToClipBoard(mContext, address);
+                  },
                   child: QrImage(
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.white,
                     data: address,
                   ),
                 ),
-                Container(
+              ),
+              InkWell(
+                onTap: () {
+                  copyToClipBoard(mContext, address);
+                },
+                child: Container(
                   child: Center(
                       child: Padding(
                     padding:
@@ -118,20 +126,49 @@ void showAddressDialog(BuildContext mContext, String address) {
                       maxLines: 2,
                     ),
                   )),
-                )
-              ],
-            ),
+                ),
+              ),
+              Row(
+                children: <Widget>[
+                  coin.abbr == 'RICK' || coin.abbr == 'MORTY'
+                      ? RaisedButton(
+                          child: Text(AppLocalizations.of(context).faucetName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .button
+                                  .copyWith(
+                                      color: Theme.of(context).primaryColor)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          elevation: 0,
+                          color: Theme.of(context).accentColor,
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(text: address));
+                            launchURL(
+                                'https://www.atomicexplorer.com/#/faucet/${coin.abbr.toLowerCase()}');
+                          },
+                        )
+                      : null,
+                  Expanded(
+                    child: Container(),
+                  ),
+                  FlatButton(
+                    child: Text(
+                      AppLocalizations.of(context).close.toUpperCase(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .button
+                          .copyWith(color: Theme.of(context).accentColor),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-        actions: <Widget>[
-          // usually buttons at the bottom of the dialog
-          FlatButton(
-            child: Text(AppLocalizations.of(context).close.toUpperCase()),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
       );
     },
   ).then((dynamic data) {
@@ -141,7 +178,7 @@ void showAddressDialog(BuildContext mContext, String address) {
 
 void showMessage(BuildContext mContext, String error) {
   Scaffold.of(mContext).showSnackBar(SnackBar(
-    duration: const Duration(seconds: 2),
+    duration: const Duration(seconds: 3),
     backgroundColor: Theme.of(mContext).primaryColor,
     content: Text(
       error,
@@ -189,7 +226,6 @@ Future<bool> authenticateBiometrics(
     }
 
     if (didAuthenticate) {
-
       if (pinStatus == PinStatus.DISABLED_PIN) {
         SharedPreferences.getInstance().then((SharedPreferences data) {
           data.setBool('switch_pin', false);
@@ -266,4 +302,15 @@ Future<void> showConfirmationRemoveCoin(
       }).then((_) {
     dialogBloc.dialog = null;
   });
+}
+
+Future<void> launchURL(String url) async {
+  Log.println('', url);
+  if (await canLaunch(url)) {
+    mainBloc.isUrlLaucherIsOpen = true;
+    await launch(url);
+    mainBloc.isUrlLaucherIsOpen = false;
+  } else {
+    throw 'Could not launch $url';
+  }
 }
