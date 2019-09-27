@@ -148,10 +148,9 @@ void showAddressDialog(BuildContext mContext, String address, Coin coin) {
                                 'https://www.atomicexplorer.com/#/faucet/${coin.abbr.toLowerCase()}');
                           },
                         )
-                      : null,
-                  Expanded(
-                    child: Container(),
-                  ),
+                      : Expanded(
+                          child: Container(),
+                        ),
                   FlatButton(
                     child: Text(
                       AppLocalizations.of(context).close.toUpperCase(),
