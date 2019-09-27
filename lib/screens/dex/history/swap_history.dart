@@ -273,7 +273,12 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                 .recoverFund(widget.swap)
                                 .then((dynamic result) {
                               if (result is RecoverFundsOfSwap) {
-                                showMessage(context, 'Success recover swap');
+                                showMessage(
+                                    context,
+                                    'Successfully unlocked ' +
+                                        result.result.coin +
+                                        ' funds - TX: ' +
+                                        result.result.txHash);
                                 swapHistoryBloc.updateSwaps(50, null);
                               } else if (result is ErrorString) {
                                 showErrorMessage(context, result.error);
