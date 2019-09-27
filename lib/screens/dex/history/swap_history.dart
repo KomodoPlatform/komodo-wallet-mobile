@@ -253,7 +253,9 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                             child: const CircularProgressIndicator(
                               strokeWidth: 2,
                             )))
-                    : FlatButton(
+                    : Padding(
+                      padding: const EdgeInsets.only(right:16, bottom: 16),
+                      child:FlatButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0)),
                         color: const Color.fromRGBO(191, 191, 191, 1),
@@ -282,7 +284,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                     recoverIsLoading = false;
                                   }));
                         },
-                      )
+                      ))
             ],
           ),
         ));
