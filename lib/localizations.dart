@@ -558,6 +558,8 @@ class AppLocalizations {
       Intl.message('simplified', name: 'simplifiedChinese');
   String get traditionalChinese =>
       Intl.message('traditional', name: 'traditionalChinese');
+  String get faucetName =>
+      Intl.message('FAUCET', name: 'faucetName');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

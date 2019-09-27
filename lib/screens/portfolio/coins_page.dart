@@ -384,7 +384,7 @@ class _ItemCoinState extends State<ItemCoin> {
       color: Theme.of(context).backgroundColor,
       icon: Icons.arrow_downward,
       onTap: () {
-        showAddressDialog(context, balance.address);
+        showAddressDialog(context, balance.address, coin);
       },
     ));
     if (double.parse(balance.getBalance()) > 0) {
