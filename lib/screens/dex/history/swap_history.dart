@@ -254,37 +254,35 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                               strokeWidth: 2,
                             )))
                     : Padding(
-                      padding: const EdgeInsets.only(right:16, bottom: 16),
-                      child:FlatButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0)),
-                        color: const Color.fromRGBO(191, 191, 191, 1),
-                        child: Text(
-                          'RECOVER FUNDS',
-                          style: Theme.of(context)
-                              .textTheme
-                              .button
-                              .copyWith(color: Theme.of(context).primaryColor),
-                        ),
-                        onPressed: () async {
-                          // recover call
-                          setState(() {
-                            recoverIsLoading = true;
-                          });
-                          swapHistoryBloc
-                              .recoverFund(widget.swap)
-                              .then((dynamic result) {
-                            if (result is RecoverFundsOfSwap) {
-                              showMessage(context, 'Success recover swap');
-                              swapHistoryBloc.updateSwaps(50, null);
-                            } else if (result is ErrorString) {
-                              showErrorMessage(context, result.error);
-                            }
-                          }).then((_) => setState(() {
-                                    recoverIsLoading = false;
-                                  }));
-                        },
-                      ))
+                        padding: const EdgeInsets.only(right: 16, bottom: 16),
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          color: const Color.fromRGBO(191, 191, 191, 1),
+                          child: Text(
+                            'Unlock Funds',
+                            style: Theme.of(context).textTheme.button.copyWith(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          onPressed: () async {
+                            // recover call
+                            setState(() {
+                              recoverIsLoading = true;
+                            });
+                            swapHistoryBloc
+                                .recoverFund(widget.swap)
+                                .then((dynamic result) {
+                              if (result is RecoverFundsOfSwap) {
+                                showMessage(context, 'Success recover swap');
+                                swapHistoryBloc.updateSwaps(50, null);
+                              } else if (result is ErrorString) {
+                                showErrorMessage(context, result.error);
+                              }
+                            }).then((_) => setState(() {
+                                      recoverIsLoading = false;
+                                    }));
+                          },
+                        ))
             ],
           ),
         ));
