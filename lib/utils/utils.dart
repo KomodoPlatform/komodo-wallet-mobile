@@ -147,10 +147,9 @@ void showAddressDialog(BuildContext mContext, String address, Coin coin) {
                                 'https://www.atomicexplorer.com/#/faucet/${coin.abbr.toLowerCase()}');
                           },
                         )
-                      : null,
-                  Expanded(
-                    child: Container(),
-                  ),
+                      : Expanded(
+                          child: Container(),
+                        ),
                   FlatButton(
                     child: Text(
                       AppLocalizations.of(context).close.toUpperCase(),
@@ -177,7 +176,7 @@ void showAddressDialog(BuildContext mContext, String address, Coin coin) {
 
 void showMessage(BuildContext mContext, String error) {
   Scaffold.of(mContext).showSnackBar(SnackBar(
-    duration: const Duration(seconds: 2),
+    duration: const Duration(seconds: 3),
     backgroundColor: Theme.of(mContext).primaryColor,
     content: Text(
       error,

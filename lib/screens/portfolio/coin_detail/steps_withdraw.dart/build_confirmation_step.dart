@@ -7,12 +7,12 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:decimal/decimal.dart';
-import 'package:http/http.dart' as http;
 
 class BuildConfirmationStep extends StatefulWidget {
   const BuildConfirmationStep(
@@ -46,8 +46,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
 
   Future<double> getFee() async {
     try {
-      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
-          http.Client(), GetTradeFee(coin: widget.coinBalance.coin.abbr));
+      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(MarketMakerService().client,
+          GetTradeFee(coin: widget.coinBalance.coin.abbr));
       if (tradeFeeResponse is TradeFee) {
         return double.parse(tradeFeeResponse.result.amount);
       } else {
