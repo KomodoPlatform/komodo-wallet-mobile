@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 SnackBarThemeData _snackBarTheme() => SnackBarThemeData(
     elevation: 12.0,
-    shape: RoundedRectangleBorder(borderRadius: const BorderRadius.all(Radius.circular(4))),
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
     actionTextColor: Colors.green,
     behavior: SnackBarBehavior.floating,
   );

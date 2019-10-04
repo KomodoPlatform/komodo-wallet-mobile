@@ -13,6 +13,7 @@ import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/news/media_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
