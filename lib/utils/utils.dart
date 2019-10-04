@@ -14,7 +14,6 @@ import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:local_auth/local_auth.dart';

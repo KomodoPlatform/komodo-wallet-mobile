@@ -71,6 +71,7 @@ class AuthenticateBloc extends BlocBase {
 
   Future<void> login(String passphrase, String password) async {
     await DBProvider.db.initDB();
+    await DBProvider.db.initCoinsActivateDefault(CoinEletrum.CONFIG);
     mainBloc.setCurrentIndexTab(0);
     walletBloc.setCurrentWallet(await DBProvider.db.getCurrentWallet());
 

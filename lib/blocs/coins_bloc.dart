@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:decimal/decimal.dart';
@@ -19,11 +17,11 @@ import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CoinsBloc implements BlocBase {
   List<CoinBalance> coinBalance = <CoinBalance>[];
@@ -248,29 +246,16 @@ class CoinsBloc implements BlocBase {
     }
   }
 
-  Future<void> removeOneCoinFromLocal(Coin coinToRemove) async {
-    final List<Coin> readJsonCoinRes = await readJsonCoin();
-    readJsonCoinRes.removeWhere((Coin coin) => coin.abbr == coinToRemove.abbr);
-    final File file = await _localFile;
-    await file.writeAsString(json.encode(readJsonCoinRes));
-  }
+  Future<void> removeOneCoinFromLocal(Coin coinToRemove) async =>
+      await DBProvider.db.deleteCoinActivate(CoinEletrum.SAVED, coinToRemove);
 
   Future<void> updateMultiCoinsFromLocal(List<Coin> coinsToUpdate) async {
-    final List<Coin> readJsonCoinLocal = await readJsonCoin();
-
-    for (Coin readJsonCoinLocalItem in readJsonCoinLocal) {
-      bool isExist = false;
-      for (Coin coinsReadJsonItem in coinsToUpdate) {
-        if (readJsonCoinLocalItem.abbr == coinsReadJsonItem.abbr) {
-          isExist = true;
-        }
-      }
-      if (!isExist) {
-        coinsToUpdate.add(readJsonCoinLocalItem);
-      }
+    final List<Future<dynamic>> updateAllCoinFuture = <Future<dynamic>>[];
+    for (Coin coin in coinsToUpdate) {
+      updateAllCoinFuture
+          .add(DBProvider.db.updateCoinActivate(CoinEletrum.SAVED, coin));
     }
-    final File file = await _localFile;
-    await file.writeAsString(json.encode(coinsToUpdate));
+    await Future.wait<dynamic>(updateAllCoinFuture);
   }
 
   Future<void> addMultiCoins(List<Coin> coins) async {
@@ -341,70 +326,35 @@ class CoinsBloc implements BlocBase {
     _inCurrentActiveCoin.add(currentActiveCoin);
   }
 
-  Future<String> get _localPath async {
-    final Directory directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
-  Future<File> get _localFile async {
-    final String path = await _localPath;
-    return File('$path/coins_activate_default.json');
-  }
-
-  Future<File> writeJsonCoin(List<Coin> newCoins) async {
-    final File file = await _localFile;
-
-    final List<Coin> currentCoins = await readJsonCoin();
-
-    for (Coin newCoin in newCoins) {
-      if (currentCoins
-          .every((Coin currentCoin) => currentCoin.abbr != newCoin.abbr)) {
-        currentCoins.add(newCoin);
-      }
+  Future<void> writeJsonCoin(List<Coin> newCoins) async {
+    final List<Future<dynamic>> savedCoinFutures = <Future<dynamic>>[];
+    for (Coin coin in newCoins) {
+      savedCoinFutures
+          .add(DBProvider.db.saveCoinActivate(CoinEletrum.SAVED, coin));
     }
-    return file.writeAsString(json.encode(currentCoins));
+    await Future.wait<dynamic>(savedCoinFutures);
   }
 
-  Future<File> removeJsonCoin(List<Coin> coinsToRemove) async {
-    final File file = await _localFile;
-
-    final List<Coin> currentCoins = await readJsonCoin();
-    for (Coin newCoin in coinsToRemove) {
-      currentCoins.removeWhere((Coin item) => item.abbr == newCoin.abbr);
+  Future<void> removeJsonCoin(List<Coin> coinsToRemove) async {
+    final List<Future<dynamic>> removeCoinFutures = <Future<dynamic>>[];
+    for (Coin coin in coinsToRemove) {
+      removeCoinFutures
+          .add(DBProvider.db.deleteCoinActivate(CoinEletrum.SAVED, coin));
     }
-    return await file.writeAsString(json.encode(currentCoins));
+    await Future.wait<dynamic>(removeCoinFutures);
   }
 
-  Future<void> deleteJsonCoin(Coin coin) async {
-    final List<Coin> currentCoins = await readJsonCoin();
-    currentCoins
-        .removeWhere((Coin currentCoin) => currentCoin.abbr == coin.abbr);
-    final File file = await _localFile;
-    await file.writeAsString(json.encode(currentCoins));
-  }
+  Future<void> resetCoinDefault() async =>
+      await DBProvider.db.initCoinsActivateDefault(CoinEletrum.SAVED);
 
-  Future<File> resetCoinDefault() async {
-    final File file = await _localFile;
-    return await file.writeAsString(
-        json.encode(await MarketMakerService().loadJsonCoinsDefault()));
-  }
-
-  Future<List<Coin>> readJsonCoin() async {
-    try {
-      final File file = await _localFile;
-      final String contents = await file.readAsString();
-      return coinFromJson(contents);
-    } catch (e) {
-      return <Coin>[];
-    }
-  }
+  Future<List<Coin>> readJsonCoin() async =>
+      await DBProvider.db.getAllCoinElectrum(CoinEletrum.SAVED);
 
   Future<List<Coin>> getAllNotActiveCoins() async {
-    final List<Coin> allCoins = await MarketMakerService()
-        .loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
-    final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
+    final List<Coin> allCoins = await DBProvider.db.getAllCoinElectrum(CoinEletrum.CONFIG);
+    final List<Coin> allCoinsActivate = await DBProvider.db.getAllCoinElectrum(CoinEletrum.SAVED);
     final List<Coin> coinsNotActivated = <Coin>[];
-    
+
     for (Coin coin in allCoins) {
       bool isAlreadyAdded = false;
       for (Coin coinActivate in allCoinsActivate) {

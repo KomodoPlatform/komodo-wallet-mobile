@@ -24,6 +24,8 @@ import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'db/database.dart';
+
 class MarketMakerService {
   factory MarketMakerService() {
     return _singleton;
@@ -323,11 +325,7 @@ class MarketMakerService {
   }
 
   Future<List<Coin>> loadJsonCoinsDefault() async {
-    final String jsonString = await loadDefaultActivateCoin();
-    final Iterable<dynamic> l = json.decode(jsonString);
-    final List<Coin> coins =
-        l.map((dynamic model) => Coin.fromJson(model)).toList();
-    return coins;
+    return await DBProvider.db.getAllCoinElectrum(CoinEletrum.DEFAULT);
   }
 
   Future<List<dynamic>> getAllBalances(bool forceUpdate) async {
@@ -350,10 +348,7 @@ class MarketMakerService {
   }
 
   Future<String> loadElectrumServersAsset() async {
-    return await rootBundle.loadString('assets/coins_config.json');
+    return coinToJson(await DBProvider.db.getAllCoinElectrum(CoinEletrum.CONFIG));
   }
 
-  Future<String> loadDefaultActivateCoin() async {
-    return await rootBundle.loadString('assets/coins_activate_default.json');
-  }
 }
