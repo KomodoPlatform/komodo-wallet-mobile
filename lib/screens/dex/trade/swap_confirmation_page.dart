@@ -19,7 +19,7 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
-import 'package:http/http.dart' as http;
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 
 enum SwapStatus { BUY, SELL }
@@ -355,7 +355,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     if (widget.swapStatus == SwapStatus.BUY) {
       ApiProvider()
           .postBuy(
-              http.Client(),
+              MarketMakerService().client,
               GetBuySell(
                   base: coinBase.abbr,
                   rel: coinRel.abbr,
@@ -369,7 +369,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     } else if (widget.swapStatus == SwapStatus.SELL) {
       ApiProvider()
           .postSetPrice(
-              http.Client(),
+              MarketMakerService().client,
               GetSetPrice(
                   base: coinRel.abbr,
                   rel: coinBase.abbr,

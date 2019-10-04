@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -188,7 +187,7 @@ class CoinsBloc implements BlocBase {
 
   Future<void> removeCoin(Coin coin) async =>
       await removeCoinBalance(coin).then<dynamic>((_) => ApiProvider()
-          .disableCoin(http.Client(), GetDisableCoin(coin: coin.abbr))
+          .disableCoin(MarketMakerService().client, GetDisableCoin(coin: coin.abbr))
           .then<dynamic>((dynamic res) => removeCoinLocal(coin, res)));
 
   void updateOneCoin(CoinBalance coin) {
@@ -219,8 +218,7 @@ class CoinsBloc implements BlocBase {
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
-      final dynamic transactions = await ApiProvider().getTransactions(
-          http.Client(),
+      final dynamic transactions = await ApiProvider().getTransactions(MarketMakerService().client,
           GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
 
       if (transactions is Transactions) {
@@ -312,7 +310,7 @@ class CoinsBloc implements BlocBase {
         CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
     Log.println('', coin.abbr);
     return await ApiProvider()
-        .activeCoin(http.Client(), coin)
+        .activeCoin(MarketMakerService().client, coin)
         .then((dynamic activeCoin) {
       if (activeCoin is ActiveCoin) {
         currentCoinActivate(
@@ -499,7 +497,7 @@ class CoinsBloc implements BlocBase {
     dynamic balance;
     try {
       balance = await ApiProvider()
-          .getBalance(http.Client(), GetBalance(coin: coin.abbr))
+          .getBalance(MarketMakerService().client, GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
       Log.println('', e);
@@ -544,8 +542,8 @@ class CoinsBloc implements BlocBase {
 
     try {
       await ApiProvider()
-          .getCoinToKickStart(
-              http.Client(), BaseService(method: 'coins_needed_for_kick_start'))
+          .getCoinToKickStart(MarketMakerService().client,
+            BaseService(method: 'coins_needed_for_kick_start'))
           .then((dynamic coinsToKickStart) {
         if (coinsToKickStart is CoinToKickStart) {
           for (Coin coin in coinsAll) {
