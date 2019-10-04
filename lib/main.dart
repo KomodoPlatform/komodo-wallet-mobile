@@ -187,6 +187,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.paused:
         Log.println('', 'paused');
+        MarketMakerService().sink.close();
         if (Platform.isIOS &&
             !authBloc.isQrCodeActive &&
             !mainBloc.isUrlLaucherIsOpen) {
