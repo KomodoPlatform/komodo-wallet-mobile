@@ -32,7 +32,6 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:share/share.dart';
-import 'package:http/http.dart' as http;
 
 class CoinDetail extends StatefulWidget {
   const CoinDetail({this.coinBalance, this.isSendIsActive = false});
@@ -68,7 +67,7 @@ class CoinDetail extends StatefulWidget {
 
     ApiProvider()
         .postWithdraw(
-            http.Client(),
+            MarketMakerService().client,
             GetWithdraw(
                 userpass: MarketMakerService().userpass,
                 fee: null,
@@ -106,7 +105,7 @@ class CoinDetail extends StatefulWidget {
                     onPressed: () {
                       ApiProvider()
                           .postRawTransaction(
-                              http.Client(),
+                              MarketMakerService().client,
                               GetSendRawTransaction(
                                   method: 'send_raw_transaction',
                                   coin: coinBalance.coin.abbr,
@@ -900,7 +899,7 @@ class _CoinDetailState extends State<CoinDetail> {
               }
               ApiProvider()
                   .postWithdraw(
-                      http.Client(),
+                      MarketMakerService().client,
                       GetWithdraw(
                           userpass: MarketMakerService().userpass,
                           fee: fee,
@@ -914,7 +913,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 if (data is WithdrawResponse) {
                   ApiProvider()
                       .postRawTransaction(
-                          http.Client(),
+                          MarketMakerService().client,
                           GetSendRawTransaction(
                               coin: widget.coinBalance.coin.abbr,
                               txHex: data.txHex))

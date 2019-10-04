@@ -284,6 +284,10 @@ class MarketMakerService {
     return await platformmm2.invokeMethod('status');
   }
 
+  Future<void> lsof() async {
+    return await platformmm2.invokeMethod('lsof');
+  }
+
   Future<File> get _localFile async {
     return File('${filesPath}mm2');
   }
@@ -339,7 +343,7 @@ class MarketMakerService {
 
       for (Coin coin in coins) {
         futureBalances.add(ApiProvider()
-            .getBalance(http.Client(), GetBalance(coin: coin.abbr)));
+            .getBalance(MarketMakerService().client, GetBalance(coin: coin.abbr)));
       }
       balances = await Future.wait<dynamic>(futureBalances);
       balances = balances;
