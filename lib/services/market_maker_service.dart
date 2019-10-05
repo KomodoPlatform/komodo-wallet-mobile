@@ -152,6 +152,27 @@ class MarketMakerService {
     }
   }
 
+  Future<void> initSinkLog() async{
+    final File fileLog = File('${filesPath}log.txt');
+    if (fileLog.existsSync()) {
+      await fileLog.delete();
+    }
+    fileLog.create();
+    sink = fileLog.openWrite();
+  }
+
+  void openSinkLog() {
+    final File fileLog = File('${filesPath}log.txt');
+    sink ??= fileLog.openWrite();
+  }
+
+  void closeSinkLog() {
+    if (sink != null) {
+      sink.close();
+      sink = null;
+    }
+  }
+
   Future<void> runBin() async {
     final String passphrase = await EncryptionTool().read('passphrase');
     initUsername(passphrase);
@@ -166,12 +187,7 @@ class MarketMakerService {
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
-    final File fileLog = File('${filesPath}log.txt');
-    if (fileLog.existsSync()) {
-      await fileLog.delete();
-    }
-    fileLog.create();
-    sink = fileLog.openWrite();
+    await initSinkLog();
 
     if (Platform.isAndroid) {
       await stopmm2();

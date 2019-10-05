@@ -187,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.paused:
         Log.println('', 'paused');
-        MarketMakerService().sink.close();
+        MarketMakerService().closeSinkLog();
         if (Platform.isIOS &&
             !authBloc.isQrCodeActive &&
             !mainBloc.isUrlLaucherIsOpen) {
@@ -204,6 +204,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.resumed:
         Log.println('', 'resumed');
+        MarketMakerService().openSinkLog();
         if (Platform.isIOS) {
           if (!MarketMakerService().ismm2Running) {
             _runBinMm2UserAlreadyLog();
