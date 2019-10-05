@@ -48,7 +48,7 @@ class MarketMakerService {
   static MethodChannel platformmm2 = const MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
-  File fileLogFromGUI;
+  File logFile;
 
   Future<void> init(String passphrase) async {
     if (Platform.isAndroid) {
@@ -153,22 +153,35 @@ class MarketMakerService {
     }
   }
 
-  Future<void> initSinkLog() async {
-    fileLogFromGUI = File('${filesPath}log.txt');
-    if (fileLogFromGUI.existsSync()) {
-      await fileLogFromGUI.delete();
+  Future<void> initLogSink() async {
+    final File dateFile = File('${filesPath}logDate.txt');
+    logFile = File('${filesPath}log.txt');
+
+    if ((logFile.existsSync() && logFile.lengthSync() > 7900000) ||
+        (dateFile.existsSync() &&
+            (DateTime.now().isAfter(DateTime.parse(dateFile.readAsStringSync())
+                .add(const Duration(days: 2)))))) {
+      await logFile.delete();
+      logFile.create();
+      await dateFile.delete();
+      dateFile.createSync();
+      dateFile.writeAsString('${DateTime.now()}');
+    } else if (!dateFile.existsSync()) {
+      dateFile.createSync();
+      dateFile.writeAsString('${DateTime.now()}');
+    } else if (!logFile.existsSync()) {
+      logFile.create();
     }
-    fileLogFromGUI.create();
-    sink = fileLogFromGUI.openWrite(mode: FileMode.append);
+    sink = logFile.openWrite(mode: FileMode.append);
   }
 
-  void openSinkLog() {
-    if (fileLogFromGUI != null && sink == null) {
-      sink = fileLogFromGUI.openWrite(mode: FileMode.append);
+  void openLogSink() {
+    if (logFile != null && sink == null) {
+      sink = logFile.openWrite(mode: FileMode.append);
     }
   }
 
-  void closeSinkLog() {
+  void closeLogSink() {
     if (sink != null) {
       sink.close();
       sink = null;
@@ -189,7 +202,7 @@ class MarketMakerService {
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
-    await initSinkLog();
+    await initLogSink();
 
     if (Platform.isAndroid) {
       await stopmm2();
