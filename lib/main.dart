@@ -186,11 +186,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.paused:
         Log.println('', 'paused');
-        MarketMakerService().closeLogSink();
-        if (Platform.isIOS &&
-            !authBloc.isQrCodeActive &&
+        if (Platform.isIOS) {
+          MarketMakerService().closeLogSink();
+          if (!authBloc.isQrCodeActive &&
             !mainBloc.isUrlLaucherIsOpen) {
-          exit(0);
+              exit(0);
+            }
         }
         dialogBloc.closeDialog(context);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
