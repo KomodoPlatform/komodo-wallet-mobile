@@ -256,7 +256,7 @@ class MarketMakerService {
     }
   }
 
-  void logOnFile(String log) {
+  void logIntoFile(String log) {
     if (sink != null) {
       sink.write(log + '\n');
     }
