@@ -36,7 +36,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera permission is required for barcode scanning.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Why is my app authenticating using face id?</string>
+	<string>Face ID is required for authentication.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
