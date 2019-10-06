@@ -19,13 +19,13 @@ import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
-import 'package:http/http.dart' as http;
 
 class TradePage extends StatefulWidget {
   const TradePage({this.mContext});
@@ -274,8 +274,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<Decimal> getTxFee() async {
     try {
-      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
-          http.Client(), GetTradeFee(coin: currentCoinBalance.coin.abbr));
+      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(MarketMakerService().client,
+          GetTradeFee(coin: currentCoinBalance.coin.abbr));
 
       if (tradeFeeResponse is TradeFee) {
         final double tradeFee = double.parse(tradeFeeResponse.result.amount);
@@ -305,8 +305,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<String> getTxFeeErc() async {
     try {
-      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
-          http.Client(), GetTradeFee(coin: currentCoinBalance.coin.abbr));
+      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(MarketMakerService().client,
+          GetTradeFee(coin: currentCoinBalance.coin.abbr));
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
       final Decimal txFee = Decimal.parse(tradeFee.toString());
@@ -347,7 +347,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<Decimal> getERCfee(Coin coin) async {
     final TradeFee tradeFeeResponseERC = await ApiProvider()
-        .getTradeFee(http.Client(), GetTradeFee(coin: coin.abbr));
+        .getTradeFee(MarketMakerService().client, GetTradeFee(coin: coin.abbr));
     return Decimal.parse(tradeFeeResponseERC.result.amount);
   }
 

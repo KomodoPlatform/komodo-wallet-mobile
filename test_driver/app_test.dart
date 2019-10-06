@@ -103,6 +103,7 @@ void main() {
       'DGB',
       'QTUM',
       'RVN',
+      'AXE',
       'VRSC',
       'RFOX',
       'ZILLA',
@@ -111,6 +112,7 @@ void main() {
       'MORTY',
       'ETH',
       'USDC',
+      'AWC',
       'BAT',
     ];
 

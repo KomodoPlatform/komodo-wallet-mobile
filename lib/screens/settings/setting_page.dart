@@ -29,7 +29,6 @@ import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info/package_info.dart';
-import 'package:http/http.dart' as http;
 
 class SettingPage extends StatefulWidget {
   @override
@@ -132,7 +131,7 @@ class _SettingPageState extends State<SettingPage> {
 
     try {
       final dynamic versionmm2 = await ApiProvider()
-          .getVersionMM2(http.Client(), BaseService(method: 'version'));
+          .getVersionMM2(MarketMakerService().client, BaseService(method: 'version'));
       if (versionmm2 is ResultSuccess && versionmm2 != null) {
         version += ' - ${versionmm2.result}';
       }
@@ -642,8 +641,8 @@ class _SettingPageState extends State<SettingPage> {
   Future<void> _shareFile() async {
     Navigator.of(context).pop();
 
-    final dynamic recentSwap = await ApiProvider().getRecentSwaps(
-        http.Client(), GetRecentSwap(limit: 100, fromUuid: null));
+    final dynamic recentSwap = await ApiProvider().getRecentSwaps(MarketMakerService().client, 
+        GetRecentSwap(limit: 100, fromUuid: null));
 
     if (recentSwap is RecentSwaps) {
       if (MarketMakerService().sink != null) {

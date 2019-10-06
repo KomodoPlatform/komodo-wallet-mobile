@@ -7,6 +7,7 @@ class Log {
       messageToPrint = key + ' :' + message.toString() + '\n';
     }
     print(messageToPrint);
-    MarketMakerService().logOnFile(messageToPrint.toString());
+    MarketMakerService().logIntoFile(
+        DateTime.now().toString() + ' ' + messageToPrint.toString());
   }
 }

@@ -2,13 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/article.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+
+enum CoinEletrum { DEFAULT, SAVED, CONFIG }
 
 class DBProvider {
   DBProvider._();
@@ -60,7 +64,190 @@ class DBProvider {
           is_fast_encryption BIT
         )
       ''');
+      await db.execute(createTableCoins(CoinEletrum.SAVED));
+      await db.execute(createTableCoins(CoinEletrum.DEFAULT));
+      await db.execute(createTableCoins(CoinEletrum.CONFIG));
     });
+  }
+
+  String createTableCoins(CoinEletrum coinEletrum) {
+    return '''
+      CREATE TABLE ${_getDbElectrum(coinEletrum)} (
+          name TEXT PRIMARY KEY UNIQUE,
+          type TEXT,
+          address TEXT,
+          port INTEGER,
+          proto TEXT,
+          txfee INTEGER,
+          priceUSD REAL,
+          mm2 INTEGER,
+          swap_contract_address TEXT,
+          abbr TEXT,
+          coingeckoId TEXT,
+          colorCoin TEXT,
+          serverList TEXT,
+          explorerUrl TEXT
+        )
+      ''';
+  }
+
+  String _getDbElectrum(CoinEletrum coinEletrum) {
+    switch (coinEletrum) {
+      case CoinEletrum.DEFAULT:
+        return 'CoinsDefault';
+        break;
+      case CoinEletrum.SAVED:
+        return 'CoinsActivated';
+        break;
+      case CoinEletrum.CONFIG:
+        return 'CoinsConfig';
+        break;
+      default:
+        return 'CoinsDefault';
+    }
+  }
+
+  String _getPathJsonElectrum(CoinEletrum coinEletrum) {
+    switch (coinEletrum) {
+      case CoinEletrum.DEFAULT:
+        return 'coins_activate_default';
+        break;
+      case CoinEletrum.SAVED:
+        return 'coins_activate_default';
+        break;
+      case CoinEletrum.CONFIG:
+        return 'coins_config';
+        break;
+      default:
+        return 'coins_activate_default';
+    }
+  }
+
+  Future<void> saveCoinActivate(CoinEletrum coinEletrum, Coin coin) async {
+    final Database db = await database;
+
+    final Map<String, dynamic> row = <String, dynamic>{
+      'name': coin.name ?? '',
+      'type': coin.type ?? '',
+      'address': coin.address ?? '',
+      'port': coin.port ?? 0,
+      'proto': coin.proto ?? '',
+      'txfee': coin.txfee ?? 0,
+      'priceUSD': coin.priceUsd ?? 0.0,
+      'mm2': coin.mm2 ?? 0,
+      'abbr': coin.abbr ?? '',
+      'coingeckoId': coin.coingeckoId ?? '',
+      'swap_contract_address': coin.swapContractAddress ?? '',
+      'colorCoin': coin.colorCoin ?? '',
+      'serverList': json.encode(coin.serverList) ?? <String>[],
+      'explorerUrl': json.encode(coin.explorerUrl) ?? <String>[],
+    };
+    if (!(await isExist(coinEletrum, coin.name))) {
+      await db.insert(_getDbElectrum(coinEletrum), row);
+    }
+  }
+
+  Future<bool> isExist(CoinEletrum coinEletrum, String name) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+        _getDbElectrum(coinEletrum),
+        where: 'name = ?',
+        whereArgs: <dynamic>[name]);
+    if (maps.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<List<Coin>> getAllCoinElectrum(CoinEletrum coinEletrum) async {
+    // Get a reference to the database
+    final Database db = await database;
+
+    // Query the table for All The CoinSActivate.
+    final List<Map<String, dynamic>> maps =
+        await db.query(_getDbElectrum(coinEletrum));
+
+    // Convert the List<Map<String, dynamic> into a List<Coin>.
+    return List<Coin>.generate(maps.length, (int i) {
+      return Coin(
+        name: maps[i]['name'],
+        type: maps[i]['type'],
+        swapContractAddress: maps[i]['swap_contract_address'],
+        mm2: maps[i]['mm2'],
+        priceUsd: maps[i]['priceUSD'],
+        address: maps[i]['address'],
+        port: maps[i]['port'],
+        proto: maps[i]['proto'],
+        txfee: maps[i]['txfee'],
+        abbr: maps[i]['abbr'],
+        coingeckoId: maps[i]['coingeckoId'],
+        colorCoin: maps[i]['colorCoin'],
+        serverList: List<String>.from(json.decode(maps[i]['serverList'])),
+        explorerUrl: List<String>.from(json.decode(maps[i]['explorerUrl'])),
+      );
+    });
+  }
+
+  Future<void> updateCoinActivate(CoinEletrum coinEletrum, Coin coin) async {
+    // Get a reference to the database
+    final Database db = await database;
+
+    final Map<String, dynamic> row = <String, dynamic>{
+      'name': coin.name,
+      'type': coin.type,
+      'address': coin.address,
+      'port': coin.port,
+      'proto': coin.proto,
+      'txfee': coin.txfee,
+      'abbr': coin.abbr,
+      'coingeckoId': coin.coingeckoId,
+      'colorCoin': coin.colorCoin,
+      'serverList': json.encode(coin.serverList),
+      'explorerUrl': json.encode(coin.explorerUrl)
+    };
+    // Update the Coin from the Database
+    if (await isExist(coinEletrum, coin.name)) {
+      await db.update(
+        _getDbElectrum(coinEletrum),
+        row,
+        where: 'name = ?',
+        whereArgs: <dynamic>[coin.name],
+      );
+    } else {
+      await saveCoinActivate(coinEletrum, coin);
+    }
+  }
+
+  Future<void> deleteCoinActivate(CoinEletrum coinEletrum, Coin coin) async {
+    // Get a reference to the database
+    final Database db = await database;
+
+    // Remove the Coin from the Database
+    await db.delete(
+      _getDbElectrum(coinEletrum),
+      where: 'name = ?',
+      whereArgs: <dynamic>[coin.name],
+    );
+  }
+
+  Future<void> deleteAllCoinActivate(CoinEletrum coinEletrum) async {
+    final Database db = await database;
+    await db.delete(_getDbElectrum(coinEletrum));
+  }
+
+  Future<void> initCoinsActivateDefault(CoinEletrum coinEletrum) async {
+    await deleteAllCoinActivate(coinEletrum);
+    try {
+      final String contents = await rootBundle
+          .loadString('assets/${_getPathJsonElectrum(coinEletrum)}.json');
+      for (Coin coin in coinFromJson(contents)) {
+        await saveCoinActivate(coinEletrum, coin);
+      }
+    } catch (e) {
+      Log.println(
+          'initCoinsActivateDefault', 'Error on initCoinsActivateDefault');
+    }
   }
 
   Future<int> saveArticle(Article newArticle) async {
@@ -89,7 +276,7 @@ class DBProvider {
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('ArticlesSaved');
     Log.println('', maps.length);
-    // Convert the List<Map<String, dynamic> into a List<Dog>.
+    // Convert the List<Map<String, dynamic> into a List<Article>.
     return List<Article>.generate(maps.length, (int i) {
       return Article(
         id: maps[i]['id'],
@@ -146,8 +333,9 @@ class DBProvider {
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List<Wallet>.generate(maps.length, (int i) {
       return Wallet(
-          id: maps[i]['id'],
-          name: maps[i]['name'],);
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+      );
     });
   }
 
@@ -182,8 +370,9 @@ class DBProvider {
 
     final List<Wallet> wallets = List<Wallet>.generate(maps.length, (int i) {
       return Wallet(
-          id: maps[i]['id'],
-          name: maps[i]['name'],);
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+      );
     });
     if (wallets.isEmpty) {
       return null;

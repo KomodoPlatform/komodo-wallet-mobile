@@ -24,6 +24,8 @@ import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'db/database.dart';
+
 class MarketMakerService {
   factory MarketMakerService() {
     return _singleton;
@@ -46,6 +48,7 @@ class MarketMakerService {
   static MethodChannel platformmm2 = const MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
+  File logFile;
 
   Future<void> init(String passphrase) async {
     if (Platform.isAndroid) {
@@ -150,6 +153,41 @@ class MarketMakerService {
     }
   }
 
+  Future<void> initLogSink() async {
+    final File dateFile = File('${filesPath}logDate.txt');
+    logFile = File('${filesPath}log.txt');
+
+    if ((logFile.existsSync() && logFile.lengthSync() > 7900000) ||
+        (dateFile.existsSync() &&
+            (DateTime.now().isAfter(DateTime.parse(dateFile.readAsStringSync())
+                .add(const Duration(days: 2)))))) {
+      await logFile.delete();
+      logFile.create();
+      await dateFile.delete();
+      dateFile.createSync();
+      dateFile.writeAsString('${DateTime.now()}');
+    } else if (!dateFile.existsSync()) {
+      dateFile.createSync();
+      dateFile.writeAsString('${DateTime.now()}');
+    } else if (!logFile.existsSync()) {
+      logFile.create();
+    }
+    sink = logFile.openWrite(mode: FileMode.append);
+  }
+
+  void openLogSink() {
+    if (logFile != null && sink == null) {
+      sink = logFile.openWrite(mode: FileMode.append);
+    }
+  }
+
+  void closeLogSink() {
+    if (sink != null) {
+      sink.close();
+      sink = null;
+    }
+  }
+
   Future<void> runBin() async {
     final String passphrase = await EncryptionTool().read('passphrase');
     initUsername(passphrase);
@@ -164,12 +202,7 @@ class MarketMakerService {
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
-    final File fileLog = File('${filesPath}log.txt');
-    if (fileLog.existsSync()) {
-      await fileLog.delete();
-    }
-    fileLog.create();
-    sink = fileLog.openWrite();
+    await initLogSink();
 
     if (Platform.isAndroid) {
       await stopmm2();
@@ -223,7 +256,7 @@ class MarketMakerService {
     }
   }
 
-  void logOnFile(String log) {
+  void logIntoFile(String log) {
     if (sink != null) {
       sink.write(log + '\n');
     }
@@ -284,6 +317,10 @@ class MarketMakerService {
     return await platformmm2.invokeMethod('status');
   }
 
+  Future<void> lsof() async {
+    return await platformmm2.invokeMethod('lsof');
+  }
+
   Future<File> get _localFile async {
     return File('${filesPath}mm2');
   }
@@ -323,11 +360,7 @@ class MarketMakerService {
   }
 
   Future<List<Coin>> loadJsonCoinsDefault() async {
-    final String jsonString = await loadDefaultActivateCoin();
-    final Iterable<dynamic> l = json.decode(jsonString);
-    final List<Coin> coins =
-        l.map((dynamic model) => Coin.fromJson(model)).toList();
-    return coins;
+    return await DBProvider.db.getAllCoinElectrum(CoinEletrum.DEFAULT);
   }
 
   Future<List<dynamic>> getAllBalances(bool forceUpdate) async {
@@ -338,8 +371,8 @@ class MarketMakerService {
       final List<Future<dynamic>> futureBalances = <Future<dynamic>>[];
 
       for (Coin coin in coins) {
-        futureBalances.add(ApiProvider()
-            .getBalance(http.Client(), GetBalance(coin: coin.abbr)));
+        futureBalances.add(ApiProvider().getBalance(
+            MarketMakerService().client, GetBalance(coin: coin.abbr)));
       }
       balances = await Future.wait<dynamic>(futureBalances);
       balances = balances;
@@ -350,10 +383,7 @@ class MarketMakerService {
   }
 
   Future<String> loadElectrumServersAsset() async {
-    return await rootBundle.loadString('assets/coins_config.json');
-  }
-
-  Future<String> loadDefaultActivateCoin() async {
-    return await rootBundle.loadString('assets/coins_activate_default.json');
+    return coinToJson(
+        await DBProvider.db.getAllCoinElectrum(CoinEletrum.CONFIG));
   }
 }

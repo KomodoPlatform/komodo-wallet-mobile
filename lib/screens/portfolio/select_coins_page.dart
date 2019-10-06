@@ -54,8 +54,6 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLoc = AppLocalizations.of(context);
-
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 6.0,
