@@ -123,36 +123,36 @@ class DBProvider {
     }
   }
 
-
   Future<void> saveCoinActivate(CoinEletrum coinEletrum, Coin coin) async {
     final Database db = await database;
 
     final Map<String, dynamic> row = <String, dynamic>{
-        'name': coin.name ?? '',
-        'type': coin.type ?? '',
-        'address': coin.address ?? '',
-        'port': coin.port ?? 0,
-        'proto': coin.proto ?? '',
-        'txfee': coin.txfee ?? 0,
-        'priceUSD': coin.priceUsd ?? 0.0,
-        'mm2': coin.mm2 ?? 0,
-        'abbr': coin.abbr ?? '',
-        'coingeckoId': coin.coingeckoId ?? '',
-        'swap_contract_address':
-            coin.swapContractAddress ?? '',
-        'colorCoin': coin.colorCoin ?? '',
-        'serverList': json.encode(coin.serverList) ?? <String>[],
-        'explorerUrl': json.encode(coin.explorerUrl) ?? <String>[],
+      'name': coin.name ?? '',
+      'type': coin.type ?? '',
+      'address': coin.address ?? '',
+      'port': coin.port ?? 0,
+      'proto': coin.proto ?? '',
+      'txfee': coin.txfee ?? 0,
+      'priceUSD': coin.priceUsd ?? 0.0,
+      'mm2': coin.mm2 ?? 0,
+      'abbr': coin.abbr ?? '',
+      'coingeckoId': coin.coingeckoId ?? '',
+      'swap_contract_address': coin.swapContractAddress ?? '',
+      'colorCoin': coin.colorCoin ?? '',
+      'serverList': json.encode(coin.serverList) ?? <String>[],
+      'explorerUrl': json.encode(coin.explorerUrl) ?? <String>[],
     };
     if (!(await isExist(coinEletrum, coin.name))) {
       await db.insert(_getDbElectrum(coinEletrum), row);
     }
   }
 
-  Future<bool> isExist(CoinEletrum coinEletrum, String name) async{
+  Future<bool> isExist(CoinEletrum coinEletrum, String name) async {
     final Database db = await database;
-    final List<Map<String, dynamic>> maps = 
-    await db.query(_getDbElectrum(coinEletrum), where: 'name = ?', whereArgs: <dynamic>[name]);
+    final List<Map<String, dynamic>> maps = await db.query(
+        _getDbElectrum(coinEletrum),
+        where: 'name = ?',
+        whereArgs: <dynamic>[name]);
     if (maps.isNotEmpty) {
       return true;
     } else {
@@ -207,7 +207,7 @@ class DBProvider {
       'explorerUrl': json.encode(coin.explorerUrl)
     };
     // Update the Coin from the Database
-    if (await isExist(coinEletrum,coin.name)) {
+    if (await isExist(coinEletrum, coin.name)) {
       await db.update(
         _getDbElectrum(coinEletrum),
         row,
@@ -217,7 +217,6 @@ class DBProvider {
     } else {
       await saveCoinActivate(coinEletrum, coin);
     }
-
   }
 
   Future<void> deleteCoinActivate(CoinEletrum coinEletrum, Coin coin) async {
@@ -235,16 +234,6 @@ class DBProvider {
   Future<void> deleteAllCoinActivate(CoinEletrum coinEletrum) async {
     final Database db = await database;
     await db.delete(_getDbElectrum(coinEletrum));
-  }
-
-  Future<String> get _localPath async {
-    final Directory directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
-  Future<File> _localFile(CoinEletrum coinEletrum) async {
-    final String path = await _localPath;
-    return File('$path/${_getPathJsonElectrum(coinEletrum)}.json');
   }
 
   Future<void> initCoinsActivateDefault(CoinEletrum coinEletrum) async {

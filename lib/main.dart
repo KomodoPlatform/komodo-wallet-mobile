@@ -13,7 +13,6 @@ import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/news/media_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
-import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -187,11 +186,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.paused:
         Log.println('', 'paused');
-        MarketMakerService().sink.close();
-        if (Platform.isIOS &&
-            !authBloc.isQrCodeActive &&
+        if (Platform.isIOS) {
+          MarketMakerService().closeLogSink();
+          if (!authBloc.isQrCodeActive &&
             !mainBloc.isUrlLaucherIsOpen) {
-          exit(0);
+              exit(0);
+            }
         }
         dialogBloc.closeDialog(context);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -204,6 +204,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.resumed:
         Log.println('', 'resumed');
+        MarketMakerService().openLogSink();
         if (Platform.isIOS) {
           if (!MarketMakerService().ismm2Running) {
             _runBinMm2UserAlreadyLog();

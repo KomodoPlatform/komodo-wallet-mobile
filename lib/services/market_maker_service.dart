@@ -48,6 +48,7 @@ class MarketMakerService {
   static MethodChannel platformmm2 = const MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
+  File logFile;
 
   Future<void> init(String passphrase) async {
     if (Platform.isAndroid) {
@@ -152,6 +153,41 @@ class MarketMakerService {
     }
   }
 
+  Future<void> initLogSink() async {
+    final File dateFile = File('${filesPath}logDate.txt');
+    logFile = File('${filesPath}log.txt');
+
+    if ((logFile.existsSync() && logFile.lengthSync() > 7900000) ||
+        (dateFile.existsSync() &&
+            (DateTime.now().isAfter(DateTime.parse(dateFile.readAsStringSync())
+                .add(const Duration(days: 2)))))) {
+      await logFile.delete();
+      logFile.create();
+      await dateFile.delete();
+      dateFile.createSync();
+      dateFile.writeAsString('${DateTime.now()}');
+    } else if (!dateFile.existsSync()) {
+      dateFile.createSync();
+      dateFile.writeAsString('${DateTime.now()}');
+    } else if (!logFile.existsSync()) {
+      logFile.create();
+    }
+    sink = logFile.openWrite(mode: FileMode.append);
+  }
+
+  void openLogSink() {
+    if (logFile != null && sink == null) {
+      sink = logFile.openWrite(mode: FileMode.append);
+    }
+  }
+
+  void closeLogSink() {
+    if (sink != null) {
+      sink.close();
+      sink = null;
+    }
+  }
+
   Future<void> runBin() async {
     final String passphrase = await EncryptionTool().read('passphrase');
     initUsername(passphrase);
@@ -166,12 +202,7 @@ class MarketMakerService {
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
-    final File fileLog = File('${filesPath}log.txt');
-    if (fileLog.existsSync()) {
-      await fileLog.delete();
-    }
-    fileLog.create();
-    sink = fileLog.openWrite();
+    await initLogSink();
 
     if (Platform.isAndroid) {
       await stopmm2();
@@ -225,7 +256,7 @@ class MarketMakerService {
     }
   }
 
-  void logOnFile(String log) {
+  void logIntoFile(String log) {
     if (sink != null) {
       sink.write(log + '\n');
     }
@@ -340,8 +371,8 @@ class MarketMakerService {
       final List<Future<dynamic>> futureBalances = <Future<dynamic>>[];
 
       for (Coin coin in coins) {
-        futureBalances.add(ApiProvider()
-            .getBalance(MarketMakerService().client, GetBalance(coin: coin.abbr)));
+        futureBalances.add(ApiProvider().getBalance(
+            MarketMakerService().client, GetBalance(coin: coin.abbr)));
       }
       balances = await Future.wait<dynamic>(futureBalances);
       balances = balances;
@@ -352,7 +383,7 @@ class MarketMakerService {
   }
 
   Future<String> loadElectrumServersAsset() async {
-    return coinToJson(await DBProvider.db.getAllCoinElectrum(CoinEletrum.CONFIG));
+    return coinToJson(
+        await DBProvider.db.getAllCoinElectrum(CoinEletrum.CONFIG));
   }
-
 }
