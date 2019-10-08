@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-07-31T13:29:06.046544",
+  "@@last_modified": "2019-10-08T10:58:14.134507",
   "createPin": "Create PIN",
   "@createPin": {
     "type": "text",
@@ -312,6 +312,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "errorNotAValidAddressSegWit": "Segwit addresses are not supported (yet)",
+  "@errorNotAValidAddressSegWit": {
+    "type": "text",
+    "placeholders": {}
+  },
   "toAddress": "To address:",
   "@toAddress": {
     "type": "text",
@@ -392,7 +397,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "feedback": "Send Feedback",
+  "feedback": "Share Log File",
   "@feedback": {
     "type": "text",
     "placeholders": {}
@@ -666,7 +671,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "signInWithSeedPhrase": "Sign in with seed phrase",
+  "signInWithSeedPhrase": "Forgot the password? Restore wallet from seed",
   "@signInWithSeedPhrase": {
     "type": "text",
     "placeholders": {}
@@ -691,7 +696,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "infoWalletPassword": "You can choose to encrypt your wallet with a password. If you choose not to use a password, you will need to enter your seed every time you want to access your wallet.",
+  "infoWalletPassword": "You have to provide a password for the wallet encryption due to security reasons.",
   "@infoWalletPassword": {
     "type": "text",
     "placeholders": {}
@@ -711,7 +716,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "infoPasswordDialog": "If you do not enter a password, you will need to enter your seed phrase every time you want to access your wallet.",
+  "infoPasswordDialog": "Use a secure password and do not store it on the same device",
   "@infoPasswordDialog": {
     "type": "text",
     "placeholders": {}
@@ -1221,6 +1226,182 @@
   },
   "availableVolume": "max vol",
   "@availableVolume": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "configureWallet": "Configuring your wallet, please wait...",
+  "@configureWallet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCurrentAsk": "Order selected",
+  "@titleCurrentAsk": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txFeeTitle": "transaction fee:",
+  "@txFeeTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tradingFee": "trading fee:",
+  "@tradingFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapErcAmount": "This swap requires {amount} ETH for transaction fees",
+  "@swapErcAmount": {
+    "type": "text",
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "remove": "Disable",
+  "@remove": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchFilterCoin": "Search a coin",
+  "@searchFilterCoin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchFilterSubtitleSmartChain": "Select all SmartChains",
+  "@searchFilterSubtitleSmartChain": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchFilterSubtitleERC": "Select all ERC tokens",
+  "@searchFilterSubtitleERC": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "customFee": "Custom fee",
+  "@customFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gas": "Gas",
+  "@gas": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "gasPrice": "Gas price",
+  "@gasPrice": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "customFeeWarning": "Only use custom fees if you know what you are doing!",
+  "@customFeeWarning": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchFilterSubtitleutxo": "Select all UTXO coins",
+  "@searchFilterSubtitleutxo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagERC20": "ERC20",
+  "@tagERC20": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagKMD": "KMD",
+  "@tagKMD": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNotEnoughtGas": "Not enough gas - use at least {gas} Gwei",
+  "@errorNotEnoughtGas": {
+    "type": "text",
+    "placeholders": {
+      "gas": {}
+    }
+  },
+  "orderCancel": "All {coin} orders will be canceled.",
+  "@orderCancel": {
+    "type": "text",
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "deleteConfirm": "Confirm deactivation",
+  "@deleteConfirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteSpan1": "Do you want to remove ",
+  "@deleteSpan1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteSpan2": " from your portfolio? All unmatched orders will be canceled.",
+  "@deleteSpan2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "share": "SHARE",
+  "@share": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "warningShareLogs": "Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!",
+  "@warningShareLogs": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterOldPinCode": "Enter your old PIN",
+  "@enterOldPinCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterNewPinCode": "Enter your new PIN",
+  "@enterNewPinCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticate": "authenticate",
+  "@authenticate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settingLanguageTitle": "Languages",
+  "@settingLanguageTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "englishLanguage": "English",
+  "@englishLanguage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "frenchLanguage": "French",
+  "@frenchLanguage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deutscheLanguage": "Deutsch",
+  "@deutscheLanguage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "chineseLanguage": "Chinese",
+  "@chineseLanguage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "simplifiedChinese": "simplified",
+  "@simplifiedChinese": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "traditionalChinese": "traditional",
+  "@traditionalChinese": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faucetName": "FAUCET",
+  "@faucetName": {
     "type": "text",
     "placeholders": {}
   }

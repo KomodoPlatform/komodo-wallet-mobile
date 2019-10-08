@@ -551,15 +551,14 @@ class AppLocalizations {
       Intl.message('English', name: 'englishLanguage');
   String get frenchLanguage => Intl.message('French', name: 'frenchLanguage');
   String get deutscheLanguage =>
-      Intl.message('Deutsche', name: 'deutscheLanguage');
+      Intl.message('Deutsch', name: 'deutscheLanguage');
   String get chineseLanguage =>
       Intl.message('Chinese', name: 'chineseLanguage');
   String get simplifiedChinese =>
       Intl.message('simplified', name: 'simplifiedChinese');
-  String get traditionalChinese =>
-      Intl.message('traditional', name: 'traditionalChinese');
-  String get faucetName =>
-      Intl.message('FAUCET', name: 'faucetName');
+  // String get traditionalChinese =>
+  //     Intl.message('traditional', name: 'traditionalChinese');
+  String get faucetName => Intl.message('FAUCET', name: 'faucetName');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -567,7 +566,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return <String>['en', 'fr', 'de', 'zh', 'zh_Hans', 'zh_Hant']
+    return <String>['en', 'fr', 'de', 'zh', 'zh_Hans']
         .contains(locale.languageCode);
   }
 
