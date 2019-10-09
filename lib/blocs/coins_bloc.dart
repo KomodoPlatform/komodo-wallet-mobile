@@ -184,7 +184,8 @@ class CoinsBloc implements BlocBase {
 
   Future<void> removeCoin(Coin coin) async =>
       await removeCoinBalance(coin).then<dynamic>((_) => ApiProvider()
-          .disableCoin(MarketMakerService().client, GetDisableCoin(coin: coin.abbr))
+          .disableCoin(
+              MarketMakerService().client, GetDisableCoin(coin: coin.abbr))
           .then<dynamic>((dynamic res) => removeCoinLocal(coin, res)));
 
   void updateOneCoin(CoinBalance coin) {
@@ -215,7 +216,8 @@ class CoinsBloc implements BlocBase {
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
-      final dynamic transactions = await ApiProvider().getTransactions(MarketMakerService().client,
+      final dynamic transactions = await ApiProvider().getTransactions(
+          MarketMakerService().client,
           GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
 
       if (transactions is Transactions) {
@@ -302,10 +304,16 @@ class CoinsBloc implements BlocBase {
         return CoinToActivate(coin: coin, isActive: true);
       } else if (activeCoin is ErrorString &&
           activeCoin.error.contains('already initialized')) {
+        Log.println(
+            'coins_bloc.dart:305', 'ERROR: ' + activeCoin.error.toString());
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Coin ${coin.abbr} already initialized'));
         return CoinToActivate(coin: coin, isActive: true);
       } else {
+        if (activeCoin is ErrorString) {
+          Log.println(
+              'coins_bloc.dart:311', 'ERROR: ' + activeCoin.error.toString());
+        }
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
         return CoinToActivate(coin: coin, isActive: false);
@@ -314,6 +322,10 @@ class CoinsBloc implements BlocBase {
       Log.println('', 'Sorry, ${coin.abbr} not available.');
       currentCoinActivate(
           CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
+      await Future<dynamic>.delayed(const Duration(seconds: 2))
+          .then((dynamic _) {
+        currentCoinActivate(null);
+      });
       return CoinToActivate(coin: coin, isActive: false);
     });
   }
@@ -348,8 +360,10 @@ class CoinsBloc implements BlocBase {
       await DBProvider.db.getAllCoinElectrum(CoinEletrum.SAVED);
 
   Future<List<Coin>> getAllNotActiveCoins() async {
-    final List<Coin> allCoins = await DBProvider.db.getAllCoinElectrum(CoinEletrum.CONFIG);
-    final List<Coin> allCoinsActivate = await DBProvider.db.getAllCoinElectrum(CoinEletrum.SAVED);
+    final List<Coin> allCoins =
+        await DBProvider.db.getAllCoinElectrum(CoinEletrum.CONFIG);
+    final List<Coin> allCoinsActivate =
+        await DBProvider.db.getAllCoinElectrum(CoinEletrum.SAVED);
     final List<Coin> coinsNotActivated = <Coin>[];
 
     for (Coin coin in allCoins) {
@@ -492,7 +506,7 @@ class CoinsBloc implements BlocBase {
     try {
       await ApiProvider()
           .getCoinToKickStart(MarketMakerService().client,
-            BaseService(method: 'coins_needed_for_kick_start'))
+              BaseService(method: 'coins_needed_for_kick_start'))
           .then((dynamic coinsToKickStart) {
         if (coinsToKickStart is CoinToKickStart) {
           for (Coin coin in coinsAll) {
