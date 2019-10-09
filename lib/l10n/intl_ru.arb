@@ -1,80 +1,79 @@
 {
-  "@@last_modified": "2019-10-08T10:58:14.134507",
-  "createPin": "Create PIN",
+  "createPin": "Задать PIN",
   "@createPin": {
     "type": "text",
     "placeholders": {}
   },
-  "enterPinCode": "Enter your PIN code",
+  "enterPinCode": "Введите свой PIN-код",
   "@enterPinCode": {
     "type": "text",
     "placeholders": {}
   },
-  "login": "login",
+  "login": "войти",
   "@login": {
     "type": "text",
     "placeholders": {}
   },
-  "newAccount": "new account",
+  "newAccount": "новый аккаунт",
   "@newAccount": {
     "type": "text",
     "placeholders": {}
   },
-  "newAccountUpper": "New Account",
+  "newAccountUpper": "Новый аккаунт",
   "@newAccountUpper": {
     "type": "text",
     "placeholders": {}
   },
-  "addingCoinSuccess": "Activated {name} successfully !",
+  "addingCoinSuccess": "{name} активирован успешно!",
   "@addingCoinSuccess": {
     "type": "text",
     "placeholders": {
       "name": {}
     }
   },
-  "connecting": "Connecting...",
+  "connecting": "Соединение...",
   "@connecting": {
     "type": "text",
     "placeholders": {}
   },
-  "addCoin": "Activate coin",
+  "addCoin": "Активировать монету",
   "@addCoin": {
     "type": "text",
     "placeholders": {}
   },
-  "numberAssets": "{assets} Assets",
+  "numberAssets": "{assets} Активов",
   "@numberAssets": {
     "type": "text",
     "placeholders": {
       "assets": {}
     }
   },
-  "enterSeedPhrase": "Enter Your Seed Phrase",
+  "enterSeedPhrase": "Введите свою seed-фразу",
   "@enterSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "exampleHintSeed": "Example: build case level ...",
+  "exampleHintSeed": "Например: build case level ...",
   "@exampleHintSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "confirm": "confirm",
+  "confirm": "подтвердить",
   "@confirm": {
     "type": "text",
     "placeholders": {}
   },
-  "buy": "Buy",
+  "buy": "Купить",
   "@buy": {
     "type": "text",
     "placeholders": {}
   },
-  "sell": "Sell",
+  "sell": "Продать",
   "@sell": {
     "type": "text",
     "placeholders": {}
   },
-  "shareAddress": "My {coinName} address: \n{address}",
+  "shareAddress": "Мой {coinName} адрес: {address}",
   "@shareAddress": {
     "type": "text",
     "placeholders": {
@@ -82,27 +81,27 @@
       "address": {}
     }
   },
-  "withdraw": "Withdraw",
+  "withdraw": "Вывести",
   "@withdraw": {
     "type": "text",
     "placeholders": {}
   },
-  "errorValueEmpty": "Value is too high or low",
+  "errorValueEmpty": "Значение слишком высокое или маленькое",
   "@errorValueEmpty": {
     "type": "text",
     "placeholders": {}
   },
-  "amount": "Amount",
+  "amount": "Количество",
   "@amount": {
     "type": "text",
     "placeholders": {}
   },
-  "addressSend": "Recipients address",
+  "addressSend": "Адрес получателя",
   "@addressSend": {
     "type": "text",
     "placeholders": {}
   },
-  "withdrawValue": "WITHDRAW {amount} {coinName}",
+  "withdrawValue": "ВЫВЕСТИ {amount} {coinName}",
   "@withdrawValue": {
     "type": "text",
     "placeholders": {
@@ -110,324 +109,319 @@
       "coinName": {}
     }
   },
-  "withdrawConfirm": "Confirm Withdrawal",
+  "withdrawConfirm": "Подтвердите вывод",
   "@withdrawConfirm": {
     "type": "text",
     "placeholders": {}
   },
-  "close": "Close",
+  "close": "Закрыть",
   "@close": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmSeed": "Confirm Seed Phrase",
+  "confirmSeed": "Подтвердите seed-фразу",
   "@confirmSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "seedPhraseTitle": "Your new Seed Phrase",
+  "seedPhraseTitle": "Ваша новая seed-фраза",
   "@seedPhraseTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "getBackupPhrase": "Important: Back up your seed phrase before proceeding!",
+  "getBackupPhrase": "Важно: перед тем как продолжить, сохраните свою seed-фразу в надежном месте!",
   "@getBackupPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "recommendSeedMessage": "We recommend storing it offline.",
+  "recommendSeedMessage": "Мы рекомендуем хранить ее на оффлайн носителе.",
   "@recommendSeedMessage": {
     "type": "text",
     "placeholders": {}
   },
-  "next": "next",
+  "next": "далее",
   "@next": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmPin": "Confirm PIN code",
+  "confirmPin": "Подтвердите PIN-код",
   "@confirmPin": {
     "type": "text",
     "placeholders": {}
   },
-  "errorTryAgain": "Error, please try again",
+  "errorTryAgain": "Ошибка, пожалуйста, попробуйте еще раз",
   "@errorTryAgain": {
     "type": "text",
     "placeholders": {}
   },
-  "settings": "Settings",
+  "settings": "Настройки",
   "@settings": {
     "type": "text",
     "placeholders": {}
   },
-  "security": "Security",
+  "security": "Безопасность",
   "@security": {
     "type": "text",
     "placeholders": {}
   },
-  "activateAccessPin": "Activate PIN protection",
+  "activateAccessPin": "Активировать защиту PIN",
   "@activateAccessPin": {
     "type": "text",
     "placeholders": {}
   },
-  "lockScreen": "Screen is locked",
+  "lockScreen": "Экран заблокирован",
   "@lockScreen": {
     "type": "text",
     "placeholders": {}
   },
-  "changePin": "Change PIN code",
+  "changePin": "Изменить PIN-код",
   "@changePin": {
     "type": "text",
     "placeholders": {}
   },
-  "logout": "Log Out",
+  "logout": "Выйти",
   "@logout": {
     "type": "text",
     "placeholders": {}
   },
-  "max": "MAX",
+  "max": "МАКСИМУМ",
   "@max": {
     "type": "text",
     "placeholders": {}
   },
-  "amountToSell": "Amount To Sell",
+  "amountToSell": "Сумма для продажи",
   "@amountToSell": {
     "type": "text",
     "placeholders": {}
   },
-  "youWillReceived": "You will receive: ",
+  "youWillReceived": "Вы получите: ",
   "@youWillReceived": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinToSell": "Select the coin you want to SELL",
+  "selectCoinToSell": "Выберите монету, которую хотите продать",
   "@selectCoinToSell": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinToBuy": "Select the coin you want to BUY",
+  "selectCoinToBuy": "Выберите монету, которую хотите купить",
   "@selectCoinToBuy": {
     "type": "text",
     "placeholders": {}
   },
-  "swap": "swap",
+  "swap": "обмен",
   "@swap": {
     "type": "text",
     "placeholders": {}
   },
-  "buySuccessWaiting": "Swap issued, please wait!",
+  "buySuccessWaiting": "Обмен начался, пожалуйста подождите!",
   "@buySuccessWaiting": {
     "type": "text",
     "placeholders": {}
   },
-  "buySuccessWaitingError": "Ordermatch ongoing, please wait {seconde} seconds!",
+  "buySuccessWaitingError": "Поиск сделки в процессе, пожалуйста , подождите {seconde} секунд!",
   "@buySuccessWaitingError": {
     "type": "text",
     "placeholders": {
       "seconde": {}
     }
   },
-  "networkFee": "Network fee",
+  "networkFee": "Комиссия сети",
   "@networkFee": {
     "type": "text",
     "placeholders": {}
   },
-  "commissionFee": "commission fee",
+  "commissionFee": "комиссия",
   "@commissionFee": {
     "type": "text",
     "placeholders": {}
   },
-  "portfolio": "Portfolio",
+  "portfolio": "Портфолио",
   "@portfolio": {
     "type": "text",
     "placeholders": {}
   },
-  "checkOut": "Check Out",
+  "checkOut": "Всего",
   "@checkOut": {
     "type": "text",
     "placeholders": {}
   },
-  "estimateValue": "Estimated Total Value",
+  "estimateValue": "Расчетная общая стоимость",
   "@estimateValue": {
     "type": "text",
     "placeholders": {}
   },
-  "selectPaymentMethod": "Select Your Payment Method",
+  "selectPaymentMethod": "Выберите способ оплаты",
   "@selectPaymentMethod": {
     "type": "text",
     "placeholders": {}
   },
-  "volumes": "Volumes",
+  "volumes": "Объемы",
   "@volumes": {
     "type": "text",
     "placeholders": {}
   },
-  "placeOrder": "Place your order",
+  "placeOrder": "Разместить ордер",
   "@placeOrder": {
     "type": "text",
     "placeholders": {}
   },
-  "comingSoon": "Coming soon...",
+  "comingSoon": "Скоро будет...",
   "@comingSoon": {
     "type": "text",
     "placeholders": {}
   },
-  "marketplace": "Marketplace",
+  "marketplace": "Маркетплейс",
   "@marketplace": {
     "type": "text",
     "placeholders": {}
   },
-  "youAreSending": "You are sending:",
+  "youAreSending": "Вы отправляете:",
   "@youAreSending": {
     "type": "text",
     "placeholders": {}
   },
-  "code": "Code: ",
+  "code": "Код: ",
   "@code": {
     "type": "text",
     "placeholders": {}
   },
-  "value": "Value: ",
+  "value": "Стоимость: ",
   "@value": {
     "type": "text",
     "placeholders": {}
   },
-  "paidWith": "Paid with ",
+  "paidWith": "Оплачено с ",
   "@paidWith": {
     "type": "text",
     "placeholders": {}
   },
-  "errorValueNotEmpty": "Please input data",
+  "errorValueNotEmpty": "Пожалуйста, введите данные",
   "@errorValueNotEmpty": {
     "type": "text",
     "placeholders": {}
   },
-  "errorAmountBalance": "Not enough balance",
+  "errorAmountBalance": "Недостаточный баланс",
   "@errorAmountBalance": {
     "type": "text",
     "placeholders": {}
   },
-  "errorNotAValidAddress": "Not a valid address",
+  "errorNotAValidAddress": "Неверный адрес",
   "@errorNotAValidAddress": {
     "type": "text",
     "placeholders": {}
   },
-  "errorNotAValidAddressSegWit": "Segwit addresses are not supported (yet)",
-  "@errorNotAValidAddressSegWit": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "toAddress": "To address:",
+  "toAddress": "На адрес:",
   "@toAddress": {
     "type": "text",
     "placeholders": {}
   },
-  "receive": "RECEIVE",
+  "receive": "ПОЛУЧИТЬ",
   "@receive": {
     "type": "text",
     "placeholders": {}
   },
-  "send": "SEND",
+  "send": "ОТПРАВИТЬ",
   "@send": {
     "type": "text",
     "placeholders": {}
   },
-  "back": "back",
+  "back": "назад",
   "@back": {
     "type": "text",
     "placeholders": {}
   },
-  "cancel": "cancel",
+  "cancel": "отменить",
   "@cancel": {
     "type": "text",
     "placeholders": {}
   },
-  "commingsoon": "TX details coming soon!",
+  "commingsoon": "Детали TX скоро будут добавлены!",
   "@commingsoon": {
     "type": "text",
     "placeholders": {}
   },
-  "history": "history",
+  "history": "история",
   "@history": {
     "type": "text",
     "placeholders": {}
   },
-  "create": "trade",
+  "create": "сделка",
   "@create": {
     "type": "text",
     "placeholders": {}
   },
-  "commingsoonGeneral": "Details coming soon!",
+  "commingsoonGeneral": "Детали будут скоро добавлены!",
   "@commingsoonGeneral": {
     "type": "text",
     "placeholders": {}
   },
-  "orderMatching": "Order matching",
+  "orderMatching": "Поиск сделки в процессе",
   "@orderMatching": {
     "type": "text",
     "placeholders": {}
   },
-  "orderMatched": "Order matched",
+  "orderMatched": "Сделка найдена",
   "@orderMatched": {
     "type": "text",
     "placeholders": {}
   },
-  "swapOngoing": "Swap ongoing",
+  "swapOngoing": "Обмен в процессе",
   "@swapOngoing": {
     "type": "text",
     "placeholders": {}
   },
-  "swapSucceful": "Swap successful",
+  "swapSucceful": "Успешный обмен",
   "@swapSucceful": {
     "type": "text",
     "placeholders": {}
   },
-  "timeOut": "Timeout",
+  "timeOut": "Таймаут",
   "@timeOut": {
     "type": "text",
     "placeholders": {}
   },
-  "swapFailed": "Swap failed",
+  "swapFailed": "Обмен не удался",
   "@swapFailed": {
     "type": "text",
     "placeholders": {}
   },
-  "errorTryLater": "Error, please try later",
+  "errorTryLater": "Ошибка, попробуйте позже",
   "@errorTryLater": {
     "type": "text",
     "placeholders": {}
   },
-  "feedback": "Share Log File",
+  "feedback": "Отправить лог-файл",
   "@feedback": {
     "type": "text",
     "placeholders": {}
   },
-  "loadingOrderbook": "Loading orderbook...",
+  "loadingOrderbook": "Загрузка ордербука...",
   "@loadingOrderbook": {
     "type": "text",
     "placeholders": {}
   },
-  "claim": "claim",
+  "claim": "Востребовать",
   "@claim": {
     "type": "text",
     "placeholders": {}
   },
-  "claimTitle": "Claim your KMD reward?",
+  "claimTitle": "Востребовать KMD вознаграждение? ",
   "@claimTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "success": "Success!",
+  "success": "Успех!",
   "@success": {
     "type": "text",
     "placeholders": {}
   },
-  "noRewardYet": "No reward claimable - please try again in 1h.",
+  "noRewardYet": "Нет вознаграждения для востребования - повторите попытку через 1 час.",
   "@noRewardYet": {
     "type": "text",
     "placeholders": {}
   },
-  "loading": "Loading...",
+  "loading": "Загрузка...",
   "@loading": {
     "type": "text",
     "placeholders": {}
@@ -437,12 +431,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "media": "News",
+  "media": "Новости",
   "@media": {
     "type": "text",
     "placeholders": {}
   },
-  "newsFeed": "News feed",
+  "newsFeed": "Новостная лента",
   "@newsFeed": {
     "type": "text",
     "placeholders": {}
@@ -452,376 +446,376 @@
     "type": "text",
     "placeholders": {}
   },
-  "clipboard": "Copied to the clipboard",
+  "clipboard": "Скопировано в буфер обмена",
   "@clipboard": {
     "type": "text",
     "placeholders": {}
   },
-  "from": "From",
+  "from": "Из",
   "@from": {
     "type": "text",
     "placeholders": {}
   },
-  "to": "To",
+  "to": "На",
   "@to": {
     "type": "text",
     "placeholders": {}
   },
-  "txConfirmed": "CONFIRMED",
+  "txConfirmed": "ПОДТВЕРЖДЕНА",
   "@txConfirmed": {
     "type": "text",
     "placeholders": {}
   },
-  "txNotConfirmed": "UNCONFIRMED",
+  "txNotConfirmed": "НЕПОДТВЕРЖДЕНА",
   "@txNotConfirmed": {
     "type": "text",
     "placeholders": {}
   },
-  "txBlock": "Block",
+  "txBlock": "Блок",
   "@txBlock": {
     "type": "text",
     "placeholders": {}
   },
-  "txConfirmations": "Confirmations",
+  "txConfirmations": "Подтверждения",
   "@txConfirmations": {
     "type": "text",
     "placeholders": {}
   },
-  "txFee": "Fee",
+  "txFee": "Комиссия",
   "@txFee": {
     "type": "text",
     "placeholders": {}
   },
-  "txHash": "Transaction ID",
+  "txHash": "ID транзакции",
   "@txHash": {
     "type": "text",
     "placeholders": {}
   },
-  "noSwaps": "No history.",
+  "noSwaps": "Нет истории.",
   "@noSwaps": {
     "type": "text",
     "placeholders": {}
   },
-  "trade": "TRADE",
+  "trade": "СДЕЛКА",
   "@trade": {
     "type": "text",
     "placeholders": {}
   },
-  "tradeCompleted": "SWAP COMPLETED!",
+  "tradeCompleted": "Обмен завершен!",
   "@tradeCompleted": {
     "type": "text",
     "placeholders": {}
   },
-  "step": "Step",
+  "step": "Шаг",
   "@step": {
     "type": "text",
     "placeholders": {}
   },
-  "tradeDetail": "TRADE DETAILS",
+  "tradeDetail": "ДЕТАЛИ СДЕЛКИ",
   "@tradeDetail": {
     "type": "text",
     "placeholders": {}
   },
-  "requestedTrade": "Requested Trade",
+  "requestedTrade": "Запрошенная сделка",
   "@requestedTrade": {
     "type": "text",
     "placeholders": {}
   },
-  "swapID": "Swap ID",
+  "swapID": "ID Обмена",
   "@swapID": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBrowse": "BROWSE",
+  "mediaBrowse": "ПРОСМАТРИВАТЬ",
   "@mediaBrowse": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaSaved": "SAVED",
+  "mediaSaved": "СОХРАНЕННЫЕ",
   "@mediaSaved": {
     "type": "text",
     "placeholders": {}
   },
-  "articleFrom": "AtomicDEX NEWS",
+  "articleFrom": "НОВОСТИ AtomicDEX",
   "@articleFrom": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaNotSavedDescription": "YOU HAVE NO SAVED ARTICLES",
+  "mediaNotSavedDescription": "У вас нет сохраненных статей",
   "@mediaNotSavedDescription": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBrowseFeed": "BROWSE FEED",
+  "mediaBrowseFeed": "ПОСМОТРЕТЬ ЛЕНТУ",
   "@mediaBrowseFeed": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBy": "By",
+  "mediaBy": "По",
   "@mediaBy": {
     "type": "text",
     "placeholders": {}
   },
-  "lockScreenAuth": "Please authenticate!",
+  "lockScreenAuth": "Пожалуйста, аутентифицируйтесь!",
   "@lockScreenAuth": {
     "type": "text",
     "placeholders": {}
   },
-  "noTxs": "No Transactions",
+  "noTxs": "Нет транзакций",
   "@noTxs": {
     "type": "text",
     "placeholders": {}
   },
-  "done": "Done",
+  "done": "Готово",
   "@done": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinTitle": "Activate coins:",
+  "selectCoinTitle": "Активировать монеты:",
   "@selectCoinTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinInfo": "Select the coins you want to add to your portfolio.",
+  "selectCoinInfo": "Выберите монеты, которые вы хотите добавить в свое портфолио.",
   "@selectCoinInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "noArticles": "No news - please check back later!",
+  "noArticles": "Нет новостей - пожалуйста, зайдите позже!",
   "@noArticles": {
     "type": "text",
     "placeholders": {}
   },
-  "infoTrade1": "The swap request can not be undone and is a final event!",
+  "infoTrade1": "Запрос на обмен не может быть отменен и является окончательным!",
   "@infoTrade1": {
     "type": "text",
     "placeholders": {}
   },
-  "infoTrade2": "This transaction can take up to 10 mins - DONT close this application!",
+  "infoTrade2": "Эта транзакция может занять до 10 минут - НЕ закрывайте приложение!",
   "@infoTrade2": {
     "type": "text",
     "placeholders": {}
   },
-  "swapDetailTitle": "CONFIRM EXCHANGE DETAILS",
+  "swapDetailTitle": "ПОДТВЕРДИТЕ ДЕТАЛИ ОБМЕНА",
   "@swapDetailTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhrase": "Check seed phrase",
+  "checkSeedPhrase": "Проверьте seed-фразу",
   "@checkSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseTitle": "LET'S DOUBLE CHECK YOUR SEED PHRASE",
+  "checkSeedPhraseTitle": "ДАВАЙТЕ ПЕРЕПРОВЕРИМ ВАШУ SEED-ФРАЗУ",
   "@checkSeedPhraseTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseInfo": "Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want.",
+  "checkSeedPhraseInfo": "Ваша seed-фраза необходима для доступа к кошельку - поэтому мы хотим убедиться, что она правильная. Мы зададим вам три разных вопроса о вашей seed-фразе, чтобы убедиться, что вы сможете легко восстановить свой кошелек, когда захотите.",
   "@checkSeedPhraseInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseSubtile": "What is the {index}. word in your seed phrase?",
+  "checkSeedPhraseSubtile": "Какое {index} слово в вашей seed-фразе?",
   "@checkSeedPhraseSubtile": {
     "type": "text",
     "placeholders": {
       "index": {}
     }
   },
-  "checkSeedPhraseHint": "Enter the {index}. word",
+  "checkSeedPhraseHint": "Введите {index} слово",
   "@checkSeedPhraseHint": {
     "type": "text",
     "placeholders": {
       "index": {}
     }
   },
-  "checkSeedPhraseButton1": "CONTINUE",
+  "checkSeedPhraseButton1": "ПРОДОЛЖИТЬ",
   "@checkSeedPhraseButton1": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseButton2": "GO BACK AND CHECK AGAIN",
+  "checkSeedPhraseButton2": "ВЕРНУТЬСЯ И ПРОВЕРИТЬ СНОВА",
   "@checkSeedPhraseButton2": {
     "type": "text",
     "placeholders": {}
   },
-  "takerpaymentsID": "Taker Payment ID",
+  "takerpaymentsID": "ID платежа Тейкера",
   "@takerpaymentsID": {
     "type": "text",
     "placeholders": {}
   },
-  "makerpaymentID": "Maker Payment ID",
+  "makerpaymentID": "ID платежа Мейкера",
   "@makerpaymentID": {
     "type": "text",
     "placeholders": {}
   },
-  "activateAccessBiometric": "Activate Biometric protection",
+  "activateAccessBiometric": "Активировать биометрическую защиту",
   "@activateAccessBiometric": {
     "type": "text",
     "placeholders": {}
   },
-  "allowCustomSeed": "Allow custom seed",
+  "allowCustomSeed": "Разрешить произвольную seed-фразу",
   "@allowCustomSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "hintEnterPassword": "Enter your password",
+  "hintEnterPassword": "Введите свой пароль",
   "@hintEnterPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "signInWithSeedPhrase": "Forgot the password? Restore wallet from seed",
+  "signInWithSeedPhrase": "Войти с помощью seed-фразы",
   "@signInWithSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "signInWithPassword": "Sign in with password",
+  "signInWithPassword": "Войти с паролем",
   "@signInWithPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintEnterSeedPhrase": "Enter your seed phrase",
+  "hintEnterSeedPhrase": "Введите свою seed-фразу",
   "@hintEnterSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "wrongPassword": "The passwords do not match. Please try again.",
+  "wrongPassword": "Пароли не совпадают. Пожалуйста, попробуйте еще раз.",
   "@wrongPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintNameYourWallet": "Name your wallet",
+  "hintNameYourWallet": "Назовите свой кошелек",
   "@hintNameYourWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "infoWalletPassword": "You have to provide a password for the wallet encryption due to security reasons.",
+  "infoWalletPassword": "Вы можете зашифровать свой кошелек паролем. Если вы решите не использовать пароль, вам нужно будет вводить свою seed-фразу каждый раз, когда вы хотите получить доступ к своему кошельку.",
   "@infoWalletPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmPassword": "Confirm password",
+  "confirmPassword": "Подтвердите пароль",
   "@confirmPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "dontWantPassword": "I don't want a password",
+  "dontWantPassword": "Я не хочу использовать пароль",
   "@dontWantPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "areYouSure": "ARE YOU SURE?",
+  "areYouSure": "ВЫ УВЕРЕНЫ?",
   "@areYouSure": {
     "type": "text",
     "placeholders": {}
   },
-  "infoPasswordDialog": "Use a secure password and do not store it on the same device",
+  "infoPasswordDialog": "Если вы решите не использовать пароль, вам нужно будет вводить свою seed-фразу каждый раз, когда вы хотите получить доступ к своему кошельку.",
   "@infoPasswordDialog": {
     "type": "text",
     "placeholders": {}
   },
-  "setUpPassword": "SET UP A PASSWORD",
+  "setUpPassword": "УСТАНОВИТЬ ПАРОЛЬ",
   "@setUpPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "createAWallet": "CREATE A WALLET",
+  "createAWallet": "СОЗДАТЬ КОШЕЛЕК",
   "@createAWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "restoreWallet": "RESTORE",
+  "restoreWallet": "ВОССТАНОВИТЬ",
   "@restoreWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "hintPassword": "Password",
+  "hintPassword": "Пароль",
   "@hintPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintConfirmPassword": "Confirm Password",
+  "hintConfirmPassword": "Подтвердите Пароль",
   "@hintConfirmPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintCurrentPassword": "Current password",
+  "hintCurrentPassword": "Текущий пароль",
   "@hintCurrentPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "logoutsettings": "Log Out Settings",
+  "logoutsettings": "Настройки Log Out",
   "@logoutsettings": {
     "type": "text",
     "placeholders": {}
   },
-  "logoutOnExit": "Log Out on Exit",
+  "logoutOnExit": "Log Out при выходе",
   "@logoutOnExit": {
     "type": "text",
     "placeholders": {}
   },
-  "deleteWallet": "Delete Wallet",
+  "deleteWallet": "Удалить кошелек",
   "@deleteWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "delete": "Delete",
+  "delete": "Удалить",
   "@delete": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan1": "Are you sure you want to delete ",
+  "settingDialogSpan1": "Вы уверены, что хотите удалить ",
   "@settingDialogSpan1": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan2": " wallet?",
+  "settingDialogSpan2": " кошелек?",
   "@settingDialogSpan2": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan3": "If so, make sure you ",
+  "settingDialogSpan3": "Если это так, убедитесь, что вы ",
   "@settingDialogSpan3": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan4": " record your seed phrase.",
+  "settingDialogSpan4": " записали свою seed-фразу.",
   "@settingDialogSpan4": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan5": " In order to restore your wallet in the future.",
+  "settingDialogSpan5": " Для того, чтобы восстановить свой кошелек в будущем.",
   "@settingDialogSpan5": {
     "type": "text",
     "placeholders": {}
   },
-  "backupTitle": "Backup",
+  "backupTitle": "Бэкап",
   "@backupTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "version": "version",
+  "version": "версия",
   "@version": {
     "type": "text",
     "placeholders": {}
   },
-  "viewSeed": "View Seed",
+  "viewSeed": "Посмотреть seed-фразу",
   "@viewSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "enterpassword": "Please enter your password to continue.",
+  "enterpassword": "Пожалуйста, введите Ваш пароль чтобы продолжить.",
   "@enterpassword": {
     "type": "text",
     "placeholders": {}
   },
-  "clipboardCopy": "Copy to clipboard",
+  "clipboardCopy": "Скопировать в буфер обмена",
   "@clipboardCopy": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeTitle": "WELCOME",
+  "welcomeTitle": "Добро пожаловать",
   "@welcomeTitle": {
     "type": "text",
     "placeholders": {}
@@ -831,99 +825,99 @@
     "type": "text",
     "placeholders": {}
   },
-  "welcomeWallet": "wallet",
+  "welcomeWallet": "кошелек",
   "@welcomeWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeInfo": "AtomicDEX mobile is a next generation multi-coin wallet with native third generation DEX functionality and more.",
+  "welcomeInfo": "AtomicDEX mobile - это мульти-монетный кошелек с функциональностью DEX третьего поколения и многим другим.",
   "@welcomeInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeLetSetUp": "LET'S GET SET UP!",
+  "welcomeLetSetUp": "ДАВАЙТЕ ВСЕ НАСТРОИМ!",
   "@welcomeLetSetUp": {
     "type": "text",
     "placeholders": {}
   },
-  "unlock": "unlock",
+  "unlock": "разблокировать",
   "@unlock": {
     "type": "text",
     "placeholders": {}
   },
-  "noOrder": "Please enter the {coinName} amount.",
+  "noOrder": "Пожалуйста, введите сумму {coinName}.",
   "@noOrder": {
     "type": "text",
     "placeholders": {
       "coinName": {}
     }
   },
-  "bestAvailableRate": "Exchange rate",
+  "bestAvailableRate": "Обменный курс",
   "@bestAvailableRate": {
     "type": "text",
     "placeholders": {}
   },
-  "receiveLower": "Receive",
+  "receiveLower": "Получить",
   "@receiveLower": {
     "type": "text",
     "placeholders": {}
   },
-  "makeAorder": "make an order",
+  "makeAorder": "разместить ордер",
   "@makeAorder": {
     "type": "text",
     "placeholders": {}
   },
-  "exchangeTitle": "EXCHANGE",
+  "exchangeTitle": "ОБМЕН",
   "@exchangeTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "orders": "orders",
+  "orders": "ордера",
   "@orders": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoin": "Select coin",
+  "selectCoin": "Выберите монету",
   "@selectCoin": {
     "type": "text",
     "placeholders": {}
   },
-  "noFunds": "No funds",
+  "noFunds": "Нет средств",
   "@noFunds": {
     "type": "text",
     "placeholders": {}
   },
-  "noFundsDetected": "No funds available - please deposit.",
+  "noFundsDetected": "Нет доступных средств - пожалуйста, внесите депозит.",
   "@noFundsDetected": {
     "type": "text",
     "placeholders": {}
   },
-  "goToPorfolio": "Go to portfolio",
+  "goToPorfolio": "Перейти в портфолио",
   "@goToPorfolio": {
     "type": "text",
     "placeholders": {}
   },
-  "noOrderAvailable": "Click to create an order",
+  "noOrderAvailable": "Нажмите, чтобы создать ордер",
   "@noOrderAvailable": {
     "type": "text",
     "placeholders": {}
   },
-  "orderCreated": "Order created",
+  "orderCreated": "Ордер создан",
   "@orderCreated": {
     "type": "text",
     "placeholders": {}
   },
-  "orderCreatedInfo": "Order succsessfully created",
+  "orderCreatedInfo": "Ордер успешно создан",
   "@orderCreatedInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "showMyOrders": "SHOW MY ORDERS",
+  "showMyOrders": "ПОКАЗАТЬ МОИ ОРДЕРЫ",
   "@showMyOrders": {
     "type": "text",
     "placeholders": {}
   },
-  "minValue": "The minimun amount to sell is {number} {coinName}",
+  "minValue": "Минимальная сумма продажи составляет {number} {coinName}.",
   "@minValue": {
     "type": "text",
     "placeholders": {
@@ -931,12 +925,12 @@
       "number": {}
     }
   },
-  "titleCreatePassword": "CREATE A PASSWORD",
+  "titleCreatePassword": "СОЗДАТЬ ПАРОЛЬ",
   "@titleCreatePassword": {
     "type": "text",
     "placeholders": {}
   },
-  "minValueBuy": "The minimun amount to buy is {number} {coinName}",
+  "minValueBuy": "Минимальная сумма покупки: {number} {coinName}",
   "@minValueBuy": {
     "type": "text",
     "placeholders": {
@@ -944,27 +938,27 @@
       "number": {}
     }
   },
-  "encryptingWallet": "Encrypting wallet",
+  "encryptingWallet": "Шифрую кошелек",
   "@encryptingWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "decryptingWallet": "Decrypting wallet",
+  "decryptingWallet": "Расшифровываю кошелек",
   "@decryptingWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "notEnoughtBalanceForFee": "Not enough balance for fees - trade a smaller amount",
+  "notEnoughtBalanceForFee": "Недостаточно баланса для комиссий - выполните сделку на меньшую сумму",
   "@notEnoughtBalanceForFee": {
     "type": "text",
     "placeholders": {}
   },
-  "noInternet": "No Internet Connection",
+  "noInternet": "Подключение к Интернету отсутствует",
   "@noInternet": {
     "type": "text",
     "placeholders": {}
   },
-  "legalTitle": "Legal",
+  "legalTitle": "Легальные аспекты",
   "@legalTitle": {
     "type": "text",
     "placeholders": {}
@@ -974,17 +968,17 @@
     "type": "text",
     "placeholders": {}
   },
-  "accepteula": "Accept EULA",
+  "accepteula": "Принять EULA",
   "@accepteula": {
     "type": "text",
     "placeholders": {}
   },
-  "accepttac": "Accept TERMS and CONDITIONS",
+  "accepttac": "ПРИНЯТЬ УСЛОВИЯ",
   "@accepttac": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmeula": "By clicking the below buttons you confirm to have read the 'EULA' and 'Terms and Conditions' and accept these",
+  "confirmeula": "Нажимая кнопки ниже, вы подтверждаете, что прочитали «EULA» и «Условия и положения» и принимаете их",
   "@confirmeula": {
     "type": "text",
     "placeholders": {}
@@ -1184,22 +1178,22 @@
     "type": "text",
     "placeholders": {}
   },
-  "ethFee": "ETH fee",
+  "ethFee": "ETH комиссия",
   "@ethFee": {
     "type": "text",
     "placeholders": {}
   },
-  "notEnoughEth": "Not enough ETH for transaction!",
+  "notEnoughEth": "Недостаточно ETH для транзакции!",
   "@notEnoughEth": {
     "type": "text",
     "placeholders": {}
   },
-  "ethNotActive": "Please activate ETH.",
+  "ethNotActive": "Пожалуйста, активируйте ETH.",
   "@ethNotActive": {
     "type": "text",
     "placeholders": {}
   },
-  "youWillReceiveClaim": "You will receive {amount} {coin}",
+  "youWillReceiveClaim": "Вы получите {amount} {coin}",
   "@youWillReceiveClaim": {
     "type": "text",
     "placeholders": {
@@ -1207,201 +1201,25 @@
       "coin": {}
     }
   },
-  "seeOrders": "Click to see {amount} orders",
+  "seeOrders": "Нажмите, чтобы увидеть {amount} ордеров",
   "@seeOrders": {
     "type": "text",
     "placeholders": {
       "amount": {}
     }
   },
-  "clickToSee": "Click to see ",
+  "clickToSee": "Нажмите, чтобы увидеть ",
   "@clickToSee": {
     "type": "text",
     "placeholders": {}
   },
-  "price": "price",
+  "price": "цена",
   "@price": {
     "type": "text",
     "placeholders": {}
   },
-  "availableVolume": "max vol",
+  "availableVolume": "максимальный объем",
   "@availableVolume": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "configureWallet": "Configuring your wallet, please wait...",
-  "@configureWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "titleCurrentAsk": "Order selected",
-  "@titleCurrentAsk": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txFeeTitle": "transaction fee:",
-  "@txFeeTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tradingFee": "trading fee:",
-  "@tradingFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "swapErcAmount": "This swap requires {amount} ETH for transaction fees",
-  "@swapErcAmount": {
-    "type": "text",
-    "placeholders": {
-      "amount": {}
-    }
-  },
-  "remove": "Disable",
-  "@remove": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterCoin": "Search a coin",
-  "@searchFilterCoin": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterSubtitleSmartChain": "Select all SmartChains",
-  "@searchFilterSubtitleSmartChain": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterSubtitleERC": "Select all ERC tokens",
-  "@searchFilterSubtitleERC": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "customFee": "Custom fee",
-  "@customFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "gas": "Gas",
-  "@gas": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "gasPrice": "Gas price",
-  "@gasPrice": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "customFeeWarning": "Only use custom fees if you know what you are doing!",
-  "@customFeeWarning": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterSubtitleutxo": "Select all UTXO coins",
-  "@searchFilterSubtitleutxo": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tagERC20": "ERC20",
-  "@tagERC20": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tagKMD": "KMD",
-  "@tagKMD": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "errorNotEnoughtGas": "Not enough gas - use at least {gas} Gwei",
-  "@errorNotEnoughtGas": {
-    "type": "text",
-    "placeholders": {
-      "gas": {}
-    }
-  },
-  "orderCancel": "All {coin} orders will be canceled.",
-  "@orderCancel": {
-    "type": "text",
-    "placeholders": {
-      "coin": {}
-    }
-  },
-  "deleteConfirm": "Confirm deactivation",
-  "@deleteConfirm": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deleteSpan1": "Do you want to remove ",
-  "@deleteSpan1": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deleteSpan2": " from your portfolio? All unmatched orders will be canceled.",
-  "@deleteSpan2": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "share": "SHARE",
-  "@share": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "warningShareLogs": "Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!",
-  "@warningShareLogs": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "enterOldPinCode": "Enter your old PIN",
-  "@enterOldPinCode": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "enterNewPinCode": "Enter your new PIN",
-  "@enterNewPinCode": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "authenticate": "authenticate",
-  "@authenticate": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "settingLanguageTitle": "Languages",
-  "@settingLanguageTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "englishLanguage": "English",
-  "@englishLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "frenchLanguage": "French",
-  "@frenchLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deutscheLanguage": "Deutsch",
-  "@deutscheLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "chineseLanguage": "Chinese",
-  "@chineseLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "simplifiedChinese": "simplified",
-  "@simplifiedChinese": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "traditionalChinese": "traditional",
-  "@traditionalChinese": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "faucetName": "FAUCET",
-  "@faucetName": {
     "type": "text",
     "placeholders": {}
   }

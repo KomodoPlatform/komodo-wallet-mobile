@@ -69,9 +69,9 @@ class _BuildItemLanguageState extends State<BuildItemLanguage> {
       case 'Hans':
         return ' ' + AppLocalizations.of(context).simplifiedChinese;
         break;
-      case 'Hant':
-        return ' ' + AppLocalizations.of(context).traditionalChinese;
-        break;
+      // case 'Hant':
+      //   return ' ' + AppLocalizations.of(context).traditionalChinese;
+      //   break;
       default:
         return '';
     }

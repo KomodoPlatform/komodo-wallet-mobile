@@ -2,46 +2,50 @@
 // This is a library that looks up messages for specific locales by
 // delegating to the appropriate library.
 
+// Ignore issues from commonly used lints in this file.
+// ignore_for_file:implementation_imports, file_names, unnecessary_new
+// ignore_for_file:unnecessary_brace_in_string_interps, directives_ordering
+// ignore_for_file:argument_type_not_assignable, invalid_assignment
+// ignore_for_file:prefer_single_quotes, prefer_generic_function_type_aliases
+// ignore_for_file:comment_references
+
 import 'dart:async';
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
-// ignore: implementation_imports
 import 'package:intl/src/intl_helpers.dart';
 
-import 'messages_de.dart' as messages_de;
-import 'messages_fr.dart' as messages_fr;
-import 'messages_messages.dart' as messages_messages;
-import 'messages_zh.dart' as messages_zh;
-import 'messages_zh_hant.dart' as messages_zh_hant;
+import 'messages_de.dart' deferred as messages_de;
+import 'messages_fr.dart' deferred as messages_fr;
+import 'messages_messages.dart' deferred as messages_messages;
+import 'messages_ru.dart' deferred as messages_ru;
+import 'messages_zh.dart' deferred as messages_zh;
+import 'messages_zh_Hans.dart' deferred as messages_zh_hans;
 
-typedef LibraryLoader = void Function();
-
+typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = <String, LibraryLoader>{
-// ignore: unnecessary_new
-  'fr': () => new Future<dynamic>.value(null),
-// ignore: unnecessary_new
-  'de': () => new Future<dynamic>.value(null),
-// ignore: unnecessary_new
-  'messages': () => new Future<dynamic>.value(null),
-  // ignore: unnecessary_new
-  'zh': () => new Future<dynamic>.value(null),
-// ignore: unnecessary_new
-  'zh_hant': () => new Future<dynamic>.value(null),
+  'de': messages_de.loadLibrary,
+  'fr': messages_fr.loadLibrary,
+  'messages': messages_messages.loadLibrary,
+  'ru': messages_ru.loadLibrary,
+  'zh': messages_zh.loadLibrary,
+  'zh_Hans': messages_zh_hans.loadLibrary,
 };
 
-MessageLookupByLibrary _findExact(dynamic localeName) {
+MessageLookupByLibrary _findExact(String localeName) {
   switch (localeName) {
-    case 'fr':
-      return messages_fr.messages;
     case 'de':
       return messages_de.messages;
+    case 'fr':
+      return messages_fr.messages;
     case 'messages':
       return messages_messages.messages;
+    case 'ru':
+      return messages_ru.messages;
     case 'zh':
       return messages_zh.messages;
-    case 'zh_hant':
-      return messages_zh_hant.messages;
+    case 'zh_Hans':
+      return messages_zh_hans.messages;
     default:
       return null;
   }
@@ -53,16 +57,12 @@ Future<bool> initializeMessages(String localeName) async {
       localeName, (dynamic locale) => _deferredLibraries[locale] != null,
       onFailure: (dynamic _) => null);
   if (availableLocale == null) {
-    // ignore: unnecessary_new
     return new Future<bool>.value(false);
   }
   final Function lib = _deferredLibraries[availableLocale];
-  // ignore: unnecessary_new
   await (lib == null ? new Future<bool>.value(false) : lib());
-  // ignore: unnecessary_new
   initializeInternalMessageLookup(() => new CompositeMessageLookup());
   messageLookup.addLocale(availableLocale, _findGeneratedMessagesFor);
-  // ignore: unnecessary_new
   return new Future<bool>.value(true);
 }
 
@@ -74,10 +74,11 @@ bool _messagesExistFor(String locale) {
   }
 }
 
-MessageLookupByLibrary _findGeneratedMessagesFor(dynamic locale) {
+MessageLookupByLibrary _findGeneratedMessagesFor(String locale) {
   final String actualLocale = Intl.verifiedLocale(locale, _messagesExistFor,
       onFailure: (dynamic _) => null);
-  if (actualLocale == null) 
+  if (actualLocale == null) {
     return null;
+  }
   return _findExact(actualLocale);
 }

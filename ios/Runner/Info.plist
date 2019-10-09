@@ -20,6 +20,7 @@
 		<string>English</string>
 		<string>fr</string>
 		<string>de</string>
+        <string>ru</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>komodo_dex</string>

@@ -1,10 +1,10 @@
 {
-  "createPin": "创建PIN码",
+  "createPin": "創建PIN碼",
   "@createPin": {
     "type": "text",
     "placeholders": {}
   },
-  "enterPinCode": "输入您的PIN码",
+  "enterPinCode": "輸入您的PIN碼",
   "@enterPinCode": {
     "type": "text",
     "placeholders": {}
@@ -14,12 +14,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "newAccount": "新帐户",
+  "newAccount": "新帳戶",
   "@newAccount": {
     "type": "text",
     "placeholders": {}
   },
-  "newAccountUpper": "新帐户",
+  "newAccountUpper": "新帳戶",
   "@newAccountUpper": {
     "type": "text",
     "placeholders": {}
@@ -36,19 +36,19 @@
     "type": "text",
     "placeholders": {}
   },
-  "addCoin": "新增代币",
+  "addCoin": "新增代幣",
   "@addCoin": {
     "type": "text",
     "placeholders": {}
   },
-  "numberAssets": "{assets}资产",
+  "numberAssets": "{assets} 資產",
   "@numberAssets": {
     "type": "text",
     "placeholders": {
       "assets": {}
     }
   },
-  "enterSeedPhrase": "输入助记词",
+  "enterSeedPhrase": "輸入助記詞",
   "@enterSeedPhrase": {
     "type": "text",
     "placeholders": {}
@@ -58,22 +58,22 @@
     "type": "text",
     "placeholders": {}
   },
-  "confirm": "确认",
+  "confirm": "確認",
   "@confirm": {
     "type": "text",
     "placeholders": {}
   },
-  "buy": "买",
+  "buy": "買",
   "@buy": {
     "type": "text",
     "placeholders": {}
   },
-  "sell": "卖",
+  "sell": "賣",
   "@sell": {
     "type": "text",
     "placeholders": {}
   },
-  "shareAddress": "我的 {coinName}地址: \\n{address}",
+  "shareAddress": "我的 {coinName} 地址: \\n{address}",
   "@shareAddress": {
     "type": "text",
     "placeholders": {
@@ -81,27 +81,27 @@
       "address": {}
     }
   },
-  "withdraw": "提领",
+  "withdraw": "提領",
   "@withdraw": {
     "type": "text",
     "placeholders": {}
   },
-  "errorValueEmpty": "金额太高或低",
+  "errorValueEmpty": "金額太高或低",
   "@errorValueEmpty": {
     "type": "text",
     "placeholders": {}
   },
-  "amount": "数量",
+  "amount": "數量",
   "@amount": {
     "type": "text",
     "placeholders": {}
   },
-  "addressSend": "收款人钱包地址",
+  "addressSend": "收款人錢包地址",
   "@addressSend": {
     "type": "text",
     "placeholders": {}
   },
-  "withdrawValue": "提领 {amount} {coinName}",
+  "withdrawValue": "提領{amount} {coinName}",
   "@withdrawValue": {
     "type": "text",
     "placeholders": {
@@ -109,32 +109,32 @@
       "coinName": {}
     }
   },
-  "withdrawConfirm": "确认提领",
+  "withdrawConfirm": "確認提領",
   "@withdrawConfirm": {
     "type": "text",
     "placeholders": {}
   },
-  "close": "关闭",
+  "close": "關閉",
   "@close": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmSeed": "确认助记词",
+  "confirmSeed": "確認助記詞",
   "@confirmSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "seedPhraseTitle": "您的新助记词",
+  "seedPhraseTitle": "您的新助記詞",
   "@seedPhraseTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "getBackupPhrase": "重要提醒: 在继续之前请记得备份助记词！",
+  "getBackupPhrase": "重要提醒: 在繼續之前請記得備份助記詞 !",
   "@getBackupPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "recommendSeedMessage": "我们强烈建议离线保管。",
+  "recommendSeedMessage": "我們強烈建議離線保管。",
   "@recommendSeedMessage": {
     "type": "text",
     "placeholders": {}
@@ -144,17 +144,17 @@
     "type": "text",
     "placeholders": {}
   },
-  "confirmPin": "确认PIN码",
+  "confirmPin": "確認PIN碼",
   "@confirmPin": {
     "type": "text",
     "placeholders": {}
   },
-  "errorTryAgain": "失败, 请再重新操作一次",
+  "errorTryAgain": "失敗, 請再重新操作一次",
   "@errorTryAgain": {
     "type": "text",
     "placeholders": {}
   },
-  "settings": "设定",
+  "settings": "設定",
   "@settings": {
     "type": "text",
     "placeholders": {}
@@ -164,17 +164,17 @@
     "type": "text",
     "placeholders": {}
   },
-  "activateAccessPin": "启动PIN码保护",
+  "activateAccessPin": "啟動PIN碼保護",
   "@activateAccessPin": {
     "type": "text",
     "placeholders": {}
   },
-  "lockScreen": "萤幕已锁定",
+  "lockScreen": "螢幕已鎖定",
   "@lockScreen": {
     "type": "text",
     "placeholders": {}
   },
-  "changePin": "变更PIN码",
+  "changePin": "變更PIN碼",
   "@changePin": {
     "type": "text",
     "placeholders": {}
@@ -189,54 +189,54 @@
     "type": "text",
     "placeholders": {}
   },
-  "amountToSell": "欲出售数量",
+  "amountToSell": "欲出售數量",
   "@amountToSell": {
     "type": "text",
     "placeholders": {}
   },
-  "youWillReceived": "可获得： ",
+  "youWillReceived": "可獲得： ",
   "@youWillReceived": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinToSell": "请选择您要卖的代币",
+  "selectCoinToSell": "請選擇您要賣的代幣",
   "@selectCoinToSell": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinToBuy": "请选择您要买的代币",
+  "selectCoinToBuy": "請選擇您要買的代幣",
   "@selectCoinToBuy": {
     "type": "text",
     "placeholders": {}
   },
-  "swap": "兑换",
+  "swap": "兌換",
   "@swap": {
     "type": "text",
     "placeholders": {}
   },
-  "buySuccessWaiting": "兑换需求发布, 请稍后！",
+  "buySuccessWaiting": "兌換需求發布, 請稍後！",
   "@buySuccessWaiting": {
     "type": "text",
     "placeholders": {}
   },
-  "buySuccessWaitingError": "订单匹配中, 请稍等 {seconde}秒!",
+  "buySuccessWaitingError": "訂單匹配中, 請稍等 {seconde} 秒!",
   "@buySuccessWaitingError": {
     "type": "text",
     "placeholders": {
       "seconde": {}
     }
   },
-  "networkFee": "矿工费用",
+  "networkFee": "礦工費用",
   "@networkFee": {
     "type": "text",
     "placeholders": {}
   },
-  "commissionFee": "成交费用",
+  "commissionFee": "成交費用",
   "@commissionFee": {
     "type": "text",
     "placeholders": {}
   },
-  "portfolio": "资产配置",
+  "portfolio": "資產配置",
   "@portfolio": {
     "type": "text",
     "placeholders": {}
@@ -246,12 +246,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "estimateValue": "预估总金额",
+  "estimateValue": "預估總金額",
   "@estimateValue": {
     "type": "text",
     "placeholders": {}
   },
-  "selectPaymentMethod": "请选择付款方式",
+  "selectPaymentMethod": "請選擇付款方式",
   "@selectPaymentMethod": {
     "type": "text",
     "placeholders": {}
@@ -261,12 +261,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "placeOrder": "下单",
+  "placeOrder": "下單",
   "@placeOrder": {
     "type": "text",
     "placeholders": {}
   },
-  "comingSoon": " 即将上线，敬请期待。。。",
+  "comingSoon": " 即將上線，敬請期待。。。",
   "@comingSoon": {
     "type": "text",
     "placeholders": {}
@@ -276,7 +276,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "youAreSending": "您正在发送：",
+  "youAreSending": "您正在發送：",
   "@youAreSending": {
     "type": "text",
     "placeholders": {}
@@ -286,7 +286,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "value": "金额: ",
+  "value": "金額: ",
   "@value": {
     "type": "text",
     "placeholders": {}
@@ -296,17 +296,17 @@
     "type": "text",
     "placeholders": {}
   },
-  "errorValueNotEmpty": "请输入资料",
+  "errorValueNotEmpty": "請輸入資料",
   "@errorValueNotEmpty": {
     "type": "text",
     "placeholders": {}
   },
-  "errorAmountBalance": "余额不足",
+  "errorAmountBalance": "餘額不足",
   "@errorAmountBalance": {
     "type": "text",
     "placeholders": {}
   },
-  "errorNotAValidAddress": "钱包地址错误",
+  "errorNotAValidAddress": "錢包地址錯誤",
   "@errorNotAValidAddress": {
     "type": "text",
     "placeholders": {}
@@ -316,12 +316,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "receive": "转入",
+  "receive": "轉入",
   "@receive": {
     "type": "text",
     "placeholders": {}
   },
-  "send": "转出",
+  "send": "轉出",
   "@send": {
     "type": "text",
     "placeholders": {}
@@ -336,12 +336,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "commingsoon": "交易明细载入中！",
+  "commingsoon": "交易明細載入中！",
   "@commingsoon": {
     "type": "text",
     "placeholders": {}
   },
-  "history": "历史",
+  "history": "歷史",
   "@history": {
     "type": "text",
     "placeholders": {}
@@ -351,62 +351,62 @@
     "type": "text",
     "placeholders": {}
   },
-  "commingsoonGeneral": "细节戴入中！",
+  "commingsoonGeneral": "細節戴入中！",
   "@commingsoonGeneral": {
     "type": "text",
     "placeholders": {}
   },
-  "orderMatching": "订单匹配中",
+  "orderMatching": "訂單匹配中",
   "@orderMatching": {
     "type": "text",
     "placeholders": {}
   },
-  "orderMatched": "订单匹配成功",
+  "orderMatched": "訂單匹配成功",
   "@orderMatched": {
     "type": "text",
     "placeholders": {}
   },
-  "swapOngoing": "兑换中",
+  "swapOngoing": "兌換中",
   "@swapOngoing": {
     "type": "text",
     "placeholders": {}
   },
-  "swapSucceful": "兑换成功",
+  "swapSucceful": "兌換成功",
   "@swapSucceful": {
     "type": "text",
     "placeholders": {}
   },
-  "timeOut": "超时",
+  "timeOut": "超時",
   "@timeOut": {
     "type": "text",
     "placeholders": {}
   },
-  "swapFailed": "兑换失败",
+  "swapFailed": "兌換失敗",
   "@swapFailed": {
     "type": "text",
     "placeholders": {}
   },
-  "errorTryLater": "发生了错误，请稍后再试",
+  "errorTryLater": "發生了錯誤，請稍後再試",
   "@errorTryLater": {
     "type": "text",
     "placeholders": {}
   },
-  "feedback": "发送反馈",
+  "feedback": "發送反饋",
   "@feedback": {
     "type": "text",
     "placeholders": {}
   },
-  "loadingOrderbook": "委托订单载入中。。。",
+  "loadingOrderbook": "委託訂單載入中。。。",
   "@loadingOrderbook": {
     "type": "text",
     "placeholders": {}
   },
-  "claim": "领取",
+  "claim": "領取",
   "@claim": {
     "type": "text",
     "placeholders": {}
   },
-  "claimTitle": "领取您的KMD奖励？",
+  "claimTitle": "領取您的KMD獎勵？",
   "@claimTitle": {
     "type": "text",
     "placeholders": {}
@@ -416,12 +416,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "noRewardYet": "没有奖励可领取 - 请一个小时后重试。",
+  "noRewardYet": "沒有獎勵可領取 - 請一個小時後重試。",
   "@noRewardYet": {
     "type": "text",
     "placeholders": {}
   },
-  "loading": "载入中。。。",
+  "loading": "載入中。。。",
   "@loading": {
     "type": "text",
     "placeholders": {}
@@ -431,12 +431,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "media": "新闻",
+  "media": "新聞",
   "@media": {
     "type": "text",
     "placeholders": {}
   },
-  "newsFeed": "新闻",
+  "newsFeed": "新聞",
   "@newsFeed": {
     "type": "text",
     "placeholders": {}
@@ -446,12 +446,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "clipboard": "已复制",
+  "clipboard": "已複制",
   "@clipboard": {
     "type": "text",
     "placeholders": {}
   },
-  "from": "从",
+  "from": "從",
   "@from": {
     "type": "text",
     "placeholders": {}
@@ -461,27 +461,27 @@
     "type": "text",
     "placeholders": {}
   },
-  "txConfirmed": "已确认",
+  "txConfirmed": "已確認",
   "@txConfirmed": {
     "type": "text",
     "placeholders": {}
   },
-  "txNotConfirmed": "未确认",
+  "txNotConfirmed": "未確認",
   "@txNotConfirmed": {
     "type": "text",
     "placeholders": {}
   },
-  "txBlock": "区块",
+  "txBlock": "區塊",
   "@txBlock": {
     "type": "text",
     "placeholders": {}
   },
-  "txConfirmations": "交易确认",
+  "txConfirmations": "交易確認",
   "@txConfirmations": {
     "type": "text",
     "placeholders": {}
   },
-  "txFee": "手续费",
+  "txFee": "手續費",
   "@txFee": {
     "type": "text",
     "placeholders": {}
@@ -491,7 +491,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "noSwaps": "没有纪录",
+  "noSwaps": "沒有紀錄",
   "@noSwaps": {
     "type": "text",
     "placeholders": {}
@@ -501,17 +501,17 @@
     "type": "text",
     "placeholders": {}
   },
-  "tradeCompleted": "兑换成功！",
+  "tradeCompleted": "兌換成功！",
   "@tradeCompleted": {
     "type": "text",
     "placeholders": {}
   },
-  "step": "步骤",
+  "step": "步驟",
   "@step": {
     "type": "text",
     "placeholders": {}
   },
-  "tradeDetail": "交易明细",
+  "tradeDetail": "交易明細",
   "@tradeDetail": {
     "type": "text",
     "placeholders": {}
@@ -521,12 +521,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "swapID": "兑换 ID",
+  "swapID": "兌換 ID",
   "@swapID": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBrowse": "浏览",
+  "mediaBrowse": "瀏覽",
   "@mediaBrowse": {
     "type": "text",
     "placeholders": {}
@@ -536,17 +536,17 @@
     "type": "text",
     "placeholders": {}
   },
-  "articleFrom": "AtomicDEX 新闻",
+  "articleFrom": "AtomicDEX 新聞",
   "@articleFrom": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaNotSavedDescription": "您没有收藏的文章",
+  "mediaNotSavedDescription": "您沒有收藏的文章",
   "@mediaNotSavedDescription": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBrowseFeed": "浏览新闻",
+  "mediaBrowseFeed": "瀏覽新聞",
   "@mediaBrowseFeed": {
     "type": "text",
     "placeholders": {}
@@ -556,12 +556,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "lockScreenAuth": "请登入！",
+  "lockScreenAuth": "請登入！",
   "@lockScreenAuth": {
     "type": "text",
     "placeholders": {}
   },
-  "noTxs": "无交易",
+  "noTxs": "無交易",
   "@noTxs": {
     "type": "text",
     "placeholders": {}
@@ -571,226 +571,226 @@
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinTitle": "新增代币:",
+  "selectCoinTitle": "新增代幣:",
   "@selectCoinTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinInfo": "请选您想要添加的代币。",
+  "selectCoinInfo": "請選您想要添加的代幣。",
   "@selectCoinInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "noArticles": "无新闻 - 请稍后再试！",
+  "noArticles": "無新聞 - 請稍後再試！",
   "@noArticles": {
     "type": "text",
     "placeholders": {}
   },
-  "infoTrade1": "兑换需求是无法撤销的！",
+  "infoTrade1": "兌換需求是無法撤銷的！",
   "@infoTrade1": {
     "type": "text",
     "placeholders": {}
   },
-  "infoTrade2": "此交易时间可能长达 10 分钟 - 请勿关闭应用程式！",
+  "infoTrade2": "此交易時間可能長達 10 分鐘 - 請勿關閉應用程式！",
   "@infoTrade2": {
     "type": "text",
     "placeholders": {}
   },
-  "swapDetailTitle": "请确认交易明细",
+  "swapDetailTitle": "請確認交易明細",
   "@swapDetailTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhrase": "请确认助记词",
+  "checkSeedPhrase": "請確認助記詞",
   "@checkSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseTitle": "请再次确认助记词",
+  "checkSeedPhraseTitle": "請再次確認助記詞",
   "@checkSeedPhraseTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseInfo": "您的助记词是很重要的所以我们要确认您有正确备份。我们将问您三个有关您的助记词的问题以确保您可以随时恢复钱包。",
+  "checkSeedPhraseInfo": "您的助記詞是很重要的所以我們要確認您有正確備份。我們將問您三個有關您的助記詞的問題以確保您可以隨時恢復錢包。",
   "@checkSeedPhraseInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseSubtile": "您助记词的第 {index}. 个字是什么？",
+  "checkSeedPhraseSubtile": "您助記詞的第 {index}. 個字是什麼？",
   "@checkSeedPhraseSubtile": {
     "type": "text",
     "placeholders": {
       "index": {}
     }
   },
-  "checkSeedPhraseHint": "请输入第 {index}. 个字",
+  "checkSeedPhraseHint": "請輸入第 {index}. 個字",
   "@checkSeedPhraseHint": {
     "type": "text",
     "placeholders": {
       "index": {}
     }
   },
-  "checkSeedPhraseButton1": "继续",
+  "checkSeedPhraseButton1": "繼續",
   "@checkSeedPhraseButton1": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseButton2": "返回并再次检查",
+  "checkSeedPhraseButton2": "返回並再次檢查",
   "@checkSeedPhraseButton2": {
     "type": "text",
     "placeholders": {}
   },
-  "takerpaymentsID": "吃单交易 ID",
+  "takerpaymentsID": "吃單交易 ID",
   "@takerpaymentsID": {
     "type": "text",
     "placeholders": {}
   },
-  "makerpaymentID": "挂单交易 ID",
+  "makerpaymentID": "掛單交易 ID",
   "@makerpaymentID": {
     "type": "text",
     "placeholders": {}
   },
-  "activateAccessBiometric": "开启生物识别功能",
+  "activateAccessBiometric": "開啟生物識別功能",
   "@activateAccessBiometric": {
     "type": "text",
     "placeholders": {}
   },
-  "allowCustomSeed": "允许自订助记词",
+  "allowCustomSeed": "允許自訂助記詞",
   "@allowCustomSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "hintEnterPassword": "请输入您的密码",
+  "hintEnterPassword": "請輸入您的密碼",
   "@hintEnterPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "signInWithSeedPhrase": "汇入助记词",
+  "signInWithSeedPhrase": "匯入助記詞",
   "@signInWithSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "signInWithPassword": "汇入密码",
+  "signInWithPassword": "匯入密碼",
   "@signInWithPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintEnterSeedPhrase": "请输入您的助记词",
+  "hintEnterSeedPhrase": "請輸入您的助記詞",
   "@hintEnterSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "wrongPassword": "密码不正确。请再重试一次。",
+  "wrongPassword": "密碼不正確。請再重試一次。",
   "@wrongPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintNameYourWallet": "钱包名称",
+  "hintNameYourWallet": "錢包名稱",
   "@hintNameYourWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "infoWalletPassword": "您可以选择使用密码加密您的钱包。如果您选择不使用密码，则每次进入钱包时都需要输入助记词。",
+  "infoWalletPassword": "您可以選擇使用密碼加密您的錢包。如果您選擇不使用密碼，則每次進入錢包時都需要輸入助記詞。",
   "@infoWalletPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmPassword": "确认密码",
+  "confirmPassword": "確認密碼",
   "@confirmPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "dontWantPassword": "我不想要使用密码",
+  "dontWantPassword": "我不想要使用密碼",
   "@dontWantPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "areYouSure": "您确定吗？",
+  "areYouSure": "您確定嗎？",
   "@areYouSure": {
     "type": "text",
     "placeholders": {}
   },
-  "infoPasswordDialog": "如果您不使用密码，每次进入钱包时都需要输入助记词。",
+  "infoPasswordDialog": "如果您不使用密碼，每次進入錢包時都需要輸入助記詞。",
   "@infoPasswordDialog": {
     "type": "text",
     "placeholders": {}
   },
-  "setUpPassword": "设定密码",
+  "setUpPassword": "設定密碼",
   "@setUpPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "createAWallet": "创建钱包",
+  "createAWallet": "創建錢包",
   "@createAWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "restoreWallet": "恢复钱包",
+  "restoreWallet": "恢復錢包",
   "@restoreWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "hintPassword": "密码",
+  "hintPassword": "密碼",
   "@hintPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintConfirmPassword": "确认密码",
+  "hintConfirmPassword": "確認密碼",
   "@hintConfirmPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintCurrentPassword": "当前密码",
+  "hintCurrentPassword": "當前密碼",
   "@hintCurrentPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "logoutsettings": "登出设定",
+  "logoutsettings": "登出設定",
   "@logoutsettings": {
     "type": "text",
     "placeholders": {}
   },
-  "logoutOnExit": "离开时登出",
+  "logoutOnExit": "離開時登出",
   "@logoutOnExit": {
     "type": "text",
     "placeholders": {}
   },
-  "deleteWallet": "删除钱包",
+  "deleteWallet": "刪除錢包",
   "@deleteWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "delete": "删除",
+  "delete": "刪除",
   "@delete": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan1": "确定要删除",
+  "settingDialogSpan1": "確定要刪除",
   "@settingDialogSpan1": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan2": "钱包吗？",
+  "settingDialogSpan2": " 錢包嗎？",
   "@settingDialogSpan2": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan3": "如果是，确保您 ",
+  "settingDialogSpan3": "如果是，確保您 ",
   "@settingDialogSpan3": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan4": " 纪录助记词。",
+  "settingDialogSpan4": " 紀錄助記詞。",
   "@settingDialogSpan4": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan5": " 以便将来恢复钱包。",
+  "settingDialogSpan5": " 以便將來恢復錢包。",
   "@settingDialogSpan5": {
     "type": "text",
     "placeholders": {}
   },
-  "backupTitle": "备份",
+  "backupTitle": "備份",
   "@backupTitle": {
     "type": "text",
     "placeholders": {}
@@ -800,22 +800,22 @@
     "type": "text",
     "placeholders": {}
   },
-  "viewSeed": "导出助记词",
+  "viewSeed": "導出助記詞",
   "@viewSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "enterpassword": "继续前请输入密码。",
+  "enterpassword": "繼續前請輸入密碼。",
   "@enterpassword": {
     "type": "text",
     "placeholders": {}
   },
-  "clipboardCopy": "已复制",
+  "clipboardCopy": "已複制",
   "@clipboardCopy": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeTitle": "欢迎使用",
+  "welcomeTitle": "歡迎使用",
   "@welcomeTitle": {
     "type": "text",
     "placeholders": {}
@@ -825,34 +825,34 @@
     "type": "text",
     "placeholders": {}
   },
-  "welcomeWallet": "钱包",
+  "welcomeWallet": "錢包",
   "@welcomeWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeInfo": "ATOMIC DEX 是次世代多币别钱包, 具有原生第三代的DEX功能等等。",
+  "welcomeInfo": "ATOMIC DEX 是次世代多幣別錢包, 具有原生第三代的DEX功能等等。",
   "@welcomeInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeLetSetUp": "创建钱包!",
+  "welcomeLetSetUp": "創建錢包",
   "@welcomeLetSetUp": {
     "type": "text",
     "placeholders": {}
   },
-  "unlock": "解锁您的钱包",
+  "unlock": "解鎖您的錢包",
   "@unlock": {
     "type": "text",
     "placeholders": {}
   },
-  "noOrder": "当前无 {coinName} 匹配订单 - 请稍后再试, 或建立订单。",
+  "noOrder": "當前無 {coinName} 匹配訂單 - 請稍後再試, 或建立訂單。",
   "@noOrder": {
     "type": "text",
     "placeholders": {
       "coinName": {}
     }
   },
-  "bestAvailableRate": "当前最佳汇率",
+  "bestAvailableRate": "當前最佳匯率",
   "@bestAvailableRate": {
     "type": "text",
     "placeholders": {}
@@ -862,7 +862,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "makeAorder": "建立订单",
+  "makeAorder": "建立訂單",
   "@makeAorder": {
     "type": "text",
     "placeholders": {}
@@ -872,52 +872,52 @@
     "type": "text",
     "placeholders": {}
   },
-  "orders": "当前委托",
+  "orders": "當前委託",
   "@orders": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoin": "请选代币",
+  "selectCoin": "請選代幣",
   "@selectCoin": {
     "type": "text",
     "placeholders": {}
   },
-  "noFunds": "无资产",
+  "noFunds": "無資產",
   "@noFunds": {
     "type": "text",
     "placeholders": {}
   },
-  "noFundsDetected": "当前无资产",
+  "noFundsDetected": "當前無資產 - 請儲存資產。",
   "@noFundsDetected": {
     "type": "text",
     "placeholders": {}
   },
-  "goToPorfolio": "前往资产配置",
+  "goToPorfolio": "前往資產配置",
   "@goToPorfolio": {
     "type": "text",
     "placeholders": {}
   },
-  "noOrderAvailable": "点击建立订单",
+  "noOrderAvailable": "點擊建立訂單",
   "@noOrderAvailable": {
     "type": "text",
     "placeholders": {}
   },
-  "orderCreated": "委托订单提交",
+  "orderCreated": "委託訂單提交",
   "@orderCreated": {
     "type": "text",
     "placeholders": {}
   },
-  "orderCreatedInfo": "委托订单成功建立",
+  "orderCreatedInfo": "委託訂單成功建立",
   "@orderCreatedInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "showMyOrders": "显示我的委托单",
+  "showMyOrders": "顯示我的委託單",
   "@showMyOrders": {
     "type": "text",
     "placeholders": {}
   },
-  "minValue": "最低可卖出数量 {number} {coinName}",
+  "minValue": "最低可賣出數量 {number} {coinName}",
   "@minValue": {
     "type": "text",
     "placeholders": {
@@ -925,12 +925,12 @@
       "number": {}
     }
   },
-  "titleCreatePassword": "创建一个密码",
+  "titleCreatePassword": "創建一個密碼",
   "@titleCreatePassword": {
     "type": "text",
     "placeholders": {}
   },
-  "minValueBuy": "最低可买入数量 {number} {coinName}",
+  "minValueBuy": "最低可買入數量 {number} {coinName}",
   "@minValueBuy": {
     "type": "text",
     "placeholders": {
@@ -938,47 +938,47 @@
       "number": {}
     }
   },
-  "encryptingWallet": "钱包加密中",
+  "encryptingWallet": "錢包加密中",
   "@encryptingWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "decryptingWallet": "钱包解密中",
+  "decryptingWallet": "錢包解密中",
   "@decryptingWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "notEnoughtBalanceForFee": "余额不足以支付手续费 - 请调整交易数量。",
+  "notEnoughtBalanceForFee": "餘額不足以支付手續費 - 請調整交易數量。",
   "@notEnoughtBalanceForFee": {
     "type": "text",
     "placeholders": {}
   },
-  "noInternet": "无法连上网路",
+  "noInternet": "無法連上網路",
   "@noInternet": {
     "type": "text",
     "placeholders": {}
   },
-  "legalTitle": "条款 (目前只提供英文版)",
+  "legalTitle": "條款 (目前只提供英文版)",
   "@legalTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "disclaimerAndTos": "免责声明 & 使用条款",
+  "disclaimerAndTos": "免責聲明 & 使用條款",
   "@disclaimerAndTos": {
     "type": "text",
     "placeholders": {}
   },
-  "accepteula": "同意接受终端使用者授权协议 (EULA)",
+  "accepteula": "同意接受終端使用者授權協議 (EULA)",
   "@accepteula": {
     "type": "text",
     "placeholders": {}
   },
-  "accepttac": "接受条款与条件",
+  "accepttac": "接受條款與條件",
   "@accepttac": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmeula": "我了解点击以下的按钮，即表示我已阅读及接受终端使用者授权协议(EULA) & 使用条款与条件 。",
+  "confirmeula": "我了解點擊以下的按鈕，即表示我已閱讀及接受終端使用者授權協議(EULA) & 使用條款與條件 。",
   "@confirmeula": {
     "type": "text",
     "placeholders": {}
@@ -1003,7 +1003,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle5": "MODIFICATIONS\n",
+  "eulaTitle5": "MODIFICATIONS",
   "@eulaTitle5": {
     "type": "text",
     "placeholders": {}
@@ -1018,7 +1018,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle8": "Backups\n",
+  "eulaTitle8": "Backups",
   "@eulaTitle8": {
     "type": "text",
     "placeholders": {}
@@ -1053,7 +1053,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle15": "INDEMNIFICATION\n",
+  "eulaTitle15": "INDEMNIFICATION",
   "@eulaTitle15": {
     "type": "text",
     "placeholders": {}
@@ -1068,7 +1068,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle18": "TERMINATION\n",
+  "eulaTitle18": "TERMINATION",
   "@eulaTitle18": {
     "type": "text",
     "placeholders": {}
@@ -1108,7 +1108,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "eulaParagraphe6": "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. You must immediately notify us of any unauthorized uses of your account or any other breaches of security. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions.",
+  "eulaParagraphe6": "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. You must immediately notify us of any unauthorized uses of your account or any other breaches of security. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions.\n",
   "@eulaParagraphe6": {
     "type": "text",
     "placeholders": {}
@@ -1178,22 +1178,22 @@
     "type": "text",
     "placeholders": {}
   },
-  "ethFee": "ETH费用",
+  "ethFee": "ETH fee\n",
   "@ethFee": {
     "type": "text",
     "placeholders": {}
   },
-  "notEnoughEth": "没有足够的交易ETH！",
+  "notEnoughEth": "沒有足夠的交易ETH！",
   "@notEnoughEth": {
     "type": "text",
     "placeholders": {}
   },
-  "ethNotActive": "请激活ETH。",
+  "ethNotActive": "請激活ETH。",
   "@ethNotActive": {
     "type": "text",
     "placeholders": {}
   },
-  "youWillReceiveClaim": "您将收到{amount} {coin}",
+  "youWillReceiveClaim": "您將收到{amount} {coin}",
   "@youWillReceiveClaim": {
     "type": "text",
     "placeholders": {
@@ -1201,19 +1201,19 @@
       "coin": {}
     }
   },
-  "seeOrders": "点击查看{amount}订单",
+  "seeOrders": "點擊查看{amount}訂單",
   "@seeOrders": {
     "type": "text",
     "placeholders": {
       "amount": {}
     }
   },
-  "clickToSee": "点击查看",
+  "clickToSee": "點擊查看",
   "@clickToSee": {
     "type": "text",
     "placeholders": {}
   },
-  "price": "价钱",
+  "price": "價錢",
   "@price": {
     "type": "text",
     "placeholders": {}
