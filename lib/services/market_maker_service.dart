@@ -191,9 +191,10 @@ class MarketMakerService {
   Future<void> runBin() async {
     final String passphrase = await EncryptionTool().read('passphrase');
     initUsername(passphrase);
-
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final String os = Platform.isAndroid ? 'Android' : 'iOS';
     final String startParam = configMm2ToJson(ConfigMm2(
-        gui: 'atomicDEX',
+        gui: 'atomicDEX ${packageInfo.version} $os',
         netid: 9999,
         client: 1,
         userhome: filesPath,

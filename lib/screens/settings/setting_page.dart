@@ -130,8 +130,8 @@ class _SettingPageState extends State<SettingPage> {
         AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
     try {
-      final dynamic versionmm2 = await ApiProvider()
-          .getVersionMM2(MarketMakerService().client, BaseService(method: 'version'));
+      final dynamic versionmm2 = await ApiProvider().getVersionMM2(
+          MarketMakerService().client, BaseService(method: 'version'));
       if (versionmm2 is ResultSuccess && versionmm2 != null) {
         version += ' - ${versionmm2.result}';
       }
@@ -640,14 +640,18 @@ class _SettingPageState extends State<SettingPage> {
 
   Future<void> _shareFile() async {
     Navigator.of(context).pop();
-
-    final dynamic recentSwap = await ApiProvider().getRecentSwaps(MarketMakerService().client, 
-        GetRecentSwap(limit: 100, fromUuid: null));
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final String os = Platform.isAndroid ? 'Android' : 'iOS';
+    final dynamic recentSwap = await ApiProvider().getRecentSwaps(
+        MarketMakerService().client, GetRecentSwap(limit: 100, fromUuid: null));
 
     if (recentSwap is RecentSwaps) {
       if (MarketMakerService().sink != null) {
         MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
-        MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n');
+        MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n\n');
+        MarketMakerService()
+            .sink
+            .write('AtomicDEX mobile ${packageInfo.version} $os\n');
       }
     }
     mainBloc.isUrlLaucherIsOpen = true;
