@@ -40,6 +40,8 @@ class SettingsBloc implements BlocBase{
         break;
       case 'ru':
         return AppLocalizations.of(context).russianLanguage;
+      case 'ja':
+        return AppLocalizations.of(context).japaneseLanguage;
         break;
       default:
         return AppLocalizations.of(context).englishLanguage;
