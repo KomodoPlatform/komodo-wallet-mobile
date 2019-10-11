@@ -456,7 +456,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "to": "На",
+  "to": "В",
   "@to": {
     "type": "text",
     "placeholders": {}
