@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:path/path.dart';
@@ -36,6 +37,7 @@ class DBProvider {
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
     return await openDatabase(path, version: 1, onOpen: (Database db) {},
         onCreate: (Database db, int version) async {
+      Log.println('database:40', 'initDB - openDB');
       await db.execute('''
       CREATE TABLE ArticlesSaved (
           id TEXT PRIMARY KEY,
@@ -64,13 +66,44 @@ class DBProvider {
           is_fast_encryption BIT
         )
       ''');
+
       await db.execute(createTableCoins(CoinEletrum.SAVED));
       await db.execute(createTableCoins(CoinEletrum.DEFAULT));
       await db.execute(createTableCoins(CoinEletrum.CONFIG));
+
+      //temporary quick-fix/hackaround for 'no such table' error after app update - cc: tonymorony
+      try {
+        final dynamic res = await db.query('CoinsActivated');
+        if (res is ErrorString && res.error.contains('no such')) {
+          Log.println(
+              'database:77', 'noSuchCoinsActivatedError - creating table...');
+          await db.execute('''
+      CREATE TABLE CoinsActivated} (
+          name TEXT PRIMARY KEY UNIQUE,
+          type TEXT,
+          address TEXT,
+          port INTEGER,
+          proto TEXT,
+          txfee INTEGER,
+          priceUSD REAL,
+          mm2 INTEGER,
+          swap_contract_address TEXT,
+          abbr TEXT,
+          coingeckoId TEXT,
+          colorCoin TEXT,
+          serverList TEXT,
+          explorerUrl TEXT
+        )
+      ''');
+        }
+      } catch (e) {
+        Log.println('database:99', 'DB INIT ERROR: ' + e.toString());
+      }
     });
   }
 
   String createTableCoins(CoinEletrum coinEletrum) {
+    Log.println('database:105', 'CREATE: ' + _getDbElectrum(coinEletrum));
     return '''
       CREATE TABLE ${_getDbElectrum(coinEletrum)} (
           name TEXT PRIMARY KEY UNIQUE,
@@ -95,13 +128,10 @@ class DBProvider {
     switch (coinEletrum) {
       case CoinEletrum.DEFAULT:
         return 'CoinsDefault';
-        break;
       case CoinEletrum.SAVED:
         return 'CoinsActivated';
-        break;
       case CoinEletrum.CONFIG:
         return 'CoinsConfig';
-        break;
       default:
         return 'CoinsDefault';
     }
@@ -111,13 +141,10 @@ class DBProvider {
     switch (coinEletrum) {
       case CoinEletrum.DEFAULT:
         return 'coins_activate_default';
-        break;
       case CoinEletrum.SAVED:
         return 'coins_activate_default';
-        break;
       case CoinEletrum.CONFIG:
         return 'coins_config';
-        break;
       default:
         return 'coins_activate_default';
     }
@@ -142,12 +169,12 @@ class DBProvider {
       'serverList': json.encode(coin.serverList) ?? <String>[],
       'explorerUrl': json.encode(coin.explorerUrl) ?? <String>[],
     };
-    if (!(await isExist(coinEletrum, coin.name))) {
+    if (!(await exists(coinEletrum, coin.name))) {
       await db.insert(_getDbElectrum(coinEletrum), row);
     }
   }
 
-  Future<bool> isExist(CoinEletrum coinEletrum, String name) async {
+  Future<bool> exists(CoinEletrum coinEletrum, String name) async {
     final Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
         _getDbElectrum(coinEletrum),
@@ -207,7 +234,7 @@ class DBProvider {
       'explorerUrl': json.encode(coin.explorerUrl)
     };
     // Update the Coin from the Database
-    if (await isExist(coinEletrum, coin.name)) {
+    if (await exists(coinEletrum, coin.name)) {
       await db.update(
         _getDbElectrum(coinEletrum),
         row,
