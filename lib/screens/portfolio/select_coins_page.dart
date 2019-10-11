@@ -60,12 +60,12 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
           backgroundColor: Theme.of(context).backgroundColor,
           elevation: 0,
           title: SearchFieldFilterCoin(clear: () {
-                  initCoinList();
-                }, onFilterCoins: (List<Coin> coinsFiltered) {
-                  setState(() {
-                    currentCoins = coinsFiltered;
-                  });
-                }),
+            initCoinList();
+          }, onFilterCoins: (List<Coin> coinsFiltered) {
+            setState(() {
+              currentCoins = coinsFiltered;
+            });
+          }),
           leading: isSearchActive
               ? null
               : Builder(

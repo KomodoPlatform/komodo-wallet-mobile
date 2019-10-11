@@ -43,10 +43,10 @@ class BuildConfirmationStep extends StatefulWidget {
 }
 
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
-
   Future<double> getFee() async {
     try {
-      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(MarketMakerService().client,
+      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
+          MarketMakerService().client,
           GetTradeFee(coin: widget.coinBalance.coin.abbr));
       if (tradeFeeResponse is TradeFee) {
         return double.parse(tradeFeeResponse.result.amount);
@@ -121,13 +121,13 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
 
           print(Decimal.parse(ethfee.toString()));
           print(Decimal.parse(widget.amountToPay));
-          
+
           if ((ethCoin != null &&
-                      ethfee > double.parse(ethCoin.balance.balance)) ||
-                  (ethCoin != null &&
-                      widget.coinBalance.coin.abbr == 'ETH' &&
-                              Decimal.parse(amountUserReceive.toString()) >
-                          Decimal.parse(ethCoin.balance.balance))) {
+                  ethfee > double.parse(ethCoin.balance.balance)) ||
+              (ethCoin != null &&
+                  widget.coinBalance.coin.abbr == 'ETH' &&
+                  Decimal.parse(amountUserReceive.toString()) >
+                      Decimal.parse(ethCoin.balance.balance))) {
             notEnoughEth = true;
           }
 

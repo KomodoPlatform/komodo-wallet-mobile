@@ -747,7 +747,8 @@ class _CoinDetailState extends State<CoinDetail> {
         onPressed: () {
           switch (statusButton) {
             case StatusButton.RECEIVE:
-              showAddressDialog(mContext, currentCoinBalance.balance.address, widget.coinBalance.coin);
+              showAddressDialog(mContext, currentCoinBalance.balance.address,
+                  widget.coinBalance.coin);
               break;
             case StatusButton.SEND:
               if (currentIndex == 3) {
