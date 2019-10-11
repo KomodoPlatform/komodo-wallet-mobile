@@ -153,10 +153,10 @@ class _PinPageState extends State<PinPage> {
     return Scaffold(
         appBar: !isLoading
             ? AppBarStatus(
-                  pinStatus: widget.pinStatus,
-                  title: widget.title,
-                  context: context,
-                )
+                pinStatus: widget.pinStatus,
+                title: widget.title,
+                context: context,
+              )
             : null,
         backgroundColor: Theme.of(context).backgroundColor,
         resizeToAvoidBottomPadding: false,

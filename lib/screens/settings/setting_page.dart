@@ -56,6 +56,8 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final Locale myLocale = Localizations.localeOf(context);
+    // Log.println('setting_page.dart:60', 'current locale: $myLocale');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(

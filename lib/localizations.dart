@@ -10,13 +10,12 @@ class AppLocalizations {
     final String name =
         locale.countryCode == null ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
-
     return initializeMessages(localeName).then((bool _) {
       Intl.defaultLocale = localeName;
       return AppLocalizations();
     });
   }
-
+  
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
@@ -570,7 +569,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return <String>['en', 'fr', 'de', 'zh', 'zh_Hans', 'ru', 'ja']
+    return <String>['en', 'fr', 'de', 'zh', 'zh_TW', 'ru', 'ja']
         .contains(locale.languageCode);
   }
 

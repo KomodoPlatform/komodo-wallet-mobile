@@ -17,7 +17,7 @@ final MessageLookup messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'zh_Hans';
+  String get localeName => 'zh_TW';
 
   static dynamic m0(dynamic name) => "成功新增 ${name}!";
 

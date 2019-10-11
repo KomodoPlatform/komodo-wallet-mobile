@@ -61,10 +61,7 @@ class MainBloc implements BlocBase {
         Locale('zh'), // generic Chinese 'zh'
         Locale.fromSubtags(
             languageCode: 'zh',
-            scriptCode: 'Hans'), // generic simplified Chinese 'zh_Hans'
-        // Locale.fromSubtags(
-        //     languageCode: 'zh',
-        //     scriptCode: 'Hant'), // generic traditional Chinese 'zh_Hant'
+            countryCode: 'TW'), // Taiwan simplified Chinese 'zh_TW'
         Locale('ru'),
         Locale('ja')
       ];

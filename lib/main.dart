@@ -115,8 +115,11 @@ class _MyAppState extends State<MyApp> {
               pref: 'current_languages',
               builder:
                   (BuildContext context, AsyncSnapshot<dynamic> prefLocale) {
-                Log.println('l10n - main.dart:118',
-                    'current locale: ' + currentLocale?.toString());
+                // Log.println('l10n - main.dart:118',
+                //     'current locale: ' + currentLocale?.toString());
+                // Log.println('l10n - main.dart:120',
+                //     'current pref locale: ' + prefLocale.toString());
+
                 return MaterialApp(
                     title: 'atomicDEX',
                     localizationsDelegates: <LocalizationsDelegate<dynamic>>[
