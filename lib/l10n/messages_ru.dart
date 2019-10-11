@@ -388,7 +388,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeOut": MessageLookupByLibrary.simpleMessage("Таймаут"),
         "titleCreatePassword":
             MessageLookupByLibrary.simpleMessage("СОЗДАТЬ ПАРОЛЬ"),
-        "to": MessageLookupByLibrary.simpleMessage("На"),
+        "to": MessageLookupByLibrary.simpleMessage("В"),
         "toAddress": MessageLookupByLibrary.simpleMessage("На адрес:"),
         "trade": MessageLookupByLibrary.simpleMessage("СДЕЛКА"),
         "tradeCompleted":
