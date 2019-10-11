@@ -10,13 +10,12 @@ class AppLocalizations {
     final String name =
         locale.countryCode == null ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
-
     return initializeMessages(localeName).then((bool _) {
       Intl.defaultLocale = localeName;
       return AppLocalizations();
     });
   }
-
+  
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
@@ -551,15 +550,18 @@ class AppLocalizations {
       Intl.message('English', name: 'englishLanguage');
   String get frenchLanguage => Intl.message('French', name: 'frenchLanguage');
   String get deutscheLanguage =>
-      Intl.message('Deutsche', name: 'deutscheLanguage');
+      Intl.message('Deutsch', name: 'deutscheLanguage');
   String get chineseLanguage =>
       Intl.message('Chinese', name: 'chineseLanguage');
   String get simplifiedChinese =>
       Intl.message('simplified', name: 'simplifiedChinese');
-  String get traditionalChinese =>
-      Intl.message('traditional', name: 'traditionalChinese');
-  String get faucetName =>
-      Intl.message('FAUCET', name: 'faucetName');
+  // String get traditionalChinese =>
+  //     Intl.message('traditional', name: 'traditionalChinese');
+    String get russianLanguage =>
+      Intl.message('Russian', name: 'russianLanguage');
+    String get japaneseLanguage =>
+      Intl.message('Japanese', name: 'japaneseLanguage');
+  String get faucetName => Intl.message('FAUCET', name: 'faucetName');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -567,7 +569,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return <String>['en', 'fr', 'de', 'zh', 'zh_Hans', 'zh_Hant']
+    return <String>['en', 'fr', 'de', 'zh', 'zh_TW', 'ru', 'ja']
         .contains(locale.languageCode);
   }
 

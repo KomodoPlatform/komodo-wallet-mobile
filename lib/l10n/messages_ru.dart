@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a messages locale. All the
+// This is a library that provides messages for a ru locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -17,178 +17,153 @@ final MessageLookup messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'messages';
+  String get localeName => 'ru';
 
-  static dynamic m0(dynamic name) => "Activated ${name} successfully !";
+  static dynamic m0(dynamic name) => "${name} активирован успешно!";
 
   static dynamic m9(dynamic seconde) =>
-      "Ordermatch ongoing, please wait ${seconde} seconds!";
+      "Поиск сделки в процессе, пожалуйста , подождите ${seconde} секунд!";
 
-  static dynamic m1(dynamic index) => "Enter the ${index}. word";
+  static dynamic m1(dynamic index) => "Введите ${index} слово";
 
   static dynamic m2(dynamic index) =>
-      "What is the ${index}. word in your seed phrase?";
-
-  static dynamic m12(dynamic gas) =>
-      "Not enough gas - use at least ${gas} Gwei";
+      "Какое ${index} слово в вашей seed-фразе?";
 
   static dynamic m10(dynamic coinName, dynamic number) =>
-      "The minimun amount to sell is ${number} ${coinName}";
+      "Минимальная сумма продажи составляет ${number} ${coinName}.";
 
   static dynamic m11(dynamic coinName, dynamic number) =>
-      "The minimun amount to buy is ${number} ${coinName}";
+      "Минимальная сумма покупки: ${number} ${coinName}";
 
-  static dynamic m3(dynamic coinName) => "Please enter the ${coinName} amount.";
+  static dynamic m3(dynamic coinName) =>
+      "Пожалуйста, введите сумму ${coinName}.";
 
-  static dynamic m4(dynamic assets) => "${assets} Assets";
+  static dynamic m4(dynamic assets) => "${assets} Активов";
 
-  static dynamic m13(dynamic coin) => "All ${coin} orders will be canceled.";
-
-  static dynamic m5(dynamic amount) => "Click to see ${amount} orders";
+  static dynamic m5(dynamic amount) =>
+      "Нажмите, чтобы увидеть ${amount} ордеров";
 
   static dynamic m6(dynamic coinName, dynamic address) =>
-      "My ${coinName} address: \n${address}";
-
-  static dynamic m14(dynamic amount) =>
-      "This swap requires ${amount} ETH for transaction fees";
+      "Мой ${coinName} адрес: ${address}";
 
   static dynamic m7(dynamic amount, dynamic coinName) =>
-      "WITHDRAW ${amount} ${coinName}";
+      "ВЫВЕСТИ ${amount} ${coinName}";
 
   static dynamic m8(dynamic amount, dynamic coin) =>
-      "You will receive ${amount} ${coin}";
+      "Вы получите ${amount} ${coin}";
 
   final Map<String, dynamic> messages =
       _notInlinedMessages(_notInlinedMessages);
   static dynamic _notInlinedMessages(dynamic _) => <String, Function>{
-        "accepteula": MessageLookupByLibrary.simpleMessage("Accept EULA"),
-        "accepttac":
-            MessageLookupByLibrary.simpleMessage("Accept TERMS and CONDITIONS"),
+        "accepteula": MessageLookupByLibrary.simpleMessage("Принять EULA"),
+        "accepttac": MessageLookupByLibrary.simpleMessage("ПРИНЯТЬ УСЛОВИЯ"),
         "activateAccessBiometric": MessageLookupByLibrary.simpleMessage(
-            "Activate Biometric protection"),
+            "Активировать биометрическую защиту"),
         "activateAccessPin":
-            MessageLookupByLibrary.simpleMessage("Activate PIN protection"),
-        "addCoin": MessageLookupByLibrary.simpleMessage("Activate coin"),
+            MessageLookupByLibrary.simpleMessage("Активировать защиту PIN"),
+        "addCoin": MessageLookupByLibrary.simpleMessage("Активировать монету"),
         "addingCoinSuccess": m0,
-        "addressSend":
-            MessageLookupByLibrary.simpleMessage("Recipients address"),
-        "allowCustomSeed":
-            MessageLookupByLibrary.simpleMessage("Allow custom seed"),
-        "amount": MessageLookupByLibrary.simpleMessage("Amount"),
-        "amountToSell": MessageLookupByLibrary.simpleMessage("Amount To Sell"),
+        "addressSend": MessageLookupByLibrary.simpleMessage("Адрес получателя"),
+        "allowCustomSeed": MessageLookupByLibrary.simpleMessage(
+            "Разрешить произвольную seed-фразу"),
+        "amount": MessageLookupByLibrary.simpleMessage("Количество"),
+        "amountToSell":
+            MessageLookupByLibrary.simpleMessage("Сумма для продажи"),
         "appName": MessageLookupByLibrary.simpleMessage("atomicDEX"),
-        "areYouSure": MessageLookupByLibrary.simpleMessage("ARE YOU SURE?"),
-        "articleFrom": MessageLookupByLibrary.simpleMessage("AtomicDEX NEWS"),
-        "authenticate": MessageLookupByLibrary.simpleMessage("authenticate"),
-        "availableVolume": MessageLookupByLibrary.simpleMessage("max vol"),
-        "back": MessageLookupByLibrary.simpleMessage("back"),
-        "backupTitle": MessageLookupByLibrary.simpleMessage("Backup"),
+        "areYouSure": MessageLookupByLibrary.simpleMessage("ВЫ УВЕРЕНЫ?"),
+        "articleFrom":
+            MessageLookupByLibrary.simpleMessage("НОВОСТИ AtomicDEX"),
+        "availableVolume":
+            MessageLookupByLibrary.simpleMessage("максимальный объем"),
+        "back": MessageLookupByLibrary.simpleMessage("назад"),
+        "backupTitle": MessageLookupByLibrary.simpleMessage("Бэкап"),
         "bestAvailableRate":
-            MessageLookupByLibrary.simpleMessage("Exchange rate"),
-        "buy": MessageLookupByLibrary.simpleMessage("Buy"),
-        "buySuccessWaiting":
-            MessageLookupByLibrary.simpleMessage("Swap issued, please wait!"),
+            MessageLookupByLibrary.simpleMessage("Обменный курс"),
+        "buy": MessageLookupByLibrary.simpleMessage("Купить"),
+        "buySuccessWaiting": MessageLookupByLibrary.simpleMessage(
+            "Обмен начался, пожалуйста подождите!"),
         "buySuccessWaitingError": m9,
-        "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
-        "changePin": MessageLookupByLibrary.simpleMessage("Change PIN code"),
-        "checkOut": MessageLookupByLibrary.simpleMessage("Check Out"),
+        "cancel": MessageLookupByLibrary.simpleMessage("отменить"),
+        "changePin": MessageLookupByLibrary.simpleMessage("Изменить PIN-код"),
+        "checkOut": MessageLookupByLibrary.simpleMessage("Всего"),
         "checkSeedPhrase":
-            MessageLookupByLibrary.simpleMessage("Check seed phrase"),
+            MessageLookupByLibrary.simpleMessage("Проверьте seed-фразу"),
         "checkSeedPhraseButton1":
-            MessageLookupByLibrary.simpleMessage("CONTINUE"),
+            MessageLookupByLibrary.simpleMessage("ПРОДОЛЖИТЬ"),
         "checkSeedPhraseButton2":
-            MessageLookupByLibrary.simpleMessage("GO BACK AND CHECK AGAIN"),
+            MessageLookupByLibrary.simpleMessage("ВЕРНУТЬСЯ И ПРОВЕРИТЬ СНОВА"),
         "checkSeedPhraseHint": m1,
         "checkSeedPhraseInfo": MessageLookupByLibrary.simpleMessage(
-            "Your seed phrase is important - that\'s why we like to make sure it\'s correct. We\'ll ask you three different questions about your seed phrase to make sure you\'ll be able to easily restore your wallet whenever you want."),
+            "Ваша seed-фраза необходима для доступа к кошельку - поэтому мы хотим убедиться, что она правильная. Мы зададим вам три разных вопроса о вашей seed-фразе, чтобы убедиться, что вы сможете легко восстановить свой кошелек, когда захотите."),
         "checkSeedPhraseSubtile": m2,
         "checkSeedPhraseTitle": MessageLookupByLibrary.simpleMessage(
-            "LET\'S DOUBLE CHECK YOUR SEED PHRASE"),
-        "chineseLanguage": MessageLookupByLibrary.simpleMessage("Chinese"),
-        "claim": MessageLookupByLibrary.simpleMessage("claim"),
-        "claimTitle":
-            MessageLookupByLibrary.simpleMessage("Claim your KMD reward?"),
-        "clickToSee": MessageLookupByLibrary.simpleMessage("Click to see "),
+            "ДАВАЙТЕ ПЕРЕПРОВЕРИМ ВАШУ SEED-ФРАЗУ"),
+        "claim": MessageLookupByLibrary.simpleMessage("Востребовать"),
+        "claimTitle": MessageLookupByLibrary.simpleMessage(
+            "Востребовать KMD вознаграждение? "),
+        "clickToSee":
+            MessageLookupByLibrary.simpleMessage("Нажмите, чтобы увидеть "),
         "clipboard":
-            MessageLookupByLibrary.simpleMessage("Copied to the clipboard"),
+            MessageLookupByLibrary.simpleMessage("Скопировано в буфер обмена"),
         "clipboardCopy":
-            MessageLookupByLibrary.simpleMessage("Copy to clipboard"),
-        "close": MessageLookupByLibrary.simpleMessage("Close"),
-        "code": MessageLookupByLibrary.simpleMessage("Code: "),
-        "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon..."),
-        "commingsoon":
-            MessageLookupByLibrary.simpleMessage("TX details coming soon!"),
-        "commingsoonGeneral":
-            MessageLookupByLibrary.simpleMessage("Details coming soon!"),
-        "commissionFee": MessageLookupByLibrary.simpleMessage("commission fee"),
-        "configureWallet": MessageLookupByLibrary.simpleMessage(
-            "Configuring your wallet, please wait..."),
-        "confirm": MessageLookupByLibrary.simpleMessage("confirm"),
+            MessageLookupByLibrary.simpleMessage("Скопировать в буфер обмена"),
+        "close": MessageLookupByLibrary.simpleMessage("Закрыть"),
+        "code": MessageLookupByLibrary.simpleMessage("Код: "),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("Скоро будет..."),
+        "commingsoon": MessageLookupByLibrary.simpleMessage(
+            "Детали TX скоро будут добавлены!"),
+        "commingsoonGeneral": MessageLookupByLibrary.simpleMessage(
+            "Детали будут скоро добавлены!"),
+        "commissionFee": MessageLookupByLibrary.simpleMessage("комиссия"),
+        "confirm": MessageLookupByLibrary.simpleMessage("подтвердить"),
         "confirmPassword":
-            MessageLookupByLibrary.simpleMessage("Confirm password"),
-        "confirmPin": MessageLookupByLibrary.simpleMessage("Confirm PIN code"),
+            MessageLookupByLibrary.simpleMessage("Подтвердите пароль"),
+        "confirmPin":
+            MessageLookupByLibrary.simpleMessage("Подтвердите PIN-код"),
         "confirmSeed":
-            MessageLookupByLibrary.simpleMessage("Confirm Seed Phrase"),
+            MessageLookupByLibrary.simpleMessage("Подтвердите seed-фразу"),
         "confirmeula": MessageLookupByLibrary.simpleMessage(
-            "By clicking the below buttons you confirm to have read the \'EULA\' and \'Terms and Conditions\' and accept these"),
-        "connecting": MessageLookupByLibrary.simpleMessage("Connecting..."),
-        "create": MessageLookupByLibrary.simpleMessage("trade"),
+            "Нажимая кнопки ниже, вы подтверждаете, что прочитали «EULA» и «Условия и положения» и принимаете их"),
+        "connecting": MessageLookupByLibrary.simpleMessage("Соединение..."),
+        "create": MessageLookupByLibrary.simpleMessage("сделка"),
         "createAWallet":
-            MessageLookupByLibrary.simpleMessage("CREATE A WALLET"),
-        "createPin": MessageLookupByLibrary.simpleMessage("Create PIN"),
-        "customFee": MessageLookupByLibrary.simpleMessage("Custom fee"),
-        "customFeeWarning": MessageLookupByLibrary.simpleMessage(
-            "Only use custom fees if you know what you are doing!"),
+            MessageLookupByLibrary.simpleMessage("СОЗДАТЬ КОШЕЛЕК"),
+        "createPin": MessageLookupByLibrary.simpleMessage("Задать PIN"),
         "decryptingWallet":
-            MessageLookupByLibrary.simpleMessage("Decrypting wallet"),
-        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
-        "deleteConfirm":
-            MessageLookupByLibrary.simpleMessage("Confirm deactivation"),
-        "deleteSpan1":
-            MessageLookupByLibrary.simpleMessage("Do you want to remove "),
-        "deleteSpan2": MessageLookupByLibrary.simpleMessage(
-            " from your portfolio? All unmatched orders will be canceled."),
-        "deleteWallet": MessageLookupByLibrary.simpleMessage("Delete Wallet"),
-        "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Deutsch"),
+            MessageLookupByLibrary.simpleMessage("Расшифровываю кошелек"),
+        "delete": MessageLookupByLibrary.simpleMessage("Удалить"),
+        "deleteWallet": MessageLookupByLibrary.simpleMessage("Удалить кошелек"),
         "dex": MessageLookupByLibrary.simpleMessage("DEX"),
         "disclaimerAndTos":
             MessageLookupByLibrary.simpleMessage("Disclaimer & ToS"),
-        "done": MessageLookupByLibrary.simpleMessage("Done"),
-        "dontWantPassword":
-            MessageLookupByLibrary.simpleMessage("I don\'t want a password"),
+        "done": MessageLookupByLibrary.simpleMessage("Готово"),
+        "dontWantPassword": MessageLookupByLibrary.simpleMessage(
+            "Я не хочу использовать пароль"),
         "encryptingWallet":
-            MessageLookupByLibrary.simpleMessage("Encrypting wallet"),
-        "englishLanguage": MessageLookupByLibrary.simpleMessage("English"),
-        "enterNewPinCode":
-            MessageLookupByLibrary.simpleMessage("Enter your new PIN"),
-        "enterOldPinCode":
-            MessageLookupByLibrary.simpleMessage("Enter your old PIN"),
+            MessageLookupByLibrary.simpleMessage("Шифрую кошелек"),
         "enterPinCode":
-            MessageLookupByLibrary.simpleMessage("Enter your PIN code"),
+            MessageLookupByLibrary.simpleMessage("Введите свой PIN-код"),
         "enterSeedPhrase":
-            MessageLookupByLibrary.simpleMessage("Enter Your Seed Phrase"),
+            MessageLookupByLibrary.simpleMessage("Введите свою seed-фразу"),
         "enterpassword": MessageLookupByLibrary.simpleMessage(
-            "Please enter your password to continue."),
+            "Пожалуйста, введите Ваш пароль чтобы продолжить."),
         "errorAmountBalance":
-            MessageLookupByLibrary.simpleMessage("Not enough balance"),
+            MessageLookupByLibrary.simpleMessage("Недостаточный баланс"),
         "errorNotAValidAddress":
-            MessageLookupByLibrary.simpleMessage("Not a valid address"),
-        "errorNotAValidAddressSegWit": MessageLookupByLibrary.simpleMessage(
-            "Segwit addresses are not supported (yet)"),
-        "errorNotEnoughtGas": m12,
-        "errorTryAgain":
-            MessageLookupByLibrary.simpleMessage("Error, please try again"),
+            MessageLookupByLibrary.simpleMessage("Неверный адрес"),
+        "errorTryAgain": MessageLookupByLibrary.simpleMessage(
+            "Ошибка, пожалуйста, попробуйте еще раз"),
         "errorTryLater":
-            MessageLookupByLibrary.simpleMessage("Error, please try later"),
-        "errorValueEmpty":
-            MessageLookupByLibrary.simpleMessage("Value is too high or low"),
+            MessageLookupByLibrary.simpleMessage("Ошибка, попробуйте позже"),
+        "errorValueEmpty": MessageLookupByLibrary.simpleMessage(
+            "Значение слишком высокое или маленькое"),
         "errorValueNotEmpty":
-            MessageLookupByLibrary.simpleMessage("Please input data"),
+            MessageLookupByLibrary.simpleMessage("Пожалуйста, введите данные"),
         "estimateValue":
-            MessageLookupByLibrary.simpleMessage("Estimated Total Value"),
-        "ethFee": MessageLookupByLibrary.simpleMessage("ETH fee"),
-        "ethNotActive":
-            MessageLookupByLibrary.simpleMessage("Please activate ETH."),
+            MessageLookupByLibrary.simpleMessage("Расчетная общая стоимость"),
+        "ethFee": MessageLookupByLibrary.simpleMessage("ETH комиссия"),
+        "ethNotActive": MessageLookupByLibrary.simpleMessage(
+            "Пожалуйста, активируйте ETH."),
         "eulaParagraphe1": MessageLookupByLibrary.simpleMessage(
             "This End-User License Agreement (\'EULA\') is a legal agreement between you and Komodo Platform.\n\nThis EULA agreement governs your acquisition and use of our atomicDEX mobile software (\'Software\', \'Mobile Application\', \'Application\' or \'App\') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a \'Distributor\').\nPlease read this EULA agreement carefully before completing the installation process and using the atomicDEX mobile software. It provides a license to use the atomicDEX mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the atomicDEX mobile software, this EULA agreement will also govern that trial. By clicking \'accept\' or installing and/or using the atomicDEX mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\nLicense Grant\nKomodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the atomicDEX mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the atomicDEX mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the atomicDEX mobile software.\nYou are not permitted to:\nEdit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things\nReproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose\nUse the Software in any way which breaches any applicable local, national or international law\nuse the Software for any purpose that Komodo Platform considers is a breach of this EULA agreement\nIntellectual Property and Ownership\nKomodo Platform shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of Komodo Platform.\n\nKomodo Platform reserves the right to grant licences to use the Software to third parties.\nTermination\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to Komodo Platform.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\nGoverning Law\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on July 3, 2019\n\n"),
         "eulaParagraphe10": MessageLookupByLibrary.simpleMessage(
@@ -263,213 +238,193 @@ class MessageLookup extends MessageLookupByLibrary {
         "eulaTitle9":
             MessageLookupByLibrary.simpleMessage("GENERAL WARNING\n\n"),
         "exampleHintSeed": MessageLookupByLibrary.simpleMessage(
-            "Example: build case level ..."),
-        "exchangeTitle": MessageLookupByLibrary.simpleMessage("EXCHANGE"),
-        "faucetName": MessageLookupByLibrary.simpleMessage("FAUCET"),
-        "feedback": MessageLookupByLibrary.simpleMessage("Share Log File"),
-        "frenchLanguage": MessageLookupByLibrary.simpleMessage("French"),
-        "from": MessageLookupByLibrary.simpleMessage("From"),
-        "gas": MessageLookupByLibrary.simpleMessage("Gas"),
-        "gasPrice": MessageLookupByLibrary.simpleMessage("Gas price"),
+            "Например: build case level ..."),
+        "exchangeTitle": MessageLookupByLibrary.simpleMessage("ОБМЕН"),
+        "feedback": MessageLookupByLibrary.simpleMessage("Отправить лог-файл"),
+        "from": MessageLookupByLibrary.simpleMessage("Из"),
         "getBackupPhrase": MessageLookupByLibrary.simpleMessage(
-            "Important: Back up your seed phrase before proceeding!"),
-        "goToPorfolio": MessageLookupByLibrary.simpleMessage("Go to portfolio"),
+            "Важно: перед тем как продолжить, сохраните свою seed-фразу в надежном месте!"),
+        "goToPorfolio":
+            MessageLookupByLibrary.simpleMessage("Перейти в портфолио"),
         "hintConfirmPassword":
-            MessageLookupByLibrary.simpleMessage("Confirm Password"),
+            MessageLookupByLibrary.simpleMessage("Подтвердите Пароль"),
         "hintCurrentPassword":
-            MessageLookupByLibrary.simpleMessage("Current password"),
+            MessageLookupByLibrary.simpleMessage("Текущий пароль"),
         "hintEnterPassword":
-            MessageLookupByLibrary.simpleMessage("Enter your password"),
+            MessageLookupByLibrary.simpleMessage("Введите свой пароль"),
         "hintEnterSeedPhrase":
-            MessageLookupByLibrary.simpleMessage("Enter your seed phrase"),
+            MessageLookupByLibrary.simpleMessage("Введите свою seed-фразу"),
         "hintNameYourWallet":
-            MessageLookupByLibrary.simpleMessage("Name your wallet"),
-        "hintPassword": MessageLookupByLibrary.simpleMessage("Password"),
-        "history": MessageLookupByLibrary.simpleMessage("history"),
+            MessageLookupByLibrary.simpleMessage("Назовите свой кошелек"),
+        "hintPassword": MessageLookupByLibrary.simpleMessage("Пароль"),
+        "history": MessageLookupByLibrary.simpleMessage("история"),
         "infoPasswordDialog": MessageLookupByLibrary.simpleMessage(
-            "Use a secure password and do not store it on the same device"),
+            "Если вы решите не использовать пароль, вам нужно будет вводить свою seed-фразу каждый раз, когда вы хотите получить доступ к своему кошельку."),
         "infoTrade1": MessageLookupByLibrary.simpleMessage(
-            "The swap request can not be undone and is a final event!"),
+            "Запрос на обмен не может быть отменен и является окончательным!"),
         "infoTrade2": MessageLookupByLibrary.simpleMessage(
-            "This transaction can take up to 10 mins - DONT close this application!"),
+            "Эта транзакция может занять до 10 минут - НЕ закрывайте приложение!"),
         "infoWalletPassword": MessageLookupByLibrary.simpleMessage(
-            "You have to provide a password for the wallet encryption due to security reasons."),
-        "legalTitle": MessageLookupByLibrary.simpleMessage("Legal"),
-        "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
+            "Вы можете зашифровать свой кошелек паролем. Если вы решите не использовать пароль, вам нужно будет вводить свою seed-фразу каждый раз, когда вы хотите получить доступ к своему кошельку."),
+        "legalTitle": MessageLookupByLibrary.simpleMessage("Легальные аспекты"),
+        "loading": MessageLookupByLibrary.simpleMessage("Загрузка..."),
         "loadingOrderbook":
-            MessageLookupByLibrary.simpleMessage("Loading orderbook..."),
-        "lockScreen": MessageLookupByLibrary.simpleMessage("Screen is locked"),
-        "lockScreenAuth":
-            MessageLookupByLibrary.simpleMessage("Please authenticate!"),
-        "login": MessageLookupByLibrary.simpleMessage("login"),
-        "logout": MessageLookupByLibrary.simpleMessage("Log Out"),
-        "logoutOnExit": MessageLookupByLibrary.simpleMessage("Log Out on Exit"),
+            MessageLookupByLibrary.simpleMessage("Загрузка ордербука..."),
+        "lockScreen":
+            MessageLookupByLibrary.simpleMessage("Экран заблокирован"),
+        "lockScreenAuth": MessageLookupByLibrary.simpleMessage(
+            "Пожалуйста, аутентифицируйтесь!"),
+        "login": MessageLookupByLibrary.simpleMessage("войти"),
+        "logout": MessageLookupByLibrary.simpleMessage("Выйти"),
+        "logoutOnExit":
+            MessageLookupByLibrary.simpleMessage("Log Out при выходе"),
         "logoutsettings":
-            MessageLookupByLibrary.simpleMessage("Log Out Settings"),
-        "makeAorder": MessageLookupByLibrary.simpleMessage("make an order"),
+            MessageLookupByLibrary.simpleMessage("Настройки Log Out"),
+        "makeAorder": MessageLookupByLibrary.simpleMessage("разместить ордер"),
         "makerpaymentID":
-            MessageLookupByLibrary.simpleMessage("Maker Payment ID"),
-        "marketplace": MessageLookupByLibrary.simpleMessage("Marketplace"),
-        "max": MessageLookupByLibrary.simpleMessage("MAX"),
-        "media": MessageLookupByLibrary.simpleMessage("News"),
-        "mediaBrowse": MessageLookupByLibrary.simpleMessage("BROWSE"),
-        "mediaBrowseFeed": MessageLookupByLibrary.simpleMessage("BROWSE FEED"),
-        "mediaBy": MessageLookupByLibrary.simpleMessage("By"),
-        "mediaNotSavedDescription":
-            MessageLookupByLibrary.simpleMessage("YOU HAVE NO SAVED ARTICLES"),
-        "mediaSaved": MessageLookupByLibrary.simpleMessage("SAVED"),
+            MessageLookupByLibrary.simpleMessage("ID платежа Мейкера"),
+        "marketplace": MessageLookupByLibrary.simpleMessage("Маркетплейс"),
+        "max": MessageLookupByLibrary.simpleMessage("МАКСИМУМ"),
+        "media": MessageLookupByLibrary.simpleMessage("Новости"),
+        "mediaBrowse": MessageLookupByLibrary.simpleMessage("ПРОСМАТРИВАТЬ"),
+        "mediaBrowseFeed":
+            MessageLookupByLibrary.simpleMessage("ПОСМОТРЕТЬ ЛЕНТУ"),
+        "mediaBy": MessageLookupByLibrary.simpleMessage("По"),
+        "mediaNotSavedDescription": MessageLookupByLibrary.simpleMessage(
+            "У вас нет сохраненных статей"),
+        "mediaSaved": MessageLookupByLibrary.simpleMessage("СОХРАНЕННЫЕ"),
         "minValue": m10,
         "minValueBuy": m11,
-        "networkFee": MessageLookupByLibrary.simpleMessage("Network fee"),
-        "newAccount": MessageLookupByLibrary.simpleMessage("new account"),
-        "newAccountUpper": MessageLookupByLibrary.simpleMessage("New Account"),
-        "newsFeed": MessageLookupByLibrary.simpleMessage("News feed"),
-        "next": MessageLookupByLibrary.simpleMessage("next"),
+        "networkFee": MessageLookupByLibrary.simpleMessage("Комиссия сети"),
+        "newAccount": MessageLookupByLibrary.simpleMessage("новый аккаунт"),
+        "newAccountUpper":
+            MessageLookupByLibrary.simpleMessage("Новый аккаунт"),
+        "newsFeed": MessageLookupByLibrary.simpleMessage("Новостная лента"),
+        "next": MessageLookupByLibrary.simpleMessage("далее"),
         "noArticles": MessageLookupByLibrary.simpleMessage(
-            "No news - please check back later!"),
-        "noFunds": MessageLookupByLibrary.simpleMessage("No funds"),
+            "Нет новостей - пожалуйста, зайдите позже!"),
+        "noFunds": MessageLookupByLibrary.simpleMessage("Нет средств"),
         "noFundsDetected": MessageLookupByLibrary.simpleMessage(
-            "No funds available - please deposit."),
-        "noInternet":
-            MessageLookupByLibrary.simpleMessage("No Internet Connection"),
+            "Нет доступных средств - пожалуйста, внесите депозит."),
+        "noInternet": MessageLookupByLibrary.simpleMessage(
+            "Подключение к Интернету отсутствует"),
         "noOrder": m3,
-        "noOrderAvailable":
-            MessageLookupByLibrary.simpleMessage("Click to create an order"),
+        "noOrderAvailable": MessageLookupByLibrary.simpleMessage(
+            "Нажмите, чтобы создать ордер"),
         "noRewardYet": MessageLookupByLibrary.simpleMessage(
-            "No reward claimable - please try again in 1h."),
-        "noSwaps": MessageLookupByLibrary.simpleMessage("No history."),
-        "noTxs": MessageLookupByLibrary.simpleMessage("No Transactions"),
+            "Нет вознаграждения для востребования - повторите попытку через 1 час."),
+        "noSwaps": MessageLookupByLibrary.simpleMessage("Нет истории."),
+        "noTxs": MessageLookupByLibrary.simpleMessage("Нет транзакций"),
         "notEnoughEth": MessageLookupByLibrary.simpleMessage(
-            "Not enough ETH for transaction!"),
+            "Недостаточно ETH для транзакции!"),
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
-            "Not enough balance for fees - trade a smaller amount"),
+            "Недостаточно баланса для комиссий - выполните сделку на меньшую сумму"),
         "numberAssets": m4,
-        "orderCancel": m13,
-        "orderCreated": MessageLookupByLibrary.simpleMessage("Order created"),
+        "orderCreated": MessageLookupByLibrary.simpleMessage("Ордер создан"),
         "orderCreatedInfo":
-            MessageLookupByLibrary.simpleMessage("Order succsessfully created"),
-        "orderMatched": MessageLookupByLibrary.simpleMessage("Order matched"),
-        "orderMatching": MessageLookupByLibrary.simpleMessage("Order matching"),
-        "orders": MessageLookupByLibrary.simpleMessage("orders"),
-        "paidWith": MessageLookupByLibrary.simpleMessage("Paid with "),
-        "placeOrder": MessageLookupByLibrary.simpleMessage("Place your order"),
-        "portfolio": MessageLookupByLibrary.simpleMessage("Portfolio"),
-        "price": MessageLookupByLibrary.simpleMessage("price"),
-        "receive": MessageLookupByLibrary.simpleMessage("RECEIVE"),
-        "receiveLower": MessageLookupByLibrary.simpleMessage("Receive"),
+            MessageLookupByLibrary.simpleMessage("Ордер успешно создан"),
+        "orderMatched": MessageLookupByLibrary.simpleMessage("Сделка найдена"),
+        "orderMatching":
+            MessageLookupByLibrary.simpleMessage("Поиск сделки в процессе"),
+        "orders": MessageLookupByLibrary.simpleMessage("ордера"),
+        "paidWith": MessageLookupByLibrary.simpleMessage("Оплачено с "),
+        "placeOrder": MessageLookupByLibrary.simpleMessage("Разместить ордер"),
+        "portfolio": MessageLookupByLibrary.simpleMessage("Портфолио"),
+        "price": MessageLookupByLibrary.simpleMessage("цена"),
+        "receive": MessageLookupByLibrary.simpleMessage("ПОЛУЧИТЬ"),
+        "receiveLower": MessageLookupByLibrary.simpleMessage("Получить"),
         "recommendSeedMessage": MessageLookupByLibrary.simpleMessage(
-            "We recommend storing it offline."),
-        "remove": MessageLookupByLibrary.simpleMessage("Disable"),
+            "Мы рекомендуем хранить ее на оффлайн носителе."),
         "requestedTrade":
-            MessageLookupByLibrary.simpleMessage("Requested Trade"),
-        "restoreWallet": MessageLookupByLibrary.simpleMessage("RESTORE"),
-        "searchFilterCoin":
-            MessageLookupByLibrary.simpleMessage("Search a coin"),
-        "searchFilterSubtitleERC":
-            MessageLookupByLibrary.simpleMessage("Select all ERC tokens"),
-        "searchFilterSubtitleSmartChain":
-            MessageLookupByLibrary.simpleMessage("Select all SmartChains"),
-        "searchFilterSubtitleutxo":
-            MessageLookupByLibrary.simpleMessage("Select all UTXO coins"),
-        "security": MessageLookupByLibrary.simpleMessage("Security"),
+            MessageLookupByLibrary.simpleMessage("Запрошенная сделка"),
+        "restoreWallet": MessageLookupByLibrary.simpleMessage("ВОССТАНОВИТЬ"),
+        "security": MessageLookupByLibrary.simpleMessage("Безопасность"),
         "seeOrders": m5,
         "seedPhraseTitle":
-            MessageLookupByLibrary.simpleMessage("Your new Seed Phrase"),
-        "selectCoin": MessageLookupByLibrary.simpleMessage("Select coin"),
+            MessageLookupByLibrary.simpleMessage("Ваша новая seed-фраза"),
+        "selectCoin": MessageLookupByLibrary.simpleMessage("Выберите монету"),
         "selectCoinInfo": MessageLookupByLibrary.simpleMessage(
-            "Select the coins you want to add to your portfolio."),
+            "Выберите монеты, которые вы хотите добавить в свое портфолио."),
         "selectCoinTitle":
-            MessageLookupByLibrary.simpleMessage("Activate coins:"),
+            MessageLookupByLibrary.simpleMessage("Активировать монеты:"),
         "selectCoinToBuy": MessageLookupByLibrary.simpleMessage(
-            "Select the coin you want to BUY"),
+            "Выберите монету, которую хотите купить"),
         "selectCoinToSell": MessageLookupByLibrary.simpleMessage(
-            "Select the coin you want to SELL"),
+            "Выберите монету, которую хотите продать"),
         "selectPaymentMethod":
-            MessageLookupByLibrary.simpleMessage("Select Your Payment Method"),
-        "sell": MessageLookupByLibrary.simpleMessage("Sell"),
-        "send": MessageLookupByLibrary.simpleMessage("SEND"),
+            MessageLookupByLibrary.simpleMessage("Выберите способ оплаты"),
+        "sell": MessageLookupByLibrary.simpleMessage("Продать"),
+        "send": MessageLookupByLibrary.simpleMessage("ОТПРАВИТЬ"),
         "setUpPassword":
-            MessageLookupByLibrary.simpleMessage("SET UP A PASSWORD"),
+            MessageLookupByLibrary.simpleMessage("УСТАНОВИТЬ ПАРОЛЬ"),
         "settingDialogSpan1": MessageLookupByLibrary.simpleMessage(
-            "Are you sure you want to delete "),
-        "settingDialogSpan2": MessageLookupByLibrary.simpleMessage(" wallet?"),
-        "settingDialogSpan3":
-            MessageLookupByLibrary.simpleMessage("If so, make sure you "),
+            "Вы уверены, что хотите удалить "),
+        "settingDialogSpan2": MessageLookupByLibrary.simpleMessage(" кошелек?"),
+        "settingDialogSpan3": MessageLookupByLibrary.simpleMessage(
+            "Если это так, убедитесь, что вы "),
         "settingDialogSpan4":
-            MessageLookupByLibrary.simpleMessage(" record your seed phrase."),
+            MessageLookupByLibrary.simpleMessage(" записали свою seed-фразу."),
         "settingDialogSpan5": MessageLookupByLibrary.simpleMessage(
-            " In order to restore your wallet in the future."),
-        "settingLanguageTitle":
-            MessageLookupByLibrary.simpleMessage("Languages"),
-        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
-        "share": MessageLookupByLibrary.simpleMessage("SHARE"),
+            " Для того, чтобы восстановить свой кошелек в будущем."),
+        "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
         "shareAddress": m6,
-        "showMyOrders": MessageLookupByLibrary.simpleMessage("SHOW MY ORDERS"),
+        "showMyOrders":
+            MessageLookupByLibrary.simpleMessage("ПОКАЗАТЬ МОИ ОРДЕРЫ"),
         "signInWithPassword":
-            MessageLookupByLibrary.simpleMessage("Sign in with password"),
-        "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage(
-            "Forgot the password? Restore wallet from seed"),
-        "simplifiedChinese": MessageLookupByLibrary.simpleMessage("simplified"),
-        "step": MessageLookupByLibrary.simpleMessage("Step"),
-        "success": MessageLookupByLibrary.simpleMessage("Success!"),
-        "swap": MessageLookupByLibrary.simpleMessage("swap"),
+            MessageLookupByLibrary.simpleMessage("Войти с паролем"),
+        "signInWithSeedPhrase":
+            MessageLookupByLibrary.simpleMessage("Войти с помощью seed-фразы"),
+        "step": MessageLookupByLibrary.simpleMessage("Шаг"),
+        "success": MessageLookupByLibrary.simpleMessage("Успех!"),
+        "swap": MessageLookupByLibrary.simpleMessage("обмен"),
         "swapDetailTitle":
-            MessageLookupByLibrary.simpleMessage("CONFIRM EXCHANGE DETAILS"),
-        "swapErcAmount": m14,
-        "swapFailed": MessageLookupByLibrary.simpleMessage("Swap failed"),
-        "swapID": MessageLookupByLibrary.simpleMessage("Swap ID"),
-        "swapOngoing": MessageLookupByLibrary.simpleMessage("Swap ongoing"),
-        "swapSucceful": MessageLookupByLibrary.simpleMessage("Swap successful"),
-        "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
-        "tagKMD": MessageLookupByLibrary.simpleMessage("KMD"),
+            MessageLookupByLibrary.simpleMessage("ПОДТВЕРДИТЕ ДЕТАЛИ ОБМЕНА"),
+        "swapFailed": MessageLookupByLibrary.simpleMessage("Обмен не удался"),
+        "swapID": MessageLookupByLibrary.simpleMessage("ID Обмена"),
+        "swapOngoing": MessageLookupByLibrary.simpleMessage("Обмен в процессе"),
+        "swapSucceful": MessageLookupByLibrary.simpleMessage("Успешный обмен"),
         "takerpaymentsID":
-            MessageLookupByLibrary.simpleMessage("Taker Payment ID"),
-        "timeOut": MessageLookupByLibrary.simpleMessage("Timeout"),
+            MessageLookupByLibrary.simpleMessage("ID платежа Тейкера"),
+        "timeOut": MessageLookupByLibrary.simpleMessage("Таймаут"),
         "titleCreatePassword":
-            MessageLookupByLibrary.simpleMessage("CREATE A PASSWORD"),
-        "titleCurrentAsk":
-            MessageLookupByLibrary.simpleMessage("Order selected"),
-        "to": MessageLookupByLibrary.simpleMessage("To"),
-        "toAddress": MessageLookupByLibrary.simpleMessage("To address:"),
-        "trade": MessageLookupByLibrary.simpleMessage("TRADE"),
+            MessageLookupByLibrary.simpleMessage("СОЗДАТЬ ПАРОЛЬ"),
+        "to": MessageLookupByLibrary.simpleMessage("На"),
+        "toAddress": MessageLookupByLibrary.simpleMessage("На адрес:"),
+        "trade": MessageLookupByLibrary.simpleMessage("СДЕЛКА"),
         "tradeCompleted":
-            MessageLookupByLibrary.simpleMessage("SWAP COMPLETED!"),
-        "tradeDetail": MessageLookupByLibrary.simpleMessage("TRADE DETAILS"),
-        "tradingFee": MessageLookupByLibrary.simpleMessage("trading fee:"),
-        "traditionalChinese":
-            MessageLookupByLibrary.simpleMessage("traditional"),
-        "txBlock": MessageLookupByLibrary.simpleMessage("Block"),
+            MessageLookupByLibrary.simpleMessage("Обмен завершен!"),
+        "tradeDetail": MessageLookupByLibrary.simpleMessage("ДЕТАЛИ СДЕЛКИ"),
+        "txBlock": MessageLookupByLibrary.simpleMessage("Блок"),
         "txConfirmations":
-            MessageLookupByLibrary.simpleMessage("Confirmations"),
-        "txConfirmed": MessageLookupByLibrary.simpleMessage("CONFIRMED"),
-        "txFee": MessageLookupByLibrary.simpleMessage("Fee"),
-        "txFeeTitle": MessageLookupByLibrary.simpleMessage("transaction fee:"),
-        "txHash": MessageLookupByLibrary.simpleMessage("Transaction ID"),
-        "txNotConfirmed": MessageLookupByLibrary.simpleMessage("UNCONFIRMED"),
-        "unlock": MessageLookupByLibrary.simpleMessage("unlock"),
-        "value": MessageLookupByLibrary.simpleMessage("Value: "),
-        "version": MessageLookupByLibrary.simpleMessage("version"),
-        "viewSeed": MessageLookupByLibrary.simpleMessage("View Seed"),
-        "volumes": MessageLookupByLibrary.simpleMessage("Volumes"),
-        "warningShareLogs": MessageLookupByLibrary.simpleMessage(
-            "Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!"),
+            MessageLookupByLibrary.simpleMessage("Подтверждения"),
+        "txConfirmed": MessageLookupByLibrary.simpleMessage("ПОДТВЕРЖДЕНА"),
+        "txFee": MessageLookupByLibrary.simpleMessage("Комиссия"),
+        "txHash": MessageLookupByLibrary.simpleMessage("ID транзакции"),
+        "txNotConfirmed":
+            MessageLookupByLibrary.simpleMessage("НЕПОДТВЕРЖДЕНА"),
+        "unlock": MessageLookupByLibrary.simpleMessage("разблокировать"),
+        "value": MessageLookupByLibrary.simpleMessage("Стоимость: "),
+        "version": MessageLookupByLibrary.simpleMessage("версия"),
+        "viewSeed":
+            MessageLookupByLibrary.simpleMessage("Посмотреть seed-фразу"),
+        "volumes": MessageLookupByLibrary.simpleMessage("Объемы"),
         "welcomeInfo": MessageLookupByLibrary.simpleMessage(
-            "AtomicDEX mobile is a next generation multi-coin wallet with native third generation DEX functionality and more."),
+            "AtomicDEX mobile - это мульти-монетный кошелек с функциональностью DEX третьего поколения и многим другим."),
         "welcomeLetSetUp":
-            MessageLookupByLibrary.simpleMessage("LET\'S GET SET UP!"),
+            MessageLookupByLibrary.simpleMessage("ДАВАЙТЕ ВСЕ НАСТРОИМ!"),
         "welcomeName": MessageLookupByLibrary.simpleMessage("AtomicDEX"),
-        "welcomeTitle": MessageLookupByLibrary.simpleMessage("WELCOME"),
-        "welcomeWallet": MessageLookupByLibrary.simpleMessage("wallet"),
-        "withdraw": MessageLookupByLibrary.simpleMessage("Withdraw"),
+        "welcomeTitle":
+            MessageLookupByLibrary.simpleMessage("Добро пожаловать"),
+        "welcomeWallet": MessageLookupByLibrary.simpleMessage("кошелек"),
+        "withdraw": MessageLookupByLibrary.simpleMessage("Вывести"),
         "withdrawConfirm":
-            MessageLookupByLibrary.simpleMessage("Confirm Withdrawal"),
+            MessageLookupByLibrary.simpleMessage("Подтвердите вывод"),
         "withdrawValue": m7,
         "wrongPassword": MessageLookupByLibrary.simpleMessage(
-            "The passwords do not match. Please try again."),
+            "Пароли не совпадают. Пожалуйста, попробуйте еще раз."),
         "youAreSending":
-            MessageLookupByLibrary.simpleMessage("You are sending:"),
+            MessageLookupByLibrary.simpleMessage("Вы отправляете:"),
         "youWillReceiveClaim": m8,
-        "youWillReceived":
-            MessageLookupByLibrary.simpleMessage("You will receive: ")
+        "youWillReceived": MessageLookupByLibrary.simpleMessage("Вы получите: ")
       };
 }

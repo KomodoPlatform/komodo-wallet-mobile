@@ -1,80 +1,79 @@
 {
-  "@@last_modified": "2019-10-08T10:58:14.134507",
-  "createPin": "Create PIN",
+  "createPin": "PINコード作成",
   "@createPin": {
     "type": "text",
     "placeholders": {}
   },
-  "enterPinCode": "Enter your PIN code",
+  "enterPinCode": "PINコード入力",
   "@enterPinCode": {
     "type": "text",
     "placeholders": {}
   },
-  "login": "login",
+  "login": "ログイン",
   "@login": {
     "type": "text",
     "placeholders": {}
   },
-  "newAccount": "new account",
+  "newAccount": "新規アカウント",
   "@newAccount": {
     "type": "text",
     "placeholders": {}
   },
-  "newAccountUpper": "New Account",
+  "newAccountUpper": "新規アカウント",
   "@newAccountUpper": {
     "type": "text",
     "placeholders": {}
   },
-  "addingCoinSuccess": "Activated {name} successfully !",
+  "addingCoinSuccess": "{name}のアクティベートに成功しました!",
   "@addingCoinSuccess": {
     "type": "text",
     "placeholders": {
       "name": {}
     }
   },
-  "connecting": "Connecting...",
+  "connecting": "接続中…",
   "@connecting": {
     "type": "text",
     "placeholders": {}
   },
-  "addCoin": "Activate coin",
+  "addCoin": "コインを有効化",
   "@addCoin": {
     "type": "text",
     "placeholders": {}
   },
-  "numberAssets": "{assets} Assets",
+  "numberAssets": "{assets} アセット",
   "@numberAssets": {
     "type": "text",
     "placeholders": {
       "assets": {}
     }
   },
-  "enterSeedPhrase": "Enter Your Seed Phrase",
+  "enterSeedPhrase": "パスフレーズを入力",
   "@enterSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "exampleHintSeed": "Example: build case level ...",
+  "exampleHintSeed": "例: build case level …",
   "@exampleHintSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "confirm": "confirm",
+  "confirm": "確認",
   "@confirm": {
     "type": "text",
     "placeholders": {}
   },
-  "buy": "Buy",
+  "buy": "購入",
   "@buy": {
     "type": "text",
     "placeholders": {}
   },
-  "sell": "Sell",
+  "sell": "売却",
   "@sell": {
     "type": "text",
     "placeholders": {}
   },
-  "shareAddress": "My {coinName} address: \n{address}",
+  "shareAddress": "私の {coinName} アドレス: {address}",
   "@shareAddress": {
     "type": "text",
     "placeholders": {
@@ -82,27 +81,27 @@
       "address": {}
     }
   },
-  "withdraw": "Withdraw",
+  "withdraw": "出金",
   "@withdraw": {
     "type": "text",
     "placeholders": {}
   },
-  "errorValueEmpty": "Value is too high or low",
+  "errorValueEmpty": "値が高すぎ、または低すぎます",
   "@errorValueEmpty": {
     "type": "text",
     "placeholders": {}
   },
-  "amount": "Amount",
+  "amount": "数量",
   "@amount": {
     "type": "text",
     "placeholders": {}
   },
-  "addressSend": "Recipients address",
+  "addressSend": "受け取りアドレス\n",
   "@addressSend": {
     "type": "text",
     "placeholders": {}
   },
-  "withdrawValue": "WITHDRAW {amount} {coinName}",
+  "withdrawValue": "出金 {amount} {coinName}",
   "@withdrawValue": {
     "type": "text",
     "placeholders": {
@@ -110,324 +109,319 @@
       "coinName": {}
     }
   },
-  "withdrawConfirm": "Confirm Withdrawal",
+  "withdrawConfirm": "出金確認",
   "@withdrawConfirm": {
     "type": "text",
     "placeholders": {}
   },
-  "close": "Close",
+  "close": "閉じる",
   "@close": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmSeed": "Confirm Seed Phrase",
+  "confirmSeed": "パスフレーズの確認",
   "@confirmSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "seedPhraseTitle": "Your new Seed Phrase",
+  "seedPhraseTitle": "新しいパスフレーズ",
   "@seedPhraseTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "getBackupPhrase": "Important: Back up your seed phrase before proceeding!",
+  "getBackupPhrase": "重要 : 続行する前にパスフレーズのバックアップを行なってください!",
   "@getBackupPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "recommendSeedMessage": "We recommend storing it offline.",
+  "recommendSeedMessage": "オフラインに保存する事を推奨します。",
   "@recommendSeedMessage": {
     "type": "text",
     "placeholders": {}
   },
-  "next": "next",
+  "next": "さらに",
   "@next": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmPin": "Confirm PIN code",
+  "confirmPin": "PINコード確認",
   "@confirmPin": {
     "type": "text",
     "placeholders": {}
   },
-  "errorTryAgain": "Error, please try again",
+  "errorTryAgain": "エラー、もう一度試して下さい",
   "@errorTryAgain": {
     "type": "text",
     "placeholders": {}
   },
-  "settings": "Settings",
+  "settings": "設定",
   "@settings": {
     "type": "text",
     "placeholders": {}
   },
-  "security": "Security",
+  "security": "セキュリティ",
   "@security": {
     "type": "text",
     "placeholders": {}
   },
-  "activateAccessPin": "Activate PIN protection",
+  "activateAccessPin": "PINコードを有効化",
   "@activateAccessPin": {
     "type": "text",
     "placeholders": {}
   },
-  "lockScreen": "Screen is locked",
+  "lockScreen": "画面がロックされています",
   "@lockScreen": {
     "type": "text",
     "placeholders": {}
   },
-  "changePin": "Change PIN code",
+  "changePin": "PINコード変更",
   "@changePin": {
     "type": "text",
     "placeholders": {}
   },
-  "logout": "Log Out",
+  "logout": "ログアウト",
   "@logout": {
     "type": "text",
     "placeholders": {}
   },
-  "max": "MAX",
+  "max": "最大",
   "@max": {
     "type": "text",
     "placeholders": {}
   },
-  "amountToSell": "Amount To Sell",
+  "amountToSell": "売却額",
   "@amountToSell": {
     "type": "text",
     "placeholders": {}
   },
-  "youWillReceived": "You will receive: ",
+  "youWillReceived": "受け取り額:",
   "@youWillReceived": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinToSell": "Select the coin you want to SELL",
+  "selectCoinToSell": "売却したいコインを選択",
   "@selectCoinToSell": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinToBuy": "Select the coin you want to BUY",
+  "selectCoinToBuy": "購入したいコインを選択",
   "@selectCoinToBuy": {
     "type": "text",
     "placeholders": {}
   },
-  "swap": "swap",
+  "swap": "スワップ",
   "@swap": {
     "type": "text",
     "placeholders": {}
   },
-  "buySuccessWaiting": "Swap issued, please wait!",
+  "buySuccessWaiting": "スワップが発行されました、しばらくお待ちください。",
   "@buySuccessWaiting": {
     "type": "text",
     "placeholders": {}
   },
-  "buySuccessWaitingError": "Ordermatch ongoing, please wait {seconde} seconds!",
+  "buySuccessWaitingError": "オーダーマッチ中、あと{seconde} 秒お待ち下さい。\n\n",
   "@buySuccessWaitingError": {
     "type": "text",
     "placeholders": {
       "seconde": {}
     }
   },
-  "networkFee": "Network fee",
+  "networkFee": "ネットワーク手数料",
   "@networkFee": {
     "type": "text",
     "placeholders": {}
   },
-  "commissionFee": "commission fee",
+  "commissionFee": "コミッション手数料",
   "@commissionFee": {
     "type": "text",
     "placeholders": {}
   },
-  "portfolio": "Portfolio",
+  "portfolio": "ポートフォリオ",
   "@portfolio": {
     "type": "text",
     "placeholders": {}
   },
-  "checkOut": "Check Out",
+  "checkOut": "チェックアウト",
   "@checkOut": {
     "type": "text",
     "placeholders": {}
   },
-  "estimateValue": "Estimated Total Value",
+  "estimateValue": "推定金額",
   "@estimateValue": {
     "type": "text",
     "placeholders": {}
   },
-  "selectPaymentMethod": "Select Your Payment Method",
+  "selectPaymentMethod": "支払い方法を選択",
   "@selectPaymentMethod": {
     "type": "text",
     "placeholders": {}
   },
-  "volumes": "Volumes",
+  "volumes": "取引高",
   "@volumes": {
     "type": "text",
     "placeholders": {}
   },
-  "placeOrder": "Place your order",
+  "placeOrder": "注文する",
   "@placeOrder": {
     "type": "text",
     "placeholders": {}
   },
-  "comingSoon": "Coming soon...",
+  "comingSoon": "近日公開…",
   "@comingSoon": {
     "type": "text",
     "placeholders": {}
   },
-  "marketplace": "Marketplace",
+  "marketplace": "市場",
   "@marketplace": {
     "type": "text",
     "placeholders": {}
   },
-  "youAreSending": "You are sending:",
+  "youAreSending": "送金しています:",
   "@youAreSending": {
     "type": "text",
     "placeholders": {}
   },
-  "code": "Code: ",
+  "code": "コード:",
   "@code": {
     "type": "text",
     "placeholders": {}
   },
-  "value": "Value: ",
+  "value": "値:",
   "@value": {
     "type": "text",
     "placeholders": {}
   },
-  "paidWith": "Paid with ",
+  "paidWith": "支払い方法",
   "@paidWith": {
     "type": "text",
     "placeholders": {}
   },
-  "errorValueNotEmpty": "Please input data",
+  "errorValueNotEmpty": "データを入力して下さい",
   "@errorValueNotEmpty": {
     "type": "text",
     "placeholders": {}
   },
-  "errorAmountBalance": "Not enough balance",
+  "errorAmountBalance": "残高不足",
   "@errorAmountBalance": {
     "type": "text",
     "placeholders": {}
   },
-  "errorNotAValidAddress": "Not a valid address",
+  "errorNotAValidAddress": "無効なアドレス",
   "@errorNotAValidAddress": {
     "type": "text",
     "placeholders": {}
   },
-  "errorNotAValidAddressSegWit": "Segwit addresses are not supported (yet)",
-  "@errorNotAValidAddressSegWit": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "toAddress": "To address:",
+  "toAddress": "送金先アドレス:",
   "@toAddress": {
     "type": "text",
     "placeholders": {}
   },
-  "receive": "RECEIVE",
+  "receive": "受け取り",
   "@receive": {
     "type": "text",
     "placeholders": {}
   },
-  "send": "SEND",
+  "send": "送金",
   "@send": {
     "type": "text",
     "placeholders": {}
   },
-  "back": "back",
+  "back": "戻る",
   "@back": {
     "type": "text",
     "placeholders": {}
   },
-  "cancel": "cancel",
+  "cancel": "キャンセル",
   "@cancel": {
     "type": "text",
     "placeholders": {}
   },
-  "commingsoon": "TX details coming soon!",
+  "commingsoon": "TX詳細準備中",
   "@commingsoon": {
     "type": "text",
     "placeholders": {}
   },
-  "history": "history",
+  "history": "履歴",
   "@history": {
     "type": "text",
     "placeholders": {}
   },
-  "create": "trade",
+  "create": "トレード",
   "@create": {
     "type": "text",
     "placeholders": {}
   },
-  "commingsoonGeneral": "Details coming soon!",
+  "commingsoonGeneral": "詳細情報準備中",
   "@commingsoonGeneral": {
     "type": "text",
     "placeholders": {}
   },
-  "orderMatching": "Order matching",
+  "orderMatching": "オーダーマッチング",
   "@orderMatching": {
     "type": "text",
     "placeholders": {}
   },
-  "orderMatched": "Order matched",
+  "orderMatched": "オーダーがマッチしました",
   "@orderMatched": {
     "type": "text",
     "placeholders": {}
   },
-  "swapOngoing": "Swap ongoing",
+  "swapOngoing": "スワップ中",
   "@swapOngoing": {
     "type": "text",
     "placeholders": {}
   },
-  "swapSucceful": "Swap successful",
+  "swapSucceful": "スワップ成功",
   "@swapSucceful": {
     "type": "text",
     "placeholders": {}
   },
-  "timeOut": "Timeout",
+  "timeOut": "時間切れ",
   "@timeOut": {
     "type": "text",
     "placeholders": {}
   },
-  "swapFailed": "Swap failed",
+  "swapFailed": "スワップ失敗",
   "@swapFailed": {
     "type": "text",
     "placeholders": {}
   },
-  "errorTryLater": "Error, please try later",
+  "errorTryLater": "エラー、もう一度試して下さい",
   "@errorTryLater": {
     "type": "text",
     "placeholders": {}
   },
-  "feedback": "Share Log File",
+  "feedback": "フィードバックを送信",
   "@feedback": {
     "type": "text",
     "placeholders": {}
   },
-  "loadingOrderbook": "Loading orderbook...",
+  "loadingOrderbook": "オーダーブックロード中...",
   "@loadingOrderbook": {
     "type": "text",
     "placeholders": {}
   },
-  "claim": "claim",
+  "claim": "請求",
   "@claim": {
     "type": "text",
     "placeholders": {}
   },
-  "claimTitle": "Claim your KMD reward?",
+  "claimTitle": "KMD報酬を請求しますか?",
   "@claimTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "success": "Success!",
+  "success": "成功",
   "@success": {
     "type": "text",
     "placeholders": {}
   },
-  "noRewardYet": "No reward claimable - please try again in 1h.",
+  "noRewardYet": "請求出来る報酬はありません。1時間後にもう一度試して下さい。",
   "@noRewardYet": {
     "type": "text",
     "placeholders": {}
   },
-  "loading": "Loading...",
+  "loading": "ロード中",
   "@loading": {
     "type": "text",
     "placeholders": {}
@@ -437,12 +431,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "media": "News",
+  "media": "ニュース",
   "@media": {
     "type": "text",
     "placeholders": {}
   },
-  "newsFeed": "News feed",
+  "newsFeed": "ニュースフィード",
   "@newsFeed": {
     "type": "text",
     "placeholders": {}
@@ -452,376 +446,376 @@
     "type": "text",
     "placeholders": {}
   },
-  "clipboard": "Copied to the clipboard",
+  "clipboard": "クリップボードにコピー",
   "@clipboard": {
     "type": "text",
     "placeholders": {}
   },
-  "from": "From",
+  "from": "送信元",
   "@from": {
     "type": "text",
     "placeholders": {}
   },
-  "to": "To",
+  "to": "送信先",
   "@to": {
     "type": "text",
     "placeholders": {}
   },
-  "txConfirmed": "CONFIRMED",
+  "txConfirmed": "確認済み",
   "@txConfirmed": {
     "type": "text",
     "placeholders": {}
   },
-  "txNotConfirmed": "UNCONFIRMED",
+  "txNotConfirmed": "未確認",
   "@txNotConfirmed": {
     "type": "text",
     "placeholders": {}
   },
-  "txBlock": "Block",
+  "txBlock": "ブロック",
   "@txBlock": {
     "type": "text",
     "placeholders": {}
   },
-  "txConfirmations": "Confirmations",
+  "txConfirmations": "確認",
   "@txConfirmations": {
     "type": "text",
     "placeholders": {}
   },
-  "txFee": "Fee",
+  "txFee": "手数料",
   "@txFee": {
     "type": "text",
     "placeholders": {}
   },
-  "txHash": "Transaction ID",
+  "txHash": "トランザクションID",
   "@txHash": {
     "type": "text",
     "placeholders": {}
   },
-  "noSwaps": "No history.",
+  "noSwaps": "履歴無し",
   "@noSwaps": {
     "type": "text",
     "placeholders": {}
   },
-  "trade": "TRADE",
+  "trade": "取引",
   "@trade": {
     "type": "text",
     "placeholders": {}
   },
-  "tradeCompleted": "SWAP COMPLETED!",
+  "tradeCompleted": "スワップ完了!",
   "@tradeCompleted": {
     "type": "text",
     "placeholders": {}
   },
-  "step": "Step",
+  "step": "ステップ",
   "@step": {
     "type": "text",
     "placeholders": {}
   },
-  "tradeDetail": "TRADE DETAILS",
+  "tradeDetail": "取引詳細",
   "@tradeDetail": {
     "type": "text",
     "placeholders": {}
   },
-  "requestedTrade": "Requested Trade",
+  "requestedTrade": "注文された取引",
   "@requestedTrade": {
     "type": "text",
     "placeholders": {}
   },
-  "swapID": "Swap ID",
+  "swapID": "IDスワップ",
   "@swapID": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBrowse": "BROWSE",
+  "mediaBrowse": "閲覧",
   "@mediaBrowse": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaSaved": "SAVED",
+  "mediaSaved": "保存済み",
   "@mediaSaved": {
     "type": "text",
     "placeholders": {}
   },
-  "articleFrom": "AtomicDEX NEWS",
+  "articleFrom": "AtomicDEXニュース",
   "@articleFrom": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaNotSavedDescription": "YOU HAVE NO SAVED ARTICLES",
+  "mediaNotSavedDescription": "保存された記事はありません",
   "@mediaNotSavedDescription": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBrowseFeed": "BROWSE FEED",
+  "mediaBrowseFeed": "フィードをブラウズ",
   "@mediaBrowseFeed": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBy": "By",
+  "mediaBy": "毎",
   "@mediaBy": {
     "type": "text",
     "placeholders": {}
   },
-  "lockScreenAuth": "Please authenticate!",
+  "lockScreenAuth": "認証して下さい",
   "@lockScreenAuth": {
     "type": "text",
     "placeholders": {}
   },
-  "noTxs": "No Transactions",
+  "noTxs": "取引無し",
   "@noTxs": {
     "type": "text",
     "placeholders": {}
   },
-  "done": "Done",
+  "done": "完了",
   "@done": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinTitle": "Activate coins:",
+  "selectCoinTitle": "有効なコイン:",
   "@selectCoinTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinInfo": "Select the coins you want to add to your portfolio.",
+  "selectCoinInfo": "ポートフォリオに追加するコインを選んでください。",
   "@selectCoinInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "noArticles": "No news - please check back later!",
+  "noArticles": "新着ニュース無し - 後で又チェックして下さい",
   "@noArticles": {
     "type": "text",
     "placeholders": {}
   },
-  "infoTrade1": "The swap request can not be undone and is a final event!",
+  "infoTrade1": "スワップ要求は取り消し不可能です",
   "@infoTrade1": {
     "type": "text",
     "placeholders": {}
   },
-  "infoTrade2": "This transaction can take up to 10 mins - DONT close this application!",
+  "infoTrade2": "この取引には10分程度かかります - アプリを閉じないで下さい!",
   "@infoTrade2": {
     "type": "text",
     "placeholders": {}
   },
-  "swapDetailTitle": "CONFIRM EXCHANGE DETAILS",
+  "swapDetailTitle": "交換詳細を確認",
   "@swapDetailTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhrase": "Check seed phrase",
+  "checkSeedPhrase": "パスフレーズを確認",
   "@checkSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseTitle": "LET'S DOUBLE CHECK YOUR SEED PHRASE",
+  "checkSeedPhraseTitle": "パスフレーズを再確認しましょう",
   "@checkSeedPhraseTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseInfo": "Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want.",
+  "checkSeedPhraseInfo": "パスフレーズは重要です - 間違いないように確認を行います。必要な時にウォレットをいつでも復元できる様に、パスフレーズに関して三つの質問を行います。",
   "@checkSeedPhraseInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseSubtile": "What is the {index}. word in your seed phrase?",
+  "checkSeedPhraseSubtile": "パスフレーズの{index}番目の単語は何ですか？",
   "@checkSeedPhraseSubtile": {
     "type": "text",
     "placeholders": {
       "index": {}
     }
   },
-  "checkSeedPhraseHint": "Enter the {index}. word",
+  "checkSeedPhraseHint": "{index}番目の単語を入力",
   "@checkSeedPhraseHint": {
     "type": "text",
     "placeholders": {
       "index": {}
     }
   },
-  "checkSeedPhraseButton1": "CONTINUE",
+  "checkSeedPhraseButton1": "続ける",
   "@checkSeedPhraseButton1": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseButton2": "GO BACK AND CHECK AGAIN",
+  "checkSeedPhraseButton2": "戻って再度チェック",
   "@checkSeedPhraseButton2": {
     "type": "text",
     "placeholders": {}
   },
-  "takerpaymentsID": "Taker Payment ID",
+  "takerpaymentsID": "テイカーのペイメントID",
   "@takerpaymentsID": {
     "type": "text",
     "placeholders": {}
   },
-  "makerpaymentID": "Maker Payment ID",
+  "makerpaymentID": "メイカーのペイメントID",
   "@makerpaymentID": {
     "type": "text",
     "placeholders": {}
   },
-  "activateAccessBiometric": "Activate Biometric protection",
+  "activateAccessBiometric": "生体認証有効化",
   "@activateAccessBiometric": {
     "type": "text",
     "placeholders": {}
   },
-  "allowCustomSeed": "Allow custom seed",
+  "allowCustomSeed": "カスタムシード有効化",
   "@allowCustomSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "hintEnterPassword": "Enter your password",
+  "hintEnterPassword": "パスワード入力",
   "@hintEnterPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "signInWithSeedPhrase": "Forgot the password? Restore wallet from seed",
+  "signInWithSeedPhrase": "パスフレーズでサインイン",
   "@signInWithSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "signInWithPassword": "Sign in with password",
+  "signInWithPassword": "パスワードでサインイン",
   "@signInWithPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintEnterSeedPhrase": "Enter your seed phrase",
+  "hintEnterSeedPhrase": "パスフレーズ入力",
   "@hintEnterSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "wrongPassword": "The passwords do not match. Please try again.",
+  "wrongPassword": "パスワードが一致しません、もう一度試して下さい。",
   "@wrongPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintNameYourWallet": "Name your wallet",
+  "hintNameYourWallet": "ウォレットの名前を決めて下さい",
   "@hintNameYourWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "infoWalletPassword": "You have to provide a password for the wallet encryption due to security reasons.",
+  "infoWalletPassword": "パスワードでウォレットを暗号化する事が出来ます。パスワードを利用しない場合、ウォレットにアクセスする度にパスフレーズの入力が必要になります。",
   "@infoWalletPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmPassword": "Confirm password",
+  "confirmPassword": "パスワード確認",
   "@confirmPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "dontWantPassword": "I don't want a password",
+  "dontWantPassword": "パスワードを利用しない",
   "@dontWantPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "areYouSure": "ARE YOU SURE?",
+  "areYouSure": "本当ですか？",
   "@areYouSure": {
     "type": "text",
     "placeholders": {}
   },
-  "infoPasswordDialog": "Use a secure password and do not store it on the same device",
+  "infoPasswordDialog": "パスワードを入力しない場合、ウォレットにアクセスする度にパスフレーズの入力が必要になります。",
   "@infoPasswordDialog": {
     "type": "text",
     "placeholders": {}
   },
-  "setUpPassword": "SET UP A PASSWORD",
+  "setUpPassword": "パスワードを設定",
   "@setUpPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "createAWallet": "CREATE A WALLET",
+  "createAWallet": "ウォレットを作成",
   "@createAWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "restoreWallet": "RESTORE",
+  "restoreWallet": "復元",
   "@restoreWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "hintPassword": "Password",
+  "hintPassword": "パスワード",
   "@hintPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintConfirmPassword": "Confirm Password",
+  "hintConfirmPassword": "パスワード確認",
   "@hintConfirmPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintCurrentPassword": "Current password",
+  "hintCurrentPassword": "現在のパスワード",
   "@hintCurrentPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "logoutsettings": "Log Out Settings",
+  "logoutsettings": "ログアウト設定",
   "@logoutsettings": {
     "type": "text",
     "placeholders": {}
   },
-  "logoutOnExit": "Log Out on Exit",
+  "logoutOnExit": "退出と同時にログアウト",
   "@logoutOnExit": {
     "type": "text",
     "placeholders": {}
   },
-  "deleteWallet": "Delete Wallet",
+  "deleteWallet": "ウォレット消去",
   "@deleteWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "delete": "Delete",
+  "delete": "消去",
   "@delete": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan1": "Are you sure you want to delete ",
+  "settingDialogSpan1": "本当に消去しますか",
   "@settingDialogSpan1": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan2": " wallet?",
+  "settingDialogSpan2": "ウォレット？",
   "@settingDialogSpan2": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan3": "If so, make sure you ",
+  "settingDialogSpan3": "本当なら、次のことを確認して下さい",
   "@settingDialogSpan3": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan4": " record your seed phrase.",
+  "settingDialogSpan4": "パスフレーズを保存",
   "@settingDialogSpan4": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan5": " In order to restore your wallet in the future.",
+  "settingDialogSpan5": "将来ウォレットを復元する為に。",
   "@settingDialogSpan5": {
     "type": "text",
     "placeholders": {}
   },
-  "backupTitle": "Backup",
+  "backupTitle": "バックアップ",
   "@backupTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "version": "version",
+  "version": "バージョン",
   "@version": {
     "type": "text",
     "placeholders": {}
   },
-  "viewSeed": "View Seed",
+  "viewSeed": "パスフレーズ確認",
   "@viewSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "enterpassword": "Please enter your password to continue.",
+  "enterpassword": "継続するにはパスワードを入力して下さい。",
   "@enterpassword": {
     "type": "text",
     "placeholders": {}
   },
-  "clipboardCopy": "Copy to clipboard",
+  "clipboardCopy": "クリップボードにコピー",
   "@clipboardCopy": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeTitle": "WELCOME",
+  "welcomeTitle": "ようこそ",
   "@welcomeTitle": {
     "type": "text",
     "placeholders": {}
@@ -831,99 +825,99 @@
     "type": "text",
     "placeholders": {}
   },
-  "welcomeWallet": "wallet",
+  "welcomeWallet": "ウォレット",
   "@welcomeWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeInfo": "AtomicDEX mobile is a next generation multi-coin wallet with native third generation DEX functionality and more.",
+  "welcomeInfo": "AtomicDEXモバイルは第三世代のDEX機能を搭載した次世代型のマルチコインウォレットです。",
   "@welcomeInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeLetSetUp": "LET'S GET SET UP!",
+  "welcomeLetSetUp": "セットアップしましょう!",
   "@welcomeLetSetUp": {
     "type": "text",
     "placeholders": {}
   },
-  "unlock": "unlock",
+  "unlock": "アンロック",
   "@unlock": {
     "type": "text",
     "placeholders": {}
   },
-  "noOrder": "Please enter the {coinName} amount.",
+  "noOrder": "利用可能な{coinName}の注文がありません - 暫く経ってから再度試すか注文を作成して下さい。",
   "@noOrder": {
     "type": "text",
     "placeholders": {
       "coinName": {}
     }
   },
-  "bestAvailableRate": "Exchange rate",
+  "bestAvailableRate": "ベスト・アベイラブル・レート",
   "@bestAvailableRate": {
     "type": "text",
     "placeholders": {}
   },
-  "receiveLower": "Receive",
+  "receiveLower": "受け取り",
   "@receiveLower": {
     "type": "text",
     "placeholders": {}
   },
-  "makeAorder": "make an order",
+  "makeAorder": "オーダー作成",
   "@makeAorder": {
     "type": "text",
     "placeholders": {}
   },
-  "exchangeTitle": "EXCHANGE",
+  "exchangeTitle": "交換",
   "@exchangeTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "orders": "orders",
+  "orders": "オーダー",
   "@orders": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoin": "Select coin",
+  "selectCoin": "コイン選択",
   "@selectCoin": {
     "type": "text",
     "placeholders": {}
   },
-  "noFunds": "No funds",
+  "noFunds": "資金がありません",
   "@noFunds": {
     "type": "text",
     "placeholders": {}
   },
-  "noFundsDetected": "No funds available - please deposit.",
+  "noFundsDetected": "資金がありません -入金して下さい",
   "@noFundsDetected": {
     "type": "text",
     "placeholders": {}
   },
-  "goToPorfolio": "Go to portfolio",
+  "goToPorfolio": "ポートフォリオへ移動",
   "@goToPorfolio": {
     "type": "text",
     "placeholders": {}
   },
-  "noOrderAvailable": "Click to create an order",
+  "noOrderAvailable": "クリックしてオーダーを発注",
   "@noOrderAvailable": {
     "type": "text",
     "placeholders": {}
   },
-  "orderCreated": "Order created",
+  "orderCreated": "オーダーが作られました",
   "@orderCreated": {
     "type": "text",
     "placeholders": {}
   },
-  "orderCreatedInfo": "Order succsessfully created",
+  "orderCreatedInfo": "オーダー作成に成功",
   "@orderCreatedInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "showMyOrders": "SHOW MY ORDERS",
+  "showMyOrders": "オーダーを見る",
   "@showMyOrders": {
     "type": "text",
     "placeholders": {}
   },
-  "minValue": "The minimun amount to sell is {number} {coinName}",
+  "minValue": "売却最小額は {number} {coinName} です。",
   "@minValue": {
     "type": "text",
     "placeholders": {
@@ -931,12 +925,12 @@
       "number": {}
     }
   },
-  "titleCreatePassword": "CREATE A PASSWORD",
+  "titleCreatePassword": "パスワーを作る",
   "@titleCreatePassword": {
     "type": "text",
     "placeholders": {}
   },
-  "minValueBuy": "The minimun amount to buy is {number} {coinName}",
+  "minValueBuy": "購入最小額は {number} {coinName}です。\n",
   "@minValueBuy": {
     "type": "text",
     "placeholders": {
@@ -944,47 +938,47 @@
       "number": {}
     }
   },
-  "encryptingWallet": "Encrypting wallet",
+  "encryptingWallet": "ウォレットを暗号化",
   "@encryptingWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "decryptingWallet": "Decrypting wallet",
+  "decryptingWallet": "ウォレットを復号化",
   "@decryptingWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "notEnoughtBalanceForFee": "Not enough balance for fees - trade a smaller amount",
+  "notEnoughtBalanceForFee": "手数料支払いの残高が足りません - 少額でトレードして下さい",
   "@notEnoughtBalanceForFee": {
     "type": "text",
     "placeholders": {}
   },
-  "noInternet": "No Internet Connection",
+  "noInternet": "インターネットへ繋がりません",
   "@noInternet": {
     "type": "text",
     "placeholders": {}
   },
-  "legalTitle": "Legal",
+  "legalTitle": "規則",
   "@legalTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "disclaimerAndTos": "Disclaimer & ToS",
+  "disclaimerAndTos": "免責&利用規約",
   "@disclaimerAndTos": {
     "type": "text",
     "placeholders": {}
   },
-  "accepteula": "Accept EULA",
+  "accepteula": "使用許諾契約に同意",
   "@accepteula": {
     "type": "text",
     "placeholders": {}
   },
-  "accepttac": "Accept TERMS and CONDITIONS",
+  "accepttac": "利用規約に同意",
   "@accepttac": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmeula": "By clicking the below buttons you confirm to have read the 'EULA' and 'Terms and Conditions' and accept these",
+  "confirmeula": "下記ボタンをクリックすると、本ソフトウェアライセンス使用許諾契約および利用規約を既読し同意したものと見なされます。",
   "@confirmeula": {
     "type": "text",
     "placeholders": {}
@@ -1169,12 +1163,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "eulaParagraphe17": "The Terms are effective until terminated by Komodo Platform. \nIn the event of termination, You are no longer authorized to access the Application, but all restrictions imposed on You and the disclaimers and limitations of liability set out in the Terms will survive termination. \nSuch termination shall not affect any legal right that may have accrued to Komodo Platform against You up to the date of termination. \nKomodo Platform may also remove the Application as a whole or any sections or features of the Application at any time. \n\n",
+  "eulaParagraphe17": "本規約は、Komodo Platformによって終了されるまで有効です。終了した場合、お客様はアプリケーションへのアクセスを許可されなくなりますが、お客様に課せられたすべての制限および本規約に定められた免責事項と責任の制限は終了後も存続します。そのような解約は、解約日までにKomodo Platformに対してお客様に対して生じた法的権利に影響を与えません。 Komodo Platformは、アプリケーション全体またはアプリケーションのセクションまたは機能をいつでも削除することもできます。",
   "@eulaParagraphe17": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaParagraphe18": "The provisions of previous paragraphs are for the benefit of Komodo Platform and its officers, directors, employees, agents, licensors, suppliers, and any third party information providers to the Application. Each of these individuals or entities shall have the right to assert and enforce those provisions directly against You on its own behalf.\n\n",
+  "eulaParagraphe18": "前の段落の規定は、Komodo Platformおよびその役員、取締役、従業員、代理店、ライセンサー、サプライヤー、およびアプリケーションの第三者情報プロバイダーの利益のためです。これらの個人または団体のそれぞれは、自分自身に代わってこれらの条項を直接あなたに対して主張および実施する権利を有します。",
   "@eulaParagraphe18": {
     "type": "text",
     "placeholders": {}
@@ -1184,22 +1178,22 @@
     "type": "text",
     "placeholders": {}
   },
-  "ethFee": "ETH fee",
+  "ethFee": "ETH 手数料",
   "@ethFee": {
     "type": "text",
     "placeholders": {}
   },
-  "notEnoughEth": "Not enough ETH for transaction!",
+  "notEnoughEth": "取引のためのETHが不足しています!",
   "@notEnoughEth": {
     "type": "text",
     "placeholders": {}
   },
-  "ethNotActive": "Please activate ETH.",
+  "ethNotActive": "ETHを有効化して下さい。",
   "@ethNotActive": {
     "type": "text",
     "placeholders": {}
   },
-  "youWillReceiveClaim": "You will receive {amount} {coin}",
+  "youWillReceiveClaim": "あなたは{amount} {coin}受け取ります",
   "@youWillReceiveClaim": {
     "type": "text",
     "placeholders": {
@@ -1207,201 +1201,25 @@
       "coin": {}
     }
   },
-  "seeOrders": "Click to see {amount} orders",
+  "seeOrders": "クリックして {amount} オーダーを確認します",
   "@seeOrders": {
     "type": "text",
     "placeholders": {
       "amount": {}
     }
   },
-  "clickToSee": "Click to see ",
+  "clickToSee": "クリックして確認",
   "@clickToSee": {
     "type": "text",
     "placeholders": {}
   },
-  "price": "price",
+  "price": "価格",
   "@price": {
     "type": "text",
     "placeholders": {}
   },
-  "availableVolume": "max vol",
+  "availableVolume": "最大値",
   "@availableVolume": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "configureWallet": "Configuring your wallet, please wait...",
-  "@configureWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "titleCurrentAsk": "Order selected",
-  "@titleCurrentAsk": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txFeeTitle": "transaction fee:",
-  "@txFeeTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tradingFee": "trading fee:",
-  "@tradingFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "swapErcAmount": "This swap requires {amount} ETH for transaction fees",
-  "@swapErcAmount": {
-    "type": "text",
-    "placeholders": {
-      "amount": {}
-    }
-  },
-  "remove": "Disable",
-  "@remove": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterCoin": "Search a coin",
-  "@searchFilterCoin": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterSubtitleSmartChain": "Select all SmartChains",
-  "@searchFilterSubtitleSmartChain": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterSubtitleERC": "Select all ERC tokens",
-  "@searchFilterSubtitleERC": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "customFee": "Custom fee",
-  "@customFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "gas": "Gas",
-  "@gas": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "gasPrice": "Gas price",
-  "@gasPrice": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "customFeeWarning": "Only use custom fees if you know what you are doing!",
-  "@customFeeWarning": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterSubtitleutxo": "Select all UTXO coins",
-  "@searchFilterSubtitleutxo": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tagERC20": "ERC20",
-  "@tagERC20": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tagKMD": "KMD",
-  "@tagKMD": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "errorNotEnoughtGas": "Not enough gas - use at least {gas} Gwei",
-  "@errorNotEnoughtGas": {
-    "type": "text",
-    "placeholders": {
-      "gas": {}
-    }
-  },
-  "orderCancel": "All {coin} orders will be canceled.",
-  "@orderCancel": {
-    "type": "text",
-    "placeholders": {
-      "coin": {}
-    }
-  },
-  "deleteConfirm": "Confirm deactivation",
-  "@deleteConfirm": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deleteSpan1": "Do you want to remove ",
-  "@deleteSpan1": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deleteSpan2": " from your portfolio? All unmatched orders will be canceled.",
-  "@deleteSpan2": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "share": "SHARE",
-  "@share": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "warningShareLogs": "Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!",
-  "@warningShareLogs": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "enterOldPinCode": "Enter your old PIN",
-  "@enterOldPinCode": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "enterNewPinCode": "Enter your new PIN",
-  "@enterNewPinCode": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "authenticate": "authenticate",
-  "@authenticate": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "settingLanguageTitle": "Languages",
-  "@settingLanguageTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "englishLanguage": "English",
-  "@englishLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "frenchLanguage": "French",
-  "@frenchLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deutscheLanguage": "Deutsch",
-  "@deutscheLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "chineseLanguage": "Chinese",
-  "@chineseLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "simplifiedChinese": "simplified",
-  "@simplifiedChinese": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "traditionalChinese": "traditional",
-  "@traditionalChinese": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "faucetName": "FAUCET",
-  "@faucetName": {
     "type": "text",
     "placeholders": {}
   }

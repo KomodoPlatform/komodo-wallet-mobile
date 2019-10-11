@@ -274,7 +274,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<Decimal> getTxFee() async {
     try {
-      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(MarketMakerService().client,
+      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
+          MarketMakerService().client,
           GetTradeFee(coin: currentCoinBalance.coin.abbr));
 
       if (tradeFeeResponse is TradeFee) {
@@ -287,8 +288,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           }
         }
         return txFee;
-      } 
-      else {
+      } else {
         if (tradeFeeResponse is ErrorString) {
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
@@ -305,7 +305,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<String> getTxFeeErc() async {
     try {
-      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(MarketMakerService().client,
+      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
+          MarketMakerService().client,
           GetTradeFee(coin: currentCoinBalance.coin.abbr));
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 

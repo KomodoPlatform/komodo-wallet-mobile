@@ -115,6 +115,11 @@ class _MyAppState extends State<MyApp> {
               pref: 'current_languages',
               builder:
                   (BuildContext context, AsyncSnapshot<dynamic> prefLocale) {
+                // Log.println('l10n - main.dart:118',
+                //     'current locale: ' + currentLocale?.toString());
+                // Log.println('l10n - main.dart:120',
+                //     'current pref locale: ' + prefLocale.toString());
+
                 return MaterialApp(
                     title: 'atomicDEX',
                     localizationsDelegates: <LocalizationsDelegate<dynamic>>[
@@ -188,10 +193,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         Log.println('', 'paused');
         if (Platform.isIOS) {
           MarketMakerService().closeLogSink();
-          if (!authBloc.isQrCodeActive &&
-            !mainBloc.isUrlLaucherIsOpen) {
-              exit(0);
-            }
+          if (!authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
+            exit(0);
+          }
         }
         dialogBloc.closeDialog(context);
         final SharedPreferences prefs = await SharedPreferences.getInstance();

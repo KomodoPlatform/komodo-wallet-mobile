@@ -6,7 +6,7 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 SettingsBloc settingsBloc = SettingsBloc();
 
-class SettingsBloc implements BlocBase{
+class SettingsBloc implements BlocBase {
   bool isDeleteLoading = true;
 
   final StreamController<bool> _isDeleteLoadingController =
@@ -24,7 +24,7 @@ class SettingsBloc implements BlocBase{
     _inIsDeleteLoading.add(isDeleteLoading);
   }
 
-    String getNameLanguage(BuildContext context, String languageCode) {
+  String getNameLanguage(BuildContext context, String languageCode) {
     switch (languageCode) {
       case 'en':
         return AppLocalizations.of(context).englishLanguage;
@@ -38,9 +38,17 @@ class SettingsBloc implements BlocBase{
       case 'zh':
         return AppLocalizations.of(context).chineseLanguage;
         break;
+      case 'zh_TW':
+        return AppLocalizations.of(context).simplifiedChinese;
+        break;
+      case 'ru':
+        return AppLocalizations.of(context).russianLanguage;
+        break;
+      case 'ja':
+        return AppLocalizations.of(context).japaneseLanguage;
+        break;
       default:
         return AppLocalizations.of(context).englishLanguage;
     }
   }
-  
 }

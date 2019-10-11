@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a messages locale. All the
+// This is a library that provides messages for a ja locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -17,178 +17,122 @@ final MessageLookup messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'messages';
+  String get localeName => 'ja';
 
-  static dynamic m0(dynamic name) => "Activated ${name} successfully !";
+  static dynamic m0(dynamic name) => "${name}のアクティベートに成功しました!";
 
-  static dynamic m9(dynamic seconde) =>
-      "Ordermatch ongoing, please wait ${seconde} seconds!";
+  static dynamic m9(dynamic seconde) => "オーダーマッチ中、あと${seconde} 秒お待ち下さい。\n\n";
 
-  static dynamic m1(dynamic index) => "Enter the ${index}. word";
+  static dynamic m1(dynamic index) => "${index}番目の単語を入力";
 
-  static dynamic m2(dynamic index) =>
-      "What is the ${index}. word in your seed phrase?";
-
-  static dynamic m12(dynamic gas) =>
-      "Not enough gas - use at least ${gas} Gwei";
+  static dynamic m2(dynamic index) => "パスフレーズの${index}番目の単語は何ですか？";
 
   static dynamic m10(dynamic coinName, dynamic number) =>
-      "The minimun amount to sell is ${number} ${coinName}";
+      "売却最小額は ${number} ${coinName} です。";
 
   static dynamic m11(dynamic coinName, dynamic number) =>
-      "The minimun amount to buy is ${number} ${coinName}";
+      "購入最小額は ${number} ${coinName}です。\n";
 
-  static dynamic m3(dynamic coinName) => "Please enter the ${coinName} amount.";
+  static dynamic m3(dynamic coinName) =>
+      "利用可能な${coinName}の注文がありません - 暫く経ってから再度試すか注文を作成して下さい。";
 
-  static dynamic m4(dynamic assets) => "${assets} Assets";
+  static dynamic m4(dynamic assets) => "${assets} アセット";
 
-  static dynamic m13(dynamic coin) => "All ${coin} orders will be canceled.";
-
-  static dynamic m5(dynamic amount) => "Click to see ${amount} orders";
+  static dynamic m5(dynamic amount) => "クリックして ${amount} オーダーを確認します";
 
   static dynamic m6(dynamic coinName, dynamic address) =>
-      "My ${coinName} address: \n${address}";
-
-  static dynamic m14(dynamic amount) =>
-      "This swap requires ${amount} ETH for transaction fees";
+      "私の ${coinName} アドレス: ${address}";
 
   static dynamic m7(dynamic amount, dynamic coinName) =>
-      "WITHDRAW ${amount} ${coinName}";
+      "出金 ${amount} ${coinName}";
 
   static dynamic m8(dynamic amount, dynamic coin) =>
-      "You will receive ${amount} ${coin}";
+      "あなたは${amount} ${coin}受け取ります";
 
   final Map<String, dynamic> messages =
       _notInlinedMessages(_notInlinedMessages);
   static dynamic _notInlinedMessages(dynamic _) => <String, Function>{
-        "accepteula": MessageLookupByLibrary.simpleMessage("Accept EULA"),
-        "accepttac":
-            MessageLookupByLibrary.simpleMessage("Accept TERMS and CONDITIONS"),
-        "activateAccessBiometric": MessageLookupByLibrary.simpleMessage(
-            "Activate Biometric protection"),
-        "activateAccessPin":
-            MessageLookupByLibrary.simpleMessage("Activate PIN protection"),
-        "addCoin": MessageLookupByLibrary.simpleMessage("Activate coin"),
+        "accepteula": MessageLookupByLibrary.simpleMessage("使用許諾契約に同意"),
+        "accepttac": MessageLookupByLibrary.simpleMessage("利用規約に同意"),
+        "activateAccessBiometric":
+            MessageLookupByLibrary.simpleMessage("生体認証有効化"),
+        "activateAccessPin": MessageLookupByLibrary.simpleMessage("PINコードを有効化"),
+        "addCoin": MessageLookupByLibrary.simpleMessage("コインを有効化"),
         "addingCoinSuccess": m0,
-        "addressSend":
-            MessageLookupByLibrary.simpleMessage("Recipients address"),
-        "allowCustomSeed":
-            MessageLookupByLibrary.simpleMessage("Allow custom seed"),
-        "amount": MessageLookupByLibrary.simpleMessage("Amount"),
-        "amountToSell": MessageLookupByLibrary.simpleMessage("Amount To Sell"),
+        "addressSend": MessageLookupByLibrary.simpleMessage("受け取りアドレス\n"),
+        "allowCustomSeed": MessageLookupByLibrary.simpleMessage("カスタムシード有効化"),
+        "amount": MessageLookupByLibrary.simpleMessage("数量"),
+        "amountToSell": MessageLookupByLibrary.simpleMessage("売却額"),
         "appName": MessageLookupByLibrary.simpleMessage("atomicDEX"),
-        "areYouSure": MessageLookupByLibrary.simpleMessage("ARE YOU SURE?"),
-        "articleFrom": MessageLookupByLibrary.simpleMessage("AtomicDEX NEWS"),
-        "authenticate": MessageLookupByLibrary.simpleMessage("authenticate"),
-        "availableVolume": MessageLookupByLibrary.simpleMessage("max vol"),
-        "back": MessageLookupByLibrary.simpleMessage("back"),
-        "backupTitle": MessageLookupByLibrary.simpleMessage("Backup"),
+        "areYouSure": MessageLookupByLibrary.simpleMessage("本当ですか？"),
+        "articleFrom": MessageLookupByLibrary.simpleMessage("AtomicDEXニュース"),
+        "availableVolume": MessageLookupByLibrary.simpleMessage("最大値"),
+        "back": MessageLookupByLibrary.simpleMessage("戻る"),
+        "backupTitle": MessageLookupByLibrary.simpleMessage("バックアップ"),
         "bestAvailableRate":
-            MessageLookupByLibrary.simpleMessage("Exchange rate"),
-        "buy": MessageLookupByLibrary.simpleMessage("Buy"),
+            MessageLookupByLibrary.simpleMessage("ベスト・アベイラブル・レート"),
+        "buy": MessageLookupByLibrary.simpleMessage("購入"),
         "buySuccessWaiting":
-            MessageLookupByLibrary.simpleMessage("Swap issued, please wait!"),
+            MessageLookupByLibrary.simpleMessage("スワップが発行されました、しばらくお待ちください。"),
         "buySuccessWaitingError": m9,
-        "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
-        "changePin": MessageLookupByLibrary.simpleMessage("Change PIN code"),
-        "checkOut": MessageLookupByLibrary.simpleMessage("Check Out"),
-        "checkSeedPhrase":
-            MessageLookupByLibrary.simpleMessage("Check seed phrase"),
-        "checkSeedPhraseButton1":
-            MessageLookupByLibrary.simpleMessage("CONTINUE"),
+        "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
+        "changePin": MessageLookupByLibrary.simpleMessage("PINコード変更"),
+        "checkOut": MessageLookupByLibrary.simpleMessage("チェックアウト"),
+        "checkSeedPhrase": MessageLookupByLibrary.simpleMessage("パスフレーズを確認"),
+        "checkSeedPhraseButton1": MessageLookupByLibrary.simpleMessage("続ける"),
         "checkSeedPhraseButton2":
-            MessageLookupByLibrary.simpleMessage("GO BACK AND CHECK AGAIN"),
+            MessageLookupByLibrary.simpleMessage("戻って再度チェック"),
         "checkSeedPhraseHint": m1,
         "checkSeedPhraseInfo": MessageLookupByLibrary.simpleMessage(
-            "Your seed phrase is important - that\'s why we like to make sure it\'s correct. We\'ll ask you three different questions about your seed phrase to make sure you\'ll be able to easily restore your wallet whenever you want."),
+            "パスフレーズは重要です - 間違いないように確認を行います。必要な時にウォレットをいつでも復元できる様に、パスフレーズに関して三つの質問を行います。"),
         "checkSeedPhraseSubtile": m2,
-        "checkSeedPhraseTitle": MessageLookupByLibrary.simpleMessage(
-            "LET\'S DOUBLE CHECK YOUR SEED PHRASE"),
-        "chineseLanguage": MessageLookupByLibrary.simpleMessage("Chinese"),
-        "claim": MessageLookupByLibrary.simpleMessage("claim"),
-        "claimTitle":
-            MessageLookupByLibrary.simpleMessage("Claim your KMD reward?"),
-        "clickToSee": MessageLookupByLibrary.simpleMessage("Click to see "),
-        "clipboard":
-            MessageLookupByLibrary.simpleMessage("Copied to the clipboard"),
-        "clipboardCopy":
-            MessageLookupByLibrary.simpleMessage("Copy to clipboard"),
-        "close": MessageLookupByLibrary.simpleMessage("Close"),
-        "code": MessageLookupByLibrary.simpleMessage("Code: "),
-        "comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon..."),
-        "commingsoon":
-            MessageLookupByLibrary.simpleMessage("TX details coming soon!"),
-        "commingsoonGeneral":
-            MessageLookupByLibrary.simpleMessage("Details coming soon!"),
-        "commissionFee": MessageLookupByLibrary.simpleMessage("commission fee"),
-        "configureWallet": MessageLookupByLibrary.simpleMessage(
-            "Configuring your wallet, please wait..."),
-        "confirm": MessageLookupByLibrary.simpleMessage("confirm"),
-        "confirmPassword":
-            MessageLookupByLibrary.simpleMessage("Confirm password"),
-        "confirmPin": MessageLookupByLibrary.simpleMessage("Confirm PIN code"),
-        "confirmSeed":
-            MessageLookupByLibrary.simpleMessage("Confirm Seed Phrase"),
+        "checkSeedPhraseTitle":
+            MessageLookupByLibrary.simpleMessage("パスフレーズを再確認しましょう"),
+        "claim": MessageLookupByLibrary.simpleMessage("請求"),
+        "claimTitle": MessageLookupByLibrary.simpleMessage("KMD報酬を請求しますか?"),
+        "clickToSee": MessageLookupByLibrary.simpleMessage("クリックして確認"),
+        "clipboard": MessageLookupByLibrary.simpleMessage("クリップボードにコピー"),
+        "clipboardCopy": MessageLookupByLibrary.simpleMessage("クリップボードにコピー"),
+        "close": MessageLookupByLibrary.simpleMessage("閉じる"),
+        "code": MessageLookupByLibrary.simpleMessage("コード:"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("近日公開…"),
+        "commingsoon": MessageLookupByLibrary.simpleMessage("TX詳細準備中"),
+        "commingsoonGeneral": MessageLookupByLibrary.simpleMessage("詳細情報準備中"),
+        "commissionFee": MessageLookupByLibrary.simpleMessage("コミッション手数料"),
+        "confirm": MessageLookupByLibrary.simpleMessage("確認"),
+        "confirmPassword": MessageLookupByLibrary.simpleMessage("パスワード確認"),
+        "confirmPin": MessageLookupByLibrary.simpleMessage("PINコード確認"),
+        "confirmSeed": MessageLookupByLibrary.simpleMessage("パスフレーズの確認"),
         "confirmeula": MessageLookupByLibrary.simpleMessage(
-            "By clicking the below buttons you confirm to have read the \'EULA\' and \'Terms and Conditions\' and accept these"),
-        "connecting": MessageLookupByLibrary.simpleMessage("Connecting..."),
-        "create": MessageLookupByLibrary.simpleMessage("trade"),
-        "createAWallet":
-            MessageLookupByLibrary.simpleMessage("CREATE A WALLET"),
-        "createPin": MessageLookupByLibrary.simpleMessage("Create PIN"),
-        "customFee": MessageLookupByLibrary.simpleMessage("Custom fee"),
-        "customFeeWarning": MessageLookupByLibrary.simpleMessage(
-            "Only use custom fees if you know what you are doing!"),
-        "decryptingWallet":
-            MessageLookupByLibrary.simpleMessage("Decrypting wallet"),
-        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
-        "deleteConfirm":
-            MessageLookupByLibrary.simpleMessage("Confirm deactivation"),
-        "deleteSpan1":
-            MessageLookupByLibrary.simpleMessage("Do you want to remove "),
-        "deleteSpan2": MessageLookupByLibrary.simpleMessage(
-            " from your portfolio? All unmatched orders will be canceled."),
-        "deleteWallet": MessageLookupByLibrary.simpleMessage("Delete Wallet"),
-        "deutscheLanguage": MessageLookupByLibrary.simpleMessage("Deutsch"),
+            "下記ボタンをクリックすると、本ソフトウェアライセンス使用許諾契約および利用規約を既読し同意したものと見なされます。"),
+        "connecting": MessageLookupByLibrary.simpleMessage("接続中…"),
+        "create": MessageLookupByLibrary.simpleMessage("トレード"),
+        "createAWallet": MessageLookupByLibrary.simpleMessage("ウォレットを作成"),
+        "createPin": MessageLookupByLibrary.simpleMessage("PINコード作成"),
+        "decryptingWallet": MessageLookupByLibrary.simpleMessage("ウォレットを復号化"),
+        "delete": MessageLookupByLibrary.simpleMessage("消去"),
+        "deleteWallet": MessageLookupByLibrary.simpleMessage("ウォレット消去"),
         "dex": MessageLookupByLibrary.simpleMessage("DEX"),
-        "disclaimerAndTos":
-            MessageLookupByLibrary.simpleMessage("Disclaimer & ToS"),
-        "done": MessageLookupByLibrary.simpleMessage("Done"),
-        "dontWantPassword":
-            MessageLookupByLibrary.simpleMessage("I don\'t want a password"),
-        "encryptingWallet":
-            MessageLookupByLibrary.simpleMessage("Encrypting wallet"),
-        "englishLanguage": MessageLookupByLibrary.simpleMessage("English"),
-        "enterNewPinCode":
-            MessageLookupByLibrary.simpleMessage("Enter your new PIN"),
-        "enterOldPinCode":
-            MessageLookupByLibrary.simpleMessage("Enter your old PIN"),
-        "enterPinCode":
-            MessageLookupByLibrary.simpleMessage("Enter your PIN code"),
-        "enterSeedPhrase":
-            MessageLookupByLibrary.simpleMessage("Enter Your Seed Phrase"),
-        "enterpassword": MessageLookupByLibrary.simpleMessage(
-            "Please enter your password to continue."),
-        "errorAmountBalance":
-            MessageLookupByLibrary.simpleMessage("Not enough balance"),
+        "disclaimerAndTos": MessageLookupByLibrary.simpleMessage("免責&利用規約"),
+        "done": MessageLookupByLibrary.simpleMessage("完了"),
+        "dontWantPassword": MessageLookupByLibrary.simpleMessage("パスワードを利用しない"),
+        "encryptingWallet": MessageLookupByLibrary.simpleMessage("ウォレットを暗号化"),
+        "enterPinCode": MessageLookupByLibrary.simpleMessage("PINコード入力"),
+        "enterSeedPhrase": MessageLookupByLibrary.simpleMessage("パスフレーズを入力"),
+        "enterpassword":
+            MessageLookupByLibrary.simpleMessage("継続するにはパスワードを入力して下さい。"),
+        "errorAmountBalance": MessageLookupByLibrary.simpleMessage("残高不足"),
         "errorNotAValidAddress":
-            MessageLookupByLibrary.simpleMessage("Not a valid address"),
-        "errorNotAValidAddressSegWit": MessageLookupByLibrary.simpleMessage(
-            "Segwit addresses are not supported (yet)"),
-        "errorNotEnoughtGas": m12,
-        "errorTryAgain":
-            MessageLookupByLibrary.simpleMessage("Error, please try again"),
-        "errorTryLater":
-            MessageLookupByLibrary.simpleMessage("Error, please try later"),
+            MessageLookupByLibrary.simpleMessage("無効なアドレス"),
+        "errorTryAgain": MessageLookupByLibrary.simpleMessage("エラー、もう一度試して下さい"),
+        "errorTryLater": MessageLookupByLibrary.simpleMessage("エラー、もう一度試して下さい"),
         "errorValueEmpty":
-            MessageLookupByLibrary.simpleMessage("Value is too high or low"),
+            MessageLookupByLibrary.simpleMessage("値が高すぎ、または低すぎます"),
         "errorValueNotEmpty":
-            MessageLookupByLibrary.simpleMessage("Please input data"),
-        "estimateValue":
-            MessageLookupByLibrary.simpleMessage("Estimated Total Value"),
-        "ethFee": MessageLookupByLibrary.simpleMessage("ETH fee"),
-        "ethNotActive":
-            MessageLookupByLibrary.simpleMessage("Please activate ETH."),
+            MessageLookupByLibrary.simpleMessage("データを入力して下さい"),
+        "estimateValue": MessageLookupByLibrary.simpleMessage("推定金額"),
+        "ethFee": MessageLookupByLibrary.simpleMessage("ETH 手数料"),
+        "ethNotActive": MessageLookupByLibrary.simpleMessage("ETHを有効化して下さい。"),
         "eulaParagraphe1": MessageLookupByLibrary.simpleMessage(
             "This End-User License Agreement (\'EULA\') is a legal agreement between you and Komodo Platform.\n\nThis EULA agreement governs your acquisition and use of our atomicDEX mobile software (\'Software\', \'Mobile Application\', \'Application\' or \'App\') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a \'Distributor\').\nPlease read this EULA agreement carefully before completing the installation process and using the atomicDEX mobile software. It provides a license to use the atomicDEX mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the atomicDEX mobile software, this EULA agreement will also govern that trial. By clicking \'accept\' or installing and/or using the atomicDEX mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\nLicense Grant\nKomodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the atomicDEX mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the atomicDEX mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the atomicDEX mobile software.\nYou are not permitted to:\nEdit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things\nReproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose\nUse the Software in any way which breaches any applicable local, national or international law\nuse the Software for any purpose that Komodo Platform considers is a breach of this EULA agreement\nIntellectual Property and Ownership\nKomodo Platform shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of Komodo Platform.\n\nKomodo Platform reserves the right to grant licences to use the Software to third parties.\nTermination\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to Komodo Platform.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\nGoverning Law\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on July 3, 2019\n\n"),
         "eulaParagraphe10": MessageLookupByLibrary.simpleMessage(
@@ -206,9 +150,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "eulaParagraphe16": MessageLookupByLibrary.simpleMessage(
             "For the avoidance of doubt, Komodo Platform does not provide investment, tax or legal advice, nor does Komodo Platform broker trades on your behalf. All Komodo Platform trades are executed automatically, based on the parameters of your order instructions and in accordance with posted Trade execution procedures, and You are solely responsible for determining whether any investment, investment strategy or related transaction is appropriate for You based on your personal investment objectives, financial circumstances and risk tolerance. You should consult your legal or tax professional regarding your specific situation.Neither Komodo nor its owners, members, officers, directors, partners, consultants, nor anyone involved in the publication of this application, is a registered investment adviser or broker-dealer or associated person with a registered investment adviser or broker-dealer and none of the foregoing make any recommendation that the purchase or sale of crypto-assets or securities of any company profiled in the mobile Application is suitable or advisable for any person or that an investment or transaction in such crypto-assets or securities will be profitable. The information contained in the mobile Application is not intended to be, and shall not constitute, an offer to sell or the solicitation of any offer to buy any crypto-asset or security. The information presented in the mobile Application is provided for informational purposes only and is not to be treated as advice or a recommendation to make any specific investment or transaction. Please, consult with a qualified professional before making any decisions.The opinions and analysis included in this applications are based on information from sources deemed to be reliable and are provided “as is” in good faith. Komodo makes no representation or warranty, expressed, implied, or statutory, as to the accuracy or completeness of such information, which may be subject to change without notice. Komodo shall not be liable for any errors or any actions taken in relation to the above. Statements of opinion and belief are those of the authors and/or editors who contribute to this application, and are based solely upon the information possessed by such authors and/or editors. No inference should be drawn that Komodo or such authors or editors have any special or greater knowledge about the crypto-assets or companies profiled or any particular expertise in the industries or markets in which the profiled crypto-assets and companies operate and compete.Information on this application is obtained from sources deemed to be reliable; however, Komodo takes no responsibility for verifying the accuracy of such information and makes no representation that such information is accurate or complete. Certain statements included in this application may be forward-looking statements based on current expectations. Komodo makes no representation and provides no assurance or guarantee that such forward-looking statements will prove to be accurate.Persons using the Komodo application are urged to consult with a qualified professional with respect to an investment or transaction in any crypto-asset or company profiled herein. Additionally, persons using this application expressly represent that the content in this application is not and will not be a consideration in such persons’ investment or transaction decisions. Traders should verify independently information provided in the Komodo application by completing their own due diligence on any crypto-asset or company in which they are contemplating an investment or transaction of any kind and review a complete information package on that crypto-asset or company, which should include, but not be limited to, related blog updates and press releases.Past performance of profiled crypto-assets and securities is not indicative of future results. Crypto-assets and companies profiled on this site may lack an active trading market and invest in a crypto-asset or security that lacks an active trading market or trade on certain media, platforms and markets are deemed highly speculative and carry a high degree of risk. Anyone holding such crypto-assets and securities should be financially able and prepared to bear the risk of loss and the actual loss of his or her entire trade. The information in this application is not designed to be used as a basis for an investment decision. Persons using the Komodo application should confirm to their own satisfaction the veracity of any information prior to entering into any investment or making any transaction. The decision to buy or sell any crypto-asset or security that may be featured by Komodo is done purely and entirely at the reader’s own risk. As a reader and user of this application, You agree that under no circumstances will You seek to hold liable owners, members, officers, directors, partners, consultants or other persons involved in the publication of this application for any losses incurred by the use of information contained in this applicationKomodo and its contractors and affiliates may profit in the event the crypto-assets and securities increase or decrease in value. Such crypto-assets and securities may be bought or sold from time to time, even after Komodo has distributed positive information regarding the crypto-assets and companies. Komodo has no obligation to inform readers of its trading activities or the trading activities of any of its owners, members, officers, directors, contractors and affiliates and/or any companies affiliated with BC Relations’ owners, members, officers, directors, contractors and affiliates.Komodo and its affiliates may from time to time enter into agreements to purchase crypto-assets or securities to provide a method to reach their goals.\n\n"),
         "eulaParagraphe17": MessageLookupByLibrary.simpleMessage(
-            "The Terms are effective until terminated by Komodo Platform. \nIn the event of termination, You are no longer authorized to access the Application, but all restrictions imposed on You and the disclaimers and limitations of liability set out in the Terms will survive termination. \nSuch termination shall not affect any legal right that may have accrued to Komodo Platform against You up to the date of termination. \nKomodo Platform may also remove the Application as a whole or any sections or features of the Application at any time. \n\n"),
+            "本規約は、Komodo Platformによって終了されるまで有効です。終了した場合、お客様はアプリケーションへのアクセスを許可されなくなりますが、お客様に課せられたすべての制限および本規約に定められた免責事項と責任の制限は終了後も存続します。そのような解約は、解約日までにKomodo Platformに対してお客様に対して生じた法的権利に影響を与えません。 Komodo Platformは、アプリケーション全体またはアプリケーションのセクションまたは機能をいつでも削除することもできます。"),
         "eulaParagraphe18": MessageLookupByLibrary.simpleMessage(
-            "The provisions of previous paragraphs are for the benefit of Komodo Platform and its officers, directors, employees, agents, licensors, suppliers, and any third party information providers to the Application. Each of these individuals or entities shall have the right to assert and enforce those provisions directly against You on its own behalf.\n\n"),
+            "前の段落の規定は、Komodo Platformおよびその役員、取締役、従業員、代理店、ライセンサー、サプライヤー、およびアプリケーションの第三者情報プロバイダーの利益のためです。これらの個人または団体のそれぞれは、自分自身に代わってこれらの条項を直接あなたに対して主張および実施する権利を有します。"),
         "eulaParagraphe19": MessageLookupByLibrary.simpleMessage(
             "We might be required to retain and use personal data to meet our internal and external audit requirements, for data security purposes and as we believe to be necessary or appropriate: \n(a) to comply with our obligations under applicable law and regulations, which may include laws and regulations outside your country of residence;\n(b) to respond to requests from courts, law enforcement agencies, regulatory agencies, and other public and government authorities, which may include such authorities outside your country of residence; \n(c) to monitor compliance with and enforce our Platform terms and conditions;\n(d) to carry out anti-money laundering, sanctions or Know Your Customer checks as required by applicable laws and regulations; \n(e) to protect our rights, privacy, safety, property, or those of other persons. We may also be required to use and retain personal data after You have closed your account for legal, regulatory and compliance reasons, such as the prevention, detection or investigation of a crime; loss prevention; or fraud prevention. \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on July 3, 2019\n\n"),
         "eulaParagraphe2": MessageLookupByLibrary.simpleMessage(
@@ -262,214 +206,157 @@ class MessageLookup extends MessageLookupByLibrary {
         "eulaTitle8": MessageLookupByLibrary.simpleMessage("Backups\n\n"),
         "eulaTitle9":
             MessageLookupByLibrary.simpleMessage("GENERAL WARNING\n\n"),
-        "exampleHintSeed": MessageLookupByLibrary.simpleMessage(
-            "Example: build case level ..."),
-        "exchangeTitle": MessageLookupByLibrary.simpleMessage("EXCHANGE"),
-        "faucetName": MessageLookupByLibrary.simpleMessage("FAUCET"),
-        "feedback": MessageLookupByLibrary.simpleMessage("Share Log File"),
-        "frenchLanguage": MessageLookupByLibrary.simpleMessage("French"),
-        "from": MessageLookupByLibrary.simpleMessage("From"),
-        "gas": MessageLookupByLibrary.simpleMessage("Gas"),
-        "gasPrice": MessageLookupByLibrary.simpleMessage("Gas price"),
+        "exampleHintSeed":
+            MessageLookupByLibrary.simpleMessage("例: build case level …"),
+        "exchangeTitle": MessageLookupByLibrary.simpleMessage("交換"),
+        "feedback": MessageLookupByLibrary.simpleMessage("フィードバックを送信"),
+        "from": MessageLookupByLibrary.simpleMessage("送信元"),
         "getBackupPhrase": MessageLookupByLibrary.simpleMessage(
-            "Important: Back up your seed phrase before proceeding!"),
-        "goToPorfolio": MessageLookupByLibrary.simpleMessage("Go to portfolio"),
-        "hintConfirmPassword":
-            MessageLookupByLibrary.simpleMessage("Confirm Password"),
-        "hintCurrentPassword":
-            MessageLookupByLibrary.simpleMessage("Current password"),
-        "hintEnterPassword":
-            MessageLookupByLibrary.simpleMessage("Enter your password"),
-        "hintEnterSeedPhrase":
-            MessageLookupByLibrary.simpleMessage("Enter your seed phrase"),
+            "重要 : 続行する前にパスフレーズのバックアップを行なってください!"),
+        "goToPorfolio": MessageLookupByLibrary.simpleMessage("ポートフォリオへ移動"),
+        "hintConfirmPassword": MessageLookupByLibrary.simpleMessage("パスワード確認"),
+        "hintCurrentPassword": MessageLookupByLibrary.simpleMessage("現在のパスワード"),
+        "hintEnterPassword": MessageLookupByLibrary.simpleMessage("パスワード入力"),
+        "hintEnterSeedPhrase": MessageLookupByLibrary.simpleMessage("パスフレーズ入力"),
         "hintNameYourWallet":
-            MessageLookupByLibrary.simpleMessage("Name your wallet"),
-        "hintPassword": MessageLookupByLibrary.simpleMessage("Password"),
-        "history": MessageLookupByLibrary.simpleMessage("history"),
+            MessageLookupByLibrary.simpleMessage("ウォレットの名前を決めて下さい"),
+        "hintPassword": MessageLookupByLibrary.simpleMessage("パスワード"),
+        "history": MessageLookupByLibrary.simpleMessage("履歴"),
         "infoPasswordDialog": MessageLookupByLibrary.simpleMessage(
-            "Use a secure password and do not store it on the same device"),
-        "infoTrade1": MessageLookupByLibrary.simpleMessage(
-            "The swap request can not be undone and is a final event!"),
+            "パスワードを入力しない場合、ウォレットにアクセスする度にパスフレーズの入力が必要になります。"),
+        "infoTrade1": MessageLookupByLibrary.simpleMessage("スワップ要求は取り消し不可能です"),
         "infoTrade2": MessageLookupByLibrary.simpleMessage(
-            "This transaction can take up to 10 mins - DONT close this application!"),
+            "この取引には10分程度かかります - アプリを閉じないで下さい!"),
         "infoWalletPassword": MessageLookupByLibrary.simpleMessage(
-            "You have to provide a password for the wallet encryption due to security reasons."),
-        "legalTitle": MessageLookupByLibrary.simpleMessage("Legal"),
-        "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
+            "パスワードでウォレットを暗号化する事が出来ます。パスワードを利用しない場合、ウォレットにアクセスする度にパスフレーズの入力が必要になります。"),
+        "legalTitle": MessageLookupByLibrary.simpleMessage("規則"),
+        "loading": MessageLookupByLibrary.simpleMessage("ロード中"),
         "loadingOrderbook":
-            MessageLookupByLibrary.simpleMessage("Loading orderbook..."),
-        "lockScreen": MessageLookupByLibrary.simpleMessage("Screen is locked"),
-        "lockScreenAuth":
-            MessageLookupByLibrary.simpleMessage("Please authenticate!"),
-        "login": MessageLookupByLibrary.simpleMessage("login"),
-        "logout": MessageLookupByLibrary.simpleMessage("Log Out"),
-        "logoutOnExit": MessageLookupByLibrary.simpleMessage("Log Out on Exit"),
-        "logoutsettings":
-            MessageLookupByLibrary.simpleMessage("Log Out Settings"),
-        "makeAorder": MessageLookupByLibrary.simpleMessage("make an order"),
-        "makerpaymentID":
-            MessageLookupByLibrary.simpleMessage("Maker Payment ID"),
-        "marketplace": MessageLookupByLibrary.simpleMessage("Marketplace"),
-        "max": MessageLookupByLibrary.simpleMessage("MAX"),
-        "media": MessageLookupByLibrary.simpleMessage("News"),
-        "mediaBrowse": MessageLookupByLibrary.simpleMessage("BROWSE"),
-        "mediaBrowseFeed": MessageLookupByLibrary.simpleMessage("BROWSE FEED"),
-        "mediaBy": MessageLookupByLibrary.simpleMessage("By"),
+            MessageLookupByLibrary.simpleMessage("オーダーブックロード中..."),
+        "lockScreen": MessageLookupByLibrary.simpleMessage("画面がロックされています"),
+        "lockScreenAuth": MessageLookupByLibrary.simpleMessage("認証して下さい"),
+        "login": MessageLookupByLibrary.simpleMessage("ログイン"),
+        "logout": MessageLookupByLibrary.simpleMessage("ログアウト"),
+        "logoutOnExit": MessageLookupByLibrary.simpleMessage("退出と同時にログアウト"),
+        "logoutsettings": MessageLookupByLibrary.simpleMessage("ログアウト設定"),
+        "makeAorder": MessageLookupByLibrary.simpleMessage("オーダー作成"),
+        "makerpaymentID": MessageLookupByLibrary.simpleMessage("メイカーのペイメントID"),
+        "marketplace": MessageLookupByLibrary.simpleMessage("市場"),
+        "max": MessageLookupByLibrary.simpleMessage("最大"),
+        "media": MessageLookupByLibrary.simpleMessage("ニュース"),
+        "mediaBrowse": MessageLookupByLibrary.simpleMessage("閲覧"),
+        "mediaBrowseFeed": MessageLookupByLibrary.simpleMessage("フィードをブラウズ"),
+        "mediaBy": MessageLookupByLibrary.simpleMessage("毎"),
         "mediaNotSavedDescription":
-            MessageLookupByLibrary.simpleMessage("YOU HAVE NO SAVED ARTICLES"),
-        "mediaSaved": MessageLookupByLibrary.simpleMessage("SAVED"),
+            MessageLookupByLibrary.simpleMessage("保存された記事はありません"),
+        "mediaSaved": MessageLookupByLibrary.simpleMessage("保存済み"),
         "minValue": m10,
         "minValueBuy": m11,
-        "networkFee": MessageLookupByLibrary.simpleMessage("Network fee"),
-        "newAccount": MessageLookupByLibrary.simpleMessage("new account"),
-        "newAccountUpper": MessageLookupByLibrary.simpleMessage("New Account"),
-        "newsFeed": MessageLookupByLibrary.simpleMessage("News feed"),
-        "next": MessageLookupByLibrary.simpleMessage("next"),
-        "noArticles": MessageLookupByLibrary.simpleMessage(
-            "No news - please check back later!"),
-        "noFunds": MessageLookupByLibrary.simpleMessage("No funds"),
-        "noFundsDetected": MessageLookupByLibrary.simpleMessage(
-            "No funds available - please deposit."),
-        "noInternet":
-            MessageLookupByLibrary.simpleMessage("No Internet Connection"),
+        "networkFee": MessageLookupByLibrary.simpleMessage("ネットワーク手数料"),
+        "newAccount": MessageLookupByLibrary.simpleMessage("新規アカウント"),
+        "newAccountUpper": MessageLookupByLibrary.simpleMessage("新規アカウント"),
+        "newsFeed": MessageLookupByLibrary.simpleMessage("ニュースフィード"),
+        "next": MessageLookupByLibrary.simpleMessage("さらに"),
+        "noArticles":
+            MessageLookupByLibrary.simpleMessage("新着ニュース無し - 後で又チェックして下さい"),
+        "noFunds": MessageLookupByLibrary.simpleMessage("資金がありません"),
+        "noFundsDetected":
+            MessageLookupByLibrary.simpleMessage("資金がありません -入金して下さい"),
+        "noInternet": MessageLookupByLibrary.simpleMessage("インターネットへ繋がりません"),
         "noOrder": m3,
         "noOrderAvailable":
-            MessageLookupByLibrary.simpleMessage("Click to create an order"),
+            MessageLookupByLibrary.simpleMessage("クリックしてオーダーを発注"),
         "noRewardYet": MessageLookupByLibrary.simpleMessage(
-            "No reward claimable - please try again in 1h."),
-        "noSwaps": MessageLookupByLibrary.simpleMessage("No history."),
-        "noTxs": MessageLookupByLibrary.simpleMessage("No Transactions"),
-        "notEnoughEth": MessageLookupByLibrary.simpleMessage(
-            "Not enough ETH for transaction!"),
+            "請求出来る報酬はありません。1時間後にもう一度試して下さい。"),
+        "noSwaps": MessageLookupByLibrary.simpleMessage("履歴無し"),
+        "noTxs": MessageLookupByLibrary.simpleMessage("取引無し"),
+        "notEnoughEth":
+            MessageLookupByLibrary.simpleMessage("取引のためのETHが不足しています!"),
         "notEnoughtBalanceForFee": MessageLookupByLibrary.simpleMessage(
-            "Not enough balance for fees - trade a smaller amount"),
+            "手数料支払いの残高が足りません - 少額でトレードして下さい"),
         "numberAssets": m4,
-        "orderCancel": m13,
-        "orderCreated": MessageLookupByLibrary.simpleMessage("Order created"),
-        "orderCreatedInfo":
-            MessageLookupByLibrary.simpleMessage("Order succsessfully created"),
-        "orderMatched": MessageLookupByLibrary.simpleMessage("Order matched"),
-        "orderMatching": MessageLookupByLibrary.simpleMessage("Order matching"),
-        "orders": MessageLookupByLibrary.simpleMessage("orders"),
-        "paidWith": MessageLookupByLibrary.simpleMessage("Paid with "),
-        "placeOrder": MessageLookupByLibrary.simpleMessage("Place your order"),
-        "portfolio": MessageLookupByLibrary.simpleMessage("Portfolio"),
-        "price": MessageLookupByLibrary.simpleMessage("price"),
-        "receive": MessageLookupByLibrary.simpleMessage("RECEIVE"),
-        "receiveLower": MessageLookupByLibrary.simpleMessage("Receive"),
-        "recommendSeedMessage": MessageLookupByLibrary.simpleMessage(
-            "We recommend storing it offline."),
-        "remove": MessageLookupByLibrary.simpleMessage("Disable"),
-        "requestedTrade":
-            MessageLookupByLibrary.simpleMessage("Requested Trade"),
-        "restoreWallet": MessageLookupByLibrary.simpleMessage("RESTORE"),
-        "searchFilterCoin":
-            MessageLookupByLibrary.simpleMessage("Search a coin"),
-        "searchFilterSubtitleERC":
-            MessageLookupByLibrary.simpleMessage("Select all ERC tokens"),
-        "searchFilterSubtitleSmartChain":
-            MessageLookupByLibrary.simpleMessage("Select all SmartChains"),
-        "searchFilterSubtitleutxo":
-            MessageLookupByLibrary.simpleMessage("Select all UTXO coins"),
-        "security": MessageLookupByLibrary.simpleMessage("Security"),
+        "orderCreated": MessageLookupByLibrary.simpleMessage("オーダーが作られました"),
+        "orderCreatedInfo": MessageLookupByLibrary.simpleMessage("オーダー作成に成功"),
+        "orderMatched": MessageLookupByLibrary.simpleMessage("オーダーがマッチしました"),
+        "orderMatching": MessageLookupByLibrary.simpleMessage("オーダーマッチング"),
+        "orders": MessageLookupByLibrary.simpleMessage("オーダー"),
+        "paidWith": MessageLookupByLibrary.simpleMessage("支払い方法"),
+        "placeOrder": MessageLookupByLibrary.simpleMessage("注文する"),
+        "portfolio": MessageLookupByLibrary.simpleMessage("ポートフォリオ"),
+        "price": MessageLookupByLibrary.simpleMessage("価格"),
+        "receive": MessageLookupByLibrary.simpleMessage("受け取り"),
+        "receiveLower": MessageLookupByLibrary.simpleMessage("受け取り"),
+        "recommendSeedMessage":
+            MessageLookupByLibrary.simpleMessage("オフラインに保存する事を推奨します。"),
+        "requestedTrade": MessageLookupByLibrary.simpleMessage("注文された取引"),
+        "restoreWallet": MessageLookupByLibrary.simpleMessage("復元"),
+        "security": MessageLookupByLibrary.simpleMessage("セキュリティ"),
         "seeOrders": m5,
-        "seedPhraseTitle":
-            MessageLookupByLibrary.simpleMessage("Your new Seed Phrase"),
-        "selectCoin": MessageLookupByLibrary.simpleMessage("Select coin"),
-        "selectCoinInfo": MessageLookupByLibrary.simpleMessage(
-            "Select the coins you want to add to your portfolio."),
-        "selectCoinTitle":
-            MessageLookupByLibrary.simpleMessage("Activate coins:"),
-        "selectCoinToBuy": MessageLookupByLibrary.simpleMessage(
-            "Select the coin you want to BUY"),
-        "selectCoinToSell": MessageLookupByLibrary.simpleMessage(
-            "Select the coin you want to SELL"),
-        "selectPaymentMethod":
-            MessageLookupByLibrary.simpleMessage("Select Your Payment Method"),
-        "sell": MessageLookupByLibrary.simpleMessage("Sell"),
-        "send": MessageLookupByLibrary.simpleMessage("SEND"),
-        "setUpPassword":
-            MessageLookupByLibrary.simpleMessage("SET UP A PASSWORD"),
-        "settingDialogSpan1": MessageLookupByLibrary.simpleMessage(
-            "Are you sure you want to delete "),
-        "settingDialogSpan2": MessageLookupByLibrary.simpleMessage(" wallet?"),
+        "seedPhraseTitle": MessageLookupByLibrary.simpleMessage("新しいパスフレーズ"),
+        "selectCoin": MessageLookupByLibrary.simpleMessage("コイン選択"),
+        "selectCoinInfo":
+            MessageLookupByLibrary.simpleMessage("ポートフォリオに追加するコインを選んでください。"),
+        "selectCoinTitle": MessageLookupByLibrary.simpleMessage("有効なコイン:"),
+        "selectCoinToBuy": MessageLookupByLibrary.simpleMessage("購入したいコインを選択"),
+        "selectCoinToSell": MessageLookupByLibrary.simpleMessage("売却したいコインを選択"),
+        "selectPaymentMethod": MessageLookupByLibrary.simpleMessage("支払い方法を選択"),
+        "sell": MessageLookupByLibrary.simpleMessage("売却"),
+        "send": MessageLookupByLibrary.simpleMessage("送金"),
+        "setUpPassword": MessageLookupByLibrary.simpleMessage("パスワードを設定"),
+        "settingDialogSpan1": MessageLookupByLibrary.simpleMessage("本当に消去しますか"),
+        "settingDialogSpan2": MessageLookupByLibrary.simpleMessage("ウォレット？"),
         "settingDialogSpan3":
-            MessageLookupByLibrary.simpleMessage("If so, make sure you "),
-        "settingDialogSpan4":
-            MessageLookupByLibrary.simpleMessage(" record your seed phrase."),
-        "settingDialogSpan5": MessageLookupByLibrary.simpleMessage(
-            " In order to restore your wallet in the future."),
-        "settingLanguageTitle":
-            MessageLookupByLibrary.simpleMessage("Languages"),
-        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
-        "share": MessageLookupByLibrary.simpleMessage("SHARE"),
+            MessageLookupByLibrary.simpleMessage("本当なら、次のことを確認して下さい"),
+        "settingDialogSpan4": MessageLookupByLibrary.simpleMessage("パスフレーズを保存"),
+        "settingDialogSpan5":
+            MessageLookupByLibrary.simpleMessage("将来ウォレットを復元する為に。"),
+        "settings": MessageLookupByLibrary.simpleMessage("設定"),
         "shareAddress": m6,
-        "showMyOrders": MessageLookupByLibrary.simpleMessage("SHOW MY ORDERS"),
+        "showMyOrders": MessageLookupByLibrary.simpleMessage("オーダーを見る"),
         "signInWithPassword":
-            MessageLookupByLibrary.simpleMessage("Sign in with password"),
-        "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage(
-            "Forgot the password? Restore wallet from seed"),
-        "simplifiedChinese": MessageLookupByLibrary.simpleMessage("simplified"),
-        "step": MessageLookupByLibrary.simpleMessage("Step"),
-        "success": MessageLookupByLibrary.simpleMessage("Success!"),
-        "swap": MessageLookupByLibrary.simpleMessage("swap"),
-        "swapDetailTitle":
-            MessageLookupByLibrary.simpleMessage("CONFIRM EXCHANGE DETAILS"),
-        "swapErcAmount": m14,
-        "swapFailed": MessageLookupByLibrary.simpleMessage("Swap failed"),
-        "swapID": MessageLookupByLibrary.simpleMessage("Swap ID"),
-        "swapOngoing": MessageLookupByLibrary.simpleMessage("Swap ongoing"),
-        "swapSucceful": MessageLookupByLibrary.simpleMessage("Swap successful"),
-        "tagERC20": MessageLookupByLibrary.simpleMessage("ERC20"),
-        "tagKMD": MessageLookupByLibrary.simpleMessage("KMD"),
-        "takerpaymentsID":
-            MessageLookupByLibrary.simpleMessage("Taker Payment ID"),
-        "timeOut": MessageLookupByLibrary.simpleMessage("Timeout"),
-        "titleCreatePassword":
-            MessageLookupByLibrary.simpleMessage("CREATE A PASSWORD"),
-        "titleCurrentAsk":
-            MessageLookupByLibrary.simpleMessage("Order selected"),
-        "to": MessageLookupByLibrary.simpleMessage("To"),
-        "toAddress": MessageLookupByLibrary.simpleMessage("To address:"),
-        "trade": MessageLookupByLibrary.simpleMessage("TRADE"),
-        "tradeCompleted":
-            MessageLookupByLibrary.simpleMessage("SWAP COMPLETED!"),
-        "tradeDetail": MessageLookupByLibrary.simpleMessage("TRADE DETAILS"),
-        "tradingFee": MessageLookupByLibrary.simpleMessage("trading fee:"),
-        "traditionalChinese":
-            MessageLookupByLibrary.simpleMessage("traditional"),
-        "txBlock": MessageLookupByLibrary.simpleMessage("Block"),
-        "txConfirmations":
-            MessageLookupByLibrary.simpleMessage("Confirmations"),
-        "txConfirmed": MessageLookupByLibrary.simpleMessage("CONFIRMED"),
-        "txFee": MessageLookupByLibrary.simpleMessage("Fee"),
-        "txFeeTitle": MessageLookupByLibrary.simpleMessage("transaction fee:"),
-        "txHash": MessageLookupByLibrary.simpleMessage("Transaction ID"),
-        "txNotConfirmed": MessageLookupByLibrary.simpleMessage("UNCONFIRMED"),
-        "unlock": MessageLookupByLibrary.simpleMessage("unlock"),
-        "value": MessageLookupByLibrary.simpleMessage("Value: "),
-        "version": MessageLookupByLibrary.simpleMessage("version"),
-        "viewSeed": MessageLookupByLibrary.simpleMessage("View Seed"),
-        "volumes": MessageLookupByLibrary.simpleMessage("Volumes"),
-        "warningShareLogs": MessageLookupByLibrary.simpleMessage(
-            "Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!"),
+            MessageLookupByLibrary.simpleMessage("パスワードでサインイン"),
+        "signInWithSeedPhrase":
+            MessageLookupByLibrary.simpleMessage("パスフレーズでサインイン"),
+        "step": MessageLookupByLibrary.simpleMessage("ステップ"),
+        "success": MessageLookupByLibrary.simpleMessage("成功"),
+        "swap": MessageLookupByLibrary.simpleMessage("スワップ"),
+        "swapDetailTitle": MessageLookupByLibrary.simpleMessage("交換詳細を確認"),
+        "swapFailed": MessageLookupByLibrary.simpleMessage("スワップ失敗"),
+        "swapID": MessageLookupByLibrary.simpleMessage("IDスワップ"),
+        "swapOngoing": MessageLookupByLibrary.simpleMessage("スワップ中"),
+        "swapSucceful": MessageLookupByLibrary.simpleMessage("スワップ成功"),
+        "takerpaymentsID": MessageLookupByLibrary.simpleMessage("テイカーのペイメントID"),
+        "timeOut": MessageLookupByLibrary.simpleMessage("時間切れ"),
+        "titleCreatePassword": MessageLookupByLibrary.simpleMessage("パスワーを作る"),
+        "to": MessageLookupByLibrary.simpleMessage("送信先"),
+        "toAddress": MessageLookupByLibrary.simpleMessage("送金先アドレス:"),
+        "trade": MessageLookupByLibrary.simpleMessage("取引"),
+        "tradeCompleted": MessageLookupByLibrary.simpleMessage("スワップ完了!"),
+        "tradeDetail": MessageLookupByLibrary.simpleMessage("取引詳細"),
+        "txBlock": MessageLookupByLibrary.simpleMessage("ブロック"),
+        "txConfirmations": MessageLookupByLibrary.simpleMessage("確認"),
+        "txConfirmed": MessageLookupByLibrary.simpleMessage("確認済み"),
+        "txFee": MessageLookupByLibrary.simpleMessage("手数料"),
+        "txHash": MessageLookupByLibrary.simpleMessage("トランザクションID"),
+        "txNotConfirmed": MessageLookupByLibrary.simpleMessage("未確認"),
+        "unlock": MessageLookupByLibrary.simpleMessage("アンロック"),
+        "value": MessageLookupByLibrary.simpleMessage("値:"),
+        "version": MessageLookupByLibrary.simpleMessage("バージョン"),
+        "viewSeed": MessageLookupByLibrary.simpleMessage("パスフレーズ確認"),
+        "volumes": MessageLookupByLibrary.simpleMessage("取引高"),
         "welcomeInfo": MessageLookupByLibrary.simpleMessage(
-            "AtomicDEX mobile is a next generation multi-coin wallet with native third generation DEX functionality and more."),
-        "welcomeLetSetUp":
-            MessageLookupByLibrary.simpleMessage("LET\'S GET SET UP!"),
+            "AtomicDEXモバイルは第三世代のDEX機能を搭載した次世代型のマルチコインウォレットです。"),
+        "welcomeLetSetUp": MessageLookupByLibrary.simpleMessage("セットアップしましょう!"),
         "welcomeName": MessageLookupByLibrary.simpleMessage("AtomicDEX"),
-        "welcomeTitle": MessageLookupByLibrary.simpleMessage("WELCOME"),
-        "welcomeWallet": MessageLookupByLibrary.simpleMessage("wallet"),
-        "withdraw": MessageLookupByLibrary.simpleMessage("Withdraw"),
-        "withdrawConfirm":
-            MessageLookupByLibrary.simpleMessage("Confirm Withdrawal"),
+        "welcomeTitle": MessageLookupByLibrary.simpleMessage("ようこそ"),
+        "welcomeWallet": MessageLookupByLibrary.simpleMessage("ウォレット"),
+        "withdraw": MessageLookupByLibrary.simpleMessage("出金"),
+        "withdrawConfirm": MessageLookupByLibrary.simpleMessage("出金確認"),
         "withdrawValue": m7,
-        "wrongPassword": MessageLookupByLibrary.simpleMessage(
-            "The passwords do not match. Please try again."),
-        "youAreSending":
-            MessageLookupByLibrary.simpleMessage("You are sending:"),
+        "wrongPassword":
+            MessageLookupByLibrary.simpleMessage("パスワードが一致しません、もう一度試して下さい。"),
+        "youAreSending": MessageLookupByLibrary.simpleMessage("送金しています:"),
         "youWillReceiveClaim": m8,
-        "youWillReceived":
-            MessageLookupByLibrary.simpleMessage("You will receive: ")
+        "youWillReceived": MessageLookupByLibrary.simpleMessage("受け取り額:")
       };
 }

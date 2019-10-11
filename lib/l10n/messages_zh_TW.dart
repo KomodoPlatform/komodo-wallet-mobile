@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a zh locale. All the
+// This is a library that provides messages for a zh_hans locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -17,116 +17,116 @@ final MessageLookup messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'zh';
+  String get localeName => 'zh_TW';
 
   static dynamic m0(dynamic name) => "成功新增 ${name}!";
 
-  static dynamic m9(dynamic seconde) => "訂單匹配中, 請稍等 ${seconde} 秒!";
+  static dynamic m9(dynamic seconde) => "订单匹配中, 请稍等 ${seconde}秒!";
 
-  static dynamic m1(dynamic index) => "請輸入第 ${index}. 個字";
+  static dynamic m1(dynamic index) => "请输入第 ${index}. 个字";
 
-  static dynamic m2(dynamic index) => "您助記詞的第 ${index}. 個字是什麼？";
+  static dynamic m2(dynamic index) => "您助记词的第 ${index}. 个字是什么？";
 
   static dynamic m10(dynamic coinName, dynamic number) =>
-      "最低可賣出數量 ${number} ${coinName}";
+      "最低可卖出数量 ${number} ${coinName}";
 
   static dynamic m11(dynamic coinName, dynamic number) =>
-      "最低可買入數量 ${number} ${coinName}";
+      "最低可买入数量 ${number} ${coinName}";
 
-  static dynamic m3(dynamic coinName) => "當前無 ${coinName} 匹配訂單 - 請稍後再試, 或建立訂單。";
+  static dynamic m3(dynamic coinName) => "当前无 ${coinName} 匹配订单 - 请稍后再试, 或建立订单。";
 
-  static dynamic m4(dynamic assets) => "${assets} 資產";
+  static dynamic m4(dynamic assets) => "${assets}资产";
 
-  static dynamic m5(dynamic amount) => "點擊查看${amount}訂單";
+  static dynamic m5(dynamic amount) => "点击查看${amount}订单";
 
   static dynamic m6(dynamic coinName, dynamic address) =>
-      "我的 ${coinName} 地址: \\n${address}";
+      "我的 ${coinName}地址: \\n${address}";
 
   static dynamic m7(dynamic amount, dynamic coinName) =>
-      "提領${amount} ${coinName}";
+      "提领 ${amount} ${coinName}";
 
-  static dynamic m8(dynamic amount, dynamic coin) => "您將收到${amount} ${coin}";
+  static dynamic m8(dynamic amount, dynamic coin) => "您将收到${amount} ${coin}";
 
   final Map<String, dynamic> messages =
       _notInlinedMessages(_notInlinedMessages);
   static dynamic _notInlinedMessages(dynamic _) => <String, Function>{
         "accepteula":
-            MessageLookupByLibrary.simpleMessage("同意接受終端使用者授權協議 (EULA)"),
-        "accepttac": MessageLookupByLibrary.simpleMessage("接受條款與條件"),
+            MessageLookupByLibrary.simpleMessage("同意接受终端使用者授权协议 (EULA)"),
+        "accepttac": MessageLookupByLibrary.simpleMessage("接受条款与条件"),
         "activateAccessBiometric":
-            MessageLookupByLibrary.simpleMessage("開啟生物識別功能"),
-        "activateAccessPin": MessageLookupByLibrary.simpleMessage("啟動PIN碼保護"),
-        "addCoin": MessageLookupByLibrary.simpleMessage("新增代幣"),
+            MessageLookupByLibrary.simpleMessage("开启生物识别功能"),
+        "activateAccessPin": MessageLookupByLibrary.simpleMessage("启动PIN码保护"),
+        "addCoin": MessageLookupByLibrary.simpleMessage("新增代币"),
         "addingCoinSuccess": m0,
-        "addressSend": MessageLookupByLibrary.simpleMessage("收款人錢包地址"),
-        "allowCustomSeed": MessageLookupByLibrary.simpleMessage("允許自訂助記詞"),
-        "amount": MessageLookupByLibrary.simpleMessage("數量"),
-        "amountToSell": MessageLookupByLibrary.simpleMessage("欲出售數量"),
+        "addressSend": MessageLookupByLibrary.simpleMessage("收款人钱包地址"),
+        "allowCustomSeed": MessageLookupByLibrary.simpleMessage("允许自订助记词"),
+        "amount": MessageLookupByLibrary.simpleMessage("数量"),
+        "amountToSell": MessageLookupByLibrary.simpleMessage("欲出售数量"),
         "appName": MessageLookupByLibrary.simpleMessage("atomicDEX"),
-        "areYouSure": MessageLookupByLibrary.simpleMessage("您確定嗎？"),
-        "articleFrom": MessageLookupByLibrary.simpleMessage("AtomicDEX 新聞"),
+        "areYouSure": MessageLookupByLibrary.simpleMessage("您确定吗？"),
+        "articleFrom": MessageLookupByLibrary.simpleMessage("AtomicDEX 新闻"),
         "availableVolume": MessageLookupByLibrary.simpleMessage("最大卷"),
         "back": MessageLookupByLibrary.simpleMessage("上一步"),
-        "backupTitle": MessageLookupByLibrary.simpleMessage("備份"),
-        "bestAvailableRate": MessageLookupByLibrary.simpleMessage("當前最佳匯率"),
-        "buy": MessageLookupByLibrary.simpleMessage("買"),
+        "backupTitle": MessageLookupByLibrary.simpleMessage("备份"),
+        "bestAvailableRate": MessageLookupByLibrary.simpleMessage("当前最佳汇率"),
+        "buy": MessageLookupByLibrary.simpleMessage("买"),
         "buySuccessWaiting":
-            MessageLookupByLibrary.simpleMessage("兌換需求發布, 請稍後！"),
+            MessageLookupByLibrary.simpleMessage("兑换需求发布, 请稍后！"),
         "buySuccessWaitingError": m9,
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
-        "changePin": MessageLookupByLibrary.simpleMessage("變更PIN碼"),
+        "changePin": MessageLookupByLibrary.simpleMessage("变更PIN码"),
         "checkOut": MessageLookupByLibrary.simpleMessage("Check Out"),
-        "checkSeedPhrase": MessageLookupByLibrary.simpleMessage("請確認助記詞"),
-        "checkSeedPhraseButton1": MessageLookupByLibrary.simpleMessage("繼續"),
+        "checkSeedPhrase": MessageLookupByLibrary.simpleMessage("请确认助记词"),
+        "checkSeedPhraseButton1": MessageLookupByLibrary.simpleMessage("继续"),
         "checkSeedPhraseButton2":
-            MessageLookupByLibrary.simpleMessage("返回並再次檢查"),
+            MessageLookupByLibrary.simpleMessage("返回并再次检查"),
         "checkSeedPhraseHint": m1,
         "checkSeedPhraseInfo": MessageLookupByLibrary.simpleMessage(
-            "您的助記詞是很重要的所以我們要確認您有正確備份。我們將問您三個有關您的助記詞的問題以確保您可以隨時恢復錢包。"),
+            "您的助记词是很重要的所以我们要确认您有正确备份。我们将问您三个有关您的助记词的问题以确保您可以随时恢复钱包。"),
         "checkSeedPhraseSubtile": m2,
         "checkSeedPhraseTitle":
-            MessageLookupByLibrary.simpleMessage("請再次確認助記詞"),
-        "claim": MessageLookupByLibrary.simpleMessage("領取"),
-        "claimTitle": MessageLookupByLibrary.simpleMessage("領取您的KMD獎勵？"),
-        "clickToSee": MessageLookupByLibrary.simpleMessage("點擊查看"),
-        "clipboard": MessageLookupByLibrary.simpleMessage("已複制"),
-        "clipboardCopy": MessageLookupByLibrary.simpleMessage("已複制"),
-        "close": MessageLookupByLibrary.simpleMessage("關閉"),
+            MessageLookupByLibrary.simpleMessage("请再次确认助记词"),
+        "claim": MessageLookupByLibrary.simpleMessage("领取"),
+        "claimTitle": MessageLookupByLibrary.simpleMessage("领取您的KMD奖励？"),
+        "clickToSee": MessageLookupByLibrary.simpleMessage("点击查看"),
+        "clipboard": MessageLookupByLibrary.simpleMessage("已复制"),
+        "clipboardCopy": MessageLookupByLibrary.simpleMessage("已复制"),
+        "close": MessageLookupByLibrary.simpleMessage("关闭"),
         "code": MessageLookupByLibrary.simpleMessage("Code: "),
-        "comingSoon": MessageLookupByLibrary.simpleMessage(" 即將上線，敬請期待。。。"),
-        "commingsoon": MessageLookupByLibrary.simpleMessage("交易明細載入中！"),
-        "commingsoonGeneral": MessageLookupByLibrary.simpleMessage("細節戴入中！"),
-        "commissionFee": MessageLookupByLibrary.simpleMessage("成交費用"),
-        "confirm": MessageLookupByLibrary.simpleMessage("確認"),
-        "confirmPassword": MessageLookupByLibrary.simpleMessage("確認密碼"),
-        "confirmPin": MessageLookupByLibrary.simpleMessage("確認PIN碼"),
-        "confirmSeed": MessageLookupByLibrary.simpleMessage("確認助記詞"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage(" 即将上线，敬请期待。。。"),
+        "commingsoon": MessageLookupByLibrary.simpleMessage("交易明细载入中！"),
+        "commingsoonGeneral": MessageLookupByLibrary.simpleMessage("细节戴入中！"),
+        "commissionFee": MessageLookupByLibrary.simpleMessage("成交费用"),
+        "confirm": MessageLookupByLibrary.simpleMessage("确认"),
+        "confirmPassword": MessageLookupByLibrary.simpleMessage("确认密码"),
+        "confirmPin": MessageLookupByLibrary.simpleMessage("确认PIN码"),
+        "confirmSeed": MessageLookupByLibrary.simpleMessage("确认助记词"),
         "confirmeula": MessageLookupByLibrary.simpleMessage(
-            "我了解點擊以下的按鈕，即表示我已閱讀及接受終端使用者授權協議(EULA) & 使用條款與條件 。"),
+            "我了解点击以下的按钮，即表示我已阅读及接受终端使用者授权协议(EULA) & 使用条款与条件 。"),
         "connecting": MessageLookupByLibrary.simpleMessage("串接中。。。"),
         "create": MessageLookupByLibrary.simpleMessage("交易"),
-        "createAWallet": MessageLookupByLibrary.simpleMessage("創建錢包"),
-        "createPin": MessageLookupByLibrary.simpleMessage("創建PIN碼"),
-        "decryptingWallet": MessageLookupByLibrary.simpleMessage("錢包解密中"),
-        "delete": MessageLookupByLibrary.simpleMessage("刪除"),
-        "deleteWallet": MessageLookupByLibrary.simpleMessage("刪除錢包"),
+        "createAWallet": MessageLookupByLibrary.simpleMessage("创建钱包"),
+        "createPin": MessageLookupByLibrary.simpleMessage("创建PIN码"),
+        "decryptingWallet": MessageLookupByLibrary.simpleMessage("钱包解密中"),
+        "delete": MessageLookupByLibrary.simpleMessage("删除"),
+        "deleteWallet": MessageLookupByLibrary.simpleMessage("删除钱包"),
         "dex": MessageLookupByLibrary.simpleMessage("DEX"),
-        "disclaimerAndTos": MessageLookupByLibrary.simpleMessage("免責聲明 & 使用條款"),
+        "disclaimerAndTos": MessageLookupByLibrary.simpleMessage("免责声明 & 使用条款"),
         "done": MessageLookupByLibrary.simpleMessage("完成"),
-        "dontWantPassword": MessageLookupByLibrary.simpleMessage("我不想要使用密碼"),
-        "encryptingWallet": MessageLookupByLibrary.simpleMessage("錢包加密中"),
-        "enterPinCode": MessageLookupByLibrary.simpleMessage("輸入您的PIN碼"),
-        "enterSeedPhrase": MessageLookupByLibrary.simpleMessage("輸入助記詞"),
-        "enterpassword": MessageLookupByLibrary.simpleMessage("繼續前請輸入密碼。"),
-        "errorAmountBalance": MessageLookupByLibrary.simpleMessage("餘額不足"),
-        "errorNotAValidAddress": MessageLookupByLibrary.simpleMessage("錢包地址錯誤"),
-        "errorTryAgain": MessageLookupByLibrary.simpleMessage("失敗, 請再重新操作一次"),
-        "errorTryLater": MessageLookupByLibrary.simpleMessage("發生了錯誤，請稍後再試"),
-        "errorValueEmpty": MessageLookupByLibrary.simpleMessage("金額太高或低"),
-        "errorValueNotEmpty": MessageLookupByLibrary.simpleMessage("請輸入資料"),
-        "estimateValue": MessageLookupByLibrary.simpleMessage("預估總金額"),
-        "ethFee": MessageLookupByLibrary.simpleMessage("ETH fee\n"),
-        "ethNotActive": MessageLookupByLibrary.simpleMessage("請激活ETH。"),
+        "dontWantPassword": MessageLookupByLibrary.simpleMessage("我不想要使用密码"),
+        "encryptingWallet": MessageLookupByLibrary.simpleMessage("钱包加密中"),
+        "enterPinCode": MessageLookupByLibrary.simpleMessage("输入您的PIN码"),
+        "enterSeedPhrase": MessageLookupByLibrary.simpleMessage("输入助记词"),
+        "enterpassword": MessageLookupByLibrary.simpleMessage("继续前请输入密码。"),
+        "errorAmountBalance": MessageLookupByLibrary.simpleMessage("余额不足"),
+        "errorNotAValidAddress": MessageLookupByLibrary.simpleMessage("钱包地址错误"),
+        "errorTryAgain": MessageLookupByLibrary.simpleMessage("失败, 请再重新操作一次"),
+        "errorTryLater": MessageLookupByLibrary.simpleMessage("发生了错误，请稍后再试"),
+        "errorValueEmpty": MessageLookupByLibrary.simpleMessage("金额太高或低"),
+        "errorValueNotEmpty": MessageLookupByLibrary.simpleMessage("请输入资料"),
+        "estimateValue": MessageLookupByLibrary.simpleMessage("预估总金额"),
+        "ethFee": MessageLookupByLibrary.simpleMessage("ETH费用"),
+        "ethNotActive": MessageLookupByLibrary.simpleMessage("请激活ETH。"),
         "eulaParagraphe1": MessageLookupByLibrary.simpleMessage(
             "This End-User License Agreement (\'EULA\') is a legal agreement between you and Komodo Platform.\n\nThis EULA agreement governs your acquisition and use of our atomicDEX mobile software (\'Software\', \'Mobile Application\', \'Application\' or \'App\') directly from Komodo Platform or indirectly through a Komodo Platform authorized entity, reseller or distributor (a \'Distributor\').\nPlease read this EULA agreement carefully before completing the installation process and using the atomicDEX mobile software. It provides a license to use the atomicDEX mobile software and contains warranty information and liability disclaimers.\nIf you register for the beta program of the atomicDEX mobile software, this EULA agreement will also govern that trial. By clicking \'accept\' or installing and/or using the atomicDEX mobile software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.\nIf you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.\nThis EULA agreement shall apply only to the Software supplied by Komodo Platform herewith regardless of whether other software is referred to or described herein. The terms also apply to any Komodo Platform updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply.\nLicense Grant\nKomodo Platform hereby grants you a personal, non-transferable, non-exclusive licence to use the atomicDEX mobile software on your devices in accordance with the terms of this EULA agreement.\n\nYou are permitted to load the atomicDEX mobile software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum security and resource requirements of the atomicDEX mobile software.\nYou are not permitted to:\nEdit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things\nReproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose\nUse the Software in any way which breaches any applicable local, national or international law\nuse the Software for any purpose that Komodo Platform considers is a breach of this EULA agreement\nIntellectual Property and Ownership\nKomodo Platform shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of Komodo Platform.\n\nKomodo Platform reserves the right to grant licences to use the Software to third parties.\nTermination\nThis EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to Komodo Platform.\nIt will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.\nGoverning Law\nThis EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Vietnam.\n\nThis document was last updated on July 3, 2019"),
         "eulaParagraphe10": MessageLookupByLibrary.simpleMessage(
@@ -158,7 +158,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "eulaParagraphe5": MessageLookupByLibrary.simpleMessage(
             "You are not allowed to decompile, decode, disassemble, rent, lease, loan, sell, sublicense, or create derivative works from the atomicDEX mobile application or the user content. Nor are You allowed to use any network monitoring or detection software to determine the software architecture, or extract information about usage or individuals’ or users’ identities. \nYou are not allowed to copy, modify, reproduce, republish, distribute, display, or transmit for commercial, non-profit or public purposes all or any portion of the application or the user content without our prior written authorization."),
         "eulaParagraphe6": MessageLookupByLibrary.simpleMessage(
-            "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. You must immediately notify us of any unauthorized uses of your account or any other breaches of security. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions.\n"),
+            "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. You must immediately notify us of any unauthorized uses of your account or any other breaches of security. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions."),
         "eulaParagraphe7": MessageLookupByLibrary.simpleMessage(
             "We are not responsible for seed-phrases residing in the Mobile Application. In no event shall we be held liable for any loss of any kind. It is your sole responsibility to maintain appropriate backup of your accounts/seedphrases."),
         "eulaParagraphe8": MessageLookupByLibrary.simpleMessage(
@@ -176,12 +176,13 @@ class MessageLookup extends MessageLookupByLibrary {
             "REPRESENTATIONS AND WARRANTIES, INDEMNIFICATION, AND LIMITATION OF LIABILITY\n"),
         "eulaTitle14":
             MessageLookupByLibrary.simpleMessage("GENERAL RISK FACTORS\n"),
-        "eulaTitle15": MessageLookupByLibrary.simpleMessage("INDEMNIFICATION"),
+        "eulaTitle15":
+            MessageLookupByLibrary.simpleMessage("INDEMNIFICATION\n"),
         "eulaTitle16": MessageLookupByLibrary.simpleMessage(
             "RISK DISCLOSURES RELATING TO THE WALLET\n"),
         "eulaTitle17": MessageLookupByLibrary.simpleMessage(
             "NO INVESTMENT ADVICE OR BROKERAGE\n"),
-        "eulaTitle18": MessageLookupByLibrary.simpleMessage("TERMINATION"),
+        "eulaTitle18": MessageLookupByLibrary.simpleMessage("TERMINATION\n"),
         "eulaTitle19":
             MessageLookupByLibrary.simpleMessage("THIRD PARTY RIGHTS\n"),
         "eulaTitle2": MessageLookupByLibrary.simpleMessage(
@@ -191,154 +192,153 @@ class MessageLookup extends MessageLookupByLibrary {
         "eulaTitle3": MessageLookupByLibrary.simpleMessage(
             "TERMS AND CONDITIONS OF USE AND DISCLAIMER\n"),
         "eulaTitle4": MessageLookupByLibrary.simpleMessage("GENERAL USE\n"),
-        "eulaTitle5": MessageLookupByLibrary.simpleMessage("MODIFICATIONS"),
+        "eulaTitle5": MessageLookupByLibrary.simpleMessage("MODIFICATIONS\n"),
         "eulaTitle6":
             MessageLookupByLibrary.simpleMessage("LIMITATIONS ON USE\n"),
         "eulaTitle7":
             MessageLookupByLibrary.simpleMessage("Accounts and membership\n"),
-        "eulaTitle8": MessageLookupByLibrary.simpleMessage("Backups"),
+        "eulaTitle8": MessageLookupByLibrary.simpleMessage("Backups\n"),
         "eulaTitle9": MessageLookupByLibrary.simpleMessage("GENERAL WARNING\n"),
         "exampleHintSeed":
             MessageLookupByLibrary.simpleMessage("例如： build case level 。。。"),
         "exchangeTitle": MessageLookupByLibrary.simpleMessage("交易中心"),
-        "feedback": MessageLookupByLibrary.simpleMessage("發送反饋"),
-        "from": MessageLookupByLibrary.simpleMessage("從"),
+        "feedback": MessageLookupByLibrary.simpleMessage("发送反馈"),
+        "from": MessageLookupByLibrary.simpleMessage("从"),
         "getBackupPhrase":
-            MessageLookupByLibrary.simpleMessage("重要提醒: 在繼續之前請記得備份助記詞 !"),
-        "goToPorfolio": MessageLookupByLibrary.simpleMessage("前往資產配置"),
-        "hintConfirmPassword": MessageLookupByLibrary.simpleMessage("確認密碼"),
-        "hintCurrentPassword": MessageLookupByLibrary.simpleMessage("當前密碼"),
-        "hintEnterPassword": MessageLookupByLibrary.simpleMessage("請輸入您的密碼"),
-        "hintEnterSeedPhrase": MessageLookupByLibrary.simpleMessage("請輸入您的助記詞"),
-        "hintNameYourWallet": MessageLookupByLibrary.simpleMessage("錢包名稱"),
-        "hintPassword": MessageLookupByLibrary.simpleMessage("密碼"),
-        "history": MessageLookupByLibrary.simpleMessage("歷史"),
+            MessageLookupByLibrary.simpleMessage("重要提醒: 在继续之前请记得备份助记词！"),
+        "goToPorfolio": MessageLookupByLibrary.simpleMessage("前往资产配置"),
+        "hintConfirmPassword": MessageLookupByLibrary.simpleMessage("确认密码"),
+        "hintCurrentPassword": MessageLookupByLibrary.simpleMessage("当前密码"),
+        "hintEnterPassword": MessageLookupByLibrary.simpleMessage("请输入您的密码"),
+        "hintEnterSeedPhrase": MessageLookupByLibrary.simpleMessage("请输入您的助记词"),
+        "hintNameYourWallet": MessageLookupByLibrary.simpleMessage("钱包名称"),
+        "hintPassword": MessageLookupByLibrary.simpleMessage("密码"),
+        "history": MessageLookupByLibrary.simpleMessage("历史"),
         "infoPasswordDialog":
-            MessageLookupByLibrary.simpleMessage("如果您不使用密碼，每次進入錢包時都需要輸入助記詞。"),
-        "infoTrade1": MessageLookupByLibrary.simpleMessage("兌換需求是無法撤銷的！"),
+            MessageLookupByLibrary.simpleMessage("如果您不使用密码，每次进入钱包时都需要输入助记词。"),
+        "infoTrade1": MessageLookupByLibrary.simpleMessage("兑换需求是无法撤销的！"),
         "infoTrade2":
-            MessageLookupByLibrary.simpleMessage("此交易時間可能長達 10 分鐘 - 請勿關閉應用程式！"),
+            MessageLookupByLibrary.simpleMessage("此交易时间可能长达 10 分钟 - 请勿关闭应用程式！"),
         "infoWalletPassword": MessageLookupByLibrary.simpleMessage(
-            "您可以選擇使用密碼加密您的錢包。如果您選擇不使用密碼，則每次進入錢包時都需要輸入助記詞。"),
-        "legalTitle": MessageLookupByLibrary.simpleMessage("條款 (目前只提供英文版)"),
-        "loading": MessageLookupByLibrary.simpleMessage("載入中。。。"),
-        "loadingOrderbook": MessageLookupByLibrary.simpleMessage("委託訂單載入中。。。"),
-        "lockScreen": MessageLookupByLibrary.simpleMessage("螢幕已鎖定"),
-        "lockScreenAuth": MessageLookupByLibrary.simpleMessage("請登入！"),
+            "您可以选择使用密码加密您的钱包。如果您选择不使用密码，则每次进入钱包时都需要输入助记词。"),
+        "legalTitle": MessageLookupByLibrary.simpleMessage("条款 (目前只提供英文版)"),
+        "loading": MessageLookupByLibrary.simpleMessage("载入中。。。"),
+        "loadingOrderbook": MessageLookupByLibrary.simpleMessage("委托订单载入中。。。"),
+        "lockScreen": MessageLookupByLibrary.simpleMessage("萤幕已锁定"),
+        "lockScreenAuth": MessageLookupByLibrary.simpleMessage("请登入！"),
         "login": MessageLookupByLibrary.simpleMessage("登入"),
         "logout": MessageLookupByLibrary.simpleMessage("登出"),
-        "logoutOnExit": MessageLookupByLibrary.simpleMessage("離開時登出"),
-        "logoutsettings": MessageLookupByLibrary.simpleMessage("登出設定"),
-        "makeAorder": MessageLookupByLibrary.simpleMessage("建立訂單"),
-        "makerpaymentID": MessageLookupByLibrary.simpleMessage("掛單交易 ID"),
+        "logoutOnExit": MessageLookupByLibrary.simpleMessage("离开时登出"),
+        "logoutsettings": MessageLookupByLibrary.simpleMessage("登出设定"),
+        "makeAorder": MessageLookupByLibrary.simpleMessage("建立订单"),
+        "makerpaymentID": MessageLookupByLibrary.simpleMessage("挂单交易 ID"),
         "marketplace": MessageLookupByLibrary.simpleMessage("Marketplace"),
         "max": MessageLookupByLibrary.simpleMessage("上限"),
-        "media": MessageLookupByLibrary.simpleMessage("新聞"),
-        "mediaBrowse": MessageLookupByLibrary.simpleMessage("瀏覽"),
-        "mediaBrowseFeed": MessageLookupByLibrary.simpleMessage("瀏覽新聞"),
+        "media": MessageLookupByLibrary.simpleMessage("新闻"),
+        "mediaBrowse": MessageLookupByLibrary.simpleMessage("浏览"),
+        "mediaBrowseFeed": MessageLookupByLibrary.simpleMessage("浏览新闻"),
         "mediaBy": MessageLookupByLibrary.simpleMessage("--"),
         "mediaNotSavedDescription":
-            MessageLookupByLibrary.simpleMessage("您沒有收藏的文章"),
+            MessageLookupByLibrary.simpleMessage("您没有收藏的文章"),
         "mediaSaved": MessageLookupByLibrary.simpleMessage("已收藏"),
         "minValue": m10,
         "minValueBuy": m11,
-        "networkFee": MessageLookupByLibrary.simpleMessage("礦工費用"),
-        "newAccount": MessageLookupByLibrary.simpleMessage("新帳戶"),
-        "newAccountUpper": MessageLookupByLibrary.simpleMessage("新帳戶"),
-        "newsFeed": MessageLookupByLibrary.simpleMessage("新聞"),
+        "networkFee": MessageLookupByLibrary.simpleMessage("矿工费用"),
+        "newAccount": MessageLookupByLibrary.simpleMessage("新帐户"),
+        "newAccountUpper": MessageLookupByLibrary.simpleMessage("新帐户"),
+        "newsFeed": MessageLookupByLibrary.simpleMessage("新闻"),
         "next": MessageLookupByLibrary.simpleMessage("下一步"),
-        "noArticles": MessageLookupByLibrary.simpleMessage("無新聞 - 請稍後再試！"),
-        "noFunds": MessageLookupByLibrary.simpleMessage("無資產"),
-        "noFundsDetected":
-            MessageLookupByLibrary.simpleMessage("當前無資產 - 請儲存資產。"),
-        "noInternet": MessageLookupByLibrary.simpleMessage("無法連上網路"),
+        "noArticles": MessageLookupByLibrary.simpleMessage("无新闻 - 请稍后再试！"),
+        "noFunds": MessageLookupByLibrary.simpleMessage("无资产"),
+        "noFundsDetected": MessageLookupByLibrary.simpleMessage("当前无资产"),
+        "noInternet": MessageLookupByLibrary.simpleMessage("无法连上网路"),
         "noOrder": m3,
-        "noOrderAvailable": MessageLookupByLibrary.simpleMessage("點擊建立訂單"),
+        "noOrderAvailable": MessageLookupByLibrary.simpleMessage("点击建立订单"),
         "noRewardYet":
-            MessageLookupByLibrary.simpleMessage("沒有獎勵可領取 - 請一個小時後重試。"),
-        "noSwaps": MessageLookupByLibrary.simpleMessage("沒有紀錄"),
-        "noTxs": MessageLookupByLibrary.simpleMessage("無交易"),
-        "notEnoughEth": MessageLookupByLibrary.simpleMessage("沒有足夠的交易ETH！"),
+            MessageLookupByLibrary.simpleMessage("没有奖励可领取 - 请一个小时后重试。"),
+        "noSwaps": MessageLookupByLibrary.simpleMessage("没有纪录"),
+        "noTxs": MessageLookupByLibrary.simpleMessage("无交易"),
+        "notEnoughEth": MessageLookupByLibrary.simpleMessage("没有足够的交易ETH！"),
         "notEnoughtBalanceForFee":
-            MessageLookupByLibrary.simpleMessage("餘額不足以支付手續費 - 請調整交易數量。"),
+            MessageLookupByLibrary.simpleMessage("余额不足以支付手续费 - 请调整交易数量。"),
         "numberAssets": m4,
-        "orderCreated": MessageLookupByLibrary.simpleMessage("委託訂單提交"),
-        "orderCreatedInfo": MessageLookupByLibrary.simpleMessage("委託訂單成功建立"),
-        "orderMatched": MessageLookupByLibrary.simpleMessage("訂單匹配成功"),
-        "orderMatching": MessageLookupByLibrary.simpleMessage("訂單匹配中"),
-        "orders": MessageLookupByLibrary.simpleMessage("當前委託"),
+        "orderCreated": MessageLookupByLibrary.simpleMessage("委托订单提交"),
+        "orderCreatedInfo": MessageLookupByLibrary.simpleMessage("委托订单成功建立"),
+        "orderMatched": MessageLookupByLibrary.simpleMessage("订单匹配成功"),
+        "orderMatching": MessageLookupByLibrary.simpleMessage("订单匹配中"),
+        "orders": MessageLookupByLibrary.simpleMessage("当前委托"),
         "paidWith": MessageLookupByLibrary.simpleMessage("付款方式"),
-        "placeOrder": MessageLookupByLibrary.simpleMessage("下單"),
-        "portfolio": MessageLookupByLibrary.simpleMessage("資產配置"),
-        "price": MessageLookupByLibrary.simpleMessage("價錢"),
-        "receive": MessageLookupByLibrary.simpleMessage("轉入"),
+        "placeOrder": MessageLookupByLibrary.simpleMessage("下单"),
+        "portfolio": MessageLookupByLibrary.simpleMessage("资产配置"),
+        "price": MessageLookupByLibrary.simpleMessage("价钱"),
+        "receive": MessageLookupByLibrary.simpleMessage("转入"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("收"),
         "recommendSeedMessage":
-            MessageLookupByLibrary.simpleMessage("我們強烈建議離線保管。"),
+            MessageLookupByLibrary.simpleMessage("我们强烈建议离线保管。"),
         "requestedTrade": MessageLookupByLibrary.simpleMessage("交易需求"),
-        "restoreWallet": MessageLookupByLibrary.simpleMessage("恢復錢包"),
+        "restoreWallet": MessageLookupByLibrary.simpleMessage("恢复钱包"),
         "security": MessageLookupByLibrary.simpleMessage("安全"),
         "seeOrders": m5,
-        "seedPhraseTitle": MessageLookupByLibrary.simpleMessage("您的新助記詞"),
-        "selectCoin": MessageLookupByLibrary.simpleMessage("請選代幣"),
-        "selectCoinInfo": MessageLookupByLibrary.simpleMessage("請選您想要添加的代幣。"),
-        "selectCoinTitle": MessageLookupByLibrary.simpleMessage("新增代幣:"),
-        "selectCoinToBuy": MessageLookupByLibrary.simpleMessage("請選擇您要買的代幣"),
-        "selectCoinToSell": MessageLookupByLibrary.simpleMessage("請選擇您要賣的代幣"),
-        "selectPaymentMethod": MessageLookupByLibrary.simpleMessage("請選擇付款方式"),
-        "sell": MessageLookupByLibrary.simpleMessage("賣"),
-        "send": MessageLookupByLibrary.simpleMessage("轉出"),
-        "setUpPassword": MessageLookupByLibrary.simpleMessage("設定密碼"),
-        "settingDialogSpan1": MessageLookupByLibrary.simpleMessage("確定要刪除"),
-        "settingDialogSpan2": MessageLookupByLibrary.simpleMessage(" 錢包嗎？"),
-        "settingDialogSpan3": MessageLookupByLibrary.simpleMessage("如果是，確保您 "),
-        "settingDialogSpan4": MessageLookupByLibrary.simpleMessage(" 紀錄助記詞。"),
+        "seedPhraseTitle": MessageLookupByLibrary.simpleMessage("您的新助记词"),
+        "selectCoin": MessageLookupByLibrary.simpleMessage("请选代币"),
+        "selectCoinInfo": MessageLookupByLibrary.simpleMessage("请选您想要添加的代币。"),
+        "selectCoinTitle": MessageLookupByLibrary.simpleMessage("新增代币:"),
+        "selectCoinToBuy": MessageLookupByLibrary.simpleMessage("请选择您要买的代币"),
+        "selectCoinToSell": MessageLookupByLibrary.simpleMessage("请选择您要卖的代币"),
+        "selectPaymentMethod": MessageLookupByLibrary.simpleMessage("请选择付款方式"),
+        "sell": MessageLookupByLibrary.simpleMessage("卖"),
+        "send": MessageLookupByLibrary.simpleMessage("转出"),
+        "setUpPassword": MessageLookupByLibrary.simpleMessage("设定密码"),
+        "settingDialogSpan1": MessageLookupByLibrary.simpleMessage("确定要删除"),
+        "settingDialogSpan2": MessageLookupByLibrary.simpleMessage("钱包吗？"),
+        "settingDialogSpan3": MessageLookupByLibrary.simpleMessage("如果是，确保您 "),
+        "settingDialogSpan4": MessageLookupByLibrary.simpleMessage(" 纪录助记词。"),
         "settingDialogSpan5":
-            MessageLookupByLibrary.simpleMessage(" 以便將來恢復錢包。"),
-        "settings": MessageLookupByLibrary.simpleMessage("設定"),
+            MessageLookupByLibrary.simpleMessage(" 以便将来恢复钱包。"),
+        "settings": MessageLookupByLibrary.simpleMessage("设定"),
         "shareAddress": m6,
-        "showMyOrders": MessageLookupByLibrary.simpleMessage("顯示我的委託單"),
-        "signInWithPassword": MessageLookupByLibrary.simpleMessage("匯入密碼"),
-        "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage("匯入助記詞"),
-        "step": MessageLookupByLibrary.simpleMessage("步驟"),
+        "showMyOrders": MessageLookupByLibrary.simpleMessage("显示我的委托单"),
+        "signInWithPassword": MessageLookupByLibrary.simpleMessage("汇入密码"),
+        "signInWithSeedPhrase": MessageLookupByLibrary.simpleMessage("汇入助记词"),
+        "step": MessageLookupByLibrary.simpleMessage("步骤"),
         "success": MessageLookupByLibrary.simpleMessage("成功!"),
-        "swap": MessageLookupByLibrary.simpleMessage("兌換"),
-        "swapDetailTitle": MessageLookupByLibrary.simpleMessage("請確認交易明細"),
-        "swapFailed": MessageLookupByLibrary.simpleMessage("兌換失敗"),
-        "swapID": MessageLookupByLibrary.simpleMessage("兌換 ID"),
-        "swapOngoing": MessageLookupByLibrary.simpleMessage("兌換中"),
-        "swapSucceful": MessageLookupByLibrary.simpleMessage("兌換成功"),
-        "takerpaymentsID": MessageLookupByLibrary.simpleMessage("吃單交易 ID"),
-        "timeOut": MessageLookupByLibrary.simpleMessage("超時"),
-        "titleCreatePassword": MessageLookupByLibrary.simpleMessage("創建一個密碼"),
+        "swap": MessageLookupByLibrary.simpleMessage("兑换"),
+        "swapDetailTitle": MessageLookupByLibrary.simpleMessage("请确认交易明细"),
+        "swapFailed": MessageLookupByLibrary.simpleMessage("兑换失败"),
+        "swapID": MessageLookupByLibrary.simpleMessage("兑换 ID"),
+        "swapOngoing": MessageLookupByLibrary.simpleMessage("兑换中"),
+        "swapSucceful": MessageLookupByLibrary.simpleMessage("兑换成功"),
+        "takerpaymentsID": MessageLookupByLibrary.simpleMessage("吃单交易 ID"),
+        "timeOut": MessageLookupByLibrary.simpleMessage("超时"),
+        "titleCreatePassword": MessageLookupByLibrary.simpleMessage("创建一个密码"),
         "to": MessageLookupByLibrary.simpleMessage("至"),
         "toAddress": MessageLookupByLibrary.simpleMessage("收款地址:"),
         "trade": MessageLookupByLibrary.simpleMessage("交易"),
-        "tradeCompleted": MessageLookupByLibrary.simpleMessage("兌換成功！"),
-        "tradeDetail": MessageLookupByLibrary.simpleMessage("交易明細"),
-        "txBlock": MessageLookupByLibrary.simpleMessage("區塊"),
-        "txConfirmations": MessageLookupByLibrary.simpleMessage("交易確認"),
-        "txConfirmed": MessageLookupByLibrary.simpleMessage("已確認"),
-        "txFee": MessageLookupByLibrary.simpleMessage("手續費"),
+        "tradeCompleted": MessageLookupByLibrary.simpleMessage("兑换成功！"),
+        "tradeDetail": MessageLookupByLibrary.simpleMessage("交易明细"),
+        "txBlock": MessageLookupByLibrary.simpleMessage("区块"),
+        "txConfirmations": MessageLookupByLibrary.simpleMessage("交易确认"),
+        "txConfirmed": MessageLookupByLibrary.simpleMessage("已确认"),
+        "txFee": MessageLookupByLibrary.simpleMessage("手续费"),
         "txHash": MessageLookupByLibrary.simpleMessage("交易 ID"),
-        "txNotConfirmed": MessageLookupByLibrary.simpleMessage("未確認"),
-        "unlock": MessageLookupByLibrary.simpleMessage("解鎖您的錢包"),
-        "value": MessageLookupByLibrary.simpleMessage("金額: "),
+        "txNotConfirmed": MessageLookupByLibrary.simpleMessage("未确认"),
+        "unlock": MessageLookupByLibrary.simpleMessage("解锁您的钱包"),
+        "value": MessageLookupByLibrary.simpleMessage("金额: "),
         "version": MessageLookupByLibrary.simpleMessage("版本"),
-        "viewSeed": MessageLookupByLibrary.simpleMessage("導出助記詞"),
+        "viewSeed": MessageLookupByLibrary.simpleMessage("导出助记词"),
         "volumes": MessageLookupByLibrary.simpleMessage("Volumes"),
         "welcomeInfo": MessageLookupByLibrary.simpleMessage(
-            "ATOMIC DEX 是次世代多幣別錢包, 具有原生第三代的DEX功能等等。"),
-        "welcomeLetSetUp": MessageLookupByLibrary.simpleMessage("創建錢包"),
+            "ATOMIC DEX 是次世代多币别钱包, 具有原生第三代的DEX功能等等。"),
+        "welcomeLetSetUp": MessageLookupByLibrary.simpleMessage("创建钱包!"),
         "welcomeName": MessageLookupByLibrary.simpleMessage("AtomicDEX"),
-        "welcomeTitle": MessageLookupByLibrary.simpleMessage("歡迎使用"),
-        "welcomeWallet": MessageLookupByLibrary.simpleMessage("錢包"),
-        "withdraw": MessageLookupByLibrary.simpleMessage("提領"),
-        "withdrawConfirm": MessageLookupByLibrary.simpleMessage("確認提領"),
+        "welcomeTitle": MessageLookupByLibrary.simpleMessage("欢迎使用"),
+        "welcomeWallet": MessageLookupByLibrary.simpleMessage("钱包"),
+        "withdraw": MessageLookupByLibrary.simpleMessage("提领"),
+        "withdrawConfirm": MessageLookupByLibrary.simpleMessage("确认提领"),
         "withdrawValue": m7,
-        "wrongPassword": MessageLookupByLibrary.simpleMessage("密碼不正確。請再重試一次。"),
-        "youAreSending": MessageLookupByLibrary.simpleMessage("您正在發送："),
+        "wrongPassword": MessageLookupByLibrary.simpleMessage("密码不正确。请再重试一次。"),
+        "youAreSending": MessageLookupByLibrary.simpleMessage("您正在发送："),
         "youWillReceiveClaim": m8,
-        "youWillReceived": MessageLookupByLibrary.simpleMessage("可獲得： ")
+        "youWillReceived": MessageLookupByLibrary.simpleMessage("可获得： ")
       };
 }

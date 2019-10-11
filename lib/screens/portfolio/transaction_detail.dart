@@ -20,13 +20,13 @@ class TransactionDetail extends StatefulWidget {
 }
 
 class _TransactionDetailState extends State<TransactionDetail> {
-
   @override
   void dispose() {
-                      mainBloc.isUrlLaucherIsOpen = false;
+    mainBloc.isUrlLaucherIsOpen = false;
 
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return LockScreen(
@@ -38,7 +38,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
             IconButton(
               icon: Icon(Icons.share),
               onPressed: () {
-                final String fromOrTo = double.parse(widget.transaction.myBalanceChange) > 0
+                final String fromOrTo = double.parse(
+                            widget.transaction.myBalanceChange) >
+                        0
                     ? '${AppLocalizations.of(context).from}: ${widget.transaction.from[0]}'
                     : '${AppLocalizations.of(context).to} ${widget.transaction.to.length > 1 ? widget.transaction.to[1] : widget.transaction.to[0]}';
                 String fee = '';
@@ -48,7 +50,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 }
                 final String dataToShare =
                     'Transaction detail:\nAmount: ${widget.transaction.myBalanceChange} ${widget.transaction.coin}\nDate: ${widget.transaction.getTimeFormat()}\nBlock: ${widget.transaction.blockHeight}\nConfirmations: ${widget.transaction.confirmations}\nFee: $fee ${widget.transaction.coin}\n$fromOrTo\nTx Hash: ${widget.transaction.txHash}';
-                  mainBloc.isUrlLaucherIsOpen = true;
+                mainBloc.isUrlLaucherIsOpen = true;
 
                 Share.share(dataToShare);
               },
@@ -95,9 +97,11 @@ class _TransactionDetailState extends State<TransactionDetail> {
                         final String amount = widget
                                 .coinBalance.coin.swapContractAddress.isNotEmpty
                             ? replaceAllTrainlingZeroERC(
-                                double.parse(tx.myBalanceChange).toStringAsFixed(16))
+                                double.parse(tx.myBalanceChange)
+                                    .toStringAsFixed(16))
                             : replaceAllTrainlingZero(
-                                double.parse(tx.myBalanceChange).toStringAsFixed(8));
+                                double.parse(tx.myBalanceChange)
+                                    .toStringAsFixed(8));
 
                         return AutoSizeText(
                           amount + ' ' + tx.coin,
@@ -109,7 +113,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     ),
                   ),
                   Text(
-                    (Decimal.parse(widget.coinBalance.priceForOne) * Decimal.parse(tx.myBalanceChange.toString()))
+                    (Decimal.parse(widget.coinBalance.priceForOne) *
+                                Decimal.parse(tx.myBalanceChange.toString()))
                             .toStringAsFixed(2) +
                         ' USD',
                     style: Theme.of(context).textTheme.body2,
@@ -167,7 +172,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 data: widget.transaction.from[0])
             : ItemTransationDetail(
                 title: AppLocalizations.of(context).to,
-                data: widget.transaction.getToAddress().isNotEmpty ? widget.transaction.getToAddress()[0] : ''),
+                data: widget.transaction.getToAddress().isNotEmpty
+                    ? widget.transaction.getToAddress()[0]
+                    : ''),
         ItemTransationDetail(title: 'Tx Hash', data: widget.transaction.txHash),
       ],
     );

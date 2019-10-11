@@ -35,7 +35,7 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
 
     int i = 0;
     for (String word in wordsSeed) {
-            wordsData.add(WordData(word: word, index: i));
+      wordsData.add(WordData(word: word, index: i));
       i++;
     }
     final Random _random = Random();
@@ -112,7 +112,6 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
               builder: (BuildContext context) => CreatePasswordPage(
                     seed: widget.seed,
                   )),
-                  
         );
       } else {
         checkPassphrasePage.setIsWordGood(false);
@@ -176,5 +175,4 @@ class WordData {
 
   int index;
   String word;
-
 }

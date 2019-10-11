@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 MainBloc mainBloc = MainBloc();
 
@@ -21,7 +22,6 @@ class MainBloc implements BlocBase {
   Stream<bool> get outIsNetworkOffline => _isNetworkOffline.stream;
 
   bool isUrlLaucherIsOpen = false;
-
 
   Locale currentLocale;
 
@@ -48,6 +48,8 @@ class MainBloc implements BlocBase {
   }
 
   void setNewLanguage(Locale locale) {
+    Log.println(
+        'l10n - main_bloc.dart:52', 'Set Language to: ' + locale.toString());
     currentLocale = locale;
     _inCurrentLocale.add(currentLocale);
   }
@@ -59,9 +61,8 @@ class MainBloc implements BlocBase {
         Locale('zh'), // generic Chinese 'zh'
         Locale.fromSubtags(
             languageCode: 'zh',
-            scriptCode: 'Hans'), // generic simplified Chinese 'zh_Hans'
-        Locale.fromSubtags(
-            languageCode: 'zh',
-            scriptCode: 'Hant'), // generic traditional Chinese 'zh_Hant'
+            countryCode: 'TW'), // Taiwan simplified Chinese 'zh_TW'
+        Locale('ru'),
+        Locale('ja')
       ];
 }

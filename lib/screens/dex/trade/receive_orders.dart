@@ -156,7 +156,10 @@ class _AsksOrderState extends State<AsksOrder> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(AppLocalizations.of(context).receiveLower, key: const Key('title-ask-orders'),),
+              Text(
+                AppLocalizations.of(context).receiveLower,
+                key: const Key('title-ask-orders'),
+              ),
               Container(
                   height: 30,
                   width: 30,
