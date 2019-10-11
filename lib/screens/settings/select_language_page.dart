@@ -69,9 +69,16 @@ class _BuildItemLanguageState extends State<BuildItemLanguage> {
       case 'Hans':
         return ' ' + AppLocalizations.of(context).simplifiedChinese;
         break;
-      // case 'Hant':
-      //   return ' ' + AppLocalizations.of(context).traditionalChinese;
-      //   break;
+      default:
+        return '';
+    }
+  }
+
+  String getGenericLocale(String localeCode) {
+    switch (localeCode) {
+      case 'zh_TW':
+        return ' ' + AppLocalizations.of(context).simplifiedChinese;
+        break;
       default:
         return '';
     }
@@ -80,8 +87,12 @@ class _BuildItemLanguageState extends State<BuildItemLanguage> {
   @override
   Widget build(BuildContext context) {
     String scripCode = '';
+    String localeCode = '';
     if (widget.locale.scriptCode != null) {
       scripCode = widget.locale.scriptCode;
+    }
+    if (widget.locale.countryCode != null) {
+      localeCode = widget.locale.toString();
     }
     return ListTile(
         onTap: () {
@@ -96,6 +107,7 @@ class _BuildItemLanguageState extends State<BuildItemLanguage> {
         ),
         title: Text(
             settingsBloc.getNameLanguage(context, widget.locale.languageCode) +
-                getGenericScript(scripCode)));
+                getGenericScript(scripCode) +
+                getGenericLocale(localeCode)));
   }
 }

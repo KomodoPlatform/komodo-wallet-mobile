@@ -16,6 +16,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
@@ -347,7 +348,7 @@ class ItemCoin extends StatefulWidget {
       this.slidableController})
       : super(key: key);
 
-  final dynamic coinBalance;
+  final CoinBalance coinBalance;
   final BuildContext mContext;
   final SlidableController slidableController;
 
@@ -363,6 +364,10 @@ class _ItemCoinState extends State<ItemCoin> {
     final NumberFormat f = NumberFormat('###,##0.########');
     final List<Widget> actions = <Widget>[];
     if (double.parse(balance.getBalance()) > 0) {
+      Log.println(
+          'coins_page:367', 'balance: ' + widget.coinBalance.balance.balance);
+      Log.println('coins_page:368',
+          'locked_by_swaps: ' + widget.coinBalance.balance.lockedBySwaps);
       actions.add(IconSlideAction(
         caption: AppLocalizations.of(context).send,
         color: Colors.white,

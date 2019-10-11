@@ -477,6 +477,10 @@ class CoinsBloc implements BlocBase {
     dynamic coinBalance;
     if (balance is Balance && coin.abbr == balance.coin) {
       coinBalance = CoinBalance(coin, balance);
+      // Log.println(
+      //     'coins_bloc:480', 'Balance: ' + coinBalance.balance.getBalance());
+      // Log.println('coins_bloc:481',
+      //     'RealBalance: ' + coinBalance.balance.getRealBalance());
       if (coinBalance.balanceUSD == null &&
           double.parse(coinBalance.balance.getBalance()) > 0) {
         coinBalance.priceForOne = price.toString();

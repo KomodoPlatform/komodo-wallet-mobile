@@ -378,7 +378,7 @@ class _DislaimerPageState extends State<DislaimerPage>
       await entryptionTool
           .writeData(KeyEncryption.SEED, wallet, widget.password, widget.seed)
           .catchError((dynamic e) => Log.println('', e));
-      
+
       await DBProvider.db.saveWallet(wallet);
       await DBProvider.db.saveCurrentWallet(wallet);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
