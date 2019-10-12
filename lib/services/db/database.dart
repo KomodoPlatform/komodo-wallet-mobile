@@ -72,33 +72,35 @@ class DBProvider {
       await db.execute(createTableCoins(CoinEletrum.CONFIG));
 
       //temporary quick-fix/hackaround for 'no such table' error after app update - cc: tonymorony
-      try {
-        final dynamic res = await db.query('CoinsActivated');
-        if (res is ErrorString && res.error.contains('no such')) {
-          Log.println(
-              'database:77', 'noSuchCoinsActivatedError - creating table...');
-          await db.execute('''
-      CREATE TABLE CoinsActivated} (
-          name TEXT PRIMARY KEY UNIQUE,
-          type TEXT,
-          address TEXT,
-          port INTEGER,
-          proto TEXT,
-          txfee INTEGER,
-          priceUSD REAL,
-          mm2 INTEGER,
-          swap_contract_address TEXT,
-          abbr TEXT,
-          coingeckoId TEXT,
-          colorCoin TEXT,
-          serverList TEXT,
-          explorerUrl TEXT
-        )
-      ''');
-        }
-      } catch (e) {
-        Log.println('database:99', 'DB INIT ERROR: ' + e.toString());
-      }
+      // try {
+      //   final dynamic res = await db.query('CoinsActivated');
+      //   if (res is ErrorString && res.error.contains('no such')) {
+      //     Log.println(
+      //         'database:77', 'noSuchCoinsActivatedError - creating table...');
+      //     await db.execute('''
+      // CREATE TABLE CoinsActivated} (
+      //     name TEXT PRIMARY KEY UNIQUE,
+      //     type TEXT,
+      //     address TEXT,
+      //     port INTEGER,
+      //     proto TEXT,
+      //     txfee INTEGER,
+      //     priceUSD REAL,
+      //     mm2 INTEGER,
+      //     swap_contract_address TEXT,
+      //     abbr TEXT,
+      //     coingeckoId TEXT,
+      //     colorCoin TEXT,
+      //     serverList TEXT,
+      //     explorerUrl TEXT
+      //   )
+      // ''');
+      //   } else {
+      //     Log.println('database:99', 'Table exists');
+      //   }
+      // } catch (e) {
+      //   Log.println('database:99', 'DB INIT ERROR: ' + e.toString());
+      // }
     });
   }
 
