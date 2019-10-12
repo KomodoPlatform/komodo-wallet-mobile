@@ -189,16 +189,16 @@ class CoinsBloc implements BlocBase {
           .then<dynamic>((dynamic res) => removeCoinLocal(coin, res)));
 
   void updateOneCoin(CoinBalance coin) {
-    bool isExist = false;
+    bool exists = false;
     int currentIndex = 0;
 
     coinBalance.asMap().forEach((int index, CoinBalance coinBalance) {
       if (coinBalance.coin.abbr == coin.coin.abbr) {
-        isExist = true;
+        exists = true;
         currentIndex = index;
       }
     });
-    if (!isExist) {
+    if (!exists) {
       coinBalance.add(coin);
     } else {
       coinBalance.removeAt(currentIndex);
