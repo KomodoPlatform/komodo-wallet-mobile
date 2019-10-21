@@ -4,33 +4,36 @@
 
 import 'dart:convert';
 
-List<CoinInit> coinInitFromJson(String str) => List<CoinInit>.from(json.decode(str).map((dynamic x) => CoinInit.fromJson(x)));
+List<CoinInit> coinInitFromJson(String str) => List<CoinInit>.from(
+    json.decode(str).map((dynamic x) => CoinInit.fromJson(x)));
 
-String coinInitToJson(List<CoinInit> data) => json.encode(List<dynamic>.from(data.map<dynamic>((dynamic x) => x.toJson())));
-
+String coinInitToJson(List<CoinInit> data) => json
+    .encode(List<dynamic>.from(data.map<dynamic>((dynamic x) => x.toJson())));
 
 class CoinInit {
-      CoinInit({
-        this.coin,
-        this.name,
-        this.fname,
-        this.rpcport,
-        this.pubtype,
-        this.p2Shtype,
-        this.wiftype,
-        this.txfee,
-        this.mm2,
-        this.txversion,
-        this.overwintered,
-        this.asset,
-        this.etomic,
-    });
+  CoinInit({
+    this.coin,
+    this.name,
+    this.fname,
+    this.rpcport,
+    this.taddr,
+    this.pubtype,
+    this.p2Shtype,
+    this.wiftype,
+    this.txfee,
+    this.mm2,
+    this.txversion,
+    this.overwintered,
+    this.asset,
+    this.etomic,
+  });
 
-    factory CoinInit.fromJson(Map<String, dynamic> json) => CoinInit(
+  factory CoinInit.fromJson(Map<String, dynamic> json) => CoinInit(
         coin: json['coin'],
         name: json['name'],
         fname: json['fname'],
         rpcport: json['rpcport'],
+        taddr: json['taddr'],
         pubtype: json['pubtype'],
         p2Shtype: json['p2shtype'],
         wiftype: json['wiftype'],
@@ -40,27 +43,29 @@ class CoinInit {
         overwintered: json['overwintered'],
         asset: json['asset'],
         etomic: json['etomic'],
-    );
+      );
 
-    String coin;
-    String name;
-    String fname;
-    int rpcport;
-    int pubtype;
-    int p2Shtype;
-    int wiftype;
-    int txfee;
-    int mm2;
-    int txversion;
-    int overwintered;
-    String asset;
-    String etomic;
+  String coin;
+  String name;
+  String fname;
+  int rpcport;
+  int taddr;
+  int pubtype;
+  int p2Shtype;
+  int wiftype;
+  int txfee;
+  int mm2;
+  int txversion;
+  int overwintered;
+  String asset;
+  String etomic;
 
-    Map<String, dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin,
         'name': name,
         'fname': fname,
         'rpcport': rpcport,
+        'taddr': taddr,
         'pubtype': pubtype,
         'p2shtype': p2Shtype,
         'wiftype': wiftype,
@@ -70,5 +75,5 @@ class CoinInit {
         'overwintered': overwintered,
         'asset': asset,
         'etomic': etomic,
-    };
+      };
 }
