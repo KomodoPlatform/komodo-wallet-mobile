@@ -180,6 +180,20 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       swapBloc.setCurrentAmountSell(double.parse(amountSell));
     }
     setState(() {
+      if (_noOrderFound &&
+          _controllerAmountReceive.text.isNotEmpty &&
+          _controllerAmountSell.text.isNotEmpty) {
+        final String bestPrice = (Decimal.parse(
+                    _controllerAmountReceive.text.replaceAll(',', '.')) /
+                Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.')))
+            .toStringAsFixed(8);
+        swapBloc.updateBuyCoin(OrderCoin(
+            coinBase: swapBloc.receiveCoin,
+            coinRel: swapBloc.sellCoin?.coin,
+            bestPrice: bestPrice,
+            maxVolume:
+                double.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
+      }
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
