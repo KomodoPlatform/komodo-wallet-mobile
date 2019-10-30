@@ -86,7 +86,8 @@ class Ask {
         coin: json['coin'] ?? '',
         address: json['address'] ?? '',
         price: json['price'] ?? 0.0,
-        maxvolume: json['maxvolume'].toDouble() ?? 0.0,
+        maxvolume: Decimal.parse(json['maxvolume'].toString()).toDouble() ??
+            0.0, //toDouble()
         pubkey: json['pubkey'] ?? '',
         age: json['age'] ?? 0,
         zcredits: json['zcredits'] ?? 0,

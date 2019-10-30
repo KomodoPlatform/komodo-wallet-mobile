@@ -63,7 +63,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     super.initState();
     swapBloc.outFocusTextField.listen((bool onData) {
       if (widget.mContext != null) {
-        FocusScope.of(widget.mContext).requestFocus(_focusSell);
+        try {
+          FocusScope.of(widget.mContext).requestFocus(_focusSell);
+        } catch (e) {
+          Log.println('trade_page:70', 'deactivated widget: ' + e.toString());
+        }
       }
     });
     _noOrderFound = false;
