@@ -110,6 +110,15 @@
         "txversion": 4,
         "overwintered": 1
     },
+    {
+        "coin": "DEX",
+        "asset": "DEX",
+        "rpcport": 11890,
+        "mm2": 1,
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
+    },
     {   
         "coin": "VRSC",
         "asset": "VerusCoin",
@@ -197,6 +206,13 @@
         "coin": "TUSD",
         "name": "TrueUSD",
         "etomic": "0x0000000000085d4780B73119b644AE5ecd22b376",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
+        "coin": "BUSD",
+        "name": "BinanceUSD",
+        "etomic": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
         "rpcport": 80,
         "mm2": 1
     },
