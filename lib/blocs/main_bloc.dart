@@ -63,6 +63,8 @@ class MainBloc implements BlocBase {
             languageCode: 'zh',
             countryCode: 'TW'), // Taiwan simplified Chinese 'zh_TW'
         Locale('ru'),
-        Locale('ja')
+        Locale('ja'),
+        Locale('tr'),
+        Locale('hu')
       ];
 }
