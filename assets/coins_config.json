@@ -366,6 +366,25 @@
     ]
   },
   {
+    "name": "Feathercoin",
+    "type": "utxo",
+    "address": "electrum.feathercoin.network:50001",
+    "port": 50001,
+    "proto": "tcp",
+    "txfee": 1000000,
+    "abbr": "FTC",
+    "coingeckoId": "feathercoin",
+    "colorCoin": "0xFF3E4B51",
+    "serverList": [
+      "electrum.feathercoin.network:50001",
+      "electrumx-gb-1.feathercoin.network:50001",
+      "electrumx-gb-2.feathercoin.network:50001"
+    ],
+    "explorerUrl": [
+      "https://explorer.feathercoin.com/"
+    ]
+  },
+  {
     "name": "Hush",
     "type": "smartChain",
     "address": "electrum1.cipig.net",
