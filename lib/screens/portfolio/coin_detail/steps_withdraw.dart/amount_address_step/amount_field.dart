@@ -52,7 +52,7 @@ class _AmountFieldState extends State<AmountField> {
             child: TextFormField(
               inputFormatters: <TextInputFormatter>[
                 WhitelistingTextInputFormatter(
-                    RegExp('^\$|^(0|([1-9][0-9]{0,3}))([.,]{1}[0-9]{0,8})?\$'))
+                    RegExp('^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$'))
               ],
               focusNode: widget.focusNode,
               controller: widget.controller,
