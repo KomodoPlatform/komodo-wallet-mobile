@@ -913,7 +913,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "orderCreatedInfo": "Order succsessfully created",
+  "orderCreatedInfo": "Order successfully created",
   "@orderCreatedInfo": {
     "type": "text",
     "placeholders": {}
