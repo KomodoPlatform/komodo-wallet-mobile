@@ -43,7 +43,7 @@ Future<void> startApp() async {
     return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));
   } catch (e) {
-    Log.println('', e);
+    Log.println('', 'startApp] $e');
     rethrow;
   }
 }
@@ -187,14 +187,28 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.inactive:
+        // “your app is no longer responding to touch but is still foreground
+        // (received a phone call, doing touch ID, et cetera)”
         Log.println('', 'inactive');
         break;
       case AppLifecycleState.paused:
-        Log.println('', 'paused');
+        // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
+        // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS) {
-          MarketMakerService().closeLogSink();
-          if (!authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
-            exit(0);
+          final double btr = await MarketMakerService.platformmm2
+              .invokeMethod('backgroundTimeRemaining');
+          Log.println('', 'paused, backgroundTimeRemaining: $btr');
+          // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
+          // and when we are silent the `backgroundTimeRemaining` is low
+          // (expected low values are ~5, ~180, ~600 seconds).
+          if (btr < 3600) {
+            MarketMakerService().closeLogSink();
+            if (!authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
+              // https://gitlab.com/artemciy/supernet/issues/4#note_190147428
+              Log.println('',
+                  'Suspended, exiting explicitly in order to workaround a crash');
+              exit(0);
+            }
           }
         }
         dialogBloc.closeDialog(context);

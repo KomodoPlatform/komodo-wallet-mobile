@@ -9,6 +9,7 @@ import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
@@ -90,8 +91,6 @@ class OrdersBloc implements BlocBase {
   }
 
   Future<void> updateOrdersSwaps() async {
-    final List<dynamic> ordersSwaps = <dynamic>[];
-
     await updateOrders();
     final List<Swap> swaps = await swapHistoryBloc.fetchSwaps(50, null);
 
@@ -120,6 +119,9 @@ class OrdersBloc implements BlocBase {
       });
     }
 
+    musicService.play(orders, swaps, swapHistoryBloc.swaps);
+
+    final List<dynamic> ordersSwaps = <dynamic>[];
     ordersSwaps.addAll(orders);
     ordersSwaps.addAll(swaps);
     ordersSwaps.sort((dynamic a, dynamic b) {

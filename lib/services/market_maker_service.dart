@@ -263,9 +263,14 @@ class MarketMakerService {
     }
   }
 
+  /// Process a line of MM log,
+  /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void onLogsmm2(String log) {
     if (sink != null) {
-      Log.println('mm2', log);
+      Log.println('', log);
+      // AG: This currently relies on the information that can be freely changed by MM
+      // or removed from the logs entirely (e.g. on debug and human-readable parts).
+      // Should update it to rely on the log tags instead.
       if (log.contains('CONNECTED') ||
           log.contains('Entering the taker_swap_loop') ||
           log.contains('Received \'negotiation') ||
@@ -304,9 +309,9 @@ class MarketMakerService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        print('ALL COINS ACTIVATES');
+        Log.println('', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          print('LOADCOIN FINISHED');
+          Log.println('', 'loadCoin finished');
         });
       });
     } catch (e) {

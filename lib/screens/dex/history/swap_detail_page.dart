@@ -45,7 +45,13 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
               key: const Key('swap-detail-back-button'),
               icon: Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context, false),
-            )),
+            ),
+            actions: <Widget>[
+              IconButton(
+                  key: const Key('swap-detail-sound-button'),
+                  icon: Icon(Icons.audiotrack),
+                  onPressed: () => 0)
+            ]),
         body: StreamBuilder<List<Swap>>(
             stream: swapHistoryBloc.outSwaps,
             initialData: swapHistoryBloc.swaps,

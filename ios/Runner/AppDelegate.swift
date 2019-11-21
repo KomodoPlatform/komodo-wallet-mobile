@@ -4,16 +4,10 @@ import Foundation
 import CoreLocation
 import os.log
 
-extension OSLog {
-    private static var subsystem = Bundle.main.bundleIdentifier!
-
-    /// Logs the view cycles like viewDidLoad.
-    static let viewCycle = OSLog(subsystem: subsystem, category: "viewcycle")
-}
-
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
     var eventSink: FlutterEventSink?
+    var taskID: UIBackgroundTaskIdentifier?
     
     override func application(
         _ application: UIApplication,
@@ -30,7 +24,6 @@ extension OSLog {
         let chargingChannel = FlutterEventChannel(name: "streamLogMM2",
                                                   binaryMessenger: controller as! FlutterBinaryMessenger)
         chargingChannel.setStreamHandler(self)
-        
         
         mm2main.setMethodCallHandler({
             (call: FlutterMethodCall, result: FlutterResult) -> Void in
@@ -52,6 +45,13 @@ extension OSLog {
                 result(ret)
             } else if call.method == "lsof" {
                 lsof()
+            } else if call.method == "log" {
+                // Allows us to log via the `os_log` default channel
+                // (Flutter currently does it for us, but there's a chance that it won't).
+                let arg = call.arguments as! String;
+                os_log("%{public}s", type: OSLogType.default, arg);
+            } else if call.method == "backgroundTimeRemaining" {
+                result(Double(application.backgroundTimeRemaining))
             } else {
                 result("Flutter method not implemented on iOS")
             }
@@ -61,7 +61,32 @@ extension OSLog {
         
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
-    
+
+    // https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622997-applicationdidenterbackground
+    override func applicationDidEnterBackground(_ application: UIApplication) {
+        print("AppDelegate] applicationDidEnterBackground");
+        os_log("AppDelegate] applicationDidEnterBackground", type: OSLogType.default);
+
+        let prevTaskID = taskID;
+        taskID = application.beginBackgroundTask(withName: "onEnter", expirationHandler: ({
+            print("AppDelegate] expirationHandler!");
+            os_log("AppDelegate] expirationHandler!", type: OSLogType.default);
+        }));
+
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 60) {
+            os_log("AppDelegate] A minute has passed in background?", type: OSLogType.default);
+            os_log("AppDelegate] Time remaining: %f", type: OSLogType.default, application.backgroundTimeRemaining);
+        };
+
+        if let ptid = prevTaskID {
+            application.endBackgroundTask (ptid);
+        }
+    }
+
+    override func applicationWillEnterForeground(_ application: UIApplication) {
+        os_log("AppDelegate] applicationWillEnterForeground", type: OSLogType.default)
+    }
+
     @objc func onDidReceiveData(_ notification:Notification) {
         if let data = notification.userInfo as? [String: String]
         {
