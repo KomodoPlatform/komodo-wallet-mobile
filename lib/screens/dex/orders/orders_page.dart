@@ -61,17 +61,15 @@ class _OrdersPageState extends State<OrdersPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildIcon(order.base),
-                Icon(
-                  Icons.sync,
-                  size: 25,
-                  color: Colors.white,
-                ),
-                _buildIcon(order.rel)
-              ],
-            ),
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    child: _buildIcon(order.base),
+                  ),
+                  Container(
+                    child: _buildIcon(order.rel),
+                  ),
+                ]),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -168,7 +166,7 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget _buildTextAmount(String coin, String amount) {
     if (coin != null && amount != null && amount.isNotEmpty) {
       return Text(
-        '~ ${(Decimal.parse(amount) % Decimal.parse('1') == Decimal.parse('0') ? Decimal.parse(amount) : Decimal.parse(amount).toStringAsFixed(6))} $coin ',
+        '~ ${Decimal.parse(amount) % Decimal.parse('1') == Decimal.parse('0') ? Decimal.parse(amount) : Decimal.parse(amount).toStringAsFixed(6)} $coin ',
         style: Theme.of(context).textTheme.body1,
       );
     } else {
