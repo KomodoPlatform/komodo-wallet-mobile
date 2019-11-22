@@ -30,7 +30,18 @@ enum MusicMode {
 }
 
 class MusicService {
-  MusicMode musicMode = MusicMode.SILENT;
+  MusicService() {
+    _audioPlayer.onPlayerCompletion.listen((_) {
+      // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
+      //Log.println('', 'onPlayerCompletion');
+    });
+    _audioPlayer.onPlayerError.listen((String ev) {
+      Log.println('', 'onPlayerError: ' + ev);
+    });
+  }
+
+  /// Initially `null` (unknown) in order to trigger `recommendsPeriodicUpdates`.
+  MusicMode musicMode;
 
   static final AudioPlayer _audioPlayer =
       AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
@@ -104,34 +115,38 @@ class MusicService {
       } else if (newMode == MusicMode.ACTIVE) {
         _player.loop('362272__zabuhailo__street-musician-money.mp3');
       } else if (newMode == MusicMode.FAILED) {
+        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
         _player.play(rng.nextBool()
             ? '376196__euphrosyyn__futuristic-robotic-voice-sentences.mp3'
             : '213901__garzul__robotic-arp-sequence.mp3');
       } else if (newMode == MusicMode.APPLAUSE) {
+        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
         _player.play('Cash-Register-Cha-Ching-SoundBible.com-184076484.mp3');
       } else if (newMode == MusicMode.SILENT) {
+        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
         _player.play('poker-chips-daniel_simon.mp3');
+      } else {
+        Log.println('', 'Unexpected music mode: $newMode');
+        _audioPlayer.stop();
       }
 
       musicMode = newMode;
     }
+  }
 
-/*
-    // TODO: Add the listeners *once*? Remove old listeners?
-    _audioPlayer.onPlayerCompletion.listen((_) {
-      Log.println('', 'onPlayerCompletion');
-    });
-    _audioPlayer.onPlayerError.listen((String ev) {
-      Log.println('', 'onPlayerError: ' + ev);
-    });
-
-    Log.println('', 'Playing home.mp3');
-    //_player.loop('home.mp3', isNotification: false);
-
-    Future<void>.delayed(const Duration(seconds: 22), () {
-      Log.println('', 'stopping');
-      _audioPlayer.stop();
-    });
-*/
+  /// True when we want to periodically update the orders and swaps.
+  ///
+  /// As of now the lists of orders and swaps are not a part of a separate model
+  /// but are instead embedded into the UI orders and swap history blocks.
+  /// This results in unreliable updates of those list
+  /// as the said updates either aren't triggered when these blocks are not visible
+  /// or triggered belatedly and out of order, during UI transitions and such.
+  ///
+  /// Hence when the music is playing we want to also trigger an update of these list with a separate timer.
+  ///
+  /// We also want an update whenever the `musicMode` is unknown,
+  /// which happens after the application restarts.
+  bool recommendsPeriodicUpdates() {
+    return musicMode != MusicMode.SILENT;
   }
 }

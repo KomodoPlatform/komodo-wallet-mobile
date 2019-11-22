@@ -18,6 +18,7 @@ import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:package_info/package_info.dart';
@@ -49,6 +50,7 @@ class MarketMakerService {
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
   File logFile;
+  bool shouldUpdateOrdersAndSwaps = false;
 
   Future<void> init(String passphrase) async {
     if (Platform.isAndroid) {
@@ -71,6 +73,14 @@ class MarketMakerService {
     } else {
       await MarketMakerService().runBin();
     }
+
+    Timer.periodic(const Duration(seconds: 2), (_) {
+      if (shouldUpdateOrdersAndSwaps ||
+          musicService.recommendsPeriodicUpdates()) {
+        shouldUpdateOrdersAndSwaps = false;
+        updateOrdersAndSwaps();
+      }
+    });
   }
 
   Future<void> initMarketMaker() async {
@@ -263,6 +273,13 @@ class MarketMakerService {
     }
   }
 
+  /// Load fresh lists of orders and swaps from MM.
+  void updateOrdersAndSwaps() {
+    swapHistoryBloc.updateSwaps(50, null).then((_) {
+      ordersBloc.updateOrdersSwaps();
+    });
+  }
+
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void onLogsmm2(String log) {
@@ -278,11 +295,7 @@ class MarketMakerService {
           log.contains('Sending \'taker-fee') ||
           log.contains('Sending \'taker-payment') ||
           log.contains('Finished')) {
-        Future<dynamic>.delayed(const Duration(seconds: 1), () {
-          swapHistoryBloc.updateSwaps(50, null).then((_) {
-            ordersBloc.updateOrdersSwaps();
-          });
-        });
+        shouldUpdateOrdersAndSwaps = true;
       }
     }
   }
