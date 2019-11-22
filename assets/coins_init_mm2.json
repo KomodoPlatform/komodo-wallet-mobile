@@ -7,7 +7,7 @@
         "pubtype": 48,
         "p2shtype": 5,
         "wiftype": 176,
-        "txfee": 100000,
+        "txfee": 10000,
         "mm2": 1
     },
     {
@@ -94,6 +94,31 @@
         "mm2": 1,
         "txfee": 10000
     },
+    {
+        "coin": "OOT",
+        "asset": "OOT",
+        "rpcport": 12467,
+        "mm2": 1,
+        "txfee": 10000
+    },
+    {
+        "coin": "COMMOD",
+        "asset": "COMMOD",
+        "rpcport": 27048,
+        "mm2": 1,
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
+    },
+    {
+        "coin": "DEX",
+        "asset": "DEX",
+        "rpcport": 11890,
+        "mm2": 1,
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1
+    },
     {   
         "coin": "VRSC",
         "asset": "VerusCoin",
@@ -171,6 +196,41 @@
         "mm2": 1
     },
     {
+        "coin": "PAX",
+        "name": "PaxosStandard",
+        "etomic": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
+        "coin": "TUSD",
+        "name": "TrueUSD",
+        "etomic": "0x0000000000085d4780B73119b644AE5ecd22b376",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
+        "coin": "BUSD",
+        "name": "BinanceUSD",
+        "etomic": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
+        "coin": "DAI",
+        "name": "DAI",
+        "etomic": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
+        "coin": "SAI",
+        "name": "SAI",
+        "etomic": "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
         "coin": "THETA",
         "name": "Theta",
         "etomic": "0x3883f5e181fccaF8410FA61e12b59BAd963fb645",
@@ -222,5 +282,28 @@
         "wiftype": 128,
         "txfee": 100000,
         "mm2": 1
-      }
+    },
+    {
+        "coin": "FTC",
+        "name": "Feathercoin",
+        "rpcport": 9337,
+        "pubtype": 14,
+        "p2shtype": 5,
+        "wiftype": 142,
+        "txfee": 1000000,
+        "mm2": 1
+    },
+    {
+        "coin": "ZEC",
+        "name": "ZCash",
+        "rpcport": 8232,
+        "taddr": 28,
+        "pubtype": 184,
+        "p2shtype": 189,
+        "wiftype": 128,
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1
+    }
 ]

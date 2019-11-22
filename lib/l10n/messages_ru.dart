@@ -284,7 +284,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "makerpaymentID":
             MessageLookupByLibrary.simpleMessage("ID платежа Мейкера"),
         "marketplace": MessageLookupByLibrary.simpleMessage("Маркетплейс"),
-        "max": MessageLookupByLibrary.simpleMessage("МАКСИМУМ"),
+        "max": MessageLookupByLibrary.simpleMessage("MAX"),
         "media": MessageLookupByLibrary.simpleMessage("Новости"),
         "mediaBrowse": MessageLookupByLibrary.simpleMessage("ПРОСМАТРИВАТЬ"),
         "mediaBrowseFeed":

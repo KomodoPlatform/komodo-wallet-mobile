@@ -124,6 +124,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   Widget _buildCoinSwapDetail() {
+    // Log.println('swap_confirmatin_page:127', 'buildConfirmPage');
+    // Log.println('swap_confirmatin_page:128', 'sellAmount: '+widget.amountToSell);
+    // Log.println('swap_confirmatin_page:129', 'buyAmount: '+widget.amountToBuy);
     return Column(
       children: <Widget>[
         Stack(
@@ -340,6 +343,11 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         : Decimal.parse(Decimal.parse(widget.bestPrice).toStringAsFixed(8)) *
             satoshi;
 
+    // Log.println('swap_confirmation_page:346', 'amountToSell: '+amountToSell.toString());
+    // Log.println('swap_confirmation_page:347', 'amountToSellSatoshi: '+satoshiSellAmount.toString());
+    // Log.println('swap_confirmation_page:348', 'amountToBuySatoshi: '+satoshiBuyAmount.toString());
+    // Log.println('swap_confirmation_page:349', 'priceSatoshi: '+satoshiPrice.toString());
+
     //if the desired sellamount != calculated sellamount this loop fixes the precision errors caused by the above division
     //this is considered a dirty quickfix until a final decision is made ref. num handling - likely should follow @ArtemGr's
     //advice ref. utilizing rational datatype IF we need divisions. We do assume sellamount slightly > calculated_sell_amount isnt an issue
@@ -351,6 +359,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             satoshiSellAmount) {
       satoshiBuyAmount += Decimal.parse('1');
     }
+    // Log.println('swap_confirmation_page:358', 'amountToBuySatoshi: '+satoshiBuyAmount.toString());
 
     if (widget.swapStatus == SwapStatus.BUY) {
       ApiProvider()
@@ -376,7 +385,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                   cancelPrevious: false,
                   max: false,
                   volume: amountToSell,
-                  price: Decimal.parse(widget.bestPrice).toStringAsFixed(8)))
+                  price: Decimal.parse(widget.bestPrice).toString()))
           .then<dynamic>((dynamic onValue) => onValue is SetPriceResponse
               ? _goToNextScreen(
                   mContext,

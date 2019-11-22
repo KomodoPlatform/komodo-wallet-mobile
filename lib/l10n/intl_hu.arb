@@ -1,11 +1,10 @@
 {
-  "@@last_modified": "2019-11-19T18:39:56.504106",
-  "createPin": "Create PIN",
+  "createPin": "PIN kód létrehozása",
   "@createPin": {
     "type": "text",
     "placeholders": {}
   },
-  "enterPinCode": "Enter your PIN code",
+  "enterPinCode": "Adja meg a PIN kódját",
   "@enterPinCode": {
     "type": "text",
     "placeholders": {}
@@ -15,66 +14,66 @@
     "type": "text",
     "placeholders": {}
   },
-  "newAccount": "new account",
+  "newAccount": "új számla",
   "@newAccount": {
     "type": "text",
     "placeholders": {}
   },
-  "newAccountUpper": "New Account",
+  "newAccountUpper": "Új Számla",
   "@newAccountUpper": {
     "type": "text",
     "placeholders": {}
   },
-  "addingCoinSuccess": "Activated {name} successfully !",
+  "addingCoinSuccess": "{name} sikeresen aktiválva !",
   "@addingCoinSuccess": {
     "type": "text",
     "placeholders": {
       "name": {}
     }
   },
-  "connecting": "Connecting...",
+  "connecting": "Csatlakozás...",
   "@connecting": {
     "type": "text",
     "placeholders": {}
   },
-  "addCoin": "Activate coin",
+  "addCoin": "Aktív érme",
   "@addCoin": {
     "type": "text",
     "placeholders": {}
   },
-  "numberAssets": "{assets} Assets",
+  "numberAssets": "{assets} Aktív",
   "@numberAssets": {
     "type": "text",
     "placeholders": {
       "assets": {}
     }
   },
-  "enterSeedPhrase": "Enter Your Seed Phrase",
+  "enterSeedPhrase": "Adja meg a Seed-jét",
   "@enterSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "exampleHintSeed": "Example: build case level ...",
+  "exampleHintSeed": "Például: build case level ...",
   "@exampleHintSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "confirm": "confirm",
+  "confirm": "Megerősít",
   "@confirm": {
     "type": "text",
     "placeholders": {}
   },
-  "buy": "Buy",
+  "buy": "Vétel",
   "@buy": {
     "type": "text",
     "placeholders": {}
   },
-  "sell": "Sell",
+  "sell": "Eladás",
   "@sell": {
     "type": "text",
     "placeholders": {}
   },
-  "shareAddress": "My {coinName} address: \n{address}",
+  "shareAddress": "Az én {coinName} címem: \n{address}",
   "@shareAddress": {
     "type": "text",
     "placeholders": {
@@ -82,27 +81,27 @@
       "address": {}
     }
   },
-  "withdraw": "Withdraw",
+  "withdraw": "Kiutal",
   "@withdraw": {
     "type": "text",
     "placeholders": {}
   },
-  "errorValueEmpty": "Value is too high or low",
+  "errorValueEmpty": "Az érték túl magas vagy alacsony",
   "@errorValueEmpty": {
     "type": "text",
     "placeholders": {}
   },
-  "amount": "Amount",
+  "amount": "Összeg",
   "@amount": {
     "type": "text",
     "placeholders": {}
   },
-  "addressSend": "Recipients address",
+  "addressSend": "Címzett címe",
   "@addressSend": {
     "type": "text",
     "placeholders": {}
   },
-  "withdrawValue": "WITHDRAW {amount} {coinName}",
+  "withdrawValue": "KIUTAL {amount} {coinName}",
   "@withdrawValue": {
     "type": "text",
     "placeholders": {
@@ -110,77 +109,77 @@
       "coinName": {}
     }
   },
-  "withdrawConfirm": "Confirm Withdrawal",
+  "withdrawConfirm": "Kiutalás megerősítése",
   "@withdrawConfirm": {
     "type": "text",
     "placeholders": {}
   },
-  "close": "Close",
+  "close": "Bezár",
   "@close": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmSeed": "Confirm Seed Phrase",
+  "confirmSeed": "SEED megerősítése",
   "@confirmSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "seedPhraseTitle": "Your new Seed Phrase",
+  "seedPhraseTitle": "Új SEED-ed",
   "@seedPhraseTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "getBackupPhrase": "Important: Back up your seed phrase before proceeding!",
+  "getBackupPhrase": "Fontos: Mentse el a SEED-jét mielött tovább haladnánk!",
   "@getBackupPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "recommendSeedMessage": "We recommend storing it offline.",
+  "recommendSeedMessage": "Azt ajánljuk offline tárolja.",
   "@recommendSeedMessage": {
     "type": "text",
     "placeholders": {}
   },
-  "next": "next",
+  "next": "tovább",
   "@next": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmPin": "Confirm PIN code",
+  "confirmPin": "PIN kód megerősítése",
   "@confirmPin": {
     "type": "text",
     "placeholders": {}
   },
-  "errorTryAgain": "Error, please try again",
+  "errorTryAgain": "Hiba, kérem próbálja újra",
   "@errorTryAgain": {
     "type": "text",
     "placeholders": {}
   },
-  "settings": "Settings",
+  "settings": "Beállítások",
   "@settings": {
     "type": "text",
     "placeholders": {}
   },
-  "security": "Security",
+  "security": "Biztonság",
   "@security": {
     "type": "text",
     "placeholders": {}
   },
-  "activateAccessPin": "Activate PIN protection",
+  "activateAccessPin": "PIN védelem aktviálása",
   "@activateAccessPin": {
     "type": "text",
     "placeholders": {}
   },
-  "lockScreen": "Screen is locked",
+  "lockScreen": "Képernyő lezárva",
   "@lockScreen": {
     "type": "text",
     "placeholders": {}
   },
-  "changePin": "Change PIN code",
+  "changePin": "PIN módosítása",
   "@changePin": {
     "type": "text",
     "placeholders": {}
   },
-  "logout": "Log Out",
+  "logout": "Kijelentkezés",
   "@logout": {
     "type": "text",
     "placeholders": {}
@@ -190,54 +189,47 @@
     "type": "text",
     "placeholders": {}
   },
-  "amountToSell": "Amount To Sell",
+  "amountToSell": "Eladandó összeg",
   "@amountToSell": {
     "type": "text",
     "placeholders": {}
   },
-  "youWillReceived": "You will receive: ",
+  "youWillReceived": "Fog kapni: ",
   "@youWillReceived": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinToSell": "Select the coin you want to SELL",
+  "selectCoinToSell": "Válassza ki az érmét amit ELADNI szeretne",
   "@selectCoinToSell": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinToBuy": "Select the coin you want to BUY",
+  "selectCoinToBuy": "Válassza ki az érmét amit VÁSÁROLNI szeretne",
   "@selectCoinToBuy": {
     "type": "text",
     "placeholders": {}
   },
-  "swap": "swap",
+  "swap": "csere",
   "@swap": {
     "type": "text",
     "placeholders": {}
   },
-  "buySuccessWaiting": "Swap issued, please wait!",
+  "buySuccessWaiting": "Csere kiadva, kérjük várjon!",
   "@buySuccessWaiting": {
     "type": "text",
     "placeholders": {}
   },
-  "buySuccessWaitingError": "Ordermatch ongoing, please wait {seconde} seconds!",
-  "@buySuccessWaitingError": {
-    "type": "text",
-    "placeholders": {
-      "seconde": {}
-    }
-  },
-  "networkFee": "Network fee",
+  "networkFee": "Hálózati díj",
   "@networkFee": {
     "type": "text",
     "placeholders": {}
   },
-  "commissionFee": "commission fee",
+  "commissionFee": "Jutalék díj",
   "@commissionFee": {
     "type": "text",
     "placeholders": {}
   },
-  "portfolio": "Portfolio",
+  "portfolio": "Portfolió",
   "@portfolio": {
     "type": "text",
     "placeholders": {}
@@ -247,12 +239,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "estimateValue": "Estimated Total Value",
+  "estimateValue": "Becsült Teljes Érték",
   "@estimateValue": {
     "type": "text",
     "placeholders": {}
   },
-  "selectPaymentMethod": "Select Your Payment Method",
+  "selectPaymentMethod": "Válassza ki a fizetési metódust",
   "@selectPaymentMethod": {
     "type": "text",
     "placeholders": {}
@@ -262,172 +254,162 @@
     "type": "text",
     "placeholders": {}
   },
-  "placeOrder": "Place your order",
+  "placeOrder": "Rendelés leadása",
   "@placeOrder": {
     "type": "text",
     "placeholders": {}
   },
-  "comingSoon": "Coming soon...",
+  "comingSoon": "Hamarosan...",
   "@comingSoon": {
     "type": "text",
     "placeholders": {}
   },
-  "marketplace": "Marketplace",
+  "marketplace": "Piactér",
   "@marketplace": {
     "type": "text",
     "placeholders": {}
   },
-  "youAreSending": "You are sending:",
+  "youAreSending": "Ön küld:",
   "@youAreSending": {
     "type": "text",
     "placeholders": {}
   },
-  "code": "Code: ",
+  "code": "Kód: ",
   "@code": {
     "type": "text",
     "placeholders": {}
   },
-  "value": "Value: ",
+  "value": "Érték: ",
   "@value": {
     "type": "text",
     "placeholders": {}
   },
-  "paidWith": "Paid with ",
+  "paidWith": "Fizetett ",
   "@paidWith": {
     "type": "text",
     "placeholders": {}
   },
-  "errorValueNotEmpty": "Please input data",
+  "errorValueNotEmpty": "Kérjük adjon meg adatokat",
   "@errorValueNotEmpty": {
     "type": "text",
     "placeholders": {}
   },
-  "errorAmountBalance": "Not enough balance",
+  "errorAmountBalance": "Nincs elég egyenleg",
   "@errorAmountBalance": {
     "type": "text",
     "placeholders": {}
   },
-  "errorNotAValidAddress": "Not a valid address",
+  "errorNotAValidAddress": "Hiba! Helytelen / nem valós cím!",
   "@errorNotAValidAddress": {
     "type": "text",
     "placeholders": {}
   },
-  "errorNotAValidAddressSegWit": "Segwit addresses are not supported (yet)",
-  "@errorNotAValidAddressSegWit": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "toAddress": "To address:",
+  "toAddress": "Címzett:",
   "@toAddress": {
     "type": "text",
     "placeholders": {}
   },
-  "receive": "RECEIVE",
+  "receive": "FOGAD",
   "@receive": {
     "type": "text",
     "placeholders": {}
   },
-  "send": "SEND",
+  "send": "KÜLD",
   "@send": {
     "type": "text",
     "placeholders": {}
   },
-  "back": "back",
+  "back": "vissza",
   "@back": {
     "type": "text",
     "placeholders": {}
   },
-  "cancel": "cancel",
+  "cancel": "visszamond",
   "@cancel": {
     "type": "text",
     "placeholders": {}
   },
-  "commingsoon": "TX details coming soon!",
+  "commingsoon": "Tranzakció részletek hamarosan!",
   "@commingsoon": {
     "type": "text",
     "placeholders": {}
   },
-  "history": "history",
+  "history": "előzmények",
   "@history": {
     "type": "text",
     "placeholders": {}
   },
-  "create": "trade",
-  "@create": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "commingsoonGeneral": "Details coming soon!",
+  "commingsoonGeneral": "A részletek hamarosan megjelennek!",
   "@commingsoonGeneral": {
     "type": "text",
     "placeholders": {}
   },
-  "orderMatching": "Order matching",
+  "orderMatching": "Rendelés egyeztetés",
   "@orderMatching": {
     "type": "text",
     "placeholders": {}
   },
-  "orderMatched": "Order matched",
+  "orderMatched": "Rendelés megegyezett",
   "@orderMatched": {
     "type": "text",
     "placeholders": {}
   },
-  "swapOngoing": "Swap ongoing",
+  "swapOngoing": "Csere folyamatban",
   "@swapOngoing": {
     "type": "text",
     "placeholders": {}
   },
-  "swapSucceful": "Swap successful",
+  "swapSucceful": "Csere sikeres",
   "@swapSucceful": {
     "type": "text",
     "placeholders": {}
   },
-  "timeOut": "Timeout",
+  "timeOut": "Időtúllépés",
   "@timeOut": {
     "type": "text",
     "placeholders": {}
   },
-  "swapFailed": "Swap failed",
+  "swapFailed": "Csere sikertelen",
   "@swapFailed": {
     "type": "text",
     "placeholders": {}
   },
-  "errorTryLater": "Error, please try later",
+  "errorTryLater": "Hiba, kérjük próbálja újra",
   "@errorTryLater": {
     "type": "text",
     "placeholders": {}
   },
-  "feedback": "Share Log File",
+  "feedback": "Visszajelzés küldése",
   "@feedback": {
     "type": "text",
     "placeholders": {}
   },
-  "loadingOrderbook": "Loading orderbook...",
+  "loadingOrderbook": "Rendelési könyv betöltése...",
   "@loadingOrderbook": {
     "type": "text",
     "placeholders": {}
   },
-  "claim": "claim",
+  "claim": "Igényel",
   "@claim": {
     "type": "text",
     "placeholders": {}
   },
-  "claimTitle": "Claim your KMD reward?",
+  "claimTitle": "Igényelje meg KMD jutalmát?",
   "@claimTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "success": "Success!",
+  "success": "Siker!",
   "@success": {
     "type": "text",
     "placeholders": {}
   },
-  "noRewardYet": "No reward claimable - please try again in 1h.",
+  "noRewardYet": "Nincs igényelhető jutalom - próbálkozzon újra 1 óra múlva.",
   "@noRewardYet": {
     "type": "text",
     "placeholders": {}
   },
-  "loading": "Loading...",
+  "loading": "Betöltés...",
   "@loading": {
     "type": "text",
     "placeholders": {}
@@ -437,12 +419,12 @@
     "type": "text",
     "placeholders": {}
   },
-  "media": "News",
+  "media": "Hírek",
   "@media": {
     "type": "text",
     "placeholders": {}
   },
-  "newsFeed": "News feed",
+  "newsFeed": "Hírcsatorna",
   "@newsFeed": {
     "type": "text",
     "placeholders": {}
@@ -452,52 +434,42 @@
     "type": "text",
     "placeholders": {}
   },
-  "clipboard": "Copied to the clipboard",
+  "clipboard": "Vágólapra másolva",
   "@clipboard": {
     "type": "text",
     "placeholders": {}
   },
-  "from": "From",
+  "from": "Honnan",
   "@from": {
     "type": "text",
     "placeholders": {}
   },
-  "to": "To",
+  "to": "Hova",
   "@to": {
     "type": "text",
     "placeholders": {}
   },
-  "txConfirmed": "CONFIRMED",
+  "txConfirmed": "MERŐSÍTVE",
   "@txConfirmed": {
     "type": "text",
     "placeholders": {}
   },
-  "txNotConfirmed": "UNCONFIRMED",
-  "@txNotConfirmed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txBlock": "Block",
+  "txBlock": "Blokk",
   "@txBlock": {
     "type": "text",
     "placeholders": {}
   },
-  "txConfirmations": "Confirmations",
+  "txConfirmations": "Megerősítések",
   "@txConfirmations": {
     "type": "text",
     "placeholders": {}
   },
-  "txFee": "Fee",
+  "txFee": "Díj",
   "@txFee": {
     "type": "text",
     "placeholders": {}
   },
-  "txHash": "Transaction ID",
-  "@txHash": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "noSwaps": "No history.",
+  "noSwaps": "Nincs elözmény.",
   "@noSwaps": {
     "type": "text",
     "placeholders": {}
@@ -507,321 +479,306 @@
     "type": "text",
     "placeholders": {}
   },
-  "tradeCompleted": "SWAP COMPLETED!",
+  "tradeCompleted": "Csere végrehajtva!",
   "@tradeCompleted": {
     "type": "text",
     "placeholders": {}
   },
-  "step": "Step",
+  "step": "Lépés",
   "@step": {
     "type": "text",
     "placeholders": {}
   },
-  "tradeDetail": "TRADE DETAILS",
+  "tradeDetail": "TRADE részletek",
   "@tradeDetail": {
     "type": "text",
     "placeholders": {}
   },
-  "requestedTrade": "Requested Trade",
+  "requestedTrade": "Kért Trade",
   "@requestedTrade": {
     "type": "text",
     "placeholders": {}
   },
-  "swapID": "Swap ID",
+  "swapID": "Csere ID",
   "@swapID": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBrowse": "BROWSE",
+  "mediaBrowse": "BÖNGÉSZ",
   "@mediaBrowse": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaSaved": "SAVED",
-  "@mediaSaved": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "articleFrom": "AtomicDEX NEWS",
+  "articleFrom": "AtomicDEX HÍREK",
   "@articleFrom": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaNotSavedDescription": "YOU HAVE NO SAVED ARTICLES",
+  "mediaNotSavedDescription": "Nincsenek mentett cikkeid",
   "@mediaNotSavedDescription": {
     "type": "text",
     "placeholders": {}
   },
-  "mediaBrowseFeed": "BROWSE FEED",
-  "@mediaBrowseFeed": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "mediaBy": "By",
+  "mediaBy": "Által",
   "@mediaBy": {
     "type": "text",
     "placeholders": {}
   },
-  "lockScreenAuth": "Please authenticate!",
+  "lockScreenAuth": "Kérjük hitelesítse!",
   "@lockScreenAuth": {
     "type": "text",
     "placeholders": {}
   },
-  "noTxs": "No Transactions",
+  "noTxs": "Nincs tranzakció",
   "@noTxs": {
     "type": "text",
     "placeholders": {}
   },
-  "done": "Done",
+  "done": "Kész",
   "@done": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinTitle": "Activate coins:",
+  "selectCoinTitle": "Érme aktiválás:",
   "@selectCoinTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoinInfo": "Select the coins you want to add to your portfolio.",
+  "selectCoinInfo": "Válassza ki az érmét amit hozzá kíván adni a portfóliójához",
   "@selectCoinInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "noArticles": "No news - please check back later!",
+  "noArticles": "Nincsenek hírek - kérjük nézzen vissza később!",
   "@noArticles": {
     "type": "text",
     "placeholders": {}
   },
-  "infoTrade1": "The swap request can not be undone and is a final event!",
+  "infoTrade1": "A megkezdett cserét visszavonni nem lehet, ez végleges!",
   "@infoTrade1": {
     "type": "text",
     "placeholders": {}
   },
-  "infoTrade2": "This transaction can take up to 10 mins - DONT close this application!",
+  "infoTrade2": "Ez a tranzakció akár 10 percet is igénybe vehet - NE zárja be ezt az alkalmazást!",
   "@infoTrade2": {
     "type": "text",
     "placeholders": {}
   },
-  "swapDetailTitle": "CONFIRM EXCHANGE DETAILS",
+  "swapDetailTitle": "Erősitse meg a csere részleteit",
   "@swapDetailTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhrase": "Check seed phrase",
+  "checkSeedPhrase": "ellenőrizze a SEED-jét",
   "@checkSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseTitle": "LET'S DOUBLE CHECK YOUR SEED PHRASE",
+  "checkSeedPhraseTitle": "DUPLÁN ellenőrizze a SEED-jét",
   "@checkSeedPhraseTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseInfo": "Your seed phrase is important - that's why we like to make sure it's correct. We'll ask you three different questions about your seed phrase to make sure you'll be able to easily restore your wallet whenever you want.",
+  "checkSeedPhraseInfo": "A SEED-ed fontos - ezért szeretnénk ellenőrizni, hogy helyes-e. Három különféle kérdést fogunk feltenni a SEED-el kapcsolatban, hogy megbizonyosodjon arról, hogy bármikor könnyedén visszaállíthatja a pénztárcáját.",
   "@checkSeedPhraseInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseSubtile": "What is the {index}. word in your seed phrase?",
+  "checkSeedPhraseSubtile": "Mi a {index}. szó a SEED-ben?",
   "@checkSeedPhraseSubtile": {
     "type": "text",
     "placeholders": {
       "index": {}
     }
   },
-  "checkSeedPhraseHint": "Enter the {index}. word",
+  "checkSeedPhraseHint": "Írja be a  {index}. szót",
   "@checkSeedPhraseHint": {
     "type": "text",
     "placeholders": {
       "index": {}
     }
   },
-  "checkSeedPhraseButton1": "CONTINUE",
+  "checkSeedPhraseButton1": "FOLYTATÁS",
   "@checkSeedPhraseButton1": {
     "type": "text",
     "placeholders": {}
   },
-  "checkSeedPhraseButton2": "GO BACK AND CHECK AGAIN",
+  "checkSeedPhraseButton2": "Lépjen vissza és ellenőrizze ismét",
   "@checkSeedPhraseButton2": {
     "type": "text",
     "placeholders": {}
   },
-  "takerpaymentsID": "Taker Payment ID",
+  "takerpaymentsID": "Vevő fizetés ID",
   "@takerpaymentsID": {
     "type": "text",
     "placeholders": {}
   },
-  "makerpaymentID": "Maker Payment ID",
+  "makerpaymentID": "Készítő fizetés ID",
   "@makerpaymentID": {
     "type": "text",
     "placeholders": {}
   },
-  "activateAccessBiometric": "Activate Biometric protection",
+  "activateAccessBiometric": "Biometrikus védelem aktiválása",
   "@activateAccessBiometric": {
     "type": "text",
     "placeholders": {}
   },
-  "allowCustomSeed": "Allow custom seed",
+  "allowCustomSeed": "Egyedi SEED engedélyezése",
   "@allowCustomSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "hintEnterPassword": "Enter your password",
+  "hintEnterPassword": "Írja be a jelszavát",
   "@hintEnterPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "signInWithSeedPhrase": "Forgot the password? Restore wallet from seed",
+  "signInWithSeedPhrase": "Jelentkezzen be SEED-el",
   "@signInWithSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "signInWithPassword": "Sign in with password",
+  "signInWithPassword": "Jelentkezzen be jelszóval",
   "@signInWithPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintEnterSeedPhrase": "Enter your seed phrase",
+  "hintEnterSeedPhrase": "Írja be a SEED-jét",
   "@hintEnterSeedPhrase": {
     "type": "text",
     "placeholders": {}
   },
-  "wrongPassword": "The passwords do not match. Please try again.",
+  "wrongPassword": "A jelszavak nem egyeznek. Próbálja újra.",
   "@wrongPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintNameYourWallet": "Name your wallet",
+  "hintNameYourWallet": "Pénztárcád neve",
   "@hintNameYourWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "infoWalletPassword": "You have to provide a password for the wallet encryption due to security reasons.",
+  "infoWalletPassword": "Dönthet úgy is, hogy jelszóval titkosítja a pénztárcáját. Ha úgy dönt, hogy nem használ jelszót, akkor minden alkalommal meg kell adnia a SEED-jét, amikor hozzáférni szeretne a pénztárcájához.",
   "@infoWalletPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmPassword": "Confirm password",
+  "confirmPassword": "Jelszó megerősítése",
   "@confirmPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "dontWantPassword": "I don't want a password",
+  "dontWantPassword": "Nem akarok jelszót",
   "@dontWantPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "areYouSure": "ARE YOU SURE?",
+  "areYouSure": "Biztos benne?",
   "@areYouSure": {
     "type": "text",
     "placeholders": {}
   },
-  "infoPasswordDialog": "Use a secure password and do not store it on the same device",
+  "infoPasswordDialog": "Ha nem ad meg jelszót, akkor minden alkalommal be kell írnia a SEED-jét, amikor hozzáférni szeretne a pénztárcájához.",
   "@infoPasswordDialog": {
     "type": "text",
     "placeholders": {}
   },
-  "setUpPassword": "SET UP A PASSWORD",
+  "setUpPassword": "JELSZÓ BEÁLLÍTÁSA",
   "@setUpPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "createAWallet": "CREATE A WALLET",
+  "createAWallet": "PÉNZTÁRCA LÉTREHOZÁSA",
   "@createAWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "restoreWallet": "RESTORE",
+  "restoreWallet": "VISSZAÁLLÍTÁS",
   "@restoreWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "hintPassword": "Password",
+  "hintPassword": "Jelszó",
   "@hintPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintConfirmPassword": "Confirm Password",
+  "hintConfirmPassword": "Jelszó megerősítése",
   "@hintConfirmPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "hintCurrentPassword": "Current password",
+  "hintCurrentPassword": "Jelenlegi jelszó",
   "@hintCurrentPassword": {
     "type": "text",
     "placeholders": {}
   },
-  "logoutsettings": "Log Out Settings",
+  "logoutsettings": "Kijelentkezés beállításai",
   "@logoutsettings": {
     "type": "text",
     "placeholders": {}
   },
-  "logoutOnExit": "Log Out on Exit",
+  "logoutOnExit": "Kijelentkezés kilépéskor",
   "@logoutOnExit": {
     "type": "text",
     "placeholders": {}
   },
-  "deleteWallet": "Delete Wallet",
+  "deleteWallet": "Pénztárca törlése",
   "@deleteWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "delete": "Delete",
+  "delete": "Törlés",
   "@delete": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan1": "Are you sure you want to delete ",
+  "settingDialogSpan1": "Biztos benne, hogy törölni szeretné ",
   "@settingDialogSpan1": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan2": " wallet?",
+  "settingDialogSpan2": " pénztárca?",
   "@settingDialogSpan2": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan3": "If so, make sure you ",
+  "settingDialogSpan3": "Ha igen, győződjön meg róla ",
   "@settingDialogSpan3": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan4": " record your seed phrase.",
+  "settingDialogSpan4": " rögzítse a SEED-jét.",
   "@settingDialogSpan4": {
     "type": "text",
     "placeholders": {}
   },
-  "settingDialogSpan5": " In order to restore your wallet in the future.",
+  "settingDialogSpan5": " A pénztárca jövőbeli helyreállítása érdekében.",
   "@settingDialogSpan5": {
     "type": "text",
     "placeholders": {}
   },
-  "backupTitle": "Backup",
+  "backupTitle": "Mentés",
   "@backupTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "version": "version",
-  "@version": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "viewSeed": "View Seed",
+  "viewSeed": "Seed megjelenítése",
   "@viewSeed": {
     "type": "text",
     "placeholders": {}
   },
-  "enterpassword": "Please enter your password to continue.",
+  "enterpassword": "Kérjük, írja be a jelszavát a folytatáshoz.",
   "@enterpassword": {
     "type": "text",
     "placeholders": {}
   },
-  "clipboardCopy": "Copy to clipboard",
+  "clipboardCopy": "Vágólapra másolva",
   "@clipboardCopy": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeTitle": "WELCOME",
+  "welcomeTitle": "Üdvözöljük",
   "@welcomeTitle": {
     "type": "text",
     "placeholders": {}
@@ -831,235 +788,219 @@
     "type": "text",
     "placeholders": {}
   },
-  "welcomeWallet": "wallet",
+  "welcomeWallet": "pénztárca",
   "@welcomeWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeInfo": "AtomicDEX mobile is a next generation multi-coin wallet with native third generation DEX functionality and more.",
+  "welcomeInfo": "AtomicDEX mobil egy következő generációs többérmés pénztárca natív harmadik generációs DEX funkcióval és még sokkal több",
   "@welcomeInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "welcomeLetSetUp": "LET'S GET SET UP!",
+  "welcomeLetSetUp": "KÉSZÍTSÜK FEL!",
   "@welcomeLetSetUp": {
     "type": "text",
     "placeholders": {}
   },
-  "unlock": "unlock",
+  "unlock": "kinyit",
   "@unlock": {
     "type": "text",
     "placeholders": {}
   },
-  "noOrder": "Please enter the {coinName} amount.",
+  "noOrder": "Nem érhető el {coinName} rendelés - próbálja újra később, vagy készítsen egy rendelést.",
   "@noOrder": {
     "type": "text",
     "placeholders": {
       "coinName": {}
     }
   },
-  "bestAvailableRate": "Exchange rate",
+  "bestAvailableRate": "A rendelkezésrre álló legjobb ár",
   "@bestAvailableRate": {
     "type": "text",
     "placeholders": {}
   },
-  "receiveLower": "Receive",
+  "receiveLower": "Fogad",
   "@receiveLower": {
     "type": "text",
     "placeholders": {}
   },
-  "makeAorder": "make an order",
+  "makeAorder": "Rendelés készítése",
   "@makeAorder": {
     "type": "text",
     "placeholders": {}
   },
-  "exchangeTitle": "EXCHANGE",
+  "exchangeTitle": "KERESKEDŐOLDAL",
   "@exchangeTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "orders": "orders",
+  "orders": "rendelések",
   "@orders": {
     "type": "text",
     "placeholders": {}
   },
-  "selectCoin": "Select coin",
+  "selectCoin": "Válasszon érmét",
   "@selectCoin": {
     "type": "text",
     "placeholders": {}
   },
-  "noFunds": "No funds",
+  "noFunds": "Nincs alaptőke",
   "@noFunds": {
     "type": "text",
     "placeholders": {}
   },
-  "noFundsDetected": "No funds available - please deposit.",
+  "noFundsDetected": "Alaptőke nem elérhető - kérjük utaljon be.",
   "@noFundsDetected": {
     "type": "text",
     "placeholders": {}
   },
-  "goToPorfolio": "Go to portfolio",
+  "goToPorfolio": "Ugrás a portfólióhoz",
   "@goToPorfolio": {
     "type": "text",
     "placeholders": {}
   },
-  "noOrderAvailable": "Click to create an order",
+  "noOrderAvailable": "Kattintson a megrendelés létrehozásához",
   "@noOrderAvailable": {
     "type": "text",
     "placeholders": {}
   },
-  "orderCreated": "Order created",
+  "orderCreated": "Megrendelés létrehozva",
   "@orderCreated": {
     "type": "text",
     "placeholders": {}
   },
-  "orderCreatedInfo": "Order successfully created",
+  "orderCreatedInfo": "Megrendelés sikeresen létrehozva",
   "@orderCreatedInfo": {
     "type": "text",
     "placeholders": {}
   },
-  "showMyOrders": "SHOW MY ORDERS",
+  "showMyOrders": "Mutasd a rendeléseimet",
   "@showMyOrders": {
     "type": "text",
     "placeholders": {}
   },
-  "minValue": "The minimun amount to sell is {number} {coinName}",
-  "@minValue": {
-    "type": "text",
-    "placeholders": {
-      "coinName": {},
-      "number": {}
-    }
-  },
-  "titleCreatePassword": "CREATE A PASSWORD",
+  "titleCreatePassword": "JELSZÓ LÉTREHOZÁSA",
   "@titleCreatePassword": {
     "type": "text",
     "placeholders": {}
   },
-  "minValueBuy": "The minimun amount to buy is {number} {coinName}",
-  "@minValueBuy": {
-    "type": "text",
-    "placeholders": {
-      "coinName": {},
-      "number": {}
-    }
-  },
-  "encryptingWallet": "Encrypting wallet",
+  "encryptingWallet": "Pénztárca titkosítása",
   "@encryptingWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "decryptingWallet": "Decrypting wallet",
+  "decryptingWallet": "Pénztárca dekódolása",
   "@decryptingWallet": {
     "type": "text",
     "placeholders": {}
   },
-  "notEnoughtBalanceForFee": "Not enough balance for fees - trade a smaller amount",
+  "notEnoughtBalanceForFee": "Nincs elég egyenlege a jutalékhoz - kereskedjen kisebb mennyiséggel",
   "@notEnoughtBalanceForFee": {
     "type": "text",
     "placeholders": {}
   },
-  "noInternet": "No Internet Connection",
+  "noInternet": "Nincs Internet Kapcsolat",
   "@noInternet": {
     "type": "text",
     "placeholders": {}
   },
-  "legalTitle": "Legal",
+  "legalTitle": "Jogi",
   "@legalTitle": {
     "type": "text",
     "placeholders": {}
   },
-  "disclaimerAndTos": "Disclaimer & ToS",
+  "disclaimerAndTos": "Felelősségi nyilatkozat & használati feltételek",
   "@disclaimerAndTos": {
     "type": "text",
     "placeholders": {}
   },
-  "accepteula": "Accept EULA",
+  "accepteula": "Fogadja el az EULA-t",
   "@accepteula": {
     "type": "text",
     "placeholders": {}
   },
-  "accepttac": "Accept TERMS and CONDITIONS",
+  "accepttac": "Fogadja el a feltételeket és a kondíciókat",
   "@accepttac": {
     "type": "text",
     "placeholders": {}
   },
-  "confirmeula": "By clicking the below buttons you confirm to have read the 'EULA' and 'Terms and Conditions' and accept these",
+  "confirmeula": "Az alábbi gombokra kattintva megerősítheti, hogy elolvasta a „EULA” és a „Általános Szerződési Feltételeket”, és elfogadja ezeket",
   "@confirmeula": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle1": "End-User License Agreement (EULA) of atomicDEX mobile:\n\n",
+  "eulaTitle1": "AtomicDEX mobil Végfelhasználói licencszerződés (EULA):\n\n",
   "@eulaTitle1": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle2": "TERMS and CONDITIONS: (APPLICATION USER AGREEMENT)\n\n",
+  "eulaTitle2": "FELTÉTELEK: (ALKALMAZÁS FELHASZNÁLÓI SZERZŐDÉSE)\n\n",
   "@eulaTitle2": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle3": "TERMS AND CONDITIONS OF USE AND DISCLAIMER\n\n",
+  "eulaTitle3": "HASZNÁLATI FELTÉTELEK ÉS NYILATKOZAT\n\n",
   "@eulaTitle3": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle4": "GENERAL USE\n\n",
+  "eulaTitle4": "ÁLTALÁNOS HASZNÁLAT\n\n",
   "@eulaTitle4": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle5": "MODIFICATIONS\n\n",
+  "eulaTitle5": "MÓDOSÍTÁSOK\n\n",
   "@eulaTitle5": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle6": "LIMITATIONS ON USE\n\n",
+  "eulaTitle6": "HASZNÁLATI KORLÁTOZÁSOK\n\n",
   "@eulaTitle6": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle7": "Accounts and membership\n\n",
+  "eulaTitle7": "SZÁMLÁK és TAGSÁG\n\n",
   "@eulaTitle7": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle8": "Backups\n\n",
+  "eulaTitle8": "MENTÉSEK\n\n",
   "@eulaTitle8": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle9": "GENERAL WARNING\n\n",
+  "eulaTitle9": "ÁLTALÁNOS FIGYELMEZTETÉS\n\n",
   "@eulaTitle9": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle10": "ACCESS AND SECURITY\n\n",
+  "eulaTitle10": "HOZZÁFÉRRÉS és BIZTONSÁG\n\n",
   "@eulaTitle10": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle11": "INTELLECTUAL PROPERTY RIGHTS\n\n",
+  "eulaTitle11": "SZELLEMI TULAJDONJOGOK\n\n",
   "@eulaTitle11": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle12": "DISCLAIMER\n\n",
+  "eulaTitle12": "NYILATKOZAT\n\n",
   "@eulaTitle12": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle13": "REPRESENTATIONS AND WARRANTIES, INDEMNIFICATION, AND LIMITATION OF LIABILITY\n\n",
+  "eulaTitle13": "KÉPVISELETEK ÉS GARANCIÁK, KÁRATLANÍTÁS ÉS KORLÁTOZOTT FELELŐSSÉG\n\n",
   "@eulaTitle13": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle14": "GENERAL RISK FACTORS\n\n",
+  "eulaTitle14": "ÁLTALÁNOS KOCKÁZATI TÉNYEZŐK\n\n",
   "@eulaTitle14": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle15": "INDEMNIFICATION\n\n",
+  "eulaTitle15": "KÁRTALANÍTÁS\n\n",
   "@eulaTitle15": {
     "type": "text",
     "placeholders": {}
@@ -1069,22 +1010,22 @@
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle17": "NO INVESTMENT ADVICE OR BROKERAGE\n\n",
+  "eulaTitle17": "NEM BEFEKTETÉSI TANÁCS VAGY ÜGYNŐKI JUTALÉK\n\n",
   "@eulaTitle17": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle18": "TERMINATION\n\n",
+  "eulaTitle18": "FELMONDÁS\n\n",
   "@eulaTitle18": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle19": "THIRD PARTY RIGHTS\n\n",
+  "eulaTitle19": "HARMADIK FÉL JOGAI\n\n",
   "@eulaTitle19": {
     "type": "text",
     "placeholders": {}
   },
-  "eulaTitle20": "OUR LEGAL OBLIGATIONS\n\n",
+  "eulaTitle20": "JOGI KÖTELEZETTSÉGEK\n\n",
   "@eulaTitle20": {
     "type": "text",
     "placeholders": {}
@@ -1184,22 +1125,22 @@
     "type": "text",
     "placeholders": {}
   },
-  "ethFee": "ETH fee",
+  "ethFee": "ETH jutalék",
   "@ethFee": {
     "type": "text",
     "placeholders": {}
   },
-  "notEnoughEth": "Not enough ETH for transaction!",
+  "notEnoughEth": "Nincs elég ETH a tranzakcióhoz!",
   "@notEnoughEth": {
     "type": "text",
     "placeholders": {}
   },
-  "ethNotActive": "Please activate ETH.",
+  "ethNotActive": "Kérjük aktiválja az ETH-t.",
   "@ethNotActive": {
     "type": "text",
     "placeholders": {}
   },
-  "youWillReceiveClaim": "You will receive {amount} {coin}",
+  "youWillReceiveClaim": "Kapni fog {amount} {coin}",
   "@youWillReceiveClaim": {
     "type": "text",
     "placeholders": {
@@ -1207,221 +1148,25 @@
       "coin": {}
     }
   },
-  "seeOrders": "Click to see {amount} orders",
+  "seeOrders": "Kattintson a megtekintéshez {amount} rendelések",
   "@seeOrders": {
     "type": "text",
     "placeholders": {
       "amount": {}
     }
   },
-  "clickToSee": "Click to see ",
+  "clickToSee": "Kattintson a megtekintéshez",
   "@clickToSee": {
     "type": "text",
     "placeholders": {}
   },
-  "price": "price",
+  "price": "ár",
   "@price": {
     "type": "text",
     "placeholders": {}
   },
   "availableVolume": "max vol",
   "@availableVolume": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "configureWallet": "Configuring your wallet, please wait...",
-  "@configureWallet": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "titleCurrentAsk": "Order selected",
-  "@titleCurrentAsk": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "txFeeTitle": "transaction fee:",
-  "@txFeeTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tradingFee": "trading fee:",
-  "@tradingFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "swapErcAmount": "This swap requires {amount} ETH for transaction fees",
-  "@swapErcAmount": {
-    "type": "text",
-    "placeholders": {
-      "amount": {}
-    }
-  },
-  "remove": "Disable",
-  "@remove": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterCoin": "Search a coin",
-  "@searchFilterCoin": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterSubtitleSmartChain": "Select all SmartChains",
-  "@searchFilterSubtitleSmartChain": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterSubtitleERC": "Select all ERC tokens",
-  "@searchFilterSubtitleERC": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "customFee": "Custom fee",
-  "@customFee": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "gas": "Gas",
-  "@gas": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "gasPrice": "Gas price",
-  "@gasPrice": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "customFeeWarning": "Only use custom fees if you know what you are doing!",
-  "@customFeeWarning": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "searchFilterSubtitleutxo": "Select all UTXO coins",
-  "@searchFilterSubtitleutxo": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tagERC20": "ERC20",
-  "@tagERC20": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "tagKMD": "KMD",
-  "@tagKMD": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "errorNotEnoughtGas": "Not enough gas - use at least {gas} Gwei",
-  "@errorNotEnoughtGas": {
-    "type": "text",
-    "placeholders": {
-      "gas": {}
-    }
-  },
-  "orderCancel": "All {coin} orders will be canceled.",
-  "@orderCancel": {
-    "type": "text",
-    "placeholders": {
-      "coin": {}
-    }
-  },
-  "deleteConfirm": "Confirm deactivation",
-  "@deleteConfirm": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deleteSpan1": "Do you want to remove ",
-  "@deleteSpan1": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deleteSpan2": " from your portfolio? All unmatched orders will be canceled.",
-  "@deleteSpan2": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "share": "SHARE",
-  "@share": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "warningShareLogs": "Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!",
-  "@warningShareLogs": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "enterOldPinCode": "Enter your old PIN",
-  "@enterOldPinCode": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "enterNewPinCode": "Enter your new PIN",
-  "@enterNewPinCode": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "authenticate": "authenticate",
-  "@authenticate": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "settingLanguageTitle": "Languages",
-  "@settingLanguageTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "englishLanguage": "English",
-  "@englishLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "frenchLanguage": "French",
-  "@frenchLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "deutscheLanguage": "Deutsch",
-  "@deutscheLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "chineseLanguage": "Chinese",
-  "@chineseLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "simplifiedChinese": "simplified",
-  "@simplifiedChinese": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "traditionalChinese": "traditional",
-  "@traditionalChinese": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "russianLanguage": "Russian",
-  "@russianLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "japaneseLanguage": "Japanese",
-  "@japaneseLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "turkishLanguage": "Turkish",
-  "@turkishLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "hungarianLanguage": "Hungarian",
-  "@hungarianLanguage": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "faucetName": "FAUCET",
-  "@faucetName": {
     "type": "text",
     "placeholders": {}
   }

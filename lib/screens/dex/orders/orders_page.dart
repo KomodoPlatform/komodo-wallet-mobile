@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
+import 'package:decimal/decimal.dart';
 
 class OrdersPage extends StatefulWidget {
   @override
@@ -60,18 +61,27 @@ class _OrdersPageState extends State<OrdersPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    child: _buildIcon(order.base),
+                  ),
+                  Container(
+                    child: _buildIcon(order.rel),
+                  ),
+                ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 _buildTextAmount(order.base, order.baseAmount),
                 Expanded(
                   child: Container(),
                 ),
-                _buildIcon(order.base),
                 Icon(
-                  Icons.sync,
+                  Icons.code,
                   size: 20,
                   color: Colors.white,
                 ),
-                _buildIcon(order.rel),
                 Expanded(
                   child: Container(),
                 ),
@@ -156,7 +166,7 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget _buildTextAmount(String coin, String amount) {
     if (coin != null && amount != null && amount.isNotEmpty) {
       return Text(
-        '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
+        '~ ${Decimal.parse(amount) % Decimal.parse('1') == Decimal.parse('0') ? Decimal.parse(amount) : Decimal.parse(amount).toStringAsFixed(6)} $coin ',
         style: Theme.of(context).textTheme.body1,
       );
     } else {
@@ -166,8 +176,8 @@ class _OrdersPageState extends State<OrdersPage> {
 
   Widget _buildIcon(String coin) {
     return Container(
-      height: 25,
-      width: 25,
+      height: 30,
+      width: 30,
       child: Image.asset(
         'assets/${coin.toLowerCase()}.png',
         fit: BoxFit.cover,

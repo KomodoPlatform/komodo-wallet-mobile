@@ -19,10 +19,12 @@ class Transaction {
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-        blockHeight: json['block_height'].toDouble() ?? 0,
+        blockHeight: json['block_height'] ?? 0, //toDouble()
         coin: json['coin'] ?? '',
         confirmations: json['confirmations'] ?? 0,
-        feeDetails: json['fee_details'] == null ? null : FeeDetails.fromJson(json['fee_details']),
+        feeDetails: json['fee_details'] == null
+            ? null
+            : FeeDetails.fromJson(json['fee_details']),
         from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
             <String>[],
         internalId: json['internal_id'] ?? '',
@@ -37,7 +39,7 @@ class Transaction {
         txHex: json['tx_hex'] ?? '',
       );
 
-  double blockHeight;
+  int blockHeight;
   String coin;
   int confirmations;
   FeeDetails feeDetails;

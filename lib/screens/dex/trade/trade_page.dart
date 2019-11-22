@@ -63,7 +63,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     super.initState();
     swapBloc.outFocusTextField.listen((bool onData) {
       if (widget.mContext != null) {
-        FocusScope.of(widget.mContext).requestFocus(_focusSell);
+        try {
+          FocusScope.of(widget.mContext).requestFocus(_focusSell);
+        } catch (e) {
+          Log.println('trade_page:70', 'deactivated widget: ' + e.toString());
+        }
       }
     });
     _noOrderFound = false;
@@ -162,7 +166,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       final String bestPrice = (Decimal.parse(
                   _controllerAmountReceive.text.replaceAll(',', '.')) /
               Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.')))
-          .toStringAsFixed(8);
+          .toString();
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoin?.coin,
@@ -180,6 +184,20 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       swapBloc.setCurrentAmountSell(double.parse(amountSell));
     }
     setState(() {
+      if (_noOrderFound &&
+          _controllerAmountReceive.text.isNotEmpty &&
+          _controllerAmountSell.text.isNotEmpty) {
+        final String bestPrice = (Decimal.parse(
+                    _controllerAmountReceive.text.replaceAll(',', '.')) /
+                Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.')))
+            .toStringAsFixed(8);
+        swapBloc.updateBuyCoin(OrderCoin(
+            coinBase: swapBloc.receiveCoin,
+            coinRel: swapBloc.sellCoin?.coin,
+            bestPrice: bestPrice,
+            maxVolume:
+                double.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
+      }
       if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
         setState(() {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {

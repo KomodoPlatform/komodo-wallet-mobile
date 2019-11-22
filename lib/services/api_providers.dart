@@ -57,8 +57,7 @@ class ApiProvider {
     return res;
   }
 
-  ErrorString injectErrorString(
-      dynamic value, String errorStr) {
+  ErrorString injectErrorString(dynamic value, String errorStr) {
     if (value is ErrorString) {
       if (value.error.contains(errorStr)) {
         value.error = errorStr;
@@ -107,10 +106,13 @@ class ApiProvider {
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
               .post(url, body: getOrderbookToJson(userBody.body))
-              .then((Response r) => _saveRes('getOrderbook', r))
+              .then(
+                  (Response r) => _saveRes('getOrderbook_api_providers:110', r))
               .then<dynamic>((Response res) => orderbookFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
-                  'getOrderbook', e, 'Error on get orderbook')));
+                  'getOrderbook_api_providers:111',
+                  e,
+                  'Error on get orderbook')));
 
   Future<dynamic> getBalance(
     http.Client client,
@@ -136,10 +138,9 @@ class ApiProvider {
             .post(url, body: getBuyToJson(userBody.body))
             .then((Response r) => _saveRes('postBuy', r))
             .then<dynamic>((Response res) => buyResponseFromJson(res.body))
-            .catchError((dynamic e) => errorStringFromJson(res.body)
-                .then((ErrorString errorString) => injectErrorString(
-                    errorString,
-                    'All electrums are currently disconnected')))
+            .catchError((dynamic e) => errorStringFromJson(res.body).then(
+                (ErrorString errorString) => injectErrorString(
+                    errorString, 'All electrums are currently disconnected')))
             .catchError((dynamic e) =>
                 _catchErrorString('postBuy', e, 'Error on post buy'));
       });
@@ -346,8 +347,8 @@ class ApiProvider {
               .catchError((dynamic _) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'disableCoin', e, 'Error on disable coin')));
-                  
-    Future<dynamic> recoverFundsOfSwap(
+
+  Future<dynamic> recoverFundsOfSwap(
     http.Client client,
     GetRecoverFundsOfSwap body,
   ) async =>

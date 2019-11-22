@@ -338,7 +338,7 @@ class AppLocalizations {
   String get orderCreated =>
       Intl.message('Order created', name: 'orderCreated');
   String get orderCreatedInfo =>
-      Intl.message('Order succsessfully created', name: 'orderCreatedInfo');
+      Intl.message('Order successfully created', name: 'orderCreatedInfo');
   String get showMyOrders =>
       Intl.message('SHOW MY ORDERS', name: 'showMyOrders');
   String minValue(String coinName, String number) => Intl.message(
@@ -555,12 +555,16 @@ class AppLocalizations {
       Intl.message('Chinese', name: 'chineseLanguage');
   String get simplifiedChinese =>
       Intl.message('simplified', name: 'simplifiedChinese');
-  // String get traditionalChinese =>
-  //     Intl.message('traditional', name: 'traditionalChinese');
-    String get russianLanguage =>
-      Intl.message('Russian', name: 'russianLanguage');
-    String get japaneseLanguage =>
-      Intl.message('Japanese', name: 'japaneseLanguage');
+  String get traditionalChinese =>
+      Intl.message('traditional', name: 'traditionalChinese');
+  String get russianLanguage =>
+    Intl.message('Russian', name: 'russianLanguage');
+  String get japaneseLanguage =>
+    Intl.message('Japanese', name: 'japaneseLanguage');
+  String get turkishLanguage =>
+    Intl.message('Turkish', name: 'turkishLanguage');
+  String get hungarianLanguage =>
+    Intl.message('Hungarian', name: 'hungarianLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
 }
 
@@ -569,7 +573,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return <String>['en', 'fr', 'de', 'zh', 'zh_TW', 'ru', 'ja']
+    return <String>['en', 'fr', 'de', 'zh', 'zh_TW', 'ru', 'ja', 'tr', 'hu']
         .contains(locale.languageCode);
   }
 
