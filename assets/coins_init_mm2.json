@@ -7,7 +7,7 @@
         "pubtype": 48,
         "p2shtype": 5,
         "wiftype": 176,
-        "txfee": 100000,
+        "txfee": 10000,
         "mm2": 1
     },
     {
@@ -219,6 +219,13 @@
     {
         "coin": "DAI",
         "name": "DAI",
+        "etomic": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        "rpcport": 80,
+        "mm2": 1
+    },
+    {
+        "coin": "SAI",
+        "name": "SAI",
         "etomic": "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359",
         "rpcport": 80,
         "mm2": 1

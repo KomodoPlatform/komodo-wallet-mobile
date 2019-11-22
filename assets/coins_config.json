@@ -214,6 +214,26 @@
     ]
   },
   {
+    "name": "SAI",
+    "type": "erc",
+    "address": "http://eth1.cipig.net",
+    "port": 8555,
+    "proto": "tcp",
+    "txfee": 0,
+    "abbr": "SAI",
+    "coingeckoId": "dai",
+    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+    "colorCoin": "0xFFF8B34F",
+    "serverList": [
+      "http://eth1.cipig.net:8555",
+      "http://eth2.cipig.net:8555",
+      "http://eth3.cipig.net:8555"
+    ],
+    "explorerUrl": [
+      "https://etherscan.io/"
+    ]
+  },
+  {
     "name": "Dogecoin",
     "type": "utxo",
     "address": "electrum1.cipig.net",
