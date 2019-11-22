@@ -104,11 +104,11 @@ class MusicService {
       } else if (newMode == MusicMode.ACTIVE) {
         _player.loop('362272__zabuhailo__street-musician-money.mp3');
       } else if (newMode == MusicMode.FAILED) {
-        _player.loop(rng.nextBool()
+        _player.play(rng.nextBool()
             ? '376196__euphrosyyn__futuristic-robotic-voice-sentences.mp3'
             : '213901__garzul__robotic-arp-sequence.mp3');
       } else if (newMode == MusicMode.APPLAUSE) {
-        _player.loop('Cash-Register-Cha-Ching-SoundBible.com-184076484.mp3');
+        _player.play('Cash-Register-Cha-Ching-SoundBible.com-184076484.mp3');
       } else if (newMode == MusicMode.SILENT) {
         _player.play('poker-chips-daniel_simon.mp3');
       }
