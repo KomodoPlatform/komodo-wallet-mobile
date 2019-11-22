@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:path/path.dart';
