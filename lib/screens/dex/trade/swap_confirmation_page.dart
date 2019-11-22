@@ -385,7 +385,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                   cancelPrevious: false,
                   max: false,
                   volume: amountToSell,
-                  price: Decimal.parse(widget.bestPrice).toStringAsFixed(8)))
+                  price: Decimal.parse(widget.bestPrice).toString()))
           .then<dynamic>((dynamic onValue) => onValue is SetPriceResponse
               ? _goToNextScreen(
                   mContext,

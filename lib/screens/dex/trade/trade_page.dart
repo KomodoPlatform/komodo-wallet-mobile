@@ -166,7 +166,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       final String bestPrice = (Decimal.parse(
                   _controllerAmountReceive.text.replaceAll(',', '.')) /
               Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.')))
-          .toStringAsFixed(8);
+          .toString();
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoin?.coin,
