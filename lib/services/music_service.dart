@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:komodo_dex/model/order.dart';
@@ -90,6 +92,27 @@ class MusicService {
     final MusicMode newMode = pickMode(orders, swaps, allSwaps);
     if (newMode != musicMode) {
       Log.println('', 'play] mode changed from $musicMode to $newMode');
+
+      final Random rng = Random();
+
+      if (newMode == MusicMode.TAKER) {
+        _player.loop(rng.nextBool()
+            ? '15427__lg__fax.mp3'
+            : 'Coin_Drop-Willem_Hunt-569197907.mp3');
+      } else if (newMode == MusicMode.MAKER) {
+        _player.loop('162196__rickmk2__coin-rustle.mp3');
+      } else if (newMode == MusicMode.ACTIVE) {
+        _player.loop('362272__zabuhailo__street-musician-money.mp3');
+      } else if (newMode == MusicMode.FAILED) {
+        _player.loop(rng.nextBool()
+            ? '376196__euphrosyyn__futuristic-robotic-voice-sentences.mp3'
+            : '213901__garzul__robotic-arp-sequence.mp3');
+      } else if (newMode == MusicMode.APPLAUSE) {
+        _player.loop('Cash-Register-Cha-Ching-SoundBible.com-184076484.mp3');
+      } else if (newMode == MusicMode.SILENT) {
+        _player.play('poker-chips-daniel_simon.mp3');
+      }
+
       musicMode = newMode;
     }
 
@@ -110,6 +133,5 @@ class MusicService {
       _audioPlayer.stop();
     });
 */
-
   }
 }
