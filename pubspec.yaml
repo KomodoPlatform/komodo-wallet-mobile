@@ -62,6 +62,15 @@ dev_dependencies:
   package_info: ^0.4.0+4
   flutter_launcher_icons: ^0.7.3
   decimal: ^0.3.0
+
+  # AG: Error `value of type 'UnsafePointer<_>' has no member 'bindMemory'`
+  # means that flutter_sodium is using SWIFT 5 code
+  # (merged in https://github.com/firstfloorsoftware/flutter_sodium/pull/16).
+  # Downgrade to "0.0.9" to fix.
+  # I thought about upgrading the flutter project to Swift 5,
+  # but Xcode 10.1 on our Mac CI server only supports Swift 4.2
+  # (cf. https://www.swiftprogrammer.info/swift5_high_sierra.html: "your best bet is to upgrade your Mac")
+  #flutter_sodium: 0.0.9
   flutter_sodium: ^0.0.10
 
 flutter_icons:

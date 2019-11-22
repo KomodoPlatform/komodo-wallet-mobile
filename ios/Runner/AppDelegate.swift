@@ -7,11 +7,10 @@ import os.log
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
     var eventSink: FlutterEventSink?
-    var taskID: UIBackgroundTaskIdentifier?
     
     override func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         let controllerMain : FlutterViewController = window?.rootViewController as! FlutterViewController
         let mm2main = FlutterMethodChannel(name: "mm2",
@@ -60,31 +59,6 @@ import os.log
         GeneratedPluginRegistrant.register(with: self)
         
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-    }
-
-    // https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622997-applicationdidenterbackground
-    override func applicationDidEnterBackground(_ application: UIApplication) {
-        print("AppDelegate] applicationDidEnterBackground");
-        os_log("AppDelegate] applicationDidEnterBackground", type: OSLogType.default);
-
-        let prevTaskID = taskID;
-        taskID = application.beginBackgroundTask(withName: "onEnter", expirationHandler: ({
-            print("AppDelegate] expirationHandler!");
-            os_log("AppDelegate] expirationHandler!", type: OSLogType.default);
-        }));
-
-        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 60) {
-            os_log("AppDelegate] A minute has passed in background?", type: OSLogType.default);
-            os_log("AppDelegate] Time remaining: %f", type: OSLogType.default, application.backgroundTimeRemaining);
-        };
-
-        if let ptid = prevTaskID {
-            application.endBackgroundTask (ptid);
-        }
-    }
-
-    override func applicationWillEnterForeground(_ application: UIApplication) {
-        os_log("AppDelegate] applicationWillEnterForeground", type: OSLogType.default)
     }
 
     @objc func onDidReceiveData(_ notification:Notification) {
