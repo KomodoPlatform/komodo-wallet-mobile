@@ -277,6 +277,16 @@
         "mm2": 1
     },
     {
+        "coin": "FTC",
+        "name": "Feathercoin",
+        "rpcport": 9337,
+        "pubtype": 14,
+        "p2shtype": 5,
+        "wiftype": 142,
+        "txfee": 1000000,
+        "mm2": 1
+    },
+    {
         "coin": "ZEC",
         "name": "ZCash",
         "rpcport": 8232,

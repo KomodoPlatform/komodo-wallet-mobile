@@ -100,7 +100,7 @@
     "address": "electrum-ltc.bysh.me",
     "port": 50001,
     "proto": "tcp",
-    "txfee": 100000,
+    "txfee": 10000,
     "abbr": "LTC",
     "coingeckoId": "litecoin",
     "colorCoin": "0xFFbebebe",
@@ -363,6 +363,25 @@
     ],
     "explorerUrl": [
       "https://ravencoin.network/"
+    ]
+  },
+  {
+    "name": "Feathercoin",
+    "type": "utxo",
+    "address": "electrum.feathercoin.network:50001",
+    "port": 50001,
+    "proto": "tcp",
+    "txfee": 1000000,
+    "abbr": "FTC",
+    "coingeckoId": "feathercoin",
+    "colorCoin": "0xFF3E4B51",
+    "serverList": [
+      "electrum.feathercoin.network:50001",
+      "electrumx-gb-1.feathercoin.network:50001",
+      "electrumx-gb-2.feathercoin.network:50001"
+    ],
+    "explorerUrl": [
+      "https://explorer.feathercoin.com/"
     ]
   },
   {
