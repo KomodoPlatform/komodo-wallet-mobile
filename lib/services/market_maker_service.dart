@@ -50,6 +50,10 @@ class MarketMakerService {
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
   File logFile;
+
+  /// Flips on temporarily when we see an indication of swap activity,
+  /// possibly a change of swap status, in MM logs,
+  /// triggering a Timer-based invocation of `updateOrdersAndSwaps`.
   bool shouldUpdateOrdersAndSwaps = false;
 
   Future<void> init(String passphrase) async {
