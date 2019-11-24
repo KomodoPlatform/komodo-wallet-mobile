@@ -45,8 +45,8 @@ class OrdersBloc implements BlocBase {
 
   Future<void> updateOrders() async {
     try {
-      final dynamic newOrders = await ApiProvider()
-          .getMyOrders(MarketMakerService().client, BaseService(method: 'my_orders'));
+      final dynamic newOrders = await ApiProvider().getMyOrders(
+          MarketMakerService().client, BaseService(method: 'my_orders'));
       if (newOrders is Orders) {
         final List<Order> orders = <Order>[];
 
@@ -95,7 +95,11 @@ class OrdersBloc implements BlocBase {
   /// Skips `fetchSwaps` if there is already a list of [swaps] obtained recently from MM.
   Future<void> updateOrdersSwaps([List<Swap> swaps]) async {
     await updateOrders();
-    swaps ??= await swapHistoryBloc.fetchSwaps(50, null);
+    if (swaps == null) {
+      swaps = await swapHistoryBloc.fetchSwaps(50, null);
+    } else {
+      swaps = List<Swap>.from(swaps); // Treat external `swaps` as immutable.
+    }
 
     swaps.removeWhere((Swap swap) =>
         swap.status == Status.SWAP_FAILED ||

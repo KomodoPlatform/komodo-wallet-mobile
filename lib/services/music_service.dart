@@ -43,6 +43,9 @@ class MusicService {
   /// Initially `null` (unknown) in order to trigger `recommendsPeriodicUpdates`.
   MusicMode musicMode;
 
+  /// Whether the volume is currently up.
+  bool _on = true;
+
   static final AudioPlayer _audioPlayer =
       AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
   static final AudioCache _player =
@@ -51,6 +54,7 @@ class MusicService {
   /// Pick the current music mode based on the list of all the orders and SWAPs.
   MusicMode pickMode(
       List<Order> orders, List<Swap> swaps, List<Swap> allSwaps) {
+    // ignore: always_specify_types
     final Set<String> active = {};
     for (final Swap swap in swaps) {
       // Active swaps.
@@ -148,5 +152,15 @@ class MusicService {
   /// which happens after the application restarts.
   bool recommendsPeriodicUpdates() {
     return musicMode != MusicMode.SILENT;
+  }
+
+  /// True if the music volume is currently up.
+  bool on() {
+    return _on;
+  }
+
+  /// Tune the volume down or back up.
+  void flip() {
+    _on = !_on;
   }
 }
