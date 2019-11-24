@@ -17,6 +17,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
@@ -279,8 +280,8 @@ class MarketMakerService {
 
   /// Load fresh lists of orders and swaps from MM.
   void updateOrdersAndSwaps() {
-    swapHistoryBloc.updateSwaps(50, null).then((_) {
-      ordersBloc.updateOrdersSwaps();
+    swapHistoryBloc.updateSwaps(50, null).then((List<Swap> swaps) {
+      ordersBloc.updateOrdersSwaps(swaps);
     });
   }
 

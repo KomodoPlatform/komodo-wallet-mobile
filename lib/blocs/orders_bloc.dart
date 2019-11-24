@@ -90,9 +90,12 @@ class OrdersBloc implements BlocBase {
     }
   }
 
-  Future<void> updateOrdersSwaps() async {
+  /// Loads orders and swaps from MM.
+  ///
+  /// Skips `fetchSwaps` if there is already a list of [swaps] obtained recently from MM.
+  Future<void> updateOrdersSwaps([List<Swap> swaps]) async {
     await updateOrders();
-    final List<Swap> swaps = await swapHistoryBloc.fetchSwaps(50, null);
+    swaps ??= await swapHistoryBloc.fetchSwaps(50, null);
 
     swaps.removeWhere((Swap swap) =>
         swap.status == Status.SWAP_FAILED ||
