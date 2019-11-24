@@ -111,24 +111,30 @@ class MusicService {
       final Random rng = Random();
 
       if (newMode == MusicMode.TAKER) {
-        _player.loop(rng.nextBool()
-            ? '15427__lg__fax.mp3'
-            : 'Coin_Drop-Willem_Hunt-569197907.mp3');
+        _player.loop(
+            rng.nextBool()
+                ? '15427__lg__fax.mp3'
+                : 'Coin_Drop-Willem_Hunt-569197907.mp3',
+            volume: volume());
       } else if (newMode == MusicMode.MAKER) {
-        _player.loop('162196__rickmk2__coin-rustle.mp3');
+        _player.loop('162196__rickmk2__coin-rustle.mp3', volume: volume());
       } else if (newMode == MusicMode.ACTIVE) {
-        _player.loop('362272__zabuhailo__street-musician-money.mp3');
+        _player.loop('362272__zabuhailo__street-musician-money.mp3',
+            volume: volume());
       } else if (newMode == MusicMode.FAILED) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play(rng.nextBool()
-            ? '376196__euphrosyyn__futuristic-robotic-voice-sentences.mp3'
-            : '213901__garzul__robotic-arp-sequence.mp3');
+        _player.play(
+            rng.nextBool()
+                ? '376196__euphrosyyn__futuristic-robotic-voice-sentences.mp3'
+                : '213901__garzul__robotic-arp-sequence.mp3',
+            volume: volume());
       } else if (newMode == MusicMode.APPLAUSE) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('Cash-Register-Cha-Ching-SoundBible.com-184076484.mp3');
+        _player.play('Cash-Register-Cha-Ching-SoundBible.com-184076484.mp3',
+            volume: volume());
       } else if (newMode == MusicMode.SILENT) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('poker-chips-daniel_simon.mp3');
+        _player.play('poker-chips-daniel_simon.mp3', volume: volume());
       } else {
         Log.println('', 'Unexpected music mode: $newMode');
         _audioPlayer.stop();
@@ -154,6 +160,13 @@ class MusicService {
     return musicMode != MusicMode.SILENT;
   }
 
+  /// Current audio player volume, from 0 to 1, based on the `on` switch.
+  double volume() {
+    // AG: We don't want the volume to be *too* low
+    // for otherwise reviewers might think that we're using the infamous silent audio trick.
+    return _on ? 1 : 0.1;
+  }
+
   /// True if the music volume is currently up.
   bool on() {
     return _on;
@@ -162,5 +175,6 @@ class MusicService {
   /// Tune the volume down or back up.
   void flip() {
     _on = !_on;
+    _audioPlayer.setVolume(volume());
   }
 }
