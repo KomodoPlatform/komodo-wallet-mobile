@@ -4,20 +4,13 @@ import Foundation
 import CoreLocation
 import os.log
 
-extension OSLog {
-    private static var subsystem = Bundle.main.bundleIdentifier!
-
-    /// Logs the view cycles like viewDidLoad.
-    static let viewCycle = OSLog(subsystem: subsystem, category: "viewcycle")
-}
-
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
     var eventSink: FlutterEventSink?
     
     override func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         let controllerMain : FlutterViewController = window?.rootViewController as! FlutterViewController
         let mm2main = FlutterMethodChannel(name: "mm2",
@@ -30,7 +23,6 @@ extension OSLog {
         let chargingChannel = FlutterEventChannel(name: "streamLogMM2",
                                                   binaryMessenger: controller as! FlutterBinaryMessenger)
         chargingChannel.setStreamHandler(self)
-        
         
         mm2main.setMethodCallHandler({
             (call: FlutterMethodCall, result: FlutterResult) -> Void in
@@ -52,6 +44,13 @@ extension OSLog {
                 result(ret)
             } else if call.method == "lsof" {
                 lsof()
+            } else if call.method == "log" {
+                // Allows us to log via the `os_log` default channel
+                // (Flutter currently does it for us, but there's a chance that it won't).
+                let arg = call.arguments as! String;
+                os_log("%{public}s", type: OSLogType.default, arg);
+            } else if call.method == "backgroundTimeRemaining" {
+                result(Double(application.backgroundTimeRemaining))
             } else {
                 result("Flutter method not implemented on iOS")
             }
@@ -61,7 +60,7 @@ extension OSLog {
         
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
-    
+
     @objc func onDidReceiveData(_ notification:Notification) {
         if let data = notification.userInfo as? [String: String]
         {

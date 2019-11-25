@@ -2,6 +2,7 @@ import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
+import 'package:komodo_dex/services/music_service.dart';
 
 import '../model/active_coin.dart';
 import '../model/balance.dart';
@@ -51,8 +52,20 @@ class ApiProvider {
   Response res;
   String userpass;
 
-  Response _saveRes(String key, Response res) {
-    Log.println(key, res.body);
+  Response _saveRes(String method, Response res) {
+    final String loggedBody = res.body.toString();
+    String loggedLine = 'api $method $loggedBody';
+
+    // getMyOrders and getRecentSwaps are invoked every two seconds during an active order or swap
+    // and fully logging their response bodies every two seconds is an overkill,
+    // though we still want to *mention* the invocations in the logs.
+    final bool cut = musicService.recommendsPeriodicUpdates() &&
+        (method == 'getMyOrders' || method == 'getRecentSwaps');
+    if (cut && loggedLine.length > 77) {
+      loggedLine = loggedLine.substring(0, 75) + '..';
+    }
+
+    Log.println('', loggedLine);
     this.res = res;
     return res;
   }

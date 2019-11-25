@@ -17,7 +17,9 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:package_info/package_info.dart';
@@ -50,6 +52,11 @@ class MarketMakerService {
   final Client client = http.Client();
   File logFile;
 
+  /// Flips on temporarily when we see an indication of swap activity,
+  /// possibly a change of swap status, in MM logs,
+  /// triggering a Timer-based invocation of `updateOrdersAndSwaps`.
+  bool shouldUpdateOrdersAndSwaps = false;
+
   Future<void> init(String passphrase) async {
     if (Platform.isAndroid) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -71,6 +78,14 @@ class MarketMakerService {
     } else {
       await MarketMakerService().runBin();
     }
+
+    Timer.periodic(const Duration(seconds: 2), (_) {
+      if (shouldUpdateOrdersAndSwaps ||
+          musicService.recommendsPeriodicUpdates()) {
+        shouldUpdateOrdersAndSwaps = false;
+        updateOrdersAndSwaps();
+      }
+    });
   }
 
   Future<void> initMarketMaker() async {
@@ -263,9 +278,21 @@ class MarketMakerService {
     }
   }
 
+  /// Load fresh lists of orders and swaps from MM.
+  void updateOrdersAndSwaps() {
+    swapHistoryBloc.updateSwaps(50, null).then((List<Swap> swaps) {
+      ordersBloc.updateOrdersSwaps(swaps);
+    });
+  }
+
+  /// Process a line of MM log,
+  /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void onLogsmm2(String log) {
     if (sink != null) {
-      Log.println('mm2', log);
+      Log.println('', log);
+      // AG: This currently relies on the information that can be freely changed by MM
+      // or removed from the logs entirely (e.g. on debug and human-readable parts).
+      // Should update it to rely on the log tags instead.
       if (log.contains('CONNECTED') ||
           log.contains('Entering the taker_swap_loop') ||
           log.contains('Received \'negotiation') ||
@@ -273,11 +300,7 @@ class MarketMakerService {
           log.contains('Sending \'taker-fee') ||
           log.contains('Sending \'taker-payment') ||
           log.contains('Finished')) {
-        Future<dynamic>.delayed(const Duration(seconds: 1), () {
-          swapHistoryBloc.updateSwaps(50, null).then((_) {
-            ordersBloc.updateOrdersSwaps();
-          });
-        });
+        shouldUpdateOrdersAndSwaps = true;
       }
     }
   }
@@ -304,9 +327,9 @@ class MarketMakerService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        print('ALL COINS ACTIVATES');
+        Log.println('', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          print('LOADCOIN FINISHED');
+          Log.println('', 'loadCoin finished');
         });
       });
     } catch (e) {
