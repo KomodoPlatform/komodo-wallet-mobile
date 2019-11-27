@@ -4,8 +4,8 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/sound_volume_button.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -47,18 +47,8 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
               icon: Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context, false),
             ),
-            actions: <Widget>[
-              IconButton(
-                  key: const Key('swap-detail-sound-button'),
-                  icon: Icon(Icons.audiotrack),
-                  color: musicService.on()
-                      ? Theme.of(context).toggleableActiveColor
-                      : Theme.of(context).textTheme.body2.color,
-                  onPressed: () {
-                    setState(() {
-                      musicService.flip();
-                    });
-                  })
+            actions: const <Widget>[
+              SoundVolumeButton(key: Key('swap-detail-sound-button'))
             ]),
         body: StreamBuilder<List<Swap>>(
             stream: swapHistoryBloc.outSwaps,

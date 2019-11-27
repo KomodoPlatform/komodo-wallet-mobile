@@ -26,6 +26,7 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
+import 'package:komodo_dex/widgets/sound_volume_button.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info/package_info.dart';
@@ -84,6 +85,8 @@ class _SettingPageState extends State<SettingPage> {
               _buildLogOutOnExit(),
               _buildTitle(AppLocalizations.of(context).settingLanguageTitle),
               _buildLanguages(),
+              _buildTitle(AppLocalizations.of(context).soundTitle),
+              _buildSound(),
               _buildTitle(AppLocalizations.of(context).security),
               _buildActivatePIN(),
               const SizedBox(
@@ -170,6 +173,27 @@ class _SettingPageState extends State<SettingPage> {
               ),
             );
           }),
+    );
+  }
+
+  Widget _buildSound() {
+    return CustomTile(
+      child: ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                AppLocalizations.of(context).soundOption,
+                style: Theme.of(context).textTheme.body1.copyWith(
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white.withOpacity(0.7)),
+              ),
+            ),
+            const SoundVolumeButton(key: Key('settings-sound-button'))
+          ],
+        ),
+      ),
     );
   }
 

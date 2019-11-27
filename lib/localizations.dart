@@ -566,6 +566,9 @@ class AppLocalizations {
   String get hungarianLanguage =>
     Intl.message('Hungarian', name: 'hungarianLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
+
+  String get soundTitle => Intl.message('Sound', name: 'soundTitle');
+  String get soundOption => Intl.message('Play at full volume', name: 'soundOption');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
