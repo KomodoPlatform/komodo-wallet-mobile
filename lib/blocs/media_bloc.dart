@@ -51,7 +51,7 @@ class MediaBloc implements BlocBase {
       this.articles = articles;
       _inArticles.add(this.articles);
     } catch (e) {
-      Log.println('', e);
+      Log.println('media_bloc:54', e);
     }
   }
 

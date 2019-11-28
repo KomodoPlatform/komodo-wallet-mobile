@@ -124,9 +124,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   Widget _buildCoinSwapDetail() {
-    // Log.println('swap_confirmatin_page:127', 'buildConfirmPage');
-    // Log.println('swap_confirmatin_page:128', 'sellAmount: '+widget.amountToSell);
-    // Log.println('swap_confirmatin_page:129', 'buyAmount: '+widget.amountToBuy);
+    // Log.println('swap_confirmation_page:127', 'buildConfirmPage');
+    // Log.println('swap_confirmation_page:128', 'sellAmount: '+widget.amountToSell);
+    // Log.println('swap_confirmation_page:129', 'buyAmount: '+widget.amountToBuy);
     return Column(
       children: <Widget>[
         Stack(
@@ -359,7 +359,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             satoshiSellAmount) {
       satoshiBuyAmount += Decimal.parse('1');
     }
-    // Log.println('swap_confirmation_page:358', 'amountToBuySatoshi: '+satoshiBuyAmount.toString());
+    // Log.println('swap_confirmation_page:362', 'amountToBuySatoshi: '+satoshiBuyAmount.toString());
 
     if (widget.swapStatus == SwapStatus.BUY) {
       ApiProvider()
@@ -403,10 +403,10 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       isSwapMaking = false;
     });
     String timeSecondeLeft = error.error;
-    Log.println('', timeSecondeLeft);
+    Log.println('swap_confirmation_page:406', timeSecondeLeft);
     timeSecondeLeft = timeSecondeLeft.substring(
         timeSecondeLeft.lastIndexOf(' '), timeSecondeLeft.length);
-    Log.println('', timeSecondeLeft);
+    Log.println('swap_confirmation_page:409', timeSecondeLeft);
     String errorDisplay =
         error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
     if (error.error.contains('is too low, required')) {

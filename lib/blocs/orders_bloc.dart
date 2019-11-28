@@ -85,7 +85,7 @@ class OrdersBloc implements BlocBase {
         _inCurrentOrders.add(currentOrders);
       }
     } catch (e) {
-      Log.println('', e);
+      Log.println('orders_bloc:88', e);
       rethrow;
     }
   }
@@ -159,7 +159,7 @@ class OrdersBloc implements BlocBase {
       });
       _inOrderSwaps.add(orderSwaps);
     } catch (e) {
-      Log.println('', e);
+      Log.println('orders_bloc:162', e);
       rethrow;
     }
   }
