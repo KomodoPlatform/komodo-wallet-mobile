@@ -289,7 +289,7 @@ class MarketMakerService {
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void onLogsmm2(String log) {
     if (sink != null) {
-      Log.println('', log);
+      Log.println('market_maker_service:292', log);
       // AG: This currently relies on the information that can be freely changed by MM
       // or removed from the logs entirely (e.g. on debug and human-readable parts).
       // Should update it to rely on the log tags instead.
@@ -327,9 +327,9 @@ class MarketMakerService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        Log.println('', 'All coins activated');
+        Log.println('market_maker_service:330', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('', 'loadCoin finished');
+          Log.println('market_maker_service:332', 'loadCoin finished');
         });
       });
     } catch (e) {

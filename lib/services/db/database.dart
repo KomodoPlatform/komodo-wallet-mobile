@@ -36,7 +36,7 @@ class DBProvider {
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
     return await openDatabase(path, version: 1, onOpen: (Database db) {},
         onCreate: (Database db, int version) async {
-      Log.println('database:40', 'initDB - openDB');
+      Log.println('database:39', 'initDB - openDB');
       await db.execute('''
       CREATE TABLE ArticlesSaved (
           id TEXT PRIMARY KEY,
@@ -95,16 +95,16 @@ class DBProvider {
       //   )
       // ''');
       //   } else {
-      //     Log.println('database:99', 'Table exists');
+      //     Log.println('database:98', 'Table exists');
       //   }
       // } catch (e) {
-      //   Log.println('database:99', 'DB INIT ERROR: ' + e.toString());
+      //   Log.println('database:101', 'DB INIT ERROR: ' + e.toString());
       // }
     });
   }
 
   String createTableCoins(CoinEletrum coinEletrum) {
-    Log.println('database:105', 'CREATE: ' + _getDbElectrum(coinEletrum));
+    Log.println('database:107', 'CREATE: ' + _getDbElectrum(coinEletrum));
     return '''
       CREATE TABLE ${_getDbElectrum(coinEletrum)} (
           name TEXT PRIMARY KEY UNIQUE,
@@ -274,7 +274,7 @@ class DBProvider {
       }
     } catch (e) {
       Log.println(
-          'initCoinsActivateDefault', 'Error on initCoinsActivateDefault');
+          'database:276', 'Error on initCoinsActivateDefault');
     }
   }
 
@@ -303,7 +303,7 @@ class DBProvider {
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('ArticlesSaved');
-    Log.println('', maps.length);
+    Log.println('database:306', maps.length);
     // Convert the List<Map<String, dynamic> into a List<Article>.
     return List<Article>.generate(maps.length, (int i) {
       return Article(
@@ -357,7 +357,7 @@ class DBProvider {
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('Wallet');
-    Log.println('', maps.length);
+    Log.println('database:360', maps.length);
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List<Wallet>.generate(maps.length, (int i) {
       return Wallet(
@@ -373,7 +373,7 @@ class DBProvider {
   }
 
   Future<void> deleteWallet(Wallet wallet) async {
-    Log.println('', wallet.id);
+    Log.println('database:376', wallet.id);
     final Database db = await database;
     await db.delete('Wallet', where: 'id = ?', whereArgs: <dynamic>[wallet.id]);
   }

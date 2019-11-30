@@ -81,7 +81,7 @@ class CoinDetail extends StatefulWidget {
         .then((dynamic data) {
       Navigator.of(mContext).pop();
       if (data is WithdrawResponse) {
-        Log.println('', data.myBalanceChange);
+        Log.println('coin_detail:84', data.myBalanceChange);
         if (double.parse(data.myBalanceChange) > 0) {
           dialogBloc.dialog = showDialog<dynamic>(
             context: mContext,

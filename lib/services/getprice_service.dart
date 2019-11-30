@@ -28,7 +28,7 @@ class GetPriceService {
       price = double.parse(
           decoded2[coingeckoId][currency.toLowerCase()].toString());
     } catch (e) {
-      Log.println('getPrice ERROR:', e.toString());
+      Log.println('getprice_service:31', e.toString());
       price = nil;
     }
     return price;
