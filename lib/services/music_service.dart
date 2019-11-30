@@ -33,10 +33,10 @@ class MusicService {
   MusicService() {
     _audioPlayer.onPlayerCompletion.listen((_) {
       // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
-      //Log.println('', 'onPlayerCompletion');
+      //Log.println('music_service:36', 'onPlayerCompletion');
     });
     _audioPlayer.onPlayerError.listen((String ev) {
-      Log.println('', 'onPlayerError: ' + ev);
+      Log.println('music_service:39', 'onPlayerError: ' + ev);
     });
   }
 
@@ -61,7 +61,7 @@ class MusicService {
       final String uuid = swap.result.uuid;
       active.add(uuid);
       final String shortId = uuid.substring(0, 4);
-      Log.println('',
+      Log.println('music_service:64',
           'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
       return MusicMode.ACTIVE;
     }
@@ -76,11 +76,11 @@ class MusicService {
       if (musicMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log.println('', 'pickMode] failed swap $shortId, MusicMode.FAILED');
+          Log.println('music_service:79', 'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
           Log.println(
-              '', 'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
+              'music_service:82', 'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
       }
@@ -89,15 +89,15 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log.println('', 'pickMode] taker order $shortId, MusicMode.TAKER');
+        Log.println('music_service:92', 'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log.println('', 'pickMode] maker order $shortId, MusicMode.MAKER');
+        Log.println('music_service:95', 'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log.println('', 'pickMode] no active orders or swaps, MusicMode.SILENT');
+    Log.println('music_service:100', 'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
   }
 
@@ -106,7 +106,7 @@ class MusicService {
     //   but for reliability we should also add a periodic update independent from MM logs.
     final MusicMode newMode = pickMode(orders, swaps, allSwaps);
     if (newMode != musicMode) {
-      Log.println('', 'play] mode changed from $musicMode to $newMode');
+      Log.println('music_service:109', 'play] mode changed from $musicMode to $newMode');
 
       final Random rng = Random();
 
@@ -136,7 +136,7 @@ class MusicService {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
         _player.play('poker-chips-daniel_simon.mp3', volume: volume());
       } else {
-        Log.println('', 'Unexpected music mode: $newMode');
+        Log.println('music_service:139', 'Unexpected music mode: $newMode');
         _audioPlayer.stop();
       }
 

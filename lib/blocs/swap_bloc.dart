@@ -254,7 +254,7 @@ class SwapBloc implements BlocBase {
       _inAmountReceiveCoin.add(amountReceive);
       return amountReceive;
     } catch (e) {
-      Log.println('', e);
+      Log.println('swap_bloc:257', e);
       return 0;
     }
   }

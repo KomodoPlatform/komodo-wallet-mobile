@@ -366,7 +366,7 @@ class _ItemCoinState extends State<ItemCoin> {
     if (double.parse(balance.getBalance()) > 0) {
       Log.println(
           'coins_page:367', 'balance: ' + widget.coinBalance.balance.balance);
-      Log.println('coins_page:368',
+      Log.println('coins_page:369',
           'locked_by_swaps: ' + widget.coinBalance.balance.lockedBySwaps);
       actions.add(IconSlideAction(
         caption: AppLocalizations.of(context).send,

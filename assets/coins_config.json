@@ -396,6 +396,7 @@
     "coingeckoId": "feathercoin",
     "colorCoin": "0xFF3E4B51",
     "serverList": [
+      "electrumx-de-1.feathercoin.network:50001",
       "electrum.feathercoin.network:50001",
       "electrumx-gb-1.feathercoin.network:50001",
       "electrumx-gb-2.feathercoin.network:50001"

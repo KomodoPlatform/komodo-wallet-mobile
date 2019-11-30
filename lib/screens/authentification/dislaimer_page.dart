@@ -377,7 +377,7 @@ class _DislaimerPageState extends State<DislaimerPage>
 
       await entryptionTool
           .writeData(KeyEncryption.SEED, wallet, widget.password, widget.seed)
-          .catchError((dynamic e) => Log.println('', e));
+          .catchError((dynamic e) => Log.println('dislaimer_page:380', e));
 
       await DBProvider.db.saveWallet(wallet);
       await DBProvider.db.saveCurrentWallet(wallet);

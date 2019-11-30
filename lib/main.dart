@@ -43,7 +43,7 @@ Future<void> startApp() async {
     return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));
   } catch (e) {
-    Log.println('', 'startApp] $e');
+    Log.println('main:46', 'startApp] $e');
     rethrow;
   }
 }
@@ -52,16 +52,16 @@ Future<void> _runBinMm2UserAlreadyLog() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('isPassphraseIsSaved') != null &&
       prefs.getBool('isPassphraseIsSaved') == true) {
-    Log.println('', 'readJsonCoin');
+    Log.println('main:55', 'readJsonCoin');
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
 
     if (!(authBloc.isPinShow && prefs.getBool('switch_pin'))) {
-      Log.println('', 'login isPinShow');
+      Log.println('main:60', 'login isPinShow');
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
-    Log.println('', 'loadJsonCoinsDefault');
+    Log.println('main:64', 'loadJsonCoinsDefault');
     await coinsBloc
         .writeJsonCoin(await MarketMakerService().loadJsonCoinsDefault());
   }
@@ -115,9 +115,9 @@ class _MyAppState extends State<MyApp> {
               pref: 'current_languages',
               builder:
                   (BuildContext context, AsyncSnapshot<dynamic> prefLocale) {
-                // Log.println('l10n - main.dart:118',
+                // Log.println('main:118',
                 //     'current locale: ' + currentLocale?.toString());
-                // Log.println('l10n - main.dart:120',
+                // Log.println('main:120',
                 //     'current pref locale: ' + prefLocale.toString());
 
                 return MaterialApp(
@@ -189,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.inactive:
         // “your app is no longer responding to touch but is still foreground
         // (received a phone call, doing touch ID, et cetera)”
-        Log.println('', 'inactive');
+        Log.println('main:192', 'inactive');
         break;
       case AppLifecycleState.paused:
         // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         if (Platform.isIOS) {
           final double btr = await MarketMakerService.platformmm2
               .invokeMethod('backgroundTimeRemaining');
-          Log.println('', 'paused, backgroundTimeRemaining: $btr');
+          Log.println('main:200', 'paused, backgroundTimeRemaining: $btr');
           // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
           // and when we are silent the `backgroundTimeRemaining` is low
           // (expected low values are ~5, ~180, ~600 seconds).
@@ -205,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             MarketMakerService().closeLogSink();
             if (!authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
               // https://gitlab.com/artemciy/supernet/issues/4#note_190147428
-              Log.println('',
+              Log.println('main:208',
                   'Suspended, exiting explicitly in order to workaround a crash');
               exit(0);
             }
@@ -221,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.resumed:
-        Log.println('', 'resumed');
+        Log.println('main:224', 'resumed');
         MarketMakerService().openLogSink();
         if (Platform.isIOS) {
           if (!MarketMakerService().ismm2Running) {
@@ -230,7 +230,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.suspending:
-        Log.println('', 'suspending');
+        Log.println('main:233', 'suspending');
         break;
     }
   }

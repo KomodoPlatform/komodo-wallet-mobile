@@ -54,7 +54,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
         return 0;
       }
     } catch (e) {
-      Log.println('', e);
+      Log.println('build_confirmation_step:57', e);
       return 0;
     }
   }
@@ -75,7 +75,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
             try {
               fee = snapshot.data;
             } catch (e) {
-              Log.println('', e);
+              Log.println('build_confirmation_step:78', e);
             }
           }
 

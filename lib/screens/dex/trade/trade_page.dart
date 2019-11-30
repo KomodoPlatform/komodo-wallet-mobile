@@ -66,7 +66,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         try {
           FocusScope.of(widget.mContext).requestFocus(_focusSell);
         } catch (e) {
-          Log.println('trade_page:70', 'deactivated widget: ' + e.toString());
+          Log.println('trade_page:69', 'deactivated widget: ' + e.toString());
         }
       }
     });
@@ -228,7 +228,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 maxVolume: maxVolume));
           }
           getFee(false).then((double tradeFee) async {
-            Log.println('', tradeFee);
+            Log.println('trade_page:231', tradeFee);
             if (currentCoinBalance != null &&
                 double.parse(amountSell) + tradeFee >
                     double.parse(currentCoinBalance.balance.getBalance())) {
@@ -272,7 +272,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       });
       return fee;
     } catch (e) {
-      Log.println('', e);
+      Log.println('trade_page:275', e);
       return 0;
     }
   }
@@ -316,7 +316,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         return Decimal.parse('0');
       }
     } catch (e) {
-      Log.println('', e);
+      Log.println('trade_page:319', e);
       rethrow;
     }
   }
@@ -359,7 +359,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 : 'ETH');
       }
     } catch (e) {
-      Log.println('', e);
+      Log.println('trade_page:362', e);
       rethrow;
     }
   }
@@ -376,7 +376,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         final double tradeFee = await getFee(true);
         final double maxValue =
             double.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
-        Log.println('', 'setting max: ' + maxValue.toString());
+        Log.println('trade_page:379', 'setting max: ' + maxValue.toString());
 
         if (maxValue < 0) {
           setState(() {
@@ -394,13 +394,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ));
           _focusSell.unfocus();
         } else {
-          Log.println('', '----------------_controllerAmountSell');
+          Log.println('trade_page:397', '----------------_controllerAmountSell');
           _controllerAmountSell.setTextAndPosition(
               replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
         }
       });
     } catch (e) {
-      Log.println('', e);
+      Log.println('trade_page:403', e);
     }
   }
 
@@ -726,7 +726,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildCoinSelect(Market market) {
-    Log.println('', 'coin-select-${market.toString().toLowerCase()}');
+    Log.println('trade_page:729', 'coin-select-${market.toString().toLowerCase()}');
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: InkWell(
@@ -856,7 +856,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           isNumeric(_controllerAmountSell.text) &&
           !isLoadingMax &&
           double.parse(_controllerAmountSell.text) > 0) {
-        Log.println('', isLoadingMax);
+        Log.println('trade_page:859', isLoadingMax);
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -1011,10 +1011,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               double.parse(orderbook.getBuyAmount(_controllerAmountSell.text)) >
                   0;
           Log.println(
-              '',
+              'trade_page:1013',
               '----getBuyAmount----' +
                   orderbook.getBuyAmount(_controllerAmountSell.text));
-          Log.println('',
+          Log.println('trade_page:1017',
               'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
             key: Key(

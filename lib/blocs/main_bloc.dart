@@ -49,7 +49,7 @@ class MainBloc implements BlocBase {
 
   void setNewLanguage(Locale locale) {
     Log.println(
-        'l10n - main_bloc.dart:52', 'Set Language to: ' + locale.toString());
+        'main_bloc:51', 'Set Language to: ' + locale.toString());
     currentLocale = locale;
     _inCurrentLocale.add(currentLocale);
   }
