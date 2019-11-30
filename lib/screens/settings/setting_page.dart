@@ -58,7 +58,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     // final Locale myLocale = Localizations.localeOf(context);
-    // Log.println('setting_page:60', 'current locale: $myLocale');
+    // Log.println('setting_page:61', 'current locale: $myLocale');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -141,7 +141,7 @@ class _SettingPageState extends State<SettingPage> {
         version += ' - ${versionmm2.result}';
       }
     } catch (e) {
-      Log.println('setting_page:141', e);
+      Log.println('setting_page:144', e);
       rethrow;
     }
     return version;
@@ -228,7 +228,7 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          Log.println('setting_page:207', 'dataSwitch' + dataSwitch.toString());
+                          Log.println('setting_page:231', 'dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
@@ -420,9 +420,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log.println('setting_page:399', 'PRESSED');
+        Log.println('setting_page:423', 'PRESSED');
         authBloc.logout().then((_) {
-          Log.println('setting_page:401', 'PRESSED');
+          Log.println('setting_page:425', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },
