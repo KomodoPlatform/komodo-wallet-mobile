@@ -111,30 +111,22 @@ class MusicService {
       final Random rng = Random();
 
       if (newMode == MusicMode.TAKER) {
-        _player.loop(
-            rng.nextBool()
-                ? '15427__lg__fax.mp3'
-                : 'Coin_Drop-Willem_Hunt-569197907.mp3',
+        _player.loop(rng.nextBool() ? 'sound00.mp3' : 'sound01.mp3',
             volume: volume());
       } else if (newMode == MusicMode.MAKER) {
-        _player.loop('162196__rickmk2__coin-rustle.mp3', volume: volume());
+        _player.loop('sound02.mp3', volume: volume());
       } else if (newMode == MusicMode.ACTIVE) {
-        _player.loop('362272__zabuhailo__street-musician-money.mp3',
-            volume: volume());
+        _player.loop('sound03.mp3', volume: volume());
       } else if (newMode == MusicMode.FAILED) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play(
-            rng.nextBool()
-                ? '376196__euphrosyyn__futuristic-robotic-voice-sentences.mp3'
-                : '213901__garzul__robotic-arp-sequence.mp3',
+        _player.play(rng.nextBool() ? 'sound04.mp3' : 'sound05.mp3',
             volume: volume());
       } else if (newMode == MusicMode.APPLAUSE) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('Cash-Register-Cha-Ching-SoundBible.com-184076484.mp3',
-            volume: volume());
+        _player.play('sound06.mp3', volume: volume());
       } else if (newMode == MusicMode.SILENT) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('poker-chips-daniel_simon.mp3', volume: volume());
+        _player.play('sound07.mp3', volume: volume());
       } else {
         Log.println('music_service:139', 'Unexpected music mode: $newMode');
         _audioPlayer.stop();
