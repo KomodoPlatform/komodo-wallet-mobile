@@ -19,4 +19,5 @@ jobs:
     - run: flutter doctor
     - run: flutter pub get
     - run: flutter build apk --release
-    - run: shasum -a 256 build/app/outputs/apk/release/app-release.apk
+    - if: runner.os != 'Windows'
+      run: shasum -a 256 build/app/outputs/apk/release/app-release.apk
