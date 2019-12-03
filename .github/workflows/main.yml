@@ -1,0 +1,22 @@
+on: push
+
+name: Build atomicDEX APK
+jobs:
+  build:
+    name: Build APK on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: ca333/flutter-action@v1
+      with:
+        channel: 'stable'
+    - run: flutter doctor
+    - run: flutter pub get
+    - run: flutter build apk --release
+    - run: shasum -a 256 build/app/outputs/apk/release/app-release.apk
