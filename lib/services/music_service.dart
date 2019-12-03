@@ -76,11 +76,12 @@ class MusicService {
       if (musicMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log.println('music_service:79', 'pickMode] failed swap $shortId, MusicMode.FAILED');
+          Log.println('music_service:79',
+              'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log.println(
-              'music_service:82', 'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
+          Log.println('music_service:83',
+              'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
       }
@@ -89,54 +90,65 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log.println('music_service:92', 'pickMode] taker order $shortId, MusicMode.TAKER');
+        Log.println('music_service:93',
+            'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log.println('music_service:95', 'pickMode] maker order $shortId, MusicMode.MAKER');
+        Log.println('music_service:97',
+            'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log.println('music_service:100', 'pickMode] no active orders or swaps, MusicMode.SILENT');
+    Log.println('music_service:103',
+        'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
   }
+
+  // First batch of audio files was gathered by the various members of Komodo team
+  // and had funny names testimony to the gay variety of places it came from:
+  // 15427__lg__fax, Coin_Drop-Willem_Hunt-569197907, 162196__rickmk2__coin-rustle,
+  // 362272__zabuhailo__street-musician-money, 376196__euphrosyyn__futuristic-robotic-voice-sentences,
+  // 213901__garzul__robotic-arp-sequence, Cash-Register-Cha-Ching-SoundBible.com-184076484,
+  // poker-chips-daniel_simon
+  // We did a pair programming session on classifying that music
+  // and it was a bit of a surprise that every one of them has fallen into a place.
+  //
+  // If we are to expand the collection of audio tracks
+  // then the idea is to have some default tracks in the application bundle
+  // (just to minimally cover all the modes)
+  // and download the extra tracks on demand from an external server
+  // in order to keep the application bundle (and Git repository) small.
 
   void play(List<Order> orders, List<Swap> swaps, List<Swap> allSwaps) {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
     final MusicMode newMode = pickMode(orders, swaps, allSwaps);
     if (newMode != musicMode) {
-      Log.println('music_service:109', 'play] mode changed from $musicMode to $newMode');
+      Log.println('music_service:128',
+          'play] mode changed from $musicMode to $newMode');
 
       final Random rng = Random();
 
       if (newMode == MusicMode.TAKER) {
-        _player.loop(
-            rng.nextBool()
-                ? '15427__lg__fax.mp3'
-                : 'Coin_Drop-Willem_Hunt-569197907.mp3',
+        _player.loop(rng.nextBool() ? 'sound00.mp3' : 'sound01.mp3',
             volume: volume());
       } else if (newMode == MusicMode.MAKER) {
-        _player.loop('162196__rickmk2__coin-rustle.mp3', volume: volume());
+        _player.loop('sound02.mp3', volume: volume());
       } else if (newMode == MusicMode.ACTIVE) {
-        _player.loop('362272__zabuhailo__street-musician-money.mp3',
-            volume: volume());
+        _player.loop('sound03.mp3', volume: volume());
       } else if (newMode == MusicMode.FAILED) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play(
-            rng.nextBool()
-                ? '376196__euphrosyyn__futuristic-robotic-voice-sentences.mp3'
-                : '213901__garzul__robotic-arp-sequence.mp3',
+        _player.play(rng.nextBool() ? 'sound04.mp3' : 'sound05.mp3',
             volume: volume());
       } else if (newMode == MusicMode.APPLAUSE) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('Cash-Register-Cha-Ching-SoundBible.com-184076484.mp3',
-            volume: volume());
+        _player.play('sound06.mp3', volume: volume());
       } else if (newMode == MusicMode.SILENT) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('poker-chips-daniel_simon.mp3', volume: volume());
+        _player.play('sound07.mp3', volume: volume());
       } else {
-        Log.println('music_service:139', 'Unexpected music mode: $newMode');
+        Log.println('music_service:151', 'Unexpected music mode: $newMode');
         _audioPlayer.stop();
       }
 
