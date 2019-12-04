@@ -23,6 +23,7 @@ class CoinInit {
     this.txfee,
     this.mm2,
     this.txversion,
+    this.isPoS,
     this.overwintered,
     this.asset,
     this.etomic,
@@ -40,6 +41,7 @@ class CoinInit {
         txfee: json['txfee'],
         mm2: json['mm2'],
         txversion: json['txversion'],
+        isPoS: json['isPoS'],
         overwintered: json['overwintered'],
         asset: json['asset'],
         etomic: json['etomic'],
@@ -56,6 +58,7 @@ class CoinInit {
   int txfee;
   int mm2;
   int txversion;
+  int isPoS;
   int overwintered;
   String asset;
   String etomic;
@@ -72,6 +75,7 @@ class CoinInit {
         'txfee': txfee,
         'mm2': mm2,
         'txversion': txversion,
+        'isPoS': isPoS,
         'overwintered': overwintered,
         'asset': asset,
         'etomic': etomic,

@@ -388,8 +388,8 @@
   {
     "name": "Feathercoin",
     "type": "utxo",
-    "address": "electrum.feathercoin.network:50001",
-    "port": 50001,
+    "address": "electrum1.cipig.net",
+    "port": 10054,
     "proto": "tcp",
     "txfee": 1000000,
     "abbr": "FTC",
@@ -399,10 +399,30 @@
       "electrumx-de-1.feathercoin.network:50001",
       "electrum.feathercoin.network:50001",
       "electrumx-gb-1.feathercoin.network:50001",
-      "electrumx-gb-2.feathercoin.network:50001"
+      "electrumx-gb-2.feathercoin.network:50001",
+      "electrum1.cipig.net:10054",
+      "electrum2.cipig.net:10054",
+      "electrum3.cipig.net:10054"
     ],
     "explorerUrl": [
       "https://explorer.feathercoin.com/"
+    ]
+  },
+  {
+    "name": "Navcoin",
+    "type": "utxo",
+    "address": "electrumx.nav.community",
+    "port": 40001,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "NAV",
+    "coingeckoId": "nav-coin",
+    "colorCoin": "0xFFA83BAB",
+    "serverList": [
+      "electrumx.nav.community:40001"
+    ],
+    "explorerUrl": [
+      "https://www.navexplorer.com/"
     ]
   },
   {
