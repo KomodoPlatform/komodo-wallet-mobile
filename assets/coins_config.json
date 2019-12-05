@@ -419,7 +419,10 @@
     "coingeckoId": "nav-coin",
     "colorCoin": "0xFFA83BAB",
     "serverList": [
-      "electrumx.nav.community:40001"
+      "electrumx.nav.community:40001",
+      "electrum1.cipig.net:10056",
+      "electrum2.cipig.net:10056",
+      "electrum3.cipig.net:10056"
     ],
     "explorerUrl": [
       "https://www.navexplorer.com/"
