@@ -5,6 +5,7 @@ import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/sound_volume_button.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -45,7 +46,10 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
               key: const Key('swap-detail-back-button'),
               icon: Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context, false),
-            )),
+            ),
+            actions: const <Widget>[
+              SoundVolumeButton(key: Key('swap-detail-sound-button'))
+            ]),
         body: StreamBuilder<List<Swap>>(
             stream: swapHistoryBloc.outSwaps,
             initialData: swapHistoryBloc.swaps,

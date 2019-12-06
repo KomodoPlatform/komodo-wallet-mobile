@@ -77,9 +77,9 @@ class _AddressFieldState extends State<AddressField> {
                 } else {
                   try {
                     final Uint8List decoded = bs58check.decode(value);
-                    Log.println('', bs58check.encode(decoded));
+                    Log.println('address_field:80', bs58check.encode(decoded));
                   } catch (e) {
-                    Log.println('', e);
+                    Log.println('address_field:82', e);
                     if (value.length > 3 &&
                         (value.startsWith('bc1') ||
                             value.startsWith('3') ||

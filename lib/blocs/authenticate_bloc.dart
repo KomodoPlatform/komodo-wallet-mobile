@@ -75,7 +75,7 @@ class AuthenticateBloc extends BlocBase {
       await DBProvider.db.initDB();
       await DBProvider.db.initCoinsActivateDefault(CoinEletrum.CONFIG);
     } catch (e) {
-      Log.println('authentitcate_bloc:78', 'DB error: ' + e.toString());
+      Log.println('authenticate_bloc:78', 'DB error: ' + e.toString());
     }
 
     mainBloc.setCurrentIndexTab(0);

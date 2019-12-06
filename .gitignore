@@ -4,6 +4,7 @@
 # signing artefacts
 /android/key.properties
 /android/app/*.keystore
+/android/app/key.jks
 
 # Miscellaneous
 *.class

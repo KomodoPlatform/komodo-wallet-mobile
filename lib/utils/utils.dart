@@ -201,9 +201,9 @@ Future<bool> checkBiometrics() async {
   bool canCheckBiometrics = false;
   try {
     canCheckBiometrics = await auth.canCheckBiometrics;
-    Log.println('', canCheckBiometrics);
+    Log.println('utils:204', canCheckBiometrics);
   } on PlatformException catch (e) {
-    Log.println('', e);
+    Log.println('utils:206', e);
   }
   return canCheckBiometrics;
 }
@@ -303,7 +303,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('', url);
+  Log.println('utils:306', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);

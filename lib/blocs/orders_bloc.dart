@@ -9,6 +9,7 @@ import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
@@ -44,8 +45,8 @@ class OrdersBloc implements BlocBase {
 
   Future<void> updateOrders() async {
     try {
-      final dynamic newOrders = await ApiProvider()
-          .getMyOrders(MarketMakerService().client, BaseService(method: 'my_orders'));
+      final dynamic newOrders = await ApiProvider().getMyOrders(
+          MarketMakerService().client, BaseService(method: 'my_orders'));
       if (newOrders is Orders) {
         final List<Order> orders = <Order>[];
 
@@ -84,16 +85,21 @@ class OrdersBloc implements BlocBase {
         _inCurrentOrders.add(currentOrders);
       }
     } catch (e) {
-      Log.println('', e);
+      Log.println('orders_bloc:88', e);
       rethrow;
     }
   }
 
-  Future<void> updateOrdersSwaps() async {
-    final List<dynamic> ordersSwaps = <dynamic>[];
-
+  /// Loads orders and swaps from MM.
+  ///
+  /// Skips `fetchSwaps` if there is already a list of [swaps] obtained recently from MM.
+  Future<void> updateOrdersSwaps([List<Swap> swaps]) async {
     await updateOrders();
-    final List<Swap> swaps = await swapHistoryBloc.fetchSwaps(50, null);
+    if (swaps == null) {
+      swaps = await swapHistoryBloc.fetchSwaps(50, null);
+    } else {
+      swaps = List<Swap>.from(swaps); // Treat external `swaps` as immutable.
+    }
 
     swaps.removeWhere((Swap swap) =>
         swap.status == Status.SWAP_FAILED ||
@@ -120,6 +126,9 @@ class OrdersBloc implements BlocBase {
       });
     }
 
+    musicService.play(orders, swaps, swapHistoryBloc.swaps);
+
+    final List<dynamic> ordersSwaps = <dynamic>[];
     ordersSwaps.addAll(orders);
     ordersSwaps.addAll(swaps);
     ordersSwaps.sort((dynamic a, dynamic b) {
@@ -150,7 +159,7 @@ class OrdersBloc implements BlocBase {
       });
       _inOrderSwaps.add(orderSwaps);
     } catch (e) {
-      Log.println('', e);
+      Log.println('orders_bloc:162', e);
       rethrow;
     }
   }

@@ -26,6 +26,7 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
+import 'package:komodo_dex/widgets/sound_volume_button.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info/package_info.dart';
@@ -57,7 +58,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     // final Locale myLocale = Localizations.localeOf(context);
-    // Log.println('setting_page.dart:60', 'current locale: $myLocale');
+    // Log.println('setting_page:61', 'current locale: $myLocale');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -84,6 +85,8 @@ class _SettingPageState extends State<SettingPage> {
               _buildLogOutOnExit(),
               _buildTitle(AppLocalizations.of(context).settingLanguageTitle),
               _buildLanguages(),
+              _buildTitle(AppLocalizations.of(context).soundTitle),
+              _buildSound(),
               _buildTitle(AppLocalizations.of(context).security),
               _buildActivatePIN(),
               const SizedBox(
@@ -138,7 +141,7 @@ class _SettingPageState extends State<SettingPage> {
         version += ' - ${versionmm2.result}';
       }
     } catch (e) {
-      Log.println('', e);
+      Log.println('setting_page:144', e);
       rethrow;
     }
     return version;
@@ -173,6 +176,27 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
+  Widget _buildSound() {
+    return CustomTile(
+      child: ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                AppLocalizations.of(context).soundOption,
+                style: Theme.of(context).textTheme.body1.copyWith(
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white.withOpacity(0.7)),
+              ),
+            ),
+            const SoundVolumeButton(key: Key('settings-sound-button'))
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildTitle(String title) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -204,7 +228,7 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          Log.println('', 'dataSwitch' + dataSwitch.toString());
+                          Log.println('setting_page:231', 'dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
@@ -396,9 +420,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log.println('', 'PRESSED');
+        Log.println('setting_page:423', 'PRESSED');
         authBloc.logout().then((_) {
-          Log.println('', 'PRESSED');
+          Log.println('setting_page:425', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },

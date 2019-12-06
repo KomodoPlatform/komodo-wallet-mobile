@@ -7,7 +7,7 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.2.7
+version: 0.2.8
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
@@ -21,7 +21,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   # flutter_cupertino_localizations: ^1.0.1
-  
+  audioplayers: ^0.13.2
+
 dev_dependencies:
   flutter_driver:
     sdk: flutter
@@ -61,6 +62,15 @@ dev_dependencies:
   package_info: ^0.4.0+4
   flutter_launcher_icons: ^0.7.3
   decimal: ^0.3.0
+
+  # AG: Error `value of type 'UnsafePointer<_>' has no member 'bindMemory'`
+  # means that flutter_sodium is using SWIFT 5 code
+  # (merged in https://github.com/firstfloorsoftware/flutter_sodium/pull/16).
+  # Downgrade to "0.0.9" to fix.
+  # I thought about upgrading the flutter project to Swift 5,
+  # but Xcode 10.1 on our Mac CI server only supports Swift 4.2
+  # (cf. https://www.swiftprogrammer.info/swift5_high_sierra.html: "your best bet is to upgrade your Mac")
+  #flutter_sodium: 0.0.9
   flutter_sodium: ^0.0.10
 
 flutter_icons:
@@ -77,6 +87,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - assets/
+  - assets/audio/
   - assets/mocks/
 
   # The following line ensures that the Material Icons font is
