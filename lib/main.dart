@@ -229,9 +229,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           }
         }
         break;
-      case AppLifecycleState.suspending:
-        Log.println('main:233', 'suspending');
-        break;
     }
   }
 
