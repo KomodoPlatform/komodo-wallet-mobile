@@ -49,7 +49,9 @@ linter:
     - always_put_control_body_on_new_line
     # - always_put_required_named_parameters_first # we prefer having parameters in the same order as fields https://github.com/flutter/flutter/issues/10219
     - always_require_non_null_named_parameters
-    - always_specify_types
+    # AG: As of now this annotation is kind of unwieldy, cf. https://github.com/dart-lang/linter/issues/1620,
+    # and it's hard or impossible to `ignore` it in complex initializers.
+    # - always_specify_types
     - annotate_overrides
     # - avoid_annotating_with_dynamic # conflicts with always_specify_types
     - avoid_as
