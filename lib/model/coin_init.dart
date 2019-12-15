@@ -25,6 +25,8 @@ class CoinInit {
     this.txversion,
     this.isPoS,
     this.overwintered,
+    this.version_group_id,
+    this.consensus_branch_id,
     this.asset,
     this.etomic,
   });
@@ -43,6 +45,8 @@ class CoinInit {
         txversion: json['txversion'],
         isPoS: json['isPoS'],
         overwintered: json['overwintered'],
+        version_group_id: json['version_group_id'],
+        consensus_branch_id: json['consensus_branch_id'],
         asset: json['asset'],
         etomic: json['etomic'],
       );
@@ -60,6 +64,8 @@ class CoinInit {
   int txversion;
   int isPoS;
   int overwintered;
+  String version_group_id;
+  String consensus_branch_id;
   String asset;
   String etomic;
 
@@ -77,6 +83,8 @@ class CoinInit {
         'txversion': txversion,
         'isPoS': isPoS,
         'overwintered': overwintered,
+        'version_group_id': version_group_id,
+        'consensus_branch_id': consensus_branch_id,
         'asset': asset,
         'etomic': etomic,
       };
