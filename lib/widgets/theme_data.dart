@@ -31,10 +31,10 @@ ThemeData getTheme() => ThemeData(
               fontSize: 40, fontWeight: FontWeight.w700, color: Colors.white),
           title: TextStyle(
               fontSize: 26.0, color: Colors.white, fontWeight: FontWeight.w700),
-          subtitle: TextStyle(fontSize: 18.0, color: Colors.white),
+          subtitle: const TextStyle(fontSize: 18.0, color: Colors.white),
           body1: TextStyle(
               fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.w300),
-          button: TextStyle(fontSize: 16.0, color: Colors.white),
+          button: const TextStyle(fontSize: 16.0, color: Colors.white),
           body2:
               TextStyle(fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
           caption: TextStyle(

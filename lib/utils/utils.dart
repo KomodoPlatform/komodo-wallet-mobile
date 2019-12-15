@@ -91,7 +91,7 @@ void showAddressDialog(BuildContext mContext, String address, Coin coin) {
         contentPadding: const EdgeInsets.all(16),
         titlePadding: const EdgeInsets.all(0),
         shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.white),
+            side: const BorderSide(color: Colors.white),
             borderRadius: BorderRadius.circular(6.0)),
         content: Container(
           height: MediaQuery.of(context).size.height * 0.4,
