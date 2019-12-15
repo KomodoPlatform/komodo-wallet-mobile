@@ -25,7 +25,6 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
   List<Widget> wordsWidget = <Widget>[];
   List<WordData> wordsDataRandom = <WordData>[];
   int stepper = 0;
-  TextEditingController _controller;
 
   @override
   void initState() {
