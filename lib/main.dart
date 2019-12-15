@@ -229,6 +229,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           }
         }
         break;
+      case AppLifecycleState.detached:
+        Log.println('main:233', 'detached');
+        break;
     }
   }
 
