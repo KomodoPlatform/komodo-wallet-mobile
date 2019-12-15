@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,7 +59,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     // final Locale myLocale = Localizations.localeOf(context);
-    // Log.println('setting_page:61', 'current locale: $myLocale');
+    // Log.println('setting_page:62', 'current locale: $myLocale');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -141,7 +142,7 @@ class _SettingPageState extends State<SettingPage> {
         version += ' - ${versionmm2.result}';
       }
     } catch (e) {
-      Log.println('setting_page:144', e);
+      Log.println('setting_page:145', e);
       rethrow;
     }
     return version;
@@ -177,23 +178,46 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildSound() {
-    return CustomTile(
-      child: ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                AppLocalizations.of(context).soundOption,
-                style: Theme.of(context).textTheme.body1.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
-              ),
+    return Column(
+      children: [
+        CustomTile(
+          child: ListTile(
+            title: Text(
+              AppLocalizations.of(context).soundOption,
+              style: Theme.of(context).textTheme.body1.copyWith(
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white.withOpacity(0.7)),
             ),
-            const SoundVolumeButton(key: Key('settings-sound-button'))
-          ],
+            trailing:
+                const SoundVolumeButton(key: Key('settings-sound-button')),
+          ),
         ),
-      ),
+        const SizedBox(
+          height: 1,
+        ),
+        SoundPicker(AppLocalizations.of(context).soundTaker,
+            AppLocalizations.of(context).soundTakerDesc),
+        const SizedBox(
+          height: 1,
+        ),
+        SoundPicker(AppLocalizations.of(context).soundMaker,
+            AppLocalizations.of(context).soundMakerDesc),
+        const SizedBox(
+          height: 1,
+        ),
+        SoundPicker(AppLocalizations.of(context).soundActive,
+            AppLocalizations.of(context).soundActiveDesc),
+        const SizedBox(
+          height: 1,
+        ),
+        SoundPicker(AppLocalizations.of(context).soundFailed,
+            AppLocalizations.of(context).soundFailedDesc),
+        const SizedBox(
+          height: 1,
+        ),
+        SoundPicker(AppLocalizations.of(context).soundApplause,
+            AppLocalizations.of(context).soundApplauseDesc),
+      ],
     );
   }
 
@@ -228,7 +252,8 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          Log.println('setting_page:231', 'dataSwitch' + dataSwitch.toString());
+                          Log.println('setting_page:255',
+                              'dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
@@ -420,9 +445,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log.println('setting_page:423', 'PRESSED');
+        Log.println('setting_page:448', 'PRESSED');
         authBloc.logout().then((_) {
-          Log.println('setting_page:425', 'PRESSED');
+          Log.println('setting_page:450', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },
@@ -708,6 +733,68 @@ class _SettingPageState extends State<SettingPage> {
         }).then((dynamic _) {
       dialogBloc.dialog = null;
     });
+  }
+}
+
+/// See if the file is an auudio file we can play.
+bool checkAudioFile(String path) {
+  if (path == null) return false;
+  return path.endsWith('.mp3') || path.endsWith('.wav');
+}
+
+class FilePickerButton extends StatelessWidget {
+  const FilePickerButton(this.description);
+  final String description;
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        key: const Key('file-picker-button'),
+        icon: Icon(Icons.folder_open),
+        color: Theme.of(context).toggleableActiveColor,
+        onPressed: () async {
+          // TODO: File picker currently triggers the PIN screen...
+          final String path = await FilePicker.getFilePath();
+          final bool ck = checkAudioFile(path);
+          if (!ck) {
+            showDialog<dynamic>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(AppLocalizations.of(context).soundCantPlayThat),
+                content: Text(AppLocalizations.of(context)
+                    .soundCantPlayThatMsg(description)),
+                actions: <Widget>[
+                  FlatButton(
+                    child: const Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
+          }
+          Log.println('setting_page:776','path: $path');
+        });
+  }
+}
+
+class SoundPicker extends StatelessWidget {
+  const SoundPicker(this.name, this.description);
+  final String name, description;
+  @override
+  Widget build(BuildContext context) {
+    return CustomTile(
+        child: Tooltip(
+            message: AppLocalizations.of(context).soundPlayedWhen(description),
+            child: ListTile(
+              title: Text(
+                name,
+                style: Theme.of(context).textTheme.body1.copyWith(
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white.withOpacity(0.7)),
+              ),
+              trailing: FilePickerButton(description),
+            )));
   }
 }
 
