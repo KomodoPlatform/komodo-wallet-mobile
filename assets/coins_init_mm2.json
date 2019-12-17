@@ -17,7 +17,8 @@
         "mm2": 1,
         "txfee": 1000,
         "txversion": 4,
-        "overwintered": 1
+        "overwintered": 1,
+        "required_confirmations": 2
     },
     {
         "coin": "QTUM",
@@ -85,30 +86,24 @@
         "mm2": 1,
         "txfee": 10000,
         "txversion": 4,
-        "overwintered": 1
+        "overwintered": 1,
+        "required_confirmations": 2
     },
     {
         "coin": "ZILLA",
         "asset": "ZILLA",
         "rpcport": 10041,
         "mm2": 1,
-        "txfee": 10000
+        "txfee": 10000,
+        "required_confirmations": 2
     },
     {
         "coin": "OOT",
         "asset": "OOT",
         "rpcport": 12467,
         "mm2": 1,
-        "txfee": 10000
-    },
-    {
-        "coin": "COMMOD",
-        "asset": "COMMOD",
-        "rpcport": 27048,
-        "mm2": 1,
         "txfee": 10000,
-        "txversion": 4,
-        "overwintered": 1
+        "required_confirmations": 2
     },
     {
         "coin": "DEX",
@@ -117,7 +112,8 @@
         "mm2": 1,
         "txfee": 10000,
         "txversion": 4,
-        "overwintered": 1
+        "overwintered": 1,
+        "required_confirmations": 2
     },
     {   
         "coin": "VRSC",
@@ -126,7 +122,8 @@
         "mm2": 1,
         "txfee": 10000,
         "txversion": 4,
-        "overwintered": 1
+        "overwintered": 1,
+        "required_confirmations": 2
     },
     {
         "coin": "LABS",
@@ -135,7 +132,8 @@
         "rpcport": 40265,
         "txfee": 10000,
         "txversion": 4,
-        "overwintered": 1
+        "overwintered": 1,
+        "required_confirmations": 2
     },
     {
         "coin": "RICK",
@@ -162,7 +160,8 @@
         "mm2": 1,
         "txfee": 10000,
         "txversion": 4,
-        "overwintered": 1
+        "overwintered": 1,
+        "required_confirmations": 2
     },
     {
         "coin": "AXE",
