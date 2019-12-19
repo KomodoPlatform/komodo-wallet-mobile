@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
@@ -133,11 +134,26 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 const SizedBox(
                   width: 8,
                 ),
-                InkWell(
-                  onTap: () {
+                GestureDetector(
+                  // onTap: () {
+                  //   setState(() {
+                  //     isObscured = !isObscured;
+                  //   });
+                  // },
+                  // onLongPressUp: () {
+                  //   Log.println('create_password_page:144', 'long press up');
+                  // },
+                  onTapDown: (TapDownDetails value) {
                     setState(() {
                       isObscured = !isObscured;
                     });
+                    // Log.println('create_password_page:150', 'long press end');
+                  },
+                  onTapUp: (TapUpDetails value) {
+                    setState(() {
+                      isObscured = !isObscured;
+                    });
+                    // Log.println('create_password_page:156', 'long press start');
                   },
                   child: Container(
                       height: 60,

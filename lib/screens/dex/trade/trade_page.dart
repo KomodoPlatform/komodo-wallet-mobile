@@ -394,13 +394,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ));
           _focusSell.unfocus();
         } else {
-          Log.println('trade_page:397', '----------------_controllerAmountSell');
+          Log.println(
+              'trade_page:397', '----------------_controllerAmountSell');
           _controllerAmountSell.setTextAndPosition(
               replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
         }
       });
     } catch (e) {
-      Log.println('trade_page:403', e);
+      Log.println('trade_page:404', e);
     }
   }
 
@@ -726,7 +727,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildCoinSelect(Market market) {
-    Log.println('trade_page:729', 'coin-select-${market.toString().toLowerCase()}');
+    Log.println(
+        'trade_page:730', 'coin-select-${market.toString().toLowerCase()}');
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: InkWell(
@@ -856,7 +858,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           isNumeric(_controllerAmountSell.text) &&
           !isLoadingMax &&
           double.parse(_controllerAmountSell.text) > 0) {
-        Log.println('trade_page:859', isLoadingMax);
+        Log.println('trade_page:861', isLoadingMax);
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -1011,10 +1013,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               double.parse(orderbook.getBuyAmount(_controllerAmountSell.text)) >
                   0;
           Log.println(
-              'trade_page:1013',
+              'trade_page:1015',
               '----getBuyAmount----' +
                   orderbook.getBuyAmount(_controllerAmountSell.text));
-          Log.println('trade_page:1017',
+          Log.println('trade_page:1019',
               'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
             key: Key(

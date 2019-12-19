@@ -30,7 +30,6 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
 
     return provider.bloc;
   }
-
   static Type _typeOf<T>() => T;
 }
 
