@@ -215,11 +215,23 @@ class _UnlockPasswordState extends State<UnlockPassword> {
             const SizedBox(
               width: 8,
             ),
-            InkWell(
-              onTap: () {
+            GestureDetector(
+              // onTap: () {
+              //   setState(() {
+              //     isObscured = !isObscured;
+              //   });
+              // },
+              onLongPressEnd: (LongPressEndDetails value) {
                 setState(() {
                   isObscured = !isObscured;
                 });
+                // Log.println('TAP', 'long press end');
+              },
+              onLongPressStart: (LongPressStartDetails value) {
+                setState(() {
+                  isObscured = !isObscured;
+                });
+                // Log.println('TAP', 'long press start');
               },
               child: Container(
                   height: 60,
