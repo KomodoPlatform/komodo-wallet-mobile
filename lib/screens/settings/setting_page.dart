@@ -421,9 +421,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log.println('setting_page:423', 'PRESSED');
+        Log.println('setting_page:424', 'PRESSED');
         authBloc.logout().then((_) {
-          Log.println('setting_page:425', 'PRESSED');
+          Log.println('setting_page:426', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },

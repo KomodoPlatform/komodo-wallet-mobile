@@ -115,13 +115,13 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                 setState(() {
                   _isSeedShow = !_isSeedShow;
                 });
-                // Log.println('TAP', 'long press end');
+                // Log.println('restore_seed_page:118', 'long press end');
               },
               onTapUp: (TapUpDetails value) {
                 setState(() {
                   _isSeedShow = !_isSeedShow;
                 });
-                // Log.println('TAP', 'long press start');
+                // Log.println('restore_seed_page:124', 'long press start');
               },
               child: Padding(
                 padding: const EdgeInsets.all(16.0),

@@ -141,19 +141,19 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                   //   });
                   // },
                   // onLongPressUp: () {
-                  //   Log.println('TAP', 'long press up');
+                  //   Log.println('create_password_page:144', 'long press up');
                   // },
                   onTapDown: (TapDownDetails value) {
                     setState(() {
                       isObscured = !isObscured;
                     });
-                    // Log.println('TAP', 'long press end');
+                    // Log.println('create_password_page:150', 'long press end');
                   },
                   onTapUp: (TapUpDetails value) {
                     setState(() {
                       isObscured = !isObscured;
                     });
-                    // Log.println('TAP', 'long press start');
+                    // Log.println('create_password_page:156', 'long press start');
                   },
                   child: Container(
                       height: 60,

@@ -148,13 +148,13 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                           setState(() {
                             isObscured = !isObscured;
                           });
-                          // Log.println('TAP', 'long press end');
+                          // Log.println('unlock_wallet_page:151', 'long press end');
                         },
                         onTapUp: (TapUpDetails value) {
                           setState(() {
                             isObscured = !isObscured;
                           });
-                          // Log.println('TAP', 'long press start');
+                          // Log.println('unlock_wallet_page:157', 'long press start');
                         },
                         child: Container(
                             height: 60,

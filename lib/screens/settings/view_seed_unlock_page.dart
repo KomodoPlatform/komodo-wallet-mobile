@@ -225,13 +225,13 @@ class _UnlockPasswordState extends State<UnlockPassword> {
                 setState(() {
                   isObscured = !isObscured;
                 });
-                // Log.println('TAP', 'long press end');
+                // Log.println('view_seed_unlock_page:228', 'long press end');
               },
               onTapUp: (TapUpDetails value) {
                 setState(() {
                   isObscured = !isObscured;
                 });
-                // Log.println('TAP', 'long press start');
+                // Log.println('view_seed_unlock_page:234', 'long press start');
               },
               child: Container(
                   height: 60,
