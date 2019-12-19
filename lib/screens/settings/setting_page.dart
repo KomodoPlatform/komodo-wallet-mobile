@@ -754,6 +754,12 @@ class FilePickerButton extends StatelessWidget {
         onPressed: () async {
           // TODO: File picker currently triggers the PIN screen...
           final String path = await FilePicker.getFilePath();
+
+          // on iOS this happens *after* pin lock, but very close in time to it (same second),
+          // on Android/debug *before* pin lock,
+          // chance is it's unordered.
+          Log.println('setting_page:761', 'file picked: $path');
+
           final bool ck = checkAudioFile(path);
           if (!ck) {
             showDialog<dynamic>(
@@ -773,7 +779,7 @@ class FilePickerButton extends StatelessWidget {
               ),
             );
           }
-          Log.println('setting_page:776','path: $path');
+          Log.println('setting_page:782','path: $path');
         });
   }
 }

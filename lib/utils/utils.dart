@@ -201,9 +201,9 @@ Future<bool> checkBiometrics() async {
   bool canCheckBiometrics = false;
   try {
     canCheckBiometrics = await auth.canCheckBiometrics;
-    Log.println('utils:204', canCheckBiometrics);
-  } on PlatformException catch (e) {
-    Log.println('utils:206', e);
+    Log.println('utils:204', 'canCheckBiometrics: $canCheckBiometrics');
+  } on PlatformException catch (ex) {
+    Log.println('utils:206', 'canCheckBiometrics exception: $ex');
   }
   return canCheckBiometrics;
 }

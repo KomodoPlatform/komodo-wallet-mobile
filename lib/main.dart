@@ -185,19 +185,25 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    // https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle
     switch (state) {
       case AppLifecycleState.inactive:
-        // “your app is no longer responding to touch but is still foreground
+        // willResignActive: “your app is no longer responding to touch but is still foreground
         // (received a phone call, doing touch ID, et cetera)”
-        Log.println('main:192', 'inactive');
+        // - https://github.com/flutter/flutter/issues/10123#issuecomment-302763382
+        // Picking a file also triggers this on Android (?), as it switches into a system activity.
+        // On iOS *after* picking a file the app returns to `inactive`,
+        // on Android to `inactive` and then `resumed`.
+        Log.println('main:197', 'lifecycle: inactive');
         break;
       case AppLifecycleState.paused:
+        Log.println('main:200', 'lifecycle: paused');
         // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS) {
           final double btr = await MarketMakerService.platformmm2
               .invokeMethod('backgroundTimeRemaining');
-          Log.println('main:200', 'paused, backgroundTimeRemaining: $btr');
+          Log.println('main:206', 'paused, backgroundTimeRemaining: $btr');
           // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
           // and when we are silent the `backgroundTimeRemaining` is low
           // (expected low values are ~5, ~180, ~600 seconds).
@@ -205,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             MarketMakerService().closeLogSink();
             if (!authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
               // https://gitlab.com/artemciy/supernet/issues/4#note_190147428
-              Log.println('main:208',
+              Log.println('main:214',
                   'Suspended, exiting explicitly in order to workaround a crash');
               exit(0);
             }
@@ -221,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.resumed:
-        Log.println('main:224', 'resumed');
+        Log.println('main:230', 'lifecycle: resumed');
         MarketMakerService().openLogSink();
         if (Platform.isIOS) {
           if (!MarketMakerService().ismm2Running) {
@@ -231,11 +237,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       // For Flutter v1.9.1:
       case AppLifecycleState.suspending:
-        Log.println('main:234', 'suspending');
+        Log.println('main:240', 'lifecycle: suspending');
         break;
       // For Flutter v1.12.13:
       // case AppLifecycleState.detached:
-      //   Log.println('main:238', 'detached');
+      //   Log.println('main:244', 'lifecycle: detached');
       //   break
     }
   }
