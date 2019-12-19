@@ -143,13 +143,13 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                   // onLongPressUp: () {
                   //   Log.println('TAP', 'long press up');
                   // },
-                  onLongPressEnd: (LongPressEndDetails value) {
+                  onTapDown: (TapDownDetails value) {
                     setState(() {
                       isObscured = !isObscured;
                     });
                     // Log.println('TAP', 'long press end');
                   },
-                  onLongPressStart: (LongPressStartDetails value) {
+                  onTapUp: (TapUpDetails value) {
                     setState(() {
                       isObscured = !isObscured;
                     });

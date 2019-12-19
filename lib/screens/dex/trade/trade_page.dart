@@ -394,7 +394,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ));
           _focusSell.unfocus();
         } else {
-          Log.println('trade_page:397', '----------------_controllerAmountSell');
+          Log.println(
+              'trade_page:397', '----------------_controllerAmountSell');
           _controllerAmountSell.setTextAndPosition(
               replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
         }
@@ -726,7 +727,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildCoinSelect(Market market) {
-    Log.println('trade_page:729', 'coin-select-${market.toString().toLowerCase()}');
+    Log.println(
+        'trade_page:729', 'coin-select-${market.toString().toLowerCase()}');
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: InkWell(

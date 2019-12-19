@@ -104,12 +104,24 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
           const SizedBox(
             width: 8,
           ),
-          InkWell(
-              borderRadius: BorderRadius.circular(8),
-              onTap: () {
+          GestureDetector(
+              //borderRadius: BorderRadius.circular(8),
+              // onTap: () {
+              //   setState(() {
+              //     _isSeedShow ? _isSeedShow = false : _isSeedShow = true;
+              //   });
+              // },
+              onTapDown: (TapDownDetails value) {
                 setState(() {
-                  _isSeedShow ? _isSeedShow = false : _isSeedShow = true;
+                  _isSeedShow = !_isSeedShow;
                 });
+                // Log.println('TAP', 'long press end');
+              },
+              onTapUp: (TapUpDetails value) {
+                setState(() {
+                  _isSeedShow = !_isSeedShow;
+                });
+                // Log.println('TAP', 'long press start');
               },
               child: Padding(
                 padding: const EdgeInsets.all(16.0),

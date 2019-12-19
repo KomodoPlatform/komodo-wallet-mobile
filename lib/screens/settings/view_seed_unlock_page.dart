@@ -221,13 +221,13 @@ class _UnlockPasswordState extends State<UnlockPassword> {
               //     isObscured = !isObscured;
               //   });
               // },
-              onLongPressEnd: (LongPressEndDetails value) {
+              onTapDown: (TapDownDetails value) {
                 setState(() {
                   isObscured = !isObscured;
                 });
                 // Log.println('TAP', 'long press end');
               },
-              onLongPressStart: (LongPressStartDetails value) {
+              onTapUp: (TapUpDetails value) {
                 setState(() {
                   isObscured = !isObscured;
                 });
