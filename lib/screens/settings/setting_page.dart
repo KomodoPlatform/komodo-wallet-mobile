@@ -228,7 +228,8 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          Log.println('setting_page:231', 'dataSwitch' + dataSwitch.toString());
+                          Log.println('setting_page:231',
+                              'dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
@@ -420,9 +421,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log.println('setting_page:423', 'PRESSED');
+        Log.println('setting_page:424', 'PRESSED');
         authBloc.logout().then((_) {
-          Log.println('setting_page:425', 'PRESSED');
+          Log.println('setting_page:426', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },

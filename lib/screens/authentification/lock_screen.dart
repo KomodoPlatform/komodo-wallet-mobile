@@ -124,7 +124,8 @@ class _LockScreenState extends State<LockScreen> {
                                           snapshot.data &&
                                           widget.pinStatus ==
                                               PinStatus.NORMAL_PIN) {
-                                        Log.println('lock_screen:127', snapshot.data);
+                                        Log.println(
+                                            'lock_screen:127', snapshot.data);
                                         if (isLogin.hasData && isLogin.data) {
                                           authenticateBiometrics(
                                               context, widget.pinStatus);

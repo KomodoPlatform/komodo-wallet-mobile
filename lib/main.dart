@@ -229,9 +229,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           }
         }
         break;
-      case AppLifecycleState.detached:
-        Log.println('main:233', 'detached');
+      // For Flutter v1.9.1:
+      case AppLifecycleState.suspending:
+        Log.println('main:234', 'suspending');
         break;
+      // For Flutter v1.12.13:
+      // case AppLifecycleState.detached:
+      //   Log.println('main:238', 'detached');
+      //   break
     }
   }
 
