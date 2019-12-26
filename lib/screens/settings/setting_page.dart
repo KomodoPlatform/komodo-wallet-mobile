@@ -284,7 +284,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildActivateBiometric() {
     return FutureBuilder<bool>(
         initialData: false,
-        future: checkBiometrics(),
+        future: canCheckBiometrics,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData && snapshot.data) {
             return CustomTile(

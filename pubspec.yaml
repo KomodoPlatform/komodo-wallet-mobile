@@ -55,6 +55,7 @@ dev_dependencies:
     git:
       url: https://github.com/KomodoPlatform/plugins
       path: packages/share/
+  # https://pub.dev/packages/local_auth, canCheckBiometrics, getAvailableBiometrics
   local_auth: ^0.6.0
   flutter_svg: ^0.13.1
   keccak: ^1.0.3

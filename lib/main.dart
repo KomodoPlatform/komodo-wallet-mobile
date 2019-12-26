@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -13,6 +12,7 @@ import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/news/media_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
+import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -52,16 +52,15 @@ Future<void> _runBinMm2UserAlreadyLog() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('isPassphraseIsSaved') != null &&
       prefs.getBool('isPassphraseIsSaved') == true) {
-    Log.println('main:55', 'readJsonCoin');
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
 
     if (!(authBloc.isPinShow && prefs.getBool('switch_pin'))) {
-      Log.println('main:60', 'login isPinShow');
+      Log.println('main:59', 'login isPinShow');
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
-    Log.println('main:64', 'loadJsonCoinsDefault');
+    Log.println('main:63', 'loadJsonCoinsDefault');
     await coinsBloc
         .writeJsonCoin(await MarketMakerService().loadJsonCoinsDefault());
   }
@@ -115,9 +114,9 @@ class _MyAppState extends State<MyApp> {
               pref: 'current_languages',
               builder:
                   (BuildContext context, AsyncSnapshot<dynamic> prefLocale) {
-                // Log.println('main:118',
+                // Log.println('main:117',
                 //     'current locale: ' + currentLocale?.toString());
-                // Log.println('main:120',
+                // Log.println('main:119',
                 //     'current pref locale: ' + prefLocale.toString());
 
                 return MaterialApp(
@@ -194,16 +193,18 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log.println('main:197', 'lifecycle: inactive');
+        Log.println('main:196', 'lifecycle: inactive');
+        lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
         Log.println('main:200', 'lifecycle: paused');
+        lockService.lockSignal(context);
         // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS) {
           final double btr = await MarketMakerService.platformmm2
               .invokeMethod('backgroundTimeRemaining');
-          Log.println('main:206', 'paused, backgroundTimeRemaining: $btr');
+          Log.println('main:207', 'paused, backgroundTimeRemaining: $btr');
           // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
           // and when we are silent the `backgroundTimeRemaining` is low
           // (expected low values are ~5, ~180, ~600 seconds).
@@ -211,23 +212,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             MarketMakerService().closeLogSink();
             if (!authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
               // https://gitlab.com/artemciy/supernet/issues/4#note_190147428
-              Log.println('main:214',
+              Log.println('main:215',
                   'Suspended, exiting explicitly in order to workaround a crash');
               exit(0);
             }
           }
         }
-        dialogBloc.closeDialog(context);
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        if (prefs.getBool('switch_pin_log_out_on_exit')) {
-          authBloc.logout();
-        }
-        if (!authBloc.isQrCodeActive) {
-          authBloc.showPin(true);
-        }
         break;
       case AppLifecycleState.resumed:
-        Log.println('main:230', 'lifecycle: resumed');
+        Log.println('main:223', 'lifecycle: resumed');
+        lockService.lockSignal(context);
         MarketMakerService().openLogSink();
         if (Platform.isIOS) {
           if (!MarketMakerService().ismm2Running) {
@@ -237,11 +231,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       // For Flutter v1.9.1:
       case AppLifecycleState.suspending:
-        Log.println('main:240', 'lifecycle: suspending');
+        Log.println('main:234', 'lifecycle: suspending');
+        lockService.lockSignal(context);
         break;
       // For Flutter v1.12.13:
       // case AppLifecycleState.detached:
-      //   Log.println('main:244', 'lifecycle: detached');
+      //   Log.println('main:239', 'lifecycle: detached');
       //   break
     }
   }
