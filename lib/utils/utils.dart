@@ -242,7 +242,7 @@ Future<bool> authenticateBiometrics(
           localizedReason: AppLocalizations.of(context).lockScreenAuth);
     } on PlatformException catch (e) {
       Log.println(
-          'utils:239', 'authenticateWithBiometrics exception: ' + e.message);
+          'utils:244', 'authenticateWithBiometrics exception: ' + e.message);
     }
 
     _activeAuthenticateWithBiometrics = 0;
@@ -327,7 +327,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:325', url);
+  Log.println('utils:330', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);

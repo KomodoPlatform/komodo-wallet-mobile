@@ -107,41 +107,50 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Locale>(
-        stream: mainBloc.outcurrentLocale,
-        builder: (BuildContext context, AsyncSnapshot<dynamic> currentLocale) {
-          return SharedPreferencesBuilder<dynamic>(
-              pref: 'current_languages',
-              builder:
-                  (BuildContext context, AsyncSnapshot<dynamic> prefLocale) {
-                // Log.println('main:117',
-                //     'current locale: ' + currentLocale?.toString());
-                // Log.println('main:119',
-                //     'current pref locale: ' + prefLocale.toString());
+    // Forward pointer events to LockService.
+    return Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) => lockService.pointerEvent(context),
+        onPointerUp: (_) => lockService.pointerEvent(context),
+        child: StreamBuilder<Locale>(
+            stream: mainBloc.outcurrentLocale,
+            builder:
+                (BuildContext context, AsyncSnapshot<dynamic> currentLocale) {
+              return SharedPreferencesBuilder<dynamic>(
+                  pref: 'current_languages',
+                  builder: (BuildContext context,
+                      AsyncSnapshot<dynamic> prefLocale) {
+                    // Log.println('main:123',
+                    //     'current locale: ' + currentLocale?.toString());
+                    // Log.println('main:125',
+                    //     'current pref locale: ' + prefLocale.toString());
 
-                return MaterialApp(
-                    title: 'atomicDEX',
-                    localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-                      const AppLocalizationsDelegate(),
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      GlobalCupertinoLocalizations.delegate
-                    ],
-                    locale: currentLocale.hasData
-                        ? currentLocale.data
-                        : prefLocale.hasData ? Locale(prefLocale.data) : null,
-                    supportedLocales: mainBloc.supportedLocales,
-                    theme: getTheme(),
-                    initialRoute: '/',
-                    routes: <String, Widget Function(BuildContext)>{
-                      // When we navigate to the '/' route, build the FirstScreen Widget
-                      '/': (BuildContext context) => LockScreen(
-                            context: context,
-                            child: MyHomePage(),
-                          ),
-                    });
-              });
-        });
+                    return MaterialApp(
+                        title: 'atomicDEX',
+                        localizationsDelegates: <
+                            LocalizationsDelegate<dynamic>>[
+                          const AppLocalizationsDelegate(),
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate
+                        ],
+                        locale: currentLocale.hasData
+                            ? currentLocale.data
+                            : prefLocale.hasData
+                                ? Locale(prefLocale.data)
+                                : null,
+                        supportedLocales: mainBloc.supportedLocales,
+                        theme: getTheme(),
+                        initialRoute: '/',
+                        routes: <String, Widget Function(BuildContext)>{
+                          // When we navigate to the '/' route, build the FirstScreen Widget
+                          '/': (BuildContext context) => LockScreen(
+                                context: context,
+                                child: MyHomePage(),
+                              ),
+                        });
+                  });
+            }));
   }
 }
 
@@ -173,6 +182,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _initLanguage();
+    lockService.initialize();
   }
 
   @override
@@ -193,18 +203,18 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log.println('main:196', 'lifecycle: inactive');
+        Log.println('main:206', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
-        Log.println('main:200', 'lifecycle: paused');
+        Log.println('main:210', 'lifecycle: paused');
         lockService.lockSignal(context);
         // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS) {
           final double btr = await MarketMakerService.platformmm2
               .invokeMethod('backgroundTimeRemaining');
-          Log.println('main:207', 'paused, backgroundTimeRemaining: $btr');
+          Log.println('main:217', 'paused, backgroundTimeRemaining: $btr');
           // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
           // and when we are silent the `backgroundTimeRemaining` is low
           // (expected low values are ~5, ~180, ~600 seconds).
@@ -212,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             MarketMakerService().closeLogSink();
             if (!authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
               // https://gitlab.com/artemciy/supernet/issues/4#note_190147428
-              Log.println('main:215',
+              Log.println('main:225',
                   'Suspended, exiting explicitly in order to workaround a crash');
               exit(0);
             }
@@ -220,7 +230,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.resumed:
-        Log.println('main:223', 'lifecycle: resumed');
+        Log.println('main:233', 'lifecycle: resumed');
         lockService.lockSignal(context);
         MarketMakerService().openLogSink();
         if (Platform.isIOS) {
@@ -231,12 +241,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         break;
       // For Flutter v1.9.1:
       case AppLifecycleState.suspending:
-        Log.println('main:234', 'lifecycle: suspending');
+        Log.println('main:244', 'lifecycle: suspending');
         lockService.lockSignal(context);
         break;
       // For Flutter v1.12.13:
       // case AppLifecycleState.detached:
-      //   Log.println('main:239', 'lifecycle: detached');
+      //   Log.println('main:249', 'lifecycle: detached');
       //   break
     }
   }

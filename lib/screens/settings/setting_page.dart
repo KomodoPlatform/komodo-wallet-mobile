@@ -21,6 +21,7 @@ import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -59,7 +60,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     // final Locale myLocale = Localizations.localeOf(context);
-    // Log.println('setting_page:62', 'current locale: $myLocale');
+    // Log.println('setting_page:63', 'current locale: $myLocale');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -142,7 +143,7 @@ class _SettingPageState extends State<SettingPage> {
         version += ' - ${versionmm2.result}';
       }
     } catch (e) {
-      Log.println('setting_page:145', e);
+      Log.println('setting_page:146', e);
       rethrow;
     }
     return version;
@@ -252,7 +253,7 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          Log.println('setting_page:255',
+                          Log.println('setting_page:256',
                               'dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
@@ -445,9 +446,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log.println('setting_page:448', 'PRESSED');
+        Log.println('setting_page:449', 'PRESSED');
         authBloc.logout().then((_) {
-          Log.println('setting_page:450', 'PRESSED');
+          Log.println('setting_page:451', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },
@@ -752,13 +753,19 @@ class FilePickerButton extends StatelessWidget {
         icon: Icon(Icons.folder_open),
         color: Theme.of(context).toggleableActiveColor,
         onPressed: () async {
-          // TODO: File picker currently triggers the PIN screen...
-          final String path = await FilePicker.getFilePath();
+          String path;
+          final int lockCookie = lockService.enteringFilePicker();
+          try {
+            path = await FilePicker.getFilePath();
+          } catch (err) {
+            Log.println('setting_page:761', 'file picker exception: $err');
+          }
+          lockService.filePickerReturned(lockCookie);
 
           // on iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log.println('setting_page:761', 'file picked: $path');
+          Log.println('setting_page:768', 'file picked: $path');
 
           final bool ck = checkAudioFile(path);
           if (!ck) {
@@ -779,7 +786,7 @@ class FilePickerButton extends StatelessWidget {
               ),
             );
           }
-          Log.println('setting_page:782','path: $path');
+          Log.println('setting_page:789', 'path: $path');
         });
   }
 }
