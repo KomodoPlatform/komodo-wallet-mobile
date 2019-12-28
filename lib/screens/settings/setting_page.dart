@@ -23,6 +23,7 @@ import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -60,7 +61,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     // final Locale myLocale = Localizations.localeOf(context);
-    // Log.println('setting_page:63', 'current locale: $myLocale');
+    // Log.println('setting_page:64', 'current locale: $myLocale');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -143,7 +144,7 @@ class _SettingPageState extends State<SettingPage> {
         version += ' - ${versionmm2.result}';
       }
     } catch (e) {
-      Log.println('setting_page:146', e);
+      Log.println('setting_page:147', e);
       rethrow;
     }
     return version;
@@ -196,27 +197,29 @@ class _SettingPageState extends State<SettingPage> {
         const SizedBox(
           height: 1,
         ),
-        SoundPicker(AppLocalizations.of(context).soundTaker,
+        SoundPicker(MusicMode.TAKER, AppLocalizations.of(context).soundTaker,
             AppLocalizations.of(context).soundTakerDesc),
         const SizedBox(
           height: 1,
         ),
-        SoundPicker(AppLocalizations.of(context).soundMaker,
+        SoundPicker(MusicMode.MAKER, AppLocalizations.of(context).soundMaker,
             AppLocalizations.of(context).soundMakerDesc),
         const SizedBox(
           height: 1,
         ),
-        SoundPicker(AppLocalizations.of(context).soundActive,
+        SoundPicker(MusicMode.ACTIVE, AppLocalizations.of(context).soundActive,
             AppLocalizations.of(context).soundActiveDesc),
         const SizedBox(
           height: 1,
         ),
-        SoundPicker(AppLocalizations.of(context).soundFailed,
+        SoundPicker(MusicMode.FAILED, AppLocalizations.of(context).soundFailed,
             AppLocalizations.of(context).soundFailedDesc),
         const SizedBox(
           height: 1,
         ),
-        SoundPicker(AppLocalizations.of(context).soundApplause,
+        SoundPicker(
+            MusicMode.APPLAUSE,
+            AppLocalizations.of(context).soundApplause,
             AppLocalizations.of(context).soundApplauseDesc),
       ],
     );
@@ -253,7 +256,7 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          Log.println('setting_page:256',
+                          Log.println('setting_page:259',
                               'dataSwitch' + dataSwitch.toString());
                           setState(() {
                             if (snapshot.data) {
@@ -446,9 +449,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log.println('setting_page:449', 'PRESSED');
+        Log.println('setting_page:452', 'PRESSED');
         authBloc.logout().then((_) {
-          Log.println('setting_page:451', 'PRESSED');
+          Log.println('setting_page:454', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },
@@ -744,7 +747,8 @@ bool checkAudioFile(String path) {
 }
 
 class FilePickerButton extends StatelessWidget {
-  const FilePickerButton(this.description);
+  const FilePickerButton(this.musicMode, this.description);
+  final MusicMode musicMode;
   final String description;
   @override
   Widget build(BuildContext context) {
@@ -758,14 +762,14 @@ class FilePickerButton extends StatelessWidget {
           try {
             path = await FilePicker.getFilePath();
           } catch (err) {
-            Log.println('setting_page:761', 'file picker exception: $err');
+            Log.println('setting_page:765', 'file picker exception: $err');
           }
           lockService.filePickerReturned(lockCookie);
 
           // on iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log.println('setting_page:768', 'file picked: $path');
+          Log.println('setting_page:772', 'file picked: $path');
 
           final bool ck = checkAudioFile(path);
           if (!ck) {
@@ -785,14 +789,17 @@ class FilePickerButton extends StatelessWidget {
                 ],
               ),
             );
+            return;
           }
-          Log.println('setting_page:789', 'path: $path');
+          Log.println('setting_page:794', 'path: $path');
+          musicService.setSoundPath(musicMode, path);
         });
   }
 }
 
 class SoundPicker extends StatelessWidget {
-  const SoundPicker(this.name, this.description);
+  const SoundPicker(this.musicMode, this.name, this.description);
+  final MusicMode musicMode;
   final String name, description;
   @override
   Widget build(BuildContext context) {
@@ -806,7 +813,7 @@ class SoundPicker extends StatelessWidget {
                     fontWeight: FontWeight.w300,
                     color: Colors.white.withOpacity(0.7)),
               ),
-              trailing: FilePickerButton(description),
+              trailing: FilePickerButton(musicMode, description),
             )));
   }
 }

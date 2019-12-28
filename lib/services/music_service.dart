@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -33,10 +34,10 @@ class MusicService {
   MusicService() {
     _audioPlayer.onPlayerCompletion.listen((_) {
       // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
-      //Log.println('music_service:36', 'onPlayerCompletion');
+      //Log.println('music_service:37', 'onPlayerCompletion');
     });
     _audioPlayer.onPlayerError.listen((String ev) {
-      Log.println('music_service:39', 'onPlayerError: ' + ev);
+      Log.println('music_service:40', 'onPlayerError: ' + ev);
     });
   }
 
@@ -47,7 +48,10 @@ class MusicService {
   bool _on = true;
 
   /// Maps a mode to the path of a custom sound configured by user.
-  Map<MusicMode, String> _soundPaths = {};
+  final Map<MusicMode, String> _soundPaths = {};
+
+  /// The path of the sound currently played.
+  String _soundPath;
 
   static final AudioPlayer _audioPlayer =
       AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
@@ -64,7 +68,7 @@ class MusicService {
       final String uuid = swap.result.uuid;
       active.add(uuid);
       final String shortId = uuid.substring(0, 4);
-      Log.println('music_service:64',
+      Log.println('music_service:71',
           'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
       return MusicMode.ACTIVE;
     }
@@ -79,11 +83,11 @@ class MusicService {
       if (musicMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log.println('music_service:79',
+          Log.println('music_service:86',
               'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log.println('music_service:83',
+          Log.println('music_service:90',
               'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
@@ -93,24 +97,24 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log.println('music_service:93',
+        Log.println('music_service:100',
             'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log.println('music_service:97',
+        Log.println('music_service:104',
             'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log.println('music_service:103',
+    Log.println('music_service:110',
         'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
   }
 
   void setSoundPath(MusicMode mode, String path) {
     _soundPaths[mode] = path;
-    Log.println('music_service:109', 'setSoundPath $mode, $path');
+    Log.println('music_service:117', 'setSoundPath $mode, $path');
   }
 
   // First batch of audio files was gathered by the various members of Komodo team
@@ -132,36 +136,72 @@ class MusicService {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
     final MusicMode newMode = pickMode(orders, swaps, allSwaps);
+    bool changes = false;
+
     if (newMode != musicMode) {
-      Log.println('music_service:133',
+      changes = true;
+      Log.println('music_service:143',
           'play] mode changed from $musicMode to $newMode');
-
-      final Random rng = Random();
-
-      if (newMode == MusicMode.TAKER) {
-        _player.loop(rng.nextBool() ? 'taker1.mp3' : 'taker2.mp3',
-            volume: volume());
-      } else if (newMode == MusicMode.MAKER) {
-        _player.loop('maker.mp3', volume: volume());
-      } else if (newMode == MusicMode.ACTIVE) {
-        _player.loop('active.mp3', volume: volume());
-      } else if (newMode == MusicMode.FAILED) {
-        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play(rng.nextBool() ? 'failed1.mp3' : 'failed2.mp3',
-            volume: volume());
-      } else if (newMode == MusicMode.APPLAUSE) {
-        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('applause.mp3', volume: volume());
-      } else if (newMode == MusicMode.SILENT) {
-        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('lastSound.mp3', volume: volume());
-      } else {
-        Log.println('music_service:156', 'Unexpected music mode: $newMode');
-        _audioPlayer.stop();
-      }
-
-      musicMode = newMode;
     }
+
+    final String customPath = _soundPaths[newMode];
+
+    () async {
+      try {
+        // This is what the audio player does:
+        await rootBundle.load('assets/audio/$customPath');
+        // ^^ hence we'll need to copy the file to the assets for it to be loadable.
+        // I wonder if we should simply overwrite our asset audio file.
+      } catch (ex) {
+        Log.println('music_service:156', 'rootBundle.load exception: $ex');
+      }
+    }();
+
+    Log.println('music_service:160', 'custom sound path: $customPath');
+    if (customPath != null && customPath != _soundPath) changes = true;
+
+    if (!changes) return;
+
+    final Random rng = Random();
+
+    final String defaultPath = newMode == MusicMode.TAKER
+        ? (rng.nextBool() ? 'taker1.mp3' : 'taker2.mp3')
+        : newMode == MusicMode.MAKER
+            ? 'maker.mp3'
+            : newMode == MusicMode.ACTIVE
+                ? 'active.mp3'
+                : newMode == MusicMode.FAILED
+                    ? (rng.nextBool() ? 'failed1.mp3' : 'failed2.mp3')
+                    : newMode == MusicMode.APPLAUSE
+                        ? 'applause.mp3'
+                        : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
+
+    final String path = customPath ?? defaultPath;
+    Log.println('music_service:180', 'path: $path');
+
+    _soundPath = path;
+
+    if (newMode == MusicMode.TAKER) {
+      _player.loop(path, volume: volume());
+    } else if (newMode == MusicMode.MAKER) {
+      _player.loop(path, volume: volume());
+    } else if (newMode == MusicMode.ACTIVE) {
+      _player.loop(path, volume: volume());
+    } else if (newMode == MusicMode.FAILED) {
+      _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+      _player.play(path, volume: volume());
+    } else if (newMode == MusicMode.APPLAUSE) {
+      _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+      _player.play(path, volume: volume());
+    } else if (newMode == MusicMode.SILENT) {
+      _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+      _player.play(path, volume: volume());
+    } else {
+      Log.println('music_service:200', 'Unexpected music mode: $newMode');
+      _audioPlayer.stop();
+    }
+
+    musicMode = newMode;
   }
 
   /// True when we want to periodically update the orders and swaps.
