@@ -46,6 +46,9 @@ class MusicService {
   /// Whether the volume is currently up.
   bool _on = true;
 
+  /// Maps a mode to the path of a custom sound configured by user.
+  Map<MusicMode, String> _soundPaths = {};
+
   static final AudioPlayer _audioPlayer =
       AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
   static final AudioCache _player =
@@ -105,6 +108,11 @@ class MusicService {
     return MusicMode.SILENT;
   }
 
+  void setSoundPath(MusicMode mode, String path) {
+    _soundPaths[mode] = path;
+    Log.println('music_service:109', 'setSoundPath $mode, $path');
+  }
+
   // First batch of audio files was gathered by the various members of Komodo team
   // and had funny names testimony to the gay variety of places it came from:
   // 15427__lg__fax, Coin_Drop-Willem_Hunt-569197907, 162196__rickmk2__coin-rustle,
@@ -125,30 +133,30 @@ class MusicService {
     //   but for reliability we should also add a periodic update independent from MM logs.
     final MusicMode newMode = pickMode(orders, swaps, allSwaps);
     if (newMode != musicMode) {
-      Log.println('music_service:128',
+      Log.println('music_service:133',
           'play] mode changed from $musicMode to $newMode');
 
       final Random rng = Random();
 
       if (newMode == MusicMode.TAKER) {
-        _player.loop(rng.nextBool() ? 'sound00.mp3' : 'sound01.mp3',
+        _player.loop(rng.nextBool() ? 'taker1.mp3' : 'taker2.mp3',
             volume: volume());
       } else if (newMode == MusicMode.MAKER) {
-        _player.loop('sound02.mp3', volume: volume());
+        _player.loop('maker.mp3', volume: volume());
       } else if (newMode == MusicMode.ACTIVE) {
-        _player.loop('sound03.mp3', volume: volume());
+        _player.loop('active.mp3', volume: volume());
       } else if (newMode == MusicMode.FAILED) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play(rng.nextBool() ? 'sound04.mp3' : 'sound05.mp3',
+        _player.play(rng.nextBool() ? 'failed1.mp3' : 'failed2.mp3',
             volume: volume());
       } else if (newMode == MusicMode.APPLAUSE) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('sound06.mp3', volume: volume());
+        _player.play('applause.mp3', volume: volume());
       } else if (newMode == MusicMode.SILENT) {
         _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('sound07.mp3', volume: volume());
+        _player.play('lastSound.mp3', volume: volume());
       } else {
-        Log.println('music_service:151', 'Unexpected music mode: $newMode');
+        Log.println('music_service:156', 'Unexpected music mode: $newMode');
         _audioPlayer.stop();
       }
 
