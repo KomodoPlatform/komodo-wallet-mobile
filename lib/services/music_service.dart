@@ -1,11 +1,12 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/services.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:path_provider/path_provider.dart';
 
 MusicService musicService = MusicService();
 
@@ -32,12 +33,18 @@ enum MusicMode {
 
 class MusicService {
   MusicService() {
+    getApplicationDocumentsDirectory().then((docs) {
+      _docs = docs;
+    });
+
+    /*
     _audioPlayer.onPlayerCompletion.listen((_) {
       // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
-      //Log.println('music_service:37', 'onPlayerCompletion');
+      //Log.println('music_service:43', 'onPlayerCompletion');
     });
+    */
     _audioPlayer.onPlayerError.listen((String ev) {
-      Log.println('music_service:40', 'onPlayerError: ' + ev);
+      Log.println('music_service:47', 'onPlayerError: ' + ev);
     });
   }
 
@@ -47,11 +54,11 @@ class MusicService {
   /// Whether the volume is currently up.
   bool _on = true;
 
-  /// Maps a mode to the path of a custom sound configured by user.
-  final Map<MusicMode, String> _soundPaths = {};
-
   /// The path of the sound currently played.
   String _soundPath;
+
+  /// Application directory, with `_customName` files in it.
+  Directory _docs;
 
   static final AudioPlayer _audioPlayer =
       AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
@@ -68,7 +75,7 @@ class MusicService {
       final String uuid = swap.result.uuid;
       active.add(uuid);
       final String shortId = uuid.substring(0, 4);
-      Log.println('music_service:71',
+      Log.println('music_service:78',
           'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
       return MusicMode.ACTIVE;
     }
@@ -83,11 +90,11 @@ class MusicService {
       if (musicMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log.println('music_service:86',
+          Log.println('music_service:93',
               'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log.println('music_service:90',
+          Log.println('music_service:97',
               'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
@@ -97,24 +104,46 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log.println('music_service:100',
+        Log.println('music_service:107',
             'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log.println('music_service:104',
+        Log.println('music_service:111',
             'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log.println('music_service:110',
+    Log.println('music_service:117',
         'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
   }
 
-  void setSoundPath(MusicMode mode, String path) {
-    _soundPaths[mode] = path;
-    Log.println('music_service:117', 'setSoundPath $mode, $path');
+  String _customName(MusicMode mode) => mode == MusicMode.TAKER
+      ? 'taker.mp3'
+      : mode == MusicMode.MAKER
+          ? 'maker.mp3'
+          : mode == MusicMode.ACTIVE
+              ? 'active.mp3'
+              : mode == MusicMode.FAILED
+                  ? 'failed.mp3'
+                  : mode == MusicMode.APPLAUSE ? 'applause.mp3' : null;
+
+  Future<void> setSoundPath(MusicMode mode, String path) async {
+    final String name = _customName(mode);
+    if (name == null) throw Exception('unexpected mode: $mode');
+
+    // NB: In my experience on iOS the `path` points into an "Inbox" application directory.
+    // "Your app can read and delete files in this directory but cannot create new files
+    // or write to existing files. If the user tries to edit a file in this directory,
+    // your app must silently move it out of the directory before making any changes."
+    // - https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
+
+    if (_docs == null) throw Exception('Application directory is missing');
+    final String target = _docs.path.toString() + '/' + name;
+    final File file = File(path);
+    Log.println('music_service:145', 'copying $path to $target');
+    await file.copy(target);
   }
 
   // First batch of audio files was gathered by the various members of Komodo team
@@ -140,25 +169,19 @@ class MusicService {
 
     if (newMode != musicMode) {
       changes = true;
-      Log.println('music_service:143',
+      Log.println('music_service:172',
           'play] mode changed from $musicMode to $newMode');
     }
 
-    final String customPath = _soundPaths[newMode];
+    // Switch to a custom sound file if it is present in the docs.
+    File customFile;
+    final String customName = _customName(newMode);
+    if (_docs != null && customName != null) {
+      final File custom = File(_docs.path.toString() + '/' + customName);
+      if (custom.existsSync()) customFile = custom;
+    }
 
-    () async {
-      try {
-        // This is what the audio player does:
-        await rootBundle.load('assets/audio/$customPath');
-        // ^^ hence we'll need to copy the file to the assets for it to be loadable.
-        // I wonder if we should simply overwrite our asset audio file.
-      } catch (ex) {
-        Log.println('music_service:156', 'rootBundle.load exception: $ex');
-      }
-    }();
-
-    Log.println('music_service:160', 'custom sound path: $customPath');
-    if (customPath != null && customPath != _soundPath) changes = true;
+    if (customFile != null && customFile.path != _soundPath) changes = true;
 
     if (!changes) return;
 
@@ -176,10 +199,13 @@ class MusicService {
                         ? 'applause.mp3'
                         : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
 
-    final String path = customPath ?? defaultPath;
-    Log.println('music_service:180', 'path: $path');
+    final String path = customFile != null ? customFile.path : defaultPath;
+    Log.println('music_service:203', 'path: $path');
 
     _soundPath = path;
+
+    // Tell the player how to access the file directly instead of trying to copy it from the assets.
+    if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
 
     if (newMode == MusicMode.TAKER) {
       _player.loop(path, volume: volume());
@@ -197,7 +223,7 @@ class MusicService {
       _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
       _player.play(path, volume: volume());
     } else {
-      Log.println('music_service:200', 'Unexpected music mode: $newMode');
+      Log.println('music_service:226', 'Unexpected music mode: $newMode');
       _audioPlayer.stop();
     }
 

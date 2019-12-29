@@ -766,7 +766,7 @@ class FilePickerButton extends StatelessWidget {
           }
           lockService.filePickerReturned(lockCookie);
 
-          // on iOS this happens *after* pin lock, but very close in time to it (same second),
+          // On iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
           Log.println('setting_page:772', 'file picked: $path');
@@ -791,8 +791,7 @@ class FilePickerButton extends StatelessWidget {
             );
             return;
           }
-          Log.println('setting_page:794', 'path: $path');
-          musicService.setSoundPath(musicMode, path);
+          await musicService.setSoundPath(musicMode, path);
         });
   }
 }

@@ -61,7 +61,7 @@ class LockService {
   /// If there is a tap before the file picker await returns
   /// then something is wrong and we should trigger the lock screen.
   void pointerEvent(BuildContext context) {
-    Log.println('lock_service:64', 'pointerEvent');
+    //Log.println('lock_service:64', 'pointerEvent');
     if (_inFilePicker != 0) {
       _inFilePicker = 0;
       _lock(context);
