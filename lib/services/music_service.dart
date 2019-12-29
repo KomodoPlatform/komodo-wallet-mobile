@@ -36,16 +36,7 @@ class MusicService {
     getApplicationDocumentsDirectory().then((docs) {
       _docs = docs;
     });
-
-    /*
-    _audioPlayer.onPlayerCompletion.listen((_) {
-      // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
-      //Log.println('music_service:43', 'onPlayerCompletion');
-    });
-    */
-    _audioPlayer.onPlayerError.listen((String ev) {
-      Log.println('music_service:47', 'onPlayerError: ' + ev);
-    });
+    makePlayer();
   }
 
   /// Initially `null` (unknown) in order to trigger `recommendsPeriodicUpdates`.
@@ -54,16 +45,30 @@ class MusicService {
   /// Whether the volume is currently up.
   bool _on = true;
 
-  /// The path of the sound currently played.
-  String _soundPath;
-
   /// Application directory, with `_customName` files in it.
   Directory _docs;
 
-  static final AudioPlayer _audioPlayer =
-      AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
-  static final AudioCache _player =
-      AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
+  /// Triggers reconfiguration of the player.
+  bool _reload = false;
+
+  AudioPlayer _audioPlayer;
+  AudioCache _player;
+
+  void makePlayer() {
+    _audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
+    _player = AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
+
+    _audioPlayer.onPlayerError.listen((String ev) {
+      Log.println('music_service:62', 'onPlayerError: ' + ev);
+    });
+
+    /*
+    _audioPlayer.onPlayerCompletion.listen((_) {
+      // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
+      //Log.println('music_service:68', 'onPlayerCompletion');
+    });
+    */
+  }
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
   MusicMode pickMode(
@@ -75,7 +80,7 @@ class MusicService {
       final String uuid = swap.result.uuid;
       active.add(uuid);
       final String shortId = uuid.substring(0, 4);
-      Log.println('music_service:78',
+      Log.println('music_service:83',
           'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
       return MusicMode.ACTIVE;
     }
@@ -90,11 +95,11 @@ class MusicService {
       if (musicMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log.println('music_service:93',
+          Log.println('music_service:98',
               'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log.println('music_service:97',
+          Log.println('music_service:102',
               'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
@@ -104,17 +109,17 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log.println('music_service:107',
+        Log.println('music_service:112',
             'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log.println('music_service:111',
+        Log.println('music_service:116',
             'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log.println('music_service:117',
+    Log.println('music_service:122',
         'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
   }
@@ -142,8 +147,10 @@ class MusicService {
     if (_docs == null) throw Exception('Application directory is missing');
     final String target = _docs.path.toString() + '/' + name;
     final File file = File(path);
-    Log.println('music_service:145', 'copying $path to $target');
+    Log.println('music_service:150', 'copying $path to $target');
     await file.copy(target);
+
+    _reload = true;
   }
 
   // First batch of audio files was gathered by the various members of Komodo team
@@ -169,9 +176,21 @@ class MusicService {
 
     if (newMode != musicMode) {
       changes = true;
-      Log.println('music_service:172',
+      Log.println('music_service:179',
           'play] mode changed from $musicMode to $newMode');
     }
+
+    if (_reload) {
+      _reload = false;
+      // Recreating the player in order for it not to use a previous instance of the sound file.
+      _audioPlayer.stop();
+      _audioPlayer.release();
+      _player.clearCache();
+      makePlayer();
+      changes = true;
+    }
+
+    if (!changes) return;
 
     // Switch to a custom sound file if it is present in the docs.
     File customFile;
@@ -180,10 +199,6 @@ class MusicService {
       final File custom = File(_docs.path.toString() + '/' + customName);
       if (custom.existsSync()) customFile = custom;
     }
-
-    if (customFile != null && customFile.path != _soundPath) changes = true;
-
-    if (!changes) return;
 
     final Random rng = Random();
 
@@ -200,9 +215,7 @@ class MusicService {
                         : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
 
     final String path = customFile != null ? customFile.path : defaultPath;
-    Log.println('music_service:203', 'path: $path');
-
-    _soundPath = path;
+    Log.println('music_service:218', 'path: $path');
 
     // Tell the player how to access the file directly instead of trying to copy it from the assets.
     if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
@@ -223,7 +236,7 @@ class MusicService {
       _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
       _player.play(path, volume: volume());
     } else {
-      Log.println('music_service:226', 'Unexpected music mode: $newMode');
+      Log.println('music_service:239', 'Unexpected music mode: $newMode');
       _audioPlayer.stop();
     }
 
@@ -243,7 +256,7 @@ class MusicService {
   /// We also want an update whenever the `musicMode` is unknown,
   /// which happens after the application restarts.
   bool recommendsPeriodicUpdates() {
-    return musicMode != MusicMode.SILENT;
+    return musicMode != MusicMode.SILENT || _reload;
   }
 
   /// Current audio player volume, from 0 to 1, based on the `on` switch.
