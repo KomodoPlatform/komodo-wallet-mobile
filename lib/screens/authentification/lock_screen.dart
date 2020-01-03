@@ -117,7 +117,7 @@ class _LockScreenState extends State<LockScreen> {
                               return Stack(
                                 children: <Widget>[
                                   FutureBuilder<bool>(
-                                    future: checkBiometrics(),
+                                    future: canCheckBiometrics,
                                     builder: (BuildContext context,
                                         AsyncSnapshot<dynamic> snapshot) {
                                       if (snapshot.hasData &&
@@ -219,7 +219,7 @@ class _BiometricPageState extends State<BiometricPage> {
 
   @override
   void initState() {
-    checkBiometrics().then((bool onValue) async {
+    canCheckBiometrics.then((bool onValue) async {
       if (onValue && (widget.pinStatus == PinStatus.NORMAL_PIN)) {
         final LocalAuthentication auth = LocalAuthentication();
         final List<BiometricType> availableBiometrics =

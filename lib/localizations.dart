@@ -15,7 +15,7 @@ class AppLocalizations {
       return AppLocalizations();
     });
   }
-  
+
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
@@ -558,17 +558,43 @@ class AppLocalizations {
   String get traditionalChinese =>
       Intl.message('traditional', name: 'traditionalChinese');
   String get russianLanguage =>
-    Intl.message('Russian', name: 'russianLanguage');
+      Intl.message('Russian', name: 'russianLanguage');
   String get japaneseLanguage =>
-    Intl.message('Japanese', name: 'japaneseLanguage');
+      Intl.message('Japanese', name: 'japaneseLanguage');
   String get turkishLanguage =>
-    Intl.message('Turkish', name: 'turkishLanguage');
+      Intl.message('Turkish', name: 'turkishLanguage');
   String get hungarianLanguage =>
-    Intl.message('Hungarian', name: 'hungarianLanguage');
+      Intl.message('Hungarian', name: 'hungarianLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
 
-  String get soundTitle => Intl.message('Sound', name: 'soundTitle');
-  String get soundOption => Intl.message('Play at full volume', name: 'soundOption');
+  // --- sound configuration ---
+
+  String get soundTitle => Intl.message('Sound');
+  String get soundOption => Intl.message('Play at full volume');
+  String get soundTaker => Intl.message('Taker');
+  String get soundTakerDesc => Intl.message(
+      'you have a fresh order that is trying to match with an existing order');
+  String get soundMaker => Intl.message('Maker');
+  String get soundMakerDesc =>
+      Intl.message('you have an order that new orders can match with');
+  String get soundActive => Intl.message('Active');
+  String get soundActiveDesc =>
+      Intl.message('you have an active swap in progress');
+  String get soundFailed => Intl.message('Failed');
+  String get soundFailedDesc => Intl.message('a swap fails');
+  String get soundApplause => Intl.message('Applause');
+  String get soundApplauseDesc => Intl.message('a swap runs to completion');
+  String get soundCantPlayThat => Intl.message("Can't play that");
+  String soundCantPlayThatMsg(String description) => Intl.message(
+      "Pick an mp3 or wav file please. We'll play it when $description.",
+      name: 'soundCantPlayThatMsg',
+      args: [description],
+      examples: const {'description': 'a swap runs to completion'});
+  String soundPlayedWhen(String description) =>
+      Intl.message('Played when $description',
+          name: 'soundPlayedWhen',
+          args: [description],
+          examples: const {'description': 'a swap runs to completion'});
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
