@@ -14,11 +14,10 @@ jobs:
       with:
         java-version: '12.x'
     - uses: ca333/flutter-action@v1
-      with:
-        channel: 'stable'
+      with: 
+        flutter-version: '1.9.1+hotfix.6'
     - run: flutter doctor
     - run: flutter pub get
-    - run: flutter version v1.9.1+hotfix.6
     - run: flutter build apk --release
     - if: runner.os != 'Windows'
       run: shasum -a 256 build/app/outputs/apk/release/app-release.apk
