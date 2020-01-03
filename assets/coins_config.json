@@ -486,6 +486,25 @@
     ]
   },
   {
+    "name": "Electra",
+    "type": "utxo",
+    "address": "electrum1.cipig.net",
+    "port": 10052,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "ECA",
+    "coingeckoId": "electra",
+    "colorCoin": "0xFFAA01C3",
+    "serverList": [
+      "electrum1.cipig.net:10052",
+      "electrum2.cipig.net:10052",
+      "electrum3.cipig.net:10052"
+    ],
+    "explorerUrl": [
+      "https://explorer.electraproject.org/"
+    ]
+  },
+  {
     "name": "BAT",
     "type": "erc",
     "address": "http://eth1.cipig.net",
