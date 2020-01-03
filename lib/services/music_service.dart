@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:audioplayers/audio_cache.dart';
@@ -5,6 +6,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:path_provider/path_provider.dart';
 
 MusicService musicService = MusicService();
 
@@ -31,13 +33,10 @@ enum MusicMode {
 
 class MusicService {
   MusicService() {
-    _audioPlayer.onPlayerCompletion.listen((_) {
-      // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
-      //Log.println('music_service:36', 'onPlayerCompletion');
+    getApplicationDocumentsDirectory().then((docs) {
+      _docs = docs;
     });
-    _audioPlayer.onPlayerError.listen((String ev) {
-      Log.println('music_service:39', 'onPlayerError: ' + ev);
-    });
+    makePlayer();
   }
 
   /// Initially `null` (unknown) in order to trigger `recommendsPeriodicUpdates`.
@@ -46,10 +45,30 @@ class MusicService {
   /// Whether the volume is currently up.
   bool _on = true;
 
-  static final AudioPlayer _audioPlayer =
-      AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
-  static final AudioCache _player =
-      AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
+  /// Application directory, with `_customName` files in it.
+  Directory _docs;
+
+  /// Triggers reconfiguration of the player.
+  bool _reload = false;
+
+  AudioPlayer _audioPlayer;
+  AudioCache _player;
+
+  void makePlayer() {
+    _audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
+    _player = AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
+
+    _audioPlayer.onPlayerError.listen((String ev) {
+      Log.println('music_service:62', 'onPlayerError: ' + ev);
+    });
+
+    /*
+    _audioPlayer.onPlayerCompletion.listen((_) {
+      // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
+      //Log.println('music_service:68', 'onPlayerCompletion');
+    });
+    */
+  }
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
   MusicMode pickMode(
@@ -61,7 +80,7 @@ class MusicService {
       final String uuid = swap.result.uuid;
       active.add(uuid);
       final String shortId = uuid.substring(0, 4);
-      Log.println('music_service:64',
+      Log.println('music_service:83',
           'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
       return MusicMode.ACTIVE;
     }
@@ -76,11 +95,11 @@ class MusicService {
       if (musicMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log.println('music_service:79',
+          Log.println('music_service:98',
               'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log.println('music_service:83',
+          Log.println('music_service:102',
               'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
@@ -90,19 +109,48 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log.println('music_service:93',
+        Log.println('music_service:112',
             'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log.println('music_service:97',
+        Log.println('music_service:116',
             'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log.println('music_service:103',
+    Log.println('music_service:122',
         'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
+  }
+
+  String _customName(MusicMode mode) => mode == MusicMode.TAKER
+      ? 'taker.mp3'
+      : mode == MusicMode.MAKER
+          ? 'maker.mp3'
+          : mode == MusicMode.ACTIVE
+              ? 'active.mp3'
+              : mode == MusicMode.FAILED
+                  ? 'failed.mp3'
+                  : mode == MusicMode.APPLAUSE ? 'applause.mp3' : null;
+
+  Future<void> setSoundPath(MusicMode mode, String path) async {
+    final String name = _customName(mode);
+    if (name == null) throw Exception('unexpected mode: $mode');
+
+    // NB: In my experience on iOS the `path` points into an "Inbox" application directory.
+    // "Your app can read and delete files in this directory but cannot create new files
+    // or write to existing files. If the user tries to edit a file in this directory,
+    // your app must silently move it out of the directory before making any changes."
+    // - https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
+
+    if (_docs == null) throw Exception('Application directory is missing');
+    final String target = _docs.path.toString() + '/' + name;
+    final File file = File(path);
+    Log.println('music_service:150', 'copying $path to $target');
+    await file.copy(target);
+
+    _reload = true;
   }
 
   // First batch of audio files was gathered by the various members of Komodo team
@@ -124,36 +172,75 @@ class MusicService {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
     final MusicMode newMode = pickMode(orders, swaps, allSwaps);
+    bool changes = false;
+
     if (newMode != musicMode) {
-      Log.println('music_service:128',
+      changes = true;
+      Log.println('music_service:179',
           'play] mode changed from $musicMode to $newMode');
-
-      final Random rng = Random();
-
-      if (newMode == MusicMode.TAKER) {
-        _player.loop(rng.nextBool() ? 'sound00.mp3' : 'sound01.mp3',
-            volume: volume());
-      } else if (newMode == MusicMode.MAKER) {
-        _player.loop('sound02.mp3', volume: volume());
-      } else if (newMode == MusicMode.ACTIVE) {
-        _player.loop('sound03.mp3', volume: volume());
-      } else if (newMode == MusicMode.FAILED) {
-        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play(rng.nextBool() ? 'sound04.mp3' : 'sound05.mp3',
-            volume: volume());
-      } else if (newMode == MusicMode.APPLAUSE) {
-        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('sound06.mp3', volume: volume());
-      } else if (newMode == MusicMode.SILENT) {
-        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-        _player.play('sound07.mp3', volume: volume());
-      } else {
-        Log.println('music_service:151', 'Unexpected music mode: $newMode');
-        _audioPlayer.stop();
-      }
-
-      musicMode = newMode;
     }
+
+    if (_reload) {
+      _reload = false;
+      // Recreating the player in order for it not to use a previous instance of the sound file.
+      _audioPlayer.stop();
+      _audioPlayer.release();
+      _player.clearCache();
+      makePlayer();
+      changes = true;
+    }
+
+    if (!changes) return;
+
+    // Switch to a custom sound file if it is present in the docs.
+    File customFile;
+    final String customName = _customName(newMode);
+    if (_docs != null && customName != null) {
+      final File custom = File(_docs.path.toString() + '/' + customName);
+      if (custom.existsSync()) customFile = custom;
+    }
+
+    final Random rng = Random();
+
+    final String defaultPath = newMode == MusicMode.TAKER
+        ? (rng.nextBool() ? 'taker1.mp3' : 'taker2.mp3')
+        : newMode == MusicMode.MAKER
+            ? 'maker.mp3'
+            : newMode == MusicMode.ACTIVE
+                ? 'active.mp3'
+                : newMode == MusicMode.FAILED
+                    ? (rng.nextBool() ? 'failed1.mp3' : 'failed2.mp3')
+                    : newMode == MusicMode.APPLAUSE
+                        ? 'applause.mp3'
+                        : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
+
+    final String path = customFile != null ? customFile.path : defaultPath;
+    Log.println('music_service:218', 'path: $path');
+
+    // Tell the player how to access the file directly instead of trying to copy it from the assets.
+    if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
+
+    if (newMode == MusicMode.TAKER) {
+      _player.loop(path, volume: volume());
+    } else if (newMode == MusicMode.MAKER) {
+      _player.loop(path, volume: volume());
+    } else if (newMode == MusicMode.ACTIVE) {
+      _player.loop(path, volume: volume());
+    } else if (newMode == MusicMode.FAILED) {
+      _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+      _player.play(path, volume: volume());
+    } else if (newMode == MusicMode.APPLAUSE) {
+      _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+      _player.play(path, volume: volume());
+    } else if (newMode == MusicMode.SILENT) {
+      _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+      _player.play(path, volume: volume());
+    } else {
+      Log.println('music_service:239', 'Unexpected music mode: $newMode');
+      _audioPlayer.stop();
+    }
+
+    musicMode = newMode;
   }
 
   /// True when we want to periodically update the orders and swaps.
@@ -169,7 +256,7 @@ class MusicService {
   /// We also want an update whenever the `musicMode` is unknown,
   /// which happens after the application restarts.
   bool recommendsPeriodicUpdates() {
-    return musicMode != MusicMode.SILENT;
+    return musicMode != MusicMode.SILENT || _reload;
   }
 
   /// Current audio player volume, from 0 to 1, based on the `on` switch.
