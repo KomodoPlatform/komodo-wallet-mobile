@@ -14,15 +14,8 @@ jobs:
       with:
         java-version: '12.x'
     - uses: ca333/flutter-action@v1
-      with:
-        channel: 'stable'
-
-    - run: flutter version v1.9.1+hotfix.6
-    - run: flutter clean
-    # IIRC it is a known issue that Flutter doesn't yes clean these files.
-    # cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
-    - run: (cd ios && rm -rf Podfile.lock Podfile Pods)
-
+      with: 
+        flutter-version: '1.9.1+hotfix.6'
     - run: flutter doctor
     - run: flutter pub get
     - run: flutter build apk --release

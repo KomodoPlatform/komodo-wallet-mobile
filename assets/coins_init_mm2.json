@@ -8,7 +8,8 @@
         "p2shtype": 5,
         "wiftype": 176,
         "txfee": 10000,
-        "mm2": 1
+        "mm2": 1,
+        "segwit": true
     },
     {
         "coin": "KMD",
@@ -28,7 +29,8 @@
         "txfee": 400000,
         "rpcport": 3889,
         "wiftype": 128,
-        "mm2": 1
+        "mm2": 1,
+        "segwit": true
     },
     {
         "coin": "DGB",
@@ -38,7 +40,8 @@
         "txfee": 100000,
         "p2shtype": 63,
         "wiftype": 128,
-        "mm2": 1
+        "mm2": 1,
+        "segwit": true
     },
     {
         "coin": "BTC",
@@ -47,7 +50,8 @@
         "pubtype": 0,
         "p2shtype": 5,
         "wiftype": 128,
-        "mm2": 1
+        "mm2": 1,
+        "segwit": true
     },
     {
         "coin": "BCH",
@@ -57,7 +61,8 @@
         "p2shtype": 5,
         "wiftype": 128,
         "txfee": 1000,
-        "mm2": 1
+        "mm2": 1,
+        "segwit": true
     },
     {
         "coin": "DASH",
@@ -290,7 +295,8 @@
         "p2shtype": 5,
         "wiftype": 142,
         "txfee": 1000000,
-        "mm2": 1
+        "mm2": 1,
+        "segwit": true
     },
     {
         "coin": "NAV",
@@ -319,5 +325,17 @@
         "version_group_id": "0x892f2085",
         "consensus_branch_id": "0x2BB40E60",
         "mm2": 1
+    },
+    {
+        "coin": "ECA",
+        "name": "electra",
+        "fname": "Electra",
+        "rpcport": 5788,
+        "pubtype": 33,
+        "p2shtype": 40,
+        "wiftype": 161,
+        "txfee": 10000,
+        "txversion": 7,
+        "mm2":1
     }
 ]
