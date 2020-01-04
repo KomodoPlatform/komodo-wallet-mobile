@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
