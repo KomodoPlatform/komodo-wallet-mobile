@@ -138,11 +138,23 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       const SizedBox(
                         width: 8,
                       ),
-                      InkWell(
-                        onTap: () {
+                      GestureDetector(
+                        // onTap: () {
+                        //   setState(() {
+                        //     isObscured = !isObscured;
+                        //   });
+                        // },
+                        onTapDown: (TapDownDetails value) {
                           setState(() {
                             isObscured = !isObscured;
                           });
+                          // Log.println('unlock_wallet_page:151', 'long press end');
+                        },
+                        onTapUp: (TapUpDetails value) {
+                          setState(() {
+                            isObscured = !isObscured;
+                          });
+                          // Log.println('unlock_wallet_page:157', 'long press start');
                         },
                         child: Container(
                             height: 60,

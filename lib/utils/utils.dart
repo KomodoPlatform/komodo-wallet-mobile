@@ -91,7 +91,7 @@ void showAddressDialog(BuildContext mContext, String address, Coin coin) {
         contentPadding: const EdgeInsets.all(16),
         titlePadding: const EdgeInsets.all(0),
         shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.white),
+            side: const BorderSide(color: Colors.white),
             borderRadius: BorderRadius.circular(6.0)),
         content: Container(
           height: MediaQuery.of(context).size.height * 0.4,
@@ -196,32 +196,56 @@ void showErrorMessage(BuildContext mContext, String error) {
   ));
 }
 
-Future<bool> checkBiometrics() async {
+bool _canCheckBiometrics;
+
+Future<bool> get canCheckBiometrics async {
   final LocalAuthentication auth = LocalAuthentication();
-  bool canCheckBiometrics = false;
-  try {
-    canCheckBiometrics = await auth.canCheckBiometrics;
-    Log.println('utils:204', canCheckBiometrics);
-  } on PlatformException catch (e) {
-    Log.println('utils:206', e);
+  if (_canCheckBiometrics == null) {
+    try {
+      _canCheckBiometrics = await auth.canCheckBiometrics;
+      Log.println('utils:206', 'canCheckBiometrics: $_canCheckBiometrics');
+    } on PlatformException catch (ex) {
+      Log.println('utils:208', 'canCheckBiometrics exception: $ex');
+    }
   }
-  return canCheckBiometrics;
+  return _canCheckBiometrics;
 }
 
+int _activeAuthenticateWithBiometrics = 0;
+
+/// This function is used to bring up the biometric authentication prompt.
+/// It is invoked from the widget tree builders, such as LockScreen's.
+/// Widget tree builders would often invoke this function several times in a row
+/// (due to poor BLoC optimization perhaps?), leading to a flickering prompt on iOS.
+/// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
 Future<bool> authenticateBiometrics(
     BuildContext context, PinStatus pinStatus) async {
+  Log.println('utils:223', 'authenticateBiometrics');
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('switch_pin_biometric')) {
     final LocalAuthentication localAuth = LocalAuthentication();
     bool didAuthenticate = false;
+
+    // Avoid flicker by ignoring duplicate invocations
+    // while an existing authenticateWithBiometrics is still active.
+    // The protective lock is released automatically after 7 seconds
+    // because there is a small chance of code flow anomaly,
+    // such as situations where `authenticateWithBiometrics` wouldn't invoke its callback.
+    final int now = DateTime.now().millisecondsSinceEpoch;
+    if (_activeAuthenticateWithBiometrics > 0 &&
+        now - _activeAuthenticateWithBiometrics < 7777) return false;
+    _activeAuthenticateWithBiometrics = now;
 
     try {
       didAuthenticate = await localAuth.authenticateWithBiometrics(
           stickyAuth: true,
           localizedReason: AppLocalizations.of(context).lockScreenAuth);
     } on PlatformException catch (e) {
-      print(e.message);
+      Log.println(
+          'utils:244', 'authenticateWithBiometrics exception: ' + e.message);
     }
+
+    _activeAuthenticateWithBiometrics = 0;
 
     if (didAuthenticate) {
       if (pinStatus == PinStatus.DISABLED_PIN) {
@@ -303,7 +327,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:306', url);
+  Log.println('utils:330', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);

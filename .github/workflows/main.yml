@@ -14,8 +14,8 @@ jobs:
       with:
         java-version: '12.x'
     - uses: ca333/flutter-action@v1
-      with:
-        channel: 'stable'
+      with: 
+        flutter-version: '1.9.1+hotfix.6'
     - run: flutter doctor
     - run: flutter pub get
     - run: flutter build apk --release

@@ -10,7 +10,7 @@ class Log {
   static void println(String key, dynamic message) {
     String messageToPrint = key + message.toString() + '\n';
     if (key.isNotEmpty) {
-      messageToPrint = key + ' :' + message.toString() + '\n';
+      messageToPrint = key + '] ' + message.toString() + '\n';
     }
 
     if (pass(key, message)) {
