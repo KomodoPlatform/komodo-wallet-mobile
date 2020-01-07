@@ -85,123 +85,84 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
             const SizedBox(
               height: 24,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  child: TextFormField(
-                      key: const Key('create-password-field'),
-                      maxLength: 40,
-                      focusNode: _focus1,
-                      controller: controller1,
-                      onFieldSubmitted: (String term) {
-                        _fieldFocusChange(context, _focus1, _focus2);
-                        _validateInputs();
-                      },
-                      textInputAction: TextInputAction.next,
-                      autocorrect: false,
-                      enableInteractiveSelection: true,
-                      obscureText: isObscured,
-                      validator: (String arg) {
-                        final RegExp exp = RegExp(
-                            r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
-                        return !arg.contains(exp)
-                            ? 'Password must contain at least 12 characters, with one lower-case, one upper-case and one special symbol.'
-                            : null;
-                      },
-                      style: Theme.of(context).textTheme.body1,
-                      decoration: InputDecoration(
-                          errorMaxLines: 6,
-                          errorStyle: Theme.of(context)
-                              .textTheme
-                              .body1
-                              .copyWith(
-                                  fontSize: 12,
-                                  color: Theme.of(context).errorColor),
-                          border: const OutlineInputBorder(),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColorLight)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).accentColor)),
-                          hintStyle: Theme.of(context).textTheme.body2,
-                          labelStyle: Theme.of(context).textTheme.body1,
-                          hintText: AppLocalizations.of(context).hintPassword,
-                          labelText: null)),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                GestureDetector(
-                  // onTap: () {
-                  //   setState(() {
-                  //     isObscured = !isObscured;
-                  //   });
-                  // },
-                  // onLongPressUp: () {
-                  //   Log.println('create_password_page:144', 'long press up');
-                  // },
-                  onTapDown: (TapDownDetails value) {
+            TextFormField(
+              key: const Key('create-password-field'),
+              maxLength: 40,
+              focusNode: _focus1,
+              controller: controller1,
+              onFieldSubmitted: (String term) {
+                _fieldFocusChange(context, _focus1, _focus2);
+                _validateInputs();
+              },
+              textInputAction: TextInputAction.next,
+              autocorrect: false,
+              enableInteractiveSelection: true,
+              obscureText: isObscured,
+              validator: (String arg) {
+                final RegExp exp = RegExp(
+                    r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
+                return !arg.contains(exp)
+                    ? 'Password must contain at least 12 characters, with one lower-case, one upper-case and one special symbol.'
+                    : null;
+              },
+              style: Theme.of(context).textTheme.body1,
+              decoration: InputDecoration(
+                errorMaxLines: 6,
+                errorStyle: Theme.of(context).textTheme.body1.copyWith(
+                    fontSize: 12, color: Theme.of(context).errorColor),
+                border: const OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).primaryColorLight)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).accentColor)),
+                hintStyle: Theme.of(context).textTheme.body2,
+                labelStyle: Theme.of(context).textTheme.body1,
+                hintText: AppLocalizations.of(context).hintPassword,
+                labelText: null,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    isObscured ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: () {
                     setState(() {
                       isObscured = !isObscured;
                     });
-                    // Log.println('create_password_page:150', 'long press end');
                   },
-                  onTapUp: (TapUpDetails value) {
-                    setState(() {
-                      isObscured = !isObscured;
-                    });
-                    // Log.println('create_password_page:156', 'long press start');
-                  },
-                  child: Container(
-                      height: 60,
-                      padding: const EdgeInsets.only(right: 16, left: 16),
-                      child: isObscured
-                          ? Icon(Icons.visibility)
-                          : Icon(Icons.visibility_off)),
-                )
-              ],
+                ),
+              ),
             ),
             const SizedBox(
               height: 8,
             ),
             Builder(builder: (BuildContext context) {
-              return Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextFormField(
-                        key: const Key('create-password-field-confirm'),
-                        maxLength: 40,
-                        controller: controller2,
-                        textInputAction: TextInputAction.done,
-                        autocorrect: false,
-                        focusNode: _focus2,
-                        obscureText: isObscured,
-                        enableInteractiveSelection: true,
-                        onFieldSubmitted: (String data) {
-                          _checkValidation(context);
-                        },
-                        style: Theme.of(context).textTheme.body1,
-                        decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).primaryColorLight)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).accentColor)),
-                            hintStyle: Theme.of(context).textTheme.body2,
-                            labelStyle: Theme.of(context).textTheme.body1,
-                            hintText: AppLocalizations.of(context)
-                                .hintConfirmPassword,
-                            labelText: null)),
-                  ),
-                  const SizedBox(
-                    width: 72,
-                  ),
-                ],
+              return TextFormField(
+                key: const Key('create-password-field-confirm'),
+                maxLength: 40,
+                controller: controller2,
+                textInputAction: TextInputAction.done,
+                autocorrect: false,
+                focusNode: _focus2,
+                obscureText: isObscured,
+                enableInteractiveSelection: true,
+                onFieldSubmitted: (String data) {
+                  _checkValidation(context);
+                },
+                style: Theme.of(context).textTheme.body1,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorLight)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Theme.of(context).accentColor)),
+                  hintStyle: Theme.of(context).textTheme.body2,
+                  labelStyle: Theme.of(context).textTheme.body1,
+                  hintText: AppLocalizations.of(context).hintConfirmPassword,
+                  labelText: null,
+                ),
               );
             }),
             const SizedBox(

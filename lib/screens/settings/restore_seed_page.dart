@@ -72,64 +72,40 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   Widget _buildInputSeed() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: TextField(
-              key: const Key('restore-seed-field'),
-              controller: controllerSeed,
-              onChanged: (String str) {
-                _checkSeed(str);
-              },
-              autocorrect: false,
-              keyboardType: TextInputType.multiline,
-              obscureText: _isSeedShow,
-              enableInteractiveSelection: true,
-              maxLines: null,
-              style: Theme.of(context).textTheme.body1,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor)),
-                  hintStyle: Theme.of(context).textTheme.body2,
-                  labelStyle: Theme.of(context).textTheme.body1,
-                  hintText: AppLocalizations.of(context).exampleHintSeed,
-                  labelText: null),
+      child: TextField(
+        key: const Key('restore-seed-field'),
+        controller: controllerSeed,
+        onChanged: (String str) {
+          _checkSeed(str);
+        },
+        autocorrect: false,
+        keyboardType: TextInputType.multiline,
+        obscureText: _isSeedShow,
+        enableInteractiveSelection: true,
+        maxLines: null,
+        style: Theme.of(context).textTheme.body1,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          enabledBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Theme.of(context).primaryColorLight)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).accentColor)),
+          hintStyle: Theme.of(context).textTheme.body2,
+          labelStyle: Theme.of(context).textTheme.body1,
+          hintText: AppLocalizations.of(context).exampleHintSeed,
+          labelText: null,
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isSeedShow ? Icons.visibility_off : Icons.visibility,
             ),
+            onPressed: () {
+              setState(() {
+                _isSeedShow = !_isSeedShow;
+              });
+            },
           ),
-          const SizedBox(
-            width: 8,
-          ),
-          GestureDetector(
-              //borderRadius: BorderRadius.circular(8),
-              // onTap: () {
-              //   setState(() {
-              //     _isSeedShow ? _isSeedShow = false : _isSeedShow = true;
-              //   });
-              // },
-              onTapDown: (TapDownDetails value) {
-                setState(() {
-                  _isSeedShow = !_isSeedShow;
-                });
-                // Log.println('restore_seed_page:118', 'long press end');
-              },
-              onTapUp: (TapUpDetails value) {
-                setState(() {
-                  _isSeedShow = !_isSeedShow;
-                });
-                // Log.println('restore_seed_page:124', 'long press start');
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: _isSeedShow
-                    ? Icon(Icons.visibility)
-                    : Icon(Icons.visibility_off),
-              ))
-        ],
+        ),
       ),
     );
   }

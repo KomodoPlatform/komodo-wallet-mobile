@@ -95,75 +95,50 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Builder(builder: (BuildContext context) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                            maxLength: 40,
-                            controller: controller,
-                            onChanged: (String str) {
-                              if (str.isEmpty || str.length > 40) {
-                                setState(() {
-                                  isButtonLoginEnabled = false;
-                                });
-                              } else {
-                                setState(() {
-                                  isButtonLoginEnabled = true;
-                                });
-                              }
-                            },
-                            onSubmitted: (String data) {
-                              _login(context);
-                            },
-                            autocorrect: false,
-                            obscureText: isObscured,
-                            enableInteractiveSelection: false,
-                            style: Theme.of(context).textTheme.body1,
-                            decoration: InputDecoration(
-                                border: const OutlineInputBorder(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .primaryColorLight)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor)),
-                                hintStyle: Theme.of(context).textTheme.body2,
-                                labelStyle: Theme.of(context).textTheme.body1,
-                                hintText: AppLocalizations.of(context)
-                                    .hintEnterPassword,
-                                labelText: null)),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      GestureDetector(
-                        // onTap: () {
-                        //   setState(() {
-                        //     isObscured = !isObscured;
-                        //   });
-                        // },
-                        onTapDown: (TapDownDetails value) {
+                  return TextField(
+                    maxLength: 40,
+                    controller: controller,
+                    onChanged: (String str) {
+                      if (str.isEmpty || str.length > 40) {
+                        setState(() {
+                          isButtonLoginEnabled = false;
+                        });
+                      } else {
+                        setState(() {
+                          isButtonLoginEnabled = true;
+                        });
+                      }
+                    },
+                    onSubmitted: (String data) {
+                      _login(context);
+                    },
+                    autocorrect: false,
+                    obscureText: isObscured,
+                    enableInteractiveSelection: false,
+                    style: Theme.of(context).textTheme.body1,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorLight)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor)),
+                      hintStyle: Theme.of(context).textTheme.body2,
+                      labelStyle: Theme.of(context).textTheme.body1,
+                      hintText: AppLocalizations.of(context).hintEnterPassword,
+                      labelText: null,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isObscured ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
                           setState(() {
                             isObscured = !isObscured;
                           });
-                          // Log.println('unlock_wallet_page:151', 'long press end');
                         },
-                        onTapUp: (TapUpDetails value) {
-                          setState(() {
-                            isObscured = !isObscured;
-                          });
-                          // Log.println('unlock_wallet_page:157', 'long press start');
-                        },
-                        child: Container(
-                            height: 60,
-                            padding: const EdgeInsets.only(right: 16, left: 16),
-                            child: isObscured
-                                ? Icon(Icons.visibility)
-                                : Icon(Icons.visibility_off)),
-                      )
-                    ],
+                      ),
+                    ),
                   );
                 }),
               ),
