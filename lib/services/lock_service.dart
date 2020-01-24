@@ -90,7 +90,7 @@ class LockService {
       // #496: When a text fields is hidden in a focused state and then later shows up again,
       // it might stuck in some intermediate state, preventing the long press menus, such as "PASTE",
       // from appearing. Unfocusing before hiding such fields workarounds the issue.
-      Log.println('lock_service:90', 'Unfocus and lock..');
+      Log.println('lock_service:93', 'Unfocus and lock..');
       FocusScope.of(context).requestFocus(FocusNode());
 
       if (context != null) dialogBloc.closeDialog(context);
