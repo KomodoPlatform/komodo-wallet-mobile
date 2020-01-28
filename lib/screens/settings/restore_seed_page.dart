@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
+import 'package:komodo_dex/widgets/password_visibility_toggler.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:bip39/bip39.dart' as bip39;
 
@@ -14,7 +15,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   TextEditingController controllerSeed = TextEditingController();
   bool _isButtonDisabled = false;
   bool _isLogin;
-  bool _isSeedShow = true;
+  bool _isSeedHidden = true;
   bool checkBox = false;
 
   @override
@@ -80,7 +81,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         },
         autocorrect: false,
         keyboardType: TextInputType.multiline,
-        obscureText: _isSeedShow,
+        obscureText: _isSeedHidden,
         enableInteractiveSelection: true,
         maxLines: null,
         style: Theme.of(context).textTheme.body1,
@@ -95,13 +96,10 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
           labelStyle: Theme.of(context).textTheme.body1,
           hintText: AppLocalizations.of(context).exampleHintSeed,
           labelText: null,
-          suffixIcon: IconButton(
-            icon: Icon(
-              _isSeedShow ? Icons.visibility_off : Icons.visibility,
-            ),
-            onPressed: () {
+          suffixIcon: PasswordVisibilityToggler(
+            onVisibilityChange: (bool isObscured) {
               setState(() {
-                _isSeedShow = !_isSeedShow;
+                _isSeedHidden = isObscured;
               });
             },
           ),

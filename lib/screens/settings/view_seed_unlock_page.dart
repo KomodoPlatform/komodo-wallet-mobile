@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/password_visibility_toggler.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
@@ -205,13 +206,10 @@ class _UnlockPasswordState extends State<UnlockPassword> {
             labelStyle: Theme.of(context).textTheme.body1,
             hintText: AppLocalizations.of(context).hintCurrentPassword,
             labelText: null,
-            suffixIcon: IconButton(
-              icon: Icon(
-                isObscured ? Icons.visibility_off : Icons.visibility,
-              ),
-              onPressed: () {
+            suffixIcon: PasswordVisibilityToggler(
+              onVisibilityChange: (bool isPasswordObscured) {
                 setState(() {
-                  isObscured = !isObscured;
+                  isObscured = isPasswordObscured;
                 });
               },
             ),

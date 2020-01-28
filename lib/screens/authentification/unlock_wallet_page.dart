@@ -6,6 +6,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/widgets/password_visibility_toggler.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class UnlockWalletPage extends StatefulWidget {
@@ -128,13 +129,10 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       labelStyle: Theme.of(context).textTheme.body1,
                       hintText: AppLocalizations.of(context).hintEnterPassword,
                       labelText: null,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          isObscured ? Icons.visibility_off : Icons.visibility,
-                        ),
-                        onPressed: () {
+                      suffixIcon: PasswordVisibilityToggler(
+                        onVisibilityChange: (bool isPasswordObscured) {
                           setState(() {
-                            isObscured = !isObscured;
+                            isObscured = isPasswordObscured;
                           });
                         },
                       ),
