@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
-import 'package:komodo_dex/widgets/password_visibility_toggler.dart';
+import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class CreatePasswordPage extends StatefulWidget {
@@ -122,7 +122,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 labelStyle: Theme.of(context).textTheme.body1,
                 hintText: AppLocalizations.of(context).hintPassword,
                 labelText: null,
-                suffixIcon: PasswordVisibilityToggler(
+                suffixIcon: PasswordVisibilityControl(
                   onVisibilityChange: (bool isPasswordObscured) {
                     setState(() {
                       isObscured = isPasswordObscured;
