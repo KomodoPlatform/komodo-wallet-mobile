@@ -7,6 +7,12 @@ Komodo Platform's hybrid mutlicoin DEX-wallet.
 
 ## For iOS build:
 
+Do
+
+    (cd ios && rm -rf Podfile.lock Podfile Pods)
+
+between flutter upgrades.
+cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 ## For Android build:
 
