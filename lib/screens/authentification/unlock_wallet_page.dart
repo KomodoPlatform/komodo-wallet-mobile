@@ -6,6 +6,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class UnlockWalletPage extends StatefulWidget {
@@ -95,75 +96,54 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Builder(builder: (BuildContext context) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                            maxLength: 40,
-                            controller: controller,
-                            onChanged: (String str) {
-                              if (str.isEmpty || str.length > 40) {
-                                setState(() {
-                                  isButtonLoginEnabled = false;
-                                });
-                              } else {
-                                setState(() {
-                                  isButtonLoginEnabled = true;
-                                });
-                              }
-                            },
-                            onSubmitted: (String data) {
-                              _login(context);
-                            },
-                            autocorrect: false,
-                            obscureText: isObscured,
-                            enableInteractiveSelection: false,
-                            style: Theme.of(context).textTheme.body1,
-                            decoration: InputDecoration(
-                                border: const OutlineInputBorder(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .primaryColorLight)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor)),
-                                hintStyle: Theme.of(context).textTheme.body2,
-                                labelStyle: Theme.of(context).textTheme.body1,
-                                hintText: AppLocalizations.of(context)
-                                    .hintEnterPassword,
-                                labelText: null)),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      GestureDetector(
-                        // onTap: () {
-                        //   setState(() {
-                        //     isObscured = !isObscured;
-                        //   });
-                        // },
-                        onTapDown: (TapDownDetails value) {
+                  return TextField(
+                    maxLength: 40,
+                    controller: controller,
+                    onChanged: (String str) {
+                      if (str.isEmpty || str.length > 40) {
+                        setState(() {
+                          isButtonLoginEnabled = false;
+                        });
+                      } else {
+                        setState(() {
+                          isButtonLoginEnabled = true;
+                        });
+                      }
+                    },
+                    onSubmitted: (String data) {
+                      _login(context);
+                    },
+                    autocorrect: false,
+                    obscureText: isObscured,
+                    //it is possible to make single PASTE option enabled only if
+                    //password field is empty (and hide CUT, COPY and SELECT ALL options).
+                    //But in order to implement it, we need to use 'toolbarOptions'
+                    //property, because changing 'enableInteractiveSelection' flag in
+                    //setState does not have any effect. And 'toolbarOptions' only works
+                    //properly in flutter v.1.10.13+
+                    //https://github.com/flutter/flutter/issues/45534
+                    enableInteractiveSelection: true,
+                    style: Theme.of(context).textTheme.body1,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColorLight)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor)),
+                      hintStyle: Theme.of(context).textTheme.body2,
+                      labelStyle: Theme.of(context).textTheme.body1,
+                      hintText: AppLocalizations.of(context).hintEnterPassword,
+                      labelText: null,
+                      suffixIcon: PasswordVisibilityControl(
+                        onVisibilityChange: (bool isPasswordObscured) {
                           setState(() {
-                            isObscured = !isObscured;
+                            isObscured = isPasswordObscured;
                           });
-                          // Log.println('unlock_wallet_page:151', 'long press end');
                         },
-                        onTapUp: (TapUpDetails value) {
-                          setState(() {
-                            isObscured = !isObscured;
-                          });
-                          // Log.println('unlock_wallet_page:157', 'long press start');
-                        },
-                        child: Container(
-                            height: 60,
-                            padding: const EdgeInsets.only(right: 16, left: 16),
-                            child: isObscured
-                                ? Icon(Icons.visibility)
-                                : Icon(Icons.visibility_off)),
-                      )
-                    ],
+                      ),
+                    ),
                   );
                 }),
               ),

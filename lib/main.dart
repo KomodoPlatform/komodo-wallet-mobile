@@ -240,7 +240,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
        case AppLifecycleState.detached:
-         Log.println('main:249', 'lifecycle: detached');
+         Log.println('main:243', 'lifecycle: detached');
          break;
     }
   }
