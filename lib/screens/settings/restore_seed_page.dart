@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
+import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:bip39/bip39.dart' as bip39;
 
@@ -14,7 +15,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   TextEditingController controllerSeed = TextEditingController();
   bool _isButtonDisabled = false;
   bool _isLogin;
-  bool _isSeedShow = true;
+  bool _isSeedHidden = true;
   bool checkBox = false;
 
   @override
@@ -72,64 +73,37 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
   Widget _buildInputSeed() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: TextField(
-              key: const Key('restore-seed-field'),
-              controller: controllerSeed,
-              onChanged: (String str) {
-                _checkSeed(str);
-              },
-              autocorrect: false,
-              keyboardType: TextInputType.multiline,
-              obscureText: _isSeedShow,
-              enableInteractiveSelection: true,
-              maxLines: null,
-              style: Theme.of(context).textTheme.body1,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor)),
-                  hintStyle: Theme.of(context).textTheme.body2,
-                  labelStyle: Theme.of(context).textTheme.body1,
-                  hintText: AppLocalizations.of(context).exampleHintSeed,
-                  labelText: null),
-            ),
+      child: TextField(
+        key: const Key('restore-seed-field'),
+        controller: controllerSeed,
+        onChanged: (String str) {
+          _checkSeed(str);
+        },
+        autocorrect: false,
+        keyboardType: TextInputType.multiline,
+        obscureText: _isSeedHidden,
+        enableInteractiveSelection: true,
+        maxLines: null,
+        style: Theme.of(context).textTheme.body1,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          enabledBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Theme.of(context).primaryColorLight)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).accentColor)),
+          hintStyle: Theme.of(context).textTheme.body2,
+          labelStyle: Theme.of(context).textTheme.body1,
+          hintText: AppLocalizations.of(context).exampleHintSeed,
+          labelText: null,
+          suffixIcon: PasswordVisibilityControl(
+            onVisibilityChange: (bool isObscured) {
+              setState(() {
+                _isSeedHidden = isObscured;
+              });
+            },
           ),
-          const SizedBox(
-            width: 8,
-          ),
-          GestureDetector(
-              //borderRadius: BorderRadius.circular(8),
-              // onTap: () {
-              //   setState(() {
-              //     _isSeedShow ? _isSeedShow = false : _isSeedShow = true;
-              //   });
-              // },
-              onTapDown: (TapDownDetails value) {
-                setState(() {
-                  _isSeedShow = !_isSeedShow;
-                });
-                // Log.println('restore_seed_page:118', 'long press end');
-              },
-              onTapUp: (TapUpDetails value) {
-                setState(() {
-                  _isSeedShow = !_isSeedShow;
-                });
-                // Log.println('restore_seed_page:124', 'long press start');
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: _isSeedShow
-                    ? Icon(Icons.visibility)
-                    : Icon(Icons.visibility_off),
-              ))
-        ],
+        ),
       ),
     );
   }
