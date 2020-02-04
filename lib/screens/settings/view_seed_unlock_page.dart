@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
@@ -176,71 +177,43 @@ class _UnlockPasswordState extends State<UnlockPassword> {
           style: Theme.of(context).textTheme.body1,
         ),
         const SizedBox(height: 8),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: TextField(
-                  maxLength: 40,
-                  controller: controller,
-                  textInputAction: TextInputAction.done,
-                  onSubmitted: (String data) {
-                    _checkPassword(data);
-                  },
-                  onChanged: (String data) {
-                    setState(() {
-                      data.isNotEmpty
-                          ? isContinueEnabled = true
-                          : isContinueEnabled = false;
-                    });
-                  },
-                  autocorrect: false,
-                  obscureText: isObscured,
-                  enableInteractiveSelection: true,
-                  style: Theme.of(context).textTheme.body1,
-                  decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColorLight)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).accentColor)),
-                      hintStyle: Theme.of(context).textTheme.body2,
-                      labelStyle: Theme.of(context).textTheme.body1,
-                      hintText:
-                          AppLocalizations.of(context).hintCurrentPassword,
-                      labelText: null)),
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            GestureDetector(
-              // onTap: () {
-              //   setState(() {
-              //     isObscured = !isObscured;
-              //   });
-              // },
-              onTapDown: (TapDownDetails value) {
+        TextField(
+          maxLength: 40,
+          controller: controller,
+          textInputAction: TextInputAction.done,
+          onSubmitted: (String data) {
+            _checkPassword(data);
+          },
+          onChanged: (String data) {
+            setState(() {
+              data.isNotEmpty
+                  ? isContinueEnabled = true
+                  : isContinueEnabled = false;
+            });
+          },
+          autocorrect: false,
+          obscureText: isObscured,
+          enableInteractiveSelection: true,
+          style: Theme.of(context).textTheme.body1,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            enabledBorder: OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: Theme.of(context).primaryColorLight)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).accentColor)),
+            hintStyle: Theme.of(context).textTheme.body2,
+            labelStyle: Theme.of(context).textTheme.body1,
+            hintText: AppLocalizations.of(context).hintCurrentPassword,
+            labelText: null,
+            suffixIcon: PasswordVisibilityControl(
+              onVisibilityChange: (bool isPasswordObscured) {
                 setState(() {
-                  isObscured = !isObscured;
+                  isObscured = isPasswordObscured;
                 });
-                // Log.println('view_seed_unlock_page:228', 'long press end');
               },
-              onTapUp: (TapUpDetails value) {
-                setState(() {
-                  isObscured = !isObscured;
-                });
-                // Log.println('view_seed_unlock_page:234', 'long press start');
-              },
-              child: Container(
-                  height: 60,
-                  padding: const EdgeInsets.only(right: 16, left: 16),
-                  child: isObscured
-                      ? Icon(Icons.visibility)
-                      : Icon(Icons.visibility_off)),
-            )
-          ],
+            ),
+          ),
         ),
         const SizedBox(height: 50),
         Padding(
