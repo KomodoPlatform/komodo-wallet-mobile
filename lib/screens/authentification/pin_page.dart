@@ -215,7 +215,17 @@ class _PinPageState extends State<PinPage> {
                   },
                 )
               : Center(
-                  child: Text('Wait $delay seconds to retry'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        'Wrong Password',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      const AspectRatio(aspectRatio: 1),
+                      Text('Wait $delay seconds to retry'),
+                    ],
+                  ),
                 ))
           : _buildLoading(),
     );
