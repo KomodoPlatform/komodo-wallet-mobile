@@ -11,7 +11,8 @@
     "colorCoin": "0xFF326464",
     "serverList": [
       "electrum1.cipig.net:10001",
-      "electrum2.cipig.net:10001"
+      "electrum2.cipig.net:10001",
+      "electrum3.cipig.net:10001"
     ],
     "explorerUrl": [
       "https://kmdexplorer.io/",
