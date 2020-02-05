@@ -18,11 +18,19 @@ cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 
 ## Flutter version
-
-Currently using flutter v1.14.3 in order to enjoy some recent UI fixes/updates, cf. https://github.com/ca333/komodoDEX/pull/656/commits/010c276b3aec9cb2231527ef18e9c2969c47f3ce
+Currently using flutter 1.12.13+hotfix.7 in order to enjoy some recent UI fixes/updates, cf. https://github.com/ca333/komodoDEX/pull/656/commits/010c276b3aec9cb2231527ef18e9c2969c47f3ce
 
 Upgrading from v1.9.1+hotfix.6  
-(NB: `flutter version` doesn't work with `1.14.3` yet)  
+
+    flutter version 1.12.13+hotfix.7
+    flutter clean
+    (cd ios && rm -rf Podfile.lock Podfile Pods)
+    flutter packages upgrade
+
+### beta Flutter
+
+`flutter version` is inconsistent regarding the access to beta versions.
+Git tags can be used instead (that is, when we want to experiment with beta versions of Flutter):
 
     FD=`which flutter`
     FD=`dirname $FD`
@@ -32,7 +40,3 @@ Upgrading from v1.9.1+hotfix.6
     git pull
     git reset --hard
     git checkout -f v1.14.3
-
-    cd .../komodoDEX/
-    flutter packages upgrade
-    flutter clean
