@@ -83,7 +83,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         keyboardType: TextInputType.multiline,
         obscureText: _isSeedHidden,
         enableInteractiveSelection: true,
-        maxLines: null,
+        maxLines: _isSeedHidden ? 1 : null,
         style: Theme.of(context).textTheme.body1,
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
