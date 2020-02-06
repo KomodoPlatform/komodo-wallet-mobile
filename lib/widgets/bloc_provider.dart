@@ -20,17 +20,10 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
   _BlocProviderState<T> createState() => _BlocProviderState<T>();
 
   static T of<T extends BlocBase>(BuildContext context) {
-    /* For Flutter v1.12.13
-    final BlocProvider<T> provider = context.findAncestorWidgetOfExactType<BlocProvider<T>>();
-    */
-
-    // For Flutter v1.9.1:
-    final Type type = _typeOf<BlocProvider<T>>();
-    final BlocProvider<T> provider = context.ancestorWidgetOfExactType(type);
-
+    final BlocProvider<T> provider =
+        context.findAncestorWidgetOfExactType<BlocProvider<T>>();
     return provider.bloc;
   }
-  static Type _typeOf<T>() => T;
 }
 
 class _BlocProviderState<T> extends State<BlocProvider<BlocBase>> {

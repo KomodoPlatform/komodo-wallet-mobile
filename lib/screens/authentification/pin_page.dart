@@ -253,7 +253,7 @@ class _PinPageState extends State<PinPage> {
       delay = delayMax;
       keyboardBlocked = true;
 
-      Timer.periodic(Duration(seconds: 1), (timer) {
+      Timer.periodic(const Duration(seconds: 1), (timer) {
         setState(() {
           delay--;
           if (delay == 0) {
