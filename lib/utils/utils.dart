@@ -238,7 +238,11 @@ Future<bool> authenticateBiometrics(
           stickyAuth: true,
           localizedReason: AppLocalizations.of(context).lockScreenAuth);
     } on PlatformException catch (e) {
-      Log.println('utils:241', 'authenticateWithBiometrics ex: ' + e.message);
+      // AG, 2020-02-07, observed a race:
+      // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
+      // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
+      // Rewriting the biometrics support (cf. #668) might be one way to fix that.
+      Log.println('utils:245', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
     _activeAuthenticateWithBiometrics = 0;
@@ -323,7 +327,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:326', url);
+  Log.println('utils:330', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);

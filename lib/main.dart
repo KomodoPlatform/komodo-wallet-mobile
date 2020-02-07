@@ -14,6 +14,7 @@ import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/mode.dart';
@@ -43,7 +44,7 @@ Future<void> startApp() async {
     return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));
   } catch (e) {
-    Log.println('main:46', 'startApp] $e');
+    Log.println('main:47', 'startApp] $e');
     rethrow;
   }
 }
@@ -56,11 +57,11 @@ Future<void> _runBinMm2UserAlreadyLog() async {
     await authBloc.initSwitchPref();
 
     if (!(authBloc.isPinShow && prefs.getBool('switch_pin'))) {
-      Log.println('main:59', 'login isPinShow');
+      Log.println('main:60', 'login isPinShow');
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
-    Log.println('main:63', 'loadJsonCoinsDefault');
+    Log.println('main:64', 'loadJsonCoinsDefault');
     await coinsBloc.writeJsonCoin(await MMService().loadJsonCoinsDefault());
   }
 }
@@ -117,9 +118,9 @@ class _MyAppState extends State<MyApp> {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    // Log.println('main:120',
+                    // Log.println('main:121',
                     //     'current locale: ' + currentLocale?.toString());
-                    // Log.println('main:122',
+                    // Log.println('main:123',
                     //     'current pref locale: ' + prefLocale.toString());
 
                     return MaterialApp(
@@ -200,34 +201,25 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log.println('main:203', 'lifecycle: inactive');
+        Log.println('main:204', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
-        Log.println('main:207', 'lifecycle: paused');
+        Log.println('main:208', 'lifecycle: paused');
         lockService.lockSignal(context);
+
+        // AG: do we really need it? // if (Platform.isIOS) MMService().closeLogSink();
+
         // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
-        if (Platform.isIOS) {
-          final double btr =
-              await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-          Log.println('main:214', 'paused, backgroundTimeRemaining: $btr');
-          // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
-          // and when we are silent the `backgroundTimeRemaining` is low
-          // (expected low values are ~5, ~180, ~600 seconds).
-          if (btr < 3600) {
-            MMService().closeLogSink();
-            if (!authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
-              // https://gitlab.com/artemciy/supernet/issues/4#note_190147428
-              Log.println('main:222',
-                  'Suspended, exiting explicitly in order to workaround a crash');
-              exit(0);
-            }
-          }
+        if (Platform.isIOS && await musicService.iosBackgroundExit()) {
+          // https://gitlab.com/artemciy/supernet/issues/4#note_284468673
+          Log.println('main:217', 'Suspended, exit');
+          exit(0);
         }
         break;
       case AppLifecycleState.resumed:
-        Log.println('main:230', 'lifecycle: resumed');
+        Log.println('main:222', 'lifecycle: resumed');
         lockService.lockSignal(context);
         MMService().openLogSink();
         if (Platform.isIOS) {
@@ -237,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.detached:
-        Log.println('main:240', 'lifecycle: detached');
+        Log.println('main:232', 'lifecycle: detached');
         break;
     }
   }
