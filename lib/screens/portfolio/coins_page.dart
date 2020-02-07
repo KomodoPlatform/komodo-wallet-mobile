@@ -15,7 +15,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
@@ -43,7 +43,7 @@ class _CoinsPageState extends State<CoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    if (MarketMakerService().ismm2Running) {
+    if (MMService().ismm2Running) {
       coinsBloc.loadCoin();
     }
 
@@ -282,7 +282,7 @@ class ListCoinsState extends State<ListCoins> {
 
   @override
   void initState() {
-    if (MarketMakerService().ismm2Running) {
+    if (MMService().ismm2Running) {
       coinsBloc.loadCoin();
     }
     super.initState();
@@ -701,8 +701,8 @@ class _AddCoinButtonState extends State<AddCoinButton> {
   }
 
   Future<bool> _buildAddCoinButton() async {
-    final List<Coin> allCoins = await MarketMakerService()
-        .loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
+    final List<Coin> allCoins = await MMService()
+        .loadJsonCoins(await MMService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
 
     return !(allCoins.length == allCoinsActivate.length);

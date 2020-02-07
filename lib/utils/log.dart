@@ -1,4 +1,4 @@
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 
 class Log {
   /// This function can be used in a hot-reload debugging session to focus on certain sections of the log.
@@ -19,9 +19,9 @@ class Log {
       print(messageToPrint);
     }
 
-    //via os_log://MarketMakerService.platformmm2.invokeMethod<String>('log', messageToPrint);
+    //via os_log://MMService.nativeC.invokeMethod<String>('log', messageToPrint);
 
-    MarketMakerService().logIntoFile(
+    MMService().logIntoFile(
         DateTime.now().toString() + ' ' + messageToPrint.toString());
   }
 }

@@ -39,7 +39,7 @@ import '../model/trade_fee.dart';
 import '../model/transactions.dart';
 import '../model/withdraw_response.dart';
 import '../utils/log.dart';
-import 'market_maker_service.dart';
+import 'mm_service.dart';
 
 class UserpassBody {
   UserpassBody({this.body, this.client});
@@ -93,8 +93,8 @@ class ApiProvider {
   }
 
   Future<UserpassBody> _assertUserpass(http.Client client, dynamic body) async {
-    body.userpass = MarketMakerService().userpass.isNotEmpty
-        ? MarketMakerService().userpass
+    body.userpass = MMService().userpass.isNotEmpty
+        ? MMService().userpass
         : body.userpass;
     return UserpassBody(body: body, client: client);
   }
@@ -182,13 +182,13 @@ class ApiProvider {
 
     return coin.type == 'erc'
         ? getEnabledCoinToJson(GetEnabledCoin(
-            userpass: MarketMakerService().userpass,
+            userpass: MMService().userpass,
             coin: coin.abbr,
             txHistory: true,
             swapContractAddress: coin.swapContractAddress,
             urls: coin.serverList))
         : getActiveCoinToJson(GetActiveCoin(
-            userpass: MarketMakerService().userpass,
+            userpass: MMService().userpass,
             coin: coin.abbr,
             txHistory: true,
             servers: servers));

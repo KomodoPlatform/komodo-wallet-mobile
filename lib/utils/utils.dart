@@ -11,7 +11,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -252,7 +252,7 @@ Future<bool> authenticateBiometrics(
       }
       authBloc.showPin(false);
       if (pinStatus == PinStatus.NORMAL_PIN &&
-          !MarketMakerService().ismm2Running) {
+          !MMService().ismm2Running) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
     }
