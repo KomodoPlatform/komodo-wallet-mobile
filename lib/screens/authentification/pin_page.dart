@@ -93,7 +93,7 @@ class _PinPageState extends State<PinPage> {
           await EncryptionTool()
               .writeData(
                   KeyEncryption.PIN, wallet, widget.password, code.toString())
-              .catchError((dynamic e) => Log.println('pin_page:90', e));
+              .catchError((dynamic e) => Log.println('pin_page:96', e));
         }
 
         await EncryptionTool().write('pin', code.toString());

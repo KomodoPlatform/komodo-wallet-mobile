@@ -228,12 +228,9 @@ Future<bool> authenticateBiometrics(
 
     // Avoid flicker by ignoring duplicate invocations
     // while an existing authenticateWithBiometrics is still active.
-    // The protective lock is released automatically after 7 seconds
-    // because there is a small chance of code flow anomaly,
-    // such as situations where `authenticateWithBiometrics` wouldn't invoke its callback.
+    // AG: The duplicate invocation might also crash the app (observed on 2020-02-07, Android, debug).
     final int now = DateTime.now().millisecondsSinceEpoch;
-    if (_activeAuthenticateWithBiometrics > 0 &&
-        now - _activeAuthenticateWithBiometrics < 7777) return false;
+    if (_activeAuthenticateWithBiometrics > 0) return false;
     _activeAuthenticateWithBiometrics = now;
 
     try {
@@ -241,8 +238,7 @@ Future<bool> authenticateBiometrics(
           stickyAuth: true,
           localizedReason: AppLocalizations.of(context).lockScreenAuth);
     } on PlatformException catch (e) {
-      Log.println(
-          'utils:244', 'authenticateWithBiometrics exception: ' + e.message);
+      Log.println('utils:241', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
     _activeAuthenticateWithBiometrics = 0;
@@ -327,7 +323,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:330', url);
+  Log.println('utils:326', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);
