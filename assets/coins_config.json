@@ -50,7 +50,7 @@
     "serverList": [
       "bch.imaginary.cash:50001",
       "electrumx-bch.cryptonermal.net:50001",
-      "wallet.satoshiscoffeehouse.com:50001"
+      "bch0.kister.net:50001"
     ],
     "explorerUrl": [
       "https://explorer.bitcoin.com/bch/"
