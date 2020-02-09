@@ -11,7 +11,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -228,12 +228,9 @@ Future<bool> authenticateBiometrics(
 
     // Avoid flicker by ignoring duplicate invocations
     // while an existing authenticateWithBiometrics is still active.
-    // The protective lock is released automatically after 7 seconds
-    // because there is a small chance of code flow anomaly,
-    // such as situations where `authenticateWithBiometrics` wouldn't invoke its callback.
+    // AG: The duplicate invocation might also crash the app (observed on 2020-02-07, Android, debug).
     final int now = DateTime.now().millisecondsSinceEpoch;
-    if (_activeAuthenticateWithBiometrics > 0 &&
-        now - _activeAuthenticateWithBiometrics < 7777) return false;
+    if (_activeAuthenticateWithBiometrics > 0) return false;
     _activeAuthenticateWithBiometrics = now;
 
     try {
@@ -241,8 +238,11 @@ Future<bool> authenticateBiometrics(
           stickyAuth: true,
           localizedReason: AppLocalizations.of(context).lockScreenAuth);
     } on PlatformException catch (e) {
-      Log.println(
-          'utils:244', 'authenticateWithBiometrics exception: ' + e.message);
+      // AG, 2020-02-07, observed a race:
+      // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
+      // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
+      // Rewriting the biometrics support (cf. #668) might be one way to fix that.
+      Log.println('utils:245', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
     _activeAuthenticateWithBiometrics = 0;
@@ -256,7 +256,7 @@ Future<bool> authenticateBiometrics(
       }
       authBloc.showPin(false);
       if (pinStatus == PinStatus.NORMAL_PIN &&
-          !MarketMakerService().ismm2Running) {
+          !MMService().ismm2Running) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
     }

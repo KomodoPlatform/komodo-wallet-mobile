@@ -7,7 +7,7 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -90,7 +90,7 @@ class AuthenticateBloc extends BlocBase {
     await prefs.setBool('isPinIsSet', false);
     await prefs.setBool('switch_pin_log_out_on_exit', false);
 
-    await MarketMakerService().init(passphrase);
+    await MMService().init(passphrase);
 
     isLogin = true;
     _inIsLogin.add(true);
@@ -146,7 +146,7 @@ class AuthenticateBloc extends BlocBase {
     _inIsLogin.add(false);
 
     coinsBloc.stopCheckBalance();
-    await MarketMakerService().stopmm2();
+    await MMService().stopmm2();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await EncryptionTool().delete('passphrase');
     await prefs.setBool('isPinIsSet', false);
@@ -156,7 +156,7 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().delete('pin');
     coinsBloc.resetCoinBalance();
     await coinsBloc.resetCoinDefault();
-    MarketMakerService().balances = <Balance>[];
+    MMService().balances = <Balance>[];
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);
     await DBProvider.db.deleteCurrentWallet();

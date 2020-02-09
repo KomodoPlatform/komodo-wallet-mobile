@@ -17,7 +17,7 @@ import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/getprice_service.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
@@ -185,7 +185,7 @@ class CoinsBloc implements BlocBase {
   Future<void> removeCoin(Coin coin) async =>
       await removeCoinBalance(coin).then<dynamic>((_) => ApiProvider()
           .disableCoin(
-              MarketMakerService().client, GetDisableCoin(coin: coin.abbr))
+              MMService().client, GetDisableCoin(coin: coin.abbr))
           .then<dynamic>((dynamic res) => removeCoinLocal(coin, res)));
 
   void updateOneCoin(CoinBalance coin) {
@@ -217,7 +217,7 @@ class CoinsBloc implements BlocBase {
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
       final dynamic transactions = await ApiProvider().getTransactions(
-          MarketMakerService().client,
+          MMService().client,
           GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
 
       if (transactions is Transactions) {
@@ -296,7 +296,7 @@ class CoinsBloc implements BlocBase {
         CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
     Log.println('coins_bloc:297', coin.abbr);
     return await ApiProvider()
-        .activeCoin(MarketMakerService().client, coin)
+        .activeCoin(MMService().client, coin)
         .then((dynamic activeCoin) {
       if (activeCoin is ActiveCoin) {
         currentCoinActivate(
@@ -395,7 +395,7 @@ class CoinsBloc implements BlocBase {
 
   void startCheckBalance() {
     timer = Timer.periodic(const Duration(seconds: 45), (_) {
-      if (!MarketMakerService().ismm2Running) {
+      if (!MMService().ismm2Running) {
         _.cancel();
       } else {
         loadCoin();
@@ -410,7 +410,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> loadCoin() async {
-    if (MarketMakerService().ismm2Running &&
+    if (MMService().ismm2Running &&
         !onActivateCoins &&
         !mainBloc.isNetworkOffline) {
       onActivateCoins = true;
@@ -460,7 +460,7 @@ class CoinsBloc implements BlocBase {
     dynamic balance;
     try {
       balance = await ApiProvider()
-          .getBalance(MarketMakerService().client, GetBalance(coin: coin.abbr))
+          .getBalance(MMService().client, GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
       Log.println('coins_bloc:466', e);
@@ -498,7 +498,7 @@ class CoinsBloc implements BlocBase {
     }
 
     if (balance is Balance && balance.coin == 'KMD') {
-      MarketMakerService().pubkey = balance.address;
+      MMService().pubkey = balance.address;
     }
     return coinBalance;
   }
@@ -509,7 +509,7 @@ class CoinsBloc implements BlocBase {
 
     try {
       await ApiProvider()
-          .getCoinToKickStart(MarketMakerService().client,
+          .getCoinToKickStart(MMService().client,
               BaseService(method: 'coins_needed_for_kick_start'))
           .then((dynamic coinsToKickStart) {
         if (coinsToKickStart is CoinToKickStart) {
