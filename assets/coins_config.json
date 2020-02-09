@@ -302,9 +302,9 @@
     "coingeckoId": "qtum",
     "colorCoin": "0xFF52a5da",
     "serverList": [
-      "s2.qtum.info:50001",
-      "s4.qtum.info:50001",
-      "s5.qtum.info:50001"
+      "s7.qtum.info:50001",
+      "s8.qtum.info:50001",
+      "s9.qtum.info:50001"
     ],
     "explorerUrl": [
       "https://qtum.info/"
