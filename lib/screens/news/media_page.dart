@@ -143,6 +143,9 @@ class _BrowseNewsState extends State<BrowseNews> {
   }
 
   Widget _buildHeader(Article article) {
+    double _imageHeight = MediaQuery.of(context).size.height * 0.3;
+    if (_imageHeight < 200) _imageHeight = 200;
+
     return InkWell(
       onTap: () {
         Navigator.push<dynamic>(
@@ -157,7 +160,9 @@ class _BrowseNewsState extends State<BrowseNews> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height * 0.3,
+            padding: const EdgeInsets.only(top: 20),
+            alignment: Alignment.center,
+            height: _imageHeight,
             child: Image.network(
               article.media[0],
               fit: BoxFit.cover,
@@ -188,6 +193,14 @@ class _BrowseNewsState extends State<BrowseNews> {
                   savedArticle: false,
                 )
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              height: 1,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey.withOpacity(0.2),
             ),
           )
         ],
