@@ -373,40 +373,45 @@ class SavedNews extends StatelessWidget {
             );
           } else if (snapshot.data.isEmpty) {
             //paradox condition cleaned up
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset('assets/icon_not_saved.svg'),
-                const SizedBox(
-                  height: 16,
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SvgPicture.asset('assets/icon_not_saved.svg'),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      AppLocalizations.of(context).mediaNotSavedDescription,
+                      style: Theme.of(context).textTheme.title,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    RaisedButton(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0)),
+                      color: Theme.of(context).accentColor,
+                      disabledColor: Theme.of(context).disabledColor,
+                      child: Text(
+                        AppLocalizations.of(context).mediaBrowseFeed,
+                        style: Theme.of(context)
+                            .textTheme
+                            .button
+                            .copyWith(color: Theme.of(context).primaryColor),
+                      ),
+                      onPressed: () async {
+                        tabController.animateTo(0);
+                      },
+                    )
+                  ],
                 ),
-                Text(
-                  AppLocalizations.of(context).mediaNotSavedDescription,
-                  style: Theme.of(context).textTheme.title,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                RaisedButton(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0)),
-                  color: Theme.of(context).accentColor,
-                  disabledColor: Theme.of(context).disabledColor,
-                  child: Text(
-                    AppLocalizations.of(context).mediaBrowseFeed,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Theme.of(context).primaryColor),
-                  ),
-                  onPressed: () async {
-                    tabController.animateTo(0);
-                  },
-                )
-              ],
+              ),
             );
           } else {
             return const Center(child: CircularProgressIndicator());
