@@ -14,7 +14,7 @@ import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/result.dart';
-import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
+import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
@@ -439,7 +439,7 @@ class _SettingPageState extends State<SettingPage> {
           Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => const DislaimerPage(
+                builder: (BuildContext context) => const DisclaimerPage(
                       readOnly: true,
                     )),
           );

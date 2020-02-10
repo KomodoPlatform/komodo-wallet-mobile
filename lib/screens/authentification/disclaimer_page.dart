@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
@@ -12,8 +13,8 @@ import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DislaimerPage extends StatefulWidget {
-  const DislaimerPage(
+class DisclaimerPage extends StatefulWidget {
+  const DisclaimerPage(
       {Key key,
       this.password,
       this.seed,
@@ -26,10 +27,10 @@ class DislaimerPage extends StatefulWidget {
   final bool readOnly;
 
   @override
-  _DislaimerPageState createState() => _DislaimerPageState();
+  _DisclaimerPageState createState() => _DisclaimerPageState();
 }
 
-class _DislaimerPageState extends State<DislaimerPage>
+class _DisclaimerPageState extends State<DisclaimerPage>
     with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   bool isEndOfScroll = false;
@@ -99,7 +100,7 @@ class _DislaimerPageState extends State<DislaimerPage>
 
   @override
   Widget build(BuildContext context) {
-    final List<TextSpan> disclaimerToS = <TextSpan>[
+    final List<TextSpan> _disclaimerToSText = <TextSpan>[
       TextSpan(
           text: AppLocalizations.of(context).eulaTitle1,
           style: Theme.of(context).textTheme.title),
@@ -218,6 +219,119 @@ class _DislaimerPageState extends State<DislaimerPage>
           text: AppLocalizations.of(context).eulaParagraphe19,
           style: Theme.of(context).textTheme.body1)
     ];
+
+    final Widget _tosContent = Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: RichText(
+        text: TextSpan(
+          style: Theme.of(context).textTheme.body1,
+          children: _disclaimerToSText,
+        ),
+      ),
+    );
+
+    final Widget _tosControls = Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: <Widget>[
+          widget.readOnly
+              ? Container()
+              : Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Checkbox(
+                          key: const Key('checkbox-eula'),
+                          value: _checkBoxEULA,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _checkBoxEULA = !_checkBoxEULA;
+                            });
+                          },
+                        ),
+                        Flexible(
+                            child:
+                                Text(AppLocalizations.of(context).accepteula)),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Checkbox(
+                          key: const Key('checkbox-toc'),
+                          value: _checkBoxTOC,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _checkBoxTOC = !_checkBoxTOC;
+                            });
+                          },
+                        ),
+                        Flexible(
+                            child: Text(
+                          AppLocalizations.of(context).accepttac,
+                        )),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 4),
+                      child: Text(
+                        AppLocalizations.of(context).confirmeula,
+                        style: Theme.of(context).textTheme.body2,
+                      ),
+                    ),
+                  ],
+                ),
+          PrimaryButton(
+            key: const Key('next-disclaimer'),
+            onPressed: (widget.readOnly
+                    ? isEndOfScroll
+                    : isEndOfScroll && _checkBoxEULA && _checkBoxTOC)
+                ? _nextPage
+                : null,
+            text: widget.readOnly
+                ? AppLocalizations.of(context).close
+                : AppLocalizations.of(context).next,
+            isLoading: isLoading,
+          ),
+          isLoading
+              ? const SizedBox(
+                  height: 8,
+                )
+              : Container(),
+          isLoading
+              ? Text(
+                  AppLocalizations.of(context).encryptingWallet,
+                  style: Theme.of(context).textTheme.body1,
+                )
+              : Container()
+        ],
+      ),
+    );
+
+    final Widget _scrollControl = SlideTransition(
+      position: _offsetFloat,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ScaleTransition(
+            scale: _scaleTransition,
+            child: FloatingActionButton(
+              child: Icon(Icons.arrow_downward),
+              onPressed: () {
+                if (isEndOfScroll) {
+                  timer.cancel();
+                  _controllerScale.reverse();
+                }
+                _scrollController.animateTo(_scrollPosition + 300,
+                    duration: const Duration(seconds: 1), curve: Curves.ease);
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -229,137 +343,47 @@ class _DislaimerPageState extends State<DislaimerPage>
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Stack(
+          // On small screens and in split-screen mode
+          // page controls (checkboxes, button) should not be docked
+          // to the bottom of the screen
+          child: MediaQuery.of(context).size.height < 480
+              ? Stack(
                   children: <Widget>[
-                    ListView(
-                      key: const Key('scroll-disclaimer'),
+                    SingleChildScrollView(
                       controller: _scrollController,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: RichText(
-                            text: TextSpan(
-                              style: Theme.of(context).textTheme.body1,
-                              children: disclaimerToS,
-                            ),
-                          ),
-                        ),
-                        const Text(
-                          '',
-                          key: Key('end-list-disclaimer'),
-                        ),
-                      ],
-                    ),
-                    SlideTransition(
-                      position: _offsetFloat,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: ScaleTransition(
-                            scale: _scaleTransition,
-                            child: FloatingActionButton(
-                              child: Icon(Icons.arrow_downward),
-                              onPressed: () {
-                                if (isEndOfScroll) {
-                                  timer.cancel();
-                                  _controllerScale.reverse();
-                                }
-                                _scrollController.animateTo(
-                                    _scrollPosition + 300,
-                                    duration: const Duration(seconds: 1),
-                                    curve: Curves.ease);
-                              },
-                            ),
-                          ),
-                        ),
+                      child: Column(
+                        children: <Widget>[
+                          _tosContent,
+                          _tosControls,
+                        ],
                       ),
-                    )
+                    ),
+                    _scrollControl,
                   ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
+                )
+              : Column(
                   children: <Widget>[
-                    widget.readOnly
-                        ? Container()
-                        : Column(
+                    Expanded(
+                      child: Stack(
+                        children: <Widget>[
+                          ListView(
+                            key: const Key('scroll-disclaimer'),
+                            controller: _scrollController,
                             children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Checkbox(
-                                    key: const Key('checkbox-eula'),
-                                    value: _checkBoxEULA,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        _checkBoxEULA = !_checkBoxEULA;
-                                      });
-                                    },
-                                  ),
-                                  Flexible(
-                                      child: Text(AppLocalizations.of(context)
-                                          .accepteula)),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Checkbox(
-                                    key: const Key('checkbox-toc'),
-                                    value: _checkBoxTOC,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        _checkBoxTOC = !_checkBoxTOC;
-                                      });
-                                    },
-                                  ),
-                                  Flexible(
-                                      child: Text(
-                                    AppLocalizations.of(context).accepttac,
-                                  )),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 4),
-                                child: Text(
-                                  AppLocalizations.of(context).confirmeula,
-                                  style: Theme.of(context).textTheme.body2,
-                                ),
+                              _tosContent,
+                              const Text(
+                                '',
+                                key: Key('end-list-disclaimer'),
                               ),
                             ],
                           ),
-                    PrimaryButton(
-                      key: const Key('next-disclaimer'),
-                      onPressed: (widget.readOnly
-                              ? isEndOfScroll
-                              : isEndOfScroll && _checkBoxEULA && _checkBoxTOC)
-                          ? _nextPage
-                          : null,
-                      text: widget.readOnly
-                          ? AppLocalizations.of(context).close
-                          : AppLocalizations.of(context).next,
-                      isLoading: isLoading,
+                          _scrollControl,
+                        ],
+                      ),
                     ),
-                    isLoading
-                        ? const SizedBox(
-                            height: 8,
-                          )
-                        : Container(),
-                    isLoading
-                        ? Text(
-                            AppLocalizations.of(context).encryptingWallet,
-                            style: Theme.of(context).textTheme.body1,
-                          )
-                        : Container()
+                    _tosControls,
                   ],
                 ),
-              )
-            ],
-          ),
         ));
   }
 
@@ -371,11 +395,11 @@ class _DislaimerPageState extends State<DislaimerPage>
         isLoading = true;
       });
 
-      final EncryptionTool entryptionTool = EncryptionTool();
+      final EncryptionTool encryptionTool = EncryptionTool();
       final Wallet wallet = walletBloc.currentWallet;
       walletBloc.currentWallet = wallet;
 
-      await entryptionTool
+      await encryptionTool
           .writeData(KeyEncryption.SEED, wallet, widget.password, widget.seed)
           .catchError((dynamic e) => Log.println('dislaimer_page:380', e));
 
