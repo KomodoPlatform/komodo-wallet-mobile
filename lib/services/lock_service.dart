@@ -25,15 +25,17 @@ class LockService {
     return now;
   }
 
+  bool get inFilePicker => _inFilePicker > 0;
+
   /// Must be called when the file picker `await` returns.
   void filePickerReturned(int lockCookie) {
     assert(lockCookie > 0);
     final int started = _inFilePicker;
     _inFilePicker = 0;
-    Log.println('lock_service:33', 'filePickerReturned');
+    Log.println('lock_service:35', 'filePickerReturned');
 
     if (started != lockCookie) {
-      Log.println('lock_service:36', 'Warning, lockCookie mismatch!');
+      Log.println('lock_service:38', 'Warning, lockCookie mismatch!');
       _lock(null);
       return;
     }
@@ -42,14 +44,14 @@ class LockService {
     final int delta = now - started;
     if (delta <= 333) {
       _lock(null);
-      Log.println('lock_service:45', 'File picking was unrealistically fast.');
+      Log.println('lock_service:47', 'File picking was unrealistically fast.');
       return;
     }
     // We can't exempt file picker from lock screen forever,
     // for otherwise an attacker can later gain access by continuing an unfinished file picking activity.
     if (delta > 60 * 1000) {
       _lock(null);
-      Log.println('lock_service:52', 'File picking took more than a minute.');
+      Log.println('lock_service:54', 'File picking took more than a minute.');
       return;
     }
   }
@@ -61,7 +63,7 @@ class LockService {
   /// If there is a tap before the file picker await returns
   /// then something is wrong and we should trigger the lock screen.
   void pointerEvent(BuildContext context) {
-    //Log.println('lock_service:64', 'pointerEvent');
+    //Log.println('lock_service:66', 'pointerEvent');
     if (_inFilePicker != 0) {
       _inFilePicker = 0;
       _lock(context);
@@ -81,7 +83,7 @@ class LockService {
   /// Hence we can't track the exact visibility through the lifecycle states,
   /// but we can treat them as a signal that the visibility was affected, triggering the lock screen.
   void lockSignal(BuildContext context) {
-    Log.println('lock_service:84', 'lockSignal');
+    Log.println('lock_service:86', 'lockSignal');
     if (_inFilePicker == 0) _lock(context);
   }
 
@@ -90,7 +92,7 @@ class LockService {
       // #496: When a text fields is hidden in a focused state and then later shows up again,
       // it might stuck in some intermediate state, preventing the long press menus, such as "PASTE",
       // from appearing. Unfocusing before hiding such fields workarounds the issue.
-      Log.println('lock_service:93', 'Unfocus and lock..');
+      Log.println('lock_service:95', 'Unfocus and lock..');
       FocusScope.of(context).requestFocus(FocusNode());
 
       if (context != null) dialogBloc.closeDialog(context);

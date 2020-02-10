@@ -7,7 +7,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
@@ -161,7 +161,7 @@ class _BuildScreenAuthMultiWalletsState
                       onSuccess: (String seed, String password) async {
                         await coinsBloc.resetCoinDefault();
                         authBloc.showPin(false);
-                        if (!MarketMakerService().ismm2Running) {
+                        if (!MMService().ismm2Running) {
                           await authBloc.login(seed, password);
                         }
                         Navigator.of(context).pop();

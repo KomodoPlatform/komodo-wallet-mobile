@@ -5,7 +5,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:pin_code_view/pin_code_view.dart';
@@ -93,14 +93,14 @@ class _PinPageState extends State<PinPage> {
           await EncryptionTool()
               .writeData(
                   KeyEncryption.PIN, wallet, widget.password, code.toString())
-              .catchError((dynamic e) => Log.println('pin_page:90', e));
+              .catchError((dynamic e) => Log.println('pin_page:96', e));
         }
 
         await EncryptionTool().write('pin', code.toString());
         authBloc.showPin(false);
         authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
         if (!widget.isFromChangingPin) {
-          if (!MarketMakerService().ismm2Running) {
+          if (!MMService().ismm2Running) {
             await authBloc.login(
                 await EncryptionTool().read('passphrase'), widget.password);
           }
@@ -119,7 +119,7 @@ class _PinPageState extends State<PinPage> {
         break;
       case PinStatus.NORMAL_PIN:
         authBloc.showPin(false);
-        if (!MarketMakerService().ismm2Running) {
+        if (!MMService().ismm2Running) {
           await authBloc.login(await EncryptionTool().read('passphrase'), null);
         }
         if (widget.onSuccess != null) {

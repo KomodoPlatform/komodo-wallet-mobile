@@ -18,6 +18,7 @@ cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 
 ## Flutter version
+
 Currently using flutter 1.12.13+hotfix.7 in order to enjoy some recent UI fixes/updates, cf. https://github.com/ca333/komodoDEX/pull/656/commits/010c276b3aec9cb2231527ef18e9c2969c47f3ce
 
 Upgrading from v1.9.1+hotfix.6  
@@ -26,6 +27,8 @@ Upgrading from v1.9.1+hotfix.6
     flutter clean
     (cd ios && rm -rf Podfile.lock Podfile Pods)
     flutter packages upgrade
+
+(If the "flutter version" doesn't have the required version in the list yet then one way to get it is to go to the flutter directory (cf. `which flutter`) and invoke `git pull` there).
 
 ### beta Flutter
 

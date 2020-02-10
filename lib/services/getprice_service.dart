@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 
 GetPriceService getPriceObj = GetPriceService();
 
@@ -23,7 +23,7 @@ class GetPriceService {
       return nil;
     }
     try {
-      final Response response2 = await MarketMakerService().client.get(coinUrl);
+      final Response response2 = await MMService().client.get(coinUrl);
       final Map<dynamic, dynamic> decoded2 = jsonDecode(response2.body);
       price = double.parse(
           decoded2[coingeckoId][currency.toLowerCase()].toString());
