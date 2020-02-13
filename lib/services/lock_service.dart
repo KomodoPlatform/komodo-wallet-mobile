@@ -127,6 +127,12 @@ class LockService {
 
     // If there is a tap then we have returned from the QR.
     _inQrScanner = 0;
+
+    if (_inBiometrics != 0) {
+      // If there is a tap then we're not in biometrics anymore.
+      _inBiometrics = 0;
+      _lastReturn = DateTime.now().millisecondsSinceEpoch;
+    }
   }
 
   /// Fundamentally the app can be either visible or invisible (not on screen or hidden by something)
@@ -142,7 +148,7 @@ class LockService {
   /// Hence we can't track the exact visibility through the lifecycle states,
   /// but we can treat them as a signal that the visibility was affected, triggering the lock screen.
   void lockSignal(BuildContext context) {
-    Log.println('lock_service:145', 'lockSignal');
+    Log.println('lock_service:151', 'lockSignal');
     if (_inFilePicker == 0) _lock(context);
   }
 
@@ -156,13 +162,13 @@ class LockService {
     // NB: Deltas like 949ms are a norm when returning from biometrics in a flutter debug, under simulator,
     // probably because it also triggers a number of other resource-intensitive things.
     final int lrDelta = DateTime.now().millisecondsSinceEpoch - _lastReturn;
-    Log.println('lock_service:159', '_lastReturn delta: $lrDelta');
+    Log.println('lock_service:165', '_lastReturn delta: $lrDelta');
     if (lrDelta < 999) return;
 
     // #496: When a text fields is hidden in a focused state and then later shows up again,
     // it might stuck in some intermediate state, preventing the long press menus, such as "PASTE",
     // from appearing. Unfocusing before hiding such fields workarounds the issue.
-    Log.println('lock_service:165', 'Unfocus and lock..');
+    Log.println('lock_service:171', 'Unfocus and lock..');
     FocusScope.of(context).requestFocus(FocusNode());
 
     if (context != null) dialogBloc.closeDialog(context);
