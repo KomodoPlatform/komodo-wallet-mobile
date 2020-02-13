@@ -69,7 +69,7 @@ class _PinPageState extends State<PinPage> {
         _correctPin = null;
       });
     } else if (pinStatus == PinStatus.CONFIRM_PIN) {
-      authBloc.showPin(false);
+      authBloc.showLock = false;
       setState(() {
         _correctPin = prefs.getString('pin_create');
       });
@@ -97,7 +97,7 @@ class _PinPageState extends State<PinPage> {
         }
 
         await EncryptionTool().write('pin', code.toString());
-        authBloc.showPin(false);
+        authBloc.showLock = false;
         authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
         if (!widget.isFromChangingPin) {
           if (!MMService().ismm2Running) {
@@ -118,7 +118,7 @@ class _PinPageState extends State<PinPage> {
 
         break;
       case PinStatus.NORMAL_PIN:
-        authBloc.showPin(false);
+        authBloc.showLock = false;
         if (!MMService().ismm2Running) {
           await authBloc.login(await EncryptionTool().read('passphrase'), null);
         }
