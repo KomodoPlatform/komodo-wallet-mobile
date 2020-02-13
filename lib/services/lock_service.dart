@@ -11,6 +11,7 @@ class LockService {
   SharedPreferences _prefs;
   int _inFilePicker = 0;
   int _inQrScanner = 0;
+  int _inBiometrics = 0;
 
   /// Time when we have last returned from an external dialogue (such as file picker or QR scan)
   /// withing the acceptable security constraints.
@@ -27,13 +28,18 @@ class LockService {
     assert(!authBloc.showLock);
     final int now = DateTime.now().millisecondsSinceEpoch;
     _inFilePicker = now;
-    Log.println('lock_service:30', 'enteringFilePicker');
+    Log.println('lock_service:31', 'enteringFilePicker');
     return now;
   }
 
   int enteringQrScanner() {
-    Log.println('lock_service:35', 'enteringQrScanner');
+    Log.println('lock_service:36', 'enteringQrScanner');
     return _inQrScanner = DateTime.now().millisecondsSinceEpoch;
+  }
+
+  int enteringBiometrics() {
+    Log.println('lock_service:41', 'enteringBiometrics');
+    return _inBiometrics = DateTime.now().millisecondsSinceEpoch;
   }
 
   /// Whether the user has left the app by activating the system file picker dialogue.
@@ -42,15 +48,18 @@ class LockService {
   /// Whether the user has left the app by activating the system QR scanner dialogue.
   bool get inQrScanner => _inQrScanner > 0;
 
+  /// Whether the user has left the app by activating the system biometrics dialogue.
+  bool get inBiometrics => _inBiometrics > 0;
+
   /// Must be called when the file picker `await` returns.
   void filePickerReturned(int lockCookie) {
     assert(lockCookie > 0);
     final int started = _inFilePicker;
     _inFilePicker = 0;
-    Log.println('lock_service:50', 'filePickerReturned');
+    Log.println('lock_service:59', 'filePickerReturned');
 
     if (started != lockCookie) {
-      Log.println('lock_service:53', 'Warning, lockCookie mismatch!');
+      Log.println('lock_service:62', 'Warning, lockCookie mismatch!');
       _lock(null);
       return;
     }
@@ -59,14 +68,14 @@ class LockService {
     final int delta = now - started;
     if (delta <= 333) {
       _lock(null);
-      Log.println('lock_service:62', 'File picking was unrealistically fast.');
+      Log.println('lock_service:71', 'File picking was unrealistically fast.');
       return;
     }
     // We can't exempt file picker from lock screen forever,
     // for otherwise an attacker can later gain access by continuing an unfinished file picking activity.
     if (delta > 60 * 1000) {
       _lock(null);
-      Log.println('lock_service:69', 'File picking took more than a minute.');
+      Log.println('lock_service:78', 'File picking took more than a minute.');
       return;
     }
 
@@ -74,12 +83,12 @@ class LockService {
   }
 
   void qrScannerReturned(int lockCookie) {
-    Log.println('lock_service:77', 'qrScannerReturned');
+    Log.println('lock_service:86', 'qrScannerReturned');
     assert(lockCookie > 0);
     final int started = _inQrScanner;
     _inQrScanner = 0;
     if (started != lockCookie) {
-      Log.println('lock_service:82', 'Warning, lockCookie mismatch!');
+      Log.println('lock_service:91', 'Warning, lockCookie mismatch!');
       _lock(null);
       return;
     }
@@ -90,11 +99,17 @@ class LockService {
     final int delta = now - started;
     if (delta > 5 * 60 * 1000) {
       _lock(null);
-      Log.println('lock_service:93', 'QR took more than five minutes.');
+      Log.println('lock_service:102', 'QR took more than five minutes.');
       return;
     }
 
     _lastReturn = now;
+  }
+
+  void biometricsReturned(int lockCookie) {
+    Log.println('lock_service:110', 'biometricsReturned');
+    _inBiometrics = 0;
+    _lastReturn = DateTime.now().millisecondsSinceEpoch;
   }
 
   /// File picker is a system activity that seizes the control from our app,
@@ -104,7 +119,7 @@ class LockService {
   /// If there is a tap before the file picker `await` returns
   /// then something is wrong and we should trigger the lock screen.
   void pointerEvent(BuildContext context) {
-    //Log.println('lock_service:107', 'pointerEvent');
+    //Log.println('lock_service:122', 'pointerEvent');
     if (_inFilePicker != 0) {
       _inFilePicker = 0;
       _lock(context);
@@ -127,7 +142,7 @@ class LockService {
   /// Hence we can't track the exact visibility through the lifecycle states,
   /// but we can treat them as a signal that the visibility was affected, triggering the lock screen.
   void lockSignal(BuildContext context) {
-    Log.println('lock_service:130', 'lockSignal');
+    Log.println('lock_service:145', 'lockSignal');
     if (_inFilePicker == 0) _lock(context);
   }
 
@@ -138,13 +153,16 @@ class LockService {
     // Lock signals are coming *concurrently and in parallel* with the returns
     // and might arrive both before and *after* them.
     // That is, if `_lastReturn` is recent then we are most likely *still returning*.
-    final int now = DateTime.now().millisecondsSinceEpoch;
-    if (now - _lastReturn >= 0 && now - _lastReturn < 99) return;
+    // NB: Deltas like 949ms are a norm when returning from biometrics in a flutter debug, under simulator,
+    // probably because it also triggers a number of other resource-intensitive things.
+    final int lrDelta = DateTime.now().millisecondsSinceEpoch - _lastReturn;
+    Log.println('lock_service:159', '_lastReturn delta: $lrDelta');
+    if (lrDelta < 999) return;
 
     // #496: When a text fields is hidden in a focused state and then later shows up again,
     // it might stuck in some intermediate state, preventing the long press menus, such as "PASTE",
     // from appearing. Unfocusing before hiding such fields workarounds the issue.
-    Log.println('lock_service:147', 'Unfocus and lock..');
+    Log.println('lock_service:165', 'Unfocus and lock..');
     FocusScope.of(context).requestFocus(FocusNode());
 
     if (context != null) dialogBloc.closeDialog(context);
