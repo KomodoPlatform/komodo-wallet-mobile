@@ -26,7 +26,6 @@
         "name": "QTUM",
         "pubtype": 58,
         "p2shtype": 50,
-        "txfee": 400000,
         "rpcport": 3889,
         "wiftype": 128,
         "mm2": 1,
