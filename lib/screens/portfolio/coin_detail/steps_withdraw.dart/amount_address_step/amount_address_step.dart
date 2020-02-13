@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -8,6 +7,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/address_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
+import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
@@ -121,7 +121,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   }
 
   Future<void> scan() async {
-    authBloc.setIsQrCodeActive(true);
+    final int lockCookie = lockService.enteringQrScanner();
     try {
       final String barcode = await BarcodeScanner.scan();
       setState(() {
@@ -141,6 +141,6 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     } catch (e) {
       setState(() => barcode = 'Unknown error: $e');
     }
-    authBloc.setIsQrCodeActive(false);
+    lockService.qrScannerReturned(lockCookie);
   }
 }

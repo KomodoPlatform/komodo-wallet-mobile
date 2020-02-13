@@ -254,9 +254,8 @@ Future<bool> authenticateBiometrics(
         });
         Navigator.pop(context);
       }
-      authBloc.showPin(false);
-      if (pinStatus == PinStatus.NORMAL_PIN &&
-          !MMService().ismm2Running) {
+      authBloc.showLock = false;
+      if (pinStatus == PinStatus.NORMAL_PIN && !MMService().ismm2Running) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
     }
@@ -327,7 +326,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:330', url);
+  Log.println('utils:329', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);

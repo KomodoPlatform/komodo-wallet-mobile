@@ -56,12 +56,11 @@ Future<void> _runBinMm2UserAlreadyLog() async {
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
 
-    if (!(authBloc.isPinShow && prefs.getBool('switch_pin'))) {
-      Log.println('main:60', 'login isPinShow');
+    if (!(authBloc.showLock && prefs.getBool('switch_pin'))) {
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
-    Log.println('main:64', 'loadJsonCoinsDefault');
+    Log.println('main:63', 'loadJsonCoinsDefault');
     await coinsBloc.writeJsonCoin(await MMService().loadJsonCoinsDefault());
   }
 }
@@ -118,9 +117,9 @@ class _MyAppState extends State<MyApp> {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    // Log.println('main:121',
+                    // Log.println('main:120',
                     //     'current locale: ' + currentLocale?.toString());
-                    // Log.println('main:123',
+                    // Log.println('main:122',
                     //     'current pref locale: ' + prefLocale.toString());
 
                     return MaterialApp(
@@ -201,11 +200,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log.println('main:204', 'lifecycle: inactive');
+        Log.println('main:203', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
-        Log.println('main:208', 'lifecycle: paused');
+        Log.println('main:207', 'lifecycle: paused');
         lockService.lockSignal(context);
 
         // AG: do we really need it? // if (Platform.isIOS) MMService().closeLogSink();
@@ -214,12 +213,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS && await musicService.iosBackgroundExit()) {
           // https://gitlab.com/artemciy/supernet/issues/4#note_284468673
-          Log.println('main:217', 'Suspended, exit');
+          Log.println('main:216', 'Suspended, exit');
           exit(0);
         }
         break;
       case AppLifecycleState.resumed:
-        Log.println('main:222', 'lifecycle: resumed');
+        Log.println('main:221', 'lifecycle: resumed');
         lockService.lockSignal(context);
         MMService().openLogSink();
         if (Platform.isIOS) {
@@ -229,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.detached:
-        Log.println('main:232', 'lifecycle: detached');
+        Log.println('main:231', 'lifecycle: detached');
         break;
     }
   }
