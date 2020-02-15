@@ -24,23 +24,17 @@ class AuthenticateBloc extends BlocBase {
   Sink<bool> get _inIsLogin => _isLoginController.sink;
   Stream<bool> get outIsLogin => _isLoginController.stream;
 
-  bool isPinShow = true;
-  final StreamController<bool> _showPinController =
+  bool _showLock = true;
+  final StreamController<bool> _showLockController =
       StreamController<bool>.broadcast();
-  Sink<bool> get _inShowPin => _showPinController.sink;
-  Stream<bool> get outShowPin => _showPinController.stream;
+  Sink<bool> get _inShowLock => _showLockController.sink;
+  Stream<bool> get outShowLock => _showLockController.stream;
 
   PinStatus pinStatus = PinStatus.NORMAL_PIN;
   final StreamController<PinStatus> _pinStatusController =
       StreamController<PinStatus>.broadcast();
   Sink<PinStatus> get _inpinStatus => _pinStatusController.sink;
   Stream<PinStatus> get outpinStatus => _pinStatusController.stream;
-
-  bool isQrCodeActive = false;
-  final StreamController<bool> _isQrCodeActiveController =
-      StreamController<bool>.broadcast();
-  Sink<bool> get _inIsQrCodeActive => _isQrCodeActiveController.sink;
-  Stream<bool> get outIsQrCodeActive => _isQrCodeActiveController.stream;
 
   Future<void> init() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -65,9 +59,8 @@ class AuthenticateBloc extends BlocBase {
   @override
   void dispose() {
     _isLoginController.close();
-    _showPinController.close();
+    _showLockController.close();
     _pinStatusController.close();
-    _isQrCodeActiveController.close();
   }
 
   Future<void> login(String passphrase, String password) async {
@@ -75,7 +68,7 @@ class AuthenticateBloc extends BlocBase {
       await DBProvider.db.initDB();
       await DBProvider.db.initCoinsActivateDefault(CoinEletrum.CONFIG);
     } catch (e) {
-      Log.println('authenticate_bloc:78', 'DB error: ' + e.toString());
+      Log.println('authenticate_bloc:71', 'DB error: ' + e.toString());
     }
 
     mainBloc.setCurrentIndexTab(0);
@@ -162,19 +155,17 @@ class AuthenticateBloc extends BlocBase {
     await DBProvider.db.deleteCurrentWallet();
   }
 
-  void showPin(bool isShow) {
-    isPinShow = isShow;
-    _inShowPin.add(isPinShow);
+  /// Whether the lock (PIN code, fingerprint and faceid biometrics) is displayed.
+  bool get showLock => _showLock;
+
+  /// Whether to show the lock (PIN code, fingerprint and faceid biometrics).
+  set showLock(bool yn) {
+    _inShowLock.add(_showLock = yn);
   }
 
   void updateStatusPin(PinStatus pinStatus) {
     this.pinStatus = pinStatus;
     _inpinStatus.add(this.pinStatus);
-  }
-
-  void setIsQrCodeActive(bool active) {
-    isQrCodeActive = active;
-    _inIsQrCodeActive.add(isQrCodeActive);
   }
 }
 

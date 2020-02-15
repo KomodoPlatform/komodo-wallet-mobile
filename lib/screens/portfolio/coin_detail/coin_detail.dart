@@ -5,7 +5,6 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -81,7 +80,7 @@ class CoinDetail extends StatefulWidget {
         .then((dynamic data) {
       Navigator.of(mContext).pop();
       if (data is WithdrawResponse) {
-        Log.println('coin_detail:84', data.myBalanceChange);
+        Log.println('coin_detail:83', data.myBalanceChange);
         if (double.parse(data.myBalanceChange) > 0) {
           dialogBloc.dialog = showDialog<dynamic>(
             context: mContext,
@@ -196,7 +195,6 @@ class _CoinDetailState extends State<CoinDetail> {
         isExpanded = true;
       });
     }
-    authBloc.setIsQrCodeActive(false);
     currentIndex = 0;
     setState(() {
       isLoading = true;
