@@ -160,7 +160,7 @@ class _BuildScreenAuthMultiWalletsState
                       wallet: wallet,
                       onSuccess: (String seed, String password) async {
                         await coinsBloc.resetCoinDefault();
-                        authBloc.showPin(false);
+                        authBloc.showLock = false;
                         if (!MMService().ismm2Running) {
                           await authBloc.login(seed, password);
                         }
