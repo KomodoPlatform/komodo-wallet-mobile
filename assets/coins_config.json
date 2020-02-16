@@ -297,7 +297,6 @@
     "address": "s1.qtum.info",
     "port": 50001,
     "proto": "tcp",
-    "txfee": 400000,
     "abbr": "QTUM",
     "coingeckoId": "qtum",
     "colorCoin": "0xFF52a5da",
