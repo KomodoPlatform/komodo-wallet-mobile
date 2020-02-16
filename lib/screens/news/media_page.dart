@@ -143,6 +143,9 @@ class _BrowseNewsState extends State<BrowseNews> {
   }
 
   Widget _buildHeader(Article article) {
+    double _imageHeight = MediaQuery.of(context).size.height * 0.3;
+    if (_imageHeight < 200) _imageHeight = 200;
+
     return InkWell(
       onTap: () {
         Navigator.push<dynamic>(
@@ -157,7 +160,9 @@ class _BrowseNewsState extends State<BrowseNews> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height * 0.3,
+            padding: const EdgeInsets.only(top: 20),
+            alignment: Alignment.center,
+            height: _imageHeight,
             child: Image.network(
               article.media[0],
               fit: BoxFit.cover,
@@ -188,6 +193,14 @@ class _BrowseNewsState extends State<BrowseNews> {
                   savedArticle: false,
                 )
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              height: 1,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey.withOpacity(0.2),
             ),
           )
         ],
@@ -373,40 +386,45 @@ class SavedNews extends StatelessWidget {
             );
           } else if (snapshot.data.isEmpty) {
             //paradox condition cleaned up
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset('assets/icon_not_saved.svg'),
-                const SizedBox(
-                  height: 16,
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SvgPicture.asset('assets/icon_not_saved.svg'),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      AppLocalizations.of(context).mediaNotSavedDescription,
+                      style: Theme.of(context).textTheme.title,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    RaisedButton(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0)),
+                      color: Theme.of(context).accentColor,
+                      disabledColor: Theme.of(context).disabledColor,
+                      child: Text(
+                        AppLocalizations.of(context).mediaBrowseFeed,
+                        style: Theme.of(context)
+                            .textTheme
+                            .button
+                            .copyWith(color: Theme.of(context).primaryColor),
+                      ),
+                      onPressed: () async {
+                        tabController.animateTo(0);
+                      },
+                    )
+                  ],
                 ),
-                Text(
-                  AppLocalizations.of(context).mediaNotSavedDescription,
-                  style: Theme.of(context).textTheme.title,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                RaisedButton(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0)),
-                  color: Theme.of(context).accentColor,
-                  disabledColor: Theme.of(context).disabledColor,
-                  child: Text(
-                    AppLocalizations.of(context).mediaBrowseFeed,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(color: Theme.of(context).primaryColor),
-                  ),
-                  onPressed: () async {
-                    tabController.animateTo(0);
-                  },
-                )
-              ],
+              ),
             );
           } else {
             return const Center(child: CircularProgressIndicator());

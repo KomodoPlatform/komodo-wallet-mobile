@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
+import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
@@ -202,7 +202,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
     Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => DislaimerPage(
+          builder: (BuildContext context) => DisclaimerPage(
                 password: controller1.text,
                 seed: widget.seed,
                 onSuccess: () {

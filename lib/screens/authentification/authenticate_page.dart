@@ -106,37 +106,42 @@ class _BuildScreenAuthMultiWalletsState
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Column(
-        children: <Widget>[
-          const SizedBox(
-            height: 16,
-          ),
-          Center(
-            child: Container(
-                height: 200,
-                width: 200,
-                child: Image.asset('assets/mark_and_text_vertical_light.png')),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(child: CreateWalletButton()),
-                const SizedBox(
-                  width: 8,
+      body: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              const SizedBox(
+                height: 16,
+              ),
+              Center(
+                child: Container(
+                    height: 200,
+                    width: 200,
+                    child:
+                        Image.asset('assets/mark_and_text_vertical_light.png')),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(child: CreateWalletButton()),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(child: RestoreButton())
+                  ],
                 ),
-                Expanded(child: RestoreButton())
-              ],
-            ),
+              ),
+              Column(
+                children: widget.wallets.map<Widget>((wallet) {
+                  return _buildItemWallet(wallet);
+                }).toList(),
+              ),
+              const SizedBox(height: 32),
+            ],
           ),
-          Expanded(
-              child: ListView.builder(
-            itemCount: widget.wallets.length,
-            itemBuilder: (BuildContext context, int index) {
-              return _buildItemWallet(widget.wallets[index]);
-            },
-          ))
-        ],
+        ),
       ),
     );
   }
@@ -232,44 +237,48 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Expanded(
-            child: Container(),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        alignment: Alignment.center,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Container(
-                  height: 240,
-                  width: 240,
-                  child:
-                      Image.asset('assets/mark_and_text_vertical_light.png')),
-            ],
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  CreateWalletButton(),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  RestoreButton(),
+                  Container(
+                      height: 240,
+                      width: 240,
+                      child: Image.asset(
+                          'assets/mark_and_text_vertical_light.png')),
                 ],
               ),
-            ),
+              const SizedBox(
+                height: 16,
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    bottom: 32,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      CreateWalletButton(),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      RestoreButton(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: Container(),
-          ),
-        ],
+        ),
       ),
     );
   }
