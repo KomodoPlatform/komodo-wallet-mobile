@@ -884,14 +884,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   )
                 : SimpleDialog(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0)),
-                    backgroundColor: Colors.white,
                     title: Column(
                       children: <Widget>[
                         Icon(
                           Icons.info_outline,
-                          color: Theme.of(context).accentColor,
                           size: 48,
                         ),
                         const SizedBox(
@@ -902,7 +898,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           style: Theme.of(context)
                               .textTheme
                               .title
-                              .copyWith(color: Theme.of(context).accentColor),
                         ),
                         const SizedBox(
                           height: 16,
@@ -914,7 +909,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           style: Theme.of(context)
                               .textTheme
                               .body1
-                              .copyWith(color: Theme.of(context).primaryColor)),
+                              .copyWith(color: Theme.of(context).hintColor)),
                       const SizedBox(
                         height: 24,
                       ),
@@ -929,7 +924,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                 mainBloc.setCurrentIndexTab(0);
                               },
                               backgroundColor: Theme.of(context).accentColor,
-                              isDarkMode: false,
                             ),
                           )
                         ],
