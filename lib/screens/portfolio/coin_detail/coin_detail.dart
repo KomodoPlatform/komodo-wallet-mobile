@@ -5,7 +5,6 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -26,7 +25,7 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/bui
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
 import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
 import 'package:komodo_dex/services/api_providers.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
@@ -67,9 +66,9 @@ class CoinDetail extends StatefulWidget {
 
     ApiProvider()
         .postWithdraw(
-            MarketMakerService().client,
+            MMService().client,
             GetWithdraw(
-                userpass: MarketMakerService().userpass,
+                userpass: MMService().userpass,
                 fee: null,
                 coin: coinBalance.coin.abbr,
                 to: coinBalance.balance.address,
@@ -81,7 +80,7 @@ class CoinDetail extends StatefulWidget {
         .then((dynamic data) {
       Navigator.of(mContext).pop();
       if (data is WithdrawResponse) {
-        Log.println('coin_detail:84', data.myBalanceChange);
+        Log.println('coin_detail:83', data.myBalanceChange);
         if (double.parse(data.myBalanceChange) > 0) {
           dialogBloc.dialog = showDialog<dynamic>(
             context: mContext,
@@ -105,7 +104,7 @@ class CoinDetail extends StatefulWidget {
                     onPressed: () {
                       ApiProvider()
                           .postRawTransaction(
-                              MarketMakerService().client,
+                              MMService().client,
                               GetSendRawTransaction(
                                   method: 'send_raw_transaction',
                                   coin: coinBalance.coin.abbr,
@@ -196,7 +195,6 @@ class _CoinDetailState extends State<CoinDetail> {
         isExpanded = true;
       });
     }
-    authBloc.setIsQrCodeActive(false);
     currentIndex = 0;
     setState(() {
       isLoading = true;
@@ -900,9 +898,9 @@ class _CoinDetailState extends State<CoinDetail> {
               }
               ApiProvider()
                   .postWithdraw(
-                      MarketMakerService().client,
+                      MMService().client,
                       GetWithdraw(
-                          userpass: MarketMakerService().userpass,
+                          userpass: MMService().userpass,
                           fee: fee,
                           coin: widget.coinBalance.coin.abbr,
                           to: _addressController.text,
@@ -914,7 +912,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 if (data is WithdrawResponse) {
                   ApiProvider()
                       .postRawTransaction(
-                          MarketMakerService().client,
+                          MMService().client,
                           GetSendRawTransaction(
                               coin: widget.coinBalance.coin.abbr,
                               txHex: data.txHex))

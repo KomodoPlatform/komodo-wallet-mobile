@@ -7,7 +7,7 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.2.12
+version: 0.2.14
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
@@ -81,7 +81,23 @@ dev_dependencies:
   # but Xcode 10.1 on our Mac CI server only supports Swift 4.2
   # (cf. https://www.swiftprogrammer.info/swift5_high_sierra.html: "your best bet is to upgrade your Mac")
   #flutter_sodium: 0.0.9
-  flutter_sodium: ^0.0.10
+  #flutter_sodium: 0.0.10
+
+  # flutter_sodium 0.0.11 still has error with latest flutter version 1.14.3
+  # while assembling android release:
+  # "Execution failed for task ':flutter_sodium:verifyReleaseResources'"
+  # This error is caused by using old compileSdkVersion - 27
+  # https://github.com/firstfloorsoftware/flutter_sodium/issues/28
+  # There is the fork with fixed compileSdkVersion - 28:
+  # https://github.com/chickahoona/flutter_sodium/tree/upgrade-to-compilesdk-28
+  # and related PR:
+  # https://github.com/firstfloorsoftware/flutter_sodium/pull/29
+  # We can temporary use this fork instead of original package
+  #flutter_sodium: ^0.0.11
+  flutter_sodium:
+    git:
+      url: git://github.com/komodoplatform/flutter_sodium.git
+      ref: upgrade-to-compilesdk-28
 
 flutter_icons:
   android: true

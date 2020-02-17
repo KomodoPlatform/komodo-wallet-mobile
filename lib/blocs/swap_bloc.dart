@@ -8,7 +8,7 @@ import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/services/api_providers.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
@@ -171,7 +171,7 @@ class SwapBloc implements BlocBase {
 
     for (Coin coin in coins) {
       if (coin.abbr != rel.abbr) {
-        futureOrderbook.add(ApiProvider().getOrderbook(MarketMakerService().client,
+        futureOrderbook.add(ApiProvider().getOrderbook(MMService().client,
             GetOrderbook(base: coin.abbr, rel: rel.abbr)));
       }
     }
@@ -217,7 +217,7 @@ class SwapBloc implements BlocBase {
   Future<double> setReceiveAmount(
       Coin coin, String amountSell, Ask currentAsk) async {
     try {
-      final Orderbook orderbook = await ApiProvider().getOrderbook(MarketMakerService().client,
+      final Orderbook orderbook = await ApiProvider().getOrderbook(MMService().client,
           GetOrderbook(base: coin.abbr, rel: sellCoin.coin.abbr));
       String bestPrice = '0';
       double maxVolume = 0;

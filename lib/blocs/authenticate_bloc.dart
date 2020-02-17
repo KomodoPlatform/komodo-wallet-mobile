@@ -7,7 +7,7 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
@@ -24,23 +24,17 @@ class AuthenticateBloc extends BlocBase {
   Sink<bool> get _inIsLogin => _isLoginController.sink;
   Stream<bool> get outIsLogin => _isLoginController.stream;
 
-  bool isPinShow = true;
-  final StreamController<bool> _showPinController =
+  bool _showLock = true;
+  final StreamController<bool> _showLockController =
       StreamController<bool>.broadcast();
-  Sink<bool> get _inShowPin => _showPinController.sink;
-  Stream<bool> get outShowPin => _showPinController.stream;
+  Sink<bool> get _inShowLock => _showLockController.sink;
+  Stream<bool> get outShowLock => _showLockController.stream;
 
   PinStatus pinStatus = PinStatus.NORMAL_PIN;
   final StreamController<PinStatus> _pinStatusController =
       StreamController<PinStatus>.broadcast();
   Sink<PinStatus> get _inpinStatus => _pinStatusController.sink;
   Stream<PinStatus> get outpinStatus => _pinStatusController.stream;
-
-  bool isQrCodeActive = false;
-  final StreamController<bool> _isQrCodeActiveController =
-      StreamController<bool>.broadcast();
-  Sink<bool> get _inIsQrCodeActive => _isQrCodeActiveController.sink;
-  Stream<bool> get outIsQrCodeActive => _isQrCodeActiveController.stream;
 
   Future<void> init() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -65,9 +59,8 @@ class AuthenticateBloc extends BlocBase {
   @override
   void dispose() {
     _isLoginController.close();
-    _showPinController.close();
+    _showLockController.close();
     _pinStatusController.close();
-    _isQrCodeActiveController.close();
   }
 
   Future<void> login(String passphrase, String password) async {
@@ -75,7 +68,7 @@ class AuthenticateBloc extends BlocBase {
       await DBProvider.db.initDB();
       await DBProvider.db.initCoinsActivateDefault(CoinEletrum.CONFIG);
     } catch (e) {
-      Log.println('authenticate_bloc:78', 'DB error: ' + e.toString());
+      Log.println('authenticate_bloc:71', 'DB error: ' + e.toString());
     }
 
     mainBloc.setCurrentIndexTab(0);
@@ -90,7 +83,7 @@ class AuthenticateBloc extends BlocBase {
     await prefs.setBool('isPinIsSet', false);
     await prefs.setBool('switch_pin_log_out_on_exit', false);
 
-    await MarketMakerService().init(passphrase);
+    await MMService().init(passphrase);
 
     isLogin = true;
     _inIsLogin.add(true);
@@ -146,7 +139,7 @@ class AuthenticateBloc extends BlocBase {
     _inIsLogin.add(false);
 
     coinsBloc.stopCheckBalance();
-    await MarketMakerService().stopmm2();
+    await MMService().stopmm2();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await EncryptionTool().delete('passphrase');
     await prefs.setBool('isPinIsSet', false);
@@ -156,25 +149,23 @@ class AuthenticateBloc extends BlocBase {
     await EncryptionTool().delete('pin');
     coinsBloc.resetCoinBalance();
     await coinsBloc.resetCoinDefault();
-    MarketMakerService().balances = <Balance>[];
+    MMService().balances = <Balance>[];
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);
     await DBProvider.db.deleteCurrentWallet();
   }
 
-  void showPin(bool isShow) {
-    isPinShow = isShow;
-    _inShowPin.add(isPinShow);
+  /// Whether the lock (PIN code, fingerprint and faceid biometrics) is displayed.
+  bool get showLock => _showLock;
+
+  /// Whether to show the lock (PIN code, fingerprint and faceid biometrics).
+  set showLock(bool yn) {
+    _inShowLock.add(_showLock = yn);
   }
 
   void updateStatusPin(PinStatus pinStatus) {
     this.pinStatus = pinStatus;
     _inpinStatus.add(this.pinStatus);
-  }
-
-  void setIsQrCodeActive(bool active) {
-    isQrCodeActive = active;
-    _inIsQrCodeActive.add(isQrCodeActive);
   }
 }
 

@@ -14,7 +14,7 @@ import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/result.dart';
-import 'package:komodo_dex/screens/authentification/dislaimer_page.dart';
+import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
@@ -22,7 +22,7 @@ import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/lock_service.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -139,7 +139,7 @@ class _SettingPageState extends State<SettingPage> {
 
     try {
       final dynamic versionmm2 = await ApiProvider().getVersionMM2(
-          MarketMakerService().client, BaseService(method: 'version'));
+          MMService().client, BaseService(method: 'version'));
       if (versionmm2 is ResultSuccess && versionmm2 != null) {
         version += ' - ${versionmm2.result}';
       }
@@ -439,7 +439,7 @@ class _SettingPageState extends State<SettingPage> {
           Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => const DislaimerPage(
+                builder: (BuildContext context) => const DisclaimerPage(
                       readOnly: true,
                     )),
           );
@@ -698,19 +698,19 @@ class _SettingPageState extends State<SettingPage> {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
     final dynamic recentSwap = await ApiProvider().getRecentSwaps(
-        MarketMakerService().client, GetRecentSwap(limit: 100, fromUuid: null));
+        MMService().client, GetRecentSwap(limit: 100, fromUuid: null));
 
     if (recentSwap is RecentSwaps) {
-      if (MarketMakerService().sink != null) {
-        MarketMakerService().sink.write('\n\nMy recent swaps: \n\n');
-        MarketMakerService().sink.write(recentSwapsToJson(recentSwap) + '\n\n');
-        MarketMakerService()
+      if (MMService().sink != null) {
+        MMService().sink.write('\n\nMy recent swaps: \n\n');
+        MMService().sink.write(recentSwapsToJson(recentSwap) + '\n\n');
+        MMService()
             .sink
             .write('AtomicDEX mobile ${packageInfo.version} $os\n');
       }
     }
     mainBloc.isUrlLaucherIsOpen = true;
-    Share.shareFile(File('${MarketMakerService().filesPath}log.txt'),
+    Share.shareFile(File('${MMService().filesPath}log.txt'),
         subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 

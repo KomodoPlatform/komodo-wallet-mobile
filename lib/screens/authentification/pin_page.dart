@@ -5,7 +5,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:pin_code_view/pin_code_view.dart';
@@ -43,6 +43,12 @@ class _PinPageState extends State<PinPage> {
   bool isLoading = false;
   String _correctPin;
 
+  int delay = 0;
+  int delayMax = 0;
+  final delayIncrements = 5;
+
+  bool keyboardBlocked = false;
+
   @override
   void initState() {
     _initCorrectPin(widget.pinStatus);
@@ -63,7 +69,7 @@ class _PinPageState extends State<PinPage> {
         _correctPin = null;
       });
     } else if (pinStatus == PinStatus.CONFIRM_PIN) {
-      authBloc.showPin(false);
+      authBloc.showLock = false;
       setState(() {
         _correctPin = prefs.getString('pin_create');
       });
@@ -87,14 +93,14 @@ class _PinPageState extends State<PinPage> {
           await EncryptionTool()
               .writeData(
                   KeyEncryption.PIN, wallet, widget.password, code.toString())
-              .catchError((dynamic e) => Log.println('pin_page:90', e));
+              .catchError((dynamic e) => Log.println('pin_page:96', e));
         }
 
         await EncryptionTool().write('pin', code.toString());
-        authBloc.showPin(false);
+        authBloc.showLock = false;
         authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
         if (!widget.isFromChangingPin) {
-          if (!MarketMakerService().ismm2Running) {
+          if (!MMService().ismm2Running) {
             await authBloc.login(
                 await EncryptionTool().read('passphrase'), widget.password);
           }
@@ -112,8 +118,8 @@ class _PinPageState extends State<PinPage> {
 
         break;
       case PinStatus.NORMAL_PIN:
-        authBloc.showPin(false);
-        if (!MarketMakerService().ismm2Running) {
+        authBloc.showLock = false;
+        if (!MMService().ismm2Running) {
           await authBloc.login(await EncryptionTool().read('passphrase'), null);
         }
         if (widget.onSuccess != null) {
@@ -151,63 +157,78 @@ class _PinPageState extends State<PinPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: !isLoading
-            ? AppBarStatus(
-                pinStatus: widget.pinStatus,
-                title: widget.title,
-                context: context,
-              )
-            : null,
-        backgroundColor: Theme.of(context).backgroundColor,
-        resizeToAvoidBottomPadding: false,
-        body: !isLoading
-            ? PinCode(
-                title: Text(
-                  widget.subTitle,
-                  style: Theme.of(context).textTheme.subtitle,
-                ),
-                subTitle: const Text(
-                  '',
-                ),
-                obscurePin: true,
-                error: _error,
-                codeLength: 6,
-                correctPin: _correctPin,
-                onCodeFail: (dynamic code) async {
-                  if (widget.pinStatus == PinStatus.CREATE_PIN) {
-                    final SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.setBool('isPinIsCreated', true);
-                    await prefs.setString('pin_create', code);
-                    final MaterialPageRoute<dynamic> materialPage =
-                        MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => PinPage(
-                                  title:
-                                      AppLocalizations.of(context).confirmPin,
-                                  subTitle:
-                                      AppLocalizations.of(context).confirmPin,
-                                  code: code,
-                                  pinStatus: PinStatus.CONFIRM_PIN,
-                                  password: widget.password,
-                                  isFromChangingPin: widget.isFromChangingPin,
-                                ));
+      appBar: !isLoading
+          ? AppBarStatus(
+              pinStatus: widget.pinStatus,
+              title: widget.title,
+              context: context,
+            )
+          : null,
+      backgroundColor: Theme.of(context).backgroundColor,
+      resizeToAvoidBottomPadding: false,
+      body: !isLoading
+          ? (!keyboardBlocked
+              ? PinCode(
+                  title: Text(
+                    widget.subTitle,
+                    style: Theme.of(context).textTheme.subtitle,
+                  ),
+                  subTitle: const Text(
+                    '',
+                  ),
+                  obscurePin: true,
+                  error: _error,
+                  codeLength: 6,
+                  correctPin: _correctPin,
+                  onCodeFail: (dynamic code) async {
+                    if (widget.pinStatus == PinStatus.CREATE_PIN) {
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setBool('isPinIsCreated', true);
+                      await prefs.setString('pin_create', code);
+                      final MaterialPageRoute<dynamic> materialPage =
+                          MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => PinPage(
+                                    title:
+                                        AppLocalizations.of(context).confirmPin,
+                                    subTitle:
+                                        AppLocalizations.of(context).confirmPin,
+                                    code: code,
+                                    pinStatus: PinStatus.CONFIRM_PIN,
+                                    password: widget.password,
+                                    isFromChangingPin: widget.isFromChangingPin,
+                                  ));
 
-                    if (widget.firstCreationPin != null &&
-                        widget.firstCreationPin) {
-                      Navigator.push<dynamic>(context, materialPage);
+                      if (widget.firstCreationPin != null &&
+                          widget.firstCreationPin) {
+                        Navigator.push<dynamic>(context, materialPage);
+                      } else {
+                        Navigator.pushReplacement<dynamic, dynamic>(
+                            context, materialPage);
+                      }
                     } else {
-                      Navigator.pushReplacement<dynamic, dynamic>(
-                          context, materialPage);
+                      _errorPin();
                     }
-                  } else {
-                    _errorPin();
-                  }
-                },
-                onCodeSuccess: (dynamic code) {
-                  _onCodeSuccess(widget.pinStatus, code);
-                },
-              )
-            : _buildLoading());
+                  },
+                  onCodeSuccess: (dynamic code) {
+                    _onCodeSuccess(widget.pinStatus, code);
+                  },
+                )
+              : Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        'Wrong Password',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      const AspectRatio(aspectRatio: 1),
+                      Text('Wait $delay seconds to retry'),
+                    ],
+                  ),
+                ))
+          : _buildLoading(),
+    );
   }
 
   Widget _buildLoading() {
@@ -228,6 +249,19 @@ class _PinPageState extends State<PinPage> {
   void _errorPin() {
     setState(() {
       _error = AppLocalizations.of(context).errorTryAgain;
+      delayMax += delayIncrements;
+      delay = delayMax;
+      keyboardBlocked = true;
+
+      Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          delay--;
+          if (delay == 0) {
+            keyboardBlocked = false;
+            timer.cancel();
+          }
+        });
+      });
     });
   }
 }

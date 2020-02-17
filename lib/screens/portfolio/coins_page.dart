@@ -15,7 +15,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
@@ -31,6 +31,7 @@ class _CoinsPageState extends State<CoinsPage> {
   BuildContext contextMain;
   NumberFormat f = NumberFormat('###,##0.0#');
   double _heightScreen;
+  double _heightSliver;
   double _widthScreen;
 
   void _scrollListener() {
@@ -43,7 +44,7 @@ class _CoinsPageState extends State<CoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    if (MarketMakerService().ismm2Running) {
+    if (MMService().ismm2Running) {
       coinsBloc.loadCoin();
     }
 
@@ -54,6 +55,8 @@ class _CoinsPageState extends State<CoinsPage> {
   Widget build(BuildContext context) {
     _heightScreen = MediaQuery.of(context).size.height;
     _widthScreen = MediaQuery.of(context).size.width;
+    _heightSliver = _heightScreen * 0.25;
+    if (_heightSliver < 125) _heightSliver = 125;
 
     return Scaffold(
         body: NestedScrollView(
@@ -63,7 +66,7 @@ class _CoinsPageState extends State<CoinsPage> {
               return <Widget>[
                 SliverAppBar(
                   backgroundColor: Theme.of(context).backgroundColor,
-                  expandedHeight: _heightScreen * 0.25,
+                  expandedHeight: _heightSliver,
                   pinned: true,
                   flexibleSpace: Builder(
                     builder: (BuildContext context) {
@@ -71,6 +74,7 @@ class _CoinsPageState extends State<CoinsPage> {
                           collapseMode: CollapseMode.pin,
                           centerTitle: true,
                           title: Container(
+                            padding: const EdgeInsets.only(top: 35),
                             width: _widthScreen * 0.5,
                             child: Center(
                               heightFactor: _heightFactor,
@@ -115,7 +119,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                 children: <Widget>[
                                   const LoadAsset(),
                                   const SizedBox(
-                                    height: 14,
+                                    height: 14.0,
                                   ),
                                   BarGraph()
                                 ],
@@ -282,7 +286,7 @@ class ListCoinsState extends State<ListCoins> {
 
   @override
   void initState() {
-    if (MarketMakerService().ismm2Running) {
+    if (MMService().ismm2Running) {
       coinsBloc.loadCoin();
     }
     super.initState();
@@ -701,8 +705,8 @@ class _AddCoinButtonState extends State<AddCoinButton> {
   }
 
   Future<bool> _buildAddCoinButton() async {
-    final List<Coin> allCoins = await MarketMakerService()
-        .loadJsonCoins(await MarketMakerService().loadElectrumServersAsset());
+    final List<Coin> allCoins = await MMService()
+        .loadJsonCoins(await MMService().loadElectrumServersAsset());
     final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
 
     return !(allCoins.length == allCoinsActivate.length);

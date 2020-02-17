@@ -28,14 +28,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'db/database.dart';
 
-class MarketMakerService {
-  factory MarketMakerService() {
+/// Interface to Market Maker, https://developers.atomicdex.io/
+class MMService {
+  factory MMService() {
     return _singleton;
   }
 
-  MarketMakerService._internal();
+  MMService._internal();
 
-  static final MarketMakerService _singleton = MarketMakerService._internal();
+  static final MMService _singleton = MMService._internal();
 
   List<dynamic> balances = <dynamic>[];
   Process mm2Process;
@@ -47,7 +48,8 @@ class MarketMakerService {
   String pubkey = '';
   String filesPath = '';
   IOSink sink;
-  static MethodChannel platformmm2 = const MethodChannel('mm2');
+  /// Channel to native code.
+  static MethodChannel nativeC = const MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
   final Client client = http.Client();
   File logFile;
@@ -66,17 +68,17 @@ class MarketMakerService {
           !checkmm2process.stdout
               .toString()
               .contains(prefs.getInt('mm2ProcessPID').toString())) {
-        await MarketMakerService().runBin();
+        await MMService().runBin();
       } else {
-        MarketMakerService().initUsername(passphrase);
-        MarketMakerService().ismm2Running = true;
-        await MarketMakerService().initCheckLogs();
+        MMService().initUsername(passphrase);
+        MMService().ismm2Running = true;
+        await MMService().initCheckLogs();
         coinsBloc.currentCoinActivate(null);
         coinsBloc.loadCoin();
         coinsBloc.startCheckBalance();
       }
     } else {
-      await MarketMakerService().runBin();
+      await MMService().runBin();
     }
 
     Timer.periodic(const Duration(seconds: 2), (_) {
@@ -242,7 +244,7 @@ class MarketMakerService {
     } else if (Platform.isIOS) {
       eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
       try {
-        await platformmm2.invokeMethod<dynamic>(
+        await nativeC.invokeMethod<dynamic>(
             'start', <String, String>{'params': startParam}); //start mm2
 
         // check when mm2 is ready then load coins
@@ -289,7 +291,7 @@ class MarketMakerService {
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void onLogsmm2(String log) {
     if (sink != null) {
-      Log.println('market_maker_service:292', log);
+      Log.println('mm_service:294', log);
       // AG: This currently relies on the information that can be freely changed by MM
       // or removed from the logs entirely (e.g. on debug and human-readable parts).
       // Should update it to rely on the log tags instead.
@@ -327,9 +329,9 @@ class MarketMakerService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        Log.println('market_maker_service:330', 'All coins activated');
+        Log.println('mm_service:332', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('market_maker_service:332', 'loadCoin finished');
+          Log.println('mm_service:334', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -338,11 +340,11 @@ class MarketMakerService {
   }
 
   Future<int> checkStatusmm2() async {
-    return await platformmm2.invokeMethod('status');
+    return await nativeC.invokeMethod('status');
   }
 
   Future<void> lsof() async {
-    return await platformmm2.invokeMethod('lsof');
+    return await nativeC.invokeMethod('lsof');
   }
 
   Future<File> get _localFile async {
@@ -395,8 +397,8 @@ class MarketMakerService {
       final List<Future<dynamic>> futureBalances = <Future<dynamic>>[];
 
       for (Coin coin in coins) {
-        futureBalances.add(ApiProvider().getBalance(
-            MarketMakerService().client, GetBalance(coin: coin.abbr)));
+        futureBalances.add(ApiProvider()
+            .getBalance(MMService().client, GetBalance(coin: coin.abbr)));
       }
       balances = await Future.wait<dynamic>(futureBalances);
       balances = balances;

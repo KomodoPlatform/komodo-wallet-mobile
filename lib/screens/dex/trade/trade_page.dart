@@ -19,7 +19,7 @@ import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/services/api_providers.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
@@ -293,7 +293,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<Decimal> getTxFee() async {
     try {
       final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
-          MarketMakerService().client,
+          MMService().client,
           GetTradeFee(coin: currentCoinBalance.coin.abbr));
 
       if (tradeFeeResponse is TradeFee) {
@@ -324,7 +324,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<String> getTxFeeErc() async {
     try {
       final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
-          MarketMakerService().client,
+          MMService().client,
           GetTradeFee(coin: currentCoinBalance.coin.abbr));
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
@@ -366,7 +366,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<Decimal> getERCfee(Coin coin) async {
     final TradeFee tradeFeeResponseERC = await ApiProvider()
-        .getTradeFee(MarketMakerService().client, GetTradeFee(coin: coin.abbr));
+        .getTradeFee(MMService().client, GetTradeFee(coin: coin.abbr));
     return Decimal.parse(tradeFeeResponseERC.result.amount);
   }
 
@@ -884,14 +884,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   )
                 : SimpleDialog(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0)),
-                    backgroundColor: Colors.white,
                     title: Column(
                       children: <Widget>[
                         Icon(
                           Icons.info_outline,
-                          color: Theme.of(context).accentColor,
                           size: 48,
                         ),
                         const SizedBox(
@@ -902,7 +898,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           style: Theme.of(context)
                               .textTheme
                               .title
-                              .copyWith(color: Theme.of(context).accentColor),
                         ),
                         const SizedBox(
                           height: 16,
@@ -914,7 +909,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           style: Theme.of(context)
                               .textTheme
                               .body1
-                              .copyWith(color: Theme.of(context).primaryColor)),
+                              .copyWith(color: Theme.of(context).hintColor)),
                       const SizedBox(
                         height: 24,
                       ),
@@ -929,7 +924,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                 mainBloc.setCurrentIndexTab(0);
                               },
                               backgroundColor: Theme.of(context).accentColor,
-                              isDarkMode: false,
                             ),
                           )
                         ],

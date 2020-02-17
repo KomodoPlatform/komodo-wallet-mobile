@@ -8,7 +8,7 @@ import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
@@ -30,7 +30,7 @@ class SwapHistoryBloc implements BlocBase {
     _swapsController.close();
   }
 
-  Future<dynamic> recoverFund(Swap swap) async => await ApiProvider().recoverFundsOfSwap(MarketMakerService().client,
+  Future<dynamic> recoverFund(Swap swap) async => await ApiProvider().recoverFundsOfSwap(MMService().client,
         GetRecoverFundsOfSwap(params: Params(uuid: swap.result.uuid)));
 
   Future<List<Swap>> updateSwaps(int limit, String fromUuid) async {
@@ -41,7 +41,7 @@ class SwapHistoryBloc implements BlocBase {
 
   Future<List<Swap>> fetchSwaps(int limit, String fromUuid) async {
     try {
-      final dynamic recentSwaps = await ApiProvider().getRecentSwaps(MarketMakerService().client,
+      final dynamic recentSwaps = await ApiProvider().getRecentSwaps(MMService().client,
           GetRecentSwap(limit: limit, fromUuid: fromUuid));
       if (recentSwaps is RecentSwaps) {
         final List<Swap> newSwaps = <Swap>[];

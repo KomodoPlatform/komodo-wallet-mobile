@@ -11,7 +11,8 @@
     "colorCoin": "0xFF326464",
     "serverList": [
       "electrum1.cipig.net:10001",
-      "electrum2.cipig.net:10001"
+      "electrum2.cipig.net:10001",
+      "electrum3.cipig.net:10001"
     ],
     "explorerUrl": [
       "https://kmdexplorer.io/",
@@ -49,7 +50,7 @@
     "serverList": [
       "bch.imaginary.cash:50001",
       "electrumx-bch.cryptonermal.net:50001",
-      "wallet.satoshiscoffeehouse.com:50001"
+      "bch0.kister.net:50001"
     ],
     "explorerUrl": [
       "https://explorer.bitcoin.com/bch/"
@@ -249,7 +250,7 @@
       "electrum1.cipig.net:10060"
     ],
     "explorerUrl": [
-      "https://dogechain.info"
+      "https://dogechain.info/"
     ]
   },
   {
@@ -296,14 +297,13 @@
     "address": "s1.qtum.info",
     "port": 50001,
     "proto": "tcp",
-    "txfee": 400000,
     "abbr": "QTUM",
     "coingeckoId": "qtum",
     "colorCoin": "0xFF52a5da",
     "serverList": [
-      "s2.qtum.info:50001",
-      "s4.qtum.info:50001",
-      "s5.qtum.info:50001"
+      "s7.qtum.info:50001",
+      "s8.qtum.info:50001",
+      "s9.qtum.info:50001"
     ],
     "explorerUrl": [
       "https://qtum.info/"
@@ -396,10 +396,6 @@
     "coingeckoId": "feathercoin",
     "colorCoin": "0xFF3E4B51",
     "serverList": [
-      "electrumx-de-1.feathercoin.network:50001",
-      "electrum.feathercoin.network:50001",
-      "electrumx-gb-1.feathercoin.network:50001",
-      "electrumx-gb-2.feathercoin.network:50001",
       "electrum1.cipig.net:10054",
       "electrum2.cipig.net:10054",
       "electrum3.cipig.net:10054"

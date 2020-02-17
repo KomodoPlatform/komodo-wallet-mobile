@@ -13,7 +13,8 @@ import 'package:komodo_dex/screens/news/media_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
-import 'package:komodo_dex/services/market_maker_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/mode.dart';
@@ -38,12 +39,12 @@ void main() {
 
 Future<void> startApp() async {
   try {
-    await MarketMakerService().initMarketMaker();
+    await MMService().initMarketMaker();
     await _runBinMm2UserAlreadyLog();
     return runApp(BlocProvider<AuthenticateBloc>(
         bloc: AuthenticateBloc(), child: const MyApp()));
   } catch (e) {
-    Log.println('main:46', 'startApp] $e');
+    Log.println('main:47', 'startApp] $e');
     rethrow;
   }
 }
@@ -55,14 +56,12 @@ Future<void> _runBinMm2UserAlreadyLog() async {
     await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
     await authBloc.initSwitchPref();
 
-    if (!(authBloc.isPinShow && prefs.getBool('switch_pin'))) {
-      Log.println('main:59', 'login isPinShow');
+    if (!(authBloc.showLock && prefs.getBool('switch_pin'))) {
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
     Log.println('main:63', 'loadJsonCoinsDefault');
-    await coinsBloc
-        .writeJsonCoin(await MarketMakerService().loadJsonCoinsDefault());
+    await coinsBloc.writeJsonCoin(await MMService().loadJsonCoinsDefault());
   }
 }
 
@@ -73,7 +72,7 @@ void _checkNetworkStatus() {
       mainBloc.setIsNetworkOffline(true);
     } else {
       if (mainBloc.isNetworkOffline) {
-        if (!MarketMakerService().ismm2Running) {
+        if (!MMService().ismm2Running) {
           _runBinMm2UserAlreadyLog();
         }
         mainBloc.setIsNetworkOffline(false);
@@ -99,9 +98,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _checkNetworkStatus();
     if (isInDebugMode) {
-      MarketMakerService()
-          .initMarketMaker()
-          .then((_) => _runBinMm2UserAlreadyLog());
+      MMService().initMarketMaker().then((_) => _runBinMm2UserAlreadyLog());
     }
   }
 
@@ -120,9 +117,9 @@ class _MyAppState extends State<MyApp> {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    // Log.println('main:123',
+                    // Log.println('main:120',
                     //     'current locale: ' + currentLocale?.toString());
-                    // Log.println('main:125',
+                    // Log.println('main:122',
                     //     'current pref locale: ' + prefLocale.toString());
 
                     return MaterialApp(
@@ -203,51 +200,36 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log.println('main:206', 'lifecycle: inactive');
+        Log.println('main:203', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
-        Log.println('main:210', 'lifecycle: paused');
+        Log.println('main:207', 'lifecycle: paused');
         lockService.lockSignal(context);
+
+        // AG: do we really need it? // if (Platform.isIOS) MMService().closeLogSink();
+
         // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
-        if (Platform.isIOS) {
-          final double btr = await MarketMakerService.platformmm2
-              .invokeMethod('backgroundTimeRemaining');
-          Log.println('main:217', 'paused, backgroundTimeRemaining: $btr');
-          // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
-          // and when we are silent the `backgroundTimeRemaining` is low
-          // (expected low values are ~5, ~180, ~600 seconds).
-          if (btr < 3600) {
-            MarketMakerService().closeLogSink();
-            if (!authBloc.isQrCodeActive && !mainBloc.isUrlLaucherIsOpen) {
-              // https://gitlab.com/artemciy/supernet/issues/4#note_190147428
-              Log.println('main:225',
-                  'Suspended, exiting explicitly in order to workaround a crash');
-              exit(0);
-            }
-          }
+        if (Platform.isIOS && await musicService.iosBackgroundExit()) {
+          // https://gitlab.com/artemciy/supernet/issues/4#note_284468673
+          Log.println('main:216', 'Suspended, exit');
+          exit(0);
         }
         break;
       case AppLifecycleState.resumed:
-        Log.println('main:233', 'lifecycle: resumed');
+        Log.println('main:221', 'lifecycle: resumed');
         lockService.lockSignal(context);
-        MarketMakerService().openLogSink();
+        MMService().openLogSink();
         if (Platform.isIOS) {
-          if (!MarketMakerService().ismm2Running) {
+          if (!MMService().ismm2Running) {
             _runBinMm2UserAlreadyLog();
           }
         }
         break;
-      // For Flutter v1.9.1:
-      case AppLifecycleState.suspending:
-        Log.println('main:244', 'lifecycle: suspending');
-        lockService.lockSignal(context);
+      case AppLifecycleState.detached:
+        Log.println('main:231', 'lifecycle: detached');
         break;
-      // For Flutter v1.12.13:
-      // case AppLifecycleState.detached:
-      //   Log.println('main:249', 'lifecycle: detached');
-      //   break
     }
   }
 
