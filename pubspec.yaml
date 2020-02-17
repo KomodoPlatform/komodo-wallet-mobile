@@ -96,7 +96,7 @@ dev_dependencies:
   #flutter_sodium: ^0.0.11
   flutter_sodium:
     git:
-      url: git://github.com/chickahoona/flutter_sodium.git
+      url: git://github.com/komodoplatform/flutter_sodium.git
       ref: upgrade-to-compilesdk-28
 
 flutter_icons:
