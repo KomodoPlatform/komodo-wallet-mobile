@@ -88,16 +88,13 @@ dev_dependencies:
   # "Execution failed for task ':flutter_sodium:verifyReleaseResources'"
   # This error is caused by using old compileSdkVersion - 27
   # https://github.com/firstfloorsoftware/flutter_sodium/issues/28
-  # There is the fork with fixed compileSdkVersion - 28:
-  # https://github.com/chickahoona/flutter_sodium/tree/upgrade-to-compilesdk-28
-  # and related PR:
-  # https://github.com/firstfloorsoftware/flutter_sodium/pull/29
-  # We can temporary use this fork instead of original package
+  # Our fork has a fixed compileSdkVersion - 28:
+  # https://github.com/KomodoPlatform/flutter_sodium
   #flutter_sodium: ^0.0.11
   flutter_sodium:
     git:
-      url: git://github.com/komodoplatform/flutter_sodium.git
-      ref: upgrade-to-compilesdk-28
+      url: git://github.com/KomodoPlatform/flutter_sodium.git
+      ref: 3d6f8d89b4e5f5fbb46b0f230a760b3930c57a39
 
 flutter_icons:
   android: true
