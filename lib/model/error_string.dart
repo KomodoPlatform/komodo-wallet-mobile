@@ -8,6 +8,9 @@ import 'package:komodo_dex/utils/log.dart';
 Future<ErrorString> errorStringFromJson(String str) async =>
     removeLineFromMM2(ErrorString.fromJson(json.decode(str)));
 
+Future<ErrorString> errorStringFromDecodedJson(dynamic decodedJson) async =>
+    removeLineFromMM2(ErrorString.fromJson(decodedJson));
+
 String errorStringToJson(ErrorString data) => json.encode(data.toJson());
 
 ErrorString removeLineFromMM2(ErrorString errorString) {

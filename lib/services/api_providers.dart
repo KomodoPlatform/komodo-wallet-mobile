@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
@@ -130,15 +132,28 @@ class ApiProvider {
   Future<dynamic> getBalance(
     http.Client client,
     GetBalance body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getBalanceToJson(userBody.body))
-              .then((Response r) => _saveRes('getBalance', r))
-              .then<dynamic>((Response res) => balanceFromJson(res.body))
-              .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'getBalance', e, 'Error on get balance ${body.coin}')));
+  ) async {
+    try {
+      final userBody = await _assertUserpass(client, body);
+      final r = await userBody.client
+                .post(url, body: getBalanceToJson(userBody.body));
+      if(r.statusCode == 200) {
+        final res = _saveRes('getBalance', r);
+        if(res.body.isEmpty) {
+          return null;
+        }
+        final dynamic decoded = json.decode(res.body);
+        final error = await errorStringFromDecodedJson(decoded);
+        if(error != null) return error;
+        return balanceFromJson(res.body);
+      }
+      return null;
+    } catch (e) {
+      return _catchErrorString(
+                  'getBalance', e, 'Error on get balance ${body.coin}');
+    }
+  }
+
 
   Future<dynamic> postBuy(
     http.Client client,
