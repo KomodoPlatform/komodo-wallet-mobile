@@ -471,9 +471,9 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: HEAD
+      ref: c3abb4404a3e4e7b51a771ffb9c85e700516d1e8
       resolved-ref: c3abb4404a3e4e7b51a771ffb9c85e700516d1e8
-      url: "https://github.com/KomodoPlatform/pin_code_view"
+      url: "git://github.com/KomodoPlatform/pin_code_view.git"
     source: git
     version: "0.2.1"
   platform:
@@ -550,7 +550,7 @@ packages:
     dependency: "direct dev"
     description:
       path: "packages/share/"
-      ref: HEAD
+      ref: "1494b043d03799dd14e689552d1218918435f9f5"
       resolved-ref: "1494b043d03799dd14e689552d1218918435f9f5"
       url: "https://github.com/KomodoPlatform/plugins"
     source: git
