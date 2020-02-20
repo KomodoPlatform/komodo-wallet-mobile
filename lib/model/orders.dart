@@ -116,6 +116,7 @@ class MakerOrder {
       };
 }
 
+// AG: The name clashes with regular expressions `Match`, should rename.
 class Match {
   Match({
     this.connect,

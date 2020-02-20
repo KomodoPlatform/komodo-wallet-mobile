@@ -1,13 +1,7 @@
-// To parse this JSON data, do
-//
-//     final balance = balanceFromJson(jsonString);
-
 import 'dart:convert';
 
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:decimal/decimal.dart';
-
-Balance balanceFromJson(String str) => Balance.fromJson(json.decode(str));
 
 String balanceToJson(Balance data) => json.encode(data.toJson());
 

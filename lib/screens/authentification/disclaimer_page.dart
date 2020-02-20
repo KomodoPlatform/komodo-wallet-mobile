@@ -401,7 +401,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
       await encryptionTool
           .writeData(KeyEncryption.SEED, wallet, widget.password, widget.seed)
-          .catchError((dynamic e) => Log.println('dislaimer_page:380', e));
+          .catchError((dynamic e) => Log.println('disclaimer_page:404', e));
 
       await DBProvider.db.saveWallet(wallet);
       await DBProvider.db.saveCurrentWallet(wallet);
