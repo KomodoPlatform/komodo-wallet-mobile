@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
@@ -29,7 +31,7 @@ import '../model/get_trade_fee.dart';
 import '../model/get_tx_history.dart';
 import '../model/get_withdraw.dart';
 import '../model/orderbook.dart';
-import '../model/orders.dart';
+import '../model/orders.dart' hide Match;
 import '../model/recent_swaps.dart';
 import '../model/result.dart';
 import '../model/send_raw_transaction_response.dart';
@@ -65,7 +67,7 @@ class ApiProvider {
       loggedLine = loggedLine.substring(0, 75) + '..';
     }
 
-    Log.println('api_providers:68', loggedLine);
+    Log.println('api_providers:70', loggedLine);
     this.res = res;
     return res;
   }
@@ -89,13 +91,12 @@ class ApiProvider {
 
   ErrorString _catchErrorString(String key, dynamic e, String message) {
     Log.println(key, e);
-    return ErrorString(error: message);
+    return ErrorString(message);
   }
 
   Future<UserpassBody> _assertUserpass(http.Client client, dynamic body) async {
-    body.userpass = MMService().userpass.isNotEmpty
-        ? MMService().userpass
-        : body.userpass;
+    body.userpass =
+        MMService().userpass.isNotEmpty ? MMService().userpass : body.userpass;
     return UserpassBody(body: body, client: client);
   }
 
@@ -127,18 +128,44 @@ class ApiProvider {
                   e,
                   'Error on get orderbook')));
 
-  Future<dynamic> getBalance(
-    http.Client client,
-    GetBalance body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getBalanceToJson(userBody.body))
-              .then((Response r) => _saveRes('getBalance', r))
-              .then<dynamic>((Response res) => balanceFromJson(res.body))
-              .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'getBalance', e, 'Error on get balance ${body.coin}')));
+  Future<Balance> getBalance(GetBalance gb, {http.Client client}) async {
+    // AG: HTTP handling is improved in this method.
+    //     After using it for a while and seeing that it works as expected
+    //     we should refactor the rest of the methods accordingly.
+
+    client ??= MMService().client;
+    try {
+      final userBody = await _assertUserpass(client, gb);
+      final r = await userBody.client
+          .post(url, body: getBalanceToJson(userBody.body));
+      if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
+      if (r.statusCode != 200) {
+        String emsg;
+        try {
+          // See if the body is a JSON error.
+          emsg = ErrorString.fromJson(json.decode(r.body)).error;
+        } catch (_notJson) {/**/}
+        if (emsg.isEmpty) {
+          // Treat the body as a potentially useful but untrusted error message.
+          emsg = r.body
+              .replaceAll(RegExp('[^a-zA-Z0-9, :\]\.-]+'), '.')
+              .replaceFirstMapped(RegExp('^(.{0,99}).*'), (Match m) => m[1]);
+        }
+        throw ErrorString('HTTP ${r.statusCode}: $emsg');
+      }
+      _saveRes('getBalance', r);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = json.decode(r.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      return Balance.fromJson(jbody);
+    } catch (e) {
+      throw _catchErrorString(
+          'getBalance', e, 'Error getting ${gb.coin} balance');
+    }
+  }
 
   Future<dynamic> postBuy(
     http.Client client,
@@ -208,7 +235,7 @@ class ApiProvider {
           .catchError((dynamic e) => _catchErrorString(
               'activeCoin', e, 'Error on active ${coin.name}'))
           .timeout(const Duration(seconds: 60),
-              onTimeout: () => ErrorString(error: 'Timeout on ${coin.abbr}'));
+              onTimeout: () => ErrorString('Timeout on ${coin.abbr}'));
 
   Future<dynamic> postSetPrice(
     http.Client client,

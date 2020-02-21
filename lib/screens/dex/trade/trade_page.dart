@@ -1007,10 +1007,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               double.parse(orderbook.getBuyAmount(_controllerAmountSell.text)) >
                   0;
           Log.println(
-              'trade_page:1015',
+              'trade_page:1009',
               '----getBuyAmount----' +
                   orderbook.getBuyAmount(_controllerAmountSell.text));
-          Log.println('trade_page:1019',
+          Log.println('trade_page:1013',
               'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
             key: Key(
