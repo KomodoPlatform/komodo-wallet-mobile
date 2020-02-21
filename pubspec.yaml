@@ -47,7 +47,7 @@ dev_dependencies:
   shared_preferences: ^0.5.3+4
   bip39: ^1.0.3
   pin_code_view:
-    git: https://github.com/KomodoPlatform/pin_code_view
+    git: https://github.com/khiznichenko/pin_code_view
   # share: ^0.6.0+1
   crypto: ^2.0.6
   intl_translation: ^0.17.7
