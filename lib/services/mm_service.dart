@@ -12,6 +12,7 @@ import 'package:http/http.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
+import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
@@ -48,6 +49,7 @@ class MMService {
   String pubkey = '';
   String filesPath = '';
   IOSink sink;
+
   /// Channel to native code.
   static MethodChannel nativeC = const MethodChannel('mm2');
   static const EventChannel eventChannel = EventChannel('streamLogMM2');
@@ -291,7 +293,7 @@ class MMService {
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void onLogsmm2(String log) {
     if (sink != null) {
-      Log.println('mm_service:294', log);
+      Log.println('mm_service:296', log);
       // AG: This currently relies on the information that can be freely changed by MM
       // or removed from the logs entirely (e.g. on debug and human-readable parts).
       // Should update it to rely on the log tags instead.
@@ -329,9 +331,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        Log.println('mm_service:332', 'All coins activated');
+        Log.println('mm_service:334', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('mm_service:334', 'loadCoin finished');
+          Log.println('mm_service:336', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -389,22 +391,20 @@ class MMService {
     return await DBProvider.db.getAllCoinElectrum(CoinEletrum.DEFAULT);
   }
 
-  Future<List<dynamic>> getAllBalances(bool forceUpdate) async {
+  Future<List<Balance>> getAllBalances(bool forceUpdate) async {
+    Log.println('mm_service:395', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.readJsonCoin();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
-      List<dynamic> balances = <dynamic>[];
-      final List<Future<dynamic>> futureBalances = <Future<dynamic>>[];
+      final List<Future<Balance>> futureBalances = <Future<Balance>>[];
 
       for (Coin coin in coins) {
-        futureBalances.add(ApiProvider()
-            .getBalance(MMService().client, GetBalance(coin: coin.abbr)));
+        futureBalances
+            .add(ApiProvider().getBalance(GetBalance(coin: coin.abbr)));
       }
-      balances = await Future.wait<dynamic>(futureBalances);
-      balances = balances;
-      return balances;
+      return await Future.wait<Balance>(futureBalances);
     } else {
-      return balances;
+      return [];
     }
   }
 
