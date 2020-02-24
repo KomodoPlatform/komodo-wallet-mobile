@@ -39,6 +39,7 @@ class PinPage extends StatefulWidget {
 }
 
 class _PinPageState extends State<PinPage> {
+  String _error = '';
   bool isLoading = false;
   String _correctPin;
 
@@ -169,7 +170,7 @@ class _PinPageState extends State<PinPage> {
                 '',
               ),
               obscurePin: true,
-              error: AppLocalizations.of(context).errorTryAgain,
+              error: _error,
               errorDelaySeconds:
                   widget.pinStatus == PinStatus.NORMAL_PIN ? 5 : null,
               codeLength: 6,
@@ -199,6 +200,8 @@ class _PinPageState extends State<PinPage> {
                     Navigator.pushReplacement<dynamic, dynamic>(
                         context, materialPage);
                   }
+                } else {
+                  _errorPin();
                 }
               },
               onCodeSuccess: (dynamic code) {
@@ -222,6 +225,12 @@ class _PinPageState extends State<PinPage> {
         ],
       ),
     );
+  }
+
+  void _errorPin() {
+    setState(() {
+      _error = AppLocalizations.of(context).errorTryAgain;
+    });
   }
 }
 
