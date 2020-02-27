@@ -13,6 +13,10 @@ class CustomJob {
 JobService jobService = JobService();
 
 class JobService {
+  JobService() {
+    start();
+  }
+
   List<CustomJob> installedJobs = [];
 
   bool installJob(CustomJob job) {
