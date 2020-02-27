@@ -20,6 +20,7 @@ import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:komodo_dex/services/job_service.dart';
 
 class CoinsBloc implements BlocBase {
   List<CoinBalance> coinBalance = <CoinBalance>[];
@@ -98,7 +99,7 @@ class CoinsBloc implements BlocBase {
   Stream<List<CoinToActivate>> get outCoinBeforeActivation =>
       _coinBeforeActivationController.stream;
 
-  Timer timer;
+  CustomJob job;
   bool onActivateCoins = false;
 
   @override
@@ -392,18 +393,19 @@ class CoinsBloc implements BlocBase {
   }
 
   void startCheckBalance() {
-    timer = Timer.periodic(const Duration(seconds: 45), (_) {
+    job = CustomJob('checkBalance', const Duration(seconds: 45), () {
       if (!MMService().ismm2Running) {
-        _.cancel();
+        jobService.uninstallJob(job);
       } else {
         loadCoin();
       }
     });
+    jobService.installJob(job);
   }
 
   void stopCheckBalance() {
-    if (timer != null) {
-      timer.cancel();
+    if (job != null) {
+      jobService.uninstallJob(job);
     }
   }
 

@@ -20,6 +20,7 @@ import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -83,13 +84,15 @@ class MMService {
       await MMService().runBin();
     }
 
-    Timer.periodic(const Duration(seconds: 2), (_) {
+    final job =
+        CustomJob('updateOrdersAndSwaps', const Duration(seconds: 2), () {
       if (shouldUpdateOrdersAndSwaps ||
           musicService.recommendsPeriodicUpdates()) {
         shouldUpdateOrdersAndSwaps = false;
         updateOrdersAndSwaps();
       }
     });
+    jobService.installJob(job);
   }
 
   Future<void> initMarketMaker() async {
@@ -138,7 +141,7 @@ class MMService {
     }
     int offset = await fileLog.length();
 
-    Timer.periodic(const Duration(seconds: 1), (_) {
+    final job = CustomJob('logs', const Duration(seconds: 1), () {
       fileLog
           .openRead(offset)
           .transform(utf8.decoder)
@@ -154,6 +157,7 @@ class MMService {
         offset = await fileLog.length();
       });
     });
+    jobService.installJob(job);
   }
 
   Future<void> waitUntilMM2isStop() async {
@@ -251,18 +255,19 @@ class MMService {
 
         // check when mm2 is ready then load coins
         final int timerTmp = DateTime.now().millisecondsSinceEpoch;
-        Timer.periodic(const Duration(seconds: 2), (_) {
+        CustomJob job;
+        job = CustomJob('mm2_ios', const Duration(seconds: 2), () {
           final int t1 = timerTmp + 20000;
           final int t2 = DateTime.now().millisecondsSinceEpoch;
           if (t1 <= t2) {
-            _.cancel();
+            jobService.uninstallJob(job);
           }
 
           checkStatusmm2().then((int onValue) {
             print('STATUS MM2: ' + onValue.toString());
             if (onValue == 3) {
               ismm2Running = true;
-              _.cancel();
+              jobService.uninstallJob(job);
               print('CANCEL TIMER');
               initCoinsAndLoad();
               coinsBloc.startCheckBalance();
