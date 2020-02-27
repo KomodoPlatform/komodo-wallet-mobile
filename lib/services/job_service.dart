@@ -26,6 +26,11 @@ class JobService {
     return true;
   }
 
+  bool uninstallJob(CustomJob job) {
+    installedJobs.remove(job);
+    return true;
+  }
+
   void start() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       step();
