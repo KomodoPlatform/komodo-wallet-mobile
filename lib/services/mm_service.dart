@@ -84,15 +84,13 @@ class MMService {
       await MMService().runBin();
     }
 
-    final job =
-        CustomJob('updateOrdersAndSwaps', const Duration(seconds: 2), () {
+    jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
       if (shouldUpdateOrdersAndSwaps ||
           musicService.recommendsPeriodicUpdates()) {
         shouldUpdateOrdersAndSwaps = false;
-        updateOrdersAndSwaps();
+        await updateOrdersAndSwaps();
       }
     });
-    jobService.installJob(job);
   }
 
   Future<void> initMarketMaker() async {
@@ -141,7 +139,7 @@ class MMService {
     }
     int offset = await fileLog.length();
 
-    final job = CustomJob('logs', const Duration(seconds: 1), () {
+    jobService.install('mmLogs', 1, (j) async {
       fileLog
           .openRead(offset)
           .transform(utf8.decoder)
@@ -157,7 +155,6 @@ class MMService {
         offset = await fileLog.length();
       });
     });
-    jobService.installJob(job);
   }
 
   Future<void> waitUntilMM2isStop() async {
@@ -255,19 +252,18 @@ class MMService {
 
         // check when mm2 is ready then load coins
         final int timerTmp = DateTime.now().millisecondsSinceEpoch;
-        CustomJob job;
-        job = CustomJob('mm2_ios', const Duration(seconds: 2), () {
+        Timer.periodic(const Duration(seconds: 2), (_) {
           final int t1 = timerTmp + 20000;
           final int t2 = DateTime.now().millisecondsSinceEpoch;
           if (t1 <= t2) {
-            jobService.uninstallJob(job);
+            _.cancel();
           }
 
           checkStatusmm2().then((int onValue) {
             print('STATUS MM2: ' + onValue.toString());
             if (onValue == 3) {
               ismm2Running = true;
-              jobService.uninstallJob(job);
+              _.cancel();
               print('CANCEL TIMER');
               initCoinsAndLoad();
               coinsBloc.startCheckBalance();
@@ -288,10 +284,9 @@ class MMService {
   }
 
   /// Load fresh lists of orders and swaps from MM.
-  void updateOrdersAndSwaps() {
-    swapHistoryBloc.updateSwaps(50, null).then((List<Swap> swaps) {
-      ordersBloc.updateOrdersSwaps(swaps);
-    });
+  Future<void> updateOrdersAndSwaps() async {
+    final List<Swap> swaps = await swapHistoryBloc.updateSwaps(50, null);
+    await ordersBloc.updateOrdersSwaps(swaps);
   }
 
   /// Process a line of MM log,
