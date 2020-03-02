@@ -15,7 +15,7 @@ class CustomJob {
   /// `0.0` if the job is paused.
   double _period;
   int _timeout;
-  final JobCallback _callback;
+  JobCallback _callback;
   DateTime _started;
   DateTime _finished;
 }
@@ -29,14 +29,16 @@ class JobService {
   final Map<String, CustomJob> _jobs = {};
   DateTime _lastRun, _lastPeriodic;
 
+  static const int _many = 2147483647;
+
   void _maintenance() {
     // If we aren't invoked then we are missing a timer.
     final now = DateTime.now();
     final runDelta =
-        _lastRun != null ? now.difference(_lastRun).inMilliseconds : 99999;
+        _lastRun != null ? now.difference(_lastRun).inMilliseconds : _many;
     final periodicDelta = _lastPeriodic != null
         ? now.difference(_lastPeriodic).inMilliseconds
-        : 99999;
+        : _many;
     if (runDelta > 2222 && periodicDelta > 3333) {
       _lastPeriodic = now;
       Timer.periodic(const Duration(seconds: 1), (t) => step());
@@ -47,7 +49,7 @@ class JobService {
   /// Job invocations will be at least [period] seconds apart.
   /// We'll also wait for the job to finish or reach a [timeout] before reinvoking it.
   ///
-  /// If the job is already installed then we update its [period] and [timeout].
+  /// If the job is already installed then we update its [period], [timeout] and [cb].
   ///
   /// The job is paused while its [period] is 0.
   void install(String name, double period, JobCallback cb,
@@ -56,6 +58,7 @@ class JobService {
     if (_jobs.containsKey(name)) {
       _jobs[name]._period = period;
       _jobs[name]._timeout = timeout;
+      _jobs[name]._callback = cb;
     } else {
       _jobs[name] = CustomJob(name, period, timeout, cb);
     }
@@ -97,7 +100,7 @@ class JobService {
         if (startDeltaMs < job._timeout * 1000) {
           continue;
         } else {
-          Log.println('job_service:100', 'job ${job._name} timed out');
+          Log.println('job_service:103', 'job ${job._name} timed out');
         }
       }
 
@@ -112,11 +115,11 @@ class JobService {
         try {
           await job._callback(job);
         } catch (ex) {
-          Log.println('job_service:115', 'job ${job._name} error: $ex');
+          Log.println('job_service:118', 'job ${job._name} error: $ex');
         }
         job._finished = DateTime.now();
         //final delta = job._finished.difference(now).inMilliseconds / 1000.0;
-        //Log.println('job_service:119', 'job ${job._name} done in ${delta}s');
+        //Log.println('job_service:122', 'job ${job._name} done in ${delta}s');
       }(job);
     }
   }
