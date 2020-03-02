@@ -27,12 +27,18 @@ JobService jobService = JobService();
 /// and against invoking a job while the previous invocation has not been finished yet.
 class JobService {
   final Map<String, CustomJob> _jobs = {};
-  DateTime _lastRun = DateTime.now().subtract(const Duration(seconds: 999));
+  DateTime _lastRun, _lastPeriodic;
 
   void _maintenance() {
     // If we aren't invoked then we are missing a timer.
-    final deltaMs = DateTime.now().difference(_lastRun).inMilliseconds;
-    if (deltaMs > 2222) {
+    final now = DateTime.now();
+    final runDelta =
+        _lastRun != null ? now.difference(_lastRun).inMilliseconds : 99999;
+    final periodicDelta = _lastPeriodic != null
+        ? now.difference(_lastPeriodic).inMilliseconds
+        : 99999;
+    if (runDelta > 2222 && periodicDelta > 3333) {
+      _lastPeriodic = now;
       Timer.periodic(const Duration(seconds: 1), (t) => step());
     }
   }
@@ -44,7 +50,8 @@ class JobService {
   /// If the job is already installed then we update its [period] and [timeout].
   ///
   /// The job is paused while its [period] is 0.
-  void install(String name, double period, JobCallback cb, {int timeout = 333}) {
+  void install(String name, double period, JobCallback cb,
+      {int timeout = 333}) {
     _maintenance();
     if (_jobs.containsKey(name)) {
       _jobs[name]._period = period;
@@ -63,9 +70,11 @@ class JobService {
   Future<void> step() async {
     final now = DateTime.now();
 
-    // #637: Guard against duplicate timers reducing performance.
-    final deltaMs = now.difference(_lastRun).inMilliseconds;
-    if (deltaMs < 777) return;
+    if (_lastRun != null) {
+      // #637: Guard against duplicate timers reducing performance.
+      final deltaMs = now.difference(_lastRun).inMilliseconds;
+      if (deltaMs < 777) return;
+    }
 
     _lastRun = now;
 
@@ -88,7 +97,7 @@ class JobService {
         if (startDeltaMs < job._timeout * 1000) {
           continue;
         } else {
-          Log.println('job_service:91', 'job ${job._name} timed out');
+          Log.println('job_service:100', 'job ${job._name} timed out');
         }
       }
 
@@ -103,11 +112,11 @@ class JobService {
         try {
           await job._callback(job);
         } catch (ex) {
-          Log.println('job_service:106', 'job ${job._name} error: $ex');
+          Log.println('job_service:115', 'job ${job._name} error: $ex');
         }
         job._finished = DateTime.now();
         //final delta = job._finished.difference(now).inMilliseconds / 1000.0;
-        //Log.println('job_service:110', 'job ${job._name} done in ${delta}s');
+        //Log.println('job_service:119', 'job ${job._name} done in ${delta}s');
       }(job);
     }
   }
