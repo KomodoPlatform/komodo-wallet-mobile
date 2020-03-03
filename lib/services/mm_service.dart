@@ -20,6 +20,7 @@ import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -83,11 +84,11 @@ class MMService {
       await MMService().runBin();
     }
 
-    Timer.periodic(const Duration(seconds: 2), (_) {
+    jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
       if (shouldUpdateOrdersAndSwaps ||
           musicService.recommendsPeriodicUpdates()) {
         shouldUpdateOrdersAndSwaps = false;
-        updateOrdersAndSwaps();
+        await updateOrdersAndSwaps();
       }
     });
   }
@@ -138,7 +139,7 @@ class MMService {
     }
     int offset = await fileLog.length();
 
-    Timer.periodic(const Duration(seconds: 1), (_) {
+    jobService.install('mmLogs', 1, (j) async {
       fileLog
           .openRead(offset)
           .transform(utf8.decoder)
@@ -283,10 +284,9 @@ class MMService {
   }
 
   /// Load fresh lists of orders and swaps from MM.
-  void updateOrdersAndSwaps() {
-    swapHistoryBloc.updateSwaps(50, null).then((List<Swap> swaps) {
-      ordersBloc.updateOrdersSwaps(swaps);
-    });
+  Future<void> updateOrdersAndSwaps() async {
+    final List<Swap> swaps = await swapHistoryBloc.updateSwaps(50, null);
+    await ordersBloc.updateOrdersSwaps(swaps);
   }
 
   /// Process a line of MM log,
