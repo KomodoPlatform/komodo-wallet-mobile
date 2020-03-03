@@ -12,6 +12,11 @@ version: 0.2.14
 environment:
   sdk: ">=2.3.0 <3.0.0"
 
+# We're using specific (pinned) plugin versions in order to help us review the dependency upgrades.
+# KomodoPlatform plugin upgrades should be created as new branches, with PR into master;
+# commits from such branches can be referenced in this YAML (ref) under a TODO section that mentions the branch.
+# cf. https://github.com/ca333/komodoDEX/pull/695#issuecomment-592236296
+
 dependencies:
   flutter:
     sdk: flutter
