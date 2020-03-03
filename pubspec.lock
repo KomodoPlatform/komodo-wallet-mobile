@@ -471,9 +471,9 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: cupertino-style-pin-code
-      resolved-ref: d3e1ee9d4731b3fa109eb9c878a27424cf8fbfd9
-      url: "https://github.com/khiznichenko/pin_code_view.git"
+      ref: c0b6516aae9a3321fcce7391447351ad73a50f0a
+      resolved-ref: c0b6516aae9a3321fcce7391447351ad73a50f0a
+      url: "git://github.com/KomodoPlatform/pin_code_view.git"
     source: git
     version: "0.2.1"
   platform:

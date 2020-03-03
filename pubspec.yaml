@@ -48,8 +48,9 @@ dev_dependencies:
   bip39: 1.0.3
   pin_code_view:
     git:
-      url: https://github.com/khiznichenko/pin_code_view.git
-      ref: cupertino-style-pin-code
+      url: git://github.com/KomodoPlatform/pin_code_view.git
+      # TODO: Branch cupertino-style-pin-code is waiting for security review, https://github.com/KomodoPlatform/pin_code_view/pull/4
+      ref: c0b6516aae9a3321fcce7391447351ad73a50f0a
   # share: ^0.6.0+1
   crypto: 2.1.3
   intl_translation: 0.17.9
