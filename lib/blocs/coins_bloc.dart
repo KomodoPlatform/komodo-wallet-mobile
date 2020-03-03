@@ -20,6 +20,7 @@ import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:komodo_dex/services/job_service.dart';
 
 class CoinsBloc implements BlocBase {
   List<CoinBalance> coinBalance = <CoinBalance>[];
@@ -98,7 +99,6 @@ class CoinsBloc implements BlocBase {
   Stream<List<CoinToActivate>> get outCoinBeforeActivation =>
       _coinBeforeActivationController.stream;
 
-  Timer timer;
   bool onActivateCoins = false;
 
   @override
@@ -392,19 +392,14 @@ class CoinsBloc implements BlocBase {
   }
 
   void startCheckBalance() {
-    timer = Timer.periodic(const Duration(seconds: 45), (_) {
-      if (!MMService().ismm2Running) {
-        _.cancel();
-      } else {
-        loadCoin();
-      }
+    jobService.install('checkBalance', 45, (j) async {
+      if (!MMService().ismm2Running) return;
+      await loadCoin();
     });
   }
 
   void stopCheckBalance() {
-    if (timer != null) {
-      timer.cancel();
-    }
+    jobService.suspend('checkBalance');
   }
 
   Future<void> loadCoin() async {
@@ -434,7 +429,7 @@ class CoinsBloc implements BlocBase {
             }
           });
         } catch (e) {
-          Log.println('coins_bloc:437', e);
+          Log.println('coins_bloc:432', e);
         }
       }
 
@@ -461,7 +456,7 @@ class CoinsBloc implements BlocBase {
           .getBalance(GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
-      Log.println('coins_bloc:464', e);
+      Log.println('coins_bloc:459', e);
       balance = null;
     }
 
@@ -474,7 +469,7 @@ class CoinsBloc implements BlocBase {
       coinBalance = CoinBalance(coin, balance);
       // Log.println(
       //     'coins_bloc:480', 'Balance: ' + coinBalance.balance.getBalance());
-      // Log.println('coins_bloc:477',
+      // Log.println('coins_bloc:472',
       //     'RealBalance: ' + coinBalance.balance.getRealBalance());
       if (coinBalance.balanceUSD == null &&
           double.parse(coinBalance.balance.getBalance()) > 0) {
@@ -519,7 +514,7 @@ class CoinsBloc implements BlocBase {
       });
       await writeJsonCoin(coinsToSave);
     } catch (e) {
-      Log.println('coins_bloc:522', e);
+      Log.println('coins_bloc:517', e);
       rethrow;
     }
   }
