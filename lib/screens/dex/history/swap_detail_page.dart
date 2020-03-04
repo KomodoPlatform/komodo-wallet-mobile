@@ -1,11 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/sound_volume_button.dart';
+import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -251,20 +254,24 @@ class _ProgressSwapState extends State<ProgressSwap>
     super.dispose();
   }
 
+  int tmpStep = -1;
+
   @override
   Widget build(BuildContext context) {
-    if (swapTmp.status != widget.swap.status) {
-      swapTmp = widget.swap;
+    final SwapProvider _swapProvider = Provider.of<SwapProvider>(context);
+    final Swap _swap = _swapProvider.getSwap(widget.swap.result.uuid);
+    final steps = _swap.result.successEvents?.length ?? 1;
+    final step = _swap.result.events?.length ?? 0;
+
+    if (swapTmp.status != _swap.status || tmpStep != step) {
+      swapTmp = _swap;
+      tmpStep = step;
       _radialProgressAnimationController.value = 0;
       _radialProgressAnimationController.reset();
-      if (swapHistoryBloc.getNumberStep() ==
-          swapHistoryBloc.getStepStatusNumber(widget.swap.status)) {
-        _initAnimation(((360 / swapHistoryBloc.getNumberStep()) *
-                swapHistoryBloc.getStepStatusNumber(widget.swap.status)) -
-            (360 / swapHistoryBloc.getNumberStep()));
+      if (steps == step) {
+        _initAnimation(((360 / steps) * step) - (360 / steps));
       } else {
-        _initAnimation((360 / swapHistoryBloc.getNumberStep()) *
-            swapHistoryBloc.getStepStatusNumber(widget.swap.status));
+        _initAnimation((360 / steps) * step);
       }
     }
 
@@ -299,7 +306,7 @@ class _ProgressSwapState extends State<ProgressSwap>
                     ),
                     Text(
                       swapHistoryBloc
-                          .getStepStatusNumber(widget.swap.status)
+                          .getStepStatusNumber(_swap.status)
                           .toString(),
                       style: Theme.of(context)
                           .textTheme
@@ -315,7 +322,7 @@ class _ProgressSwapState extends State<ProgressSwap>
             ),
           ),
           Text(
-            swapHistoryBloc.getSwapStatusString(context, widget.swap.status),
+            swapHistoryBloc.getSwapStatusString(context, _swap.status),
             style: Theme.of(context).textTheme.body1.copyWith(
                 fontWeight: FontWeight.w300,
                 color: Colors.white.withOpacity(0.5)),
