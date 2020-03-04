@@ -19,5 +19,6 @@ class SwapProvider extends ChangeNotifier {
 
   void _updateLocalSwapsData(List<Swap> newData) {
     _swaps = newData;
+    notifyListeners();
   } 
 }
