@@ -32,6 +32,7 @@ dependencies:
 
   # https://pub.dev/packages/path_provider
   path_provider: 1.6.0
+  provider: 4.0.4
 
 dev_dependencies:
   flutter_driver:

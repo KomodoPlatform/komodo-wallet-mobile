@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/news/media_page.dart';
@@ -20,6 +21,7 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/mode.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
@@ -30,8 +32,7 @@ import 'widgets/theme_data.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (isInDebugMode) {
-    return runApp(BlocProvider<AuthenticateBloc>(
-        bloc: AuthenticateBloc(), child: const MyApp()));
+    return runApp(_myAppWithProviders);
   } else {
     startApp();
   }
@@ -41,13 +42,24 @@ Future<void> startApp() async {
   try {
     await MMService().initMarketMaker();
     await _runBinMm2UserAlreadyLog();
-    return runApp(BlocProvider<AuthenticateBloc>(
-        bloc: AuthenticateBloc(), child: const MyApp()));
+    return runApp(_myAppWithProviders);
   } catch (e) {
     Log.println('main:47', 'startApp] $e');
     rethrow;
   }
 }
+
+BlocProvider<AuthenticateBloc> _myAppWithProviders =
+    BlocProvider<AuthenticateBloc>(
+        bloc: AuthenticateBloc(),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context) => SwapProvider(),
+            )
+          ],
+          child: const MyApp(),
+        ));
 
 Future<void> _runBinMm2UserAlreadyLog() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
