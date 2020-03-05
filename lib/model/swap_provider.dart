@@ -49,7 +49,7 @@ class SyncSwaps {
   /// Fresh status of swap [uuid].
   /// cf. https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#my-swap-status
   Swap swap(String uuid) {
-    return _swaps.firstWhere((Swap swap) => swap.result.uuid == uuid);
+    return _swaps.firstWhere((Swap swap) => swap.result.uuid == uuid, orElse: () => null);
   }
 
   void _notifyListeners() {

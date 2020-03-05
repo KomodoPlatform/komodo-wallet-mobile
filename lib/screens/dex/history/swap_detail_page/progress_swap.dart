@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
 class ProgressSwap extends StatefulWidget {
-  const ProgressSwap({this.swap, this.onStepFinish});
+  const ProgressSwap({this.swapUuid, this.onStepFinish});
 
-  final Swap swap;
+  final String swapUuid;
   final Function onStepFinish;
 
   @override
@@ -27,11 +27,11 @@ class _ProgressSwapState extends State<ProgressSwap>
   double progressDegrees = 0;
   int count = 0;
   Swap swapTmp = Swap();
+  Swap swap;
 
   @override
   void initState() {
     super.initState();
-    swapTmp = widget.swap;
     _radialProgressAnimationController =
         AnimationController(vsync: this, duration: fillDuration);
     _initAnimation(0.0);
@@ -44,7 +44,6 @@ class _ProgressSwapState extends State<ProgressSwap>
             parent: _radialProgressAnimationController, curve: Curves.easeIn))
       ..addListener(() {
         setState(() {
-          final Swap swap = widget.swap;
           progressDegrees = (swap.step / swap.steps) * _progressAnimation.value;
           if (progressDegrees == 360) {
             widget.onStepFinish();
@@ -66,12 +65,12 @@ class _ProgressSwapState extends State<ProgressSwap>
   @override
   Widget build(BuildContext context) {
     final SwapProvider _swapProvider = Provider.of<SwapProvider>(context);
-    final Swap _swap = _swapProvider.swap(widget.swap.result.uuid);
-    final steps = _swap.steps;
-    final step = _swap.step;
+    swap = _swapProvider.swap(widget.swapUuid) ?? Swap();
+    final steps = swap.steps;
+    final step = swap.step;
 
-    if (swapTmp.status != _swap.status || tmpStep != step) {
-      swapTmp = _swap;
+    if (swapTmp.status != swap.status || tmpStep != step) {
+      swapTmp = swap;
       tmpStep = step;
       _radialProgressAnimationController.value = 0;
       _radialProgressAnimationController.reset();
@@ -112,13 +111,13 @@ class _ProgressSwapState extends State<ProgressSwap>
                       style: Theme.of(context).textTheme.subtitle,
                     ),
                     Text(
-                      _swap.step.toString(),
+                      swap.step.toString(),
                       style: Theme.of(context)
                           .textTheme
                           .subtitle
                           .copyWith(color: Theme.of(context).accentColor),
                     ),
-                    Text('/${_swap.steps}',
+                    Text('/${swap.steps}',
                         style: Theme.of(context).textTheme.subtitle)
                   ],
                 ),
@@ -126,7 +125,7 @@ class _ProgressSwapState extends State<ProgressSwap>
             ),
           ),
           Text(
-            swapHistoryBloc.getSwapStatusString(context, _swap.status),
+            swapHistoryBloc.getSwapStatusString(context, swap.status),
             style: Theme.of(context).textTheme.body1.copyWith(
                 fontWeight: FontWeight.w300,
                 color: Colors.white.withOpacity(0.5)),
