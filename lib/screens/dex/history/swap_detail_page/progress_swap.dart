@@ -8,10 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
 class ProgressSwap extends StatefulWidget {
-  const ProgressSwap({this.swapUuid, this.onStepFinish});
+  const ProgressSwap({this.uuid, this.onFinished});
 
-  final String swapUuid;
-  final Function onStepFinish;
+  final String uuid;
+  final Function onFinished;
 
   @override
   _ProgressSwapState createState() => _ProgressSwapState();
@@ -26,7 +26,7 @@ class _ProgressSwapState extends State<ProgressSwap>
 
   double progressDegrees = 0;
   int count = 0;
-  Swap swapTmp = Swap();
+  Swap prevSwap = Swap();
   Swap swap;
 
   @override
@@ -34,19 +34,20 @@ class _ProgressSwapState extends State<ProgressSwap>
     super.initState();
     _radialProgressAnimationController =
         AnimationController(vsync: this, duration: fillDuration);
-    _initAnimation(0.0);
+    _animateTo(0.0);
   }
 
-  void _initAnimation(double begin) {
+  void _animateTo(double end) {
     _progressAnimation = null;
-    _progressAnimation = Tween<double>(begin: begin, end: 360.0).animate(
+    _radialProgressAnimationController.reset();
+    _progressAnimation = Tween<double>(begin: progressDegrees, end: end).animate(
         CurvedAnimation(
             parent: _radialProgressAnimationController, curve: Curves.easeIn))
       ..addListener(() {
         setState(() {
-          progressDegrees = (swap.step / swap.steps) * _progressAnimation.value;
+          progressDegrees = _progressAnimation?.value ?? progressDegrees;
           if (progressDegrees == 360) {
-            widget.onStepFinish();
+            widget.onFinished();
           }
         });
       });
@@ -60,25 +61,14 @@ class _ProgressSwapState extends State<ProgressSwap>
     super.dispose();
   }
 
-  int tmpStep = -1;
-
   @override
   Widget build(BuildContext context) {
     final SwapProvider _swapProvider = Provider.of<SwapProvider>(context);
-    swap = _swapProvider.swap(widget.swapUuid) ?? Swap();
-    final steps = swap.steps;
-    final step = swap.step;
+    swap = _swapProvider.swap(widget.uuid) ?? Swap();
 
-    if (swapTmp.status != swap.status || tmpStep != step) {
-      swapTmp = swap;
-      tmpStep = step;
-      _radialProgressAnimationController.value = 0;
-      _radialProgressAnimationController.reset();
-      if (steps == step) {
-        _initAnimation(((360 / steps) * step) - (360 / steps));
-      } else {
-        _initAnimation((360 / steps) * step);
-      }
+    if (swap.step != prevSwap.step) {
+      prevSwap = swap;
+      _animateTo((360 / swap.steps) * swap.step);
     }
 
     final double heightScreen = MediaQuery.of(context).size.height * 0.06;
