@@ -61,4 +61,10 @@ class Swap {
 
     return order;
   }
+
+  /// Total number of successful steps in the swaps.
+  int get steps => result.successEvents?.length ?? 3;
+
+  /// Current swap step.
+  int get step => result.events?.length ?? 0;
 }

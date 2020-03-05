@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -235,10 +234,8 @@ class _ProgressSwapState extends State<ProgressSwap>
             parent: _radialProgressAnimationController, curve: Curves.easeIn))
       ..addListener(() {
         setState(() {
-          progressDegrees =
-              (swapHistoryBloc.getStepStatusNumber(widget.swap.status) /
-                      swapHistoryBloc.getNumberStep()) *
-                  _progressAnimation.value;
+          final Swap swap = widget.swap;
+          progressDegrees = (swap.step / swap.steps) * _progressAnimation.value;
           if (progressDegrees == 360) {
             widget.onStepFinish();
           }
@@ -259,9 +256,9 @@ class _ProgressSwapState extends State<ProgressSwap>
   @override
   Widget build(BuildContext context) {
     final SwapProvider _swapProvider = Provider.of<SwapProvider>(context);
-    final Swap _swap = _swapProvider.getSwap(widget.swap.result.uuid);
-    final steps = _swap.result.successEvents?.length ?? 1;
-    final step = _swap.result.events?.length ?? 0;
+    final Swap _swap = _swapProvider.swap(widget.swap.result.uuid);
+    final steps = _swap.steps;
+    final step = _swap.step;
 
     if (swapTmp.status != _swap.status || tmpStep != step) {
       swapTmp = _swap;
@@ -305,16 +302,13 @@ class _ProgressSwapState extends State<ProgressSwap>
                       style: Theme.of(context).textTheme.subtitle,
                     ),
                     Text(
-                      swapHistoryBloc
-                          .getStepStatusNumber(_swap.status)
-                          .toString(),
+                      _swap.step.toString(),
                       style: Theme.of(context)
                           .textTheme
                           .subtitle
                           .copyWith(color: Theme.of(context).accentColor),
                     ),
-                    Text(
-                        '/${swapHistoryBloc.getNumberStep().toInt().toString()}',
+                    Text('/${_swap.steps}',
                         style: Theme.of(context).textTheme.subtitle)
                   ],
                 ),

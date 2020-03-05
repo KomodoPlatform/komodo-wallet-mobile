@@ -19,6 +19,7 @@ import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/services/api_providers.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -60,7 +61,7 @@ class MMService {
   /// Flips on temporarily when we see an indication of swap activity,
   /// possibly a change of swap status, in MM logs,
   /// triggering a Timer-based invocation of `updateOrdersAndSwaps`.
-  bool shouldUpdateOrdersAndSwaps = false;
+  String shouldUpdateOrdersAndSwaps;
 
   Future<void> init(String passphrase) async {
     if (Platform.isAndroid) {
@@ -85,10 +86,12 @@ class MMService {
     }
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
-      if (shouldUpdateOrdersAndSwaps ||
-          musicService.recommendsPeriodicUpdates()) {
-        shouldUpdateOrdersAndSwaps = false;
-        await updateOrdersAndSwaps();
+      final String reason = shouldUpdateOrdersAndSwaps;
+      shouldUpdateOrdersAndSwaps = null;
+      if (reason != null) {
+        await updateOrdersAndSwaps(reason);
+      } else if (musicService.recommendsPeriodicUpdates()) {
+        await updateOrdersAndSwaps('musicService');
       }
     });
   }
@@ -284,27 +287,41 @@ class MMService {
   }
 
   /// Load fresh lists of orders and swaps from MM.
-  Future<void> updateOrdersAndSwaps() async {
+  Future<void> updateOrdersAndSwaps(String reason) async {
     final List<Swap> swaps = await swapHistoryBloc.updateSwaps(50, null);
     await ordersBloc.updateOrdersSwaps(swaps);
+    await syncSwaps.update(reason);
   }
 
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void onLogsmm2(String log) {
     if (sink != null) {
-      Log.println('mm_service:296', log);
+      Log.println('mm_service:300', log);
+
       // AG: This currently relies on the information that can be freely changed by MM
       // or removed from the logs entirely (e.g. on debug and human-readable parts).
       // Should update it to rely on the log tags instead.
-      if (log.contains('CONNECTED') ||
-          log.contains('Entering the taker_swap_loop') ||
-          log.contains('Received \'negotiation') ||
-          log.contains('Got maker payment') ||
-          log.contains('Sending \'taker-fee') ||
-          log.contains('Sending \'taker-payment') ||
-          log.contains('Finished')) {
-        shouldUpdateOrdersAndSwaps = true;
+      // Should also parse the swap ID there and use it to update just that swap:
+
+      // +--- 05 05:19:37 -------
+      // | (0:46) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Started...
+
+      // +--- 05 05:20:08 -------
+      // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
+
+      const samples = [
+        'CONNECTED',
+        'Entering the taker_swap_loop',
+        'Received \'negotiation',
+        'Got maker payment',
+        'Sending \'taker-fee',
+        'Sending \'taker-payment',
+        'Finished'
+      ];
+      for (String sample in samples) {
+        if (!log.contains(sample)) continue;
+        shouldUpdateOrdersAndSwaps = 'MM log: $sample';
       }
     }
   }
@@ -331,9 +348,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        Log.println('mm_service:334', 'All coins activated');
+        Log.println('mm_service:342', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('mm_service:336', 'loadCoin finished');
+          Log.println('mm_service:344', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -392,7 +409,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log.println('mm_service:395', 'getAllBalances');
+    Log.println('mm_service:403', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.readJsonCoin();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
