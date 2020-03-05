@@ -6,6 +6,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:path_provider/path_provider.dart';
@@ -64,47 +65,37 @@ class MusicService {
     _player = AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
 
     _audioPlayer.onPlayerError.listen((String ev) {
-      Log.println('music_service:67', 'onPlayerError: ' + ev);
+      Log.println('music_service:68', 'onPlayerError: ' + ev);
     });
 
     /*
     _audioPlayer.onPlayerCompletion.listen((_) {
       // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
-      //Log.println('music_service:73', 'onPlayerCompletion');
+      //Log.println('music_service:74', 'onPlayerCompletion');
     });
     */
   }
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
-  MusicMode pickMode(
-      List<Order> orders, List<Swap> swaps, List<Swap> allSwaps) {
-    // ignore: always_specify_types
-    final Set<String> active = {};
-    for (final Swap swap in swaps) {
-      // Active swaps.
+  MusicMode pickMode(List<Order> orders) {
+    for (final Swap swap in syncSwaps.swaps) {
       final String uuid = swap.result.uuid;
-      active.add(uuid);
       final String shortId = uuid.substring(0, 4);
-      Log.println('music_service:88',
+      Log.println('music_service:84',
           'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
-      return MusicMode.ACTIVE;
-    }
+      final bool active = swap.status != Status.SWAP_FAILED ||
+          swap.status != Status.SWAP_SUCCESSFUL ||
+          swap.status != Status.TIME_OUT;
+      if (active) return MusicMode.ACTIVE;
 
-    for (final Swap swap in allSwaps) {
-      final String uuid = swap.result.uuid;
-      if (active.contains(uuid)) {
-        // Already seen this swap in the list of active swaps.
-        continue;
-      }
-      final String shortId = uuid.substring(0, 4);
       if (musicMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log.println('music_service:103',
+          Log.println('music_service:94',
               'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log.println('music_service:107',
+          Log.println('music_service:98',
               'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
@@ -114,17 +105,17 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log.println('music_service:117',
+        Log.println('music_service:108',
             'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log.println('music_service:121',
+        Log.println('music_service:112',
             'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log.println('music_service:127',
+    Log.println('music_service:118',
         'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
   }
@@ -152,7 +143,7 @@ class MusicService {
     if (_docs == null) throw Exception('Application directory is missing');
     final String target = _docs.path.toString() + '/' + name;
     final File file = File(path);
-    Log.println('music_service:155', 'copying $path to $target');
+    Log.println('music_service:146', 'copying $path to $target');
     await file.copy(target);
 
     _reload = true;
@@ -173,15 +164,15 @@ class MusicService {
   // and download the extra tracks on demand from an external server
   // in order to keep the application bundle (and Git repository) small.
 
-  void play(List<Order> orders, List<Swap> swaps, List<Swap> allSwaps) {
+  void play(List<Order> orders) {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
-    final MusicMode newMode = pickMode(orders, swaps, allSwaps);
+    final MusicMode newMode = pickMode(orders);
     bool changes = false;
 
     if (newMode != musicMode) {
       changes = true;
-      Log.println('music_service:184', 'play] $musicMode -> $newMode');
+      Log.println('music_service:175', 'play] $musicMode -> $newMode');
     }
 
     if (_reload) {
@@ -219,7 +210,7 @@ class MusicService {
                         : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
 
     final String path = customFile != null ? customFile.path : defaultPath;
-    Log.println('music_service:222', 'path: $path');
+    Log.println('music_service:213', 'path: $path');
 
     // Tell the player how to access the file directly instead of trying to copy it from the assets.
     if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
@@ -240,7 +231,7 @@ class MusicService {
       _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
       _player.play(path, volume: volume());
     } else {
-      Log.println('music_service:243', 'Unexpected music mode: $newMode');
+      Log.println('music_service:234', 'Unexpected music mode: $newMode');
       _audioPlayer.stop();
     }
 
@@ -271,7 +262,7 @@ class MusicService {
   Future<bool> iosBackgroundExit() async {
     final double btr =
         await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-    Log.println('music_service:274', 'backgroundTimeRemaining: $btr');
+    Log.println('music_service:265', 'backgroundTimeRemaining: $btr');
 
     // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
     // and when we are silent the `backgroundTimeRemaining` is low

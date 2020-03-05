@@ -91,7 +91,7 @@ class MMService {
       if (reason != null) {
         await updateOrdersAndSwaps(reason);
       } else if (musicService.recommendsPeriodicUpdates()) {
-        await updateOrdersAndSwaps('musicService');
+        await syncSwaps.update('musicService');
       }
     });
   }
@@ -288,9 +288,9 @@ class MMService {
 
   /// Load fresh lists of orders and swaps from MM.
   Future<void> updateOrdersAndSwaps(String reason) async {
+    await syncSwaps.update(reason);
     final List<Swap> swaps = await swapHistoryBloc.updateSwaps(50, null);
     await ordersBloc.updateOrdersSwaps(swaps);
-    await syncSwaps.update(reason);
   }
 
   /// Process a line of MM log,

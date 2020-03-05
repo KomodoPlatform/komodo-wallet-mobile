@@ -126,7 +126,7 @@ class OrdersBloc implements BlocBase {
       });
     }
 
-    musicService.play(orders, swaps, swapHistoryBloc.swaps);
+    musicService.play(orders);
 
     final List<dynamic> ordersSwaps = <dynamic>[];
     ordersSwaps.addAll(orders);
