@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -40,17 +39,17 @@ class _ProgressSwapState extends State<ProgressSwap>
   void _animateTo(double end) {
     _progressAnimation = null;
     _radialProgressAnimationController.reset();
-    _progressAnimation = Tween<double>(begin: progressDegrees, end: end).animate(
-        CurvedAnimation(
+    _progressAnimation = Tween<double>(begin: progressDegrees, end: end)
+        .animate(CurvedAnimation(
             parent: _radialProgressAnimationController, curve: Curves.easeIn))
-      ..addListener(() {
-        setState(() {
-          progressDegrees = _progressAnimation?.value ?? progressDegrees;
-          if (progressDegrees == 360) {
-            widget.onFinished();
-          }
-        });
-      });
+          ..addListener(() {
+            setState(() {
+              progressDegrees = _progressAnimation?.value ?? progressDegrees;
+              if (progressDegrees == 360) {
+                widget.onFinished();
+              }
+            });
+          });
 
     _radialProgressAnimationController.forward();
   }
@@ -107,8 +106,10 @@ class _ProgressSwapState extends State<ProgressSwap>
                           .subtitle
                           .copyWith(color: Theme.of(context).accentColor),
                     ),
-                    Text('/${swap.steps}',
-                        style: Theme.of(context).textTheme.subtitle)
+                    swap.step != 0
+                        ? Text('/${swap.steps}',
+                            style: Theme.of(context).textTheme.subtitle)
+                        : Container(),
                   ],
                 ),
               ),
@@ -125,7 +126,6 @@ class _ProgressSwapState extends State<ProgressSwap>
     );
   }
 }
-
 
 class RadialPainter extends CustomPainter {
   const RadialPainter({@required this.context, this.progressInDegrees});
