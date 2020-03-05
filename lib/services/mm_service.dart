@@ -173,9 +173,17 @@ class MMService {
     }
   }
 
+  Future<void> truncatemm2Log() async {
+    final File fileLog = File('${filesPath}mm.log');
+    await fileLog.delete();
+    await fileLog.create();
+  }
+
   Future<void> initLogSink() async {
     final File dateFile = File('${filesPath}logDate.txt');
     logFile = File('${filesPath}log.txt');
+
+    await truncatemm2Log();
 
     if ((logFile.existsSync() && logFile.lengthSync() > 7900000) ||
         (dateFile.existsSync() &&
