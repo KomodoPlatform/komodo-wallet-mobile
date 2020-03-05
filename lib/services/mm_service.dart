@@ -173,17 +173,19 @@ class MMService {
     }
   }
 
-  Future<void> truncatemm2Log() async {
-    final File fileLog = File('${filesPath}mm.log');
-    await fileLog.delete();
-    await fileLog.create();
-  }
-
   Future<void> initLogSink() async {
     final File dateFile = File('${filesPath}logDate.txt');
     logFile = File('${filesPath}log.txt');
 
-    await truncatemm2Log();
+    jobService.install('truncatemmLogs', 300, (j) async {
+      final File logFile = File('${filesPath}mm.log');
+      if (logFile == null) return;
+      final size = await logFile.length();
+      if (size >= 1048576) {
+        await logFile.delete();
+        await logFile.create();
+      }
+    });
 
     if ((logFile.existsSync() && logFile.lengthSync() > 7900000) ||
         (dateFile.existsSync() &&
