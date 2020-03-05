@@ -8,7 +8,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
+import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
