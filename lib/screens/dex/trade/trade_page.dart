@@ -18,7 +18,7 @@ import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -292,7 +292,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<Decimal> getTxFee() async {
     try {
-      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
+      final dynamic tradeFeeResponse = await MM.getTradeFee(
           MMService().client,
           GetTradeFee(coin: currentCoinBalance.coin.abbr));
 
@@ -323,7 +323,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<String> getTxFeeErc() async {
     try {
-      final TradeFee tradeFeeResponse = await ApiProvider().getTradeFee(
+      final TradeFee tradeFeeResponse = await MM.getTradeFee(
           MMService().client,
           GetTradeFee(coin: currentCoinBalance.coin.abbr));
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);

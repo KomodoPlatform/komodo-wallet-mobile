@@ -7,7 +7,7 @@ import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -45,7 +45,7 @@ class OrdersBloc implements BlocBase {
 
   Future<void> updateOrders() async {
     try {
-      final dynamic newOrders = await ApiProvider().getMyOrders(
+      final dynamic newOrders = await MM.getMyOrders(
           MMService().client, BaseService(method: 'my_orders'));
       if (newOrders is Orders) {
         final List<Order> orders = <Order>[];

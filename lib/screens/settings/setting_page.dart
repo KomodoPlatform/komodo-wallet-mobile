@@ -20,7 +20,7 @@ import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -138,7 +138,7 @@ class _SettingPageState extends State<SettingPage> {
         AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
     try {
-      final dynamic versionmm2 = await ApiProvider().getVersionMM2(
+      final dynamic versionmm2 = await MM.getVersionMM2(
           MMService().client, BaseService(method: 'version'));
       if (versionmm2 is ResultSuccess && versionmm2 != null) {
         version += ' - ${versionmm2.result}';
@@ -697,16 +697,14 @@ class _SettingPageState extends State<SettingPage> {
     Navigator.of(context).pop();
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
-    final dynamic recentSwap = await ApiProvider().getRecentSwaps(
+    final dynamic recentSwap = await MM.getRecentSwaps(
         MMService().client, GetRecentSwap(limit: 100, fromUuid: null));
 
     if (recentSwap is RecentSwaps) {
       if (MMService().sink != null) {
         MMService().sink.write('\n\nMy recent swaps: \n\n');
         MMService().sink.write(recentSwapsToJson(recentSwap) + '\n\n');
-        MMService()
-            .sink
-            .write('AtomicDEX mobile ${packageInfo.version} $os\n');
+        MMService().sink.write('AtomicDEX mobile ${packageInfo.version} $os\n');
       }
     }
     mainBloc.isUrlLaucherIsOpen = true;
@@ -762,14 +760,14 @@ class FilePickerButton extends StatelessWidget {
           try {
             path = await FilePicker.getFilePath();
           } catch (err) {
-            Log.println('setting_page:765', 'file picker exception: $err');
+            Log.println('setting_page:763', 'file picker exception: $err');
           }
           lockService.filePickerReturned(lockCookie);
 
           // On iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log.println('setting_page:772', 'file picked: $path');
+          Log.println('setting_page:770', 'file picked: $path');
 
           final bool ck = checkAudioFile(path);
           if (!ck) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 
@@ -57,13 +57,13 @@ class SyncSwaps {
   }
 
   Future<void> update(String reason) async {
-    Log.println('swap_provider:65', 'update] reason $reason');
+    Log.println('swap_provider:60', 'update] reason $reason');
 
-    final dynamic rswaps = await ApiProvider().getRecentSwaps(
+    final dynamic rswaps = await MM.getRecentSwaps(
         MMService().client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (rswaps is ErrorString) {
-      Log.println('swap_provider:71', '!getRecentSwaps: ${rswaps.error}');
+      Log.println('swap_provider:66', '!getRecentSwaps: ${rswaps.error}');
       return;
     }
     if (rswaps is! RecentSwaps) throw Exception('!RecentSwaps');
