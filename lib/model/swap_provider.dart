@@ -65,13 +65,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log.println('swap_provider:68', 'update] reason $reason');
+    Log('swap_provider:68', 'update] reason $reason');
 
     final dynamic rswaps = await MM.getRecentSwaps(
         MMService().client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (rswaps is ErrorString) {
-      Log.println('swap_provider:74', '!getRecentSwaps: ${rswaps.error}');
+      Log('swap_provider:74', '!getRecentSwaps: ${rswaps.error}');
       return;
     }
     if (rswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -96,14 +96,31 @@ class SyncSwaps {
     final int timestamp = rswap.events.last.timestamp;
     if (_ours[uuid]?.timestamp == timestamp) return;
 
-    Log.println('swap_provider:99', 'gossiping of $uuid; $timestamp');
-    final SwapGossip gossip = SwapGossip();
-    gossip.timestamp = timestamp;
+    Log('swap_provider:99', 'gossiping of $uuid; $timestamp');
+    final SwapGossip gossip = SwapGossip.from(timestamp, rswap);
     _ours[uuid] = gossip;
   }
 }
 
 class SwapGossip {
+  SwapGossip.from(this.timestamp, ResultSwap rswap) {
+    for (int ix = 0; ix < rswap.events.length - 1; ++ix) {
+      final EventElement eva = rswap.events[ix];
+      final EventElement adam = rswap.events[ix + 1];
+      final String evaT = eva.event.type;
+      final String adamT = adam.event.type;
+      final int delta = adam.timestamp - eva.timestamp;
+      if (delta < 0) {
+        Log('swap_provider:114', 'Negative delta ($evaT→$adamT): $delta');
+        continue;
+      }
+      stepSpeed['$evaT→$adamT'] = delta;
+    }
+  }
+
   /// Time of last swap event, in milliseconds since UNIX epoch.
   int timestamp;
+
+  /// Time between swap states in milliseconds.
+  Map<String, int> stepSpeed = {};
 }

@@ -65,13 +65,13 @@ class MusicService {
     _player = AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
 
     _audioPlayer.onPlayerError.listen((String ev) {
-      Log.println('music_service:68', 'onPlayerError: ' + ev);
+      Log('music_service:68', 'onPlayerError: ' + ev);
     });
 
     /*
     _audioPlayer.onPlayerCompletion.listen((_) {
       // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
-      //Log.println('music_service:74', 'onPlayerCompletion');
+      //Log('music_service:74', 'onPlayerCompletion');
     });
     */
   }
@@ -81,21 +81,23 @@ class MusicService {
     for (final Swap swap in syncSwaps.swaps) {
       final String uuid = swap.result.uuid;
       final String shortId = uuid.substring(0, 4);
-      Log.println('music_service:84',
-          'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
-      final bool active = swap.status != Status.SWAP_FAILED ||
-          swap.status != Status.SWAP_SUCCESSFUL ||
+      final bool active = swap.status != Status.SWAP_FAILED &&
+          swap.status != Status.SWAP_SUCCESSFUL &&
           swap.status != Status.TIME_OUT;
-      if (active) return MusicMode.ACTIVE;
+      if (active) {
+        Log('music_service:88',
+            'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
+        return MusicMode.ACTIVE;
+      }
 
       if (musicMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log.println('music_service:94',
+          Log('music_service:96',
               'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log.println('music_service:98',
+          Log('music_service:100',
               'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
@@ -105,17 +107,17 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log.println('music_service:108',
+        Log('music_service:110',
             'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log.println('music_service:112',
+        Log('music_service:114',
             'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log.println('music_service:118',
+    Log('music_service:120',
         'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
   }
@@ -143,7 +145,7 @@ class MusicService {
     if (_docs == null) throw Exception('Application directory is missing');
     final String target = _docs.path.toString() + '/' + name;
     final File file = File(path);
-    Log.println('music_service:146', 'copying $path to $target');
+    Log('music_service:148', 'copying $path to $target');
     await file.copy(target);
 
     _reload = true;
@@ -172,7 +174,7 @@ class MusicService {
 
     if (newMode != musicMode) {
       changes = true;
-      Log.println('music_service:175', 'play] $musicMode -> $newMode');
+      Log('music_service:177', 'play] $musicMode -> $newMode');
     }
 
     if (_reload) {
@@ -210,7 +212,7 @@ class MusicService {
                         : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
 
     final String path = customFile != null ? customFile.path : defaultPath;
-    Log.println('music_service:213', 'path: $path');
+    Log('music_service:215', 'path: $path');
 
     // Tell the player how to access the file directly instead of trying to copy it from the assets.
     if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
@@ -231,7 +233,7 @@ class MusicService {
       _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
       _player.play(path, volume: volume());
     } else {
-      Log.println('music_service:234', 'Unexpected music mode: $newMode');
+      Log('music_service:236', 'Unexpected music mode: $newMode');
       _audioPlayer.stop();
     }
 
@@ -262,7 +264,7 @@ class MusicService {
   Future<bool> iosBackgroundExit() async {
     final double btr =
         await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-    Log.println('music_service:265', 'backgroundTimeRemaining: $btr');
+    Log('music_service:267', 'backgroundTimeRemaining: $btr');
 
     // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
     // and when we are silent the `backgroundTimeRemaining` is low
