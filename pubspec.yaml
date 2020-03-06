@@ -153,6 +153,9 @@ flutter:
           style: italic
         - asset: fonts/Ubuntu/Ubuntu-Bold.ttf
           weight: 700
+    - family: Monospace
+      fonts:
+        - asset: fonts/Monospace/RobotoMono-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages

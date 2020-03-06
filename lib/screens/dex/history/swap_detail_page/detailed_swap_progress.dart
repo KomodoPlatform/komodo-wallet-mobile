@@ -46,7 +46,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
             height: 15,
             padding: const EdgeInsets.all(1),
             child: Container(
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
               strokeWidth: 1,
             )),
           );
@@ -145,6 +145,17 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
           // so we can show this step before actual swap data received.
           _buildFirstStep(),
           ..._buildFollowingSteps(),
+          const SizedBox(height: 12),
+          Container(
+            child: Text(
+              _swapProvider.swapDescription(swap.result?.uuid),
+              style: TextStyle(
+                fontFamily: 'Monospace',
+                color: Theme.of(context).accentColor,
+                fontSize: 14,
+              ),
+            ),
+          ),
         ],
       ),
     );

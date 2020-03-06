@@ -23,6 +23,20 @@ class SwapProvider extends ChangeNotifier {
 
   Iterable<Swap> get swaps => syncSwaps.swaps;
   Swap swap(String uuid) => syncSwaps.swap(uuid);
+  
+  String swapDescription(String uuid) {
+    return 'Wake up, Neo...\nMatrix has you...\n👁️👁️';
+  }
+
+  SwapStepData swapStepData(
+      {String uuid, String prevEventType, String nextEventType}) {
+    return SwapStepData(estimatedStepSpeed: 71 * 1000);
+  }
+}
+
+class SwapStepData {
+  SwapStepData({this.estimatedStepSpeed});
+  int estimatedStepSpeed;
 }
 
 SyncSwaps syncSwaps = SyncSwaps();
