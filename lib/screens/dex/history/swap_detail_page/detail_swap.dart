@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_progress.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class DetailSwap extends StatefulWidget {
@@ -57,7 +58,11 @@ class _DetailSwapState extends State<DetailSwap> {
             : Container(),
         const SizedBox(
           height: 32,
-        )
+        ),
+        DetailedSwapProgress(uuid: widget.swap.result.uuid),
+        const SizedBox(
+          height: 32,
+        ),
       ],
     );
   }
