@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:provider/provider.dart';
@@ -31,11 +30,15 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       Widget icon = Container();
       switch (status) {
         case SwapStepStatus.pending:
-          icon = Icon(Icons.radio_button_unchecked, size: 15);
+          icon = Icon(
+            Icons.radio_button_unchecked,
+            size: 15,
+            color: Theme.of(context).textTheme.body2.color,
+          );
           break;
         case SwapStepStatus.success:
           icon = Icon(Icons.check_circle,
-              size: 15, color: Colors.lightGreenAccent);
+              size: 15, color: Theme.of(context).accentColor);
           break;
         case SwapStepStatus.inProgress:
           icon = Container(
@@ -44,8 +47,8 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
             padding: const EdgeInsets.all(1),
             child: Container(
                 child: CircularProgressIndicator(
-                  strokeWidth: 1,
-                )),
+              strokeWidth: 1,
+            )),
           );
           break;
         default:
@@ -70,7 +73,12 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
             children: <Widget>[
               _buildStepStatusIcon(status),
               const SizedBox(width: 8),
-              Text('${index + 1}. $title'),
+              Text('${index + 1}. $title',
+                  style: TextStyle(
+                    color: status == SwapStepStatus.pending
+                        ? Theme.of(context).textTheme.body2.color
+                        : null,
+                  )),
             ],
           ),
           const SizedBox(height: 8),
