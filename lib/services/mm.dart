@@ -49,14 +49,20 @@ class UserpassBody {
   http.Client client;
 }
 
+// AG: Planning to get rid of `res` and turn `MM` into a const:
+// 
+//     const ApiProvider MM = const ApiProvider();
+// 
+// ignore: non_constant_identifier_names
+ApiProvider MM = ApiProvider();
+
 class ApiProvider {
   String url = 'http://localhost:7783';
   Response res;
-  String userpass;
 
   Response _saveRes(String method, Response res) {
     final String loggedBody = res.body.toString();
-    String loggedLine = 'api $method $loggedBody';
+    String loggedLine = '$method $loggedBody';
 
     // getMyOrders and getRecentSwaps are invoked every two seconds during an active order or swap
     // and fully logging their response bodies every two seconds is an overkill,
@@ -67,7 +73,7 @@ class ApiProvider {
       loggedLine = loggedLine.substring(0, 75) + '..';
     }
 
-    Log.println('api_providers:70', loggedLine);
+    Log.println('mm:76', loggedLine);
     this.res = res;
     return res;
   }

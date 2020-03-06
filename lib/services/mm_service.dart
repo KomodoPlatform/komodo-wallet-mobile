@@ -20,7 +20,7 @@ import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
@@ -91,7 +91,7 @@ class MMService {
       if (reason != null) {
         await updateOrdersAndSwaps(reason);
       } else if (musicService.recommendsPeriodicUpdates()) {
-        await updateOrdersAndSwaps('musicService');
+        await syncSwaps.update('musicService');
       }
     });
   }
@@ -288,9 +288,9 @@ class MMService {
 
   /// Load fresh lists of orders and swaps from MM.
   Future<void> updateOrdersAndSwaps(String reason) async {
+    await syncSwaps.update(reason);
     final List<Swap> swaps = await swapHistoryBloc.updateSwaps(50, null);
     await ordersBloc.updateOrdersSwaps(swaps);
-    await syncSwaps.update(reason);
   }
 
   /// Process a line of MM log,
@@ -348,9 +348,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        Log.println('mm_service:342', 'All coins activated');
+        Log.println('mm_service:351', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('mm_service:344', 'loadCoin finished');
+          Log.println('mm_service:353', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -409,15 +409,14 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log.println('mm_service:403', 'getAllBalances');
+    Log.println('mm_service:412', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.readJsonCoin();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
       final List<Future<Balance>> futureBalances = <Future<Balance>>[];
 
       for (Coin coin in coins) {
-        futureBalances
-            .add(ApiProvider().getBalance(GetBalance(coin: coin.abbr)));
+        futureBalances.add(MM.getBalance(GetBalance(coin: coin.abbr)));
       }
       return await Future.wait<Balance>(futureBalances);
     } else {
