@@ -48,7 +48,8 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
     final Color _disabledColor = Theme.of(context).textTheme.body2.color;
     final Color _accentColor = Theme.of(context).accentColor;
 
-    if (swap.status == Status.SWAP_SUCCESSFUL || swap.status == Status.SWAP_FAILED) {
+    if (swap.status == Status.SWAP_SUCCESSFUL ||
+        swap.status == Status.SWAP_FAILED) {
       setState(() {
         isInProgress = false;
       });
@@ -65,12 +66,10 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
           );
           break;
         case SwapStepStatus.success:
-          icon = Icon(Icons.check_circle,
-              size: 15, color: _accentColor);
+          icon = Icon(Icons.check_circle, size: 15, color: _accentColor);
           break;
         case SwapStepStatus.inProgress:
-          icon = Icon(Icons.swap_horiz,
-              size: 15, color: _accentColor);
+          icon = Icon(Icons.swap_horiz, size: 15, color: _accentColor);
           break;
         default:
           {}
@@ -88,7 +87,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       // TODO(yurii): handle SwapStepStatus.failed
     }
 
-    String _formatTime(Duration duration) {
+    String _formatSpeed(Duration duration) {
       if (duration == null) return '-';
 
       final int hh = duration.inHours;
@@ -112,13 +111,19 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       return formatted;
     }
 
-    Duration _getEstimatedTime(int index) {
-      // TODO(yurii): implement estimated time
-      return null;
+    Duration _getEstimatedSpeed(int index) {
+      if (index == 0) return null;
+
+      final StepSpeed stepSpeed = _swapProvider.stepSpeed(
+        widget.uuid,
+        swap.result.successEvents[index - 1],
+        swap.result.successEvents[index],
+      );
+      return Duration(milliseconds: stepSpeed.speed);
     }
 
-    Duration _getActualTime(int index) {
-      if (index == 0) return null; // TODO(yurii): calculate first step time
+    Duration _getActualSpeed(int index) {
+      if (index == 0) return null; // TODO(yurii): calculate first step speed
       if (index > swap.step) return null;
 
       final int fromTimestamp = swap.result.events[index - 1].timestamp;
@@ -140,8 +145,8 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
     Widget _buildStep({
       String title,
       SwapStepStatus status,
-      Duration estimatedTime,
-      Duration actualTime,
+      Duration estimatedSpeed,
+      Duration actualSpeed,
       int index,
     }) {
       return Column(
@@ -162,16 +167,41 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
                       )),
                   Row(
                     children: <Widget>[
-                      Text('Act. time: ',
+                      Text('act: ', // TODO(yurii): localization
                           style: TextStyle(
                             fontSize: 13,
                             color: _getStatus(index) == SwapStepStatus.pending
                                 ? _disabledColor
                                 : _accentColor,
-                          )), // TODO(yurii): localization
+                          )),
                       Text(
-                        _formatTime(_getActualTime(index)),
+                        _formatSpeed(_getActualSpeed(index)),
                         style: const TextStyle(fontSize: 13),
+                      ),
+                      const SizedBox(width: 4),
+                      Text('|',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: _getStatus(index) == SwapStepStatus.pending
+                                ? _disabledColor
+                                : null,
+                          )),
+                      const SizedBox(width: 4),
+                      Text('est: ', // TODO(yurii): localization
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: _getStatus(index) == SwapStepStatus.pending
+                                ? _disabledColor
+                                : _accentColor,
+                          )),
+                      Text(
+                        _formatSpeed(_getEstimatedSpeed(index)),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: _getStatus(index) == SwapStepStatus.pending
+                              ? _disabledColor
+                              : null,
+                        ),
                       ),
                     ],
                   ),
@@ -188,8 +218,8 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       return _buildStep(
         title: 'Started', // TODO(yurii): localization
         status: _getStatus(0),
-        estimatedTime: _getEstimatedTime(0),
-        actualTime: _getActualTime(0),
+        estimatedSpeed: _getEstimatedSpeed(0),
+        actualSpeed: _getActualSpeed(0),
         index: 0,
       );
     }
@@ -203,8 +233,8 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
         list.add(_buildStep(
           title: swap.result.successEvents[i], // TODO(yurii): localization
           status: _getStatus(i),
-          estimatedTime: _getEstimatedTime(i),
-          actualTime: _getActualTime(i),
+          estimatedSpeed: _getEstimatedSpeed(i),
+          actualSpeed: _getActualSpeed(i),
           index: i,
         ));
       }
