@@ -61,7 +61,7 @@ class SwapProvider extends ChangeNotifier {
   void _transitions(StringBuffer text, EventEvent ev) {
     final Map<String, int> knownTransitions = {};
     final String pref = ev.type + '→';
-    // TBD: Should probably filter by (sorted) koin pair.
+    // TBD: Should probably filter by (sorted) coin pair.
     for (SwapGossip gossip in syncSwaps._ours.values) {
       for (String trans in gossip.stepSpeed.keys) {
         if (trans.startsWith(pref)) {
@@ -79,15 +79,33 @@ class SwapProvider extends ChangeNotifier {
     }
   }
 
-  SwapStepData swapStepData(
-      {String uuid, String prevEventType, String nextEventType}) {
-    return SwapStepData(estimatedStepSpeed: 71 * 1000);
+  /// Based on the available gossip information
+  /// tries to estimate the speed of transition [from] one [to] another steps of a given [uuid] swap.
+  /// Returns `null` if no estimate is currently available.
+  StepSpeed stepSpeed(String uuid, String from, String to) {
+    final String transition = '$from→$to';
+    int sum = 0;
+    int count = 0;
+    // TBD: Should probably filter by (sorted) coin pair.
+    for (SwapGossip gossip in syncSwaps._ours.values) {
+      final int speed = gossip.stepSpeed[transition];
+      if (speed == null) continue;
+      sum += speed;
+      count += 1;
+    }
+    if (count == 0) return null;
+    final int speed = (sum / count).round();
+    Log('swap_provider:98', 'stepSpeed] $transition: $speed');
+
+    return StepSpeed(speed: speed);
   }
 }
 
-class SwapStepData {
-  SwapStepData({this.estimatedStepSpeed});
-  int estimatedStepSpeed;
+class StepSpeed {
+  StepSpeed({this.speed});
+
+  /// Speed estimate of step transition, in milliseconds.
+  int speed;
 }
 
 SyncSwaps syncSwaps = SyncSwaps();
@@ -131,13 +149,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:134', 'update] reason $reason');
+    Log('swap_provider:152', 'update] reason $reason');
 
     final dynamic rswaps = await MM.getRecentSwaps(
         mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (rswaps is ErrorString) {
-      Log('swap_provider:140', '!getRecentSwaps: ${rswaps.error}');
+      Log('swap_provider:158', '!getRecentSwaps: ${rswaps.error}');
       return;
     }
     if (rswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -163,7 +181,7 @@ class SyncSwaps {
     final int timestamp = rswap.events.last.timestamp;
     if (_ours[uuid]?.timestamp == timestamp) return;
 
-    Log('swap_provider:166', 'gossiping of $uuid; $timestamp');
+    Log('swap_provider:184', 'gossiping of $uuid; $timestamp');
     final SwapGossip gossip = SwapGossip.from(timestamp, rswap);
     _ours[uuid] = gossip;
   }
@@ -178,7 +196,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:181', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:199', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
