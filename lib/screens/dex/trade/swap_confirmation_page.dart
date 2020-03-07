@@ -393,10 +393,10 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       isSwapMaking = false;
     });
     String timeSecondeLeft = error.error;
-    Log('swap_confirmation_page:397', timeSecondeLeft);
+    Log('swap_confirmation_page:396', timeSecondeLeft);
     timeSecondeLeft = timeSecondeLeft.substring(
         timeSecondeLeft.lastIndexOf(' '), timeSecondeLeft.length);
-    Log('swap_confirmation_page:400', timeSecondeLeft);
+    Log('swap_confirmation_page:399', timeSecondeLeft);
     String errorDisplay =
         error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
     if (error.error.contains('is too low, required')) {
@@ -411,7 +411,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
 
   void _goToNextScreen(BuildContext mContext, dynamic onValue,
       String amountToSell, Decimal amountToBuy) {
-    Log('', '_goToNextScreen] swap started…');
+    Log('swap_confirmation_page:414', '_goToNextScreen] swap started…');
     ordersBloc.updateOrdersSwaps();
 
     if (widget.swapStatus == SwapStatus.BUY) {
