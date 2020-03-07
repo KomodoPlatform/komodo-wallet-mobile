@@ -2,26 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 SwapHistoryBloc swapHistoryBloc = SwapHistoryBloc();
 
 class SwapHistoryBloc implements BlocBase {
-  List<Swap> swaps = <Swap>[];
-
-  // Streams to handle the list coin
-  final StreamController<List<Swap>> _swapsController =
-      StreamController<List<Swap>>.broadcast();
-  Sink<List<Swap>> get _inSwaps => _swapsController.sink;
-  Stream<List<Swap>> get outSwaps => _swapsController.stream;
+  // BLoC list of swaps.
+  // AG: Should eventually refactor the UI code to use the `SwapProvider` instead.
+  final StreamController<Iterable<Swap>> _swapsController =
+      StreamController<Iterable<Swap>>.broadcast();
+  Sink<Iterable<Swap>> get inSwaps => _swapsController.sink;
+  Stream<Iterable<Swap>> get outSwaps => _swapsController.stream;
 
   bool isAnimationStepFinalIsFinish = false;
   bool isSwapsOnGoing = false;
@@ -30,85 +26,9 @@ class SwapHistoryBloc implements BlocBase {
     _swapsController.close();
   }
 
-  Future<dynamic> recoverFund(Swap swap) async => await MM.recoverFundsOfSwap(MMService().client,
-        GetRecoverFundsOfSwap(params: Params(uuid: swap.result.uuid)));
-
-  Future<List<Swap>> updateSwaps(int limit, String fromUuid) async {
-    isSwapsOnGoing = false;
-    setSwaps(await fetchSwaps(limit, fromUuid));
-    return swaps;
-  }
-
-  Future<List<Swap>> fetchSwaps(int limit, String fromUuid) async {
-    try {
-      final dynamic recentSwaps = await MM.getRecentSwaps(MMService().client,
-          GetRecentSwap(limit: limit, fromUuid: fromUuid));
-      if (recentSwaps is RecentSwaps) {
-        final List<Swap> newSwaps = <Swap>[];
-
-        for (ResultSwap swap in recentSwaps.result.swaps) {
-          final dynamic nSwap = Swap(result: swap, status: getStatusSwap(swap));
-          if (nSwap is Swap) {
-            if (swap.myInfo != null &&
-                swap.myInfo.startedAt + 3600 <
-                    DateTime.now().millisecondsSinceEpoch ~/ 1000 &&
-                getStatusSwap(swap) != Status.SWAP_SUCCESSFUL) {
-              nSwap.status = Status.TIME_OUT;
-            }
-            newSwaps.add(nSwap);
-            if (nSwap.status == Status.ORDER_MATCHED ||
-                nSwap.status == Status.ORDER_MATCHING ||
-                nSwap.status == Status.SWAP_ONGOING) {
-              isSwapsOnGoing = true;
-            }
-          } else if (nSwap is ErrorString) {
-            if (swap.myInfo != null &&
-                swap.myInfo.startedAt + 600 <
-                    DateTime.now().millisecondsSinceEpoch ~/ 1000) {
-              newSwaps.add(Swap(
-                status: Status.TIME_OUT,
-                result: swap,
-              ));
-            }
-          }
-        }
-
-        return newSwaps;
-      } else {
-        return <Swap>[];
-      }
-    } catch (e) {
-      Log.println('swap_history_bloc:81', e);
-      return <Swap>[];
-    }
-  }
-
-  void setSwaps(List<Swap> newSwaps) {
-    if (newSwaps == null) {
-      swaps.clear();
-    } else {
-      if (swaps.isEmpty) {
-        swaps.addAll(newSwaps);
-      } else {
-        for (Swap newSwap in newSwaps) {
-          bool isSwapAlreadyExist = false;
-          swaps.asMap().forEach((int index, Swap currentSwap) {
-            if (newSwap.result.uuid == currentSwap.result.uuid) {
-              isSwapAlreadyExist = true;
-              if (newSwap.status != currentSwap.status) {
-                swaps.removeAt(index);
-                swaps.add(newSwap);
-              }
-            }
-          });
-          if (!isSwapAlreadyExist) {
-            swaps.add(newSwap);
-          }
-        }
-      }
-    }
-    _inSwaps.add(swaps);
-  }
+  Future<dynamic> recoverFund(Swap swap) async => await MM.recoverFundsOfSwap(
+      MMService().client,
+      GetRecoverFundsOfSwap(params: Params(uuid: swap.result.uuid)));
 
   Status getStatusSwap(ResultSwap resultSwap) {
     Status status = Status.ORDER_MATCHING;

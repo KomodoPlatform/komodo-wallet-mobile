@@ -23,9 +23,12 @@ class SwapProvider extends ChangeNotifier {
 
   Iterable<Swap> get swaps => syncSwaps.swaps;
   Swap swap(String uuid) => syncSwaps.swap(uuid);
-  
+
   String swapDescription(String uuid) {
-    return 'Wake up, Neo...\nMatrix has you...\n👁️👁️';
+    return ''
+        ' + --- Wake up, Neo... --- +\n'
+        ' | Matrix has you...       |\n'
+        ' | 👁️👁️                   |';
   }
 
   SwapStepData swapStepData(
@@ -79,13 +82,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:68', 'update] reason $reason');
+    Log('swap_provider:85', 'update] reason $reason');
 
     final dynamic rswaps = await MM.getRecentSwaps(
-        MMService().client, GetRecentSwap(limit: 50, fromUuid: null));
+        mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (rswaps is ErrorString) {
-      Log('swap_provider:74', '!getRecentSwaps: ${rswaps.error}');
+      Log('swap_provider:91', '!getRecentSwaps: ${rswaps.error}');
       return;
     }
     if (rswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -100,6 +103,7 @@ class SyncSwaps {
 
     _swaps = swaps;
     _notifyListeners();
+    swapHistoryBloc.inSwaps.add(swaps.values);
   }
 
   /// Share swap information on dexp2p.
@@ -110,7 +114,7 @@ class SyncSwaps {
     final int timestamp = rswap.events.last.timestamp;
     if (_ours[uuid]?.timestamp == timestamp) return;
 
-    Log('swap_provider:99', 'gossiping of $uuid; $timestamp');
+    Log('swap_provider:117', 'gossiping of $uuid; $timestamp');
     final SwapGossip gossip = SwapGossip.from(timestamp, rswap);
     _ours[uuid] = gossip;
   }
@@ -125,7 +129,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:114', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:132', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;

@@ -10,6 +10,10 @@ List<Coin> coinFromJson(String str) =>
 String coinToJson(List<Coin> data) =>
     json.encode(List<dynamic>.from(data.map<dynamic>((dynamic x) => x.toJson())));
 
+// AG: Looks like this is a custom format.
+// For example, the "coin" in https://github.com/jl777/coins/blob/master/coins was renamed to "abbr" here.
+// I think that's unfortunate, should take opportunities to close the gap with original.
+
 class Coin {
   Coin({
     this.name,
@@ -53,6 +57,7 @@ class Coin {
   int txfee;
   double priceUsd;
   int mm2;
+  /// Aka "coin", "ticker".
   String abbr;
   String coingeckoId;
   String colorCoin;

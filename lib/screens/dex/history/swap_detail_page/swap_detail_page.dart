@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/final_trade_success.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/stepper_trade.dart';
@@ -20,7 +21,6 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
 
   @override
   void initState() {
-    swapHistoryBloc.updateSwaps(50, null);
     if (widget.swap.status != null &&
         widget.swap.status == Status.SWAP_SUCCESSFUL)
       swapHistoryBloc.isAnimationStepFinalIsFinish = true;
@@ -31,9 +31,7 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
   Widget build(BuildContext context) {
     return LockScreen(
       context: context,
-      onSuccess: () {
-        swapHistoryBloc.updateSwaps(50, null);
-      },
+      onSuccess: () {},
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
@@ -47,11 +45,11 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
             actions: const <Widget>[
               SoundVolumeButton(key: Key('swap-detail-sound-button'))
             ]),
-        body: StreamBuilder<List<Swap>>(
+        body: StreamBuilder<Iterable<Swap>>(
             stream: swapHistoryBloc.outSwaps,
-            initialData: swapHistoryBloc.swaps,
+            initialData: syncSwaps.swaps,
             builder:
-                (BuildContext context, AsyncSnapshot<List<Swap>> snapshot) {
+                (BuildContext context, AsyncSnapshot<Iterable<Swap>> snapshot) {
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
                 swapData = widget.swap;
                 for (Swap swap in snapshot.data) {

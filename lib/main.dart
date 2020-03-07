@@ -40,11 +40,11 @@ void main() {
 
 Future<void> startApp() async {
   try {
-    await MMService().initMarketMaker();
+    await mmSe.initMarketMaker();
     await _runBinMm2UserAlreadyLog();
     return runApp(_myAppWithProviders);
   } catch (e) {
-    Log.println('main:47', 'startApp] $e');
+    Log('main:47', 'startApp] $e');
     rethrow;
   }
 }
@@ -72,8 +72,8 @@ Future<void> _runBinMm2UserAlreadyLog() async {
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
-    Log.println('main:75', 'loadJsonCoinsDefault');
-    await coinsBloc.writeJsonCoin(await MMService().loadJsonCoinsDefault());
+    Log('main:75', 'loadJsonCoinsDefault');
+    await coinsBloc.writeJsonCoin(await mmSe.loadJsonCoinsDefault());
   }
 }
 
@@ -84,7 +84,7 @@ void _checkNetworkStatus() {
       mainBloc.setIsNetworkOffline(true);
     } else {
       if (mainBloc.isNetworkOffline) {
-        if (!MMService().ismm2Running) {
+        if (!mmSe.ismm2Running) {
           _runBinMm2UserAlreadyLog();
         }
         mainBloc.setIsNetworkOffline(false);
@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _checkNetworkStatus();
     if (isInDebugMode) {
-      MMService().initMarketMaker().then((_) => _runBinMm2UserAlreadyLog());
+      mmSe.initMarketMaker().then((_) => _runBinMm2UserAlreadyLog());
     }
   }
 
@@ -129,9 +129,9 @@ class _MyAppState extends State<MyApp> {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    // Log.println('main:132',
+                    // Log('main:132',
                     //     'current locale: ' + currentLocale?.toString());
-                    // Log.println('main:134',
+                    // Log('main:134',
                     //     'current pref locale: ' + prefLocale.toString());
 
                     return MaterialApp(
@@ -212,35 +212,35 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log.println('main:215', 'lifecycle: inactive');
+        Log('main:215', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
-        Log.println('main:219', 'lifecycle: paused');
+        Log('main:219', 'lifecycle: paused');
         lockService.lockSignal(context);
 
-        // AG: do we really need it? // if (Platform.isIOS) MMService().closeLogSink();
+        // AG: do we really need it? // if (Platform.isIOS) mmSe.closeLogSink();
 
         // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS && await musicService.iosBackgroundExit()) {
           // https://gitlab.com/artemciy/supernet/issues/4#note_284468673
-          Log.println('main:228', 'Suspended, exit');
+          Log('main:228', 'Suspended, exit');
           exit(0);
         }
         break;
       case AppLifecycleState.resumed:
-        Log.println('main:233', 'lifecycle: resumed');
+        Log('main:233', 'lifecycle: resumed');
         lockService.lockSignal(context);
-        MMService().openLogSink();
+        mmSe.openLogSink();
         if (Platform.isIOS) {
-          if (!MMService().ismm2Running) {
+          if (!mmSe.ismm2Running) {
             _runBinMm2UserAlreadyLog();
           }
         }
         break;
       case AppLifecycleState.detached:
-        Log.println('main:243', 'lifecycle: detached');
+        Log('main:243', 'lifecycle: detached');
         break;
     }
   }

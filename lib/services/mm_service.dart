@@ -11,14 +11,12 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
-import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/job_service.dart';
@@ -31,15 +29,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'db/database.dart';
 
+/// Singleton shorthand for `MMService()`.
+MMService mmSe = MMService._internal();
+
 /// Interface to Market Maker, https://developers.atomicdex.io/
 class MMService {
-  factory MMService() {
-    return _singleton;
-  }
-
+  factory MMService() => mmSe;
   MMService._internal();
-
-  static final MMService _singleton = MMService._internal();
 
   List<dynamic> balances = <dynamic>[];
   Process mm2Process;
@@ -72,17 +68,17 @@ class MMService {
           !checkmm2process.stdout
               .toString()
               .contains(prefs.getInt('mm2ProcessPID').toString())) {
-        await MMService().runBin();
+        await mmSe.runBin();
       } else {
-        MMService().initUsername(passphrase);
-        MMService().ismm2Running = true;
-        await MMService().initCheckLogs();
+        mmSe.initUsername(passphrase);
+        mmSe.ismm2Running = true;
+        await mmSe.initCheckLogs();
         coinsBloc.currentCoinActivate(null);
         coinsBloc.loadCoin();
         coinsBloc.startCheckBalance();
       }
     } else {
-      await MMService().runBin();
+      await mmSe.runBin();
     }
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
@@ -289,15 +285,14 @@ class MMService {
   /// Load fresh lists of orders and swaps from MM.
   Future<void> updateOrdersAndSwaps(String reason) async {
     await syncSwaps.update(reason);
-    final List<Swap> swaps = await swapHistoryBloc.updateSwaps(50, null);
-    await ordersBloc.updateOrdersSwaps(swaps);
+    await ordersBloc.updateOrdersSwaps();
   }
 
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void onLogsmm2(String log) {
     if (sink != null) {
-      Log.println('mm_service:300', log);
+      Log.println('mm_service:295', log);
 
       // AG: This currently relies on the information that can be freely changed by MM
       // or removed from the logs entirely (e.g. on debug and human-readable parts).
@@ -348,9 +343,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        Log.println('mm_service:351', 'All coins activated');
+        Log.println('mm_service:346', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('mm_service:353', 'loadCoin finished');
+          Log.println('mm_service:348', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -409,7 +404,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log.println('mm_service:412', 'getAllBalances');
+    Log.println('mm_service:407', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.readJsonCoin();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {

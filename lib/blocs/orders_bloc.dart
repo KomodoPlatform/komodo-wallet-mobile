@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -85,22 +85,16 @@ class OrdersBloc implements BlocBase {
         _inCurrentOrders.add(currentOrders);
       }
     } catch (e) {
-      Log.println('orders_bloc:88', e);
+      Log('orders_bloc:88', e);
       rethrow;
     }
   }
 
-  /// Loads orders and swaps from MM.
-  ///
-  /// Skips `fetchSwaps` if there is already a list of [swaps] obtained recently from MM.
-  Future<void> updateOrdersSwaps([List<Swap> swaps]) async {
+  /// Loads orders from MM.
+  Future<void> updateOrdersSwaps() async {
     await updateOrders();
-    if (swaps == null) {
-      swaps = await swapHistoryBloc.fetchSwaps(50, null);
-    } else {
-      swaps = List<Swap>.from(swaps); // Treat external `swaps` as immutable.
-    }
 
+    final List<Swap> swaps = syncSwaps.swaps.toList();
     swaps.removeWhere((Swap swap) =>
         swap.status == Status.SWAP_FAILED ||
         swap.status == Status.SWAP_SUCCESSFUL ||
@@ -159,7 +153,7 @@ class OrdersBloc implements BlocBase {
       });
       _inOrderSwaps.add(orderSwaps);
     } catch (e) {
-      Log.println('orders_bloc:162', e);
+      Log('orders_bloc:156', e);
       rethrow;
     }
   }
