@@ -170,19 +170,19 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
                       Text('act: ', // TODO(yurii): localization
                           style: TextStyle(
                             fontSize: 13,
-                            color: _getStatus(index) == SwapStepStatus.pending
+                            color: status == SwapStepStatus.pending
                                 ? _disabledColor
                                 : _accentColor,
                           )),
                       Text(
-                        _formatSpeed(_getActualSpeed(index)),
+                        _formatSpeed(actualSpeed),
                         style: const TextStyle(fontSize: 13),
                       ),
                       const SizedBox(width: 4),
                       Text('|',
                           style: TextStyle(
                             fontSize: 13,
-                            color: _getStatus(index) == SwapStepStatus.pending
+                            color: status == SwapStepStatus.pending
                                 ? _disabledColor
                                 : null,
                           )),
@@ -190,15 +190,15 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
                       Text('est: ', // TODO(yurii): localization
                           style: TextStyle(
                             fontSize: 13,
-                            color: _getStatus(index) == SwapStepStatus.pending
+                            color: status == SwapStepStatus.pending
                                 ? _disabledColor
                                 : _accentColor,
                           )),
                       Text(
-                        _formatSpeed(_getEstimatedSpeed(index)),
+                        _formatSpeed(estimatedSpeed),
                         style: TextStyle(
                           fontSize: 13,
-                          color: _getStatus(index) == SwapStepStatus.pending
+                          color: status == SwapStepStatus.pending
                               ? _disabledColor
                               : null,
                         ),
