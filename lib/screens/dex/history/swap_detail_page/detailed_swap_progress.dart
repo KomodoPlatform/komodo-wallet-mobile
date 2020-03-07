@@ -41,15 +41,8 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
               size: 15, color: Theme.of(context).accentColor);
           break;
         case SwapStepStatus.inProgress:
-          icon = Container(
-            width: 15,
-            height: 15,
-            padding: const EdgeInsets.all(1),
-            child: Container(
-                child: const CircularProgressIndicator(
-              strokeWidth: 1,
-            )),
-          );
+          icon = Icon(Icons.swap_horiz,
+              size: 15, color: Theme.of(context).accentColor);
           break;
         default:
           {}
@@ -70,10 +63,12 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       return Column(
         children: <Widget>[
           Row(
+            mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               _buildStepStatusIcon(status),
               const SizedBox(width: 8),
               Text('${index + 1}. $title',
+                  overflow: TextOverflow.visible,
                   style: TextStyle(
                     color: status == SwapStepStatus.pending
                         ? Theme.of(context).textTheme.body2.color
