@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -21,10 +23,36 @@ class DetailedSwapProgress extends StatefulWidget {
 
 class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
   Swap swap;
+  Timer timer;
+  bool isInProgress = true;
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      setState(() {});
+      if (!isInProgress) timer.cancel();
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final SwapProvider _swapProvider = Provider.of<SwapProvider>(context);
     swap = _swapProvider.swap(widget.uuid) ?? Swap();
+    final Color _disabledColor = Theme.of(context).textTheme.body2.color;
+    final Color _accentColor = Theme.of(context).accentColor;
+
+    if (swap.status == Status.SWAP_SUCCESSFUL || swap.status == Status.SWAP_FAILED) {
+      setState(() {
+        isInProgress = false;
+      });
+    }
 
     Widget _buildStepStatusIcon(SwapStepStatus status) {
       Widget icon = Container();
@@ -33,16 +61,16 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
           icon = Icon(
             Icons.radio_button_unchecked,
             size: 15,
-            color: Theme.of(context).textTheme.body2.color,
+            color: _disabledColor,
           );
           break;
         case SwapStepStatus.success:
           icon = Icon(Icons.check_circle,
-              size: 15, color: Theme.of(context).accentColor);
+              size: 15, color: _accentColor);
           break;
         case SwapStepStatus.inProgress:
           icon = Icon(Icons.swap_horiz,
-              size: 15, color: Theme.of(context).accentColor);
+              size: 15, color: _accentColor);
           break;
         default:
           {}
@@ -51,6 +79,62 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       return Container(
         child: icon,
       );
+    }
+
+    SwapStepStatus _getStatus(int index) {
+      if (index == swap.step) return SwapStepStatus.inProgress;
+      if (index < swap.step) return SwapStepStatus.success;
+      return SwapStepStatus.pending;
+      // TODO(yurii): handle SwapStepStatus.failed
+    }
+
+    String _formatTime(Duration duration) {
+      if (duration == null) return '-';
+
+      final int hh = duration.inHours;
+      final int mm = duration.inMinutes;
+      final int ss = duration.inSeconds;
+      final int ms = duration.inMilliseconds;
+
+      if (ms < 1000) return '${ms}ms';
+
+      String formatted = '';
+      if (ss.remainder(60) > 0) {
+        formatted = '${ss.remainder(60)}s';
+      }
+      if (mm > 0) {
+        formatted = '${mm.remainder(60)}m ' + formatted;
+      }
+      if (hh > 0) {
+        formatted = '${hh.remainder(60)}h ' + formatted;
+      }
+
+      return formatted;
+    }
+
+    Duration _getEstimatedTime(int index) {
+      // TODO(yurii): implement estimated time
+      return null;
+    }
+
+    Duration _getActualTime(int index) {
+      if (index == 0) return null; // TODO(yurii): calculate first step time
+      if (index > swap.step) return null;
+
+      final int fromTimestamp = swap.result.events[index - 1].timestamp;
+      switch (_getStatus(index)) {
+        case SwapStepStatus.inProgress:
+          return Duration(
+              milliseconds:
+                  DateTime.now().millisecondsSinceEpoch - fromTimestamp);
+          break;
+        case SwapStepStatus.success:
+          final int toTimeStamp = swap.result.events[index].timestamp;
+          return Duration(milliseconds: toTimeStamp - fromTimestamp);
+          break;
+        default:
+          return null;
+      }
     }
 
     Widget _buildStep({
@@ -67,35 +151,37 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
             children: <Widget>[
               _buildStepStatusIcon(status),
               const SizedBox(width: 8),
-              Text('${index + 1}. $title',
-                  overflow: TextOverflow.visible,
-                  style: TextStyle(
-                    color: status == SwapStepStatus.pending
-                        ? Theme.of(context).textTheme.body2.color
-                        : null,
-                  )),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(title,
+                      style: TextStyle(
+                        color: status == SwapStepStatus.pending
+                            ? _disabledColor
+                            : null,
+                      )),
+                  Row(
+                    children: <Widget>[
+                      Text('Act. time: ',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: _getStatus(index) == SwapStepStatus.pending
+                                ? _disabledColor
+                                : _accentColor,
+                          )), // TODO(yurii): localization
+                      Text(
+                        _formatTime(_getActualTime(index)),
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 8),
         ],
       );
-    }
-
-    SwapStepStatus _getStatus(int idx) {
-      if (idx == swap.step) return SwapStepStatus.inProgress;
-      if (idx < swap.step) return SwapStepStatus.success;
-      return SwapStepStatus.pending;
-      // TODO(yurii): handle SwapStepStatus.failed
-    }
-
-    Duration _getEstimatedTime(int idx) {
-      // TODO(yurii): implement estimated time
-      return null;
-    }
-
-    Duration _getActualTime(int idx) {
-      // TODO(yurii): implement actual time
-      return null;
     }
 
     Widget _buildFirstStep() {
@@ -146,7 +232,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
               _swapProvider.swapDescription(swap.result?.uuid),
               style: TextStyle(
                 fontFamily: 'Monospace',
-                color: Theme.of(context).accentColor,
+                color: _accentColor,
                 fontSize: 14,
               ),
             ),
