@@ -72,7 +72,7 @@ void _checkNetworkStatus() {
       mainBloc.setIsNetworkOffline(true);
     } else {
       if (mainBloc.isNetworkOffline) {
-        if (!MMService().ismm2Running) {
+        if (!MMService().running) {
           _runBinMm2UserAlreadyLog();
         }
         mainBloc.setIsNetworkOffline(false);
@@ -222,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         lockService.lockSignal(context);
         MMService().openLogSink();
         if (Platform.isIOS) {
-          if (!MMService().ismm2Running) {
+          if (!MMService().running) {
             _runBinMm2UserAlreadyLog();
           }
         }

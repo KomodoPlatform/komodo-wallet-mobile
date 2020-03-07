@@ -44,10 +44,7 @@ class _CoinsPageState extends State<CoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    if (MMService().ismm2Running) {
-      coinsBloc.loadCoin();
-    }
-
+    if (MMService().running) coinsBloc.loadCoin();
     super.initState();
   }
 
@@ -286,7 +283,7 @@ class ListCoinsState extends State<ListCoins> {
 
   @override
   void initState() {
-    if (MMService().ismm2Running) {
+    if (MMService().running) {
       coinsBloc.loadCoin();
     }
     super.initState();

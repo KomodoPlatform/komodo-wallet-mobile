@@ -43,7 +43,11 @@ class MMService {
   List<dynamic> balances = <dynamic>[];
   Process mm2Process;
   List<Coin> coins = <Coin>[];
-  bool ismm2Running = false;
+
+  /// Switched on when we hear from MM.
+  bool get running => _running;
+  bool _running = false;
+
   String url = 'http://localhost:7783';
   String userpass = '';
   Stream<List<int>> streamSubscriptionStdout;
@@ -74,7 +78,7 @@ class MMService {
         await MMService().runBin();
       } else {
         MMService().initUsername(passphrase);
-        MMService().ismm2Running = true;
+        MMService()._running = true;
         await MMService().initCheckLogs();
         coinsBloc.currentCoinActivate(null);
         coinsBloc.loadCoin();
@@ -134,26 +138,30 @@ class MMService {
   Future<void> initCheckLogs() async {
     final File fileLog = File('${filesPath}mm.log');
 
-    if (!fileLog.existsSync()) {
-      await fileLog.create();
-    }
-    int offset = await fileLog.length();
+    if (!fileLog.existsSync()) await fileLog.create();
+    int offset = fileLog.lengthSync();
 
-    jobService.install('mmLogs', 1, (j) async {
-      fileLog
+    jobService.install('tail MM log', 1, (j) async {
+      final Stream<String> stream = fileLog
           .openRead(offset)
           .transform(utf8.decoder)
-          .transform(const LineSplitter())
-          .listen((String data) {
-        if (data.contains('DEX stats API enabled at')) {
-          ismm2Running = true;
+          .transform(const LineSplitter());
+      await for (String chunk in stream) {
+        if (chunk.contains('DEX stats API enabled at')) {
+          _running = true;
           initCoinsAndLoad();
           coinsBloc.startCheckBalance();
         }
-        onLogsmm2(data);
-      }).onDone(() async {
-        offset = await fileLog.length();
-      });
+        _onLog(chunk);
+      }
+      offset = fileLog.lengthSync();
+      if (offset > 512 * 1024) {
+        // #653: Truncate the MM log.
+        // `_onLog` copies chunks into the "log.txt"
+        // hence we can just truncate the "mm.log" without separately copying it.
+        final IOSink truncSink = fileLog.openWrite();
+        await truncSink.close();
+      }
     });
   }
 
@@ -176,16 +184,6 @@ class MMService {
   Future<void> initLogSink() async {
     final File dateFile = File('${filesPath}logDate.txt');
     logFile = File('${filesPath}log.txt');
-
-    jobService.install('truncatemmLogs', 300, (j) async {
-      final File logFile = File('${filesPath}mm.log');
-      if (logFile == null) return;
-      final size = await logFile.length();
-      if (size >= 1048576) {
-        await logFile.delete();
-        await logFile.create();
-      }
-    });
 
     if ((logFile.existsSync() && logFile.lengthSync() > 7900000) ||
         (dateFile.existsSync() &&
@@ -272,7 +270,7 @@ class MMService {
           checkStatusmm2().then((int onValue) {
             print('STATUS MM2: ' + onValue.toString());
             if (onValue == 3) {
-              ismm2Running = true;
+              _running = true;
               _.cancel();
               print('CANCEL TIMER');
               initCoinsAndLoad();
@@ -301,26 +299,26 @@ class MMService {
 
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
-  void onLogsmm2(String log) {
+  void _onLog(String chunk) {
     if (sink != null) {
-      Log.println('mm_service:296', log);
+      Log.println('mm_service:296', chunk);
       // AG: This currently relies on the information that can be freely changed by MM
       // or removed from the logs entirely (e.g. on debug and human-readable parts).
       // Should update it to rely on the log tags instead.
-      if (log.contains('CONNECTED') ||
-          log.contains('Entering the taker_swap_loop') ||
-          log.contains('Received \'negotiation') ||
-          log.contains('Got maker payment') ||
-          log.contains('Sending \'taker-fee') ||
-          log.contains('Sending \'taker-payment') ||
-          log.contains('Finished')) {
+      if (chunk.contains('CONNECTED') ||
+          chunk.contains('Entering the taker_swap_loop') ||
+          chunk.contains('Received \'negotiation') ||
+          chunk.contains('Got maker payment') ||
+          chunk.contains('Sending \'taker-fee') ||
+          chunk.contains('Sending \'taker-payment') ||
+          chunk.contains('Finished')) {
         shouldUpdateOrdersAndSwaps = true;
       }
     }
   }
 
   void _onEvent(Object event) {
-    onLogsmm2(event);
+    _onLog(event);
   }
 
   void _onError(Object error) {
@@ -374,7 +372,7 @@ class MMService {
   }
 
   Future<dynamic> stopmm2() async {
-    ismm2Running = false;
+    _running = false;
     try {
       final BaseService baseService =
           BaseService(userpass: userpass, method: 'stop');
@@ -382,6 +380,7 @@ class MMService {
           await http.post(url, body: baseServiceToJson(baseService));
       // await Future<dynamic>.delayed(const Duration(seconds: 1));
 
+      _running = false;
       return baseServiceFromJson(response.body);
     } catch (e) {
       print(e);

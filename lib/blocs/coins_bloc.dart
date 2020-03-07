@@ -393,7 +393,7 @@ class CoinsBloc implements BlocBase {
 
   void startCheckBalance() {
     jobService.install('checkBalance', 45, (j) async {
-      if (!MMService().ismm2Running) return;
+      if (!MMService().running) return;
       await loadCoin();
     });
   }
@@ -403,7 +403,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> loadCoin() async {
-    if (MMService().ismm2Running &&
+    if (MMService().running &&
         !onActivateCoins &&
         !mainBloc.isNetworkOffline) {
       onActivateCoins = true;
