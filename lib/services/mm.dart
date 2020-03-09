@@ -50,9 +50,9 @@ class UserpassBody {
 }
 
 // AG: Planning to get rid of `res` and turn `MM` into a const:
-// 
+//
 //     const ApiProvider MM = const ApiProvider();
-// 
+//
 // ignore: non_constant_identifier_names
 ApiProvider MM = ApiProvider();
 
@@ -207,32 +207,34 @@ class ApiProvider {
                 _catchErrorString('postSell', e, 'Error on post sell'));
       });
 
-  dynamic getBodyActiveCoin(Coin coin) {
+  dynamic enableCoinImpl(Coin coin) {
     final List<Server> servers = coin.serverList
         .map((String url) =>
             Server(url: url, protocol: 'TCP', disableCertVerification: false))
         .toList();
 
     return coin.type == 'erc'
-        ? getEnabledCoinToJson(GetEnabledCoin(
-            userpass: MMService().userpass,
-            coin: coin.abbr,
-            txHistory: true,
-            swapContractAddress: coin.swapContractAddress,
-            urls: coin.serverList))
-        : getActiveCoinToJson(GetActiveCoin(
-            userpass: MMService().userpass,
-            coin: coin.abbr,
-            txHistory: true,
-            servers: servers));
+        ? json.encode(MmEnable(
+                userpass: MMService().userpass,
+                coin: coin.abbr,
+                txHistory: true,
+                swapContractAddress: coin.swapContractAddress,
+                urls: coin.serverList)
+            .toJson())
+        : json.encode(MmElectrum(
+                userpass: MMService().userpass,
+                coin: coin.abbr,
+                txHistory: true,
+                servers: servers)
+            .toJson());
   }
 
-  Future<dynamic> activeCoin(
+  Future<dynamic> enableCoin(
     http.Client client,
     Coin coin,
   ) async =>
       await client
-          .post(url, body: getBodyActiveCoin(coin))
+          .post(url, body: enableCoinImpl(coin))
           .then((Response r) => _saveRes('activeCoin', r))
           .then((Response res) => activeCoinFromJson(res.body))
           .then<dynamic>((ActiveCoin data) =>

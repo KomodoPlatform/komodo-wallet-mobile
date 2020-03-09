@@ -165,7 +165,7 @@ class SwapBloc implements BlocBase {
   }
 
   Future<void> getBuyCoins(Coin rel) async {
-    final List<Coin> coins = await coinsBloc.readJsonCoin();
+    final List<Coin> coins = await coinsBloc.electrumCoins();
     final List<Future<dynamic>> futureOrderbook = <Future<dynamic>>[];
 
     for (Coin coin in coins) {

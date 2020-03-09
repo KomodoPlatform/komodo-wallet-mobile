@@ -65,7 +65,7 @@ Future<void> _runBinMm2UserAlreadyLog() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('isPassphraseIsSaved') != null &&
       prefs.getBool('isPassphraseIsSaved') == true) {
-    await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
+    await coinsBloc.writeJsonCoin(await coinsBloc.electrumCoins());
     await authBloc.initSwitchPref();
 
     if (!(authBloc.showLock && prefs.getBool('switch_pin'))) {

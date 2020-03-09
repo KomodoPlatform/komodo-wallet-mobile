@@ -707,7 +707,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
   Future<bool> _buildAddCoinButton() async {
     final List<Coin> allCoins = await MMService()
         .loadJsonCoins(await MMService().loadElectrumServersAsset());
-    final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
+    final List<Coin> allCoinsActivate = await coinsBloc.electrumCoins();
 
     return !(allCoins.length == allCoinsActivate.length);
   }

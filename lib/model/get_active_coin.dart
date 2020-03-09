@@ -1,27 +1,19 @@
-// To parse this JSON data, do
-//
-//     final getActiveCoin = getActiveCoinFromJson(jsonString);
+class MmElectrum {
+  MmElectrum(
+      {this.userpass,
+      this.method = 'electrum',
+      this.coin,
+      this.servers,
+      this.txHistory});
 
-import 'dart:convert';
-
-GetActiveCoin getActiveCoinFromJson(String str) =>
-    GetActiveCoin.fromJson(json.decode(str));
-
-String getActiveCoinToJson(GetActiveCoin data) {
-  final Map<String, dynamic> dyn = data.toJson();
-  return json.encode(dyn);
-}
-
-class GetActiveCoin {
-  GetActiveCoin(
-      {this.userpass, this.method = 'electrum', this.coin, this.servers, this.txHistory});
-
-  factory GetActiveCoin.fromJson(Map<String, dynamic> json) => GetActiveCoin(
+  factory MmElectrum.fromJson(Map<String, dynamic> json) => MmElectrum(
       userpass: json['userpass'] ?? '',
       method: json['method'] ?? '',
       coin: json['coin'] ?? '',
       txHistory: json['tx_history'] ?? false,
-      servers: List<Server>.from(json['servers'].map<dynamic>((dynamic x) => Server.fromJson(x))) ?? <Server>[]);
+      servers: List<Server>.from(json['servers']
+              .map<dynamic>((dynamic x) => Server.fromJson(x))) ??
+          <Server>[]);
   String userpass;
   String method;
   String coin;
@@ -33,7 +25,9 @@ class GetActiveCoin {
         'method': method ?? '',
         'coin': coin ?? '',
         'tx_history': txHistory ?? false,
-        'servers': List<dynamic>.from(servers.map<dynamic>((dynamic x) => x.toJson())) ?? <Server>[]
+        'servers': List<dynamic>.from(
+                servers.map<dynamic>((dynamic x) => x.toJson())) ??
+            <Server>[]
       };
 }
 

@@ -10,9 +10,10 @@ List<Coin> coinFromJson(String str) =>
 String coinToJson(List<Coin> data) =>
     json.encode(List<dynamic>.from(data.map<dynamic>((dynamic x) => x.toJson())));
 
-// AG: Looks like this is a custom format.
-// For example, the "coin" in https://github.com/jl777/coins/blob/master/coins was renamed to "abbr" here.
-// I think that's unfortunate, should take opportunities to close the gap with original.
+// NB: This is a custom format used in coins_config.json
+// 
+// https://github.com/jl777/coins/blob/master/coins corresponds to coins_init_mm2.json
+// and is handled elsewhere.
 
 class Coin {
   Coin({
@@ -29,7 +30,8 @@ class Coin {
     this.colorCoin,
     this.serverList,
     this.explorerUrl,
-    this.type
+    this.type,
+    this.requiredConfirmations
   });
 
   factory Coin.fromJson(Map<String, dynamic> json) => Coin(
@@ -47,6 +49,7 @@ class Coin {
         colorCoin: json['colorCoin'] ?? '',
         serverList: List<String>.from(json['serverList'].map((dynamic x) => x)) ?? <String>[],
         explorerUrl: List<String>.from(json['explorerUrl'].map((dynamic x) => x)) ?? <String>[],
+        requiredConfirmations: json['required_confirmations']
       );
 
   String type; // 'other', 'erc' or 'smartChain'
@@ -64,6 +67,7 @@ class Coin {
   List<String> serverList;
   List<String> explorerUrl;
   String swapContractAddress;
+  int requiredConfirmations;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type ?? '',
@@ -81,6 +85,7 @@ class Coin {
         'colorCoin': colorCoin ?? '',
         'serverList': List<dynamic>.from(serverList.map<String>((dynamic x) => x)) ?? <String>[],
         'explorerUrl': List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ?? <String>[],
+        'required_confirmations': requiredConfirmations
       };
 
   String getTxFeeSatoshi() {

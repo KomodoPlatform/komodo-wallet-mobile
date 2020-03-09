@@ -342,7 +342,7 @@ class MMService {
     try {
       await coinsBloc.activateCoinKickStart();
 
-      coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
+      coinsBloc.enableCoins(await coinsBloc.electrumCoins()).then((_) {
         Log.println('mm_service:346', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
           Log.println('mm_service:348', 'loadCoin finished');
@@ -400,12 +400,12 @@ class MMService {
   }
 
   Future<List<Coin>> loadJsonCoinsDefault() async {
-    return await DBProvider.db.getAllCoinElectrum(CoinEletrum.DEFAULT);
+    return await DBProvider.db.electrumCoins(CoinEletrum.DEFAULT);
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
     Log.println('mm_service:407', 'getAllBalances');
-    final List<Coin> coins = await coinsBloc.readJsonCoin();
+    final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
       final List<Future<Balance>> futureBalances = <Future<Balance>>[];
@@ -420,7 +420,6 @@ class MMService {
   }
 
   Future<String> loadElectrumServersAsset() async {
-    return coinToJson(
-        await DBProvider.db.getAllCoinElectrum(CoinEletrum.CONFIG));
+    return coinToJson(await DBProvider.db.electrumCoins(CoinEletrum.CONFIG));
   }
 }

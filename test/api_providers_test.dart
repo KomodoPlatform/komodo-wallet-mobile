@@ -374,32 +374,30 @@ void main() {
     test('returns a ActiveCoin if the http call completes successfully',
         () async {
       when(client.post(url,
-              body: ApiProvider().getBodyActiveCoin(coinToActiveERC)))
+              body: ApiProvider().enableCoinImpl(coinToActiveERC)))
           .thenAnswer((_) async =>
               http.Response(fixture('active_coin/active_coin.json'), 200));
-      expect(await ApiProvider().activeCoin(client, coinToActiveERC),
+      expect(await ApiProvider().enableCoin(client, coinToActiveERC),
           const TypeMatcher<ActiveCoin>());
     });
 
     test('returns a ActiveCoin if the http call completes successfully',
         () async {
-      when(client.post(url,
-              body: ApiProvider().getBodyActiveCoin(coinToActive)))
+      when(client.post(url, body: ApiProvider().enableCoinImpl(coinToActive)))
           .thenAnswer((_) async =>
               http.Response(fixture('active_coin/active_coin.json'), 200));
-      expect(await ApiProvider().activeCoin(client, coinToActive),
+      expect(await ApiProvider().enableCoin(client, coinToActive),
           const TypeMatcher<ActiveCoin>());
     });
 
     test('returns a ErrorString if the http call completes with error from mm2',
         () async {
-      when(client.post(url,
-              body: ApiProvider().getBodyActiveCoin(coinToActive)))
+      when(client.post(url, body: ApiProvider().enableCoinImpl(coinToActive)))
           .thenAnswer((_) async => http.Response(
               fixture('active_coin/errors/error_active_coin_mm2_param.json'),
               200));
       final dynamic error =
-          await ApiProvider().activeCoin(client, coinToActive);
+          await ApiProvider().enableCoin(client, coinToActive);
       expect(error, const TypeMatcher<ErrorString>());
       expect(error.error,
           'mm2 param is not set neither in coins config nor enable request, assuming that coin is not supported');
@@ -499,20 +497,20 @@ void main() {
           const TypeMatcher<Balance>());
     });
 
-    test('throws ErrorString if the http call completes with error',
-        () async {
+    test('throws ErrorString if the http call completes with error', () async {
       when(client.post(url, body: getBalanceToJson(body))).thenAnswer(
           (_) async =>
               http.Response(fixture('general_errors/error_string.json'), 200));
       ErrorString error;
       try {
         await ApiProvider().getBalance(body, client: client);
-      } on ErrorString catch (e) {error = e;}
-      expect(error,const TypeMatcher<ErrorString>());
+      } on ErrorString catch (e) {
+        error = e;
+      }
+      expect(error, const TypeMatcher<ErrorString>());
     });
 
-    test('throws ErrorString if the http call completes with error',
-        () async {
+    test('throws ErrorString if the http call completes with error', () async {
       when(client.post(url, body: getBalanceToJson(body)))
           .thenAnswer((_) async => http.Response('No found', 200));
       ErrorString error;
