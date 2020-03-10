@@ -57,7 +57,9 @@ class MMService {
 
   /// Channel to native code.
   static MethodChannel nativeC = const MethodChannel('mm2');
-  static const EventChannel eventChannel = EventChannel('streamLogMM2');
+
+  /// MM log streamed from iOS/Swift.
+  static const EventChannel iosLogC = EventChannel('streamLogMM2');
   final Client client = http.Client();
   File logFile;
 
@@ -155,8 +157,8 @@ class MMService {
         _onLog(chunk);
       }
       offset = fileLog.lengthSync();
-      if (offset > 512 * 1024) {
-        // #653: Truncate the MM log.
+      if (offset > 1024 * 1024) {
+        // #653: Truncate the MM log buffer which is used presently on Android.
         // `_onLog` copies chunks into the "log.txt"
         // hence we can just truncate the "mm.log" without separately copying it.
         final IOSink truncSink = fileLog.openWrite();
@@ -253,7 +255,9 @@ class MMService {
         rethrow;
       }
     } else if (Platform.isIOS) {
-      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+      iosLogC
+          .receiveBroadcastStream()
+          .listen(_onIosLogEvent, onError: _onIosLogError);
       try {
         await nativeC.invokeMethod<dynamic>(
             'start', <String, String>{'params': startParam}); //start mm2
@@ -301,7 +305,7 @@ class MMService {
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
     if (sink != null) {
-      Log.println('mm_service:296', chunk);
+      Log.println('mm_service:308', chunk);
       // AG: This currently relies on the information that can be freely changed by MM
       // or removed from the logs entirely (e.g. on debug and human-readable parts).
       // Should update it to rely on the log tags instead.
@@ -317,12 +321,12 @@ class MMService {
     }
   }
 
-  void _onEvent(Object event) {
+  void _onIosLogEvent(Object event) {
     _onLog(event);
   }
 
-  void _onError(Object error) {
-    print(error);
+  void _onIosLogError(Object error) {
+    Log.println('mm_service:329', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -339,9 +343,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        Log.println('mm_service:334', 'All coins activated');
+        Log.println('mm_service:346', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('mm_service:336', 'loadCoin finished');
+          Log.println('mm_service:348', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -401,7 +405,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log.println('mm_service:395', 'getAllBalances');
+    Log.println('mm_service:408', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.readJsonCoin();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
