@@ -100,16 +100,14 @@ class _ProgressSwapState extends State<ProgressSwap>
                       style: Theme.of(context).textTheme.subtitle,
                     ),
                     Text(
-                      swap.step.toString(),
+                      swap.statusStep.toString(),
                       style: Theme.of(context)
                           .textTheme
                           .subtitle
                           .copyWith(color: Theme.of(context).accentColor),
                     ),
-                    swap.step != 0
-                        ? Text('/${swap.steps}',
-                            style: Theme.of(context).textTheme.subtitle)
-                        : Container(),
+                    Text('/${swap.statusSteps}',
+                        style: Theme.of(context).textTheme.subtitle),
                   ],
                 ),
               ),

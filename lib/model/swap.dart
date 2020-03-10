@@ -62,9 +62,39 @@ class Swap {
     return order;
   }
 
-  /// Total number of successful steps in the swaps.
-  int get steps => result?.successEvents?.length ?? 3;
+  /// Total number of expected simplyfied swap steps,
+  /// based on swap status changes.
+  int get statusSteps => 3;
 
-  /// Current swap step.
+  /// Number of current status-based swap step.
+  int get statusStep {
+    switch (status) {
+      case Status.ORDER_MATCHING:
+        return 0;
+        break;
+      case Status.ORDER_MATCHED:
+        return 1;
+        break;
+      case Status.SWAP_ONGOING:
+        return 2;
+        break;
+      case Status.SWAP_SUCCESSFUL:
+        return 3;
+        break;
+      case Status.TIME_OUT:
+        return 0;
+        break;
+      case Status.SWAP_FAILED:
+        return 0;
+        break;
+      default:
+    }
+    return 0;
+  }
+
+  /// Total number of detailed successful steps in the swaps.
+  int get steps => result?.successEvents?.length ?? statusSteps;
+
+  /// Current detailed swap step.
   int get step => result?.events?.length ?? 0;
 }
