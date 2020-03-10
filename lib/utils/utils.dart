@@ -333,3 +333,39 @@ Future<void> launchURL(String url) async {
     throw 'Could not launch $url';
   }
 }
+
+Duration durationSum(List<Duration> list) {
+  int ms = 0;
+  for (int i = 0; i < list.length; i++) {
+    ms += list[i]?.inMilliseconds ?? 0;
+  }
+  return Duration(milliseconds: ms);
+}
+
+/// Returns String of milliseconds ('555ms') if [duration] < 1s,
+/// seconds ('55s') if < 1min,
+/// minutes and seconds ('5m 5s') if < 1 hour,
+/// and hours, minutes, and seconds ('25h 25m 25s') if > 1 hour
+String durationFormat(Duration duration) {
+  if (duration == null) return '-';
+
+  final int hh = duration.inHours;
+  final int mm = duration.inMinutes;
+  final int ss = duration.inSeconds;
+  final int ms = duration.inMilliseconds;
+
+  if (ms < 1000) return '${ms}ms'; // TODO(yurii): localization
+
+  String formatted = '';
+  if (ss.remainder(60) > 0) {
+    formatted = '${ss.remainder(60)}s'; // TODO(yurii): localization
+  }
+  if (mm > 0) {
+    formatted = '${mm.remainder(60)}m ' + formatted; // TODO(yurii): localization
+  }
+  if (hh > 0) {
+    formatted = '${hh}h ' + formatted; // TODO(yurii): localization
+  }
+
+  return formatted;
+}

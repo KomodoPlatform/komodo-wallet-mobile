@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 enum SwapStepStatus {
@@ -87,30 +89,6 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       // TODO(yurii): handle SwapStepStatus.failed
     }
 
-    String _formatSpeed(Duration duration) {
-      if (duration == null) return '-';
-
-      final int hh = duration.inHours;
-      final int mm = duration.inMinutes;
-      final int ss = duration.inSeconds;
-      final int ms = duration.inMilliseconds;
-
-      if (ms < 1000) return '${ms}ms';
-
-      String formatted = '';
-      if (ss.remainder(60) > 0) {
-        formatted = '${ss.remainder(60)}s';
-      }
-      if (mm > 0) {
-        formatted = '${mm.remainder(60)}m ' + formatted;
-      }
-      if (hh > 0) {
-        formatted = '${hh.remainder(60)}h ' + formatted;
-      }
-
-      return formatted;
-    }
-
     Duration _getEstimatedSpeed(int index) {
       if (index == 0) return null;
 
@@ -154,6 +132,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
+              const SizedBox(width: 6),
               _buildStepStatusIcon(status),
               const SizedBox(width: 8),
               Column(
@@ -175,8 +154,13 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
                                 : _accentColor,
                           )),
                       Text(
-                        _formatSpeed(actualSpeed),
-                        style: const TextStyle(fontSize: 13),
+                        durationFormat(actualSpeed),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: status == SwapStepStatus.pending
+                              ? _disabledColor
+                              : null,
+                        ),
                       ),
                       const SizedBox(width: 4),
                       Text('|',
@@ -195,7 +179,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
                                 : _accentColor,
                           )),
                       Text(
-                        _formatSpeed(estimatedSpeed),
+                        durationFormat(estimatedSpeed),
                         style: TextStyle(
                           fontSize: 13,
                           color: status == SwapStepStatus.pending
@@ -209,7 +193,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 13),
         ],
       );
     }
@@ -221,6 +205,82 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
         estimatedSpeed: _getEstimatedSpeed(0),
         actualSpeed: _getActualSpeed(0),
         index: 0,
+      );
+    }
+
+    Widget _buildTotal() {
+      Duration estimatedTotalSpeed = const Duration(seconds: 0);
+      Duration actualTotalSpeed = const Duration(seconds: 0);
+
+      if (swap.step > 0) {
+        for (var i = 0; i < swap.result.successEvents.length; i++) {
+          final SwapStepStatus status = _getStatus(i);
+
+          final Duration actualStepSpeed =
+              _getActualSpeed(i) ?? const Duration(seconds: 0);
+
+          Duration estimatedStepSpeed =
+              _getEstimatedSpeed(i) ?? const Duration(seconds: 0);
+          if (status == SwapStepStatus.success) {
+            estimatedStepSpeed = actualStepSpeed;
+          } else if (status == SwapStepStatus.inProgress) {
+            estimatedStepSpeed = Duration(
+                milliseconds: max(actualStepSpeed.inMilliseconds,
+                    estimatedStepSpeed.inMilliseconds));
+          }
+
+          estimatedTotalSpeed =
+              durationSum([estimatedTotalSpeed, estimatedStepSpeed]);
+          actualTotalSpeed = durationSum([actualTotalSpeed, actualStepSpeed]);
+        }
+      }
+
+      return Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              color: Theme.of(context).dialogBackgroundColor,
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Text('Total:'), // TODO(yurii): localization
+                  Row(
+                    children: <Widget>[
+                      Text('act: ', // TODO(yurii): localization
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: _accentColor,
+                          )),
+                      Text(
+                        durationFormat(actualTotalSpeed),
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                      const SizedBox(width: 4),
+                      const Text('|',
+                          style: TextStyle(
+                            fontSize: 13,
+                          )),
+                      const SizedBox(width: 4),
+                      Text('est: ', // TODO(yurii): localization
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: _accentColor,
+                          )),
+                      Text(
+                        durationFormat(estimatedTotalSpeed),
+                        style: const TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 13),
+          ],
+        ),
       );
     }
 
@@ -252,6 +312,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
             style: Theme.of(context).textTheme.body2,
           ),
           const SizedBox(height: 8),
+          _buildTotal(),
           // We assume that all kind of swaps has first step, with type of 'Started',
           // so we can show this step before actual swap data received.
           _buildFirstStep(),
