@@ -43,7 +43,11 @@ class MMService {
   List<dynamic> balances = <dynamic>[];
   Process mm2Process;
   List<Coin> coins = <Coin>[];
-  bool ismm2Running = false;
+
+  /// Switched on when we hear from MM.
+  bool get running => _running;
+  bool _running = false;
+
   String url = 'http://localhost:7783';
   String userpass = '';
   Stream<List<int>> streamSubscriptionStdout;
@@ -53,7 +57,9 @@ class MMService {
 
   /// Channel to native code.
   static MethodChannel nativeC = const MethodChannel('mm2');
-  static const EventChannel eventChannel = EventChannel('streamLogMM2');
+
+  /// MM log streamed from iOS/Swift.
+  static const EventChannel iosLogC = EventChannel('streamLogMM2');
   final Client client = http.Client();
   File logFile;
 
@@ -74,7 +80,7 @@ class MMService {
         await MMService().runBin();
       } else {
         MMService().initUsername(passphrase);
-        MMService().ismm2Running = true;
+        MMService()._running = true;
         await MMService().initCheckLogs();
         coinsBloc.currentCoinActivate(null);
         coinsBloc.loadCoin();
@@ -134,26 +140,30 @@ class MMService {
   Future<void> initCheckLogs() async {
     final File fileLog = File('${filesPath}mm.log');
 
-    if (!fileLog.existsSync()) {
-      await fileLog.create();
-    }
-    int offset = await fileLog.length();
+    if (!fileLog.existsSync()) await fileLog.create();
+    int offset = fileLog.lengthSync();
 
-    jobService.install('mmLogs', 1, (j) async {
-      fileLog
+    jobService.install('tail MM log', 1, (j) async {
+      final Stream<String> stream = fileLog
           .openRead(offset)
           .transform(utf8.decoder)
-          .transform(const LineSplitter())
-          .listen((String data) {
-        if (data.contains('DEX stats API enabled at')) {
-          ismm2Running = true;
+          .transform(const LineSplitter());
+      await for (String chunk in stream) {
+        if (chunk.contains('DEX stats API enabled at')) {
+          _running = true;
           initCoinsAndLoad();
           coinsBloc.startCheckBalance();
         }
-        onLogsmm2(data);
-      }).onDone(() async {
-        offset = await fileLog.length();
-      });
+        _onLog(chunk);
+      }
+      offset = fileLog.lengthSync();
+      if (offset > 1024 * 1024) {
+        // #653: Truncate the MM log buffer which is used presently on Android.
+        // `_onLog` copies chunks into the "log.txt"
+        // hence we can just truncate the "mm.log" without separately copying it.
+        final IOSink truncSink = fileLog.openWrite();
+        await truncSink.close();
+      }
     });
   }
 
@@ -245,7 +255,9 @@ class MMService {
         rethrow;
       }
     } else if (Platform.isIOS) {
-      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+      iosLogC
+          .receiveBroadcastStream()
+          .listen(_onIosLogEvent, onError: _onIosLogError);
       try {
         await nativeC.invokeMethod<dynamic>(
             'start', <String, String>{'params': startParam}); //start mm2
@@ -262,7 +274,7 @@ class MMService {
           checkStatusmm2().then((int onValue) {
             print('STATUS MM2: ' + onValue.toString());
             if (onValue == 3) {
-              ismm2Running = true;
+              _running = true;
               _.cancel();
               print('CANCEL TIMER');
               initCoinsAndLoad();
@@ -291,30 +303,30 @@ class MMService {
 
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
-  void onLogsmm2(String log) {
+  void _onLog(String chunk) {
     if (sink != null) {
-      Log.println('mm_service:296', log);
+      Log.println('mm_service:308', chunk);
       // AG: This currently relies on the information that can be freely changed by MM
       // or removed from the logs entirely (e.g. on debug and human-readable parts).
       // Should update it to rely on the log tags instead.
-      if (log.contains('CONNECTED') ||
-          log.contains('Entering the taker_swap_loop') ||
-          log.contains('Received \'negotiation') ||
-          log.contains('Got maker payment') ||
-          log.contains('Sending \'taker-fee') ||
-          log.contains('Sending \'taker-payment') ||
-          log.contains('Finished')) {
+      if (chunk.contains('CONNECTED') ||
+          chunk.contains('Entering the taker_swap_loop') ||
+          chunk.contains('Received \'negotiation') ||
+          chunk.contains('Got maker payment') ||
+          chunk.contains('Sending \'taker-fee') ||
+          chunk.contains('Sending \'taker-payment') ||
+          chunk.contains('Finished')) {
         shouldUpdateOrdersAndSwaps = true;
       }
     }
   }
 
-  void _onEvent(Object event) {
-    onLogsmm2(event);
+  void _onIosLogEvent(Object event) {
+    _onLog(event);
   }
 
-  void _onError(Object error) {
-    print(error);
+  void _onIosLogError(Object error) {
+    Log.println('mm_service:329', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -331,9 +343,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        Log.println('mm_service:334', 'All coins activated');
+        Log.println('mm_service:346', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('mm_service:336', 'loadCoin finished');
+          Log.println('mm_service:348', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -364,7 +376,7 @@ class MMService {
   }
 
   Future<dynamic> stopmm2() async {
-    ismm2Running = false;
+    _running = false;
     try {
       final BaseService baseService =
           BaseService(userpass: userpass, method: 'stop');
@@ -372,6 +384,7 @@ class MMService {
           await http.post(url, body: baseServiceToJson(baseService));
       // await Future<dynamic>.delayed(const Duration(seconds: 1));
 
+      _running = false;
       return baseServiceFromJson(response.body);
     } catch (e) {
       print(e);
@@ -392,7 +405,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log.println('mm_service:395', 'getAllBalances');
+    Log.println('mm_service:408', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.readJsonCoin();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
