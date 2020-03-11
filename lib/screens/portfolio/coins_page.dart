@@ -44,10 +44,7 @@ class _CoinsPageState extends State<CoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    if (MMService().ismm2Running) {
-      coinsBloc.loadCoin();
-    }
-
+    if (MMService().running) coinsBloc.loadCoin();
     super.initState();
   }
 
@@ -286,7 +283,7 @@ class ListCoinsState extends State<ListCoins> {
 
   @override
   void initState() {
-    if (MMService().ismm2Running) {
+    if (MMService().running) {
       coinsBloc.loadCoin();
     }
     super.initState();
@@ -368,10 +365,10 @@ class _ItemCoinState extends State<ItemCoin> {
     final NumberFormat f = NumberFormat('###,##0.########');
     final List<Widget> actions = <Widget>[];
     if (double.parse(balance.getBalance()) > 0) {
-      Log.println(
-          'coins_page:371', 'balance: ' + widget.coinBalance.balance.balance);
-      Log.println('coins_page:373',
-          'locked_by_swaps: ' + widget.coinBalance.balance.lockedBySwaps);
+      Log(
+          'coins_page:368',
+          '${coin.abbr} balance: ${balance.balance}'
+              '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(IconSlideAction(
         caption: AppLocalizations.of(context).send,
         color: Colors.white,
