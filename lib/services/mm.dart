@@ -101,8 +101,7 @@ class ApiProvider {
   }
 
   Future<UserpassBody> _assertUserpass(http.Client client, dynamic body) async {
-    body.userpass =
-        MMService().userpass.isNotEmpty ? MMService().userpass : body.userpass;
+    body.userpass = mmSe.userpass.isNotEmpty ? mmSe.userpass : body.userpass;
     return UserpassBody(body: body, client: client);
   }
 
@@ -139,7 +138,7 @@ class ApiProvider {
     //     After using it for a while and seeing that it works as expected
     //     we should refactor the rest of the methods accordingly.
 
-    client ??= MMService().client;
+    client ??= mmSe.client;
     try {
       final userBody = await _assertUserpass(client, gb);
       final r = await userBody.client
@@ -215,14 +214,14 @@ class ApiProvider {
 
     return coin.type == 'erc'
         ? json.encode(MmEnable(
-                userpass: MMService().userpass,
+                userpass: mmSe.userpass,
                 coin: coin.abbr,
                 txHistory: true,
                 swapContractAddress: coin.swapContractAddress,
                 urls: coin.serverList)
             .toJson())
         : json.encode(MmElectrum(
-                userpass: MMService().userpass,
+                userpass: mmSe.userpass,
                 coin: coin.abbr,
                 txHistory: true,
                 servers: servers)
