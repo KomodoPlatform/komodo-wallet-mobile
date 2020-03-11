@@ -30,10 +30,10 @@ class SwapHistoryBloc implements BlocBase {
       MMService().client,
       GetRecoverFundsOfSwap(params: Params(uuid: swap.result.uuid)));
 
-  Status getStatusSwap(ResultSwap resultSwap) {
+  Status getStatusSwap(MmSwap resultSwap) {
     Status status = Status.ORDER_MATCHING;
 
-    for (EventElement event in resultSwap.events) {
+    for (SwapEL event in resultSwap.events) {
       switch (event.event.type) {
         case 'Started':
           status = Status.ORDER_MATCHED;

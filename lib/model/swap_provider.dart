@@ -27,12 +27,12 @@ class SwapProvider extends ChangeNotifier {
   String swapDescription(String uuid) {
     final Swap swap = this.swap(uuid);
     if (swap == null) return '';
-    final ResultSwap rswap = swap.result;
+    final MmSwap rswap = swap.result;
     if (rswap == null) return '';
     if (rswap.events.isEmpty) return '';
     final bool finished = rswap.events.last.event.type == 'Finished';
     // Event before 'Finished'.
-    final EventEvent ev = rswap.events.reversed
+    final SwapEEL ev = rswap.events.reversed
         .map((ev) => ev.event)
         .firstWhere((ev) => ev.type != 'Finished');
     if (ev == null) return '';
@@ -49,7 +49,7 @@ class SwapProvider extends ChangeNotifier {
     return text.toString();
   }
 
-  void _failEv(StringBuffer text, EventEvent ev) {
+  void _failEv(StringBuffer text, SwapEEL ev) {
     text.writeln('Failure ${ev.type}');
     if (ev.data.error.isNotEmpty) {
       text.writeln('--- raw error message ---');
@@ -58,7 +58,7 @@ class SwapProvider extends ChangeNotifier {
   }
 
   /// If we've seen different states reached from the current one then share these observations.
-  void _transitions(StringBuffer text, EventEvent ev) {
+  void _transitions(StringBuffer text, SwapEEL ev) {
     final Map<String, int> knownTransitions = {};
     final String pref = ev.type + '→';
     // TBD: Should probably filter by (sorted) coin pair.
@@ -161,7 +161,7 @@ class SyncSwaps {
     if (rswaps is! RecentSwaps) throw Exception('!RecentSwaps');
 
     final Map<String, Swap> swaps = {};
-    for (ResultSwap rswap in rswaps.result.swaps) {
+    for (MmSwap rswap in rswaps.result.swaps) {
       final Status status = swapHistoryBloc.getStatusSwap(rswap);
       final String uuid = rswap.uuid;
       swaps[uuid] = Swap(result: rswap, status: status);
@@ -174,7 +174,7 @@ class SyncSwaps {
   }
 
   /// Share swap information on dexp2p.
-  void _gossip(ResultSwap rswap) {
+  void _gossip(MmSwap rswap) {
     // See if we have already gossiped about this version of the swap.
     if (rswap.events.isEmpty) return;
     final String uuid = rswap.uuid;
@@ -188,10 +188,10 @@ class SyncSwaps {
 }
 
 class SwapGossip {
-  SwapGossip.from(this.timestamp, ResultSwap rswap) {
+  SwapGossip.from(this.timestamp, MmSwap rswap) {
     for (int ix = 0; ix < rswap.events.length - 1; ++ix) {
-      final EventElement eva = rswap.events[ix];
-      final EventElement adam = rswap.events[ix + 1];
+      final SwapEL eva = rswap.events[ix];
+      final SwapEL adam = rswap.events[ix + 1];
       final String evaT = eva.event.type;
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
@@ -200,6 +200,14 @@ class SwapGossip {
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
+
+      if (evaT == 'Started') {
+        final SwapEF data = eva.event.data;
+        makerPaymentConfirmations = data.makerPaymentConfirmations;
+        takerPaymentConfirmations = data.takerPaymentConfirmations;
+        makerPaymentRequiresNota = data.makerPaymentRequiresNota;
+        takerPaymentRequiresNota = data.takerPaymentRequiresNota;
+      }
     }
   }
 
@@ -208,4 +216,7 @@ class SwapGossip {
 
   /// Time between swap states in milliseconds.
   Map<String, int> stepSpeed = {};
+
+  int makerPaymentConfirmations, takerPaymentConfirmations;
+  bool makerPaymentRequiresNota, takerPaymentRequiresNota;
 }
