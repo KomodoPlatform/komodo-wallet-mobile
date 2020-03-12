@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart' as ft;
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
@@ -42,6 +43,8 @@ import 'fixtures/fixture_reader.dart';
 class MockClient extends Mock implements http.Client {}
 
 void main() {
+  ft.TestWidgetsFlutterBinding.ensureInitialized();
+
   const String url = 'http://localhost:7783';
 
   group('disable_coin', () {
@@ -521,7 +524,7 @@ void main() {
       } on ErrorString catch (e) {
         error = e;
       }
-      expect(error.error, 'Error on get balance ${body.coin}');
+      expect(error.error, 'Error getting ${body.coin} balance');
     });
   });
 
