@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/progress_step.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-import 'detailed_swap_progress.dart';
+import 'detailed_swap_steps.dart';
 
 class DetailedSwapStep extends StatelessWidget {
   const DetailedSwapStep({
