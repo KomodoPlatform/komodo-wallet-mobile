@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page/progress_step.dart';
+import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_step.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -50,39 +50,12 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
   Widget build(BuildContext context) {
     final SwapProvider _swapProvider = Provider.of<SwapProvider>(context);
     swap = _swapProvider.swap(widget.uuid) ?? Swap();
-    final Color _disabledColor = Theme.of(context).textTheme.body2.color;
-    final Color _accentColor = Theme.of(context).accentColor;
 
     if (swap.status == Status.SWAP_SUCCESSFUL ||
         swap.status == Status.SWAP_FAILED) {
       setState(() {
         isInProgress = false;
       });
-    }
-
-    Widget _buildStepStatusIcon(SwapStepStatus status) {
-      Widget icon = Container();
-      switch (status) {
-        case SwapStepStatus.pending:
-          icon = Icon(
-            Icons.radio_button_unchecked,
-            size: 15,
-            color: _disabledColor,
-          );
-          break;
-        case SwapStepStatus.success:
-          icon = Icon(Icons.check_circle, size: 15, color: _accentColor);
-          break;
-        case SwapStepStatus.inProgress:
-          icon = Icon(Icons.swap_horiz, size: 15, color: _accentColor);
-          break;
-        default:
-          {}
-      }
-
-      return Container(
-        child: icon,
-      );
     }
 
     SwapStepStatus _getStatus(int index) {
@@ -123,100 +96,15 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       }
     }
 
-    Widget _buildStep({
-      String title,
-      SwapStepStatus status,
-      Duration estimatedSpeed,
-      Duration actualSpeed,
-      int index,
-    }) {
-      return Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              const SizedBox(width: 6),
-              _buildStepStatusIcon(status),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(title,
-                        style: TextStyle(
-                          color: status == SwapStepStatus.pending
-                              ? _disabledColor
-                              : null,
-                        )),
-                    ProgressStep(
-                      uuid: widget.uuid,
-                      step: index,
-                      estimatedTotalSpeed: estimatedTotalSpeed,
-                      actualTotalSpeed: actualTotalSpeed,
-                      estimatedStepSpeed: estimatedSpeed,
-                      actualStepSpeed: actualSpeed,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Text('act: ', // TODO(yurii): localization
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: status == SwapStepStatus.pending
-                                  ? _disabledColor
-                                  : _accentColor,
-                            )),
-                        Text(
-                          durationFormat(actualSpeed),
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: status == SwapStepStatus.pending
-                                ? _disabledColor
-                                : null,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text('|',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: status == SwapStepStatus.pending
-                                  ? _disabledColor
-                                  : null,
-                            )),
-                        const SizedBox(width: 4),
-                        Text('est: ', // TODO(yurii): localization
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: status == SwapStepStatus.pending
-                                  ? _disabledColor
-                                  : _accentColor,
-                            )),
-                        Text(
-                          durationFormat(estimatedSpeed),
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: status == SwapStepStatus.pending
-                                ? _disabledColor
-                                : null,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-        ],
-      );
-    }
-
     Widget _buildFirstStep() {
-      return _buildStep(
+      return DetailedSwapStep(
         title: 'Started', // TODO(yurii): localization
         status: _getStatus(0),
         estimatedSpeed: _getEstimatedSpeed(0),
         actualSpeed: _getActualSpeed(0),
         index: 0,
+        actualTotalSpeed: actualTotalSpeed,
+        estimatedTotalSpeed: estimatedTotalSpeed,
       );
     }
 
@@ -226,12 +114,14 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       final List<Widget> list = [];
 
       for (int i = 1; i < swap.result.successEvents.length; i++) {
-        list.add(_buildStep(
+        list.add(DetailedSwapStep(
           title: swap.result.successEvents[i], // TODO(yurii): localization
           status: _getStatus(i),
           estimatedSpeed: _getEstimatedSpeed(i),
           actualSpeed: _getActualSpeed(i),
           index: i,
+          actualTotalSpeed: actualTotalSpeed,
+          estimatedTotalSpeed: estimatedTotalSpeed,
         ));
       }
 
@@ -285,7 +175,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
                       Text('act: ', // TODO(yurii): localization
                           style: TextStyle(
                             fontSize: 13,
-                            color: _accentColor,
+                            color: Theme.of(context).accentColor,
                           )),
                       Text(
                         durationFormat(actualTotalSpeed),
@@ -300,7 +190,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
                       Text('est: ', // TODO(yurii): localization
                           style: TextStyle(
                             fontSize: 13,
-                            color: _accentColor,
+                            color: Theme.of(context).accentColor,
                           )),
                       Text(
                         durationFormat(estimatedTotalSpeed),
@@ -340,7 +230,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
               _swapProvider.swapDescription(swap.result?.uuid),
               style: TextStyle(
                 fontFamily: 'Monospace',
-                color: _accentColor,
+                color: Theme.of(context).accentColor,
                 fontSize: 14,
               ),
             ),

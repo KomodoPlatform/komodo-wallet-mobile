@@ -1,22 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:provider/provider.dart';
 
 class ProgressStep extends StatefulWidget {
   const ProgressStep({
-    @required this.uuid,
     @required this.estimatedTotalSpeed,
     @required this.actualTotalSpeed,
-    this.step,
     this.estimatedStepSpeed,
     this.actualStepSpeed,
   });
 
-  final String uuid;
-  final int step;
   final Duration estimatedTotalSpeed;
   final Duration actualTotalSpeed;
   final Duration estimatedStepSpeed;
@@ -29,37 +20,22 @@ class ProgressStep extends StatefulWidget {
 class _ProgressStepState extends State<ProgressStep> {
   @override
   Widget build(BuildContext context) {
-    final SwapProvider _swapProvider = Provider.of<SwapProvider>(context);
-    final Swap swap = _swapProvider.swap(widget.uuid);
-
-    double _getStepShare() {
-      final int stepMilliseconds = max(
-        widget.estimatedStepSpeed.inMilliseconds,
-        widget.actualStepSpeed.inMilliseconds,
-      );
-
-      double share =
-          stepMilliseconds / widget.estimatedTotalSpeed.inMilliseconds;
-      if (share < 0.01) share = 0.01;
-      return share;
-    }
-
     double getEstimatedShare() {
       if (widget.estimatedStepSpeed == null) {
         return 0;
       }
-      
-      return (widget.estimatedStepSpeed.inMilliseconds /
-              widget.estimatedTotalSpeed.inMilliseconds);
+
+      return widget.estimatedStepSpeed.inMilliseconds /
+          widget.estimatedTotalSpeed.inMilliseconds;
     }
 
     double getActualShare() {
       if (widget.estimatedStepSpeed == null || widget.actualStepSpeed == null) {
         return 0;
       }
-      
-      return (widget.actualStepSpeed.inMilliseconds /
-              widget.estimatedTotalSpeed.inMilliseconds);
+
+      return widget.actualStepSpeed.inMilliseconds /
+          widget.estimatedTotalSpeed.inMilliseconds;
     }
 
     return Column(
@@ -73,7 +49,7 @@ class _ProgressStepState extends State<ProgressStep> {
             color: Theme.of(context).accentColor,
           ),
         ),
-        SizedBox(height: 1),
+        const SizedBox(height: 1),
         Container(
           color: Theme.of(context).dialogBackgroundColor,
           width: double.infinity,

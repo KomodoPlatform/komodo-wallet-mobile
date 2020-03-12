@@ -39,7 +39,7 @@ class SwapProvider extends ChangeNotifier {
         .firstWhere((ev) => ev.type != 'Finished');
     if (ev == null) return '';
 
-    // Whether the swap is a successfull one (so far).
+    // Whether the swap is a successful one (so far).
     final bool succ = rswap.successEvents.contains(ev.type);
 
     final StringBuffer text = StringBuffer();
