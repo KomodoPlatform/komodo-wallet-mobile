@@ -57,7 +57,7 @@ class DetailedSwapStep extends StatelessWidget {
       children: <Widget>[
         Row(
           children: <Widget>[
-            const SizedBox(width: 6),
+            const SizedBox(width: 8),
             _buildStepStatusIcon(status),
             const SizedBox(width: 8),
             Expanded(
@@ -70,11 +70,14 @@ class DetailedSwapStep extends StatelessWidget {
                             ? _disabledColor
                             : null,
                       )),
-                  ProgressStep(
-                    estimatedTotalSpeed: estimatedTotalSpeed,
-                    actualTotalSpeed: actualTotalSpeed,
-                    estimatedStepSpeed: estimatedSpeed,
-                    actualStepSpeed: actualSpeed,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: ProgressStep(
+                      estimatedTotalSpeed: estimatedTotalSpeed,
+                      actualTotalSpeed: actualTotalSpeed,
+                      estimatedStepSpeed: estimatedSpeed,
+                      actualStepSpeed: actualSpeed,
+                    ),
                   ),
                   Row(
                     children: <Widget>[

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_step.dart';
+import 'package:komodo_dex/screens/dex/history/swap_detail_page/progress_step.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -15,16 +16,16 @@ enum SwapStepStatus {
   failed,
 }
 
-class DetailedSwapProgress extends StatefulWidget {
-  const DetailedSwapProgress({this.uuid});
+class DetailedSwapSteps extends StatefulWidget {
+  const DetailedSwapSteps({this.uuid});
 
   final String uuid;
 
   @override
-  _DetailedSwapProgressState createState() => _DetailedSwapProgressState();
+  _DetailedSwapStepsState createState() => _DetailedSwapStepsState();
 }
 
-class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
+class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
   Swap swap;
   Timer timer;
   bool isInProgress = true;
@@ -128,6 +129,31 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
       return list;
     }
 
+    Widget _getSwapStatusIcon() {
+      Widget icon = Container();
+      switch (swap.status) {
+        case Status.SWAP_SUCCESSFUL:
+          icon = Icon(Icons.check_circle,
+              size: 15, color: Theme.of(context).accentColor);
+          break;
+        case Status.ORDER_MATCHED:
+        case Status.SWAP_ONGOING:
+        case Status.ORDER_MATCHING:
+          icon = Icon(Icons.swap_horiz,
+              size: 15, color: Theme.of(context).accentColor);
+          break;
+        default:
+          icon = Icon(
+            Icons.radio_button_unchecked,
+            size: 15,
+          );
+      }
+
+      return Container(
+        child: icon,
+      );
+    }
+
     Widget _buildTotal() {
       if (swap.step > 0) {
         Duration estimatedSumSpeed = const Duration(seconds: 0);
@@ -166,39 +192,53 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
             Container(
               color: Theme.of(context).dialogBackgroundColor,
               padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: <Widget>[
-                  const Text('Total:'), // TODO(yurii): localization
-                  Row(
-                    children: <Widget>[
-                      Text('act: ', // TODO(yurii): localization
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Theme.of(context).accentColor,
-                          )),
-                      Text(
-                        durationFormat(actualTotalSpeed),
-                        style: const TextStyle(fontSize: 13),
-                      ),
-                      const SizedBox(width: 4),
-                      const Text('|',
-                          style: TextStyle(
-                            fontSize: 13,
-                          )),
-                      const SizedBox(width: 4),
-                      Text('est: ', // TODO(yurii): localization
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Theme.of(context).accentColor,
-                          )),
-                      Text(
-                        durationFormat(estimatedTotalSpeed),
-                        style: const TextStyle(
-                          fontSize: 13,
+                  _getSwapStatusIcon(),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Text('Total:'), // TODO(yurii): localization
+                        ProgressStep(
+                          actualTotalSpeed: actualTotalSpeed,
+                          estimatedTotalSpeed: estimatedTotalSpeed,
+                          actualStepSpeed: actualTotalSpeed,
+                          estimatedStepSpeed: estimatedTotalSpeed,
                         ),
-                      ),
-                    ],
+                        Row(
+                          children: <Widget>[
+                            Text('act: ', // TODO(yurii): localization
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Theme.of(context).accentColor,
+                                )),
+                            Text(
+                              durationFormat(actualTotalSpeed),
+                              style: const TextStyle(fontSize: 13),
+                            ),
+                            const SizedBox(width: 4),
+                            const Text('|',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                )),
+                            const SizedBox(width: 4),
+                            Text('est: ', // TODO(yurii): localization
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Theme.of(context).accentColor,
+                                )),
+                            Text(
+                              durationFormat(estimatedTotalSpeed),
+                              style: const TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -218,7 +258,7 @@ class _DetailedSwapProgressState extends State<DetailedSwapProgress> {
             'Progress details:', // TODO(yurii): localization
             style: Theme.of(context).textTheme.body2,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 20),
           _buildTotal(),
           // We assume that all kind of swaps has first step, with type of 'Started',
           // so we can show this step before actual swap data received.
