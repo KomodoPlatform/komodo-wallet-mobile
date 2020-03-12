@@ -560,6 +560,25 @@
     ]
   },
   {
+    "name": "Vote2020",
+    "type": "smartChain",
+    "address": "electrum3.cipig.net",
+    "port": 10002,
+    "proto": "tcp",
+    "txfee": 10000,
+    "abbr": "VOTE",
+    "coingeckoId": "test-token",
+    "colorCoin": "0xFFabdce4",
+    "serverList": [
+      "electrum1.cipig.net:10002",
+      "electrum2.cipig.net:10002",
+      "electrum3.cipig.net:10002"
+    ],
+    "explorerUrl": [
+      "https://vote.kmdexplorer.io/"
+    ]
+  },
+  {
     "name": "DEX",
     "type": "smartChain",
     "address": "electrum3.cipig.net",
