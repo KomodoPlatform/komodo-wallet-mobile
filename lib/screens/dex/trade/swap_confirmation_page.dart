@@ -421,9 +421,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             builder: (BuildContext context) => SwapDetailPage(
                   swap: Swap(
                       status: Status.ORDER_MATCHING,
-                      result: ResultSwap(
+                      result: MmSwap(
                         uuid: onValue.result.uuid,
-                        myInfo: MyInfo(
+                        myInfo: SwapMyInfo(
                             myAmount: amountToSell.toString(),
                             otherAmount: amountToBuy.toString(),
                             myCoin: onValue.result.rel,

@@ -29,7 +29,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'db/database.dart';
 
-/// Singleton shorthand for `MMService()`.
+/// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
 
 /// Interface to Market Maker, https://developers.atomicdex.io/
@@ -40,7 +40,11 @@ class MMService {
   List<dynamic> balances = <dynamic>[];
   Process mm2Process;
   List<Coin> coins = <Coin>[];
-  bool ismm2Running = false;
+
+  /// Switched on when we hear from MM.
+  bool get running => _running;
+  bool _running = false;
+
   String url = 'http://localhost:7783';
   String userpass = '';
   Stream<List<int>> streamSubscriptionStdout;
@@ -50,7 +54,9 @@ class MMService {
 
   /// Channel to native code.
   static MethodChannel nativeC = const MethodChannel('mm2');
-  static const EventChannel eventChannel = EventChannel('streamLogMM2');
+
+  /// MM log streamed from iOS/Swift.
+  static const EventChannel iosLogC = EventChannel('streamLogMM2');
   final Client client = http.Client();
   File logFile;
 
@@ -71,7 +77,7 @@ class MMService {
         await mmSe.runBin();
       } else {
         mmSe.initUsername(passphrase);
-        mmSe.ismm2Running = true;
+        mmSe._running = true;
         await mmSe.initCheckLogs();
         coinsBloc.currentCoinActivate(null);
         coinsBloc.loadCoin();
@@ -133,26 +139,30 @@ class MMService {
   Future<void> initCheckLogs() async {
     final File fileLog = File('${filesPath}mm.log');
 
-    if (!fileLog.existsSync()) {
-      await fileLog.create();
-    }
-    int offset = await fileLog.length();
+    if (!fileLog.existsSync()) await fileLog.create();
+    int offset = fileLog.lengthSync();
 
-    jobService.install('mmLogs', 1, (j) async {
-      fileLog
+    jobService.install('tail MM log', 1, (j) async {
+      final Stream<String> stream = fileLog
           .openRead(offset)
           .transform(utf8.decoder)
-          .transform(const LineSplitter())
-          .listen((String data) {
-        if (data.contains('DEX stats API enabled at')) {
-          ismm2Running = true;
+          .transform(const LineSplitter());
+      await for (String chunk in stream) {
+        if (chunk.contains('DEX stats API enabled at')) {
+          _running = true;
           initCoinsAndLoad();
           coinsBloc.startCheckBalance();
         }
-        onLogsmm2(data);
-      }).onDone(() async {
-        offset = await fileLog.length();
-      });
+        _onLog(chunk);
+      }
+      offset = fileLog.lengthSync();
+      if (offset > 1024 * 1024) {
+        // #653: Truncate the MM log buffer which is used presently on Android.
+        // `_onLog` copies chunks into the "log.txt"
+        // hence we can just truncate the "mm.log" without separately copying it.
+        final IOSink truncSink = fileLog.openWrite();
+        await truncSink.close();
+      }
     });
   }
 
@@ -244,7 +254,9 @@ class MMService {
         rethrow;
       }
     } else if (Platform.isIOS) {
-      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+      iosLogC
+          .receiveBroadcastStream()
+          .listen(_onIosLogEvent, onError: _onIosLogError);
       try {
         await nativeC.invokeMethod<dynamic>(
             'start', <String, String>{'params': startParam}); //start mm2
@@ -261,7 +273,7 @@ class MMService {
           checkStatusmm2().then((int onValue) {
             print('STATUS MM2: ' + onValue.toString());
             if (onValue == 3) {
-              ismm2Running = true;
+              _running = true;
               _.cancel();
               print('CANCEL TIMER');
               initCoinsAndLoad();
@@ -290,9 +302,9 @@ class MMService {
 
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
-  void onLogsmm2(String log) {
+  void _onLog(String chunk) {
     if (sink != null) {
-      Log.println('mm_service:295', log);
+      Log('mm_service:307', chunk);
 
       // AG: This currently relies on the information that can be freely changed by MM
       // or removed from the logs entirely (e.g. on debug and human-readable parts).
@@ -315,18 +327,18 @@ class MMService {
         'Finished'
       ];
       for (String sample in samples) {
-        if (!log.contains(sample)) continue;
+        if (!chunk.contains(sample)) continue;
         shouldUpdateOrdersAndSwaps = 'MM log: $sample';
       }
     }
   }
 
-  void _onEvent(Object event) {
-    onLogsmm2(event);
+  void _onIosLogEvent(Object event) {
+    _onLog(event);
   }
 
-  void _onError(Object error) {
-    print(error);
+  void _onIosLogError(Object error) {
+    Log('mm_service:341', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -343,9 +355,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.enableCoins(await coinsBloc.electrumCoins()).then((_) {
-        Log.println('mm_service:346', 'All coins activated');
+        Log('mm_service:358', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('mm_service:348', 'loadCoin finished');
+          Log('mm_service:360', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -376,7 +388,7 @@ class MMService {
   }
 
   Future<dynamic> stopmm2() async {
-    ismm2Running = false;
+    _running = false;
     try {
       final BaseService baseService =
           BaseService(userpass: userpass, method: 'stop');
@@ -384,6 +396,7 @@ class MMService {
           await http.post(url, body: baseServiceToJson(baseService));
       // await Future<dynamic>.delayed(const Duration(seconds: 1));
 
+      _running = false;
       return baseServiceFromJson(response.body);
     } catch (e) {
       print(e);
@@ -404,7 +417,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log.println('mm_service:407', 'getAllBalances');
+    Log('mm_service:420', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
