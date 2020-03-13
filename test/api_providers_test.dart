@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart' as ft;
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -43,11 +44,19 @@ import 'fixtures/fixture_reader.dart';
 class MockClient extends Mock implements http.Client {}
 
 /// Might run this with
-/// 
+///
 ///     flutter test test/api_providers_test.dart
 void main() {
   // Allow for running from IDE.
   ft.TestWidgetsFlutterBinding.ensureInitialized();
+
+  // Fix "MissingPluginException(No implementation found for method
+  // getApplicationDocumentsDirectory on channel plugins.flutter.io/path_provider)"
+  const MethodChannel channel =
+      MethodChannel('plugins.flutter.io/path_provider');
+  channel.setMockMethodCallHandler((MethodCall methodCall) async {
+    return '.';
+  });
 
   const String url = 'http://localhost:7783';
 
