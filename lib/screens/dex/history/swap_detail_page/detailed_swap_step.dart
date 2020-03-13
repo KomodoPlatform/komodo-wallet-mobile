@@ -9,6 +9,7 @@ class DetailedSwapStep extends StatelessWidget {
     this.title,
     this.status,
     this.estimatedSpeed,
+    this.estimatedDeviation,
     this.actualSpeed,
     this.estimatedTotalSpeed,
     this.actualTotalSpeed,
@@ -18,6 +19,7 @@ class DetailedSwapStep extends StatelessWidget {
   final String title;
   final SwapStepStatus status;
   final Duration estimatedSpeed;
+  final Duration estimatedDeviation;
   final Duration actualSpeed;
   final Duration estimatedTotalSpeed;
   final Duration actualTotalSpeed;
@@ -122,6 +124,24 @@ class DetailedSwapStep extends StatelessWidget {
                               : null,
                         ),
                       ),
+                      estimatedDeviation == null
+                          ? Container()
+                          : Row(
+                              children: <Widget>[
+                                Text(' ±',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: _disabledColor,
+                                    )),
+                                Text(
+                                  durationFormat(estimatedDeviation),
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: _disabledColor,
+                                  ),
+                                ),
+                              ],
+                            ),
                     ],
                   ),
                 ],

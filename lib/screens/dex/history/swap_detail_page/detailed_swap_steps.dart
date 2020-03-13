@@ -77,6 +77,17 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       return Duration(milliseconds: stepSpeed.speed);
     }
 
+    Duration _getEstimatedDeviation(int index) {
+      if (index == 0) return null;
+
+      final StepSpeed stepSpeed = _swapProvider.stepSpeed(
+        widget.uuid,
+        swap.result.successEvents[index - 1],
+        swap.result.successEvents[index],
+      );
+      return Duration(milliseconds: stepSpeed.deviation);
+    }
+
     Duration _getActualSpeed(int index) {
       if (index == 0) return null; // TODO(yurii): calculate first step speed
       if (index > swap.step) return null;
@@ -102,6 +113,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         title: 'Started', // TODO(yurii): localization
         status: _getStatus(0),
         estimatedSpeed: _getEstimatedSpeed(0),
+        estimatedDeviation: _getEstimatedDeviation(0),
         actualSpeed: _getActualSpeed(0),
         index: 0,
         actualTotalSpeed: actualTotalSpeed,
@@ -119,6 +131,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
           title: swap.result.successEvents[i], // TODO(yurii): localization
           status: _getStatus(i),
           estimatedSpeed: _getEstimatedSpeed(i),
+          estimatedDeviation: _getEstimatedDeviation(i),
           actualSpeed: _getActualSpeed(i),
           index: i,
           actualTotalSpeed: actualTotalSpeed,

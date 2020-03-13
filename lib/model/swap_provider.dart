@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 import 'error_string.dart';
 import 'get_recent_swap.dart';
@@ -86,28 +87,30 @@ class SwapProvider extends ChangeNotifier {
   /// Returns `null` if no estimate is currently available.
   StepSpeed stepSpeed(String uuid, String from, String to) {
     final String transition = '$from→$to';
-    int sum = 0;
     int count = 0;
+    final List<double> values = [];
     // TBD: Should probably filter by (sorted) coin pair.
     for (SwapGossip gossip in syncSwaps._ours.values) {
       final int speed = gossip.stepSpeed[transition];
       if (speed == null) continue;
-      sum += speed;
+      values.add(speed.toDouble());
       count += 1;
     }
     if (count == 0) return null;
-    final int speed = (sum / count).round();
+    final int speed = mean(values).round();
     Log('swap_provider:100', 'stepSpeed] $transition: $speed');
+    final int dev = deviation(values).round();
 
-    return StepSpeed(speed: speed);
+    return StepSpeed(speed: speed, deviation: dev);
   }
 }
 
 class StepSpeed {
-  StepSpeed({this.speed});
+  StepSpeed({this.speed, this.deviation});
 
   /// Speed estimate of step transition, in milliseconds.
   int speed;
+  int deviation;
 }
 
 SyncSwaps syncSwaps = SyncSwaps();

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
@@ -368,4 +369,21 @@ String durationFormat(Duration duration) {
   }
 
   return formatted;
+}
+
+double mean(List<double> values) {
+  if (values == null || values.isEmpty) return null;
+  final double sum = values.reduce((sum, current) => sum + current);
+  return sum / values.length;
+}
+
+double deviation(List<double> values) {
+  final double average = mean(values);
+  final List<double> squares = [];
+  for (var i = 0; i < values.length; i++) {
+    squares.add(pow(values[i] - average, 2));
+  }
+  final averageSquares = mean(squares);
+  
+  return sqrt(averageSquares);
 }
