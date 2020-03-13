@@ -43,6 +43,7 @@ import 'fixtures/fixture_reader.dart';
 class MockClient extends Mock implements http.Client {}
 
 void main() {
+  // Allow for running from IDE.
   ft.TestWidgetsFlutterBinding.ensureInitialized();
 
   const String url = 'http://localhost:7783';
@@ -517,7 +518,7 @@ void main() {
     test('throws ErrorString if the http call completes with error',
         () async {
       when(client.post(url, body: getBalanceToJson(body)))
-          .thenAnswer((_) async => http.Response('No found', 200));
+          .thenAnswer((_) async => http.Response('Not found', 404));
       ErrorString error;
       try {
         await ApiProvider().getBalance(body, client: client);
