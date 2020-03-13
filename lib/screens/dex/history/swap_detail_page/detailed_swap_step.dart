@@ -74,12 +74,14 @@ class DetailedSwapStep extends StatelessWidget {
                       )),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
-                    child: ProgressStep(
-                      estimatedTotalSpeed: estimatedTotalSpeed,
-                      actualTotalSpeed: actualTotalSpeed,
-                      estimatedStepSpeed: estimatedSpeed,
-                      actualStepSpeed: actualSpeed,
-                    ),
+                    child: estimatedTotalSpeed == null
+                        ? Container()
+                        : ProgressStep(
+                            estimatedTotalSpeed: estimatedTotalSpeed,
+                            actualTotalSpeed: actualTotalSpeed,
+                            estimatedStepSpeed: estimatedSpeed,
+                            actualStepSpeed: actualSpeed,
+                          ),
                   ),
                   Row(
                     children: <Widget>[
@@ -100,46 +102,52 @@ class DetailedSwapStep extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      Text('|',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: status == SwapStepStatus.pending
-                                ? _disabledColor
-                                : null,
-                          )),
-                      const SizedBox(width: 4),
-                      Text('est: ', // TODO(yurii): localization
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: status == SwapStepStatus.pending
-                                ? _disabledColor
-                                : _accentColor,
-                          )),
-                      Text(
-                        durationFormat(estimatedSpeed),
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: status == SwapStepStatus.pending
-                              ? _disabledColor
-                              : null,
-                        ),
-                      ),
-                      estimatedDeviation == null
+                      estimatedTotalSpeed == null
                           ? Container()
                           : Row(
                               children: <Widget>[
-                                Text(' ±',
+                                Text('|',
                                     style: TextStyle(
                                       fontSize: 13,
-                                      color: _disabledColor,
+                                      color: status == SwapStepStatus.pending
+                                          ? _disabledColor
+                                          : null,
+                                    )),
+                                const SizedBox(width: 4),
+                                Text('est: ', // TODO(yurii): localization
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: status == SwapStepStatus.pending
+                                          ? _disabledColor
+                                          : _accentColor,
                                     )),
                                 Text(
-                                  durationFormat(estimatedDeviation),
+                                  durationFormat(estimatedSpeed),
                                   style: TextStyle(
                                     fontSize: 13,
-                                    color: _disabledColor,
+                                    color: status == SwapStepStatus.pending
+                                        ? _disabledColor
+                                        : null,
                                   ),
                                 ),
+                                estimatedDeviation == null
+                                    ? Container()
+                                    : Row(
+                                        children: <Widget>[
+                                          Text(' ±',
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: _disabledColor,
+                                              )),
+                                          Text(
+                                            durationFormat(estimatedDeviation),
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: _disabledColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                               ],
                             ),
                     ],

@@ -67,14 +67,14 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     Duration _getEstimatedSpeed(int index) {
-      if (index == 0) return null;
+      if (index == 0) return const Duration(seconds: 0);
 
       final StepSpeed stepSpeed = _swapProvider.stepSpeed(
         widget.uuid,
         swap.result.successEvents[index - 1],
         swap.result.successEvents[index],
       );
-      return Duration(milliseconds: stepSpeed.speed);
+      return stepSpeed != null ? Duration(milliseconds: stepSpeed.speed) : null;
     }
 
     Duration _getEstimatedDeviation(int index) {
@@ -85,7 +85,9 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         swap.result.successEvents[index - 1],
         swap.result.successEvents[index],
       );
-      return Duration(milliseconds: stepSpeed.deviation);
+      return stepSpeed != null
+          ? Duration(milliseconds: stepSpeed.deviation)
+          : null;
     }
 
     Duration _getActualSpeed(int index) {
@@ -128,7 +130,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
 
       for (int i = 1; i < swap.result.successEvents.length; i++) {
         list.add(DetailedSwapStep(
-          title: swap.result.successEvents[i], // TODO(yurii): localization
+          title: swap.result.successEvents[i],
           status: _getStatus(i),
           estimatedSpeed: _getEstimatedSpeed(i),
           estimatedDeviation: _getEstimatedDeviation(i),
@@ -167,96 +169,107 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       );
     }
 
-    Widget _buildTotal() {
-      if (swap.step > 0) {
-        Duration estimatedSumSpeed = const Duration(seconds: 0);
-        Duration actualSumSpeed = const Duration(seconds: 0);
+    void _updateTotals() {
+      if (swap.step == 0) return;
 
-        for (var i = 0; i < swap.result.successEvents.length; i++) {
-          final SwapStepStatus status = _getStatus(i);
+      Duration estimatedSumSpeed = const Duration(seconds: 0);
+      Duration actualSumSpeed = const Duration(seconds: 0);
 
-          final Duration actualStepSpeed =
-              _getActualSpeed(i) ?? const Duration(seconds: 0);
+      for (var i = 0; i < swap.result.successEvents.length; i++) {
+        final SwapStepStatus status = _getStatus(i);
 
-          Duration estimatedStepSpeed =
-              _getEstimatedSpeed(i) ?? const Duration(seconds: 0);
-          if (status == SwapStepStatus.success) {
-            estimatedStepSpeed = actualStepSpeed;
-          } else if (status == SwapStepStatus.inProgress) {
-            estimatedStepSpeed = Duration(
-                milliseconds: max(actualStepSpeed.inMilliseconds,
-                    estimatedStepSpeed.inMilliseconds));
-          }
+        final Duration actualStepSpeed =
+            _getActualSpeed(i) ?? const Duration(seconds: 0);
+        actualSumSpeed = durationSum([actualSumSpeed, actualStepSpeed]);
 
-          estimatedSumSpeed =
-              durationSum([estimatedSumSpeed, estimatedStepSpeed]);
-          actualSumSpeed = durationSum([actualSumSpeed, actualStepSpeed]);
+        Duration estimatedStepSpeed = _getEstimatedSpeed(i);
+        if (estimatedStepSpeed == null) {
+          // If one of the steps does not have estimated speed data
+          // we can not calculate total estimated swap speed
+          estimatedSumSpeed = null;
+          break;
         }
 
-        setState(() {
-          estimatedTotalSpeed = estimatedSumSpeed;
-          actualTotalSpeed = actualSumSpeed;
-        });
+        if (status == SwapStepStatus.success) {
+          estimatedStepSpeed = actualStepSpeed;
+        } else if (status == SwapStepStatus.inProgress) {
+          estimatedStepSpeed = Duration(
+              milliseconds: max(actualStepSpeed.inMilliseconds,
+                  estimatedStepSpeed.inMilliseconds));
+        }
+
+        estimatedSumSpeed =
+            durationSum([estimatedSumSpeed, estimatedStepSpeed]);
       }
 
+      setState(() {
+        estimatedTotalSpeed = estimatedSumSpeed;
+        actualTotalSpeed = actualSumSpeed;
+      });
+    }
+
+    Widget _buildTotal() {
+      _updateTotals();
+
       return Container(
-        child: Column(
+        color: Theme.of(context).dialogBackgroundColor,
+        padding: const EdgeInsets.all(8),
+        child: Row(
           children: <Widget>[
-            Container(
-              color: Theme.of(context).dialogBackgroundColor,
-              padding: const EdgeInsets.all(8),
-              child: Row(
+            _getSwapStatusIcon(),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _getSwapStatusIcon(),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const Text('Total:'), // TODO(yurii): localization
-                        ProgressStep(
+                  const Text('Total:'), // TODO(yurii): localization
+                  estimatedTotalSpeed == null
+                      ? Container()
+                      : ProgressStep(
                           actualTotalSpeed: actualTotalSpeed,
                           estimatedTotalSpeed: estimatedTotalSpeed,
                           actualStepSpeed: actualTotalSpeed,
                           estimatedStepSpeed: estimatedTotalSpeed,
                         ),
-                        Row(
-                          children: <Widget>[
-                            Text('act: ', // TODO(yurii): localization
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Theme.of(context).accentColor,
-                                )),
-                            Text(
-                              durationFormat(actualTotalSpeed),
-                              style: const TextStyle(fontSize: 13),
+                  Row(
+                    children: <Widget>[
+                      Text('act: ', // TODO(yurii): localization
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Theme.of(context).accentColor,
+                          )),
+                      Text(
+                        durationFormat(actualTotalSpeed),
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                      const SizedBox(width: 4),
+                      estimatedTotalSpeed == null
+                          ? Container()
+                          : Row(
+                              children: <Widget>[
+                                const Text('|',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                    )),
+                                const SizedBox(width: 4),
+                                Text('est: ', // TODO(yurii): localization
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Theme.of(context).accentColor,
+                                    )),
+                                Text(
+                                  durationFormat(estimatedTotalSpeed),
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 4),
-                            const Text('|',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                )),
-                            const SizedBox(width: 4),
-                            Text('est: ', // TODO(yurii): localization
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Theme.of(context).accentColor,
-                                )),
-                            Text(
-                              durationFormat(estimatedTotalSpeed),
-                              style: const TextStyle(
-                                fontSize: 13,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 13),
           ],
         ),
       );
@@ -273,6 +286,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
           ),
           const SizedBox(height: 20),
           _buildTotal(),
+          const SizedBox(height: 13),
           // We assume that all kind of swaps has first step, with type of 'Started',
           // so we can show this step before actual swap data received.
           _buildFirstStep(),
