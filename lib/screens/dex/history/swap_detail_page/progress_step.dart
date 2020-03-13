@@ -28,6 +28,7 @@ class _ProgressStepState extends State<ProgressStep> {
       double share = widget.estimatedStepSpeed.inMilliseconds /
           widget.estimatedTotalSpeed.inMilliseconds;
       if (share < 0.01) share = 0.01;
+      if (share > 1) share = 1;
       return share;
     }
 
@@ -39,6 +40,7 @@ class _ProgressStepState extends State<ProgressStep> {
       double share = widget.actualStepSpeed.inMilliseconds /
           widget.estimatedTotalSpeed.inMilliseconds;
       if (share < 0.01) share = 0.01;
+      if (share > 1) share = 1;
       return share;
     }
 
