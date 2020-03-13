@@ -39,30 +39,38 @@ packages:
   audioplayers:
     dependency: "direct main"
     description:
-      name: audioplayers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.13.7"
+      path: "."
+      ref: "859c88c2c3fe926bdbb6e5e729d3c16d088be76a"
+      resolved-ref: "859c88c2c3fe926bdbb6e5e729d3c16d088be76a"
+      url: "git://github.com/KomodoPlatform/audioplayers.git"
+    source: git
+    version: "0.14.0"
   auto_size_text:
     dependency: "direct dev"
     description:
-      name: auto_size_text
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.2"
+      path: "."
+      ref: a2cb00e548916731f5c4c241d79a93419a4f9447
+      resolved-ref: a2cb00e548916731f5c4c241d79a93419a4f9447
+      url: "git://github.com/KomodoPlatform/auto_size_text.git"
+    source: git
+    version: "2.1.0"
   barcode_scan:
     dependency: "direct dev"
     description:
-      name: barcode_scan
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
+      path: "."
+      ref: a4a010ca31b67d6ef331786bb93d79cb71f1f327
+      resolved-ref: a4a010ca31b67d6ef331786bb93d79cb71f1f327
+      url: "git://github.com/KomodoPlatform/flutter_barcode_reader.git"
+    source: git
+    version: "2.0.1"
   bip39:
     dependency: "direct dev"
     description:
-      name: bip39
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: dbd846b743eab3b21f3ef56abc958305be54761a
+      resolved-ref: dbd846b743eab3b21f3ef56abc958305be54761a
+      url: "git://github.com/KomodoPlatform/bip39-dart.git"
+    source: git
     version: "1.0.3"
   boolean_selector:
     dependency: transitive
@@ -74,16 +82,20 @@ packages:
   bs58check:
     dependency: "direct dev"
     description:
-      name: bs58check
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "2889fa8791fd46afb30a9e7984c06b66a6241a44"
+      resolved-ref: "2889fa8791fd46afb30a9e7984c06b66a6241a44"
+      url: "git://github.com/KomodoPlatform/bs58check-dart.git"
+    source: git
     version: "1.0.1"
   carousel_slider:
     dependency: "direct dev"
     description:
-      name: carousel_slider
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "115ce460e6d6e8382e97f6f2e2ad39d90d6485d7"
+      resolved-ref: "115ce460e6d6e8382e97f6f2e2ad39d90d6485d7"
+      url: "git://github.com/KomodoPlatform/flutter_carousel_slider.git"
+    source: git
     version: "1.4.1"
   charcode:
     dependency: transitive
@@ -151,9 +163,11 @@ packages:
   decimal:
     dependency: "direct dev"
     description:
-      name: decimal
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "4654d8c1d3a9b67288e5637e5a476f5745cd0a99"
+      resolved-ref: "4654d8c1d3a9b67288e5637e5a476f5745cd0a99"
+      url: "git://github.com/KomodoPlatform/dart-decimal.git"
+    source: git
     version: "0.3.5"
   file:
     dependency: transitive
@@ -165,9 +179,11 @@ packages:
   file_picker:
     dependency: "direct main"
     description:
-      name: file_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: b68ee11c6ac117460ffa0c96b13ac4b89f2386f7
+      resolved-ref: b68ee11c6ac117460ffa0c96b13ac4b89f2386f7
+      url: "git://github.com/KomodoPlatform/flutter_file_picker.git"
+    source: git
     version: "1.4.3+2"
   flutter:
     dependency: "direct main"
@@ -182,9 +198,11 @@ packages:
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
-      name: flutter_launcher_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: c2584ef5b381e7343dfa18acddae9becdabd9727
+      resolved-ref: c2584ef5b381e7343dfa18acddae9becdabd9727
+      url: "git://github.com/KomodoPlatform/flutter_launcher_icons.git"
+    source: git
     version: "0.7.4"
   flutter_localizations:
     dependency: "direct main"
@@ -194,16 +212,20 @@ packages:
   flutter_secure_storage:
     dependency: "direct dev"
     description:
-      name: flutter_secure_storage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.3.1+1"
+      path: "."
+      ref: eef67d3d006b2c53453df183f7d4ac081948e110
+      resolved-ref: eef67d3d006b2c53453df183f7d4ac081948e110
+      url: "git://github.com/KomodoPlatform/flutter_secure_storage.git"
+    source: git
+    version: "3.3.1+2"
   flutter_slidable:
     dependency: "direct dev"
     description:
-      name: flutter_slidable
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "27bbe0dfa9866ae01e8001267e873221ef5fbd67"
+      resolved-ref: "27bbe0dfa9866ae01e8001267e873221ef5fbd67"
+      url: "https://github.com/KomodoPlatform/flutter_slidable.git"
+    source: git
     version: "0.5.4"
   flutter_sodium:
     dependency: "direct dev"
@@ -217,10 +239,12 @@ packages:
   flutter_svg:
     dependency: "direct dev"
     description:
-      name: flutter_svg
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.13.1"
+      path: "."
+      ref: a05263d56aa8745405b01df452332d03a758e40d
+      resolved-ref: a05263d56aa8745405b01df452332d03a758e40d
+      url: "git://github.com/KomodoPlatform/flutter_svg.git"
+    source: git
+    version: "0.13.0+2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -323,9 +347,11 @@ packages:
   keccak:
     dependency: "direct dev"
     description:
-      name: keccak
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "420208090228f49237e080a31d1b627ec454d1cd"
+      resolved-ref: "420208090228f49237e080a31d1b627ec454d1cd"
+      url: "git://github.com/KomodoPlatform/keccak.git"
+    source: git
     version: "1.0.3"
   local_auth:
     dependency: "direct dev"
@@ -421,9 +447,11 @@ packages:
   password:
     dependency: "direct dev"
     description:
-      name: password
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
+      resolved-ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
+      url: "git://github.com/KomodoPlatform/password-dart.git"
+    source: git
     version: "1.0.0"
   path:
     dependency: transitive
@@ -528,10 +556,12 @@ packages:
   qr_flutter:
     dependency: "direct dev"
     description:
-      name: qr_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0+55"
+      path: "."
+      ref: "587c969052f37d9fc0f14801aba241bffbc1ea84"
+      resolved-ref: "587c969052f37d9fc0f14801aba241bffbc1ea84"
+      url: "git://github.com/KomodoPlatform/qr.flutter.git"
+    source: git
+    version: "3.2.0"
   quiver:
     dependency: transitive
     description:
@@ -552,7 +582,7 @@ packages:
       path: "packages/share/"
       ref: "1494b043d03799dd14e689552d1218918435f9f5"
       resolved-ref: "1494b043d03799dd14e689552d1218918435f9f5"
-      url: "https://github.com/KomodoPlatform/plugins"
+      url: "git://github.com/KomodoPlatform/plugins.git"
     source: git
     version: "0.6.2+1"
   shared_preferences:
@@ -640,10 +670,19 @@ packages:
   sqflite:
     dependency: "direct dev"
     description:
-      name: sqflite
+      path: "sqflite/"
+      ref: "8da4eefdd8b13dfe7eedbd5dea1c1dded7d04acf"
+      resolved-ref: "8da4eefdd8b13dfe7eedbd5dea1c1dded7d04acf"
+      url: "git://github.com/KomodoPlatform/sqflite.git"
+    source: git
+    version: "1.3.0-dev.2"
+  sqflite_common:
+    dependency: transitive
+    description:
+      name: sqflite_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.1"
+    version: "0.1.0-dev.3"
   stack_trace:
     dependency: transitive
     description:
@@ -703,9 +742,11 @@ packages:
   timeago:
     dependency: "direct dev"
     description:
-      name: timeago
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "timeago/"
+      ref: "9aeb58544067d4a2cc480da3741db9c35d1f36f3"
+      resolved-ref: "9aeb58544067d4a2cc480da3741db9c35d1f36f3"
+      url: "git://github.com/KomodoPlatform/timeago.dart.git"
+    source: git
     version: "2.0.26"
   typed_data:
     dependency: transitive
@@ -745,9 +786,11 @@ packages:
   uuid:
     dependency: "direct dev"
     description:
-      name: uuid
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "981adcac181443e3def4ced76a43b96c534e68ce"
+      resolved-ref: "981adcac181443e3def4ced76a43b96c534e68ce"
+      url: "git://github.com/KomodoPlatform/dart-uuid.git"
+    source: git
     version: "2.0.4"
   vector_math:
     dependency: transitive
@@ -799,5 +842,5 @@ packages:
     source: hosted
     version: "2.2.0"
 sdks:
-  dart: ">=2.6.0 <3.0.0"
+  dart: ">=2.7.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.5 <2.0.0"
