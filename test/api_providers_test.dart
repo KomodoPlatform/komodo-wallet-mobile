@@ -42,6 +42,9 @@ import 'fixtures/fixture_reader.dart';
 
 class MockClient extends Mock implements http.Client {}
 
+/// Might run this with
+/// 
+///     flutter test test/api_providers_test.dart
 void main() {
   // Allow for running from IDE.
   ft.TestWidgetsFlutterBinding.ensureInitialized();
