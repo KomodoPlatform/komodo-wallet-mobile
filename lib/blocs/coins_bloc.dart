@@ -183,8 +183,8 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> removeCoin(Coin coin) async =>
-      await removeCoinBalance(coin).then<dynamic>((_) => ApiProvider()
-          .disableCoin(MMService().client, GetDisableCoin(coin: coin.abbr))
+      await removeCoinBalance(coin).then<dynamic>((_) => MM
+          .disableCoin(mmSe.client, GetDisableCoin(coin: coin.abbr))
           .then<dynamic>((dynamic res) => removeCoinLocal(coin, res)));
 
   void updateOneCoin(CoinBalance coin) {
@@ -215,7 +215,7 @@ class CoinsBloc implements BlocBase {
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
-      final dynamic transactions = await MM.getTransactions(MMService().client,
+      final dynamic transactions = await MM.getTransactions(mmSe.client,
           GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
 
       if (transactions is Transactions) {
@@ -293,29 +293,27 @@ class CoinsBloc implements BlocBase {
     currentCoinActivate(
         CoinToActivate(currentStatus: 'Activating ${coin.abbr} ...'));
     Log('coins_bloc:295', '${coin.abbr}, ${coin.requiredConfirmations}');
-    return await ApiProvider()
-        .enableCoin(MMService().client, coin)
-        .then((dynamic activeCoin) {
+    return await MM.enableCoin(mmSe.client, coin).then((dynamic activeCoin) {
       if (activeCoin is ActiveCoin) {
         currentCoinActivate(
             CoinToActivate(currentStatus: '${coin.name} activated.'));
         return CoinToActivate(coin: coin, isActive: true);
       } else if (activeCoin is ErrorString &&
           activeCoin.error.contains('already initialized')) {
-        Log('coins_bloc:305', 'ERROR: ' + activeCoin.error.toString());
+        Log('coins_bloc:303', 'ERROR: ' + activeCoin.error.toString());
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Coin ${coin.abbr} already initialized'));
         return CoinToActivate(coin: coin, isActive: true);
       } else {
         if (activeCoin is ErrorString) {
-          Log('coins_bloc:311', 'ERROR: ' + activeCoin.error.toString());
+          Log('coins_bloc:309', 'ERROR: ' + activeCoin.error.toString());
         }
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
         return CoinToActivate(coin: coin, isActive: false);
       }
     }).timeout(const Duration(seconds: 30), onTimeout: () async {
-      Log('coins_bloc:318', 'Sorry, ${coin.abbr} not available.');
+      Log('coins_bloc:316', 'Sorry, ${coin.abbr} not available.');
       currentCoinActivate(
           CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
       await Future<dynamic>.delayed(const Duration(seconds: 2))
@@ -391,7 +389,7 @@ class CoinsBloc implements BlocBase {
 
   void startCheckBalance() {
     jobService.install('checkBalance', 45, (j) async {
-      if (!MMService().running) return;
+      if (!mmSe.running) return;
       await loadCoin();
     });
   }
@@ -401,9 +399,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> loadCoin() async {
-    if (MMService().running &&
-        !onActivateCoins &&
-        !mainBloc.isNetworkOffline) {
+    if (mmSe.running && !onActivateCoins && !mainBloc.isNetworkOffline) {
       onActivateCoins = true;
       final List<Coin> coins = await coinsBloc.electrumCoins();
       final List<Future<dynamic>> getAllBalances = <Future<dynamic>>[];
@@ -427,7 +423,7 @@ class CoinsBloc implements BlocBase {
             }
           });
         } catch (e) {
-          Log('coins_bloc:430', e);
+          Log('coins_bloc:426', e);
         }
       }
 
@@ -450,11 +446,11 @@ class CoinsBloc implements BlocBase {
   Future<CoinBalance> _getBalanceForCoin(Coin coin) async {
     Balance balance;
     try {
-      balance = await ApiProvider()
+      balance = await MM
           .getBalance(GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
-      Log('coins_bloc:457', e);
+      Log('coins_bloc:453', e);
       balance = null;
     }
 
@@ -467,7 +463,7 @@ class CoinsBloc implements BlocBase {
       coinBalance = CoinBalance(coin, balance);
       // Log(
       //     'coins_bloc:480', 'Balance: ' + coinBalance.balance.getBalance());
-      // Log('coins_bloc:470',
+      // Log('coins_bloc:466',
       //     'RealBalance: ' + coinBalance.balance.getRealBalance());
       if (coinBalance.balanceUSD == null &&
           double.parse(coinBalance.balance.getBalance()) > 0) {
@@ -486,7 +482,7 @@ class CoinsBloc implements BlocBase {
     }
 
     if (balance != null && balance.coin == 'KMD') {
-      MMService().pubkey = balance.address;
+      mmSe.pubkey = balance.address;
     }
     return coinBalance;
   }
@@ -496,9 +492,9 @@ class CoinsBloc implements BlocBase {
     final List<Coin> coinsAll = await getAllNotActiveCoins();
 
     try {
-      await ApiProvider()
-          .getCoinToKickStart(MMService().client,
-              BaseService(method: 'coins_needed_for_kick_start'))
+      await MM
+          .getCoinToKickStart(
+              mmSe.client, BaseService(method: 'coins_needed_for_kick_start'))
           .then((dynamic coinsToKickStart) {
         if (coinsToKickStart is CoinToKickStart) {
           for (Coin coin in coinsAll) {
@@ -512,7 +508,7 @@ class CoinsBloc implements BlocBase {
       });
       await writeJsonCoin(coinsToSave);
     } catch (e) {
-      Log('coins_bloc:515', e);
+      Log('coins_bloc:511', e);
       rethrow;
     }
   }
