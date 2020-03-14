@@ -102,7 +102,7 @@ class DetailedSwapStep extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      estimatedTotalSpeed == null
+                      estimatedSpeed == null
                           ? Container()
                           : Row(
                               children: <Widget>[
