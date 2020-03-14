@@ -14,6 +14,7 @@ enum SwapStepStatus {
   inProgress,
   success,
   failed,
+  handled,
 }
 
 class DetailedSwapSteps extends StatefulWidget {
@@ -61,9 +62,15 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
 
     SwapStepStatus _getStatus(int index) {
       if (index == swap.step) return SwapStepStatus.inProgress;
-      if (index < swap.step) return SwapStepStatus.success;
+      if (index < swap.step) {
+        if (swap.result.events[index].event.type ==
+            swap.result.successEvents[index]) {
+          return SwapStepStatus.success;
+        } else {
+          return SwapStepStatus.failed;
+        }
+      }
       return SwapStepStatus.pending;
-      // TODO(yurii): handle SwapStepStatus.failed
     }
 
     Duration _getEstimatedSpeed(int index) {
@@ -108,6 +115,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
               milliseconds:
                   DateTime.now().millisecondsSinceEpoch - fromTimestamp);
           break;
+        case SwapStepStatus.failed:
         case SwapStepStatus.success:
           final int toTimeStamp = swap.result.events[index].timestamp;
           return Duration(milliseconds: toTimeStamp - fromTimestamp);
@@ -135,10 +143,13 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
 
       final List<Widget> list = [];
 
+      int failedOnStep;
       for (int i = 1; i < swap.result.successEvents.length; i++) {
+        final SwapStepStatus status = _getStatus(i);
+        if (failedOnStep != null) break;
         list.add(DetailedSwapStep(
           title: swap.result.successEvents[i],
-          status: _getStatus(i),
+          status: status,
           estimatedSpeed: _getEstimatedSpeed(i),
           estimatedDeviation: _getEstimatedDeviation(i),
           actualSpeed: _getActualSpeed(i),
@@ -146,6 +157,26 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
           actualTotalSpeed: actualTotalSpeed,
           estimatedTotalSpeed: estimatedTotalSpeed,
         ));
+        if (status == SwapStepStatus.failed) {
+          failedOnStep = i;
+        }
+      }
+
+      if (failedOnStep != null) {
+        for (int e = failedOnStep; e < swap.result.events.length; e++) {
+          final String errorEventType = swap.result.events[e].event.type;
+          final SwapStepStatus status =
+              errorEventType.toLowerCase().contains('failed')
+                  ? SwapStepStatus.failed
+                  : SwapStepStatus.handled;
+
+          list.add(DetailedSwapStep(
+            title: errorEventType,
+            status: status,
+            actualSpeed: e == failedOnStep ? null : _getActualSpeed(e),
+            index: e,
+          ));
+        }
       }
 
       return list;
@@ -163,6 +194,10 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         case Status.ORDER_MATCHING:
           icon = Icon(Icons.swap_horiz,
               size: 15, color: Theme.of(context).accentColor);
+          break;
+        case Status.SWAP_FAILED:
+          icon =
+              Icon(Icons.cancel, size: 15, color: Theme.of(context).errorColor);
           break;
         default:
           icon = Icon(

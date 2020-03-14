@@ -46,6 +46,13 @@ class DetailedSwapStep extends StatelessWidget {
         case SwapStepStatus.inProgress:
           icon = Icon(Icons.swap_horiz, size: 15, color: _accentColor);
           break;
+        case SwapStepStatus.failed:
+          icon =
+              Icon(Icons.cancel, size: 15, color: Theme.of(context).errorColor);
+          break;
+        case SwapStepStatus.handled:
+          icon = Icon(Icons.check_circle, size: 15, color: Theme.of(context).errorColor);
+          break;
         default:
           {}
       }
