@@ -104,25 +104,28 @@ class MMService {
 
     if (Platform.isAndroid) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      final String newBuildNumber = packageInfo.buildNumber;
 
       try {
         final ProcessResult checkmm2 =
             await Process.run('ls', <String>['${filesPath}mm2']);
-        final String currentBuildNumber = prefs.getString('version');
+
+        final String savedmm2Hash = prefs.getString('mm2_hash');
+
+        final ByteData resultmm2 = await rootBundle.load('assets/mm2');
+        final String assetmm2Hash =
+            sha1.convert(resultmm2.buffer.asUint8List()).toString();
 
         if (checkmm2.stdout.toString().trim() != '${filesPath}mm2' ||
-            currentBuildNumber == null ||
-            currentBuildNumber.isEmpty ||
-            currentBuildNumber != newBuildNumber) {
-          await prefs.setString('version', newBuildNumber);
+            savedmm2Hash == null ||
+            savedmm2Hash.isEmpty ||
+            savedmm2Hash != assetmm2Hash) {
           await coinsBloc.resetCoinDefault();
-          final ByteData resultmm2 = await rootBundle.load('assets/mm2');
           if (checkmm2.stdout.toString().trim() == '${filesPath}mm2') {
             await deletemm2File();
           }
           await writeData(resultmm2.buffer.asUint8List());
+          await prefs.setString('mm2_hash', assetmm2Hash);
+
           await Process.run('chmod', <String>['544', '${filesPath}mm2']);
         }
       } catch (e) {
