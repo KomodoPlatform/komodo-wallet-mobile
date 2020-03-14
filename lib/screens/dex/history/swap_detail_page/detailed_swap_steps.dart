@@ -67,7 +67,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     Duration _getEstimatedSpeed(int index) {
-      if (index == 0) return const Duration(seconds: 0);
+      if (index == 0) return const Duration(seconds: 30);
 
       final StepSpeed stepSpeed = _swapProvider.stepSpeed(
         widget.uuid,
@@ -91,10 +91,17 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     Duration _getActualSpeed(int index) {
-      if (index == 0) return null; // TODO(yurii): calculate first step speed
+      if (index == 0 && swap.result == null) return null;
       if (index > swap.step) return null;
 
-      final int fromTimestamp = swap.result.events[index - 1].timestamp;
+      int fromTimestamp;
+      if (index == 0) {
+        // yurii: for some reason swap.result.myInfo.startedAt
+        // returns seconds since epoch instead of milliseconds
+        fromTimestamp = swap.result.myInfo.startedAt * 1000;
+      } else {
+        fromTimestamp = swap.result.events[index - 1].timestamp;
+      }
       switch (_getStatus(index)) {
         case SwapStepStatus.inProgress:
           return Duration(
