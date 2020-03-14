@@ -122,10 +122,12 @@ class SyncSwaps {
   /// Loaded from MM.
   Map<String, Swap> _swaps = {};
 
-  /// Maps swap UUIDs to gossip entities created from our swaps.
+  /// Gossip entities created from our swaps.
   final Map<String, SwapGossip> _ours = {};
 
-  final Set<String> _gossiped = {};
+  /// Gossiped timestamps.
+  /// If timestamp differs then we haven't shared that version of gossip yet.
+  final Map<String, int> _gossiped = {};
 
   /// Link a [ChangeNotifier] proxy to this singleton.
   void linkProvider(SwapProvider provider) {
@@ -154,13 +156,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:157', 'update] reason $reason');
+    Log('swap_provider:159', 'update] reason $reason');
 
     final dynamic mswaps = await MM.getRecentSwaps(
         mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (mswaps is ErrorString) {
-      Log('swap_provider:163', '!getRecentSwaps: ${mswaps.error}');
+      Log('swap_provider:165', '!getRecentSwaps: ${mswaps.error}');
       return;
     }
     if (mswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -180,7 +182,7 @@ class SyncSwaps {
     try {
       await _gossipSync();
     } catch (ex) {
-      Log('swap_provider:183', '!_gossipSync: $ex');
+      Log('swap_provider:185', '!_gossipSync: $ex');
     }
   }
 
@@ -189,9 +191,9 @@ class SyncSwaps {
     if (mswap.events.isEmpty) return;
 
     // See if we have already gossiped about this version of the swap.
-    final String uuid = mswap.uuid;
+    final String id = SwapGossip.swap2id(mswap);
     final int timestamp = mswap.events.last.timestamp;
-    if (_ours[uuid]?.timestamp == timestamp) return;
+    if (_ours[id]?.timestamp == timestamp) return;
 
     // Skip old swaps.
     final int now = DateTime.now().millisecondsSinceEpoch;
@@ -199,19 +201,21 @@ class SyncSwaps {
 
     final SwapGossip gossip = SwapGossip.from(timestamp, mswap);
     if (gossip.makerCoin == null) return; // No Start event.
-    _ours[uuid] = gossip;
+    _ours[id] = gossip;
   }
 
   Future<void> _gossipSync() async {
     // Exploratory.
 
     final List<SwapGossip> entities = [];
-    for (String uuid in _ours.keys) {
-      if (_gossiped.contains(uuid)) continue;
-      entities.add(_ours[uuid]);
+    for (String id in _ours.keys) {
+      final entity = _ours[id];
+      if (entity.timestamp == _gossiped[id]) continue;
+      Log('swap_provider:214', 'Gossiping $id…');
+      entities.add(entity);
     }
-    if (entities.isEmpty) return;
 
+    Log('swap_provider:218', 'ct.cipig.net/sync…');
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
           'components': <String, dynamic>{
@@ -225,13 +229,13 @@ class SyncSwaps {
         }));
     if (pr.statusCode != 200) throw Exception('HTTP ${pr.statusCode}');
 
-    for (SwapGossip entity in entities) _gossiped.add(entity.uuid);
+    for (SwapGossip en in entities) _gossiped[en.id] = en.timestamp;
   }
 }
 
 class SwapGossip {
   SwapGossip.from(this.timestamp, MmSwap mswap) {
-    uuid = mswap.uuid;
+    id = swap2id(mswap);
     gui = mswap.gui;
     mmMersion = mswap.mmMersion;
 
@@ -242,7 +246,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:245', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:249', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
@@ -259,8 +263,11 @@ class SwapGossip {
     }
   }
 
-  /// Swap ID. Gossip entity ID.
-  String uuid;
+  static String swap2id(MmSwap mswap) =>
+      mswap.uuid + '/' + (mswap.type == 'Taker' ? 't' : 'm');
+
+  /// Gossip entity ID: “${swap_uuid}/${type}”, where $type is “t” for Taker and “m” for Maker.
+  String id;
 
   /// Ticker of maker coin.
   String makerCoin;
@@ -284,7 +291,7 @@ class SwapGossip {
   bool makerPaymentRequiresNota, takerPaymentRequiresNota;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
-        'uuid': uuid,
+        'id': id,
         'maker_coin': makerCoin,
         'taker_coin': takerCoin,
         'timestamp': timestamp,
