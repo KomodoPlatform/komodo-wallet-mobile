@@ -2,15 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
+import 'coin.dart';
 import 'error_string.dart';
 import 'get_recent_swap.dart';
+import 'recent_swaps.dart';
+import 'swap.dart';
 
 class SwapProvider extends ChangeNotifier {
   SwapProvider() {
@@ -65,7 +67,8 @@ class SwapProvider extends ChangeNotifier {
     final Map<String, int> knownTransitions = {};
     final String pref = ev.type + '→';
     // TBD: Should probably filter by (sorted) coin pair.
-    for (SwapGossip gossip in syncSwaps._ours.values) {
+    final ens = syncSwaps._ours.values.followedBy(syncSwaps._theirs.values);
+    for (SwapGossip gossip in ens) {
       for (String trans in gossip.stepSpeed.keys) {
         if (trans.startsWith(pref)) {
           final String to = trans.substring(pref.length);
@@ -90,7 +93,8 @@ class SwapProvider extends ChangeNotifier {
     int count = 0;
     final List<double> values = [];
     // TBD: Should probably filter by (sorted) coin pair.
-    for (SwapGossip gossip in syncSwaps._ours.values) {
+    final ens = syncSwaps._ours.values.followedBy(syncSwaps._theirs.values);
+    for (SwapGossip gossip in ens) {
       final int speed = gossip.stepSpeed[transition];
       if (speed == null) continue;
       values.add(speed.toDouble());
@@ -129,6 +133,8 @@ class SyncSwaps {
   /// If timestamp differs then we haven't shared that version of gossip yet.
   final Map<String, int> _gossiped = {};
 
+  final Map<String, SwapGossip> _theirs = {};
+
   /// Link a [ChangeNotifier] proxy to this singleton.
   void linkProvider(SwapProvider provider) {
     _providers.add(provider);
@@ -156,13 +162,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:159', 'update] reason $reason');
+    Log('swap_provider:165', 'update] reason $reason');
 
     final dynamic mswaps = await MM.getRecentSwaps(
         mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (mswaps is ErrorString) {
-      Log('swap_provider:165', '!getRecentSwaps: ${mswaps.error}');
+      Log('swap_provider:171', '!getRecentSwaps: ${mswaps.error}');
       return;
     }
     if (mswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -182,7 +188,7 @@ class SyncSwaps {
     try {
       await _gossipSync();
     } catch (ex) {
-      Log('swap_provider:185', '!_gossipSync: $ex');
+      Log('swap_provider:191', '!_gossipSync: $ex');
     }
   }
 
@@ -211,25 +217,40 @@ class SyncSwaps {
     for (String id in _ours.keys) {
       final entity = _ours[id];
       if (entity.timestamp == _gossiped[id]) continue;
-      Log('swap_provider:214', 'Gossiping $id…');
+      Log('swap_provider:220', 'Gossiping $id…');
       entities.add(entity);
     }
 
-    Log('swap_provider:218', 'ct.cipig.net/sync…');
+    // TBD: We should have a model encapsulating and caching the enabled coins.
+    final List<Coin> coins =
+        await DBProvider.db.electrumCoins(CoinEletrum.SAVED);
+    final List<String> tickers = coins.map((Coin coin) => coin.abbr).toList();
+
+    Log('swap_provider:229', 'ct.cipig.net/sync…');
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
           'components': <String, dynamic>{
             'swap-events.1': <String, dynamic>{
               // Coins we're currently interested in (e.g. activated).
-              'tickers': ['RICK', 'MORTY'],
+              'tickers': tickers,
               // Gossip entities we share with the network.
               'ours': entities.map((e) => e.toJson).toList()
             }
           }
         }));
     if (pr.statusCode != 200) throw Exception('HTTP ${pr.statusCode}');
-
     for (SwapGossip en in entities) _gossiped[en.id] = en.timestamp;
+
+    final ct = pr.headers['content-type'] ?? '';
+    if (ct != 'application/json') throw Exception('HTTP Content-Type $ct');
+    final Map<String, dynamic> js = json.decode(pr.body);
+    final Map<String, dynamic> components = js['components'];
+    if (!components.containsKey('swap-events.1')) return;
+    final List<dynamic> re = components['swap-events.1']['entities'];
+    for (Map<String, dynamic> en in re) {
+      final SwapGossip gen = SwapGossip.fromJson(en);
+      _theirs[gen.id] = gen;
+    }
   }
 }
 
@@ -246,7 +267,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:249', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:270', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
@@ -261,6 +282,22 @@ class SwapGossip {
         takerPaymentRequiresNota = data.takerPaymentRequiresNota;
       }
     }
+  }
+
+  /// Load back from caretaker.
+  SwapGossip.fromJson(Map<String, dynamic> en) {
+    id = en['id'];
+    gui = en['gui'];
+    mmMersion = en['mm_version'];
+    stepSpeed = Map<String, int>.from(en['step_speed']);
+    makerCoin = en['maker_coin'];
+    takerCoin = en['taker_coin'];
+    makerPaymentConfirmations = en['maker_payment_confirmations'];
+    takerPaymentConfirmations = en['taker_payment_confirmations'];
+    final dynamic mrn = en['maker_payment_requires_nota'];
+    makerPaymentRequiresNota = mrn == 1 || mrn == 0 ? false : null;
+    final dynamic trn = en['taker_payment_requires_nota'];
+    takerPaymentRequiresNota = trn == 1 || trn == 0 ? false : null;
   }
 
   static String swap2id(MmSwap mswap) =>
