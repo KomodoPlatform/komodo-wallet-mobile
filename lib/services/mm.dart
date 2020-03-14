@@ -67,7 +67,7 @@ class ApiProvider {
     // getMyOrders and getRecentSwaps are invoked every two seconds during an active order or swap
     // and fully logging their response bodies every two seconds is an overkill,
     // though we still want to *mention* the invocations in the logs.
-    final bool cut = musicService.recommendsPeriodicUpdates() &&
+    final bool cut = musicService.recommendsPeriodicUpdates &&
         (method == 'getMyOrders' || method == 'getRecentSwaps');
     if (cut && loggedLine.length > 77) {
       loggedLine = loggedLine.substring(0, 75) + '..';

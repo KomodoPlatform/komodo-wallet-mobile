@@ -177,7 +177,7 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:180', 'update] reason $reason');
+    Log('swap_provider:180', 'update] reason: $reason');
 
     final dynamic mswaps = await MM.getRecentSwaps(
         mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
@@ -241,7 +241,7 @@ class SyncSwaps {
         await DBProvider.db.electrumCoins(CoinEletrum.SAVED);
     final List<String> tickers = coins.map((Coin coin) => coin.abbr).toList();
 
-    Log('swap_provider:244', 'ct.cipig.net/sync…');
+    //Log('swap_provider:244', 'ct.cipig.net/sync…');
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
           'components': <String, dynamic>{

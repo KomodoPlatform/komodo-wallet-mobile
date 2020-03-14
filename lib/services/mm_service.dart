@@ -92,7 +92,7 @@ class MMService {
       shouldUpdateOrdersAndSwaps = null;
       if (reason != null) {
         await updateOrdersAndSwaps(reason);
-      } else if (musicService.recommendsPeriodicUpdates()) {
+      } else if (musicService.recommendsPeriodicUpdates) {
         await syncSwaps.update('musicService');
       }
     });
@@ -106,30 +106,27 @@ class MMService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       try {
-        final ProcessResult checkmm2 =
-            await Process.run('ls', <String>['${filesPath}mm2']);
+        final ls = await Process.run('ls', <String>['${filesPath}mm2']);
+        final lsMatch = ls.stdout.toString().trim() == '${filesPath}mm2';
 
-        final String savedmm2Hash = prefs.getString('mm2_hash');
+        final mm2hash = prefs.getString('mm2_hash') ?? '';
 
-        final ByteData resultmm2 = await rootBundle.load('assets/mm2');
-        final String assetmm2Hash =
-            sha1.convert(resultmm2.buffer.asUint8List()).toString();
+        Log('mm_service:114', 'Loading the mm2 asset…');
+        final ByteData assetsMm2 = await rootBundle.load('assets/mm2');
+        Log('mm_service:116', 'Calculating the mm2 asset hash…');
+        final assHash = sha1.convert(assetsMm2.buffer.asUint8List()).toString();
+        final hashMatch = mm2hash.isNotEmpty && mm2hash == assHash;
+        Log('mm_service:119', 'Hash matches? $hashMatch');
 
-        if (checkmm2.stdout.toString().trim() != '${filesPath}mm2' ||
-            savedmm2Hash == null ||
-            savedmm2Hash.isEmpty ||
-            savedmm2Hash != assetmm2Hash) {
+        if (!lsMatch || !hashMatch) {
           await coinsBloc.resetCoinDefault();
-          if (checkmm2.stdout.toString().trim() == '${filesPath}mm2') {
-            await deletemm2File();
-          }
-          await writeData(resultmm2.buffer.asUint8List());
-          await prefs.setString('mm2_hash', assetmm2Hash);
-
-          await Process.run('chmod', <String>['544', '${filesPath}mm2']);
+          if (lsMatch) await deleteMmBin();
+          await saveMmBin(assetsMm2.buffer.asUint8List());
+          await prefs.setString('mm2_hash', mm2hash);
+          await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
         }
       } catch (e) {
-        print(e);
+        Log('mm_service:129', e);
       }
     }
   }
@@ -308,32 +305,42 @@ class MMService {
   void _onLog(String chunk) {
     if (sink != null) {
       Log('mm_service:307', chunk);
+      final reasons = _lookupReasons(chunk);
+      // TBD: Use the obtained swap UUIDs for targeted swap updates.
+      if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
+    }
+  }
 
-      // AG: This currently relies on the information that can be freely changed by MM
-      // or removed from the logs entirely (e.g. on debug and human-readable parts).
-      // Should update it to rely on the log tags instead.
-      // Should also parse the swap ID there and use it to update just that swap:
+  /// Checks a [chunk] of MM log to see if there's a reason to reload swap status.
+  List<_UpdReason> _lookupReasons(String chunk) {
+    final List<_UpdReason> reasons = [];
+    final sending = RegExp(
+        r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
+    for (RegExpMatch mat in sending.allMatches(chunk)) {
+      //Log('mm_service:320', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
+    }
 
-      // +--- 05 05:19:37 -------
-      // | (0:46) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Started...
+    // | (0:46) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Started...
+    // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
+    final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
+    for (RegExpMatch mat in dashboard.allMatches(chunk)) {
+      //Log('mm_service:328', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
+    }
 
-      // +--- 05 05:20:08 -------
-      // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
-
-      const samples = [
-        'CONNECTED',
-        'Entering the taker_swap_loop',
-        'Received \'negotiation',
-        'Got maker payment',
-        'Sending \'taker-fee',
-        'Sending \'taker-payment',
-        'Finished'
-      ];
-      for (String sample in samples) {
-        if (!chunk.contains(sample)) continue;
-        shouldUpdateOrdersAndSwaps = 'MM log: $sample';
+    const samples = [
+      'CONNECTED',
+      '[dht-boot]',
+      'Entering the taker_swap_loop',
+      'Finished'
+    ];
+    for (String sample in samples) {
+      if (chunk.contains(sample)) {
+        reasons.add(_UpdReason(sample: 'MM log: $sample'));
       }
     }
+    return reasons;
   }
 
   void _onIosLogEvent(Object event) {
@@ -341,7 +348,7 @@ class MMService {
   }
 
   void _onIosLogError(Object error) {
-    Log('mm_service:341', error);
+    Log('mm_service:351', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -358,9 +365,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.enableCoins(await coinsBloc.electrumCoins()).then((_) {
-        Log('mm_service:358', 'All coins activated');
+        Log('mm_service:368', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log('mm_service:360', 'loadCoin finished');
+          Log('mm_service:370', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -380,12 +387,12 @@ class MMService {
     return File('${filesPath}mm2');
   }
 
-  Future<File> writeData(List<int> data) async {
+  Future<File> saveMmBin(List<int> data) async {
     final File file = await _localFile;
     return file.writeAsBytes(data);
   }
 
-  Future<void> deletemm2File() async {
+  Future<void> deleteMmBin() async {
     final File file = await _localFile;
     await file.delete();
   }
@@ -420,7 +427,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:420', 'getAllBalances');
+    Log('mm_service:430', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
@@ -438,4 +445,15 @@ class MMService {
   Future<String> loadElectrumServersAsset() async {
     return coinToJson(await DBProvider.db.electrumCoins(CoinEletrum.CONFIG));
   }
+}
+
+/// Reason for updating the list of orders and swaps.
+class _UpdReason {
+  _UpdReason({this.sample, this.uuid});
+
+  /// MM log sample that was the reason for update.
+  String sample;
+
+  /// Swap UUID that ought to be updated.
+  String uuid;
 }

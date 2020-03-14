@@ -252,9 +252,7 @@ class MusicService {
   ///
   /// We also want an update whenever the `musicMode` is unknown,
   /// which happens after the application restarts.
-  bool recommendsPeriodicUpdates() {
-    return musicMode != MusicMode.SILENT || _reload;
-  }
+  bool get recommendsPeriodicUpdates => _reload;
 
   /// Whether the application shold `exit` when it goes to "background".
   /// If there are active orders and swaps then we should be playing a sound and staying alive in background.
@@ -264,7 +262,7 @@ class MusicService {
   Future<bool> iosBackgroundExit() async {
     final double btr =
         await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-    Log('music_service:267', 'backgroundTimeRemaining: $btr');
+    Log('music_service:265', 'backgroundTimeRemaining: $btr');
 
     // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
     // and when we are silent the `backgroundTimeRemaining` is low
