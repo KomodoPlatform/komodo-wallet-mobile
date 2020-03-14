@@ -92,18 +92,30 @@ class SwapProvider extends ChangeNotifier {
   /// tries to estimate the speed of transition [from] one [to] another steps of a given [uuid] swap.
   /// Returns `null` if no estimate is currently available.
   StepSpeed stepSpeed(String uuid, String from, String to) {
+    String makerCoin, takerCoin;
+    final Swap swap = this.swap(uuid);
+    if (swap != null) {
+      final SwapEL started = swap.result.events
+          .firstWhere((SwapEL ev) => ev.event.type == 'Started');
+      if (started != null) {
+        makerCoin = started.event.data.makerCoin;
+        takerCoin = started.event.data.takerCoin;
+      }
+    }
+
     final String transition = '$from→$to';
-    int count = 0;
     final List<double> values = [];
-    // TBD: Should probably filter by (sorted) coin pair.
     final ens = syncSwaps._ours.values.followedBy(syncSwaps._theirs.values);
     for (SwapGossip gossip in ens) {
+      // Filter by coin pair and direction.
+      if (makerCoin != null && makerCoin != gossip.makerCoin) continue;
+      if (takerCoin != null && takerCoin != gossip.takerCoin) continue;
+
       final int speed = gossip.stepSpeed[transition];
       if (speed == null) continue;
       values.add(speed.toDouble());
-      count += 1;
     }
-    if (count == 0) return null;
+    if (values.isEmpty) return null;
     final int speed = mean(values).round();
     final int dev = deviation(values).round();
     return StepSpeed(speed: speed, deviation: dev);
@@ -165,13 +177,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:165', 'update] reason $reason');
+    Log('swap_provider:180', 'update] reason $reason');
 
     final dynamic mswaps = await MM.getRecentSwaps(
         mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (mswaps is ErrorString) {
-      Log('swap_provider:171', '!getRecentSwaps: ${mswaps.error}');
+      Log('swap_provider:186', '!getRecentSwaps: ${mswaps.error}');
       return;
     }
     if (mswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -191,7 +203,7 @@ class SyncSwaps {
     try {
       await _gossipSync();
     } catch (ex) {
-      Log('swap_provider:191', '!_gossipSync: $ex');
+      Log('swap_provider:206', '!_gossipSync: $ex');
     }
   }
 
@@ -206,7 +218,7 @@ class SyncSwaps {
 
     // Skip old swaps.
     final int now = DateTime.now().millisecondsSinceEpoch;
-    if ((now - timestamp).abs() > 3600) return;
+    if ((now - timestamp).abs() > 86400) return;
 
     final SwapGossip gossip = SwapGossip.from(timestamp, mswap);
     if (gossip.makerCoin == null) return; // No Start event.
@@ -220,7 +232,7 @@ class SyncSwaps {
     for (String id in _ours.keys) {
       final entity = _ours[id];
       if (entity.timestamp == _gossiped[id]) continue;
-      Log('swap_provider:220', 'Gossiping $id…');
+      Log('swap_provider:235', 'Gossiping $id…');
       entities.add(entity);
     }
 
@@ -229,7 +241,7 @@ class SyncSwaps {
         await DBProvider.db.electrumCoins(CoinEletrum.SAVED);
     final List<String> tickers = coins.map((Coin coin) => coin.abbr).toList();
 
-    Log('swap_provider:229', 'ct.cipig.net/sync…');
+    Log('swap_provider:244', 'ct.cipig.net/sync…');
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
           'components': <String, dynamic>{
@@ -246,7 +258,9 @@ class SyncSwaps {
 
     final ct = pr.headers['content-type'] ?? '';
     if (ct != 'application/json') throw Exception('HTTP Content-Type $ct');
-    final Map<String, dynamic> js = json.decode(pr.body);
+    // NB: `http` fails to recognize that 'application/json' is UTF-8 by default.
+    final body = const Utf8Decoder().convert(pr.bodyBytes);
+    final Map<String, dynamic> js = json.decode(body);
     final Map<String, dynamic> components = js['components'];
     if (!components.containsKey('swap-events.1')) return;
     final List<dynamic> re = components['swap-events.1']['entities'];
@@ -270,7 +284,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:270', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:287', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
