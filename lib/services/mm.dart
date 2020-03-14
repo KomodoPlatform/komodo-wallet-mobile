@@ -279,7 +279,7 @@ class ApiProvider {
           (UserpassBody userBody) => userBody.client
               .post(url, body: getRecentSwapToJson(userBody.body))
               .then((Response r) => _saveRes('getRecentSwaps', r))
-              .then<dynamic>((Response res) => recentSwapsFromJson(res.body))
+              .then<dynamic>((Response res) => RecentSwaps.fromJson(json.decode(res.body)))
               .catchError((dynamic _) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'getRecentSwaps', e, 'Error on get recent swaps')));

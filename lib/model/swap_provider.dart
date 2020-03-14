@@ -98,9 +98,7 @@ class SwapProvider extends ChangeNotifier {
     }
     if (count == 0) return null;
     final int speed = mean(values).round();
-    Log('swap_provider:100', 'stepSpeed] $transition: $speed');
     final int dev = deviation(values).round();
-
     return StepSpeed(speed: speed, deviation: dev);
   }
 }
@@ -156,13 +154,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:156', 'update] reason $reason');
+    Log('swap_provider:157', 'update] reason $reason');
 
     final dynamic mswaps = await MM.getRecentSwaps(
         mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (mswaps is ErrorString) {
-      Log('swap_provider:162', '!getRecentSwaps: ${mswaps.error}');
+      Log('swap_provider:163', '!getRecentSwaps: ${mswaps.error}');
       return;
     }
     if (mswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -182,7 +180,7 @@ class SyncSwaps {
     try {
       await _gossipSync();
     } catch (ex) {
-      Log('swap_provider:182', '!_gossipSync: $ex');
+      Log('swap_provider:183', '!_gossipSync: $ex');
     }
   }
 
@@ -195,11 +193,10 @@ class SyncSwaps {
     final int timestamp = mswap.events.last.timestamp;
     if (_ours[uuid]?.timestamp == timestamp) return;
 
-    // TBD: Skip old swaps.
-    //final int now = DateTime.now().millisecondsSinceEpoch;
-    //if ((now - timestamp).abs() > 3600) return;
+    // Skip old swaps.
+    final int now = DateTime.now().millisecondsSinceEpoch;
+    if ((now - timestamp).abs() > 3600) return;
 
-    Log('swap_provider:199', 'gossiping of $uuid; $timestamp');
     final SwapGossip gossip = SwapGossip.from(timestamp, mswap);
     if (gossip.makerCoin == null) return; // No Start event.
     _ours[uuid] = gossip;
@@ -235,6 +232,8 @@ class SyncSwaps {
 class SwapGossip {
   SwapGossip.from(this.timestamp, MmSwap mswap) {
     uuid = mswap.uuid;
+    gui = mswap.gui;
+    mmMersion = mswap.mmMersion;
 
     for (int ix = 0; ix < mswap.events.length - 1; ++ix) {
       final SwapEL eva = mswap.events[ix];
@@ -243,7 +242,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:243', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:245', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
@@ -260,15 +259,26 @@ class SwapGossip {
     }
   }
 
+  /// Swap ID. Gossip entity ID.
   String uuid;
 
-  String makerCoin, takerCoin;
+  /// Ticker of maker coin.
+  String makerCoin;
+
+  /// Ticker of taker coin.
+  String takerCoin;
 
   /// Time of last swap event, in milliseconds since UNIX epoch.
   int timestamp;
 
   /// Time between swap states in milliseconds.
   Map<String, int> stepSpeed = {};
+
+  /// Name and version of UI that has shared this gossip entity.
+  String gui;
+
+  /// Commit version of MM.
+  String mmMersion;
 
   int makerPaymentConfirmations, takerPaymentConfirmations;
   bool makerPaymentRequiresNota, takerPaymentRequiresNota;
@@ -278,7 +288,9 @@ class SwapGossip {
         'maker_coin': makerCoin,
         'taker_coin': takerCoin,
         'timestamp': timestamp,
-        'stepSpeed': stepSpeed,
+        'step_speed': stepSpeed,
+        'gui': gui,
+        'mm_version': mmMersion,
         'maker_payment_confirmations': makerPaymentConfirmations,
         'taker_payment_confirmations': takerPaymentConfirmations,
         'maker_payment_requires_nota': makerPaymentRequiresNota,

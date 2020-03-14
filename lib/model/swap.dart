@@ -21,11 +21,6 @@ Swap swapFromJson(String str) {
   return Swap.fromJson(jsonData);
 }
 
-String swapToJson(Swap data) {
-  final Map<String, dynamic> dyn = data.toJson();
-  return json.encode(dyn);
-}
-
 class Swap {
   Swap({this.result, this.status});
 
@@ -36,8 +31,8 @@ class Swap {
   MmSwap result;
   Status status;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson() ?? MmSwap().toJson(),
+  Map<String, dynamic> get toJson => <String, dynamic>{
+        'result': result.toJson ?? MmSwap().toJson,
       };
 
   int compareToSwap(Swap other) {

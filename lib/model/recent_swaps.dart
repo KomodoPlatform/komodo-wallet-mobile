@@ -2,14 +2,7 @@
 //
 //     final recentSwaps = recentSwapsFromJson(jsonString);
 
-import 'dart:convert';
-
 import 'package:komodo_dex/model/transaction_data.dart';
-
-RecentSwaps recentSwapsFromJson(String str) =>
-    RecentSwaps.fromJson(json.decode(str));
-
-String recentSwapsToJson(RecentSwaps data) => json.encode(data.toJson());
 
 class RecentSwaps {
   RecentSwaps({
@@ -22,8 +15,8 @@ class RecentSwaps {
 
   Result result;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'result': result.toJson() ?? Result().toJson(),
+  Map<String, dynamic> get toJson => <String, dynamic>{
+        'result': result.toJson ?? Result().toJson,
       };
 }
 
@@ -53,13 +46,13 @@ class Result {
   List<MmSwap> swaps;
   int total;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> get toJson => <String, dynamic>{
         'from_uuid': fromUuid,
         'limit': limit ?? 0,
         'skipped': skipped ?? 0,
         'swaps': swaps == null
             ? null
-            : List<dynamic>.from(swaps.map<dynamic>((MmSwap x) => x.toJson())),
+            : List<dynamic>.from(swaps.map<dynamic>((MmSwap x) => x.toJson)),
         'total': total ?? 0,
       };
 }
@@ -74,7 +67,9 @@ class MmSwap {
       this.successEvents,
       this.type,
       this.uuid,
-      this.recoverable});
+      this.recoverable,
+      this.gui,
+      this.mmMersion});
 
   factory MmSwap.fromJson(Map<String, dynamic> json) => MmSwap(
       errorEvents: List<String>.from(
@@ -90,7 +85,9 @@ class MmSwap {
           <String>[],
       type: json['type'] ?? '',
       uuid: json['uuid'] ?? '',
-      recoverable: json['recoverable'] ?? false);
+      recoverable: json['recoverable'] ?? false,
+      gui: json['gui'],
+      mmMersion: json['mm_version']);
 
   /// if at least 1 of the events happens, the swap is considered a failure
   List<String> errorEvents;
@@ -113,7 +110,9 @@ class MmSwap {
   /// MM allows as many calls to the recover_funds_of_swap method as necessary, in case of errors
   bool recoverable;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
+  String gui, mmMersion;
+
+  Map<String, dynamic> get toJson => <String, dynamic>{
         'error_events':
             List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
@@ -126,7 +125,9 @@ class MmSwap {
                 <String>[],
         'type': type ?? '',
         'uuid': uuid ?? '',
-        'recoverable': recoverable ?? false
+        'recoverable': recoverable ?? false,
+        'gui': gui,
+        'mm_version': mmMersion
       };
 }
 
@@ -145,8 +146,8 @@ class SwapEL {
   SwapEEL event;
   int timestamp;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'event': event.toJson() ?? SwapEEL().toJson(),
+  Map<String, dynamic> get toJson => <String, dynamic>{
+        'event': event.toJson ?? SwapEEL().toJson,
         'timestamp': timestamp ?? 0,
       };
 }
@@ -166,7 +167,7 @@ class SwapEEL {
   SwapEF data;
   String type;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> get toJson => <String, dynamic>{
         'data': data == null ? null : data.toJson(),
         'type': type ?? '',
       };
