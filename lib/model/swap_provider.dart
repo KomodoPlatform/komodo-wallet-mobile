@@ -49,16 +49,19 @@ class SwapProvider extends ChangeNotifier {
     if (succ) {
       if (!finished) _transitions(text, ev);
     } else {
-      _failEv(text, ev);
+      _failEv(text, rswap);
     }
     return text.toString();
   }
 
-  void _failEv(StringBuffer text, SwapEEL ev) {
-    text.writeln('Failure ${ev.type}');
-    if (ev.data.error.isNotEmpty) {
+  void _failEv(StringBuffer text, MmSwap rswap) {
+    final SwapEL deviation = rswap.events.firstWhere(
+        (SwapEL ev) => !rswap.successEvents.contains(ev.event.type));
+    if (deviation == null) return;
+    text.writeln('Failure ${deviation.event.type}');
+    if (deviation.event.data.error.isNotEmpty) {
       text.writeln('--- raw error message ---');
-      text.writeln(ev.data.error);
+      text.writeln(deviation.event.data.error);
     }
   }
 
