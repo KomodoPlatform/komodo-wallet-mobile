@@ -92,4 +92,10 @@ class Swap {
 
   /// Current detailed swap step.
   int get step => result?.events?.length ?? 0;
+
+  SwapEL get started =>
+      result?.events?.firstWhere((SwapEL ev) => ev.event.type == 'Started');
+
+  String get makerCoin => started?.event?.data?.makerCoin;
+  String get takerCoin => started?.event?.data?.takerCoin;
 }
