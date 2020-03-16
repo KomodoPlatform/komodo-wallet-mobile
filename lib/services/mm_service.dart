@@ -53,10 +53,12 @@ class MMService {
   IOSink sink;
 
   /// Channel to native code.
-  static MethodChannel nativeC = const MethodChannel('mm2');
+  static MethodChannel nativeC = MethodChannel(
+      Platform.isAndroid ? 'com.komodoplatform.atomicdex/nativeC' : 'mm2');
 
-  /// MM log streamed from iOS/Swift.
-  static const EventChannel iosLogC = EventChannel('streamLogMM2');
+  /// Log entries streamed from native code.
+  /// MM log is coming that way on iOS.
+  static const EventChannel logC = EventChannel('AtomicDEX/logC');
   final Client client = http.Client();
   File logFile;
 
@@ -111,12 +113,12 @@ class MMService {
 
         final mm2hash = prefs.getString('mm2_hash') ?? '';
 
-        Log('mm_service:114', 'Loading the mm2 asset…');
+        Log('mm_service:116', 'Loading the mm2 asset…');
         final ByteData assetsMm2 = await rootBundle.load('assets/mm2');
-        Log('mm_service:116', 'Calculating the mm2 asset hash…');
+        Log('mm_service:118', 'Calculating the mm2 asset hash…');
         final assHash = sha1.convert(assetsMm2.buffer.asUint8List()).toString();
         final hashMatch = mm2hash.isNotEmpty && mm2hash == assHash;
-        Log('mm_service:119', 'Hash matches? $hashMatch');
+        Log('mm_service:121', 'Hash matches? $hashMatch');
 
         if (!lsMatch || !hashMatch) {
           await coinsBloc.resetCoinDefault();
@@ -126,7 +128,7 @@ class MMService {
           await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
         }
       } catch (e) {
-        Log('mm_service:129', e);
+        Log('mm_service:131', e);
       }
     }
   }
@@ -143,6 +145,11 @@ class MMService {
     int offset = fileLog.lengthSync();
 
     jobService.install('tail MM log', 1, (j) async {
+      if (Platform.isAndroid) {
+        final String pong = await nativeC.invokeMethod<String>('ping');
+        Log('mm_service:150', 'nativeC: $pong');
+      }
+
       final Stream<String> stream = fileLog
           .openRead(offset)
           .transform(utf8.decoder)
@@ -234,6 +241,10 @@ class MMService {
 
     await initLogSink();
 
+    logC
+        .receiveBroadcastStream()
+        .listen(_onNativeLog, onError: _onNativeLogError);
+
     if (Platform.isAndroid) {
       await stopmm2();
       await waitUntilMM2isStop();
@@ -254,9 +265,6 @@ class MMService {
         rethrow;
       }
     } else if (Platform.isIOS) {
-      iosLogC
-          .receiveBroadcastStream()
-          .listen(_onIosLogEvent, onError: _onIosLogError);
       try {
         await nativeC.invokeMethod<dynamic>(
             'start', <String, String>{'params': startParam}); //start mm2
@@ -304,7 +312,7 @@ class MMService {
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
     if (sink != null) {
-      Log('mm_service:307', chunk);
+      Log('mm_service:315', chunk);
       final reasons = _lookupReasons(chunk);
       // TBD: Use the obtained swap UUIDs for targeted swap updates.
       if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
@@ -317,7 +325,7 @@ class MMService {
     final sending = RegExp(
         r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
     for (RegExpMatch mat in sending.allMatches(chunk)) {
-      //Log('mm_service:320', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:328', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
     }
 
@@ -325,7 +333,7 @@ class MMService {
     // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
     final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
     for (RegExpMatch mat in dashboard.allMatches(chunk)) {
-      //Log('mm_service:328', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:336', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
     }
 
@@ -343,12 +351,12 @@ class MMService {
     return reasons;
   }
 
-  void _onIosLogEvent(Object event) {
+  void _onNativeLog(Object event) {
     _onLog(event);
   }
 
-  void _onIosLogError(Object error) {
-    Log('mm_service:351', error);
+  void _onNativeLogError(Object error) {
+    Log('mm_service:359', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -365,9 +373,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.enableCoins(await coinsBloc.electrumCoins()).then((_) {
-        Log('mm_service:368', 'All coins activated');
+        Log('mm_service:376', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log('mm_service:370', 'loadCoin finished');
+          Log('mm_service:378', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -427,7 +435,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:430', 'getAllBalances');
+    Log('mm_service:438', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {

@@ -20,7 +20,7 @@ import os.log
             fatalError("rootViewController is not type FlutterViewController")
         }
         
-        let chargingChannel = FlutterEventChannel(name: "streamLogMM2",
+        let chargingChannel = FlutterEventChannel(name: "AtomicDEX/logC",
                                                   binaryMessenger: controller as! FlutterBinaryMessenger)
         chargingChannel.setStreamHandler(self)
         
