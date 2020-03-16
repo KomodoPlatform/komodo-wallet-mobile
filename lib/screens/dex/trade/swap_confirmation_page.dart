@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -16,9 +15,9 @@ import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
+import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 
@@ -124,9 +123,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   Widget _buildCoinSwapDetail() {
-    // Log.println('swap_confirmation_page:127', 'buildConfirmPage');
-    // Log.println('swap_confirmation_page:128', 'sellAmount: '+widget.amountToSell);
-    // Log.println('swap_confirmation_page:129', 'buyAmount: '+widget.amountToBuy);
     return Column(
       children: <Widget>[
         Stack(
@@ -316,6 +312,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   Future<void> _makeASwap(BuildContext mContext) async {
+    Log('swap_confirmation_page:315', '_makeASwap] Starting a swap…');
     setState(() {
       isSwapMaking = true;
     });
@@ -343,11 +340,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         : Decimal.parse(Decimal.parse(widget.bestPrice).toStringAsFixed(8)) *
             satoshi;
 
-    // Log.println('swap_confirmation_page:346', 'amountToSell: '+amountToSell.toString());
-    // Log.println('swap_confirmation_page:347', 'amountToSellSatoshi: '+satoshiSellAmount.toString());
-    // Log.println('swap_confirmation_page:348', 'amountToBuySatoshi: '+satoshiBuyAmount.toString());
-    // Log.println('swap_confirmation_page:349', 'priceSatoshi: '+satoshiPrice.toString());
-
     //if the desired sellamount != calculated sellamount this loop fixes the precision errors caused by the above division
     //this is considered a dirty quickfix until a final decision is made ref. num handling - likely should follow @ArtemGr's
     //advice ref. utilizing rational datatype IF we need divisions. We do assume sellamount slightly > calculated_sell_amount isnt an issue
@@ -359,26 +351,24 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             satoshiSellAmount) {
       satoshiBuyAmount += Decimal.parse('1');
     }
-    // Log.println('swap_confirmation_page:362', 'amountToBuySatoshi: '+satoshiBuyAmount.toString());
 
     if (widget.swapStatus == SwapStatus.BUY) {
-      ApiProvider()
-          .postBuy(
-              MMService().client,
-              GetBuySell(
-                  base: coinBase.abbr,
-                  rel: coinRel.abbr,
-                  volume: (satoshiBuyAmount / satoshi).toString(),
-                  price: (satoshiPrice / satoshi).toString()))
-          .then((dynamic onValue) => onValue is BuyResponse
-              ? _goToNextScreen(
-                  mContext, onValue, amountToSell, satoshiBuyAmount / satoshi)
-              : _catchErrorSwap(mContext, onValue))
-          .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
+      final dynamic re = await MM.postBuy(
+          mmSe.client,
+          GetBuySell(
+              base: coinBase.abbr,
+              rel: coinRel.abbr,
+              volume: (satoshiBuyAmount / satoshi).toString(),
+              price: (satoshiPrice / satoshi).toString()));
+      if (re is BuyResponse) {
+        _goToNextScreen(mContext, re, amountToSell, satoshiBuyAmount / satoshi);
+      } else {
+        _catchErrorSwap(mContext, re);
+      }
     } else if (widget.swapStatus == SwapStatus.SELL) {
-      ApiProvider()
+      MM
           .postSetPrice(
-              MMService().client,
+              mmSe.client,
               GetSetPrice(
                   base: coinRel.abbr,
                   rel: coinBase.abbr,
@@ -403,10 +393,10 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       isSwapMaking = false;
     });
     String timeSecondeLeft = error.error;
-    Log.println('swap_confirmation_page:406', timeSecondeLeft);
+    Log('swap_confirmation_page:396', timeSecondeLeft);
     timeSecondeLeft = timeSecondeLeft.substring(
         timeSecondeLeft.lastIndexOf(' '), timeSecondeLeft.length);
-    Log.println('swap_confirmation_page:409', timeSecondeLeft);
+    Log('swap_confirmation_page:399', timeSecondeLeft);
     String errorDisplay =
         error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
     if (error.error.contains('is too low, required')) {
@@ -421,8 +411,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
 
   void _goToNextScreen(BuildContext mContext, dynamic onValue,
       String amountToSell, Decimal amountToBuy) {
+    Log('swap_confirmation_page:414', '_goToNextScreen] swap started…');
     ordersBloc.updateOrdersSwaps();
-    swapHistoryBloc.updateSwaps(50, null);
 
     if (widget.swapStatus == SwapStatus.BUY) {
       Navigator.pushReplacement<dynamic, dynamic>(
@@ -431,9 +421,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             builder: (BuildContext context) => SwapDetailPage(
                   swap: Swap(
                       status: Status.ORDER_MATCHING,
-                      result: ResultSwap(
+                      result: MmSwap(
                         uuid: onValue.result.uuid,
-                        myInfo: MyInfo(
+                        myInfo: SwapMyInfo(
                             myAmount: amountToSell.toString(),
                             otherAmount: amountToBuy.toString(),
                             myCoin: onValue.result.rel,

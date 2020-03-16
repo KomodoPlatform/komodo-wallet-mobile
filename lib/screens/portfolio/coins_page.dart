@@ -365,10 +365,10 @@ class _ItemCoinState extends State<ItemCoin> {
     final NumberFormat f = NumberFormat('###,##0.########');
     final List<Widget> actions = <Widget>[];
     if (double.parse(balance.getBalance()) > 0) {
-      Log.println(
-          'coins_page:371', 'balance: ' + widget.coinBalance.balance.balance);
-      Log.println('coins_page:373',
-          'locked_by_swaps: ' + widget.coinBalance.balance.lockedBySwaps);
+      Log(
+          'coins_page:368',
+          '${coin.abbr} balance: ${balance.balance}'
+              '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(IconSlideAction(
         caption: AppLocalizations.of(context).send,
         color: Colors.white,
@@ -704,7 +704,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
   Future<bool> _buildAddCoinButton() async {
     final List<Coin> allCoins = await MMService()
         .loadJsonCoins(await MMService().loadElectrumServersAsset());
-    final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
+    final List<Coin> allCoinsActivate = await coinsBloc.electrumCoins();
 
     return !(allCoins.length == allCoinsActivate.length);
   }

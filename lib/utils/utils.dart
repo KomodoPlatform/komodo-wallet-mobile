@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
@@ -204,9 +205,9 @@ Future<bool> get canCheckBiometrics async {
   if (_canCheckBiometrics == null) {
     try {
       _canCheckBiometrics = await auth.canCheckBiometrics;
-      Log.println('utils:207', 'canCheckBiometrics: $_canCheckBiometrics');
+      Log.println('utils:208', 'canCheckBiometrics: $_canCheckBiometrics');
     } on PlatformException catch (ex) {
-      Log.println('utils:209', 'canCheckBiometrics exception: $ex');
+      Log.println('utils:210', 'canCheckBiometrics exception: $ex');
     }
   }
   return _canCheckBiometrics;
@@ -219,7 +220,7 @@ Future<bool> get canCheckBiometrics async {
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
 Future<bool> authenticateBiometrics(
     BuildContext context, PinStatus pinStatus) async {
-  Log.println('utils:222', 'authenticateBiometrics');
+  Log.println('utils:223', 'authenticateBiometrics');
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('switch_pin_biometric')) {
     final LocalAuthentication localAuth = LocalAuthentication();
@@ -240,7 +241,7 @@ Future<bool> authenticateBiometrics(
       // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
       // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
       // Rewriting the biometrics support (cf. #668) might be one way to fix that.
-      Log.println('utils:243', 'authenticateWithBiometrics ex: ' + e.message);
+      Log.println('utils:244', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
     lockService.biometricsReturned(lockCookie);
@@ -324,7 +325,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:327', url);
+  Log.println('utils:328', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);
@@ -332,4 +333,57 @@ Future<void> launchURL(String url) async {
   } else {
     throw 'Could not launch $url';
   }
+}
+
+Duration durationSum(List<Duration> list) {
+  int ms = 0;
+  for (int i = 0; i < list.length; i++) {
+    ms += list[i]?.inMilliseconds ?? 0;
+  }
+  return Duration(milliseconds: ms);
+}
+
+/// Returns String of milliseconds ('555ms') if [duration] < 1s,
+/// seconds ('55s') if < 1min,
+/// minutes and seconds ('5m 5s') if < 1 hour,
+/// and hours, minutes, and seconds ('25h 25m 25s') if > 1 hour
+String durationFormat(Duration duration) {
+  if (duration == null) return '-';
+
+  final int hh = duration.inHours;
+  final int mm = duration.inMinutes;
+  final int ss = duration.inSeconds;
+  final int ms = duration.inMilliseconds;
+
+  if (ms < 1000) return '${ms}ms'; // TODO(yurii): localization
+
+  String formatted = '';
+  if (ss.remainder(60) > 0) {
+    formatted = '${ss.remainder(60)}s'; // TODO(yurii): localization
+  }
+  if (mm > 0) {
+    formatted = '${mm.remainder(60)}m ' + formatted; // TODO(yurii): localization
+  }
+  if (hh > 0) {
+    formatted = '${hh}h ' + formatted; // TODO(yurii): localization
+  }
+
+  return formatted;
+}
+
+double mean(List<double> values) {
+  if (values == null || values.isEmpty) return null;
+  final double sum = values.reduce((sum, current) => sum + current);
+  return sum / values.length;
+}
+
+double deviation(List<double> values) {
+  final double average = mean(values);
+  final List<double> squares = [];
+  for (var i = 0; i < values.length; i++) {
+    squares.add(pow(values[i] - average, 2));
+  }
+  final averageSquares = mean(squares);
+  
+  return sqrt(averageSquares);
 }

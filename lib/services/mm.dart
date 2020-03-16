@@ -49,25 +49,31 @@ class UserpassBody {
   http.Client client;
 }
 
+// AG: Planning to get rid of `res` and turn `MM` into a const:
+//
+//     const ApiProvider MM = const ApiProvider();
+//
+// ignore: non_constant_identifier_names
+ApiProvider MM = ApiProvider();
+
 class ApiProvider {
   String url = 'http://localhost:7783';
   Response res;
-  String userpass;
 
   Response _saveRes(String method, Response res) {
     final String loggedBody = res.body.toString();
-    String loggedLine = 'api $method $loggedBody';
+    String loggedLine = '$method $loggedBody';
 
     // getMyOrders and getRecentSwaps are invoked every two seconds during an active order or swap
     // and fully logging their response bodies every two seconds is an overkill,
     // though we still want to *mention* the invocations in the logs.
-    final bool cut = musicService.recommendsPeriodicUpdates() &&
+    final bool cut = musicService.recommendsPeriodicUpdates &&
         (method == 'getMyOrders' || method == 'getRecentSwaps');
     if (cut && loggedLine.length > 77) {
       loggedLine = loggedLine.substring(0, 75) + '..';
     }
 
-    Log.println('api_providers:70', loggedLine);
+    Log.println('mm:76', loggedLine);
     this.res = res;
     return res;
   }
@@ -95,8 +101,7 @@ class ApiProvider {
   }
 
   Future<UserpassBody> _assertUserpass(http.Client client, dynamic body) async {
-    body.userpass =
-        MMService().userpass.isNotEmpty ? MMService().userpass : body.userpass;
+    body.userpass = mmSe.userpass.isNotEmpty ? mmSe.userpass : body.userpass;
     return UserpassBody(body: body, client: client);
   }
 
@@ -133,7 +138,7 @@ class ApiProvider {
     //     After using it for a while and seeing that it works as expected
     //     we should refactor the rest of the methods accordingly.
 
-    client ??= MMService().client;
+    client ??= mmSe.client;
     try {
       final userBody = await _assertUserpass(client, gb);
       final r = await userBody.client
@@ -201,32 +206,34 @@ class ApiProvider {
                 _catchErrorString('postSell', e, 'Error on post sell'));
       });
 
-  dynamic getBodyActiveCoin(Coin coin) {
+  dynamic enableCoinImpl(Coin coin) {
     final List<Server> servers = coin.serverList
         .map((String url) =>
             Server(url: url, protocol: 'TCP', disableCertVerification: false))
         .toList();
 
     return coin.type == 'erc'
-        ? getEnabledCoinToJson(GetEnabledCoin(
-            userpass: MMService().userpass,
-            coin: coin.abbr,
-            txHistory: true,
-            swapContractAddress: coin.swapContractAddress,
-            urls: coin.serverList))
-        : getActiveCoinToJson(GetActiveCoin(
-            userpass: MMService().userpass,
-            coin: coin.abbr,
-            txHistory: true,
-            servers: servers));
+        ? json.encode(MmEnable(
+                userpass: mmSe.userpass,
+                coin: coin.abbr,
+                txHistory: true,
+                swapContractAddress: coin.swapContractAddress,
+                urls: coin.serverList)
+            .toJson())
+        : json.encode(MmElectrum(
+                userpass: mmSe.userpass,
+                coin: coin.abbr,
+                txHistory: true,
+                servers: servers)
+            .toJson());
   }
 
-  Future<dynamic> activeCoin(
+  Future<dynamic> enableCoin(
     http.Client client,
     Coin coin,
   ) async =>
       await client
-          .post(url, body: getBodyActiveCoin(coin))
+          .post(url, body: enableCoinImpl(coin))
           .then((Response r) => _saveRes('activeCoin', r))
           .then((Response res) => activeCoinFromJson(res.body))
           .then<dynamic>((ActiveCoin data) =>
@@ -272,7 +279,7 @@ class ApiProvider {
           (UserpassBody userBody) => userBody.client
               .post(url, body: getRecentSwapToJson(userBody.body))
               .then((Response r) => _saveRes('getRecentSwaps', r))
-              .then<dynamic>((Response res) => recentSwapsFromJson(res.body))
+              .then<dynamic>((Response res) => RecentSwaps.fromJson(json.decode(res.body)))
               .catchError((dynamic _) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'getRecentSwaps', e, 'Error on get recent swaps')));

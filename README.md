@@ -43,3 +43,8 @@ Git tags can be used instead (that is, when we want to experiment with beta vers
     git pull
     git reset --hard
     git checkout -f v1.14.3
+
+## Accessing the database
+
+    adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
+    sqlite3 AtomicDEX.db
