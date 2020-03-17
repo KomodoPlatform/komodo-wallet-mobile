@@ -47,7 +47,12 @@ dependencies:
   # https://pub.dev/packages/path_provider
   # https://github.com/flutter/plugins
   path_provider: 1.6.0 # flutter.dev
-  provider: 4.0.4
+
+  # https://pub.dev/packages/provider
+  provider: # 4.0.4 - TODO: review 0c1394a
+    git:
+      url: https://github.com/KomodoPlatform/provider
+      ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
 
 dev_dependencies:
   flutter_driver: # flutter.dev
