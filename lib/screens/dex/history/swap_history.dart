@@ -8,9 +8,10 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page.dart';
+import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 
 class SwapHistory extends StatefulWidget {
   @override
@@ -18,26 +19,16 @@ class SwapHistory extends StatefulWidget {
 }
 
 class _SwapHistoryState extends State<SwapHistory> {
-  int limit = 50;
   String fromUUID;
   final ScrollController _scrollController = ScrollController();
   bool isLoadingNewSwaps = false;
 
   @override
   void initState() {
-    swapHistoryBloc.updateSwaps(50, null);
-
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        setState(() {
-          isLoadingNewSwaps = true;
-        });
-        swapHistoryBloc.updateSwaps(limit, fromUUID).then((List<Swap> onValue) {
-          setState(() {
-            isLoadingNewSwaps = false;
-          });
-        });
+        Log('swap_history:31', 'scrolling down');
       }
     });
     super.initState();
@@ -45,13 +36,12 @@ class _SwapHistoryState extends State<SwapHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Swap>>(
+    return StreamBuilder<Iterable<Swap>>(
         stream: swapHistoryBloc.outSwaps,
-        initialData: swapHistoryBloc.swaps,
-        builder: (BuildContext context, AsyncSnapshot<List<Swap>> snapshot) {
-          Log.println('swap_history:52', snapshot.data.length);
-          Log.println('swap_history:53', snapshot.connectionState);
-          final List<Swap> swaps = snapshot.data;
+        initialData: syncSwaps.swaps,
+        builder:
+            (BuildContext context, AsyncSnapshot<Iterable<Swap>> snapshot) {
+          final List<Swap> swaps = snapshot.data.toList();
 
           swaps.removeWhere((Swap swap) =>
               swap.result.myInfo == null ||
@@ -99,9 +89,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         });
   }
 
-  Future<List<Swap>> _onRefresh() async {
-    return await swapHistoryBloc.updateSwaps(limit, null);
-  }
+  Future<Iterable<Swap>> _onRefresh() async => syncSwaps.swaps;
 }
 
 class BuildItemSwap extends StatefulWidget {
@@ -279,7 +267,6 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                                         result.result.coin +
                                         ' funds - TX: ' +
                                         result.result.txHash);
-                                swapHistoryBloc.updateSwaps(50, null);
                               } else if (result is ErrorString) {
                                 showErrorMessage(context, result.error);
                               }

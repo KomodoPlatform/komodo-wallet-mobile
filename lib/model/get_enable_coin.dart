@@ -1,22 +1,5 @@
-// To parse this JSON data, do
-//
-//     final getEnabledCoin = getEnabledCoinFromJson(jsonString);
-
-import 'dart:convert';
-
-GetEnabledCoin getEnabledCoinFromJson(String str) =>
-    GetEnabledCoin.fromJson(json.decode(str));
-
-String getEnabledCoinToJson(GetEnabledCoin data) {
-  final Map<String, dynamic> dyn = data.toJson();
-  if (data.swapContractAddress.isEmpty) {
-    dyn.remove('swap_contract_address');
-  }
-  return json.encode(dyn);
-}
-
-class GetEnabledCoin {
-  GetEnabledCoin({
+class MmEnable {
+  MmEnable({
     this.userpass,
     this.method = 'enable',
     this.coin,
@@ -25,13 +8,13 @@ class GetEnabledCoin {
     this.swapContractAddress,
   });
 
-  factory GetEnabledCoin.fromJson(Map<String, dynamic> json) =>
-      GetEnabledCoin(
+  factory MmEnable.fromJson(Map<String, dynamic> json) => MmEnable(
         userpass: json['userpass'] ?? '',
         method: json['method'] ?? '',
         coin: json['coin'] ?? '',
         txHistory: json['tx_history'] ?? false,
-        urls: List<String>.from(json['urls'].map((dynamic x) => x)) ?? <String>[],
+        urls:
+            List<String>.from(json['urls'].map((dynamic x) => x)) ?? <String>[],
         swapContractAddress: json['swap_contract_address'] ?? '',
       );
 
@@ -47,7 +30,8 @@ class GetEnabledCoin {
         'method': method ?? '',
         'coin': coin ?? '',
         'tx_history': txHistory ?? false,
-        'urls': List<dynamic>.from(urls.map<dynamic>((String x) => x)) ?? <String>[],
-        'swap_contract_address': swapContractAddress ?? '',
+        'urls': List<dynamic>.from(urls.map<dynamic>((String x) => x)) ??
+            <String>[],
+        'swap_contract_address': swapContractAddress,
       };
 }

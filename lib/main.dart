@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/news/media_page.dart';
@@ -20,6 +21,7 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/mode.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
@@ -30,8 +32,7 @@ import 'widgets/theme_data.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (isInDebugMode) {
-    return runApp(BlocProvider<AuthenticateBloc>(
-        bloc: AuthenticateBloc(), child: const MyApp()));
+    return runApp(_myAppWithProviders);
   } else {
     startApp();
   }
@@ -39,29 +40,40 @@ void main() {
 
 Future<void> startApp() async {
   try {
-    await MMService().initMarketMaker();
+    await mmSe.initMarketMaker();
     await _runBinMm2UserAlreadyLog();
-    return runApp(BlocProvider<AuthenticateBloc>(
-        bloc: AuthenticateBloc(), child: const MyApp()));
+    return runApp(_myAppWithProviders);
   } catch (e) {
-    Log.println('main:47', 'startApp] $e');
+    Log('main:47', 'startApp] $e');
     rethrow;
   }
 }
+
+BlocProvider<AuthenticateBloc> _myAppWithProviders =
+    BlocProvider<AuthenticateBloc>(
+        bloc: AuthenticateBloc(),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context) => SwapProvider(),
+            )
+          ],
+          child: const MyApp(),
+        ));
 
 Future<void> _runBinMm2UserAlreadyLog() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('isPassphraseIsSaved') != null &&
       prefs.getBool('isPassphraseIsSaved') == true) {
-    await coinsBloc.writeJsonCoin(await coinsBloc.readJsonCoin());
+    await coinsBloc.writeJsonCoin(await coinsBloc.electrumCoins());
     await authBloc.initSwitchPref();
 
     if (!(authBloc.showLock && prefs.getBool('switch_pin'))) {
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
   } else {
-    Log.println('main:63', 'loadJsonCoinsDefault');
-    await coinsBloc.writeJsonCoin(await MMService().loadJsonCoinsDefault());
+    Log('main:75', 'loadJsonCoinsDefault');
+    await coinsBloc.writeJsonCoin(await mmSe.loadJsonCoinsDefault());
   }
 }
 
@@ -72,7 +84,7 @@ void _checkNetworkStatus() {
       mainBloc.setIsNetworkOffline(true);
     } else {
       if (mainBloc.isNetworkOffline) {
-        if (!MMService().running) {
+        if (!mmSe.running) {
           _runBinMm2UserAlreadyLog();
         }
         mainBloc.setIsNetworkOffline(false);
@@ -98,7 +110,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _checkNetworkStatus();
     if (isInDebugMode) {
-      MMService().initMarketMaker().then((_) => _runBinMm2UserAlreadyLog());
+      mmSe.initMarketMaker().then((_) => _runBinMm2UserAlreadyLog());
     }
   }
 
@@ -117,9 +129,9 @@ class _MyAppState extends State<MyApp> {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    // Log.println('main:120',
+                    // Log('main:132',
                     //     'current locale: ' + currentLocale?.toString());
-                    // Log.println('main:122',
+                    // Log('main:134',
                     //     'current pref locale: ' + prefLocale.toString());
 
                     return MaterialApp(
@@ -200,35 +212,35 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log.println('main:203', 'lifecycle: inactive');
+        Log('main:215', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
-        Log.println('main:207', 'lifecycle: paused');
+        Log('main:219', 'lifecycle: paused');
         lockService.lockSignal(context);
 
-        // AG: do we really need it? // if (Platform.isIOS) MMService().closeLogSink();
+        // AG: do we really need it? // if (Platform.isIOS) mmSe.closeLogSink();
 
         // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS && await musicService.iosBackgroundExit()) {
           // https://gitlab.com/artemciy/supernet/issues/4#note_284468673
-          Log.println('main:216', 'Suspended, exit');
+          Log('main:228', 'Suspended, exit');
           exit(0);
         }
         break;
       case AppLifecycleState.resumed:
-        Log.println('main:221', 'lifecycle: resumed');
+        Log('main:233', 'lifecycle: resumed');
         lockService.lockSignal(context);
-        MMService().openLogSink();
+        mmSe.openLogSink();
         if (Platform.isIOS) {
-          if (!MMService().running) {
+          if (!mmSe.running) {
             _runBinMm2UserAlreadyLog();
           }
         }
         break;
       case AppLifecycleState.detached:
-        Log.println('main:231', 'lifecycle: detached');
+        Log('main:243', 'lifecycle: detached');
         break;
     }
   }

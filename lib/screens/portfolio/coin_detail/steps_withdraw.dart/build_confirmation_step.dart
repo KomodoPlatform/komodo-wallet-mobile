@@ -6,7 +6,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -45,16 +45,15 @@ class BuildConfirmationStep extends StatefulWidget {
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   Future<double> getFee() async {
     try {
-      final dynamic tradeFeeResponse = await ApiProvider().getTradeFee(
-          MMService().client,
-          GetTradeFee(coin: widget.coinBalance.coin.abbr));
+      final dynamic tradeFeeResponse = await MM.getTradeFee(
+          MMService().client, GetTradeFee(coin: widget.coinBalance.coin.abbr));
       if (tradeFeeResponse is TradeFee) {
         return double.parse(tradeFeeResponse.result.amount);
       } else {
         return 0;
       }
     } catch (e) {
-      Log.println('build_confirmation_step:57', e);
+      Log.println('build_confirmation_step:56', e);
       return 0;
     }
   }
@@ -75,7 +74,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
             try {
               fee = snapshot.data;
             } catch (e) {
-              Log.println('build_confirmation_step:78', e);
+              Log.println('build_confirmation_step:77', e);
             }
           }
 

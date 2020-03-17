@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -20,7 +21,7 @@ import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -61,7 +62,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     // final Locale myLocale = Localizations.localeOf(context);
-    // Log.println('setting_page:64', 'current locale: $myLocale');
+    // Log('setting_page:65', 'current locale: $myLocale');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -138,13 +139,13 @@ class _SettingPageState extends State<SettingPage> {
         AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
     try {
-      final dynamic versionmm2 = await ApiProvider().getVersionMM2(
-          MMService().client, BaseService(method: 'version'));
+      final dynamic versionmm2 =
+          await MM.getVersionMM2(mmSe.client, BaseService(method: 'version'));
       if (versionmm2 is ResultSuccess && versionmm2 != null) {
         version += ' - ${versionmm2.result}';
       }
     } catch (e) {
-      Log.println('setting_page:147', e);
+      Log('setting_page:148', e);
       rethrow;
     }
     return version;
@@ -256,8 +257,7 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          Log.println('setting_page:259',
-                              'dataSwitch' + dataSwitch.toString());
+                          Log('setting_page:260', 'dataSwitch $dataSwitch');
                           setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
@@ -449,9 +449,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log.println('setting_page:452', 'PRESSED');
+        Log('setting_page:452', 'PRESSED');
         authBloc.logout().then((_) {
-          Log.println('setting_page:454', 'PRESSED');
+          Log('setting_page:454', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },
@@ -697,20 +697,18 @@ class _SettingPageState extends State<SettingPage> {
     Navigator.of(context).pop();
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
-    final dynamic recentSwap = await ApiProvider().getRecentSwaps(
-        MMService().client, GetRecentSwap(limit: 100, fromUuid: null));
+    final dynamic recentSwap = await MM.getRecentSwaps(
+        mmSe.client, GetRecentSwap(limit: 100, fromUuid: null));
 
     if (recentSwap is RecentSwaps) {
-      if (MMService().sink != null) {
-        MMService().sink.write('\n\nMy recent swaps: \n\n');
-        MMService().sink.write(recentSwapsToJson(recentSwap) + '\n\n');
-        MMService()
-            .sink
-            .write('AtomicDEX mobile ${packageInfo.version} $os\n');
+      if (mmSe.sink != null) {
+        mmSe.sink.write('\n\nMy recent swaps: \n\n');
+        mmSe.sink.write(json.encode(recentSwap.toJson) + '\n\n');
+        mmSe.sink.write('AtomicDEX mobile ${packageInfo.version} $os\n');
       }
     }
     mainBloc.isUrlLaucherIsOpen = true;
-    Share.shareFile(File('${MMService().filesPath}log.txt'),
+    Share.shareFile(File('${mmSe.filesPath}log.txt'),
         subject: 'My logs for the ${DateTime.now().toIso8601String()}');
   }
 
@@ -762,14 +760,14 @@ class FilePickerButton extends StatelessWidget {
           try {
             path = await FilePicker.getFilePath();
           } catch (err) {
-            Log.println('setting_page:765', 'file picker exception: $err');
+            Log('setting_page:763', 'file picker exception: $err');
           }
           lockService.filePickerReturned(lockCookie);
 
           // On iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log.println('setting_page:772', 'file picked: $path');
+          Log('setting_page:770', 'file picked: $path');
 
           final bool ck = checkAudioFile(path);
           if (!ck) {

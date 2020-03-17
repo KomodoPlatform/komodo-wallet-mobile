@@ -11,15 +11,14 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_init.dart';
 import 'package:komodo_dex/model/config_mm2.dart';
 import 'package:komodo_dex/model/get_balance.dart';
-import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
@@ -30,15 +29,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'db/database.dart';
 
+/// Singleton shorthand for `MMService()`, Market Maker API.
+MMService mmSe = MMService._internal();
+
 /// Interface to Market Maker, https://developers.atomicdex.io/
 class MMService {
-  factory MMService() {
-    return _singleton;
-  }
-
+  factory MMService() => mmSe;
   MMService._internal();
-
-  static final MMService _singleton = MMService._internal();
 
   List<dynamic> balances = <dynamic>[];
   Process mm2Process;
@@ -66,7 +63,7 @@ class MMService {
   /// Flips on temporarily when we see an indication of swap activity,
   /// possibly a change of swap status, in MM logs,
   /// triggering a Timer-based invocation of `updateOrdersAndSwaps`.
-  bool shouldUpdateOrdersAndSwaps = false;
+  String shouldUpdateOrdersAndSwaps;
 
   Future<void> init(String passphrase) async {
     if (Platform.isAndroid) {
@@ -77,24 +74,26 @@ class MMService {
           !checkmm2process.stdout
               .toString()
               .contains(prefs.getInt('mm2ProcessPID').toString())) {
-        await MMService().runBin();
+        await mmSe.runBin();
       } else {
-        MMService().initUsername(passphrase);
-        MMService()._running = true;
-        await MMService().initCheckLogs();
+        mmSe.initUsername(passphrase);
+        mmSe._running = true;
+        await mmSe.initCheckLogs();
         coinsBloc.currentCoinActivate(null);
         coinsBloc.loadCoin();
         coinsBloc.startCheckBalance();
       }
     } else {
-      await MMService().runBin();
+      await mmSe.runBin();
     }
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
-      if (shouldUpdateOrdersAndSwaps ||
-          musicService.recommendsPeriodicUpdates()) {
-        shouldUpdateOrdersAndSwaps = false;
-        await updateOrdersAndSwaps();
+      final String reason = shouldUpdateOrdersAndSwaps;
+      shouldUpdateOrdersAndSwaps = null;
+      if (reason != null) {
+        await updateOrdersAndSwaps(reason);
+      } else if (musicService.recommendsPeriodicUpdates) {
+        await syncSwaps.update('musicService');
       }
     });
   }
@@ -105,29 +104,29 @@ class MMService {
 
     if (Platform.isAndroid) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      final String newBuildNumber = packageInfo.buildNumber;
 
       try {
-        final ProcessResult checkmm2 =
-            await Process.run('ls', <String>['${filesPath}mm2']);
-        final String currentBuildNumber = prefs.getString('version');
+        final ls = await Process.run('ls', <String>['${filesPath}mm2']);
+        final lsMatch = ls.stdout.toString().trim() == '${filesPath}mm2';
 
-        if (checkmm2.stdout.toString().trim() != '${filesPath}mm2' ||
-            currentBuildNumber == null ||
-            currentBuildNumber.isEmpty ||
-            currentBuildNumber != newBuildNumber) {
-          await prefs.setString('version', newBuildNumber);
+        final mm2hash = prefs.getString('mm2_hash') ?? '';
+
+        Log('mm_service:114', 'Loading the mm2 asset…');
+        final ByteData assetsMm2 = await rootBundle.load('assets/mm2');
+        Log('mm_service:116', 'Calculating the mm2 asset hash…');
+        final assHash = sha1.convert(assetsMm2.buffer.asUint8List()).toString();
+        final hashMatch = mm2hash.isNotEmpty && mm2hash == assHash;
+        Log('mm_service:119', 'Hash matches? $hashMatch');
+
+        if (!lsMatch || !hashMatch) {
           await coinsBloc.resetCoinDefault();
-          final ByteData resultmm2 = await rootBundle.load('assets/mm2');
-          if (checkmm2.stdout.toString().trim() == '${filesPath}mm2') {
-            await deletemm2File();
-          }
-          await writeData(resultmm2.buffer.asUint8List());
-          await Process.run('chmod', <String>['544', '${filesPath}mm2']);
+          if (lsMatch) await deleteMmBin();
+          await saveMmBin(assetsMm2.buffer.asUint8List());
+          await prefs.setString('mm2_hash', mm2hash);
+          await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
         }
       } catch (e) {
-        print(e);
+        Log('mm_service:129', e);
       }
     }
   }
@@ -296,29 +295,52 @@ class MMService {
   }
 
   /// Load fresh lists of orders and swaps from MM.
-  Future<void> updateOrdersAndSwaps() async {
-    final List<Swap> swaps = await swapHistoryBloc.updateSwaps(50, null);
-    await ordersBloc.updateOrdersSwaps(swaps);
+  Future<void> updateOrdersAndSwaps(String reason) async {
+    await syncSwaps.update(reason);
+    await ordersBloc.updateOrdersSwaps();
   }
 
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
     if (sink != null) {
-      Log.println('mm_service:308', chunk);
-      // AG: This currently relies on the information that can be freely changed by MM
-      // or removed from the logs entirely (e.g. on debug and human-readable parts).
-      // Should update it to rely on the log tags instead.
-      if (chunk.contains('CONNECTED') ||
-          chunk.contains('Entering the taker_swap_loop') ||
-          chunk.contains('Received \'negotiation') ||
-          chunk.contains('Got maker payment') ||
-          chunk.contains('Sending \'taker-fee') ||
-          chunk.contains('Sending \'taker-payment') ||
-          chunk.contains('Finished')) {
-        shouldUpdateOrdersAndSwaps = true;
+      Log('mm_service:307', chunk);
+      final reasons = _lookupReasons(chunk);
+      // TBD: Use the obtained swap UUIDs for targeted swap updates.
+      if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
+    }
+  }
+
+  /// Checks a [chunk] of MM log to see if there's a reason to reload swap status.
+  List<_UpdReason> _lookupReasons(String chunk) {
+    final List<_UpdReason> reasons = [];
+    final sending = RegExp(
+        r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
+    for (RegExpMatch mat in sending.allMatches(chunk)) {
+      //Log('mm_service:320', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
+    }
+
+    // | (0:46) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Started...
+    // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
+    final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
+    for (RegExpMatch mat in dashboard.allMatches(chunk)) {
+      //Log('mm_service:328', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
+    }
+
+    const samples = [
+      'CONNECTED',
+      '[dht-boot]',
+      'Entering the taker_swap_loop',
+      'Finished'
+    ];
+    for (String sample in samples) {
+      if (chunk.contains(sample)) {
+        reasons.add(_UpdReason(sample: 'MM log: $sample'));
       }
     }
+    return reasons;
   }
 
   void _onIosLogEvent(Object event) {
@@ -326,7 +348,7 @@ class MMService {
   }
 
   void _onIosLogError(Object error) {
-    Log.println('mm_service:329', error);
+    Log('mm_service:351', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -342,10 +364,10 @@ class MMService {
     try {
       await coinsBloc.activateCoinKickStart();
 
-      coinsBloc.addMultiCoins(await coinsBloc.readJsonCoin()).then((_) {
-        Log.println('mm_service:346', 'All coins activated');
+      coinsBloc.enableCoins(await coinsBloc.electrumCoins()).then((_) {
+        Log('mm_service:368', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log.println('mm_service:348', 'loadCoin finished');
+          Log('mm_service:370', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -365,12 +387,12 @@ class MMService {
     return File('${filesPath}mm2');
   }
 
-  Future<File> writeData(List<int> data) async {
+  Future<File> saveMmBin(List<int> data) async {
     final File file = await _localFile;
     return file.writeAsBytes(data);
   }
 
-  Future<void> deletemm2File() async {
+  Future<void> deleteMmBin() async {
     final File file = await _localFile;
     await file.delete();
   }
@@ -401,19 +423,18 @@ class MMService {
   }
 
   Future<List<Coin>> loadJsonCoinsDefault() async {
-    return await DBProvider.db.getAllCoinElectrum(CoinEletrum.DEFAULT);
+    return await DBProvider.db.electrumCoins(CoinEletrum.DEFAULT);
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log.println('mm_service:408', 'getAllBalances');
-    final List<Coin> coins = await coinsBloc.readJsonCoin();
+    Log('mm_service:430', 'getAllBalances');
+    final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
       final List<Future<Balance>> futureBalances = <Future<Balance>>[];
 
       for (Coin coin in coins) {
-        futureBalances
-            .add(ApiProvider().getBalance(GetBalance(coin: coin.abbr)));
+        futureBalances.add(MM.getBalance(GetBalance(coin: coin.abbr)));
       }
       return await Future.wait<Balance>(futureBalances);
     } else {
@@ -422,7 +443,17 @@ class MMService {
   }
 
   Future<String> loadElectrumServersAsset() async {
-    return coinToJson(
-        await DBProvider.db.getAllCoinElectrum(CoinEletrum.CONFIG));
+    return coinToJson(await DBProvider.db.electrumCoins(CoinEletrum.CONFIG));
   }
+}
+
+/// Reason for updating the list of orders and swaps.
+class _UpdReason {
+  _UpdReason({this.sample, this.uuid});
+
+  /// MM log sample that was the reason for update.
+  String sample;
+
+  /// Swap UUID that ought to be updated.
+  String uuid;
 }

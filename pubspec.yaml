@@ -47,6 +47,7 @@ dependencies:
   # https://pub.dev/packages/path_provider
   # https://github.com/flutter/plugins
   path_provider: 1.6.0 # flutter.dev
+  provider: 4.0.4
 
 dev_dependencies:
   flutter_driver: # flutter.dev
@@ -211,6 +212,9 @@ flutter:
           style: italic
         - asset: fonts/Ubuntu/Ubuntu-Bold.ttf
           weight: 700
+    - family: Monospace
+      fonts:
+        - asset: fonts/Monospace/RobotoMono-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
