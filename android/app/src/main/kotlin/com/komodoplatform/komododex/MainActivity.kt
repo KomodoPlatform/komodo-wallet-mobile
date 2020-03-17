@@ -40,17 +40,17 @@ class MainActivity: FlutterFragmentActivity() {
 
   private fun nativeC() {
     // https://flutter.dev/docs/development/platform-integration/platform-channels?tab=android-channel-kotlin-tab#step-3-add-an-android-platform-specific-implementation
-    // https://api.flutter.dev/javadoc/index.html?io/flutter/plugin/common/EventChannel.html
     MethodChannel (getFlutterView(), "com.komodoplatform.atomicdex/nativeC") .setMethodCallHandler {
       call, result ->  // NB: invoked on the main thread.
       if (call.method == "ping") {  // Allows us to test the channel.
-        logSink?.success ("ping] Logging from MainActivity.kt")
+        logSink?.success ("ping] Logging from MainActivity.kt; BUILD_TIME: " + BuildConfig.BUILD_TIME)
         result.success ("pong")
       } else {
         result.notImplemented()}}}
 
   private fun logC() {
     // https://blog.testfairy.com/listeners-with-eventchannel-in-flutter/
+    // https://api.flutter.dev/javadoc/index.html?io/flutter/plugin/common/EventChannel.html
     val chan = EventChannel (getFlutterView(), "AtomicDEX/logC")
     chan.setStreamHandler (object: EventChannel.StreamHandler {
       override fun onListen (listener: Any?, eventSink: EventChannel.EventSink) {logSink = eventSink}
