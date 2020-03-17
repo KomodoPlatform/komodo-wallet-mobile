@@ -232,7 +232,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.resumed:
         Log('main:233', 'lifecycle: resumed');
         lockService.lockSignal(context);
-        mmSe.openLogSink();
         if (Platform.isIOS) {
           if (!mmSe.running) {
             _runBinMm2UserAlreadyLog();

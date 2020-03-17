@@ -297,8 +297,13 @@ class MMService {
   }
 
   void logIntoFile(String log) {
-    if (sink != null) {
-      sink.write(log + '\n');
+    IOSink s = sink;
+    try {
+      s.write(log + '\n');
+    } catch (e) {
+      sink = s = logFile.openWrite(mode: FileMode.append);
+      s.write(log + '\n');
+      print(e);
     }
   }
 
