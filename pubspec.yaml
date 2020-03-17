@@ -60,7 +60,7 @@ dev_dependencies:
     git:
       url: git://github.com/KomodoPlatform/qr.flutter.git
       ref: 587c969052f37d9fc0f14801aba241bffbc1ea84
-  auto_size_text: # 2.1.0 - Secure code reviewed diff 2b3ed87 ( 1.1.2) a2cb00 (2.1.0)
+  auto_size_text: # 2.1.0 - DONE: Secure code reviewed diff 2b3ed87 ( 1.1.2) a2cb00 (2.1.0)
     git:
       url: git://github.com/KomodoPlatform/auto_size_text.git
       ref: a2cb00e548916731f5c4c241d79a93419a4f9447
@@ -69,7 +69,7 @@ dev_dependencies:
       url: git://github.com/KomodoPlatform/flutter_barcode_reader.git
       ref: a4a010ca31b67d6ef331786bb93d79cb71f1f327
   shared_preferences: 0.5.6+1 # flutter.dev
-  bip39: # 1.0.3 - Secure code reviewed dbd846b (1.0.3)
+  bip39: # 1.0.3 - DONE: Secure code reviewed dbd846b (1.0.3)
     git: 
       url: git://github.com/KomodoPlatform/bip39-dart.git
       ref: dbd846b743eab3b21f3ef56abc958305be54761a
@@ -80,7 +80,7 @@ dev_dependencies:
   # share: ^0.6.0+1
   crypto: 2.1.3 # dart.dev
   intl_translation: 0.17.9 # dart.dev
-  bs58check: # 1.0.1 - Secure code reviewed 2889fa8 (1.0.1)
+  bs58check: # 1.0.1 - DONE: Secure code reviewed 2889fa8 (1.0.1)
     git:
       url: git://github.com/KomodoPlatform/bs58check-dart.git
       ref: 2889fa8791fd46afb30a9e7984c06b66a6241a44
@@ -96,7 +96,7 @@ dev_dependencies:
     git:
       url: git://github.com/KomodoPlatform/flutter_svg.git
       ref: a05263d56aa8745405b01df452332d03a758e40d
-  keccak: # 1.0.3 - Secure code reviewed 4202080 (1.0.3)
+  keccak: # 1.0.3 - DONE: Secure code reviewed 4202080 (1.0.3)
     git:
       url: git://github.com/KomodoPlatform/keccak.git
       ref: 420208090228f49237e080a31d1b627ec454d1cd
@@ -127,7 +127,7 @@ dev_dependencies:
     git: 
       url: https://github.com/KomodoPlatform/flutter_slidable.git
       ref: 27bbe0dfa9866ae01e8001267e873221ef5fbd67
-  password: # 1.0.0 - Secure code reviewed dbf924d (1.0.0)
+  password: # 1.0.0 - DONE: Secure code reviewed dbf924d (1.0.0)
     git:
       url: git://github.com/KomodoPlatform/password-dart.git
       ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
