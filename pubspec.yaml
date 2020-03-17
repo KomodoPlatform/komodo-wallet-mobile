@@ -165,7 +165,7 @@ dev_dependencies:
   # Our fork has a fixed compileSdkVersion - 28:
   # https://github.com/KomodoPlatform/flutter_sodium
   #flutter_sodium: ^0.0.11
-  flutter_sodium: # 0.0.11 - Secure code reviewed 3d6f8d8 (0.0.11)
+  flutter_sodium: # 0.0.11 - DONE: Secure code reviewed 3d6f8d8 (0.0.11)
     git:
       url: git://github.com/KomodoPlatform/flutter_sodium.git
       ref: 3d6f8d89b4e5f5fbb46b0f230a760b3930c57a39
