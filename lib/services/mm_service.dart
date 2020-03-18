@@ -300,10 +300,10 @@ class MMService {
     IOSink s = sink;
     try {
       s.write(log + '\n');
-    } catch (e) {
+    } catch (ex) {
+      print(ex); // AG: We should *gossip* this exception in the future.
       sink = s = logFile.openWrite(mode: FileMode.append);
       s.write(log + '\n');
-      print(e);
     }
   }
 
