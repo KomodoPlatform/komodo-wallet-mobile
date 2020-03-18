@@ -15,6 +15,8 @@ class Log {
     return true;
   }
 
+  static String twoDigits(int n) => n >= 10 ? '$n' : '0$n';
+
   /// Log the [message].
   /// The [key] points at the code line location
   /// (updated automatically with https://github.com/ArtemGr/log-loc-rs).
@@ -32,7 +34,15 @@ class Log {
 
     //via os_log://MMService.nativeC.invokeMethod<String>('log', messageToPrint);
 
-    MMService().logIntoFile(
-        DateTime.now().toString() + ' ' + messageToPrint.toString());
+    // We make the log lines a bit shorter by only mentioning the time
+    // and not the date, as the latter is already present in the log file name.
+    final now = DateTime.now();
+    mmSe.log2file(
+        '${twoDigits(now.hour)}'
+        ':${twoDigits(now.minute)}'
+        ':${twoDigits(now.second)}'
+        '.${now.millisecond}'
+        ' $messageToPrint',
+        now: now);
   }
 }

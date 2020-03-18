@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:archive/archive.dart' as arch;
+import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,8 +16,6 @@ import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/base_service.dart';
-import 'package:komodo_dex/model/get_recent_swap.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -62,7 +64,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     // final Locale myLocale = Localizations.localeOf(context);
-    // Log('setting_page:65', 'current locale: $myLocale');
+    // Log('setting_page:67', 'current locale: $myLocale');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -145,7 +147,7 @@ class _SettingPageState extends State<SettingPage> {
         version += ' - ${versionmm2.result}';
       }
     } catch (e) {
-      Log('setting_page:148', e);
+      Log('setting_page:150', e);
       rethrow;
     }
     return version;
@@ -257,7 +259,7 @@ class _SettingPageState extends State<SettingPage> {
                     ? Switch(
                         value: snapshot.data,
                         onChanged: (bool dataSwitch) {
-                          Log('setting_page:260', 'dataSwitch $dataSwitch');
+                          Log('setting_page:262', 'dataSwitch $dataSwitch');
                           setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
@@ -449,9 +451,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildLogout() {
     return CustomTile(
       onPressed: () {
-        Log('setting_page:452', 'PRESSED');
+        Log('setting_page:454', 'PRESSED');
         authBloc.logout().then((_) {
-          Log('setting_page:454', 'PRESSED');
+          Log('setting_page:456', 'PRESSED');
           SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
         });
       },
@@ -697,19 +699,52 @@ class _SettingPageState extends State<SettingPage> {
     Navigator.of(context).pop();
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
-    final dynamic recentSwap = await MM.getRecentSwaps(
-        mmSe.client, GetRecentSwap(limit: 100, fromUuid: null));
 
-    if (recentSwap is RecentSwaps) {
-      if (mmSe.sink != null) {
-        mmSe.sink.write('\n\nMy recent swaps: \n\n');
-        mmSe.sink.write(json.encode(recentSwap.toJson) + '\n\n');
-        mmSe.sink.write('AtomicDEX mobile ${packageInfo.version} $os\n');
+    final now = DateTime.now();
+    final log = mmSe.currentLog(now: now);
+    try {
+      log.sink.write('\n\n--- my recent swaps ---\n\n');
+      for (Swap swap in syncSwaps.swaps) {
+        final started = swap.started;
+        if (started == null) continue;
+        final tim = DateTime.fromMillisecondsSinceEpoch(started.timestamp);
+        final delta = now.difference(tim);
+        if (delta.inDays > 3) continue; // Skip old swaps.
+        log.sink.write(json.encode(swap.toJson) + '\n\n');
       }
+      log.sink.write('\n\n--- / my recent swaps ---\n\n');
+      log.sink.write('AtomicDEX mobile ${packageInfo.version} $os\n');
+    } catch (ex) {
+      Log('setting_page:718', ex);
+      log.sink.write('Error saving swaps: $ex');
     }
+
+    // Discord attachment size limit is about 8 MiB
+    // so we're trying to send but a portion of the latest log.
+    // bzip2 encoder is too slow for some older phones.
+    // gzip gives us a compression ratio of about 20%, allowing to send about 40 MiB of log.
+    int start = 0;
+    final end = log.file.lengthSync();
+    if (end > 33 * 1024 * 1024) start = end - 33 * 1024 * 1024;
+    final buf = Uint8List(end - start);
+    final raf = log.file.openSync();
+    final got = await raf.readInto(buf, start, end);
+    if (got != end - start) {
+      throw Exception(
+          'Error reading from log: start $start, end $end, got $got');
+    }
+    final af = File('${mmSe.filesPath}dex.log.gz');
+    if (af.existsSync()) af.deleteSync();
+    final enc = arch.GZipEncoder();
+    Log('setting_page:739', 'Creating dex.log.gz out of $got log bytes…');
+    af.writeAsBytesSync(enc.encode(buf));
+    final len = af.lengthSync();
+    Log('setting_page:742', 'Compression produced $len bytes.');
+
     mainBloc.isUrlLaucherIsOpen = true;
-    Share.shareFile(File('${mmSe.filesPath}log.txt'),
-        subject: 'My logs for the ${DateTime.now().toIso8601String()}');
+    await Share.shareFile(af,
+        mimeType: 'application/octet-stream',
+        subject: 'AtomicDEX logs at ${DateTime.now().toIso8601String()}');
   }
 
   Future<void> _shareFileDialog() async {
@@ -760,14 +795,14 @@ class FilePickerButton extends StatelessWidget {
           try {
             path = await FilePicker.getFilePath();
           } catch (err) {
-            Log('setting_page:763', 'file picker exception: $err');
+            Log('setting_page:798', 'file picker exception: $err');
           }
           lockService.filePickerReturned(lockCookie);
 
           // On iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log('setting_page:770', 'file picked: $path');
+          Log('setting_page:805', 'file picked: $path');
 
           final bool ck = checkAudioFile(path);
           if (!ck) {

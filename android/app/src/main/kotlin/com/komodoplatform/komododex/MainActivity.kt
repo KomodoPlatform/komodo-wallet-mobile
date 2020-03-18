@@ -43,8 +43,13 @@ class MainActivity: FlutterFragmentActivity() {
     MethodChannel (getFlutterView(), "com.komodoplatform.atomicdex/nativeC") .setMethodCallHandler {
       call, result ->  // NB: invoked on the main thread.
       if (call.method == "ping") {  // Allows us to test the channel.
-        logSink?.success ("ping] Logging from MainActivity.kt; BUILD_TIME: " + BuildConfig.BUILD_TIME)
+        // Example using the `logSink`:
+        // 
+        //     logSink?.success ("ping] Logging from MainActivity.kt; BUILD_TIME: " + BuildConfig.BUILD_TIME)
+
         result.success ("pong")
+      } else if (call.method == "BUILD_TIME") {
+        result.success (BuildConfig.BUILD_TIME)
       } else {
         result.notImplemented()}}}
 

@@ -9,7 +9,7 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 import 'mm_service.dart';
 
@@ -39,7 +39,7 @@ enum MusicMode {
 /// Allows iOS application instances to stay alive in background.
 class MusicService {
   MusicService() {
-    getApplicationDocumentsDirectory().then((docs) {
+    applicationDocumentsDirectory.then((docs) {
       _docs = docs;
     });
     makePlayer();

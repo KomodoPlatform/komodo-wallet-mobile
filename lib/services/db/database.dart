@@ -8,8 +8,8 @@ import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 enum CoinEletrum { DEFAULT, SAVED, CONFIG }
@@ -31,12 +31,11 @@ class DBProvider {
   }
 
   Future<Database> initDB() async {
-    final Directory documentsDirectory =
-        await getApplicationDocumentsDirectory();
+    final Directory documentsDirectory = await applicationDocumentsDirectory;
     final String path = join(documentsDirectory.path, 'AtomicDEX.db');
     return await openDatabase(path, version: 1, onOpen: (Database db) {},
         onCreate: (Database db, int version) async {
-      Log('database:39', 'initDB - openDB');
+      Log('database:38', 'initDB - openDB');
       await db.execute('''
       CREATE TABLE ArticlesSaved (
           id TEXT PRIMARY KEY,
@@ -95,16 +94,16 @@ class DBProvider {
       //   )
       // ''');
       //   } else {
-      //     Log('database:98', 'Table exists');
+      //     Log('database:97', 'Table exists');
       //   }
       // } catch (e) {
-      //   Log('database:101', 'DB INIT ERROR: ' + e.toString());
+      //   Log('database:100', 'DB INIT ERROR: ' + e.toString());
       // }
     });
   }
 
   String createTableCoins(CoinEletrum coinEletrum) {
-    Log('database:107', 'CREATE: ' + _getDbElectrum(coinEletrum));
+    Log('database:106', 'CREATE: ' + _getDbElectrum(coinEletrum));
     return '''
       CREATE TABLE ${_getDbElectrum(coinEletrum)} (
           name TEXT PRIMARY KEY UNIQUE,
@@ -273,7 +272,7 @@ class DBProvider {
         await saveCoinActivate(coinEletrum, coin);
       }
     } catch (e) {
-      Log('database:276', 'Error on initCoinsActivateDefault');
+      Log('database:275', 'Error on initCoinsActivateDefault');
     }
   }
 
@@ -302,7 +301,7 @@ class DBProvider {
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('ArticlesSaved');
-    Log('database:305', maps.length);
+    Log('database:304', maps.length);
     // Convert the List<Map<String, dynamic> into a List<Article>.
     return List<Article>.generate(maps.length, (int i) {
       return Article(
@@ -356,7 +355,7 @@ class DBProvider {
 
     // Query the table for All The Article.
     final List<Map<String, dynamic>> maps = await db.query('Wallet');
-    Log('database:359', maps.length);
+    Log('database:358', maps.length);
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List<Wallet>.generate(maps.length, (int i) {
       return Wallet(
@@ -372,7 +371,7 @@ class DBProvider {
   }
 
   Future<void> deleteWallet(Wallet wallet) async {
-    Log('database:375', wallet.id);
+    Log('database:374', wallet.id);
     final Database db = await database;
     await db.delete('Wallet', where: 'id = ?', whereArgs: <dynamic>[wallet.id]);
   }

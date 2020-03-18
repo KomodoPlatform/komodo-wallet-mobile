@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -16,6 +17,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:local_auth/local_auth.dart';
@@ -205,9 +207,9 @@ Future<bool> get canCheckBiometrics async {
   if (_canCheckBiometrics == null) {
     try {
       _canCheckBiometrics = await auth.canCheckBiometrics;
-      Log.println('utils:208', 'canCheckBiometrics: $_canCheckBiometrics');
+      Log.println('utils:210', 'canCheckBiometrics: $_canCheckBiometrics');
     } on PlatformException catch (ex) {
-      Log.println('utils:210', 'canCheckBiometrics exception: $ex');
+      Log.println('utils:212', 'canCheckBiometrics exception: $ex');
     }
   }
   return _canCheckBiometrics;
@@ -220,7 +222,7 @@ Future<bool> get canCheckBiometrics async {
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
 Future<bool> authenticateBiometrics(
     BuildContext context, PinStatus pinStatus) async {
-  Log.println('utils:223', 'authenticateBiometrics');
+  Log.println('utils:225', 'authenticateBiometrics');
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('switch_pin_biometric')) {
     final LocalAuthentication localAuth = LocalAuthentication();
@@ -241,7 +243,7 @@ Future<bool> authenticateBiometrics(
       // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
       // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
       // Rewriting the biometrics support (cf. #668) might be one way to fix that.
-      Log.println('utils:244', 'authenticateWithBiometrics ex: ' + e.message);
+      Log.println('utils:246', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
     lockService.biometricsReturned(lockCookie);
@@ -325,7 +327,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:328', url);
+  Log.println('utils:330', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);
@@ -362,7 +364,8 @@ String durationFormat(Duration duration) {
     formatted = '${ss.remainder(60)}s'; // TODO(yurii): localization
   }
   if (mm > 0) {
-    formatted = '${mm.remainder(60)}m ' + formatted; // TODO(yurii): localization
+    formatted =
+        '${mm.remainder(60)}m ' + formatted; // TODO(yurii): localization
   }
   if (hh > 0) {
     formatted = '${hh}h ' + formatted; // TODO(yurii): localization
@@ -384,6 +387,18 @@ double deviation(List<double> values) {
     squares.add(pow(values[i] - average, 2));
   }
   final averageSquares = mean(squares);
-  
+
   return sqrt(averageSquares);
 }
+
+Directory _applicationDocumentsDirectory;
+
+Future<Directory> get applicationDocumentsDirectory async {
+  _applicationDocumentsDirectory ??= await getApplicationDocumentsDirectory();
+  return _applicationDocumentsDirectory;
+}
+
+/// Cached synchronous access to the application directory.
+/// Returns `null` if the application directory is not known yet.
+Directory get applicationDocumentsDirectorySync =>
+    _applicationDocumentsDirectory;
