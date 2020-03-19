@@ -120,22 +120,34 @@ class MMService {
         final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
         Log('mm_service:121', 'buildTime: $buildTime');
 
-        //final mm2build = prefs.getInt('') ?? '';
+        final mm2build = prefs.getInt('build_time') ?? 0;
 
-        final mm2hash = prefs.getString('mm2_hash') ?? '';
+        final newerBuild = mm2build == 0 || buildTime > mm2build;
+        Log('mm_service:126', 'Newer build? $newerBuild');
 
-        Log('mm_service:127', 'Loading the mm2 asset…');
-        final ByteData assetsMm2 = await rootBundle.load('assets/mm2');
-        Log('mm_service:129', 'Calculating the mm2 asset hash…');
-        final assHash = sha1.convert(assetsMm2.buffer.asUint8List()).toString();
-        final hashMatch = mm2hash.isNotEmpty && mm2hash == assHash;
-        Log('mm_service:132', 'Hash matches? $hashMatch');
+        if (!lsMatch || newerBuild) {
+          Log('mm_service:131', 'Loading the mm2 asset…');
+          final ByteData assetsMm2 = await rootBundle.load('assets/mm2');
+          Log('mm_service:134', 'Calculating the mm2 asset hash…');
+          final assHash =
+              sha1.convert(assetsMm2.buffer.asUint8List()).toString();
+          if (newerBuild) {
+            final mm2hash = prefs.getString('mm2_hash') ?? '';
+            final hashMatch = mm2hash.isNotEmpty && mm2hash == assHash;
+            Log('mm_service:154', 'Hash matches? $hashMatch');
 
-        if (!lsMatch || !hashMatch) {
+            if (hashMatch) {
+              await prefs.setInt('build_time', buildTime);
+              return;
+            }
+          }
+
           await coinsBloc.resetCoinDefault();
           if (lsMatch) await deleteMmBin();
           await saveMmBin(assetsMm2.buffer.asUint8List());
-          await prefs.setString('mm2_hash', mm2hash);
+
+          await prefs.setInt('build_time', buildTime);
+          await prefs.setString('mm2_hash', assHash);
           await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
         }
       } catch (e) {
