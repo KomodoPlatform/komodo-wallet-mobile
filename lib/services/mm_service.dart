@@ -103,57 +103,52 @@ class MMService {
     });
   }
 
-  Future<void> initMarketMaker() async {
-    if (Platform.isAndroid) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+  /// Updates the executable copy of the Market Maker binary.
+  Future<void> updateMmBinary() async {
+    if (!Platform.isAndroid) return;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      try {
-        final ls = await Process.run('ls', <String>['${filesPath}mm2']);
+    final ls = await Process.run('ls', <String>['${filesPath}mm2']);
 
-        // True if the "mm2" file is there AND if we can invoke shell commands, such as "ls".
-        final lsMatch = ls.stdout.toString().trim() == '${filesPath}mm2';
+    // True if the "mm2" file is there AND if we can invoke shell commands, such as "ls".
+    final lsMatch = ls.stdout.toString().trim() == '${filesPath}mm2';
 
-        // Sanity check: native code must reply us with 'pong'.
-        final String pong = await nativeC.invokeMethod<String>('ping');
-        if (pong != 'pong') throw Exception('No pong');
+    // Sanity check: native code must reply us with 'pong'.
+    final String pong = await nativeC.invokeMethod<String>('ping');
+    if (pong != 'pong') throw Exception('No pong');
 
-        final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
-        Log('mm_service:121', 'buildTime: $buildTime');
+    final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
+    Log('mm_service:121', 'BUILD_TIME: $buildTime');
+    if (buildTime <= 0) throw Exception('No BUILD_TIME');
+    final ms = DateTime.now().millisecondsSinceEpoch;
+    if (ms <= buildTime) Log('mm_service:124', 'BUILD_TIME in the future!');
 
-        final mm2build = prefs.getInt('build_time') ?? 0;
+    final lastHash = prefs.getString('mm2.lastHash') ?? '';
+    final lastCheck = prefs.getInt('mm2.lastCheck') ?? 0;
+    if (ms <= lastCheck) Log('mm_service:128', 'lastCheck in the future!');
 
-        final newerBuild = mm2build == 0 || buildTime > mm2build;
-        Log('mm_service:126', 'Newer build? $newerBuild');
+    // If there's a copy of mm2 binary and we've checked it recently then we're done.
+    if (lsMatch && buildTime < lastCheck) return;
 
-        if (!lsMatch || newerBuild) {
-          Log('mm_service:129', 'Loading the mm2 asset…');
-          final ByteData assetsMm2 = await rootBundle.load('assets/mm2');
-          Log('mm_service:131', 'Calculating the mm2 asset hash…');
-          final assHash =
-              sha1.convert(assetsMm2.buffer.asUint8List()).toString();
-          if (newerBuild && lsMatch) {
-            final mm2hash = prefs.getString('mm2_hash') ?? '';
-            final hashMatch = mm2hash.isNotEmpty && mm2hash == assHash;
-            Log('mm_service:137', 'Hash matches? $hashMatch');
+    Log('mm_service:133', 'Loading assets/mm2…');
+    final ByteData mm2bytes = await rootBundle.load('assets/mm2');
 
-            if (hashMatch) {
-              await prefs.setInt('build_time', buildTime);
-              return;
-            }
-          }
-
-          await coinsBloc.resetCoinDefault();
-          if (lsMatch) await deleteMmBin();
-          await saveMmBin(assetsMm2.buffer.asUint8List());
-
-          await prefs.setInt('build_time', buildTime);
-          await prefs.setString('mm2_hash', assHash);
-          await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
-        }
-      } catch (e) {
-        Log('mm_service:154', e);
-      }
+    Log('mm_service:136', 'Calculating assets/mm2 hash…');
+    // AG: On my device it takes 7.7 seconds to calculate SHA1, 4.3 seconds to calculate MD5.
+    final md5h = md5.convert(mm2bytes.buffer.asUint8List()).toString();
+    if (md5h == lastHash) {
+      Log('mm_service:140', 'MM matches the assets/ hash, skipping update');
+      await prefs.setInt('mm2.lastCheck', ms);
+      return;
     }
+
+    Log('mm_service:145', 'Updating MM…');
+    await coinsBloc.resetCoinDefault();
+    if (lsMatch) await deleteMmBin();
+    await saveMmBin(mm2bytes.buffer.asUint8List());
+    await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
+    await prefs.setString('mm2.lastHash', md5h);
+    await prefs.setInt('mm2.lastCheck', ms);
   }
 
   void initUsername(String passphrase) {
@@ -369,7 +364,7 @@ class MMService {
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
-    Log('mm_service:360', chunk);
+    Log('mm_service:367', chunk);
     final reasons = _lookupReasons(chunk);
     // TBD: Use the obtained swap UUIDs for targeted swap updates.
     if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
@@ -381,7 +376,7 @@ class MMService {
     final sending = RegExp(
         r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
     for (RegExpMatch mat in sending.allMatches(chunk)) {
-      //Log('mm_service:372', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:379', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
     }
 
@@ -389,7 +384,7 @@ class MMService {
     // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
     final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
     for (RegExpMatch mat in dashboard.allMatches(chunk)) {
-      //Log('mm_service:380', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:387', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
     }
 
@@ -412,7 +407,7 @@ class MMService {
   }
 
   void _onNativeLogError(Object error) {
-    Log('mm_service:403', error);
+    Log('mm_service:410', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -429,9 +424,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
 
       coinsBloc.enableCoins(await coinsBloc.electrumCoins()).then((_) {
-        Log('mm_service:420', 'All coins activated');
+        Log('mm_service:427', 'All coins activated');
         coinsBloc.loadCoin().then((_) {
-          Log('mm_service:422', 'loadCoin finished');
+          Log('mm_service:429', 'loadCoin finished');
         });
       });
     } catch (e) {
@@ -491,7 +486,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:482', 'getAllBalances');
+    Log('mm_service:489', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {

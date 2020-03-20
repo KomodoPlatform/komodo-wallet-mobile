@@ -42,7 +42,7 @@ void main() {
 
 Future<void> startApp() async {
   try {
-    await mmSe.initMarketMaker();
+    await mmSe.updateMmBinary();
     await _runBinMm2UserAlreadyLog();
     return runApp(_myAppWithProviders);
   } catch (e) {
@@ -112,7 +112,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _checkNetworkStatus();
     if (isInDebugMode) {
-      mmSe.initMarketMaker().then((_) => _runBinMm2UserAlreadyLog());
+      mmSe.updateMmBinary().then((_) => _runBinMm2UserAlreadyLog());
     }
   }
 
