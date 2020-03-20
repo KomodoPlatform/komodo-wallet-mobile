@@ -126,15 +126,15 @@ class MMService {
         Log('mm_service:126', 'Newer build? $newerBuild');
 
         if (!lsMatch || newerBuild) {
-          Log('mm_service:131', 'Loading the mm2 asset…');
+          Log('mm_service:129', 'Loading the mm2 asset…');
           final ByteData assetsMm2 = await rootBundle.load('assets/mm2');
-          Log('mm_service:134', 'Calculating the mm2 asset hash…');
+          Log('mm_service:131', 'Calculating the mm2 asset hash…');
           final assHash =
               sha1.convert(assetsMm2.buffer.asUint8List()).toString();
-          if (newerBuild) {
+          if (newerBuild && lsMatch) {
             final mm2hash = prefs.getString('mm2_hash') ?? '';
             final hashMatch = mm2hash.isNotEmpty && mm2hash == assHash;
-            Log('mm_service:154', 'Hash matches? $hashMatch');
+            Log('mm_service:137', 'Hash matches? $hashMatch');
 
             if (hashMatch) {
               await prefs.setInt('build_time', buildTime);
@@ -151,7 +151,7 @@ class MMService {
           await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
         }
       } catch (e) {
-        Log('mm_service:142', e);
+        Log('mm_service:154', e);
       }
     }
   }
