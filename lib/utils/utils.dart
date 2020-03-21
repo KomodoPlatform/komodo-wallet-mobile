@@ -402,3 +402,7 @@ Future<Directory> get applicationDocumentsDirectory async {
 /// Returns `null` if the application directory is not known yet.
 Directory get applicationDocumentsDirectorySync =>
     _applicationDocumentsDirectory;
+
+Future<void> sleepMs(int ms) async {
+  await Future<void>.delayed(Duration(milliseconds: ms));
+}

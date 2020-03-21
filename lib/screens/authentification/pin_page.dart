@@ -79,7 +79,7 @@ class _PinPageState extends State<PinPage> {
         prefs.setBool('isPinIsCreated', true);
         break;
       case PinStatus.CONFIRM_PIN:
-        final Wallet wallet = await DBProvider.db.getCurrentWallet();
+        final Wallet wallet = await Db.getCurrentWallet();
         setState(() {
           isLoading = true;
         });

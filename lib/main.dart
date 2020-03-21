@@ -25,7 +25,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
-import 'blocs/coins_bloc.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
 import 'widgets/theme_data.dart';
@@ -46,7 +45,7 @@ Future<void> startApp() async {
     await _runBinMm2UserAlreadyLog();
     return runApp(_myAppWithProviders);
   } catch (e) {
-    Log('main:49', 'startApp] $e');
+    Log('main:48', 'startApp] $e');
     rethrow;
   }
 }
@@ -67,15 +66,11 @@ Future<void> _runBinMm2UserAlreadyLog() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('isPassphraseIsSaved') != null &&
       prefs.getBool('isPassphraseIsSaved') == true) {
-    await coinsBloc.writeJsonCoin(await coinsBloc.electrumCoins());
     await authBloc.initSwitchPref();
 
     if (!(authBloc.showLock && prefs.getBool('switch_pin'))) {
       await authBloc.login(await EncryptionTool().read('passphrase'), null);
     }
-  } else {
-    Log('main:77', 'loadJsonCoinsDefault');
-    await coinsBloc.writeJsonCoin(await mmSe.loadJsonCoinsDefault());
   }
 }
 
@@ -131,9 +126,9 @@ class _MyAppState extends State<MyApp> {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    // Log('main:134',
+                    // Log('main:129',
                     //     'current locale: ' + currentLocale?.toString());
-                    // Log('main:136',
+                    // Log('main:131',
                     //     'current pref locale: ' + prefLocale.toString());
 
                     return MaterialApp(
@@ -214,11 +209,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log('main:217', 'lifecycle: inactive');
+        Log('main:212', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
-        Log('main:221', 'lifecycle: paused');
+        Log('main:216', 'lifecycle: paused');
         lockService.lockSignal(context);
 
         // AG: do we really need it? // if (Platform.isIOS) mmSe.closeLogSink();
@@ -227,12 +222,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS && await musicService.iosBackgroundExit()) {
           // https://gitlab.com/artemciy/supernet/issues/4#note_284468673
-          Log('main:230', 'Suspended, exit');
+          Log('main:225', 'Suspended, exit');
           exit(0);
         }
         break;
       case AppLifecycleState.resumed:
-        Log('main:235', 'lifecycle: resumed');
+        Log('main:230', 'lifecycle: resumed');
         lockService.lockSignal(context);
         if (Platform.isIOS) {
           if (!mmSe.running) {
@@ -241,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.detached:
-        Log('main:244', 'lifecycle: detached');
+        Log('main:239', 'lifecycle: detached');
         break;
     }
   }

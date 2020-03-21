@@ -8,7 +8,6 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-import 'coin.dart';
 import 'error_string.dart';
 import 'get_recent_swap.dart';
 import 'recent_swaps.dart';
@@ -174,13 +173,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:177', 'update] reason: $reason');
+    Log('swap_provider:176', 'update] reason: $reason');
 
     final dynamic mswaps = await MM.getRecentSwaps(
         mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (mswaps is ErrorString) {
-      Log('swap_provider:183', '!getRecentSwaps: ${mswaps.error}');
+      Log('swap_provider:182', '!getRecentSwaps: ${mswaps.error}');
       return;
     }
     if (mswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -200,7 +199,7 @@ class SyncSwaps {
     try {
       await _gossipSync();
     } catch (ex) {
-      Log('swap_provider:203', '!_gossipSync: $ex');
+      Log('swap_provider:202', '!_gossipSync: $ex');
     }
   }
 
@@ -229,16 +228,13 @@ class SyncSwaps {
     for (String id in _ours.keys) {
       final entity = _ours[id];
       if (entity.timestamp == _gossiped[id]) continue;
-      Log('swap_provider:232', 'Gossiping $id…');
+      Log('swap_provider:231', 'Gossiping $id…');
       entities.add(entity);
     }
 
-    // TBD: We should have a model encapsulating and caching the enabled coins.
-    final List<Coin> coins =
-        await DBProvider.db.electrumCoins(CoinEletrum.SAVED);
-    final List<String> tickers = coins.map((Coin coin) => coin.abbr).toList();
+    final List<String> tickers = (await Db.activeCoins).toList();
 
-    //Log('swap_provider:241', 'ct.cipig.net/sync…');
+    //Log('swap_provider:237', 'ct.cipig.net/sync…');
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
           'components': <String, dynamic>{
@@ -281,7 +277,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:284', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:280', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
