@@ -12,6 +12,7 @@ class Log {
   /// This function can be used in a hot-reload debugging session to focus on certain sections of the log.
   static bool pass(String key, dynamic message) {
     //return message.toString().startsWith('pickMode]') || message.toString().startsWith('play]');
+    //return key.startsWith('swap_provider:');
     return true;
   }
 

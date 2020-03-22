@@ -406,3 +406,26 @@ Directory get applicationDocumentsDirectorySync =>
 Future<void> sleepMs(int ms) async {
   await Future<void>.delayed(Duration(milliseconds: ms));
 }
+
+/// Decode a lowercase hex into an integer.
+///
+/// There's actually more than one way to decode a hex
+/// (e.g. big-endian versus little-endian)
+/// and most libraries have the decoding underspecified
+/// hence the explicit decoding might be more easily reproducible and transparent.
+int hex2int(String sv) {
+  int iv = 0;
+  for (int ix = 0; ix < sv.length; ++ix) {
+    final ch = sv.codeUnitAt(ix);
+    int cv;
+    if (ch >= 0x30 && ch <= 0x39) {
+      cv = ch - 0x30; // 0-9, http://ascii-table.com/
+    } else if (ch >= 0x61 && ch <= 0x66) {
+      cv = ch - 0x61 + 10; // a-f
+    } else {
+      throw Exception('Not a hex: $ch in $sv at $ix');
+    }
+    iv += cv << (ix * 4);
+  }
+  return iv;
+}

@@ -316,11 +316,10 @@ class MMService {
           }
 
           checkStatusmm2().then((int onValue) {
-            print('STATUS MM2: ' + onValue.toString());
+            Log('mm_service:319', 'mm2_main_status: $onValue');
             if (onValue == 3) {
               _running = true;
               _.cancel();
-              print('CANCEL TIMER');
               initCoinsAndLoad();
               coinsBloc.startCheckBalance();
             }
@@ -361,7 +360,7 @@ class MMService {
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
-    Log('mm_service:364', chunk);
+    Log('mm_service:363', chunk);
     final reasons = _lookupReasons(chunk);
     // TBD: Use the obtained swap UUIDs for targeted swap updates.
     if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
@@ -373,7 +372,7 @@ class MMService {
     final sending = RegExp(
         r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
     for (RegExpMatch mat in sending.allMatches(chunk)) {
-      //Log('mm_service:376', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:375', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
     }
 
@@ -381,7 +380,7 @@ class MMService {
     // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
     final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
     for (RegExpMatch mat in dashboard.allMatches(chunk)) {
-      //Log('mm_service:384', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:383', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
     }
 
@@ -404,7 +403,7 @@ class MMService {
   }
 
   void _onNativeLogError(Object error) {
-    Log('mm_service:407', error);
+    Log('mm_service:406', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -421,9 +420,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
       await coinsBloc.enableCoins(active);
-      Log('mm_service:424', 'All coins activated');
+      Log('mm_service:423', 'All coins activated');
       await coinsBloc.loadCoin();
-      Log('mm_service:426', 'loadCoin finished');
+      Log('mm_service:425', 'loadCoin finished');
     } catch (e) {
       print(e);
     }
@@ -469,7 +468,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:472', 'getAllBalances');
+    Log('mm_service:471', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
