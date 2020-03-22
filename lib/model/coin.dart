@@ -95,6 +95,7 @@ class Coin {
   List<String> serverList;
   List<String> explorerUrl;
   String swapContractAddress;
+  /// NB: If the initial value is `null` then it might be updated from MM during the coin activation.
   int requiredConfirmations;
   bool requiresNotarization;
 
