@@ -1,612 +1,625 @@
 [
-  {
-    "name": "Komodo",
-    "type": "smartChain",
-    "address": "electrum1.cipig.net",
-    "port": 10001,
-    "proto": "tcp",
-    "abbr": "KMD",
-    "coingeckoId": "komodo",
-    "colorCoin": "0xFF326464",
-    "serverList": [
-      "electrum1.cipig.net:10001",
-      "electrum2.cipig.net:10001",
-      "electrum3.cipig.net:10001"
-    ],
-    "explorerUrl": [
-      "https://kmdexplorer.io/",
-      "http://kmd.explorer.dexstats.info/",
-      "https://explorer.komodo.services/"
-    ]
-  },
-  {
-    "name": "Bitcoin",
-    "type": "utxo",
-    "address": "e-x.not.fyi",
-    "port": 50001,
-    "proto": "tcp",
-    "abbr": "BTC",
-    "coingeckoId": "bitcoin",
-    "colorCoin": "0xFFf7931a",
-    "serverList": [
-      "electrum1.cipig.net:10000",
-      "electrum2.cipig.net:10000",
-      "electrum3.cipig.net:10000"
-    ],
-    "explorerUrl": [
-      "https://insight.bitpay.com/"
-    ]
-  },
-  {
-    "name": "Bitcoin Cash",
-    "type": "utxo",
-    "address": "bch.imaginary.cash",
-    "port": 50001,
-    "proto": "tcp",
-    "abbr": "BCH",
-    "coingeckoId": "bitcoin-cash",
-    "colorCoin": "0xFF2db300",
-    "serverList": [
-      "bch.imaginary.cash:50001",
-      "electrumx-bch.cryptonermal.net:50001",
-      "bch0.kister.net:50001"
-    ],
-    "explorerUrl": [
-      "https://explorer.bitcoin.com/bch/"
-    ]
-  },
-  {
-    "name": "Ethereum",
-    "type": "erc",
-    "address": "http://eth2.cipig.net",
-    "port": 8555,
-    "proto": "tcp",
-    "abbr": "ETH",
-    "coingeckoId": "ethereum",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFF828384",
-    "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "DASH",
-    "type": "utxo",
-    "address": "electrum3.cipig.net",
-    "port": 10061,
-    "proto": "tcp",
-    "abbr": "DASH",
-    "coingeckoId": "dash",
-    "colorCoin": "0xFF5783a7",
-    "serverList": [
-      "electrum1.cipig.net:10061",
-      "electrum2.cipig.net:10061",
-      "electrum3.cipig.net:10061"
-    ],
-    "explorerUrl": [
-      "https://explorer.dash.org/"
-    ]
-  },
-  {
-    "name": "Litecoin",
-    "type": "utxo",
-    "address": "electrum-ltc.bysh.me",
-    "port": 50001,
-    "proto": "tcp",
-    "abbr": "LTC",
-    "coingeckoId": "litecoin",
-    "colorCoin": "0xFFbebebe",
-    "serverList": [
-      "electrum.ltc.xurious.com:50001",
-      "ltc.rentonisk.com:50001",
-      "electrum-ltc.bysh.me:50001"
-    ],
-    "explorerUrl": [
-      "https://blockexplorer.one/litecoin/mainnet/"
-    ]
-  },
-  {
-    "name": "USDC",
-    "type": "erc",
-    "address": "http://eth1.cipig.net",
-    "port": 8555,
-    "proto": "tcp",
-    "abbr": "USDC",
-    "coingeckoId": "usd-coin",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFF2775c9",
-    "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "AtomicWallet",
-    "type": "erc",
-    "address": "http://eth1.cipig.net",
-    "port": 8555,
-    "proto": "tcp",
-    "abbr": "AWC",
-    "coingeckoId": "usd-coin",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFF2ea5fb",
-    "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "TrueUSD",
-    "type": "erc",
-    "address": "http://eth1.cipig.net",
-    "port": 8555,
-    "proto": "tcp",
-    "abbr": "TUSD",
-    "coingeckoId": "true-usd",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFF1B1C5B",
-    "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "Paxos",
-    "type": "erc",
-    "address": "http://eth1.cipig.net",
-    "port": 8555,
-    "proto": "tcp",
-    "abbr": "PAX",
-    "coingeckoId": "paxos-standard",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFF005120",
-    "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "DAI",
-    "type": "erc",
-    "address": "http://eth1.cipig.net",
-    "port": 8555,
-    "proto": "tcp",
-    "abbr": "DAI",
-    "coingeckoId": "dai",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFFF8B34F",
-    "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "SAI",
-    "type": "erc",
-    "address": "http://eth1.cipig.net",
-    "port": 8555,
-    "proto": "tcp",
-    "abbr": "SAI",
-    "coingeckoId": "dai",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFFF8B34F",
-    "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "Dogecoin",
-    "type": "utxo",
-    "address": "electrum1.cipig.net",
-    "port": 10060,
-    "proto": "tcp",
-    "abbr": "DOGE",
-    "coingeckoId": "dogecoin",
-    "colorCoin": "0xFFba9f33",
-    "serverList": [
-      "electrum3.cipig.net:10060",
-      "electrum2.cipig.net:10060",
-      "electrum1.cipig.net:10060"
-    ],
-    "explorerUrl": [
-      "https://dogechain.info/"
-    ]
-  },
-  {
-    "name": "Digibyte",
-    "type": "utxo",
-    "address": "electrum1.cipig.net",
-    "port": 10059,
-    "proto": "tcp",
-    "abbr": "DGB",
-    "coingeckoId": "digibyte",
-    "colorCoin": "0xFF082550",
-    "serverList": [
-      "electrum3.cipig.net:10059",
-      "electrum2.cipig.net:10059",
-      "electrum1.cipig.net:10059"
-    ],
-    "explorerUrl": [
-      "https://digiexplorer.info/"
-    ]
-  },
-  {
-    "name": "ZCash",
-    "type": "utxo",
-    "address": "electrum1.cipig.net",
-    "port": 10058,
-    "proto": "tcp",
-    "abbr": "ZEC",
-    "coingeckoId": "zcash",
-    "colorCoin": "0xFFF4B824",
-    "serverList": [
-      "electrum3.cipig.net:10058",
-      "electrum2.cipig.net:10058",
-      "electrum1.cipig.net:10058"
-    ],
-    "explorerUrl": [
-      "https://zcashnetwork.info/"
-    ]
-  },
-  {
-    "name": "QTUM",
-    "type": "utxo",
-    "address": "s1.qtum.info",
-    "port": 50001,
-    "proto": "tcp",
-    "abbr": "QTUM",
-    "coingeckoId": "qtum",
-    "colorCoin": "0xFF52a5da",
-    "serverList": [
-      "s7.qtum.info:50001",
-      "s8.qtum.info:50001",
-      "s9.qtum.info:50001"
-    ],
-    "explorerUrl": [
-      "https://qtum.info/"
-    ]
-  },
-  {
-    "name": "RedFOX",
-    "type": "smartChain",
-    "address": "electrum1.cipig.net",
-    "port": 10034,
-    "proto": "tcp",
-    "abbr": "RFOX",
-    "coingeckoId": "redfox-labs",
-    "colorCoin": "0xFFcc0000",
-    "serverList": [
-      "electrum3.cipig.net:10034",
-      "electrum2.cipig.net:10034",
-      "electrum1.cipig.net:10034"
-    ],
-    "explorerUrl": [
-      "https://rfox.explorer.dexstats.info/"
-    ]
-  },
-  {
-    "name": "KMDLABS",
-    "type": "smartChain",
-    "address": "electrum1.cipig.net",
-    "port": 10019,
-    "proto": "tcp",
-    "abbr": "LABS",
-    "coingeckoId": "test-token",
-    "colorCoin": "0xFF64ffbf",
-    "serverList": [
-      "electrum3.cipig.net:10019",
-      "electrum2.cipig.net:10019",
-      "electrum1.cipig.net:10019"
-    ],
-    "explorerUrl": [
-      "https://labs.explorer.dexstats.info/"
-    ]
-  },
-  {
-    "name": "ChainZilla",
-    "type": "smartChain",
-    "address": "electrum1.cipig.net",
-    "port": 10028,
-    "proto": "tcp",
-    "abbr": "ZILLA",
-    "coingeckoId": "chainzilla",
-    "colorCoin": "0xFF000032",
-    "serverList": [
-      "electrum3.cipig.net:10028",
-      "electrum2.cipig.net:10028",
-      "electrum1.cipig.net:10028"
-    ],
-    "explorerUrl": [
-      "https://zillaexplorer.io/"
-    ]
-  },
-  {
-    "name": "Ravencoin",
-    "type": "utxo",
-    "address": "electrum2.cipig.net:10051",
-    "port": 10051,
-    "proto": "tcp",
-    "abbr": "RVN",
-    "coingeckoId": "ravencoin",
-    "colorCoin": "0xFFf15b22",
-    "serverList": [
-      "electrum3.cipig.net:10051",
-      "electrum2.cipig.net:10051",
-      "electrum1.cipig.net:10051"
-    ],
-    "explorerUrl": [
-      "https://ravencoin.network/"
-    ]
-  },
-  {
-    "name": "Feathercoin",
-    "type": "utxo",
-    "address": "electrum1.cipig.net",
-    "port": 10054,
-    "proto": "tcp",
-    "abbr": "FTC",
-    "coingeckoId": "feathercoin",
-    "colorCoin": "0xFF3E4B51",
-    "serverList": [
-      "electrum1.cipig.net:10054",
-      "electrum2.cipig.net:10054",
-      "electrum3.cipig.net:10054"
-    ],
-    "explorerUrl": [
-      "https://explorer.feathercoin.com/"
-    ]
-  },
-  {
-    "name": "Navcoin",
-    "type": "utxo",
-    "address": "electrumx.nav.community",
-    "port": 40001,
-    "proto": "tcp",
-    "abbr": "NAV",
-    "coingeckoId": "nav-coin",
-    "colorCoin": "0xFFA83BAB",
-    "serverList": [
-      "electrumx.nav.community:40001",
-      "electrum1.cipig.net:10056",
-      "electrum2.cipig.net:10056",
-      "electrum3.cipig.net:10056"
-    ],
-    "explorerUrl": [
-      "https://www.navexplorer.com/"
-    ]
-  },
-  {
-    "name": "Hush",
-    "type": "smartChain",
-    "address": "electrum1.cipig.net",
-    "port": 10064,
-    "proto": "tcp",
-    "abbr": "HUSH",
-    "coingeckoId": "hush",
-    "colorCoin": "0xFF2D2D2D",
-    "serverList": [
-      "electrum3.cipig.net:10064",
-      "electrum2.cipig.net:10064",
-      "electrum1.cipig.net:10064"
-    ],
-    "explorerUrl": [
-      "https://explorer.myhush.org/"
-    ]
-  },
-  {
-    "name": "Axe",
-    "type": "utxo",
-    "address": "electrum1.cipig.net",
-    "port": 10057,
-    "proto": "tcp",
-    "abbr": "AXE",
-    "coingeckoId": "axe",
-    "colorCoin": "0xFFe93d55",
-    "serverList": [
-      "electrum3.cipig.net:10057",
-      "electrum2.cipig.net:10057",
-      "electrum1.cipig.net:10057"
-    ],
-    "explorerUrl": [
-      "https://insight.axerunners.com/"
-    ]
-  },
-  {
-    "name": "VerusCoin",
-    "type": "utxo",
-    "address": "el0.veruscoin.io",
-    "port": 17485,
-    "proto": "tcp",
-    "abbr": "VRSC",
-    "coingeckoId": "verus-coin",
-    "colorCoin": "0xFF659dda",
-    "serverList": [
-      "el0.veruscoin.io:17485",
-      "el1.veruscoin.io:17485",
-      "el2.veruscoin.io:17485"
-    ],
-    "explorerUrl": [
-      "https://vrsc.kmdexplorer.io/"
-    ]
-  },
-  {
-    "name": "Electra",
-    "type": "utxo",
-    "address": "electrum1.cipig.net",
-    "port": 10052,
-    "proto": "tcp",
-    "abbr": "ECA",
-    "coingeckoId": "electra",
-    "colorCoin": "0xFFAA01C3",
-    "serverList": [
-      "electrum1.cipig.net:10052",
-      "electrum2.cipig.net:10052",
-      "electrum3.cipig.net:10052"
-    ],
-    "explorerUrl": [
-      "https://explorer.electraproject.org/"
-    ]
-  },
-  {
-    "name": "BAT",
-    "type": "erc",
-    "address": "http://eth1.cipig.net",
-    "port": 8555,
-    "proto": "tcp",
-    "abbr": "BAT",
-    "coingeckoId": "basic-attention-token",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFFff5000",
-    "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "BUSD",
-    "type": "erc",
-    "address": "http://eth1.cipig.net",
-    "port": 8555,
-    "proto": "tcp",
-    "abbr": "BUSD",
-    "coingeckoId": "binance-usd",
-    "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-    "colorCoin": "0xFFF0BA01",
-    "serverList": [
-      "http://eth1.cipig.net:8555",
-      "http://eth2.cipig.net:8555",
-      "http://eth3.cipig.net:8555"
-    ],
-    "explorerUrl": [
-      "https://etherscan.io/"
-    ]
-  },
-  {
-    "name": "Rick",
-    "type": "smartChain",
-    "address": "electrum3.cipig.net",
-    "port": 10017,
-    "proto": "tcp",
-    "abbr": "RICK",
-    "coingeckoId": "test-token",
-    "colorCoin": "0xFFabdce4",
-    "serverList": [
-      "electrum1.cipig.net:10017",
-      "electrum2.cipig.net:10017",
-      "electrum3.cipig.net:10017"
-    ],
-    "explorerUrl": [
-      "https://rick.kmd.dev/"
-    ]
-  },
-  {
-    "name": "Vote2020",
-    "type": "smartChain",
-    "address": "electrum3.cipig.net",
-    "port": 10002,
-    "proto": "tcp",
-    "abbr": "VOTE",
-    "coingeckoId": "test-token",
-    "colorCoin": "0xFFabdce4",
-    "serverList": [
-      "electrum1.cipig.net:10002",
-      "electrum2.cipig.net:10002",
-      "electrum3.cipig.net:10002"
-    ],
-    "explorerUrl": [
-      "https://vote.kmdexplorer.io/"
-    ],
-    "rpcport": 44249,
-    "mm2": 1,
-    "txfee": 10000,
-    "txversion": 4,
-    "overwintered": 1
-  },
-  {
-    "name": "DEX",
-    "type": "smartChain",
-    "address": "electrum3.cipig.net",
-    "port": 10006,
-    "proto": "tcp",
-    "abbr": "DEX",
-    "coingeckoId": "test-token",
-    "colorCoin": "0xFF27B6B4",
-    "serverList": [
-      "electrum1.cipig.net:10006",
-      "electrum2.cipig.net:10006",
-      "electrum3.cipig.net:10006"
-    ],
-    "explorerUrl": [
-      "https://dex.kmdexplorer.io/"
-    ]
-  },
-  {
-    "name": "Utrum",
-    "type": "smartChain",
-    "address": "electrum1.cipig.net",
-    "port": 10088,
-    "proto": "tcp",
-    "abbr": "OOT",
-    "coingeckoId": "utrum",
-    "colorCoin": "0xFF23AADF",
-    "serverList": [
-      "electrum1.utrum.io:10088",
-      "electrum2.utrum.io:10088"
-    ],
-    "explorerUrl": [
-      "https://explorer.utrum.io/"
-    ]
-  },
-  {
-    "name": "Morty",
-    "type": "smartChain",
-    "address": "electrum1.cipig.net",
-    "port": 10018,
-    "proto": "tcp",
-    "abbr": "MORTY",
-    "coingeckoId": "test-token",
-    "colorCoin": "0xFFf8f277",
-    "serverList": [
-      "electrum3.cipig.net:10018",
-      "electrum2.cipig.net:10018",
-      "electrum1.cipig.net:10018"
-    ],
-    "explorerUrl": [
-      "https://morty.kmd.dev/"
-    ]
-  }
+	{
+		"name": "AtomicWallet",
+		"type": "erc",
+		"address": "http://eth1.cipig.net",
+		"port": 8555,
+		"proto": "tcp",
+		"abbr": "AWC",
+		"coingeckoId": "usd-coin",
+		"swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+		"colorCoin": "0xFF2ea5fb",
+		"serverList": [
+			"http://eth1.cipig.net:8555",
+			"http://eth2.cipig.net:8555",
+			"http://eth3.cipig.net:8555"
+		],
+		"explorerUrl": [
+			"https://etherscan.io/"
+		]
+	},
+	{
+		"name": "Axe",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10057,
+		"proto": "tcp",
+		"abbr": "AXE",
+		"coingeckoId": "axe",
+		"colorCoin": "0xFFe93d55",
+		"serverList": [
+			"electrum3.cipig.net:10057",
+			"electrum2.cipig.net:10057",
+			"electrum1.cipig.net:10057"
+		],
+		"explorerUrl": [
+			"https://insight.axerunners.com/"
+		]
+	},
+	{
+		"name": "BAT",
+		"type": "erc",
+		"address": "http://eth1.cipig.net",
+		"port": 8555,
+		"proto": "tcp",
+		"abbr": "BAT",
+		"coingeckoId": "basic-attention-token",
+		"swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+		"colorCoin": "0xFFff5000",
+		"serverList": [
+			"http://eth1.cipig.net:8555",
+			"http://eth2.cipig.net:8555",
+			"http://eth3.cipig.net:8555"
+		],
+		"explorerUrl": [
+			"https://etherscan.io/"
+		]
+	},
+	{
+		"name": "BUSD",
+		"type": "erc",
+		"address": "http://eth1.cipig.net",
+		"port": 8555,
+		"proto": "tcp",
+		"abbr": "BUSD",
+		"coingeckoId": "binance-usd",
+		"swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+		"colorCoin": "0xFFF0BA01",
+		"serverList": [
+			"http://eth1.cipig.net:8555",
+			"http://eth2.cipig.net:8555",
+			"http://eth3.cipig.net:8555"
+		],
+		"explorerUrl": [
+			"https://etherscan.io/"
+		]
+	},
+	{
+		"name": "Bitcoin",
+		"type": "utxo",
+		"address": "e-x.not.fyi",
+		"port": 50001,
+		"proto": "tcp",
+		"abbr": "BTC",
+		"coingeckoId": "bitcoin",
+		"colorCoin": "0xFFf7931a",
+		"serverList": [
+			"electrum1.cipig.net:10000",
+			"electrum2.cipig.net:10000",
+			"electrum3.cipig.net:10000"
+		],
+		"explorerUrl": [
+			"https://insight.bitpay.com/"
+		]
+	},
+	{
+		"name": "Bitcoin Cash",
+		"type": "utxo",
+		"address": "bch.imaginary.cash",
+		"port": 50001,
+		"proto": "tcp",
+		"abbr": "BCH",
+		"coingeckoId": "bitcoin-cash",
+		"colorCoin": "0xFF2db300",
+		"serverList": [
+			"bch.imaginary.cash:50001",
+			"electrumx-bch.cryptonermal.net:50001",
+			"bch0.kister.net:50001"
+		],
+		"explorerUrl": [
+			"https://explorer.bitcoin.com/bch/"
+		]
+	},
+	{
+		"name": "ChainZilla",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10028,
+		"proto": "tcp",
+		"abbr": "ZILLA",
+		"coingeckoId": "chainzilla",
+		"colorCoin": "0xFF000032",
+		"serverList": [
+			"electrum3.cipig.net:10028",
+			"electrum2.cipig.net:10028",
+			"electrum1.cipig.net:10028"
+		],
+		"explorerUrl": [
+			"https://zillaexplorer.io/"
+		]
+	},
+	{
+		"name": "DAI",
+		"type": "erc",
+		"address": "http://eth1.cipig.net",
+		"port": 8555,
+		"proto": "tcp",
+		"abbr": "DAI",
+		"coingeckoId": "dai",
+		"swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+		"colorCoin": "0xFFF8B34F",
+		"serverList": [
+			"http://eth1.cipig.net:8555",
+			"http://eth2.cipig.net:8555",
+			"http://eth3.cipig.net:8555"
+		],
+		"explorerUrl": [
+			"https://etherscan.io/"
+		]
+	},
+	{
+		"name": "DASH",
+		"type": "utxo",
+		"address": "electrum3.cipig.net",
+		"port": 10061,
+		"proto": "tcp",
+		"abbr": "DASH",
+		"coingeckoId": "dash",
+		"colorCoin": "0xFF5783a7",
+		"serverList": [
+			"electrum1.cipig.net:10061",
+			"electrum2.cipig.net:10061",
+			"electrum3.cipig.net:10061"
+		],
+		"explorerUrl": [
+			"https://explorer.dash.org/"
+		]
+	},
+	{
+		"name": "DEX",
+		"type": "smartChain",
+		"address": "electrum3.cipig.net",
+		"port": 10006,
+		"proto": "tcp",
+		"abbr": "DEX",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFF27B6B4",
+		"serverList": [
+			"electrum1.cipig.net:10006",
+			"electrum2.cipig.net:10006",
+			"electrum3.cipig.net:10006"
+		],
+		"explorerUrl": [
+			"https://dex.kmdexplorer.io/"
+		]
+	},
+	{
+		"name": "Digibyte",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10059,
+		"proto": "tcp",
+		"abbr": "DGB",
+		"coingeckoId": "digibyte",
+		"colorCoin": "0xFF082550",
+		"serverList": [
+			"electrum3.cipig.net:10059",
+			"electrum2.cipig.net:10059",
+			"electrum1.cipig.net:10059"
+		],
+		"explorerUrl": [
+			"https://digiexplorer.info/"
+		]
+	},
+	{
+		"name": "Dogecoin",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10060,
+		"proto": "tcp",
+		"abbr": "DOGE",
+		"coingeckoId": "dogecoin",
+		"colorCoin": "0xFFba9f33",
+		"serverList": [
+			"electrum3.cipig.net:10060",
+			"electrum2.cipig.net:10060",
+			"electrum1.cipig.net:10060"
+		],
+		"explorerUrl": [
+			"https://dogechain.info/"
+		]
+	},
+	{
+		"name": "Electra",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10052,
+		"proto": "tcp",
+		"abbr": "ECA",
+		"coingeckoId": "electra",
+		"colorCoin": "0xFFAA01C3",
+		"serverList": [
+			"electrum1.cipig.net:10052",
+			"electrum2.cipig.net:10052",
+			"electrum3.cipig.net:10052"
+		],
+		"explorerUrl": [
+			"https://explorer.electraproject.org/"
+		]
+	},
+	{
+		"name": "Ethereum",
+		"type": "erc",
+		"address": "http://eth2.cipig.net",
+		"port": 8555,
+		"proto": "tcp",
+		"abbr": "ETH",
+		"coingeckoId": "ethereum",
+		"swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+		"colorCoin": "0xFF828384",
+		"serverList": [
+			"http://eth1.cipig.net:8555",
+			"http://eth2.cipig.net:8555",
+			"http://eth3.cipig.net:8555"
+		],
+		"explorerUrl": [
+			"https://etherscan.io/"
+		]
+	},
+	{
+		"name": "Feathercoin",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10054,
+		"proto": "tcp",
+		"abbr": "FTC",
+		"coingeckoId": "feathercoin",
+		"colorCoin": "0xFF3E4B51",
+		"serverList": [
+			"electrum1.cipig.net:10054",
+			"electrum2.cipig.net:10054",
+			"electrum3.cipig.net:10054"
+		],
+		"explorerUrl": [
+			"https://explorer.feathercoin.com/"
+		]
+	},
+	{
+		"name": "Hush",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10064,
+		"proto": "tcp",
+		"abbr": "HUSH",
+		"coingeckoId": "hush",
+		"colorCoin": "0xFF2D2D2D",
+		"serverList": [
+			"electrum3.cipig.net:10064",
+			"electrum2.cipig.net:10064",
+			"electrum1.cipig.net:10064"
+		],
+		"explorerUrl": [
+			"https://explorer.myhush.org/"
+		]
+	},
+	{
+		"name": "KMDLABS",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10019,
+		"proto": "tcp",
+		"abbr": "LABS",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFF64ffbf",
+		"serverList": [
+			"electrum3.cipig.net:10019",
+			"electrum2.cipig.net:10019",
+			"electrum1.cipig.net:10019"
+		],
+		"explorerUrl": [
+			"https://labs.explorer.dexstats.info/"
+		]
+	},
+	{
+		"name": "Komodo",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10001,
+		"proto": "tcp",
+		"abbr": "KMD",
+		"coingeckoId": "komodo",
+		"colorCoin": "0xFF326464",
+		"serverList": [
+			"electrum1.cipig.net:10001",
+			"electrum2.cipig.net:10001",
+			"electrum3.cipig.net:10001"
+		],
+		"explorerUrl": [
+			"https://kmdexplorer.io/",
+			"http://kmd.explorer.dexstats.info/",
+			"https://explorer.komodo.services/"
+		]
+	},
+	{
+		"name": "Litecoin",
+		"type": "utxo",
+		"address": "electrum-ltc.bysh.me",
+		"port": 50001,
+		"proto": "tcp",
+		"abbr": "LTC",
+		"coingeckoId": "litecoin",
+		"colorCoin": "0xFFbebebe",
+		"serverList": [
+			"electrum.ltc.xurious.com:50001",
+			"ltc.rentonisk.com:50001",
+			"electrum-ltc.bysh.me:50001"
+		],
+		"explorerUrl": [
+			"https://blockexplorer.one/litecoin/mainnet/"
+		]
+	},
+	{
+		"name": "Morty",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10018,
+		"proto": "tcp",
+		"abbr": "MORTY",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFFf8f277",
+		"serverList": [
+			"electrum3.cipig.net:10018",
+			"electrum2.cipig.net:10018",
+			"electrum1.cipig.net:10018"
+		],
+		"explorerUrl": [
+			"https://morty.kmd.dev/"
+		]
+	},
+	{
+		"name": "Navcoin",
+		"type": "utxo",
+		"address": "electrumx.nav.community",
+		"port": 40001,
+		"proto": "tcp",
+		"abbr": "NAV",
+		"coingeckoId": "nav-coin",
+		"colorCoin": "0xFFA83BAB",
+		"serverList": [
+			"electrumx.nav.community:40001",
+			"electrum1.cipig.net:10056",
+			"electrum2.cipig.net:10056",
+			"electrum3.cipig.net:10056"
+		],
+		"explorerUrl": [
+			"https://www.navexplorer.com/"
+		]
+	},
+	{
+		"name": "Paxos",
+		"type": "erc",
+		"address": "http://eth1.cipig.net",
+		"port": 8555,
+		"proto": "tcp",
+		"abbr": "PAX",
+		"coingeckoId": "paxos-standard",
+		"swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+		"colorCoin": "0xFF005120",
+		"serverList": [
+			"http://eth1.cipig.net:8555",
+			"http://eth2.cipig.net:8555",
+			"http://eth3.cipig.net:8555"
+		],
+		"explorerUrl": [
+			"https://etherscan.io/"
+		]
+	},
+	{
+		"name": "QTUM",
+		"type": "utxo",
+		"address": "s1.qtum.info",
+		"port": 50001,
+		"proto": "tcp",
+		"abbr": "QTUM",
+		"coingeckoId": "qtum",
+		"colorCoin": "0xFF52a5da",
+		"serverList": [
+			"s7.qtum.info:50001",
+			"s8.qtum.info:50001",
+			"s9.qtum.info:50001"
+		],
+		"explorerUrl": [
+			"https://qtum.info/"
+		]
+	},
+	{
+		"name": "Ravencoin",
+		"type": "utxo",
+		"address": "electrum2.cipig.net:10051",
+		"port": 10051,
+		"proto": "tcp",
+		"abbr": "RVN",
+		"coingeckoId": "ravencoin",
+		"colorCoin": "0xFFf15b22",
+		"serverList": [
+			"electrum3.cipig.net:10051",
+			"electrum2.cipig.net:10051",
+			"electrum1.cipig.net:10051"
+		],
+		"explorerUrl": [
+			"https://ravencoin.network/"
+		]
+	},
+	{
+		"name": "RedFOX",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10034,
+		"proto": "tcp",
+		"abbr": "RFOX",
+		"coingeckoId": "redfox-labs",
+		"colorCoin": "0xFFcc0000",
+		"serverList": [
+			"electrum3.cipig.net:10034",
+			"electrum2.cipig.net:10034",
+			"electrum1.cipig.net:10034"
+		],
+		"explorerUrl": [
+			"https://rfox.explorer.dexstats.info/"
+		]
+	},
+	{
+		"name": "Rick",
+		"type": "smartChain",
+		"address": "electrum3.cipig.net",
+		"port": 10017,
+		"proto": "tcp",
+		"abbr": "RICK",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFFabdce4",
+		"serverList": [
+			"electrum1.cipig.net:10017",
+			"electrum2.cipig.net:10017",
+			"electrum3.cipig.net:10017"
+		],
+		"explorerUrl": [
+			"https://rick.kmd.dev/"
+		]
+	},
+	{
+		"name": "SAI",
+		"type": "erc",
+		"address": "http://eth1.cipig.net",
+		"port": 8555,
+		"proto": "tcp",
+		"abbr": "SAI",
+		"coingeckoId": "dai",
+		"swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+		"colorCoin": "0xFFF8B34F",
+		"serverList": [
+			"http://eth1.cipig.net:8555",
+			"http://eth2.cipig.net:8555",
+			"http://eth3.cipig.net:8555"
+		],
+		"explorerUrl": [
+			"https://etherscan.io/"
+		]
+	},
+	{
+		"name": "SUPERNET",
+		"type": "smartChain",
+		"address": "electrum3.cipig.net",
+		"port": 10005,
+		"proto": "tcp",
+		"abbr": "SUPERNET",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFF27B6B4",
+		"serverList": [
+			"electrum1.cipig.net:10005",
+			"electrum2.cipig.net:10005",
+			"electrum3.cipig.net:10005"
+		],
+		"explorerUrl": [
+			"https://supernet.kmdexplorer.io/"
+		]
+	},
+	{
+		"name": "TrueUSD",
+		"type": "erc",
+		"address": "http://eth1.cipig.net",
+		"port": 8555,
+		"proto": "tcp",
+		"abbr": "TUSD",
+		"coingeckoId": "true-usd",
+		"swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+		"colorCoin": "0xFF1B1C5B",
+		"serverList": [
+			"http://eth1.cipig.net:8555",
+			"http://eth2.cipig.net:8555",
+			"http://eth3.cipig.net:8555"
+		],
+		"explorerUrl": [
+			"https://etherscan.io/"
+		]
+	},
+	{
+		"name": "USDC",
+		"type": "erc",
+		"address": "http://eth1.cipig.net",
+		"port": 8555,
+		"proto": "tcp",
+		"abbr": "USDC",
+		"coingeckoId": "usd-coin",
+		"swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+		"colorCoin": "0xFF2775c9",
+		"serverList": [
+			"http://eth1.cipig.net:8555",
+			"http://eth2.cipig.net:8555",
+			"http://eth3.cipig.net:8555"
+		],
+		"explorerUrl": [
+			"https://etherscan.io/"
+		]
+	},
+	{
+		"name": "Utrum",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10088,
+		"proto": "tcp",
+		"abbr": "OOT",
+		"coingeckoId": "utrum",
+		"colorCoin": "0xFF23AADF",
+		"serverList": [
+			"electrum1.utrum.io:10088",
+			"electrum2.utrum.io:10088"
+		],
+		"explorerUrl": [
+			"https://explorer.utrum.io/"
+		]
+	},
+	{
+		"name": "VerusCoin",
+		"type": "utxo",
+		"address": "el0.veruscoin.io",
+		"port": 17485,
+		"proto": "tcp",
+		"abbr": "VRSC",
+		"coingeckoId": "verus-coin",
+		"colorCoin": "0xFF659dda",
+		"serverList": [
+			"el0.veruscoin.io:17485",
+			"el1.veruscoin.io:17485",
+			"el2.veruscoin.io:17485"
+		],
+		"explorerUrl": [
+			"https://vrsc.kmdexplorer.io/"
+		]
+	},
+	{
+		"name": "Vote2020",
+		"type": "smartChain",
+		"address": "electrum3.cipig.net",
+		"port": 10002,
+		"proto": "tcp",
+		"abbr": "VOTE",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFFabdce4",
+		"serverList": [
+			"electrum1.cipig.net:10002",
+			"electrum2.cipig.net:10002",
+			"electrum3.cipig.net:10002"
+		],
+		"explorerUrl": [
+			"https://vote.kmdexplorer.io/"
+		]
+	},
+	{
+		"name": "ZCash",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10058,
+		"proto": "tcp",
+		"abbr": "ZEC",
+		"coingeckoId": "zcash",
+		"colorCoin": "0xFFF4B824",
+		"serverList": [
+			"electrum3.cipig.net:10058",
+			"electrum2.cipig.net:10058",
+			"electrum1.cipig.net:10058"
+		],
+		"explorerUrl": [
+			"https://zcashnetwork.info/"
+		]
+	}
 ]
