@@ -15,6 +15,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -366,7 +367,7 @@ class _ItemCoinState extends State<ItemCoin> {
     final List<Widget> actions = <Widget>[];
     if (double.parse(balance.getBalance()) > 0) {
       Log(
-          'coins_page:368',
+          'coins_page:369',
           '${coin.abbr} balance: ${balance.balance}'
               '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(IconSlideAction(
@@ -701,11 +702,10 @@ class _AddCoinButtonState extends State<AddCoinButton> {
     );
   }
 
+  /// Returns `true` if there are coins we can still activate, `false` if all of them activated.
   Future<bool> _buildAddCoinButton() async {
-    final List<Coin> allCoins = await MMService()
-        .loadJsonCoins(await MMService().loadElectrumServersAsset());
-    final List<Coin> allCoinsActivate = await coinsBloc.electrumCoins();
-
-    return !(allCoins.length == allCoinsActivate.length);
+    final active = await Db.activeCoins;
+    final known = await coins;
+    return active.length < known.length;
   }
 }

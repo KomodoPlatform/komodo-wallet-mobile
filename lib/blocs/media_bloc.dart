@@ -35,8 +35,7 @@ class MediaBloc implements BlocBase {
     try {
       final Response response =
           await http.get('https://composer.kmd.io/api/dex/news/all');
-      final List<Article> articlesSaved =
-          await DBProvider.db.getAllArticlesSaved();
+      final List<Article> articlesSaved = await Db.getAllArticlesSaved();
       final List<Article> articles = articleFromJson(response.body);
 
       for (Article article in articles) {
@@ -51,20 +50,19 @@ class MediaBloc implements BlocBase {
       this.articles = articles;
       _inArticles.add(this.articles);
     } catch (e) {
-      Log.println('media_bloc:54', e);
+      Log.println('media_bloc:53', e);
     }
   }
 
   Future<List<Article>> getArticlesSaved() async {
-    final List<Article> articlesSaved =
-        await DBProvider.db.getAllArticlesSaved();
+    final List<Article> articlesSaved = await Db.getAllArticlesSaved();
     this.articlesSaved = articlesSaved;
     _inArticlesSaved.add(this.articlesSaved);
     return articlesSaved;
   }
 
   Future<void> deleteArticle(Article article) async {
-    await DBProvider.db.deleteArticle(article);
+    await Db.deleteArticle(article);
     article.isSavedArticle = false;
     updateSavedArticle(article);
     getArticlesSaved();
@@ -72,7 +70,7 @@ class MediaBloc implements BlocBase {
 
   Future<void> addArticle(Article article) async {
     article.isSavedArticle = true;
-    await DBProvider.db.saveArticle(article);
+    await Db.saveArticle(article);
     updateSavedArticle(article);
     getArticlesSaved();
   }
@@ -87,6 +85,6 @@ class MediaBloc implements BlocBase {
   }
 
   Future<void> deleteAllArticles() async {
-    await DBProvider.db.deleteAllArticles();
+    await Db.deleteAllArticles();
   }
 }

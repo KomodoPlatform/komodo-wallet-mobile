@@ -8,11 +8,16 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-import 'coin.dart';
 import 'error_string.dart';
 import 'get_recent_swap.dart';
 import 'recent_swaps.dart';
 import 'swap.dart';
+
+/// “${swap_uuid}/${type}”, where $type is “t” for Taker and “m” for Maker.
+/// For example: “8f2464eb-4a1c-4d2e-b6e4-26b1de99ca8c/t”.
+/// xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx, cf. https://en.wikipedia.org/wiki/Universally_unique_identifier#Format
+final _idExp = RegExp(
+    r'^([0-9a-f]{8})-([0-9a-f]{4})-(\d)([0-9a-f]{3})-([0-9a-f]{4})-([0-9a-f]{12})/(t|m)$');
 
 class SwapProvider extends ChangeNotifier {
   SwapProvider() {
@@ -145,6 +150,8 @@ class SyncSwaps {
   /// If timestamp differs then we haven't shared that version of gossip yet.
   final Map<String, int> _gossiped = {};
 
+  /// Gossip obtained from a caretaker.
+  /// The keys are entity IDs: “${swap_uuid}/${type}”, where $type is “t” for Taker and “m” for Maker.
   final Map<String, SwapGossip> _theirs = {};
 
   /// Link a [ChangeNotifier] proxy to this singleton.
@@ -174,13 +181,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:177', 'update] reason: $reason');
+    Log('swap_provider:184', 'update] reason: $reason');
 
     final dynamic mswaps = await MM.getRecentSwaps(
         mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (mswaps is ErrorString) {
-      Log('swap_provider:183', '!getRecentSwaps: ${mswaps.error}');
+      Log('swap_provider:190', '!getRecentSwaps: $mswaps');
       return;
     }
     if (mswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -200,7 +207,7 @@ class SyncSwaps {
     try {
       await _gossipSync();
     } catch (ex) {
-      Log('swap_provider:203', '!_gossipSync: $ex');
+      Log('swap_provider:210', '!_gossipSync: $ex');
     }
   }
 
@@ -229,22 +236,39 @@ class SyncSwaps {
     for (String id in _ours.keys) {
       final entity = _ours[id];
       if (entity.timestamp == _gossiped[id]) continue;
-      Log('swap_provider:232', 'Gossiping $id…');
+      Log('swap_provider:239', 'Gossiping $id…');
       entities.add(entity);
     }
 
-    // TBD: We should have a model encapsulating and caching the enabled coins.
-    final List<Coin> coins =
-        await DBProvider.db.electrumCoins(CoinEletrum.SAVED);
-    final List<String> tickers = coins.map((Coin coin) => coin.abbr).toList();
+    final List<String> tickers = (await Db.activeCoins).toList();
 
-    //Log('swap_provider:241', 'ct.cipig.net/sync…');
+    final bstart = DateTime.now().millisecondsSinceEpoch;
+    final blen = _theirs.length * 3 ~/ 32 + 1;
+    final bloom = List<int>.filled(blen, 0, growable: false);
+    for (final id in _theirs.keys) {
+      final mat = _idExp.firstMatch(id);
+      final mt = mat.group(7) == 'm' ? 1 : 0;
+      for (int group in [1, 2, 5]) {
+        final iv = hex2int(mat.group(group)) + mt;
+        final bucket = iv % bloom.length;
+        final bit = iv % 64;
+        bloom[bucket] |= 1 << bit;
+      }
+    }
+    final bsec = (DateTime.now().millisecondsSinceEpoch - bstart) / 1000.0;
+    double bpe = blen * 64 / _theirs.length; // Bits per element.
+    bpe = double.parse(bpe.toStringAsFixed(1));
+    Log('swap_provider:261', 'Bloom $bloom (${_theirs.length}, $bpe) in $bsec');
+
+    //Log('swap_provider:263', 'ct.cipig.net/sync…');
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
           'components': <String, dynamic>{
             'swap-events.1': <String, dynamic>{
               // Coins we're currently interested in (e.g. activated).
               'tickers': tickers,
+              // Bloom filter allows us to skip receiving old known entities.
+              'bloom': bloom,
               // Gossip entities we share with the network.
               'ours': entities.map((e) => e.toJson).toList()
             }
@@ -281,7 +305,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:284', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:308', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
@@ -301,6 +325,7 @@ class SwapGossip {
   /// Load back from caretaker.
   SwapGossip.fromJson(Map<String, dynamic> en) {
     id = en['id'];
+    if (!_idExp.hasMatch(id)) throw Exception('Bad id: $id');
     gui = en['gui'];
     mmMersion = en['mm_version'];
     stepSpeed = Map<String, int>.from(en['step_speed']);

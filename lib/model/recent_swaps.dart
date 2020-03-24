@@ -116,9 +116,7 @@ class MmSwap {
         'error_events':
             List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
-        'events': List<dynamic>.from(
-                events.map<dynamic>((dynamic x) => x.toJson())) ??
-            <SwapEL>[],
+        'events': events.map((e) => e.toJson).toList(),
         'my_info': myInfo ?? SwapMyInfo(),
         'success_events':
             List<dynamic>.from(successEvents.map<dynamic>((dynamic x) => x)) ??

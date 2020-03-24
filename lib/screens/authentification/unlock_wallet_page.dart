@@ -44,7 +44,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
             ? AppBar(
                 leading: InkWell(
                     onTap: () async {
-                      await DBProvider.db.deleteWallet(widget.wallet);
+                      await Db.deleteWallet(widget.wallet);
                       await authBloc.logout();
                       Navigator.pop(context);
                     },

@@ -133,6 +133,24 @@ class ApiProvider {
                   e,
                   'Error on get orderbook')));
 
+  void _assert200(Response r) {
+    if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
+    if (r.statusCode != 200) {
+      String emsg;
+      try {
+        // See if the body is a JSON error.
+        emsg = ErrorString.fromJson(json.decode(r.body)).error;
+      } catch (_notJson) {/**/}
+      if (emsg.isEmpty) {
+        // Treat the body as a potentially useful but untrusted error message.
+        emsg = r.body
+            .replaceAll(RegExp('[^a-zA-Z0-9, :\]\.-]+'), '.')
+            .replaceFirstMapped(RegExp('^(.{0,99}).*'), (Match m) => m[1]);
+      }
+      throw ErrorString('HTTP ${r.statusCode}: $emsg');
+    }
+  }
+
   Future<Balance> getBalance(GetBalance gb, {http.Client client}) async {
     // AG: HTTP handling is improved in this method.
     //     After using it for a while and seeing that it works as expected
@@ -143,21 +161,7 @@ class ApiProvider {
       final userBody = await _assertUserpass(client, gb);
       final r = await userBody.client
           .post(url, body: getBalanceToJson(userBody.body));
-      if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
-      if (r.statusCode != 200) {
-        String emsg;
-        try {
-          // See if the body is a JSON error.
-          emsg = ErrorString.fromJson(json.decode(r.body)).error;
-        } catch (_notJson) {/**/}
-        if (emsg.isEmpty) {
-          // Treat the body as a potentially useful but untrusted error message.
-          emsg = r.body
-              .replaceAll(RegExp('[^a-zA-Z0-9, :\]\.-]+'), '.')
-              .replaceFirstMapped(RegExp('^(.{0,99}).*'), (Match m) => m[1]);
-        }
-        throw ErrorString('HTTP ${r.statusCode}: $emsg');
-      }
+      _assert200(r);
       _saveRes('getBalance', r);
 
       // Parse JSON once, then check if the JSON is an error.
@@ -212,37 +216,39 @@ class ApiProvider {
             Server(url: url, protocol: 'TCP', disableCertVerification: false))
         .toList();
 
-    return coin.type == 'erc'
-        ? json.encode(MmEnable(
-                userpass: mmSe.userpass,
-                coin: coin.abbr,
-                txHistory: true,
-                swapContractAddress: coin.swapContractAddress,
-                urls: coin.serverList)
-            .toJson())
-        : json.encode(MmElectrum(
-                userpass: mmSe.userpass,
-                coin: coin.abbr,
-                txHistory: true,
-                servers: servers)
-            .toJson());
+    if (coin.type == 'erc')
+      return json.encode(MmEnable(
+              userpass: mmSe.userpass,
+              coin: coin.abbr,
+              txHistory: true,
+              swapContractAddress: coin.swapContractAddress,
+              urls: coin.serverList)
+          .toJson());
+    // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
+    final electrum = <String, dynamic>{
+      'method': 'electrum',
+      'userpass': mmSe.userpass,
+      'coin': coin.abbr,
+      'servers': List<dynamic>.from(servers.map<dynamic>((se) => se.toJson())),
+      'mm2': coin.mm2,
+      'tx_history': true,
+      'required_confirmations': coin.requiredConfirmations,
+      'requires_notarization': coin.requiresNotarization
+    };
+    final js = json.encode(electrum);
+    Log('mm:239', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
+    return js;
   }
 
-  Future<dynamic> enableCoin(
-    http.Client client,
-    Coin coin,
-  ) async =>
-      await client
-          .post(url, body: enableCoinImpl(coin))
-          .then((Response r) => _saveRes('activeCoin', r))
-          .then((Response res) => activeCoinFromJson(res.body))
-          .then<dynamic>((ActiveCoin data) =>
-              data.result.isEmpty ? errorStringFromJson(res.body) : data)
-          .catchError((dynamic e) => errorStringFromJson(res.body))
-          .catchError((dynamic e) => _catchErrorString(
-              'activeCoin', e, 'Error on active ${coin.name}'))
-          .timeout(const Duration(seconds: 60),
-              onTimeout: () => ErrorString('Timeout on ${coin.abbr}'));
+  Future<ActiveCoin> enableCoin(Coin coin, {http.Client client}) async {
+    client ??= mmSe.client;
+    final r = await client.post(url, body: enableCoinImpl(coin));
+    _assert200(r);
+    final dynamic jbody = json.decode(r.body);
+    final err = ErrorString.fromJson(jbody);
+    if (err.error.isNotEmpty) throw removeLineFromMM2(err);
+    return ActiveCoin.fromJson(jbody);
+  }
 
   Future<dynamic> postSetPrice(
     http.Client client,
@@ -279,7 +285,8 @@ class ApiProvider {
           (UserpassBody userBody) => userBody.client
               .post(url, body: getRecentSwapToJson(userBody.body))
               .then((Response r) => _saveRes('getRecentSwaps', r))
-              .then<dynamic>((Response res) => RecentSwaps.fromJson(json.decode(res.body)))
+              .then<dynamic>(
+                  (Response res) => RecentSwaps.fromJson(json.decode(res.body)))
               .catchError((dynamic _) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'getRecentSwaps', e, 'Error on get recent swaps')));
@@ -310,6 +317,7 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'cancelOrder', e, 'Error on cancel order')));
 
+  /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#coins-needed-for-kick-start
   Future<dynamic> getCoinToKickStart(
     http.Client client,
     BaseService body,

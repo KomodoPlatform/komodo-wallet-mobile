@@ -41,7 +41,7 @@ class _LockScreenState extends State<LockScreen> {
   Future<void> _initScreen() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isPinIsCreated = prefs.getBool('isPinIsCreated');
-    final Wallet currentWallet = await DBProvider.db.getCurrentWallet();
+    final Wallet currentWallet = await Db.getCurrentWallet();
 
     if (password == null &&
         isPinIsCreated != null &&

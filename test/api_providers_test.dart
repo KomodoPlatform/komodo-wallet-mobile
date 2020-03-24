@@ -388,7 +388,7 @@ void main() {
       when(client.post(url, body: MM.enableCoinImpl(coinToActiveERC)))
           .thenAnswer((_) async =>
               http.Response(fixture('active_coin/active_coin.json'), 200));
-      expect(await MM.enableCoin(client, coinToActiveERC),
+      expect(await MM.enableCoin(coinToActiveERC, client: client),
           const TypeMatcher<ActiveCoin>());
     });
 
@@ -397,7 +397,7 @@ void main() {
       when(client.post(url, body: MM.enableCoinImpl(coinToActive))).thenAnswer(
           (_) async =>
               http.Response(fixture('active_coin/active_coin.json'), 200));
-      expect(await MM.enableCoin(client, coinToActive),
+      expect(await MM.enableCoin(coinToActive, client: client),
           const TypeMatcher<ActiveCoin>());
     });
 
@@ -407,7 +407,7 @@ void main() {
           (_) async => http.Response(
               fixture('active_coin/errors/error_active_coin_mm2_param.json'),
               200));
-      final dynamic error = await MM.enableCoin(client, coinToActive);
+      final dynamic error = await MM.enableCoin(coinToActive, client: client);
       expect(error, const TypeMatcher<ErrorString>());
       expect(error.error,
           'mm2 param is not set neither in coins config nor enable request, assuming that coin is not supported');

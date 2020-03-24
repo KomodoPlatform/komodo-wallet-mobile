@@ -48,6 +48,7 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        buildConfigField "Long", "BUILD_TIME", "" + System.currentTimeMillis() + "L"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
