@@ -1,5 +1,43 @@
 [
 	{
+		"name": "Komodo",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10001,
+		"proto": "tcp",
+		"abbr": "KMD",
+		"coingeckoId": "komodo",
+		"colorCoin": "0xFF326464",
+		"serverList": [
+			"electrum1.cipig.net:10001",
+			"electrum2.cipig.net:10001",
+			"electrum3.cipig.net:10001"
+		],
+		"explorerUrl": [
+			"https://kmdexplorer.io/",
+			"http://kmd.explorer.dexstats.info/",
+			"https://explorer.komodo.services/"
+		]
+	},
+	{
+		"name": "Bitcoin",
+		"type": "utxo",
+		"address": "e-x.not.fyi",
+		"port": 50001,
+		"proto": "tcp",
+		"abbr": "BTC",
+		"coingeckoId": "bitcoin",
+		"colorCoin": "0xFFf7931a",
+		"serverList": [
+			"electrum1.cipig.net:10000",
+			"electrum2.cipig.net:10000",
+			"electrum3.cipig.net:10000"
+		],
+		"explorerUrl": [
+			"https://insight.bitpay.com/"
+		]
+	},
+	{
 		"name": "AtomicWallet",
 		"type": "erc",
 		"address": "http://eth1.cipig.net",
@@ -72,24 +110,6 @@
 		],
 		"explorerUrl": [
 			"https://etherscan.io/"
-		]
-	},
-	{
-		"name": "Bitcoin",
-		"type": "utxo",
-		"address": "e-x.not.fyi",
-		"port": 50001,
-		"proto": "tcp",
-		"abbr": "BTC",
-		"coingeckoId": "bitcoin",
-		"colorCoin": "0xFFf7931a",
-		"serverList": [
-			"electrum1.cipig.net:10000",
-			"electrum2.cipig.net:10000",
-			"electrum3.cipig.net:10000"
-		],
-		"explorerUrl": [
-			"https://insight.bitpay.com/"
 		]
 	},
 	{
@@ -308,26 +328,6 @@
 		],
 		"explorerUrl": [
 			"https://labs.explorer.dexstats.info/"
-		]
-	},
-	{
-		"name": "Komodo",
-		"type": "smartChain",
-		"address": "electrum1.cipig.net",
-		"port": 10001,
-		"proto": "tcp",
-		"abbr": "KMD",
-		"coingeckoId": "komodo",
-		"colorCoin": "0xFF326464",
-		"serverList": [
-			"electrum1.cipig.net:10001",
-			"electrum2.cipig.net:10001",
-			"electrum3.cipig.net:10001"
-		],
-		"explorerUrl": [
-			"https://kmdexplorer.io/",
-			"http://kmd.explorer.dexstats.info/",
-			"https://explorer.komodo.services/"
 		]
 	},
 	{
