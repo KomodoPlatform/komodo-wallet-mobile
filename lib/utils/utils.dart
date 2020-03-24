@@ -429,3 +429,9 @@ int hex2int(String sv) {
   }
   return iv;
 }
+
+bool get isInDebugMode {
+  bool inDebugMode = false;
+  assert(inDebugMode = true);
+  return inDebugMode;
+}

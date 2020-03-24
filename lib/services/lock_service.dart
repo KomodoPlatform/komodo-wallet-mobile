@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 LockService lockService = LockService();
@@ -28,17 +29,17 @@ class LockService {
     assert(!authBloc.showLock);
     final int now = DateTime.now().millisecondsSinceEpoch;
     _inFilePicker = now;
-    Log.println('lock_service:31', 'enteringFilePicker');
+    Log.println('lock_service:32', 'enteringFilePicker');
     return now;
   }
 
   int enteringQrScanner() {
-    Log.println('lock_service:36', 'enteringQrScanner');
+    Log.println('lock_service:37', 'enteringQrScanner');
     return _inQrScanner = DateTime.now().millisecondsSinceEpoch;
   }
 
   int enteringBiometrics() {
-    Log.println('lock_service:41', 'enteringBiometrics');
+    Log.println('lock_service:42', 'enteringBiometrics');
     return _inBiometrics = DateTime.now().millisecondsSinceEpoch;
   }
 
@@ -56,10 +57,10 @@ class LockService {
     assert(lockCookie > 0);
     final int started = _inFilePicker;
     _inFilePicker = 0;
-    Log.println('lock_service:59', 'filePickerReturned');
+    Log.println('lock_service:60', 'filePickerReturned');
 
     if (started != lockCookie) {
-      Log.println('lock_service:62', 'Warning, lockCookie mismatch!');
+      Log.println('lock_service:63', 'Warning, lockCookie mismatch!');
       _lock(null);
       return;
     }
@@ -68,14 +69,14 @@ class LockService {
     final int delta = now - started;
     if (delta <= 333) {
       _lock(null);
-      Log.println('lock_service:71', 'File picking was unrealistically fast.');
+      Log.println('lock_service:72', 'File picking was unrealistically fast.');
       return;
     }
     // We can't exempt file picker from lock screen forever,
     // for otherwise an attacker can later gain access by continuing an unfinished file picking activity.
     if (delta > 60 * 1000) {
       _lock(null);
-      Log.println('lock_service:78', 'File picking took more than a minute.');
+      Log.println('lock_service:79', 'File picking took more than a minute.');
       return;
     }
 
@@ -83,12 +84,12 @@ class LockService {
   }
 
   void qrScannerReturned(int lockCookie) {
-    Log.println('lock_service:86', 'qrScannerReturned');
+    Log.println('lock_service:87', 'qrScannerReturned');
     assert(lockCookie > 0);
     final int started = _inQrScanner;
     _inQrScanner = 0;
     if (started != lockCookie) {
-      Log.println('lock_service:91', 'Warning, lockCookie mismatch!');
+      Log.println('lock_service:92', 'Warning, lockCookie mismatch!');
       _lock(null);
       return;
     }
@@ -99,7 +100,7 @@ class LockService {
     final int delta = now - started;
     if (delta > 5 * 60 * 1000) {
       _lock(null);
-      Log.println('lock_service:102', 'QR took more than five minutes.');
+      Log.println('lock_service:103', 'QR took more than five minutes.');
       return;
     }
 
@@ -107,7 +108,7 @@ class LockService {
   }
 
   void biometricsReturned(int lockCookie) {
-    Log.println('lock_service:110', 'biometricsReturned');
+    Log.println('lock_service:111', 'biometricsReturned');
     _inBiometrics = 0;
     _lastReturn = DateTime.now().millisecondsSinceEpoch;
   }
@@ -119,7 +120,7 @@ class LockService {
   /// If there is a tap before the file picker `await` returns
   /// then something is wrong and we should trigger the lock screen.
   void pointerEvent(BuildContext context) {
-    //Log.println('lock_service:122', 'pointerEvent');
+    //Log.println('lock_service:123', 'pointerEvent');
     if (_inFilePicker != 0) {
       _inFilePicker = 0;
       _lock(context);
@@ -148,7 +149,7 @@ class LockService {
   /// Hence we can't track the exact visibility through the lifecycle states,
   /// but we can treat them as a signal that the visibility was affected, triggering the lock screen.
   void lockSignal(BuildContext context) {
-    Log.println('lock_service:151', 'lockSignal');
+    Log.println('lock_service:152', 'lockSignal');
     if (_inFilePicker == 0) _lock(context);
   }
 
@@ -162,13 +163,19 @@ class LockService {
     // NB: Deltas like 949ms are a norm when returning from biometrics in a flutter debug, under simulator,
     // probably because it also triggers a number of other resource-intensitive things.
     final int lrDelta = DateTime.now().millisecondsSinceEpoch - _lastReturn;
-    Log.println('lock_service:165', '_lastReturn delta: $lrDelta');
-    if (lrDelta < 999) return;
+    Log.println('lock_service:166', '_lastReturn delta: $lrDelta');
+    if (isInDebugMode) {
+      // Delays tend to be higher in the debug mode,
+      // cf. https://github.com/ca333/komodoDEX/issues/672#issuecomment-586757030
+      if (lrDelta < 2222) return;
+    } else {
+      if (lrDelta < 999) return;
+    }
 
     // #496: When a text fields is hidden in a focused state and then later shows up again,
     // it might stuck in some intermediate state, preventing the long press menus, such as "PASTE",
     // from appearing. Unfocusing before hiding such fields workarounds the issue.
-    Log.println('lock_service:171', 'Unfocus and lock..');
+    Log.println('lock_service:178', 'Unfocus and lock..');
     FocusScope.of(context).requestFocus(FocusNode());
 
     if (context != null) dialogBloc.closeDialog(context);
