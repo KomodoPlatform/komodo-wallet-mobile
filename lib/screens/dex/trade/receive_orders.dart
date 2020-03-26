@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class ReceiveOrders extends StatefulWidget {
   const ReceiveOrders(
@@ -214,7 +215,7 @@ class _AsksOrderState extends State<AsksOrder> {
           Container(
             key: Key('ask-item-$index'),
             child: Text(
-              ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
+              deci2s(ask.getReceivePrice()) + ' ' + ask.coin.toUpperCase(),
               style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
             ),
           ),
@@ -230,7 +231,7 @@ class _AsksOrderState extends State<AsksOrder> {
       DataCell(
           Container(
             child: Text(
-              ask.getReceiveAmount(widget.sellAmount) +
+              deci2s(ask.getReceiveAmount(deci(widget.sellAmount))) +
                   ' ' +
                   ask.coin.toUpperCase(),
               style: Theme.of(context)
@@ -272,7 +273,7 @@ class AskItem extends StatelessWidget {
               child: Container(
                 color: Colors.red,
                 child: Text(
-                  ask.getReceivePrice() + ' ' + ask.coin.toUpperCase(),
+                  deci2s(ask.getReceivePrice()) + ' ' + ask.coin.toUpperCase(),
                   style:
                       Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
                 ),
@@ -290,7 +291,7 @@ class AskItem extends StatelessWidget {
               child: Container(
                 color: Colors.red,
                 child: Text(
-                  ask.getReceiveAmount(sellAmount) +
+                  deci2s(ask.getReceiveAmount(deci(sellAmount))) +
                       ' ' +
                       ask.coin.toUpperCase(),
                   style: Theme.of(context)

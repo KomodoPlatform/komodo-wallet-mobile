@@ -44,7 +44,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   CoinBalance currentCoinBalance;
   Coin currentCoinToBuy;
   String tmpText = '';
-  String tmpAmountSell = '';
+  Decimal tmpAmountSell = deci(0);
   final FocusNode _focusSell = FocusNode();
   final FocusNode _focusReceive = FocusNode();
   Animation<double> animationInputSell;
@@ -163,42 +163,36 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
         _controllerAmountSell.text.isNotEmpty) {
-      final String bestPrice = (Decimal.parse(
-                  _controllerAmountReceive.text.replaceAll(',', '.')) /
-              Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.')))
-          .toString();
+      final Decimal bestPrice = deci(_controllerAmountReceive.text) /
+          deci(_controllerAmountSell.text);
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoin?.coin,
           bestPrice: bestPrice,
-          maxVolume:
-              double.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
+          maxVolume: deci(_controllerAmountSell.text)));
     }
     setState(() {});
   }
 
   void onChangeSell() {
-    final String amountSell = _controllerAmountSell.text.replaceAll(',', '.');
+    final amountSell = deci(_controllerAmountSell.text);
 
     if (_controllerAmountSell.text.isNotEmpty) {
-      swapBloc.setCurrentAmountSell(double.parse(amountSell));
+      swapBloc.setCurrentAmountSell(amountSell.toDouble());
     }
     setState(() {
       if (_noOrderFound &&
           _controllerAmountReceive.text.isNotEmpty &&
           _controllerAmountSell.text.isNotEmpty) {
-        final String bestPrice = (Decimal.parse(
-                    _controllerAmountReceive.text.replaceAll(',', '.')) /
-                Decimal.parse(_controllerAmountSell.text.replaceAll(',', '.')))
-            .toStringAsFixed(8);
+        final Decimal bestPrice = deci(_controllerAmountReceive.text) /
+            deci(_controllerAmountSell.text);
         swapBloc.updateBuyCoin(OrderCoin(
             coinBase: swapBloc.receiveCoin,
             coinRel: swapBloc.sellCoin?.coin,
             bestPrice: bestPrice,
-            maxVolume:
-                double.parse(_controllerAmountSell.text.replaceAll(',', '.'))));
+            maxVolume: deci(_controllerAmountSell.text)));
       }
-      if (amountSell != tmpAmountSell && amountSell.isNotEmpty) {
+      if (amountSell != tmpAmountSell && amountSell != deci(0)) {
         setState(() {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
@@ -210,14 +204,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           if (_controllerAmountReceive.text.isNotEmpty &&
               _controllerAmountSell.text.isNotEmpty &&
               swapBloc.receiveCoin != null) {
-            String price = (Decimal.parse(amountSell) /
-                    Decimal.parse(
-                        _controllerAmountReceive.text.replaceAll(',', '.')))
-                .toString();
-            double maxVolume = double.parse(amountSell);
+            Decimal price = amountSell / deci(_controllerAmountReceive.text);
+            Decimal maxVolume = amountSell;
 
             if (currentAsk != null) {
-              price = currentAsk.price;
+              price = deci(currentAsk.price);
               maxVolume = currentAsk.maxvolume;
             }
 
@@ -227,20 +218,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 bestPrice: price,
                 maxVolume: maxVolume));
           }
-          getFee(false).then((double tradeFee) async {
-            Log.println('trade_page:231', tradeFee);
+          getFee(false).then((Decimal tradeFee) async {
+            Log.println('trade_page:222', 'tradeFee $tradeFee');
             if (currentCoinBalance != null &&
-                double.parse(amountSell) + tradeFee >
-                    double.parse(currentCoinBalance.balance.getBalance())) {
+                amountSell + tradeFee > currentCoinBalance.balance.balance) {
               if (!swapBloc.isMaxActive) {
                 await setMaxValue();
-              }
-            } else {
-              if (amountSell.contains(RegExp(
-                  '^\$|^(0|([1-9][0-9]{0,24}))([.,]{1}[0-9]{0,8})?\$'))) {
-              } else {
-                _controllerAmountSell
-                    .setTextAndPosition(replaceAllTrainlingZero(tmpText));
               }
             }
           });
@@ -253,41 +236,35 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _checkMaxVolume() {
-    if (Decimal.parse(_controllerAmountSell.text) >=
-        Decimal.parse(swapBloc.orderCoin.maxVolume.toString()) *
-            Decimal.parse(swapBloc.orderCoin.bestPrice)) {
-      _setMaxVolumeSell();
-    }
+    if (deci(_controllerAmountSell.text) <=
+        swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice) return;
+
+    setState(() {
+      final max = swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice;
+      _controllerAmountSell.setTextAndPosition(deci2s(max));
+    });
   }
 
-  Future<double> getFee(bool isMax) async {
+  Future<Decimal> getFee(bool isMax) async {
     setState(() {
       isLoadingMax = true;
     });
     try {
-      final double fee =
-          (await getTxFee() + await getTradeFee(isMax)).toDouble();
+      final Decimal fee = await getTxFee() + await getTradeFee(isMax);
       setState(() {
         isLoadingMax = false;
       });
       return fee;
     } catch (e) {
-      Log.println('trade_page:275', e);
-      return 0;
+      Log.println('trade_page:259', e);
+      return deci(0);
     }
   }
 
   Future<Decimal> getTradeFee(bool isMax) async {
-    double amount =
-        double.parse(_controllerAmountSell.text.replaceAll(',', '.'));
-    if (isMax) {
-      amount = double.parse(currentCoinBalance.balance.getBalance());
-    }
-
-    return Decimal.parse((Decimal.parse('1') /
-            Decimal.parse('777') *
-            Decimal.parse(amount.toString()))
-        .toStringAsFixed(8));
+    Decimal amount = deci(_controllerAmountSell.text);
+    if (isMax) amount = currentCoinBalance.balance.balance;
+    return deci(1) / deci(777) * amount;
   }
 
   Future<Decimal> getTxFee() async {
@@ -315,7 +292,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         return Decimal.parse('0');
       }
     } catch (e) {
-      Log.println('trade_page:318', e);
+      Log.println('trade_page:295', e);
       rethrow;
     }
   }
@@ -357,7 +334,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 : 'ETH');
       }
     } catch (e) {
-      Log.println('trade_page:360', e);
+      Log.println('trade_page:337', e);
       rethrow;
     }
   }
@@ -371,12 +348,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<void> setMaxValue() async {
     try {
       setState(() async {
-        final double tradeFee = await getFee(true);
-        final double maxValue =
-            double.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
-        Log.println('trade_page:377', 'setting max: ' + maxValue.toString());
+        final Decimal tradeFee = await getFee(true);
+        final Decimal maxValue = currentCoinBalance.balance.balance - tradeFee;
+        Log.println('trade_page:353', 'setting max: $maxValue');
 
-        if (maxValue < 0) {
+        if (maxValue < deci(0)) {
           setState(() {
             isLoadingMax = false;
           });
@@ -384,7 +360,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
             backgroundColor: Theme.of(context).errorColor,
-            content: tradeFee < 0.00777
+            content: tradeFee < deci(0.00777)
                 ? Text(AppLocalizations.of(context).minValueBuy(
                     currentCoinBalance.coin.abbr, 0.00777.toString()))
                 : Text(AppLocalizations.of(context).minValueBuy(
@@ -392,30 +368,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ));
           _focusSell.unfocus();
         } else {
-          Log.println(
-              'trade_page:395', '----------------_controllerAmountSell');
-          _controllerAmountSell.setTextAndPosition(
-              replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
+          Log.println('trade_page:371', '-----------_controllerAmountSell');
+          _controllerAmountSell.setTextAndPosition(deci2s(maxValue));
         }
       });
     } catch (e) {
-      Log.println('trade_page:402', e);
+      Log.println('trade_page:376', e);
     }
-  }
-
-  void _setMaxVolumeSell() {
-    setState(() {
-      final max1 = Decimal.parse(swapBloc.orderCoin.maxVolume.toString()) *
-          Decimal.parse(swapBloc.orderCoin.bestPrice);
-      Log('trade_page:410', '_setMaxVolumeSell] $max1');
-      final max2 = max1.toStringAsFixed(8);
-      Log('trade_page:412', '_setMaxVolumeSell] $max2');
-      final max3 = max2.replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
-      Log('trade_page:414', '_setMaxVolumeSell] $max3');
-      final max4 = replaceAllTrainlingZero(max3);
-      Log('trade_page:416', '_setMaxVolumeSell] $max4');
-      _controllerAmountSell.setTextAndPosition(max4);
-    });
   }
 
   Widget _buildExchange() {
@@ -731,7 +690,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Widget _buildCoinSelect(Market market) {
     Log.println(
-        'trade_page:733', 'coin-select-${market.toString().toLowerCase()}');
+        'trade_page:692', 'coin-select-${market.toString().toLowerCase()}');
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: InkWell(
@@ -861,7 +820,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           isNumeric(_controllerAmountSell.text) &&
           !isLoadingMax &&
           double.parse(_controllerAmountSell.text) > 0) {
-        Log.println('trade_page:864', isLoadingMax);
+        Log.println('trade_page:823', isLoadingMax);
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -967,16 +926,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     _controllerAmountReceive.text = '';
     timerGetOrderbook?.cancel();
     _controllerAmountReceive.text =
-        ask.getReceiveAmount(double.parse(_controllerAmountSell.text));
+        deci2s(ask.getReceiveAmount(deci(_controllerAmountSell.text)));
 
     swapBloc.updateBuyCoin(OrderCoin(
         coinBase: swapBloc.receiveCoin,
         coinRel: swapBloc.sellCoin?.coin,
-        bestPrice: (Decimal.parse(_controllerAmountSell.text) /
-                Decimal.parse(
-                    _controllerAmountReceive.text.replaceAll(',', '.')))
-            .toString(),
-        maxVolume: double.parse(_controllerAmountSell.text)));
+        bestPrice: deci(_controllerAmountSell.text) /
+            deci(_controllerAmountReceive.text),
+        maxVolume: deci(_controllerAmountSell.text)));
 
     final Decimal askPrice = Decimal.parse(ask.price.toString());
     final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
@@ -1001,15 +958,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       for (OrderCoin orderbook in orderbooks) {
         SimpleDialogOption dialogItem;
         if (orderbook.coinBase.abbr != swapBloc.sellCoin.coin.abbr) {
-          final bool isOrderAvailable = orderbook.coinBase.abbr !=
-                  swapBloc.sellCoin.coin.abbr &&
-              double.parse(orderbook.getBuyAmount(_controllerAmountSell.text)) >
-                  0;
+          final bool isOrderAvailable =
+              orderbook.coinBase.abbr != swapBloc.sellCoin.coin.abbr &&
+                  orderbook.getBuyAmount(deci(_controllerAmountSell.text)) >
+                      deci(0);
           Log.println(
-              'trade_page:1008',
+              'trade_page:965',
               '----getBuyAmount----' +
-                  orderbook.getBuyAmount(_controllerAmountSell.text));
-          Log.println('trade_page:1012',
+                  deci2s(orderbook
+                      .getBuyAmount(deci(_controllerAmountSell.text))));
+          Log.println('trade_page:970',
               'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
             key: Key(
@@ -1044,8 +1002,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     children: <Widget>[
                       Flexible(
                         child: isOrderAvailable
-                            ? Text(orderbook
-                                .getBuyAmount(_controllerAmountSell.text))
+                            ? Text(deci2s(orderbook.getBuyAmount(
+                                deci(_controllerAmountSell.text))))
                             : Text(
                                 AppLocalizations.of(context).noOrderAvailable,
                                 style: Theme.of(context)
@@ -1207,7 +1165,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     ? Decimal.parse('1')
                     : Decimal.parse('2')));
 
-        if (Decimal.parse(ethBalance.balance.balance) < feeERC) {
+        if (ethBalance.balance.balance < feeERC) {
           Scaffold.of(mContext).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
             backgroundColor: Theme.of(context).primaryColor,
@@ -1274,7 +1232,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     });
                   },
                   order: currentAsk,
-                  bestPrice: swapBloc.orderCoin.bestPrice,
+                  bestPrice: deci2s(swapBloc.orderCoin.bestPrice),
                   coinBase: swapBloc.orderCoin?.coinBase,
                   coinRel: swapBloc.orderCoin?.coinRel,
                   swapStatus: swapBloc.enabledReceiveField
@@ -1391,8 +1349,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
         initialData: swapBloc.orderCoin,
         stream: swapBloc.outOrderCoin,
         builder: (BuildContext context, AsyncSnapshot<OrderCoin> snapshot) {
-          if (snapshot.data != null &&
-              Decimal.parse(snapshot.data.bestPrice) > Decimal.parse('0')) {
+          if (snapshot.data != null && snapshot.data.bestPrice > deci(0)) {
             return Padding(
               padding: const EdgeInsets.only(top: 16),
               child: Column(

@@ -94,17 +94,10 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
                       child: Builder(builder: (BuildContext context) {
-                        final String amount = widget
-                                .coinBalance.coin.swapContractAddress.isNotEmpty
-                            ? replaceAllTrainlingZeroERC(
-                                double.parse(tx.myBalanceChange)
-                                    .toStringAsFixed(16))
-                            : replaceAllTrainlingZero(
-                                double.parse(tx.myBalanceChange)
-                                    .toStringAsFixed(8));
+                        final amount = deci(tx.myBalanceChange);
 
                         return AutoSizeText(
-                          amount + ' ' + tx.coin,
+                          deci2s(amount) + ' ' + tx.coin,
                           style: Theme.of(context).textTheme.title,
                           maxLines: 1,
                           textAlign: TextAlign.center,
