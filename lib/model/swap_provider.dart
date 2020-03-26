@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -181,13 +182,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:184', 'update] reason: $reason');
+    Log('swap_provider:185', 'update] reason: $reason');
 
     final dynamic mswaps = await MM.getRecentSwaps(
         mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
 
     if (mswaps is ErrorString) {
-      Log('swap_provider:190', '!getRecentSwaps: $mswaps');
+      Log('swap_provider:191', '!getRecentSwaps: $mswaps');
       return;
     }
     if (mswaps is! RecentSwaps) throw Exception('!RecentSwaps');
@@ -207,7 +208,7 @@ class SyncSwaps {
     try {
       await _gossipSync();
     } catch (ex) {
-      Log('swap_provider:210', '!_gossipSync: $ex');
+      Log('swap_provider:211', '!_gossipSync: $ex');
     }
   }
 
@@ -236,7 +237,7 @@ class SyncSwaps {
     for (String id in _ours.keys) {
       final entity = _ours[id];
       if (entity.timestamp == _gossiped[id]) continue;
-      Log('swap_provider:239', 'Gossiping $id…');
+      Log('swap_provider:240', 'Gossiping $id…');
       entities.add(entity);
     }
 
@@ -258,9 +259,9 @@ class SyncSwaps {
     final bsec = (DateTime.now().millisecondsSinceEpoch - bstart) / 1000.0;
     double bpe = blen * 64 / _theirs.length; // Bits per element.
     bpe = double.parse(bpe.toStringAsFixed(1));
-    Log('swap_provider:261', 'Bloom $bloom (${_theirs.length}, $bpe) in $bsec');
+    Log('swap_provider:262', 'Bloom $bloom (${_theirs.length}, $bpe) in $bsec');
 
-    //Log('swap_provider:263', 'ct.cipig.net/sync…');
+    //Log('swap_provider:264', 'ct.cipig.net/sync…');
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
           'components': <String, dynamic>{
@@ -305,7 +306,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:308', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:309', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
@@ -328,7 +329,7 @@ class SwapGossip {
     if (!_idExp.hasMatch(id)) throw Exception('Bad id: $id');
     gui = en['gui'];
     mmMersion = en['mm_version'];
-    stepSpeed = Map<String, int>.from(en['step_speed']);
+    stepSpeed = LinkedHashMap<String, int>.from(en['step_speed']);
     makerCoin = en['maker_coin'];
     takerCoin = en['taker_coin'];
     makerPaymentConfirmations = en['maker_payment_confirmations'];
@@ -355,7 +356,7 @@ class SwapGossip {
   int timestamp;
 
   /// Time between swap states in milliseconds.
-  Map<String, int> stepSpeed = {};
+  LinkedHashMap<String, int> stepSpeed = LinkedHashMap<String, int>.of({});
 
   /// Name and version of UI that has shared this gossip entity.
   String gui;

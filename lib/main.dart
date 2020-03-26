@@ -18,7 +18,6 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/mode.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +44,7 @@ Future<void> startApp() async {
     await _runBinMm2UserAlreadyLog();
     return runApp(_myAppWithProviders);
   } catch (e) {
-    Log('main:48', 'startApp] $e');
+    Log('main:47', 'startApp] $e');
     rethrow;
   }
 }
@@ -126,9 +125,9 @@ class _MyAppState extends State<MyApp> {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    // Log('main:129',
+                    // Log('main:128',
                     //     'current locale: ' + currentLocale?.toString());
-                    // Log('main:131',
+                    // Log('main:130',
                     //     'current pref locale: ' + prefLocale.toString());
 
                     return MaterialApp(
@@ -209,11 +208,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log('main:212', 'lifecycle: inactive');
+        Log('main:211', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
-        Log('main:216', 'lifecycle: paused');
+        Log('main:215', 'lifecycle: paused');
         lockService.lockSignal(context);
 
         // AG: do we really need it? // if (Platform.isIOS) mmSe.closeLogSink();
@@ -222,12 +221,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS && await musicService.iosBackgroundExit()) {
           // https://gitlab.com/artemciy/supernet/issues/4#note_284468673
-          Log('main:225', 'Suspended, exit');
+          Log('main:224', 'Suspended, exit');
           exit(0);
         }
         break;
       case AppLifecycleState.resumed:
-        Log('main:230', 'lifecycle: resumed');
+        Log('main:229', 'lifecycle: resumed');
         lockService.lockSignal(context);
         if (Platform.isIOS) {
           if (!mmSe.running) {
@@ -236,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         }
         break;
       case AppLifecycleState.detached:
-        Log('main:239', 'lifecycle: detached');
+        Log('main:238', 'lifecycle: detached');
         break;
     }
   }
