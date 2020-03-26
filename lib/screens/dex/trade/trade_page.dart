@@ -293,8 +293,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<Decimal> getTxFee() async {
     try {
       final dynamic tradeFeeResponse = await MM.getTradeFee(
-          MMService().client,
-          GetTradeFee(coin: currentCoinBalance.coin.abbr));
+          MMService().client, GetTradeFee(coin: currentCoinBalance.coin.abbr));
 
       if (tradeFeeResponse is TradeFee) {
         final double tradeFee = double.parse(tradeFeeResponse.result.amount);
@@ -316,7 +315,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         return Decimal.parse('0');
       }
     } catch (e) {
-      Log.println('trade_page:319', e);
+      Log.println('trade_page:318', e);
       rethrow;
     }
   }
@@ -324,8 +323,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<String> getTxFeeErc() async {
     try {
       final TradeFee tradeFeeResponse = await MM.getTradeFee(
-          MMService().client,
-          GetTradeFee(coin: currentCoinBalance.coin.abbr));
+          MMService().client, GetTradeFee(coin: currentCoinBalance.coin.abbr));
       final double tradeFee = double.parse(tradeFeeResponse.result.amount);
 
       final Decimal txFee = Decimal.parse(tradeFee.toString());
@@ -359,7 +357,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 : 'ETH');
       }
     } catch (e) {
-      Log.println('trade_page:362', e);
+      Log.println('trade_page:360', e);
       rethrow;
     }
   }
@@ -376,7 +374,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         final double tradeFee = await getFee(true);
         final double maxValue =
             double.parse(currentCoinBalance.balance.getBalance()) - tradeFee;
-        Log.println('trade_page:379', 'setting max: ' + maxValue.toString());
+        Log.println('trade_page:377', 'setting max: ' + maxValue.toString());
 
         if (maxValue < 0) {
           setState(() {
@@ -395,23 +393,28 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           _focusSell.unfocus();
         } else {
           Log.println(
-              'trade_page:397', '----------------_controllerAmountSell');
+              'trade_page:395', '----------------_controllerAmountSell');
           _controllerAmountSell.setTextAndPosition(
               replaceAllTrainlingZero(maxValue.toStringAsFixed(8)));
         }
       });
     } catch (e) {
-      Log.println('trade_page:404', e);
+      Log.println('trade_page:402', e);
     }
   }
 
   void _setMaxVolumeSell() {
     setState(() {
-      _controllerAmountSell.setTextAndPosition(replaceAllTrainlingZero(
-          (Decimal.parse(swapBloc.orderCoin.maxVolume.toString()) *
-                  Decimal.parse(swapBloc.orderCoin.bestPrice))
-              .toStringAsFixed(8)
-              .replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '')));
+      final max1 = Decimal.parse(swapBloc.orderCoin.maxVolume.toString()) *
+          Decimal.parse(swapBloc.orderCoin.bestPrice);
+      Log('trade_page:410', '_setMaxVolumeSell] $max1');
+      final max2 = max1.toStringAsFixed(8);
+      Log('trade_page:412', '_setMaxVolumeSell] $max2');
+      final max3 = max2.replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
+      Log('trade_page:414', '_setMaxVolumeSell] $max3');
+      final max4 = replaceAllTrainlingZero(max3);
+      Log('trade_page:416', '_setMaxVolumeSell] $max4');
+      _controllerAmountSell.setTextAndPosition(max4);
     });
   }
 
@@ -728,7 +731,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Widget _buildCoinSelect(Market market) {
     Log.println(
-        'trade_page:730', 'coin-select-${market.toString().toLowerCase()}');
+        'trade_page:733', 'coin-select-${market.toString().toLowerCase()}');
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: InkWell(
@@ -858,7 +861,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           isNumeric(_controllerAmountSell.text) &&
           !isLoadingMax &&
           double.parse(_controllerAmountSell.text) > 0) {
-        Log.println('trade_page:861', isLoadingMax);
+        Log.println('trade_page:864', isLoadingMax);
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -893,12 +896,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                         const SizedBox(
                           height: 16,
                         ),
-                        Text(
-                          AppLocalizations.of(context).noFunds,
-                          style: Theme.of(context)
-                              .textTheme
-                              .title
-                        ),
+                        Text(AppLocalizations.of(context).noFunds,
+                            style: Theme.of(context).textTheme.title),
                         const SizedBox(
                           height: 16,
                         )
@@ -1007,10 +1006,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               double.parse(orderbook.getBuyAmount(_controllerAmountSell.text)) >
                   0;
           Log.println(
-              'trade_page:1009',
+              'trade_page:1008',
               '----getBuyAmount----' +
                   orderbook.getBuyAmount(_controllerAmountSell.text));
-          Log.println('trade_page:1013',
+          Log.println('trade_page:1012',
               'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
             key: Key(
