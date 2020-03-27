@@ -13,19 +13,12 @@ class OrderCoin {
   Coin coinRel;
   Coin coinBase;
   Orderbook orderbook;
-  String bestPrice;
-  double maxVolume;
+  Decimal bestPrice;
+  Decimal maxVolume;
 
-  String getBuyAmount(String amountToSell) {
-    String buyAmount = 0.toString();
-    buyAmount = (Decimal.parse(amountToSell) / Decimal.parse(bestPrice))
-        .toStringAsFixed(8);
-    if (double.parse(buyAmount) == 0) {
-      buyAmount = 0.toStringAsFixed(0);
-    }
-    if (double.parse(buyAmount) >= maxVolume) {
-      buyAmount = maxVolume.toString();
-    }
+  Decimal getBuyAmount(Decimal amountToSell) {
+    Decimal buyAmount = amountToSell / bestPrice;
+    if (buyAmount >= maxVolume) buyAmount = maxVolume;
     return buyAmount;
   }
 }

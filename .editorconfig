@@ -5,3 +5,6 @@ root = true
 charset = utf-8
 indent_style = space
 end_of_line = lf
+
+[*.kt]
+indent_size = 2

@@ -31,8 +31,8 @@ class Uuid {
           uuid: json['uuid'] ?? '',
           pubkey: json['pubkey'] ?? '',
           timeStart: json['timeStart'] ?? 0,
-          base: Coin.fromJson(json['base']) ?? Coin(),
-          rel: Coin.fromJson(json['rel']) ?? Coin(),
+          base: Coin.fromJson(json['base'], json['base']),
+          rel: Coin.fromJson(json['rel'], json['rel']),
           amountToBuy: json['amountToBuy'].toDouble() ?? 0.0,
           amountToGet: json['amountToGet'].toDouble()) ??
       0.0;
@@ -49,8 +49,8 @@ class Uuid {
         'uuid': uuid ?? '',
         'pubkey': pubkey ?? '',
         'timeStart': timeStart ?? 0,
-        'base': base.toJson() ?? Coin(),
-        'rel': rel.toJson() ?? Coin(),
+        'base': base.toJson(),
+        'rel': rel.toJson(),
         'amountToBuy': amountToBuy ?? 0.0,
         'amountToGet': amountToGet ?? 0.0
       };

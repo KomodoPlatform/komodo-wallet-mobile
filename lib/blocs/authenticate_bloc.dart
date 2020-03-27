@@ -9,7 +9,6 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -64,15 +63,8 @@ class AuthenticateBloc extends BlocBase {
   }
 
   Future<void> login(String passphrase, String password) async {
-    try {
-      await DBProvider.db.initDB();
-      await DBProvider.db.initCoinsActivateDefault(CoinEletrum.CONFIG);
-    } catch (e) {
-      Log.println('authenticate_bloc:71', 'DB error: ' + e.toString());
-    }
-
     mainBloc.setCurrentIndexTab(0);
-    walletBloc.setCurrentWallet(await DBProvider.db.getCurrentWallet());
+    walletBloc.setCurrentWallet(await Db.getCurrentWallet());
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await _checkPINStatus(password);
@@ -102,7 +94,7 @@ class AuthenticateBloc extends BlocBase {
   }
 
   Future<void> _checkPINStatus(String password) async {
-    final Wallet wallet = await DBProvider.db.getCurrentWallet();
+    final Wallet wallet = await Db.getCurrentWallet();
     final EncryptionTool entryptionTool = EncryptionTool();
 
     String pin;
@@ -148,11 +140,10 @@ class AuthenticateBloc extends BlocBase {
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');
     coinsBloc.resetCoinBalance();
-    await coinsBloc.resetCoinDefault();
     MMService().balances = <Balance>[];
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);
-    await DBProvider.db.deleteCurrentWallet();
+    await Db.deleteCurrentWallet();
   }
 
   /// Whether the lock (PIN code, fingerprint and faceid biometrics) is displayed.

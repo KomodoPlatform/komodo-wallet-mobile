@@ -4,12 +4,13 @@ import 'dart:math';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 import 'mm_service.dart';
 
@@ -39,7 +40,7 @@ enum MusicMode {
 /// Allows iOS application instances to stay alive in background.
 class MusicService {
   MusicService() {
-    getApplicationDocumentsDirectory().then((docs) {
+    applicationDocumentsDirectory.then((docs) {
       _docs = docs;
     });
     makePlayer();
@@ -65,19 +66,19 @@ class MusicService {
     _player = AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
 
     _audioPlayer.onPlayerError.listen((String ev) {
-      Log('music_service:68', 'onPlayerError: ' + ev);
+      Log('music_service:69', 'onPlayerError: ' + ev);
     });
 
     /*
     _audioPlayer.onPlayerCompletion.listen((_) {
       // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
-      //Log('music_service:74', 'onPlayerCompletion');
+      //Log('music_service:75', 'onPlayerCompletion');
     });
     */
   }
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
-  MusicMode pickMode(List<Order> orders) {
+  static MusicMode pickMode(List<Order> orders, MusicMode prevMode) {
     for (final Swap swap in syncSwaps.swaps) {
       final String uuid = swap.result.uuid;
       final String shortId = uuid.substring(0, 4);
@@ -85,19 +86,19 @@ class MusicService {
           swap.status != Status.SWAP_SUCCESSFUL &&
           swap.status != Status.TIME_OUT;
       if (active) {
-        Log('music_service:88',
+        Log('music_service:89',
             'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
         return MusicMode.ACTIVE;
       }
 
-      if (musicMode == MusicMode.ACTIVE) {
+      if (prevMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log('music_service:96',
+          Log('music_service:97',
               'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log('music_service:100',
+          Log('music_service:101',
               'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
@@ -107,17 +108,17 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log('music_service:110',
+        Log('music_service:111',
             'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log('music_service:114',
+        Log('music_service:115',
             'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log('music_service:120',
+    Log('music_service:121',
         'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
   }
@@ -145,7 +146,7 @@ class MusicService {
     if (_docs == null) throw Exception('Application directory is missing');
     final String target = _docs.path.toString() + '/' + name;
     final File file = File(path);
-    Log('music_service:148', 'copying $path to $target');
+    Log('music_service:149', 'copying $path to $target');
     await file.copy(target);
 
     _reload = true;
@@ -169,12 +170,12 @@ class MusicService {
   void play(List<Order> orders) {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
-    final MusicMode newMode = pickMode(orders);
+    final MusicMode newMode = pickMode(orders, musicMode);
     bool changes = false;
 
     if (newMode != musicMode) {
       changes = true;
-      Log('music_service:177', 'play] $musicMode -> $newMode');
+      Log('music_service:178', 'play] $musicMode -> $newMode');
     }
 
     if (_reload) {
@@ -212,7 +213,7 @@ class MusicService {
                         : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
 
     final String path = customFile != null ? customFile.path : defaultPath;
-    Log('music_service:215', 'path: $path');
+    Log('music_service:216', 'path: $path');
 
     // Tell the player how to access the file directly instead of trying to copy it from the assets.
     if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
@@ -233,7 +234,7 @@ class MusicService {
       _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
       _player.play(path, volume: volume());
     } else {
-      Log('music_service:236', 'Unexpected music mode: $newMode');
+      Log('music_service:237', 'Unexpected music mode: $newMode');
       _audioPlayer.stop();
     }
 
@@ -262,16 +263,18 @@ class MusicService {
   Future<bool> iosBackgroundExit() async {
     final double btr =
         await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-    Log('music_service:265', 'backgroundTimeRemaining: $btr');
+    Log('music_service:266', 'backgroundTimeRemaining: $btr');
 
     // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
     // and when we are silent the `backgroundTimeRemaining` is low
     // (expected low values are ~5, ~180, ~600 seconds).
     // #658: We should only remain in background if we're going to keep playing the sounds.
-    if (btr > 3600 &&
-        (musicMode == MusicMode.ACTIVE ||
-            musicMode == MusicMode.MAKER ||
-            musicMode == MusicMode.TAKER)) return false;
+    if (btr > 3600) {
+      final mode = pickMode(ordersBloc.orders, MusicMode.SILENT);
+      if (mode == MusicMode.ACTIVE ||
+          mode == MusicMode.MAKER ||
+          mode == MusicMode.TAKER) return false;
+    }
 
     // Known cases of when "background" doesn't necessarily means "suspend".
     if (mainBloc.isUrlLaucherIsOpen) return false;

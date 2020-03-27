@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show File, Platform, Process, ProcessResult;
 
+import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
     show ByteData, EventChannel, MethodChannel, rootBundle;
@@ -23,11 +24,9 @@ import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:package_info/package_info.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'db/database.dart';
 
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
@@ -49,16 +48,20 @@ class MMService {
   String userpass = '';
   Stream<List<int>> streamSubscriptionStdout;
   String pubkey = '';
-  String filesPath = '';
-  IOSink sink;
 
   /// Channel to native code.
-  static MethodChannel nativeC = const MethodChannel('mm2');
+  static MethodChannel nativeC = MethodChannel(
+      Platform.isAndroid ? 'com.komodoplatform.atomicdex/nativeC' : 'mm2');
 
-  /// MM log streamed from iOS/Swift.
-  static const EventChannel iosLogC = EventChannel('streamLogMM2');
+  /// Log entries streamed from native code.
+  /// MM log is coming that way on iOS.
+  static const EventChannel logC = EventChannel('AtomicDEX/logC');
   final Client client = http.Client();
-  File logFile;
+
+  /// Maps a $year-$month-$day date to the corresponding log file.
+  /// The current date time can fluctuate (due to time correction services, for instance)
+  /// so the map helps us with always picking the file that corresponds to the actual date.
+  final Map<String, FileAndSink> _logs = {};
 
   /// Flips on temporarily when we see an indication of swap activity,
   /// possibly a change of swap status, in MM logs,
@@ -98,37 +101,51 @@ class MMService {
     });
   }
 
-  Future<void> initMarketMaker() async {
-    final Directory directory = await getApplicationDocumentsDirectory();
-    filesPath = directory.path + '/';
+  /// Updates the executable copy of the Market Maker binary.
+  Future<void> updateMmBinary() async {
+    if (!Platform.isAndroid) return;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (Platform.isAndroid) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final ls = await Process.run('ls', <String>['${filesPath}mm2']);
 
-      try {
-        final ls = await Process.run('ls', <String>['${filesPath}mm2']);
-        final lsMatch = ls.stdout.toString().trim() == '${filesPath}mm2';
+    // True if the "mm2" file is there AND if we can invoke shell commands, such as "ls".
+    final lsMatch = ls.stdout.toString().trim() == '${filesPath}mm2';
 
-        final mm2hash = prefs.getString('mm2_hash') ?? '';
+    // Sanity check: native code must reply us with 'pong'.
+    final String pong = await nativeC.invokeMethod<String>('ping');
+    if (pong != 'pong') throw Exception('No pong');
 
-        Log('mm_service:114', 'Loading the mm2 asset…');
-        final ByteData assetsMm2 = await rootBundle.load('assets/mm2');
-        Log('mm_service:116', 'Calculating the mm2 asset hash…');
-        final assHash = sha1.convert(assetsMm2.buffer.asUint8List()).toString();
-        final hashMatch = mm2hash.isNotEmpty && mm2hash == assHash;
-        Log('mm_service:119', 'Hash matches? $hashMatch');
+    final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
+    Log('mm_service:119', 'BUILD_TIME: $buildTime');
+    if (buildTime <= 0) throw Exception('No BUILD_TIME');
+    final ms = DateTime.now().millisecondsSinceEpoch;
+    if (ms <= buildTime) Log('mm_service:122', 'BUILD_TIME in the future!');
 
-        if (!lsMatch || !hashMatch) {
-          await coinsBloc.resetCoinDefault();
-          if (lsMatch) await deleteMmBin();
-          await saveMmBin(assetsMm2.buffer.asUint8List());
-          await prefs.setString('mm2_hash', mm2hash);
-          await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
-        }
-      } catch (e) {
-        Log('mm_service:129', e);
-      }
+    final lastHash = prefs.getString('mm2.lastHash') ?? '';
+    final lastCheck = prefs.getInt('mm2.lastCheck') ?? 0;
+    if (ms <= lastCheck) Log('mm_service:126', 'lastCheck in the future!');
+
+    // If there's a copy of mm2 binary and we've checked it recently then we're done.
+    if (lsMatch && buildTime < lastCheck) return;
+
+    Log('mm_service:131', 'Loading assets/mm2…');
+    final ByteData mm2bytes = await rootBundle.load('assets/mm2');
+
+    Log('mm_service:134', 'Calculating assets/mm2 hash…');
+    // AG: On my device it takes 7.7 seconds to calculate SHA1, 4.3 seconds to calculate MD5.
+    final md5h = md5.convert(mm2bytes.buffer.asUint8List()).toString();
+    if (md5h == lastHash) {
+      Log('mm_service:138', 'MM matches the assets/ hash, skipping update');
+      await prefs.setInt('mm2.lastCheck', ms);
+      return;
     }
+
+    Log('mm_service:143', 'Updating MM…');
+    if (lsMatch) await deleteMmBin();
+    await saveMmBin(mm2bytes.buffer.asUint8List());
+    await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
+    await prefs.setString('mm2.lastHash', md5h);
+    await prefs.setInt('mm2.lastCheck', ms);
   }
 
   void initUsername(String passphrase) {
@@ -182,39 +199,68 @@ class MMService {
     }
   }
 
-  Future<void> initLogSink() async {
-    final File dateFile = File('${filesPath}logDate.txt');
-    logFile = File('${filesPath}log.txt');
+  String get filesPath => applicationDocumentsDirectorySync == null
+      ? null
+      : applicationDocumentsDirectorySync.path + '/';
 
-    if ((logFile.existsSync() && logFile.lengthSync() > 7900000) ||
-        (dateFile.existsSync() &&
-            (DateTime.now().isAfter(DateTime.parse(dateFile.readAsStringSync())
-                .add(const Duration(days: 2)))))) {
-      await logFile.delete();
-      logFile.create();
-      await dateFile.delete();
-      dateFile.createSync();
-      dateFile.writeAsString('${DateTime.now()}');
-    } else if (!dateFile.existsSync()) {
-      dateFile.createSync();
-      dateFile.writeAsString('${DateTime.now()}');
-    } else if (!logFile.existsSync()) {
-      logFile.create();
-    }
-    sink = logFile.openWrite(mode: FileMode.append);
-  }
+  /// Returns a log file matching the present [now] time.
+  FileAndSink currentLog({DateTime now}) {
+    // Time can fluctuate back and forth due to time syncronization and such.
+    // Hence we're using a map that allows us to direct the log entries
+    // to a log file precisely matching the `now` time,
+    // even if it happens to jump a bit into the past.
+    // This in turn allows us to make the log lines shorter
+    // by only mentioning the current time (and not date) in a line.
+    now ??= DateTime.now();
+    final ymd = '${now.year}'
+        '-${Log.twoDigits(now.month)}'
+        '-${Log.twoDigits(now.day)}';
+    final log = _logs[ymd];
+    if (log != null) return log;
 
-  void openLogSink() {
-    if (logFile != null && sink == null) {
-      sink = logFile.openWrite(mode: FileMode.append);
-    }
-  }
+    if (_logs.length > 2) _logs.clear(); // Close day-before-yesterday logs.
 
-  void closeLogSink() {
-    if (sink != null) {
-      sink.close();
-      sink = null;
+    // Remove old logs.
+
+    final unusedLog = File('${filesPath}log.txt');
+    if (unusedLog.existsSync()) unusedLog.deleteSync();
+
+    final unusedLogDate = File('${filesPath}logDate.txt');
+    if (unusedLogDate.existsSync()) unusedLogDate.deleteSync();
+
+    final gz = File('${filesPath}dex.log.gz'); // _shareFile
+    if (gz.existsSync()) gz.deleteSync();
+
+    final files = Directory(filesPath);
+    final logName = RegExp(r'^(\d{4})-(\d{2})-(\d{2})\.log$');
+    final List<File> unlink = [];
+    for (FileSystemEntity en in files.listSync()) {
+      final name = path.basename(en.path);
+      final mat = logName.firstMatch(name);
+      if (mat == null) continue;
+      if (en.statSync().type != FileSystemEntityType.file) continue;
+      final int year = int.parse(mat.group(1));
+      final int month = int.parse(mat.group(2));
+      final int day = int.parse(mat.group(3));
+      final enDate = DateTime(year, month, day);
+      if (enDate.isAfter(now)) continue;
+      final int delta = now.difference(enDate).inDays;
+      if (delta > 3) unlink.add(en);
     }
+    for (File en in unlink) en.deleteSync();
+
+    // Create and open the log.
+
+    final file = File('$filesPath$ymd.log');
+    if (!file.existsSync()) {
+      file.createSync();
+      file.writeAsStringSync('${DateTime.now()}');
+    }
+
+    final sink = file.openWrite(mode: FileMode.append);
+    final ret = FileAndSink(file, sink);
+    _logs[ymd] = ret;
+    return ret;
   }
 
   Future<void> runBin() async {
@@ -232,7 +278,9 @@ class MMService {
         coins: await readJsonCoinInit(),
         dbdir: filesPath));
 
-    await initLogSink();
+    logC
+        .receiveBroadcastStream()
+        .listen(_onNativeLog, onError: _onNativeLogError);
 
     if (Platform.isAndroid) {
       await stopmm2();
@@ -254,9 +302,6 @@ class MMService {
         rethrow;
       }
     } else if (Platform.isIOS) {
-      iosLogC
-          .receiveBroadcastStream()
-          .listen(_onIosLogEvent, onError: _onIosLogError);
       try {
         await nativeC.invokeMethod<dynamic>(
             'start', <String, String>{'params': startParam}); //start mm2
@@ -271,11 +316,10 @@ class MMService {
           }
 
           checkStatusmm2().then((int onValue) {
-            print('STATUS MM2: ' + onValue.toString());
+            Log('mm_service:319', 'mm2_main_status: $onValue');
             if (onValue == 3) {
               _running = true;
               _.cancel();
-              print('CANCEL TIMER');
               initCoinsAndLoad();
               coinsBloc.startCheckBalance();
             }
@@ -288,9 +332,22 @@ class MMService {
     }
   }
 
-  void logIntoFile(String log) {
-    if (sink != null) {
-      sink.write(log + '\n');
+  void log2file(String chunk, {DateTime now}) {
+    if (chunk == null) return;
+    if (!chunk.endsWith('\n')) chunk += '\n';
+
+    now ??= DateTime.now();
+    final log = currentLog(now: now);
+
+    // There's a chance that during life cycle transitions log file descriptor will be closed on iOS.
+    // The try-catch will hopefully help us detect this and reopen the file.
+    IOSink s = log.sink;
+    try {
+      s.write(chunk);
+    } catch (ex) {
+      print(ex); // AG: We should *gossip* this exception in the future.
+      log.sink = s = log.file.openWrite(mode: FileMode.append);
+      s.write(chunk);
     }
   }
 
@@ -303,12 +360,10 @@ class MMService {
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
-    if (sink != null) {
-      Log('mm_service:307', chunk);
-      final reasons = _lookupReasons(chunk);
-      // TBD: Use the obtained swap UUIDs for targeted swap updates.
-      if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
-    }
+    Log('mm_service:363', chunk);
+    final reasons = _lookupReasons(chunk);
+    // TBD: Use the obtained swap UUIDs for targeted swap updates.
+    if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
   }
 
   /// Checks a [chunk] of MM log to see if there's a reason to reload swap status.
@@ -317,7 +372,7 @@ class MMService {
     final sending = RegExp(
         r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
     for (RegExpMatch mat in sending.allMatches(chunk)) {
-      //Log('mm_service:320', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:375', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
     }
 
@@ -325,7 +380,7 @@ class MMService {
     // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
     final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
     for (RegExpMatch mat in dashboard.allMatches(chunk)) {
-      //Log('mm_service:328', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:383', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
     }
 
@@ -343,12 +398,12 @@ class MMService {
     return reasons;
   }
 
-  void _onIosLogEvent(Object event) {
+  void _onNativeLog(Object event) {
     _onLog(event);
   }
 
-  void _onIosLogError(Object error) {
-    Log('mm_service:351', error);
+  void _onNativeLogError(Object error) {
+    Log('mm_service:406', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -363,13 +418,11 @@ class MMService {
   Future<void> initCoinsAndLoad() async {
     try {
       await coinsBloc.activateCoinKickStart();
-
-      coinsBloc.enableCoins(await coinsBloc.electrumCoins()).then((_) {
-        Log('mm_service:368', 'All coins activated');
-        coinsBloc.loadCoin().then((_) {
-          Log('mm_service:370', 'loadCoin finished');
-        });
-      });
+      final active = await coinsBloc.electrumCoins();
+      await coinsBloc.enableCoins(active);
+      Log('mm_service:423', 'All coins activated');
+      await coinsBloc.loadCoin();
+      Log('mm_service:425', 'loadCoin finished');
     } catch (e) {
       print(e);
     }
@@ -414,20 +467,8 @@ class MMService {
     }
   }
 
-  Future<List<Coin>> loadJsonCoins(String loadFile) async {
-    final String jsonString = loadFile;
-    final Iterable<dynamic> l = json.decode(jsonString);
-    final List<Coin> coins =
-        l.map((dynamic model) => Coin.fromJson(model)).toList();
-    return coins;
-  }
-
-  Future<List<Coin>> loadJsonCoinsDefault() async {
-    return await DBProvider.db.electrumCoins(CoinEletrum.DEFAULT);
-  }
-
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:430', 'getAllBalances');
+    Log('mm_service:471', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
@@ -441,10 +482,6 @@ class MMService {
       return [];
     }
   }
-
-  Future<String> loadElectrumServersAsset() async {
-    return coinToJson(await DBProvider.db.electrumCoins(CoinEletrum.CONFIG));
-  }
 }
 
 /// Reason for updating the list of orders and swaps.
@@ -456,4 +493,10 @@ class _UpdReason {
 
   /// Swap UUID that ought to be updated.
   String uuid;
+}
+
+class FileAndSink {
+  FileAndSink(this.file, this.sink);
+  File file;
+  IOSink sink;
 }

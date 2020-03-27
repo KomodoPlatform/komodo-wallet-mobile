@@ -30,6 +30,9 @@ class ErrorString implements Exception {
 
   String error;
 
+  @override
+  String toString() => error;
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'error': error ?? '',
       };
