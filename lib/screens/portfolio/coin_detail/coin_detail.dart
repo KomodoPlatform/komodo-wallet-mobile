@@ -568,17 +568,10 @@ class _CoinDetailState extends State<CoinDetail> {
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, top: 8),
                             child: Builder(builder: (BuildContext context) {
-                              final String amount = widget.coinBalance.coin
-                                      .swapContractAddress.isNotEmpty
-                                  ? replaceAllTrainlingZeroERC(
-                                      double.parse(transaction.myBalanceChange)
-                                          .toStringAsFixed(16))
-                                  : replaceAllTrainlingZero(
-                                      double.parse(transaction.myBalanceChange)
-                                          .toStringAsFixed(8));
+                              final amount = deci(transaction.myBalanceChange);
 
                               return AutoSizeText(
-                                '${double.parse(transaction.myBalanceChange) > 0 ? '+' : ''}$amount ${currentCoinBalance.coin.abbr}',
+                                '${amount.toDouble() > 0 ? '+' : ''}${deci2s(amount)} ${currentCoinBalance.coin.abbr}',
                                 maxLines: 1,
                                 style: subtitle,
                                 textAlign: TextAlign.end,

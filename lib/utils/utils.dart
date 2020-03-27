@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keccak/keccak.dart';
@@ -65,18 +66,25 @@ bool isChecksumAddress(String address) {
   return true;
 }
 
-String replaceAllTrainlingZero(String data) {
-  for (int i = 0; i < 8; i++) {
-    data = data.replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
-  }
-  return data;
+/// Convers a null, a string or a double into a Decimal.
+Decimal deci(dynamic dv) {
+  if (dv == null) return Decimal.fromInt(0);
+  if (dv is int) return Decimal.fromInt(dv);
+  if (dv is String) return Decimal.parse(dv.replaceAll(',', '.'));
+  if (dv is double) return Decimal.parse(dv.toStringAsFixed(16));
+  if (dv is Decimal) return dv;
+  throw Exception('Neither string nor double: $dv');
 }
 
-String replaceAllTrainlingZeroERC(String data) {
-  for (int i = 0; i < 16; i++) {
-    data = data.replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
-  }
-  return data;
+/// Precise but readable representation (no trailing zeroes).
+String deci2s(Decimal dv, [int fractions = 8]) {
+  if (dv.isInteger) return dv.toStringAsFixed(0); // Fast path.
+  String sv = dv.toStringAsFixed(fractions);
+  final dot = sv.indexOf('.');
+  if (dot == -1) return sv;
+  sv = sv.replaceFirst(RegExp(r'0+$'), '', dot);
+  if (sv.length - 1 == dot) sv = sv.substring(0, dot);
+  return sv;
 }
 
 bool isNumeric(String s) {
@@ -207,9 +215,9 @@ Future<bool> get canCheckBiometrics async {
   if (_canCheckBiometrics == null) {
     try {
       _canCheckBiometrics = await auth.canCheckBiometrics;
-      Log.println('utils:210', 'canCheckBiometrics: $_canCheckBiometrics');
+      Log.println('utils:218', 'canCheckBiometrics: $_canCheckBiometrics');
     } on PlatformException catch (ex) {
-      Log.println('utils:212', 'canCheckBiometrics exception: $ex');
+      Log.println('utils:220', 'canCheckBiometrics exception: $ex');
     }
   }
   return _canCheckBiometrics;
@@ -222,7 +230,7 @@ Future<bool> get canCheckBiometrics async {
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
 Future<bool> authenticateBiometrics(
     BuildContext context, PinStatus pinStatus) async {
-  Log.println('utils:225', 'authenticateBiometrics');
+  Log.println('utils:233', 'authenticateBiometrics');
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('switch_pin_biometric')) {
     final LocalAuthentication localAuth = LocalAuthentication();
@@ -243,7 +251,7 @@ Future<bool> authenticateBiometrics(
       // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
       // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
       // Rewriting the biometrics support (cf. #668) might be one way to fix that.
-      Log.println('utils:246', 'authenticateWithBiometrics ex: ' + e.message);
+      Log.println('utils:254', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
     lockService.biometricsReturned(lockCookie);
@@ -327,7 +335,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:330', url);
+  Log.println('utils:338', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);

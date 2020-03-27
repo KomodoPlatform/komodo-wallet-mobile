@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class SwapBloc implements BlocBase {
@@ -191,7 +192,7 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRate() {
     if (swapBloc.orderCoin != null) {
-      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${(Decimal.parse(currentAmountSell.toString()) / Decimal.parse(currentAmountBuy.toString())).toStringAsFixed(8)} ${swapBloc.orderCoin?.coinRel?.abbr}';
+      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(deci(currentAmountSell) / deci(currentAmountBuy))} ${swapBloc.orderCoin?.coinRel?.abbr}';
     } else {
       return '';
     }
@@ -215,27 +216,27 @@ class SwapBloc implements BlocBase {
   }
 
   Future<double> setReceiveAmount(
-      Coin coin, String amountSell, Ask currentAsk) async {
+      Coin coin, Decimal amountSell, Ask currentAsk) async {
     try {
       final Orderbook orderbook = await MM.getOrderbook(MMService().client,
           GetOrderbook(base: coin.abbr, rel: sellCoin.coin.abbr));
-      String bestPrice = '0';
-      double maxVolume = 0;
+      Decimal bestPrice = deci(0);
+      Decimal maxVolume = deci(0);
       int i = 0;
 
       if (currentAsk == null) {
         for (Ask ask in orderbook.asks) {
           if (ask.address != swapBloc.sellCoin.balance.address &&
               (i == 0 ||
-                  (Decimal.parse(ask.price) <= Decimal.parse(bestPrice) &&
+                  (deci(ask.price) <= bestPrice &&
                       ask.maxvolume > maxVolume))) {
             maxVolume = ask.maxvolume;
-            bestPrice = ask.price;
+            bestPrice = deci(ask.price);
           }
           i++;
         }
       } else {
-        bestPrice = currentAsk.price;
+        bestPrice = deci(currentAsk.price);
         maxVolume = currentAsk.maxvolume;
       }
 
@@ -248,8 +249,7 @@ class SwapBloc implements BlocBase {
       );
       _inOrderCoin.add(orderCoin);
 
-      amountReceive =
-          double.parse(orderCoin.getBuyAmount(amountSell.replaceAll(',', '.')));
+      amountReceive = orderCoin.getBuyAmount(amountSell).toDouble();
 
       _inAmountReceiveCoin.add(amountReceive);
       return amountReceive;

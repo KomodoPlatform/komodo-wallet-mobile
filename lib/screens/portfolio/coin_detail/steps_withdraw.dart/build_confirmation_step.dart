@@ -10,6 +10,7 @@ import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:decimal/decimal.dart';
@@ -53,7 +54,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
         return 0;
       }
     } catch (e) {
-      Log.println('build_confirmation_step:56', e);
+      Log.println('build_confirmation_step:57', e);
       return 0;
     }
   }
@@ -68,38 +69,33 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           bool notEnoughEth = false;
           bool isEthActive = false;
 
-          double fee = 0;
-          double ethfee = 0;
+          Decimal fee = deci(0);
+          Decimal ethfee = deci(0);
           if (snapshot.hasData && coinsDetailBloc.customFee == null) {
             try {
               fee = snapshot.data;
             } catch (e) {
-              Log.println('build_confirmation_step:77', e);
+              Log.println('build_confirmation_step:78', e);
             }
           }
 
           if (coinsDetailBloc.customFee != null &&
               widget.coinBalance.coin.type != 'erc') {
-            fee = double.parse(coinsDetailBloc.customFee.amount);
+            fee = deci(coinsDetailBloc.customFee.amount);
           }
 
           if (coinsDetailBloc.customFee != null &&
               widget.coinBalance.coin.type == 'erc') {
-            fee = coinsDetailBloc.customFee.gas *
-                double.parse(coinsDetailBloc.customFee.gasPrice);
+            fee = deci(coinsDetailBloc.customFee.gas) *
+                deci(coinsDetailBloc.customFee.gasPrice);
           }
 
-          double amountToPay = double.parse(widget.amountToPay);
-          if (!isErcCoin) {
-            amountToPay += fee;
-          }
-          double amountUserReceive = double.parse(widget.amountToPay);
-          final double userBalance =
-              double.parse(widget.coinBalance.balance.getBalance());
+          Decimal amountToPay = deci(widget.amountToPay);
+          if (!isErcCoin) amountToPay += fee;
+          Decimal amountUserReceive = deci(widget.amountToPay);
+          final Decimal userBalance = widget.coinBalance.balance.balance;
 
-          if (amountToPay > userBalance) {
-            amountUserReceive = userBalance;
-          }
+          if (amountToPay > userBalance) amountUserReceive = userBalance;
 
           if (userBalance == amountUserReceive) {
             amountToPay = amountUserReceive;
@@ -116,24 +112,22 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           }
 
           isEthActive = !(ethCoin == null);
-          ethfee = Decimal.parse(fee.toString()).toDouble();
+          ethfee = fee;
 
           print(Decimal.parse(ethfee.toString()));
           print(Decimal.parse(widget.amountToPay));
 
-          if ((ethCoin != null &&
-                  ethfee > double.parse(ethCoin.balance.balance)) ||
+          if ((ethCoin != null && ethfee > ethCoin.balance.balance) ||
               (ethCoin != null &&
                   widget.coinBalance.coin.abbr == 'ETH' &&
-                  Decimal.parse(amountUserReceive.toString()) >
-                      Decimal.parse(ethCoin.balance.balance))) {
+                  amountUserReceive > ethCoin.balance.balance)) {
             notEnoughEth = true;
           }
 
           final bool isButtonActive =
               (widget.coinBalance.coin.swapContractAddress.isEmpty &&
-                      amountToPay > 0) ||
-                  (amountToPay > 0 && !notEnoughEth && isEthActive);
+                      amountToPay > deci(0)) ||
+                  (amountToPay > deci(0) && !notEnoughEth && isEthActive);
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -297,7 +291,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                               .toUpperCase(),
                           onPressed: isButtonActive && snapshot.hasData
                               ? () {
-                                  _onPressedConfirmWithdraw(amountUserReceive);
+                                  _onPressedConfirmWithdraw(
+                                      amountUserReceive.toDouble());
                                 }
                               : null,
                         );

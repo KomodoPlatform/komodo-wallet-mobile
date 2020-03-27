@@ -463,7 +463,7 @@ class CoinsBloc implements BlocBase {
           .toDouble();
     } else {
       coinBalance = CoinBalance(
-          coin, Balance(address: '', balance: '0', coin: coin.abbr));
+          coin, Balance(address: '', balance: deci('0'), coin: coin.abbr));
       coinBalance.priceForOne = price.toString();
       coinBalance.balanceUSD = 0.0;
     }
