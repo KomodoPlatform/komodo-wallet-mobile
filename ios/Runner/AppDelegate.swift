@@ -44,6 +44,7 @@ import os.log
                 result(ret)
             } else if call.method == "lsof" {
                 lsof()
+                result(0)
             } else if call.method == "log" {
                 // Allows us to log via the `os_log` default channel
                 // (Flutter currently does it for us, but there's a chance that it won't).
