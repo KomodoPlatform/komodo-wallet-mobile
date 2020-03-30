@@ -15,14 +15,25 @@
 #include <arpa/inet.h>
 
 void metrics (void) {
+  mach_port_t self = mach_task_self();
+  if (self == MACH_PORT_NULL || self == MACH_PORT_DEAD) return;
+
   // cf. https://forums.developer.apple.com/thread/105088#357415
+  int32_t footprint = 0;
   task_vm_info_data_t vmInfo;
   mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
-  kern_return_t kernelReturn = task_info (mach_task_self(), TASK_VM_INFO, (task_info_t) &vmInfo, &count);
-  if (kernelReturn == KERN_SUCCESS)  {
-    int32_t footprint = (int32_t) vmInfo.phys_footprint / (1024 * 1024);
-    os_log (OS_LOG_DEFAULT, "phys_footprint is %d MiB", footprint);
-  }
+  kern_return_t rc = task_info (self, TASK_VM_INFO, (task_info_t) &vmInfo, &count);
+  if (rc == KERN_SUCCESS) footprint = (int32_t) vmInfo.phys_footprint / (1024 * 1024);
+
+  // iOS applications are in danger of being killed if the number of iterrupts is too high,
+  // so it might be interesting to maintain some statistics on the number of interrupts.
+  int64_t wakeups = 0;
+  task_power_info_data_t powInfo;
+  count = TASK_POWER_INFO_COUNT;
+  rc = task_info (self, TASK_POWER_INFO, (task_info_t) &powInfo, &count);
+  if (rc == KERN_SUCCESS) wakeups = (int64_t) powInfo.task_interrupt_wakeups;
+
+  os_log (OS_LOG_DEFAULT, "phys_footprint %d MiB; wakeups %lld", footprint, wakeups);
 }
 
 void lsof (void)
