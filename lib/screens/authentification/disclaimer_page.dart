@@ -315,16 +315,22 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           padding: const EdgeInsets.all(16.0),
           child: ScaleTransition(
             scale: _scaleTransition,
-            child: FloatingActionButton(
-              child: Icon(Icons.arrow_downward),
-              onPressed: () {
-                if (isEndOfScroll) {
-                  timer.cancel();
-                  _controllerScale.reverse();
-                }
-                _scrollController.animateTo(_scrollPosition + 300,
-                    duration: const Duration(seconds: 1), curve: Curves.ease);
-              },
+            child: GestureDetector(
+              onLongPress: () {
+                  _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+                      duration: const Duration(seconds: 3), curve: Curves.ease);
+                },
+              child: FloatingActionButton(
+                child: Icon(Icons.arrow_downward),
+                onPressed: () {
+                  if (isEndOfScroll) {
+                    timer.cancel();
+                    _controllerScale.reverse();
+                  }
+                  _scrollController.animateTo(_scrollPosition + 300,
+                      duration: const Duration(seconds: 1), curve: Curves.ease);
+                },
+              ),
             ),
           ),
         ),

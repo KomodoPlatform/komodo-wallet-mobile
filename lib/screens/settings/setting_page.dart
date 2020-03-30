@@ -695,13 +695,14 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
 
-  Future<void> _shareFile() async {
+  Future<void> _shareLogs() async {
     Navigator.of(context).pop();
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
 
     final now = DateTime.now();
     final log = mmSe.currentLog(now: now);
+    if (syncSwaps.swaps.isEmpty) await syncSwaps.update('share logs');
     try {
       log.sink.write('\n\n--- my recent swaps ---\n\n');
       for (Swap swap in syncSwaps.swaps) {
@@ -709,13 +710,14 @@ class _SettingPageState extends State<SettingPage> {
         if (started == null) continue;
         final tim = DateTime.fromMillisecondsSinceEpoch(started.timestamp);
         final delta = now.difference(tim);
-        if (delta.inDays > 3) continue; // Skip old swaps.
+        if (delta.inDays > 7) continue; // Skip old swaps.
         log.sink.write(json.encode(swap.toJson) + '\n\n');
       }
       log.sink.write('\n\n--- / my recent swaps ---\n\n');
       log.sink.write('AtomicDEX mobile ${packageInfo.version} $os\n');
+      await log.sink.flush();
     } catch (ex) {
-      Log('setting_page:718', ex);
+      Log('setting_page:720', ex);
       log.sink.write('Error saving swaps: $ex');
     }
 
@@ -724,11 +726,12 @@ class _SettingPageState extends State<SettingPage> {
     // bzip2 encoder is too slow for some older phones.
     // gzip gives us a compression ratio of about 20%, allowing to send about 40 MiB of log.
     int start = 0;
-    final end = log.file.lengthSync();
+    final raf = log.file.openSync();
+    final end = raf.lengthSync();
     if (end > 33 * 1024 * 1024) start = end - 33 * 1024 * 1024;
     final buf = Uint8List(end - start);
-    final raf = log.file.openSync();
-    final got = await raf.readInto(buf, start, end);
+    raf.setPositionSync(start);
+    final got = await raf.readInto(buf);
     if (got != end - start) {
       throw Exception(
           'Error reading from log: start $start, end $end, got $got');
@@ -736,10 +739,10 @@ class _SettingPageState extends State<SettingPage> {
     final af = File('${mmSe.filesPath}dex.log.gz');
     if (af.existsSync()) af.deleteSync();
     final enc = arch.GZipEncoder();
-    Log('setting_page:739', 'Creating dex.log.gz out of $got log bytes…');
+    Log('setting_page:742', 'Creating dex.log.gz out of $got log bytes…');
     af.writeAsBytesSync(enc.encode(buf));
     final len = af.lengthSync();
-    Log('setting_page:742', 'Compression produced $len bytes.');
+    Log('setting_page:745', 'Compression produced $len bytes.');
 
     mainBloc.isUrlLaucherIsOpen = true;
     await Share.shareFile(af,
@@ -763,7 +766,7 @@ class _SettingPageState extends State<SettingPage> {
               RaisedButton(
                 key: const Key('setting-share-button'),
                 child: Text(AppLocalizations.of(context).share),
-                onPressed: () => _shareFile(),
+                onPressed: () => _shareLogs(),
               )
             ],
           );
@@ -795,14 +798,14 @@ class FilePickerButton extends StatelessWidget {
           try {
             path = await FilePicker.getFilePath();
           } catch (err) {
-            Log('setting_page:798', 'file picker exception: $err');
+            Log('setting_page:801', 'file picker exception: $err');
           }
           lockService.filePickerReturned(lockCookie);
 
           // On iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log('setting_page:805', 'file picked: $path');
+          Log('setting_page:808', 'file picked: $path');
 
           final bool ck = checkAudioFile(path);
           if (!ck) {

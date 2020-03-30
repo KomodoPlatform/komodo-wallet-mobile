@@ -98,6 +98,12 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               textInputAction: TextInputAction.next,
               autocorrect: false,
               enableInteractiveSelection: true,
+              toolbarOptions: ToolbarOptions(
+                paste: controller1.text.isEmpty,
+                copy: false,
+                cut: false,
+                selectAll: false,
+              ),
               obscureText: isObscured,
               validator: (String arg) {
                 final RegExp exp = RegExp(
@@ -144,6 +150,12 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 focusNode: _focus2,
                 obscureText: isObscured,
                 enableInteractiveSelection: true,
+                toolbarOptions: ToolbarOptions(
+                  paste: controller2.text.isEmpty,
+                  copy: false,
+                  cut: false,
+                  selectAll: false,
+                ),
                 onFieldSubmitted: (String data) {
                   _checkValidation(context);
                 },
