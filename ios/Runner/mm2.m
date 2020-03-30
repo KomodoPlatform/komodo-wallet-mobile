@@ -7,12 +7,45 @@
 #import <stdio.h>
 #import <os/log.h>  // os_log
 
+#include <net/if.h>
+#include <ifaddrs.h>
+
 #include <mach/mach.h>  // task_info, mach_task_self
 
 #include <string.h>  // strcpy
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
+// Note that the network interface traffic is not the same as the application traffic.
+// Might still be useful with picking some trends in how the application is using the network,
+// and for troubleshooting.
+void network (void) {
+  // https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/getifaddrs.3.html
+  struct ifaddrs *addrs = NULL;
+  int rc = getifaddrs (&addrs);
+  if (rc != 0) return;
+
+  for (struct ifaddrs *addr = addrs; addr != NULL; addr = addr->ifa_next) {
+    if (addr->ifa_addr->sa_family != AF_LINK) continue;
+
+    // Known aliases: “en0” is wi-fi, “pdp_ip0” is mobile.
+    // AG: “lo0” on my iPhone 5s seems to be measuring the Wi-Fi traffic.
+    const char* name = addr->ifa_name;
+
+    struct if_data *stats = (struct if_data*) addr->ifa_data;
+    if (name == NULL || stats == NULL) continue;
+    if (stats->ifi_ipackets == 0 || stats->ifi_opackets == 0) continue;
+
+    os_log (OS_LOG_DEFAULT,
+      "if %{public}s ipackets %lld ibytes %lld opackets %lld obytes %lld",
+      name,
+      (int64_t) stats->ifi_ipackets,
+      (int64_t) stats->ifi_ibytes,
+      (int64_t) stats->ifi_opackets,
+      (int64_t) stats->ifi_obytes);}
+
+  freeifaddrs (addrs);}
 
 void metrics (void) {
   mach_port_t self = mach_task_self();
@@ -34,7 +67,7 @@ void metrics (void) {
   if (rc == KERN_SUCCESS) wakeups = (int64_t) powInfo.task_interrupt_wakeups;
 
   os_log (OS_LOG_DEFAULT, "phys_footprint %d MiB; wakeups %lld", footprint, wakeups);
-}
+  network();}
 
 void lsof (void)
 {
