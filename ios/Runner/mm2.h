@@ -21,4 +21,7 @@ int8_t mm2_main (const char* conf, void (*log_cb) (const char* line));
 
 void lsof (void);
 
+/// Measurement of application metrics: network traffic, CPU usage, etc.
+void metrics (void);
+
 #endif /* mm2_h */

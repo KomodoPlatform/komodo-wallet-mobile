@@ -12,6 +12,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+void metrics (void) {
+  //os_log (OS_LOG_DEFAULT, "metrics] hi");
+}
 
 void lsof (void)
 {
