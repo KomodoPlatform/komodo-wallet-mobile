@@ -433,7 +433,8 @@ class MMService {
   }
 
   Future<void> lsof() async {
-    return await nativeC.invokeMethod('lsof');
+    final rc = await nativeC.invokeMethod<int>('lsof');
+    if (rc != 0) throw Exception('!lsof: $rc');
   }
 
   Future<File> get _localFile async {
@@ -468,7 +469,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:471', 'getAllBalances');
+    Log('mm_service:472', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
