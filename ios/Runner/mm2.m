@@ -5,7 +5,9 @@
 #import <errno.h>
 #import <sys/param.h>
 #import <stdio.h>
-#import <os/log.h>
+#import <os/log.h>  // os_log
+
+#include <mach/mach.h>  // task_info, mach_task_self
 
 #include <string.h>  // strcpy
 #include <sys/socket.h>
@@ -13,7 +15,14 @@
 #include <arpa/inet.h>
 
 void metrics (void) {
-  //os_log (OS_LOG_DEFAULT, "metrics] hi");
+  // cf. https://forums.developer.apple.com/thread/105088#357415
+  task_vm_info_data_t vmInfo;
+  mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
+  kern_return_t kernelReturn = task_info (mach_task_self(), TASK_VM_INFO, (task_info_t) &vmInfo, &count);
+  if (kernelReturn == KERN_SUCCESS)  {
+    int32_t footprint = (int32_t) vmInfo.phys_footprint / (1024 * 1024);
+    os_log (OS_LOG_DEFAULT, "phys_footprint is %d MiB", footprint);
+  }
 }
 
 void lsof (void)
