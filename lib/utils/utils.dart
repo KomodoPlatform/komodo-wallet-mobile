@@ -70,7 +70,10 @@ bool isChecksumAddress(String address) {
 Decimal deci(dynamic dv) {
   if (dv == null) return Decimal.fromInt(0);
   if (dv is int) return Decimal.fromInt(dv);
-  if (dv is String) return Decimal.parse(dv.replaceAll(',', '.'));
+  if (dv is String)
+    return dv.isEmpty
+        ? Decimal.fromInt(0)
+        : Decimal.parse(dv.replaceAll(',', '.'));
   if (dv is double) return Decimal.parse(dv.toStringAsFixed(16));
   if (dv is Decimal) return dv;
   throw Exception('Neither string nor double: $dv');
