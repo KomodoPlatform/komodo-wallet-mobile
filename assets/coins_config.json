@@ -561,8 +561,9 @@
 		"coingeckoId": "utrum",
 		"colorCoin": "0xFF23AADF",
 		"serverList": [
-			"electrum1.utrum.io:10088",
-			"electrum2.utrum.io:10088"
+			"electrum1.cipig.net:10021",
+			"electrum2.cipig.net:10021",
+                        "electrum3.cipig.net:10021"
 		],
 		"explorerUrl": [
 			"https://explorer.utrum.io/"
