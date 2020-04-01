@@ -44,6 +44,10 @@ Git tags can be used instead (that is, when we want to experiment with beta vers
     git reset --hard
     git checkout -f v1.14.3
 
+### Kotlin vs Flutter
+
+In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Flutter “1.12.13+hotfix.7”. To fix it - [uninstall the latest Kotlin](https://github.com/flutter/flutter/issues/52077#issuecomment-600459786) - then the Kotlin version 1.3.61, bundled with the Android Studio, will reappear.
+
 ## Accessing the database
 
     adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
