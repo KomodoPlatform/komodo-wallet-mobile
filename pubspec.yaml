@@ -33,13 +33,13 @@ dependencies:
   # flutter_cupertino_localizations: ^1.0.1
 
   # https://pub.dev/packages/audioplayers
-  audioplayers: # 0.14.0 - TODO: review 859c88c
+  audioplayers: # 0.14.0 - DONE: Secure code reviewed 859c88c
     git:
       url: git://github.com/KomodoPlatform/audioplayers.git
       ref: 859c88c2c3fe926bdbb6e5e729d3c16d088be76a
   
   # https://pub.dev/packages/file_picker
-  file_picker: # 1.4.3+2 - TODO: review b68ee11
+  file_picker: # 1.4.3+2 - DONE: Secure code reviewed b68ee11
     git:
       url: git://github.com/KomodoPlatform/flutter_file_picker.git
       ref: b68ee11c6ac117460ffa0c96b13ac4b89f2386f7
@@ -79,7 +79,7 @@ dev_dependencies:
     git: 
       url: git://github.com/KomodoPlatform/bip39-dart.git
       ref: dbd846b743eab3b21f3ef56abc958305be54761a
-  pin_code_view: # TODO: Branch cupertino-style-pin-code is waiting for security review, https://github.com/KomodoPlatform/pin_code_view/pull/4
+  pin_code_view: # DONE: Secure code reviewed c0b6516
     git:
       url: git://github.com/KomodoPlatform/pin_code_view.git
       ref: c0b6516aae9a3321fcce7391447351ad73a50f0a
