@@ -170,12 +170,28 @@ class MusicService {
   void play(List<Order> orders) {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
-    final MusicMode newMode = pickMode(orders, musicMode);
+    MusicMode newMode = pickMode(orders, musicMode);
+
+    // #711: AG: My experiments show that, on iOS 12.4.5,
+    // changing the sound effectively evicts us from the background
+    // (timers stop to fire and the application is later recreated).
+    // It probably shortens back the “suspend” mode
+    // (except this late “suspend” is out of the grace period
+    //  and doesn't have the time to leave a trace in the logs).
+    // Most probably a result of iOS update,
+    // as I haven't seen this happening when the sound modes where implemented.
+    // Might also be an artefact of how the “audioplayers” dependency interacts with the OS,
+    // we might experiment with reimplementing the sound in native code to solve this.
+    // In order to workaround this unfortunate occurence we reduce all potentially backgound modes to MAKER.
+    if (newMode != MusicMode.SILENT) newMode = MusicMode.MAKER;
+    // Uncomment this to trigger the change-of-sound suspend faster:
+    //if (newMode == musicMode) newMode = MusicMode.APPLAUSE;
+
     bool changes = false;
 
     if (newMode != musicMode) {
       changes = true;
-      Log('music_service:178', 'play] $musicMode -> $newMode');
+      Log('music_service:194', 'play] $musicMode -> $newMode');
     }
 
     if (_reload) {
@@ -213,7 +229,7 @@ class MusicService {
                         : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
 
     final String path = customFile != null ? customFile.path : defaultPath;
-    Log('music_service:216', 'path: $path');
+    Log('music_service:232', 'path: $path');
 
     // Tell the player how to access the file directly instead of trying to copy it from the assets.
     if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
@@ -234,7 +250,7 @@ class MusicService {
       _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
       _player.play(path, volume: volume());
     } else {
-      Log('music_service:237', 'Unexpected music mode: $newMode');
+      Log('music_service:253', 'Unexpected music mode: $newMode');
       _audioPlayer.stop();
     }
 
@@ -273,7 +289,7 @@ class MusicService {
   Future<bool> iosBackgroundExit() async {
     final double btr =
         await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-    Log('music_service:276', 'backgroundTimeRemaining: $btr');
+    Log('music_service:292', 'backgroundTimeRemaining: $btr');
 
     // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
     // and when we are silent the `backgroundTimeRemaining` is low
