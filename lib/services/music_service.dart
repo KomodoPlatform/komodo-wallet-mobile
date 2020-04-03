@@ -241,6 +241,16 @@ class MusicService {
     musicMode = newMode;
   }
 
+  /// Play a single sound file in a loop.
+  /// Useful for testing the timers without starting MM.
+  ///
+  /// NB: On iOS, when the application is suspended without any music playing,
+  /// the timers (such as the ones used by the JobService) stop
+  /// and resume only when the user returns back to the application.
+  void justPlay() {
+    _player.loop('maker.mp3', volume: 0.1);
+  }
+
   /// True when we want to periodically update the orders and swaps.
   ///
   /// As of now the lists of orders and swaps are not a part of a separate model
@@ -263,7 +273,7 @@ class MusicService {
   Future<bool> iosBackgroundExit() async {
     final double btr =
         await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-    Log('music_service:266', 'backgroundTimeRemaining: $btr');
+    Log('music_service:276', 'backgroundTimeRemaining: $btr');
 
     // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
     // and when we are silent the `backgroundTimeRemaining` is low

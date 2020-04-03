@@ -73,8 +73,8 @@ class MMService {
     jobService.install('metrics', 3.14, (j) async {
       // Not implemented on Android YET.
       if (Platform.isIOS) {
-        final rc = await nativeC.invokeMethod<int>('metrics');
-        if (rc != 0) Log('mm_service:77', '!metrics: $rc');
+        final js = await nativeC.invokeMethod<String>('metrics');
+        Log('mm_service:77', 'metrics: $js');
       }
     });
   }

@@ -6,6 +6,7 @@
 #import <sys/param.h>
 #import <stdio.h>
 #import <os/log.h>  // os_log
+#import <Foundation/Foundation.h>  // NSException
 
 #include <net/if.h>
 #include <ifaddrs.h>
@@ -20,7 +21,7 @@
 // Note that the network interface traffic is not the same as the application traffic.
 // Might still be useful with picking some trends in how the application is using the network,
 // and for troubleshooting.
-void network (void) {
+void network (NSMutableDictionary* ret) {
   // https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/getifaddrs.3.html
   struct ifaddrs *addrs = NULL;
   int rc = getifaddrs (&addrs);
@@ -37,26 +38,83 @@ void network (void) {
     if (name == NULL || stats == NULL) continue;
     if (stats->ifi_ipackets == 0 || stats->ifi_opackets == 0) continue;
 
-    os_log (OS_LOG_DEFAULT,
-      "if %{public}s ipackets %lld ibytes %lld opackets %lld obytes %lld",
+    int8_t log = 0;
+    if (log == 1) os_log (OS_LOG_DEFAULT,
+      "network] if %{public}s ipackets %lld ibytes %lld opackets %lld obytes %lld",
       name,
       (int64_t) stats->ifi_ipackets,
       (int64_t) stats->ifi_ibytes,
       (int64_t) stats->ifi_opackets,
-      (int64_t) stats->ifi_obytes);}
+      (int64_t) stats->ifi_obytes);
+
+    NSDictionary* readings = @{
+      @"ipackets": @((int64_t) stats->ifi_ipackets),
+      @"ibytes": @((int64_t) stats->ifi_ibytes),
+      @"opackets": @((int64_t) stats->ifi_opackets),
+      @"obytes": @((int64_t) stats->ifi_obytes)};
+    NSString* key = [[NSString alloc] initWithUTF8String:name];
+    [ret setObject:readings forKey:key];}
 
   freeifaddrs (addrs);}
 
-void metrics (void) {
+// Results in a `EXC_CRASH (SIGABRT)` crash log.
+void throw_example (void) {
+  @throw [NSException exceptionWithName:@"exceptionName" reason:@"throw_example" userInfo:nil];}
+
+// “in_use” stops at 256.
+void file_example (void) {
+  NSFileManager* sharedFM = [NSFileManager defaultManager];
+  NSArray<NSURL*>* urls = [sharedFM URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+  for (NSURL* url in urls) os_log (OS_LOG_DEFAULT, "file_example] supp dir: %{public}s\n", url.fileSystemRepresentation);
+  if (urls.count < 1) {os_log (OS_LOG_DEFAULT, "file_example] Can't get a NSApplicationSupportDirectory"); return;}
+  const char* wr_dir = urls[0].fileSystemRepresentation;
+
+  NSString* dir = [[NSString alloc] initWithUTF8String:wr_dir];
+  NSArray* files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:NULL];
+  static int32_t total = 0;
+  [files enumerateObjectsUsingBlock:^ (id obj, NSUInteger idx, BOOL *stop) {
+    NSString* filename = (NSString*) obj;
+    os_log (OS_LOG_DEFAULT, "file_example] filename: %{public}s", filename.UTF8String);
+
+    NSString* path = [NSString stringWithFormat:@"%@/%@", dir, filename];
+    int fd = open (path.UTF8String, O_RDWR);
+    if (fd > 0) ++total;}];
+
+  int32_t in_use = 0;
+  for (int fd = 0; fd < (int) FD_SETSIZE; ++fd) if (fcntl (fd, F_GETFD, 0) != -1) ++in_use;
+
+  os_log (OS_LOG_DEFAULT, "file_example] leaked %d; in_use %d / %d", total, in_use, (int32_t) FD_SETSIZE);}
+
+// On iPhone 5s the app stopped at “phys_footprint 646 MiB; rs 19 MiB”.
+// It didn't get to a memory allocation failure but was killed by Jetsam instead
+// (“JetsamEvent-2020-04-03-175018.ips” was generated in the iTunes crash logs directory).
+void leak_example (void) {
+  static int8_t* leaks[9999];  // Preserve the pointers for GC.
+  static int32_t next_leak = 0;
+  int32_t size = 9 * 1024 * 1024;
+  os_log (OS_LOG_DEFAULT, "leak_example] Leaking %d MiB…", size / 1024 / 1024);
+  int8_t* leak = malloc (size);
+  if (leak == NULL) {os_log (OS_LOG_DEFAULT, "leak_example] Allocation failed"); return;}
+  leaks[next_leak++] = leak;
+  // Fill with random junk to workaround memory compression.
+  for (int ix = 0; ix < size; ++ix) leak[ix] = (int8_t) rand();
+  os_log (OS_LOG_DEFAULT, "leak_example] Leak %d, allocated %d MiB", next_leak, size / 1024 / 1024);}
+
+const char* metrics (void) {
+  //file_example();
+  //leak_example();
+
   mach_port_t self = mach_task_self();
-  if (self == MACH_PORT_NULL || self == MACH_PORT_DEAD) return;
+  if (self == MACH_PORT_NULL || self == MACH_PORT_DEAD) return "{}";
 
   // cf. https://forums.developer.apple.com/thread/105088#357415
-  int32_t footprint = 0;
+  int32_t footprint = 0, rs = 0;
   task_vm_info_data_t vmInfo;
   mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
   kern_return_t rc = task_info (self, TASK_VM_INFO, (task_info_t) &vmInfo, &count);
-  if (rc == KERN_SUCCESS) footprint = (int32_t) vmInfo.phys_footprint / (1024 * 1024);
+  if (rc == KERN_SUCCESS) {
+    footprint = (int32_t) vmInfo.phys_footprint / (1024 * 1024);
+    rs = (int32_t) vmInfo.resident_size / (1024 * 1024);}
 
   // iOS applications are in danger of being killed if the number of iterrupts is too high,
   // so it might be interesting to maintain some statistics on the number of interrupts.
@@ -66,8 +124,26 @@ void metrics (void) {
   rc = task_info (self, TASK_POWER_INFO, (task_info_t) &powInfo, &count);
   if (rc == KERN_SUCCESS) wakeups = (int64_t) powInfo.task_interrupt_wakeups;
 
-  os_log (OS_LOG_DEFAULT, "phys_footprint %d MiB; wakeups %lld", footprint, wakeups);
-  network();}
+  int32_t files = 0;
+  for (int fd = 0; fd < (int) FD_SETSIZE; ++fd) if (fcntl (fd, F_GETFD, 0) != -1) ++files;
+
+  NSMutableDictionary* ret = [NSMutableDictionary new];
+
+  //os_log (OS_LOG_DEFAULT,
+  //  "metrics] phys_footprint %d MiB; rs %d MiB; wakeups %lld; files %d", footprint, rs, wakeups, files);
+  ret[@"footprint"] = @(footprint);
+  ret[@"rs"] = @(rs);
+  ret[@"wakeups"] = @(wakeups);
+  ret[@"files"] = @(files);
+
+  network (ret);
+
+  NSError *err;
+  NSData *js = [NSJSONSerialization dataWithJSONObject:ret options:0 error: &err];
+  if (js == NULL) {os_log (OS_LOG_DEFAULT, "metrics] !json: %@", err); return "{}";}
+  NSString *jss = [[NSString alloc] initWithData:js encoding:NSUTF8StringEncoding];
+  const char *cs = [jss UTF8String];
+  return cs;}
 
 void lsof (void)
 {

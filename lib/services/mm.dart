@@ -210,6 +210,20 @@ class ApiProvider {
                 _catchErrorString('postSell', e, 'Error on post sell'));
       });
 
+  Future<void> simPanic({http.Client client}) async {
+    client ??= mmSe.client;
+    final req = <String, dynamic>{
+      'method': 'sim_panic',
+      'userpass': mmSe.userpass,
+      'mode': 'simple'
+    };
+    final r = await client.post(url, body: json.encode(req));
+    _assert200(r);
+    final dynamic jbody = json.decode(r.body);
+    final err = ErrorString.fromJson(jbody);
+    if (err.error.isNotEmpty) throw removeLineFromMM2(err);
+  }
+
   dynamic enableCoinImpl(Coin coin) {
     final List<Server> servers = coin.serverList
         .map((String url) =>
@@ -236,7 +250,7 @@ class ApiProvider {
       'requires_notarization': coin.requiresNotarization
     };
     final js = json.encode(electrum);
-    Log('mm:239', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
+    Log('mm:253', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
     return js;
   }
 

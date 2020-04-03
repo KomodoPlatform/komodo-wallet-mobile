@@ -39,15 +39,15 @@ import os.log
                 result("starting mm2")
             } else if call.method == "status" {
                 let ret = Int32(mm2_main_status());
-                
+
                 print(ret)
                 result(ret)
             } else if call.method == "lsof" {
                 lsof()
                 result(0)
             } else if call.method == "metrics" {
-                metrics()
-                result(0)
+                let js = metrics()
+                result (String (cString: js!))
             } else if call.method == "log" {
                 // Allows us to log via the `os_log` default channel
                 // (Flutter currently does it for us, but there's a chance that it won't).
@@ -72,14 +72,14 @@ import os.log
         }
         
     }
-    
+
     public func onListen(withArguments arguments: Any?,
                          eventSink: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = eventSink
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didReceiveData, object: nil)
         return nil
     }
-    
+
     private func sendLogMM2StateEvent(str: String) {
         guard let eventSink = self.eventSink else {
             return
@@ -87,7 +87,6 @@ import os.log
         eventSink(str)
     }
 
-    
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
         NotificationCenter.default.removeObserver(self)
         eventSink = nil
