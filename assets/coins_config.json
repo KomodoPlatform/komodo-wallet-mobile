@@ -579,9 +579,10 @@
 		"coingeckoId": "verus-coin",
 		"colorCoin": "0xFF659dda",
 		"serverList": [
-			"el0.veruscoin.io:17485",
-			"el1.veruscoin.io:17485",
-			"el2.veruscoin.io:17485"
+                        "el0.veruscoin.io:17485",
+                        "el1.veruscoin.io:17485",
+                        "el2.veruscoin.io:17485",
+                        "electrum.vrsc.0x03.services:17485"
 		],
 		"explorerUrl": [
 			"https://vrsc.kmdexplorer.io/"
