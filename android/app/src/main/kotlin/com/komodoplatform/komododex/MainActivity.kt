@@ -2,15 +2,15 @@ package com.komodoplatform.atomicdex
 
 import android.os.Build
 import android.os.Bundle
-import io.flutter.app.FlutterFragmentActivity
-import io.flutter.plugin.common.EventChannel 
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.GeneratedPluginRegistrant
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import io.flutter.app.FlutterActivity
+import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.GeneratedPluginRegistrant
 
-class MainActivity: FlutterFragmentActivity() {
+class MainActivity: FlutterActivity() {
   private var logC: EventChannel? = null
   private var logSink: EventChannel.EventSink? = null
 
@@ -49,6 +49,8 @@ class MainActivity: FlutterFragmentActivity() {
 
         result.success ("pong")
       } else if (call.method == "BUILD_TIME") {
+        // NB: If Kotlin is missing the “BUILD_TIME” then use “flutter build apk --debug”
+        // to generate the “komodoDEX/build/app/intermediates/javac/release/classes/com/komodoplatform/atomicdex/BuildConfig.class”.
         result.success (BuildConfig.BUILD_TIME)
       } else {
         result.notImplemented()}}}
