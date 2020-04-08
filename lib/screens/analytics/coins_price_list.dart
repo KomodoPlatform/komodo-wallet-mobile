@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 
 import 'build_coin_price.dart';
 
 class CoinsPriceList extends StatefulWidget {
+  const CoinsPriceList({this.onItemTap});
+
+  final Function(Coin) onItemTap;
+
   @override
   _CoinsPriceListState createState() => _CoinsPriceListState();
 }
@@ -31,7 +36,12 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
               shrinkWrap: true,
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                return BuildCoinPrice(snapshot.data[index]);
+                return BuildCoinPrice(
+                  coinBalance: snapshot.data[index],
+                  onTap: () {
+                    widget.onItemTap(snapshot.data[index].coin);
+                  },
+                );
               });
         } else {
           return const Center(

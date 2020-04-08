@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/analytics/coins_price_list.dart';
 import 'package:komodo_dex/screens/analytics/order_book.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
@@ -11,6 +12,8 @@ class AnalyticsPage extends StatefulWidget {
 class _AnalyticsPageState extends State<AnalyticsPage>
     with TickerProviderStateMixin {
   TabController tabController;
+  Coin _buyCoin;
+  Coin _sellCoin;
 
   @override
   void initState() {
@@ -60,11 +63,37 @@ class _AnalyticsPageState extends State<AnalyticsPage>
         return TabBarView(
           controller: tabController,
           children: <Widget>[
-            CoinsPriceList(),
-            OrderBook(),
+            CoinsPriceList(onItemTap: (Coin coin) {
+              print(coin.abbr);
+              setState(() {
+                _buyCoin = coin;
+                _sellCoin = null;
+              });
+              tabController.index = 1;
+            }),
+            OrderBook(
+              buyCoin: _buyCoin,
+              sellCoin: _sellCoin,
+              onPairChange: (CoinsPair coinsPair) {
+                setState(() {
+                  _buyCoin = coinsPair.buy ?? _buyCoin;
+                  _sellCoin = coinsPair.sell ?? _sellCoin;
+                });
+              },
+            ),
           ],
         );
       }),
     );
   }
+}
+
+class CoinsPair {
+  CoinsPair({
+    this.buy,
+    this.sell,
+  });
+
+  Coin buy;
+  Coin sell;
 }

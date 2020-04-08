@@ -5,9 +5,10 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class BuildCoinPrice extends StatefulWidget {
-  const BuildCoinPrice(this.coinBalance);
+  const BuildCoinPrice({this.coinBalance, this.onTap});
 
   final CoinBalance coinBalance;
+  final Function onTap;
 
   @override
   _BuildCoinPriceState createState() => _BuildCoinPriceState();
@@ -44,7 +45,9 @@ class _BuildCoinPriceState extends State<BuildCoinPrice> {
                   Material(
                     color: Theme.of(context).primaryColor,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        widget.onTap();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(14.0),
                         child: Row(

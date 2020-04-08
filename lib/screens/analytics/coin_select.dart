@@ -18,10 +18,13 @@ class CoinSelect extends StatefulWidget {
 
 class _CoinSelectState extends State<CoinSelect> {
   List<CoinBalance> _balanceList;
+  Coin _selected;
 
   @override
   void initState() {
     super.initState();
+
+    _selected = widget.value;
 
     coinsBloc.outCoins.listen((List<CoinBalance> list) {
       setState(() {
@@ -36,8 +39,6 @@ class _CoinSelectState extends State<CoinSelect> {
 
   @override
   Widget build(BuildContext context) {
-    final Coin coin = widget.value;
-
     return InkWell(
       onTap: () {
         _showDialog();
@@ -52,20 +53,21 @@ class _CoinSelectState extends State<CoinSelect> {
               ),
               Row(
                 children: <Widget>[
-                  coin != null
+                  _selected != null
                       ? Image.asset(
-                          'assets/${coin.abbr.toLowerCase()}.png',
+                          'assets/${_selected.abbr.toLowerCase()}.png',
                           height: 25,
                         )
                       : CircleAvatar(
                           backgroundColor: Theme.of(context).accentColor,
                           radius: 12,
                         ),
+                  const SizedBox(width: 6),
                   ConstrainedBox(
                       constraints: const BoxConstraints(minWidth: 50),
                       child: Center(
                           child: Text(
-                        coin != null ? coin.abbr : '-',
+                        _selected != null ? _selected.abbr : '-',
                         style: Theme.of(context).textTheme.subtitle,
                         maxLines: 1,
                       ))),
@@ -93,6 +95,9 @@ class _CoinSelectState extends State<CoinSelect> {
                 key: Key('coin-select-option-${coinBalance.coin.abbr}'),
                 onPressed: () {
                   dialogBloc.closeDialog(context);
+                  setState(() {
+                    _selected = coinBalance.coin;
+                  });
                   if (widget.onChange != null) {
                     widget.onChange(coinBalance.coin);
                   }
