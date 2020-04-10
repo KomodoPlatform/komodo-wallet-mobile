@@ -63,7 +63,7 @@ dev_dependencies:
   test: 1.9.4 # dart.dev
   mockito: 4.1.1 # dart.dev
   http: 0.12.0+4 # dart.dev
-  qr_flutter: # 3.2.0 - DONE: Secure code reviewed diff 60b20d1 (2.0.0) 587c969 (3.2.0) - TODO: # Secure code review subdep qr-dart (7a1d3791810050bd1257e70a08ab309b0fa6b996)
+  qr_flutter: # 3.2.0 - DONE: Secure code reviewed diff 60b20d1 (2.0.0) 587c969 (3.2.0) - DONE: sub dependencies reviewed: qr-dart (7a1d379)
     git:
       url: git://github.com/KomodoPlatform/qr.flutter.git
       ref: 587c969052f37d9fc0f14801aba241bffbc1ea84
@@ -99,7 +99,7 @@ dev_dependencies:
       ref: 1494b043d03799dd14e689552d1218918435f9f5
   # https://pub.dev/packages/local_auth, canCheckBiometrics, getAvailableBiometrics
   local_auth: 0.6.1 # flutter.dev
-  flutter_svg: # 0.13.1 - DONE: Secure code reviewed diff 39cbfdb (0.13.0+2) a05263d (0.13.1) - TODO: review sub dependencies
+  flutter_svg: # 0.13.1 - DONE: Secure code reviewed diff 39cbfdb (0.13.0+2) a05263d (0.13.1) - DONE: sub dependencies reviewed: path_drawing(1ad9895), xml(6e6547a)
     git:
       url: git://github.com/KomodoPlatform/flutter_svg.git
       ref: a05263d56aa8745405b01df452332d03a758e40d
@@ -112,7 +112,7 @@ dev_dependencies:
       url: git://github.com/KomodoPlatform/timeago.dart.git
       path: timeago/
       ref: 9aeb58544067d4a2cc480da3741db9c35d1f36f3
-  sqflite: # 1.2.2+1 - DONE: Secure code reviewed diff 3cd583b (1.1.2-dev) 8da4eef (1.2.2+1) - TODO: review sub dependencies
+  sqflite: # 1.2.2+1 - DONE: Secure code reviewed diff 3cd583b (1.1.2-dev) 8da4eef (1.2.2+1) - DONE: sub dependencies reviewed: process_run(129f744), tekartik_travis_ci_flutter(83a30d5)
     git:
       url: git://github.com/KomodoPlatform/sqflite.git
       path: sqflite/
