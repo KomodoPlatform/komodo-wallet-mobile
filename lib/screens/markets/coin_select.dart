@@ -117,7 +117,14 @@ class _CoinSelectState extends State<CoinSelect> {
                               'assets/${coinBalance.balance.coin.toLowerCase()}.png',
                         ),
                         const SizedBox(width: 12),
-                        Text(coinBalance.coin.name.toUpperCase()),
+                        Text(
+                          coinBalance.coin.name.toUpperCase(),
+                          style: TextStyle(
+                            color: coinBalance.coin == widget.value
+                                ? Theme.of(context).accentColor
+                                : null,
+                          ),
+                        ),
                       ],
                     ),
                   ),
