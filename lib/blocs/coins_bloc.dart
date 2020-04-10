@@ -468,9 +468,6 @@ class CoinsBloc implements BlocBase {
       coinBalance.balanceUSD = 0.0;
     }
 
-    if (balance != null && balance.coin == 'KMD') {
-      mmSe.pubkey = balance.address;
-    }
     return coinBalance;
   }
 
@@ -478,7 +475,7 @@ class CoinsBloc implements BlocBase {
     final dynamic ctks = await MM.getCoinToKickStart(
         mmSe.client, BaseService(method: 'coins_needed_for_kick_start'));
     if (ctks is CoinToKickStart) {
-      Log('coins_bloc:481', 'kick_start coins: ${ctks.result}');
+      Log('coins_bloc:478', 'kick_start coins: ${ctks.result}');
       final known = await coins;
       for (String ticker in ctks.result) {
         final coin = known[ticker];

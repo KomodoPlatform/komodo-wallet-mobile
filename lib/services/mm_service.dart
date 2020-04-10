@@ -47,7 +47,15 @@ class MMService {
   String url = 'http://localhost:7783';
   String userpass = '';
   Stream<List<int>> streamSubscriptionStdout;
+
+  /// Our p2p ID, 64 bytes version
+  /// (There is also a 66 bytes version, 64 bytes version is a tail of it)
   String pubkey = '';
+
+  /// We're using the netid of 9999 currently
+  /// But it's possible in theory to connect the UI to MM running on a different netid
+  /// Might want to check if we're running under the standard netid before we gossip
+  int netid;
 
   /// Channel to native code.
   static MethodChannel nativeC = MethodChannel(
@@ -76,7 +84,7 @@ class MMService {
         final double btr =
             await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
         final js = await nativeC.invokeMethod<String>('metrics');
-        Log('mm_service:79', 'backgroundTimeRemaining: $btr; metrics: $js');
+        Log('mm_service:87', 'backgroundTimeRemaining: $btr; metrics: $js');
       }
     });
   }
@@ -131,31 +139,31 @@ class MMService {
     if (pong != 'pong') throw Exception('No pong');
 
     final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
-    Log('mm_service:134', 'BUILD_TIME: $buildTime');
+    Log('mm_service:142', 'BUILD_TIME: $buildTime');
     if (buildTime <= 0) throw Exception('No BUILD_TIME');
     final ms = DateTime.now().millisecondsSinceEpoch;
-    if (ms <= buildTime) Log('mm_service:137', 'BUILD_TIME in the future!');
+    if (ms <= buildTime) Log('mm_service:145', 'BUILD_TIME in the future!');
 
     final lastHash = prefs.getString('mm2.lastHash') ?? '';
     final lastCheck = prefs.getInt('mm2.lastCheck') ?? 0;
-    if (ms <= lastCheck) Log('mm_service:141', 'lastCheck in the future!');
+    if (ms <= lastCheck) Log('mm_service:149', 'lastCheck in the future!');
 
     // If there's a copy of mm2 binary and we've checked it recently then we're done.
     if (lsMatch && buildTime < lastCheck) return;
 
-    Log('mm_service:146', 'Loading assets/mm2…');
+    Log('mm_service:154', 'Loading assets/mm2…');
     final ByteData mm2bytes = await rootBundle.load('assets/mm2');
 
-    Log('mm_service:149', 'Calculating assets/mm2 hash…');
+    Log('mm_service:157', 'Calculating assets/mm2 hash…');
     // AG: On my device it takes 7.7 seconds to calculate SHA1, 4.3 seconds to calculate MD5.
     final md5h = md5.convert(mm2bytes.buffer.asUint8List()).toString();
     if (md5h == lastHash) {
-      Log('mm_service:153', 'MM matches the assets/ hash, skipping update');
+      Log('mm_service:161', 'MM matches the assets/ hash, skipping update');
       await prefs.setInt('mm2.lastCheck', ms);
       return;
     }
 
-    Log('mm_service:158', 'Updating MM…');
+    Log('mm_service:166', 'Updating MM…');
     if (lsMatch) await deleteMmBin();
     await saveMmBin(mm2bytes.buffer.asUint8List());
     await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
@@ -254,9 +262,9 @@ class MMService {
       final mat = logName.firstMatch(name);
       if (mat == null) continue;
       if (en.statSync().type != FileSystemEntityType.file) continue;
-      final int year = int.parse(mat.group(1));
-      final int month = int.parse(mat.group(2));
-      final int day = int.parse(mat.group(3));
+      final int year = int.parse(mat[1]);
+      final int month = int.parse(mat[2]);
+      final int day = int.parse(mat[3]);
       final enDate = DateTime(year, month, day);
       if (enDate.isAfter(now)) continue;
       final int delta = now.difference(enDate).inDays;
@@ -331,7 +339,7 @@ class MMService {
           }
 
           checkStatusmm2().then((int onValue) {
-            Log('mm_service:334', 'mm2_main_status: $onValue');
+            Log('mm_service:342', 'mm2_main_status: $onValue');
             if (onValue == 3) {
               _running = true;
               _.cancel();
@@ -375,7 +383,16 @@ class MMService {
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
-    Log('mm_service:378', chunk);
+    Log('mm_service:386', chunk);
+
+    final pkr =
+        RegExp(r'initialize] netid (\d+) public key (\w+) preferred port');
+    final pkm = pkr.firstMatch(chunk);
+    if (pkm != null) {
+      netid = int.parse(pkm[1]);
+      pubkey = pkm[2];
+    }
+
     final reasons = _lookupReasons(chunk);
     // TBD: Use the obtained swap UUIDs for targeted swap updates.
     if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
@@ -387,16 +404,16 @@ class MMService {
     final sending = RegExp(
         r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
     for (RegExpMatch mat in sending.allMatches(chunk)) {
-      //Log('mm_service:390', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
-      reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
+      //Log('mm_service:407', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
     }
 
     // | (0:46) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Started...
     // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
     final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
     for (RegExpMatch mat in dashboard.allMatches(chunk)) {
-      //Log('mm_service:398', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
-      reasons.add(_UpdReason(sample: mat.group(0), uuid: mat.group(1)));
+      //Log('mm_service:415', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
     }
 
     const samples = [
@@ -418,7 +435,7 @@ class MMService {
   }
 
   void _onNativeLogError(Object error) {
-    Log('mm_service:421', error);
+    Log('mm_service:438', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -435,9 +452,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
       await coinsBloc.enableCoins(active);
-      Log('mm_service:438', 'All coins activated');
+      Log('mm_service:455', 'All coins activated');
       await coinsBloc.loadCoin();
-      Log('mm_service:440', 'loadCoin finished');
+      Log('mm_service:457', 'loadCoin finished');
     } catch (e) {
       print(e);
     }
@@ -485,7 +502,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:488', 'getAllBalances');
+    Log('mm_service:505', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {

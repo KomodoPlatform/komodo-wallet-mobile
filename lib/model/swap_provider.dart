@@ -319,6 +319,10 @@ class SwapGossip {
         takerPaymentConfirmations = data.takerPaymentConfirmations;
         makerPaymentRequiresNota = data.makerPaymentRequiresNota;
         takerPaymentRequiresNota = data.takerPaymentRequiresNota;
+        myPersistentPub = data.myPersistentPub;
+        assert(myPersistentPub.endsWith(mmSe.pubkey));
+        taker = data.taker.isNotEmpty ? data.taker : null;
+        maker = data.maker.isNotEmpty ? data.maker : null;
       }
     }
   }
@@ -338,6 +342,9 @@ class SwapGossip {
     makerPaymentRequiresNota = mrn == 1 || mrn == 0 ? false : null;
     final dynamic trn = en['taker_payment_requires_nota'];
     takerPaymentRequiresNota = trn == 1 || trn == 0 ? false : null;
+    myPersistentPub = en['my_persistent_pub'];
+    taker = en['taker'];
+    maker = en['maker'];
   }
 
   static String swap2id(MmSwap mswap) =>
@@ -364,8 +371,13 @@ class SwapGossip {
   /// Commit version of MM.
   String mmMersion;
 
+  // TODO: Remove the false information.
+  // (Half of this information is false, because MM doesn't know the coin settings of the other sides).
   int makerPaymentConfirmations, takerPaymentConfirmations;
   bool makerPaymentRequiresNota, takerPaymentRequiresNota;
+
+  String myPersistentPub;
+  String taker, maker;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
         'id': id,
@@ -378,6 +390,9 @@ class SwapGossip {
         'maker_payment_confirmations': makerPaymentConfirmations,
         'taker_payment_confirmations': takerPaymentConfirmations,
         'maker_payment_requires_nota': makerPaymentRequiresNota,
-        'taker_payment_requires_nota': takerPaymentRequiresNota
+        'taker_payment_requires_nota': takerPaymentRequiresNota,
+        'my_persistent_pub': myPersistentPub,
+        'taker': taker,
+        'maker': maker
       };
 }
