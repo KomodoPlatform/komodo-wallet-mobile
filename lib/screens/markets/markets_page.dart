@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/markets/coins_price_list.dart';
-import 'package:komodo_dex/screens/markets/order_book.dart';
+import 'package:komodo_dex/screens/markets/order_book_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
 class MarketsPage extends StatefulWidget {
