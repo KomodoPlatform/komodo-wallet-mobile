@@ -48,7 +48,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _buildPairSelect(),
-            _buildTable(context),
+            _buildTable(),
           ],
         ),
       ),
@@ -67,6 +67,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
             children: <Widget>[
               CoinSelect(
                   value: widget.buyCoin,
+                  disabledOption: widget.sellCoin,
                   onChange: (Coin value) {
                     widget.onPairChange(CoinsPair(buy: value));
                   }),
@@ -79,6 +80,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
               const SizedBox(width: 12),
               CoinSelect(
                 value: widget.sellCoin,
+                disabledOption: widget.buyCoin,
                 onChange: (Coin value) {
                   widget.onPairChange(CoinsPair(sell: value));
                 },
@@ -90,12 +92,12 @@ class _OrderBookPageState extends State<OrderBookPage> {
     );
   }
 
-  Future<Orderbook> _getOrderBooks() async {
+  Future<Orderbook> _getOrderBook() async {
     return await MM.getOrderbook(MMService().client,
         GetOrderbook(base: widget.buyCoin.abbr, rel: widget.sellCoin.abbr));
   }
 
-  Widget _buildTable(BuildContext context) {
+  Widget _buildTable() {
     if (widget.buyCoin == null || widget.sellCoin == null) {
       return const Center(
         heightFactor: 10,
@@ -104,7 +106,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
     }
 
     return FutureBuilder<Orderbook>(
-        future: _getOrderBooks(),
+        future: _getOrderBook(),
         builder: (BuildContext context, AsyncSnapshot<Orderbook> snapshot) {
           if (!snapshot.hasData) {
             return const Center(

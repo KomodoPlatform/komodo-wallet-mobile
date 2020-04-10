@@ -7,9 +7,10 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class CoinSelect extends StatefulWidget {
-  const CoinSelect({this.value, this.onChange});
+  const CoinSelect({this.value, this.disabledOption, this.onChange});
 
   final Coin value;
+  final Coin disabledOption;
   final Function(Coin) onChange;
 
   @override
@@ -93,27 +94,32 @@ class _CoinSelectState extends State<CoinSelect> {
 
               coinsList.add(SimpleDialogOption(
                 key: Key('coin-select-option-${coinBalance.coin.abbr}'),
-                onPressed: () {
-                  dialogBloc.closeDialog(context);
-                  setState(() {
-                    _selected = coinBalance.coin;
-                  });
-                  if (widget.onChange != null) {
-                    widget.onChange(coinBalance.coin);
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: Row(
-                    children: <Widget>[
-                      PhotoHero(
-                        radius: 14,
-                        tag:
-                            'assets/${coinBalance.balance.coin.toLowerCase()}.png',
-                      ),
-                      const SizedBox(width: 12),
-                      Text(coinBalance.coin.name.toUpperCase()),
-                    ],
+                onPressed: coinBalance.coin == widget.disabledOption
+                    ? null
+                    : () {
+                        dialogBloc.closeDialog(context);
+                        setState(() {
+                          _selected = coinBalance.coin;
+                        });
+                        if (widget.onChange != null) {
+                          widget.onChange(coinBalance.coin);
+                        }
+                      },
+                child: Opacity(
+                  opacity: coinBalance.coin == widget.disabledOption ? 0.4 : 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Row(
+                      children: <Widget>[
+                        PhotoHero(
+                          radius: 14,
+                          tag:
+                              'assets/${coinBalance.balance.coin.toLowerCase()}.png',
+                        ),
+                        const SizedBox(width: 12),
+                        Text(coinBalance.coin.name.toUpperCase()),
+                      ],
+                    ),
                   ),
                 ),
               ));
