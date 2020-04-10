@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/screens/analytics/coin_select.dart';
-import 'package:komodo_dex/screens/analytics/analytics_page.dart';
+import 'package:komodo_dex/screens/markets/coin_select.dart';
+import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 

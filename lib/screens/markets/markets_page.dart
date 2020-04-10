@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/screens/analytics/coins_price_list.dart';
-import 'package:komodo_dex/screens/analytics/order_book.dart';
+import 'package:komodo_dex/screens/markets/coins_price_list.dart';
+import 'package:komodo_dex/screens/markets/order_book.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
-class AnalyticsPage extends StatefulWidget {
+class MarketsPage extends StatefulWidget {
   @override
-  _AnalyticsPageState createState() => _AnalyticsPageState();
+  _MarketsPageState createState() => _MarketsPageState();
 }
 
-class _AnalyticsPageState extends State<AnalyticsPage>
+class _MarketsPageState extends State<MarketsPage>
     with TickerProviderStateMixin {
   TabController tabController;
   Coin _buyCoin;
@@ -29,8 +29,8 @@ class _AnalyticsPageState extends State<AnalyticsPage>
       appBar: AppBar(
           title: Center(
               child: Text(
-            'ANALYTICS', // TODO(yurii): localization
-            key: const Key('analytics-title'),
+            'MARKETS', // TODO(yurii): localization
+            key: const Key('markets-title'),
             style: Theme.of(context).textTheme.subtitle,
           )),
           bottom: PreferredSize(

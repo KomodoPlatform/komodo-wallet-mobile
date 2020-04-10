@@ -9,7 +9,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/analytics/analytics_page.dart';
+import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/news/media_page.dart';
@@ -178,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   final List<Widget> _children = <Widget>[
     CoinsPage(),
     SwapPage(),
-    AnalyticsPage(),
+    MarketsPage(),
     Media(),
     SettingPage()
   ];
@@ -333,10 +333,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       BottomNavigationBarItem(
                                         icon: Icon(
                                           Icons.show_chart,
-                                          key: const Key('icon-analytics-page'),
+                                          key: const Key('icon-markets-page'),
                                         ),
                                         title: const Text(
-                                            'Analytics'), // TODO(yurii): localization
+                                            'Markets'), // TODO(yurii): localization
                                       ),
                                       BottomNavigationBarItem(
                                           icon: Icon(Icons.library_books,
