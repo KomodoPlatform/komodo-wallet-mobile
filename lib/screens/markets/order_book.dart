@@ -43,13 +43,14 @@ class _OrderBookPageState extends State<OrderBookPage> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(14),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildPairSelect(),
-          _buildTable(context),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildPairSelect(),
+            _buildTable(context),
+          ],
+        ),
       ),
     );
   }
@@ -96,10 +97,9 @@ class _OrderBookPageState extends State<OrderBookPage> {
 
   Widget _buildTable(BuildContext context) {
     if (widget.buyCoin == null || widget.sellCoin == null) {
-      return const Expanded(
-        child: Center(
-          child: Text('Please select coins'),
-        ),
+      return const Center(
+        heightFactor: 10,
+        child: Text('Please select coins'), // TODO(yurii): localization
       );
     }
 
@@ -107,14 +107,72 @@ class _OrderBookPageState extends State<OrderBookPage> {
         future: _getOrderBooks(),
         builder: (BuildContext context, AsyncSnapshot<Orderbook> snapshot) {
           if (!snapshot.hasData) {
-            return const Expanded(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+            return const Center(
+              heightFactor: 10,
+              child: CircularProgressIndicator(),
             );
           }
 
-          final List<Ask> sortedBids = _sortByPrice(snapshot.data.bids);
+          final TableRow _tableHeader = TableRow(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text('Price (${widget.sellCoin.abbr})'),
+              ), // TODO(yurii): localization
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text('Amount (${widget.buyCoin.abbr})'),
+                ),
+              ), // TODO(yurii): localization
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text('Total (${widget.buyCoin.abbr})'),
+                ),
+              ), // TODO(yurii): localization
+            ],
+          );
+
+          final List<Ask> sortedAsks = _sortByPrice(snapshot.data.asks);
+          List<TableRow> asksList = [];
+          double askTotal = 0;
+
+          for (int i = 0; i < sortedAsks.length; i++) {
+            final Ask ask = sortedAsks[i];
+            askTotal += ask.maxvolume.toDouble();
+            asksList.add(TableRow(
+              children: <Widget>[
+                Text(
+                  _formatted(ask.price),
+                  style: TextStyle(color: Colors.pink),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    _formatted(ask.maxvolume.toString()),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    _formatted(askTotal.toString()),
+                  ),
+                ),
+              ],
+            ));
+          }
+          asksList = List.from(asksList.reversed);
+
+          final List<Ask> sortedBids =
+              List.from(_sortByPrice(snapshot.data.bids).reversed);
           final List<TableRow> bidsList = [];
           double bidTotal = 0;
 
@@ -129,38 +187,17 @@ class _OrderBookPageState extends State<OrderBookPage> {
                   _formatted(bid.price),
                   style: TextStyle(color: Colors.green),
                 ),
-                Text(
-                  _formatted(_bidVolume.toString()),
-                  style: TextStyle(color: Colors.green),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    _formatted(_bidVolume.toString()),
+                  ),
                 ),
-                Text(
-                  _formatted(bidTotal.toString()),
-                  style: TextStyle(color: Colors.green),
-                ),
-              ],
-            ));
-          }
-
-          final List<Ask> sortedAsks = _sortByPrice(snapshot.data.asks);
-          final List<TableRow> asksList = [];
-          double askTotal = 0;
-
-          for (int i = 0; i < sortedAsks.length; i++) {
-            final Ask ask = sortedAsks[i];
-            askTotal += ask.maxvolume.toDouble();
-            asksList.add(TableRow(
-              children: <Widget>[
-                Text(
-                  _formatted(ask.price),
-                  style: TextStyle(color: Colors.pink),
-                ),
-                Text(
-                  _formatted(ask.maxvolume.toString()),
-                  style: TextStyle(color: Colors.pink),
-                ),
-                Text(
-                  _formatted(askTotal.toString()),
-                  style: TextStyle(color: Colors.pink),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    _formatted(bidTotal.toString()),
+                  ),
                 ),
               ],
             ));
@@ -174,34 +211,21 @@ class _OrderBookPageState extends State<OrderBookPage> {
             ],
           );
 
-          return Table(
-            children: [
-              TableRow(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.grey),
-                  ),
-                ),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Price (${widget.sellCoin.abbr})'),
-                  ), // TODO(yurii): localization
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Amount (${widget.buyCoin.abbr})'),
-                  ), // TODO(yurii): localization
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Total (${widget.buyCoin.abbr})'),
-                  ), // TODO(yurii): localization
-                ],
-              ),
-              _spacer,
-              ...asksList,
-              _spacer,
-              ...bidsList,
-            ],
+          return Container(
+            padding: const EdgeInsets.only(
+              top: 20,
+              left: 8,
+              right: 8,
+            ),
+            child: Table(
+              children: [
+                _tableHeader,
+                _spacer,
+                ...asksList,
+                _spacer,
+                ...bidsList,
+              ],
+            ),
           );
         });
   }
@@ -210,7 +234,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
     final List<Ask> sorted = list;
     sorted
         .sort((a, b) => double.parse(a.price).compareTo(double.parse(b.price)));
-    return List.from(sorted.reversed);
+    return sorted;
   }
 
   String _formatted(String value) {
