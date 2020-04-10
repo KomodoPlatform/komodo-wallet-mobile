@@ -71,7 +71,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
               });
               tabController.index = 1;
             }),
-            OrderBook(
+            OrderBookPage(
               buyCoin: _buyCoin,
               sellCoin: _sellCoin,
               onPairChange: (CoinsPair coinsPair) {

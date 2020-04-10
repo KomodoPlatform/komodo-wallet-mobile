@@ -1,27 +1,54 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/get_orderbook.dart';
+import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/analytics/coin_select.dart';
 import 'package:komodo_dex/screens/analytics/analytics_page.dart';
+import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 
-class OrderBook extends StatefulWidget {
-  const OrderBook({this.buyCoin, this.sellCoin, this.onPairChange});
+class OrderBookPage extends StatefulWidget {
+  const OrderBookPage({this.buyCoin, this.sellCoin, this.onPairChange});
 
   final Coin buyCoin;
   final Coin sellCoin;
   final Function(CoinsPair) onPairChange;
 
   @override
-  _OrderBookState createState() => _OrderBookState();
+  _OrderBookPageState createState() => _OrderBookPageState();
 }
 
-class _OrderBookState extends State<OrderBook> {
+class _OrderBookPageState extends State<OrderBookPage> {
+  Timer ticker;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ticker = Timer.periodic(const Duration(milliseconds: 500), (_) {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    if (ticker != null) ticker.cancel();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(14),
       child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildPairSelect(),
+          _buildTable(context),
         ],
       ),
     );
@@ -60,5 +87,141 @@ class _OrderBookState extends State<OrderBook> {
         ),
       ),
     );
+  }
+
+  Future<Orderbook> _getOrderBooks() async {
+    return await MM.getOrderbook(MMService().client,
+        GetOrderbook(base: widget.buyCoin.abbr, rel: widget.sellCoin.abbr));
+  }
+
+  Widget _buildTable(BuildContext context) {
+    if (widget.buyCoin == null || widget.sellCoin == null) {
+      return const Expanded(
+        child: Center(
+          child: Text('Please select coins'),
+        ),
+      );
+    }
+
+    return FutureBuilder<Orderbook>(
+        future: _getOrderBooks(),
+        builder: (BuildContext context, AsyncSnapshot<Orderbook> snapshot) {
+          if (!snapshot.hasData) {
+            return const Expanded(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          final List<Ask> sortedBids = _sortByPrice(snapshot.data.bids);
+          final List<TableRow> bidsList = [];
+          double bidTotal = 0;
+
+          for (int i = 0; i < sortedBids.length; i++) {
+            final Ask bid = sortedBids[i];
+            final double _bidVolume =
+                bid.maxvolume.toDouble() / double.parse(bid.price);
+            bidTotal += _bidVolume;
+            bidsList.add(TableRow(
+              children: <Widget>[
+                Text(
+                  _formatted(bid.price),
+                  style: TextStyle(color: Colors.green),
+                ),
+                Text(
+                  _formatted(_bidVolume.toString()),
+                  style: TextStyle(color: Colors.green),
+                ),
+                Text(
+                  _formatted(bidTotal.toString()),
+                  style: TextStyle(color: Colors.green),
+                ),
+              ],
+            ));
+          }
+
+          final List<Ask> sortedAsks = _sortByPrice(snapshot.data.asks);
+          final List<TableRow> asksList = [];
+          double askTotal = 0;
+
+          for (int i = 0; i < sortedAsks.length; i++) {
+            final Ask ask = sortedAsks[i];
+            askTotal += ask.maxvolume.toDouble();
+            asksList.add(TableRow(
+              children: <Widget>[
+                Text(
+                  _formatted(ask.price),
+                  style: TextStyle(color: Colors.pink),
+                ),
+                Text(
+                  _formatted(ask.maxvolume.toString()),
+                  style: TextStyle(color: Colors.pink),
+                ),
+                Text(
+                  _formatted(askTotal.toString()),
+                  style: TextStyle(color: Colors.pink),
+                ),
+              ],
+            ));
+          }
+
+          const TableRow _spacer = TableRow(
+            children: [
+              SizedBox(height: 12),
+              SizedBox(height: 12),
+              SizedBox(height: 12),
+            ],
+          );
+
+          return Table(
+            children: [
+              TableRow(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.grey),
+                  ),
+                ),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Price (${widget.sellCoin.abbr})'),
+                  ), // TODO(yurii): localization
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Amount (${widget.buyCoin.abbr})'),
+                  ), // TODO(yurii): localization
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Total (${widget.buyCoin.abbr})'),
+                  ), // TODO(yurii): localization
+                ],
+              ),
+              _spacer,
+              ...asksList,
+              _spacer,
+              ...bidsList,
+            ],
+          );
+        });
+  }
+
+  List<Ask> _sortByPrice(List<Ask> list) {
+    final List<Ask> sorted = list;
+    sorted
+        .sort((a, b) => double.parse(a.price).compareTo(double.parse(b.price)));
+    return List.from(sorted.reversed);
+  }
+
+  String _formatted(String value) {
+    const int digits = 6;
+    const int fraction = 2;
+
+    final String rounded = double.parse(value).toStringAsFixed(fraction);
+    if (rounded.length >= digits + 1) {
+      return rounded;
+    } else {
+      return double.parse(value).toStringAsPrecision(digits);
+    }
   }
 }
