@@ -377,6 +377,9 @@ class SwapGossip {
   bool makerPaymentRequiresNota, takerPaymentRequiresNota;
 
   String myPersistentPub;
+
+  /// On tracking concerns:
+  /// https://gitlab.com/artemciy/mm-pubsub-db/-/blob/2342fa23/373-p2p-order-matching.md#L115
   String taker, maker;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
