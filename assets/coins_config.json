@@ -561,8 +561,9 @@
 		"coingeckoId": "utrum",
 		"colorCoin": "0xFF23AADF",
 		"serverList": [
-			"electrum1.utrum.io:10088",
-			"electrum2.utrum.io:10088"
+			"electrum1.cipig.net:10021",
+			"electrum2.cipig.net:10021",
+                        "electrum3.cipig.net:10021"
 		],
 		"explorerUrl": [
 			"https://explorer.utrum.io/"
@@ -578,9 +579,10 @@
 		"coingeckoId": "verus-coin",
 		"colorCoin": "0xFF659dda",
 		"serverList": [
-			"el0.veruscoin.io:17485",
-			"el1.veruscoin.io:17485",
-			"el2.veruscoin.io:17485"
+                        "el0.veruscoin.io:17485",
+                        "el1.veruscoin.io:17485",
+                        "el2.veruscoin.io:17485",
+                        "electrum.vrsc.0x03.services:17485"
 		],
 		"explorerUrl": [
 			"https://vrsc.kmdexplorer.io/"

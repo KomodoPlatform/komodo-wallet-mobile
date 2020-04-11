@@ -28,18 +28,19 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   # https://pub.dev/packages/cupertino_icons
   # https://github.com/flutter/cupertino_icons
+  # Secure code reviewed
   cupertino_icons: 0.1.3 # flutter.dev
 
   # flutter_cupertino_localizations: ^1.0.1
 
   # https://pub.dev/packages/audioplayers
-  audioplayers: # 0.14.0 - TODO: review 859c88c
+  audioplayers: # 0.14.0 - DONE: Secure code reviewed 859c88c
     git:
       url: git://github.com/KomodoPlatform/audioplayers.git
       ref: 859c88c2c3fe926bdbb6e5e729d3c16d088be76a
   
   # https://pub.dev/packages/file_picker
-  file_picker: # 1.4.3+2 - TODO: review b68ee11
+  file_picker: # 1.4.3+2 - DONE: Secure code reviewed b68ee11
     git:
       url: git://github.com/KomodoPlatform/flutter_file_picker.git
       ref: b68ee11c6ac117460ffa0c96b13ac4b89f2386f7
@@ -49,7 +50,7 @@ dependencies:
   path_provider: 1.6.0 # flutter.dev
 
   # https://pub.dev/packages/provider
-  provider: # 4.0.4 - TODO: review 0c1394a
+  provider: # 4.0.4 - DONE: Secure code reviewed 0c1394a
     git:
       url: https://github.com/KomodoPlatform/provider
       ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
@@ -62,7 +63,7 @@ dev_dependencies:
   test: 1.9.4 # dart.dev
   mockito: 4.1.1 # dart.dev
   http: 0.12.0+4 # dart.dev
-  qr_flutter: # 3.2.0 - TODO: diff 60b20d1 (2.0.0) 587c969 (3.2.0)
+  qr_flutter: # 3.2.0 - DONE: Secure code reviewed diff 60b20d1 (2.0.0) 587c969 (3.2.0) - TODO: # Secure code review subdep qr-dart (7a1d3791810050bd1257e70a08ab309b0fa6b996)
     git:
       url: git://github.com/KomodoPlatform/qr.flutter.git
       ref: 587c969052f37d9fc0f14801aba241bffbc1ea84
@@ -70,16 +71,16 @@ dev_dependencies:
     git:
       url: git://github.com/KomodoPlatform/auto_size_text.git
       ref: a2cb00e548916731f5c4c241d79a93419a4f9447
-  barcode_scan: # 2.0.1 - TODO: diff b2900df (1.0.0) a4a010c (2.0.1)
+  barcode_scan: # 2.0.1 - DONE: Secure code reviewed diff b2900df (1.0.0) a4a010c (2.0.1)
     git:
       url: git://github.com/KomodoPlatform/flutter_barcode_reader.git
       ref: a4a010ca31b67d6ef331786bb93d79cb71f1f327
   shared_preferences: 0.5.6+1 # flutter.dev
-  bip39: # 1.0.3 - DONE: Secure code reviewed dbd846b (1.0.3)
+  bip39: # 1.0.3 - DONE: Secure code reviewed dbd846b (1.0.3) - DONE: sub dependencies reviewed
     git: 
       url: git://github.com/KomodoPlatform/bip39-dart.git
       ref: dbd846b743eab3b21f3ef56abc958305be54761a
-  pin_code_view: # TODO: Branch cupertino-style-pin-code is waiting for security review, https://github.com/KomodoPlatform/pin_code_view/pull/4
+  pin_code_view: # DONE: Secure code reviewed c0b6516
     git:
       url: git://github.com/KomodoPlatform/pin_code_view.git
       ref: c0b6516aae9a3321fcce7391447351ad73a50f0a
@@ -98,7 +99,7 @@ dev_dependencies:
       ref: 1494b043d03799dd14e689552d1218918435f9f5
   # https://pub.dev/packages/local_auth, canCheckBiometrics, getAvailableBiometrics
   local_auth: 0.6.1 # flutter.dev
-  flutter_svg: # 0.13.1 - TODO: diff 39cbfdb (0.13.0+2) a05263d (0.13.1)
+  flutter_svg: # 0.13.1 - DONE: Secure code reviewed diff 39cbfdb (0.13.0+2) a05263d (0.13.1) - TODO: review sub dependencies
     git:
       url: git://github.com/KomodoPlatform/flutter_svg.git
       ref: a05263d56aa8745405b01df452332d03a758e40d
@@ -106,30 +107,30 @@ dev_dependencies:
     git:
       url: git://github.com/KomodoPlatform/keccak.git
       ref: 420208090228f49237e080a31d1b627ec454d1cd
-  timeago: # 2.0.26 - TODO: review 9aeb585 (2.0.26)
+  timeago: # 2.0.26 - DONE: Secure code reviewed 9aeb585 (2.0.26)
     git:
       url: git://github.com/KomodoPlatform/timeago.dart.git
       path: timeago/
       ref: 9aeb58544067d4a2cc480da3741db9c35d1f36f3
-  sqflite: # 1.2.2+1 - TODO: diff 3cd583b (1.1.2-dev) 8da4eef (1.2.2+1)
+  sqflite: # 1.2.2+1 - DONE: Secure code reviewed diff 3cd583b (1.1.2-dev) 8da4eef (1.2.2+1) - TODO: review sub dependencies
     git:
       url: git://github.com/KomodoPlatform/sqflite.git
       path: sqflite/
       ref: 8da4eefdd8b13dfe7eedbd5dea1c1dded7d04acf
-  carousel_slider: # 1.4.1 - TODO: diff cec5240 (1.3.1) 115ce46 (1.4.1)
+  carousel_slider: # 1.4.1 - DONE: Secure code reviewed diff cec5240 (1.3.1) 115ce46 (1.4.1)
     git:
       url: git://github.com/KomodoPlatform/flutter_carousel_slider.git
       ref: 115ce460e6d6e8382e97f6f2e2ad39d90d6485d7
-  flutter_secure_storage: # 3.3.1+2 - TODO: diff 31c34d6 (3.2.1+1) eef67d3 (3.3.1+2)
+  flutter_secure_storage: # 3.3.1+2 - DONE: Secure code reviewed diff 31c34d6 (3.2.1+1) eef67d3 (3.3.1+2)
     git:
       url: git://github.com/KomodoPlatform/flutter_secure_storage.git
       ref: eef67d3d006b2c53453df183f7d4ac081948e110
-  uuid: # 2.0.4 - TODO: diff 1b7db8f (2.0.1) 981adca (2.0.4)
+  uuid: # 2.0.4 - DONE: Secure code reviewed diff 1b7db8f (2.0.1) 981adca (2.0.4)
     git: 
       url: git://github.com/KomodoPlatform/dart-uuid.git
       ref: 981adcac181443e3def4ced76a43b96c534e68ce
   connectivity: 0.4.6+2 # flutter.dev
-  flutter_slidable: # 0.5.4 - TODO: diff 9bf12c (0.5.3) 27bbe0d (0.5.4)
+  flutter_slidable: # 0.5.4 - DONE: Secure code reviewed diff 9bf12c (0.5.3) 27bbe0d (0.5.4)
     git: 
       url: https://github.com/KomodoPlatform/flutter_slidable.git
       ref: 27bbe0dfa9866ae01e8001267e873221ef5fbd67
@@ -138,11 +139,11 @@ dev_dependencies:
       url: git://github.com/KomodoPlatform/password-dart.git
       ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
   package_info: 0.4.0+13 # flutter.dev
-  flutter_launcher_icons: # 0.7.4 - TODO: diff 869b629 (0.7.2+1) c2584ef (0.7.4)
+  flutter_launcher_icons: # 0.7.4 - DONE: Secure code reviewed diff 869b629 (0.7.2+1) c2584ef (0.7.4)
     git:
       url: git://github.com/KomodoPlatform/flutter_launcher_icons.git
       ref: c2584ef5b381e7343dfa18acddae9becdabd9727
-  decimal: # 0.3.5 - TODO: review 4654d8c (0.3.5)
+  decimal: # 0.3.5 - DONE: Secure code reviewed 4654d8c (0.3.5)
     git:
       url: git://github.com/KomodoPlatform/dart-decimal.git
       ref: 4654d8c1d3a9b67288e5637e5a476f5745cd0a99
@@ -165,7 +166,8 @@ dev_dependencies:
   # Our fork has a fixed compileSdkVersion - 28:
   # https://github.com/KomodoPlatform/flutter_sodium
   #flutter_sodium: ^0.0.11
-  flutter_sodium: # 0.0.11 - DONE: Secure code reviewed 3d6f8d8 (0.0.11)
+  # TODO: selfhost libsodium-jni (android implementation depends on AAR library from https://github.com/joshjdevl/libsodium-jni)
+  flutter_sodium: # 0.0.11 - DONE: Secure code reviewed 3d6f8d8 (0.0.11) - TODO: read ^
     git:
       url: git://github.com/KomodoPlatform/flutter_sodium.git
       ref: 3d6f8d89b4e5f5fbb46b0f230a760b3930c57a39
