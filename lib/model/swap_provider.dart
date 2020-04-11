@@ -272,6 +272,15 @@ class SyncSwaps {
               'bloom': bloom,
               // Gossip entities we share with the network.
               'ours': entities.map((e) => e.toJson).toList()
+            },
+            'metrics.1': <String, dynamic>{
+              'pk': mmSe.pubkey,
+              'gui': mmSe.gui,
+              'footprint': mmSe.footprint,
+              'rs': mmSe.rs,
+              'files': mmSe.files,
+              'lm': mmSe.metricsLM ~/ 1000,
+              'now': DateTime.now().millisecondsSinceEpoch ~/ 1000
             }
           }
         }));
@@ -306,7 +315,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:309', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:318', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
