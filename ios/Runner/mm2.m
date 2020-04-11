@@ -89,16 +89,50 @@ void file_example (void) {
 // It didn't get to a memory allocation failure but was killed by Jetsam instead
 // (“JetsamEvent-2020-04-03-175018.ips” was generated in the iTunes crash logs directory).
 void leak_example (void) {
-  static int8_t* leaks[9999];  // Preserve the pointers for GC.
+  static int8_t* leaks[9999];  // Preserve the pointers for GC
   static int32_t next_leak = 0;
   int32_t size = 9 * 1024 * 1024;
   os_log (OS_LOG_DEFAULT, "leak_example] Leaking %d MiB…", size / 1024 / 1024);
   int8_t* leak = malloc (size);
   if (leak == NULL) {os_log (OS_LOG_DEFAULT, "leak_example] Allocation failed"); return;}
   leaks[next_leak++] = leak;
-  // Fill with random junk to workaround memory compression.
+  // Fill with random junk to workaround memory compression
   for (int ix = 0; ix < size; ++ix) leak[ix] = (int8_t) rand();
   os_log (OS_LOG_DEFAULT, "leak_example] Leak %d, allocated %d MiB", next_leak, size / 1024 / 1024);}
+
+int32_t fds_simple (void) {
+  int32_t fds = 0;
+  for (int fd = 0; fd < (int) FD_SETSIZE; ++fd) if (fcntl (fd, F_GETFD, 0) != -1) ++fds;
+  return fds;}
+
+int32_t fds (void) {
+  // fds_simple is likely to generate a number of interrupts
+  // (FD_SETSIZE of 1024 would likely mean 1024 interrupts).
+  // We should actually check it: maybe it will help us with reproducing the high number of `wakeups`.
+  // But for production use we want to reduce the number of `fcntl` invocations.
+
+  // We'll skip the first portion of file descriptors because most of the time we have them opened anyway.
+  int fd = 66;
+  int32_t fds = 66;
+  int32_t gap = 0;
+
+  while (fd < (int) FD_SETSIZE && fd < 333) {
+    if (fcntl (fd, F_GETFD, 0) != -1) {  // If file descriptor exists
+      gap = 0;
+      if (fd < 220) {
+        // We will count the files by ten, hoping that iOS traditionally fills the gaps.
+        fd += 10;
+        fds += 10;
+      } else {
+        // Unless we're close to the limit, where we want more precision.
+        ++fd; ++fds;}
+      continue;}
+    // Sample with increasing step while inside the gap.
+    int step = 1 + gap / 3;
+    fd += step;
+    gap += step;}
+
+  return fds;}
 
 const char* metrics (void) {
   //file_example();
@@ -124,8 +158,7 @@ const char* metrics (void) {
   rc = task_info (self, TASK_POWER_INFO, (task_info_t) &powInfo, &count);
   if (rc == KERN_SUCCESS) wakeups = (int64_t) powInfo.task_interrupt_wakeups;
 
-  int32_t files = 0;
-  for (int fd = 0; fd < (int) FD_SETSIZE; ++fd) if (fcntl (fd, F_GETFD, 0) != -1) ++files;
+  int32_t files = fds();
 
   NSMutableDictionary* ret = [NSMutableDictionary new];
 
