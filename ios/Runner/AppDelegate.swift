@@ -12,6 +12,7 @@ import os.log
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        audio_hi();
         let controllerMain : FlutterViewController = window?.rootViewController as! FlutterViewController
         let mm2main = FlutterMethodChannel(name: "mm2",
                                            binaryMessenger: controllerMain as! FlutterBinaryMessenger)

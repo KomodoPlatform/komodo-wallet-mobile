@@ -272,6 +272,15 @@ class SyncSwaps {
               'bloom': bloom,
               // Gossip entities we share with the network.
               'ours': entities.map((e) => e.toJson).toList()
+            },
+            'metrics.1': <String, dynamic>{
+              'pk': mmSe.pubkey,
+              'gui': mmSe.gui,
+              'footprint': mmSe.footprint,
+              'rs': mmSe.rs,
+              'files': mmSe.files,
+              'lm': mmSe.metricsLM ~/ 1000,
+              'now': DateTime.now().millisecondsSinceEpoch ~/ 1000
             }
           }
         }));
@@ -306,7 +315,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:309', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:318', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
@@ -319,6 +328,10 @@ class SwapGossip {
         takerPaymentConfirmations = data.takerPaymentConfirmations;
         makerPaymentRequiresNota = data.makerPaymentRequiresNota;
         takerPaymentRequiresNota = data.takerPaymentRequiresNota;
+        myPersistentPub = data.myPersistentPub;
+        assert(myPersistentPub.endsWith(mmSe.pubkey));
+        taker = data.taker.isNotEmpty ? data.taker : null;
+        maker = data.maker.isNotEmpty ? data.maker : null;
       }
     }
   }
@@ -338,6 +351,9 @@ class SwapGossip {
     makerPaymentRequiresNota = mrn == 1 || mrn == 0 ? false : null;
     final dynamic trn = en['taker_payment_requires_nota'];
     takerPaymentRequiresNota = trn == 1 || trn == 0 ? false : null;
+    myPersistentPub = en['my_persistent_pub'];
+    taker = en['taker'];
+    maker = en['maker'];
   }
 
   static String swap2id(MmSwap mswap) =>
@@ -364,8 +380,16 @@ class SwapGossip {
   /// Commit version of MM.
   String mmMersion;
 
+  // TODO: Remove the false information.
+  // (Half of this information is false, because MM doesn't know the coin settings of the other sides).
   int makerPaymentConfirmations, takerPaymentConfirmations;
   bool makerPaymentRequiresNota, takerPaymentRequiresNota;
+
+  String myPersistentPub;
+
+  /// On tracking concerns:
+  /// https://gitlab.com/artemciy/mm-pubsub-db/-/blob/2342fa23/373-p2p-order-matching.md#L115
+  String taker, maker;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
         'id': id,
@@ -378,6 +402,9 @@ class SwapGossip {
         'maker_payment_confirmations': makerPaymentConfirmations,
         'taker_payment_confirmations': takerPaymentConfirmations,
         'maker_payment_requires_nota': makerPaymentRequiresNota,
-        'taker_payment_requires_nota': takerPaymentRequiresNota
+        'taker_payment_requires_nota': takerPaymentRequiresNota,
+        'my_persistent_pub': myPersistentPub,
+        'taker': taker,
+        'maker': maker
       };
 }
