@@ -6,6 +6,8 @@ import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/screens/markets/markets_page.dart';
+import 'package:komodo_dex/screens/markets/order_book_chart.dart';
+import 'package:komodo_dex/screens/markets/order_book_table.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 
@@ -21,20 +23,20 @@ class OrderBookPage extends StatefulWidget {
 }
 
 class _OrderBookPageState extends State<OrderBookPage> {
-  Timer ticker;
+  Timer _ticker;
 
   @override
   void initState() {
     super.initState();
 
-    ticker = Timer.periodic(const Duration(milliseconds: 500), (_) {
+    _ticker = Timer.periodic(const Duration(milliseconds: 500), (_) {
       setState(() {});
     });
   }
 
   @override
   void dispose() {
-    if (ticker != null) ticker.cancel();
+    if (_ticker != null) _ticker.cancel();
 
     super.dispose();
   }
@@ -48,7 +50,43 @@ class _OrderBookPageState extends State<OrderBookPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _buildPairSelect(),
-            _buildTable(),
+            FutureBuilder(
+              future: _getOrderBook(),
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<Orderbook> snapshot,
+              ) {
+                if (widget.buyCoin == null || widget.sellCoin == null) {
+                  return const Center(
+                    heightFactor: 10,
+                    child: Text(
+                        'Please select coins'), // TODO(yurii): localization
+                  );
+                }
+
+                if (!snapshot.hasData) {
+                  return const Center(
+                    heightFactor: 10,
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return Stack(
+                  children: <Widget>[
+                    OrderBookChart(
+                      asks: snapshot.data.asks,
+                      bids: snapshot.data.bids,
+                    ),
+                    OrderBookTable(
+                      buyCoin: widget.buyCoin,
+                      sellCoin: widget.sellCoin,
+                      asks: snapshot.data.asks,
+                      bids: snapshot.data.bids,
+                    ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -95,159 +133,5 @@ class _OrderBookPageState extends State<OrderBookPage> {
   Future<Orderbook> _getOrderBook() async {
     return await MM.getOrderbook(MMService().client,
         GetOrderbook(base: widget.buyCoin.abbr, rel: widget.sellCoin.abbr));
-  }
-
-  Widget _buildTable() {
-    if (widget.buyCoin == null || widget.sellCoin == null) {
-      return const Center(
-        heightFactor: 10,
-        child: Text('Please select coins'), // TODO(yurii): localization
-      );
-    }
-
-    return FutureBuilder<Orderbook>(
-        future: _getOrderBook(),
-        builder: (BuildContext context, AsyncSnapshot<Orderbook> snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              heightFactor: 10,
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final TableRow _tableHeader = TableRow(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Colors.grey),
-              ),
-            ),
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text('Price (${widget.sellCoin.abbr})'),
-              ), // TODO(yurii): localization
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text('Amount (${widget.buyCoin.abbr})'),
-                ),
-              ), // TODO(yurii): localization
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text('Total (${widget.buyCoin.abbr})'),
-                ),
-              ), // TODO(yurii): localization
-            ],
-          );
-
-          final List<Ask> sortedAsks = _sortByPrice(snapshot.data.asks);
-          List<TableRow> asksList = [];
-          double askTotal = 0;
-
-          for (int i = 0; i < sortedAsks.length; i++) {
-            final Ask ask = sortedAsks[i];
-            askTotal += ask.maxvolume.toDouble();
-            asksList.add(TableRow(
-              children: <Widget>[
-                Text(
-                  _formatted(ask.price),
-                  style: TextStyle(color: Colors.pink),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    _formatted(ask.maxvolume.toString()),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    _formatted(askTotal.toString()),
-                  ),
-                ),
-              ],
-            ));
-          }
-          asksList = List.from(asksList.reversed);
-
-          final List<Ask> sortedBids =
-              List.from(_sortByPrice(snapshot.data.bids).reversed);
-          final List<TableRow> bidsList = [];
-          double bidTotal = 0;
-
-          for (int i = 0; i < sortedBids.length; i++) {
-            final Ask bid = sortedBids[i];
-            final double _bidVolume =
-                bid.maxvolume.toDouble() / double.parse(bid.price);
-            bidTotal += _bidVolume;
-            bidsList.add(TableRow(
-              children: <Widget>[
-                Text(
-                  _formatted(bid.price),
-                  style: TextStyle(color: Colors.green),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    _formatted(_bidVolume.toString()),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    _formatted(bidTotal.toString()),
-                  ),
-                ),
-              ],
-            ));
-          }
-
-          const TableRow _spacer = TableRow(
-            children: [
-              SizedBox(height: 12),
-              SizedBox(height: 12),
-              SizedBox(height: 12),
-            ],
-          );
-
-          return Container(
-            padding: const EdgeInsets.only(
-              top: 20,
-              left: 8,
-              right: 8,
-            ),
-            child: Table(
-              children: [
-                _tableHeader,
-                _spacer,
-                ...asksList,
-                _spacer,
-                ...bidsList,
-              ],
-            ),
-          );
-        });
-  }
-
-  List<Ask> _sortByPrice(List<Ask> list) {
-    final List<Ask> sorted = list;
-    sorted
-        .sort((a, b) => double.parse(a.price).compareTo(double.parse(b.price)));
-    return sorted;
-  }
-
-  String _formatted(String value) {
-    const int digits = 6;
-    const int fraction = 2;
-
-    final String rounded = double.parse(value).toStringAsFixed(fraction);
-    if (rounded.length >= digits + 1) {
-      return rounded;
-    } else {
-      return double.parse(value).toStringAsPrecision(digits);
-    }
   }
 }
