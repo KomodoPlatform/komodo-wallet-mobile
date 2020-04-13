@@ -19,13 +19,10 @@ class CoinSelect extends StatefulWidget {
 
 class _CoinSelectState extends State<CoinSelect> {
   List<CoinBalance> _balanceList;
-  Coin _selected;
 
   @override
   void initState() {
     super.initState();
-
-    _selected = widget.value;
 
     coinsBloc.outCoins.listen((List<CoinBalance> list) {
       setState(() {
@@ -54,9 +51,9 @@ class _CoinSelectState extends State<CoinSelect> {
               ),
               Row(
                 children: <Widget>[
-                  _selected != null
+                  widget.value != null
                       ? Image.asset(
-                          'assets/${_selected.abbr.toLowerCase()}.png',
+                          'assets/${widget.value.abbr.toLowerCase()}.png',
                           height: 25,
                         )
                       : CircleAvatar(
@@ -68,7 +65,7 @@ class _CoinSelectState extends State<CoinSelect> {
                       constraints: const BoxConstraints(minWidth: 50),
                       child: Center(
                           child: Text(
-                        _selected != null ? _selected.abbr : '-',
+                        widget.value != null ? widget.value.abbr : '-',
                         style: Theme.of(context).textTheme.subtitle,
                         maxLines: 1,
                       ))),
@@ -98,9 +95,6 @@ class _CoinSelectState extends State<CoinSelect> {
                     ? null
                     : () {
                         dialogBloc.closeDialog(context);
-                        setState(() {
-                          _selected = coinBalance.coin;
-                        });
                         if (widget.onChange != null) {
                           widget.onChange(coinBalance.coin);
                         }

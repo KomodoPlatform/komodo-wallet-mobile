@@ -110,10 +110,16 @@ class _OrderBookPageState extends State<OrderBookPage> {
                     widget.onPairChange(CoinsPair(buy: value));
                   }),
               const SizedBox(width: 12),
-              Text(
-                '/',
-                style:
-                    Theme.of(context).textTheme.subtitle.copyWith(fontSize: 18),
+              ButtonTheme(
+                minWidth: 30,
+                child: FlatButton(
+                    onPressed: () {
+                      widget.onPairChange(CoinsPair(
+                        buy: widget.sellCoin,
+                        sell: widget.buyCoin,
+                      ));
+                    },
+                    child: Icon(Icons.swap_horiz)),
               ),
               const SizedBox(width: 12),
               CoinSelect(
