@@ -594,7 +594,7 @@
 		"address": "electrum3.cipig.net",
 		"port": 10002,
 		"proto": "tcp",
-		"abbr": "VOTE",
+		"abbr": "VOTE2020",
 		"coingeckoId": "test-token",
 		"colorCoin": "0xFFabdce4",
 		"serverList": [
