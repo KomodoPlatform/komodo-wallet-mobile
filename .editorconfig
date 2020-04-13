@@ -11,3 +11,6 @@ indent_size = 2
 
 [*.m]
 indent_size = 2
+
+[*.swift]
+indent_size = 2

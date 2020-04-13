@@ -24,4 +24,7 @@ void lsof (void);
 /// Measurement of application metrics: network traffic, CPU usage, etc.
 const char* metrics (void);
 
+/// Corresponds to the `applicationDocumentsDirectory` used in Dart.
+const char* documentDirectory (void);
+
 #endif /* mm2_h */

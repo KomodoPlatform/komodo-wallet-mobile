@@ -47,6 +47,7 @@ import os.log
                 lsof()
                 result(0)
             } else if call.method == "metrics" {
+                audio_hi();  // Schedule more files.
                 let js = metrics()
                 result (String (cString: js!))
             } else if call.method == "log" {

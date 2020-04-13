@@ -168,6 +168,7 @@ class MusicService {
   // in order to keep the application bundle (and Git repository) small.
 
   void play(List<Order> orders) {
+    if (1==1) return;  // XXX
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
     MusicMode newMode = pickMode(orders, musicMode);
@@ -191,7 +192,7 @@ class MusicService {
 
     if (newMode != musicMode) {
       changes = true;
-      Log('music_service:194', 'play] $musicMode -> $newMode');
+      Log('music_service:195', 'play] $musicMode -> $newMode');
     }
 
     if (_reload) {
@@ -229,7 +230,7 @@ class MusicService {
                         : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
 
     final String path = customFile != null ? customFile.path : defaultPath;
-    Log('music_service:232', 'path: $path');
+    Log('music_service:233', 'path: $path');
 
     // Tell the player how to access the file directly instead of trying to copy it from the assets.
     if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
@@ -250,7 +251,7 @@ class MusicService {
       _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
       _player.play(path, volume: volume());
     } else {
-      Log('music_service:253', 'Unexpected music mode: $newMode');
+      Log('music_service:254', 'Unexpected music mode: $newMode');
       _audioPlayer.stop();
     }
 
@@ -289,7 +290,7 @@ class MusicService {
   Future<bool> iosBackgroundExit() async {
     final double btr =
         await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-    Log('music_service:292', 'backgroundTimeRemaining: $btr');
+    Log('music_service:293', 'backgroundTimeRemaining: $btr');
 
     // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
     // and when we are silent the `backgroundTimeRemaining` is low
