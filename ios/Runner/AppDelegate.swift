@@ -8,34 +8,28 @@ import os.log
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
   var eventSink: FlutterEventSink?
 
-  func audio() {
-    let vc = window?.rootViewController as? FlutterViewController
-    let mk = vc?.lookupKey (forAsset: "assets/audio/maker.mp3")
+  func audio (vc: FlutterViewController) {
+    let mk = vc.lookupKey (forAsset: "assets/audio/maker.mp3")
     let mp = Bundle.main.path (forResource: mk, ofType: nil)
-    audio_hi (mp)
+    audio_init (mp)
   }
 
-    override func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+  override func application (_ application: UIApplication,
+  didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    guard let vc = window?.rootViewController as? FlutterViewController else {
+      fatalError ("rootViewController is not type FlutterViewController")}
+    let vcbm = vc as! FlutterBinaryMessenger
 
-        audio()
-        let controllerMain : FlutterViewController = window?.rootViewController as! FlutterViewController
-        let mm2main = FlutterMethodChannel(name: "mm2",
-                                           binaryMessenger: controllerMain as! FlutterBinaryMessenger)
+    audio (vc: vc)
+
+    let mm2main = FlutterMethodChannel (name: "mm2", binaryMessenger: vcbm)
+    let chargingChannel = FlutterEventChannel (name: "AtomicDEX/logC", binaryMessenger: vcbm)
+    chargingChannel.setStreamHandler (self)
         
-        guard let controller = window?.rootViewController as? FlutterViewController else {
-            fatalError("rootViewController is not type FlutterViewController")
-        }
+    mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
+      if call.method == "audio_schedule" {
         
-        let chargingChannel = FlutterEventChannel(name: "AtomicDEX/logC",
-                                                  binaryMessenger: controller as! FlutterBinaryMessenger)
-        chargingChannel.setStreamHandler(self)
-        
-        mm2main.setMethodCallHandler({
-            (call: FlutterMethodCall, result: FlutterResult) -> Void in
-            
-            if call.method == "start" {
+      } else if call.method == "start" {
                 guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
                 
                 print("START MM2 --------------------------------")
@@ -54,7 +48,6 @@ import os.log
                 lsof()
                 result(0)
             } else if call.method == "metrics" {
-                self.audio()  // Schedule more files.
                 let js = metrics()
                 result (String (cString: js!))
             } else if call.method == "log" {
@@ -64,15 +57,10 @@ import os.log
                 os_log("%{public}s", type: OSLogType.default, arg);
             } else if call.method == "backgroundTimeRemaining" {
                 result(Double(application.backgroundTimeRemaining))
-            } else {
-                result("Flutter method not implemented on iOS")
-            }
-        })
-        
-        GeneratedPluginRegistrant.register(with: self)
-        
-        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-    }
+      } else {result (FlutterMethodNotImplemented)}})
+    GeneratedPluginRegistrant.register(with: self)
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
 
     @objc func onDidReceiveData(_ notification:Notification) {
         if let data = notification.userInfo as? [String: String]
