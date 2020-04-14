@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 
 class OrderBookChart extends StatelessWidget {
-
-const OrderBookChart({
+  const OrderBookChart({
     @required this.asks,
     @required this.bids,
   });
@@ -20,8 +19,7 @@ const OrderBookChart({
     double _maxAmount;
 
     final List<Ask> _sortedAsks = _sortByPrice(asks);
-    final List<Ask> _sortedBids =
-        List.from(_sortByPrice(bids).reversed);
+    final List<Ask> _sortedBids = List.from(_sortByPrice(bids).reversed);
 
     for (int i = 0; i < _sortedAsks.length; i++) {
       final double prevTotal = i > 0 ? _askTotals[_askTotals.length - 1] : 0;
@@ -42,34 +40,87 @@ const OrderBookChart({
 
     if (_maxAmount == 0) return Container();
 
+    final List<Widget> _asksList = [];
+    for (int i = 0; i < _askTotals.length; i++) {
+      _asksList.add(
+        Stack(
+          children: <Widget>[
+            Positioned(
+                child: FractionallySizedBox(
+              widthFactor: (_askTotals[i] / _maxAmount) -
+                  (i > 0 ? (_askTotals[i - 1] / _maxAmount) : 0),
+              child: Container(
+                  height: 20,
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                    color: Colors.red,
+                    width: 1,
+                  )))),
+            )),
+            FractionallySizedBox(
+              widthFactor: _askTotals[i] / _maxAmount,
+              child: Container(
+                height: 20,
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(40, 255, 0, 0),
+                    border: Border(
+                        left: BorderSide(
+                      color: Colors.red,
+                      width: 1,
+                    ))),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final List<Widget> _bidsList = [];
+    for (int i = 0; i < _bidTotals.length; i++) {
+      _bidsList.add(
+        Stack(
+          children: <Widget>[
+            Positioned(
+                child: FractionallySizedBox(
+              widthFactor: (_bidTotals[i] / _maxAmount) -
+                  (i > 0 ? (_bidTotals[i - 1] / _maxAmount) : 0),
+              child: Container(
+                  height: 20,
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          top: BorderSide(
+                    color: Colors.green,
+                    width: 1,
+                  )))),
+            )),
+            FractionallySizedBox(
+              widthFactor: _bidTotals[i] / _maxAmount,
+              child: Container(
+                height: 20,
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(40, 0, 255, 0),
+                    border: Border(
+                        left: BorderSide(
+                      color: Colors.green,
+                      width: 1,
+                    ))),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(top: 69, left: 8, right: 8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          ...List.from(_askTotals
-              .map((double total) {
-                return FractionallySizedBox(
-                  widthFactor: total / _maxAmount,
-                  child: Container(
-                    height: 20,
-                    color: const Color.fromARGB(60, 255, 0, 0),
-                  ),
-                );
-              })
-              .toList()
-              .reversed),
+          ..._asksList.reversed.toList(),
           const SizedBox(height: 12),
-          ..._bidTotals.map((double total) {
-            return FractionallySizedBox(
-              widthFactor: total / _maxAmount,
-              child: Container(
-                height: 20,
-                color: const Color.fromARGB(60, 0, 255, 0),
-              ),
-            );
-          }).toList(),
+          ..._bidsList,
         ],
       ),
     );

@@ -25,7 +25,7 @@ class OrderBookTable extends StatelessWidget {
       ),
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 4.0),
           child: Text('Price (${sellCoin.abbr})'),
         ), // TODO(yurii): localization
         Align(
@@ -55,20 +55,25 @@ class OrderBookTable extends StatelessWidget {
 
       _asksList.add(TableRow(
         children: <Widget>[
-          Text(
-            _formatted(ask.price),
-            style: TextStyle(color: Colors.pink),
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: Text(
+              _formatted(ask.price),
+              style: TextStyle(color: Colors.red),
+            ),
           ),
           Align(
             alignment: Alignment.centerRight,
             child: Text(
               _formatted(ask.maxvolume.toString()),
+              style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
           Align(
             alignment: Alignment.centerRight,
             child: Text(
               _formatted(_askTotal.toString()),
+              style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
         ],
@@ -76,8 +81,7 @@ class OrderBookTable extends StatelessWidget {
     }
     _asksList = List.from(_asksList.reversed);
 
-    final List<Ask> _sortedBids =
-        List.from(_sortByPrice(bids).reversed);
+    final List<Ask> _sortedBids = List.from(_sortByPrice(bids).reversed);
     final List<TableRow> _bidsList = [];
     double _bidTotal = 0;
 
@@ -89,20 +93,25 @@ class OrderBookTable extends StatelessWidget {
 
       _bidsList.add(TableRow(
         children: <Widget>[
-          Text(
-            _formatted(bid.price),
-            style: TextStyle(color: Colors.green),
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: Text(
+              _formatted(bid.price),
+              style: TextStyle(color: Colors.green),
+            ),
           ),
           Align(
             alignment: Alignment.centerRight,
             child: Text(
               _formatted(_bidVolume.toString()),
+              style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
           Align(
             alignment: Alignment.centerRight,
             child: Text(
               _formatted(_bidTotal.toString()),
+              style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
         ],
