@@ -23,7 +23,7 @@
 
 #include <stdatomic.h>  // atomic_fetch_add
 
-void audio_hi (void) {
+void audio_hi (const char* assets_maker) {
   static AVAudioEngine* engine;
   static AVAudioPlayerNode* player;
   static AVAudioFile* file;
@@ -33,7 +33,6 @@ void audio_hi (void) {
 
   if (file) {  // Called a second time.
     while (atomic_load (&scheduled) < 33) {
-      os_log (OS_LOG_DEFAULT, "audio_hi] scheduling (queue: %d)..", atomic_load (&scheduled));
       [player scheduleFile: file atTime: nil completionHandler: ^() {
         atomic_fetch_sub (&scheduled, 1);
         os_log (OS_LOG_DEFAULT, "audio_hi] file finished; queue: %d", atomic_load (&scheduled));}];
@@ -55,8 +54,10 @@ void audio_hi (void) {
     NSString* filename = (NSString*) obj;
     os_log (OS_LOG_DEFAULT, "audio_hi] documents file: %{public}s", filename.UTF8String);}];
 
-  NSString* path = [NSString stringWithFormat:@"%s/%s", documents, "maker.mp3"];
-  os_log (OS_LOG_DEFAULT, "audio_hi] path: %{public}@", path);
+  NSString* path = [NSString stringWithFormat:@"%s", assets_maker];
+
+//  NSString* path = [NSString stringWithFormat:@"%s/%s", documents, "maker.mp3"];
+//  os_log (OS_LOG_DEFAULT, "audio_hi] path: %{public}@", path);
 
   NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
   NSError* err;
@@ -67,7 +68,7 @@ void audio_hi (void) {
   os_log (OS_LOG_DEFAULT, "audio_hi] attaching..");
   [engine connect:player to:mixer format:file.processingFormat];
 
-  audio_hi();  // Schedule the `file`
+  audio_hi (assets_maker);  // Schedule the `file`
 
   os_log (OS_LOG_DEFAULT, "audio_hi] category..");
   err = nil;

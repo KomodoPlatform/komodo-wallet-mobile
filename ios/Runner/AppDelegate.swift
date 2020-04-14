@@ -6,13 +6,20 @@ import os.log
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
-    var eventSink: FlutterEventSink?
-    
+  var eventSink: FlutterEventSink?
+
+  func audio() {
+    let vc = window?.rootViewController as? FlutterViewController
+    let mk = vc?.lookupKey (forAsset: "assets/audio/maker.mp3")
+    let mp = Bundle.main.path (forResource: mk, ofType: nil)
+    audio_hi (mp)
+  }
+
     override func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        audio_hi();
+        audio()
         let controllerMain : FlutterViewController = window?.rootViewController as! FlutterViewController
         let mm2main = FlutterMethodChannel(name: "mm2",
                                            binaryMessenger: controllerMain as! FlutterBinaryMessenger)
@@ -47,7 +54,7 @@ import os.log
                 lsof()
                 result(0)
             } else if call.method == "metrics" {
-                audio_hi();  // Schedule more files.
+                self.audio()  // Schedule more files.
                 let js = metrics()
                 result (String (cString: js!))
             } else if call.method == "log" {
