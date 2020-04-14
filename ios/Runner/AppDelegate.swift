@@ -25,10 +25,19 @@ import os.log
     let mm2main = FlutterMethodChannel (name: "mm2", binaryMessenger: vcbm)
     let chargingChannel = FlutterEventChannel (name: "AtomicDEX/logC", binaryMessenger: vcbm)
     chargingChannel.setStreamHandler (self)
-        
+
     mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
-      if call.method == "audio_schedule" {
-        
+      if call.method == "audio_bg" {
+        let dick = call.arguments as! Dictionary<String, Any>
+        let path = dick["path"] as! String
+        result (Int (audio_bg (path)))
+      } else if call.method == "audio_fg" {
+        let dick = call.arguments as! Dictionary<String, Any>
+        let path = dick["path"] as! String
+        result (Int (audio_fg (path)))
+      } else if call.method == "audio_volume" {
+        let volume = NSNumber (value: call.arguments as! Double)
+        result (Int (audio_volume (volume)))
       } else if call.method == "start" {
                 guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
                 

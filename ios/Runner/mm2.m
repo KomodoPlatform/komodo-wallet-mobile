@@ -64,8 +64,8 @@ void throw_example (void) {
 const char* documentDirectory (void) {
   NSFileManager* sharedFM = [NSFileManager defaultManager];
   NSArray<NSURL*>* urls = [sharedFM URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-  for (NSURL* url in urls) os_log (OS_LOG_DEFAULT, "file_example] supp dir: %{public}s\n", url.fileSystemRepresentation);
-  if (urls.count < 1) {os_log (OS_LOG_DEFAULT, "file_example] Can't get a NSApplicationSupportDirectory"); return NULL;}
+  //for (NSURL* url in urls) os_log (OS_LOG_DEFAULT, "documentDirectory] supp dir: %{public}s\n", url.fileSystemRepresentation);
+  if (urls.count < 1) {os_log (OS_LOG_DEFAULT, "documentDirectory] Can't get a NSApplicationSupportDirectory"); return NULL;}
   const char* wr_dir = urls[0].fileSystemRepresentation;
   return wr_dir;
 }
