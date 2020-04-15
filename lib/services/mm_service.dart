@@ -48,6 +48,12 @@ class MMService {
   String userpass = '';
   Stream<List<int>> streamSubscriptionStdout;
 
+  /// MM commit hash
+  String mmVersion;
+
+  // The date corresponding to the MM commit hash, YYYY-MM-DD
+  String mmDate;
+
   /// Our p2p ID, 64 bytes version
   /// (There is also a 66 bytes version, 64 bytes version is a tail of it)
   String pubkey = '';
@@ -420,6 +426,13 @@ class MMService {
     if (pkm != null) {
       netid = int.parse(pkm[1]);
       pubkey = pkm[2];
+    }
+
+    final mvr = RegExp(r'lp_init] version: (\w+) DT (\d{4}-\d{2}-\d{2})T\d{2}');
+    final mvm = mvr.firstMatch(chunk);
+    if (mvm != null) {
+      mmVersion = mvm[1];
+      mmDate = mvm[2];
     }
 
     final reasons = _lookupReasons(chunk);
