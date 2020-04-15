@@ -75,6 +75,11 @@ class OrderBookChart extends StatelessWidget {
         ),
       );
     }
+    if (_asksList.isEmpty) {
+      _asksList.add(Container(
+        height: 20,
+      ));
+    }
 
     final List<Widget> _bidsList = [];
     for (int i = 0; i < _bidTotals.length; i++) {
@@ -110,6 +115,11 @@ class OrderBookChart extends StatelessWidget {
           ],
         ),
       );
+    }
+    if (_bidsList.isEmpty) {
+      _bidsList.add(Container(
+        height: 20,
+      ));
     }
 
     return Container(

@@ -92,6 +92,17 @@ class OrderBookTable extends StatelessWidget {
       ));
     }
     _asksList = List.from(_asksList.reversed);
+    if (_asksList.isEmpty) {
+      _asksList.add(TableRow(
+        children: [
+          Text(
+            'No asks found', // TODO(yurii): localization
+            maxLines: 1,
+            style: TextStyle(color: Colors.red),
+          ), Container(), Container(),
+        ],
+      ));
+    }
 
     final List<Ask> _sortedBids = List.from(_sortByPrice(bids).reversed);
     final List<TableRow> _bidsList = [];
@@ -129,6 +140,17 @@ class OrderBookTable extends StatelessWidget {
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
+        ],
+      ));
+    }
+    if (_bidsList.isEmpty) {
+      _bidsList.add(TableRow(
+        children: [
+          Text(
+            'No bids found', // TODO(yurii): localization
+            maxLines: 1,
+            style: TextStyle(color: Colors.green),
+          ), Container(), Container(),
         ],
       ));
     }
