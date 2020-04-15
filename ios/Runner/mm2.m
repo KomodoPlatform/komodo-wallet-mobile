@@ -61,15 +61,19 @@ void network (NSMutableDictionary* ret) {
 void throw_example (void) {
   @throw [NSException exceptionWithName:@"exceptionName" reason:@"throw_example" userInfo:nil];}
 
-// “in_use” stops at 256.
-void file_example (void) {
+const char* documentDirectory (void) {
   NSFileManager* sharedFM = [NSFileManager defaultManager];
   NSArray<NSURL*>* urls = [sharedFM URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-  for (NSURL* url in urls) os_log (OS_LOG_DEFAULT, "file_example] supp dir: %{public}s\n", url.fileSystemRepresentation);
-  if (urls.count < 1) {os_log (OS_LOG_DEFAULT, "file_example] Can't get a NSApplicationSupportDirectory"); return;}
+  //for (NSURL* url in urls) os_log (OS_LOG_DEFAULT, "documentDirectory] supp dir: %{public}s\n", url.fileSystemRepresentation);
+  if (urls.count < 1) {os_log (OS_LOG_DEFAULT, "documentDirectory] Can't get a NSApplicationSupportDirectory"); return NULL;}
   const char* wr_dir = urls[0].fileSystemRepresentation;
+  return wr_dir;
+}
 
-  NSString* dir = [[NSString alloc] initWithUTF8String:wr_dir];
+// “in_use” stops at 256.
+void file_example (void) {
+  const char* documents = documentDirectory();
+  NSString* dir = [[NSString alloc] initWithUTF8String:documents];
   NSArray* files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:NULL];
   static int32_t total = 0;
   [files enumerateObjectsUsingBlock:^ (id obj, NSUInteger idx, BOOL *stop) {

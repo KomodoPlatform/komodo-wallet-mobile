@@ -276,6 +276,8 @@ class SyncSwaps {
             'metrics.1': <String, dynamic>{
               'pk': mmSe.pubkey,
               'gui': mmSe.gui,
+              'mm_version': mmSe.mmVersion,
+              'mm_date': mmSe.mmDate,
               'footprint': mmSe.footprint,
               'rs': mmSe.rs,
               'files': mmSe.files,
@@ -306,7 +308,9 @@ class SwapGossip {
   SwapGossip.from(this.timestamp, MmSwap mswap) {
     id = swap2id(mswap);
     gui = mswap.gui;
-    mmMersion = mswap.mmMersion;
+    mmVersion = mswap.mmVersion;
+    assert(mmVersion == mmSe.mmVersion);
+    mmDate = mmSe.mmDate;
 
     for (int ix = 0; ix < mswap.events.length - 1; ++ix) {
       final SwapEL eva = mswap.events[ix];
@@ -315,7 +319,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:318', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:322', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
@@ -341,7 +345,8 @@ class SwapGossip {
     id = en['id'];
     if (!_idExp.hasMatch(id)) throw Exception('Bad id: $id');
     gui = en['gui'];
-    mmMersion = en['mm_version'];
+    mmVersion = en['mm_version'];
+    mmDate = en['mm_date'];
     stepSpeed = LinkedHashMap<String, int>.from(en['step_speed']);
     makerCoin = en['maker_coin'];
     takerCoin = en['taker_coin'];
@@ -359,29 +364,32 @@ class SwapGossip {
   static String swap2id(MmSwap mswap) =>
       mswap.uuid + '/' + (mswap.type == 'Taker' ? 't' : 'm');
 
-  /// Gossip entity ID: “${swap_uuid}/${type}”, where $type is “t” for Taker and “m” for Maker.
+  /// Gossip entity ID: “${swap_uuid}/${type}”, where $type is “t” for Taker and “m” for Maker
   String id;
 
-  /// Ticker of maker coin.
+  /// Ticker of maker coin
   String makerCoin;
 
-  /// Ticker of taker coin.
+  /// Ticker of taker coin
   String takerCoin;
 
-  /// Time of last swap event, in milliseconds since UNIX epoch.
+  /// Time of last swap event, in milliseconds since UNIX epoch
   int timestamp;
 
-  /// Time between swap states in milliseconds.
+  /// Time between swap states in milliseconds
   LinkedHashMap<String, int> stepSpeed = LinkedHashMap<String, int>.of({});
 
-  /// Name and version of UI that has shared this gossip entity.
+  /// Name and version of UI that has shared this gossip entity
   String gui;
 
-  /// Commit version of MM.
-  String mmMersion;
+  /// MM commit hash
+  String mmVersion;
 
-  // TODO: Remove the false information.
-  // (Half of this information is false, because MM doesn't know the coin settings of the other sides).
+  // The date corresponding to the MM commit hash, YYYY-MM-DD
+  String mmDate;
+
+  // NB: These options only represent one side of the story
+  // (the Taker settings for Taker swaps, the Maker settings for Maker swaps)
   int makerPaymentConfirmations, takerPaymentConfirmations;
   bool makerPaymentRequiresNota, takerPaymentRequiresNota;
 
@@ -398,7 +406,8 @@ class SwapGossip {
         'timestamp': timestamp,
         'step_speed': stepSpeed,
         'gui': gui,
-        'mm_version': mmMersion,
+        'mm_version': mmVersion,
+        'mm_date': mmDate,
         'maker_payment_confirmations': makerPaymentConfirmations,
         'taker_payment_confirmations': takerPaymentConfirmations,
         'maker_payment_requires_nota': makerPaymentRequiresNota,

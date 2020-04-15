@@ -69,7 +69,7 @@ class MmSwap {
       this.uuid,
       this.recoverable,
       this.gui,
-      this.mmMersion});
+      this.mmVersion});
 
   factory MmSwap.fromJson(Map<String, dynamic> json) => MmSwap(
       errorEvents: List<String>.from(
@@ -87,7 +87,7 @@ class MmSwap {
       uuid: json['uuid'] ?? '',
       recoverable: json['recoverable'] ?? false,
       gui: json['gui'],
-      mmMersion: json['mm_version']);
+      mmVersion: json['mm_version']);
 
   /// if at least 1 of the events happens, the swap is considered a failure
   List<String> errorEvents;
@@ -110,7 +110,7 @@ class MmSwap {
   /// MM allows as many calls to the recover_funds_of_swap method as necessary, in case of errors
   bool recoverable;
 
-  String gui, mmMersion;
+  String gui, mmVersion;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
         'error_events':
@@ -125,7 +125,7 @@ class MmSwap {
         'uuid': uuid ?? '',
         'recoverable': recoverable ?? false,
         'gui': gui,
-        'mm_version': mmMersion
+        'mm_version': mmVersion
       };
 }
 
@@ -276,7 +276,7 @@ class SwapEF {
   int makerCoinStartBlock;
   int makerPaymentConfirmations;
 
-  /// Whether dPoW notarization is required for maker payment
+  /// Whether dPoW notarization is required for makerCoin
   bool makerPaymentRequiresNota;
   int makerPaymentLock;
 
@@ -303,7 +303,7 @@ class SwapEF {
   int takerCoinStartBlock;
   int takerPaymentConfirmations;
 
-  /// whether dPoW notarization is required for taker payment
+  /// whether dPoW notarization is required for takerCoin
   bool takerPaymentRequiresNota;
   String uuid;
   int takerPaymentLocktime;
