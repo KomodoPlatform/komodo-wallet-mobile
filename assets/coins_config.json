@@ -334,7 +334,7 @@
 		"name": "KOINON",
 		"type": "smartChain",
 		"address": "electrum1.cipig.net",
-		"port": 10702,
+		"port": 10024,
 		"proto": "tcp",
 		"abbr": "KOIN",
 		"coingeckoId": "koinon",
