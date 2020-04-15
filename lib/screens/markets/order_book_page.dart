@@ -2,14 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/get_orderbook.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
-import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/markets/order_book_chart.dart';
 import 'package:komodo_dex/screens/markets/order_book_table.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
+import 'package:provider/provider.dart';
 
 class OrderBookPage extends StatefulWidget {
   const OrderBookPage({this.buyCoin, this.sellCoin, this.onPairChange});
@@ -50,43 +48,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _buildPairSelect(),
-            FutureBuilder(
-              future: _getOrderBook(),
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<Orderbook> snapshot,
-              ) {
-                if (widget.buyCoin == null || widget.sellCoin == null) {
-                  return const Center(
-                    heightFactor: 10,
-                    child: Text(
-                        'Please select coins'), // TODO(yurii): localization
-                  );
-                }
-
-                if (!snapshot.hasData) {
-                  return const Center(
-                    heightFactor: 10,
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                return Stack(
-                  children: <Widget>[
-                    OrderBookChart(
-                      asks: snapshot.data.asks,
-                      bids: snapshot.data.bids,
-                    ),
-                    OrderBookTable(
-                      buyCoin: widget.buyCoin,
-                      sellCoin: widget.sellCoin,
-                      asks: snapshot.data.asks,
-                      bids: snapshot.data.bids,
-                    ),
-                  ],
-                );
-              },
-            ),
+            _buildOrderBook(),
           ],
         ),
       ),
@@ -136,8 +98,43 @@ class _OrderBookPageState extends State<OrderBookPage> {
     );
   }
 
-  Future<Orderbook> _getOrderBook() async {
-    return await MM.getOrderbook(MMService().client,
-        GetOrderbook(base: widget.buyCoin.abbr, rel: widget.sellCoin.abbr));
+  Widget _buildOrderBook() {
+    if (widget.buyCoin == null || widget.sellCoin == null) {
+      return const Center(
+        heightFactor: 10,
+        child: Text('Please select coins'), // TODO(yurii): localization
+      );
+    }
+
+    final OrderBookProvider _orderBookProvider =
+        Provider.of<OrderBookProvider>(context);
+    final Orderbook _orderBook = _orderBookProvider.getOrderBook(
+      CoinsPair(
+        buy: widget.buyCoin,
+        sell: widget.sellCoin,
+      ),
+    );
+
+    if (_orderBook == null) {
+      return const Center(
+        heightFactor: 10,
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    return Stack(
+      children: <Widget>[
+        OrderBookChart(
+          asks: _orderBook.asks,
+          bids: _orderBook.bids,
+        ),
+        OrderBookTable(
+          buyCoin: widget.buyCoin,
+          sellCoin: widget.sellCoin,
+          asks: _orderBook.asks,
+          bids: _orderBook.bids,
+        ),
+      ],
+    );
   }
 }
