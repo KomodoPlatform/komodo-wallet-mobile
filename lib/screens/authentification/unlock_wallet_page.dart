@@ -44,7 +44,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
             ? AppBar(
                 leading: InkWell(
                     onTap: () async {
-                      await DBProvider.db.deleteWallet(widget.wallet);
+                      await Db.deleteWallet(widget.wallet);
                       await authBloc.logout();
                       Navigator.pop(context);
                     },
@@ -115,14 +115,13 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                     },
                     autocorrect: false,
                     obscureText: isObscured,
-                    //it is possible to make single PASTE option enabled only if
-                    //password field is empty (and hide CUT, COPY and SELECT ALL options).
-                    //But in order to implement it, we need to use 'toolbarOptions'
-                    //property, because changing 'enableInteractiveSelection' flag in
-                    //setState does not have any effect. And 'toolbarOptions' only works
-                    //properly in flutter v.1.10.13+
-                    //https://github.com/flutter/flutter/issues/45534
                     enableInteractiveSelection: true,
+                    toolbarOptions: ToolbarOptions(
+                      paste: controller.text.isEmpty,
+                      copy: false,
+                      cut: false,
+                      selectAll: false,
+                    ),
                     style: Theme.of(context).textTheme.body1,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),

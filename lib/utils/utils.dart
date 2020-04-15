@@ -1,6 +1,9 @@
+import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keccak/keccak.dart';
@@ -15,6 +18,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:local_auth/local_auth.dart';
@@ -62,18 +66,28 @@ bool isChecksumAddress(String address) {
   return true;
 }
 
-String replaceAllTrainlingZero(String data) {
-  for (int i = 0; i < 8; i++) {
-    data = data.replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
-  }
-  return data;
+/// Convers a null, a string or a double into a Decimal.
+Decimal deci(dynamic dv) {
+  if (dv == null) return Decimal.fromInt(0);
+  if (dv is int) return Decimal.fromInt(dv);
+  if (dv is String)
+    return dv.isEmpty
+        ? Decimal.fromInt(0)
+        : Decimal.parse(dv.replaceAll(',', '.'));
+  if (dv is double) return Decimal.parse(dv.toStringAsFixed(16));
+  if (dv is Decimal) return dv;
+  throw Exception('Neither string nor double: $dv');
 }
 
-String replaceAllTrainlingZeroERC(String data) {
-  for (int i = 0; i < 16; i++) {
-    data = data.replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
-  }
-  return data;
+/// Precise but readable representation (no trailing zeroes).
+String deci2s(Decimal dv, [int fractions = 8]) {
+  if (dv.isInteger) return dv.toStringAsFixed(0); // Fast path.
+  String sv = dv.toStringAsFixed(fractions);
+  final dot = sv.indexOf('.');
+  if (dot == -1) return sv;
+  sv = sv.replaceFirst(RegExp(r'0+$'), '', dot);
+  if (sv.length - 1 == dot) sv = sv.substring(0, dot);
+  return sv;
 }
 
 bool isNumeric(String s) {
@@ -204,9 +218,9 @@ Future<bool> get canCheckBiometrics async {
   if (_canCheckBiometrics == null) {
     try {
       _canCheckBiometrics = await auth.canCheckBiometrics;
-      Log.println('utils:207', 'canCheckBiometrics: $_canCheckBiometrics');
+      Log.println('utils:221', 'canCheckBiometrics: $_canCheckBiometrics');
     } on PlatformException catch (ex) {
-      Log.println('utils:209', 'canCheckBiometrics exception: $ex');
+      Log.println('utils:223', 'canCheckBiometrics exception: $ex');
     }
   }
   return _canCheckBiometrics;
@@ -219,7 +233,7 @@ Future<bool> get canCheckBiometrics async {
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
 Future<bool> authenticateBiometrics(
     BuildContext context, PinStatus pinStatus) async {
-  Log.println('utils:222', 'authenticateBiometrics');
+  Log.println('utils:236', 'authenticateBiometrics');
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('switch_pin_biometric')) {
     final LocalAuthentication localAuth = LocalAuthentication();
@@ -240,7 +254,7 @@ Future<bool> authenticateBiometrics(
       // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
       // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
       // Rewriting the biometrics support (cf. #668) might be one way to fix that.
-      Log.println('utils:243', 'authenticateWithBiometrics ex: ' + e.message);
+      Log.println('utils:257', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
     lockService.biometricsReturned(lockCookie);
@@ -253,7 +267,7 @@ Future<bool> authenticateBiometrics(
         Navigator.pop(context);
       }
       authBloc.showLock = false;
-      if (pinStatus == PinStatus.NORMAL_PIN && !MMService().ismm2Running) {
+      if (pinStatus == PinStatus.NORMAL_PIN && !MMService().running) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
     }
@@ -324,7 +338,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:327', url);
+  Log.println('utils:341', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);
@@ -332,4 +346,103 @@ Future<void> launchURL(String url) async {
   } else {
     throw 'Could not launch $url';
   }
+}
+
+Duration durationSum(List<Duration> list) {
+  int ms = 0;
+  for (int i = 0; i < list.length; i++) {
+    ms += list[i]?.inMilliseconds ?? 0;
+  }
+  return Duration(milliseconds: ms);
+}
+
+/// Returns String of milliseconds ('555ms') if [duration] < 1s,
+/// seconds ('55s') if < 1min,
+/// minutes and seconds ('5m 5s') if < 1 hour,
+/// and hours, minutes, and seconds ('25h 25m 25s') if > 1 hour
+String durationFormat(Duration duration) {
+  if (duration == null) return '-';
+
+  final int hh = duration.inHours;
+  final int mm = duration.inMinutes;
+  final int ss = duration.inSeconds;
+  final int ms = duration.inMilliseconds;
+
+  if (ms < 1000) return '${ms}ms'; // TODO(yurii): localization
+
+  String formatted = '';
+  if (ss.remainder(60) > 0) {
+    formatted = '${ss.remainder(60)}s'; // TODO(yurii): localization
+  }
+  if (mm > 0) {
+    formatted =
+        '${mm.remainder(60)}m ' + formatted; // TODO(yurii): localization
+  }
+  if (hh > 0) {
+    formatted = '${hh}h ' + formatted; // TODO(yurii): localization
+  }
+
+  return formatted;
+}
+
+double mean(List<double> values) {
+  if (values == null || values.isEmpty) return null;
+  final double sum = values.reduce((sum, current) => sum + current);
+  return sum / values.length;
+}
+
+double deviation(List<double> values) {
+  final double average = mean(values);
+  final List<double> squares = [];
+  for (var i = 0; i < values.length; i++) {
+    squares.add(pow(values[i] - average, 2));
+  }
+  final averageSquares = mean(squares);
+
+  return sqrt(averageSquares);
+}
+
+Directory _applicationDocumentsDirectory;
+
+Future<Directory> get applicationDocumentsDirectory async {
+  _applicationDocumentsDirectory ??= await getApplicationDocumentsDirectory();
+  return _applicationDocumentsDirectory;
+}
+
+/// Cached synchronous access to the application directory.
+/// Returns `null` if the application directory is not known yet.
+Directory get applicationDocumentsDirectorySync =>
+    _applicationDocumentsDirectory;
+
+Future<void> sleepMs(int ms) async {
+  await Future<void>.delayed(Duration(milliseconds: ms));
+}
+
+/// Decode a lowercase hex into an integer.
+///
+/// There's actually more than one way to decode a hex
+/// (e.g. big-endian versus little-endian)
+/// and most libraries have the decoding underspecified
+/// hence the explicit decoding might be more easily reproducible and transparent.
+int hex2int(String sv) {
+  int iv = 0;
+  for (int ix = 0; ix < sv.length; ++ix) {
+    final ch = sv.codeUnitAt(ix);
+    int cv;
+    if (ch >= 0x30 && ch <= 0x39) {
+      cv = ch - 0x30; // 0-9, http://ascii-table.com/
+    } else if (ch >= 0x61 && ch <= 0x66) {
+      cv = ch - 0x61 + 10; // a-f
+    } else {
+      throw Exception('Not a hex: $ch in $sv at $ix');
+    }
+    iv += cv << (ix * 4);
+  }
+  return iv;
+}
+
+bool get isInDebugMode {
+  bool inDebugMode = false;
+  assert(inDebugMode = true);
+  return inDebugMode;
 }

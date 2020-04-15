@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
@@ -316,16 +315,22 @@ class _DisclaimerPageState extends State<DisclaimerPage>
           padding: const EdgeInsets.all(16.0),
           child: ScaleTransition(
             scale: _scaleTransition,
-            child: FloatingActionButton(
-              child: Icon(Icons.arrow_downward),
-              onPressed: () {
-                if (isEndOfScroll) {
-                  timer.cancel();
-                  _controllerScale.reverse();
-                }
-                _scrollController.animateTo(_scrollPosition + 300,
-                    duration: const Duration(seconds: 1), curve: Curves.ease);
-              },
+            child: GestureDetector(
+              onLongPress: () {
+                  _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+                      duration: const Duration(seconds: 3), curve: Curves.ease);
+                },
+              child: FloatingActionButton(
+                child: Icon(Icons.arrow_downward),
+                onPressed: () {
+                  if (isEndOfScroll) {
+                    timer.cancel();
+                    _controllerScale.reverse();
+                  }
+                  _scrollController.animateTo(_scrollPosition + 300,
+                      duration: const Duration(seconds: 1), curve: Curves.ease);
+                },
+              ),
             ),
           ),
         ),
@@ -401,13 +406,12 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
       await encryptionTool
           .writeData(KeyEncryption.SEED, wallet, widget.password, widget.seed)
-          .catchError((dynamic e) => Log.println('dislaimer_page:380', e));
+          .catchError((dynamic e) => Log.println('disclaimer_page:409', e));
 
-      await DBProvider.db.saveWallet(wallet);
-      await DBProvider.db.saveCurrentWallet(wallet);
+      await Db.saveWallet(wallet);
+      await Db.saveCurrentWallet(wallet);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool('isPinIsCreated', true);
-      await coinsBloc.resetCoinDefault();
 
       await authBloc.loginUI(true, widget.seed, widget.password).then((_) {
         setState(() {

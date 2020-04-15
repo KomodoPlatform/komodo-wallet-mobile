@@ -20,7 +20,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     tabController = TabController(length: 3, vsync: this);
-    swapHistoryBloc.updateSwaps(50, null);
     ordersBloc.updateOrdersSwaps();
 
     swapBloc.outIndexTab.listen((int onData) {

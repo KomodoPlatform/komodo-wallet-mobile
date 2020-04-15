@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
@@ -29,7 +31,7 @@ import '../model/get_trade_fee.dart';
 import '../model/get_tx_history.dart';
 import '../model/get_withdraw.dart';
 import '../model/orderbook.dart';
-import '../model/orders.dart';
+import '../model/orders.dart' hide Match;
 import '../model/recent_swaps.dart';
 import '../model/result.dart';
 import '../model/send_raw_transaction_response.dart';
@@ -47,25 +49,31 @@ class UserpassBody {
   http.Client client;
 }
 
+// AG: Planning to get rid of `res` and turn `MM` into a const:
+//
+//     const ApiProvider MM = const ApiProvider();
+//
+// ignore: non_constant_identifier_names
+ApiProvider MM = ApiProvider();
+
 class ApiProvider {
   String url = 'http://localhost:7783';
   Response res;
-  String userpass;
 
   Response _saveRes(String method, Response res) {
     final String loggedBody = res.body.toString();
-    String loggedLine = 'api $method $loggedBody';
+    String loggedLine = '$method $loggedBody';
 
     // getMyOrders and getRecentSwaps are invoked every two seconds during an active order or swap
     // and fully logging their response bodies every two seconds is an overkill,
     // though we still want to *mention* the invocations in the logs.
-    final bool cut = musicService.recommendsPeriodicUpdates() &&
+    final bool cut = musicService.recommendsPeriodicUpdates &&
         (method == 'getMyOrders' || method == 'getRecentSwaps');
     if (cut && loggedLine.length > 77) {
       loggedLine = loggedLine.substring(0, 75) + '..';
     }
 
-    Log.println('api_providers:68', loggedLine);
+    Log.println('mm:76', loggedLine);
     this.res = res;
     return res;
   }
@@ -89,13 +97,11 @@ class ApiProvider {
 
   ErrorString _catchErrorString(String key, dynamic e, String message) {
     Log.println(key, e);
-    return ErrorString(error: message);
+    return ErrorString(message);
   }
 
   Future<UserpassBody> _assertUserpass(http.Client client, dynamic body) async {
-    body.userpass = MMService().userpass.isNotEmpty
-        ? MMService().userpass
-        : body.userpass;
+    body.userpass = mmSe.userpass.isNotEmpty ? mmSe.userpass : body.userpass;
     return UserpassBody(body: body, client: client);
   }
 
@@ -127,18 +133,48 @@ class ApiProvider {
                   e,
                   'Error on get orderbook')));
 
-  Future<dynamic> getBalance(
-    http.Client client,
-    GetBalance body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getBalanceToJson(userBody.body))
-              .then((Response r) => _saveRes('getBalance', r))
-              .then<dynamic>((Response res) => balanceFromJson(res.body))
-              .catchError((dynamic e) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'getBalance', e, 'Error on get balance ${body.coin}')));
+  void _assert200(Response r) {
+    if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
+    if (r.statusCode != 200) {
+      String emsg;
+      try {
+        // See if the body is a JSON error.
+        emsg = ErrorString.fromJson(json.decode(r.body)).error;
+      } catch (_notJson) {/**/}
+      if (emsg.isEmpty) {
+        // Treat the body as a potentially useful but untrusted error message.
+        emsg = r.body
+            .replaceAll(RegExp('[^a-zA-Z0-9, :\]\.-]+'), '.')
+            .replaceFirstMapped(RegExp('^(.{0,99}).*'), (Match m) => m[1]);
+      }
+      throw ErrorString('HTTP ${r.statusCode}: $emsg');
+    }
+  }
+
+  Future<Balance> getBalance(GetBalance gb, {http.Client client}) async {
+    // AG: HTTP handling is improved in this method.
+    //     After using it for a while and seeing that it works as expected
+    //     we should refactor the rest of the methods accordingly.
+
+    client ??= mmSe.client;
+    try {
+      final userBody = await _assertUserpass(client, gb);
+      final r = await userBody.client
+          .post(url, body: getBalanceToJson(userBody.body));
+      _assert200(r);
+      _saveRes('getBalance', r);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = json.decode(r.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      return Balance.fromJson(jbody);
+    } catch (e) {
+      throw _catchErrorString(
+          'getBalance', e, 'Error getting ${gb.coin} balance');
+    }
+  }
 
   Future<dynamic> postBuy(
     http.Client client,
@@ -174,41 +210,59 @@ class ApiProvider {
                 _catchErrorString('postSell', e, 'Error on post sell'));
       });
 
-  dynamic getBodyActiveCoin(Coin coin) {
+  Future<void> simPanic({http.Client client}) async {
+    client ??= mmSe.client;
+    final req = <String, dynamic>{
+      'method': 'sim_panic',
+      'userpass': mmSe.userpass,
+      'mode': 'simple'
+    };
+    final r = await client.post(url, body: json.encode(req));
+    _assert200(r);
+    final dynamic jbody = json.decode(r.body);
+    final err = ErrorString.fromJson(jbody);
+    if (err.error.isNotEmpty) throw removeLineFromMM2(err);
+  }
+
+  dynamic enableCoinImpl(Coin coin) {
     final List<Server> servers = coin.serverList
         .map((String url) =>
             Server(url: url, protocol: 'TCP', disableCertVerification: false))
         .toList();
 
-    return coin.type == 'erc'
-        ? getEnabledCoinToJson(GetEnabledCoin(
-            userpass: MMService().userpass,
-            coin: coin.abbr,
-            txHistory: true,
-            swapContractAddress: coin.swapContractAddress,
-            urls: coin.serverList))
-        : getActiveCoinToJson(GetActiveCoin(
-            userpass: MMService().userpass,
-            coin: coin.abbr,
-            txHistory: true,
-            servers: servers));
+    if (coin.type == 'erc')
+      return json.encode(MmEnable(
+              userpass: mmSe.userpass,
+              coin: coin.abbr,
+              txHistory: true,
+              swapContractAddress: coin.swapContractAddress,
+              urls: coin.serverList)
+          .toJson());
+    // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
+    final electrum = <String, dynamic>{
+      'method': 'electrum',
+      'userpass': mmSe.userpass,
+      'coin': coin.abbr,
+      'servers': List<dynamic>.from(servers.map<dynamic>((se) => se.toJson())),
+      'mm2': coin.mm2,
+      'tx_history': true,
+      'required_confirmations': coin.requiredConfirmations,
+      'requires_notarization': coin.requiresNotarization
+    };
+    final js = json.encode(electrum);
+    Log('mm:253', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
+    return js;
   }
 
-  Future<dynamic> activeCoin(
-    http.Client client,
-    Coin coin,
-  ) async =>
-      await client
-          .post(url, body: getBodyActiveCoin(coin))
-          .then((Response r) => _saveRes('activeCoin', r))
-          .then((Response res) => activeCoinFromJson(res.body))
-          .then<dynamic>((ActiveCoin data) =>
-              data.result.isEmpty ? errorStringFromJson(res.body) : data)
-          .catchError((dynamic e) => errorStringFromJson(res.body))
-          .catchError((dynamic e) => _catchErrorString(
-              'activeCoin', e, 'Error on active ${coin.name}'))
-          .timeout(const Duration(seconds: 60),
-              onTimeout: () => ErrorString(error: 'Timeout on ${coin.abbr}'));
+  Future<ActiveCoin> enableCoin(Coin coin, {http.Client client}) async {
+    client ??= mmSe.client;
+    final r = await client.post(url, body: enableCoinImpl(coin));
+    _assert200(r);
+    final dynamic jbody = json.decode(r.body);
+    final err = ErrorString.fromJson(jbody);
+    if (err.error.isNotEmpty) throw removeLineFromMM2(err);
+    return ActiveCoin.fromJson(jbody);
+  }
 
   Future<dynamic> postSetPrice(
     http.Client client,
@@ -245,7 +299,8 @@ class ApiProvider {
           (UserpassBody userBody) => userBody.client
               .post(url, body: getRecentSwapToJson(userBody.body))
               .then((Response r) => _saveRes('getRecentSwaps', r))
-              .then<dynamic>((Response res) => recentSwapsFromJson(res.body))
+              .then<dynamic>(
+                  (Response res) => RecentSwaps.fromJson(json.decode(res.body)))
               .catchError((dynamic _) => errorStringFromJson(res.body))
               .catchError((dynamic e) => _catchErrorString(
                   'getRecentSwaps', e, 'Error on get recent swaps')));
@@ -276,6 +331,7 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'cancelOrder', e, 'Error on cancel order')));
 
+  /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#coins-needed-for-kick-start
   Future<dynamic> getCoinToKickStart(
     http.Client client,
     BaseService body,

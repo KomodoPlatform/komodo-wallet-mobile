@@ -24,7 +24,7 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amo
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
 import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
-import 'package:komodo_dex/services/api_providers.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -568,17 +568,10 @@ class _CoinDetailState extends State<CoinDetail> {
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, top: 8),
                             child: Builder(builder: (BuildContext context) {
-                              final String amount = widget.coinBalance.coin
-                                      .swapContractAddress.isNotEmpty
-                                  ? replaceAllTrainlingZeroERC(
-                                      double.parse(transaction.myBalanceChange)
-                                          .toStringAsFixed(16))
-                                  : replaceAllTrainlingZero(
-                                      double.parse(transaction.myBalanceChange)
-                                          .toStringAsFixed(8));
+                              final amount = deci(transaction.myBalanceChange);
 
                               return AutoSizeText(
-                                '${double.parse(transaction.myBalanceChange) > 0 ? '+' : ''}$amount ${currentCoinBalance.coin.abbr}',
+                                '${amount.toDouble() > 0 ? '+' : ''}${deci2s(amount)} ${currentCoinBalance.coin.abbr}',
                                 maxLines: 1,
                                 style: subtitle,
                                 textAlign: TextAlign.end,

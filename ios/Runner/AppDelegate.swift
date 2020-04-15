@@ -6,28 +6,39 @@ import os.log
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
-    var eventSink: FlutterEventSink?
-    
-    override func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+  var eventSink: FlutterEventSink?
 
-        let controllerMain : FlutterViewController = window?.rootViewController as! FlutterViewController
-        let mm2main = FlutterMethodChannel(name: "mm2",
-                                           binaryMessenger: controllerMain as! FlutterBinaryMessenger)
-        
-        guard let controller = window?.rootViewController as? FlutterViewController else {
-            fatalError("rootViewController is not type FlutterViewController")
-        }
-        
-        let chargingChannel = FlutterEventChannel(name: "streamLogMM2",
-                                                  binaryMessenger: controller as! FlutterBinaryMessenger)
-        chargingChannel.setStreamHandler(self)
-        
-        mm2main.setMethodCallHandler({
-            (call: FlutterMethodCall, result: FlutterResult) -> Void in
-            
-            if call.method == "start" {
+  func audio (vc: FlutterViewController) {
+    let mk = vc.lookupKey (forAsset: "assets/audio/maker.mp3")
+    let mp = Bundle.main.path (forResource: mk, ofType: nil)
+    audio_init (mp)
+  }
+
+  override func application (_ application: UIApplication,
+  didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    guard let vc = window?.rootViewController as? FlutterViewController else {
+      fatalError ("rootViewController is not type FlutterViewController")}
+    let vcbm = vc as! FlutterBinaryMessenger
+
+    audio (vc: vc)
+
+    let mm2main = FlutterMethodChannel (name: "mm2", binaryMessenger: vcbm)
+    let chargingChannel = FlutterEventChannel (name: "AtomicDEX/logC", binaryMessenger: vcbm)
+    chargingChannel.setStreamHandler (self)
+
+    mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
+      if call.method == "audio_bg" {
+        let dick = call.arguments as! Dictionary<String, Any>
+        let path = dick["path"] as! String
+        result (Int (audio_bg (path)))
+      } else if call.method == "audio_fg" {
+        let dick = call.arguments as! Dictionary<String, Any>
+        let path = dick["path"] as! String
+        result (Int (audio_fg (path)))
+      } else if call.method == "audio_volume" {
+        let volume = NSNumber (value: call.arguments as! Double)
+        result (Int (audio_volume (volume)))
+      } else if call.method == "start" {
                 guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
                 
                 print("START MM2 --------------------------------")
@@ -39,11 +50,15 @@ import os.log
                 result("starting mm2")
             } else if call.method == "status" {
                 let ret = Int32(mm2_main_status());
-                
+
                 print(ret)
                 result(ret)
             } else if call.method == "lsof" {
                 lsof()
+                result(0)
+            } else if call.method == "metrics" {
+                let js = metrics()
+                result (String (cString: js!))
             } else if call.method == "log" {
                 // Allows us to log via the `os_log` default channel
                 // (Flutter currently does it for us, but there's a chance that it won't).
@@ -51,15 +66,10 @@ import os.log
                 os_log("%{public}s", type: OSLogType.default, arg);
             } else if call.method == "backgroundTimeRemaining" {
                 result(Double(application.backgroundTimeRemaining))
-            } else {
-                result("Flutter method not implemented on iOS")
-            }
-        })
-        
-        GeneratedPluginRegistrant.register(with: self)
-        
-        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-    }
+      } else {result (FlutterMethodNotImplemented)}})
+    GeneratedPluginRegistrant.register(with: self)
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
 
     @objc func onDidReceiveData(_ notification:Notification) {
         if let data = notification.userInfo as? [String: String]
@@ -68,14 +78,14 @@ import os.log
         }
         
     }
-    
+
     public func onListen(withArguments arguments: Any?,
                          eventSink: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = eventSink
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didReceiveData, object: nil)
         return nil
     }
-    
+
     private func sendLogMM2StateEvent(str: String) {
         guard let eventSink = self.eventSink else {
             return
@@ -83,7 +93,6 @@ import os.log
         eventSink(str)
     }
 
-    
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
         NotificationCenter.default.removeObserver(self)
         eventSink = nil

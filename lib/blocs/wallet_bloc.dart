@@ -35,7 +35,7 @@ class WalletBloc implements BlocBase {
   }
 
   Future<List<Wallet>> getWalletsSaved() async {
-    final List<Wallet> wallets = await DBProvider.db.getAllWallet();
+    final List<Wallet> wallets = await Db.getAllWallet();
     this.wallets = wallets;
     _inWallets.add(this.wallets);
     return this.wallets;
@@ -46,7 +46,7 @@ class WalletBloc implements BlocBase {
     final String seedPhrase = await entryptionTool.readData(KeyEncryption.SEED, wallet, password);
 
     if (seedPhrase != null) {
-        await DBProvider.db.saveCurrentWallet(wallet);
+        await Db.saveCurrentWallet(wallet);
       return seedPhrase;
     } else {
       throw AppLocalizations.of(context).wrongPassword;
@@ -64,7 +64,7 @@ class WalletBloc implements BlocBase {
   }
 
   Future<void> deleteCurrentWallet() async {
-    await DBProvider.db.deleteWallet(currentWallet);
+    await Db.deleteWallet(currentWallet);
                                           authBloc.logout();
 
   }

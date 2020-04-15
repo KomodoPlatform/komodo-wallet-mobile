@@ -4,11 +4,13 @@ import 'dart:math';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 import 'mm_service.dart';
 
@@ -38,7 +40,7 @@ enum MusicMode {
 /// Allows iOS application instances to stay alive in background.
 class MusicService {
   MusicService() {
-    getApplicationDocumentsDirectory().then((docs) {
+    applicationDocumentsDirectory.then((docs) {
       _docs = docs;
     });
     makePlayer();
@@ -60,51 +62,46 @@ class MusicService {
   AudioCache _player;
 
   void makePlayer() {
+    // On iOS we're using the “audio.m” implementation instead.
+    if (!Platform.isAndroid) return;
+
     _audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
     _player = AudioCache(prefix: 'audio/', fixedPlayer: _audioPlayer);
 
     _audioPlayer.onPlayerError.listen((String ev) {
-      Log.println('music_service:67', 'onPlayerError: ' + ev);
+      Log('music_service:72', 'onPlayerError: ' + ev);
     });
 
     /*
     _audioPlayer.onPlayerCompletion.listen((_) {
       // Happens when a music (mp3) file is finished, multiple times when we're using a `loop`.
-      //Log.println('music_service:73', 'onPlayerCompletion');
+      //Log('music_service:78', 'onPlayerCompletion');
     });
     */
   }
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
-  MusicMode pickMode(
-      List<Order> orders, List<Swap> swaps, List<Swap> allSwaps) {
-    // ignore: always_specify_types
-    final Set<String> active = {};
-    for (final Swap swap in swaps) {
-      // Active swaps.
+  static MusicMode pickMode(List<Order> orders, MusicMode prevMode) {
+    for (final Swap swap in syncSwaps.swaps) {
       final String uuid = swap.result.uuid;
-      active.add(uuid);
       final String shortId = uuid.substring(0, 4);
-      Log.println('music_service:88',
-          'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
-      return MusicMode.ACTIVE;
-    }
-
-    for (final Swap swap in allSwaps) {
-      final String uuid = swap.result.uuid;
-      if (active.contains(uuid)) {
-        // Already seen this swap in the list of active swaps.
-        continue;
+      final bool active = swap.status != Status.SWAP_FAILED &&
+          swap.status != Status.SWAP_SUCCESSFUL &&
+          swap.status != Status.TIME_OUT;
+      if (active) {
+        Log('music_service:92',
+            'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
+        return MusicMode.ACTIVE;
       }
-      final String shortId = uuid.substring(0, 4);
-      if (musicMode == MusicMode.ACTIVE) {
+
+      if (prevMode == MusicMode.ACTIVE) {
         if (swap.status == Status.SWAP_FAILED ||
             swap.status == Status.TIME_OUT) {
-          Log.println('music_service:103',
+          Log('music_service:100',
               'pickMode] failed swap $shortId, MusicMode.FAILED');
           return MusicMode.FAILED;
         } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log.println('music_service:107',
+          Log('music_service:104',
               'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
           return MusicMode.APPLAUSE;
         }
@@ -114,17 +111,17 @@ class MusicService {
     for (final Order order in orders) {
       final String shortId = order.uuid.substring(0, 4);
       if (order.orderType == OrderType.TAKER) {
-        Log.println('music_service:117',
+        Log('music_service:114',
             'pickMode] taker order $shortId, MusicMode.TAKER');
         return MusicMode.TAKER;
       } else if (order.orderType == OrderType.MAKER) {
-        Log.println('music_service:121',
+        Log('music_service:118',
             'pickMode] maker order $shortId, MusicMode.MAKER');
         return MusicMode.MAKER;
       }
     }
 
-    Log.println('music_service:127',
+    Log('music_service:124',
         'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
   }
@@ -152,8 +149,17 @@ class MusicService {
     if (_docs == null) throw Exception('Application directory is missing');
     final String target = _docs.path.toString() + '/' + name;
     final File file = File(path);
-    Log.println('music_service:155', 'copying $path to $target');
+    Log('music_service:152', 'copying $path to $target');
     await file.copy(target);
+
+    // Play the file right away to see if we can.
+    // TBD: Idealy we'd automatically detect whether playing the file produces a sound,
+    // but doing it complicated, plus some sound files might be intentionally silent.
+    if (Platform.isIOS) {
+      final rc = await MMService.nativeC
+          .invokeMethod<int>('audio_fg', <String, dynamic>{'path': name});
+      Log('music_service:161', 'audio_fg rc: $rc');
+    }
 
     _reload = true;
   }
@@ -173,24 +179,27 @@ class MusicService {
   // and download the extra tracks on demand from an external server
   // in order to keep the application bundle (and Git repository) small.
 
-  void play(List<Order> orders, List<Swap> swaps, List<Swap> allSwaps) {
+  Future<void> play(List<Order> orders) async {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
-    final MusicMode newMode = pickMode(orders, swaps, allSwaps);
+    final MusicMode newMode = pickMode(orders, musicMode);
+
     bool changes = false;
 
     if (newMode != musicMode) {
       changes = true;
-      Log.println('music_service:184', 'play] $musicMode -> $newMode');
+      Log('music_service:191', 'play] $musicMode -> $newMode');
     }
 
     if (_reload) {
       _reload = false;
       // Recreating the player in order for it not to use a previous instance of the sound file.
-      _audioPlayer.stop();
-      _audioPlayer.release();
-      _player.clearCache();
-      makePlayer();
+      if (Platform.isAndroid) {
+        _audioPlayer.stop();
+        _audioPlayer.release();
+        _player.clearCache();
+        makePlayer();
+      }
       changes = true;
     }
 
@@ -218,33 +227,75 @@ class MusicService {
                         ? 'applause.mp3'
                         : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
 
-    final String path = customFile != null ? customFile.path : defaultPath;
-    Log.println('music_service:222', 'path: $path');
+    final String path = customFile != null
+        ? (Platform.isAndroid ? customFile.path : customName)
+        : defaultPath;
+    Log('music_service:233', 'path: $path');
 
-    // Tell the player how to access the file directly instead of trying to copy it from the assets.
-    if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
+    if (Platform.isAndroid) {
+      // Tell the player how to access the file directly instead of trying to copy it from the assets.
+      if (customFile != null) _player.loadedFiles[customFile.path] = customFile;
 
-    if (newMode == MusicMode.TAKER) {
-      _player.loop(path, volume: volume());
-    } else if (newMode == MusicMode.MAKER) {
-      _player.loop(path, volume: volume());
-    } else if (newMode == MusicMode.ACTIVE) {
-      _player.loop(path, volume: volume());
-    } else if (newMode == MusicMode.FAILED) {
-      _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-      _player.play(path, volume: volume());
-    } else if (newMode == MusicMode.APPLAUSE) {
-      _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-      _player.play(path, volume: volume());
-    } else if (newMode == MusicMode.SILENT) {
-      _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
-      _player.play(path, volume: volume());
+      if (newMode == MusicMode.TAKER) {
+        _player.loop(path, volume: volume());
+      } else if (newMode == MusicMode.MAKER) {
+        _player.loop(path, volume: volume());
+      } else if (newMode == MusicMode.ACTIVE) {
+        _player.loop(path, volume: volume());
+      } else if (newMode == MusicMode.FAILED) {
+        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+        _player.play(path, volume: volume());
+      } else if (newMode == MusicMode.APPLAUSE) {
+        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+        _player.play(path, volume: volume());
+      } else if (newMode == MusicMode.SILENT) {
+        _audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+        _player.play(path, volume: volume());
+      } else {
+        Log('music_service:255', 'Unexpected music mode: $newMode');
+        _audioPlayer.stop();
+      }
     } else {
-      Log.println('music_service:243', 'Unexpected music mode: $newMode');
-      _audioPlayer.stop();
+      await MMService.nativeC.invokeMethod<int>('audio_volume', volume());
+
+      if (newMode == MusicMode.APPLAUSE || newMode == MusicMode.FAILED) {
+        // Play the file in the foreground once, then continue looping the background file.
+        // NB: As of now the next invocation of `play` is likely to prematurely overwrite the queue.
+        //     We should probably refactor `pickMode` to pick both the foreground and next background modes,
+        //     and submit *both* to `audio_fg`,
+        //     and then set the `musicMode` to the next background mode.
+        final rc = await MMService.nativeC
+            .invokeMethod<int>('audio_fg', <String, dynamic>{'path': path});
+        Log('music_service:269', 'audio_fg rc: $rc');
+      } else if (newMode == MusicMode.SILENT) {
+        // Stop the background loop.
+        int rc = await MMService.nativeC
+            .invokeMethod<int>('audio_bg', <String, dynamic>{'path': ''});
+        Log('music_service:274', 'audio_bg rc: $rc');
+        // And play the file in foreground.
+        rc = await MMService.nativeC
+            .invokeMethod<int>('audio_fg', <String, dynamic>{'path': path});
+        Log('music_service:278', 'audio_fg rc: $rc');
+      } else {
+        // Loop the file in background.
+        final rc = await MMService.nativeC
+            .invokeMethod<int>('audio_bg', <String, dynamic>{'path': path});
+        Log('music_service:283', 'audio_bg rc: $rc');
+      }
     }
 
     musicMode = newMode;
+  }
+
+  /// Play a single sound file in a loop.
+  /// Useful for testing the timers without starting MM.
+  ///
+  /// NB: On iOS, when the application is suspended without any music playing,
+  /// the timers (such as the ones used by the JobService) stop
+  /// and resume only when the user returns back to the application.
+  void justPlay() {
+    if (!Platform.isAndroid) return;
+    _player.loop('maker.mp3', volume: 0.1);
   }
 
   /// True when we want to periodically update the orders and swaps.
@@ -259,9 +310,7 @@ class MusicService {
   ///
   /// We also want an update whenever the `musicMode` is unknown,
   /// which happens after the application restarts.
-  bool recommendsPeriodicUpdates() {
-    return musicMode != MusicMode.SILENT || _reload;
-  }
+  bool get recommendsPeriodicUpdates => _reload;
 
   /// Whether the application shold `exit` when it goes to "background".
   /// If there are active orders and swaps then we should be playing a sound and staying alive in background.
@@ -271,16 +320,18 @@ class MusicService {
   Future<bool> iosBackgroundExit() async {
     final double btr =
         await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-    Log.println('music_service:274', 'backgroundTimeRemaining: $btr');
+    Log('music_service:323', 'backgroundTimeRemaining: $btr');
 
     // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
     // and when we are silent the `backgroundTimeRemaining` is low
     // (expected low values are ~5, ~180, ~600 seconds).
     // #658: We should only remain in background if we're going to keep playing the sounds.
-    if (btr > 3600 &&
-        (musicMode == MusicMode.ACTIVE ||
-            musicMode == MusicMode.MAKER ||
-            musicMode == MusicMode.TAKER)) return false;
+    if (btr > 3600) {
+      final mode = pickMode(ordersBloc.orders, MusicMode.SILENT);
+      if (mode == MusicMode.ACTIVE ||
+          mode == MusicMode.MAKER ||
+          mode == MusicMode.TAKER) return false;
+    }
 
     // Known cases of when "background" doesn't necessarily means "suspend".
     if (mainBloc.isUrlLaucherIsOpen) return false;
@@ -304,6 +355,12 @@ class MusicService {
   /// Tune the volume down or back up.
   void flip() {
     _on = !_on;
-    _audioPlayer.setVolume(volume());
+    if (Platform.isAndroid) {
+      _audioPlayer.setVolume(volume());
+    } else {
+      () async {
+        await MMService.nativeC.invokeMethod<int>('audio_volume', volume());
+      }();
+    }
   }
 }

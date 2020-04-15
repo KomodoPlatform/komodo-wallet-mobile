@@ -15,6 +15,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -44,10 +45,7 @@ class _CoinsPageState extends State<CoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    if (MMService().ismm2Running) {
-      coinsBloc.loadCoin();
-    }
-
+    if (MMService().running) coinsBloc.loadCoin();
     super.initState();
   }
 
@@ -286,7 +284,7 @@ class ListCoinsState extends State<ListCoins> {
 
   @override
   void initState() {
-    if (MMService().ismm2Running) {
+    if (MMService().running) {
       coinsBloc.loadCoin();
     }
     super.initState();
@@ -368,10 +366,10 @@ class _ItemCoinState extends State<ItemCoin> {
     final NumberFormat f = NumberFormat('###,##0.########');
     final List<Widget> actions = <Widget>[];
     if (double.parse(balance.getBalance()) > 0) {
-      Log.println(
-          'coins_page:367', 'balance: ' + widget.coinBalance.balance.balance);
-      Log.println('coins_page:369',
-          'locked_by_swaps: ' + widget.coinBalance.balance.lockedBySwaps);
+      Log(
+          'coins_page:369',
+          '${coin.abbr} balance: ${balance.balance}'
+              '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(IconSlideAction(
         caption: AppLocalizations.of(context).send,
         color: Colors.white,
@@ -704,11 +702,10 @@ class _AddCoinButtonState extends State<AddCoinButton> {
     );
   }
 
+  /// Returns `true` if there are coins we can still activate, `false` if all of them activated.
   Future<bool> _buildAddCoinButton() async {
-    final List<Coin> allCoins = await MMService()
-        .loadJsonCoins(await MMService().loadElectrumServersAsset());
-    final List<Coin> allCoinsActivate = await coinsBloc.readJsonCoin();
-
-    return !(allCoins.length == allCoinsActivate.length);
+    final active = await Db.activeCoins;
+    final known = await coins;
+    return active.length < known.length;
   }
 }

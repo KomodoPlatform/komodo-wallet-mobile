@@ -194,6 +194,12 @@ class _UnlockPasswordState extends State<UnlockPassword> {
           autocorrect: false,
           obscureText: isObscured,
           enableInteractiveSelection: true,
+          toolbarOptions: ToolbarOptions(
+            paste: controller.text.isEmpty,
+            copy: false,
+            cut: false,
+            selectAll: false,
+          ),
           style: Theme.of(context).textTheme.body1,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
