@@ -67,7 +67,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
             children: <Widget>[
               CoinSelect(
                   value: widget.buyCoin,
-                  disabledOption: widget.sellCoin,
+                  type: CoinType.base,
+                  pairedCoin: widget.sellCoin,
                   onChange: (Coin value) {
                     widget.onPairChange(CoinsPair(buy: value));
                   }),
@@ -86,7 +87,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
               const SizedBox(width: 12),
               CoinSelect(
                 value: widget.sellCoin,
-                disabledOption: widget.buyCoin,
+                type: CoinType.rel,
+                pairedCoin: widget.buyCoin,
                 onChange: (Coin value) {
                   widget.onPairChange(CoinsPair(sell: value));
                 },

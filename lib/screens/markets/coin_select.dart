@@ -7,10 +7,16 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class CoinSelect extends StatefulWidget {
-  const CoinSelect({this.value, this.disabledOption, this.onChange});
+  const CoinSelect({
+    this.value,
+    this.type,
+    this.pairedCoin,
+    this.onChange,
+  });
 
   final Coin value;
-  final Coin disabledOption;
+  final CoinType type;
+  final Coin pairedCoin;
   final Function(Coin) onChange;
 
   @override
@@ -80,6 +86,10 @@ class _CoinSelectState extends State<CoinSelect> {
     );
   }
 
+  bool _isOptionDisabled(Coin coin) {
+    return coin == widget.pairedCoin;
+  }
+
   void _showDialog() {
     dialogBloc.dialog = showDialog(
         context: context,
@@ -91,7 +101,7 @@ class _CoinSelectState extends State<CoinSelect> {
 
               coinsList.add(SimpleDialogOption(
                 key: Key('coin-select-option-${coinBalance.coin.abbr}'),
-                onPressed: coinBalance.coin == widget.disabledOption
+                onPressed: _isOptionDisabled(coinBalance.coin)
                     ? null
                     : () {
                         dialogBloc.closeDialog(context);
@@ -99,30 +109,7 @@ class _CoinSelectState extends State<CoinSelect> {
                           widget.onChange(coinBalance.coin);
                         }
                       },
-                child: Opacity(
-                  opacity: coinBalance.coin == widget.disabledOption ? 0.4 : 1,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Row(
-                      children: <Widget>[
-                        PhotoHero(
-                          radius: 14,
-                          tag:
-                              'assets/${coinBalance.balance.coin.toLowerCase()}.png',
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          coinBalance.coin.name.toUpperCase(),
-                          style: TextStyle(
-                            color: coinBalance.coin == widget.value
-                                ? Theme.of(context).accentColor
-                                : null,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                child: _buildOption(coinBalance),
               ));
             }
 
@@ -137,4 +124,116 @@ class _CoinSelectState extends State<CoinSelect> {
           }
         });
   }
+
+  Widget _buildOption(CoinBalance coinBalance) {
+    Widget _optionTitle;
+
+    switch (widget.type) {
+      case CoinType.base:
+        {
+          _optionTitle = Row(
+            children: <Widget>[
+              Opacity(
+                opacity: _isOptionDisabled(coinBalance.coin) ? 0.4 : 1,
+                child: Row(
+                  children: <Widget>[
+                    PhotoHero(
+                      radius: 12,
+                      tag:
+                          'assets/${coinBalance.balance.coin.toLowerCase()}.png',
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      coinBalance.coin.abbr.toUpperCase(),
+                      style: TextStyle(
+                        color: coinBalance.coin == widget.value
+                            ? Theme.of(context).accentColor
+                            : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Opacity(
+                opacity: 0.4,
+                child: widget.pairedCoin != null
+                    ? Text('  /  ${widget.pairedCoin.abbr}')
+                    : Container(),
+              ),
+            ],
+          );
+          break;
+        }
+
+      case CoinType.rel:
+        {
+          _optionTitle = Row(
+            children: <Widget>[
+              Opacity(
+                opacity: 0.4,
+                child: widget.pairedCoin != null
+                    ? Text('${widget.pairedCoin.abbr}  /  ')
+                    : Container(),
+              ),
+              Opacity(
+                opacity: _isOptionDisabled(coinBalance.coin) ? 0.4 : 1,
+                child: Row(
+                  children: <Widget>[
+                    PhotoHero(
+                      radius: 12,
+                      tag:
+                          'assets/${coinBalance.balance.coin.toLowerCase()}.png',
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      coinBalance.coin.abbr.toUpperCase(),
+                      style: TextStyle(
+                        color: coinBalance.coin == widget.value
+                            ? Theme.of(context).accentColor
+                            : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+          break;
+        }
+
+      default:
+        {
+          _optionTitle = Opacity(
+            opacity: _isOptionDisabled(coinBalance.coin) ? 0.4 : 1,
+            child: Row(
+              children: <Widget>[
+                PhotoHero(
+                  radius: 14,
+                  tag: 'assets/${coinBalance.balance.coin.toLowerCase()}.png',
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  coinBalance.coin.name.toUpperCase(),
+                  style: TextStyle(
+                    color: coinBalance.coin == widget.value
+                        ? Theme.of(context).accentColor
+                        : null,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: _optionTitle,
+    );
+  }
+}
+
+enum CoinType {
+  base,
+  rel,
 }
