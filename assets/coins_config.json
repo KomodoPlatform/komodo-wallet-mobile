@@ -331,6 +331,24 @@
 		]
 	},
 	{
+		"name": "KOINON",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10702,
+		"proto": "tcp",
+		"abbr": "KOIN",
+		"coingeckoId": "koinon",
+		"colorCoin": "0xFF28664c",
+		"serverList": [
+			"electrum3.cipig.net:10024",
+			"electrum2.cipig.net:10024",
+			"electrum1.cipig.net:10024"
+		],
+		"explorerUrl": [
+			"https://block.koinon.cloud/"
+		]
+	},
+	{
 		"name": "Litecoin",
 		"type": "utxo",
 		"address": "electrum-ltc.bysh.me",
