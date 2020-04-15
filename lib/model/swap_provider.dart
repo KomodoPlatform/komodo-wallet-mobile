@@ -276,6 +276,8 @@ class SyncSwaps {
             'metrics.1': <String, dynamic>{
               'pk': mmSe.pubkey,
               'gui': mmSe.gui,
+              'mm_version': mmSe.mmVersion,
+              'mm_date': mmSe.mmDate,
               'footprint': mmSe.footprint,
               'rs': mmSe.rs,
               'files': mmSe.files,
@@ -317,7 +319,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:318', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:322', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
