@@ -1,16 +1,20 @@
 package com.komodoplatform.atomicdex
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.os.Build
 import android.os.Bundle
-import io.flutter.app.FlutterFragmentActivity
-import io.flutter.plugin.common.EventChannel 
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.GeneratedPluginRegistrant
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import io.flutter.app.FlutterActivity
+import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugins.GeneratedPluginRegistrant
 
-class MainActivity: FlutterFragmentActivity() {
+class MainActivity: FlutterActivity() {
   private var logC: EventChannel? = null
   private var logSink: EventChannel.EventSink? = null
 
@@ -49,6 +53,8 @@ class MainActivity: FlutterFragmentActivity() {
 
         result.success ("pong")
       } else if (call.method == "BUILD_TIME") {
+        // NB: If Kotlin is missing the “BUILD_TIME” then use “flutter build apk --debug”
+        // to generate the “komodoDEX/build/app/intermediates/javac/debug/classes/com/komodoplatform/atomicdex/BuildConfig.class”.
         result.success (BuildConfig.BUILD_TIME)
       } else {
         result.notImplemented()}}}
@@ -61,4 +67,37 @@ class MainActivity: FlutterFragmentActivity() {
       override fun onListen (listener: Any?, eventSink: EventChannel.EventSink) {logSink = eventSink}
       override fun onCancel (listener: Any?) {logSink = null}})
     logC = chan}
+
+  // --- WIP, creating a persistent notification ---
+
+  private fun notificationChannelId() = "com.komodoplatform.atomicdex/notification"
+
+  private fun createNotificationChannel() {
+    if (!BuildConfig.DEBUG) return  // WIP
+
+    // TBD: Use AndroidX to create the channel.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      val channel = NotificationChannel (notificationChannelId(), "NotificationChannel name", NotificationManager.IMPORTANCE_DEFAULT)
+      channel.description = "NotificationChannel description"
+
+      val notificationManager = getSystemService (NOTIFICATION_SERVICE) as NotificationManager
+      notificationManager.createNotificationChannel (channel)
+    }
+  }
+
+  private fun createNotification() {
+    if (!BuildConfig.DEBUG) return  // WIP
+
+    val builder = NotificationCompat.Builder (this, notificationChannelId())
+      .setSmallIcon (R.mipmap.launcher_icon)
+      .setContentTitle ("Test notification")
+      .setContentText ("Test text")
+      .setPriority (NotificationCompat.PRIORITY_DEFAULT)
+
+    with (NotificationManagerCompat.from (this)) {
+      // notificationId is a unique int for each notification that you must define
+      val notificationId = 1
+      notify (notificationId, builder.build())
+    }
+  }
 }

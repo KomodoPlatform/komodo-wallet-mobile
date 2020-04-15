@@ -70,7 +70,10 @@ bool isChecksumAddress(String address) {
 Decimal deci(dynamic dv) {
   if (dv == null) return Decimal.fromInt(0);
   if (dv is int) return Decimal.fromInt(dv);
-  if (dv is String) return Decimal.parse(dv.replaceAll(',', '.'));
+  if (dv is String)
+    return dv.isEmpty
+        ? Decimal.fromInt(0)
+        : Decimal.parse(dv.replaceAll(',', '.'));
   if (dv is double) return Decimal.parse(dv.toStringAsFixed(16));
   if (dv is Decimal) return dv;
   throw Exception('Neither string nor double: $dv');
@@ -215,9 +218,9 @@ Future<bool> get canCheckBiometrics async {
   if (_canCheckBiometrics == null) {
     try {
       _canCheckBiometrics = await auth.canCheckBiometrics;
-      Log.println('utils:218', 'canCheckBiometrics: $_canCheckBiometrics');
+      Log.println('utils:221', 'canCheckBiometrics: $_canCheckBiometrics');
     } on PlatformException catch (ex) {
-      Log.println('utils:220', 'canCheckBiometrics exception: $ex');
+      Log.println('utils:223', 'canCheckBiometrics exception: $ex');
     }
   }
   return _canCheckBiometrics;
@@ -230,7 +233,7 @@ Future<bool> get canCheckBiometrics async {
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
 Future<bool> authenticateBiometrics(
     BuildContext context, PinStatus pinStatus) async {
-  Log.println('utils:233', 'authenticateBiometrics');
+  Log.println('utils:236', 'authenticateBiometrics');
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('switch_pin_biometric')) {
     final LocalAuthentication localAuth = LocalAuthentication();
@@ -251,7 +254,7 @@ Future<bool> authenticateBiometrics(
       // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
       // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
       // Rewriting the biometrics support (cf. #668) might be one way to fix that.
-      Log.println('utils:254', 'authenticateWithBiometrics ex: ' + e.message);
+      Log.println('utils:257', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
     lockService.biometricsReturned(lockCookie);
@@ -335,7 +338,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:338', url);
+  Log.println('utils:341', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);

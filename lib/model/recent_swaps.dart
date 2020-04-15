@@ -69,7 +69,7 @@ class MmSwap {
       this.uuid,
       this.recoverable,
       this.gui,
-      this.mmMersion});
+      this.mmVersion});
 
   factory MmSwap.fromJson(Map<String, dynamic> json) => MmSwap(
       errorEvents: List<String>.from(
@@ -87,7 +87,7 @@ class MmSwap {
       uuid: json['uuid'] ?? '',
       recoverable: json['recoverable'] ?? false,
       gui: json['gui'],
-      mmMersion: json['mm_version']);
+      mmVersion: json['mm_version']);
 
   /// if at least 1 of the events happens, the swap is considered a failure
   List<String> errorEvents;
@@ -110,7 +110,7 @@ class MmSwap {
   /// MM allows as many calls to the recover_funds_of_swap method as necessary, in case of errors
   bool recoverable;
 
-  String gui, mmMersion;
+  String gui, mmVersion;
 
   Map<String, dynamic> get toJson => <String, dynamic>{
         'error_events':
@@ -125,7 +125,7 @@ class MmSwap {
         'uuid': uuid ?? '',
         'recoverable': recoverable ?? false,
         'gui': gui,
-        'mm_version': mmMersion
+        'mm_version': mmVersion
       };
 }
 
@@ -266,9 +266,9 @@ class SwapEF {
           : Transaction.fromJson(json['transaction']),
       error: json['error'] ?? '');
 
-  /// the lock duration of swap payments in seconds.
-  /// The sender can refund the transaction when the lock duration is passed.
-  /// The taker payment is locked for the lock duration.
+  /// The lock duration of swap payments in seconds
+  /// The sender can refund the transaction when the lock duration is passed
+  /// The taker payment is locked for the lock duration
   /// The maker payment is locked for lock duration * 2
   int lockDuration;
   String makerAmount;
@@ -276,25 +276,37 @@ class SwapEF {
   int makerCoinStartBlock;
   int makerPaymentConfirmations;
 
-  /// whether dPoW notarization is required for maker payment
+  /// Whether dPoW notarization is required for makerCoin
   bool makerPaymentRequiresNota;
   int makerPaymentLock;
+
+  /// 66 bytes version of our p2p ID
+  /// The 64 bytes version is the suffix (the tail) of the 66 bytes one
+  /// If we are a Maker, then this is the `makerPubkey` field in the Taker swap JSON
+  /// If we are a Taker, then this is the `takerPubkey` field in the Maker swap JSON
   String myPersistentPub;
+
   String secret;
   int startedAt;
 
-  /// the p2p ID of taker node
+  /// The p2p ID of taker node
+  /// 64 bytes (256 bits * hexadecimal)
   String taker;
+
+  // NB: The `taker` is actually a part (a suffix) of the `takerPubkey`
+  // The difference is that the `taker` is exactly 64 bytes (256 bits * hexadecimal)
+  // whereas the `takerPubkey` is one byte longer
+  String takerPubkey;
+
   String takerAmount;
   String takerCoin;
   int takerCoinStartBlock;
   int takerPaymentConfirmations;
 
-  /// whether dPoW notarization is required for taker payment
+  /// whether dPoW notarization is required for takerCoin
   bool takerPaymentRequiresNota;
   String uuid;
   int takerPaymentLocktime;
-  String takerPubkey;
   int blockHeight;
   String coin;
   FeeDetails feeDetails;
