@@ -26,20 +26,29 @@ class OrderBookTable extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 4.0),
-          child: Text('Price (${sellCoin.abbr})'),
-        ), // TODO(yurii): localization
-        Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Amount (${buyCoin.abbr})'),
+          child: Text(
+            'Price (${sellCoin.abbr})',
+            maxLines: 1,
           ),
         ), // TODO(yurii): localization
         Align(
           alignment: Alignment.centerRight,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Total (${buyCoin.abbr})'),
+            child: Text(
+              'Amount (${buyCoin.abbr})',
+              maxLines: 1,
+            ),
+          ),
+        ), // TODO(yurii): localization
+        Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
+              'Total (${buyCoin.abbr})',
+              maxLines: 1,
+            ),
           ),
         ), // TODO(yurii): localization
       ],
@@ -59,6 +68,7 @@ class OrderBookTable extends StatelessWidget {
             padding: const EdgeInsets.only(left: 4.0),
             child: Text(
               _formatted(ask.price),
+              maxLines: 1,
               style: TextStyle(color: Colors.red),
             ),
           ),
@@ -66,6 +76,7 @@ class OrderBookTable extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               _formatted(ask.maxvolume.toString()),
+              maxLines: 1,
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
@@ -73,6 +84,7 @@ class OrderBookTable extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               _formatted(_askTotal.toString()),
+              maxLines: 1,
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
@@ -97,6 +109,7 @@ class OrderBookTable extends StatelessWidget {
             padding: const EdgeInsets.only(left: 4.0),
             child: Text(
               _formatted(bid.price),
+              maxLines: 1,
               style: TextStyle(color: Colors.green),
             ),
           ),
@@ -104,6 +117,7 @@ class OrderBookTable extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               _formatted(_bidVolume.toString()),
+              maxLines: 1,
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
@@ -111,6 +125,7 @@ class OrderBookTable extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               _formatted(_bidTotal.toString()),
+              maxLines: 1,
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
