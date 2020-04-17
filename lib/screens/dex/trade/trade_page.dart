@@ -13,6 +13,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
@@ -26,6 +27,7 @@ import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:provider/provider.dart';
 
 class TradePage extends StatefulWidget {
   const TradePage({this.mContext});
@@ -118,6 +120,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    _updateMarketsPair();
+
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
@@ -138,6 +142,26 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             }),
       ],
     );
+  }
+
+  void _updateMarketsPair() {
+    if (swapBloc.sellCoin?.coin == null && swapBloc.receiveCoin == null) return;
+
+    final OrderBookProvider _orderBookProvider =
+        Provider.of<OrderBookProvider>(context);
+
+    if (swapBloc.receiveCoin != _orderBookProvider.activeCoins?.buy) {
+      _orderBookProvider.activeCoins = CoinsPair(
+        buy: swapBloc.receiveCoin,
+        sell: _orderBookProvider.activeCoins?.sell,
+      );
+    }
+    if (swapBloc.sellCoin?.coin != _orderBookProvider.activeCoins?.sell) {
+      _orderBookProvider.activeCoins = CoinsPair(
+        buy: _orderBookProvider.activeCoins?.buy,
+        sell: swapBloc.sellCoin?.coin,
+      );
+    }
   }
 
   void initListenerAmountReceive() {

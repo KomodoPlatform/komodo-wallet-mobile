@@ -46,15 +46,15 @@ class _OrderBookPageState extends State<OrderBookPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               CoinSelect(
-                  value: _orderBookProvider.activeCoins.buy,
+                  value: _orderBookProvider.activeCoins?.buy,
                   type: CoinType.base,
-                  pairedCoin: _orderBookProvider.activeCoins.sell,
+                  pairedCoin: _orderBookProvider.activeCoins?.sell,
                   autoOpen: _orderBookProvider.activeCoins?.buy == null &&
                       _orderBookProvider.activeCoins?.sell != null,
                   onChange: (Coin value) {
                     _orderBookProvider.activeCoins = CoinsPair(
                       buy: value,
-                      sell: _orderBookProvider.activeCoins.sell,
+                      sell: _orderBookProvider.activeCoins?.sell,
                     );
                   }),
               const SizedBox(width: 12),
@@ -63,23 +63,23 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 child: FlatButton(
                     onPressed: () {
                       _orderBookProvider.activeCoins = CoinsPair(
-                        buy: _orderBookProvider.activeCoins.sell,
-                        sell: _orderBookProvider.activeCoins.buy,
+                        buy: _orderBookProvider.activeCoins?.sell,
+                        sell: _orderBookProvider.activeCoins?.buy,
                       );
                     },
                     child: Icon(Icons.swap_horiz)),
               ),
               const SizedBox(width: 12),
               CoinSelect(
-                value: _orderBookProvider.activeCoins.sell,
+                value: _orderBookProvider.activeCoins?.sell,
                 type: CoinType.rel,
-                pairedCoin: _orderBookProvider.activeCoins.buy,
+                pairedCoin: _orderBookProvider.activeCoins?.buy,
                 autoOpen: _orderBookProvider.activeCoins?.sell == null &&
                       _orderBookProvider.activeCoins?.buy != null,
                 onChange: (Coin value) {
                   _orderBookProvider.activeCoins = CoinsPair(
                     sell: value,
-                    buy: _orderBookProvider.activeCoins.buy,
+                    buy: _orderBookProvider.activeCoins?.buy,
                   );
                 },
               ),

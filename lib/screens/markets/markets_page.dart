@@ -14,6 +14,7 @@ class MarketsPage extends StatefulWidget {
 class _MarketsPageState extends State<MarketsPage>
     with TickerProviderStateMixin {
   TabController tabController;
+  bool init = false;
 
   @override
   void initState() {
@@ -26,6 +27,12 @@ class _MarketsPageState extends State<MarketsPage>
   Widget build(BuildContext context) {
     final OrderBookProvider _orderBookProvider =
         Provider.of<OrderBookProvider>(context);
+    final CoinsPair _activePair = _orderBookProvider.activeCoins;
+
+    if (!init && (_activePair?.buy != null || _activePair?.sell != null)) {
+      tabController.index = 1;
+    }
+    init = true;
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
