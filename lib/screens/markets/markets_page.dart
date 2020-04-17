@@ -4,6 +4,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/screens/markets/coins_price_list.dart';
 import 'package:komodo_dex/screens/markets/order_book_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
+import 'package:provider/provider.dart';
 
 class MarketsPage extends StatefulWidget {
   @override
@@ -13,8 +14,6 @@ class MarketsPage extends StatefulWidget {
 class _MarketsPageState extends State<MarketsPage>
     with TickerProviderStateMixin {
   TabController tabController;
-  Coin _buyCoin;
-  Coin _sellCoin;
 
   @override
   void initState() {
@@ -25,6 +24,9 @@ class _MarketsPageState extends State<MarketsPage>
 
   @override
   Widget build(BuildContext context) {
+    final OrderBookProvider _orderBookProvider =
+        Provider.of<OrderBookProvider>(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -65,22 +67,10 @@ class _MarketsPageState extends State<MarketsPage>
           controller: tabController,
           children: <Widget>[
             CoinsPriceList(onItemTap: (Coin coin) {
-              setState(() {
-                _buyCoin = coin;
-                _sellCoin = null;
-              });
+              _orderBookProvider.activeCoins = CoinsPair(buy: coin, sell: null);
               tabController.index = 1;
             }),
-            OrderBookPage(
-              buyCoin: _buyCoin,
-              sellCoin: _sellCoin,
-              onPairChange: (CoinsPair coinsPair) {
-                setState(() {
-                  _buyCoin = coinsPair.buy ?? _buyCoin;
-                  _sellCoin = coinsPair.sell ?? _sellCoin;
-                });
-              },
-            ),
+            const OrderBookPage(),
           ],
         );
       }),

@@ -8,33 +8,19 @@ import 'package:komodo_dex/screens/markets/order_book_table.dart';
 import 'package:provider/provider.dart';
 
 class OrderBookPage extends StatefulWidget {
-  const OrderBookPage({this.buyCoin, this.sellCoin, this.onPairChange});
-
-  final Coin buyCoin;
-  final Coin sellCoin;
-  final Function(CoinsPair) onPairChange;
+  const OrderBookPage();
 
   @override
   _OrderBookPageState createState() => _OrderBookPageState();
 }
 
 class _OrderBookPageState extends State<OrderBookPage> {
-  bool _autoOpenBuyCoinSelect = false;
-  bool _autoOpenSellCoinSelect = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.buyCoin != null) {
-      _autoOpenSellCoinSelect = true;
-    } else if (widget.sellCoin != null) {
-      _autoOpenBuyCoinSelect = true;
-    }
-  }
+  OrderBookProvider _orderBookProvider;
 
   @override
   Widget build(BuildContext context) {
+    _orderBookProvider = Provider.of<OrderBookProvider>(context);
+
     return Container(
       padding: const EdgeInsets.all(14),
       child: SingleChildScrollView(
@@ -60,33 +46,41 @@ class _OrderBookPageState extends State<OrderBookPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               CoinSelect(
-                  value: widget.buyCoin,
+                  value: _orderBookProvider.activeCoins.buy,
                   type: CoinType.base,
-                  pairedCoin: widget.sellCoin,
-                  autoOpen: _autoOpenBuyCoinSelect,
+                  pairedCoin: _orderBookProvider.activeCoins.sell,
+                  autoOpen: _orderBookProvider.activeCoins?.buy == null &&
+                      _orderBookProvider.activeCoins?.sell != null,
                   onChange: (Coin value) {
-                    widget.onPairChange(CoinsPair(buy: value));
+                    _orderBookProvider.activeCoins = CoinsPair(
+                      buy: value,
+                      sell: _orderBookProvider.activeCoins.sell,
+                    );
                   }),
               const SizedBox(width: 12),
               ButtonTheme(
                 minWidth: 30,
                 child: FlatButton(
                     onPressed: () {
-                      widget.onPairChange(CoinsPair(
-                        buy: widget.sellCoin,
-                        sell: widget.buyCoin,
-                      ));
+                      _orderBookProvider.activeCoins = CoinsPair(
+                        buy: _orderBookProvider.activeCoins.sell,
+                        sell: _orderBookProvider.activeCoins.buy,
+                      );
                     },
                     child: Icon(Icons.swap_horiz)),
               ),
               const SizedBox(width: 12),
               CoinSelect(
-                value: widget.sellCoin,
+                value: _orderBookProvider.activeCoins.sell,
                 type: CoinType.rel,
-                pairedCoin: widget.buyCoin,
-                autoOpen: _autoOpenSellCoinSelect,
+                pairedCoin: _orderBookProvider.activeCoins.buy,
+                autoOpen: _orderBookProvider.activeCoins?.sell == null &&
+                      _orderBookProvider.activeCoins?.buy != null,
                 onChange: (Coin value) {
-                  widget.onPairChange(CoinsPair(sell: value));
+                  _orderBookProvider.activeCoins = CoinsPair(
+                    sell: value,
+                    buy: _orderBookProvider.activeCoins.buy,
+                  );
                 },
               ),
             ],
@@ -97,21 +91,15 @@ class _OrderBookPageState extends State<OrderBookPage> {
   }
 
   Widget _buildOrderBook() {
-    if (widget.buyCoin == null || widget.sellCoin == null) {
+    if (_orderBookProvider.activeCoins?.buy == null ||
+        _orderBookProvider.activeCoins?.sell == null) {
       return const Center(
         heightFactor: 10,
         child: Text('Please select coins'), // TODO(yurii): localization
       );
     }
 
-    final OrderBookProvider _orderBookProvider =
-        Provider.of<OrderBookProvider>(context);
-    final Orderbook _orderBook = _orderBookProvider.getOrderBook(
-      CoinsPair(
-        buy: widget.buyCoin,
-        sell: widget.sellCoin,
-      ),
-    );
+    final Orderbook _orderBook = _orderBookProvider.getOrderBook();
 
     if (_orderBook == null) {
       return const Center(
@@ -127,8 +115,6 @@ class _OrderBookPageState extends State<OrderBookPage> {
           bids: _orderBook.bids,
         ),
         OrderBookTable(
-          buyCoin: widget.buyCoin,
-          sellCoin: widget.sellCoin,
           asks: _orderBook.asks,
           bids: _orderBook.bids,
         ),

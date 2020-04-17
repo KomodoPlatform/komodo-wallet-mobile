@@ -16,12 +16,22 @@ class OrderBookProvider extends ChangeNotifier {
 
   final List<CoinsPair> _subscribedCoins = [];
   final Map<String, Orderbook> _orderBooks = {}; // {'BTC/KMD': Orderbook(),}
+  CoinsPair _activeCoins;
 
-  Orderbook getOrderBook(CoinsPair coinsPair) {
+  Orderbook getOrderBook([CoinsPair coinsPair]) {
+    coinsPair ??= activeCoins;
+
     if (!_subscribedCoins.contains(coinsPair)) {
       _subscribedCoins.add(coinsPair);
     }
     return _orderBooks['${coinsPair.buy.abbr}/${coinsPair.sell.abbr}'];
+  }
+
+  CoinsPair get activeCoins => _activeCoins;
+
+  set activeCoins(CoinsPair coinsPair) {
+    _activeCoins = coinsPair;
+    notifyListeners();
   }
 
   Future<void> _updateOrderBooks() async {

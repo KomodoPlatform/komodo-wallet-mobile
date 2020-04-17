@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:provider/provider.dart';
 
 class OrderBookTable extends StatelessWidget {
   const OrderBookTable({
-    @required this.buyCoin,
-    @required this.sellCoin,
     @required this.asks,
     @required this.bids,
   });
 
-  final Coin buyCoin;
-  final Coin sellCoin;
   final List<Ask> asks;
   final List<Ask> bids;
 
   @override
   Widget build(BuildContext context) {
+    final OrderBookProvider _orderBookProvider =
+        Provider.of<OrderBookProvider>(context);
+
     final TableRow _tableHeader = TableRow(
       decoration: BoxDecoration(
         border: Border(
@@ -27,7 +27,7 @@ class OrderBookTable extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 4.0),
           child: Text(
-            'Price (${sellCoin.abbr})',
+            'Price (${_orderBookProvider.activeCoins.sell.abbr})',
             maxLines: 1,
           ),
         ), // TODO(yurii): localization
@@ -36,7 +36,7 @@ class OrderBookTable extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              'Amount (${buyCoin.abbr})',
+              'Amount (${_orderBookProvider.activeCoins.buy.abbr})',
               maxLines: 1,
             ),
           ),
@@ -46,7 +46,7 @@ class OrderBookTable extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              'Total (${buyCoin.abbr})',
+              'Total (${_orderBookProvider.activeCoins.buy.abbr})',
               maxLines: 1,
             ),
           ),
@@ -99,7 +99,9 @@ class OrderBookTable extends StatelessWidget {
             'No asks found', // TODO(yurii): localization
             maxLines: 1,
             style: TextStyle(color: Colors.red),
-          ), Container(), Container(),
+          ),
+          Container(),
+          Container(),
         ],
       ));
     }
@@ -150,7 +152,9 @@ class OrderBookTable extends StatelessWidget {
             'No bids found', // TODO(yurii): localization
             maxLines: 1,
             style: TextStyle(color: Colors.green),
-          ), Container(), Container(),
+          ),
+          Container(),
+          Container(),
         ],
       ));
     }
