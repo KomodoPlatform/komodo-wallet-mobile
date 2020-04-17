@@ -11,12 +11,14 @@ class CoinSelect extends StatefulWidget {
     this.value,
     this.type,
     this.pairedCoin,
+    this.autoOpen = false,
     this.onChange,
   });
 
   final Coin value;
   final CoinType type;
   final Coin pairedCoin;
+  final bool autoOpen;
   final Function(Coin) onChange;
 
   @override
@@ -24,7 +26,8 @@ class CoinSelect extends StatefulWidget {
 }
 
 class _CoinSelectState extends State<CoinSelect> {
-  List<CoinBalance> _balanceList;
+  List<CoinBalance> _coinsList;
+  bool _isDialogOpen = false;
 
   @override
   void initState() {
@@ -32,12 +35,24 @@ class _CoinSelectState extends State<CoinSelect> {
 
     coinsBloc.outCoins.listen((List<CoinBalance> list) {
       setState(() {
-        _balanceList = list;
+        if (_isDialogOpen && (_coinsList != list)) {
+          _closeDialog();
+          _coinsList = list;
+          _showDialog();
+        } else {
+          _coinsList = list;
+        }
       });
     });
 
     if (MMService().running) {
       coinsBloc.loadCoin();
+    }
+
+    if (widget.autoOpen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showDialog();
+      });
     }
   }
 
@@ -91,20 +106,23 @@ class _CoinSelectState extends State<CoinSelect> {
   }
 
   void _showDialog() {
+    setState(() {
+      _isDialogOpen = true;
+    });
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (BuildContext context) {
-          if (_balanceList != null && _balanceList.isNotEmpty) {
+          if (_coinsList != null && _coinsList.isNotEmpty) {
             final List<SimpleDialogOption> coinsList = [];
-            for (int i = 0; i < _balanceList.length; i++) {
-              final CoinBalance coinBalance = _balanceList[i];
+            for (int i = 0; i < _coinsList.length; i++) {
+              final CoinBalance coinBalance = _coinsList[i];
 
               coinsList.add(SimpleDialogOption(
                 key: Key('coin-select-option-${coinBalance.coin.abbr}'),
                 onPressed: _isOptionDisabled(coinBalance.coin)
                     ? null
                     : () {
-                        dialogBloc.closeDialog(context);
+                        _closeDialog();
                         if (widget.onChange != null) {
                           widget.onChange(coinBalance.coin);
                         }
@@ -123,6 +141,15 @@ class _CoinSelectState extends State<CoinSelect> {
             );
           }
         });
+  }
+
+  void _closeDialog() {
+    if (!_isDialogOpen) return;
+
+    setState(() {
+      _isDialogOpen = false;
+    });
+    dialogBloc.closeDialog(context);
   }
 
   Widget _buildOption(CoinBalance coinBalance) {

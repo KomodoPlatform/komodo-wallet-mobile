@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -21,22 +19,18 @@ class OrderBookPage extends StatefulWidget {
 }
 
 class _OrderBookPageState extends State<OrderBookPage> {
-  Timer _ticker;
+  bool _autoOpenBuyCoinSelect = false;
+  bool _autoOpenSellCoinSelect = false;
 
   @override
   void initState() {
     super.initState();
 
-    _ticker = Timer.periodic(const Duration(milliseconds: 500), (_) {
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    if (_ticker != null) _ticker.cancel();
-
-    super.dispose();
+    if (widget.buyCoin != null) {
+      _autoOpenSellCoinSelect = true;
+    } else if (widget.sellCoin != null) {
+      _autoOpenBuyCoinSelect = true;
+    }
   }
 
   @override
@@ -69,6 +63,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                   value: widget.buyCoin,
                   type: CoinType.base,
                   pairedCoin: widget.sellCoin,
+                  autoOpen: _autoOpenBuyCoinSelect,
                   onChange: (Coin value) {
                     widget.onPairChange(CoinsPair(buy: value));
                   }),
@@ -89,6 +84,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 value: widget.sellCoin,
                 type: CoinType.rel,
                 pairedCoin: widget.buyCoin,
+                autoOpen: _autoOpenSellCoinSelect,
                 onChange: (Coin value) {
                   widget.onPairChange(CoinsPair(sell: value));
                 },

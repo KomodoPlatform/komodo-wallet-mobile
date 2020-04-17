@@ -65,7 +65,6 @@ class _MarketsPageState extends State<MarketsPage>
           controller: tabController,
           children: <Widget>[
             CoinsPriceList(onItemTap: (Coin coin) {
-              print(coin.abbr);
               setState(() {
                 _buyCoin = coin;
                 _sellCoin = null;
