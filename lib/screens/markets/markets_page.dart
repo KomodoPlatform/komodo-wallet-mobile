@@ -27,7 +27,7 @@ class _MarketsPageState extends State<MarketsPage>
   Widget build(BuildContext context) {
     final OrderBookProvider _orderBookProvider =
         Provider.of<OrderBookProvider>(context);
-    final CoinsPair _activePair = _orderBookProvider.activeCoins;
+    final CoinsPair _activePair = _orderBookProvider.activePair;
 
     if (!init && (_activePair?.buy != null || _activePair?.sell != null)) {
       tabController.index = 1;
@@ -74,7 +74,7 @@ class _MarketsPageState extends State<MarketsPage>
           controller: tabController,
           children: <Widget>[
             CoinsPriceList(onItemTap: (Coin coin) {
-              _orderBookProvider.activeCoins = CoinsPair(buy: coin, sell: null);
+              _orderBookProvider.activePair = CoinsPair(buy: coin, sell: null);
               tabController.index = 1;
             }),
             const OrderBookPage(),

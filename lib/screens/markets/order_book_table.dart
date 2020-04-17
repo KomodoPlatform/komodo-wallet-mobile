@@ -27,7 +27,7 @@ class OrderBookTable extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 4.0),
           child: Text(
-            'Price (${_orderBookProvider.activeCoins.sell.abbr})',
+            'Price (${_orderBookProvider.activePair.sell.abbr})',
             maxLines: 1,
           ),
         ), // TODO(yurii): localization
@@ -36,7 +36,7 @@ class OrderBookTable extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              'Amount (${_orderBookProvider.activeCoins.buy.abbr})',
+              'Amount (${_orderBookProvider.activePair.buy.abbr})',
               maxLines: 1,
             ),
           ),
@@ -46,7 +46,7 @@ class OrderBookTable extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              'Total (${_orderBookProvider.activeCoins.buy.abbr})',
+              'Total (${_orderBookProvider.activePair.buy.abbr})',
               maxLines: 1,
             ),
           ),

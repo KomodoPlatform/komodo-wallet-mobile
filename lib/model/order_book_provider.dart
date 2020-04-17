@@ -16,10 +16,10 @@ class OrderBookProvider extends ChangeNotifier {
 
   final List<CoinsPair> _subscribedCoins = [];
   final Map<String, Orderbook> _orderBooks = {}; // {'BTC/KMD': Orderbook(),}
-  CoinsPair _activeCoins;
+  CoinsPair _activePair;
 
   Orderbook getOrderBook([CoinsPair coinsPair]) {
-    coinsPair ??= activeCoins;
+    coinsPair ??= activePair;
 
     if (!_subscribedCoins.contains(coinsPair)) {
       _subscribedCoins.add(coinsPair);
@@ -27,10 +27,10 @@ class OrderBookProvider extends ChangeNotifier {
     return _orderBooks['${coinsPair.buy.abbr}/${coinsPair.sell.abbr}'];
   }
 
-  CoinsPair get activeCoins => _activeCoins;
+  CoinsPair get activePair => _activePair;
 
-  set activeCoins(CoinsPair coinsPair) {
-    _activeCoins = coinsPair;
+  set activePair(CoinsPair coinsPair) {
+    _activePair = coinsPair;
     notifyListeners();
   }
 

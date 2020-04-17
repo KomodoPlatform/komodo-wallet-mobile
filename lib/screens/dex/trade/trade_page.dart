@@ -150,15 +150,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     final OrderBookProvider _orderBookProvider =
         Provider.of<OrderBookProvider>(context);
 
-    if (swapBloc.receiveCoin != _orderBookProvider.activeCoins?.buy) {
-      _orderBookProvider.activeCoins = CoinsPair(
+    if (swapBloc.receiveCoin != _orderBookProvider.activePair?.buy) {
+      _orderBookProvider.activePair = CoinsPair(
         buy: swapBloc.receiveCoin,
-        sell: _orderBookProvider.activeCoins?.sell,
+        sell: _orderBookProvider.activePair?.sell,
       );
     }
-    if (swapBloc.sellCoin?.coin != _orderBookProvider.activeCoins?.sell) {
-      _orderBookProvider.activeCoins = CoinsPair(
-        buy: _orderBookProvider.activeCoins?.buy,
+    if (swapBloc.sellCoin?.coin != _orderBookProvider.activePair?.sell) {
+      _orderBookProvider.activePair = CoinsPair(
+        buy: _orderBookProvider.activePair?.buy,
         sell: swapBloc.sellCoin?.coin,
       );
     }

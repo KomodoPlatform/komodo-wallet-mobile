@@ -46,15 +46,15 @@ class _OrderBookPageState extends State<OrderBookPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               CoinSelect(
-                  value: _orderBookProvider.activeCoins?.buy,
+                  value: _orderBookProvider.activePair?.buy,
                   type: CoinType.base,
-                  pairedCoin: _orderBookProvider.activeCoins?.sell,
-                  autoOpen: _orderBookProvider.activeCoins?.buy == null &&
-                      _orderBookProvider.activeCoins?.sell != null,
+                  pairedCoin: _orderBookProvider.activePair?.sell,
+                  autoOpen: _orderBookProvider.activePair?.buy == null &&
+                      _orderBookProvider.activePair?.sell != null,
                   onChange: (Coin value) {
-                    _orderBookProvider.activeCoins = CoinsPair(
+                    _orderBookProvider.activePair = CoinsPair(
                       buy: value,
-                      sell: _orderBookProvider.activeCoins?.sell,
+                      sell: _orderBookProvider.activePair?.sell,
                     );
                   }),
               const SizedBox(width: 12),
@@ -62,24 +62,24 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 minWidth: 30,
                 child: FlatButton(
                     onPressed: () {
-                      _orderBookProvider.activeCoins = CoinsPair(
-                        buy: _orderBookProvider.activeCoins?.sell,
-                        sell: _orderBookProvider.activeCoins?.buy,
+                      _orderBookProvider.activePair = CoinsPair(
+                        buy: _orderBookProvider.activePair?.sell,
+                        sell: _orderBookProvider.activePair?.buy,
                       );
                     },
                     child: Icon(Icons.swap_horiz)),
               ),
               const SizedBox(width: 12),
               CoinSelect(
-                value: _orderBookProvider.activeCoins?.sell,
+                value: _orderBookProvider.activePair?.sell,
                 type: CoinType.rel,
-                pairedCoin: _orderBookProvider.activeCoins?.buy,
-                autoOpen: _orderBookProvider.activeCoins?.sell == null &&
-                      _orderBookProvider.activeCoins?.buy != null,
+                pairedCoin: _orderBookProvider.activePair?.buy,
+                autoOpen: _orderBookProvider.activePair?.sell == null &&
+                      _orderBookProvider.activePair?.buy != null,
                 onChange: (Coin value) {
-                  _orderBookProvider.activeCoins = CoinsPair(
+                  _orderBookProvider.activePair = CoinsPair(
                     sell: value,
-                    buy: _orderBookProvider.activeCoins?.buy,
+                    buy: _orderBookProvider.activePair?.buy,
                   );
                 },
               ),
@@ -91,8 +91,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
   }
 
   Widget _buildOrderBook() {
-    if (_orderBookProvider.activeCoins?.buy == null ||
-        _orderBookProvider.activeCoins?.sell == null) {
+    if (_orderBookProvider.activePair?.buy == null ||
+        _orderBookProvider.activePair?.sell == null) {
       return const Center(
         heightFactor: 10,
         child: Text('Please select coins'), // TODO(yurii): localization
