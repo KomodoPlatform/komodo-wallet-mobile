@@ -387,14 +387,13 @@
 	{
 		"name": "Navcoin",
 		"type": "utxo",
-		"address": "electrumx.nav.community",
-		"port": 40001,
+		"address": "electrum1.cipig.net",
+		"port": 10056,
 		"proto": "tcp",
 		"abbr": "NAV",
 		"coingeckoId": "nav-coin",
 		"colorCoin": "0xFFA83BAB",
 		"serverList": [
-			"electrumx.nav.community:40001",
 			"electrum1.cipig.net:10056",
 			"electrum2.cipig.net:10056",
 			"electrum3.cipig.net:10056"
