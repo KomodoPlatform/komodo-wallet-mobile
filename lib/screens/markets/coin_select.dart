@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -28,21 +30,24 @@ class CoinSelect extends StatefulWidget {
 class _CoinSelectState extends State<CoinSelect> {
   List<CoinBalance> _coinsList;
   bool _isDialogOpen = false;
+  StreamSubscription _coinsListener;
 
   @override
   void initState() {
     super.initState();
 
-    coinsBloc.outCoins.listen((List<CoinBalance> list) {
-      setState(() {
-        if (_isDialogOpen && (_coinsList != list)) {
-          _closeDialog();
-          _coinsList = list;
-          _showDialog();
-        } else {
-          _coinsList = list;
-        }
-      });
+    // Using stream listener instead of StreamBuilder in order
+    // to make SimpleDialog updatable
+    _coinsListener = coinsBloc.outCoins.listen((List<CoinBalance> list) {
+      if (_coinsList == list) return;
+
+      if (_isDialogOpen) {
+        _closeDialog();
+        setState(() => _coinsList = list);
+        _showDialog();
+      } else {
+        setState(() => _coinsList = list);
+      }
     });
 
     if (MMService().running) {
@@ -54,6 +59,12 @@ class _CoinSelectState extends State<CoinSelect> {
         _showDialog();
       });
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _coinsListener?.cancel();
   }
 
   @override
@@ -112,7 +123,19 @@ class _CoinSelectState extends State<CoinSelect> {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (BuildContext context) {
-          if (_coinsList != null && _coinsList.isNotEmpty) {
+          if (_coinsList != null) {
+            if (_coinsList.isEmpty) {
+              return const SimpleDialog(
+                title: Text('Select Coin'), // TODO(yurii): localization
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(25.0),
+                    child: Text('No active coins'),
+                  ),
+                ], // TODO(yurii): localization
+              );
+            }
+
             final List<SimpleDialogOption> coinsList = [];
             for (int i = 0; i < _coinsList.length; i++) {
               final CoinBalance coinBalance = _coinsList[i];
