@@ -5,12 +5,12 @@ import 'package:komodo_dex/model/orderbook.dart';
 
 class OrderBookChart extends StatelessWidget {
   const OrderBookChart({
-    @required this.asks,
-    @required this.bids,
+    @required this.sortedAsks,
+    @required this.sortedBids,
   });
 
-  final List<Ask> asks;
-  final List<Ask> bids;
+  final List<Ask> sortedAsks;
+  final List<Ask> sortedBids;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class OrderBookChart extends StatelessWidget {
     final List<double> _bidTotals = [];
     double _maxAmount;
 
-    final List<Ask> _sortedAsks = _sortByPrice(asks);
-    final List<Ask> _sortedBids = List.from(_sortByPrice(bids).reversed);
+    final List<Ask> _sortedAsks = sortedAsks;
+    final List<Ask> _sortedBids = List.from(sortedBids.reversed);
 
     for (int i = 0; i < _sortedAsks.length; i++) {
       final double prevTotal = i > 0 ? _askTotals[_askTotals.length - 1] : 0;
@@ -134,12 +134,5 @@ class OrderBookChart extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  List<Ask> _sortByPrice(List<Ask> list) {
-    final List<Ask> sorted = list;
-    sorted
-        .sort((a, b) => double.parse(a.price).compareTo(double.parse(b.price)));
-    return sorted;
   }
 }

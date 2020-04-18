@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 
 class OrderBookTable extends StatelessWidget {
   const OrderBookTable({
-    @required this.asks,
-    @required this.bids,
+    @required this.sortedAsks,
+    @required this.sortedBids,
   });
 
-  final List<Ask> asks;
-  final List<Ask> bids;
+  final List<Ask> sortedAsks;
+  final List<Ask> sortedBids;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class OrderBookTable extends StatelessWidget {
       ],
     );
 
-    final List<Ask> _sortedAsks = _sortByPrice(asks);
+    final List<Ask> _sortedAsks = sortedAsks;
     List<TableRow> _asksList = [];
     double _askTotal = 0;
 
@@ -106,7 +106,7 @@ class OrderBookTable extends StatelessWidget {
       ));
     }
 
-    final List<Ask> _sortedBids = List.from(_sortByPrice(bids).reversed);
+    final List<Ask> _sortedBids = List.from(sortedBids.reversed);
     final List<TableRow> _bidsList = [];
     double _bidTotal = 0;
 
@@ -183,13 +183,6 @@ class OrderBookTable extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  List<Ask> _sortByPrice(List<Ask> list) {
-    final List<Ask> sorted = list;
-    sorted
-        .sort((a, b) => double.parse(a.price).compareTo(double.parse(b.price)));
-    return sorted;
   }
 
   String _formatted(String value) {
