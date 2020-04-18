@@ -35,11 +35,7 @@ Upgrading from v1.9.1+hotfix.6
 `flutter version` is inconsistent regarding the access to beta versions.
 Git tags can be used instead (that is, when we want to experiment with beta versions of Flutter):
 
-    FD=`which flutter`
-    FD=`dirname $FD`
-    FD=`dirname $FD`
-    echo $FD
-    cd $FD
+    FD=`which flutter`; FD=`dirname $FD`; FD=`dirname $FD`; echo $FD; cd $FD
     git pull
     git reset --hard
     git checkout -f v1.14.3
