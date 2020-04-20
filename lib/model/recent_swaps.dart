@@ -67,27 +67,23 @@ class MmSwap {
       this.successEvents,
       this.type,
       this.uuid,
-      this.recoverable,
       this.gui,
       this.mmVersion});
 
-  factory MmSwap.fromJson(Map<String, dynamic> json) => MmSwap(
-      errorEvents: List<String>.from(
-              json['error_events'].map<dynamic>((dynamic x) => x)) ??
-          <String>[],
-      events: List<SwapEL>.from(
-              json['events'].map((dynamic x) => SwapEL.fromJson(x))) ??
-          <SwapEL>[],
-      myInfo:
-          json['my_info'] == null ? null : SwapMyInfo.fromJson(json['my_info']),
-      successEvents: List<String>.from(
-              json['success_events'].map<dynamic>((dynamic x) => x)) ??
-          <String>[],
-      type: json['type'] ?? '',
-      uuid: json['uuid'] ?? '',
-      recoverable: json['recoverable'] ?? false,
-      gui: json['gui'],
-      mmVersion: json['mm_version']);
+  MmSwap.fromJson(Map<String, dynamic> json) {
+    errorEvents = List<String>.from(json['error_events']);
+    events = List<SwapEL>.from(
+        json['events'].map((dynamic x) => SwapEL.fromJson(x)));
+    if (json.containsKey('my_info')) {
+      myInfo = SwapMyInfo.fromJson(json['my_info']);
+    }
+    successEvents = List<String>.from(json['success_events']);
+    type = json['type'];
+    uuid = json['uuid'];
+    _recoverable = json['recoverable'];
+    gui = json['gui'];
+    mmVersion = json['mm_version'];
+  }
 
   /// if at least 1 of the events happens, the swap is considered a failure
   List<String> errorEvents;
@@ -108,7 +104,22 @@ class MmSwap {
   /// whether the swap can be recovered using the recover_funds_of_swap API command.
   /// MM does not record the state regarding whether the swap was recovered or not.
   /// MM allows as many calls to the recover_funds_of_swap method as necessary, in case of errors
-  bool recoverable;
+  bool _recoverable;
+
+  bool get recoverable {
+    if (!_recoverable) return false;
+
+    // If the “TakerPaymentSent” did not happen then MM would reply with “Taker payment is not found, swap is not recoverable”
+    // cf. https://github.com/ca333/komodoDEX/issues/711
+    if (successEvents.contains('TakerPaymentSent') &&
+        events
+            .where((SwapEL ev) => ev.event.type == 'TakerPaymentSent')
+            .isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
 
   String gui, mmVersion;
 
@@ -123,7 +134,7 @@ class MmSwap {
                 <String>[],
         'type': type ?? '',
         'uuid': uuid ?? '',
-        'recoverable': recoverable ?? false,
+        'recoverable': _recoverable,
         'gui': gui,
         'mm_version': mmVersion
       };

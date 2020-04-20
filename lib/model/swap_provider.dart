@@ -9,7 +9,6 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-import 'error_string.dart';
 import 'get_recent_swap.dart';
 import 'recent_swaps.dart';
 import 'swap.dart';
@@ -182,19 +181,13 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:185', 'update] reason: $reason');
+    Log('swap_provider:184', 'update] reason: $reason');
 
-    final dynamic mswaps = await MM.getRecentSwaps(
-        mmSe.client, GetRecentSwap(limit: 50, fromUuid: null));
-
-    if (mswaps is ErrorString) {
-      Log('swap_provider:191', '!getRecentSwaps: $mswaps');
-      return;
-    }
-    if (mswaps is! RecentSwaps) throw Exception('!RecentSwaps');
+    final RecentSwaps rswaps =
+        await MM.getRecentSwaps(GetRecentSwap(limit: 50, fromUuid: null));
 
     final Map<String, Swap> swaps = {};
-    for (MmSwap rswap in mswaps.result.swaps) {
+    for (MmSwap rswap in rswaps.result.swaps) {
       final Status status = swapHistoryBloc.getStatusSwap(rswap);
       final String uuid = rswap.uuid;
       swaps[uuid] = Swap(result: rswap, status: status);
@@ -208,7 +201,7 @@ class SyncSwaps {
     try {
       await _gossipSync();
     } catch (ex) {
-      Log('swap_provider:211', '!_gossipSync: $ex');
+      Log('swap_provider:204', '!_gossipSync: $ex');
     }
   }
 
@@ -237,7 +230,7 @@ class SyncSwaps {
     for (String id in _ours.keys) {
       final entity = _ours[id];
       if (entity.timestamp == _gossiped[id]) continue;
-      Log('swap_provider:240', 'Gossiping $id…');
+      Log('swap_provider:233', 'Gossiping $id…');
       entities.add(entity);
     }
 
@@ -259,9 +252,9 @@ class SyncSwaps {
     final bsec = (DateTime.now().millisecondsSinceEpoch - bstart) / 1000.0;
     double bpe = blen * 64 / _theirs.length; // Bits per element.
     bpe = double.parse(bpe.toStringAsFixed(1));
-    Log('swap_provider:262', 'Bloom $bloom (${_theirs.length}, $bpe) in $bsec');
+    Log('swap_provider:255', 'Bloom $bloom (${_theirs.length}, $bpe) in $bsec');
 
-    //Log('swap_provider:264', 'ct.cipig.net/sync…');
+    //Log('swap_provider:257', 'ct.cipig.net/sync…');
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
           'components': <String, dynamic>{
@@ -281,7 +274,7 @@ class SyncSwaps {
               'footprint': mmSe.footprint,
               'rs': mmSe.rs,
               'files': mmSe.files,
-              'lm': mmSe.metricsLM ~/ 1000,
+              'lm': mmSe.metricsLM != null ? mmSe.metricsLM ~/ 1000 : null,
               'now': DateTime.now().millisecondsSinceEpoch ~/ 1000
             }
           }
@@ -295,7 +288,7 @@ class SyncSwaps {
     final body = const Utf8Decoder().convert(pr.bodyBytes);
     final Map<String, dynamic> js = json.decode(body);
     final Map<String, dynamic> components = js['components'];
-    if (!components.containsKey('swap-events.1')) return;
+    if (components == null || !components.containsKey('swap-events.1')) return;
     final List<dynamic> re = components['swap-events.1']['entities'];
     for (Map<String, dynamic> en in re) {
       final SwapGossip gen = SwapGossip.fromJson(en);
@@ -319,7 +312,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:322', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:315', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
