@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/screens/markets/health_indicator.dart';
 import 'package:provider/provider.dart';
 
 class OrderBookTable extends StatelessWidget {
@@ -25,7 +26,7 @@ class OrderBookTable extends StatelessWidget {
       ),
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 4.0),
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 4),
           child: Text(
             'Price (${_orderBookProvider.activePair.sell.abbr})',
             maxLines: 1,
@@ -50,6 +51,10 @@ class OrderBookTable extends StatelessWidget {
               maxLines: 1,
             ),
           ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 15, left: 4, right: 4),
+          child: HealthIndicator(50, color: Colors.white),
         ), // TODO(yurii): localization
       ],
     );
@@ -65,7 +70,7 @@ class OrderBookTable extends StatelessWidget {
       _asksList.add(TableRow(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 4.0),
+            padding: const EdgeInsets.only(left: 4),
             child: Text(
               _formatted(ask.price),
               maxLines: 1,
@@ -88,6 +93,10 @@ class OrderBookTable extends StatelessWidget {
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.only(top: 7, left: 4, right: 4),
+            child: HealthIndicator(70),
+          ),
         ],
       ));
     }
@@ -100,6 +109,7 @@ class OrderBookTable extends StatelessWidget {
             maxLines: 1,
             style: TextStyle(color: Colors.red),
           ),
+          Container(),
           Container(),
           Container(),
         ],
@@ -119,7 +129,7 @@ class OrderBookTable extends StatelessWidget {
       _bidsList.add(TableRow(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 4.0),
+            padding: const EdgeInsets.only(left: 4),
             child: Text(
               _formatted(bid.price),
               maxLines: 1,
@@ -142,6 +152,10 @@ class OrderBookTable extends StatelessWidget {
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.only(top: 7, left: 4, right: 4),
+            child: HealthIndicator(70),
+          ),
         ],
       ));
     }
@@ -155,12 +169,14 @@ class OrderBookTable extends StatelessWidget {
           ),
           Container(),
           Container(),
+          Container(),
         ],
       ));
     }
 
     const TableRow _spacer = TableRow(
       children: [
+        SizedBox(height: 12),
         SizedBox(height: 12),
         SizedBox(height: 12),
         SizedBox(height: 12),
@@ -174,6 +190,12 @@ class OrderBookTable extends StatelessWidget {
         right: 8,
       ),
       child: Table(
+        columnWidths: const {
+          0: FlexColumnWidth(1.0),
+          1: FlexColumnWidth(1.0),
+          2: FlexColumnWidth(1.0),
+          3: IntrinsicColumnWidth(),
+        },
         children: [
           _tableHeader,
           _spacer,
