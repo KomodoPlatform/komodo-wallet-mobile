@@ -324,7 +324,7 @@ class MMService {
     gui = 'atomicDEX ${packageInfo.version} $os';
     if (Platform.isAndroid) {
       final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
-      gui += '; BT=${buildTime / 1000}';
+      gui += '; BT=${buildTime ~/ 1000}';
     }
     final String startParam = configMm2ToJson(ConfigMm2(
         gui: gui,

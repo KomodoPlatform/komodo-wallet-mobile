@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!--
+        NB: “local_auth” wants an “AppCompat” theme:
+        “You need to use a Theme.AppCompat theme (or descendant) with this activity”
+     -->
+    <style name="LaunchTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <!-- Show a splash screen on the activity. Automatically removed when
              Flutter draws its first frame -->
         <item name="android:windowBackground">@drawable/launch_background</item>
