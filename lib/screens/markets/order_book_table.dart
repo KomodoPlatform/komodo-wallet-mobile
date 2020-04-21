@@ -104,10 +104,13 @@ class OrderBookTable extends StatelessWidget {
     if (_asksList.isEmpty) {
       _asksList.add(TableRow(
         children: [
-          Text(
-            'No asks found', // TODO(yurii): localization
-            maxLines: 1,
-            style: TextStyle(color: Colors.red),
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Text(
+              'No asks found', // TODO(yurii): localization
+              maxLines: 1,
+              style: TextStyle(color: Colors.red),
+            ),
           ),
           Container(),
           Container(),
@@ -162,10 +165,13 @@ class OrderBookTable extends StatelessWidget {
     if (_bidsList.isEmpty) {
       _bidsList.add(TableRow(
         children: [
-          Text(
-            'No bids found', // TODO(yurii): localization
-            maxLines: 1,
-            style: TextStyle(color: Colors.green),
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: Text(
+              'No bids found', // TODO(yurii): localization
+              maxLines: 1,
+              style: TextStyle(color: Colors.green),
+            ),
           ),
           Container(),
           Container(),

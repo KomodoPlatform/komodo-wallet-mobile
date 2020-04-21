@@ -69,7 +69,7 @@ class HealthIndicator extends StatelessWidget {
           child: _value != null
               ? Transform.rotate(
                   angle: (-130 * (pi / 180)) +
-                      260 * (pi / 180) / (_max - _min) * _value,
+                      260 * (pi / 180) / (_max - _min) * (_value - _min),
                   child: Align(
                     alignment: const Alignment(0, -1),
                     child: Container(
