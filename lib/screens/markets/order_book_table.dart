@@ -37,7 +37,7 @@ class OrderBookTable extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              'Amount (${_orderBookProvider.activePair.buy.abbr})',
+              'Amt. (${_orderBookProvider.activePair.buy.abbr})',
               maxLines: 1,
             ),
           ),

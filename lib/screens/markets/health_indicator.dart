@@ -24,8 +24,8 @@ class HealthIndicator extends StatelessWidget {
     final double _min = min ?? 0;
     final double _max = max ?? 100;
     double _value = value;
-    if (_value < _min) _value = _min;
-    if (_value > _max) _value = _max;
+    if (_value != null && _value < _min) _value = _min;
+    if (_value != null && _value > _max) _value = _max;
 
     return Container(
       width: _size,
@@ -34,25 +34,31 @@ class HealthIndicator extends StatelessWidget {
         Positioned(
           width: _size,
           height: _size,
-          child: Container(
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  width: _size / 10,
-                  color: _color,
-                )),
-          ),
-        ),
-        Positioned(
-          width: _size,
-          height: _size,
-          child: Center(
+          child: Opacity(
+            opacity: _value == null ? 0.5 : 1,
             child: Container(
-              width: _size / 5,
-              height: _size / 5,
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _color,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    width: _size / 10,
+                    color: _color,
+                  )),
+            ),
+          ),
+        ),
+        Positioned(
+          width: _size,
+          height: _size,
+          child: Opacity(
+            opacity: _value == null ? 0.5 : 1,
+            child: Center(
+              child: Container(
+                width: _size / 5,
+                height: _size / 5,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _color,
+                ),
               ),
             ),
           ),
@@ -60,17 +66,20 @@ class HealthIndicator extends StatelessWidget {
         Positioned(
           height: _size,
           width: _size,
-          child: Transform.rotate(
-            angle: (-130 * (pi / 180)) + 260 * (pi / 180) / (_max - _min) * _value,
-            child: Align(
-              alignment: const Alignment(0, -1),
-              child: Container(
-                height: _size / 2,
-                width: _size / 10,
-                color: _color,
-              ),
-            ),
-          ),
+          child: _value != null
+              ? Transform.rotate(
+                  angle: (-130 * (pi / 180)) +
+                      260 * (pi / 180) / (_max - _min) * _value,
+                  child: Align(
+                    alignment: const Alignment(0, -1),
+                    child: Container(
+                      height: _size / 2,
+                      width: _size / 10,
+                      color: _color,
+                    ),
+                  ),
+                )
+              : Container(),
         )
       ]),
     );
