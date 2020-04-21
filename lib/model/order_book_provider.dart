@@ -34,9 +34,17 @@ class OrderBookProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  OrderHealth getOrderHealth(Ask order) {
+    return OrderHealth(
+        // just some demo double value in 0-100 range,
+        // which depends of order.adress
+        rating: (order.address.codeUnitAt(1).toDouble() - 65) * 4);
+  }
+
   Future<void> _updateOrderBooks() async {
     for (int i = 0; i < _subscribedCoins.length; i++) {
-      _orderBooks['${_subscribedCoins[i].buy.abbr}/${_subscribedCoins[i].sell.abbr}'] =
+      _orderBooks[
+              '${_subscribedCoins[i].buy.abbr}/${_subscribedCoins[i].sell.abbr}'] =
           await MM.getOrderbook(
               MMService().client,
               GetOrderbook(
@@ -47,6 +55,12 @@ class OrderBookProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+}
+
+class OrderHealth {
+  OrderHealth({this.rating});
+
+  double rating;
 }
 
 class CoinsPair {

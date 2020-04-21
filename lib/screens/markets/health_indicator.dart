@@ -24,8 +24,8 @@ class HealthIndicator extends StatelessWidget {
     final double _min = min ?? 0;
     final double _max = max ?? 100;
     double _value = value;
-    if (_value < _min) _value = min;
-    if (_value > _max) _value = max;
+    if (_value < _min) _value = _min;
+    if (_value > _max) _value = _max;
 
     return Container(
       width: _size,
@@ -63,7 +63,7 @@ class HealthIndicator extends StatelessWidget {
           child: Transform.rotate(
             angle: (-130 * (pi / 180)) + 260 * (pi / 180) / (_max - _min) * _value,
             child: Align(
-              alignment: Alignment(0, -1),
+              alignment: const Alignment(0, -1),
               child: Container(
                 height: _size / 2,
                 width: _size / 10,

@@ -93,9 +93,9 @@ class OrderBookTable extends StatelessWidget {
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 7, left: 4, right: 4),
-            child: HealthIndicator(70),
+          Padding(
+            padding: const EdgeInsets.only(top: 7, left: 4, right: 4),
+            child: HealthIndicator(_orderBookProvider.getOrderHealth(ask).rating),
           ),
         ],
       ));
@@ -152,9 +152,9 @@ class OrderBookTable extends StatelessWidget {
               style: TextStyle(color: Theme.of(context).disabledColor),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 7, left: 4, right: 4),
-            child: HealthIndicator(70),
+          Padding(
+            padding: const EdgeInsets.only(top: 7, left: 4, right: 4),
+            child: HealthIndicator(_orderBookProvider.getOrderHealth(bid).rating),
           ),
         ],
       ));
