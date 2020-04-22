@@ -25,40 +25,40 @@ class OrderBookTable extends StatelessWidget {
         ),
       ),
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 4),
+        Container(
+          height: 34,
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.only(left: 4),
           child: Text(
             'Price (${_orderBookProvider.activePair.sell.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
         ), // TODO(yurii): localization
-        Align(
+        Container(
+          height: 34,
           alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
-              'Amt. (${_orderBookProvider.activePair.buy.abbr})',
-              maxLines: 1,
-              style: const TextStyle(fontSize: 14),
-            ),
+          child: Text(
+            'Amt. (${_orderBookProvider.activePair.buy.abbr})',
+            maxLines: 1,
+            style: const TextStyle(fontSize: 14),
           ),
         ), // TODO(yurii): localization
-        Align(
+        Container(
+          height: 34,
           alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
-              'Total (${_orderBookProvider.activePair.buy.abbr})',
-              maxLines: 1,
-              style: const TextStyle(fontSize: 14),
-            ),
-          ),
+          child: Text(
+            'Total (${_orderBookProvider.activePair.buy.abbr})',
+            maxLines: 1,
+            style: const TextStyle(fontSize: 14),
+          ), // TODO(yurii): localization
         ),
         Container(
-          padding: const EdgeInsets.only(top: 15, left: 8, right: 4),
+          height: 34,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.only(top: 4, left: 8, right: 4),
           child: HealthIndicator(50, color: Colors.white),
-        ), // TODO(yurii): localization
+        ),
       ],
     );
 
@@ -74,8 +74,10 @@ class OrderBookTable extends StatelessWidget {
         children: <Widget>[
           TableRowInkWell(
             onTap: () => _showOrderDetails(ask),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 4, top: 4, bottom: 4),
+            child: Container(
+              height: 26,
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 4),
               child: Text(
                 _formatted(ask.price),
                 maxLines: 1,
@@ -86,8 +88,8 @@ class OrderBookTable extends StatelessWidget {
           TableRowInkWell(
             onTap: () => _showOrderDetails(ask),
             child: Container(
+              height: 26,
               alignment: Alignment.centerRight,
-              padding: const EdgeInsets.only(top: 4, bottom: 4),
               child: Text(
                 _formatted(ask.maxvolume.toString()),
                 maxLines: 1,
@@ -99,8 +101,8 @@ class OrderBookTable extends StatelessWidget {
           TableRowInkWell(
             onTap: () => _showOrderDetails(ask),
             child: Container(
+              height: 26,
               alignment: Alignment.centerRight,
-              padding: const EdgeInsets.only(top: 4, bottom: 4),
               child: Text(
                 _formatted(_askTotal.toString()),
                 maxLines: 1,
@@ -111,8 +113,10 @@ class OrderBookTable extends StatelessWidget {
           ),
           TableRowInkWell(
             onTap: () => _showOrderDetails(ask),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8, right: 4),
+            child: Container(
+              height: 26,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.only(top: 2, left: 8, right: 4),
               child: HealthIndicator(
                   _orderBookProvider.getOrderHealth(ask).rating),
             ),
@@ -124,12 +128,14 @@ class OrderBookTable extends StatelessWidget {
     if (_asksList.isEmpty) {
       _asksList.add(TableRow(
         children: [
-          Padding(
+          Container(
+            alignment: Alignment.centerLeft,
+            height: 26,
             padding: const EdgeInsets.only(left: 4),
             child: Text(
               'No asks found', // TODO(yurii): localization
               maxLines: 1,
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Colors.red, fontSize: 14),
             ),
           ),
           Container(),
@@ -153,8 +159,10 @@ class OrderBookTable extends StatelessWidget {
         children: <Widget>[
           TableRowInkWell(
             onTap: () => _showOrderDetails(bid),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 4, top: 4, bottom: 4),
+            child: Container(
+              height: 26,
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 4),
               child: Text(
                 _formatted(bid.price),
                 maxLines: 1,
@@ -165,7 +173,7 @@ class OrderBookTable extends StatelessWidget {
           TableRowInkWell(
             onTap: () => _showOrderDetails(bid),
             child: Container(
-              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              height: 26,
               alignment: Alignment.centerRight,
               child: Text(
                 _formatted(_bidVolume.toString()),
@@ -178,7 +186,7 @@ class OrderBookTable extends StatelessWidget {
           TableRowInkWell(
             onTap: () => _showOrderDetails(bid),
             child: Container(
-              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              height: 26,
               alignment: Alignment.centerRight,
               child: Text(
                 _formatted(_bidTotal.toString()),
@@ -190,8 +198,10 @@ class OrderBookTable extends StatelessWidget {
           ),
           TableRowInkWell(
             onTap: () => _showOrderDetails(bid),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8, right: 4),
+            child: Container(
+              height: 26,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.only(top: 2, left: 8, right: 4),
               child: HealthIndicator(
                   _orderBookProvider.getOrderHealth(bid).rating),
             ),
@@ -202,12 +212,14 @@ class OrderBookTable extends StatelessWidget {
     if (_bidsList.isEmpty) {
       _bidsList.add(TableRow(
         children: [
-          Padding(
+          Container(
+            height: 26,
+            alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 4.0),
             child: Text(
               'No bids found', // TODO(yurii): localization
               maxLines: 1,
-              style: TextStyle(color: Colors.green),
+              style: TextStyle(color: Colors.green, fontSize: 14),
             ),
           ),
           Container(),

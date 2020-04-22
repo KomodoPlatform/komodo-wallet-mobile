@@ -41,7 +41,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
         elevation: 8,
         color: Theme.of(context).primaryColor,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -51,6 +51,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                   pairedCoin: _orderBookProvider.activePair?.sell,
                   autoOpen: _orderBookProvider.activePair?.buy == null &&
                       _orderBookProvider.activePair?.sell != null,
+                  compact: MediaQuery.of(context).size.width < 360,
                   onChange: (Coin value) {
                     _orderBookProvider.activePair = CoinsPair(
                       buy: value,
@@ -59,8 +60,9 @@ class _OrderBookPageState extends State<OrderBookPage> {
                   }),
               const SizedBox(width: 12),
               ButtonTheme(
-                minWidth: 30,
+                minWidth: 40,
                 child: FlatButton(
+                  padding: const EdgeInsets.all(0),
                     onPressed: () {
                       _orderBookProvider.activePair = CoinsPair(
                         buy: _orderBookProvider.activePair?.sell,
@@ -75,7 +77,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 type: CoinType.rel,
                 pairedCoin: _orderBookProvider.activePair?.buy,
                 autoOpen: _orderBookProvider.activePair?.sell == null &&
-                      _orderBookProvider.activePair?.buy != null,
+                    _orderBookProvider.activePair?.buy != null,
+                compact: MediaQuery.of(context).size.width < 360,
                 onChange: (Coin value) {
                   _orderBookProvider.activePair = CoinsPair(
                     sell: value,
@@ -130,16 +133,15 @@ class _OrderBookPageState extends State<OrderBookPage> {
   /// then by age (DESC)
   List<Ask> _sortByPrice(List<Ask> list, {bool isAsks = false}) {
     final List<Ask> sorted = list;
-    sorted
-        .sort((a, b) {
-          if (double.parse(a.price) > double.parse(b.price)) return 1;
-          if (double.parse(a.price) < double.parse(b.price)) return -1; 
-          
-          if (a.maxvolume > b.maxvolume) return isAsks ? 1 : -1;
-          if (a.maxvolume < b.maxvolume) return isAsks ? -1 : 1;
+    sorted.sort((a, b) {
+      if (double.parse(a.price) > double.parse(b.price)) return 1;
+      if (double.parse(a.price) < double.parse(b.price)) return -1;
 
-          return a.age.compareTo(b.age);
-        });
+      if (a.maxvolume > b.maxvolume) return isAsks ? 1 : -1;
+      if (a.maxvolume < b.maxvolume) return isAsks ? -1 : 1;
+
+      return a.age.compareTo(b.age);
+    });
     return sorted;
   }
 }

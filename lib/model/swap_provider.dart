@@ -14,6 +14,10 @@ import 'get_recent_swap.dart';
 import 'recent_swaps.dart';
 import 'swap.dart';
 
+// TODO(AG): at "_goToNextScreen] swap started…" create a virtual
+// swap that would allow the UI to better track
+// them before they're "Started"
+
 /// “${swap_uuid}/${type}”, where $type is “t” for Taker and “m” for Maker.
 /// For example: “8f2464eb-4a1c-4d2e-b6e4-26b1de99ca8c/t”.
 /// xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx, cf. https://en.wikipedia.org/wiki/Universally_unique_identifier#Format

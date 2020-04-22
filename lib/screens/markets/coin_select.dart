@@ -14,6 +14,7 @@ class CoinSelect extends StatefulWidget {
     this.type,
     this.pairedCoin,
     this.autoOpen = false,
+    this.compact = false,
     this.onChange,
   });
 
@@ -21,6 +22,7 @@ class CoinSelect extends StatefulWidget {
   final CoinType type;
   final Coin pairedCoin;
   final bool autoOpen;
+  final bool compact;
   final Function(Coin) onChange;
 
   @override
@@ -86,22 +88,29 @@ class _CoinSelectState extends State<CoinSelect> {
                   widget.value != null
                       ? Image.asset(
                           'assets/${widget.value.abbr.toLowerCase()}.png',
-                          height: 25,
+                          height: widget.compact ? 16 : 24,
                         )
                       : CircleAvatar(
                           backgroundColor: Theme.of(context).accentColor,
-                          radius: 12,
+                          radius: widget.compact ? 8 : 12,
                         ),
                   const SizedBox(width: 6),
                   ConstrainedBox(
-                      constraints: const BoxConstraints(minWidth: 50),
+                      constraints:
+                          BoxConstraints(minWidth: widget.compact ? 34 : 50),
                       child: Center(
                           child: Text(
                         widget.value != null ? widget.value.abbr : '-',
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle
+                            .copyWith(fontSize: widget.compact ? 14 : null),
                         maxLines: 1,
                       ))),
-                  Icon(Icons.arrow_drop_down),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    size: widget.compact ? 14 : null,
+                  ),
                 ],
               ),
               const SizedBox(
@@ -188,14 +197,15 @@ class _CoinSelectState extends State<CoinSelect> {
                 child: Row(
                   children: <Widget>[
                     PhotoHero(
-                      radius: 12,
+                      radius: widget.compact ? 8 : 12,
                       tag:
                           'assets/${coinBalance.balance.coin.toLowerCase()}.png',
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: widget.compact ? 6 : 8),
                     Text(
                       coinBalance.coin.abbr.toUpperCase(),
                       style: TextStyle(
+                        fontSize: widget.compact ? 14 : null,
                         color: coinBalance.coin == widget.value
                             ? Theme.of(context).accentColor
                             : null,
@@ -207,7 +217,10 @@ class _CoinSelectState extends State<CoinSelect> {
               Opacity(
                 opacity: 0.4,
                 child: widget.pairedCoin != null
-                    ? Text('  /  ${widget.pairedCoin.abbr}')
+                    ? Text(
+                        '  /  ${widget.pairedCoin.abbr}',
+                        style: TextStyle(fontSize: widget.compact ? 14 : null),
+                      )
                     : Container(),
               ),
             ],
@@ -222,7 +235,10 @@ class _CoinSelectState extends State<CoinSelect> {
               Opacity(
                 opacity: 0.4,
                 child: widget.pairedCoin != null
-                    ? Text('${widget.pairedCoin.abbr}  /  ')
+                    ? Text(
+                        '${widget.pairedCoin.abbr}  /  ',
+                        style: TextStyle(fontSize: widget.compact ? 14 : null),
+                      )
                     : Container(),
               ),
               Opacity(
@@ -230,17 +246,18 @@ class _CoinSelectState extends State<CoinSelect> {
                 child: Row(
                   children: <Widget>[
                     PhotoHero(
-                      radius: 12,
+                      radius: widget.compact ? 8 : 12,
                       tag:
                           'assets/${coinBalance.balance.coin.toLowerCase()}.png',
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: widget.compact ? 6 : 8),
                     Text(
                       coinBalance.coin.abbr.toUpperCase(),
                       style: TextStyle(
                         color: coinBalance.coin == widget.value
                             ? Theme.of(context).accentColor
                             : null,
+                        fontSize: widget.compact ? 14 : null,
                       ),
                     ),
                   ],
@@ -258,16 +275,17 @@ class _CoinSelectState extends State<CoinSelect> {
             child: Row(
               children: <Widget>[
                 PhotoHero(
-                  radius: 14,
+                  radius: widget.compact ? 8 : 12,
                   tag: 'assets/${coinBalance.balance.coin.toLowerCase()}.png',
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: widget.compact ? 6 : 8),
                 Text(
                   coinBalance.coin.name.toUpperCase(),
                   style: TextStyle(
                     color: coinBalance.coin == widget.value
                         ? Theme.of(context).accentColor
                         : null,
+                    fontSize: widget.compact ? 14 : null,
                   ),
                 ),
               ],
@@ -277,7 +295,7 @@ class _CoinSelectState extends State<CoinSelect> {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.symmetric(vertical: widget.compact ? 3 : 6),
       child: _optionTitle,
     );
   }
