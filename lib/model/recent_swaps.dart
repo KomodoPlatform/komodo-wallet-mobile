@@ -4,6 +4,8 @@
 
 import 'package:komodo_dex/model/transaction_data.dart';
 
+import 'swap.dart';
+
 class RecentSwaps {
   RecentSwaps({
     this.result,
@@ -138,6 +140,20 @@ class MmSwap {
         'gui': gui,
         'mm_version': mmVersion
       };
+
+  Status get status {
+    // cf. SwapHistoryBloc::getStatusSwap
+    bool started = false, negotiated = false;
+    for (SwapEL ev in events) {
+      if (errorEvents.contains(ev.event.type)) return Status.SWAP_FAILED;
+      if (ev.event.type == 'Finished') return Status.SWAP_SUCCESSFUL;
+      if (ev.event.type == 'Started') started = true;
+      if (ev.event.type == 'Negotiated') negotiated = true;
+    }
+    if (negotiated) return Status.SWAP_ONGOING;
+    if (started) return Status.ORDER_MATCHED;
+    return Status.ORDER_MATCHING;
+  }
 }
 
 /// First layer of swap events serialization.

@@ -90,11 +90,15 @@ class OrdersBloc implements BlocBase {
     }
   }
 
-  /// Loads orders from MM.
+  /// Orders and active swaps (both displayed on orders_page)
   Future<void> updateOrdersSwaps() async {
     await updateOrders();
 
     final List<Swap> swaps = syncSwaps.swaps.toList();
+    for (Swap swap in swaps) {
+      if (swap.result.uuid.startsWith('e852'))
+        Log('orders_bloc:100', 'swap status: ${swap.status}');
+    }
     swaps.removeWhere((Swap swap) =>
         swap.status == Status.SWAP_FAILED ||
         swap.status == Status.SWAP_SUCCESSFUL ||
@@ -153,7 +157,7 @@ class OrdersBloc implements BlocBase {
       });
       _inOrderSwaps.add(orderSwaps);
     } catch (e) {
-      Log('orders_bloc:156', e);
+      Log('orders_bloc:160', e);
       rethrow;
     }
   }
