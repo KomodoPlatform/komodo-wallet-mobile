@@ -30,6 +30,7 @@ class OrderBookTable extends StatelessWidget {
           child: Text(
             'Price (${_orderBookProvider.activePair.sell.abbr})',
             maxLines: 1,
+            style: const TextStyle(fontSize: 14),
           ),
         ), // TODO(yurii): localization
         Align(
@@ -39,6 +40,7 @@ class OrderBookTable extends StatelessWidget {
             child: Text(
               'Amt. (${_orderBookProvider.activePair.buy.abbr})',
               maxLines: 1,
+              style: const TextStyle(fontSize: 14),
             ),
           ),
         ), // TODO(yurii): localization
@@ -49,11 +51,12 @@ class OrderBookTable extends StatelessWidget {
             child: Text(
               'Total (${_orderBookProvider.activePair.buy.abbr})',
               maxLines: 1,
+              style: const TextStyle(fontSize: 14),
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 15, left: 4, right: 4),
+        Container(
+          padding: const EdgeInsets.only(top: 15, left: 8, right: 4),
           child: HealthIndicator(50, color: Colors.white),
         ), // TODO(yurii): localization
       ],
@@ -69,33 +72,50 @@ class OrderBookTable extends StatelessWidget {
 
       _asksList.add(TableRow(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 4),
-            child: Text(
-              _formatted(ask.price),
-              maxLines: 1,
-              style: TextStyle(color: Colors.red),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(ask),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 4, top: 4, bottom: 4),
+              child: Text(
+                _formatted(ask.price),
+                maxLines: 1,
+                style: TextStyle(color: Colors.red, fontSize: 14),
+              ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              _formatted(ask.maxvolume.toString()),
-              maxLines: 1,
-              style: TextStyle(color: Theme.of(context).disabledColor),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(ask),
+            child: Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: Text(
+                _formatted(ask.maxvolume.toString()),
+                maxLines: 1,
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor, fontSize: 14),
+              ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              _formatted(_askTotal.toString()),
-              maxLines: 1,
-              style: TextStyle(color: Theme.of(context).disabledColor),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(ask),
+            child: Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: Text(
+                _formatted(_askTotal.toString()),
+                maxLines: 1,
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor, fontSize: 14),
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 7, left: 4, right: 4),
-            child: HealthIndicator(_orderBookProvider.getOrderHealth(ask).rating),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(ask),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8, left: 8, right: 4),
+              child: HealthIndicator(
+                  _orderBookProvider.getOrderHealth(ask).rating),
+            ),
           ),
         ],
       ));
@@ -131,33 +151,50 @@ class OrderBookTable extends StatelessWidget {
 
       _bidsList.add(TableRow(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 4),
-            child: Text(
-              _formatted(bid.price),
-              maxLines: 1,
-              style: TextStyle(color: Colors.green),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(bid),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 4, top: 4, bottom: 4),
+              child: Text(
+                _formatted(bid.price),
+                maxLines: 1,
+                style: TextStyle(color: Colors.green, fontSize: 14),
+              ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              _formatted(_bidVolume.toString()),
-              maxLines: 1,
-              style: TextStyle(color: Theme.of(context).disabledColor),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(bid),
+            child: Container(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              alignment: Alignment.centerRight,
+              child: Text(
+                _formatted(_bidVolume.toString()),
+                maxLines: 1,
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor, fontSize: 14),
+              ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              _formatted(_bidTotal.toString()),
-              maxLines: 1,
-              style: TextStyle(color: Theme.of(context).disabledColor),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(bid),
+            child: Container(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              alignment: Alignment.centerRight,
+              child: Text(
+                _formatted(_bidTotal.toString()),
+                maxLines: 1,
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor, fontSize: 14),
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 7, left: 4, right: 4),
-            child: HealthIndicator(_orderBookProvider.getOrderHealth(bid).rating),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(bid),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8, left: 8, right: 4),
+              child: HealthIndicator(
+                  _orderBookProvider.getOrderHealth(bid).rating),
+            ),
           ),
         ],
       ));
@@ -224,4 +261,6 @@ class OrderBookTable extends StatelessWidget {
       return double.parse(value).toStringAsPrecision(digits);
     }
   }
+
+  void _showOrderDetails(Ask order) {}
 }

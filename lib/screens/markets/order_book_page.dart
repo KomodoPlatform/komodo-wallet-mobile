@@ -41,7 +41,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
         elevation: 8,
         color: Theme.of(context).primaryColor,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[

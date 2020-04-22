@@ -50,7 +50,7 @@ class OrderBookChart extends StatelessWidget {
               widthFactor: (_askTotals[i] / _maxAmount) -
                   (i > 0 ? (_askTotals[i - 1] / _maxAmount) : 0),
               child: Container(
-                  height: 20,
+                  height: 26,
                   decoration: const BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
@@ -61,7 +61,7 @@ class OrderBookChart extends StatelessWidget {
             FractionallySizedBox(
               widthFactor: _askTotals[i] / _maxAmount,
               child: Container(
-                height: 20,
+                height: 26,
                 decoration: const BoxDecoration(
                     color: Color.fromARGB(40, 255, 0, 0),
                     border: Border(
@@ -77,7 +77,7 @@ class OrderBookChart extends StatelessWidget {
     }
     if (_asksList.isEmpty) {
       _asksList.add(Container(
-        height: 20,
+        height: 26,
       ));
     }
 
@@ -91,7 +91,7 @@ class OrderBookChart extends StatelessWidget {
               widthFactor: (_bidTotals[i] / _maxAmount) -
                   (i > 0 ? (_bidTotals[i - 1] / _maxAmount) : 0),
               child: Container(
-                  height: 20,
+                  height: 26,
                   decoration: const BoxDecoration(
                       border: Border(
                           top: BorderSide(
@@ -102,7 +102,7 @@ class OrderBookChart extends StatelessWidget {
             FractionallySizedBox(
               widthFactor: _bidTotals[i] / _maxAmount,
               child: Container(
-                height: 20,
+                height: 26,
                 decoration: const BoxDecoration(
                     color: Color.fromARGB(40, 0, 255, 0),
                     border: Border(
@@ -118,13 +118,13 @@ class OrderBookChart extends StatelessWidget {
     }
     if (_bidsList.isEmpty) {
       _bidsList.add(Container(
-        height: 20,
+        height: 26,
       ));
     }
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 69, left: 8, right: 8),
+      padding: const EdgeInsets.only(top: 66, left: 8, right: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
