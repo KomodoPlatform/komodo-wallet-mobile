@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/markets/health_indicator.dart';
+import 'package:komodo_dex/screens/markets/order_details_page.dart';
 import 'package:provider/provider.dart';
 
 class OrderBookTable extends StatelessWidget {
@@ -17,6 +18,16 @@ class OrderBookTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final OrderBookProvider _orderBookProvider =
         Provider.of<OrderBookProvider>(context);
+
+    void _showOrderDetails(Ask order) {
+      Navigator.push<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => OrderDetailsPage(
+                    order: order,
+                    coinsPair: CoinsPair(),
+                  )));
+    }
 
     final TableRow _tableHeader = TableRow(
       decoration: BoxDecoration(
@@ -273,6 +284,4 @@ class OrderBookTable extends StatelessWidget {
       return double.parse(value).toStringAsPrecision(digits);
     }
   }
-
-  void _showOrderDetails(Ask order) {}
 }
