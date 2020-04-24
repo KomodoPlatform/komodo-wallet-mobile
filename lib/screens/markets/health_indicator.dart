@@ -40,7 +40,7 @@ class HealthIndicator extends StatelessWidget {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    width: _size / 10,
+                    width: _size / 16,
                     color: _color,
                   )),
             ),
@@ -53,8 +53,8 @@ class HealthIndicator extends StatelessWidget {
             opacity: _value == null ? 0.5 : 1,
             child: Center(
               child: Container(
-                width: _size / 5,
-                height: _size / 5,
+                width: _size / 8,
+                height: _size / 8,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: _color,
@@ -74,7 +74,7 @@ class HealthIndicator extends StatelessWidget {
                     alignment: const Alignment(0, -1),
                     child: Container(
                       height: _size / 2,
-                      width: _size / 10,
+                      width: _size / 16,
                       color: _color,
                     ),
                   ),

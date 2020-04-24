@@ -25,7 +25,6 @@ class OrderBookTable extends StatelessWidget {
           MaterialPageRoute<dynamic>(
               builder: (BuildContext context) => OrderDetailsPage(
                     order: order,
-                    coinsPair: CoinsPair(),
                   )));
     }
 
@@ -90,7 +89,7 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 4),
               child: Text(
-                _formatted(ask.price),
+                OrderBookProvider.formatPrice(ask.price),
                 maxLines: 1,
                 style: TextStyle(color: Colors.red, fontSize: 14),
               ),
@@ -102,7 +101,7 @@ class OrderBookTable extends StatelessWidget {
               height: 26,
               alignment: Alignment.centerRight,
               child: Text(
-                _formatted(ask.maxvolume.toString()),
+                OrderBookProvider.formatPrice(ask.maxvolume.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
@@ -115,7 +114,7 @@ class OrderBookTable extends StatelessWidget {
               height: 26,
               alignment: Alignment.centerRight,
               child: Text(
-                _formatted(_askTotal.toString()),
+                OrderBookProvider.formatPrice(_askTotal.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
@@ -175,7 +174,7 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 4),
               child: Text(
-                _formatted(bid.price),
+                OrderBookProvider.formatPrice(bid.price),
                 maxLines: 1,
                 style: TextStyle(color: Colors.green, fontSize: 14),
               ),
@@ -187,7 +186,7 @@ class OrderBookTable extends StatelessWidget {
               height: 26,
               alignment: Alignment.centerRight,
               child: Text(
-                _formatted(_bidVolume.toString()),
+                OrderBookProvider.formatPrice(_bidVolume.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
@@ -200,7 +199,7 @@ class OrderBookTable extends StatelessWidget {
               height: 26,
               alignment: Alignment.centerRight,
               child: Text(
-                _formatted(_bidTotal.toString()),
+                OrderBookProvider.formatPrice(_bidTotal.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
@@ -271,17 +270,5 @@ class OrderBookTable extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatted(String value) {
-    const int digits = 6;
-    const int fraction = 2;
-
-    final String rounded = double.parse(value).toStringAsFixed(fraction);
-    if (rounded.length >= digits + 1) {
-      return rounded;
-    } else {
-      return double.parse(value).toStringAsPrecision(digits);
-    }
   }
 }

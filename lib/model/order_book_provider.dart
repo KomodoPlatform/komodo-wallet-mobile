@@ -41,6 +41,15 @@ class OrderBookProvider extends ChangeNotifier {
         rating: (order.address.codeUnitAt(1).toDouble() - 65) * 4);
   }
 
+  static String formatPrice(String value, [int digits = 6, int fraction = 2]) {
+    final String rounded = double.parse(value).toStringAsFixed(fraction);
+    if (rounded.length >= digits + 1) {
+      return rounded;
+    } else {
+      return double.parse(value).toStringAsPrecision(digits);
+    }
+  }
+
   Future<void> _updateOrderBooks() async {
     for (int i = 0; i < _subscribedCoins.length; i++) {
       _orderBooks[
