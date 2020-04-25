@@ -140,7 +140,8 @@ class _CoinSelectState extends State<CoinSelect> {
 
     return !((_swapHistory == null || _swapHistory.isEmpty) &&
         (_orderbook == null ||
-            (_orderbook.asks.isEmpty && _orderbook.bids.isEmpty)));
+            ((_orderbook.asks == null || _orderbook.asks.isEmpty) &&
+                (_orderbook.bids == null || _orderbook.bids.isEmpty))));
   }
 
   bool _isCoinActive(Coin coin) {
@@ -155,8 +156,8 @@ class _CoinSelectState extends State<CoinSelect> {
 
     for (int i = 0; i < _coinsList.length; i++) {
       final _pair = CoinsPair(
-        buy: widget.type == CoinType.base ? coin : _coinsList[i],
-        sell: widget.type == CoinType.base ? _coinsList[i] : coin,
+        buy: widget.type == CoinType.base ? coin : _coinsList[i].coin,
+        sell: widget.type == CoinType.base ? _coinsList[i].coin : coin,
       );
 
       if (_isPairSwapable(_pair)) return true; //
@@ -179,11 +180,31 @@ class _CoinSelectState extends State<CoinSelect> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(25.0),
-                    child: Text('No active coins'),
+                    child: Text('No active coins'), // TODO(yurii): localization
                   ),
-                ], // TODO(yurii): localization
+                ],
               );
             }
+
+            final List<SimpleDialogOption> resetSelect = widget.value == null
+                ? []
+                : [
+                    SimpleDialogOption(
+                      onPressed: () {
+                        _closeDialog();
+                        if (widget.onChange != null) {
+                          widget.onChange(null);
+                        }
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.cancel),
+                          const SizedBox(width: 8),
+                          const Text('Clear'),
+                        ],
+                      ),
+                    ),
+                  ];
 
             final List<SimpleDialogOption> coinsList = [];
             for (int i = 0; i < _coinsList.length; i++) {
@@ -208,9 +229,20 @@ class _CoinSelectState extends State<CoinSelect> {
               ));
             }
 
+            if (coinsList.isEmpty) {
+              coinsList.add(
+                const SimpleDialogOption(
+                  child: Text('No coins to show'), // TODO(yurii): localization
+                ),
+              );
+            }
+
             return SimpleDialog(
               title: const Text('Select Coin'), // TODO(yurii): localization
-              children: coinsList,
+              children: [
+                ...resetSelect,
+                ...coinsList,
+              ],
             );
           } else {
             return const Center(
