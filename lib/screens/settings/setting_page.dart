@@ -714,10 +714,13 @@ class _SettingPageState extends State<SettingPage> {
         log.sink.write(json.encode(swap.toJson) + '\n\n');
       }
       log.sink.write('\n\n--- / my recent swaps ---\n\n');
+      // TBD: Replace these with a pretty-printed metrics JSON
       log.sink.write('AtomicDEX mobile ${packageInfo.version} $os\n');
+      log.sink.write('mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
+      log.sink.write('netid ${mmSe.netid} pubkey ${mmSe.pubkey}\n');
       await log.sink.flush();
     } catch (ex) {
-      Log('setting_page:720', ex);
+      Log('setting_page:723', ex);
       log.sink.write('Error saving swaps: $ex');
     }
 
@@ -739,10 +742,10 @@ class _SettingPageState extends State<SettingPage> {
     final af = File('${mmSe.filesPath}dex.log.gz');
     if (af.existsSync()) af.deleteSync();
     final enc = arch.GZipEncoder();
-    Log('setting_page:742', 'Creating dex.log.gz out of $got log bytes…');
+    Log('setting_page:745', 'Creating dex.log.gz out of $got log bytes…');
     af.writeAsBytesSync(enc.encode(buf));
     final len = af.lengthSync();
-    Log('setting_page:745', 'Compression produced $len bytes.');
+    Log('setting_page:748', 'Compression produced $len bytes.');
 
     mainBloc.isUrlLaucherIsOpen = true;
     await Share.shareFile(af,
@@ -798,14 +801,14 @@ class FilePickerButton extends StatelessWidget {
           try {
             path = await FilePicker.getFilePath();
           } catch (err) {
-            Log('setting_page:801', 'file picker exception: $err');
+            Log('setting_page:804', 'file picker exception: $err');
           }
           lockService.filePickerReturned(lockCookie);
 
           // On iOS this happens *after* pin lock, but very close in time to it (same second),
           // on Android/debug *before* pin lock,
           // chance is it's unordered.
-          Log('setting_page:808', 'file picked: $path');
+          Log('setting_page:811', 'file picked: $path');
 
           final bool ck = checkAudioFile(path);
           if (!ck) {

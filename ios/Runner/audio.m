@@ -56,7 +56,7 @@ void audio_ballast() {
 
 /// Invoked by completion handlers in order to maintain the background audio loop.
 void audio_reschedule (int generation) {
-  os_log (OS_LOG_DEFAULT, "audio_reschedule] Entered..");
+  //os_log (OS_LOG_DEFAULT, "audio_reschedule] Entered..");
   int cur_generation = atomic_load (&dex_generation);
   if (generation != cur_generation) return;
   if (!dex_bg_file) return;
@@ -64,7 +64,7 @@ void audio_reschedule (int generation) {
   // Need another thread in order not to trigger
   // "dispatch_sync called on queue already owned by current thread" in `AVAudioPlayerNodeImpl`
   dispatch_async (dispatch_get_global_queue (DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() {
-    os_log (OS_LOG_DEFAULT, "audio_reschedule] Async..");
+    //os_log (OS_LOG_DEFAULT, "audio_reschedule] Async..");
     int cur_generation = atomic_load (&dex_generation);
     if (generation != cur_generation) return;
     if (!dex_bg_file) return;
@@ -72,7 +72,7 @@ void audio_reschedule (int generation) {
     // Stops the player. Should only do this when the `processingFormat` is known to change.
     //[dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: dex_bg_file.processingFormat];
 
-    os_log (OS_LOG_DEFAULT, "audio_reschedule] Looping..");
+    //os_log (OS_LOG_DEFAULT, "audio_reschedule] Looping..");
     [dex_player scheduleFile: dex_bg_file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
     audio_ballast();});}
 

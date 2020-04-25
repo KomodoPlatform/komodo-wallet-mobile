@@ -30,6 +30,8 @@ class SwapHistoryBloc implements BlocBase {
       MMService().client,
       GetRecoverFundsOfSwap(params: Params(uuid: swap.result.uuid)));
 
+  /// Deprecated: should be using `errorEvents` and `successEvents` (`MmSwap::status`)
+  /// instead of hardcoding all the present **and future** status events
   Status getStatusSwap(MmSwap resultSwap) {
     Status status = Status.ORDER_MATCHING;
 
