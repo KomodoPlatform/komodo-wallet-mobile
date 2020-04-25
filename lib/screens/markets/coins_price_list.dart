@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/screens/markets/build_coin_price_list_item.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-
-import 'build_coin_price.dart';
 
 class CoinsPriceList extends StatefulWidget {
   const CoinsPriceList({this.onItemTap});
@@ -36,7 +35,7 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
               shrinkWrap: true,
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                return BuildCoinPrice(
+                return BuildCoinPriceListItem(
                   coinBalance: snapshot.data[index],
                   onTap: () {
                     widget.onItemTap(snapshot.data[index].coin);

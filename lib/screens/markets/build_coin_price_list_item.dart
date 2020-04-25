@@ -4,17 +4,17 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
-class BuildCoinPrice extends StatefulWidget {
-  const BuildCoinPrice({this.coinBalance, this.onTap});
+class BuildCoinPriceListItem extends StatefulWidget {
+  const BuildCoinPriceListItem({this.coinBalance, this.onTap});
 
   final CoinBalance coinBalance;
   final Function onTap;
 
   @override
-  _BuildCoinPriceState createState() => _BuildCoinPriceState();
+  _BuildCoinPriceListItemState createState() => _BuildCoinPriceListItemState();
 }
 
-class _BuildCoinPriceState extends State<BuildCoinPrice> {
+class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   Coin coin;
   Balance balance;
 
