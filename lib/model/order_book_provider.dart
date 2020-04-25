@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 
@@ -41,13 +42,13 @@ class OrderBookProvider extends ChangeNotifier {
         rating: (order.address.codeUnitAt(1).toDouble() - 65) * 4);
   }
 
-  static String formatPrice(String value, [int digits = 6, int fraction = 2]) {
-    final String rounded = double.parse(value).toStringAsFixed(fraction);
-    if (rounded.length >= digits + 1) {
-      return rounded;
-    } else {
-      return double.parse(value).toStringAsPrecision(digits);
+  // TODO(AG): historical swap data for [coinsPair]
+  List<Swap> getSwapHistory(CoinsPair coinsPair) {
+    if (coinsPair.sell.abbr == 'VOTE2020' || coinsPair.buy.abbr == 'VOTE2020') {
+      return null;
     }
+
+    return [Swap()];
   }
 
   Future<void> _updateOrderBooks() async {
@@ -63,6 +64,15 @@ class OrderBookProvider extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  static String formatPrice(String value, [int digits = 6, int fraction = 2]) {
+    final String rounded = double.parse(value).toStringAsFixed(fraction);
+    if (rounded.length >= digits + 1) {
+      return rounded;
+    } else {
+      return double.parse(value).toStringAsPrecision(digits);
+    }
   }
 }
 

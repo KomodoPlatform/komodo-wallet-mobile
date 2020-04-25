@@ -5,8 +5,12 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
+import 'package:provider/provider.dart';
 
 class CoinSelect extends StatefulWidget {
   const CoinSelect({
@@ -15,6 +19,7 @@ class CoinSelect extends StatefulWidget {
     this.pairedCoin,
     this.autoOpen = false,
     this.compact = false,
+    this.hideInactiveCoins = false,
     this.onChange,
   });
 
@@ -23,6 +28,8 @@ class CoinSelect extends StatefulWidget {
   final Coin pairedCoin;
   final bool autoOpen;
   final bool compact;
+  // Only show coins with at least one order or swap
+  final bool hideInactiveCoins;
   final Function(Coin) onChange;
 
   @override
@@ -125,6 +132,39 @@ class _CoinSelectState extends State<CoinSelect> {
     return coin == widget.pairedCoin;
   }
 
+  bool _isPairSwapable(CoinsPair pair) {
+    final OrderBookProvider _orderBookProvider =
+        Provider.of<OrderBookProvider>(context);
+    final Orderbook _orderbook = _orderBookProvider.getOrderBook(pair);
+    final List<Swap> _swapHistory = _orderBookProvider.getSwapHistory(pair);
+
+    return !((_swapHistory == null || _swapHistory.isEmpty) &&
+        (_orderbook == null ||
+            (_orderbook.asks.isEmpty && _orderbook.bids.isEmpty)));
+  }
+
+  bool _isCoinActive(Coin coin) {
+    if (widget.pairedCoin != null) {
+      final _pair = CoinsPair(
+        buy: widget.type == CoinType.base ? coin : widget.pairedCoin,
+        sell: widget.type == CoinType.base ? widget.pairedCoin : coin,
+      );
+
+      return _isPairSwapable(_pair); //
+    }
+
+    for (int i = 0; i < _coinsList.length; i++) {
+      final _pair = CoinsPair(
+        buy: widget.type == CoinType.base ? coin : _coinsList[i],
+        sell: widget.type == CoinType.base ? _coinsList[i] : coin,
+      );
+
+      if (_isPairSwapable(_pair)) return true; //
+    }
+
+    return false; //
+  }
+
   void _showDialog() {
     setState(() {
       _isDialogOpen = true;
@@ -148,6 +188,11 @@ class _CoinSelectState extends State<CoinSelect> {
             final List<SimpleDialogOption> coinsList = [];
             for (int i = 0; i < _coinsList.length; i++) {
               final CoinBalance coinBalance = _coinsList[i];
+
+              if (widget.hideInactiveCoins &&
+                  !_isCoinActive(coinBalance.coin)) {
+                continue;
+              }
 
               coinsList.add(SimpleDialogOption(
                 key: Key('coin-select-option-${coinBalance.coin.abbr}'),

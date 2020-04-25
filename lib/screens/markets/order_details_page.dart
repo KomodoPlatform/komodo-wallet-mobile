@@ -152,7 +152,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                       controller: _addressController,
                                       style: const TextStyle(fontSize: 14),
                                       maxLines: 1,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         contentPadding:
                                             EdgeInsets.only(left: 6, right: 6),
                                         border: OutlineInputBorder(),
