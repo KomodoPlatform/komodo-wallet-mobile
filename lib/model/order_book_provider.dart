@@ -36,7 +36,7 @@ class OrderBookProvider extends ChangeNotifier {
   }
 
   OrderHealth getOrderHealth(Ask order) {
-    // TODO(yurii): concider several order health metrics, such as:
+    // TODO(yurii): consider several order health metrics, such as:
     //  - overall swaps number for address
     //  - last 24h swaps number for address
     //  - overall swaps volume for address
