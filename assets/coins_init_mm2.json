@@ -3349,7 +3349,8 @@
 		"asset": "ZILLA",
 		"fname": "ChainZilla",
 		"rpcport": 10041,
-		"mm2": 1
+		"mm2": 1,
+              "requires_notarization": false
 	},
 	{
 		"coin": "ZRX",
