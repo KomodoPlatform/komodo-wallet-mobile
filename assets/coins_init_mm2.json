@@ -3350,8 +3350,7 @@
 		"fname": "ChainZilla",
 		"rpcport": 10041,
 		"mm2": 1,
-		"required_confirmations": 2,
-		"requires_notarization": true
+              "requires_notarization": false
 	},
 	{
 		"coin": "ZRX",
