@@ -34,41 +34,67 @@ class _MarketsPageState extends State<MarketsPage>
     }
     init = true;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-          title: Center(
-              child: Text(
-            'MARKETS', // TODO(yurii): localization
-            key: const Key('markets-title'),
-            style: Theme.of(context).textTheme.subtitle,
-          )),
-          bottom: PreferredSize(
-            preferredSize: const Size(200.0, 70.0),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: const BorderRadius.all(Radius.circular(32)),
-                    border: Border.all(color: Colors.grey, width: 1)),
-                child: TabBar(
-                  labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-                  indicator: CustomTabIndicator(context: context),
-                  controller: tabController,
-                  tabs: const <Widget>[
-                    Tab(
-                      text: 'PRICE', // TODO(yurii): localization
-                    ),
-                    Tab(
-                      text: 'ORDER BOOK', // TODO(yurii): localization
-                    )
+    Widget _buildAppBar() {
+      final bool _isSmallScreen = MediaQuery.of(context).size.height < 680;
+
+      final Widget _tabsPanel = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: const BorderRadius.all(Radius.circular(32)),
+              border: Border.all(color: Colors.grey, width: 1)),
+          child: TabBar(
+            labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+            indicator: CustomTabIndicator(context: context),
+            controller: tabController,
+            tabs: const <Widget>[
+              Tab(
+                text: 'PRICE', // TODO(yurii): localization
+              ),
+              Tab(
+                text: 'ORDER BOOK', // TODO(yurii): localization
+              )
+            ],
+          ),
+        ),
+      );
+
+      return _isSmallScreen
+          ? PreferredSize(
+              preferredSize: const Size.fromHeight(80),
+              child: AppBar(
+                flexibleSpace: SafeArea(
+                    child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 20),
+                    _tabsPanel,
+                  ],
+                )),
+              ),
+            )
+          : AppBar(
+              title: Center(
+                  child: Text(
+                'MARKETS', // TODO(yurii): localization
+                key: const Key('markets-title'),
+                style: Theme.of(context).textTheme.subtitle,
+              )),
+              bottom: PreferredSize(
+                preferredSize: const Size(200.0, 70.0),
+                child: Column(
+                  children: <Widget>[
+                    _tabsPanel,
+                    const SizedBox(height: 15),
                   ],
                 ),
-              ),
-            ),
-          )),
+              ));
+    }
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: _buildAppBar(),
       body: Builder(builder: (BuildContext context) {
         return TabBarView(
           controller: tabController,
