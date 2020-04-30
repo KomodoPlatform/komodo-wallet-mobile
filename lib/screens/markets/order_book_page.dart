@@ -113,8 +113,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
       );
     }
 
-    final List<Ask> _sortedAsks = _sortByPrice(_orderBook.asks, isAsks: true);
-    final List<Ask> _sortedBids = _sortByPrice(_orderBook.bids);
+    final List<Ask> _sortedAsks = OrderBookProvider.sortByPrice(_orderBook.asks, isAsks: true);
+    final List<Ask> _sortedBids = OrderBookProvider.sortByPrice(_orderBook.bids);
 
     return Stack(
       children: <Widget>[
@@ -128,22 +128,5 @@ class _OrderBookPageState extends State<OrderBookPage> {
         ),
       ],
     );
-  }
-
-  /// Returns [list] of Ask(), sorted by price (DESC),
-  /// then by amount (DESC if [isAsks] is 'true', ASC if 'false'),
-  /// then by age (DESC)
-  List<Ask> _sortByPrice(List<Ask> list, {bool isAsks = false}) {
-    final List<Ask> sorted = list;
-    sorted.sort((a, b) {
-      if (double.parse(a.price) > double.parse(b.price)) return 1;
-      if (double.parse(a.price) < double.parse(b.price)) return -1;
-
-      if (a.maxvolume > b.maxvolume) return isAsks ? 1 : -1;
-      if (a.maxvolume < b.maxvolume) return isAsks ? -1 : 1;
-
-      return a.age.compareTo(b.age);
-    });
-    return sorted;
   }
 }
