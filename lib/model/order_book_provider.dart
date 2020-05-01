@@ -5,35 +5,30 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 
 class OrderBookProvider extends ChangeNotifier {
   OrderBookProvider() {
-    Timer.periodic(const Duration(milliseconds: 500), (_) async {
-      _updateOrderBooks();
+    syncOrderbook.linkProvider(this);
+    jobService.install('syncOrderbook', 7.77, (j) async {
+      await syncOrderbook._updateOrderBooks();
     });
   }
-
-  final List<CoinsPair> _subscribedCoins = [];
-  final Map<String, Orderbook> _orderBooks = {}; // {'BTC/KMD': Orderbook(),}
-  CoinsPair _activePair;
-
-  Orderbook getOrderBook([CoinsPair coinsPair]) {
-    coinsPair ??= activePair;
-
-    if (!_subscribedCoins.contains(coinsPair)) {
-      _subscribedCoins.add(coinsPair);
-    }
-    return _orderBooks['${coinsPair.buy.abbr}/${coinsPair.sell.abbr}'];
+  @override
+  void dispose() {
+    syncOrderbook.unlinkProvider(this);
+    super.dispose();
   }
 
-  CoinsPair get activePair => _activePair;
+  void notify() => notifyListeners();
 
-  set activePair(CoinsPair coinsPair) {
-    _activePair = coinsPair;
-    notifyListeners();
-  }
+  Orderbook getOrderBook([CoinsPair coinsPair]) => syncOrderbook.getOrderBook();
+
+  CoinsPair get activePair => syncOrderbook.activePair;
+
+  set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
 
   OrderHealth getOrderHealth(Ask order) {
     // TODO(yurii): consider several order health metrics, such as:
@@ -59,21 +54,6 @@ class OrderBookProvider extends ChangeNotifier {
     }
 
     return [Swap()];
-  }
-
-  Future<void> _updateOrderBooks() async {
-    for (int i = 0; i < _subscribedCoins.length; i++) {
-      _orderBooks[
-              '${_subscribedCoins[i].buy.abbr}/${_subscribedCoins[i].sell.abbr}'] =
-          await MM.getOrderbook(
-              MMService().client,
-              GetOrderbook(
-                base: _subscribedCoins[i].buy.abbr,
-                rel: _subscribedCoins[i].sell.abbr,
-              ));
-    }
-
-    notifyListeners();
   }
 
   static String formatPrice(String value, [int digits = 6, int fraction = 2]) {
@@ -117,4 +97,61 @@ class CoinsPair {
 
   Coin buy;
   Coin sell;
+}
+
+SyncOrderbook syncOrderbook = SyncOrderbook();
+
+/// In ECS terms it is a System coordinating the orderbook information.
+class SyncOrderbook {
+  /// [ChangeNotifier] proxies linked to this singleton.
+  final Set<OrderBookProvider> _providers = {};
+
+  final List<CoinsPair> _subscribedCoins = [];
+  final Map<String, Orderbook> _orderBooks = {}; // {'BTC-KMD': Orderbook(),}
+  CoinsPair _activePair;
+
+  CoinsPair get activePair => _activePair;
+
+  set activePair(CoinsPair coinsPair) {
+    _activePair = coinsPair;
+    _notifyListeners();
+  }
+
+  Orderbook getOrderBook([CoinsPair coinsPair]) {
+    coinsPair ??= activePair;
+
+    if (!_subscribedCoins.contains(coinsPair)) {
+      _subscribedCoins.add(coinsPair);
+    }
+    return _orderBooks['${coinsPair.buy.abbr}/${coinsPair.sell.abbr}'];
+  }
+
+  Future<void> _updateOrderBooks() async {
+    for (int i = 0; i < _subscribedCoins.length; i++) {
+      _orderBooks[
+              '${_subscribedCoins[i].buy.abbr}/${_subscribedCoins[i].sell.abbr}'] =
+          await MM.getOrderbook(
+              MMService().client,
+              GetOrderbook(
+                base: _subscribedCoins[i].buy.abbr,
+                rel: _subscribedCoins[i].sell.abbr,
+              ));
+    }
+
+    _notifyListeners();
+  }
+
+  /// Link a [ChangeNotifier] proxy to this singleton.
+  void linkProvider(OrderBookProvider provider) {
+    _providers.add(provider);
+  }
+
+  /// Unlink a [ChangeNotifier] proxy from this singleton.
+  void unlinkProvider(OrderBookProvider provider) {
+    _providers.remove(provider);
+  }
+
+  void _notifyListeners() {
+    for (OrderBookProvider provider in _providers) provider.notify();
+  }
 }
