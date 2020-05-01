@@ -18,19 +18,15 @@ class OrderBookChart extends StatelessWidget {
     final List<double> _bidTotals = [];
     double _maxAmount;
 
-    final List<Ask> _sortedAsks = sortedAsks;
-    final List<Ask> _sortedBids = List.from(sortedBids.reversed);
-
-    for (int i = 0; i < _sortedAsks.length; i++) {
+    for (int i = 0; i < sortedAsks.length; i++) {
       final double prevTotal = i > 0 ? _askTotals[_askTotals.length - 1] : 0;
-      _askTotals.add(prevTotal + _sortedAsks[i].maxvolume.toDouble());
+      _askTotals.add(prevTotal + sortedAsks[i].maxvolume.toDouble());
     }
 
-    for (int i = 0; i < _sortedBids.length; i++) {
+    for (int i = 0; i < sortedBids.length; i++) {
       final double prevTotal = i > 0 ? _bidTotals[_bidTotals.length - 1] : 0;
-      final Ask bid = _sortedBids[i];
-      _bidTotals.add(
-          prevTotal + (bid.maxvolume.toDouble() / double.parse(bid.price)));
+      final Ask bid = sortedBids[i];
+      _bidTotals.add(prevTotal + (bid.maxvolume.toDouble() * double.parse(bid.price)));
     }
 
     _maxAmount = max(

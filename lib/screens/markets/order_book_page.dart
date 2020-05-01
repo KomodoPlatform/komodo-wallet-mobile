@@ -52,7 +52,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                   autoOpen: _orderBookProvider.activePair?.buy == null &&
                       _orderBookProvider.activePair?.sell != null,
                   compact: MediaQuery.of(context).size.width < 360,
-                  hideInactiveCoins: true,
+                  hideInactiveCoins: false,
                   onChange: (Coin value) {
                     _orderBookProvider.activePair = CoinsPair(
                       buy: value,
@@ -80,7 +80,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 autoOpen: _orderBookProvider.activePair?.sell == null &&
                     _orderBookProvider.activePair?.buy != null,
                 compact: MediaQuery.of(context).size.width < 360,
-                hideInactiveCoins: true,
+                hideInactiveCoins: false,
                 onChange: (Coin value) {
                   _orderBookProvider.activePair = CoinsPair(
                     sell: value,
@@ -104,22 +104,16 @@ class _OrderBookPageState extends State<OrderBookPage> {
       );
     }
 
-    final Orderbook _orderBook = _orderBookProvider.getOrderBook();
+    final Orderbook _asksOrderBook = _orderBookProvider.getOrderBook() ?? Orderbook(bids: []);
+    final Orderbook _bidsOrderBook = _orderBookProvider.getOrderBook(CoinsPair(
+      buy: _orderBookProvider.activePair.sell,
+      sell: _orderBookProvider.activePair.buy,
+    )) ?? Orderbook(bids: []);
 
-    if (_orderBook == null) {
-      return const Center(
-        heightFactor: 10,
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    final List<Ask> _sortedAsks = OrderBookProvider.sortByPrice(
-        _orderBook.bids.where(
-            (order) => order.coin == _orderBookProvider.activePair.buy.abbr).toList(),
-        isAsks: true);
+    final List<Ask> _sortedAsks =
+        OrderBookProvider.sortByPrice(_asksOrderBook.bids, isAsks: true);
     final List<Ask> _sortedBids =
-        OrderBookProvider.sortByPrice(_orderBook.bids.where(
-            (order) => order.coin == _orderBookProvider.activePair.sell.abbr).toList());
+        OrderBookProvider.sortByPrice(_bidsOrderBook.bids);
 
     return Stack(
       children: <Widget>[

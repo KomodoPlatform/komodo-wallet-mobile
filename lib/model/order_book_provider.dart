@@ -107,7 +107,7 @@ class SyncOrderbook {
   /// [ChangeNotifier] proxies linked to this singleton.
   final Set<OrderBookProvider> _providers = {};
 
-  final Map<String, Orderbook> _orderBooks = {}; // {'BTC-KMD': Orderbook(),}
+  Map<String, Orderbook> _orderBooks; // {'BTC-KMD': Orderbook(),}
   CoinsPair _activePair;
 
   CoinsPair get activePair => _activePair;
@@ -127,6 +127,7 @@ class SyncOrderbook {
     // Exploratory (should combine ECS syncs into a single service or helper)
 
     final List<String> tickers = (await Db.activeCoins).toList();
+    final Map<String, Orderbook> orderBooks = {};
 
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
@@ -148,9 +149,9 @@ class SyncOrderbook {
     if (components == null || !components.containsKey('orderbook.1')) return;
     final Map<String, dynamic> sb = components['orderbook.1']['short_book'];
 
+    for (String pair in sb.keys) {
     final List<Ask> bids = [];
 
-    for (String pair in sb.keys) {
       final List<String> coins = pair.split('-');
       final String line = sb[pair];
       //Log('order_book_provider:161', 'pair $pair; $line');
@@ -169,9 +170,11 @@ class SyncOrderbook {
             age: 1 // TODO(AG): Caretaker should share the age of the order.
             ));
       }
-      _orderBooks[pair] = Orderbook(
+      orderBooks[pair] = Orderbook(
           bids: bids, numbids: bids.length, base: coins[0], rel: coins[1]);
     }
+
+    _orderBooks = orderBooks;
 
     // TODO(AG): Only notify if there were actual changes.
     _notifyListeners();
