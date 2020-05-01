@@ -26,7 +26,7 @@ class OrderBookProvider extends ChangeNotifier {
 
   void notify() => notifyListeners();
 
-  Orderbook getOrderBook([CoinsPair coinsPair]) => syncOrderbook.getOrderBook();
+  Orderbook getOrderBook([CoinsPair coinsPair]) => syncOrderbook.getOrderBook(coinsPair);
 
   CoinsPair get activePair => syncOrderbook.activePair;
 
