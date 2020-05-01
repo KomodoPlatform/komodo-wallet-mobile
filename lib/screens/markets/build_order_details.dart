@@ -20,10 +20,6 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
         Provider.of<OrderBookProvider>(context);
     final CoinsPair _activePair = _orderBookProvider.activePair;
     final bool _isAsk = _activePair.buy.abbr == widget.order.coin;
-    final double _volume = _isAsk
-        ? widget.order.maxvolume.toDouble()
-        : (widget.order.maxvolume.toDouble() /
-            double.parse(widget.order.price));
 
     return Card(
       elevation: 8,
@@ -65,7 +61,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     const SizedBox(width: 12),
                     Text(
                       OrderBookProvider.formatPrice(
-                          '${_isAsk ? _volume : _volume * double.parse(widget.order.price)}'),
+                          widget.order.maxvolume.toString()),
                       style: Theme.of(context).textTheme.subtitle.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
@@ -96,7 +92,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     const SizedBox(width: 12),
                     Text(
                       OrderBookProvider.formatPrice(
-                          '${_isAsk ? _volume * double.parse(widget.order.price) : _volume}'),
+                          '${widget.order.maxvolume.toDouble() * double.parse(widget.order.price)}'),
                       style: Theme.of(context).textTheme.subtitle.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
@@ -121,7 +117,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 Row(
                   children: <Widget>[
                     Text(
-                      OrderBookProvider.formatPrice('${widget.order.price}'),
+                      OrderBookProvider.formatPrice(
+                          '${_isAsk ? widget.order.price : (1 / double.parse(widget.order.price)).toString()}'),
                       style: Theme.of(context)
                           .textTheme
                           .subtitle
@@ -141,7 +138,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 Row(
                   children: <Widget>[
                     Text(
-                      '${OrderBookProvider.formatPrice((1 / double.parse(widget.order.price)).toString())}',
+                      OrderBookProvider.formatPrice(
+                          '${!_isAsk ? widget.order.price : (1 / double.parse(widget.order.price)).toString()}'),
                       style: TextStyle(
                         fontSize: 13,
                         color: Theme.of(context).disabledColor,

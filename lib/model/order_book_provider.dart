@@ -8,7 +8,6 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class OrderBookProvider extends ChangeNotifier {
@@ -26,7 +25,7 @@ class OrderBookProvider extends ChangeNotifier {
 
   void notify() => notifyListeners();
 
-  Orderbook getOrderBook([CoinsPair coinsPair]) => syncOrderbook.getOrderBook();
+  Orderbook getOrderBook([CoinsPair coinsPair]) => syncOrderbook.getOrderBook(coinsPair);
 
   CoinsPair get activePair => syncOrderbook.activePair;
 
@@ -108,7 +107,6 @@ class SyncOrderbook {
   /// [ChangeNotifier] proxies linked to this singleton.
   final Set<OrderBookProvider> _providers = {};
 
-  final List<CoinsPair> _subscribedCoins = [];
   final Map<String, Orderbook> _orderBooks = {}; // {'BTC-KMD': Orderbook(),}
   CoinsPair _activePair;
 
@@ -122,10 +120,7 @@ class SyncOrderbook {
   Orderbook getOrderBook([CoinsPair coinsPair]) {
     coinsPair ??= activePair;
 
-    if (!_subscribedCoins.contains(coinsPair)) {
-      _subscribedCoins.add(coinsPair);
-    }
-    return _orderBooks['${coinsPair.buy.abbr}/${coinsPair.sell.abbr}'];
+    return _orderBooks['${coinsPair.buy.abbr}-${coinsPair.sell.abbr}'];
   }
 
   Future<void> _updateOrderBooks() async {

@@ -63,7 +63,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
               ButtonTheme(
                 minWidth: 40,
                 child: FlatButton(
-                  padding: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
                     onPressed: () {
                       _orderBookProvider.activePair = CoinsPair(
                         buy: _orderBookProvider.activePair?.sell,
@@ -113,8 +113,13 @@ class _OrderBookPageState extends State<OrderBookPage> {
       );
     }
 
-    final List<Ask> _sortedAsks = OrderBookProvider.sortByPrice(_orderBook.asks, isAsks: true);
-    final List<Ask> _sortedBids = OrderBookProvider.sortByPrice(_orderBook.bids);
+    final List<Ask> _sortedAsks = OrderBookProvider.sortByPrice(
+        _orderBook.bids.where(
+            (order) => order.coin == _orderBookProvider.activePair.buy.abbr).toList(),
+        isAsks: true);
+    final List<Ask> _sortedBids =
+        OrderBookProvider.sortByPrice(_orderBook.bids.where(
+            (order) => order.coin == _orderBookProvider.activePair.sell.abbr).toList());
 
     return Stack(
       children: <Widget>[
