@@ -1,13 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/job_service.dart';
-import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class OrderBookProvider extends ChangeNotifier {
   OrderBookProvider() {
@@ -127,17 +129,56 @@ class SyncOrderbook {
   }
 
   Future<void> _updateOrderBooks() async {
-    for (int i = 0; i < _subscribedCoins.length; i++) {
-      _orderBooks[
-              '${_subscribedCoins[i].buy.abbr}/${_subscribedCoins[i].sell.abbr}'] =
-          await MM.getOrderbook(
-              MMService().client,
-              GetOrderbook(
-                base: _subscribedCoins[i].buy.abbr,
-                rel: _subscribedCoins[i].sell.abbr,
-              ));
+    // Exploratory (should combine ECS syncs into a single service or helper)
+
+    final List<String> tickers = (await Db.activeCoins).toList();
+
+    final pr = await mmSe.client.post('http://ct.cipig.net/sync',
+        body: json.encode(<String, dynamic>{
+          'components': <String, dynamic>{
+            'orderbook.1': <String, dynamic>{
+              // Coins we're currently interested in (e.g. activated)
+              'tickers': tickers,
+              // TODO(AG): Use `skip` to skip known long lines
+            }
+          }
+        }));
+    if (pr.statusCode != 200) throw Exception('HTTP ${pr.statusCode}');
+    final ct = pr.headers['content-type'] ?? '';
+    if (ct != 'application/json') throw Exception('HTTP Content-Type $ct');
+    // NB: `http` fails to recognize that 'application/json' is UTF-8 by default.
+    final body = const Utf8Decoder().convert(pr.bodyBytes);
+    final Map<String, dynamic> js = json.decode(body);
+    final Map<String, dynamic> components = js['components'];
+    if (components == null || !components.containsKey('orderbook.1')) return;
+    final Map<String, dynamic> sb = components['orderbook.1']['short_book'];
+
+    final List<Ask> bids = [];
+
+    for (String pair in sb.keys) {
+      final List<String> coins = pair.split('-');
+      final String line = sb[pair];
+      //Log('order_book_provider:161', 'pair $pair; $line');
+      for (String so in line.split(';')) {
+        final List<String> sol = so.split(' ');
+        final id = sol[0];
+        final balance = base62rdec(sol[1]);
+        final price = base62rdec(sol[2]);
+        //Log('order_book_provider:167', '$id; balance $balance; price $price');
+        bids.add(Ask(
+            coin: coins[0],
+            address: '',
+            price: price.toDecimalString(),
+            maxvolume: deci(balance),
+            pubkey: id,
+            age: 1 // TODO(AG): Caretaker should share the age of the order.
+            ));
+      }
+      _orderBooks[pair] = Orderbook(
+          bids: bids, numbids: bids.length, base: coins[0], rel: coins[1]);
     }
 
+    // TODO(AG): Only notify if there were actual changes.
     _notifyListeners();
   }
 

@@ -356,7 +356,7 @@ class _IconsArticleState extends State<IconsArticle> {
                 : Colors.grey,
           ),
           onTap: () {
-            Log.println('media_page:336', widget.article.isSavedArticle);
+            Log.println('media_page:359', widget.article.isSavedArticle);
             if (widget.article.isSavedArticle) {
               setState(() {
                 widget.article.isSavedArticle = false;
