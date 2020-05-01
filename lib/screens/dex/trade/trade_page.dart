@@ -120,7 +120,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    _updateMarketsPair();
+    // TODO(AG): needs to be reviewed and debugged.
+    // Coin selects stops working on Markets page on iOs 12.4.5
+    //
+    //_updateMarketsPair();
 
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
