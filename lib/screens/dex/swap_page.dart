@@ -42,6 +42,63 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    Widget _buildAppBar() {
+      final bool _isSmallScreen = MediaQuery.of(context).size.height < 680;
+
+      final Widget _tabsPanel = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: const BorderRadius.all(Radius.circular(32)),
+              border: Border.all(color: Colors.grey, width: 1)),
+          child: TabBar(
+            labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+            indicator: CustomTabIndicator(context: context),
+            controller: tabController,
+            tabs: <Widget>[
+              Tab(
+                text: AppLocalizations.of(context).create.toUpperCase(),
+              ),
+              Tab(text: AppLocalizations.of(context).orders.toUpperCase()),
+              Tab(text: AppLocalizations.of(context).history.toUpperCase()),
+            ],
+          ),
+        ),
+      );
+
+      return _isSmallScreen
+          ? PreferredSize(
+              preferredSize: const Size.fromHeight(80),
+              child: AppBar(
+                flexibleSpace: SafeArea(
+                    child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 20),
+                    _tabsPanel,
+                  ],
+                )),
+              ),
+            )
+          : AppBar(
+              title: Center(
+                  child: Text(
+                AppLocalizations.of(context).exchangeTitle,
+                key: const Key('exchange-title'),
+                style: Theme.of(context).textTheme.subtitle,
+              )),
+              bottom: PreferredSize(
+                preferredSize: const Size(200.0, 70.0),
+                child: Column(
+                  children: <Widget>[
+                    _tabsPanel,
+                    const SizedBox(height: 15),
+                  ],
+                ),
+              ));
+    }
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -50,46 +107,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         length: 3,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
-          appBar: AppBar(
-            title: Center(
-                child: Text(
-              AppLocalizations.of(context).exchangeTitle,
-              key: const Key('exchange-title'),
-              style: Theme.of(context).textTheme.subtitle,
-            )),
-            bottom: PreferredSize(
-              preferredSize: const Size(200.0, 70.0),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: const BorderRadius.all(Radius.circular(32)),
-                      border: Border.all(color: Colors.grey, width: 1)),
-                  child: TabBar(
-                    labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    indicator: CustomTabIndicator(context: context),
-                    controller: tabController,
-                    tabs: <Widget>[
-                      Tab(
-                        text: AppLocalizations.of(context).create.toUpperCase(),
-                      ),
-                      Tab(
-                          text: AppLocalizations.of(context)
-                              .orders
-                              .toUpperCase()),
-                      Tab(
-                          text: AppLocalizations.of(context)
-                              .history
-                              .toUpperCase()),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+          appBar: _buildAppBar(),
           backgroundColor: Theme.of(context).backgroundColor,
           body: Builder(builder: (BuildContext context) {
             return TabBarView(
