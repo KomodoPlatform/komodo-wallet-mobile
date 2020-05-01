@@ -155,14 +155,14 @@ class OrderBookTable extends StatelessWidget {
       ));
     }
 
-    final List<Ask> _sortedBids = List.from(sortedBids.reversed);
+    final List<Ask> _sortedBids = List.from(sortedBids);
     final List<TableRow> _bidsList = [];
     double _bidTotal = 0;
 
     for (int i = 0; i < _sortedBids.length; i++) {
       final Ask bid = _sortedBids[i];
       final double _bidVolume =
-          bid.maxvolume.toDouble() / double.parse(bid.price);
+          bid.maxvolume.toDouble() * double.parse(bid.price);
       _bidTotal += _bidVolume;
 
       _bidsList.add(TableRow(
@@ -174,7 +174,7 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 4),
               child: Text(
-                OrderBookProvider.formatPrice(bid.price),
+                OrderBookProvider.formatPrice((1/double.parse(bid.price)).toString()),
                 maxLines: 1,
                 style: TextStyle(color: Colors.green, fontSize: 14),
               ),
