@@ -174,15 +174,15 @@ class SyncOrderbook {
 
       final List<String> coins = pair.split('-');
       final String line = sb[pair];
-      //Log('order_book_provider:178', 'pair $pair; $line');
+      //Log('order_book_provider:177', 'pair $pair; $line');
       for (String so in line.split(';')) {
         final List<String> sol = so.split(' ');
         final id = sol[0];
         final balance = base62rdec(sol[1]);
         final price = base62rdec(sol[2]);
-        final markers = sol[3];
+        final markers = sol.length > 3 ? sol[3] : '';
 
-        //Log('order_book_provider:186', '$id; balance $balance; price $price');
+        //Log('order_book_provider:185', '$id; balance $balance; price $price');
         bids.add(Ask(
             coin: coins[0],
             address: '',
