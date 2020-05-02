@@ -88,12 +88,15 @@ class LivMarker {
 
   /// English description provided by the marker's author (usually by a caretaker)
   String defaultDesc;
+
+  /// Rating modification assigned by the UI to this marker
+  int mod;
 }
 
 class OrderHealth {
   OrderHealth({this.rating, this.markers});
 
-  double rating;
+  int rating;
   List<LivMarker> markers;
 }
 
@@ -172,7 +175,7 @@ class SyncOrderbook {
 
       final List<String> coins = pair.split('-');
       final String line = sb[pair];
-      //Log('order_book_provider:174', 'pair $pair; $line');
+      //Log('order_book_provider:175', 'pair $pair; $line');
       for (String so in line.split(';')) {
         final List<String> sol = so.split(' ');
         final id = sol[0];
@@ -180,7 +183,7 @@ class SyncOrderbook {
         final price = base62rdec(sol[2]);
         final markers = sol[3];
 
-        //Log('order_book_provider:182', '$id; balance $balance; price $price');
+        //Log('order_book_provider:183', '$id; balance $balance; price $price');
         bids.add(Ask(
             coin: coins[0],
             address: '',
@@ -214,25 +217,26 @@ class SyncOrderbook {
     //  - ...
     final String markerS = _livMarkers[order.pubkey];
     final List<LivMarker> markers = [];
-    double rating = 100;
+    int rating = 100;
     // -s123-a
     for (RegExpMatch caps
         in RegExp(r'/(\+-)(\w+)([^\+\-]*)/').allMatches(markerS)) {
-      LivMarker lm = LivMarker();
+      final LivMarker lm = LivMarker();
       lm.sign = caps[1];
       lm.code = caps[2];
       lm.payload = caps[3];
       lm.defaultDesc = _markDesc[lm.code];
-      Log('order_book_provider:224',
+      Log('order_book_provider:226',
           'getOrderHealth] marker: ${caps[0]} plusMinus ${lm.sign} code ${lm.code} payload ${lm.payload} defaultDesc ${lm.defaultDesc}');
 
       if (lm.code == 'a' && lm.sign == '-') {
-        rating -= 20; // Custom rating
+        lm.mod = -20; // Custom rating
       } else if (lm.sign == '+') {
-        rating += 10; // Default rating
+        lm.mod = 10; // Default rating
       } else if (lm.sign == '-') {
-        rating -= 10;
+        lm.mod = -10;
       }
+      rating += lm.mod;
       markers.add(lm);
     }
 
