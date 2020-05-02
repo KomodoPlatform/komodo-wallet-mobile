@@ -63,6 +63,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     swapBloc.outFocusTextField.listen((bool onData) {
       if (widget.mContext != null) {
         try {
@@ -120,10 +121,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // TODO(AG): needs to be reviewed and debugged.
-    // Coin selects stops working on Markets page on iOs 12.4.5
-    //
-    //_updateMarketsPair();
+    _updateMarketsPair();
 
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -153,18 +151,20 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     final OrderBookProvider _orderBookProvider =
         Provider.of<OrderBookProvider>(context);
 
-    if (swapBloc.receiveCoin != _orderBookProvider.activePair?.buy) {
-      _orderBookProvider.activePair = CoinsPair(
-        buy: swapBloc.receiveCoin,
-        sell: _orderBookProvider.activePair?.sell,
-      );
-    }
-    if (swapBloc.sellCoin?.coin != _orderBookProvider.activePair?.sell) {
-      _orderBookProvider.activePair = CoinsPair(
-        buy: _orderBookProvider.activePair?.buy,
-        sell: swapBloc.sellCoin?.coin,
-      );
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (swapBloc.receiveCoin != _orderBookProvider.activePair?.buy) {
+        _orderBookProvider.activePair = CoinsPair(
+          buy: swapBloc.receiveCoin,
+          sell: _orderBookProvider.activePair?.sell,
+        );
+      }
+      if (swapBloc.sellCoin?.coin != _orderBookProvider.activePair?.sell) {
+        _orderBookProvider.activePair = CoinsPair(
+          buy: _orderBookProvider.activePair?.buy,
+          sell: swapBloc.sellCoin?.coin,
+        );
+      }
+    });
   }
 
   void initListenerAmountReceive() {
