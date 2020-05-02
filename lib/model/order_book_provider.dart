@@ -45,7 +45,7 @@ class OrderBookProvider extends ChangeNotifier {
     return OrderHealth(
         // just some demo double value in 0-100 range,
         // which depends of order.adress
-        rating: (order.address.codeUnitAt(1).toDouble() - 65) * 4);
+        rating: 50);
   }
 
   // TODO(AG): historical swap data for [coinsPair]
