@@ -12,10 +12,13 @@ class BuildOrderHealthDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (order == null) return Container();
+
     final OrderBookProvider _orderBookProvider =
         Provider.of<OrderBookProvider>(context);
 
     final OrderHealth _orderHealth = _orderBookProvider.getOrderHealth(order);
+    if (_orderHealth == null) return Container();
 
     return Card(
       elevation: 8,
@@ -64,100 +67,22 @@ class BuildOrderHealthDetails extends StatelessWidget {
                   0: IntrinsicColumnWidth(),
                   1: FlexColumnWidth(1.0),
                 },
-                children: [
-                  TableRow(children: [
+                children: _orderHealth.markers.map((_marker) {
+                  return TableRow(children: [
                     Container(
-                        padding: const EdgeInsets.only(right: 12, bottom: 12),
-                        child:
-                            const Text('80%', style: TextStyle(fontSize: 14))),
+                        padding: const EdgeInsets.only(right: 6, bottom: 12, top: 3),
+                        child: _marker.sign == '+'
+                            ? const Icon(Icons.thumb_up, size: 14)
+                            : const Icon(Icons.thumb_down, size: 14)),
                     Container(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: Text('All time swaps: 100, successfull: 80',
+                      child: Text('${_marker.defaultDesc}',
                           style: Theme.of(context).textTheme.body2.copyWith(
                                 fontWeight: FontWeight.normal,
                               )),
                     )
-                  ]),
-                  TableRow(children: [
-                    Container(
-                        padding: const EdgeInsets.only(right: 12, bottom: 12),
-                        child:
-                            const Text('60%', style: TextStyle(fontSize: 14))),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Text('Last 24 hours swaps: 10, successfull: 6',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                                fontWeight: FontWeight.normal,
-                              )),
-                    )
-                  ]),
-                  TableRow(children: [
-                    Container(
-                        padding: const EdgeInsets.only(right: 12, bottom: 12),
-                        child:
-                            const Text('90%', style: TextStyle(fontSize: 14))),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Text(
-                          'Total swaps amount: over 10000${order.coin}',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                                fontWeight: FontWeight.normal,
-                              )),
-                    )
-                  ]),
-                  TableRow(children: [
-                    Container(
-                        padding: const EdgeInsets.only(right: 12, bottom: 12),
-                        child:
-                            const Text('70%', style: TextStyle(fontSize: 14))),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Text('Online status score',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                                fontWeight: FontWeight.normal,
-                              )),
-                    )
-                  ]),
-                  TableRow(children: [
-                    Container(
-                        padding: const EdgeInsets.only(right: 12, bottom: 12),
-                        child:
-                            const Text('85%', style: TextStyle(fontSize: 14))),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Text('Order age: less than 1h',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                                fontWeight: FontWeight.normal,
-                              )),
-                    )
-                  ]),
-                  TableRow(children: [
-                    Container(
-                        padding: const EdgeInsets.only(right: 12, bottom: 12),
-                        child:
-                            const Text('95%', style: TextStyle(fontSize: 14))),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Text('Average order lifetime: less than 1h',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                                fontWeight: FontWeight.normal,
-                              )),
-                    )
-                  ]),
-                  TableRow(children: [
-                    Container(
-                        padding: const EdgeInsets.only(right: 12, bottom: 12),
-                        child:
-                            const Text('95%', style: TextStyle(fontSize: 14))),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Text('Average swap duration: less than 10m',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                                fontWeight: FontWeight.normal,
-                              )),
-                    )
-                  ]),
-                ],
+                  ]);
+                }).toList(),
               ),
             )
           ],

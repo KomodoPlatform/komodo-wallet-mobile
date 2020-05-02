@@ -8,7 +8,6 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class OrderBookProvider extends ChangeNotifier {

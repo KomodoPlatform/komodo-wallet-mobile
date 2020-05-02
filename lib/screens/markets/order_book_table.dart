@@ -128,7 +128,7 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.center,
               padding: const EdgeInsets.only(top: 2, left: 8, right: 4),
               child: HealthIndicator(
-                  _orderBookProvider.getOrderHealth(ask).rating.toDouble()),
+                  _orderBookProvider.getOrderHealth(ask).rating),
             ),
           ),
         ],
@@ -213,7 +213,7 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.center,
               padding: const EdgeInsets.only(top: 2, left: 8, right: 4),
               child: HealthIndicator(
-                  _orderBookProvider.getOrderHealth(bid).rating.toDouble()),
+                  _orderBookProvider.getOrderHealth(bid).rating),
             ),
           ),
         ],
