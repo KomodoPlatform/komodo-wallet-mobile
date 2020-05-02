@@ -214,7 +214,7 @@ class SyncOrderbook {
     //  - average swap duration for address
     //  - online status of address
     //  - ...
-    final String markerS = _livMarkers[order.pubkey];
+    final String markerS = _livMarkers[order.pubkey] ?? '';
     final List<LivMarker> markers = [];
     int rating = 100;
     // -s123-a
