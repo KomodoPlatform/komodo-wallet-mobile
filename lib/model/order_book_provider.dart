@@ -82,8 +82,8 @@ class LivMarker {
   String code;
 
   /// Payload optionally coming with the marker.
-  /// (It does not start with [a-zA-Z] and does not have [+-] in it).
-  /// Other than that, format is specific to the kind of the marker (cf. `code`)
+  /// It does not start with [a-zA-Z] and does not have [ +-] in it.
+  /// Other than that, format is specific to the kind of the marker (cf. `code`).
   String payload;
 
   /// English description provided by the marker's author (usually by a caretaker)
@@ -175,7 +175,7 @@ class SyncOrderbook {
 
       final List<String> coins = pair.split('-');
       final String line = sb[pair];
-      //Log('order_book_provider:175', 'pair $pair; $line');
+      //Log('order_book_provider:178', 'pair $pair; $line');
       for (String so in line.split(';')) {
         final List<String> sol = so.split(' ');
         final id = sol[0];
@@ -183,7 +183,7 @@ class SyncOrderbook {
         final price = base62rdec(sol[2]);
         final markers = sol[3];
 
-        //Log('order_book_provider:183', '$id; balance $balance; price $price');
+        //Log('order_book_provider:186', '$id; balance $balance; price $price');
         bids.add(Ask(
             coin: coins[0],
             address: '',
@@ -220,14 +220,12 @@ class SyncOrderbook {
     int rating = 100;
     // -s123-a
     for (RegExpMatch caps
-        in RegExp(r'/(\+-)(\w+)([^\+\-]*)/').allMatches(markerS)) {
+        in RegExp(r'([+-])([a-zA-Z]+)([^\+\-]*)').allMatches(markerS)) {
       final LivMarker lm = LivMarker();
       lm.sign = caps[1];
       lm.code = caps[2];
       lm.payload = caps[3];
       lm.defaultDesc = _markDesc[lm.code];
-      Log('order_book_provider:226',
-          'getOrderHealth] marker: ${caps[0]} plusMinus ${lm.sign} code ${lm.code} payload ${lm.payload} defaultDesc ${lm.defaultDesc}');
 
       if (lm.code == 'a' && lm.sign == '-') {
         lm.mod = -20; // Custom rating
