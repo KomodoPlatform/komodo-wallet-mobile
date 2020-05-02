@@ -13,6 +13,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
@@ -26,6 +27,7 @@ import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:provider/provider.dart';
 
 class TradePage extends StatefulWidget {
   const TradePage({this.mContext});
@@ -66,7 +68,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         try {
           FocusScope.of(widget.mContext).requestFocus(_focusSell);
         } catch (e) {
-          Log.println('trade_page:69', 'deactivated widget: ' + e.toString());
+          Log.println('trade_page:71', 'deactivated widget: ' + e.toString());
         }
       }
     });
@@ -118,6 +120,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // TODO(AG): needs to be reviewed and debugged.
+    // Coin selects stops working on Markets page on iOs 12.4.5
+    //
+    //_updateMarketsPair();
+
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
       children: <Widget>[
@@ -138,6 +145,26 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             }),
       ],
     );
+  }
+
+  void _updateMarketsPair() {
+    if (swapBloc.sellCoin?.coin == null && swapBloc.receiveCoin == null) return;
+
+    final OrderBookProvider _orderBookProvider =
+        Provider.of<OrderBookProvider>(context);
+
+    if (swapBloc.receiveCoin != _orderBookProvider.activePair?.buy) {
+      _orderBookProvider.activePair = CoinsPair(
+        buy: swapBloc.receiveCoin,
+        sell: _orderBookProvider.activePair?.sell,
+      );
+    }
+    if (swapBloc.sellCoin?.coin != _orderBookProvider.activePair?.sell) {
+      _orderBookProvider.activePair = CoinsPair(
+        buy: _orderBookProvider.activePair?.buy,
+        sell: swapBloc.sellCoin?.coin,
+      );
+    }
   }
 
   void initListenerAmountReceive() {
@@ -219,7 +246,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 maxVolume: maxVolume));
           }
           getFee(false).then((Decimal tradeFee) async {
-            Log.println('trade_page:222', 'tradeFee $tradeFee');
+            Log.println('trade_page:246', 'tradeFee $tradeFee');
             if (currentCoinBalance != null &&
                 amountSell + tradeFee > currentCoinBalance.balance.balance) {
               if (!swapBloc.isMaxActive) {
@@ -256,7 +283,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       });
       return fee;
     } catch (e) {
-      Log.println('trade_page:259', e);
+      Log.println('trade_page:283', e);
       return deci(0);
     }
   }
@@ -292,7 +319,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         return Decimal.parse('0');
       }
     } catch (e) {
-      Log.println('trade_page:295', e);
+      Log.println('trade_page:319', e);
       rethrow;
     }
   }
@@ -334,7 +361,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 : 'ETH');
       }
     } catch (e) {
-      Log.println('trade_page:337', e);
+      Log.println('trade_page:361', e);
       rethrow;
     }
   }
@@ -350,7 +377,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       setState(() async {
         final Decimal tradeFee = await getFee(true);
         final Decimal maxValue = currentCoinBalance.balance.balance - tradeFee;
-        Log.println('trade_page:353', 'setting max: $maxValue');
+        Log.println('trade_page:377', 'setting max: $maxValue');
 
         if (maxValue < deci(0)) {
           setState(() {
@@ -368,12 +395,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ));
           _focusSell.unfocus();
         } else {
-          Log.println('trade_page:371', '-----------_controllerAmountSell');
+          Log.println('trade_page:395', '-----------_controllerAmountSell');
           _controllerAmountSell.setTextAndPosition(deci2s(maxValue));
         }
       });
     } catch (e) {
-      Log.println('trade_page:376', e);
+      Log.println('trade_page:400', e);
     }
   }
 
@@ -690,7 +717,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Widget _buildCoinSelect(Market market) {
     Log.println(
-        'trade_page:692', 'coin-select-${market.toString().toLowerCase()}');
+        'trade_page:716', 'coin-select-${market.toString().toLowerCase()}');
     return Padding(
       padding: const EdgeInsets.only(top: 6),
       child: InkWell(
@@ -820,7 +847,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           isNumeric(_controllerAmountSell.text) &&
           !isLoadingMax &&
           double.parse(_controllerAmountSell.text) > 0) {
-        Log.println('trade_page:823', isLoadingMax);
+        Log.println('trade_page:847', isLoadingMax);
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -963,11 +990,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   orderbook.getBuyAmount(deci(_controllerAmountSell.text)) >
                       deci(0);
           Log.println(
-              'trade_page:965',
+              'trade_page:989',
               '----getBuyAmount----' +
                   deci2s(orderbook
                       .getBuyAmount(deci(_controllerAmountSell.text))));
-          Log.println('trade_page:970',
+          Log.println('trade_page:994',
               'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
             key: Key(

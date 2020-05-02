@@ -13,6 +13,10 @@ import 'get_recent_swap.dart';
 import 'recent_swaps.dart';
 import 'swap.dart';
 
+// TODO(AG): at "_goToNextScreen] swap started…" create a virtual
+// swap that would allow the UI to better track
+// them before they're "Started"
+
 /// “${swap_uuid}/${type}”, where $type is “t” for Taker and “m” for Maker.
 /// For example: “8f2464eb-4a1c-4d2e-b6e4-26b1de99ca8c/t”.
 /// xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx, cf. https://en.wikipedia.org/wiki/Universally_unique_identifier#Format
@@ -181,7 +185,7 @@ class SyncSwaps {
 
   /// (Re)load recent swaps from MM.
   Future<void> update(String reason) async {
-    Log('swap_provider:184', 'update] reason: $reason');
+    Log('swap_provider:188', 'update] reason: $reason');
 
     final RecentSwaps rswaps =
         await MM.getRecentSwaps(GetRecentSwap(limit: 50, fromUuid: null));
@@ -200,7 +204,7 @@ class SyncSwaps {
     try {
       await _gossipSync();
     } catch (ex) {
-      Log('swap_provider:203', '!_gossipSync: $ex');
+      Log('swap_provider:207', '!_gossipSync: $ex');
     }
   }
 
@@ -229,7 +233,7 @@ class SyncSwaps {
     for (String id in _ours.keys) {
       final entity = _ours[id];
       if (entity.timestamp == _gossiped[id]) continue;
-      Log('swap_provider:232', 'Gossiping $id…');
+      Log('swap_provider:236', 'Gossiping $id…');
       entities.add(entity);
     }
 
@@ -251,9 +255,9 @@ class SyncSwaps {
     final bsec = (DateTime.now().millisecondsSinceEpoch - bstart) / 1000.0;
     double bpe = blen * 64 / _theirs.length; // Bits per element.
     bpe = double.parse(bpe.toStringAsFixed(1));
-    Log('swap_provider:254', 'Bloom $bloom (${_theirs.length}, $bpe) in $bsec');
+    Log('swap_provider:258', 'Bloom $bloom (${_theirs.length}, $bpe) in $bsec');
 
-    //Log('swap_provider:256', 'ct.cipig.net/sync…');
+    //Log('swap_provider:260', 'ct.cipig.net/sync…');
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
           'components': <String, dynamic>{
@@ -311,7 +315,7 @@ class SwapGossip {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:314', 'Negative delta ($evaT→$adamT): $delta');
+        Log('swap_provider:318', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;

@@ -55,6 +55,10 @@ dependencies:
       url: https://github.com/KomodoPlatform/provider
       ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
 
+  # https://pub.dev/packages/rational
+  rational: ^0.3.8 # TODO
+  # ^ AG: We've been using this version of the crate already, now it's a direct dependency instead of transitive, I wonder if it was already reviewed
+
 dev_dependencies:
   flutter_driver: # flutter.dev
     sdk: flutter
@@ -166,6 +170,7 @@ dev_dependencies:
   # Our fork has a fixed compileSdkVersion - 28:
   # https://github.com/KomodoPlatform/flutter_sodium
   #flutter_sodium: ^0.0.11
+  # NB: We'll likely need libsodium for EdDSA gossip signatures
   # TODO: selfhost libsodium-jni (android implementation depends on AAR library from https://github.com/joshjdevl/libsodium-jni)
   flutter_sodium: # 0.0.11 - DONE: Secure code reviewed 3d6f8d8 (0.0.11) - TODO: read ^
     git:
