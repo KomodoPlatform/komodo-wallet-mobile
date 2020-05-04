@@ -28,6 +28,9 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
 
   @override
   Widget build(BuildContext context) {
+    final bool _hasNonzeroPrice =
+        double.parse(widget.coinBalance.priceForOne ?? '0') > 0;
+
     return Container(
       height: 64,
       child: Row(
@@ -68,13 +71,15 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                     .copyWith(fontSize: 14),
                               ),
                             ),
-                            Text(
-                              '\$${widget.coinBalance.priceForOne}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle
-                                  .copyWith(fontSize: 18),
-                            ),
+                            _hasNonzeroPrice
+                                ? Text(
+                                    '\$${widget.coinBalance.priceForOne}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle
+                                        .copyWith(fontSize: 18),
+                                  )
+                                : Container(),
                           ],
                         ),
                       ),
