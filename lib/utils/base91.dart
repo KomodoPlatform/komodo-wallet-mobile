@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'dart:typed_data';
+
 Base91 base91 = Base91();
 
 class Base91 {
@@ -24,7 +26,7 @@ class Base91 {
   List<int> _decodingTable;
   int base;
 
-  List<int> encode(List<int> bytes) {
+  Uint8List encode(Uint8List bytes) {
     int ebq = 0;
     int en = 0;
 
@@ -53,10 +55,10 @@ class Base91 {
         result.add(_encodingTable[(ebq / base).truncate()]);
       }
     }
-    return result;
+    return Uint8List.fromList(result);
   }
 
-  List<int> decode(List<int> bytes) {
+  Uint8List decode(Uint8List bytes) {
     final List<int> result = [];
     int dbq = 0;
     int dn = 0;
@@ -82,7 +84,7 @@ class Base91 {
     if (dv != -1) {
       result.add((dbq | dv << dn).toUnsigned(8));
     }
-    return result;
+    return Uint8List.fromList(result);
   }
 }
 
