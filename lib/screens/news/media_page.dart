@@ -40,39 +40,62 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        title: Center(
-            child: Text(
-          AppLocalizations.of(context).newsFeed.toUpperCase(),
-          style: Theme.of(context).textTheme.subtitle,
-        )),
-        bottom: PreferredSize(
-          preferredSize: const Size(200.0, 70.0),
-          child: Container(
-            width: 200.0,
-            height: 70,
-            padding: const EdgeInsets.only(bottom: 16, top: 16),
-            child: Container(
-              height: 46,
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  border: Border.all(color: Colors.grey, width: 1)),
-              child: TabBar(
-                labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-                indicator: CustomTabIndicator(context: context),
-                controller: _controllerTabs,
-                tabs: <Widget>[
-                  Tab(text: AppLocalizations.of(context).mediaBrowse),
-                  Tab(text: AppLocalizations.of(context).mediaSaved)
-                ],
-              ),
-            ),
+    Widget _buildAppBar() {
+      final bool _isSmallScreen = MediaQuery.of(context).size.height < 680;
+
+      final Widget _tabsPanel = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: const BorderRadius.all(Radius.circular(32)),
+              border: Border.all(color: Colors.grey, width: 1)),
+          child: TabBar(
+            labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+            indicator: CustomTabIndicator(context: context),
+            controller: _controllerTabs,
+            tabs: <Widget>[
+              Tab(text: AppLocalizations.of(context).mediaBrowse),
+              Tab(text: AppLocalizations.of(context).mediaSaved)
+            ],
           ),
         ),
-      ),
+      );
+
+      return _isSmallScreen
+          ? PreferredSize(
+              preferredSize: const Size.fromHeight(80),
+              child: AppBar(
+                flexibleSpace: SafeArea(
+                    child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 20),
+                    _tabsPanel,
+                  ],
+                )),
+              ),
+            )
+          : AppBar(
+              title: Center(
+                  child: Text(
+                AppLocalizations.of(context).newsFeed.toUpperCase(),
+                style: Theme.of(context).textTheme.subtitle,
+              )),
+              bottom: PreferredSize(
+                preferredSize: const Size(200.0, 70.0),
+                child: Column(
+                  children: <Widget>[
+                    _tabsPanel,
+                    const SizedBox(height: 15),
+                  ],
+                ),
+              ));
+    }
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
+      appBar: _buildAppBar(),
       body: TabBarView(
         controller: _controllerTabs,
         children: <Widget>[
@@ -333,7 +356,7 @@ class _IconsArticleState extends State<IconsArticle> {
                 : Colors.grey,
           ),
           onTap: () {
-            Log.println('media_page:336', widget.article.isSavedArticle);
+            Log.println('media_page:359', widget.article.isSavedArticle);
             if (widget.article.isSavedArticle) {
               setState(() {
                 widget.article.isSavedArticle = false;
@@ -405,8 +428,8 @@ class SavedNews extends StatelessWidget {
                       height: 32,
                     ),
                     RaisedButton(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 32),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.0)),
                       color: Theme.of(context).accentColor,
