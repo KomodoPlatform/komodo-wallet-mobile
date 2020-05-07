@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -21,10 +20,9 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
   TabController _controllerTabs;
   @override
   void initState() {
-    _controllerTabs = TabController(length: 2, vsync: this);
+    _controllerTabs = TabController(length: 1, vsync: this);
     _controllerTabs.addListener(_getIndex);
     mediaBloc.getArticles();
-    mediaBloc.getArticlesSaved();
     super.initState();
   }
 
@@ -56,8 +54,7 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
             indicator: CustomTabIndicator(context: context),
             controller: _controllerTabs,
             tabs: <Widget>[
-              Tab(text: 'News'.toUpperCase()),  // TODO(yurii): localization
-              Tab(text: AppLocalizations.of(context).mediaSaved)
+              Tab(text: 'News'.toUpperCase()), // TODO(yurii): localization
             ],
           ),
         ),
@@ -100,7 +97,6 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
         controller: _controllerTabs,
         children: <Widget>[
           BrowseNews(),
-          SavedNews(tabController: _controllerTabs)
         ],
       ),
     );
@@ -150,7 +146,6 @@ class _BrowseNewsState extends State<BrowseNews> {
                 else
                   return ArticleItem(
                     article: articles[index],
-                    savedArticle: false,
                   );
               },
             );
@@ -213,7 +208,6 @@ class _BrowseNewsState extends State<BrowseNews> {
                 ),
                 IconsArticle(
                   article: article,
-                  savedArticle: false,
                 )
               ],
             ),
@@ -233,10 +227,9 @@ class _BrowseNewsState extends State<BrowseNews> {
 }
 
 class ArticleItem extends StatefulWidget {
-  const ArticleItem({this.article, this.savedArticle});
+  const ArticleItem({this.article});
 
   final Article article;
-  final bool savedArticle;
 
   @override
   _ArticleItemState createState() => _ArticleItemState();
@@ -296,9 +289,7 @@ class _ArticleItemState extends State<ArticleItem> {
                                 article.getTimeFormat(),
                                 style: Theme.of(context).textTheme.body2,
                               )),
-                              IconsArticle(
-                                  article: article,
-                                  savedArticle: widget.savedArticle)
+                              IconsArticle(article: article)
                             ],
                           )
                         ],
@@ -324,10 +315,9 @@ class _ArticleItemState extends State<ArticleItem> {
 }
 
 class IconsArticle extends StatefulWidget {
-  const IconsArticle({this.article, this.savedArticle});
+  const IconsArticle({this.article});
 
   final Article article;
-  final bool savedArticle;
 
   @override
   _IconsArticleState createState() => _IconsArticleState();
@@ -345,35 +335,6 @@ class _IconsArticleState extends State<IconsArticle> {
     return Row(
       children: <Widget>[
         InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(2)),
-          child: Icon(
-            widget.article.isSavedArticle
-                ? Icons.bookmark
-                : Icons.bookmark_border,
-            size: 30,
-            color: widget.article.isSavedArticle
-                ? Theme.of(context).accentColor
-                : Colors.grey,
-          ),
-          onTap: () {
-            Log.println('media_page:359', widget.article.isSavedArticle);
-            if (widget.article.isSavedArticle) {
-              setState(() {
-                widget.article.isSavedArticle = false;
-              });
-              mediaBloc.deleteArticle(widget.article);
-            } else {
-              setState(() {
-                widget.article.isSavedArticle = true;
-              });
-              mediaBloc.addArticle(widget.article);
-            }
-          },
-        ),
-        const SizedBox(
-          width: 8,
-        ),
-        InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(2)),
             onTap: () {
               mainBloc.isUrlLaucherIsOpen = true;
@@ -384,74 +345,5 @@ class _IconsArticleState extends State<IconsArticle> {
             child: Icon(Icons.share, color: Colors.grey, size: 30)),
       ],
     );
-  }
-}
-
-class SavedNews extends StatelessWidget {
-  const SavedNews({this.tabController});
-
-  final TabController tabController;
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<List<Article>>(
-        stream: mediaBloc.outArticlesSaved,
-        initialData: mediaBloc.articlesSaved,
-        builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
-          if (snapshot.data.isNotEmpty) {
-            final List<Article> articles = snapshot.data;
-            return ListView.builder(
-              itemCount: articles.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ArticleItem(
-                    article: articles[index], savedArticle: true);
-              },
-            );
-          } else if (snapshot.data.isEmpty) {
-            //paradox condition cleaned up
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SvgPicture.asset('assets/icon_not_saved.svg'),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      AppLocalizations.of(context).mediaNotSavedDescription,
-                      style: Theme.of(context).textTheme.title,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    RaisedButton(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 32),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0)),
-                      color: Theme.of(context).accentColor,
-                      disabledColor: Theme.of(context).disabledColor,
-                      child: Text(
-                        AppLocalizations.of(context).mediaBrowseFeed,
-                        style: Theme.of(context)
-                            .textTheme
-                            .button
-                            .copyWith(color: Theme.of(context).primaryColor),
-                      ),
-                      onPressed: () async {
-                        tabController.animateTo(0);
-                      },
-                    )
-                  ],
-                ),
-              ),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        });
   }
 }

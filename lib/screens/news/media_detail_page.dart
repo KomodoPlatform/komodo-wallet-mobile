@@ -65,7 +65,6 @@ class _MediaDetailPageState extends State<MediaDetailPage> {
                   ),
                   IconsArticle(
                     article: widget.article,
-                    savedArticle: widget.article.isSavedArticle,
                   )
                 ],
               ),
