@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
+import 'package:komodo_dex/screens/feed/devops_tab.dart';
+import 'package:komodo_dex/screens/feed/issues_tab.dart';
 import 'package:komodo_dex/screens/feed/news_tab.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -13,7 +15,7 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
   TabController _controllerTabs;
   @override
   void initState() {
-    _controllerTabs = TabController(length: 1, vsync: this);
+    _controllerTabs = TabController(length: 3, vsync: this);
     _controllerTabs.addListener(_getIndex);
     mediaBloc.getArticles();
     super.initState();
@@ -48,6 +50,8 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
             controller: _controllerTabs,
             tabs: <Widget>[
               Tab(text: 'News'.toUpperCase()), // TODO(yurii): localization
+              Tab(text: 'DevOps'.toUpperCase()), // TODO(yurii): localization
+              Tab(text: 'Progress'.toUpperCase()), // TODO(yurii): localization
             ],
           ),
         ),
@@ -90,6 +94,8 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
         controller: _controllerTabs,
         children: <Widget>[
           NewsTab(),
+          DevOpsTab(),
+          IssuesTab(),
         ],
       ),
     );
