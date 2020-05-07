@@ -11,12 +11,12 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import 'media_detail_page.dart';
 
-class Media extends StatefulWidget {
+class FeedPage extends StatefulWidget {
   @override
-  _MediaState createState() => _MediaState();
+  _FeedPageState createState() => _FeedPageState();
 }
 
-class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
+class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin {
   TabController _controllerTabs;
   @override
   void initState() {

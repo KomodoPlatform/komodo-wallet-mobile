@@ -5,7 +5,7 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:carousel_slider/carousel_slider.dart';
-import 'media_page.dart';
+import 'feed_page.dart';
 
 class MediaDetailPage extends StatefulWidget {
   const MediaDetailPage({this.article});
