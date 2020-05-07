@@ -56,7 +56,7 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
             indicator: CustomTabIndicator(context: context),
             controller: _controllerTabs,
             tabs: <Widget>[
-              Tab(text: AppLocalizations.of(context).mediaBrowse),
+              Tab(text: 'News'.toUpperCase()),  // TODO(yurii): localization
               Tab(text: AppLocalizations.of(context).mediaSaved)
             ],
           ),
@@ -79,7 +79,7 @@ class _MediaState extends State<Media> with SingleTickerProviderStateMixin {
           : AppBar(
               title: Center(
                   child: Text(
-                AppLocalizations.of(context).newsFeed.toUpperCase(),
+                'Feed'.toUpperCase(), // TODO(yurii): localization
                 style: Theme.of(context).textTheme.subtitle,
               )),
               bottom: PreferredSize(

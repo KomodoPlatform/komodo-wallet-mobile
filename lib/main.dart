@@ -345,9 +345,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       BottomNavigationBarItem(
                                           icon: Icon(Icons.library_books,
                                               key: const Key('icon-media')),
-                                          title: Text(
-                                              AppLocalizations.of(context)
-                                                  .media)),
+                                          title: const Text(
+                                              'Feed')), // TODO(yurii): localization
                                       BottomNavigationBarItem(
                                           icon: Icon(Icons.settings,
                                               key: const Key(
