@@ -92,7 +92,7 @@ String deci2s(Decimal dv, [int fractions = 8]) {
   return sv;
 }
 
-/// Decode a small base62 number
+/// Decode a small unsigned base62 number
 int base62udec(String bv) {
   int uv = 0;
   for (int ch in bv.codeUnits) {
@@ -108,14 +108,42 @@ int base62udec(String bv) {
   return uv;
 }
 
+/// Decode a base62 number
+BigInt base26bdec(String bv) {
+  bool negative = false;
+  if (bv.startsWith('-')) {
+    negative = true;
+    bv = bv.substring(1);
+  }
+  BigInt iv;
+  if (bv.length <= 10) {
+    // Length 10 fits 63 bits, cf. http://ct.cipig.net/base62/zzzzzzzzzz
+    iv = BigInt.from(base62udec(bv));
+  } else {
+    final i62 = BigInt.from(62);
+    iv = BigInt.from(0);
+    for (int ch in bv.codeUnits) {
+      final int v = ch >= 48 && ch <= 57
+          ? ch - 48
+          : ch >= 65 && ch <= 90
+              ? ch - 65 + 10
+              : ch >= 97 && ch <= 122
+                  ? ch - 97 + 36
+                  : throw Exception('!base62: $ch');
+      iv = iv * i62 + BigInt.from(v);
+    }
+  }
+  if (negative) iv = -iv;
+  return iv;
+}
+
 /// Decode a base62 rational number (numerator/denominator)
 Rational base62rdec(String bv) {
-  // TODO(AG): Suport big numbers (gracefully)
   final List<String> pair = bv.split('/');
   if (pair.length != 2) throw Exception('!rational: $bv');
-  final numerator = base62udec(pair[0]);
-  final denominator = base62udec(pair[1]);
-  return Rational.fromInt(numerator, denominator);
+  final numerator = base26bdec(pair[0]);
+  final denominator = base26bdec(pair[1]);
+  return Rational(numerator, denominator);
 }
 
 bool isNumeric(String s) {
@@ -246,9 +274,9 @@ Future<bool> get canCheckBiometrics async {
   if (_canCheckBiometrics == null) {
     try {
       _canCheckBiometrics = await auth.canCheckBiometrics;
-      Log.println('utils:249', 'canCheckBiometrics: $_canCheckBiometrics');
+      Log.println('utils:277', 'canCheckBiometrics: $_canCheckBiometrics');
     } on PlatformException catch (ex) {
-      Log.println('utils:251', 'canCheckBiometrics exception: $ex');
+      Log.println('utils:279', 'canCheckBiometrics exception: $ex');
     }
   }
   return _canCheckBiometrics;
@@ -261,7 +289,7 @@ Future<bool> get canCheckBiometrics async {
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
 Future<bool> authenticateBiometrics(
     BuildContext context, PinStatus pinStatus) async {
-  Log.println('utils:264', 'authenticateBiometrics');
+  Log.println('utils:292', 'authenticateBiometrics');
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('switch_pin_biometric')) {
     final LocalAuthentication localAuth = LocalAuthentication();
@@ -282,7 +310,7 @@ Future<bool> authenticateBiometrics(
       // "ex: Can not perform this action after onSaveInstanceState" is thrown and unlocks `_activeAuthenticateWithBiometrics`;
       // a second `authenticateWithBiometrics` then leads to "ex: Authentication in progress" and crash.
       // Rewriting the biometrics support (cf. #668) might be one way to fix that.
-      Log.println('utils:285', 'authenticateWithBiometrics ex: ' + e.message);
+      Log.println('utils:313', 'authenticateWithBiometrics ex: ' + e.message);
     }
 
     lockService.biometricsReturned(lockCookie);
@@ -366,7 +394,7 @@ Future<void> showConfirmationRemoveCoin(
 }
 
 Future<void> launchURL(String url) async {
-  Log.println('utils:369', url);
+  Log.println('utils:397', url);
   if (await canLaunch(url)) {
     mainBloc.isUrlLaucherIsOpen = true;
     await launch(url);

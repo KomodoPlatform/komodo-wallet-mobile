@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-//import 'package:komodo_dex/screens/markets/health_indicator.dart';
+import 'package:komodo_dex/screens/markets/health_indicator.dart';
 import 'package:komodo_dex/screens/markets/order_details_page.dart';
 import 'package:provider/provider.dart';
 
@@ -63,12 +63,12 @@ class OrderBookTable extends StatelessWidget {
             style: const TextStyle(fontSize: 14),
           ), // TODO(yurii): localization
         ),
-        /*Container(
+        Container(
           height: 34,
           alignment: Alignment.center,
           padding: const EdgeInsets.only(top: 4, left: 8, right: 4),
           child: HealthIndicator(50, color: Colors.white),
-        ),*/
+        ),
       ],
     );
 
@@ -121,7 +121,7 @@ class OrderBookTable extends StatelessWidget {
               ),
             ),
           ),
-          /*TableRowInkWell(
+          TableRowInkWell(
             onTap: () => _showOrderDetails(ask),
             child: Container(
               height: 26,
@@ -130,7 +130,7 @@ class OrderBookTable extends StatelessWidget {
               child: HealthIndicator(
                   _orderBookProvider.getOrderHealth(ask).rating),
             ),
-          ),*/
+          ),
         ],
       ));
     }
@@ -150,7 +150,7 @@ class OrderBookTable extends StatelessWidget {
           ),
           Container(),
           Container(),
-          //Container(),
+          Container(),
         ],
       ));
     }
@@ -206,7 +206,7 @@ class OrderBookTable extends StatelessWidget {
               ),
             ),
           ),
-          /*TableRowInkWell(
+          TableRowInkWell(
             onTap: () => _showOrderDetails(bid),
             child: Container(
               height: 26,
@@ -215,7 +215,7 @@ class OrderBookTable extends StatelessWidget {
               child: HealthIndicator(
                   _orderBookProvider.getOrderHealth(bid).rating),
             ),
-          ),*/
+          ),
         ],
       ));
     }
@@ -234,7 +234,7 @@ class OrderBookTable extends StatelessWidget {
           ),
           Container(),
           Container(),
-          //Container(),
+          Container(),
         ],
       ));
     }
@@ -244,7 +244,7 @@ class OrderBookTable extends StatelessWidget {
         SizedBox(height: 12),
         SizedBox(height: 12),
         SizedBox(height: 12),
-        //SizedBox(height: 12),
+        SizedBox(height: 12),
       ],
     );
 

@@ -25,28 +25,14 @@ class OrderBookProvider extends ChangeNotifier {
 
   void notify() => notifyListeners();
 
-  Orderbook getOrderBook([CoinsPair coinsPair]) => syncOrderbook.getOrderBook(coinsPair);
+  Orderbook getOrderBook([CoinsPair coinsPair]) =>
+      syncOrderbook.getOrderBook(coinsPair);
 
   CoinsPair get activePair => syncOrderbook.activePair;
 
   set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
 
-  OrderHealth getOrderHealth(Ask order) {
-    // TODO(yurii): consider several order health metrics, such as:
-    //  - overall swaps number for address
-    //  - last 24h swaps number for address
-    //  - overall swaps volume for address
-    //  - order age
-    //  - average order lifetime for address
-    //  - average swap duration for address
-    //  - online status of address
-    //  - ...
-
-    return OrderHealth(
-        // just some demo double value in 0-100 range,
-        // which depends of order.adress
-        rating: (order.address.codeUnitAt(1).toDouble() - 65) * 4);
-  }
+  OrderHealth getOrderHealth(Ask order) => syncOrderbook.getOrderHealth(order);
 
   // TODO(AG): historical swap data for [coinsPair]
   List<Swap> getSwapHistory(CoinsPair coinsPair) {
@@ -84,10 +70,33 @@ class OrderBookProvider extends ChangeNotifier {
   }
 }
 
-class OrderHealth {
-  OrderHealth({this.rating});
+/// Liveliness marker (good and bad things we know of an order, like whether it's alive and kicking or not)
+class LivMarker {
+  /// '+' if the marker author considers the (detected) condition to be a positive sign,
+  /// '-' if they are considering it to be a negative one
+  String sign;
 
-  double rating;
+  /// Alphabetical code ([a-zA-Z]+) of the marker,
+  /// allowing the UI to recognize it and apply custom ratings and localizations
+  String code;
+
+  /// Payload optionally coming with the marker.
+  /// It does not start with [a-zA-Z] and does not have [ +-] in it.
+  /// Other than that, format is specific to the kind of the marker (cf. `code`).
+  String payload;
+
+  /// English description provided by the marker's author (usually by a caretaker)
+  String defaultDesc;
+
+  /// Rating modification assigned by the UI to this marker
+  int mod;
+}
+
+class OrderHealth {
+  OrderHealth({this.rating, this.markers});
+
+  int rating;
+  List<LivMarker> markers;
 }
 
 class CoinsPair {
@@ -110,6 +119,13 @@ class SyncOrderbook {
   Map<String, Orderbook> _orderBooks; // {'BTC-KMD': Orderbook(),}
   CoinsPair _activePair;
 
+  /// Maps short order IDs to latest liveliness markers.
+  Map<String, String> _livMarkers;
+
+  /// Liveliness marker descriptions provided by a caretaker.
+  /// Allows UI to display new / unknown / not-localized-yet markers.
+  Map<String, String> _markDesc;
+
   CoinsPair get activePair => _activePair;
 
   set activePair(CoinsPair coinsPair) {
@@ -127,7 +143,6 @@ class SyncOrderbook {
     // Exploratory (should combine ECS syncs into a single service or helper)
 
     final List<String> tickers = (await Db.activeCoins).toList();
-    final Map<String, Orderbook> orderBooks = {};
 
     final pr = await mmSe.client.post('http://ct.cipig.net/sync',
         body: json.encode(<String, dynamic>{
@@ -147,20 +162,27 @@ class SyncOrderbook {
     final Map<String, dynamic> js = json.decode(body);
     final Map<String, dynamic> components = js['components'];
     if (components == null || !components.containsKey('orderbook.1')) return;
-    final Map<String, dynamic> sb = components['orderbook.1']['short_book'];
+    final Map<String, dynamic> obr = components['orderbook.1'];
+    final Map<String, dynamic> sb = obr['short_book'];
+    _markDesc = Map.from(obr['mark_desc']);
+
+    final Map<String, Orderbook> orderBooks = {};
+    final Map<String, String> livMarkers = {};
 
     for (String pair in sb.keys) {
-    final List<Ask> bids = [];
+      final List<Ask> bids = [];
 
       final List<String> coins = pair.split('-');
       final String line = sb[pair];
-      //Log('order_book_provider:161', 'pair $pair; $line');
+      //Log('order_book_provider:177', 'pair $pair; $line');
       for (String so in line.split(';')) {
         final List<String> sol = so.split(' ');
         final id = sol[0];
         final balance = base62rdec(sol[1]);
         final price = base62rdec(sol[2]);
-        //Log('order_book_provider:167', '$id; balance $balance; price $price');
+        final markers = sol.length > 3 ? sol[3] : '';
+
+        //Log('order_book_provider:185', '$id; balance $balance; price $price');
         bids.add(Ask(
             coin: coins[0],
             address: '',
@@ -169,15 +191,54 @@ class SyncOrderbook {
             pubkey: id,
             age: 1 // TODO(AG): Caretaker should share the age of the order.
             ));
+        livMarkers[id] = markers;
       }
       orderBooks[pair] = Orderbook(
           bids: bids, numbids: bids.length, base: coins[0], rel: coins[1]);
     }
 
     _orderBooks = orderBooks;
+    _livMarkers = livMarkers;
 
     // TODO(AG): Only notify if there were actual changes.
     _notifyListeners();
+  }
+
+  OrderHealth getOrderHealth(Ask order) {
+    // TODO(yurii): consider several order health metrics, such as:
+    //  - overall swaps number for address
+    //  - last 24h swaps number for address
+    //  - overall swaps volume for address
+    //  - order age
+    //  - average order lifetime for address
+    //  - average swap duration for address
+    //  - online status of address
+    //  - ...
+    final String markerS = _livMarkers[order.pubkey] ?? '';
+    final List<LivMarker> markers = [];
+    int rating = 100;
+    // -s123-a
+    for (RegExpMatch caps
+        in RegExp(r'([+-])([a-zA-Z]+)([^\+\-]*)').allMatches(markerS)) {
+      final LivMarker lm = LivMarker();
+      lm.sign = caps[1];
+      lm.code = caps[2];
+      lm.payload = caps[3];
+      lm.defaultDesc = _markDesc[lm.code];
+
+      if (lm.code == 'a' && lm.sign == '-') {
+        lm.mod = -20; // Custom rating
+      } else if (lm.sign == '+') {
+        lm.mod = 10; // Default rating
+      } else if (lm.sign == '-') {
+        lm.mod = -10;
+      }
+      rating += lm.mod;
+      markers.add(lm);
+    }
+
+    if (rating < 0) rating = 0;
+    return OrderHealth(rating: rating, markers: markers);
   }
 
   /// Link a [ChangeNotifier] proxy to this singleton.

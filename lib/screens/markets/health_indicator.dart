@@ -11,9 +11,9 @@ class HealthIndicator extends StatelessWidget {
     this.size,
   });
 
-  final double value;
-  final double min;
-  final double max;
+  final int value;
+  final int min;
+  final int max;
   final Color color;
   final double size;
 
@@ -21,9 +21,9 @@ class HealthIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color _color = color ?? Theme.of(context).disabledColor;
     final double _size = size ?? 12.0;
-    final double _min = min ?? 0;
-    final double _max = max ?? 100;
-    double _value = value;
+    final int _min = min ?? 0;
+    final int _max = max ?? 100;
+    int _value = value;
     if (_value != null && _value < _min) _value = _min;
     if (_value != null && _value > _max) _value = _max;
 
