@@ -650,7 +650,7 @@
 		"proto": "tcp",
 		"abbr": "XZC",
 		"coingeckoId": "zcoin",
-		"colorCoin": "0xFFF4B824",
+		"colorCoin": "0xFF24B852",
 		"serverList": [
 			"electrumx02.zcoin.io:50001",
 			"electrumx03.zcoin.io:50001",
