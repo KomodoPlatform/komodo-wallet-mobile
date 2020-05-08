@@ -80,6 +80,9 @@ class MMService {
   /// Time when the metrics were last updated
   int metricsLM;
 
+  /// Location of the documents directory during the tests
+  Directory testDocuments;
+
   /// Channel to native code.
   static MethodChannel nativeC = MethodChannel(
       Platform.isAndroid ? 'com.komodoplatform.atomicdex/nativeC' : 'mm2');
@@ -253,7 +256,7 @@ class MMService {
   }
 
   String get filesPath => applicationDocumentsDirectorySync == null
-      ? null
+      ? (testDocuments != null ? testDocuments.path + '/' : null)
       : applicationDocumentsDirectorySync.path + '/';
 
   /// Returns a log file matching the present [now] time.

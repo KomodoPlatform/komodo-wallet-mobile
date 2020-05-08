@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart' as ft;
 import 'package:komodo_dex/model/active_coin.dart';
@@ -7,8 +10,6 @@ import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
-import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
-import 'package:komodo_dex/model/error_disable_coin_order_is_matched.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_buy.dart';
@@ -35,6 +36,7 @@ import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
@@ -60,65 +62,53 @@ void main() {
 
   const String url = 'http://localhost:7783';
 
+  mmSe.testDocuments = Directory(testDir().path + '/documents');
+  mmSe.testDocuments.createSync();
+  print('api_providers_test] Documents are in ${mmSe.testDocuments}');
+
   group('disable_coin', () {
     final MockClient client = MockClient();
 
     final GetDisableCoin getDisableCoin =
         GetDisableCoin(userpass: 'test', method: 'disable_coin', coin: 'KMD');
 
-    test('returns a DisableCoin if the http call completes successfully',
-        () async {
-      when(client.post(url, body: getDisableCoinToJson(getDisableCoin)))
-          .thenAnswer((_) async =>
+    test('returns a DisableCoin', () async {
+      when(client.post(url, body: json.encode(getDisableCoin))).thenAnswer(
+          (_) async =>
               http.Response(fixture('disable_coin/disable_coin.json'), 200));
-      expect(await MM.disableCoin(client, getDisableCoin),
+      expect(await MM.disableCoin(getDisableCoin, client: client),
           const TypeMatcher<DisableCoin>());
     });
 
-    test('throws an exception if the http call completes with an error',
-        () async {
-      when(client.post(url, body: getDisableCoinToJson(getDisableCoin)))
+    test('throws on 404', () async {
+      when(client.post(url, body: json.encode(getDisableCoin)))
           .thenAnswer((_) async => http.Response('Not Found', 404));
-      expect(await MM.disableCoin(client, getDisableCoin),
-          const TypeMatcher<ErrorString>());
+      expect(() async => await MM.disableCoin(getDisableCoin, client: client),
+          throwsA(const TypeMatcher<ErrorString>()));
     });
 
-    test(
-        'returns a ErrorString if the http call completes with errors - coin is not enabled',
-        () async {
-      when(client.post(url, body: getDisableCoinToJson(getDisableCoin)))
-          .thenAnswer((_) async => http.Response(
-              fixture(
-                  'disable_coin/errors/error_disable_coin_no_such_coin.json'),
-              200));
-      expect(await MM.disableCoin(client, getDisableCoin),
-          const TypeMatcher<ErrorString>());
+    test('throws on MM error', () async {
+      const mock = 'disable_coin/errors/error_disable_coin_no_such_coin.json';
+      when(client.post(url, body: json.encode(getDisableCoin)))
+          .thenAnswer((_) async => http.Response(fixture(mock), 200));
+      expect(() async => await MM.disableCoin(getDisableCoin, client: client),
+          throwsA(const TypeMatcher<ErrorString>()));
     });
 
-    test(
-        'returns a ErrorDisableCoinActiveSwap if the http call completes with errors - active swap is using the coin',
-        () async {
-      when(client.post(url, body: getDisableCoinToJson(getDisableCoin)))
-          .thenAnswer((_) async => http.Response(
-              fixture(
-                  'disable_coin/errors/error_disable_coin_active_swaps.json'),
-              200));
-
-      expect(await MM.disableCoin(client, getDisableCoin),
-          const TypeMatcher<ErrorDisableCoinActiveSwap>());
+    test('throws on MM error, v2', () async {
+      const mock = 'disable_coin/errors/error_disable_coin_active_swaps.json';
+      when(client.post(url, body: json.encode(getDisableCoin)))
+          .thenAnswer((_) async => http.Response(fixture(mock), 200));
+      expect(() async => await MM.disableCoin(getDisableCoin, client: client),
+          throwsA(const TypeMatcher<ErrorString>()));
     });
 
-    test(
-        'returns a ErrorDisableCoin if the http call completes with error - the order is matched at the moment, but another order is cancelled',
-        () async {
-      when(client.post(url, body: getDisableCoinToJson(getDisableCoin)))
-          .thenAnswer((_) async => http.Response(
-              fixture(
-                  'disable_coin/errors/error_disable_coin_matching_orders.json'),
-              200));
-
-      expect(await MM.disableCoin(client, getDisableCoin),
-          const TypeMatcher<ErrorDisableCoinOrderIsMatched>());
+    test('throws on MM error, v3', () async {
+      const mk = 'disable_coin/errors/error_disable_coin_matching_orders.json';
+      when(client.post(url, body: json.encode(getDisableCoin)))
+          .thenAnswer((_) async => http.Response(fixture(mk), 200));
+      expect(() async => await MM.disableCoin(getDisableCoin, client: client),
+          throwsA(const TypeMatcher<ErrorString>()));
     });
   });
 

@@ -13,8 +13,6 @@ import '../model/buy_response.dart';
 import '../model/coin.dart';
 import '../model/coin_to_kick_start.dart';
 import '../model/disable_coin.dart';
-import '../model/error_disable_coin_active_swap.dart';
-import '../model/error_disable_coin_order_is_matched.dart';
 import '../model/error_string.dart';
 import '../model/get_active_coin.dart';
 import '../model/get_balance.dart';
@@ -403,22 +401,21 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'getVersionMM2', e, 'Error on get version MM2')));
 
-  Future<dynamic> disableCoin(
-    http.Client client,
-    GetDisableCoin body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getDisableCoinToJson(userBody.body))
-              .then((Response r) => _saveRes('disableCoin', r))
-              .then<dynamic>((Response res) => disableCoinFromJson(res.body))
-              .catchError(
-                  (dynamic _) => errorDisableCoinActiveSwapFromJson(res.body))
-              .catchError((dynamic _) =>
-                  errorDisableCoinOrderIsMatchedFromJson(res.body))
-              .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'disableCoin', e, 'Error on disable coin')));
+  Future<DisableCoin> disableCoin(GetDisableCoin req,
+      {http.Client client}) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(client, req);
+    final r = await client.post(url, body: json.encode(userBody.body));
+    _assert200(r);
+    _saveRes('disableCoin', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return DisableCoin.fromJson(jbody);
+  }
 
   Future<dynamic> recoverFundsOfSwap(
     http.Client client,

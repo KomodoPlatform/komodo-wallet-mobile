@@ -12,8 +12,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/disable_coin.dart';
-import 'package:komodo_dex/model/error_disable_coin_active_swap.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
@@ -370,19 +369,11 @@ Future<void> showConfirmationRemoveCoin(
                 style: Theme.of(context).textTheme.button,
               ),
               onPressed: () async {
-                await coinsBloc.removeCoin(coin).then((dynamic value) {
-                  if (value is ErrorDisableCoinActiveSwap) {
-                    showMessage(mContext, value.error);
-                  }
-                  if (value is DisableCoin) {
-                    if (value.result.cancelledOrders.isNotEmpty) {
-                      showMessage(
-                          mContext,
-                          AppLocalizations.of(context)
-                              .orderCancel(value.result.coin));
-                    }
-                  }
-                });
+                try {
+                  await coinsBloc.removeCoin(coin);
+                } on ErrorString catch (ex) {
+                  showMessage(mContext, ex.error);
+                }
                 Navigator.of(context).pop();
               },
             )

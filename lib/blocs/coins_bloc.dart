@@ -182,10 +182,11 @@ class CoinsBloc implements BlocBase {
     }
   }
 
-  Future<void> removeCoin(Coin coin) async =>
-      await removeCoinBalance(coin).then<dynamic>((_) => MM
-          .disableCoin(mmSe.client, GetDisableCoin(coin: coin.abbr))
-          .then<dynamic>((dynamic res) => removeCoinLocal(coin, res)));
+  Future<void> removeCoin(Coin coin) async {
+    await removeCoinBalance(coin);
+    final res = await MM.disableCoin(GetDisableCoin(coin: coin.abbr));
+    removeCoinLocal(coin, res);
+  }
 
   void updateOneCoin(CoinBalance coin) {
     bool exists = false;

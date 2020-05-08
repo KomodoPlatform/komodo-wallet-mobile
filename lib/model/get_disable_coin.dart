@@ -2,13 +2,6 @@
 //
 //     final getDisableCoin = getDisableCoinFromJson(jsonString);
 
-import 'dart:convert';
-
-GetDisableCoin getDisableCoinFromJson(String str) =>
-    GetDisableCoin.fromJson(json.decode(str));
-
-String getDisableCoinToJson(GetDisableCoin data) => json.encode(data.toJson());
-
 class GetDisableCoin {
   GetDisableCoin({
     this.userpass,
