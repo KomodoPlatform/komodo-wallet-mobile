@@ -2,15 +2,14 @@ import 'dart:convert';
 
 import 'dart:typed_data';
 
-Base91 base91 = Base91();
+/// JSON-friendly version of Base91: double-quote (" 0x22) replaced with apostrophe (' 0x27)
+Base91 base91js = Base91(
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#\$%&()*+,./:;<=>?@[]^_`{|}~'");
 
 class Base91 {
-  Base91() {
-    const String ts =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#\$%&()*+,./:;<=>?@[]^_`{|}~"';
-    _encodingTable = Encoding.getByName('ISO_8859-1').encode(ts);
-    base = _encodingTable.length;
-    assert(base == 91);
+  Base91(this.alphabet) {
+    _encodingTable = utf8.encode(alphabet);
+    assert(_encodingTable.length == base);
 
     _decodingTable = List<int>(256);
     for (int i = 0; i < 256; i++) {
@@ -22,9 +21,10 @@ class Base91 {
     }
   }
 
+  final String alphabet;
+  final int base = 91;
   List<int> _encodingTable;
   List<int> _decodingTable;
-  int base;
 
   Uint8List encode(Uint8List bytes) {
     int ebq = 0;
@@ -46,17 +46,19 @@ class Base91 {
           en -= 14;
         }
         result.add(_encodingTable[ev % base]);
-        result.add(_encodingTable[(ev / base).truncate()]);
+        result.add(_encodingTable[ev ~/ base]);
       }
     }
     if (en > 0) {
       result.add(_encodingTable[ebq % base]);
       if (en > 7 || ebq > 90) {
-        result.add(_encodingTable[(ebq / base).truncate()]);
+        result.add(_encodingTable[ebq ~/ base]);
       }
     }
     return Uint8List.fromList(result);
   }
+
+  String encodeUtf8(String sv) => utf8.decode(encode(utf8.encode(sv)));
 
   Uint8List decode(Uint8List bytes) {
     final List<int> result = [];
@@ -81,19 +83,10 @@ class Base91 {
       }
     }
 
-    if (dv != -1) {
-      result.add((dbq | dv << dn).toUnsigned(8));
-    }
+    if (dv != -1) result.add((dbq | dv << dn).toUnsigned(8));
+
     return Uint8List.fromList(result);
   }
-}
 
-// Simple code to test the class
-void main(List<String> args) {
-  const String text = '123456';
-  print('Original text: $text');
-  final List<int> encoded = base91.encode(utf8.encode(text));
-  print('Base91 = ${utf8.decode(encoded)}');
-  final List<int> decoded = base91.decode(encoded);
-  print('Decoded = ${utf8.decode(decoded)}');
+  String decodeUtf8(String sv) => utf8.decode(decode(utf8.encode(sv)));
 }
