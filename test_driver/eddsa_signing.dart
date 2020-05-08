@@ -3,109 +3,43 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
+import 'package:flutter_sodium/flutter_sodium.dart';
 import 'package:komodo_dex/utils/base91.dart';
-import 'package:komodo_dex/utils/eddsa.dart';
 
-class SignatureInfo {
-  String signature;
-  Uint8List publicKey;
-}
+// Libsodium won't work on an average desktop,
+// we need a “flutter drive” test to touch it.
+// Run with
+//
+//     flutter drive --target=test_driver/eddsa_signing.dart
 
-// Exploratory.
-class SigningTest extends StatefulWidget {
-  @override
-  _SigningTestState createState() => _SigningTestState();
-}
+Future<String> driveHandler(String payload) async {
+  // NB: The seed matches the one in caretakers,
+  // https://gitlab.com/artemciy/mm-pubsub-db/-/blob/e0196951/src/lib.rs#L619
+  // in order to verify compatibility.
+  final seed = Uint8List(32);
+  final seedChars = 'test-seed'.codeUnits;
+  for (int ix = 0; ix < seedChars.length; ++ix) seed[ix] = seedChars[ix];
+  final b91seed = utf8.decode(base91js.encode(seed));
+  print('b91seed: $b91seed');
 
-class _SigningTestState extends State<SigningTest> {
-  TextEditingController controller = TextEditingController();
-  String text = '';
-  bool validation = false;
+  final key = KeyPair.fromMap(await Sodium.cryptoSignSeedKeypair(seed));
+  final b91pk = utf8.decode(base91js.encode(key.publicKey));
+  print('b91pk: $b91pk');
 
-  SignatureInfo sig;
+  final signature = await CryptoSign.sign(payload, key.secretKey);
+  final b91sig = utf8.decode(base91js.encode(signature));
+  print('b91sig ($payload): $b91sig');
 
-  Future<void> submit(String message) async {
-    final key = await EdDsaSigning.generateKey();
-    final signature = await EdDsaSigning.sign(message, key.secretKey);
-    final encodedSignature = base91.encode(signature);
+  final receivedSig = base91js.decode(utf8.encode(b91sig));
+  final valid = await CryptoSign.verify(receivedSig, payload, key.publicKey);
+  if (!valid) throw Exception('Signature verification failed');
 
-    final s = SignatureInfo();
-    s.publicKey = key.publicKey;
-    s.signature = ascii.decode(encodedSignature);
-
-    sig = s;
-  }
-
-  Future<void> validateSignature(String message) async {
-    final s = sig;
-    final signatureBytes = ascii.encode(s.signature);
-    final decodedSignature = base91.decode(signatureBytes);
-
-    final v =
-        await EdDsaSigning.validate(decodedSignature, message, s.publicKey);
-    print(v ? 'Validated' : 'Failed validation');
-    setState(() {
-      validation = v;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: controller,
-            key: const Key('message_text_field'),
-            onSubmitted: submit,
-          ),
-          RaisedButton(
-            key: const Key('submit_button'),
-            onPressed: () async {
-              await submit(controller.text);
-            },
-            child: const Text('Submit'),
-          ),
-          RaisedButton(
-            key: const Key('validate_button'),
-            onPressed: () async {
-              await validateSignature(controller.text);
-            },
-            child: const Text('Validate'),
-          ),
-          RaisedButton(
-            key: const Key('clear_button'),
-            onPressed: () {
-              setState(() {
-                controller.text = '';
-                sig = null;
-                validation = false;
-              });
-            },
-            child: const Text('Clear'),
-          ),
-          Text(
-            validation ? 'Validated' : 'Failed validation',
-            key: const Key('validation_text'),
-          ),
-        ],
-      ),
-    );
-  }
+  return 'okay';
 }
 
 void main() {
-  // This line enables the extension
-  enableFlutterDriverExtension();
+  enableFlutterDriverExtension(handler: driveHandler);
 
-  // Call the `main()` function of your app or call `runApp` with any widget you
-  // are interested in testing.
   runApp(
-    MaterialApp(
-      home: Scaffold(
-        body: SigningTest(),
-      ),
-    ),
-  );
+      const MaterialApp(home: Scaffold(body: Text('EdDSA test in progress'))));
 }
