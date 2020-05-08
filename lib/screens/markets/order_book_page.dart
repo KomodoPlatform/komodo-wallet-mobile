@@ -119,7 +119,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
     }
 
     final List<Ask> _sortedAsks =
-        OrderBookProvider.sortByPrice(_asksOrderBook.bids, isAsks: true);
+        OrderBookProvider.sortByPrice(_asksOrderBook.bids);
     final List<Ask> _sortedBids =
         OrderBookProvider.sortByPrice(_bidsOrderBook.bids);
 
