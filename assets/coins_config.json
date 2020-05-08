@@ -360,6 +360,7 @@
 		"serverList": [
 			"electrum.ltc.xurious.com:50001",
 			"ltc.rentonisk.com:50001",
+			"backup.electrum-ltc.org:50001",
 			"electrum-ltc.bysh.me:50001"
 		],
 		"explorerUrl": [
@@ -424,16 +425,16 @@
 	{
 		"name": "QTUM",
 		"type": "utxo",
-		"address": "s1.qtum.info",
+		"address": "electrum1.cipig.net",
 		"port": 50001,
 		"proto": "tcp",
 		"abbr": "QTUM",
 		"coingeckoId": "qtum",
 		"colorCoin": "0xFF52a5da",
 		"serverList": [
-			"s7.qtum.info:50001",
-			"s8.qtum.info:50001",
-			"s9.qtum.info:50001"
+			"electrum1.cipig.net:10050",
+			"electrum2.cipig.net:10050",
+			"electrum3.cipig.net:10050"
 		],
 		"explorerUrl": [
 			"https://qtum.info/"
