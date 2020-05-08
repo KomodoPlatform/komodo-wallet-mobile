@@ -374,34 +374,28 @@ void main() {
       'http://eth3.cipig.net:8555'
     ]);
 
-    test('returns a ActiveCoin if the http call completes successfully',
-        () async {
+    test('returns an ActiveCoin, ERC', () async {
+      const mock = 'active_coin/active_coin.json';
       when(client.post(url, body: MM.enableCoinImpl(coinToActiveERC)))
-          .thenAnswer((_) async =>
-              http.Response(fixture('active_coin/active_coin.json'), 200));
+          .thenAnswer((_) async => http.Response(fixture(mock), 200));
       expect(await MM.enableCoin(coinToActiveERC, client: client),
           const TypeMatcher<ActiveCoin>());
     });
 
-    test('returns a ActiveCoin if the http call completes successfully',
-        () async {
-      when(client.post(url, body: MM.enableCoinImpl(coinToActive))).thenAnswer(
-          (_) async =>
-              http.Response(fixture('active_coin/active_coin.json'), 200));
+    test('returns an ActiveCoin', () async {
+      const mock = 'active_coin/active_coin.json';
+      when(client.post(url, body: MM.enableCoinImpl(coinToActive)))
+          .thenAnswer((_) async => http.Response(fixture(mock), 200));
       expect(await MM.enableCoin(coinToActive, client: client),
           const TypeMatcher<ActiveCoin>());
     });
 
-    test('returns a ErrorString if the http call completes with error from mm2',
-        () async {
-      when(client.post(url, body: MM.enableCoinImpl(coinToActive))).thenAnswer(
-          (_) async => http.Response(
-              fixture('active_coin/errors/error_active_coin_mm2_param.json'),
-              200));
-      final dynamic error = await MM.enableCoin(coinToActive, client: client);
-      expect(error, const TypeMatcher<ErrorString>());
-      expect(error.error,
-          'mm2 param is not set neither in coins config nor enable request, assuming that coin is not supported');
+    test('throws an ErrorString', () async {
+      const mock = 'active_coin/errors/error_active_coin_mm2_param.json';
+      when(client.post(url, body: MM.enableCoinImpl(coinToActive)))
+          .thenAnswer((_) async => http.Response(fixture(mock), 200));
+      expect(() async => await MM.enableCoin(coinToActive, client: client),
+          throwsA(const TypeMatcher<ErrorString>()));
     });
   });
 
