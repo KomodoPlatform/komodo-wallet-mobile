@@ -56,8 +56,10 @@ dependencies:
       ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
 
   # https://pub.dev/packages/rational
-  rational: ^0.3.8 # TODO
-  # ^ AG: We've been using this version of the crate already, now it's a direct dependency instead of transitive, I wonder if it was already reviewed
+  rational:  # 0.3.8 - DONE: Secure code reviewed 44f3251
+    git:
+      url: https://github.com/KomodoPlatform/dart-rational
+      ref: 44f3251dca11df633d1a392f5c93ea1c0b68bd37
 
 dev_dependencies:
   flutter_driver: # flutter.dev
