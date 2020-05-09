@@ -12,6 +12,7 @@ import 'package:komodo_dex/utils/base91.dart';
 //
 //     flutter drive --target=test_driver/eddsa_signing.dart
 
+/// Invoked from “eddsa_signing_test.dart” to test EdDSA signatures
 Future<String> driveHandler(String payload) async {
   // NB: The seed matches the one in caretakers,
   // https://gitlab.com/artemciy/mm-pubsub-db/-/blob/e0196951/src/lib.rs#L619
@@ -20,15 +21,19 @@ Future<String> driveHandler(String payload) async {
   final seedChars = 'test-seed'.codeUnits;
   for (int ix = 0; ix < seedChars.length; ++ix) seed[ix] = seedChars[ix];
   final b91seed = utf8.decode(base91js.encode(seed));
-  print('b91seed: $b91seed');
+  if (b91seed != 'fPNK}f8e;RyAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+    throw Exception('Unexpected seed');
 
   final key = KeyPair.fromMap(await Sodium.cryptoSignSeedKeypair(seed));
   final b91pk = utf8.decode(base91js.encode(key.publicKey));
-  print('b91pk: $b91pk');
+  if (b91pk != 'xpq/5Il,F#,{wV_qrn|oHbVSOE_:QOveQC:u[24E')
+    throw Exception('Unexpected key');
 
   final signature = await CryptoSign.sign(payload, key.secretKey);
   final b91sig = utf8.decode(base91js.encode(signature));
-  print('b91sig ($payload): $b91sig');
+  if (b91sig !=
+      "je)@oUloqsoW\$oB>x;IJ8C%n:iEoP'j'Z3cz|>!WMMg7d>Ssi]hZC?gP_|r#f1~12UClN2p{zN#Y;jA")
+    throw Exception('Unexpected signature');
 
   final receivedSig = base91js.decode(utf8.encode(b91sig));
   final valid = await CryptoSign.verify(receivedSig, payload, key.publicKey);
