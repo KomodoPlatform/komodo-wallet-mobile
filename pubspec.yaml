@@ -7,7 +7,7 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.2.14
+version: 0.2.15
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
@@ -54,12 +54,6 @@ dependencies:
     git:
       url: https://github.com/KomodoPlatform/provider
       ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
-
-  # https://pub.dev/packages/rational
-  rational:  # 0.3.8 - DONE: Secure code reviewed 44f3251
-    git:
-      url: https://github.com/KomodoPlatform/dart-rational
-      ref: 44f3251dca11df633d1a392f5c93ea1c0b68bd37
 
 dev_dependencies:
   flutter_driver: # flutter.dev
@@ -149,10 +143,10 @@ dev_dependencies:
     git:
       url: git://github.com/KomodoPlatform/flutter_launcher_icons.git
       ref: c2584ef5b381e7343dfa18acddae9becdabd9727
-  decimal: # 0.3.5 - DONE: Secure code reviewed 4654d8c (0.3.5)
+  decimal: # 0.3.5 - DONE: Secure code reviewed 93fcaab (0.3.5)
     git:
       url: git://github.com/KomodoPlatform/dart-decimal.git
-      ref: 4654d8c1d3a9b67288e5637e5a476f5745cd0a99
+      ref: 93fcaabe2da686b1987a351a03a70e86edf6504f
 
   # AG: Error `value of type 'UnsafePointer<_>' has no member 'bindMemory'`
   # means that flutter_sodium is using SWIFT 5 code
