@@ -252,35 +252,31 @@ class CoinsBloc implements BlocBase {
   Future<void> enableCoins(List<Coin> coins) async {
     while (_coinsLock) await sleepMs(77);
     _coinsLock = true;
+
     final List<Coin> coinsReadJson = <Coin>[];
-    final List<Future<CoinToActivate>> listFutureActiveCoin =
-        <Future<CoinToActivate>>[];
 
+    // NB: Loading the coins sequentially in order to better reuse the HTTP file descriptors
     for (Coin coin in coins) {
-      listFutureActiveCoin.add(enableCoin(coin));
-    }
+      try {
+        final active = await enableCoin(coin);
+        if (active.isActive) {
+          coinsReadJson.add(active.coin);
 
-    await Future.wait<CoinToActivate>(listFutureActiveCoin)
-        .then((List<CoinToActivate> onValue) async {
-          for (CoinToActivate coinActivate in onValue) {
-            if (coinActivate.isActive) {
-              coinsReadJson.add(coinActivate.coin);
-            } else {
-              await removeOneCoinFromLocal(coinActivate.coin);
-            }
-          }
-        })
-        .catchError((dynamic onError) {
-          Log('coins_bloc:274', onError);
-          Log('coins_bloc:275', 'timeout2--------------');
-        })
-        .then((_) => _coinsLock = false)
-        .then((_) async {
-          _coinsLock = false;
           currentCoinActivate(CoinToActivate(currentStatus: 'Loading coins'));
           await loadCoin();
           currentCoinActivate(null);
-        });
+        } else {
+          Log('coins_bloc:269',
+              '${coin.abbr} not active? ${active.currentStatus}');
+          // TBD: Should only remove the coin if it is no longer in “coins_config.json”
+          //await removeOneCoinFromLocal(active.coin);
+        }
+      } catch (ex) {
+        Log('coins_bloc:273', 'Error activating ${coin.abbr}: $ex');
+      }
+    }
+
+    _coinsLock = false;
   }
 
   /// Activate a given coin.
@@ -295,7 +291,7 @@ class CoinsBloc implements BlocBase {
           CoinToActivate(currentStatus: '${coin.name} activated.'));
       if (ac.requiredConfirmations != coin.requiredConfirmations) {
         Log(
-            'coins_bloc:297',
+            'coins_bloc:291',
             'enableCoin, ${coin.abbr}, unexpected required_confirmations'
                 ', requested: ${coin.requiredConfirmations}'
                 ', received: ${ac.requiredConfirmations}');
@@ -303,7 +299,7 @@ class CoinsBloc implements BlocBase {
       }
       if (ac.requiresNotarization != coin.requiresNotarization) {
         Log(
-            'coins_bloc:305',
+            'coins_bloc:299',
             'enableCoin, ${coin.abbr}, unexpected requires_notarization'
                 ', requested: ${coin.requiresNotarization}'
                 ', received: ${coin.requiresNotarization}');
@@ -311,7 +307,7 @@ class CoinsBloc implements BlocBase {
       await Db.coinActive(coin);
       return CoinToActivate(coin: coin, isActive: true);
     } on TimeoutException catch (te) {
-      Log('coins_bloc:314', '${coin.abbr} enableCoin timeout, $te');
+      Log('coins_bloc:308', '${coin.abbr} enableCoin timeout, $te');
       currentCoinActivate(
           CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
       await sleepMs(2000);
@@ -323,7 +319,7 @@ class CoinsBloc implements BlocBase {
             currentStatus: 'Coin ${coin.abbr} already initialized'));
         return CoinToActivate(coin: coin, isActive: true);
       } else {
-        Log('coins_bloc:326', '!enableCoin: $ex');
+        Log('coins_bloc:320', '!enableCoin: $ex');
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
         return CoinToActivate(coin: coin, isActive: false);
@@ -341,7 +337,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> resetCoinDefault() async {
-    Log('coins_bloc:344', 'resetCoinDefault');
+    Log('coins_bloc:338', 'resetCoinDefault');
   }
 
   Future<List<Coin>> electrumCoins() async {
@@ -412,7 +408,7 @@ class CoinsBloc implements BlocBase {
             }
           });
         } catch (e) {
-          Log('coins_bloc:415', e);
+          Log('coins_bloc:409', e);
         }
       }
 
@@ -437,7 +433,7 @@ class CoinsBloc implements BlocBase {
           .getBalance(GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
-      Log('coins_bloc:440', e);
+      Log('coins_bloc:434', e);
       balance = null;
     }
 
@@ -450,7 +446,7 @@ class CoinsBloc implements BlocBase {
       coinBalance = CoinBalance(coin, balance);
       // Log(
       //     'coins_bloc:480', 'Balance: ' + coinBalance.balance.getBalance());
-      // Log('coins_bloc:453',
+      // Log('coins_bloc:447',
       //     'RealBalance: ' + coinBalance.balance.getRealBalance());
       if (coinBalance.balanceUSD == null &&
           double.parse(coinBalance.balance.getBalance()) > 0) {
@@ -475,7 +471,7 @@ class CoinsBloc implements BlocBase {
     final dynamic ctks = await MM.getCoinToKickStart(
         mmSe.client, BaseService(method: 'coins_needed_for_kick_start'));
     if (ctks is CoinToKickStart) {
-      Log('coins_bloc:478', 'kick_start coins: ${ctks.result}');
+      Log('coins_bloc:472', 'kick_start coins: ${ctks.result}');
       final known = await coins;
       for (String ticker in ctks.result) {
         final coin = known[ticker];
