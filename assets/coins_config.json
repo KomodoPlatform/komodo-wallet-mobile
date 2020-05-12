@@ -649,7 +649,7 @@
 		"port": 10065,
 		"proto": "tcp",
 		"abbr": "ZER",
-		"coingeckoId": "zcoin",
+		"coingeckoId": "zero",
 		"colorCoin": "0xFFFEDA54",
 		"serverList": [
 			"95.216.36.138:10065"
