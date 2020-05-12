@@ -141,7 +141,7 @@ class ApiProvider {
         // See if the body is a JSON error.
         emsg = ErrorString.fromJson(json.decode(r.body)).error;
       } catch (_notJson) {/**/}
-      if (emsg.isEmpty) {
+      if (emsg == null || emsg.isEmpty) {
         // Treat the body as a potentially useful but untrusted error message.
         emsg = r.body
             .replaceAll(RegExp('[^a-zA-Z0-9, :\]\.-]+'), '.')
@@ -291,19 +291,22 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'getTransactions', e, 'Error on get transactions')));
 
-  Future<dynamic> getRecentSwaps(
-    http.Client client,
-    GetRecentSwap body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getRecentSwapToJson(userBody.body))
-              .then((Response r) => _saveRes('getRecentSwaps', r))
-              .then<dynamic>(
-                  (Response res) => RecentSwaps.fromJson(json.decode(res.body)))
-              .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'getRecentSwaps', e, 'Error on get recent swaps')));
+  Future<RecentSwaps> getRecentSwaps(GetRecentSwap grs,
+      {http.Client client}) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(client, grs);
+    final r = await userBody.client
+        .post(url, body: getRecentSwapToJson(userBody.body));
+    _assert200(r);
+    _saveRes('getRecentSwaps', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return RecentSwaps.fromJson(jbody);
+  }
 
   Future<dynamic> getMyOrders(
     http.Client client,

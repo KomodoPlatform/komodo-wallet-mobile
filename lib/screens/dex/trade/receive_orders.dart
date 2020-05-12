@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -144,8 +145,8 @@ class _AsksOrderState extends State<AsksOrder> {
   @override
   Widget build(BuildContext context) {
     final List<DataRow> asksWidget = <DataRow>[];
-    widget.asks.sort((Ask a, Ask b) => a.price.compareTo(b.price));
-    widget.asks
+    final List<Ask> asksList = OrderBookProvider.sortByPrice(widget.asks);
+    asksList
         .asMap()
         .forEach((int index, Ask ask) => asksWidget.add(tableRow(ask, index)));
 

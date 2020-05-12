@@ -360,6 +360,7 @@
 		"serverList": [
 			"electrum.ltc.xurious.com:50001",
 			"ltc.rentonisk.com:50001",
+			"backup.electrum-ltc.org:50001",
 			"electrum-ltc.bysh.me:50001"
 		],
 		"explorerUrl": [
@@ -387,14 +388,13 @@
 	{
 		"name": "Navcoin",
 		"type": "utxo",
-		"address": "electrumx.nav.community",
-		"port": 40001,
+		"address": "electrum1.cipig.net",
+		"port": 10056,
 		"proto": "tcp",
 		"abbr": "NAV",
 		"coingeckoId": "nav-coin",
 		"colorCoin": "0xFFA83BAB",
 		"serverList": [
-			"electrumx.nav.community:40001",
 			"electrum1.cipig.net:10056",
 			"electrum2.cipig.net:10056",
 			"electrum3.cipig.net:10056"
@@ -425,16 +425,16 @@
 	{
 		"name": "QTUM",
 		"type": "utxo",
-		"address": "s1.qtum.info",
+		"address": "electrum1.cipig.net",
 		"port": 50001,
 		"proto": "tcp",
 		"abbr": "QTUM",
 		"coingeckoId": "qtum",
 		"colorCoin": "0xFF52a5da",
 		"serverList": [
-			"s7.qtum.info:50001",
-			"s8.qtum.info:50001",
-			"s9.qtum.info:50001"
+			"electrum1.cipig.net:10050",
+			"electrum2.cipig.net:10050",
+			"electrum3.cipig.net:10050"
 		],
 		"explorerUrl": [
 			"https://qtum.info/"
@@ -607,24 +607,6 @@
 		]
 	},
 	{
-		"name": "Vote2020",
-		"type": "smartChain",
-		"address": "electrum3.cipig.net",
-		"port": 10002,
-		"proto": "tcp",
-		"abbr": "VOTE2020",
-		"coingeckoId": "test-token",
-		"colorCoin": "0xFFabdce4",
-		"serverList": [
-			"electrum1.cipig.net:10002",
-			"electrum2.cipig.net:10002",
-			"electrum3.cipig.net:10002"
-		],
-		"explorerUrl": [
-			"https://vote.kmdexplorer.io/"
-		]
-	},
-	{
 		"name": "ZCash",
 		"type": "utxo",
 		"address": "electrum1.cipig.net",
@@ -640,6 +622,24 @@
 		],
 		"explorerUrl": [
 			"https://zcashnetwork.info/"
+		]
+	},
+	{
+		"name": "ZCoin",
+		"type": "utxo",
+		"address": "electrumx.zcoin.io",
+		"port": 50001,
+		"proto": "tcp",
+		"abbr": "XZC",
+		"coingeckoId": "zcoin",
+		"colorCoin": "0xFF24B852",
+		"serverList": [
+			"electrumx02.zcoin.io:50001",
+			"electrumx03.zcoin.io:50001",
+			"electrumx01.zcoin.io:50001"
+		],
+		"explorerUrl": [
+			"https://explorer.zcoin.io/"
 		]
 	}
 ]

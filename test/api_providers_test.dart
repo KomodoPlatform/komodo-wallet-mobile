@@ -271,43 +271,44 @@ void main() {
       when(client.post(url, body: getRecentSwapToJson(body))).thenAnswer(
           (_) async => http.Response(
               fixture('my_recent_swaps/my_recent_swaps.json'), 200));
-      expect(await MM.getRecentSwaps(client, body),
+      expect(await MM.getRecentSwaps(body, client: client),
           const TypeMatcher<RecentSwaps>());
     });
 
-    test('returns a ErrorString if the http call completes unsuccessfully',
-        () async {
+    test('throws if http call completes unsuccessfully', () async {
       when(client.post(url, body: getRecentSwapToJson(body))).thenAnswer(
           (_) async =>
               http.Response(fixture('general_errors/error_string.json'), 200));
-      expect(await MM.getRecentSwaps(client, body),
-          const TypeMatcher<ErrorString>());
+      expect(() async => await MM.getRecentSwaps(body, client: client),
+          throwsA(const TypeMatcher<ErrorString>()));
     });
 
-    test('returns a ErrorString if the http call completes with a error',
-        () async {
+    test('throws if http call completes with error', () async {
       when(client.post(url, body: getRecentSwapToJson(body)))
           .thenAnswer((_) async => http.Response('Error Parsing', 200));
-      expect(await MM.getRecentSwaps(client, body),
-          const TypeMatcher<ErrorString>());
+      expect(() async => await MM.getRecentSwaps(body, client: client),
+          throwsA(ft.isException));
     });
 
-    test('returns a ErrorString if the http call completes with a error 500',
-        () async {
+    test('throws if http call completes with status 500', () async {
       when(client.post(url, body: getRecentSwapToJson(body)))
           .thenAnswer((_) async => http.Response('Error Parsing', 500));
-      expect(await MM.getRecentSwaps(client, body),
-          const TypeMatcher<ErrorString>());
+      expect(() async => await MM.getRecentSwaps(body, client: client),
+          throwsA(const TypeMatcher<ErrorString>()));
     });
 
-    test('returns a ErrorString if the http call completes with error from mm2',
-        () async {
+    test('throws if http call completes with error from mm2', () async {
       when(client.post(url, body: getRecentSwapToJson(body))).thenAnswer(
           (_) async => http.Response(
               fixture('my_recent_swaps/errors/swap_not_found.json'), 200));
-      final dynamic error = await MM.getRecentSwaps(client, body);
-      expect(error, const TypeMatcher<ErrorString>());
-      expect(error.error,
+      ErrorString err;
+      try {
+        await MM.getRecentSwaps(body, client: client);
+      } on ErrorString catch (ex) {
+        err = ex;
+      }
+      expect(err, ft.isNotNull);
+      expect(err.error,
           'from_uuid e299c6ece7a7ddc42444eda64d46b163eaa992da65ce6de24eb812d715184e41 swap is not found');
     });
   });

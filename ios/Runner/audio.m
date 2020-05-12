@@ -56,7 +56,7 @@ void audio_ballast() {
 
 /// Invoked by completion handlers in order to maintain the background audio loop.
 void audio_reschedule (int generation) {
-  os_log (OS_LOG_DEFAULT, "audio_reschedule] Entered..");
+  //os_log (OS_LOG_DEFAULT, "audio_reschedule] Entered..");
   int cur_generation = atomic_load (&dex_generation);
   if (generation != cur_generation) return;
   if (!dex_bg_file) return;
@@ -64,7 +64,7 @@ void audio_reschedule (int generation) {
   // Need another thread in order not to trigger
   // "dispatch_sync called on queue already owned by current thread" in `AVAudioPlayerNodeImpl`
   dispatch_async (dispatch_get_global_queue (DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() {
-    os_log (OS_LOG_DEFAULT, "audio_reschedule] Async..");
+    //os_log (OS_LOG_DEFAULT, "audio_reschedule] Async..");
     int cur_generation = atomic_load (&dex_generation);
     if (generation != cur_generation) return;
     if (!dex_bg_file) return;
@@ -72,13 +72,13 @@ void audio_reschedule (int generation) {
     // Stops the player. Should only do this when the `processingFormat` is known to change.
     //[dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: dex_bg_file.processingFormat];
 
-    os_log (OS_LOG_DEFAULT, "audio_reschedule] Looping..");
+    //os_log (OS_LOG_DEFAULT, "audio_reschedule] Looping..");
     [dex_player scheduleFile: dex_bg_file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
     audio_ballast();});}
 
 // TBD: dispatch_async, go off the main thread and run initialization in background.
 void audio_init (const char* assets_maker) {
-  os_log (OS_LOG_DEFAULT, "audio_init] Entered..");
+  //os_log (OS_LOG_DEFAULT, "audio_init] Entered..");
 
   AVAudioEngine* engine = [[AVAudioEngine alloc] init];
   AVAudioPlayerNode* player = [[AVAudioPlayerNode alloc] init];
@@ -91,13 +91,14 @@ void audio_init (const char* assets_maker) {
   NSArray* documents_a = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: documents_ns error: NULL];
   [documents_a enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
     NSString* filename = (NSString*) obj;
-    os_log (OS_LOG_DEFAULT, "audio_init] Documents file: %{public}s", filename.UTF8String);}];
+    //os_log (OS_LOG_DEFAULT, "audio_init] Documents file: %{public}s", filename.UTF8String);
+  }];
 
   if (!assets_maker) {os_log (OS_LOG_DEFAULT, "audio_init] !assets_maker"); return;}
   const char* end = strstr (assets_maker, "/maker.mp3");
   if (!end) {os_log (OS_LOG_DEFAULT, "audio_init] !end"); return;}
   dex_assets_audio = [[[NSString alloc] initWithUTF8String: assets_maker] substringToIndex: end - assets_maker];
-  os_log (OS_LOG_DEFAULT, "audio_init] dex_assets_audio set to %{public}@", dex_assets_audio);
+  //os_log (OS_LOG_DEFAULT, "audio_init] dex_assets_audio set to %{public}@", dex_assets_audio);
 
   NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "failed1.mp3"];  // “Standing by”
 
@@ -108,18 +109,18 @@ void audio_init (const char* assets_maker) {
   dex_failed1 = file;
 
   AVAudioMixerNode* mixer = [engine mainMixerNode];
-  os_log (OS_LOG_DEFAULT, "audio_init] Attaching..");
+  //os_log (OS_LOG_DEFAULT, "audio_init] Attaching..");
   // NB: Should investigate the format compatibility between the different possible audio sources.
   // cf. https://stackoverflow.com/questions/33484140/how-can-i-specify-the-format-of-avaudioengine-mic-input
   // Reconnecting the payer to the mixer before a new schedule seems to help with maintaining the format.
   [engine connect: player to: mixer format: file.processingFormat];
 
-  os_log (OS_LOG_DEFAULT, "audio_init] Category..");
+  //os_log (OS_LOG_DEFAULT, "audio_init] Category..");
   err = nil;
   [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &err];
   if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !setCategory: %{public}@", err); return;}
 
-  os_log (OS_LOG_DEFAULT, "audio_init] Starting..");
+  //os_log (OS_LOG_DEFAULT, "audio_init] Starting..");
   err = nil;
   [engine startAndReturnError: &err];
   if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !start: %{public}@", err); return;}
@@ -127,11 +128,11 @@ void audio_init (const char* assets_maker) {
 
   audio_volume ([[NSNumber alloc] initWithDouble: 0.1]);
 
-  os_log (OS_LOG_DEFAULT, "audio_init] Playing..");
+  //os_log (OS_LOG_DEFAULT, "audio_init] Playing..");
   // `frameCount` corresponds to the number of “samples” in Audacity.
   [player scheduleSegment: file startingFrame: 0 frameCount: 63333 atTime: nil completionHandler: nil];
 
-  os_log (OS_LOG_DEFAULT, "audio_init] Done");
+  //os_log (OS_LOG_DEFAULT, "audio_init] Done");
   dex_engine = engine;
   dex_player = player;}
 

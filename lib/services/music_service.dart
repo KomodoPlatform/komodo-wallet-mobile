@@ -266,21 +266,21 @@ class MusicService {
         //     and then set the `musicMode` to the next background mode.
         final rc = await MMService.nativeC
             .invokeMethod<int>('audio_fg', <String, dynamic>{'path': path});
-        Log('music_service:269', 'audio_fg rc: $rc');
+        if (rc != 0) Log('music_service:269', 'audio_fg rc: $rc');
       } else if (newMode == MusicMode.SILENT) {
         // Stop the background loop.
         int rc = await MMService.nativeC
             .invokeMethod<int>('audio_bg', <String, dynamic>{'path': ''});
-        Log('music_service:274', 'audio_bg rc: $rc');
+        if (rc != 0) Log('music_service:274', 'audio_bg rc: $rc');
         // And play the file in foreground.
         rc = await MMService.nativeC
             .invokeMethod<int>('audio_fg', <String, dynamic>{'path': path});
-        Log('music_service:278', 'audio_fg rc: $rc');
+        if (rc != 0) Log('music_service:278', 'audio_fg rc: $rc');
       } else {
         // Loop the file in background.
         final rc = await MMService.nativeC
             .invokeMethod<int>('audio_bg', <String, dynamic>{'path': path});
-        Log('music_service:283', 'audio_bg rc: $rc');
+        if (rc != 0) Log('music_service:283', 'audio_bg rc: $rc');
       }
     }
 
