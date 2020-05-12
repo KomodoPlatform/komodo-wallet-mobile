@@ -645,14 +645,16 @@
 	{
 		"name": "Zero",
 		"type": "utxo",
-		"address": "95.216.36.138:10065",
+		"address": "electrum1.cipig.net",
 		"port": 10065,
 		"proto": "tcp",
 		"abbr": "ZER",
 		"coingeckoId": "zero",
 		"colorCoin": "0xFFFEDA54",
 		"serverList": [
-			"95.216.36.138:10065"
+			"electrum1.cipig.net:10065",
+			"electrum2.cipig.net:10065",
+			"electrum3.cipig.net:10065"
 		],
 		"explorerUrl": [
 			"https://zero.cryptonode.cloud/insight/"
