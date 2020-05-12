@@ -164,8 +164,8 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: "4654d8c1d3a9b67288e5637e5a476f5745cd0a99"
-      resolved-ref: "4654d8c1d3a9b67288e5637e5a476f5745cd0a99"
+      ref: "93fcaabe2da686b1987a351a03a70e86edf6504f"
+      resolved-ref: "93fcaabe2da686b1987a351a03a70e86edf6504f"
       url: "git://github.com/KomodoPlatform/dart-decimal.git"
     source: git
     version: "0.3.5"
@@ -586,11 +586,13 @@ packages:
     source: hosted
     version: "2.0.5"
   rational:
-    dependency: "direct main"
+    dependency: transitive
     description:
-      name: rational
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "44f3251dca11df633d1a392f5c93ea1c0b68bd37"
+      resolved-ref: "44f3251dca11df633d1a392f5c93ea1c0b68bd37"
+      url: "git://github.com/KomodoPlatform/dart-rational.git"
+    source: git
     version: "0.3.8"
   share:
     dependency: "direct dev"
