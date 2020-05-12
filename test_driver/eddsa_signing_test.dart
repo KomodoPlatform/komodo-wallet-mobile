@@ -19,7 +19,13 @@ Future<void> main() async {
 
   group('EdDSA', () {
     test('foobar', () async {
-      expect(await driver.requestData('foobar'), 'okay');
+      expect(await driver.requestData('sign "foobar"'), 'okay');
+    });
+  });
+
+  group('Public key encryption', () {
+    test('foobar', () async {
+      expect(await driver.requestData('encrypt "foobar"'), 'okay');
     });
   });
 }
