@@ -641,5 +641,21 @@
 		"explorerUrl": [
 			"https://explorer.zcoin.io/"
 		]
+	},
+	{
+		"name": "Zero",
+		"type": "utxo",
+		"address": "95.216.36.138:10065",
+		"port": 10065,
+		"proto": "tcp",
+		"abbr": "ZER",
+		"coingeckoId": "zcoin",
+		"colorCoin": "0xFFFEDA54",
+		"serverList": [
+			"95.216.36.138:10065"
+		],
+		"explorerUrl": [
+			"https://zero.cryptonode.cloud/insight/"
+		]
 	}
 ]
