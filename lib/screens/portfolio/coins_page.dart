@@ -45,7 +45,7 @@ class _CoinsPageState extends State<CoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    if (MMService().running) coinsBloc.loadCoin();
+    if (mmSe.running) coinsBloc.updateCoinBalances();
     super.initState();
   }
 
@@ -285,7 +285,7 @@ class ListCoinsState extends State<ListCoins> {
   @override
   void initState() {
     if (MMService().running) {
-      coinsBloc.loadCoin();
+      coinsBloc.updateCoinBalances();
     }
     super.initState();
   }
@@ -300,7 +300,7 @@ class ListCoinsState extends State<ListCoins> {
         return RefreshIndicator(
             backgroundColor: Theme.of(context).backgroundColor,
             key: _refreshIndicatorKey,
-            onRefresh: () => coinsBloc.loadCoin(),
+            onRefresh: () => coinsBloc.updateCoinBalances(),
             child: Builder(builder: (BuildContext context) {
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
                 final List<dynamic> datas = <dynamic>[];

@@ -134,7 +134,7 @@ class MMService {
         mmSe._running = true;
         await mmSe.initCheckLogs();
         coinsBloc.currentCoinActivate(null);
-        coinsBloc.loadCoin();
+        coinsBloc.updateCoinBalances();
         coinsBloc.startCheckBalance();
       }
     } else {
@@ -495,7 +495,7 @@ class MMService {
       final active = await coinsBloc.electrumCoins();
       await coinsBloc.enableCoins(active);
       Log('mm_service:497', 'All coins activated');
-      await coinsBloc.loadCoin();
+      await coinsBloc.updateCoinBalances();
       Log('mm_service:499', 'loadCoin finished');
     } catch (e) {
       print(e);
