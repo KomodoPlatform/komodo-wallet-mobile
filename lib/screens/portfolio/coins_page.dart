@@ -45,7 +45,7 @@ class _CoinsPageState extends State<CoinsPage> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    if (MMService().running) coinsBloc.loadCoin();
+    if (mmSe.running) coinsBloc.updateCoinBalances();
     super.initState();
   }
 
@@ -284,9 +284,7 @@ class ListCoinsState extends State<ListCoins> {
 
   @override
   void initState() {
-    if (MMService().running) {
-      coinsBloc.loadCoin();
-    }
+    if (mmSe.running) coinsBloc.updateCoinBalances();
     super.initState();
   }
 
@@ -300,7 +298,7 @@ class ListCoinsState extends State<ListCoins> {
         return RefreshIndicator(
             backgroundColor: Theme.of(context).backgroundColor,
             key: _refreshIndicatorKey,
-            onRefresh: () => coinsBloc.loadCoin(),
+            onRefresh: () => coinsBloc.updateCoinBalances(),
             child: Builder(builder: (BuildContext context) {
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
                 final List<dynamic> datas = <dynamic>[];
@@ -367,7 +365,7 @@ class _ItemCoinState extends State<ItemCoin> {
     final List<Widget> actions = <Widget>[];
     if (double.parse(balance.getBalance()) > 0) {
       Log(
-          'coins_page:369',
+          'coins_page:367',
           '${coin.abbr} balance: ${balance.balance}'
               '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(IconSlideAction(
