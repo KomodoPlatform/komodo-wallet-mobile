@@ -231,7 +231,7 @@ class _CoinDetailState extends State<CoinDetail> {
   @override
   void dispose() {
     if (!isDeleteLoading) {
-      coinsBloc.loadCoin();
+      coinsBloc.updateCoinBalances();
     }
     _amountController.dispose();
     _addressController.dispose();
@@ -915,9 +915,9 @@ class _CoinDetailState extends State<CoinDetail> {
                       setState(() {
                         coinsBloc.updateTransactions(
                             widget.coinBalance.coin, 10, null);
-                        coinsBloc.loadCoin();
+                        coinsBloc.updateCoinBalances();
                         Future<dynamic>.delayed(const Duration(seconds: 5), () {
-                          coinsBloc.loadCoin();
+                          coinsBloc.updateCoinBalances();
                         });
                         listSteps.add(SuccessStep(
                           txHash: dataRawTx.txHash,

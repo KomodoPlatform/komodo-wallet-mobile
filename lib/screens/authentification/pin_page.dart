@@ -94,7 +94,7 @@ class _PinPageState extends State<PinPage> {
         authBloc.showLock = false;
         authBloc.updateStatusPin(PinStatus.NORMAL_PIN);
         if (!widget.isFromChangingPin) {
-          if (!MMService().running) {
+          if (!mmSe.running) {
             await authBloc.login(
                 await EncryptionTool().read('passphrase'), widget.password);
           }
@@ -113,7 +113,7 @@ class _PinPageState extends State<PinPage> {
         break;
       case PinStatus.NORMAL_PIN:
         authBloc.showLock = false;
-        if (!MMService().running) {
+        if (!mmSe.running) {
           await authBloc.login(await EncryptionTool().read('passphrase'), null);
         }
         if (widget.onSuccess != null) {

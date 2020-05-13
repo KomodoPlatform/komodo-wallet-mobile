@@ -607,24 +607,6 @@
 		]
 	},
 	{
-		"name": "Vote2020",
-		"type": "smartChain",
-		"address": "electrum3.cipig.net",
-		"port": 10002,
-		"proto": "tcp",
-		"abbr": "VOTE2020",
-		"coingeckoId": "test-token",
-		"colorCoin": "0xFFabdce4",
-		"serverList": [
-			"electrum1.cipig.net:10002",
-			"electrum2.cipig.net:10002",
-			"electrum3.cipig.net:10002"
-		],
-		"explorerUrl": [
-			"https://vote.kmdexplorer.io/"
-		]
-	},
-	{
 		"name": "ZCash",
 		"type": "utxo",
 		"address": "electrum1.cipig.net",
@@ -658,6 +640,24 @@
 		],
 		"explorerUrl": [
 			"https://explorer.zcoin.io/"
+		]
+	},
+	{
+		"name": "Zero",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10065,
+		"proto": "tcp",
+		"abbr": "ZER",
+		"coingeckoId": "zero",
+		"colorCoin": "0xFFFEDA54",
+		"serverList": [
+			"electrum1.cipig.net:10065",
+			"electrum2.cipig.net:10065",
+			"electrum3.cipig.net:10065"
+		],
+		"explorerUrl": [
+			"https://zero.cryptonode.cloud/insight/"
 		]
 	}
 ]

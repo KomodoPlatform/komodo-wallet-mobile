@@ -19,9 +19,7 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
   void initState() {
     super.initState();
 
-    if (MMService().running) {
-      coinsBloc.loadCoin();
-    }
+    if (mmSe.running) coinsBloc.updateCoinBalances();
   }
 
   @override

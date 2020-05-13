@@ -59,9 +59,7 @@ class _CoinSelectState extends State<CoinSelect> {
       }
     });
 
-    if (MMService().running) {
-      coinsBloc.loadCoin();
-    }
+    if (mmSe.running) coinsBloc.updateCoinBalances();
 
     if (widget.autoOpen) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
