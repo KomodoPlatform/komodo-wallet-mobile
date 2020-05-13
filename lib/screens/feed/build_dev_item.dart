@@ -35,7 +35,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
                 });
               },
               child: Container(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -57,7 +57,13 @@ class _BuildDevItemState extends State<BuildDevItem> {
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(widget.dev.name),
+                          Text(
+                            widget.dev.name,
+                            style: TextStyle(
+                                color: _isOpen
+                                    ? Theme.of(context).accentColor
+                                    : null),
+                          ),
                           const SizedBox(height: 4),
                           _buildCurrentStatus(),
                           const SizedBox(height: 4),
@@ -126,11 +132,16 @@ class _BuildDevItemState extends State<BuildDevItem> {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: <Widget>[
-              Icon(iconData, size: 20),
+              Icon(iconData,
+                  size: 20, color: Theme.of(context).textTheme.caption.color),
               const SizedBox(
                 height: 4,
               ),
-              Text(title, style: const TextStyle(fontSize: 13)),
+              Text(title,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Theme.of(context).textTheme.caption.color,
+                  )),
             ],
           ),
         ),
