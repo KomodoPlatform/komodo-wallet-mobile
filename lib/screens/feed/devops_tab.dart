@@ -7,6 +7,8 @@ class DevOpsTab extends StatefulWidget {
 }
 
 class _DevOpsTabState extends State<DevOpsTab> {
+  String _open;
+
   @override
   Widget build(BuildContext context) {
     final List<Dev> _devOps = _getDevOps();
@@ -14,7 +16,9 @@ class _DevOpsTabState extends State<DevOpsTab> {
       child: ListView.builder(
           itemCount: _devOps.length,
           itemBuilder: (BuildContext context, int i) {
-            return BuildDevItem(_devOps[i]);
+            return BuildDevItem(_devOps[i], onToggle: (bool isOpen) {
+              _open = isOpen ? _devOps[i].id : null;
+            });
           }),
     );
   }
@@ -65,8 +69,7 @@ class _DevOpsTabState extends State<DevOpsTab> {
                 endTime: 1588937072000,
                 issue: Issue(
                   id: '701',
-                  title:
-                      'rewamp the news section rewamp',
+                  title: 'rewamp the news section rewamp',
                   url: 'https://github.com/ca333/komodoDEX/issues/701',
                 )),
           ]),

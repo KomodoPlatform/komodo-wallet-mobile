@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/feed/dev_detail_page.dart';
 import 'package:komodo_dex/screens/feed/devops_tab.dart';
 
 class BuildDevItem extends StatefulWidget {
-  const BuildDevItem(this.dev);
+  const BuildDevItem(this.dev, {this.onToggle, this.open = false});
 
   final Dev dev;
+  final Function(bool) onToggle;
+  final bool open;
 
   @override
   _BuildDevItemState createState() => _BuildDevItemState();
 }
 
 class _BuildDevItemState extends State<BuildDevItem> {
-  bool _isOpen = false;
+  bool _isOpen;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _isOpen = widget.open;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +42,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
               onTap: () {
                 setState(() {
                   _isOpen = !_isOpen;
+                  if (widget.onToggle != null) widget.onToggle(_isOpen);
                 });
               },
               child: Container(
@@ -39,17 +50,27 @@ class _BuildDevItemState extends State<BuildDevItem> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: widget.dev.image != null
-                          ? NetworkImage(widget.dev.image)
-                          : null,
-                      backgroundColor: Theme.of(context).disabledColor,
-                      child: widget.dev.image == null
-                          ? Icon(
-                              Icons.account_circle,
-                              size: 40,
-                            )
-                          : null,
+                    Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _isOpen
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).textTheme.body1.color,
+                      ),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: widget.dev.image != null
+                            ? NetworkImage(widget.dev.image)
+                            : null,
+                        backgroundColor: Theme.of(context).disabledColor,
+                        child: widget.dev.image == null
+                            ? Icon(
+                                Icons.account_circle,
+                                size: 40,
+                              )
+                            : null,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -60,9 +81,11 @@ class _BuildDevItemState extends State<BuildDevItem> {
                           Text(
                             widget.dev.name,
                             style: TextStyle(
-                                color: _isOpen
-                                    ? Theme.of(context).accentColor
-                                    : null),
+                              color: _isOpen
+                                  ? Theme.of(context).accentColor
+                                  : Theme.of(context).textTheme.body1.color,
+                              //fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const SizedBox(height: 4),
                           _buildCurrentStatus(),
@@ -91,24 +114,31 @@ class _BuildDevItemState extends State<BuildDevItem> {
     final _buttonsList = <Widget>[
       _buildDetailsButton(
         iconData: Icons.thumb_up,
-        title: 'React',
+        title: 'React', // TODO(yurii): localization
         onTap: () {},
       ),
       _buildDetailsButton(
         iconData: Icons.attach_money,
-        title: 'Tip',
+        title: 'Tip', // TODO(yurii): localization
         onTap: () {},
       ),
       if (_latest?.issue != null)
         _buildDetailsButton(
           iconData: Icons.error_outline,
-          title: 'Issue',
+          title: 'Issue', // TODO(yurii): localization
           onTap: () {},
         ),
       _buildDetailsButton(
         iconData: Icons.list,
-        title: 'Activity',
-        onTap: () {},
+        title: 'Activity', // TODO(yurii): localization
+        onTap: () {
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) =>
+                    DevDetailsPage(dev: widget.dev)),
+          );
+        },
       ),
     ];
 
@@ -150,7 +180,9 @@ class _BuildDevItemState extends State<BuildDevItem> {
   }
 
   Widget _buildCurrentStatus() {
+    final OnlineStatus _online = _getOnlineStatus();
     final String _message = _getCurrentStatusMessage();
+
     if (_message.isEmpty) return Container();
 
     return Row(
@@ -159,7 +191,9 @@ class _BuildDevItemState extends State<BuildDevItem> {
         Container(
             padding: const EdgeInsets.only(right: 5, top: 1),
             child: Icon(
-              Icons.playlist_add_check,
+              _online == OnlineStatus.active
+                  ? Icons.playlist_add_check
+                  : Icons.access_time,
               size: 15,
               color: Theme.of(context).textTheme.caption.color,
             )),
