@@ -38,7 +38,7 @@ import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
@@ -64,9 +64,10 @@ void main() {
 
   const String url = 'http://localhost:7783';
 
-  mmSe.testDocuments = Directory(testDir().path + '/documents');
-  mmSe.testDocuments.createSync();
-  print('api_providers_test] Documents are in ${mmSe.testDocuments}');
+  final testDocuments = Directory(testDir().path + '/documents');
+  testDocuments.createSync();
+  setDebugDocumentsDirectory(testDocuments);
+  print('api_providers_test] Documents are in $testDocuments');
 
   group('disable_coin', () {
     final MockClient client = MockClient();

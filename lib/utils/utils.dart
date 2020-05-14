@@ -451,6 +451,11 @@ double deviation(List<double> values) {
 
 Directory _applicationDocumentsDirectory;
 
+void setDebugDocumentsDirectory(Directory directory) {
+  if (!isInDebugMode) throw Exception('Not in debug');
+  _applicationDocumentsDirectory = directory;
+}
+
 Future<Directory> get applicationDocumentsDirectory async {
   _applicationDocumentsDirectory ??= await getApplicationDocumentsDirectory();
   return _applicationDocumentsDirectory;
