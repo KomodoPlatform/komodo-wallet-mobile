@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
-import 'package:komodo_dex/screens/feed/devops_tab.dart';
+import 'package:komodo_dex/screens/feed/dev.dart';
 
 class BuildDevActivityItem extends StatelessWidget {
   const BuildDevActivityItem(
@@ -24,8 +24,8 @@ class BuildDevActivityItem extends StatelessWidget {
         children: <Widget>[
           BuildDevAvatar(dev, size: 25),
           const SizedBox(width: 12),
-          Expanded(
-            child: ConstrainedBox(
+          Flexible(
+                      child: ConstrainedBox(
               constraints: const BoxConstraints(
                 minWidth: 200,
               ),

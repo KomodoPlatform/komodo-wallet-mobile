@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
+import 'package:komodo_dex/screens/feed/dev.dart';
 import 'package:komodo_dex/screens/feed/dev_activity_list.dart';
-import 'package:komodo_dex/screens/feed/devops_tab.dart';
 
 class DevDetailsPage extends StatelessWidget {
   const DevDetailsPage({

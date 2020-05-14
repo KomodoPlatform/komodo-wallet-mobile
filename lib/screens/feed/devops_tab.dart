@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/feed/build_dev_item.dart';
+import 'package:komodo_dex/screens/feed/dev.dart';
 
 class DevOpsTab extends StatefulWidget {
   @override
@@ -81,52 +82,4 @@ class _DevOpsTabState extends State<DevOpsTab> {
           ]),
     ];
   }
-}
-
-class Dev {
-  Dev({
-    @required this.id,
-    this.name,
-    this.image,
-    this.activity,
-  });
-
-  String id;
-  String name;
-  String image;
-  List<DevStatus> activity;
-}
-
-class DevStatus {
-  DevStatus({
-    @required this.id,
-    this.message,
-    this.issue,
-    this.startTime,
-    this.endTime,
-  });
-
-  String id;
-  String message;
-  Issue issue;
-  int startTime;
-  int endTime;
-}
-
-class Issue {
-  Issue({
-    @required this.id,
-    this.title,
-    this.url,
-  });
-
-  String id;
-  String title;
-  String url;
-}
-
-enum OnlineStatus {
-  active,
-  inactive,
-  unknown,
 }

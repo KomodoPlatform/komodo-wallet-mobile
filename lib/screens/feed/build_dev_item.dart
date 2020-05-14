@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
+import 'package:komodo_dex/screens/feed/dev.dart';
 import 'package:komodo_dex/screens/feed/dev_detail_page.dart';
-import 'package:komodo_dex/screens/feed/devops_tab.dart';
 
 class BuildDevItem extends StatefulWidget {
   const BuildDevItem(this.dev, {this.onToggle, this.selected = false});
@@ -80,7 +80,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
   Widget _buildDetails() {
     if (!widget.selected) return Container();
 
-    final DevStatus _latest = _getLatestStatus();
+    final DevStatus _latest = widget.dev.latestStatus;
     final _buttonsList = <Widget>[
       _buildDetailsButton(
         iconData: Icons.thumb_up,
@@ -150,8 +150,8 @@ class _BuildDevItemState extends State<BuildDevItem> {
   }
 
   Widget _buildCurrentStatus() {
-    final OnlineStatus _online = _getOnlineStatus();
-    final String _message = _getCurrentStatusMessage();
+    final OnlineStatus _online = widget.dev.onlineStatus;
+    final String _message = widget.dev.currentStatusMessage;
 
     if (_message.isEmpty) return Container();
 
@@ -182,7 +182,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
   }
 
   Widget _buildCurrentIssue() {
-    final DevStatus _latest = _getLatestStatus();
+    final DevStatus _latest = widget.dev.latestStatus;
     if (_latest?.issue == null) return Container();
 
     return Row(
@@ -213,7 +213,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
     Color color;
     Color borderColor;
 
-    switch (_getOnlineStatus()) {
+    switch (widget.dev.onlineStatus) {
       case OnlineStatus.active:
         {
           color = Colors.green;
@@ -243,60 +243,5 @@ class _BuildDevItemState extends State<BuildDevItem> {
         border: Border.all(width: 1, color: borderColor),
       ),
     );
-  }
-
-  OnlineStatus _getOnlineStatus() {
-    final DevStatus _latest = _getLatestStatus();
-    if (_latest == null) return OnlineStatus.unknown;
-
-    switch (_latest.endTime) {
-      case null:
-        {
-          return OnlineStatus.active;
-        }
-      default:
-        {
-          return OnlineStatus.inactive;
-        }
-    }
-  }
-
-  String _getCurrentStatusMessage() {
-    final DevStatus _latest = _getLatestStatus();
-    if (_latest == null) return '';
-
-    switch (_latest.endTime) {
-      case null:
-        {
-          return _latest.message ?? 'Active now'; // TODO(yurii): localization
-        }
-      default:
-        {
-          return 'Last active: ${DateTime.fromMillisecondsSinceEpoch(_latest.endTime)}'; // TODO(yurii): localization
-        }
-    }
-  }
-
-  DevStatus _getLatestStatus() {
-    final List<DevStatus> _sortedHistory =
-        _getSortedHistory(widget.dev.activity);
-
-    if (_sortedHistory == null || _sortedHistory.isEmpty) return null;
-
-    return _sortedHistory[0];
-  }
-
-  List<DevStatus> _getSortedHistory(List<DevStatus> history) {
-    final List<DevStatus> _sorted = history;
-    if (_sorted == null) return null;
-    if (_sorted.isEmpty) return _sorted;
-
-    _sorted.sort((a, b) {
-      if (a.startTime < b.startTime) return 1;
-      if (a.startTime > b.startTime) return -1;
-      return 0;
-    });
-
-    return _sorted;
   }
 }

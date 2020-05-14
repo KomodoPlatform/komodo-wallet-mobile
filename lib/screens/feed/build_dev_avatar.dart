@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/screens/feed/devops_tab.dart';
+import 'package:komodo_dex/screens/feed/dev.dart';
 
 class BuildDevAvatar extends StatelessWidget {
-  const BuildDevAvatar(this.dev, {this.size = 40});
+  const BuildDevAvatar(
+    this.dev, {
+    this.size = 40,
+    this.showOnlineStatus = true,
+  });
 
   final Dev dev;
   final double size;
+  final bool showOnlineStatus;
 
   @override
   Widget build(BuildContext context) {
