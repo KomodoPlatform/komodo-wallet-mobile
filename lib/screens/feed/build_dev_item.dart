@@ -4,10 +4,16 @@ import 'package:komodo_dex/screens/feed/dev.dart';
 import 'package:komodo_dex/screens/feed/dev_detail_page.dart';
 
 class BuildDevItem extends StatefulWidget {
-  const BuildDevItem(this.dev, {this.onToggle, this.selected = false});
+  const BuildDevItem(
+    this.dev, {
+    this.onTap,
+    this.onLongPress,
+    this.selected = false,
+  });
 
   final Dev dev;
-  final Function(bool) onToggle;
+  final Function onTap;
+  final Function onLongPress;
   final bool selected;
 
   @override
@@ -34,14 +40,20 @@ class _BuildDevItemState extends State<BuildDevItem> {
           children: <Widget>[
             InkWell(
               onTap: () {
-                if (widget.onToggle != null) widget.onToggle(!widget.selected);
+                if (widget.onTap != null) widget.onTap();
+              },
+              onLongPress: () {
+                if (widget.onLongPress != null) widget.onLongPress();
               },
               child: Container(
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    BuildDevAvatar(widget.dev, size: 40,),
+                    BuildDevAvatar(
+                      widget.dev,
+                      size: 40,
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Container(
@@ -206,5 +218,4 @@ class _BuildDevItemState extends State<BuildDevItem> {
       ],
     );
   }
-    
 }

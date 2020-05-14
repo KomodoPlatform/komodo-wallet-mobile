@@ -16,6 +16,8 @@ class _DevActivityListState extends State<DevActivityList> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.dev?.activity == null) return Container();
+    
     return ListView.builder(
       shrinkWrap: true,
       itemCount: widget.dev.activity.length,

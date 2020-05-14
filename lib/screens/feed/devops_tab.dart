@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/feed/build_dev_item.dart';
 import 'package:komodo_dex/screens/feed/dev.dart';
+import 'package:komodo_dex/screens/feed/dev_detail_page.dart';
 
 class DevOpsTab extends StatefulWidget {
   @override
@@ -17,12 +18,28 @@ class _DevOpsTabState extends State<DevOpsTab> {
       child: ListView.builder(
           itemCount: _devOps.length,
           itemBuilder: (BuildContext context, int i) {
+            final bool _isSelected = _selectedDevId == _devOps[i].id;
+
             return BuildDevItem(
               _devOps[i],
               selected: _devOps[i].id == _selectedDevId,
-              onToggle: (bool isSelected) {
+              onTap: () {
                 setState(() {
-                  _selectedDevId = isSelected ? _devOps[i].id : null;
+                  _selectedDevId = null;
+                });
+
+                if (_isSelected) return;
+
+                Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) =>
+                          DevDetailsPage(dev: _devOps[i])),
+                );
+              },
+              onLongPress: () {
+                setState(() {
+                  _selectedDevId = _isSelected ? null : _devOps[i].id;
                 });
               },
             );
