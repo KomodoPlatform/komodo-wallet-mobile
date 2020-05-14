@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
 import 'package:komodo_dex/screens/feed/dev_detail_page.dart';
 import 'package:komodo_dex/screens/feed/devops_tab.dart';
 
@@ -40,19 +41,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundImage: widget.dev.image != null
-                          ? NetworkImage(widget.dev.image)
-                          : null,
-                      backgroundColor: Theme.of(context).disabledColor,
-                      child: widget.dev.image == null
-                          ? Icon(
-                              Icons.account_circle,
-                              size: 40,
-                            )
-                          : null,
-                    ),
+                    BuildDevAvatar(widget.dev, size: 40,),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Container(
@@ -290,7 +279,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
 
   DevStatus _getLatestStatus() {
     final List<DevStatus> _sortedHistory =
-        _getSortedHistory(widget.dev.statusHistory);
+        _getSortedHistory(widget.dev.activity);
 
     if (_sortedHistory == null || _sortedHistory.isEmpty) return null;
 

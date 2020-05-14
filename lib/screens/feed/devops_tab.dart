@@ -35,7 +35,7 @@ class _DevOpsTabState extends State<DevOpsTab> {
         id: '0',
         name: 'ArtemGr',
         image: 'https://avatars2.githubusercontent.com/u/41847?s=460&v=4',
-        statusHistory: [],
+        activity: [],
       ),
       Dev(
         id: '1',
@@ -51,7 +51,7 @@ class _DevOpsTabState extends State<DevOpsTab> {
           id: '3',
           name: 'yurii',
           image: 'https://avatars3.githubusercontent.com/u/29194552?s=150&v=4',
-          statusHistory: [
+          activity: [
             DevStatus(
               id: '0',
               message: 'git',
@@ -88,13 +88,13 @@ class Dev {
     @required this.id,
     this.name,
     this.image,
-    this.statusHistory,
+    this.activity,
   });
 
   String id;
   String name;
   String image;
-  List<DevStatus> statusHistory;
+  List<DevStatus> activity;
 }
 
 class DevStatus {
