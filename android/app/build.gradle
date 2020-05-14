@@ -75,3 +75,36 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }
+
+// Setting the “vscode-java-pack” classpath
+// cf. https://github.com/redhat-developer/vscode-java/issues/285#issuecomment-327096613
+// cf. https://docs.gradle.org/5.6.2/javadoc/
+apply plugin: 'eclipse'
+eclipse {
+    sourceSets {
+        main.java.srcDirs += 'src/main/java'
+    }
+    classpath {
+        file {
+            whenMerged {
+                ext.log = {line ->
+                    System.out.println (line)
+                    def date = new Date() .format ('kk:mm:ss')
+                    new File ("build/eclipse-gradle.log") .append ("$date $line\n")}
+                ext.addEntry = {path ->
+                    log ("addEntry] $path")
+                    entries += new org.gradle.plugins.ide.eclipse.model.Library (fileReference (path.toString()))}
+
+                project.android.getBootClasspath().each {addEntry ("$it")}
+
+                // NB: Use `flutter build apk --debug` to generate the `intermediates`
+                def ims = project.getBuildDir().absolutePath + '/intermediates'
+                addEntry (ims + '/flutter/debug/libs.jar')
+                addEntry (ims + '/javac/debug/classes')  // R.class
+
+                def debug = project.android.applicationVariants[0]
+                debug.getCompileClasspath().each {addEntry (it)}
+            }
+        }
+    }
+}
