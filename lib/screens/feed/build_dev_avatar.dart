@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/feed/build_online_status.dart';
 import 'package:komodo_dex/screens/feed/dev.dart';
 
 class BuildDevAvatar extends StatelessWidget {
@@ -14,16 +15,29 @@ class BuildDevAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: size / 2,
-      backgroundImage: dev.image != null ? NetworkImage(dev.image) : null,
-      backgroundColor: Theme.of(context).disabledColor,
-      child: dev.image == null
-          ? Icon(
-              Icons.account_circle,
-              size: size,
-            )
-          : null,
+    return Stack(
+      children: <Widget>[
+        CircleAvatar(
+          radius: size / 2,
+          backgroundImage: dev.image != null ? NetworkImage(dev.image) : null,
+          backgroundColor: Theme.of(context).disabledColor,
+          child: dev.image == null
+              ? Icon(
+                  Icons.account_circle,
+                  size: size,
+                )
+              : null,
+        ),
+        showOnlineStatus ? _buildOnlineStatus() : Container(),
+      ],
+    );
+  }
+
+  Widget _buildOnlineStatus() {
+    return Positioned(
+      right: 0,
+      bottom: 0,
+      child: BuildOnlineStatus(dev, size: size / 4,),
     );
   }
 }

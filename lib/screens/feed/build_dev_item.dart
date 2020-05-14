@@ -64,8 +64,6 @@ class _BuildDevItemState extends State<BuildDevItem> {
                         ],
                       )),
                     ),
-                    const SizedBox(width: 12),
-                    _buildOnlineStatus(),
                   ],
                 ),
               ),
@@ -208,40 +206,5 @@ class _BuildDevItemState extends State<BuildDevItem> {
       ],
     );
   }
-
-  Widget _buildOnlineStatus() {
-    Color color;
-    Color borderColor;
-
-    switch (widget.dev.onlineStatus) {
-      case OnlineStatus.active:
-        {
-          color = Colors.green;
-          borderColor = Colors.green;
-          break;
-        }
-      case OnlineStatus.inactive:
-        {
-          color = const Color.fromRGBO(201, 201, 201, 1);
-          borderColor = const Color.fromRGBO(201, 201, 201, 1);
-          break;
-        }
-      case OnlineStatus.unknown:
-        {
-          color = Colors.transparent;
-          borderColor = const Color.fromRGBO(201, 201, 201, 1);
-          break;
-        }
-    }
-
-    return Container(
-      width: 10,
-      height: 10,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-        border: Border.all(width: 1, color: borderColor),
-      ),
-    );
-  }
+    
 }
