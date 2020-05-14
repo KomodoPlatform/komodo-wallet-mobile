@@ -7,7 +7,7 @@ class DevOpsTab extends StatefulWidget {
 }
 
 class _DevOpsTabState extends State<DevOpsTab> {
-  String _open;
+  String _selectedDevId;
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +16,15 @@ class _DevOpsTabState extends State<DevOpsTab> {
       child: ListView.builder(
           itemCount: _devOps.length,
           itemBuilder: (BuildContext context, int i) {
-            return BuildDevItem(_devOps[i], onToggle: (bool isOpen) {
-              _open = isOpen ? _devOps[i].id : null;
-            });
+            return BuildDevItem(
+              _devOps[i],
+              selected: _devOps[i].id == _selectedDevId,
+              onToggle: (bool isSelected) {
+                setState(() {
+                  _selectedDevId = isSelected ? _devOps[i].id : null;
+                });
+              },
+            );
           }),
     );
   }

@@ -15,24 +15,17 @@ class DevDetailsPage extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(1),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).textTheme.body1.color,
-              ),
-              child: CircleAvatar(
-                radius: 15,
-                backgroundImage:
-                    dev.image != null ? NetworkImage(dev.image) : null,
-                backgroundColor: Theme.of(context).disabledColor,
-                child: dev.image == null
-                    ? Icon(
-                        Icons.account_circle,
-                        size: 30,
-                      )
-                    : null,
-              ),
+            CircleAvatar(
+              radius: 15,
+              backgroundImage:
+                  dev.image != null ? NetworkImage(dev.image) : null,
+              backgroundColor: Theme.of(context).disabledColor,
+              child: dev.image == null
+                  ? Icon(
+                      Icons.account_circle,
+                      size: 30,
+                    )
+                  : null,
             ),
             const SizedBox(width: 12),
             Text(dev.name),

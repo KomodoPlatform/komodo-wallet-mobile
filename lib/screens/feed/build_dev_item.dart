@@ -3,30 +3,21 @@ import 'package:komodo_dex/screens/feed/dev_detail_page.dart';
 import 'package:komodo_dex/screens/feed/devops_tab.dart';
 
 class BuildDevItem extends StatefulWidget {
-  const BuildDevItem(this.dev, {this.onToggle, this.open = false});
+  const BuildDevItem(this.dev, {this.onToggle, this.selected = false});
 
   final Dev dev;
   final Function(bool) onToggle;
-  final bool open;
+  final bool selected;
 
   @override
   _BuildDevItemState createState() => _BuildDevItemState();
 }
 
 class _BuildDevItemState extends State<BuildDevItem> {
-  bool _isOpen;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _isOpen = widget.open;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: _isOpen
+      color: widget.selected
           ? Theme.of(context).backgroundColor
           : Theme.of(context).primaryColor,
       child: Container(
@@ -34,43 +25,33 @@ class _BuildDevItemState extends State<BuildDevItem> {
             border: Border(
                 bottom: BorderSide(
           width: 1,
-          color: _isOpen ? Theme.of(context).primaryColor : Colors.transparent,
+          color: widget.selected
+              ? Theme.of(context).primaryColor
+              : Colors.transparent,
         ))),
         child: Column(
           children: <Widget>[
             InkWell(
               onTap: () {
-                setState(() {
-                  _isOpen = !_isOpen;
-                  if (widget.onToggle != null) widget.onToggle(_isOpen);
-                });
+                if (widget.onToggle != null) widget.onToggle(!widget.selected);
               },
               child: Container(
                 padding: const EdgeInsets.all(12),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(1),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _isOpen
-                            ? Theme.of(context).accentColor
-                            : Theme.of(context).textTheme.body1.color,
-                      ),
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundImage: widget.dev.image != null
-                            ? NetworkImage(widget.dev.image)
-                            : null,
-                        backgroundColor: Theme.of(context).disabledColor,
-                        child: widget.dev.image == null
-                            ? Icon(
-                                Icons.account_circle,
-                                size: 40,
-                              )
-                            : null,
-                      ),
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundImage: widget.dev.image != null
+                          ? NetworkImage(widget.dev.image)
+                          : null,
+                      backgroundColor: Theme.of(context).disabledColor,
+                      child: widget.dev.image == null
+                          ? Icon(
+                              Icons.account_circle,
+                              size: 40,
+                            )
+                          : null,
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -81,7 +62,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
                           Text(
                             widget.dev.name,
                             style: TextStyle(
-                              color: _isOpen
+                              color: widget.selected
                                   ? Theme.of(context).accentColor
                                   : Theme.of(context).textTheme.body1.color,
                               //fontWeight: FontWeight.bold,
@@ -108,7 +89,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
   }
 
   Widget _buildDetails() {
-    if (!_isOpen) return Container();
+    if (!widget.selected) return Container();
 
     final DevStatus _latest = _getLatestStatus();
     final _buttonsList = <Widget>[
@@ -200,7 +181,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
         Expanded(
           child: Text(
             _message,
-            overflow: _isOpen ? null : TextOverflow.ellipsis,
+            overflow: widget.selected ? null : TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 13,
               color: Theme.of(context).textTheme.caption.color,
@@ -228,7 +209,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
         Expanded(
           child: Text(
             _latest.issue.title,
-            overflow: _isOpen ? null : TextOverflow.ellipsis,
+            overflow: widget.selected ? null : TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 13,
               color: Theme.of(context).textTheme.caption.color,
