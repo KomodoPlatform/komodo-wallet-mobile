@@ -242,11 +242,11 @@ class Db {
   }
 
   /// Remove the coin from the list of activated coins.
-  static Future<void> coinInactive(Coin coin) async {
-    Log('database:246', 'coinInactive] ${coin.abbr}');
-    _active.remove(coin.abbr);
+  static Future<void> coinInactive(String ticker) async {
+    Log('database:246', 'coinInactive] $ticker');
+    _active.remove(ticker);
     final Database db = await Db.db;
     await db.delete('CoinsActivated',
-        where: 'abbr = ?', whereArgs: <dynamic>[coin.abbr]);
+        where: 'abbr = ?', whereArgs: <dynamic>[ticker]);
   }
 }

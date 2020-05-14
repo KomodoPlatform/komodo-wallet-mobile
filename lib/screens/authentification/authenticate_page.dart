@@ -159,7 +159,7 @@ class _BuildScreenAuthMultiWalletsState
                       wallet: wallet,
                       onSuccess: (String seed, String password) async {
                         authBloc.showLock = false;
-                        if (!MMService().running) {
+                        if (!mmSe.running) {
                           await authBloc.login(seed, password);
                         }
                         Navigator.of(context).pop();
