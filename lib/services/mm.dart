@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/batch_request.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -433,4 +434,23 @@ class ApiProvider {
                   'Swap must be finished before recover funds attempt'))
               .then((ErrorString errorString) => injectErrorString(errorString, 'swap data is not found')))
           .catchError((dynamic e) => _catchErrorString('recoverFundsOfSwap', e, 'Error on recover funds of swap')));
+
+
+  Future<dynamic> batchRequest(
+    BatchRequest req,
+    {http.Client client}
+  ) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(client, req);
+    final r = await client.post(url, body: json.encode(userBody.body));
+    _assert200(r);
+    _saveRes('batchRequest', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return ActiveCoin.fromJson(jbody);
+  }
 }
