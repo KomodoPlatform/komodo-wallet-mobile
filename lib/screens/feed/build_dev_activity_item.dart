@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
 import 'package:komodo_dex/screens/feed/dev.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class BuildDevActivityItem extends StatelessWidget {
   const BuildDevActivityItem(
@@ -62,7 +63,7 @@ class BuildDevActivityItem extends StatelessWidget {
 
   Widget _buildStatusDateTime(BuildContext context) {
     return Text(
-      '${DateTime.fromMillisecondsSinceEpoch(status.startTime)}',
+      '${humanDate(status.startTime)}',
       style: TextStyle(
           fontSize: 10, color: Theme.of(context).textTheme.caption.color),
     );

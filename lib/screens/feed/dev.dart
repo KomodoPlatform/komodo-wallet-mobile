@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class Dev {
   Dev({
@@ -20,7 +21,7 @@ class Dev {
 
   List<DevStatus> _getSortedHistory() {
     if (activity == null) return null;
-    
+
     final List<DevStatus> _sorted = List.from(activity);
     if (_sorted.isEmpty) return _sorted;
 
@@ -58,7 +59,7 @@ class Dev {
         }
       default:
         {
-          return 'Last active: ${DateTime.fromMillisecondsSinceEpoch(latestStatus.endTime)}'; // TODO(yurii): localization
+          return 'Last active: ${humanDate(latestStatus.endTime)}'; // TODO(yurii): localization
         }
     }
   }
