@@ -90,7 +90,6 @@ class _DevOpsTabState extends State<DevOpsTab> {
                 id: '2',
                 message: 'news, design and layout, \'DevOps\' tab',
                 startTime: 1588927072000,
-                endTime: 1589481707000,
                 issue: Issue(
                   id: '701',
                   title: 'rewamp the news section rewamp',

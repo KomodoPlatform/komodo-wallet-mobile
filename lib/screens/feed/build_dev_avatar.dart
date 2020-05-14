@@ -34,6 +34,8 @@ class BuildDevAvatar extends StatelessWidget {
   }
 
   Widget _buildOnlineStatus() {
+    if (dev.onlineStatus != OnlineStatus.active) return Container();
+    
     return Positioned(
       right: 0,
       bottom: 0,
