@@ -6,13 +6,11 @@ import 'package:flutter_test/flutter_test.dart' as ft;
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
-import 'package:komodo_dex/model/batch_request.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_active_coin.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/get_cancel_order.dart';
@@ -629,26 +627,23 @@ void main() {
     });
   });
 
-  test('batch requests', () async {
+  test('batch', () async {
     final MockClient client = MockClient();
 
-    final batchRequest = BatchRequest(
-      method: 'electrum',
-      coin: 'RICK',
-      servers: [
-        Server(url: 'electrum1.cipig.net:10017'),
-        Server(url: 'electrum2.cipig.net:10017'),
-        Server(url: 'electrum3.cipig.net:10017')
-      ],
-      userpass: 'test',
-      mm2: 1,
-    );
+    // Let's imagine that we're sending
+    // https://github.com/KomodoPlatform/developer-docs/pull/171/files#diff-6ab44e5ca9208fafccf3568523c09b2eR60
+    final req = [
+      <String, dynamic>{'method': 'electrum'},
+      <String, dynamic>{'method': 'electrum'},
+      <String, dynamic>{'method': 'electrum'}
+    ];
 
-    when(client.post(url, body: batchRequest)).thenAnswer((_) async =>
-        http.Response(fixture('batch_requests/batch_request_rick.json'), 200));
-    final dynamic result = await MM.batchRequest(batchRequest, client: client);
-
-    expect(await MM.batchRequest(batchRequest, client: client),
-        const TypeMatcher<ActiveCoin>());
+    when(client.post(url, body: anyNamed('body'))).thenAnswer(
+        (_) async => http.Response(fixture('batch_response.json'), 200));
+    final res = await MM.batch(req, client: client);
+    expect(res.length, 3);
+    expect(res[0]['balance'], '9.8688213');
+    expect(res[1]['balance'], '4.40662368');
+    expect(res[2]['error'], 'rpc:295] Userpass is invalid!');
   });
 }

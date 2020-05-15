@@ -1,0 +1,23 @@
+[
+  {
+    "address":"RR5ecgYgykX8NCjR5zjiHMLy7F62LZUecQ",
+    "balance":"9.8688213",
+    "coin":"RICK",
+    "locked_by_swaps":"0",
+    "required_confirmations":1,
+    "requires_notarization":false,
+    "result":"success"
+  },
+  {
+    "address":"RR5ecgYgykX8NCjR5zjiHMLy7F62LZUecQ",
+    "balance":"4.40662368",
+    "coin":"MORTY",
+    "locked_by_swaps":"0",
+    "required_confirmations":1,
+    "requires_notarization":false,
+    "result":"success"
+  },
+  {
+    "error":"rpc:295] Userpass is invalid!"
+  }
+]

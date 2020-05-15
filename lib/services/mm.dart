@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
-import 'package:komodo_dex/model/batch_request.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -435,22 +434,14 @@ class ApiProvider {
               .then((ErrorString errorString) => injectErrorString(errorString, 'swap data is not found')))
           .catchError((dynamic e) => _catchErrorString('recoverFundsOfSwap', e, 'Error on recover funds of swap')));
 
-
-  Future<dynamic> batchRequest(
-    BatchRequest req,
-    {http.Client client}
-  ) async {
+  /// https://github.com/KomodoPlatform/developer-docs/pull/171/files
+  /// https://github.com/KomodoPlatform/atomicDEX-API/commit/a00c2863210ce9a262bb579a74249dbb04a94efc
+  Future<List<dynamic>> batch(List<Map<String, dynamic>> batch,
+      {http.Client client}) async {
     client ??= mmSe.client;
-    final userBody = await _assertUserpass(client, req);
-    final r = await client.post(url, body: json.encode(userBody.body));
+    final r = await client.post(url, body: json.encode(batch));
     _assert200(r);
-    _saveRes('batchRequest', r);
-
-    // Parse JSON once, then check if the JSON is an error.
-    final dynamic jbody = json.decode(r.body);
-    final error = ErrorString.fromJson(jbody);
-    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
-
-    return ActiveCoin.fromJson(jbody);
+    _saveRes('batch', r);
+    return List<dynamic>.from(json.decode(r.body));
   }
 }
