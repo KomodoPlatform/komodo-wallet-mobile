@@ -8,12 +8,14 @@ class BuildDevItem extends StatefulWidget {
     this.dev, {
     this.onTap,
     this.onLongPress,
+    this.onMoreTap,
     this.selected = false,
   });
 
   final Dev dev;
   final Function onTap;
   final Function onLongPress;
+  final Function onMoreTap;
   final bool selected;
 
   @override
@@ -46,7 +48,11 @@ class _BuildDevItemState extends State<BuildDevItem> {
                 if (widget.onLongPress != null) widget.onLongPress();
               },
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.only(
+                  left: 12,
+                  top: 12,
+                  bottom: 12,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -75,6 +81,22 @@ class _BuildDevItemState extends State<BuildDevItem> {
                           _buildCurrentIssue(),
                         ],
                       )),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (widget.onMoreTap != null) widget.onMoreTap();
+                      },
+                      child: Opacity(
+                          opacity: 0.5,
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            alignment: Alignment.topCenter,
+                            child: Icon(
+                              Icons.more_vert,
+                              size: 18,
+                            ),
+                          )),
                     ),
                   ],
                 ),

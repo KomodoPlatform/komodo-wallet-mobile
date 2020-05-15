@@ -20,6 +20,12 @@ class _DevOpsTabState extends State<DevOpsTab> {
           itemBuilder: (BuildContext context, int i) {
             final bool _isSelected = _selectedDevId == _devOps[i].id;
 
+            void _toggleSelected() {
+              setState(() {
+                _selectedDevId = _isSelected ? null : _devOps[i].id;
+              });
+            }
+
             return BuildDevItem(
               _devOps[i],
               selected: _devOps[i].id == _selectedDevId,
@@ -37,11 +43,8 @@ class _DevOpsTabState extends State<DevOpsTab> {
                           DevDetailsPage(dev: _devOps[i])),
                 );
               },
-              onLongPress: () {
-                setState(() {
-                  _selectedDevId = _isSelected ? null : _devOps[i].id;
-                });
-              },
+              onMoreTap: _toggleSelected,
+              onLongPress: _toggleSelected,
             );
           }),
     );
