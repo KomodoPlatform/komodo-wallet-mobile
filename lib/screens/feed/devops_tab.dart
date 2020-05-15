@@ -100,13 +100,13 @@ class _DevOpsTabState extends State<DevOpsTab> {
                   url: 'https://github.com/ca333/komodoDEX/issues/701',
                 )),
             DevStatus(
-              id: '0',
+              id: '3',
               message: 'git',
               startTime: 1589009514000,
               endTime: 1589020314000,
             ),
             DevStatus(
-                id: '1',
+                id: '4',
                 message: '#757 orders duplicates',
                 startTime: 1589020314000,
                 endTime: 1589022774000,
@@ -116,7 +116,7 @@ class _DevOpsTabState extends State<DevOpsTab> {
                   url: 'https://github.com/ca333/komodoDEX/issues/757',
                 )),
             DevStatus(
-                id: '2',
+                id: '5',
                 message: 'news, design and layout, \'DevOps\' tab',
                 startTime: 1589022774000,
                 issue: Issue(
@@ -125,13 +125,13 @@ class _DevOpsTabState extends State<DevOpsTab> {
                   url: 'https://github.com/ca333/komodoDEX/issues/701',
                 )),
             DevStatus(
-              id: '0',
+              id: '6',
               message: 'git',
               startTime: 1589109174000,
               endTime: 1589112774000,
             ),
             DevStatus(
-                id: '1',
+                id: '7',
                 message: '#757 orders duplicates',
                 startTime: 1589112774000,
                 endTime: 1589119974000,
@@ -141,7 +141,7 @@ class _DevOpsTabState extends State<DevOpsTab> {
                   url: 'https://github.com/ca333/komodoDEX/issues/757',
                 )),
             DevStatus(
-                id: '2',
+                id: '8',
                 message: 'news, design and layout, \'DevOps\' tab',
                 startTime: 1589551974000,
                 issue: Issue(

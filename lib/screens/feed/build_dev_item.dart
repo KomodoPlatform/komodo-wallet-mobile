@@ -82,19 +82,25 @@ class _BuildDevItemState extends State<BuildDevItem> {
                         ),
                       )),
                 ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () {
-                      if (widget.onMoreTap != null) widget.onMoreTap();
-                    },
-                    child: Icon(
-                      Icons.more_vert,
-                      size: 18,
+                Column(
+                  children: <Widget>[
+                    const SizedBox(height: 2),
+                    Container(
+                      height: 40,
+                      width: 40,
+                      child: InkWell(
+                        customBorder: const CircleBorder(),
+                        onTap: () {
+                          if (widget.onMoreTap != null) widget.onMoreTap();
+                        },
+                        child: Icon(
+                          Icons.more_vert,
+                          size: 18,
+                          color: Theme.of(context).highlightColor,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
                 const SizedBox(width: 4),
               ],

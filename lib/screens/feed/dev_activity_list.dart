@@ -20,18 +20,23 @@ class _DevActivityListState extends State<DevActivityList> {
     final List<DevStatus> _activity = List.from(widget.dev.activity.reversed);
 
     return ListView.builder(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
       reverse: true,
       shrinkWrap: true,
       itemCount: _activity.length,
       itemBuilder: (BuildContext context, int i) {
-        return Container(
-          padding: const EdgeInsets.only(left: 12, right: 12),
-          child: BuildDevActivityItem(
-              _activity[i],
-              dev: widget.dev,
-              selected: _activity[i].id == _selectedItemId,
-            ),
-        );
+        final bool _isSelected = _selectedItemId == _activity[i].id;
+
+        return BuildDevActivityItem(
+            _activity[i],
+            dev: widget.dev,
+            selected: _activity[i].id == _selectedItemId,
+            onMoreTap: () {
+              setState(() {
+              _selectedItemId = _isSelected ? null : _activity[i].id;
+              });
+            },
+          );
       },
     );
   }
