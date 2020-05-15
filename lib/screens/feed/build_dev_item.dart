@@ -89,6 +89,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
                       child: Opacity(
                           opacity: 0.5,
                           child: Container(
+                            color: Colors.transparent,
                             height: 40,
                             width: 40,
                             alignment: Alignment.topCenter,
