@@ -40,68 +40,64 @@ class _BuildDevItemState extends State<BuildDevItem> {
         ))),
         child: Column(
           children: <Widget>[
-            InkWell(
-              onTap: () {
-                if (widget.onTap != null) widget.onTap();
-              },
-              onLongPress: () {
-                if (widget.onLongPress != null) widget.onLongPress();
-              },
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 12,
-                  top: 12,
-                  bottom: 12,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    BuildDevAvatar(
-                      widget.dev,
-                      size: 40,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Container(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            widget.dev.name,
-                            style: TextStyle(
-                              color: widget.selected
-                                  ? Theme.of(context).accentColor
-                                  : Theme.of(context).textTheme.body1.color,
-                              //fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          _buildCurrentStatus(),
-                          const SizedBox(height: 4),
-                          _buildCurrentIssue(),
-                        ],
-                      )),
-                    ),
-                    GestureDetector(
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: InkWell(
                       onTap: () {
-                        if (widget.onMoreTap != null) widget.onMoreTap();
+                        if (widget.onTap != null) widget.onTap();
                       },
-                      child: Opacity(
-                          opacity: 0.5,
-                          child: Container(
-                            color: Colors.transparent,
-                            height: 40,
-                            width: 40,
-                            alignment: Alignment.topCenter,
-                            child: Icon(
-                              Icons.more_vert,
-                              size: 18,
+                      onLongPress: () {
+                        if (widget.onLongPress != null) widget.onLongPress();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            left: 12, top: 12, bottom: 12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            BuildDevAvatar(
+                              widget.dev,
+                              size: 40,
                             ),
-                          )),
-                    ),
-                  ],
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Container(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    widget.dev.name,
+                                    style: Theme.of(context).textTheme.subtitle,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  _buildCurrentStatus(),
+                                  const SizedBox(height: 4),
+                                  _buildCurrentIssue(),
+                                ],
+                              )),
+                            ),
+                          ],
+                        ),
+                      )),
                 ),
-              ),
+                Container(
+                  height: 40,
+                  width: 40,
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: () {
+                      if (widget.onMoreTap != null) widget.onMoreTap();
+                    },
+                    child: Icon(
+                      Icons.more_vert,
+                      size: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+              ],
             ),
             _buildDetails(),
           ],
@@ -195,7 +191,7 @@ class _BuildDevItemState extends State<BuildDevItem> {
             padding: const EdgeInsets.only(right: 5, top: 1),
             child: Icon(
               _online == OnlineStatus.active
-                  ? Icons.playlist_add_check
+                  ? Icons.directions_run
                   : Icons.access_time,
               size: 15,
               color: Theme.of(context).textTheme.caption.color,

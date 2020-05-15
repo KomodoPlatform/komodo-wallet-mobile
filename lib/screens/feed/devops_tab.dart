@@ -16,6 +16,7 @@ class _DevOpsTabState extends State<DevOpsTab> {
     final List<Dev> _devOps = _getDevOps();
     return Container(
       child: ListView.builder(
+        padding: const EdgeInsets.only(top: 12),
           itemCount: _devOps.length,
           itemBuilder: (BuildContext context, int i) {
             final bool _isSelected = _selectedDevId == _devOps[i].id;
