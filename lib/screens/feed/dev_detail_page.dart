@@ -23,20 +23,10 @@ class DevDetailsPage extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              children: <Widget>[
-                DevActivityList(dev),
-              ],
-            ),
-          ),
-        ),
+      body: Column(
+        children: <Widget>[
+          Expanded(child: DevActivityList(dev)),
+        ],
       ),
     );
   }

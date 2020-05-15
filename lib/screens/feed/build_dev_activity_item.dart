@@ -26,7 +26,7 @@ class BuildDevActivityItem extends StatelessWidget {
           BuildDevAvatar(dev, size: 25),
           const SizedBox(width: 12),
           Flexible(
-                      child: ConstrainedBox(
+            child: ConstrainedBox(
               constraints: const BoxConstraints(
                 minWidth: 200,
               ),
@@ -56,6 +56,8 @@ class BuildDevActivityItem extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(width: 4),
+          Opacity(opacity: 0.5, child: Icon(Icons.more_vert, size: 18,)),
         ],
       ),
     );

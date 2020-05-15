@@ -95,6 +95,56 @@ class _DevOpsTabState extends State<DevOpsTab> {
                   title: 'rewamp the news section rewamp',
                   url: 'https://github.com/ca333/komodoDEX/issues/701',
                 )),
+            DevStatus(
+              id: '0',
+              message: 'git',
+              startTime: 1589009514000,
+              endTime: 1589020314000,
+            ),
+            DevStatus(
+                id: '1',
+                message: '#757 orders duplicates',
+                startTime: 1589020314000,
+                endTime: 1589022774000,
+                issue: Issue(
+                  id: '757',
+                  title: 'Orderbook page creating orders duplicates',
+                  url: 'https://github.com/ca333/komodoDEX/issues/757',
+                )),
+            DevStatus(
+                id: '2',
+                message: 'news, design and layout, \'DevOps\' tab',
+                startTime: 1589022774000,
+                issue: Issue(
+                  id: '701',
+                  title: 'rewamp the news section rewamp',
+                  url: 'https://github.com/ca333/komodoDEX/issues/701',
+                )),
+            DevStatus(
+              id: '0',
+              message: 'git',
+              startTime: 1589109174000,
+              endTime: 1589112774000,
+            ),
+            DevStatus(
+                id: '1',
+                message: '#757 orders duplicates',
+                startTime: 1589112774000,
+                endTime: 1589119974000,
+                issue: Issue(
+                  id: '757',
+                  title: 'Orderbook page creating orders duplicates',
+                  url: 'https://github.com/ca333/komodoDEX/issues/757',
+                )),
+            DevStatus(
+                id: '2',
+                message: 'news, design and layout, \'DevOps\' tab',
+                startTime: 1589551974000,
+                issue: Issue(
+                  id: '701',
+                  title: 'rewamp the news section rewamp',
+                  url: 'https://github.com/ca333/komodoDEX/issues/701',
+                )),
           ]),
     ];
   }

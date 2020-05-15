@@ -17,15 +17,20 @@ class _DevActivityListState extends State<DevActivityList> {
   @override
   Widget build(BuildContext context) {
     if (widget.dev?.activity == null) return Container();
-    
+    final List<DevStatus> _activity = List.from(widget.dev.activity.reversed);
+
     return ListView.builder(
+      reverse: true,
       shrinkWrap: true,
-      itemCount: widget.dev.activity.length,
+      itemCount: _activity.length,
       itemBuilder: (BuildContext context, int i) {
-        return BuildDevActivityItem(
-          widget.dev.activity[i],
-          dev: widget.dev,
-          selected: widget.dev.activity[i].id == _selectedItemId,
+        return Container(
+          padding: const EdgeInsets.only(left: 12, right: 12),
+          child: BuildDevActivityItem(
+              _activity[i],
+              dev: widget.dev,
+              selected: _activity[i].id == _selectedItemId,
+            ),
         );
       },
     );
