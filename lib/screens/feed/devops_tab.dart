@@ -96,7 +96,7 @@ class _DevOpsTabState extends State<DevOpsTab> {
                 startTime: 1588927072000,
                 issue: Issue(
                   id: '701',
-                  title: 'rewamp the news section rewamp',
+                  title: 'rewamp the news section',
                   url: 'https://github.com/ca333/komodoDEX/issues/701',
                 )),
             DevStatus(
@@ -121,7 +121,7 @@ class _DevOpsTabState extends State<DevOpsTab> {
                 startTime: 1589022774000,
                 issue: Issue(
                   id: '701',
-                  title: 'rewamp the news section rewamp',
+                  title: 'rewamp the news section',
                   url: 'https://github.com/ca333/komodoDEX/issues/701',
                 )),
             DevStatus(
@@ -146,7 +146,7 @@ class _DevOpsTabState extends State<DevOpsTab> {
                 startTime: 1589551974000,
                 issue: Issue(
                   id: '701',
-                  title: 'rewamp the news section rewamp',
+                  title: 'rewamp the news section',
                   url: 'https://github.com/ca333/komodoDEX/issues/701',
                 )),
           ]),

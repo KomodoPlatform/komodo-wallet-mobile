@@ -195,13 +195,17 @@ class _BuildDevItemState extends State<BuildDevItem> {
       children: <Widget>[
         Container(
             padding: const EdgeInsets.only(right: 5, top: 1),
-            child: Icon(
-              _online == OnlineStatus.active
-                  ? Icons.directions_run
-                  : Icons.access_time,
-              size: 15,
-              color: Theme.of(context).textTheme.caption.color,
-            )),
+            child: _online == OnlineStatus.active
+                ? Icon(
+                    Icons.directions_run,
+                    size: 15,
+                    color: Colors.green,
+                  )
+                : Icon(
+                    Icons.access_time,
+                    size: 15,
+                    color: Theme.of(context).textTheme.caption.color,
+                  )),
         Expanded(
           child: Text(
             _message,

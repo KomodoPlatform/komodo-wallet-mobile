@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
 import 'package:komodo_dex/screens/feed/dev.dart';
-import 'package:komodo_dex/screens/feed/dev_detail_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class BuildDevActivityItem extends StatefulWidget {
@@ -39,59 +38,35 @@ class _BuildDevActivityItemState extends State<BuildDevActivityItem> {
                 BuildDevAvatar(widget.dev, size: 25),
                 const SizedBox(width: 12),
                 Flexible(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      minWidth: 200,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: widget.selected
+                          ? Theme.of(context).backgroundColor
+                          : Theme.of(context).primaryColor,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: widget.selected
-                            ? Theme.of(context).backgroundColor
-                            : Theme.of(context).primaryColor,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                      ),
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                        left: 20,
-                        right: 20,
-                        bottom: 20,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _buildStatusDateTime(context),
-                          const SizedBox(height: 4),
-                          Text(widget.status.message),
-                        ],
-                      ),
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                      left: 20,
+                      right: 20,
+                      bottom: 20,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _buildDateTime(context),
+                        _buildStatus(),
+                        _buildIssue(),
+                      ],
                     ),
                   ),
                 ),
                 const SizedBox(width: 4),
-                Column(
-                  children: <Widget>[
-                    const SizedBox(height: 2),
-                    Container(
-                      height: 40,
-                      width: 40,
-                      child: InkWell(
-                        customBorder: const CircleBorder(),
-                        onTap: () {
-                          if (widget.onMoreTap != null) widget.onMoreTap();
-                        },
-                        child: Icon(
-                          Icons.more_vert,
-                          size: 18,
-                          color: Theme.of(context).highlightColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                _buildMoreButton(),
                 const SizedBox(width: 4),
               ],
             ),
@@ -103,7 +78,7 @@ class _BuildDevActivityItemState extends State<BuildDevActivityItem> {
     );
   }
 
-  Widget _buildStatusDateTime(BuildContext context) {
+  Widget _buildDateTime(BuildContext context) {
     return Text(
       '${humanDate(widget.status.startTime)}',
       style: TextStyle(
@@ -111,24 +86,103 @@ class _BuildDevActivityItemState extends State<BuildDevActivityItem> {
     );
   }
 
+  Widget _buildStatus() {
+    if (widget.status.message == null) {
+      return Container(width: 0,);
+    }
+
+    return Column(
+      children: <Widget>[
+        const SizedBox(height: 4),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildStatusIcon(),
+            const SizedBox(width: 4),
+            Flexible(child: Text(widget.status.message)),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusIcon() {
+    Icon _icon;
+    if (widget.dev.latestStatus == widget.status &&
+        widget.dev.onlineStatus == OnlineStatus.active) {
+      _icon = Icon(Icons.directions_run, size: 15, color: Colors.green);
+    } else {
+      _icon = Icon(
+        Icons.playlist_add_check,
+        size: 15,
+        color: Theme.of(context).disabledColor,
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.only(top: 3),
+      child: _icon,
+    );
+  }
+
+  Widget _buildIssue() {
+    if (widget.status.issue == null) return Container(width: 0);
+
+    return Column(
+      children: <Widget>[
+        const SizedBox(height: 4),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.only(top: 2),
+              child: Icon(
+                Icons.error_outline,
+                size: 15,
+                color: Theme.of(context).disabledColor,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Flexible(child: Text(widget.status.issue.title)),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMoreButton() {
+    return Column(
+      children: <Widget>[
+        const SizedBox(height: 2),
+        Container(
+          height: 40,
+          width: 40,
+          child: InkWell(
+            customBorder: const CircleBorder(),
+            onTap: () {
+              if (widget.onMoreTap != null) widget.onMoreTap();
+            },
+            child: Icon(
+              Icons.more_vert,
+              size: 18,
+              color: Theme.of(context).highlightColor,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildDetails() {
     if (!widget.selected) return Container();
 
     final _buttonsList = <Widget>[
-      _buildDetailsButton(
-        iconData: Icons.thumb_up,
-        title: 'React', // TODO(yurii): localization
-        onTap: () {},
-      ),
-      _buildDetailsButton(
-        iconData: Icons.attach_money,
-        title: 'Tip', // TODO(yurii): localization
-        onTap: () {},
-      ),
       if (widget.status.issue != null)
         _buildDetailsButton(
           iconData: Icons.error_outline,
-          title: 'Issue', // TODO(yurii): localization
+          title: 'Go to Issue', // TODO(yurii): localization
           onTap: () {},
         ),
     ];
@@ -151,12 +205,13 @@ class _BuildDevActivityItemState extends State<BuildDevActivityItem> {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(iconData,
                   size: 20, color: Theme.of(context).textTheme.caption.color),
               const SizedBox(
-                height: 4,
+                width: 4,
               ),
               Text(title,
                   style: TextStyle(
