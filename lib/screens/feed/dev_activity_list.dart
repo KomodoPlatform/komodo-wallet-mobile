@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/screens/feed/build_dev_activity_item.dart';
-import 'package:komodo_dex/screens/feed/dev.dart';
 
 class DevActivityList extends StatefulWidget {
   const DevActivityList(this.dev);

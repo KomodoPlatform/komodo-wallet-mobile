@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
-import 'package:komodo_dex/screens/feed/dev.dart';
 import 'package:komodo_dex/screens/feed/dev_activity_list.dart';
 import 'package:komodo_dex/screens/feed/issues_list.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -109,7 +109,7 @@ class _DevDetailsPageState extends State<DevDetailsPage> {
   Widget _buildPageContent() {
     switch (_activeTab) {
       case 2: return DevActivityList(widget.dev);
-      case 3: return IssuesList();
+      case 3: return IssuesList(filterDevId: widget.dev.id);
       default: return Container();
     }
   }

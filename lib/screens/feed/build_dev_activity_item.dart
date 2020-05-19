@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
-import 'package:komodo_dex/screens/feed/dev.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class BuildDevActivityItem extends StatefulWidget {

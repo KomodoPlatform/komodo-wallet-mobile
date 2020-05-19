@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/screens/feed/dev.dart';
+import 'package:komodo_dex/model/feed_provider.dart';
 
 class BuildOnlineStatus extends StatelessWidget {
   const BuildOnlineStatus(this.dev, {this.size = 10});
