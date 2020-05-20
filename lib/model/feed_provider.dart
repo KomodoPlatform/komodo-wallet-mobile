@@ -1,9 +1,38 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class FeedProvider extends ChangeNotifier {
-  List<Dev> getDevOps() => devOpsListPlaceholder;
-  List<Issue> getIssues() => issuesListPlaceholder;
+  FeedProvider() {
+    ticker = Timer.periodic(const Duration(milliseconds: 1000), (_) {
+      _updateData();
+    });
+  }
+
+  Timer ticker;
+  List<Dev> _devOps;
+  List<Issue> _issues;
+
+  List<Dev> getDevOps() => _devOps;
+  List<Issue> getIssues() => _issues;
+  Dev getDev(String id) {
+    if (_devOps == null) return null;
+    return _devOps.firstWhere((Dev dev) => dev.id == id);
+  }
+
+  void _updateData() {
+    _devOps = devOpsListPlaceholder;
+    _issues = issuesListPlaceholder;
+
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    ticker?.cancel();
+  }
 }
 
 class Dev {
@@ -97,11 +126,13 @@ class Issue {
     @required this.id,
     this.title,
     this.url,
+    this.devs,
   });
 
   String id;
   String title;
   String url;
+  List<String> devs;
 }
 
 enum OnlineStatus {
@@ -215,10 +246,12 @@ List<Issue> issuesListPlaceholder = [
     id: '757',
     title: 'Orderbook page creating orders duplicates',
     url: 'https://github.com/ca333/komodoDEX/issues/757',
+    devs: ['0', '3'],
   ),
   Issue(
     id: '701',
     title: 'rewamp the news section',
     url: 'https://github.com/ca333/komodoDEX/issues/701',
+    devs: ['1', '2', '3'],
   ),
 ];

@@ -15,9 +15,12 @@ class _DevOpsTabState extends State<DevOpsTab> {
   @override
   Widget build(BuildContext context) {
     final List<Dev> _devOps = _getDevOps();
+    if (_devOps == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Container(
       child: ListView.builder(
-        padding: const EdgeInsets.only(top: 12),
+          padding: const EdgeInsets.only(top: 12),
           itemCount: _devOps.length,
           itemBuilder: (BuildContext context, int i) {
             final bool _isSelected = _selectedDevId == _devOps[i].id;
@@ -53,6 +56,6 @@ class _DevOpsTabState extends State<DevOpsTab> {
   }
 
   List<Dev> _getDevOps() {
-    return Provider.of<FeedProvider>(context).getDevOps;
+    return Provider.of<FeedProvider>(context).getDevOps();
   }
 }
