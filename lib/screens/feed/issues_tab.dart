@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/feed/issues_list.dart';
 
 class IssuesTab extends StatefulWidget {
   @override
@@ -8,8 +9,6 @@ class IssuesTab extends StatefulWidget {
 class _IssuesTabState extends State<IssuesTab> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return const IssuesList();
   }
 }
