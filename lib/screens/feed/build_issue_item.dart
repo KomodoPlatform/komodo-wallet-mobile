@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class BuildIssueItem extends StatefulWidget {
@@ -12,27 +13,28 @@ class BuildIssueItem extends StatefulWidget {
 }
 
 class _BuildIssueItemState extends State<BuildIssueItem> {
+  FeedProvider _feedProvider;
+
   @override
   Widget build(BuildContext context) {
+    _feedProvider = Provider.of<FeedProvider>(context);
+
     return InkWell(
       onTap: () {},
       child: Container(
-        padding: const EdgeInsets.only(
-          left: 12,
-          right: 12,
-          top: 20,
-          bottom: 20,
-        ),
+        padding: const EdgeInsets.all(20),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(Icons.error_outline),
+            Icon(Icons.error_outline,
+                size: 30, color: Theme.of(context).disabledColor),
             const SizedBox(width: 12),
-            Flexible(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(widget.issue.title),
+                  _buildLatestActivityDate(),
                   _buildContributors(),
                 ],
               ),
@@ -43,13 +45,47 @@ class _BuildIssueItemState extends State<BuildIssueItem> {
     );
   }
 
+  Widget _buildLatestActivityDate() {
+    final List<Dev> _devOps = _feedProvider.getDevOps();
+    int _latestActivity = 0;
+    for (Dev dev in _devOps) {
+      if (dev.activity == null || dev.activity.isEmpty) continue;
+      for (DevStatus status in dev.activity) {
+        if (status.issue == null || status.issue.id != widget.issue.id) {
+          continue;
+        }
+
+        if (status.startTime != null && status.startTime > _latestActivity) {
+          _latestActivity = status.startTime;
+        }
+        if (status.endTime != null && status.endTime > _latestActivity) {
+          _latestActivity = status.endTime;
+        }
+      }
+    }
+
+    if (_latestActivity == null) return Container(width: 0);
+
+    return Column(
+      children: <Widget>[
+        const SizedBox(height: 4),
+        Text(
+          'Latest activity: ${humanDate(_latestActivity)}', // TODO(yurii): localization
+          style: TextStyle(
+            fontSize: 13,
+            color: Theme.of(context).disabledColor,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildContributors() {
     final List<String> _contributorsIds = widget.issue.devs;
     if (_contributorsIds == null || _contributorsIds.isEmpty) {
       return Container();
     }
 
-    final FeedProvider _feedProvider = Provider.of<FeedProvider>(context);
     final List<Widget> _devList = [];
 
     for (int i = 0; i < _contributorsIds.length; i++) {
@@ -63,9 +99,16 @@ class _BuildIssueItemState extends State<BuildIssueItem> {
 
     return Column(
       children: <Widget>[
-        const SizedBox(height: 5),
-        Wrap(  
-          children: _devList.toList(),
+        const SizedBox(height: 6),
+        Wrap(
+          children: [
+            Text('Contributors: ',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context).disabledColor,
+                )), // TODO(yurii): localization
+            ..._devList,
+          ],
         ),
       ],
     );

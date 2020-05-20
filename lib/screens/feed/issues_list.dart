@@ -19,7 +19,6 @@ class _IssuesListState extends State<IssuesList> {
     if (_issues == null) return const Center(child: CircularProgressIndicator());
 
     return ListView.builder(
-        padding: const EdgeInsets.only(top: 8, bottom: 8),
         itemCount: _issues.length,
         itemBuilder: (BuildContext context, int i) {
           return BuildIssueItem(_issues[i]);
