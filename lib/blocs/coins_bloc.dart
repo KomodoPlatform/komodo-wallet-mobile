@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
@@ -9,6 +10,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
 import 'package:komodo_dex/model/disable_coin.dart';
 import 'package:komodo_dex/model/error_code.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
@@ -239,7 +241,7 @@ class CoinsBloc implements BlocBase {
         return transactions;
       }
     } catch (e) {
-      Log('coins_bloc:242', e);
+      Log('coins_bloc:244', e);
       rethrow;
     }
   }
@@ -250,28 +252,46 @@ class CoinsBloc implements BlocBase {
     while (_coinsLock) await sleepMs(77);
     _coinsLock = true;
 
-    final List<Coin> coinsReadJson = <Coin>[];
-
-    // NB: Loading the coins sequentially in order to better reuse the HTTP file descriptors
+    // Using a batch request to speed up the coin activation.
+    // NB: In the future we want to use a non-blocking API instead
+    // in order for the UI not to stuck if an activation of a particular coin is delayed.
+    // cf. https://github.com/KomodoPlatform/atomicDEX-API/issues/638
+    final List<Map<String, dynamic>> batch = [];
     for (Coin coin in coins) {
-      try {
-        final active = await enableCoin(coin);
-        if (active.isActive) {
-          coinsReadJson.add(active.coin);
-        } else {
-          Log('coins_bloc:262',
-              '${coin.abbr} not active? ${active.currentStatus}');
-        }
-      } catch (ex) {
-        Log('coins_bloc:266', 'Error activating ${coin.abbr}: $ex');
+      batch.add(json.decode(MM.enableCoinImpl(coin)));
+    }
+    final replies = await MM.batch(batch);
+    if (replies.length != batch.length) {
+      throw Exception(
+          'Unexpected number of replies: ${replies.length} != ${batch.length}');
+    }
+    for (int ix = 0; ix < coins.length; ++ix) {
+      final coin = coins[ix];
+      final Map<String, dynamic> ans = replies[ix];
+      final err = ErrorString.fromJson(ans);
+      if (err.error.isNotEmpty) {
+        Log('coins_bloc:273', 'Error activating ${coin.abbr}: ${err.error}');
+        continue;
       }
+      final acc = ActiveCoin.fromJson(ans);
+      if (acc.result != 'success') {
+        Log('coins_bloc:278', '!success: $ans');
+        continue;
+      }
+      await Db.coinActive(coin);
+      final bal = Balance(
+          address: acc.address,
+          balance: deci(acc.balance),
+          lockedBySwaps: deci(acc.lockedBySwaps),
+          coin: acc.coin);
+      final cb = CoinBalance(coin, bal);
+      // TODO(AG): Load previous USD balance from database
+      cb.balanceUSD = 0;
+      updateOneCoin(cb);
     }
 
-    _coinsLock = false;
-
-    currentCoinActivate(CoinToActivate(currentStatus: 'Loading coins'));
-    await updateCoinBalances();
     currentCoinActivate(null);
+    _coinsLock = false;
   }
 
   /// Activate a given coin.
@@ -286,7 +306,7 @@ class CoinsBloc implements BlocBase {
           CoinToActivate(currentStatus: '${coin.name} activated.'));
       if (ac.requiredConfirmations != coin.requiredConfirmations) {
         Log(
-            'coins_bloc:288',
+            'coins_bloc:308',
             'enableCoin, ${coin.abbr}, unexpected required_confirmations'
                 ', requested: ${coin.requiredConfirmations}'
                 ', received: ${ac.requiredConfirmations}');
@@ -294,7 +314,7 @@ class CoinsBloc implements BlocBase {
       }
       if (ac.requiresNotarization != coin.requiresNotarization) {
         Log(
-            'coins_bloc:296',
+            'coins_bloc:316',
             'enableCoin, ${coin.abbr}, unexpected requires_notarization'
                 ', requested: ${coin.requiresNotarization}'
                 ', received: ${coin.requiresNotarization}');
@@ -302,7 +322,7 @@ class CoinsBloc implements BlocBase {
       await Db.coinActive(coin);
       return CoinToActivate(coin: coin, isActive: true);
     } on TimeoutException catch (te) {
-      Log('coins_bloc:305', '${coin.abbr} enableCoin timeout, $te');
+      Log('coins_bloc:325', '${coin.abbr} enableCoin timeout, $te');
       currentCoinActivate(
           CoinToActivate(currentStatus: 'Sorry, ${coin.abbr} not available.'));
       await sleepMs(2000);
@@ -314,7 +334,7 @@ class CoinsBloc implements BlocBase {
             currentStatus: 'Coin ${coin.abbr} already initialized'));
         return CoinToActivate(coin: coin, isActive: true);
       } else {
-        Log('coins_bloc:317', '!enableCoin: $ex');
+        Log('coins_bloc:337', '!enableCoin: $ex');
         currentCoinActivate(CoinToActivate(
             currentStatus: 'Sorry, ${coin.abbr} not available.'));
         return CoinToActivate(coin: coin, isActive: false);
@@ -332,7 +352,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> resetCoinDefault() async {
-    Log('coins_bloc:335', 'resetCoinDefault');
+    Log('coins_bloc:355', 'resetCoinDefault');
   }
 
   Future<List<Coin>> electrumCoins() async {
@@ -348,7 +368,7 @@ class CoinsBloc implements BlocBase {
       ret.add(coin);
     }
     for (final String ticker in deactivate) {
-      Log('coins_bloc:351', '$ticker is unknown, removing from active coins');
+      Log('coins_bloc:371', '$ticker is unknown, removing from active coins');
       await Db.coinInactive(ticker);
     }
     return ret;
@@ -411,7 +431,7 @@ class CoinsBloc implements BlocBase {
           updateOneCoin(balance);
         }
       } catch (ex) {
-        Log('coins_bloc:414', 'Error updating ${coin.abbr} balance: $ex');
+        Log('coins_bloc:434', 'Error updating ${coin.abbr} balance: $ex');
       }
     }
 
@@ -435,7 +455,7 @@ class CoinsBloc implements BlocBase {
           .getBalance(GetBalance(coin: coin.abbr))
           .timeout(const Duration(seconds: 15));
     } catch (e) {
-      Log('coins_bloc:438', e);
+      Log('coins_bloc:458', e);
       balance = null;
     }
 
@@ -448,7 +468,7 @@ class CoinsBloc implements BlocBase {
       coinBalance = CoinBalance(coin, balance);
       // Log(
       //     'coins_bloc:480', 'Balance: ' + coinBalance.balance.getBalance());
-      // Log('coins_bloc:451',
+      // Log('coins_bloc:471',
       //     'RealBalance: ' + coinBalance.balance.getRealBalance());
       if (coinBalance.balanceUSD == null &&
           double.parse(coinBalance.balance.getBalance()) > 0) {
@@ -473,7 +493,7 @@ class CoinsBloc implements BlocBase {
     final dynamic ctks = await MM.getCoinToKickStart(
         mmSe.client, BaseService(method: 'coins_needed_for_kick_start'));
     if (ctks is CoinToKickStart) {
-      Log('coins_bloc:476', 'kick_start coins: ${ctks.result}');
+      Log('coins_bloc:496', 'kick_start coins: ${ctks.result}');
       final known = await coins;
       for (String ticker in ctks.result) {
         final coin = known[ticker];

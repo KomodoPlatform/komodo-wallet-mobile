@@ -222,7 +222,7 @@ class ApiProvider {
     if (err.error.isNotEmpty) throw removeLineFromMM2(err);
   }
 
-  dynamic enableCoinImpl(Coin coin) {
+  String enableCoinImpl(Coin coin) {
     final List<Server> servers = coin.serverList
         .map((String url) =>
             Server(url: url, protocol: 'TCP', disableCertVerification: false))
