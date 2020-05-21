@@ -657,7 +657,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                     const SizedBox(
                       height: 8,
                     ),
-                    Text(snapshot.data.currentStatus),
+                    Text(snapshot.data.currentStatus ?? AppLocalizations.of(context).connecting),
                     const SizedBox(
                       height: 16,
                     ),
