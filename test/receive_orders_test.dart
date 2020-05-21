@@ -4,7 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -42,8 +44,7 @@ void main() {
   testWidgets('Test if title exist', (WidgetTester tester) async {
     await tester.runAsync(() async {
       final List<Orderbook> ordersMock = await loadOrderbooks();
-      await createWidget(
-          tester, ReceiveOrders(orderbooks: ordersMock));
+      await createWidget(tester, ReceiveOrders(orderbooks: ordersMock));
 
       final Finder titleFinder =
           find.text(AppLocalizations.of(mContext).receiveLower);
@@ -79,12 +80,16 @@ void main() {
           .first;
 
       await createWidget(
-          tester,
-          AsksOrder(
+        tester,
+        ChangeNotifierProvider(
+          create: (context) => StartupProvider(),
+          child: AsksOrder(
             asks: orderbook.asks,
             sellAmount: 10.0,
             baseCoin: 'MORTY',
-          ));
+          ),
+        ),
+      );
 
       expect(find.byType(Image), findsOneWidget);
     });
@@ -99,12 +104,16 @@ void main() {
           .first;
 
       await createWidget(
-          tester,
-          AsksOrder(
+        tester,
+        ChangeNotifierProvider(
+          create: (context) => StartupProvider(),
+          child: AsksOrder(
             asks: orderbook.asks,
             sellAmount: 10.0,
             baseCoin: 'BTC',
-          ));
+          ),
+        ),
+      );
 
       expect(find.byKey(const Key('ask-item-0')), findsNothing);
     });
