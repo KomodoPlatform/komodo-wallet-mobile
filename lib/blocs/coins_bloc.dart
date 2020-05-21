@@ -502,6 +502,21 @@ class CoinsBloc implements BlocBase {
       }
     }
   }
+
+  List<CoinBalance> sortCoins(List<CoinBalance> unsorted) {
+    final List<CoinBalance> _sorted = List.from(unsorted);
+    _sorted.sort((a, b) {
+      if (a.balanceUSD < b.balanceUSD) return 1;
+      if (a.balanceUSD > b.balanceUSD) return -1;
+
+      if (a.balance.balance < b.balance.balance) return 1;
+      if (a.balance.balance > b.balance.balance) return -1;
+
+      return a.coin.name.compareTo(b.coin.name);
+    });
+
+    return _sorted;
+  }
 }
 
 CoinsBloc coinsBloc = CoinsBloc();

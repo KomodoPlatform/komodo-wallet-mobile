@@ -19,17 +19,11 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   Balance balance;
 
   @override
-  void initState() {
-    super.initState();
-
-    coin = widget.coinBalance.coin;
-    balance = widget.coinBalance.balance;
-  }
-
-  @override
   Widget build(BuildContext context) {
     final bool _hasNonzeroPrice =
         double.parse(widget.coinBalance.priceForOne ?? '0') > 0;
+    coin = widget.coinBalance.coin;
+    balance = widget.coinBalance.balance;
 
     return Container(
       height: 64,
