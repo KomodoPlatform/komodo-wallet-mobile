@@ -29,14 +29,15 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
       builder:
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         if (snapshot.data != null && snapshot.data.isNotEmpty) {
+          final List<CoinBalance> _sortedList = coinsBloc.sortCoins(snapshot.data);
           return ListView.builder(
               shrinkWrap: true,
-              itemCount: snapshot.data.length,
+              itemCount: _sortedList.length,
               itemBuilder: (BuildContext context, int index) {
                 return BuildCoinPriceListItem(
-                  coinBalance: snapshot.data[index],
+                  coinBalance: _sortedList[index],
                   onTap: () {
-                    widget.onItemTap(snapshot.data[index].coin);
+                    widget.onItemTap(_sortedList[index].coin);
                   },
                 );
               });
