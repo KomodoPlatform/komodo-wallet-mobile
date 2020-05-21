@@ -88,7 +88,7 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: _buildAppBar(),
       body: TabBarView(
         controller: _controllerTabs,

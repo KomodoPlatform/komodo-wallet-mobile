@@ -27,8 +27,8 @@ class _BuildDevItemState extends State<BuildDevItem> {
   Widget build(BuildContext context) {
     return Material(
       color: widget.selected
-          ? Theme.of(context).backgroundColor
-          : Theme.of(context).primaryColor,
+          ? Theme.of(context).primaryColor
+          : Theme.of(context).backgroundColor,
       child: Container(
         decoration: BoxDecoration(
             border: Border(

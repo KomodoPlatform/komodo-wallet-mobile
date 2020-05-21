@@ -19,27 +19,33 @@ class _BuildIssueItemState extends State<BuildIssueItem> {
   Widget build(BuildContext context) {
     _feedProvider = Provider.of<FeedProvider>(context);
 
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Icon(Icons.error_outline,
-                size: 30, color: Theme.of(context).disabledColor),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(widget.issue.title),
-                  _buildLatestActivityDate(),
-                  _buildContributors(),
-                ],
+    return Card(
+      color: Theme.of(context).primaryColor,
+      elevation: 4,
+      margin: const EdgeInsets.only(left: 12, right: 12, top: 12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(3),
+        onTap: () {},
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Icon(Icons.error_outline,
+                  size: 30, color: Theme.of(context).disabledColor),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(widget.issue.title),
+                    _buildLatestActivityDate(),
+                    _buildContributors(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
