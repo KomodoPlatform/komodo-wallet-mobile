@@ -3,6 +3,7 @@
 //     final recentSwaps = recentSwapsFromJson(jsonString);
 
 import 'package:komodo_dex/model/transaction_data.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 import 'swap.dart';
 
@@ -76,8 +77,11 @@ class MmSwap {
     errorEvents = List<String>.from(json['error_events']);
     events = List<SwapEL>.from(
         json['events'].map((dynamic x) => SwapEL.fromJson(x)));
-    if (json.containsKey('my_info')) {
-      myInfo = SwapMyInfo.fromJson(json['my_info']);
+    try {
+      final Map<String, dynamic> myInfoJs = json['my_info'];
+      if (myInfoJs != null) myInfo = SwapMyInfo.fromJson(myInfoJs);
+    } catch (ex, trace) {
+      Log('recent_swaps:84', '!my_info: $ex, $trace');
     }
     successEvents = List<String>.from(json['success_events']);
     type = json['type'];

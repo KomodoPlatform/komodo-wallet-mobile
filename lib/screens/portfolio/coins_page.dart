@@ -369,7 +369,7 @@ class _ItemCoinState extends State<ItemCoin> {
     final List<Widget> actions = <Widget>[];
     if (double.parse(balance.getBalance()) > 0) {
       Log(
-          'coins_page:367',
+          'coins_page:379',
           '${coin.abbr} balance: ${balance.balance}'
               '; locked_by_swaps: ${balance.lockedBySwaps}');
       actions.add(IconSlideAction(
@@ -649,7 +649,7 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                     const SizedBox(
                       height: 8,
                     ),
-                    Text(snapshot.data.currentStatus),
+                    Text(snapshot.data.currentStatus ?? AppLocalizations.of(context).connecting),
                     const SizedBox(
                       height: 16,
                     ),
