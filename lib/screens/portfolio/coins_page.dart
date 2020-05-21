@@ -302,17 +302,9 @@ class ListCoinsState extends State<ListCoins> {
             child: Builder(builder: (BuildContext context) {
               if (snapshot.data != null && snapshot.data.isNotEmpty) {
                 final List<dynamic> datas = <dynamic>[];
-                
-                final List<CoinBalance> _sorted = snapshot.data;
-                _sorted.sort((a, b) {
-                  if (a.balanceUSD < b.balanceUSD) return 1;
-                  if (a.balanceUSD > b.balanceUSD) return -1;
 
-                  if (a.balance.balance < b.balance.balance) return 1;
-                  if (a.balance.balance > b.balance.balance) return -1;
-
-                  return a.coin.name.compareTo(b.coin.name);
-                });
+                final List<CoinBalance> _sorted =
+                    coinsBloc.sortCoins(snapshot.data);
 
                 datas.addAll(_sorted);
                 datas.add(true);
