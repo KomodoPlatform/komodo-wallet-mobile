@@ -172,7 +172,8 @@ class _CoinSelectState extends State<CoinSelect> {
         context: context,
         builder: (BuildContext context) {
           if (_coinsList != null) {
-            if (_coinsList.isEmpty) {
+            final List<CoinBalance> _sortedList = coinsBloc.sortCoins(_coinsList);
+            if (_sortedList.isEmpty) {
               return const SimpleDialog(
                 title: Text('Select Coin'), // TODO(yurii): localization
                 children: <Widget>[
@@ -205,8 +206,8 @@ class _CoinSelectState extends State<CoinSelect> {
                   ];
 
             final List<SimpleDialogOption> coinsList = [];
-            for (int i = 0; i < _coinsList.length; i++) {
-              final CoinBalance coinBalance = _coinsList[i];
+            for (int i = 0; i < _sortedList.length; i++) {
+              final CoinBalance coinBalance = _sortedList[i];
 
               if (widget.hideInactiveCoins &&
                   !_isCoinActive(coinBalance.coin)) {
