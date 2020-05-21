@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
@@ -15,8 +16,11 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Protective layer: MyApp | LockScreen | MyHomePage.
+/// Also handles the application startup.
 class LockScreen extends StatefulWidget {
   const LockScreen(
       {this.pinStatus = PinStatus.NORMAL_PIN,
@@ -91,6 +95,16 @@ class _LockScreenState extends State<LockScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final StartupProvider startup = Provider.of<StartupProvider>(context);
+    if (!startup.live) {
+      return Text(startup.log,
+          style: TextStyle(
+            fontFamily: 'Monospace',
+            color: Theme.of(context).accentColor,
+            fontSize: 14,
+          ));
+    }
+
     return StreamBuilder<bool>(
       stream: authBloc.outIsLogin,
       initialData: authBloc.isLogin,
@@ -106,8 +120,8 @@ class _LockScreenState extends State<LockScreen> {
                 return StreamBuilder<bool>(
                     initialData: authBloc.showLock,
                     stream: authBloc.outShowLock,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<bool> outShowLock) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<bool> outShowLock) {
                       return SharedPreferencesBuilder<dynamic>(
                         pref: 'switch_pin',
                         builder: (BuildContext context,
@@ -125,7 +139,7 @@ class _LockScreenState extends State<LockScreen> {
                                           widget.pinStatus ==
                                               PinStatus.NORMAL_PIN) {
                                         Log.println(
-                                            'lock_screen:127', snapshot.data);
+                                            'lock_screen:141', snapshot.data);
                                         if (isLogin.hasData && isLogin.data) {
                                           authenticateBiometrics(
                                               context, widget.pinStatus);

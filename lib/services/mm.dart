@@ -71,7 +71,7 @@ class ApiProvider {
       loggedLine = loggedLine.substring(0, 75) + '..';
     }
 
-    Log.println('mm:76', loggedLine);
+    Log.println('mm:74', loggedLine);
     this.res = res;
     return res;
   }
@@ -248,7 +248,7 @@ class ApiProvider {
       'requires_notarization': coin.requiresNotarization
     };
     final js = json.encode(electrum);
-    Log('mm:253', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
+    Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
     return js;
   }
 
