@@ -97,12 +97,25 @@ class _LockScreenState extends State<LockScreen> {
   Widget build(BuildContext context) {
     final StartupProvider startup = Provider.of<StartupProvider>(context);
     if (!startup.live) {
-      return Text(startup.log,
-          style: TextStyle(
-            fontFamily: 'Monospace',
-            color: Theme.of(context).accentColor,
-            fontSize: 14,
-          ));
+      final RegExpMatch _tailMatch = RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
+      final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
+      return Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Image.asset('assets/logo_kmd.png'),
+              const SizedBox(height: 12),
+              Text(_logTail,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Theme.of(context).textTheme.caption.color,
+                  )),
+            ],
+          ),
+        ),
+      );
     }
 
     return StreamBuilder<bool>(
