@@ -72,7 +72,7 @@ void _checkNetworkStatus() {
     if (result == ConnectivityResult.none) {
       mainBloc.setIsNetworkOffline(true);
     } else {
-      if (!mmSe.running) startup.startMM();
+      if (!mmSe.running) startup.startMmIfUnlocked();
       if (mainBloc.isNetworkOffline) mainBloc.setIsNetworkOffline(false);
     }
   });
@@ -216,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         Log('main:216', 'lifecycle: resumed');
         lockService.lockSignal(context);
         if (Platform.isIOS) {
-          if (!mmSe.running) await startup.startMM();
+          if (!mmSe.running) await startup.startMmIfUnlocked();
         }
         break;
       case AppLifecycleState.detached:

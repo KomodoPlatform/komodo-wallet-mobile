@@ -28,6 +28,7 @@ class StartupProvider extends ChangeNotifier {
 
 Startup startup = Startup();
 
+/// Manage startup sequence
 class Startup {
   bool _started = false;
   bool _live = false;
@@ -51,14 +52,19 @@ class Startup {
         _notifyListeners();
       });
 
-    _log += '\nStarting MM…';
-    await startMM();
+    // We'd *like* to jump-start MM as part of the initial startup sequence
+    // but this is unlikely to happen because the passphrase needs to be unlocked first.
+    // So invoking this method here might be seen as a wishful thinking.
+    await startMmIfUnlocked();
 
     _live = true;
     _notifyListeners();
   }
 
-  Future<void> startMM() async {
+  /// Start MM but only if the passphrase is currently unlocked.
+  /// Note that MM is usually started elsewhere (cf. _PinPageState._onCodeSuccess),
+  /// though maybe we'll rectify this and unify MM startup code yet.
+  Future<void> startMmIfUnlocked() async {
     // The method is public and we should defend from it being invoked in parallel
     final now = DateTime.now().millisecondsSinceEpoch;
     if ((now - _startingMM).abs() < 3141) return;
@@ -69,6 +75,7 @@ class Startup {
         prefs.getBool('isPassphraseIsSaved') == true) {
       await authBloc.initSwitchPref();
 
+      // If the screen is currently unlocked then proceed with MM initialization
       if (!(authBloc.showLock && prefs.getBool('switch_pin'))) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
