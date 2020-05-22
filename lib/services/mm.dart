@@ -13,8 +13,6 @@ import '../model/buy_response.dart';
 import '../model/coin.dart';
 import '../model/coin_to_kick_start.dart';
 import '../model/disable_coin.dart';
-import '../model/error_disable_coin_active_swap.dart';
-import '../model/error_disable_coin_order_is_matched.dart';
 import '../model/error_string.dart';
 import '../model/get_active_coin.dart';
 import '../model/get_balance.dart';
@@ -73,7 +71,7 @@ class ApiProvider {
       loggedLine = loggedLine.substring(0, 75) + '..';
     }
 
-    Log.println('mm:76', loggedLine);
+    Log.println('mm:74', loggedLine);
     this.res = res;
     return res;
   }
@@ -224,7 +222,7 @@ class ApiProvider {
     if (err.error.isNotEmpty) throw removeLineFromMM2(err);
   }
 
-  dynamic enableCoinImpl(Coin coin) {
+  String enableCoinImpl(Coin coin) {
     final List<Server> servers = coin.serverList
         .map((String url) =>
             Server(url: url, protocol: 'TCP', disableCertVerification: false))
@@ -250,7 +248,7 @@ class ApiProvider {
       'requires_notarization': coin.requiresNotarization
     };
     final js = json.encode(electrum);
-    Log('mm:253', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
+    Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
     return js;
   }
 
@@ -403,22 +401,21 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'getVersionMM2', e, 'Error on get version MM2')));
 
-  Future<dynamic> disableCoin(
-    http.Client client,
-    GetDisableCoin body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getDisableCoinToJson(userBody.body))
-              .then((Response r) => _saveRes('disableCoin', r))
-              .then<dynamic>((Response res) => disableCoinFromJson(res.body))
-              .catchError(
-                  (dynamic _) => errorDisableCoinActiveSwapFromJson(res.body))
-              .catchError((dynamic _) =>
-                  errorDisableCoinOrderIsMatchedFromJson(res.body))
-              .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'disableCoin', e, 'Error on disable coin')));
+  Future<DisableCoin> disableCoin(GetDisableCoin req,
+      {http.Client client}) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(client, req);
+    final r = await client.post(url, body: json.encode(userBody.body));
+    _assert200(r);
+    _saveRes('disableCoin', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return DisableCoin.fromJson(jbody);
+  }
 
   Future<dynamic> recoverFundsOfSwap(
     http.Client client,
@@ -436,4 +433,15 @@ class ApiProvider {
                   'Swap must be finished before recover funds attempt'))
               .then((ErrorString errorString) => injectErrorString(errorString, 'swap data is not found')))
           .catchError((dynamic e) => _catchErrorString('recoverFundsOfSwap', e, 'Error on recover funds of swap')));
+
+  /// https://github.com/KomodoPlatform/developer-docs/pull/171/files
+  /// https://github.com/KomodoPlatform/atomicDEX-API/commit/a00c2863210ce9a262bb579a74249dbb04a94efc
+  Future<List<dynamic>> batch(List<Map<String, dynamic>> batch,
+      {http.Client client}) async {
+    client ??= mmSe.client;
+    final r = await client.post(url, body: json.encode(batch));
+    _assert200(r);
+    _saveRes('batch', r);
+    return List<dynamic>.from(json.decode(r.body));
+  }
 }

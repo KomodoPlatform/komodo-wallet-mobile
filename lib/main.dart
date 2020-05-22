@@ -20,7 +20,6 @@ import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
-import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:local_auth/local_auth.dart';
@@ -28,6 +27,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
+import 'model/startup_provider.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
 import 'widgets/theme_data.dart';
@@ -35,21 +35,16 @@ import 'widgets/theme_data.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   applicationDocumentsDirectory; // Start getting the application directory.
-  if (isInDebugMode) {
-    return runApp(_myAppWithProviders);
-  } else {
-    startApp();
-  }
+  startApp();
 }
 
 Future<void> startApp() async {
   try {
     mmSe.metrics();
-    await mmSe.updateMmBinary();
-    await _runBinMm2UserAlreadyLog();
+    startup.start();
     return runApp(_myAppWithProviders);
   } catch (e) {
-    Log('main:51', 'startApp] $e');
+    Log('main:46', 'startApp] $e');
     rethrow;
   }
 }
@@ -68,34 +63,21 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ChangeNotifierProvider(
               create: (context) => FeedProvider(),
             ),
+            ChangeNotifierProvider(
+              create: (context) => StartupProvider(),
+            ),
           ],
           child: const MyApp(),
         ));
 
-Future<void> _runBinMm2UserAlreadyLog() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getBool('isPassphraseIsSaved') != null &&
-      prefs.getBool('isPassphraseIsSaved') == true) {
-    await authBloc.initSwitchPref();
-
-    if (!(authBloc.showLock && prefs.getBool('switch_pin'))) {
-      await authBloc.login(await EncryptionTool().read('passphrase'), null);
-    }
-  }
-}
-
 void _checkNetworkStatus() {
   Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-    print(result);
+    Log('main:71', 'ConnectivityResult: $result');
     if (result == ConnectivityResult.none) {
       mainBloc.setIsNetworkOffline(true);
     } else {
-      if (mainBloc.isNetworkOffline) {
-        if (!mmSe.running) {
-          _runBinMm2UserAlreadyLog();
-        }
-        mainBloc.setIsNetworkOffline(false);
-      }
+      if (!mmSe.running) startup.startMmIfUnlocked();
+      if (mainBloc.isNetworkOffline) mainBloc.setIsNetworkOffline(false);
     }
   });
 }
@@ -116,9 +98,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _checkNetworkStatus();
-    if (isInDebugMode) {
-      mmSe.updateMmBinary().then((_) => _runBinMm2UserAlreadyLog());
-    }
   }
 
   @override
@@ -141,11 +120,6 @@ class _MyAppState extends State<MyApp> {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    // Log('main:140',
-                    //     'current locale: ' + currentLocale?.toString());
-                    // Log('main:142',
-                    //     'current pref locale: ' + prefLocale.toString());
-
                     return MaterialApp(
                         title: 'atomicDEX',
                         localizationsDelegates: <
@@ -225,11 +199,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // Picking a file also triggers this on Android (?), as it switches into a system activity.
         // On iOS *after* picking a file the app returns to `inactive`,
         // on Android to `inactive` and then `resumed`.
-        Log('main:224', 'lifecycle: inactive');
+        Log('main:198', 'lifecycle: inactive');
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:
-        Log('main:228', 'lifecycle: paused');
+        Log('main:202', 'lifecycle: paused');
         lockService.lockSignal(context);
 
         // AG: do we really need it? // if (Platform.isIOS) mmSe.closeLogSink();
@@ -238,21 +212,19 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
         if (Platform.isIOS && await musicService.iosBackgroundExit()) {
           // https://gitlab.com/artemciy/supernet/issues/4#note_284468673
-          Log('main:237', 'Suspended, exit');
+          Log('main:211', 'Suspended, exit');
           exit(0);
         }
         break;
       case AppLifecycleState.resumed:
-        Log('main:242', 'lifecycle: resumed');
+        Log('main:216', 'lifecycle: resumed');
         lockService.lockSignal(context);
         if (Platform.isIOS) {
-          if (!mmSe.running) {
-            _runBinMm2UserAlreadyLog();
-          }
+          if (!mmSe.running) await startup.startMmIfUnlocked();
         }
         break;
       case AppLifecycleState.detached:
-        Log('main:251', 'lifecycle: detached');
+        Log('main:223', 'lifecycle: detached');
         break;
     }
   }
