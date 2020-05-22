@@ -84,7 +84,7 @@ class _DevDetailsPageState extends State<DevDetailsPage> {
 
   Widget _buildCurrentStatus(BuildContext context) {
     final TextStyle _textStyle = TextStyle(
-      color: Theme.of(context).highlightColor,
+      color: Theme.of(context).disabledColor,
       fontWeight: FontWeight.normal,
       fontSize: 13,
     );

@@ -167,7 +167,7 @@ class _BuildDevActivityItemState extends State<BuildDevActivityItem> {
             child: Icon(
               Icons.more_vert,
               size: 18,
-              color: Theme.of(context).highlightColor,
+              color: Theme.of(context).disabledColor,
             ),
           ),
         ),

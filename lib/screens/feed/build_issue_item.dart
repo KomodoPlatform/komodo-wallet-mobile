@@ -27,7 +27,10 @@ class _BuildIssueItemState extends State<BuildIssueItem> {
         borderRadius: BorderRadius.circular(3),
         onTap: () {},
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(
+            vertical: 20,
+            horizontal: 12,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -38,7 +41,10 @@ class _BuildIssueItemState extends State<BuildIssueItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(widget.issue.title),
+                    Text(
+                      widget.issue.title,
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
                     _buildLatestActivityDate(),
                     _buildContributors(),
                   ],
@@ -74,7 +80,7 @@ class _BuildIssueItemState extends State<BuildIssueItem> {
 
     return Column(
       children: <Widget>[
-        const SizedBox(height: 4),
+        const SizedBox(height: 6),
         Text(
           'Latest activity: ${humanDate(_latestActivity)}', // TODO(yurii): localization
           style: TextStyle(
