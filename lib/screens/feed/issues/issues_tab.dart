@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/screens/feed/issues_list.dart';
+import 'package:komodo_dex/screens/feed/issues/issues_list.dart';
 
 class IssuesTab extends StatefulWidget {
   @override

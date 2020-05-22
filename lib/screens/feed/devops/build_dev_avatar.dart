@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
-import 'package:komodo_dex/screens/feed/build_online_status.dart';
+import 'package:komodo_dex/screens/feed/devops/build_online_status.dart';
 
 class BuildDevAvatar extends StatelessWidget {
   const BuildDevAvatar(

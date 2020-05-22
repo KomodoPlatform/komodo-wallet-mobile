@@ -3,8 +3,8 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/article.dart';
-import 'package:komodo_dex/screens/feed/media_detail_page.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:komodo_dex/screens/feed/news/media_detail_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:share/share.dart';
 

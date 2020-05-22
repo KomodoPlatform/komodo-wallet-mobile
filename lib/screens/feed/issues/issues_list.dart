@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
-import 'package:komodo_dex/screens/feed/build_issue_item.dart';
+import 'package:komodo_dex/screens/feed/issues/build_issue_item.dart';
 import 'package:provider/provider.dart';
 
 class IssuesList extends StatefulWidget {

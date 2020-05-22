@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
-import 'package:komodo_dex/screens/feed/build_dev_item.dart';
-import 'package:komodo_dex/screens/feed/dev_detail_page.dart';
+import 'package:komodo_dex/screens/feed/devops/build_dev_item.dart';
+import 'package:komodo_dex/screens/feed/devops/dev_detail_page.dart';
 import 'package:provider/provider.dart';
 
 class DevOpsTab extends StatefulWidget {

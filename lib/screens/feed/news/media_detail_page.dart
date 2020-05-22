@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/article.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/feed/news_tab.dart';
+import 'package:komodo_dex/screens/feed/news/news_tab.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:carousel_slider/carousel_slider.dart';

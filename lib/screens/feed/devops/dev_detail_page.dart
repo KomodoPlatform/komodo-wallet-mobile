@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
-import 'package:komodo_dex/screens/feed/build_dev_avatar.dart';
-import 'package:komodo_dex/screens/feed/dev_activity_list.dart';
-import 'package:komodo_dex/screens/feed/issues_list.dart';
+import 'package:komodo_dex/screens/feed/devops/build_dev_avatar.dart';
+import 'package:komodo_dex/screens/feed/devops/dev_activity_list.dart';
+import 'package:komodo_dex/screens/feed/issues/issues_list.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class DevDetailsPage extends StatefulWidget {
