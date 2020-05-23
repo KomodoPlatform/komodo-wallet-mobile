@@ -25,6 +25,12 @@
 
 # Visual Studio Code related
 .vscode/
+# vscode-java-pack
+/android/.project
+/android/.settings/org.eclipse.buildship.core.prefs
+/android/app/.project
+/android/app/.classpath
+/android/app/.settings/org.eclipse.buildship.core.prefs
 
 # Flutter/Dart/Pub related
 **/doc/api/
