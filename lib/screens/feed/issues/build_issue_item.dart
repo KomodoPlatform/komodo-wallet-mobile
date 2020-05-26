@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/screens/feed/devops/build_dev_avatar.dart';
+import 'package:komodo_dex/screens/feed/issues/issue_detail_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,14 @@ class _BuildIssueItemState extends State<BuildIssueItem> {
       margin: const EdgeInsets.only(left: 12, right: 12, top: 12),
       child: InkWell(
         borderRadius: BorderRadius.circular(3),
-        onTap: () {},
+        onTap: () {
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) =>
+                    IssueDetailPage(widget.issue)),
+          );
+        },
         child: Container(
           padding: const EdgeInsets.symmetric(
             vertical: 20,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/screens/feed/devops/build_dev_avatar.dart';
 import 'package:komodo_dex/screens/feed/devops/dev_detail_page.dart';
+import 'package:komodo_dex/screens/feed/issues/issue_detail_page.dart';
 
 class BuildDevItem extends StatefulWidget {
   const BuildDevItem(
@@ -131,7 +132,14 @@ class _BuildDevItemState extends State<BuildDevItem> {
         _buildDetailsButton(
           iconData: Icons.error_outline,
           title: 'Issue', // TODO(yurii): localization
-          onTap: () {},
+          onTap: () {
+            Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) =>
+                    IssueDetailPage(_latest.issue)),
+          );
+          },
         ),
       _buildDetailsButton(
         iconData: Icons.list,

@@ -14,6 +14,12 @@ class FeedProvider extends ChangeNotifier {
   List<Dev> _devOps;
   List<Issue> _issues;
 
+  @override
+  void dispose() {
+    super.dispose();
+    ticker?.cancel();
+  }
+
   List<Dev> getDevOps() => _devOps;
   List<Issue> getIssues() => _issues;
   Dev getDev(String id) {
@@ -28,10 +34,18 @@ class FeedProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    ticker?.cancel();
+  List<DevStatus> sortTimeLine(List<DevStatus> unsorted) {
+    if (unsorted == null) return null;
+    if (unsorted.isEmpty) return [];
+
+    final List<DevStatus> _sorted = List.from(unsorted);
+    _sorted.sort((a, b) {
+      if (a.startTime > b.startTime) return 1;
+      if (a.startTime < b.startTime) return -1;
+      return 0;
+    });
+
+    return _sorted;
   }
 }
 
@@ -108,6 +122,7 @@ class Dev {
 class DevStatus {
   DevStatus({
     @required this.id,
+    this.devId,
     this.message,
     this.issue,
     this.startTime,
@@ -115,6 +130,7 @@ class DevStatus {
   });
 
   String id;
+  String devId;
   String message;
   Issue issue;
   int startTime;
@@ -181,7 +197,7 @@ List<Dev> devOpsListPlaceholder = [
             )),
         DevStatus(
             id: '2',
-            message: 'news, design and layout, \'DevOps\' tab',
+            message: 'news, design and layout, \'DevOps\' tab 0',
             startTime: 1588927072000,
             issue: Issue(
               id: '701',
@@ -206,7 +222,7 @@ List<Dev> devOpsListPlaceholder = [
             )),
         DevStatus(
             id: '5',
-            message: 'news, design and layout, \'DevOps\' tab',
+            message: 'news, design and layout, \'DevOps\' tab 1',
             startTime: 1589022774000,
             issue: Issue(
               id: '701',
@@ -231,7 +247,7 @@ List<Dev> devOpsListPlaceholder = [
             )),
         DevStatus(
             id: '8',
-            message: 'news, design and layout, \'DevOps\' tab',
+            message: 'news, design and layout, \'DevOps\' tab 2',
             startTime: 1589551974000,
             issue: Issue(
               id: '701',
