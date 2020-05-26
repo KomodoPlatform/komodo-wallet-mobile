@@ -368,6 +368,24 @@
 		]
 	},
 	{
+		"name": "MCL",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10023,
+		"proto": "tcp",
+		"abbr": "MCL",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFF326464",
+		"serverList": [
+			"electrum3.cipig.net:10023",
+			"electrum2.cipig.net:10023",
+			"electrum1.cipig.net:10023"
+		],
+		"explorerUrl": [
+			"http://explorer.marmara.io/"
+		]
+	},
+	{
 		"name": "Morty",
 		"type": "smartChain",
 		"address": "electrum1.cipig.net",
