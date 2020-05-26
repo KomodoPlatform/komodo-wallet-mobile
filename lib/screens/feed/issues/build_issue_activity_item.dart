@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
+import 'package:komodo_dex/screens/feed/devops/activity_item_button.dart';
 import 'package:komodo_dex/screens/feed/devops/build_dev_avatar.dart';
 import 'package:komodo_dex/screens/feed/devops/dev_detail_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -162,54 +163,24 @@ class _BuildIssueActivityItemState extends State<BuildIssueActivityItem> {
 
     final _buttonsList = <Widget>[
       if (_dev != null)
-        _buildDetailsButton(
-          iconData: Icons.playlist_add_check,
-          title: 'View Activity', // TODO(yurii): localization
-          onTap: () {
-            Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    DevDetailsPage(dev: _dev,)),
-          );
-          },
-        ),
+        BuildActivityItemDetailsButton(
+            iconData: Icons.playlist_add_check,
+            title: 'View Activity',
+            onTap: () {
+              Navigator.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) => DevDetailsPage(
+                          dev: _dev,
+                        )),
+              );
+            }),
     ];
 
     return Container(
       child: Flex(
         direction: Axis.horizontal,
         children: _buttonsList,
-      ),
-    );
-  }
-
-  Widget _buildDetailsButton({
-    @required IconData iconData,
-    @required String title,
-    @required Function onTap,
-  }) {
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(iconData,
-                  size: 20, color: Theme.of(context).textTheme.caption.color),
-              const SizedBox(
-                width: 4,
-              ),
-              Text(title,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  )),
-            ],
-          ),
-        ),
       ),
     );
   }

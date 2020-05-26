@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
+import 'package:komodo_dex/screens/feed/devops/activity_item_button.dart';
 import 'package:komodo_dex/screens/feed/devops/build_dev_avatar.dart';
 import 'package:komodo_dex/screens/feed/devops/dev_detail_page.dart';
 import 'package:komodo_dex/screens/feed/issues/issue_detail_page.dart';
@@ -117,21 +118,25 @@ class _BuildDevItemState extends State<BuildDevItem> {
     if (!widget.selected) return Container();
 
     final DevStatus _latest = widget.dev.latestStatus;
+
     final _buttonsList = <Widget>[
-      _buildDetailsButton(
+      BuildActivityItemDetailsButton(
         iconData: Icons.thumb_up,
         title: 'React', // TODO(yurii): localization
+        vertical: true,
         onTap: () {},
       ),
-      _buildDetailsButton(
+      BuildActivityItemDetailsButton(
         iconData: Icons.attach_money,
         title: 'Tip', // TODO(yurii): localization
+        vertical: true,
         onTap: () {},
       ),
       if (_latest?.issue != null)
-        _buildDetailsButton(
+        BuildActivityItemDetailsButton(
           iconData: Icons.error_outline,
           title: 'Issue', // TODO(yurii): localization
+          vertical: true,
           onTap: () {
             Navigator.push<dynamic>(
             context,
@@ -141,9 +146,10 @@ class _BuildDevItemState extends State<BuildDevItem> {
           );
           },
         ),
-      _buildDetailsButton(
+      BuildActivityItemDetailsButton(
         iconData: Icons.list,
         title: 'Activity', // TODO(yurii): localization
+        vertical: true,
         onTap: () {
           Navigator.push<dynamic>(
             context,
@@ -159,35 +165,6 @@ class _BuildDevItemState extends State<BuildDevItem> {
       child: Flex(
         direction: Axis.horizontal,
         children: _buttonsList,
-      ),
-    );
-  }
-
-  Widget _buildDetailsButton({
-    @required IconData iconData,
-    @required String title,
-    @required Function onTap,
-  }) {
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: <Widget>[
-              Icon(iconData,
-                  size: 20, color: Theme.of(context).textTheme.caption.color),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(title,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  )),
-            ],
-          ),
-        ),
       ),
     );
   }

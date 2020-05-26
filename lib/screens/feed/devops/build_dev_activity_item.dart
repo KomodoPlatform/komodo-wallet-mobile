@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
+import 'package:komodo_dex/screens/feed/devops/activity_item_button.dart';
 import 'package:komodo_dex/screens/feed/devops/build_dev_avatar.dart';
 import 'package:komodo_dex/screens/feed/issues/issue_detail_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -89,7 +90,9 @@ class _BuildDevActivityItemState extends State<BuildDevActivityItem> {
 
   Widget _buildStatus() {
     if (widget.status.message == null) {
-      return Container(width: 0,);
+      return Container(
+        width: 0,
+      );
     }
 
     return Column(
@@ -181,16 +184,16 @@ class _BuildDevActivityItemState extends State<BuildDevActivityItem> {
 
     final _buttonsList = <Widget>[
       if (widget.status.issue != null)
-        _buildDetailsButton(
+        BuildActivityItemDetailsButton(
           iconData: Icons.error_outline,
           title: 'View Issue', // TODO(yurii): localization
           onTap: () {
             Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    IssueDetailPage(widget.status.issue)),
-          );
+              context,
+              MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) =>
+                      IssueDetailPage(widget.status.issue)),
+            );
           },
         ),
     ];
@@ -199,36 +202,6 @@ class _BuildDevActivityItemState extends State<BuildDevActivityItem> {
       child: Flex(
         direction: Axis.horizontal,
         children: _buttonsList,
-      ),
-    );
-  }
-
-  Widget _buildDetailsButton({
-    @required IconData iconData,
-    @required String title,
-    @required Function onTap,
-  }) {
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(iconData,
-                  size: 20, color: Theme.of(context).textTheme.caption.color),
-              const SizedBox(
-                width: 4,
-              ),
-              Text(title,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).textTheme.caption.color,
-                  )),
-            ],
-          ),
-        ),
       ),
     );
   }
