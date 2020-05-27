@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
-import 'package:komodo_dex/screens/feed/devops/devops_tab.dart';
-import 'package:komodo_dex/screens/feed/issues/issues_tab.dart';
+//import 'package:komodo_dex/screens/feed/devops/devops_tab.dart';
+//import 'package:komodo_dex/screens/feed/issues/issues_tab.dart';
 import 'package:komodo_dex/screens/feed/news/news_tab.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -15,7 +15,7 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
   TabController _controllerTabs;
   @override
   void initState() {
-    _controllerTabs = TabController(length: 3, vsync: this);
+    _controllerTabs = TabController(length: 1, vsync: this); //length: 3
     _controllerTabs.addListener(_getIndex);
     mediaBloc.getArticles();
     super.initState();
@@ -73,7 +73,7 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
           : AppBar(
               title: Center(
                   child: Text(
-                'Feed'.toUpperCase(), // TODO(yurii): localization
+                'News Feed'.toUpperCase(), // TODO(yurii): localization
                 style: Theme.of(context).textTheme.subtitle,
               )),
               /* bottom: PreferredSize(
@@ -94,8 +94,8 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
         controller: _controllerTabs,
         children: <Widget>[
           NewsTab(),
-          DevOpsTab(),
-          IssuesTab(),
+          /* DevOpsTab(),
+          IssuesTab(), */
         ],
       ),
     );
