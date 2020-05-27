@@ -13,6 +13,7 @@ class FeedProvider extends ChangeNotifier {
   Timer ticker;
   List<Dev> _devOps;
   List<Issue> _issues;
+  List<NewsItem> _news;
 
   @override
   void dispose() {
@@ -27,9 +28,12 @@ class FeedProvider extends ChangeNotifier {
     return _devOps.firstWhere((Dev dev) => dev.id == id);
   }
 
+  List<NewsItem> getNews() => _news;
+
   void _updateData() {
     _devOps = devOpsListPlaceholder;
     _issues = issuesListPlaceholder;
+    _news = newsPlaceholder;
 
     notifyListeners();
   }
@@ -157,6 +161,13 @@ enum OnlineStatus {
   unknown,
 }
 
+class NewsItem {
+  NewsItem({this.date, this.content});
+
+  String date;
+  String content;
+}
+
 List<Dev> devOpsListPlaceholder = [
   Dev(
     id: '0',
@@ -269,5 +280,46 @@ List<Issue> issuesListPlaceholder = [
     title: 'rewamp the news section',
     url: 'https://github.com/ca333/komodoDEX/issues/701',
     devs: ['1', '2', '3'],
+  ),
+];
+
+List<NewsItem> newsPlaceholder = [
+  NewsItem(
+    date: '2020-05-25T08:17:53.312+00:00',
+    content: '''Komodo v0.6.0 Upgrade Is Coming On June 14
+
+Komodo’s fourth annual Notary Node Election came to an end on May 4, 2020, and the Komodo team would like to congratulate and welcome all of the operators who won a seat in the Notary Node network. 
+
+To officially bring these new Notary Node operators into the network, an upgrade to the Komodo daemon to version 0.6.0 will be activated on June 14, 2020 at block height 1,922,000. The upgrade is mandatory for all miners, exchanges, wallet providers, and other individuals running a full node. Please be sure to update prior to June 14.
+
+Read more here.
+https://komodoplatform.com/komodo-v0-6-0-upgrade/''',
+  ),
+  NewsItem(
+    date: '2020-05-25T08:17:53.312+00:00',
+    content: '''@everyone 
+
+Weekly Update - May 22, 2020
+
+It's Friday again, which means it's time for another weekly wrap-up. We have summarized the most important events for the last 7 days.
+
+Read the weekly update here.
+https://community.komodoplatform.com/post/5ec7e12b7ef3b37cbbaa285f''',
+  ),
+  NewsItem(
+    date: '2020-05-22T08:17:53.312+00:00',
+    content: '''Happy Bitcoin Pizza Day @everyone :pizza: 
+
+To honor the 10th anniversary of the Bitcoin Pizza Day we are running a microbounty campaign!
+
+All you need to do to win your 15 KMD is tweet out a pic of your pizza (a slice or a whole pie— both work!) with an AtomicDEX logo visible in the photo. It can be your phone with the AtomicDEX app open, a screen with the AtomicDEX homepage open, or anything else that clearly shows the AtomicDEX logo. 
+
+Get creative! The 3 coolest photos, as judged by the Komodo team, will get a small bonus in KMD.
+
+You must also tag @AtomicDEX twitter account in your tweet.
+
+The first 50 participants will each win 15 KMD! After that, no prizes will be awarded, so grab a pizza and tweet your pic as soon as possible.
+
+https://twitter.com/AtomicDex/status/1263771506175283201?s=20''',
   ),
 ];
