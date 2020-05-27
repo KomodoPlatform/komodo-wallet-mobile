@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
+import 'package:komodo_dex/screens/feed/news/build_news_item.dart';
 import 'package:provider/provider.dart';
 
 class NewsTab extends StatefulWidget {
@@ -16,6 +17,38 @@ class _NewsTabState extends State<NewsTab> {
     _feedProvider = Provider.of<FeedProvider>(context);
     _news = _feedProvider.getNews();
 
-    return Container();
+    if (_news == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_news.isEmpty) {
+      return const Center(
+          child: Text(
+        'Nothing here', // TODO(yurii): localization
+        style: TextStyle(fontSize: 13),
+      ));
+    }
+
+    return Container(
+      child: ListView.builder(
+          padding: const EdgeInsets.only(top: 12, bottom: 12),
+          itemCount: _news.length,
+          itemBuilder: (BuildContext context, int i) {
+            final Widget _divider = i == _news.length - 1
+                ? Container()
+                : Divider(
+                  endIndent: 12,
+                  indent: 12,
+                    color: Theme.of(context).disabledColor,
+                  );
+            return Column(
+              children: <Widget>[
+                BuildNewsItem(_news[i]),
+                const SizedBox(height: 20),
+                _divider,
+              ],
+            );
+          }),
+    );
   }
 }
