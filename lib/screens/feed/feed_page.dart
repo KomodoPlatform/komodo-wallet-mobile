@@ -76,7 +76,7 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
                 'Feed'.toUpperCase(), // TODO(yurii): localization
                 style: Theme.of(context).textTheme.subtitle,
               )),
-              bottom: PreferredSize(
+              /* bottom: PreferredSize(
                 preferredSize: const Size(200.0, 70.0),
                 child: Column(
                   children: <Widget>[
@@ -84,7 +84,7 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
                     const SizedBox(height: 15),
                   ],
                 ),
-              ));
+              ) */);
     }
 
     return Scaffold(
