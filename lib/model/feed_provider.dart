@@ -286,6 +286,23 @@ List<Issue> issuesListPlaceholder = [
 List<NewsItem> newsPlaceholder = [
   NewsItem(
     date: '2020-05-25T08:17:53.312+00:00',
+    content: '''
+    *italics* or _italics_	
+    __*underline italics*__
+    **bold**	
+    __**underline bold**__
+    ***bold italics***	
+    __***underline bold italics***__
+    __underline__	
+    ~~Strikethrough~~
+
+    test h**e**r**e**
+
+    link:  **https://www.google.com/search?q=escape_me_please**
+    ''',
+  ),
+  NewsItem(
+    date: '2020-05-25T08:17:53.312+00:00',
     content: '''Komodo v0.6.0 Upgrade Is Coming On June 14
 
 Komodo’s fourth annual Notary Node Election came to an end on May 4, 2020, and the Komodo team would like to congratulate and welcome all of the operators who won a seat in the Notary Node network. 
