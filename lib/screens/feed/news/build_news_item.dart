@@ -26,8 +26,11 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
 
   @override
   Widget build(BuildContext context) {
-    final String _date =
-        humanDate(DateTime.parse(widget.newsItem.date).millisecondsSinceEpoch);
+    String _date;
+    try {
+      _date = humanDate(
+          DateTime.parse(widget.newsItem.date).millisecondsSinceEpoch);
+    } catch (_) {}
 
     return Container(
       padding: const EdgeInsets.all(12),
@@ -35,13 +38,14 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            _date,
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).accentColor,
+          if (_date != null)
+            Text(
+              _date,
+              style: TextStyle(
+                fontSize: 16,
+                color: Theme.of(context).accentColor,
+              ),
             ),
-          ),
           const SizedBox(height: 10),
           _buildContent(),
         ],
