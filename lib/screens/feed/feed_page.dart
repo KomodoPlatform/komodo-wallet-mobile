@@ -50,8 +50,8 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
             controller: _controllerTabs,
             tabs: <Widget>[
               Tab(text: 'News'.toUpperCase()), // TODO(yurii): localization
-              Tab(text: 'DevOps'.toUpperCase()), // TODO(yurii): localization
-              Tab(text: 'Progress'.toUpperCase()), // TODO(yurii): localization
+              /* Tab(text: 'DevOps'.toUpperCase()), // TODO(yurii): localization
+              Tab(text: 'Progress'.toUpperCase()), // TODO(yurii): localization */
             ],
           ),
         ),
