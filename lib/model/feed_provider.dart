@@ -284,26 +284,15 @@ List<Issue> issuesListPlaceholder = [
 ];
 
 List<NewsItem> newsPlaceholder = [
-  NewsItem(
-    content: '''Emojis corrupted on iOs:
-#️⃣	:hash:
-*️⃣	:keycap_star:
-0️⃣	:zero:
-1️⃣	:one:
-2️⃣	:two:
-3️⃣	:three:
-4️⃣	:four:
-5️⃣	:five:
-6️⃣	:six:
-7️⃣	:seven:
-8️⃣	:eight:
-9️⃣	:nine:
+  NewsItem(content: '''Emojis corrupted on Android
+    
 👨‍🦯	:man_with_probing_cane:
 👨‍🦼	:man_in_motorized_wheelchair:
 👨‍🦽	:man_in_manual_wheelchair:
 👩‍🦯	:woman_with_probing_cane:
 👩‍🦼	:woman_in_motorized_wheelchair:
 👩‍🦽	:woman_in_manual_wheelchair:
+🛕	:hindu_temple:
 🛺	:auto_rickshaw:
 🟠	:large_orange_circle:
 🟡	:large_yellow_circle:
@@ -373,11 +362,101 @@ List<NewsItem> newsPlaceholder = [
 🪓	:axe:
 🪔	:diya_lamp:
 🪕	:banjo:
-    '''
-  ),
+    '''),
+  NewsItem(content: '''Emojis corrupted on iOs:
+
+#️⃣	:hash:
+*️⃣	:keycap_star:
+0️⃣	:zero:
+1️⃣	:one:
+2️⃣	:two:
+3️⃣	:three:
+4️⃣	:four:
+5️⃣	:five:
+6️⃣	:six:
+7️⃣	:seven:
+8️⃣	:eight:
+9️⃣	:nine:
+👨‍🦯	:man_with_probing_cane:
+👨‍🦼	:man_in_motorized_wheelchair:
+👨‍🦽	:man_in_manual_wheelchair:
+👩‍🦯	:woman_with_probing_cane:
+👩‍🦼	:woman_in_motorized_wheelchair:
+👩‍🦽	:woman_in_manual_wheelchair:
+🛕	:hindu_temple:
+🛺	:auto_rickshaw:
+🟠	:large_orange_circle:
+🟡	:large_yellow_circle:
+🟢	:large_green_circle:
+🟣	:large_purple_circle:
+🟤	:large_brown_circle:
+🟥	:large_red_square:
+🟦	:large_blue_square:
+🟧	:large_orange_square:
+🟨	:large_yellow_square:
+🟩	:large_green_square:
+🟪	:large_purple_square:
+🟫	:large_brown_square:
+🤍	:white_heart:
+🤎	:brown_heart:
+🤏	:pinching_hand:
+🤿	:diving_mask:
+🥱	:yawning_face:
+🥻	:sari:
+🦥	:sloth:
+🦦	:otter:
+🦧	:orangutan:
+🦨	:skunk:
+🦩	:flamingo:
+🦪	:oyster:
+🦮	:guide_dog:
+🦯	:probing_cane:
+🦺	:safety_vest:
+🦻	:ear_with_hearing_aid:
+🦼	:motorized_wheelchair:
+🦽	:manual_wheelchair:
+🦾	:mechanical_arm:
+🦿	:mechanical_leg:
+🧃	:beverage_box:
+🧄	:garlic:
+🧅	:onion:
+🧆	:falafel:
+🧇	:waffle:
+🧈	:butter:
+🧉	:mate_drink:
+🧊	:ice_cube:
+🧍‍♀️	:woman_standing:
+🧍‍♂️	:man_standing:
+🧍	:standing_person:
+🧎‍♀️	:woman_kneeling:
+🧎‍♂️	:man_kneeling:
+🧎	:kneeling_person:
+🧏‍♀️	:deaf_woman:
+🧏‍♂️	:deaf_man:
+🧏	:deaf_person:
+🧑‍🦯	:person_with_probing_cane:
+🧑‍🦼	:person_in_motorized_wheelchair:
+🧑‍🦽	:person_in_manual_wheelchair:
+🩰	:ballet_shoes:
+🩱	:one-piece_swimsuit:
+🩲	:briefs:
+🩳	:shorts:
+🩸	:drop_of_blood:
+🩹	:adhesive_bandage:
+🩺	:stethoscope:
+🪀	:yo-yo:
+🪁	:kite:
+🪂	:parachute:
+🪐	:ringed_planet:
+🪑	:chair:
+🪒	:razor:
+🪓	:axe:
+🪔	:diya_lamp:
+🪕	:banjo:
+    '''),
   NewsItem(
-  // https://unicodey.com/emoji-data/table.htm
-    content: '''
+      // https://unicodey.com/emoji-data/table.htm
+      content: '''
 #️⃣	:hash:
 *️⃣	:keycap_star:
 0️⃣	:zero:
@@ -2121,11 +2200,11 @@ List<NewsItem> newsPlaceholder = [
 〽️	:part_alternation_mark:
 ㊗️	:congratulations:
 ㊙️	:secret:
-    '''
-  ),
+    '''),
   NewsItem(
     date: '2020-05-25T08:17:53.312+00:00',
-    content: '''@everyone \n\nWe have published another article from our Blockchain Fundamentals series. 📚\n\n**What’s A Merkle Tree? A Simple Guide To Merkle Trees**\n\nIf you’re involved in the world of blockchain, you may have come across the phrase \"merkle tree\" before. While Merkle trees are not a widely-understood concept, they’re also not terribly complicated. This post will explain Merkle trees in plain English and help you understand how they make blockchain technology possible.\n\nRead more here.\nhttps://komodoplatform.com/whats-merkle-tree/''',
+    content:
+        '''@everyone \n\nWe have published another article from our Blockchain Fundamentals series. 📚\n\n**What’s A Merkle Tree? A Simple Guide To Merkle Trees**\n\nIf you’re involved in the world of blockchain, you may have come across the phrase \"merkle tree\" before. While Merkle trees are not a widely-understood concept, they’re also not terribly complicated. This post will explain Merkle trees in plain English and help you understand how they make blockchain technology possible.\n\nRead more here.\nhttps://komodoplatform.com/whats-merkle-tree/''',
   ),
   NewsItem(
     date: '2020-05-25T08:17:53.312+00:00',
