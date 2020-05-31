@@ -85,10 +85,8 @@ class StructuredArticle {
           continue;
         }
 
-        _leadSubstring =
-            String.fromCharCodes(span.text.codeUnits.toList().sublist(0, _cut));
-        _bodySubstring = String.fromCharCodes(
-            span.text.codeUnits.toList().sublist(_cut + 1));
+        _leadSubstring = span.text.substring(0, _cut);
+        _bodySubstring = span.text.substring(_cut + 1);
 
         _lead ??= [];
         _lead.add(TextSpan(
@@ -129,14 +127,10 @@ class StructuredArticle {
       String _behind;
       String _ahead;
       try {
-        _behind = String.fromCharCodes(string.codeUnits
-            .toList()
-            .sublist(startFrom - _offset, startFrom - _offset + symbol.length));
+        _behind = string.substring(startFrom - _offset, startFrom - _offset + symbol.length);
       } catch (_) {}
       try {
-        _ahead = String.fromCharCodes(string.codeUnits
-            .toList()
-            .sublist(startFrom + _offset, startFrom + _offset + symbol.length));
+        _ahead = string.substring(startFrom + _offset, startFrom + _offset + symbol.length); 
       } catch (_) {}
       if (_ahead == null && _behind == null) break;
 

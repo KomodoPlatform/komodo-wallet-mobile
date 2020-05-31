@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/media_bloc.dart';
 //import 'package:komodo_dex/screens/feed/devops/devops_tab.dart';
 //import 'package:komodo_dex/screens/feed/issues/issues_tab.dart';
 import 'package:komodo_dex/screens/feed/news/news_tab.dart';
@@ -17,7 +16,6 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
   void initState() {
     _controllerTabs = TabController(length: 1, vsync: this); //length: 3
     _controllerTabs.addListener(_getIndex);
-    mediaBloc.getArticles();
     super.initState();
   }
 
