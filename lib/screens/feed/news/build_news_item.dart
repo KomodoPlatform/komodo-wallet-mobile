@@ -15,6 +15,7 @@ class BuildNewsItem extends StatefulWidget {
 
 class _BuildNewsItemState extends State<BuildNewsItem> {
   final List<TapGestureRecognizer> _recognizers = [];
+  bool _collapsed = true;
 
   @override
   void dispose() {
@@ -71,19 +72,28 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
         RichText(
           text: TextSpan(
             style: const TextStyle(fontSize: 16),
-            children: [
-              ..._article.lead,
-            ],
+            children: _article.lead,
           ),
         ),
-        const Text('------------'),
-        if (_article.body != null)
+        if (_article.body != null && _collapsed)
+          GestureDetector(
+              onTap: () {
+                setState(() {
+                  _collapsed = false;
+                });
+              },
+              child: Row(
+                children: <Widget>[
+                  Text('More ',
+                      style: TextStyle(fontSize: 16, color: Colors.blue)),
+                  Icon(Icons.arrow_drop_down, size: 16, color: Colors.blue)
+                ],
+              )), // TODO(yurii): localization
+        if (_article.body != null && !_collapsed)
           RichText(
             text: TextSpan(
               style: const TextStyle(fontSize: 16),
-              children: [
-                ..._article.body,
-              ],
+              children: _article.body,
             ),
           ),
       ],
