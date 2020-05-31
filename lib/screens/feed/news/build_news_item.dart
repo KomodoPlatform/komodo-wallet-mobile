@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
+import 'package:komodo_dex/screens/feed/news/structured_article.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class BuildNewsItem extends StatefulWidget {
@@ -62,12 +63,30 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
 
     _spanList = _parseMarkdown(_spanList);
     _spanList = _parseLinks(_spanList);
+    final StructuredArticle _article = StructuredArticle(_spanList);
 
-    return RichText(
-      text: TextSpan(
-        style: const TextStyle(fontSize: 16),
-        children: _spanList,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        RichText(
+          text: TextSpan(
+            style: const TextStyle(fontSize: 16),
+            children: [
+              ..._article.lead,
+            ],
+          ),
+        ),
+        const Text('------------'),
+        if (_article.body != null)
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(fontSize: 16),
+              children: [
+                ..._article.body,
+              ],
+            ),
+          ),
+      ],
     );
   }
 
