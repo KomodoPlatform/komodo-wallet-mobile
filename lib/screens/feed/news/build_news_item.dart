@@ -14,7 +14,7 @@ class BuildNewsItem extends StatefulWidget {
 }
 
 class _BuildNewsItemState extends State<BuildNewsItem> {
-  final List<TapGestureRecognizer> _recognizers = [];
+  List<TapGestureRecognizer> _recognizers;
   bool _collapsed = true;
 
   @override
@@ -60,11 +60,8 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
       return Container();
     }
 
-    List<TextSpan> _spanList = [TextSpan(text: widget.newsItem.content)];
-
-    _spanList = _parseMarkdown(_spanList);
-    _spanList = _parseLinks(_spanList);
-    final NewsArticle _article = NewsArticle(_spanList);
+    final NewsArticle _article = NewsArticle(widget.newsItem.content);
+    _recognizers = _article.recognizers;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,97 +95,5 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
           ),
       ],
     );
-  }
-
-  List<TextSpan> _parseLinks(List<TextSpan> input) {
-    const String _urlMatcher =
-        r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)';
-    const String _urlWrap = '|~url~|';
-    final List<TextSpan> _parsed = [];
-
-    for (TextSpan _span in input) {
-      final String _urlWrapped = _span.text.replaceAllMapped(
-        RegExp(_urlMatcher),
-        (match) => '$_urlWrap${match.group(0)}$_urlWrap',
-      );
-      final List<String> _chunks = _urlWrapped.split(_urlWrap);
-
-      for (String _chunk in _chunks) {
-        if (RegExp(_urlMatcher).hasMatch(_chunk)) {
-          _recognizers
-              .add(TapGestureRecognizer()..onTap = () => launchURL(_chunk));
-
-          _parsed.add(TextSpan(
-            text: '$_chunk',
-            style: _span.style == null
-                ? TextStyle(color: Colors.blue)
-                : _span.style.copyWith(color: Colors.blue),
-            recognizer: _recognizers.last,
-          ));
-        } else {
-          _parsed.add(TextSpan(
-            text: '$_chunk',
-            style: _span.style,
-          ));
-        }
-      }
-    }
-
-    return _parsed;
-  }
-
-  List<TextSpan> _parseMarkdown(List<TextSpan> input) {
-    final List<TextSpan> _parsed = List.from(input);
-
-    const Map<String, TextStyle> _styles = {
-      '__': TextStyle(decoration: TextDecoration.underline),
-      '_': TextStyle(fontStyle: FontStyle.italic),
-      '~~': TextStyle(decoration: TextDecoration.lineThrough),
-      '***': TextStyle(
-        fontWeight: FontWeight.bold,
-        fontStyle: FontStyle.italic,
-      ),
-      '**': TextStyle(fontWeight: FontWeight.bold),
-      '*': TextStyle(fontStyle: FontStyle.italic),
-    };
-
-    _styles.forEach((String marker, _) {
-      final List<TextSpan> _input = List.from(_parsed);
-      _parsed.clear();
-
-      final String _matcher =
-          '(?<!http.*)${RegExp.escape(marker)}.*?${RegExp.escape(marker)}';
-      const String _wrap = '|~mrk~|';
-
-      for (TextSpan _span in _input) {
-        final String _wrapped = _span.text.replaceAllMapped(
-          RegExp(_matcher),
-          (match) => '$_wrap${match.group(0)}$_wrap',
-        );
-        final List<String> _chunks = _wrapped.split(_wrap);
-
-        for (String _chunk in _chunks) {
-          if (_chunk.isEmpty) continue;
-
-          if (RegExp(_matcher).hasMatch(_chunk)) {
-            _parsed.add(TextSpan(
-              text: '${_chunk.replaceAll(marker, '')}',
-              style: _span.style == null
-                  ? _styles[marker]
-                  : _span.style.merge(_styles[marker]),
-              recognizer: _span.recognizer,
-            ));
-          } else {
-            _parsed.add(TextSpan(
-              text: '$_chunk',
-              style: _span.style,
-              recognizer: _span.recognizer,
-            ));
-          }
-        }
-      }
-    });
-
-    return _parsed;
   }
 }
