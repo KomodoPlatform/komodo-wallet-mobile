@@ -34,18 +34,15 @@ class _NewsTabState extends State<NewsTab> {
           padding: const EdgeInsets.only(top: 12, bottom: 12),
           itemCount: _news.length,
           itemBuilder: (BuildContext context, int i) {
-            final Widget _divider = i == _news.length - 1
-                ? Container()
-                : Divider(
-                  endIndent: 12,
-                  indent: 12,
-                    color: Theme.of(context).disabledColor,
-                  );
             return Column(
               children: <Widget>[
                 BuildNewsItem(_news[i]),
-                const SizedBox(height: 20),
-                _divider,
+                if (i + 1 < _news.length)
+                  Divider(
+                    endIndent: 12,
+                    indent: 12,
+                    color: Theme.of(context).disabledColor,
+                  ),
               ],
             );
           }),

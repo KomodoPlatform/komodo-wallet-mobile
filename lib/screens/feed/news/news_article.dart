@@ -42,7 +42,9 @@ class NewsArticle {
 
       _lead ??= [];
       _symbolsFromStart += span.text.length;
-      if (_symbolsFromStart > preferredLeadLength) {
+      if (_symbolsFromStart < preferredLeadLength) {
+        _lead.add(span);
+      } else {
         String _leadSubstring;
         String _bodySubstring;
 
@@ -64,11 +66,12 @@ class NewsArticle {
               symbol: '!',
               startFrom: _prefferedCut,
             );
-        final int _closestLineBreak = _closest(
+        int _closestLineBreak = _closest(
           string: span.text,
           symbol: '\n',
           startFrom: _prefferedCut,
         );
+        if (_closestLineBreak != null) _closestLineBreak--;
         final int _closestSpace = _closest(
           string: span.text,
           symbol: ' ',
@@ -80,7 +83,7 @@ class NewsArticle {
             _closestSpace ??
             _prefferedCut;
 
-        if (_totalLength - _length(_lead) - _cut < _totalLength / 5) {
+        if (_totalLength - _length(_lead) - _cut < _totalLength / 4) {
           _lead ??= [];
           _lead.add(span);
           continue;
@@ -110,8 +113,6 @@ class NewsArticle {
           style: span.style,
           recognizer: span.recognizer,
         ));
-      } else {
-        _lead.add(span);
       }
     }
   }

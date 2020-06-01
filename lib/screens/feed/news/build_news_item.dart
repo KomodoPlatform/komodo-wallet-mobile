@@ -79,13 +79,11 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
                   _collapsed = false;
                 });
               },
-              child: Row(
-                children: <Widget>[
-                  Text('More ',
-                      style: TextStyle(fontSize: 16, color: Colors.blue)),
-                  Icon(Icons.arrow_drop_down, size: 16, color: Colors.blue)
-                ],
-              )), // TODO(yurii): localization
+              child: Container(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text('Read more...', // TODO(yurii): localization
+                    style: TextStyle(fontSize: 16, color: Colors.blue)),
+              )),
         if (_article.body != null && !_collapsed)
           RichText(
             text: TextSpan(
