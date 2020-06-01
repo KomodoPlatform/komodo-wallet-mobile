@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class StructuredArticle {
-  StructuredArticle(
+class NewsArticle {
+  NewsArticle(
     this.source, {
     this.preferredLeadLength = 200,
   }) {
