@@ -99,6 +99,12 @@ class MMService {
   /// triggering a Timer-based invocation of `updateOrdersAndSwaps`.
   String shouldUpdateOrdersAndSwaps;
 
+  void trafficMetrics() {
+    jobService.install('trafficMetrics', 30, (j) async {
+      MM.getMetricsMM2(BaseService(method: 'metrics'));
+    });
+  }
+
   /// Setup and maintain the measurement of application metrics: network traffic, CPU usage, etc.
   void metrics() {
     jobService.install('metrics', 31.4, (j) async {

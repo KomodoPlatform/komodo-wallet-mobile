@@ -401,6 +401,17 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'getVersionMM2', e, 'Error on get version MM2')));
 
+  Future<dynamic> getMetricsMM2(BaseService body, {http.Client client}) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(client, body);
+    final r =
+        await userBody.client.post(url, body: baseServiceToJson(userBody.body));
+    _assert200(r);
+    _saveRes('getMetricsMM2', r);
+
+    return r.body;
+  }
+
   Future<DisableCoin> disableCoin(GetDisableCoin req,
       {http.Client client}) async {
     client ??= mmSe.client;
