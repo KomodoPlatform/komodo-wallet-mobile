@@ -28,31 +28,85 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
 
   @override
   Widget build(BuildContext context) {
-    String _date;
-    try {
-      _date = humanDate(
-          DateTime.parse(widget.newsItem.date).millisecondsSinceEpoch);
-    } catch (_) {}
-
     return Container(
       padding: const EdgeInsets.all(12),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (_date != null)
-            Text(
-              _date,
-              style: TextStyle(
-                fontSize: 16,
-                color: Theme.of(context).accentColor,
-              ),
-            ),
+          _buildHeader(),
           const SizedBox(height: 10),
           _buildContent(),
         ],
       ),
     );
+  }
+
+  Widget _buildHeader() {
+    final NewsSource _source = widget.newsItem.source ??
+        NewsSource(
+          name: 'Komodo #official-news',
+          url:
+              'https://discord.com/channels/412898016371015680/412915799251222539',
+          pic:
+              'https://cdn.discordapp.com/icons/412898016371015680/a_157cb08c4198ad53b9e9b7168c930571.png',
+        );
+
+    return Row(
+      children: <Widget>[
+        CircleAvatar(
+          radius: 15,
+          backgroundImage:
+              _source.pic != null ? NetworkImage(_source.pic) : null,
+          backgroundColor: Theme.of(context).highlightColor,
+          child: _source.pic == null
+              ? Icon(
+                  Icons.comment,
+                  size: 20,
+                )
+              : null,
+        ),
+        const SizedBox(width: 4),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              GestureDetector(
+                onTap:
+                    _source.url == null ? null : () => launchURL(_source.url),
+                child: Text(
+                  _source.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+              ),
+              _buildDate(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDate() {
+    String _date;
+    try {
+      _date = humanDate(
+          DateTime.parse(widget.newsItem.date).millisecondsSinceEpoch);
+    } catch (_) {}
+
+    return _date == null
+        ? Container(width: 0)
+        : Text(
+            _date,
+            style: TextStyle(
+              fontSize: 13,
+              color: Theme.of(context).textTheme.caption.color,
+            ),
+          );
   }
 
   Widget _buildContent() {

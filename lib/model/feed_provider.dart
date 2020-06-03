@@ -173,6 +173,15 @@ class NewsItem {
 
   String date;
   String content;
+  NewsSource source;
+}
+
+class NewsSource {
+  NewsSource({this.name, this.url, this.pic});
+  
+  String name;
+  String url;
+  String pic;
 }
 
 List<Dev> devOpsListPlaceholder = [
