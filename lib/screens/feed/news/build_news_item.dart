@@ -29,13 +29,13 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildHeader(),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           _buildContent(),
         ],
       ),
@@ -134,7 +134,7 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
                 });
               },
               child: Container(
-                padding: const EdgeInsets.only(top: 12),
+                padding: const EdgeInsets.only(top: 12, bottom: 20, right: 12),
                 child: Text('Read more...', // TODO(yurii): localization
                     style: TextStyle(fontSize: 16, color: Colors.blue)),
               )),
@@ -145,6 +145,7 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
               children: _article.body,
             ),
           ),
+        if (_article.body == null || !_collapsed) const SizedBox(height: 20),
       ],
     );
   }
