@@ -13,15 +13,33 @@ class BuildNewsItem extends StatefulWidget {
   _BuildNewsItemState createState() => _BuildNewsItemState();
 }
 
-class _BuildNewsItemState extends State<BuildNewsItem> {
+class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProviderStateMixin {
   List<TapGestureRecognizer> _recognizers;
   bool _collapsed = true;
+  AnimationController expandController;
+  Animation<double> expandAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    expandController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500)
+    );
+    expandAnimation = CurvedAnimation(
+      parent: expandController,
+      curve: Curves.easeOut,
+    );
+  }
 
   @override
   void dispose() {
     for (TapGestureRecognizer recognizer in _recognizers) {
       recognizer.dispose();
     }
+
+    expandController.dispose();
 
     super.dispose();
   }
@@ -131,6 +149,7 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
               onTap: () {
                 setState(() {
                   _collapsed = false;
+                  expandController.forward();
                 });
               },
               child: Container(
@@ -139,10 +158,14 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
                     style: TextStyle(fontSize: 16, color: Colors.blue)),
               )),
         if (_article.body != null && !_collapsed)
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(fontSize: 16),
-              children: _article.body,
+          SizeTransition(
+            axisAlignment: -1,
+            sizeFactor: expandAnimation,
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(fontSize: 16),
+                children: _article.body,
+              ),
             ),
           ),
         if (_article.body == null || !_collapsed) const SizedBox(height: 20),
