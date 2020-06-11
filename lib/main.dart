@@ -40,7 +40,6 @@ void main() {
 Future<void> startApp() async {
   try {
     mmSe.metrics();
-    mmSe.trafficMetrics();
     startup.start();
     return runApp(_myAppWithProviders);
   } catch (e) {

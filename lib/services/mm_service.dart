@@ -99,15 +99,17 @@ class MMService {
   /// triggering a Timer-based invocation of `updateOrdersAndSwaps`.
   String shouldUpdateOrdersAndSwaps;
 
-  void trafficMetrics() {
-    jobService.install('trafficMetrics', 30, (j) async {
-      MM.getMetricsMM2(BaseService(method: 'metrics'));
-    });
+  void _trafficMetrics() {
+    MM.getMetricsMM2(BaseService(method: 'metrics'));
+    // TODO(MRC): Reduce to a total by subsystem
+    // TODO(MRC): put the map into a local field
+    // TODO(MRC-AG): send it to server with other metrics
   }
 
   /// Setup and maintain the measurement of application metrics: network traffic, CPU usage, etc.
   void metrics() {
     jobService.install('metrics', 31.4, (j) async {
+      if (mmSe.running) _trafficMetrics();
       // Not implemented on Android YET.
       if (Platform.isIOS) {
         final js = await nativeC.invokeMethod<String>('metrics');

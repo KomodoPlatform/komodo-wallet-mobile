@@ -401,15 +401,29 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'getVersionMM2', e, 'Error on get version MM2')));
 
+  /// Reduce log noise
+  int _lastMetricsLog = 0;
+
+  /// Returns a parsed JSON of the MM metrics  
+  /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-tutorials/atomicdex-metrics.html
   Future<dynamic> getMetricsMM2(BaseService body, {http.Client client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(client, body);
     final r =
         await userBody.client.post(url, body: baseServiceToJson(userBody.body));
     _assert200(r);
-    _saveRes('getMetricsMM2', r);
 
-    return r.body;
+    final now = DateTime.now().millisecondsSinceEpoch;
+    if (now - _lastMetricsLog > 600 * 1000) {
+      _lastMetricsLog = now;
+      _saveRes('getMetricsMM2', r);
+    }
+
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return jbody;
   }
 
   Future<DisableCoin> disableCoin(GetDisableCoin req,
