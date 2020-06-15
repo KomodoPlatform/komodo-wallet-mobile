@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/screens/markets/order_book_chart.dart';
 import 'package:komodo_dex/screens/markets/order_book_table.dart';
@@ -123,17 +127,98 @@ class _OrderBookPageState extends State<OrderBookPage> {
     final List<Ask> _sortedBids =
         OrderBookProvider.sortByPrice(_bidsOrderBook.bids);
 
-    return Stack(
+    return Column(
       children: <Widget>[
-        OrderBookChart(
-          sortedAsks: _sortedAsks,
-          sortedBids: _sortedBids,
-        ),
-        OrderBookTable(
-          sortedAsks: _sortedAsks,
-          sortedBids: _sortedBids,
+        FutureBuilder<List<CandleData>>(
+            future: _getOHLCData(),
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<CandleData>> snapshot,
+            ) {
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.data == null) {
+                return const Center(child: Text('Something went wrong...'));
+              }
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 12),
+                  Container(
+                      height: 300,
+                      child: CandleChart(
+                        snapshot.data,
+                        candleWidth: 8,
+                        strokeWidth: 1,
+                        textColor: const Color.fromARGB(200, 255, 255, 255),
+                        gridColor: const Color.fromARGB(50, 255, 255, 255),
+                        upColor: Colors.green,
+                        downColor: Colors.red,
+                        filled: true,
+                        allowDynamicRescale: true,
+                      )),
+                ],
+              );
+            }),
+        const SizedBox(height: 12),
+        Stack(
+          children: <Widget>[
+            OrderBookChart(
+              sortedAsks: _sortedAsks,
+              sortedBids: _sortedBids,
+            ),
+            OrderBookTable(
+              sortedAsks: _sortedAsks,
+              sortedBids: _sortedBids,
+            ),
+          ],
         ),
       ],
     );
+  }
+
+  Future<List<CandleData>> _getOHLCData() async {
+    // Placeholder data api: https://docs.cryptowat.ch/rest-api/markets/ohlc
+    // TODO(yurii): implement actual coins history data fetching
+    http.Response _res;
+    String _body;
+    try {
+      _res = await http
+          .get('https://api.cryptowat.ch/markets/coinbase-pro/btcusd/ohlc');
+      _body = _res.body;
+    } catch (e) {
+      print('Failed to fetch data: $e');
+      rethrow;
+    }
+
+    dynamic json;
+    try {
+      json = jsonDecode(_body);
+    } catch (e) {
+      print('Failed to parse json: $e');
+      rethrow;
+    }
+
+    if (json == null) return null;
+
+    final List<CandleData> _data = [];
+
+    for (var candle in json['result']['60']) {
+      final CandleData _candleData = CandleData(
+        closeTime: candle[0],
+        openPrice: candle[1].toDouble(),
+        highPrice: candle[2].toDouble(),
+        lowPrice: candle[3].toDouble(),
+        closePrice: candle[4].toDouble(),
+        volume: candle[5].toDouble(),
+        quoteVolume: candle[6].toDouble(),
+      );
+      _data.add(_candleData);
+    }
+
+    return _data;
   }
 }
