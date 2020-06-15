@@ -256,6 +256,25 @@ class _ChartPainter extends CustomPainter {
         color: widget.textColor,
       );
     }
+
+    // draw time grid
+    paint.color = widget.textColor;
+    CandleData lastVisibleCandle;
+    for (int i = 0; i < visibleCandlesData.length; i++) {
+      if (_time2dx(visibleCandlesData[i].closeTime) < size.width) {
+        lastVisibleCandle = visibleCandlesData[i];
+        break;
+      }
+    }
+    _drawText(
+      canvas: canvas,
+      color: widget.textColor,
+      point: Offset(
+        size.width - 100,
+        size.height - 10,
+      ),
+      text: _formatTime(lastVisibleCandle.closeTime),
+    );
   }
 
   @override
@@ -331,6 +350,13 @@ double _getMaxPrice(List<CandleData> data) {
   }
 
   return maxPrice;
+}
+
+String _formatTime(int secondsSinceEpoch) {
+  final DateTime local =
+      DateTime.fromMillisecondsSinceEpoch(secondsSinceEpoch * 1000);
+
+  return '${local.month}-${local.day}-${local.year} ${local.hour}:${local.minute}';
 }
 
 void _drawText({Canvas canvas, Offset point, String text, Color color}) {
