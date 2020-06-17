@@ -13,7 +13,7 @@ import 'get_orderbook.dart';
 class OrderBookProvider extends ChangeNotifier {
   OrderBookProvider() {
     syncOrderbook.linkProvider(this);
-    jobService.install('syncOrderbook', 7.77, (j) async {
+    jobService.install('syncOrderbook', 2, (j) async {
       await syncOrderbook._updateOrderBooks();
     });
   }
@@ -31,8 +31,6 @@ class OrderBookProvider extends ChangeNotifier {
   CoinsPair get activePair => syncOrderbook.activePair;
 
   set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
-
-  OrderHealth getOrderHealth(Ask order) => syncOrderbook.getOrderHealth(order);
 
   // TODO(AG): historical swap data for [coinsPair]
   List<Swap> getSwapHistory(CoinsPair coinsPair) {
@@ -55,8 +53,21 @@ class OrderBookProvider extends ChangeNotifier {
   /// Returns [list] of Ask(), sorted by price (DESC),
   /// then by volume (DESC),
   /// then by age (DESC)
-  static List<Ask> sortByPrice(List<Ask> list) {
-    final List<Ask> sorted = list;
+  static List<Ask> sortByPrice(List<Ask> list, {bool quotePrice = false}) {
+    final List<Ask> sorted = quotePrice
+        ? list.map((Ask ask) {
+            final double price = 1 / double.parse(ask.price);
+            return Ask(
+              address: ask.address,
+              age: ask.age,
+              coin: ask.coin,
+              pubkey: ask.pubkey,
+              zcredits: ask.zcredits,
+              price: price.toString(),
+              maxvolume: ask.maxvolume,
+            );
+          }).toList()
+        : List.from(list);
 
     sorted.sort((a, b) {
       if (double.parse(a.price) > double.parse(b.price)) return 1;
@@ -69,35 +80,6 @@ class OrderBookProvider extends ChangeNotifier {
     });
     return sorted;
   }
-}
-
-/// Liveliness marker (good and bad things we know of an order, like whether it's alive and kicking or not)
-class LivMarker {
-  /// '+' if the marker author considers the (detected) condition to be a positive sign,
-  /// '-' if they are considering it to be a negative one
-  String sign;
-
-  /// Alphabetical code ([a-zA-Z]+) of the marker,
-  /// allowing the UI to recognize it and apply custom ratings and localizations
-  String code;
-
-  /// Payload optionally coming with the marker.
-  /// It does not start with [a-zA-Z] and does not have [ +-] in it.
-  /// Other than that, format is specific to the kind of the marker (cf. `code`).
-  String payload;
-
-  /// English description provided by the marker's author (usually by a caretaker)
-  String defaultDesc;
-
-  /// Rating modification assigned by the UI to this marker
-  int mod;
-}
-
-class OrderHealth {
-  OrderHealth({this.rating, this.markers});
-
-  int rating;
-  List<LivMarker> markers;
 }
 
 class CoinsPair {
@@ -121,12 +103,6 @@ class SyncOrderbook {
   CoinsPair _activePair;
 
   /// Maps short order IDs to latest liveliness markers.
-  Map<String, String> _livMarkers;
-
-  /// Liveliness marker descriptions provided by a caretaker.
-  /// Allows UI to display new / unknown / not-localized-yet markers.
-  Map<String, String> _markDesc;
-
   final List<CoinsPair> _tickers = [];
 
   CoinsPair get activePair => _activePair;
@@ -140,7 +116,6 @@ class SyncOrderbook {
     coinsPair ??= activePair;
     if (!_tickers.contains(coinsPair)) _tickers.add(coinsPair);
 
-    print(_orderBooks);
     return _orderBooks['${coinsPair.buy.abbr}-${coinsPair.sell.abbr}'];
   }
 
@@ -158,46 +133,7 @@ class SyncOrderbook {
     }
 
     _orderBooks = orderBooks;
-
-    // TODO(AG): Only notify if there were actual changes.
     _notifyListeners();
-  }
-
-  OrderHealth getOrderHealth(Ask order) {
-    // TODO(yurii): consider several order health metrics, such as:
-    //  - overall swaps number for address
-    //  - last 24h swaps number for address
-    //  - overall swaps volume for address
-    //  - order age
-    //  - average order lifetime for address
-    //  - average swap duration for address
-    //  - online status of address
-    //  - ...
-    final String markerS = _livMarkers[order.pubkey] ?? '';
-    final List<LivMarker> markers = [];
-    int rating = 100;
-    // -s123-a
-    for (RegExpMatch caps
-        in RegExp(r'([+-])([a-zA-Z]+)([^\+\-]*)').allMatches(markerS)) {
-      final LivMarker lm = LivMarker();
-      lm.sign = caps[1];
-      lm.code = caps[2];
-      lm.payload = caps[3];
-      lm.defaultDesc = _markDesc[lm.code];
-
-      if (lm.code == 'a' && lm.sign == '-') {
-        lm.mod = -20; // Custom rating
-      } else if (lm.sign == '+') {
-        lm.mod = 10; // Default rating
-      } else if (lm.sign == '-') {
-        lm.mod = -10;
-      }
-      rating += lm.mod;
-      markers.add(lm);
-    }
-
-    if (rating < 0) rating = 0;
-    return OrderHealth(rating: rating, markers: markers);
   }
 
   /// Link a [ChangeNotifier] proxy to this singleton.

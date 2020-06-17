@@ -107,15 +107,18 @@ class _OrderBookPageState extends State<OrderBookPage> {
     Orderbook _pairOrderBook;
 
     try {
-      _pairOrderBook = _orderBookProvider.getOrderBook() ?? Orderbook(asks: [], bids: []);
+      _pairOrderBook = _orderBookProvider.getOrderBook();
     } catch (_) {
+    }
+
+    if (_pairOrderBook == null) {
       return const Center(heightFactor: 10, child: CircularProgressIndicator());
     }
 
     final List<Ask> _sortedAsks =
         OrderBookProvider.sortByPrice(_pairOrderBook.asks);
     final List<Ask> _sortedBids =
-        OrderBookProvider.sortByPrice(_pairOrderBook.bids);
+        OrderBookProvider.sortByPrice(_pairOrderBook.bids, quotePrice: true);
 
     return Stack(
       children: <Widget>[

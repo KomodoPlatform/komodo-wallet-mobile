@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/screens/markets/health_indicator.dart';
 import 'package:komodo_dex/screens/markets/order_details_page.dart';
 import 'package:provider/provider.dart';
 
@@ -55,6 +54,7 @@ class OrderBookTable extends StatelessWidget {
           ),
         ), // TODO(yurii): localization
         Container(
+          padding: const EdgeInsets.only(right: 4),
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
@@ -62,12 +62,6 @@ class OrderBookTable extends StatelessWidget {
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ), // TODO(yurii): localization
-        ),
-        Container(
-          height: 34,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.only(top: 4, left: 8, right: 4),
-          child: HealthIndicator(50, color: Colors.white),
         ),
       ],
     );
@@ -113,21 +107,13 @@ class OrderBookTable extends StatelessWidget {
             child: Container(
               height: 26,
               alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 4),
               child: Text(
                 OrderBookProvider.formatPrice(_askTotal.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
               ),
-            ),
-          ),
-          TableRowInkWell(
-            onTap: () => _showOrderDetails(ask),
-            child: Container(
-              height: 26,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.only(top: 2, left: 8, right: 4),
-              child: const HealthIndicator(50),
             ),
           ),
         ],
@@ -147,7 +133,6 @@ class OrderBookTable extends StatelessWidget {
               style: TextStyle(color: Colors.red, fontSize: 14),
             ),
           ),
-          Container(),
           Container(),
           Container(),
         ],
@@ -197,21 +182,13 @@ class OrderBookTable extends StatelessWidget {
             child: Container(
               height: 26,
               alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 4),
               child: Text(
                 OrderBookProvider.formatPrice(_bidTotal.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
               ),
-            ),
-          ),
-          TableRowInkWell(
-            onTap: () => _showOrderDetails(bid),
-            child: Container(
-              height: 26,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.only(top: 2, left: 8, right: 4),
-              child: HealthIndicator(50),
             ),
           ),
         ],
@@ -232,14 +209,12 @@ class OrderBookTable extends StatelessWidget {
           ),
           Container(),
           Container(),
-          Container(),
         ],
       ));
     }
 
     const TableRow _spacer = TableRow(
       children: [
-        SizedBox(height: 12),
         SizedBox(height: 12),
         SizedBox(height: 12),
         SizedBox(height: 12),
