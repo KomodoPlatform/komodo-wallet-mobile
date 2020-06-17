@@ -99,28 +99,54 @@ class MMService {
   /// triggering a Timer-based invocation of `updateOrdersAndSwaps`.
   String shouldUpdateOrdersAndSwaps;
 
-  void _trafficMetrics() {
-    MM.getMetricsMM2(BaseService(method: 'metrics'));
-    // TODO(MRC): Reduce to a total by subsystem
-    // TODO(MRC): put the map into a local field
-    // TODO(MRC-AG): send it to server with other metrics
+  Future<void> _trafficMetrics() async {
+    dynamic metrics = await MM.getMetricsMM2(BaseService(method: 'metrics'));
+    // I/flutter (23292): metrics: {metrics: [{key: tx.history.request.count, labels: {client: electrum, coin: DEX, method: blockchain.scripthash.get_history}, type: counter, value: 1}, {key: rpc_client.response.count, labels: {client: electrum, coin: RICK}, type: counter, value: 13}, {key: tx.history.response.total_length, labels: {client: electrum, coin: KMD, method: blockchain.scripthash.get_history}, type: counter, value: 290}, {key: tx.history.request.count, labels: {client: electrum, coin: KMD, method: blockchain.scripthash.get_history}, type: counter, value: 1}, {key: rpc_client.request.count, labels: {client: electrum, coin: DEX}, type: counter, value: 14}, {key: tx.history.response.total_length, labels: {client: electrum, coin: RICK, method: blockchain.scripthash.get_history}, type: counter, value: 177}, {key: rpc_client.request.count, labels: {client: electrum, coin: BTC}, type: counter, value: 14}, {key: rpc_client.response.count, labels: {client: electrum, coin: BTC}, type: counter, value: 13}, {key: tx.history.response.c
+
+    if (metrics is! Map<String, dynamic>) return;
+    metrics = metrics['metrics'];
+    if (metrics is! List<dynamic>) return;
+
+    final Map<String, int> traffic = {};
+    for (var item in metrics) {
+      if (item is! Map<String, dynamic>) continue;
+      if (item['key'] is! String) continue;
+      if (item['value'] is! int) continue;
+      final String key = item['key'];
+      final int value = item['value'];
+      if (key == 'rpc_client.traffic.in' ||
+          key == 'rpc_client.traffic.out' ||
+          key == 'tx.history.response.total_length') {
+        traffic[key] = (traffic[key] ?? 0) + value;
+      } else {
+        // Uncomment to see what other metrics keys we have from MM:
+        //Log('mm_service:123', 'metrics key ' + item['key']);
+      }
+    }
+    Log('mm_service:126', 'MM traffic: $traffic');
+    // ^^ The idea here is to send the traffic to a decentralized database for further analysis
+    // (but we don't have one yet)
   }
 
   /// Setup and maintain the measurement of application metrics: network traffic, CPU usage, etc.
   void metrics() {
     jobService.install('metrics', 31.4, (j) async {
-      if (mmSe.running) _trafficMetrics();
+      try {
+        if (mmSe.running) await _trafficMetrics();
+      } catch (ex, trace) {
+        Log.println('mm_service:137', '_trafficMetrics error: $ex, $trace');
+      }
       // Not implemented on Android YET.
       if (Platform.isIOS) {
         final js = await nativeC.invokeMethod<String>('metrics');
-        //Log('mm_service:108', 'metrics: $js');
+        //Log('mm_service:142', 'metrics: $js');
         final Map<String, dynamic> mjs = json.decode(js);
         footprint = mjs['footprint'];
         rs = mjs['rs'];
         files = mjs['files'];
         metricsLM = DateTime.now().millisecondsSinceEpoch;
         if (files > 200) {
-          Log('mm_service:115',
+          Log('mm_service:149',
               'Warning, a large number of opened files, $files/256: $js');
         }
       }
@@ -178,14 +204,14 @@ class MMService {
     if (pong != 'pong') throw Exception('No pong');
 
     final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
-    Log('mm_service:173', 'BUILD_TIME: $buildTime');
+    Log('mm_service:207', 'BUILD_TIME: $buildTime');
     if (buildTime <= 0) throw Exception('No BUILD_TIME');
     final ms = DateTime.now().millisecondsSinceEpoch;
-    if (ms <= buildTime) Log('mm_service:176', 'BUILD_TIME in the future!');
+    if (ms <= buildTime) Log('mm_service:210', 'BUILD_TIME in the future!');
 
     final lastHash = prefs.getString('mm2.lastHash') ?? '';
     final lastCheck = prefs.getInt('mm2.lastCheck') ?? 0;
-    if (ms <= lastCheck) Log('mm_service:180', 'lastCheck in the future!');
+    if (ms <= lastCheck) Log('mm_service:214', 'lastCheck in the future!');
 
     // If there's a copy of mm2 binary and we've checked it recently then we're done.
     if (lsMatch && buildTime < lastCheck) return;
@@ -196,23 +222,23 @@ class MMService {
     // responsive then we can move the MM update into the Java native code.
 
     uiLog('Loading assets/mm2…');
-    Log('mm_service:191', 'Loading assets/mm2…');
+    Log('mm_service:225', 'Loading assets/mm2…');
     await sleepMs(22); // Gives UI a chance to update before we CPU-lock
     final ByteData mm2bytes = await rootBundle.load('assets/mm2');
 
     uiLog('Calculating mm2 hash…');
-    Log('mm_service:196', 'Calculating assets/mm2 hash…');
+    Log('mm_service:230', 'Calculating assets/mm2 hash…');
     await sleepMs(22); // Gives UI a chance to update before we CPU-lock
     // AG: On my device it takes 7.7 seconds to calculate SHA1, 4.3 seconds to calculate MD5.
     final md5h = md5.convert(mm2bytes.buffer.asUint8List()).toString();
     if (md5h == lastHash) {
-      Log('mm_service:201', 'MM matches the assets/ hash, skipping update');
+      Log('mm_service:235', 'MM matches the assets/ hash, skipping update');
       await prefs.setInt('mm2.lastCheck', ms);
       return;
     }
 
     uiLog('Updating MM…');
-    Log('mm_service:207', 'Updating MM…');
+    Log('mm_service:241', 'Updating MM…');
     await sleepMs(22); // Gives UI a chance to update before we CPU-lock
     if (lsMatch) await deleteMmBin();
     await saveMmBin(mm2bytes.buffer.asUint8List());
@@ -394,7 +420,7 @@ class MMService {
           }
 
           checkStatusmm2().then((int onValue) {
-            Log('mm_service:389', 'mm2_main_status: $onValue');
+            Log('mm_service:423', 'mm2_main_status: $onValue');
             if (onValue == 3) {
               _running = true;
               _.cancel();
@@ -438,7 +464,7 @@ class MMService {
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
-    Log('mm_service:433', chunk);
+    Log('mm_service:467', chunk);
 
     final pkr =
         RegExp(r'initialize] netid (\d+) public key (\w+) preferred port');
@@ -466,7 +492,7 @@ class MMService {
     final sending = RegExp(
         r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
     for (RegExpMatch mat in sending.allMatches(chunk)) {
-      //Log('mm_service:461', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:495', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
     }
 
@@ -474,7 +500,7 @@ class MMService {
     // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
     final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
     for (RegExpMatch mat in dashboard.allMatches(chunk)) {
-      //Log('mm_service:469', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:503', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
     }
 
@@ -497,7 +523,7 @@ class MMService {
   }
 
   void _onNativeLogError(Object error) {
-    Log('mm_service:492', error);
+    Log('mm_service:526', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -514,9 +540,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
       await coinsBloc.enableCoins(active);
-      Log('mm_service:509', 'All coins activated');
+      Log('mm_service:543', 'All coins activated');
       await coinsBloc.updateCoinBalances();
-      Log('mm_service:511', 'loadCoin finished');
+      Log('mm_service:545', 'loadCoin finished');
     } catch (e) {
       print(e);
     }
@@ -564,7 +590,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:559', 'getAllBalances');
+    Log('mm_service:593', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
