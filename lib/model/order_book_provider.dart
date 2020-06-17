@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/job_service.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/utils.dart';
+
+import 'get_orderbook.dart';
 
 class OrderBookProvider extends ChangeNotifier {
   OrderBookProvider() {
@@ -57,7 +57,7 @@ class OrderBookProvider extends ChangeNotifier {
   /// then by age (DESC)
   static List<Ask> sortByPrice(List<Ask> list) {
     final List<Ask> sorted = list;
-    
+
     sorted.sort((a, b) {
       if (double.parse(a.price) > double.parse(b.price)) return 1;
       if (double.parse(a.price) < double.parse(b.price)) return -1;
@@ -127,6 +127,8 @@ class SyncOrderbook {
   /// Allows UI to display new / unknown / not-localized-yet markers.
   Map<String, String> _markDesc;
 
+  final List<CoinsPair> _tickers = [];
+
   CoinsPair get activePair => _activePair;
 
   set activePair(CoinsPair coinsPair) {
@@ -136,70 +138,26 @@ class SyncOrderbook {
 
   Orderbook getOrderBook([CoinsPair coinsPair]) {
     coinsPair ??= activePair;
+    if (!_tickers.contains(coinsPair)) _tickers.add(coinsPair);
 
+    print(_orderBooks);
     return _orderBooks['${coinsPair.buy.abbr}-${coinsPair.sell.abbr}'];
   }
 
   Future<void> _updateOrderBooks() async {
-    // Exploratory (should combine ECS syncs into a single service or helper)
-
-    final List<String> tickers = (await Db.activeCoins).toList();
-
-    final pr = await mmSe.client.post('http://ct.cipig.net/sync',
-        body: json.encode(<String, dynamic>{
-          'components': <String, dynamic>{
-            'orderbook.1': <String, dynamic>{
-              // Coins we're currently interested in (e.g. activated)
-              'tickers': tickers,
-              // TODO(AG): Use `skip` to skip known long lines
-            }
-          }
-        }));
-    if (pr.statusCode != 200) throw Exception('HTTP ${pr.statusCode}');
-    final ct = pr.headers['content-type'] ?? '';
-    if (ct != 'application/json') throw Exception('HTTP Content-Type $ct');
-    // NB: `http` fails to recognize that 'application/json' is UTF-8 by default.
-    final body = const Utf8Decoder().convert(pr.bodyBytes);
-    final Map<String, dynamic> js = json.decode(body);
-    final Map<String, dynamic> components = js['components'];
-    if (components == null || !components.containsKey('orderbook.1')) return;
-    final Map<String, dynamic> obr = components['orderbook.1'];
-    final Map<String, dynamic> sb = obr['short_book'];
-    _markDesc = Map.from(obr['mark_desc']);
-
     final Map<String, Orderbook> orderBooks = {};
-    final Map<String, String> livMarkers = {};
+    for (CoinsPair pair in _tickers) {
+      final Orderbook orderbook = await MM.getOrderbook(
+          MMService().client,
+          GetOrderbook(
+            base: pair.buy.abbr,
+            rel: pair.sell.abbr,
+          ));
 
-    for (String pair in sb.keys) {
-      final List<Ask> bids = [];
-
-      final List<String> coins = pair.split('-');
-      final String line = sb[pair];
-      //Log('order_book_provider:178', 'pair $pair; $line');
-      for (String so in line.split(';')) {
-        final List<String> sol = so.split(' ');
-        final id = sol[0];
-        final balance = base62rdec(sol[1]);
-        final price = base62rdec(sol[2]);
-        final markers = sol.length > 3 ? sol[3] : '';
-
-        //Log('order_book_provider:186', '$id; balance $balance; price $price');
-        bids.add(Ask(
-            coin: coins[0],
-            address: '',
-            price: price.toDecimalString(),
-            maxvolume: deci(balance),
-            pubkey: id,
-            age: 1 // TODO(AG): Caretaker should share the age of the order.
-            ));
-        livMarkers[id] = markers;
-      }
-      orderBooks[pair] = Orderbook(
-          bids: bids, numbids: bids.length, base: coins[0], rel: coins[1]);
+      orderBooks['${pair.buy.abbr}-${pair.sell.abbr}'] = orderbook;
     }
 
     _orderBooks = orderBooks;
-    _livMarkers = livMarkers;
 
     // TODO(AG): Only notify if there were actual changes.
     _notifyListeners();
