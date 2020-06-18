@@ -13,9 +13,25 @@ class BuildNewsItem extends StatefulWidget {
   _BuildNewsItemState createState() => _BuildNewsItemState();
 }
 
-class _BuildNewsItemState extends State<BuildNewsItem> {
+class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProviderStateMixin {
   List<TapGestureRecognizer> _recognizers;
   bool _collapsed = true;
+  AnimationController expandController;
+  Animation<double> expandAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    expandController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500)
+    );
+    expandAnimation = CurvedAnimation(
+      parent: expandController,
+      curve: Curves.easeOut,
+    );
+  }
 
   @override
   void dispose() {
@@ -23,19 +39,21 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
       recognizer.dispose();
     }
 
+    expandController.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildHeader(),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           _buildContent(),
         ],
       ),
@@ -131,20 +149,26 @@ class _BuildNewsItemState extends State<BuildNewsItem> {
               onTap: () {
                 setState(() {
                   _collapsed = false;
+                  expandController.forward();
                 });
               },
               child: Container(
-                padding: const EdgeInsets.only(top: 12),
+                padding: const EdgeInsets.only(top: 12, bottom: 20, right: 12),
                 child: Text('Read more...', // TODO(yurii): localization
                     style: TextStyle(fontSize: 16, color: Colors.blue)),
               )),
         if (_article.body != null && !_collapsed)
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(fontSize: 16),
-              children: _article.body,
+          SizeTransition(
+            axisAlignment: -1,
+            sizeFactor: expandAnimation,
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(fontSize: 16),
+                children: _article.body,
+              ),
             ),
           ),
+        if (_article.body == null || !_collapsed) const SizedBox(height: 20),
       ],
     );
   }

@@ -41,6 +41,7 @@ class _NewsTabState extends State<NewsTab> {
                   Divider(
                     endIndent: 12,
                     indent: 12,
+                    height: 1,
                     color: Theme.of(context).disabledColor,
                   ),
               ],
