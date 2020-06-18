@@ -104,24 +104,21 @@ class _OrderBookPageState extends State<OrderBookPage> {
       );
     }
 
-    Orderbook _asksOrderBook;
-    Orderbook _bidsOrderBook;
+    Orderbook _pairOrderBook;
 
     try {
-      _asksOrderBook = _orderBookProvider.getOrderBook() ?? Orderbook(bids: []);
-      _bidsOrderBook = _orderBookProvider.getOrderBook(CoinsPair(
-            buy: _orderBookProvider.activePair.sell,
-            sell: _orderBookProvider.activePair.buy,
-          )) ??
-          Orderbook(bids: []);
+      _pairOrderBook = _orderBookProvider.getOrderBook();
     } catch (_) {
+    }
+
+    if (_pairOrderBook == null) {
       return const Center(heightFactor: 10, child: CircularProgressIndicator());
     }
 
     final List<Ask> _sortedAsks =
-        OrderBookProvider.sortByPrice(_asksOrderBook.bids);
+        OrderBookProvider.sortByPrice(_pairOrderBook.asks);
     final List<Ask> _sortedBids =
-        OrderBookProvider.sortByPrice(_bidsOrderBook.bids);
+        OrderBookProvider.sortByPrice(_pairOrderBook.bids, quotePrice: true);
 
     return Stack(
       children: <Widget>[
