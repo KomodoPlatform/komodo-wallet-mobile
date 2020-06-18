@@ -29,24 +29,67 @@ class _NewsTabState extends State<NewsTab> {
       ));
     }
 
+    Widget _buildUpdateIndicator() {
+      return _feedProvider.isNewsFetching
+          ? const SizedBox(
+              height: 1,
+              child: LinearProgressIndicator(),
+            )
+          : Container(height: 1);
+    }
+
     return Container(
-      child: ListView.builder(
-          padding: const EdgeInsets.only(top: 12, bottom: 12),
-          itemCount: _news.length,
-          itemBuilder: (BuildContext context, int i) {
-            return Column(
-              children: <Widget>[
-                BuildNewsItem(_news[i]),
-                if (i + 1 < _news.length)
-                  Divider(
-                    endIndent: 12,
-                    indent: 12,
-                    height: 1,
-                    color: Theme.of(context).disabledColor,
+      child: Column(
+        children: <Widget>[
+          _buildUpdateIndicator(),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                final String updateResponse = await _feedProvider.updateNews();
+                String message;
+                if (updateResponse == 'ok') {
+                  message = 'News feed updated'; // TODO(yurii): localization
+                } else {
+                  message = updateResponse;
+                }
+
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                    message,
+                    style: TextStyle(color: Theme.of(context).disabledColor),
                   ),
-              ],
-            );
-          }),
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  duration: const Duration(seconds: 1),
+                  action: SnackBarAction(
+                    textColor: Theme.of(context).accentColor,
+                    label: 'Dismiss', // TODO(yurii): localization
+                    onPressed: () {
+                      Scaffold.of(context).hideCurrentSnackBar();
+                    },
+                  ),
+                ));
+              },
+              child: ListView.builder(
+                  padding: const EdgeInsets.only(top: 12, bottom: 12),
+                  itemCount: _news.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return Column(
+                      children: <Widget>[
+                        BuildNewsItem(_news[i]),
+                        if (i + 1 < _news.length)
+                          Divider(
+                            endIndent: 12,
+                            indent: 12,
+                            height: 1,
+                            color: Theme.of(context).disabledColor,
+                          ),
+                      ],
+                    );
+                  }),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -9,19 +9,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FeedProvider extends ChangeNotifier {
   FeedProvider() {
     _updateData();
-    ticker = Timer.periodic(const Duration(minutes: 5), (_) {
+    _ticker = Timer.periodic(const Duration(minutes: 5), (_) {
       _updateData();
     });
   }
 
-  Timer ticker;
+  Timer _ticker;
   List<NewsItem> _news;
+  bool _isNewsFetching = false;
 
   @override
   void dispose() {
     super.dispose();
-    ticker?.cancel();
+    _ticker?.cancel();
   }
+
+  bool get isNewsFetching => _isNewsFetching;
 
   List<NewsItem> getNews() => _news;
   Future<String> updateNews() => _updateNews();
@@ -30,15 +33,20 @@ class FeedProvider extends ChangeNotifier {
   /// updates _news, local cache, and returns 'ok'.
   /// If failed - returns error message string
   Future<String> _updateNews() async {
+    _isNewsFetching = true;
+    notifyListeners();
     http.Response response;
+
     try {
       response = await http.get(
           'http://95.217.26.153/messages'); // TODO(yurii): change to domain name after DNS being updated
     } catch (e) {
       Log('feed_provider:44', '_updateNews] $e');
     }
+    _isNewsFetching = false;
+    notifyListeners();
     if (response?.statusCode != 200) {
-      return 'Unable to get news'; // TODO(yurii): localization
+      return 'Unable to get news update'; // TODO(yurii): localization
     }
 
     List<NewsItem> news;
@@ -48,7 +56,7 @@ class FeedProvider extends ChangeNotifier {
       Log('feed_provider:52', '_updateNews] $e');
     }
     if (news == null) {
-      return 'Unable to proceed news'; // TODO(yurii): localization
+      return 'Unable to proceed news update'; // TODO(yurii): localization
     }
 
     _news = news;
@@ -68,7 +76,12 @@ class FeedProvider extends ChangeNotifier {
       }
     }
 
-    if (await _updateNews() == 'ok') notifyListeners();
+    if (await _updateNews() == 'ok') {
+      notifyListeners();
+    } else if (_news == null) {
+      _news = []; // hide progress indicator and show empty feed message
+      notifyListeners();
+    }
   }
 
   List<NewsItem> _newsFromJson(String body) {
