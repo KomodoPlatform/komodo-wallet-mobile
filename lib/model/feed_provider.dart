@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class FeedProvider extends ChangeNotifier {
   FeedProvider() {
-    ticker = Timer.periodic(const Duration(milliseconds: 1000), (_) {
+    ticker = Timer.periodic(const Duration(milliseconds: 10000), (_) {
       _updateData();
     });
   }
@@ -31,7 +32,7 @@ class FeedProvider extends ChangeNotifier {
 
   List<NewsItem> getNews() => _news;
 
-  void _updateData() {
+  Future<void> _updateData() async {
     if (_devOps != devOpsListPlaceholder) {
       _devOps = devOpsListPlaceholder;
       notifyListeners();
@@ -41,7 +42,13 @@ class FeedProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    final dynamic newsJson = jsonDecode(newsPlaceholder);
+    http.Response response;
+    try {
+      response = await http.get('http://95.217.44.58:777/messages');
+    } catch (e) {
+      print(e);
+    }
+    final dynamic newsJson = jsonDecode(response.body);
     _news = [];
     for (dynamic item in newsJson) {
       _news.add(NewsItem(
@@ -49,6 +56,7 @@ class FeedProvider extends ChangeNotifier {
         content: item['content'],
       ));
     }
+    notifyListeners();
   }
 
   List<DevStatus> sortTimeLine(List<DevStatus> unsorted) {
@@ -305,6 +313,5 @@ List<Issue> issuesListPlaceholder = [
   ),
 ];
 
-
 String newsPlaceholder =
-    r'''[{"date": "2020-06-18 07:51:09.541000", "content": "@everyone \n\nKomodo will be on Turkish television!\n\nhttps://twitter.com/KomodoPlatform/status/1271813884098289671?s=20"}, {"date": "2020-06-18 07:18:48.906000", "content": "@everyone \n\nWe have published another article from our Blockchain Fundamentals series. 📚\n\nBlockchain Programming Languages: An Introductory Guide\n\nIf you’re a developer looking to learn the right languages to begin your blockchain career, then this post is for you. In this article, we cover the most in-demand blockchain programming languages. We’ll look at how each language is used in the context of blockchain programming, along with examples from major projects in the blockchain space. The three categories featured are protocol-level development, smart contract development, and software development kits (SDKs).\n\nRead more here.\nhttps://komodoplatform.com/blockchain-programming-languages/"}, {"date": "2020-05-02 18:54:48.795000", "content": ""}, {"date": "2020-06-18 07:51:09.541000", "content": "@everyone \n\nKomodo will be on Turkish television!\n\nhttps://twitter.com/KomodoPlatform/status/1271813884098289671?s=20"}, {"date": "2020-06-18 07:18:48.906000", "content": "@everyone \n\nWe have published another article from our Blockchain Fundamentals series. 📚\n\nBlockchain Programming Languages: An Introductory Guide\n\nIf you’re a developer looking to learn the right languages to begin your blockchain career, then this post is for you. In this article, we cover the most in-demand blockchain programming languages. We’ll look at how each language is used in the context of blockchain programming, along with examples from major projects in the blockchain space. The three categories featured are protocol-level development, smart contract development, and software development kits (SDKs).\n\nRead more here.\nhttps://komodoplatform.com/blockchain-programming-languages/"}]''';
+    r'''[{"content":"@everyone \n\nKomodo will be on Turkish television!\n\nhttps://twitter.com/KomodoPlatform/status/1271813884098289671?s=20","date":"2020-06-18 07:51:09.541000"},{"content":"@everyone \n\nWe have published another article from our Blockchain Fundamentals series. \ud83d\udcda\n\nBlockchain Programming Languages: An Introductory Guide\n\nIf you\u2019re a developer looking to learn the right languages to begin your blockchain career, then this post is for you. In this article, we cover the most in-demand blockchain programming languages. We\u2019ll look at how each language is used in the context of blockchain programming, along with examples from major projects in the blockchain space. The three categories featured are protocol-level development, smart contract development, and software development kits (SDKs).\n\nRead more here.\nhttps://komodoplatform.com/blockchain-programming-languages/","date":"2020-06-18 07:18:48.906000"}]''';
