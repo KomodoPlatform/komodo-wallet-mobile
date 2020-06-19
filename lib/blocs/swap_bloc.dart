@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -17,11 +18,18 @@ class SwapBloc implements BlocBase {
   OrderCoin orderCoin;
   CoinBalance sellCoin;
   bool enabledReceiveField;
+  double buyCoinUsd;
 
   final StreamController<OrderCoin> _orderCoinController =
       StreamController<OrderCoin>.broadcast();
   Sink<OrderCoin> get _inOrderCoin => _orderCoinController.sink;
   Stream<OrderCoin> get outOrderCoin => _orderCoinController.stream;
+
+
+  final StreamController<double> _buyCoinUsdController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inBuyCoinUsd => _buyCoinUsdController.sink;
+  Stream<double> get outBuyCoinUsd => _buyCoinUsdController.stream;
 
   Coin receiveCoin;
   final StreamController<Coin> _receiveCoinController =
@@ -113,6 +121,7 @@ class SwapBloc implements BlocBase {
     _currentAmountBuyController.close();
     _enabledSellFieldController.close();
     _isMaxActiveController.close();
+    _buyCoinUsdController.close();
   }
 
   void setIsMaxActive(bool isMaxActive) {
@@ -192,19 +201,30 @@ class SwapBloc implements BlocBase {
 
   String getExchangeRate() {
     if (swapBloc.orderCoin != null) {
-      return '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(deci(currentAmountSell) / deci(currentAmountBuy))} ${swapBloc.orderCoin?.coinRel?.abbr}';
+      final strA = '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(deci(currentAmountSell) / deci(currentAmountBuy))} ${swapBloc.orderCoin?.coinRel?.abbr}';
+      final strB = '(1 ${swapBloc.orderCoin.coinRel.abbr} = ${deci2s(deci(currentAmountBuy) / deci(currentAmountSell))} ${swapBloc.orderCoin?.coinBase?.abbr})';
+      return '$strA\n$strB';
     } else {
       return '';
     }
   }
 
-  String getExchangeRateUSD() {
+  String getExchangeReference() {
     if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
       final String res = ((Decimal.parse(currentAmountSell.toString()) /
                   Decimal.parse(currentAmountBuy.toString())) *
               Decimal.parse(sellCoin.priceForOne))
           .toStringAsFixed(2);
-      return '($res USD)';
+      //final sellUsd = '1 ${sellCoin.coin.abbr} = ${sellCoin.priceForOne} USD';
+      //final buyUsd = '1 ${swapBloc.orderCoin.coinBase.abbr} = $buyCoinUsd USD';
+
+      final f = deci(currentAmountSell) * deci(sellCoin.priceForOne) / deci(currentAmountBuy) * deci(buyCoinUsd);
+      final g = deci(currentAmountBuy) * deci(buyCoinUsd) / deci(currentAmountSell) * deci(sellCoin.priceForOne);
+      final a = '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(f)} ${swapBloc.orderCoin.coinRel.abbr}';
+      final b = '(1 ${swapBloc.orderCoin.coinRel.abbr} = ${deci2s(g)} ${swapBloc.orderCoin.coinBase.abbr})';
+      //return '($res USD\n$sellUsd\n$buyUsd\n)';
+
+      return '$a\n$b';
     } else {
       return '';
     }
@@ -252,6 +272,11 @@ class SwapBloc implements BlocBase {
       amountReceive = orderCoin.getBuyAmount(amountSell).toDouble();
 
       _inAmountReceiveCoin.add(amountReceive);
+
+      final getPrice = GetPriceService();
+      final buyCoinUsd = await getPrice.getPrice(swapBloc.orderCoin.coinBase.abbr, swapBloc.orderCoin.coinBase.coingeckoId, 'USD') ?? 0;
+      _inBuyCoinUsd.add(buyCoinUsd);
+
       return amountReceive;
     } catch (e) {
       Log.println('swap_bloc:257', e);

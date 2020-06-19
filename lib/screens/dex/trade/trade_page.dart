@@ -1397,7 +1397,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        swapBloc.getExchangeRateUSD(),
+                        swapBloc.getExchangeReference(),
                         style: Theme.of(context).textTheme.body2,
                       ),
                     ],
