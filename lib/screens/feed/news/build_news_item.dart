@@ -25,7 +25,7 @@ class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProvider
 
     expandController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500)
+      duration: const Duration(milliseconds: 500),
     );
     expandAnimation = CurvedAnimation(
       parent: expandController,
@@ -153,6 +153,7 @@ class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProvider
                 });
               },
               child: Container(
+                width: double.infinity,
                 padding: const EdgeInsets.only(top: 12, bottom: 20, right: 12),
                 child: Text('Read more...', // TODO(yurii): localization
                     style: TextStyle(fontSize: 16, color: Colors.blue)),

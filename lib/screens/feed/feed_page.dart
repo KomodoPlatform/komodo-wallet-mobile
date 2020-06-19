@@ -8,7 +8,8 @@ class FeedPage extends StatefulWidget {
   _FeedPageState createState() => _FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin {
+class _FeedPageState extends State<FeedPage>
+    with SingleTickerProviderStateMixin {
   TabController _controllerTabs;
   @override
   void initState() {
@@ -45,15 +46,13 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
             indicator: CustomTabIndicator(context: context),
             controller: _controllerTabs,
             tabs: <Widget>[
-              Tab(text: 'News'.toUpperCase()), // TODO(yurii): localization
-              /* Tab(text: 'DevOps'.toUpperCase()), // TODO(yurii): localization
-              Tab(text: 'Progress'.toUpperCase()), // TODO(yurii): localization */
+              Tab(text: 'News'.toUpperCase()),
             ],
           ),
         ),
       );
 
-      return _isSmallScreen
+      return _isSmallScreen && _controllerTabs.length > 1
           ? PreferredSize(
               preferredSize: const Size.fromHeight(80),
               child: AppBar(
@@ -72,15 +71,7 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
                 'News Feed'.toUpperCase(), // TODO(yurii): localization
                 style: Theme.of(context).textTheme.subtitle,
               )),
-              /* bottom: PreferredSize(
-                preferredSize: const Size(200.0, 70.0),
-                child: Column(
-                  children: <Widget>[
-                    _tabsPanel,
-                    const SizedBox(height: 15),
-                  ],
-                ),
-              ) */);
+            );
     }
 
     return Scaffold(
@@ -95,4 +86,3 @@ class _FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin
     );
   }
 }
-
