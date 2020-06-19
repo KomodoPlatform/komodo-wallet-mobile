@@ -14,7 +14,7 @@ ThemeData getTheme() => ThemeData(
       brightness: Brightness.dark,
       primaryColor: primaryColor,
       backgroundColor: const Color.fromRGBO(30, 42, 58, 1),
-      primaryColorDark: primaryColor,
+      primaryColorDark: const Color.fromRGBO(28, 36, 48, 1),
       accentColor: const Color.fromRGBO(65, 234, 213, 1),
       textSelectionColor:
           const Color.fromRGBO(65, 234, 213, 1).withOpacity(0.3),

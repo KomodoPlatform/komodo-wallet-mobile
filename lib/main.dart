@@ -8,12 +8,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/screens/feed/feed_page.dart';
 import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/swap_page.dart';
-import 'package:komodo_dex/screens/news/media_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
@@ -58,6 +59,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => OrderBookProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => FeedProvider(),
             ),
             ChangeNotifierProvider(
               create: (context) => StartupProvider(),
@@ -157,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     CoinsPage(),
     SwapPage(),
     MarketsPage(),
-    Media(),
+    FeedPage(),
     SettingPage()
   ];
 
@@ -227,6 +231,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
+
     return StreamBuilder<int>(
         initialData: mainBloc.currentIndexTab,
         stream: mainBloc.outCurrentIndex,
@@ -315,11 +321,26 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                             'Markets'), // TODO(yurii): localization
                                       ),
                                       BottomNavigationBarItem(
-                                          icon: Icon(Icons.library_books,
-                                              key: const Key('icon-media')),
-                                          title: Text(
-                                              AppLocalizations.of(context)
-                                                  .media)),
+                                          icon: Stack(
+                                            children: <Widget>[
+                                              Icon(Icons.library_books,
+                                                  key: const Key('icon-media')),
+                                              if (feedProvider.hasNewItems)
+                                                Positioned(
+                                                  right: 0,
+                                                  top: 0,
+                                                    child: Container(
+                                                  decoration: const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.red,
+                                                  ),
+                                                  width: 7,
+                                                  height: 7,
+                                                )),
+                                            ],
+                                          ),
+                                          title: const Text(
+                                              'Feed')), // TODO(yurii): localization
                                       BottomNavigationBarItem(
                                           icon: Icon(Icons.settings,
                                               key: const Key(
