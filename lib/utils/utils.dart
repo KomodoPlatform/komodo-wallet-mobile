@@ -504,9 +504,11 @@ String humanDate(int epoch) {
   DateTime _dateTime;
   try {
     _dateTime = DateTime.fromMillisecondsSinceEpoch(epoch);
-  } catch (_) {
-    return null;
+  } catch (e) {
+    Log('utils:508', 'humanDate] $e');
   }
+
+  if (_dateTime == null) return null;
 
   final DateTime _now = DateTime.now();
   final bool _isThisYear = _dateTime.year == _now.year;

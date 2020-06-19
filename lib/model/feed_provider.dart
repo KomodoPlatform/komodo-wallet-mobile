@@ -66,8 +66,9 @@ class FeedProvider extends ChangeNotifier {
     }
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    
-    if (response.body == prefs.getString('cachedNews')) {
+    final String cachedNews = prefs.getString('cachedNews');
+    if (cachedNews != null &&
+        _newsFromJson(cachedNews)[0].date == news[0].date) {
       return 'Already up to date'; // TODO(yurii): localization
     }
 
