@@ -25,7 +25,8 @@ class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProvider
 
     expandController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 100),
+      animationBehavior: AnimationBehavior.preserve,
     );
     expandAnimation = CurvedAnimation(
       parent: expandController,
@@ -47,7 +48,7 @@ class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 20),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +74,7 @@ class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProvider
     return Row(
       children: <Widget>[
         CircleAvatar(
-          radius: 15,
+          radius: 18,
           backgroundImage:
               _source.pic != null ? NetworkImage(_source.pic) : null,
           backgroundColor: Theme.of(context).highlightColor,
@@ -84,7 +85,7 @@ class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProvider
                 )
               : null,
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: 8),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +122,7 @@ class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProvider
         : Text(
             _date,
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 16,
               color: Theme.of(context).textTheme.caption.color,
             ),
           );
