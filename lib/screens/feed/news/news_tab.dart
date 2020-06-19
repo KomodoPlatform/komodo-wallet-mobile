@@ -76,13 +76,6 @@ class _NewsTabState extends State<NewsTab> {
                     return Column(
                       children: <Widget>[
                         BuildNewsItem(_news[i]),
-                        if (i + 1 < _news.length)
-                          Divider(
-                            endIndent: 12,
-                            indent: 12,
-                            height: 1,
-                            color: Theme.of(context).disabledColor,
-                          ),
                       ],
                     );
                   }),

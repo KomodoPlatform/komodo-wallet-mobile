@@ -13,7 +13,8 @@ class BuildNewsItem extends StatefulWidget {
   _BuildNewsItemState createState() => _BuildNewsItemState();
 }
 
-class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProviderStateMixin {
+class _BuildNewsItemState extends State<BuildNewsItem>
+    with SingleTickerProviderStateMixin {
   List<TapGestureRecognizer> _recognizers;
   bool _collapsed = true;
   AnimationController expandController;
@@ -47,16 +48,23 @@ class _BuildNewsItemState extends State<BuildNewsItem> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 12, right: 12, top: 20),
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildHeader(),
-          const SizedBox(height: 20),
-          _buildContent(),
-        ],
+    return Card(
+      margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
+      color: Theme.of(context).primaryColor,
+      child: Container(
+        padding: const EdgeInsets.only(left: 12, right: 12, top: 20),
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildHeader(),
+            Divider(
+              color: Colors.white,
+              height: 40,
+            ),
+            _buildContent(),
+          ],
+        ),
       ),
     );
   }
