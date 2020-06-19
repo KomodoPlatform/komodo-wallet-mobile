@@ -17,6 +17,12 @@ class _NewsTabState extends State<NewsTab> {
     _feedProvider = Provider.of<FeedProvider>(context);
     _news = _feedProvider.getNews();
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_feedProvider.hasNewItems) {
+        _feedProvider.hasNewItems = false;
+      }
+    });
+
     if (_news == null) {
       return const Center(child: CircularProgressIndicator());
     }

@@ -17,6 +17,7 @@ class FeedProvider extends ChangeNotifier {
   Timer _ticker;
   List<NewsItem> _news;
   bool _isNewsFetching = false;
+  bool _hasNewItems = false;
 
   @override
   void dispose() {
@@ -25,6 +26,11 @@ class FeedProvider extends ChangeNotifier {
   }
 
   bool get isNewsFetching => _isNewsFetching;
+  bool get hasNewItems => _hasNewItems;
+  set hasNewItems(bool value) {
+    _hasNewItems = value;
+    notifyListeners();
+  }
 
   List<NewsItem> getNews() => _news;
   Future<String> updateNews() => _updateNews();
@@ -59,10 +65,16 @@ class FeedProvider extends ChangeNotifier {
       return 'Unable to proceed news update'; // TODO(yurii): localization
     }
 
-    _news = news;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('cachedNews', response.body);
+    
+    if (response.body == prefs.getString('cachedNews')) {
+      return 'Already up to date'; // TODO(yurii): localization
+    }
 
+    prefs.setString('cachedNews', response.body);
+    _hasNewItems = true;
+    _news = news;
+    notifyListeners();
     return 'ok';
   }
 

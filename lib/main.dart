@@ -231,6 +231,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
+
     return StreamBuilder<int>(
         initialData: mainBloc.currentIndexTab,
         stream: mainBloc.outCurrentIndex,
@@ -319,8 +321,24 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                             'Markets'), // TODO(yurii): localization
                                       ),
                                       BottomNavigationBarItem(
-                                          icon: Icon(Icons.library_books,
-                                              key: const Key('icon-media')),
+                                          icon: Stack(
+                                            children: <Widget>[
+                                              Icon(Icons.library_books,
+                                                  key: const Key('icon-media')),
+                                              if (feedProvider.hasNewItems)
+                                                Positioned(
+                                                  right: 0,
+                                                  top: 0,
+                                                    child: Container(
+                                                  decoration: const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.red,
+                                                  ),
+                                                  width: 7,
+                                                  height: 7,
+                                                )),
+                                            ],
+                                          ),
                                           title: const Text(
                                               'Feed')), // TODO(yurii): localization
                                       BottomNavigationBarItem(
