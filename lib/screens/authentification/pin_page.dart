@@ -252,14 +252,22 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
     if (!(pinStatus == PinStatus.CONFIRM_PIN)) {
       return AppBar(
         centerTitle: true,
-        leading: InkWell(
-            onTap: () {
-              showLogoutConfirmation(context);
-            },
-            child: Icon(
-              Icons.exit_to_app,
-              color: Colors.red,
-            )),
+        actions: <Widget>[
+          InkWell(
+              onTap: () {
+                showLogoutConfirmation(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 12.0,
+                  left: 12,
+                ),
+                child: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.red,
+                ),
+              )),
+        ],
         backgroundColor: Theme.of(context).backgroundColor,
         title: Text(title),
         elevation: 0,
