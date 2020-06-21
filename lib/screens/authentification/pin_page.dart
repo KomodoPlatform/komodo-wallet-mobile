@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
+import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
@@ -253,7 +254,7 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
         centerTitle: true,
         leading: InkWell(
             onTap: () async {
-              await authBloc.logout();
+              await showLogoutConfirmation(context);
             },
             child: Icon(
               Icons.exit_to_app,
