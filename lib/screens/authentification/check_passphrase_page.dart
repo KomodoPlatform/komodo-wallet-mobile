@@ -141,6 +141,7 @@ class _SeedRandomState extends State<SeedRandom> {
         Text(
           AppLocalizations.of(context)
               .checkSeedPhraseSubtile((widget.data.index + 1).toString()),
+            key: const Key('which-word'),
           style: Theme.of(context).textTheme.body1,
         ),
         const SizedBox(
@@ -154,6 +155,7 @@ class _SeedRandomState extends State<SeedRandom> {
                 _controller.text = '';
               }
               return CustomTextField(
+                key: const Key('which-word-field'),
                 controller: _controller,
                 onChanged: (String text) {
                   checkPassphrasePage.setWord(text);

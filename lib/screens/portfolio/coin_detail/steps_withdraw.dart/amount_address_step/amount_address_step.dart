@@ -76,6 +76,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               children: <Widget>[
                 Expanded(
                   child: SecondaryButton(
+                    key: const Key('secondary-button-cancel'),
                     text: AppLocalizations.of(context).cancel,
                     onPressed: () {
                       widget.amountController.clear();
@@ -103,6 +104,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     return Builder(
       builder: (BuildContext mContext) {
         return PrimaryButton(
+          key: const Key('primary-button-withdraw'),
           text: AppLocalizations.of(context).withdraw.toUpperCase(),
           onPressed: () async {
             // Validate will return true if the form is valid, or false if
