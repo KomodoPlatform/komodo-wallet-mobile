@@ -3,7 +3,7 @@ import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 
-Future<void> showLogoutConfirmation(BuildContext context) async {
+void showLogoutConfirmation(BuildContext context) {
   dialogBloc.dialog = showDialog(
       context: context,
       builder: (BuildContext context) {

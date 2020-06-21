@@ -253,8 +253,8 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
       return AppBar(
         centerTitle: true,
         leading: InkWell(
-            onTap: () async {
-              await showLogoutConfirmation(context);
+            onTap: () {
+              showLogoutConfirmation(context);
             },
             child: Icon(
               Icons.exit_to_app,
