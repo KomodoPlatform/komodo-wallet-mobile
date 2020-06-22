@@ -6,11 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/startup_provider.dart';
+import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
+import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -97,7 +99,8 @@ class _LockScreenState extends State<LockScreen> {
   Widget build(BuildContext context) {
     final StartupProvider startup = Provider.of<StartupProvider>(context);
     if (!startup.live) {
-      final RegExpMatch _tailMatch = RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
+      final RegExpMatch _tailMatch =
+          RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
       final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -122,6 +125,9 @@ class _LockScreenState extends State<LockScreen> {
       stream: authBloc.outIsLogin,
       initialData: authBloc.isLogin,
       builder: (BuildContext context, AsyncSnapshot<bool> isLogin) {
+        final UpdatesProvider updatesProvider =
+            Provider.of<UpdatesProvider>(context);
+
         return StreamBuilder<PinStatus>(
           initialData: authBloc.pinStatus,
           stream: authBloc.outpinStatus,
@@ -162,15 +168,17 @@ class _LockScreenState extends State<LockScreen> {
                                       return Container();
                                     },
                                   ),
-                                  PinPage(
-                                    title:
-                                        AppLocalizations.of(context).lockScreen,
-                                    subTitle: AppLocalizations.of(context)
-                                        .enterPinCode,
-                                    pinStatus: widget.pinStatus,
-                                    isFromChangingPin: false,
-                                    onSuccess: widget.onSuccess,
-                                  ),
+                                  updatesProvider.updateRequired
+                                      ? UpdatesPage()
+                                      : PinPage(
+                                          title: AppLocalizations.of(context)
+                                              .lockScreen,
+                                          subTitle: AppLocalizations.of(context)
+                                              .enterPinCode,
+                                          pinStatus: widget.pinStatus,
+                                          isFromChangingPin: false,
+                                          onSuccess: widget.onSuccess,
+                                        ),
                                 ],
                               );
                             } else {

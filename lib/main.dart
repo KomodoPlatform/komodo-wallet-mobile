@@ -11,6 +11,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
 import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -65,6 +66,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => StartupProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => UpdatesProvider(),
             ),
           ],
           child: const MyApp(),
