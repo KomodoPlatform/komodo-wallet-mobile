@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/markets/build_order_details.dart';
-import 'package:komodo_dex/screens/markets/build_order_health_details.dart';
 
 class OrderDetailsPage extends StatelessWidget {
   const OrderDetailsPage({
@@ -28,7 +27,6 @@ class OrderDetailsPage extends StatelessWidget {
               children: <Widget>[
                 BuildOrderDetails(order),
                 const SizedBox(height: 10),
-                BuildOrderHealthDetails(order),
               ],
             ),
           ),

@@ -7,7 +7,6 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -19,6 +18,7 @@ import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
@@ -452,10 +452,7 @@ class _SettingPageState extends State<SettingPage> {
     return CustomTile(
       onPressed: () {
         Log('setting_page:454', 'PRESSED');
-        authBloc.logout().then((_) {
-          Log('setting_page:456', 'PRESSED');
-          SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
-        });
+        showLogoutConfirmation(context);
       },
       child: ListTile(
         leading: Padding(
