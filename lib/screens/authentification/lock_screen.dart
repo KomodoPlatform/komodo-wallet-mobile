@@ -43,6 +43,8 @@ class _LockScreenState extends State<LockScreen> {
   final LocalAuthentication auth = LocalAuthentication();
   String password;
   bool isInitPassword = false;
+  UpdatesProvider updatesProvider;
+  bool shouldUpdate = false;
 
   Future<void> _initScreen() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -77,7 +79,18 @@ class _LockScreenState extends State<LockScreen> {
         ModalRoute.of(widget.context).settings.arguments;
     password = args?.password;
     _initScreen();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (updatesProvider.status == null) await updatesProvider.check();
+      setState(() {
+        shouldUpdate =
+            updatesProvider.status == UpdateStatus.updateRecommended ||
+                updatesProvider.status == UpdateStatus.updateRequired;
+      });
+    });
+
     super.initState();
+
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -98,10 +111,9 @@ class _LockScreenState extends State<LockScreen> {
   @override
   Widget build(BuildContext context) {
     final StartupProvider startup = Provider.of<StartupProvider>(context);
-    if (!startup.live) {
-      final RegExpMatch _tailMatch =
-          RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
-      final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
+    updatesProvider = Provider.of<UpdatesProvider>(context);
+
+    Widget _buildSplash(String message) {
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: Center(
@@ -110,7 +122,7 @@ class _LockScreenState extends State<LockScreen> {
             children: <Widget>[
               Image.asset('assets/logo_kmd.png'),
               const SizedBox(height: 12),
-              Text(_logTail,
+              Text(message,
                   style: TextStyle(
                     fontSize: 13,
                     color: Theme.of(context).textTheme.caption.color,
@@ -121,13 +133,20 @@ class _LockScreenState extends State<LockScreen> {
       );
     }
 
+    if (!startup.live) {
+      final RegExpMatch _tailMatch =
+          RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
+      final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
+      return _buildSplash(_logTail);
+    } else if (updatesProvider.status == null) {
+      return _buildSplash(
+          'Checking for updates...'); // TODO(yurii): localization
+    }
+
     return StreamBuilder<bool>(
       stream: authBloc.outIsLogin,
       initialData: authBloc.isLogin,
       builder: (BuildContext context, AsyncSnapshot<bool> isLogin) {
-        final UpdatesProvider updatesProvider =
-            Provider.of<UpdatesProvider>(context);
-
         return StreamBuilder<PinStatus>(
           initialData: authBloc.pinStatus,
           stream: authBloc.outpinStatus,
@@ -168,8 +187,15 @@ class _LockScreenState extends State<LockScreen> {
                                       return Container();
                                     },
                                   ),
-                                  updatesProvider.updateRequired
-                                      ? UpdatesPage()
+                                  shouldUpdate
+                                      ? UpdatesPage(
+                                          refresh: false,
+                                          onSkip: () {
+                                            setState(() {
+                                              shouldUpdate = false;
+                                            });
+                                          },
+                                        )
                                       : PinPage(
                                           title: AppLocalizations.of(context)
                                               .lockScreen,
