@@ -29,6 +29,8 @@ class UpdatesProvider extends ChangeNotifier {
 
   Future<void> _check() async {
     isFetching = true;
+    newVersion = null;
+    status = null;
     notifyListeners();
 
     http.Response response;
@@ -48,13 +50,21 @@ class UpdatesProvider extends ChangeNotifier {
 
       isFetching = false;
       status = UpdateStatus.upToDate;
-      newVersion = null;
       notifyListeners();
       return;
     }
 
-    final String _newVersion = json['newVersion'];
-    if (_newVersion != null) newVersion = _newVersion;
+    final String jsonVersion = json['newVersion'];
+    if (jsonVersion != null) {
+      if (jsonVersion.compareTo(currentVersion) > 0) {
+        newVersion = jsonVersion;
+      } else {
+        isFetching = false;
+        status = UpdateStatus.upToDate;
+        notifyListeners();
+        return;
+      }
+    }
 
     switch (json['status']) {
       case 'upToDate':
@@ -78,9 +88,8 @@ class UpdatesProvider extends ChangeNotifier {
           break;
         }
       default:
-        status = _newVersion == null
-            ? UpdateStatus.upToDate
-            : UpdateStatus.available;
+        status =
+            newVersion == null ? UpdateStatus.upToDate : UpdateStatus.available;
     }
 
     isFetching = false;
