@@ -72,19 +72,18 @@ class _UpdatesPageState extends State<UpdatesPage> {
                                     'Checking for updates...') // TODO(yurii): localization
                               ],
                             )
-                          : updatesProvider.status ==
-                                  UpdateStatus.upToDate
+                          : updatesProvider.status == UpdateStatus.upToDate
                               ? const Text(
                                   'Already up to date') // TODO(yurii): localization
                               : Text(
-                                  'New version available: ${updatesProvider.newVersion}', // TODO(yurii): localization
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold),
+                                  'New version available${updatesProvider.newVersion == null ? '' : ': ${updatesProvider.newVersion}'}', // TODO(yurii): localization
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 )
                     ],
                   )),
             ),
-            if (updatesProvider.status != UpdateStatus.upToDate && !updatesProvider.isFetching)
+            if (updatesProvider.status != UpdateStatus.upToDate &&
+                !updatesProvider.isFetching)
               Container(
                 height: MediaQuery.of(context).size.height / 5,
                 child: Row(
@@ -107,10 +106,8 @@ class _UpdatesPageState extends State<UpdatesPage> {
                       },
                       child: const Text('Update'), // TODO(yurii): localization
                     ),
-                    if (updatesProvider.status ==
-                            UpdateStatus.newVersionAvailable ||
-                        updatesProvider.status ==
-                            UpdateStatus.updateRecommended) ...[
+                    if (updatesProvider.status == UpdateStatus.available ||
+                        updatesProvider.status == UpdateStatus.recommended) ...[
                       const SizedBox(width: 12),
                       RaisedButton(
                         color: Theme.of(context).dialogBackgroundColor,

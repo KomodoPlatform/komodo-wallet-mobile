@@ -84,8 +84,8 @@ class _LockScreenState extends State<LockScreen> {
       if (updatesProvider.status == null) await updatesProvider.check();
       setState(() {
         shouldUpdate =
-            updatesProvider.status == UpdateStatus.updateRecommended ||
-                updatesProvider.status == UpdateStatus.updateRequired;
+            updatesProvider.status == UpdateStatus.recommended ||
+                updatesProvider.status == UpdateStatus.required;
       });
     });
 
