@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
@@ -66,13 +67,19 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                               ),
                             ),
                             _hasNonzeroPrice
-                                ? Text(
-                                    '\$${widget.coinBalance.priceForOne}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle
-                                        .copyWith(fontSize: 18),
-                                  )
+                                ? Row(
+                                  children: <Widget>[
+                                    CexMarker(context),
+                                    const SizedBox(width: 4,),
+                                    Text(
+                                        '\$${widget.coinBalance.priceForOne}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle
+                                            .copyWith(fontSize: 16, fontWeight: FontWeight.normal),
+                                      ),
+                                  ],
+                                )
                                 : Container(),
                           ],
                         ),
