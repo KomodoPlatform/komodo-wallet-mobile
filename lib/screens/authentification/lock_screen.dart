@@ -83,9 +83,8 @@ class _LockScreenState extends State<LockScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (updatesProvider.status == null) await updatesProvider.check();
       setState(() {
-        shouldUpdate =
-            updatesProvider.status == UpdateStatus.recommended ||
-                updatesProvider.status == UpdateStatus.required;
+        shouldUpdate = updatesProvider.status == UpdateStatus.recommended ||
+            updatesProvider.status == UpdateStatus.required;
       });
     });
 
@@ -208,23 +207,33 @@ class _LockScreenState extends State<LockScreen> {
                                 ],
                               );
                             } else {
-                              return SharedPreferencesBuilder<bool>(
-                                  pref: 'switch_pin_biometric',
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<bool> switchPinBiometric) {
-                                    if (switchPinBiometric.hasData &&
-                                        switchPinBiometric.data) {
-                                      return Stack(
-                                        children: <Widget>[
-                                          BiometricPage(
-                                            pinStatus: widget.pinStatus,
-                                          ),
-                                        ],
-                                      );
-                                    } else {
-                                      return widget.child;
-                                    }
-                                  });
+                              return shouldUpdate
+                                  ? UpdatesPage(
+                                      refresh: false,
+                                      onSkip: () {
+                                        setState(() {
+                                          shouldUpdate = false;
+                                        });
+                                      },
+                                    )
+                                  : SharedPreferencesBuilder<bool>(
+                                      pref: 'switch_pin_biometric',
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<bool>
+                                              switchPinBiometric) {
+                                        if (switchPinBiometric.hasData &&
+                                            switchPinBiometric.data) {
+                                          return Stack(
+                                            children: <Widget>[
+                                              BiometricPage(
+                                                pinStatus: widget.pinStatus,
+                                              ),
+                                            ],
+                                          );
+                                        } else {
+                                          return widget.child;
+                                        }
+                                      });
                             }
                           } else {
                             if (widget.child == null &&
