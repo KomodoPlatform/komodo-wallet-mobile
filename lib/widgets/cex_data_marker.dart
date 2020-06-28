@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 
 class CexMarker extends StatelessWidget {
   const CexMarker(this.context, {this.size = const Size(16, 16)});
@@ -18,7 +19,7 @@ class CexMarker extends StatelessWidget {
         child: Icon(
           Icons.info_outline,
           size: size.height,
-          color: const Color.fromARGB(255, 253, 247, 227),
+          color: cexColor,
         ),
       ),
     );
@@ -36,7 +37,7 @@ void showCexDialog(BuildContext context) {
           Icon(
             Icons.info_outline,
             size: 22,
-            color: const Color.fromARGB(255, 253, 247, 227),
+            color: cexColor,
           ),
           const SizedBox(
             width: 8,
@@ -59,7 +60,7 @@ void showCexDialog(BuildContext context) {
                     child: Icon(
                   Icons.info_outline,
                   size: 16,
-                  color: const Color.fromARGB(255, 253, 247, 227),
+                  color: cexColor,
                 )),
                 const TextSpan(
                     text:

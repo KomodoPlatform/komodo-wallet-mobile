@@ -25,7 +25,6 @@ class SwapBloc implements BlocBase {
   Sink<OrderCoin> get _inOrderCoin => _orderCoinController.sink;
   Stream<OrderCoin> get outOrderCoin => _orderCoinController.stream;
 
-
   final StreamController<double> _buyCoinUsdController =
       StreamController<double>.broadcast();
   Sink<double> get _inBuyCoinUsd => _buyCoinUsdController.sink;
@@ -199,17 +198,18 @@ class SwapBloc implements BlocBase {
     _inListOrderCoin.add(orderCoins);
   }
 
-  String getExchangeRate() {
+  String getExchangeRate({bool quoted = false}) {
     if (swapBloc.orderCoin != null) {
-      final strA = '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(deci(currentAmountSell) / deci(currentAmountBuy))} ${swapBloc.orderCoin?.coinRel?.abbr}';
-      final strB = '(1 ${swapBloc.orderCoin.coinRel.abbr} = ${deci2s(deci(currentAmountBuy) / deci(currentAmountSell))} ${swapBloc.orderCoin?.coinBase?.abbr})';
-      return '$strA\n$strB';
+      final String rate = quoted
+          ? '1 ${swapBloc.orderCoin.coinRel.abbr} = ${deci2s(deci(currentAmountBuy) / deci(currentAmountSell))} ${swapBloc.orderCoin?.coinBase?.abbr}'
+          : '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(deci(currentAmountSell) / deci(currentAmountBuy))} ${swapBloc.orderCoin?.coinRel?.abbr}';
+      return rate;
     } else {
       return '';
     }
   }
 
-  String getExchangeReference() {
+  String getExchangeReference({bool quoted = false}) {
     if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
       final String res = ((Decimal.parse(currentAmountSell.toString()) /
                   Decimal.parse(currentAmountBuy.toString())) *
@@ -218,13 +218,18 @@ class SwapBloc implements BlocBase {
       //final sellUsd = '1 ${sellCoin.coin.abbr} = ${sellCoin.priceForOne} USD';
       //final buyUsd = '1 ${swapBloc.orderCoin.coinBase.abbr} = $buyCoinUsd USD';
 
-      final f = deci(currentAmountSell) * deci(sellCoin.priceForOne) / deci(currentAmountBuy) * deci(buyCoinUsd);
-      final g = deci(currentAmountBuy) * deci(buyCoinUsd) / deci(currentAmountSell) * deci(sellCoin.priceForOne);
-      final a = '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(f)} ${swapBloc.orderCoin.coinRel.abbr}';
-      final b = '(1 ${swapBloc.orderCoin.coinRel.abbr} = ${deci2s(g)} ${swapBloc.orderCoin.coinBase.abbr})';
-      //return '($res USD\n$sellUsd\n$buyUsd\n)';
+      final f = deci(currentAmountSell) *
+          deci(sellCoin.priceForOne) /
+          deci(currentAmountBuy) *
+          deci(buyCoinUsd);
+      final g = deci(currentAmountBuy) *
+          deci(buyCoinUsd) /
+          deci(currentAmountSell) *
+          deci(sellCoin.priceForOne);
 
-      return '$a\n$b';
+      return quoted
+          ? '1 ${swapBloc.orderCoin.coinRel.abbr} = ${deci2s(g)} ${swapBloc.orderCoin.coinBase.abbr}'
+          : '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(f)} ${swapBloc.orderCoin.coinRel.abbr}';
     } else {
       return '';
     }
@@ -274,7 +279,11 @@ class SwapBloc implements BlocBase {
       _inAmountReceiveCoin.add(amountReceive);
 
       final getPrice = GetPriceService();
-      final buyCoinUsd = await getPrice.getPrice(swapBloc.orderCoin.coinBase.abbr, swapBloc.orderCoin.coinBase.coingeckoId, 'USD') ?? 0;
+      final buyCoinUsd = await getPrice.getPrice(
+              swapBloc.orderCoin.coinBase.abbr,
+              swapBloc.orderCoin.coinBase.coingeckoId,
+              'USD') ??
+          0;
       _inBuyCoinUsd.add(buyCoinUsd);
 
       return amountReceive;

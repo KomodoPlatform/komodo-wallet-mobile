@@ -25,8 +25,10 @@ import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class TradePage extends StatefulWidget {
@@ -1397,10 +1399,42 @@ class _ExchangeRateState extends State<ExchangeRate> {
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        swapBloc.getExchangeReference(),
-                        style: Theme.of(context).textTheme.body2,
+                        '(${swapBloc.getExchangeRate(quoted: true)})',
                       ),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          CexMarker(context),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            'CEXchange rate', // TODO(yurii): localization
+                            style: Theme.of(context).textTheme.body2,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(
+                    swapBloc.getExchangeReference(),
+                    style: TextStyle(
+                      color: cexColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '(${swapBloc.getExchangeReference(quoted: true)})',
+                    style: TextStyle(
+                      color: cexColor,
+                    ),
                   )
                 ],
               ),
