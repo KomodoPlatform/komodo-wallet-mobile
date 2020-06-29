@@ -18,8 +18,10 @@ class _ExchangeRateState extends State<ExchangeRate> {
 
     if (buyAbbr == null || sellAbbr == null) return Container();
 
+    final double rate = swapBloc.getExchangeRate();
+    final double cexRate = swapBloc.getCExchangeRate();
+
     Widget _buildExchangeRate() {
-      final double rate = swapBloc.getExchangeRate();
       if (rate == null) return Container();
 
       final String exchangeRate =
@@ -44,18 +46,20 @@ class _ExchangeRateState extends State<ExchangeRate> {
             '1 $sellAbbr = $exchangeRateQuoted $buyAbbr',
             style: const TextStyle(fontSize: 13),
           ),
+          const SizedBox(
+            height: 12,
+          ),
         ],
       );
     }
 
     Widget _buildCExchangeRate() {
-      final double rate = swapBloc.getCExchangeRate();
-      if (rate == null) return Container();
+      if (cexRate == null) return Container();
 
       final String cExchangeRate =
-          OrderBookProvider.formatPrice(rate.toString());
+          OrderBookProvider.formatPrice(cexRate.toString());
       final String cExchangeRateQuoted =
-          OrderBookProvider.formatPrice((1 / rate).toString());
+          OrderBookProvider.formatPrice((1 / cexRate).toString());
 
       return Column(
         children: <Widget>[
@@ -90,6 +94,56 @@ class _ExchangeRateState extends State<ExchangeRate> {
               color: cexColor,
             ),
           ),
+          const SizedBox(height: 20),
+        ],
+      );
+    }
+
+    Widget _buildIndicator() {
+      if (rate == null || cexRate == null) return Container();
+
+      const double range = 5;
+      final num sign = (rate - cexRate).sign;
+      final double percent = ((rate - cexRate) * 100 / rate).abs();
+      final percentString =
+          OrderBookProvider.formatPrice(percent.toString(), 2);
+      String message;
+      Color color;
+
+      switch (sign) {
+        case -1:
+          {
+            if (percent > range) {
+              color = Colors.green;
+            }
+            message =
+                'Expedient: -$percentString% compared to CEX'; // TODO(yurii): localization
+            break;
+          }
+        case 1:
+          {
+            if (percent > range) {
+              color = Colors.orange;
+            }
+            message =
+                'Expensive: +$percentString% compared to CEX'; // TODO(yurii): localization
+            break;
+          }
+        default:
+          {
+            message = 'Identical to CEX'; // TODO(yurii): localization
+          }
+      }
+
+      return Column(
+        children: <Widget>[
+          Text(
+            message,
+            style: TextStyle(
+              color: color,
+            ),
+          ),
+          const SizedBox(height: 12),
         ],
       );
     }
@@ -99,9 +153,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
       child: Column(
         children: <Widget>[
           _buildExchangeRate(),
-          const SizedBox(
-            height: 12,
-          ),
+          _buildIndicator(),
           _buildCExchangeRate(),
         ],
       ),
