@@ -16,9 +16,9 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class SwapBloc implements BlocBase {
   OrderCoin orderCoin;
-  CoinBalance sellCoin;
+  CoinBalance sellCoinBalance;
+  CoinBalance buyCoinBalance;
   bool enabledReceiveField;
-  double buyCoinUsd;
 
   final StreamController<OrderCoin> _orderCoinController =
       StreamController<OrderCoin>.broadcast();
@@ -151,6 +151,13 @@ class SwapBloc implements BlocBase {
   void updateBuyCoin(OrderCoin orderCoin) {
     this.orderCoin = orderCoin;
     _inOrderCoin.add(this.orderCoin);
+
+    try {
+      buyCoinBalance = coinsBloc.coinBalance.firstWhere(
+          (balance) => balance.coin.abbr == orderCoin.coinBase.abbr);
+    } catch (_) {
+      buyCoinBalance = null;
+    }
   }
 
   void updateReceiveCoin(Coin receiveCoin) {
@@ -169,8 +176,8 @@ class SwapBloc implements BlocBase {
   }
 
   void updateSellCoin(CoinBalance coinBalance) {
-    sellCoin = coinBalance;
-    _inSellCoin.add(sellCoin);
+    sellCoinBalance = coinBalance;
+    _inSellCoin.add(sellCoinBalance);
   }
 
   Future<void> getBuyCoins(Coin rel) async {
@@ -198,41 +205,20 @@ class SwapBloc implements BlocBase {
     _inListOrderCoin.add(orderCoins);
   }
 
-  String getExchangeRate({bool quoted = false}) {
-    if (swapBloc.orderCoin != null) {
-      final String rate = quoted
-          ? '1 ${swapBloc.orderCoin.coinRel.abbr} = ${deci2s(deci(currentAmountBuy) / deci(currentAmountSell))} ${swapBloc.orderCoin?.coinBase?.abbr}'
-          : '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(deci(currentAmountSell) / deci(currentAmountBuy))} ${swapBloc.orderCoin?.coinRel?.abbr}';
-      return rate;
-    } else {
-      return '';
-    }
+  double getExchangeRate() {
+    if (currentAmountSell == null) return null;
+    if (currentAmountBuy == null || currentAmountBuy == 0) return null;
+
+    return currentAmountSell / currentAmountBuy;
   }
 
-  String getExchangeReference({bool quoted = false}) {
-    if (swapBloc.orderCoin != null && sellCoin.priceForOne != null) {
-      final String res = ((Decimal.parse(currentAmountSell.toString()) /
-                  Decimal.parse(currentAmountBuy.toString())) *
-              Decimal.parse(sellCoin.priceForOne))
-          .toStringAsFixed(2);
-      //final sellUsd = '1 ${sellCoin.coin.abbr} = ${sellCoin.priceForOne} USD';
-      //final buyUsd = '1 ${swapBloc.orderCoin.coinBase.abbr} = $buyCoinUsd USD';
+  double getCExchangeRate() {
+    if (buyCoinBalance?.priceForOne == null) return null;
+    if (sellCoinBalance?.priceForOne == null ||
+        double.parse(sellCoinBalance?.priceForOne) == 0) return null;
 
-      final f = deci(currentAmountSell) *
-          deci(sellCoin.priceForOne) /
-          deci(currentAmountBuy) *
-          deci(buyCoinUsd);
-      final g = deci(currentAmountBuy) *
-          deci(buyCoinUsd) /
-          deci(currentAmountSell) *
-          deci(sellCoin.priceForOne);
-
-      return quoted
-          ? '1 ${swapBloc.orderCoin.coinRel.abbr} = ${deci2s(g)} ${swapBloc.orderCoin.coinBase.abbr}'
-          : '1 ${swapBloc.orderCoin.coinBase.abbr} = ${deci2s(f)} ${swapBloc.orderCoin.coinRel.abbr}';
-    } else {
-      return '';
-    }
+    return double.parse(buyCoinBalance.priceForOne) /
+        double.parse(sellCoinBalance.priceForOne);
   }
 
   void setFocusTextField(bool focus) {
@@ -244,14 +230,14 @@ class SwapBloc implements BlocBase {
       Coin coin, Decimal amountSell, Ask currentAsk) async {
     try {
       final Orderbook orderbook = await MM.getOrderbook(MMService().client,
-          GetOrderbook(base: coin.abbr, rel: sellCoin.coin.abbr));
+          GetOrderbook(base: coin.abbr, rel: sellCoinBalance.coin.abbr));
       Decimal bestPrice = deci(0);
       Decimal maxVolume = deci(0);
       int i = 0;
 
       if (currentAsk == null) {
         for (Ask ask in orderbook.asks) {
-          if (ask.address != swapBloc.sellCoin.balance.address &&
+          if (ask.address != swapBloc.sellCoinBalance.balance.address &&
               (i == 0 ||
                   (deci(ask.price) <= bestPrice &&
                       ask.maxvolume > maxVolume))) {
@@ -266,7 +252,7 @@ class SwapBloc implements BlocBase {
       }
 
       orderCoin = OrderCoin(
-        coinRel: sellCoin.coin,
+        coinRel: sellCoinBalance.coin,
         coinBase: coin,
         orderbook: orderbook,
         maxVolume: maxVolume,
