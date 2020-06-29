@@ -102,9 +102,13 @@ class _ExchangeRateState extends State<ExchangeRate> {
     Widget _buildIndicator() {
       if (rate == null || cexRate == null) return Container();
 
-      const double range = 5;
+      const double indicatorH = 4;
+      final double indicatorW = MediaQuery.of(context).size.width * 2 / 3;
+      const double neutralRange = 5;
       final num sign = (rate - cexRate).sign;
       final double percent = ((rate - cexRate) * 100 / rate).abs();
+      int indicatorRange = (neutralRange * 2).round();
+      if (percent > indicatorRange) indicatorRange = percent.ceil();
       final percentString =
           OrderBookProvider.formatPrice(percent.toString(), 2);
       String message;
@@ -113,8 +117,8 @@ class _ExchangeRateState extends State<ExchangeRate> {
       switch (sign) {
         case -1:
           {
-            if (percent > range) {
-              color = Colors.green;
+            if (percent > neutralRange) {
+              color = Colors.greenAccent;
             }
             message =
                 'Expedient: -$percentString% compared to CEX'; // TODO(yurii): localization
@@ -122,7 +126,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
           }
         case 1:
           {
-            if (percent > range) {
+            if (percent > neutralRange) {
               color = Colors.orange;
             }
             message =
@@ -135,16 +139,86 @@ class _ExchangeRateState extends State<ExchangeRate> {
           }
       }
 
-      return Column(
-        children: <Widget>[
-          Text(
-            message,
-            style: TextStyle(
-              color: color,
+      return Container(
+        child: Column(
+          children: <Widget>[
+            Text(
+              message,
+              style: TextStyle(
+                color: color,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-        ],
+            const SizedBox(height: 4),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '-$indicatorRange%',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.greenAccent,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                SizedBox(
+                  width: indicatorW,
+                  height: indicatorH * 2,
+                  child: Stack(
+                    overflow: Overflow.visible,
+                    children: <Widget>[
+                      Positioned(
+                          left: 0,
+                          top: indicatorH / 2,
+                          child: Container(
+                            width: indicatorW / 2,
+                            height: indicatorH,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [Colors.green, Colors.grey]),
+                            ),
+                          )),
+                      Positioned(
+                          left: indicatorW / 2,
+                          top: indicatorH / 2,
+                          child: Container(
+                            width: indicatorW / 2,
+                            height: indicatorH,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [Colors.grey, Colors.orangeAccent]),
+                            ),
+                          )),
+                      Positioned(
+                          left: ((indicatorW / 2) - indicatorH / 2) +
+                              sign * percent * indicatorW / indicatorRange / 2,
+                          top: 0,
+                          width: indicatorH,
+                          height: indicatorH * 2,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).accentColor,
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  '+$indicatorRange%',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.orangeAccent,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+          ],
+        ),
       );
     }
 
@@ -154,7 +228,10 @@ class _ExchangeRateState extends State<ExchangeRate> {
         children: <Widget>[
           _buildExchangeRate(),
           _buildIndicator(),
-          _buildCExchangeRate(),
+          InkWell(
+            onTap: () => showCexDialog(context),
+            child: _buildCExchangeRate(),
+          ),
         ],
       ),
     );
