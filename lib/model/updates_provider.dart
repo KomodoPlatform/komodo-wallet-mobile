@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -42,6 +43,7 @@ class UpdatesProvider extends ChangeNotifier {
         url,
         body: jsonEncode({
           'currentVersion': currentVersion,
+          'platform': Platform.isAndroid ? 'android' : 'ios',
         }),
       );
 
