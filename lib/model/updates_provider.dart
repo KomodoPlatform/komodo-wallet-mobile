@@ -16,8 +16,7 @@ class UpdatesProvider extends ChangeNotifier {
   String newVersion;
   String message;
 
-  // TODO(yurii): change url to actual app version checker endpoint
-  final String url = 'http://yurii-khi.com/version.html';
+  final String url = 'http://95.217.165.110/';
 
   Future<void> check() => _check();
 
@@ -68,6 +67,8 @@ class UpdatesProvider extends ChangeNotifier {
         return;
       }
     }
+
+    print(newVersion);
 
     switch (json['status']) {
       case 'upToDate':
