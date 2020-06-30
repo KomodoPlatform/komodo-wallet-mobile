@@ -213,9 +213,10 @@ class SwapBloc implements BlocBase {
   }
 
   double getCExchangeRate() {
-    if (buyCoinBalance?.priceForOne == null) return null;
+    if (buyCoinBalance?.priceForOne == null ||
+        double.parse(buyCoinBalance.priceForOne) == 0) return null;
     if (sellCoinBalance?.priceForOne == null ||
-        double.parse(sellCoinBalance?.priceForOne) == 0) return null;
+        double.parse(sellCoinBalance.priceForOne) == 0) return null;
 
     return double.parse(buyCoinBalance.priceForOne) /
         double.parse(sellCoinBalance.priceForOne);
