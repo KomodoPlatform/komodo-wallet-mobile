@@ -14,6 +14,7 @@ class UpdatesProvider extends ChangeNotifier {
   UpdateStatus status;
   String currentVersion;
   String newVersion;
+  String message;
 
   // TODO(yurii): change url to actual app version checker endpoint
   final String url = 'http://yurii-khi.com/version.html';
@@ -31,6 +32,7 @@ class UpdatesProvider extends ChangeNotifier {
     isFetching = true;
     newVersion = null;
     status = null;
+    message = null;
     notifyListeners();
 
     http.Response response;
@@ -54,6 +56,7 @@ class UpdatesProvider extends ChangeNotifier {
       return;
     }
 
+    message = json['message'];
     final String jsonVersion = json['newVersion'];
     if (jsonVersion != null) {
       if (jsonVersion.compareTo(currentVersion) > 0) {

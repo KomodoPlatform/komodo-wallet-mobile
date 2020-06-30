@@ -82,6 +82,23 @@ class _UpdatesPageState extends State<UpdatesPage> {
                     ],
                   )),
             ),
+            if (updatesProvider.message != null)
+              Container(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Divider(
+                      color: Theme.of(context).hintColor,
+                      height: 60,
+                    ),
+                    Text(updatesProvider.message),
+                  ],
+                ),
+              ),
             if (updatesProvider.status != UpdateStatus.upToDate &&
                 !updatesProvider.isFetching)
               Container(
