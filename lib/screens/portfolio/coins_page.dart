@@ -71,7 +71,7 @@ class _CoinsPageState extends State<CoinsPage> {
                           collapseMode: CollapseMode.pin,
                           centerTitle: true,
                           title: Container(
-                            padding: const EdgeInsets.only(top: 35),
+                            padding: const EdgeInsets.only(top: 20),
                             width: _widthScreen * 0.5,
                             child: Center(
                               heightFactor: _heightFactor,
