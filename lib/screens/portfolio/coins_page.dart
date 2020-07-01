@@ -19,7 +19,6 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class CoinsPage extends StatefulWidget {
   @override

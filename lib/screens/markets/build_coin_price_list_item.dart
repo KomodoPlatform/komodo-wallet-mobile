@@ -3,7 +3,6 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
   const BuildCoinPriceListItem({this.coinBalance, this.onTap});
