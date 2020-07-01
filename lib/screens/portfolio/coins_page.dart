@@ -464,12 +464,12 @@ class _ItemCoinState extends State<ItemCoin> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Builder(builder: (BuildContext context) {
-                            return PhotoHero(
-                              radius: 28,
-                              tag: 'assets/${balance.coin.toLowerCase()}.png',
-                            );
-                          }),
+                          CircleAvatar(
+                            radius: 28,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage: AssetImage(
+                                'assets/${balance.coin.toLowerCase()}.png'),
+                          ),
                           const SizedBox(height: 8),
                           Text(
                             coin.name.toUpperCase(),
@@ -649,7 +649,8 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                     const SizedBox(
                       height: 8,
                     ),
-                    Text(snapshot.data.currentStatus ?? AppLocalizations.of(context).connecting),
+                    Text(snapshot.data.currentStatus ??
+                        AppLocalizations.of(context).connecting),
                     const SizedBox(
                       height: 16,
                     ),

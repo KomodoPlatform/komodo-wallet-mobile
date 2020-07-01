@@ -56,13 +56,12 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                     left: 14, top: 14, bottom: 14),
                                 child: Row(
                                   children: <Widget>[
-                                    Builder(builder: (BuildContext context) {
-                                      return PhotoHero(
-                                        radius: 18,
-                                        tag:
-                                            'assets/${balance.coin.toLowerCase()}.png',
-                                      );
-                                    }),
+                                    CircleAvatar(
+                                      radius: 18,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage: AssetImage(
+                                          'assets/${balance.coin.toLowerCase()}.png'),
+                                    ),
                                     const SizedBox(width: 8),
                                     Text(
                                       coin.name.toUpperCase(),
