@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
@@ -41,41 +42,60 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                 children: <Widget>[
                   Material(
                     color: Theme.of(context).primaryColor,
-                    child: InkWell(
-                      onTap: () {
-                        widget.onTap();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(14.0),
-                        child: Row(
-                          children: <Widget>[
-                            Builder(builder: (BuildContext context) {
-                              return PhotoHero(
-                                radius: 18,
-                                tag: 'assets/${balance.coin.toLowerCase()}.png',
-                              );
-                            }),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                coin.name.toUpperCase(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle
-                                    .copyWith(fontSize: 14),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 14),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.only(right: 14.0),
+                            child: InkWell(
+                              onTap: widget.onTap,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 14, top: 14, bottom: 14),
+                                child: Row(
+                                  children: <Widget>[
+                                    Builder(builder: (BuildContext context) {
+                                      return PhotoHero(
+                                        radius: 18,
+                                        tag:
+                                            'assets/${balance.coin.toLowerCase()}.png',
+                                      );
+                                    }),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      coin.name.toUpperCase(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle
+                                          .copyWith(fontSize: 14),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                            _hasNonzeroPrice
-                                ? Text(
-                                    '\$${widget.coinBalance.priceForOne}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle
-                                        .copyWith(fontSize: 18),
-                                  )
-                                : Container(),
-                          ],
-                        ),
+                          )),
+                          _hasNonzeroPrice
+                              ? Row(
+                                  children: <Widget>[
+                                    CexMarker(context),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      '\$${widget.coinBalance.priceForOne}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle
+                                          .copyWith(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal),
+                                    ),
+                                  ],
+                                )
+                              : Container(),
+                        ],
                       ),
                     ),
                   ),

@@ -17,6 +17,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -146,7 +147,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _updateMarketsPair() {
-    if (swapBloc.sellCoin?.coin == null && swapBloc.receiveCoin == null) return;
+    if (swapBloc.sellCoinBalance?.coin == null && swapBloc.receiveCoin == null)
+      return;
 
     final OrderBookProvider _orderBookProvider =
         Provider.of<OrderBookProvider>(context);
@@ -158,10 +160,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           sell: _orderBookProvider.activePair?.sell,
         );
       }
-      if (swapBloc.sellCoin?.coin != _orderBookProvider.activePair?.sell) {
+      if (swapBloc.sellCoinBalance?.coin !=
+          _orderBookProvider.activePair?.sell) {
         _orderBookProvider.activePair = CoinsPair(
           buy: _orderBookProvider.activePair?.buy,
-          sell: swapBloc.sellCoin?.coin,
+          sell: swapBloc.sellCoinBalance?.coin,
         );
       }
     });
@@ -194,7 +197,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           deci(_controllerAmountSell.text);
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
-          coinRel: swapBloc.sellCoin?.coin,
+          coinRel: swapBloc.sellCoinBalance?.coin,
           bestPrice: bestPrice,
           maxVolume: deci(_controllerAmountSell.text)));
     }
@@ -215,7 +218,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             deci(_controllerAmountSell.text);
         swapBloc.updateBuyCoin(OrderCoin(
             coinBase: swapBloc.receiveCoin,
-            coinRel: swapBloc.sellCoin?.coin,
+            coinRel: swapBloc.sellCoinBalance?.coin,
             bestPrice: bestPrice,
             maxVolume: deci(_controllerAmountSell.text)));
       }
@@ -241,7 +244,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
             swapBloc.updateBuyCoin(OrderCoin(
                 coinBase: swapBloc.receiveCoin,
-                coinRel: swapBloc.sellCoin?.coin,
+                coinRel: swapBloc.sellCoinBalance?.coin,
                 bestPrice: price,
                 maxVolume: maxVolume));
           }
@@ -340,24 +343,24 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       }
 
       if (txErcFee != null &&
-          swapBloc.sellCoin.coin.swapContractAddress.isEmpty) {
+          swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty) {
         return (Decimal.parse('2') * txFee).toStringAsFixed(5) +
             ' ' +
-            swapBloc.sellCoin.coin.abbr +
+            swapBloc.sellCoinBalance.coin.abbr +
             ' + ' +
             txErcFee.toStringAsFixed(5) +
             ' ETH';
       } else {
         Decimal factor = Decimal.parse('2');
         if (swapBloc.receiveCoin != null &&
-            swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty &&
+            swapBloc.sellCoinBalance.coin.swapContractAddress.isNotEmpty &&
             swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
           factor = Decimal.parse('3');
         }
         return (factor * txFee).toStringAsFixed(8) +
             ' ' +
-            (swapBloc.sellCoin.coin.swapContractAddress.isEmpty
-                ? swapBloc.sellCoin.coin.abbr
+            (swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty
+                ? swapBloc.sellCoinBalance.coin.abbr
                 : 'ETH');
       }
     } catch (e) {
@@ -441,7 +444,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 70),
       child: StreamBuilder<CoinBalance>(
-          initialData: swapBloc.sellCoin,
+          initialData: swapBloc.sellCoinBalance,
           stream: swapBloc.outSellCoin,
           builder: (BuildContext context, AsyncSnapshot<CoinBalance> sellCoin) {
             return StreamBuilder<Coin>(
@@ -676,8 +679,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                               return Text(
                                                   snapshot.data.toString() +
                                                       ' ' +
-                                                      swapBloc
-                                                          .sellCoin.coin.abbr,
+                                                      swapBloc.sellCoinBalance
+                                                          .coin.abbr,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .body2);
@@ -755,7 +758,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             : FadeTransition(
                 opacity: animationCoinSell,
                 child: StreamBuilder<dynamic>(
-                    initialData: swapBloc.sellCoin,
+                    initialData: swapBloc.sellCoinBalance,
                     stream: swapBloc.outSellCoin,
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
@@ -957,7 +960,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     swapBloc.updateBuyCoin(OrderCoin(
         coinBase: swapBloc.receiveCoin,
-        coinRel: swapBloc.sellCoin?.coin,
+        coinRel: swapBloc.sellCoinBalance?.coin,
         bestPrice: deci(_controllerAmountSell.text) /
             deci(_controllerAmountReceive.text),
         maxVolume: deci(_controllerAmountSell.text)));
@@ -984,9 +987,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     if (orderbooks != null && market == Market.RECEIVE) {
       for (OrderCoin orderbook in orderbooks) {
         SimpleDialogOption dialogItem;
-        if (orderbook.coinBase.abbr != swapBloc.sellCoin.coin.abbr) {
+        if (orderbook.coinBase.abbr != swapBloc.sellCoinBalance.coin.abbr) {
           final bool isOrderAvailable =
-              orderbook.coinBase.abbr != swapBloc.sellCoin.coin.abbr &&
+              orderbook.coinBase.abbr != swapBloc.sellCoinBalance.coin.abbr &&
                   orderbook.getBuyAmount(deci(_controllerAmountSell.text)) >
                       deci(0);
           Log.println(
@@ -1129,11 +1132,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     if (_controllerAmountSell.text != null &&
         _controllerAmountSell.text.isNotEmpty &&
         double.parse(_controllerAmountSell.text) < 3 &&
-        swapBloc.sellCoin.coin.abbr == 'QTUM') {
+        swapBloc.sellCoinBalance.coin.abbr == 'QTUM') {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoin.coin.abbr, 3.toString())),
+            .minValue(swapBloc.sellCoinBalance.coin.abbr, 3.toString())),
       ));
       return false;
     } else if (_controllerAmountSell.text != null &&
@@ -1142,7 +1145,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoin.coin.abbr, 0.00777.toString())),
+            .minValue(swapBloc.sellCoinBalance.coin.abbr, 0.00777.toString())),
       ));
       return false;
     } else if (_controllerAmountReceive.text != null &&
@@ -1163,7 +1166,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     replaceAllCommas();
 
     if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty ||
-        swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty) {
+        swapBloc.sellCoinBalance.coin.swapContractAddress.isNotEmpty) {
       CoinBalance ethBalance;
       try {
         ethBalance = coinsBloc.coinBalance
@@ -1183,12 +1186,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         final Decimal feeERC = await getERCfee(
                 swapBloc.receiveCoin.swapContractAddress.isNotEmpty
                     ? swapBloc.receiveCoin
-                    : swapBloc.sellCoin.coin) *
+                    : swapBloc.sellCoinBalance.coin) *
             ((swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                    swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty)
+                    swapBloc
+                        .sellCoinBalance.coin.swapContractAddress.isNotEmpty)
                 ? Decimal.parse('3')
                 : (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                        swapBloc.sellCoin.coin.swapContractAddress.isEmpty
+                        swapBloc
+                            .sellCoinBalance.coin.swapContractAddress.isEmpty
                     ? Decimal.parse('1')
                     : Decimal.parse('2')));
 
@@ -1318,7 +1323,7 @@ class _DialogLookingState extends State<DialogLooking> {
   Future<void> startLooking() async {
     const int timerEnd = 10;
     int timerCurrent = 0;
-    await swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+    await swapBloc.getBuyCoins(swapBloc.sellCoinBalance.coin);
     if (checkIfAsks()) {
       widget.onDone();
     } else {
@@ -1329,7 +1334,7 @@ class _DialogLookingState extends State<DialogLooking> {
           timerGetOrderbook.cancel();
           widget.onDone();
         } else {
-          swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+          swapBloc.getBuyCoins(swapBloc.sellCoinBalance.coin);
         }
       });
     }
@@ -1361,53 +1366,5 @@ class _DialogLookingState extends State<DialogLooking> {
         ),
       ),
     );
-  }
-}
-
-class ExchangeRate extends StatefulWidget {
-  @override
-  _ExchangeRateState createState() => _ExchangeRateState();
-}
-
-class _ExchangeRateState extends State<ExchangeRate> {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<OrderCoin>(
-        initialData: swapBloc.orderCoin,
-        stream: swapBloc.outOrderCoin,
-        builder: (BuildContext context, AsyncSnapshot<OrderCoin> snapshot) {
-          if (snapshot.data != null && snapshot.data.bestPrice > deci(0)) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).bestAvailableRate,
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        swapBloc.getExchangeRate(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .body1
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        swapBloc.getExchangeRateUSD(),
-                        style: Theme.of(context).textTheme.body2,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
-          } else {
-            return Container();
-          }
-        });
   }
 }

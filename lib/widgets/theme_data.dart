@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 SnackBarThemeData _snackBarTheme() => SnackBarThemeData(
-    elevation: 12.0,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
-    actionTextColor: Colors.green,
-    behavior: SnackBarBehavior.floating,
-  );
+      elevation: 12.0,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4))),
+      actionTextColor: Colors.green,
+      behavior: SnackBarBehavior.floating,
+    );
 
 Color get primaryColor => const Color.fromRGBO(42, 54, 71, 1);
 
@@ -42,3 +43,5 @@ ThemeData getTheme() => ThemeData(
               color: Colors.white.withOpacity(0.8),
               fontWeight: FontWeight.w400)),
     );
+
+const Color cexColor = Color.fromARGB(200, 253, 247, 227);
