@@ -3,6 +3,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
   const BuildCoinPriceListItem({this.coinBalance, this.onTap});
@@ -77,7 +78,10 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                           _hasNonzeroPrice
                               ? Row(
                                   children: <Widget>[
-                                    CexMarker(context),
+                                    CexMarker(
+                                      context,
+                                      size: const Size.fromHeight(14),
+                                    ),
                                     const SizedBox(
                                       width: 4,
                                     ),
@@ -87,7 +91,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                           .textTheme
                                           .subtitle
                                           .copyWith(
-                                              fontSize: 16,
+                                              color: cexColor,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.normal),
                                     ),
                                   ],
