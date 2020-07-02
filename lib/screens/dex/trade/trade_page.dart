@@ -379,7 +379,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
         final double totalUsdFee = relPrice == 0 || ethPrice == 0
             ? null
-            : txFee.toDouble() * relPrice + (txErcFee.toDouble() * ethPrice);
+            : 2 * txFee.toDouble() * relPrice +
+                (txErcFee.toDouble() * ethPrice);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
