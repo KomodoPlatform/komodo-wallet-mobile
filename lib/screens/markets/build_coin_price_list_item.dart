@@ -3,7 +3,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/photo_widget.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
   const BuildCoinPriceListItem({this.coinBalance, this.onTap});
@@ -56,13 +56,12 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                     left: 14, top: 14, bottom: 14),
                                 child: Row(
                                   children: <Widget>[
-                                    Builder(builder: (BuildContext context) {
-                                      return PhotoHero(
-                                        radius: 18,
-                                        tag:
-                                            'assets/${balance.coin.toLowerCase()}.png',
-                                      );
-                                    }),
+                                    CircleAvatar(
+                                      radius: 18,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage: AssetImage(
+                                          'assets/${balance.coin.toLowerCase()}.png'),
+                                    ),
                                     const SizedBox(width: 8),
                                     Text(
                                       coin.name.toUpperCase(),
@@ -79,7 +78,10 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                           _hasNonzeroPrice
                               ? Row(
                                   children: <Widget>[
-                                    CexMarker(context),
+                                    CexMarker(
+                                      context,
+                                      size: const Size.fromHeight(14),
+                                    ),
                                     const SizedBox(
                                       width: 4,
                                     ),
@@ -89,7 +91,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                           .textTheme
                                           .subtitle
                                           .copyWith(
-                                              fontSize: 16,
+                                              color: cexColor,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.normal),
                                     ),
                                   ],

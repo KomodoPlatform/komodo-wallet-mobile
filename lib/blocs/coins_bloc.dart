@@ -508,6 +508,13 @@ class CoinsBloc implements BlocBase {
 
     return _sorted;
   }
+
+  double priceByAbbr(String abbr) {
+    for (CoinBalance balance in coinBalance) {
+      if (balance.coin.abbr == abbr) return double.parse(balance.priceForOne);
+    }
+    return null;
+  }
 }
 
 CoinsBloc coinsBloc = CoinsBloc();
