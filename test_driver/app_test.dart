@@ -26,8 +26,8 @@ void main() {
   var seed = ['a', 'b'];
   var mortysRickAddress = '';
   var ricksMortyAddress = '';
-  var sendAmount = '0.1';
-  var password = '           a';
+  const String sendAmount = '0.1';
+  const password = '           a';
   var postRefreshSeed = '';
   bool isAndroid = false;
   const int coolOffTime = 2;
@@ -44,51 +44,51 @@ void main() {
   final SerializableFinder address = find.byValueKey('coin-details-address');
   final SerializableFinder successSend = find.text('Success!');
   final SerializableFinder whichWordText = find.byValueKey('which-word');
-  final SerializableFinder connecting = find.text('Connecting...');
+  //final SerializableFinder connecting = find.text('Connecting...');
   final SerializableFinder loadingCoins = find.text('Loading coins');
 
   //Lists
-  List<SerializableFinder> coinsOnActivationCheck = List<SerializableFinder>(4);
+  //List<SerializableFinder> coinsOnActivationCheck = List<SerializableFinder>(4);
 
 
   // Buttons
   final SerializableFinder createWallet = find.text('CREATE A WALLET');
   final SerializableFinder restoreWallet = find.text('RESTORE');
   final SerializableFinder setup = find.text('LET\'S GET SET UP!');
-  final SerializableFinder welcomeSetup = find.byValueKey('welcome-setup');
+  //final SerializableFinder welcomeSetup = find.byValueKey('welcome-setup');
   final SerializableFinder seedRefresh = find.byValueKey('seed-refresh');
   final SerializableFinder seedCopy = find.byValueKey('seed-copy');
   final SerializableFinder next = find.text('NEXT');
   final SerializableFinder receive = find.text('RECEIVE');
   final SerializableFinder close = find.text('CLOSE');
   final SerializableFinder back = find.byTooltip('Back');
-  final SerializableFinder switchTile = find.text('Activate PIN protection');
-  final SerializableFinder switchPin = find.byValueKey('settings-activate-pin');
+  //final SerializableFinder switchTile = find.text('Activate PIN protection');
+  //final SerializableFinder switchPin = find.byValueKey('settings-activate-pin');
   final SerializableFinder logout = find.byValueKey('settings-logout');
   final SerializableFinder logoutYes = find.byValueKey('settings-logout-yes');
   final SerializableFinder logoutCancel = find.byValueKey('settings-logout-cancel');
   final SerializableFinder send = find.byValueKey('secondary-button-send');
-  final SerializableFinder cancel = find.byValueKey('secondary-button-cancel');
+  //final SerializableFinder cancel = find.byValueKey('secondary-button-cancel');
   final SerializableFinder withdraw = find.byValueKey('primary-button-withdraw');
   final SerializableFinder confirm = find.byValueKey('primary-button-confirm');
-  final SerializableFinder customFee = find.byValueKey('send-toggle-customfee');
+  //final SerializableFinder customFee = find.byValueKey('send-toggle-customfee');
   final SerializableFinder settings = find.byValueKey('nav-settings');
-  final SerializableFinder portfolio = find.byValueKey('nav-portfolio');
+  //final SerializableFinder portfolio = find.byValueKey('nav-portfolio');
   final SerializableFinder dex = find.byValueKey('nav-dex');
-  final SerializableFinder markets = find.byValueKey('nav-markets');
-  final SerializableFinder news = find.byValueKey('nav-news');
+  //final SerializableFinder markets = find.byValueKey('nav-markets');
+  //final SerializableFinder news = find.byValueKey('nav-news');
   final SerializableFinder login = find.text('LOGIN');
   final SerializableFinder pasteIOS = find.text('Paste');
   final SerializableFinder pasteAndroid = find.text('PASTE');
   final SerializableFinder continueSeedVerification = find.text('CONTINUE');
-  final SerializableFinder confirmPassword = find.byValueKey('confirm-password');
+  //final SerializableFinder confirmPassword = find.byValueKey('confirm-password');
 
   // Scrollables
   final SerializableFinder settingsScrollable = find.byValueKey('settings-scrollable');
   final SerializableFinder welcomeScrollable = find.byValueKey('welcome-scrollable');
   final SerializableFinder newAccountScrollable = find.byValueKey('new-account-scrollable');
   final SerializableFinder disclamerScrollable = find.byValueKey('scroll-disclaimer');
-  final SerializableFinder portfolioCoinsScrollable = find.byValueKey('list-view-coins');
+  //final SerializableFinder portfolioCoinsScrollable = find.byValueKey('list-view-coins');
   
 
   // Input fields
@@ -281,7 +281,7 @@ void main() {
 
   //RELOG #1
   group('Test send/receive |', () {
-    test('-11- | Restore morty wallet (Delay: $coolOffTime min) - Lets let mm2 to cool off a bit', () async {
+    test('-11- | Restore morty wallet (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await Future<void>.delayed(const Duration(minutes: coolOffTime), () {});
       expect(await driver.getText(createWallet), 'CREATE A WALLET');
       expect(await driver.getText(restoreWallet), 'RESTORE');
@@ -417,7 +417,7 @@ void main() {
     });
 
     //RELOG-2
-    test('-20- | Restore RICK wallet (Delay: $coolOffTime min) - Lets let mm2 to cool off a bit', () async {
+    test('-20- | Restore RICK wallet (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await Future<void>.delayed(const Duration(minutes: coolOffTime), () {});
       expect(await driver.getText(createWallet), 'CREATE A WALLET');
       expect(await driver.getText(restoreWallet), 'RESTORE');
@@ -571,7 +571,6 @@ void main() {
     });
     
 
-    // TODO(dth): figure out tests failing even though they pass.
     //RELOG-3
     test('-29- | Delay: $coolOffTime min - Let mm2 cool off a bit', () async {
       await driver.scrollIntoView(morty);
