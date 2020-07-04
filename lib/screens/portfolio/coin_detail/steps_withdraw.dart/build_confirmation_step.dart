@@ -276,7 +276,6 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                   children: <Widget>[
                     Expanded(
                       child: SecondaryButton(
-                        key: const Key('secondary-button-cancel'),
                         text: AppLocalizations.of(context).cancel.toUpperCase(),
                         onPressed: widget.onCancel,
                       ),

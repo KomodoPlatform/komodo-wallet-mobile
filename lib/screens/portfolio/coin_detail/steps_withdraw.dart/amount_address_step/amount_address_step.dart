@@ -76,7 +76,6 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               children: <Widget>[
                 Expanded(
                   child: SecondaryButton(
-                    key: const Key('secondary-button-cancel'),
                     text: AppLocalizations.of(context).cancel,
                     onPressed: () {
                       widget.amountController.clear();

@@ -462,6 +462,7 @@ class _SettingPageState extends State<SettingPage> {
           child: SvgPicture.asset('assets/logout_setting.svg'),
         ),
         title: Text(AppLocalizations.of(context).logout,
+            key: const Key('settings-logout'),
             style: Theme.of(context).textTheme.body1.copyWith(
                 fontWeight: FontWeight.w300,
                 color: Colors.white.withOpacity(0.7))),

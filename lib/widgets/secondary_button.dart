@@ -9,7 +9,7 @@ class SecondaryButton extends StatefulWidget {
       this.borderColor = Colors.black,
       this.height,
       this.width,
-      this.textColor = Colors.black});
+      this.textColor = Colors.black, Key key});
 
   final VoidCallback onPressed;
   final String text;
@@ -28,7 +28,11 @@ class _SecondaryButtonState extends State<SecondaryButton> {
   @override
   Widget build(BuildContext context) {
     Widget child;
+    bool isSend = false;
     if (widget.text != null) {
+      if (widget.text == 'SEND'){
+        isSend = true;
+      }
       child = Text(
         widget.text.toUpperCase(),
         style: Theme.of(context).textTheme.button.copyWith(
@@ -41,6 +45,7 @@ class _SecondaryButtonState extends State<SecondaryButton> {
       height: widget.height,
       width: double.infinity,
       child: OutlineButton(
+        key: isSend ? const Key('secondary-button-send') : null,
         borderSide: BorderSide(
             color: widget.isDarkMode ? Colors.white : widget.borderColor),
         highlightedBorderColor:
