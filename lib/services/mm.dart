@@ -245,7 +245,8 @@ class ApiProvider {
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
-      'requires_notarization': coin.requiresNotarization
+      'requires_notarization': coin.requiresNotarization,
+      'address_format': coin.addressFormat,
     };
     final js = json.encode(electrum);
     Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));

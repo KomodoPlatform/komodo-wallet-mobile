@@ -11,7 +11,7 @@ bool _coinsInvoked = false;
 /// A cached list of coins.
 /// Most fields are loaded from “coins_init_mm2.json”.
 /// List of coins, their electrums and webs - are loaded from “coins_config.json”.
-/// 
+///
 /// For ease of maintenance the “coins_init_mm2.json” should be an exact copy of
 /// https://github.com/jl777/coins/blob/master/coins,
 /// that way we can update it with a simple overwrite.
@@ -77,6 +77,7 @@ class Coin {
     explorerUrl = List<String>.from(config['explorerUrl']);
     requiredConfirmations = init['required_confirmations'];
     requiresNotarization = init['requires_notarization'] ?? false;
+    addressFormat = init['address_format'];
   }
 
   String type; // 'other', 'erc' or 'smartChain'
@@ -95,9 +96,11 @@ class Coin {
   List<String> serverList;
   List<String> explorerUrl;
   String swapContractAddress;
+
   /// NB: If the initial value is `null` then it might be updated from MM during the coin activation.
   int requiredConfirmations;
   bool requiresNotarization;
+  Map<String, dynamic> addressFormat;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type ?? '',
@@ -119,7 +122,8 @@ class Coin {
             List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ??
                 <String>[],
         'required_confirmations': requiredConfirmations,
-        'requires_notarization': requiresNotarization
+        'requires_notarization': requiresNotarization,
+        'address_format': addressFormat,
       };
 
   String getTxFeeSatoshi() {
