@@ -11,6 +11,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
 import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -22,6 +23,7 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,6 +67,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => StartupProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => UpdatesProvider(),
             ),
           ],
           child: const MyApp(),
@@ -232,6 +237,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
+    final UpdatesProvider updatesProvider =
+        Provider.of<UpdatesProvider>(context);
 
     return StreamBuilder<int>(
         initialData: mainBloc.currentIndexTab,
@@ -300,8 +307,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       BottomNavigationBarItem(
                                           icon: Icon(
                                             Icons.account_balance_wallet,
-                                            key: const Key(
-                                                'nav-portfolio'),
+                                            key: const Key('nav-portfolio'),
                                           ),
                                           title: Text(
                                               AppLocalizations.of(context)
@@ -326,25 +332,22 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                               Icon(Icons.library_books,
                                                   key: const Key('nav-news')),
                                               if (feedProvider.hasNewItems)
-                                                Positioned(
-                                                  right: 0,
-                                                  top: 0,
-                                                    child: Container(
-                                                  decoration: const BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: Colors.red,
-                                                  ),
-                                                  width: 7,
-                                                  height: 7,
-                                                )),
+                                                buildRedDot(context),
                                             ],
                                           ),
                                           title: const Text(
                                               'Feed')), // TODO(yurii): localization
                                       BottomNavigationBarItem(
-                                          icon: Icon(Icons.settings,
-                                              key: const Key(
-                                                  'nav-settings')),
+                                          icon: Stack(
+                                            children: <Widget>[
+                                              Icon(Icons.settings,
+                                                  key: const Key(
+                                                      'nav-settings')),
+                                              if (updatesProvider.status !=
+                                                  UpdateStatus.upToDate)
+                                                buildRedDot(context),
+                                            ],
+                                          ),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .settings)),
