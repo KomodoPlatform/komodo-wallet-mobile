@@ -582,10 +582,8 @@ class _CoinDetailState extends State<CoinDetail> {
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, bottom: 16, top: 8),
                             child: Text(
-                              (Decimal.parse(currentCoinBalance.priceForOne) *
-                                          Decimal.parse(transaction
-                                              .myBalanceChange
-                                              .toString()))
+                              (deci(currentCoinBalance.priceForOne) *
+                                          deci(transaction.myBalanceChange))
                                       .toStringAsFixed(2) +
                                   ' USD',
                               style: Theme.of(context).textTheme.body2,
