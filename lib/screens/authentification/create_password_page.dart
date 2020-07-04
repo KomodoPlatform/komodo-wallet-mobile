@@ -184,6 +184,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 child: Column(
                   children: <Widget>[
                     PrimaryButton(
+                      key: const Key('confirm-password'),
                       text: AppLocalizations.of(context).confirmPassword,
                       onPressed: isValidPassword
                           ? () => _checkValidation(context)
