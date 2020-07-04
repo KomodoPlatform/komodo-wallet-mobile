@@ -16,12 +16,14 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/base_service.dart';
 import 'package:komodo_dex/model/result.dart';
+import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
+import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/lock_service.dart';
@@ -29,10 +31,12 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:komodo_dex/widgets/sound_volume_button.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info/package_info.dart';
@@ -117,9 +121,8 @@ class _SettingPageState extends State<SettingPage> {
               ),
               _buildTitle(AppLocalizations.of(context).legalTitle),
               _buildDisclaimerToS(),
-              walletBloc.currentWallet != null
-                  ? _buildTitle(version)
-                  : Container(),
+              _buildTitle(version),
+              _buildUpdate(),
               const SizedBox(
                 height: 48,
               ),
@@ -445,6 +448,44 @@ class _SettingPageState extends State<SettingPage> {
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => const DisclaimerPage(
                       readOnly: true,
+                    )),
+          );
+        });
+  }
+
+  Widget _buildUpdate() {
+    final UpdatesProvider updatesProvider =
+        Provider.of<UpdatesProvider>(context);
+        
+    return CustomTile(
+        child: ListTile(
+          trailing:
+              Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+          title: Row(
+            children: <Widget>[
+              Stack(
+                overflow: Overflow.visible,
+                children: <Widget>[
+                  Text(
+                    'Check for updates', // TODO(yurii): localization
+                    style: Theme.of(context).textTheme.body1.copyWith(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white.withOpacity(0.7)),
+                  ),
+                  if (updatesProvider.status != UpdateStatus.upToDate)
+                    buildRedDot(context, right: -12),
+                ],
+              ),
+            ],
+          ),
+        ),
+        onPressed: () {
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => UpdatesPage(
+                      refresh: true,
+                      onSkip: () => Navigator.pop(context),
                     )),
           );
         });
