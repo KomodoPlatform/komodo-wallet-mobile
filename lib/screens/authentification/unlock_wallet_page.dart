@@ -50,6 +50,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                     },
                     child: Icon(
                       Icons.exit_to_app,
+                      key: const Key('settings-pin-logout'),
                       color: Colors.red,
                     )),
                 backgroundColor: Theme.of(context).backgroundColor,
@@ -97,6 +98,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                 padding: const EdgeInsets.all(24.0),
                 child: Builder(builder: (BuildContext context) {
                   return TextField(
+                    key: const Key('enter-password-field'),
                     maxLength: 40,
                     controller: controller,
                     onChanged: (String str) {

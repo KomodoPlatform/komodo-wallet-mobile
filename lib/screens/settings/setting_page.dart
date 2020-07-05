@@ -86,6 +86,7 @@ class _SettingPageState extends State<SettingPage> {
             textTheme: Theme.of(context).textTheme),
         child: Container(
           child: ListView(
+            key: const Key('settings-scrollable'),
             children: <Widget>[
               _buildTitle(AppLocalizations.of(context).logoutsettings),
               _buildLogout(),
@@ -261,6 +262,7 @@ class _SettingPageState extends State<SettingPage> {
                 return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
+                        key: const Key('settings-activate-pin'),
                         onChanged: (bool dataSwitch) {
                           Log('setting_page:262', 'dataSwitch $dataSwitch');
                           setState(() {
@@ -501,6 +503,7 @@ class _SettingPageState extends State<SettingPage> {
           child: SvgPicture.asset('assets/logout_setting.svg'),
         ),
         title: Text(AppLocalizations.of(context).logout,
+            key: const Key('settings-logout'),
             style: Theme.of(context).textTheme.body1.copyWith(
                 fontWeight: FontWeight.w300,
                 color: Colors.white.withOpacity(0.7))),

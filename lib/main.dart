@@ -307,22 +307,21 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       BottomNavigationBarItem(
                                           icon: Icon(
                                             Icons.account_balance_wallet,
-                                            key: const Key(
-                                                'icon-bloc-coins-page'),
+                                            key: const Key('nav-portfolio'),
                                           ),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .portfolio)),
                                       BottomNavigationBarItem(
                                           icon: Icon(Icons.swap_vert,
-                                              key: const Key('icon-swap-page')),
+                                              key: const Key('nav-dex')),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .dex)),
                                       BottomNavigationBarItem(
                                         icon: Icon(
                                           Icons.show_chart,
-                                          key: const Key('icon-markets-page'),
+                                          key: const Key('nav-markets'),
                                         ),
                                         title: const Text(
                                             'Markets'), // TODO(yurii): localization
@@ -331,7 +330,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           icon: Stack(
                                             children: <Widget>[
                                               Icon(Icons.library_books,
-                                                  key: const Key('icon-media')),
+                                                  key: const Key('nav-news')),
                                               if (feedProvider.hasNewItems)
                                                 buildRedDot(context),
                                             ],
@@ -343,9 +342,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                             children: <Widget>[
                                               Icon(Icons.settings,
                                                   key: const Key(
-                                                      'icon-setting-page')),
-                                              if (updatesProvider
-                                                      .status !=
+                                                      'nav-settings')),
+                                              if (updatesProvider.status !=
                                                   UpdateStatus.upToDate)
                                                 buildRedDot(context),
                                             ],

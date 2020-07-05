@@ -34,6 +34,7 @@ class _CustomFeeState extends State<CustomFee> {
                 style: Theme.of(context).textTheme.body2,
               ),
               Switch(
+                key: const Key('send-toggle-customfee'),
                 value: isCustomFeeActive,
                 onChanged: (bool value) {
                   setState(() {

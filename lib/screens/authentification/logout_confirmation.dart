@@ -29,6 +29,7 @@ void showLogoutConfirmation(BuildContext context) {
                     child: RaisedButton(
                   color: Theme.of(context).dialogBackgroundColor,
                   elevation: 0,
+                  key: const Key('settings-logout-yes'),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                         color: Theme.of(context).textTheme.caption.color),
@@ -48,6 +49,7 @@ void showLogoutConfirmation(BuildContext context) {
                     child: RaisedButton(
                   color: Theme.of(context).dialogBackgroundColor,
                   elevation: 0,
+                  key: const Key('settings-logout-cancel'),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                         color: Theme.of(context).textTheme.caption.color),

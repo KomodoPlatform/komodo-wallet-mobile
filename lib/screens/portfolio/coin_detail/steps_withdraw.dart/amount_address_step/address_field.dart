@@ -44,6 +44,7 @@ class _AddressFieldState extends State<AddressField> {
           ),
           Expanded(
             child: TextFormField(
+              key: const Key('send-address-field'),
               controller: widget.controller,
               autofocus: false,
               textInputAction: TextInputAction.done,
