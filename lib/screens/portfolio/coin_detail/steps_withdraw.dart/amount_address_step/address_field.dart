@@ -8,13 +8,18 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:bs58check/bs58check.dart' as bs58check;
 
 class AddressField extends StatefulWidget {
-  const AddressField(
-      {Key key, this.onScan, this.controller, this.isERCToken = false})
-      : super(key: key);
+  const AddressField({
+    Key key,
+    this.onScan,
+    this.controller,
+    this.isERCToken = false,
+    this.addressFormat,
+  }) : super(key: key);
 
   final Function onScan;
   final TextEditingController controller;
   final bool isERCToken;
+  final Map<String, dynamic> addressFormat;
 
   @override
   _AddressFieldState createState() => _AddressFieldState();
@@ -74,6 +79,13 @@ class _AddressFieldState extends State<AddressField> {
                   if (!isAddress(value)) {
                     return AppLocalizations.of(context).errorNotAValidAddress;
                   }
+                } else if (widget.addressFormat != null &&
+                    widget.addressFormat['network'] == 'bitcoincash' &&
+                    widget.addressFormat['format'] == 'cashaddress') {
+                  // TODO(yurii): implement reliable cashaddr validation
+                  // cf: https://github.com/bitcoincashorg/bitcoincash.org/blob/master/spec/cashaddr.md
+                  if (!value.startsWith('bitcoincash:'))
+                    return AppLocalizations.of(context).errorNotAValidAddress;
                 } else {
                   try {
                     final Uint8List decoded = bs58check.decode(value);
