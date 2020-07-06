@@ -192,6 +192,7 @@ void showAddressDialog(BuildContext mContext, String address, Coin coin) {
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                     child: AutoSizeText(
                       address,
+                      textKey: const Key('coin-details-address'),
                       style: Theme.of(context).textTheme.body1,
                       maxLines: 2,
                     ),

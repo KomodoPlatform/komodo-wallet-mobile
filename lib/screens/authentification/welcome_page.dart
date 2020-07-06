@@ -29,6 +29,7 @@ class _WelcomePageState extends State<WelcomePage> {
         elevation: 0,
       ),
       body: ListView(
+        key: const Key('welcome-scrollable'),
         children: <Widget>[
           const SizedBox(
             height: 16,
@@ -107,6 +108,7 @@ class _WelcomePageState extends State<WelcomePage> {
             child: PrimaryButton(
               onPressed: isButtonLoginEnabled ? () => _newPage() : null,
               text: AppLocalizations.of(context).welcomeLetSetUp,
+              key: const Key('welcome-setup'),
             ),
           ),
           const SizedBox(

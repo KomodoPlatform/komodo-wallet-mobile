@@ -6,11 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/startup_provider.dart';
+import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/authenticate_page.dart';
 import 'package:komodo_dex/screens/authentification/create_password_page.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
+import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -41,6 +43,8 @@ class _LockScreenState extends State<LockScreen> {
   final LocalAuthentication auth = LocalAuthentication();
   String password;
   bool isInitPassword = false;
+  UpdatesProvider updatesProvider;
+  bool shouldUpdate = false;
 
   Future<void> _initScreen() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -75,7 +79,17 @@ class _LockScreenState extends State<LockScreen> {
         ModalRoute.of(widget.context).settings.arguments;
     password = args?.password;
     _initScreen();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (updatesProvider.status == null) await updatesProvider.check();
+      setState(() {
+        shouldUpdate = updatesProvider.status == UpdateStatus.recommended ||
+            updatesProvider.status == UpdateStatus.required;
+      });
+    });
+
     super.initState();
+
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -96,9 +110,9 @@ class _LockScreenState extends State<LockScreen> {
   @override
   Widget build(BuildContext context) {
     final StartupProvider startup = Provider.of<StartupProvider>(context);
-    if (!startup.live) {
-      final RegExpMatch _tailMatch = RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
-      final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
+    updatesProvider = Provider.of<UpdatesProvider>(context);
+
+    Widget _buildSplash(String message) {
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: Center(
@@ -107,7 +121,7 @@ class _LockScreenState extends State<LockScreen> {
             children: <Widget>[
               Image.asset('assets/logo_kmd.png'),
               const SizedBox(height: 12),
-              Text(_logTail,
+              Text(message,
                   style: TextStyle(
                     fontSize: 13,
                     color: Theme.of(context).textTheme.caption.color,
@@ -116,6 +130,16 @@ class _LockScreenState extends State<LockScreen> {
           ),
         ),
       );
+    }
+
+    if (!startup.live) {
+      final RegExpMatch _tailMatch =
+          RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
+      final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
+      return _buildSplash(_logTail);
+    } else if (updatesProvider.status == null) {
+      return _buildSplash(
+          'Checking for updates...'); // TODO(yurii): localization
     }
 
     return StreamBuilder<bool>(
@@ -162,35 +186,54 @@ class _LockScreenState extends State<LockScreen> {
                                       return Container();
                                     },
                                   ),
-                                  PinPage(
-                                    title:
-                                        AppLocalizations.of(context).lockScreen,
-                                    subTitle: AppLocalizations.of(context)
-                                        .enterPinCode,
-                                    pinStatus: widget.pinStatus,
-                                    isFromChangingPin: false,
-                                    onSuccess: widget.onSuccess,
-                                  ),
+                                  shouldUpdate
+                                      ? UpdatesPage(
+                                          refresh: false,
+                                          onSkip: () {
+                                            setState(() {
+                                              shouldUpdate = false;
+                                            });
+                                          },
+                                        )
+                                      : PinPage(
+                                          title: AppLocalizations.of(context)
+                                              .lockScreen,
+                                          subTitle: AppLocalizations.of(context)
+                                              .enterPinCode,
+                                          pinStatus: widget.pinStatus,
+                                          isFromChangingPin: false,
+                                          onSuccess: widget.onSuccess,
+                                        ),
                                 ],
                               );
                             } else {
-                              return SharedPreferencesBuilder<bool>(
-                                  pref: 'switch_pin_biometric',
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<bool> switchPinBiometric) {
-                                    if (switchPinBiometric.hasData &&
-                                        switchPinBiometric.data) {
-                                      return Stack(
-                                        children: <Widget>[
-                                          BiometricPage(
-                                            pinStatus: widget.pinStatus,
-                                          ),
-                                        ],
-                                      );
-                                    } else {
-                                      return widget.child;
-                                    }
-                                  });
+                              return shouldUpdate
+                                  ? UpdatesPage(
+                                      refresh: false,
+                                      onSkip: () {
+                                        setState(() {
+                                          shouldUpdate = false;
+                                        });
+                                      },
+                                    )
+                                  : SharedPreferencesBuilder<bool>(
+                                      pref: 'switch_pin_biometric',
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<bool>
+                                              switchPinBiometric) {
+                                        if (switchPinBiometric.hasData &&
+                                            switchPinBiometric.data) {
+                                          return Stack(
+                                            children: <Widget>[
+                                              BiometricPage(
+                                                pinStatus: widget.pinStatus,
+                                              ),
+                                            ],
+                                          );
+                                        } else {
+                                          return widget.child;
+                                        }
+                                      });
                             }
                           } else {
                             if (widget.child == null &&
