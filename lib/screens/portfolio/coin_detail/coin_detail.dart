@@ -578,17 +578,33 @@ class _CoinDetailState extends State<CoinDetail> {
                               );
                             }),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 16, top: 8),
-                            child: Text(
-                              (deci(currentCoinBalance.priceForOne) *
-                                          deci(transaction.myBalanceChange))
-                                      .toStringAsFixed(2) +
-                                  ' USD',
-                              style: Theme.of(context).textTheme.body2,
-                            ),
-                          ),
+                          Builder(builder: (context) {
+                            if (currentCoinBalance.priceForOne == null) {
+                              return const Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 16, right: 16, bottom: 16, top: 8),
+                                  child: SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(strokeWidth: 2.0,),
+                                  ));
+                            } else {
+                              final usdAmount =
+                                  deci(currentCoinBalance.priceForOne) *
+                                      deci(transaction.myBalanceChange);
+                              if (usdAmount != deci(0)) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16, right: 16, bottom: 16, top: 8),
+                                  child: Text(
+                                    usdAmount.toStringAsFixed(2) + ' USD',
+                                    style: Theme.of(context).textTheme.body2,
+                                  ),
+                                );
+                              }
+                              return Container();
+                            }
+                          }),
                         ],
                       ),
                     ),
