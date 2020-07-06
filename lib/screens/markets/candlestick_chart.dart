@@ -156,7 +156,7 @@ class _ChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     _canvasSize = size;
     const double pricePaddingPersent = 10;
-    const double pricePreferredDivisions = 10;
+    const double pricePreferredDivisions = 5;
     const double gap = 2;
 
     double visibleCandlesNumber = size.width / (candleWidth + gap) / zoom;
