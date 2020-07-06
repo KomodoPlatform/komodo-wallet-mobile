@@ -544,7 +544,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             final double price = coinsBloc.priceByAbbr(coin.abbr);
             if (price == null || price == 0) return Container();
 
-            final double usd = amount * coinsBloc.priceByAbbr(coin.abbr);
+            final double usd = amount * price;
 
             return buildCexPrice(usd);
           }
@@ -748,10 +748,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                               context,
                                                           AsyncSnapshot<Widget>
                                                               snapshot) {
-                                                        if (snapshot.hasData) {
+                                                        if (snapshot.hasData)
                                                           return snapshot.data;
-                                                        }
-                                                        return Container();
+
+                                                        return const SizedBox(
+                                                            width: 10,
+                                                            height: 10,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              strokeWidth: 1,
+                                                            ));
                                                       },
                                                     ),
                                                   ],
@@ -777,38 +783,45 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                               context,
                                                           AsyncSnapshot<Decimal>
                                                               snapshot) {
-                                                        if (snapshot.hasData) {
-                                                          final String abbr =
-                                                              swapBloc
-                                                                  .sellCoinBalance
-                                                                  .coin
-                                                                  .abbr;
-
-                                                          return Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            children: <Widget>[
-                                                              Text(
-                                                                  snapshot.data
-                                                                          .toString() +
-                                                                      ' ' +
-                                                                      abbr,
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .body2),
-                                                              if (showDetailedFees)
-                                                                buildCexPrice(snapshot
-                                                                        .data
-                                                                        .toDouble() *
-                                                                    coinsBloc
-                                                                        .priceByAbbr(
-                                                                            abbr)),
-                                                            ],
-                                                          );
+                                                        if (!snapshot.hasData) {
+                                                          return const SizedBox(
+                                                              width: 10,
+                                                              height: 10,
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                strokeWidth: 1,
+                                                              ));
                                                         }
-                                                        return Container();
+
+                                                        final String abbr =
+                                                            swapBloc
+                                                                .sellCoinBalance
+                                                                .coin
+                                                                .abbr;
+
+                                                        return Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: <Widget>[
+                                                            Text(
+                                                                snapshot.data
+                                                                        .toString() +
+                                                                    ' ' +
+                                                                    abbr,
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .body2),
+                                                            if (showDetailedFees)
+                                                              buildCexPrice(snapshot
+                                                                      .data
+                                                                      .toDouble() *
+                                                                  coinsBloc
+                                                                      .priceByAbbr(
+                                                                          abbr)),
+                                                          ],
+                                                        );
                                                       },
                                                     ),
                                                   ],
