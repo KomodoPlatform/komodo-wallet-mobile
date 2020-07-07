@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -105,13 +106,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                       }),
                     ),
                   ),
-                  Text(
-                    (Decimal.parse(widget.coinBalance.priceForOne) *
-                                Decimal.parse(tx.myBalanceChange.toString()))
-                            .toStringAsFixed(2) +
-                        ' USD',
-                    style: Theme.of(context).textTheme.body2,
-                  )
+                  _buildUsdAmount(),
                 ],
               ),
             ),
@@ -144,6 +139,51 @@ class _TransactionDetailState extends State<TransactionDetail> {
         ],
       ),
     );
+  }
+
+  Widget _buildUsdAmount() {
+    const Widget _progressIndicator = SizedBox(
+      width: 16,
+      height: 16,
+      child: CircularProgressIndicator(
+        strokeWidth: 2.0,
+      ),
+    );
+
+    Widget _usdAmount(String priceForOne) {
+      if (priceForOne == null) return _progressIndicator;
+
+      if (double.parse(priceForOne) == 0) return Container();
+
+      return Text(
+        (Decimal.parse(priceForOne) *
+                    Decimal.parse(
+                        widget.transaction.myBalanceChange.toString()))
+                .toStringAsFixed(2) +
+            ' USD',
+        style: Theme.of(context).textTheme.body2,
+      );
+    }
+
+    if (widget.coinBalance.priceForOne != null)
+      return _usdAmount(widget.coinBalance.priceForOne);
+
+    return StreamBuilder(
+        stream: coinsBloc.outCoins,
+        builder:
+            (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
+          if (!snapshot.hasData) return _progressIndicator;
+
+          String priceForOne;
+          try {
+            priceForOne = snapshot.data
+                .firstWhere((CoinBalance balance) =>
+                    balance.coin.abbr == widget.coinBalance.coin.abbr)
+                .priceForOne;
+          } catch (_) {}
+
+          return _usdAmount(priceForOne);
+        });
   }
 
   Widget _buildListDetails() {
