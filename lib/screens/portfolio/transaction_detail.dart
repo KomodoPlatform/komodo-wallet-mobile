@@ -150,6 +150,24 @@ class _TransactionDetailState extends State<TransactionDetail> {
       ),
     );
 
+    Widget _usdAmount(String priceForOne) {
+      if (priceForOne == null) return _progressIndicator;
+
+      if (double.parse(priceForOne) == 0) return Container();
+
+      return Text(
+        (Decimal.parse(priceForOne) *
+                    Decimal.parse(
+                        widget.transaction.myBalanceChange.toString()))
+                .toStringAsFixed(2) +
+            ' USD',
+        style: Theme.of(context).textTheme.body2,
+      );
+    }
+
+    if (widget.coinBalance.priceForOne != null)
+      return _usdAmount(widget.coinBalance.priceForOne);
+
     return StreamBuilder(
         stream: coinsBloc.outCoins,
         builder:
@@ -164,18 +182,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 .priceForOne;
           } catch (_) {}
 
-          if (priceForOne == null) return _progressIndicator;
-
-          if (double.parse(priceForOne) == 0) return Container();
-
-          return Text(
-            (Decimal.parse(priceForOne) *
-                        Decimal.parse(
-                            widget.transaction.myBalanceChange.toString()))
-                    .toStringAsFixed(2) +
-                ' USD',
-            style: Theme.of(context).textTheme.body2,
-          );
+          return _usdAmount(priceForOne);
         });
   }
 
