@@ -877,7 +877,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "selectCoin": "Sélectionnez une crypto-monnaie",
+  "selectCoin": "Cryptomonnaie",
   "@selectCoin": {
     "type": "text",
     "placeholders": {}

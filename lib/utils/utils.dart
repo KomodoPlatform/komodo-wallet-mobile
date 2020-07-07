@@ -24,6 +24,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:rational/rational.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 import '../localizations.dart';
 
@@ -191,6 +192,7 @@ void showAddressDialog(BuildContext mContext, String address, Coin coin) {
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                     child: AutoSizeText(
                       address,
+                      textKey: const Key('coin-details-address'),
                       style: Theme.of(context).textTheme.body1,
                       maxLines: 2,
                     ),
@@ -497,4 +499,24 @@ bool get isInDebugMode {
   bool inDebugMode = false;
   assert(inDebugMode = true);
   return inDebugMode;
+}
+
+String humanDate(int epoch) {
+  DateTime _dateTime;
+  try {
+    _dateTime = DateTime.fromMillisecondsSinceEpoch(epoch);
+  } catch (e) {
+    Log('utils:508', 'humanDate] $e');
+  }
+
+  if (_dateTime == null) return null;
+
+  final DateTime _now = DateTime.now();
+  final bool _isThisYear = _dateTime.year == _now.year;
+  final bool _isThisMonth = _isThisYear && _dateTime.month == _now.month;
+  final bool _isToday = _isThisMonth && _dateTime.day == _now.day;
+
+  if (_isToday) return DateFormat('H:m').format(_dateTime);
+  if (_isThisYear) return DateFormat('MMMM d, H:m').format(_dateTime);
+  return DateFormat('MMMM d y, H:m').format(_dateTime);
 }

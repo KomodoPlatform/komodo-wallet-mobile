@@ -8,12 +8,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/model/updates_provider.dart';
+import 'package:komodo_dex/screens/feed/feed_page.dart';
 import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/swap_page.dart';
-import 'package:komodo_dex/screens/news/media_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
@@ -21,6 +23,7 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,7 +63,13 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
               create: (context) => OrderBookProvider(),
             ),
             ChangeNotifierProvider(
+              create: (context) => FeedProvider(),
+            ),
+            ChangeNotifierProvider(
               create: (context) => StartupProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => UpdatesProvider(),
             ),
           ],
           child: const MyApp(),
@@ -157,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     CoinsPage(),
     SwapPage(),
     MarketsPage(),
-    Media(),
+    FeedPage(),
     SettingPage()
   ];
 
@@ -227,6 +236,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
+    final UpdatesProvider updatesProvider =
+        Provider.of<UpdatesProvider>(context);
+
     return StreamBuilder<int>(
         initialData: mainBloc.currentIndexTab,
         stream: mainBloc.outCurrentIndex,
@@ -294,36 +307,47 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       BottomNavigationBarItem(
                                           icon: Icon(
                                             Icons.account_balance_wallet,
-                                            key: const Key(
-                                                'icon-bloc-coins-page'),
+                                            key: const Key('nav-portfolio'),
                                           ),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .portfolio)),
                                       BottomNavigationBarItem(
                                           icon: Icon(Icons.swap_vert,
-                                              key: const Key('icon-swap-page')),
+                                              key: const Key('nav-dex')),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .dex)),
                                       BottomNavigationBarItem(
                                         icon: Icon(
                                           Icons.show_chart,
-                                          key: const Key('icon-markets-page'),
+                                          key: const Key('nav-markets'),
                                         ),
                                         title: const Text(
                                             'Markets'), // TODO(yurii): localization
                                       ),
                                       BottomNavigationBarItem(
-                                          icon: Icon(Icons.library_books,
-                                              key: const Key('icon-media')),
-                                          title: Text(
-                                              AppLocalizations.of(context)
-                                                  .media)),
+                                          icon: Stack(
+                                            children: <Widget>[
+                                              Icon(Icons.library_books,
+                                                  key: const Key('nav-news')),
+                                              if (feedProvider.hasNewItems)
+                                                buildRedDot(context),
+                                            ],
+                                          ),
+                                          title: const Text(
+                                              'Feed')), // TODO(yurii): localization
                                       BottomNavigationBarItem(
-                                          icon: Icon(Icons.settings,
-                                              key: const Key(
-                                                  'icon-setting-page')),
+                                          icon: Stack(
+                                            children: <Widget>[
+                                              Icon(Icons.settings,
+                                                  key: const Key(
+                                                      'nav-settings')),
+                                              if (updatesProvider.status !=
+                                                  UpdateStatus.upToDate)
+                                                buildRedDot(context),
+                                            ],
+                                          ),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .settings)),

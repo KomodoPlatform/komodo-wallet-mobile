@@ -115,16 +115,16 @@
 	{
 		"name": "Bitcoin Cash",
 		"type": "utxo",
-		"address": "bch.imaginary.cash",
-		"port": 50001,
+		"address": "electrum1.cipig.net",
+		"port": 10055,
 		"proto": "tcp",
 		"abbr": "BCH",
 		"coingeckoId": "bitcoin-cash",
 		"colorCoin": "0xFF2db300",
 		"serverList": [
-			"bch.imaginary.cash:50001",
-			"electrumx-bch.cryptonermal.net:50001",
-			"bch0.kister.net:50001"
+			"electrum1.cipig.net:10055",
+			"electrum2.cipig.net:10055",
+			"electrum3.cipig.net:10055"
 		],
 		"explorerUrl": [
 			"https://explorer.bitcoin.com/bch/"
@@ -351,20 +351,37 @@
 	{
 		"name": "Litecoin",
 		"type": "utxo",
-		"address": "electrum-ltc.bysh.me",
-		"port": 50001,
+		"address": "electrum1.cipig.net",
+		"port": 10063,
 		"proto": "tcp",
 		"abbr": "LTC",
 		"coingeckoId": "litecoin",
 		"colorCoin": "0xFFbebebe",
 		"serverList": [
-			"electrum.ltc.xurious.com:50001",
-			"ltc.rentonisk.com:50001",
-			"backup.electrum-ltc.org:50001",
-			"electrum-ltc.bysh.me:50001"
+			"electrum1.cipig.net:10063",
+			"electrum2.cipig.net:10063",
+			"electrum3.cipig.net:10063"
 		],
 		"explorerUrl": [
 			"https://blockexplorer.one/litecoin/mainnet/"
+		]
+	},
+	{
+		"name": "MCL",
+		"type": "smartChain",
+		"address": "electrum1.cipig.net",
+		"port": 10023,
+		"proto": "tcp",
+		"abbr": "MCL",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFF326464",
+		"serverList": [
+			"electrum3.cipig.net:10023",
+			"electrum2.cipig.net:10023",
+			"electrum1.cipig.net:10023"
+		],
+		"explorerUrl": [
+			"http://explorer.marmara.io/"
 		]
 	},
 	{

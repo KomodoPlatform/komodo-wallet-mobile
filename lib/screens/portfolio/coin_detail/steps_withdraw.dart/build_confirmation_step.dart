@@ -87,7 +87,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           if (coinsDetailBloc.customFee != null &&
               widget.coinBalance.coin.type == 'erc') {
             fee = deci(coinsDetailBloc.customFee.gas) *
-                deci(coinsDetailBloc.customFee.gasPrice);
+                deci(coinsDetailBloc.customFee.gasPrice) / deci(1000000000);
           }
 
           Decimal amountToPay = deci(widget.amountToPay);
@@ -286,6 +286,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     Expanded(
                       child: Builder(builder: (BuildContext context) {
                         return PrimaryButton(
+                          key: const Key('primary-button-confirm'),
                           text: AppLocalizations.of(context)
                               .confirm
                               .toUpperCase(),

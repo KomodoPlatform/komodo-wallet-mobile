@@ -17,6 +17,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -25,8 +26,10 @@ import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class TradePage extends StatefulWidget {
@@ -59,6 +62,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   bool isMaxActive = false;
   Ask currentAsk;
   bool isLoadingMax = false;
+  bool showDetailedFees = false;
 
   @override
   void initState() {
@@ -81,6 +85,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     swapBloc.updateBuyCoin(null);
     swapBloc.updateReceiveCoin(null);
     swapBloc.setEnabledSellField(false);
+    swapBloc.setCurrentAmountBuy(null);
+    swapBloc.setCurrentAmountSell(null);
 
     _controllerAmountReceive.clear();
     _controllerAmountSell.addListener(onChangeSell);
@@ -146,7 +152,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _updateMarketsPair() {
-    if (swapBloc.sellCoin?.coin == null && swapBloc.receiveCoin == null) return;
+    if (swapBloc.sellCoinBalance?.coin == null && swapBloc.receiveCoin == null)
+      return;
 
     final OrderBookProvider _orderBookProvider =
         Provider.of<OrderBookProvider>(context);
@@ -158,10 +165,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           sell: _orderBookProvider.activePair?.sell,
         );
       }
-      if (swapBloc.sellCoin?.coin != _orderBookProvider.activePair?.sell) {
+      if (swapBloc.sellCoinBalance?.coin !=
+          _orderBookProvider.activePair?.sell) {
         _orderBookProvider.activePair = CoinsPair(
           buy: _orderBookProvider.activePair?.buy,
-          sell: swapBloc.sellCoin?.coin,
+          sell: swapBloc.sellCoinBalance?.coin,
         );
       }
     });
@@ -186,6 +194,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     if (_controllerAmountReceive.text.isNotEmpty) {
       swapBloc.setCurrentAmountBuy(
           double.parse(_controllerAmountReceive.text.replaceAll(',', '.')));
+    } else {
+      swapBloc.setCurrentAmountBuy(null);
     }
     if (_noOrderFound &&
         _controllerAmountReceive.text.isNotEmpty &&
@@ -194,7 +204,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           deci(_controllerAmountSell.text);
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
-          coinRel: swapBloc.sellCoin?.coin,
+          coinRel: swapBloc.sellCoinBalance?.coin,
           bestPrice: bestPrice,
           maxVolume: deci(_controllerAmountSell.text)));
     }
@@ -206,6 +216,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     if (_controllerAmountSell.text.isNotEmpty) {
       swapBloc.setCurrentAmountSell(amountSell.toDouble());
+    } else {
+      swapBloc.setCurrentAmountSell(null);
     }
     setState(() {
       if (_noOrderFound &&
@@ -215,7 +227,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             deci(_controllerAmountSell.text);
         swapBloc.updateBuyCoin(OrderCoin(
             coinBase: swapBloc.receiveCoin,
-            coinRel: swapBloc.sellCoin?.coin,
+            coinRel: swapBloc.sellCoinBalance?.coin,
             bestPrice: bestPrice,
             maxVolume: deci(_controllerAmountSell.text)));
       }
@@ -241,7 +253,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
             swapBloc.updateBuyCoin(OrderCoin(
                 coinBase: swapBloc.receiveCoin,
-                coinRel: swapBloc.sellCoin?.coin,
+                coinRel: swapBloc.sellCoinBalance?.coin,
                 bestPrice: price,
                 maxVolume: maxVolume));
           }
@@ -324,7 +336,27 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  Future<String> getTxFeeErc() async {
+  Widget buildCexPrice(double price, [double size = 12]) {
+    if (price == null || price == 0) return Container();
+
+    final String priceStr = OrderBookProvider.formatPrice(price.toString(), 4);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        CexMarker(
+          context,
+          size: Size.fromHeight(size),
+        ),
+        const SizedBox(width: 2),
+        Text(
+          '\$$priceStr',
+          style: TextStyle(fontSize: size, color: cexColor),
+        ),
+      ],
+    );
+  }
+
+  Future<Widget> getTxFeeErc() async {
     try {
       final TradeFee tradeFeeResponse = await MM.getTradeFee(
           MMService().client, GetTradeFee(coin: currentCoinBalance.coin.abbr));
@@ -340,25 +372,63 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       }
 
       if (txErcFee != null &&
-          swapBloc.sellCoin.coin.swapContractAddress.isEmpty) {
-        return (Decimal.parse('2') * txFee).toStringAsFixed(5) +
-            ' ' +
-            swapBloc.sellCoin.coin.abbr +
-            ' + ' +
-            txErcFee.toStringAsFixed(5) +
-            ' ETH';
+          swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty) {
+        final double relPrice =
+            coinsBloc.priceByAbbr(swapBloc.sellCoinBalance.coin.abbr);
+        final double ethPrice = coinsBloc.priceByAbbr('ETH');
+
+        final double totalUsdFee = relPrice == 0 || ethPrice == 0
+            ? null
+            : 2 * txFee.toDouble() * relPrice +
+                (txErcFee.toDouble() * ethPrice);
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Text(
+                (Decimal.parse('2') * txFee).toStringAsFixed(5) +
+                    ' ' +
+                    swapBloc.sellCoinBalance.coin.abbr +
+                    ' + ' +
+                    txErcFee.toStringAsFixed(5) +
+                    ' ETH',
+                style: Theme.of(context).textTheme.body2),
+            if (showDetailedFees)
+              Column(
+                children: <Widget>[
+                  buildCexPrice(totalUsdFee),
+                  const SizedBox(height: 4),
+                ],
+              ),
+          ],
+        );
       } else {
         Decimal factor = Decimal.parse('2');
         if (swapBloc.receiveCoin != null &&
-            swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty &&
+            swapBloc.sellCoinBalance.coin.swapContractAddress.isNotEmpty &&
             swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
           factor = Decimal.parse('3');
         }
-        return (factor * txFee).toStringAsFixed(8) +
-            ' ' +
-            (swapBloc.sellCoin.coin.swapContractAddress.isEmpty
-                ? swapBloc.sellCoin.coin.abbr
-                : 'ETH');
+        final String abbr =
+            swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty
+                ? swapBloc.sellCoinBalance.coin.abbr
+                : 'ETH';
+        final double usdFee =
+            (factor * txFee).toDouble() * coinsBloc.priceByAbbr(abbr);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Text((factor * txFee).toStringAsFixed(8) + ' ' + abbr,
+                style: Theme.of(context).textTheme.body2),
+            if (showDetailedFees)
+              Column(
+                children: <Widget>[
+                  buildCexPrice(usdFee),
+                  const SizedBox(height: 4),
+                ],
+              ),
+          ],
+        );
       }
     } catch (e) {
       Log.println('trade_page:364', e);
@@ -405,34 +475,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildExchange() {
-    final bool sellEmpty = _controllerAmountSell.text.isEmpty;
-
-    final Widget swapIcon = Container(
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(32)),
-          color: Theme.of(context).backgroundColor,
-        ),
-        child: SvgPicture.asset(
-          'assets/icon_swap.svg',
-          height: 40,
-        ));
-    return Stack(
-      alignment: Alignment.center,
+    return Column(
       children: <Widget>[
-        Column(
-          children: <Widget>[
-            _buildCard(Market.SELL),
-            _buildCard(Market.RECEIVE)
-          ],
-        ),
-        sellEmpty
-            ? swapIcon
-            : Positioned(
-                top: 194,
-                left: MediaQuery.of(context).size.width / 2 - 60,
-                child: swapIcon,
-              )
+        _buildCard(Market.SELL),
+        _buildCard(Market.RECEIVE),
       ],
     );
   }
@@ -441,7 +487,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 70),
       child: StreamBuilder<CoinBalance>(
-          initialData: swapBloc.sellCoin,
+          initialData: swapBloc.sellCoinBalance,
           stream: swapBloc.outSellCoin,
           builder: (BuildContext context, AsyncSnapshot<CoinBalance> sellCoin) {
             return StreamBuilder<Coin>(
@@ -491,226 +537,352 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             paddingRight = 24;
           }
 
-          return Container(
-            width: double.infinity,
-            child: Card(
-              elevation: 8,
-              margin: const EdgeInsets.all(8),
-              color: Theme.of(context).primaryColor,
-              child: Stack(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: 24, right: paddingRight, top: 32, bottom: 52),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
+          Widget _buildCEXamount(double amount, Coin coin) {
+            if (amount == null || coin == null || amount == 0)
+              return Container();
+
+            final double price = coinsBloc.priceByAbbr(coin.abbr);
+            if (price == null || price == 0) return Container();
+
+            final double usd = amount * price;
+
+            return buildCexPrice(usd);
+          }
+
+          return Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                child: Card(
+                  elevation: 8,
+                  margin: const EdgeInsets.all(8),
+                  color: Theme.of(context).primaryColor,
+                  child: Stack(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 24, right: paddingRight, top: 32, bottom: 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Column(
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                  AppLocalizations.of(context).selectCoin,
-                                  style: Theme.of(context).textTheme.body2,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      AppLocalizations.of(context).selectCoin,
+                                      style: Theme.of(context).textTheme.body2,
+                                    ),
+                                    Container(
+                                      width: 130,
+                                      child: _buildCoinSelect(market),
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  width: 130,
-                                  child: _buildCoinSelect(market),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        market == Market.SELL
+                                            ? AppLocalizations.of(context).sell
+                                            : AppLocalizations.of(context)
+                                                .receiveLower,
+                                        style:
+                                            Theme.of(context).textTheme.body2,
+                                      ),
+                                      FadeTransition(
+                                        opacity: animationInputSell,
+                                        child: GestureDetector(
+                                          behavior: HitTestBehavior.translucent,
+                                          onTap: () => _animCoin(market),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: <Widget>[
+                                                    TextFormField(
+                                                        key: Key(
+                                                            'input-text-${market.toString().toLowerCase()}'),
+                                                        scrollPadding:
+                                                            const EdgeInsets.only(
+                                                                left: 35),
+                                                        inputFormatters: <
+                                                            TextInputFormatter>[
+                                                          DecimalTextInputFormatter(
+                                                              decimalRange: 8),
+                                                          WhitelistingTextInputFormatter(
+                                                              RegExp(
+                                                                  '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
+                                                        ],
+                                                        focusNode:
+                                                            market == Market.SELL
+                                                                ? _focusSell
+                                                                : _focusReceive,
+                                                        controller: market == Market.SELL
+                                                            ? _controllerAmountSell
+                                                            : _controllerAmountReceive,
+                                                        enabled: market == Market.RECEIVE
+                                                            ? swapBloc
+                                                                .enabledReceiveField
+                                                            : swapBloc
+                                                                .enabledSellField,
+                                                        keyboardType:
+                                                            const TextInputType.numberWithOptions(
+                                                                decimal: true),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle,
+                                                        textInputAction: TextInputAction
+                                                            .done,
+                                                        decoration: InputDecoration(
+                                                            hintStyle: Theme.of(context)
+                                                                .textTheme
+                                                                .body2
+                                                                .copyWith(
+                                                                    fontSize: 16,
+                                                                    fontWeight: FontWeight.w400),
+                                                            hintText: market == Market.SELL ? AppLocalizations.of(context).amountToSell : '')),
+                                                    const SizedBox(height: 2),
+                                                    _buildCEXamount(
+                                                        market == Market.SELL
+                                                            ? swapBloc
+                                                                .currentAmountSell
+                                                            : swapBloc
+                                                                .currentAmountBuy,
+                                                        market == Market.SELL
+                                                            ? swapBloc
+                                                                .sellCoinBalance
+                                                                ?.coin
+                                                            : swapBloc
+                                                                .buyCoinBalance
+                                                                ?.coin)
+                                                  ],
+                                                ),
+                                              ),
+                                              market == Market.SELL &&
+                                                      enabledSellFieldStream
+                                                          .data
+                                                  ? Container(
+                                                      child: FlatButton(
+                                                        onPressed: () async {
+                                                          swapBloc
+                                                              .setIsMaxActive(
+                                                                  true);
+                                                          setState(() {
+                                                            isLoadingMax = true;
+                                                          });
+                                                          await setMaxValue();
+                                                        },
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)
+                                                              .max,
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .body1
+                                                              .copyWith(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .accentColor),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container()
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    market == Market.SELL
-                                        ? AppLocalizations.of(context).sell
-                                        : AppLocalizations.of(context)
-                                            .receiveLower,
-                                    style: Theme.of(context).textTheme.body2,
-                                  ),
-                                  FadeTransition(
-                                    opacity: animationInputSell,
-                                    child: GestureDetector(
-                                      behavior: HitTestBehavior.translucent,
-                                      onTap: () => _animCoin(market),
+                            market == Market.SELL &&
+                                    _controllerAmountSell.text.isNotEmpty
+                                ? GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        showDetailedFees = !showDetailedFees;
+                                      });
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 16, left: 0),
                                       child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Expanded(
-                                            child: TextFormField(
-                                                key: Key(
-                                                    'input-text-${market.toString().toLowerCase()}'),
-                                                scrollPadding: const EdgeInsets.only(
-                                                    left: 35),
-                                                inputFormatters: <
-                                                    TextInputFormatter>[
-                                                  DecimalTextInputFormatter(
-                                                      decimalRange: 8),
-                                                  WhitelistingTextInputFormatter(
-                                                      RegExp(
-                                                          '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
-                                                ],
-                                                focusNode: market == Market.SELL
-                                                    ? _focusSell
-                                                    : _focusReceive,
-                                                controller: market == Market.SELL
-                                                    ? _controllerAmountSell
-                                                    : _controllerAmountReceive,
-                                                enabled: market == Market.RECEIVE
-                                                    ? swapBloc
-                                                        .enabledReceiveField
-                                                    : swapBloc.enabledSellField,
-                                                keyboardType:
-                                                    const TextInputType.numberWithOptions(
-                                                        decimal: true),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle,
-                                                textInputAction:
-                                                    TextInputAction.done,
-                                                decoration: InputDecoration(
-                                                    hintStyle: Theme.of(context)
-                                                        .textTheme
-                                                        .body2
-                                                        .copyWith(
-                                                            fontSize: 16,
-                                                            fontWeight: FontWeight
-                                                                .w400),
-                                                    hintText: market == Market.SELL
-                                                        ? AppLocalizations.of(context).amountToSell
-                                                        : '')),
-                                          ),
-                                          market == Market.SELL &&
-                                                  enabledSellFieldStream.data
-                                              ? Container(
-                                                  child: FlatButton(
-                                                    onPressed: () async {
-                                                      swapBloc
-                                                          .setIsMaxActive(true);
-                                                      setState(() {
-                                                        isLoadingMax = true;
-                                                      });
-                                                      await setMaxValue();
-                                                    },
-                                                    child: Text(
-                                                      AppLocalizations.of(
-                                                              context)
-                                                          .max,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .body1
-                                                          .copyWith(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .accentColor),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Text(
+                                                        AppLocalizations.of(
+                                                                context)
+                                                            .txFeeTitle,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .body2),
+                                                    FutureBuilder<Widget>(
+                                                      future: getTxFeeErc(),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<Widget>
+                                                              snapshot) {
+                                                        if (snapshot.hasData)
+                                                          return snapshot.data;
+
+                                                        return const SizedBox(
+                                                            width: 10,
+                                                            height: 10,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              strokeWidth: 1,
+                                                            ));
+                                                      },
                                                     ),
-                                                  ),
-                                                )
-                                              : Container()
+                                                  ],
+                                                ),
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Text(
+                                                        AppLocalizations.of(
+                                                                context)
+                                                            .tradingFee,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .body2),
+                                                    FutureBuilder<Decimal>(
+                                                      future: getTradeFee(
+                                                          isMaxActive),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<Decimal>
+                                                              snapshot) {
+                                                        if (!snapshot.hasData) {
+                                                          return const SizedBox(
+                                                              width: 10,
+                                                              height: 10,
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                strokeWidth: 1,
+                                                              ));
+                                                        }
+
+                                                        final String abbr =
+                                                            swapBloc
+                                                                .sellCoinBalance
+                                                                .coin
+                                                                .abbr;
+
+                                                        return Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: <Widget>[
+                                                            Text(
+                                                                snapshot.data
+                                                                        .toString() +
+                                                                    ' ' +
+                                                                    abbr,
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .body2),
+                                                            if (showDetailedFees)
+                                                              buildCexPrice(snapshot
+                                                                      .data
+                                                                      .toDouble() *
+                                                                  coinsBloc
+                                                                      .priceByAbbr(
+                                                                          abbr)),
+                                                          ],
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Icon(
+                                            showDetailedFees
+                                                ? Icons.unfold_less
+                                                : Icons.unfold_more,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .body2
+                                                .color,
+                                          ),
                                         ],
                                       ),
                                     ),
                                   )
-                                ],
-                              ),
-                            ),
+                                : Container()
                           ],
                         ),
-                        market == Market.SELL &&
-                                _controllerAmountSell.text.isNotEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 16, left: 0, right: 16, bottom: 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                            AppLocalizations.of(context)
-                                                .txFeeTitle,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .body2),
-                                        FutureBuilder<String>(
-                                          future: getTxFeeErc(),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<String> snapshot) {
-                                            if (snapshot.hasData) {
-                                              return Text(
-                                                snapshot.data,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .body2,
-                                              );
-                                            }
-                                            return Container();
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                            AppLocalizations.of(context)
-                                                .tradingFee,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .body2),
-                                        FutureBuilder<Decimal>(
-                                          future: getTradeFee(isMaxActive),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<Decimal> snapshot) {
-                                            if (snapshot.hasData) {
-                                              return Text(
-                                                  snapshot.data.toString() +
-                                                      ' ' +
-                                                      swapBloc
-                                                          .sellCoin.coin.abbr,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .body2);
-                                            }
-                                            return Container();
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Container()
-                      ],
-                    ),
+                      ),
+                      _noOrderFound && market == Market.RECEIVE
+                          ? Positioned(
+                              bottom: 10,
+                              left: 22,
+                              child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: swapBloc.receiveCoin != null
+                                      ? Text(
+                                          AppLocalizations.of(context).noOrder(
+                                              swapBloc.receiveCoin.abbr),
+                                          style:
+                                              Theme.of(context).textTheme.body2,
+                                        )
+                                      : const Text('')))
+                          : Container()
+                    ],
                   ),
-                  _noOrderFound && market == Market.RECEIVE
-                      ? Positioned(
-                          bottom: 10,
-                          left: 22,
-                          child: Container(
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              child: swapBloc.receiveCoin != null
-                                  ? Text(
-                                      AppLocalizations.of(context)
-                                          .noOrder(swapBloc.receiveCoin.abbr),
-                                      style: Theme.of(context).textTheme.body2,
-                                    )
-                                  : const Text('')))
-                      : Container()
-                ],
+                ),
               ),
-            ),
+              if (market == Market.RECEIVE)
+                Positioned(
+                  top: -25,
+                  left: MediaQuery.of(context).size.width / 2 - 60,
+                  child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(32)),
+                        color: Theme.of(context).backgroundColor,
+                      ),
+                      child: SvgPicture.asset(
+                        'assets/icon_swap.svg',
+                        height: 40,
+                      )),
+                )
+            ],
           );
         });
   }
@@ -719,7 +891,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log.println(
         'trade_page:719', 'coin-select-${market.toString().toLowerCase()}');
     return Padding(
-      padding: const EdgeInsets.only(top: 6),
+      padding: const EdgeInsets.only(top: 5),
       child: InkWell(
         key: Key('coin-select-${market.toString().toLowerCase()}'),
         borderRadius: BorderRadius.circular(4),
@@ -755,7 +927,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             : FadeTransition(
                 opacity: animationCoinSell,
                 child: StreamBuilder<dynamic>(
-                    initialData: swapBloc.sellCoin,
+                    initialData: swapBloc.sellCoinBalance,
                     stream: swapBloc.outSellCoin,
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
@@ -807,7 +979,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             ],
           ),
           const SizedBox(
-            height: 6,
+            height: 10,
           ),
           Container(
             color: Colors.grey,
@@ -957,7 +1129,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     swapBloc.updateBuyCoin(OrderCoin(
         coinBase: swapBloc.receiveCoin,
-        coinRel: swapBloc.sellCoin?.coin,
+        coinRel: swapBloc.sellCoinBalance?.coin,
         bestPrice: deci(_controllerAmountSell.text) /
             deci(_controllerAmountReceive.text),
         maxVolume: deci(_controllerAmountSell.text)));
@@ -984,9 +1156,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     if (orderbooks != null && market == Market.RECEIVE) {
       for (OrderCoin orderbook in orderbooks) {
         SimpleDialogOption dialogItem;
-        if (orderbook.coinBase.abbr != swapBloc.sellCoin.coin.abbr) {
+        if (orderbook.coinBase.abbr != swapBloc.sellCoinBalance.coin.abbr) {
           final bool isOrderAvailable =
-              orderbook.coinBase.abbr != swapBloc.sellCoin.coin.abbr &&
+              orderbook.coinBase.abbr != swapBloc.sellCoinBalance.coin.abbr &&
                   orderbook.getBuyAmount(deci(_controllerAmountSell.text)) >
                       deci(0);
           Log.println(
@@ -1129,11 +1301,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     if (_controllerAmountSell.text != null &&
         _controllerAmountSell.text.isNotEmpty &&
         double.parse(_controllerAmountSell.text) < 3 &&
-        swapBloc.sellCoin.coin.abbr == 'QTUM') {
+        swapBloc.sellCoinBalance.coin.abbr == 'QTUM') {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoin.coin.abbr, 3.toString())),
+            .minValue(swapBloc.sellCoinBalance.coin.abbr, 3.toString())),
       ));
       return false;
     } else if (_controllerAmountSell.text != null &&
@@ -1142,7 +1314,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoin.coin.abbr, 0.00777.toString())),
+            .minValue(swapBloc.sellCoinBalance.coin.abbr, 0.00777.toString())),
       ));
       return false;
     } else if (_controllerAmountReceive.text != null &&
@@ -1163,7 +1335,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     replaceAllCommas();
 
     if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty ||
-        swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty) {
+        swapBloc.sellCoinBalance.coin.swapContractAddress.isNotEmpty) {
       CoinBalance ethBalance;
       try {
         ethBalance = coinsBloc.coinBalance
@@ -1183,12 +1355,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         final Decimal feeERC = await getERCfee(
                 swapBloc.receiveCoin.swapContractAddress.isNotEmpty
                     ? swapBloc.receiveCoin
-                    : swapBloc.sellCoin.coin) *
+                    : swapBloc.sellCoinBalance.coin) *
             ((swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                    swapBloc.sellCoin.coin.swapContractAddress.isNotEmpty)
+                    swapBloc
+                        .sellCoinBalance.coin.swapContractAddress.isNotEmpty)
                 ? Decimal.parse('3')
                 : (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                        swapBloc.sellCoin.coin.swapContractAddress.isEmpty
+                        swapBloc
+                            .sellCoinBalance.coin.swapContractAddress.isEmpty
                     ? Decimal.parse('1')
                     : Decimal.parse('2')));
 
@@ -1318,7 +1492,7 @@ class _DialogLookingState extends State<DialogLooking> {
   Future<void> startLooking() async {
     const int timerEnd = 10;
     int timerCurrent = 0;
-    await swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+    await swapBloc.getBuyCoins(swapBloc.sellCoinBalance.coin);
     if (checkIfAsks()) {
       widget.onDone();
     } else {
@@ -1329,7 +1503,7 @@ class _DialogLookingState extends State<DialogLooking> {
           timerGetOrderbook.cancel();
           widget.onDone();
         } else {
-          swapBloc.getBuyCoins(swapBloc.sellCoin.coin);
+          swapBloc.getBuyCoins(swapBloc.sellCoinBalance.coin);
         }
       });
     }
@@ -1361,53 +1535,5 @@ class _DialogLookingState extends State<DialogLooking> {
         ),
       ),
     );
-  }
-}
-
-class ExchangeRate extends StatefulWidget {
-  @override
-  _ExchangeRateState createState() => _ExchangeRateState();
-}
-
-class _ExchangeRateState extends State<ExchangeRate> {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<OrderCoin>(
-        initialData: swapBloc.orderCoin,
-        stream: swapBloc.outOrderCoin,
-        builder: (BuildContext context, AsyncSnapshot<OrderCoin> snapshot) {
-          if (snapshot.data != null && snapshot.data.bestPrice > deci(0)) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).bestAvailableRate,
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        swapBloc.getExchangeRate(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .body1
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        swapBloc.getExchangeRateUSD(),
-                        style: Theme.of(context).textTheme.body2,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
-          } else {
-            return Container();
-          }
-        });
   }
 }
