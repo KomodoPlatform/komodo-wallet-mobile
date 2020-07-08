@@ -151,16 +151,21 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   }
 
   Widget _buildChart() {
-    final double height = MediaQuery.of(context).size.height / 2;
+    const double controlsBarHeight = 60;
+    final double height =
+        controlsBarHeight + MediaQuery.of(context).size.height / 2;
 
     return Container(
       color: Theme.of(context).backgroundColor,
       child: Row(
         children: <Widget>[
-          Container(
-            color: Color(int.parse(coin.colorCoin)),
-            width: 8,
-            height: height,
+          Opacity(
+            opacity: 0.3,
+            child: Container(
+              color: Color(int.parse(coin.colorCoin)),
+              width: 8,
+              height: height,
+            ),
           ),
           Expanded(
             child: Container(
@@ -183,9 +188,9 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 12),
+                        Container(height: controlsBarHeight),
                         Container(
-                            height: height - 20,
+                            height: height - controlsBarHeight,
                             child: CandleChart(
                               snapshot.data,
                               candleWidth: 8,

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart' hide TextStyle;
+import 'package:intl/intl.dart';
 
 Size _canvasSize;
 double _priceScaleFactor;
@@ -19,12 +20,14 @@ class CandleChart extends StatefulWidget {
     this.downColor = Colors.red,
     this.filled = true,
     this.allowDynamicRescale = true,
+    this.allowDynamicPriceGrid = false,
   });
 
   final List<CandleData> data;
   final double candleWidth;
   final double strokeWidth;
   final bool allowDynamicRescale;
+  final bool allowDynamicPriceGrid;
   final Color textColor;
   final Color gridColor;
   final Color upColor;
@@ -155,9 +158,12 @@ class _ChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     _canvasSize = size;
-    const double pricePaddingPersent = 10;
+    const double pricePaddingPercent = 15;
     const double pricePreferredDivisions = 5;
     const double gap = 2;
+    const double topMargin = 20;
+    const double bottomMargin = 30;
+    final double fieldHeight = size.height - bottomMargin - topMargin;
 
     double visibleCandlesNumber = size.width / (candleWidth + gap) / zoom;
     if (visibleCandlesNumber < 1) visibleCandlesNumber = 1;
@@ -182,17 +188,21 @@ class _ChartPainter extends CustomPainter {
       final double maxPrice = _getMaxPrice(visibleCandlesData);
       final double priceRange = maxPrice - minPrice;
       final double priceAxis =
-          priceRange + (2 * priceRange * pricePaddingPersent / 100);
-      _priceScaleFactor = size.height / priceAxis;
-      _priceDivision = _roundedDivision(priceAxis, pricePreferredDivisions);
-      _originPrice = ((minPrice - (priceRange * pricePaddingPersent / 100)) /
+          priceRange + (2 * priceRange * pricePaddingPercent / 100);
+      _priceScaleFactor = fieldHeight / priceAxis;
+      _priceDivision = widget.allowDynamicPriceGrid
+          ? _roundedPriceDivision(priceAxis, pricePreferredDivisions)
+          : _exactPriceDivision(priceAxis, pricePreferredDivisions);
+      _originPrice = ((minPrice - (priceRange * pricePaddingPercent / 100)) /
                   _priceDivision)
               .round() *
           _priceDivision;
     }
 
     double _price2dy(double price) {
-      return size.height - ((price - _originPrice) * _priceScaleFactor);
+      return size.height -
+          bottomMargin -
+          ((price - _originPrice) * _priceScaleFactor);
     }
 
     double _time2dx(int time) {
@@ -251,29 +261,23 @@ class _ChartPainter extends CustomPainter {
       paint.color = widget.textColor;
       _drawText(
         canvas: canvas,
-        point: Offset(3, dy),
+        point: Offset(4, dy),
         text: formattedPrice,
         color: widget.textColor,
+        align: TextAlign.start,
       );
     }
 
     // draw time grid
-    paint.color = widget.textColor;
-    CandleData lastVisibleCandle;
-    for (int i = 0; i < visibleCandlesData.length; i++) {
-      if (_time2dx(visibleCandlesData[i].closeTime) < size.width) {
-        lastVisibleCandle = visibleCandlesData[i];
-        break;
-      }
-    }
     _drawText(
       canvas: canvas,
       color: widget.textColor,
       point: Offset(
-        size.width - 100,
-        size.height - 10,
+        size.width - 100 - 4,
+        size.height - 7,
       ),
-      text: _formatTime(lastVisibleCandle.closeTime),
+      text: _formatTime(timeAxisMax.round()),
+      align: TextAlign.end,
     );
   }
 
@@ -282,7 +286,11 @@ class _ChartPainter extends CustomPainter {
     return true;
   }
 
-  double _roundedDivision(double range, double divisions) {
+  double _exactPriceDivision(double range, double divisions) {
+    return range / divisions;
+  }
+
+  double _roundedPriceDivision(double range, double divisions) {
     final double division = range / divisions;
 
     final String exponential =
@@ -356,12 +364,18 @@ String _formatTime(int secondsSinceEpoch) {
   final DateTime local =
       DateTime.fromMillisecondsSinceEpoch(secondsSinceEpoch * 1000);
 
-  return '${local.month}-${local.day}-${local.year} ${local.hour}:${local.minute}';
+  return DateFormat('M/d/yy HH:mm').format(local.toLocal());
 }
 
-void _drawText({Canvas canvas, Offset point, String text, Color color}) {
+void _drawText({
+  Canvas canvas,
+  Offset point,
+  String text,
+  Color color,
+  TextAlign align,
+}) {
   final ParagraphBuilder builder =
-      ParagraphBuilder(ParagraphStyle(textAlign: TextAlign.start))
+      ParagraphBuilder(ParagraphStyle(textAlign: align))
         ..pushStyle(TextStyle(color: color, fontSize: 13))
         ..addText(text);
   final Paragraph paragraph = builder.build()
