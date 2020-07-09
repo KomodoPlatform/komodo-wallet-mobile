@@ -219,7 +219,7 @@ Future<List<CandleData>> _getOHLCData() async {
   http.Response _res;
   String _body;
   try {
-    _res = await http.get('http://komodo.live:3333/api/v1/ohlc/btc-usdt');
+    _res = await http.get('http://komodo.live:3333/api/v1/ohlc/kmd-btc');
     _body = _res.body;
   } catch (e) {
     print('Failed to fetch data: $e');

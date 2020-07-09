@@ -159,7 +159,7 @@ class _ChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     _canvasSize = size;
     const double pricePaddingPercent = 15;
-    const double pricePreferredDivisions = 5;
+    const double pricePreferredDivisions = 4;
     const double gap = 2;
     const double topMargin = 20;
     const double bottomMargin = 30;
@@ -269,6 +269,10 @@ class _ChartPainter extends CustomPainter {
     }
 
     // draw time grid
+    final DateTime axisMax =
+        DateTime.fromMillisecondsSinceEpoch(timeAxisMax.round() * 1000);
+    final DateTime axisMin =
+        DateTime.fromMillisecondsSinceEpoch(timeAxisMin.round() * 1000);
     _drawText(
       canvas: canvas,
       color: widget.textColor,
@@ -276,8 +280,22 @@ class _ChartPainter extends CustomPainter {
         size.width - 100 - 4,
         size.height - 7,
       ),
-      text: _formatTime(timeAxisMax.round()),
+      text: _formatTime(axisMax.millisecondsSinceEpoch, 'M/d/yy HH:mm'),
       align: TextAlign.end,
+    );
+    final bool sameDay = axisMax.year == axisMin.year &&
+        axisMax.month == axisMin.month &&
+        axisMax.day == axisMin.day;
+    _drawText(
+      canvas: canvas,
+      color: widget.textColor,
+      point: Offset(
+        4,
+        size.height - 7,
+      ),
+      text: _formatTime(axisMin.millisecondsSinceEpoch,
+          sameDay ? 'M/d/yy HH:mm' : 'M/d/yy HH:mm'),
+      align: TextAlign.start,
     );
   }
 
@@ -360,11 +378,11 @@ double _getMaxPrice(List<CandleData> data) {
   return maxPrice;
 }
 
-String _formatTime(int secondsSinceEpoch) {
+String _formatTime(int millisecondsSinceEpoch, String format) {
   final DateTime local =
-      DateTime.fromMillisecondsSinceEpoch(secondsSinceEpoch * 1000);
+      DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
 
-  return DateFormat('M/d/yy HH:mm').format(local.toLocal());
+  return DateFormat(format).format(local.toLocal());
 }
 
 void _drawText({
@@ -376,7 +394,7 @@ void _drawText({
 }) {
   final ParagraphBuilder builder =
       ParagraphBuilder(ParagraphStyle(textAlign: align))
-        ..pushStyle(TextStyle(color: color, fontSize: 13))
+        ..pushStyle(TextStyle(color: color, fontSize: 10))
         ..addText(text);
   final Paragraph paragraph = builder.build()
     ..layout(const ParagraphConstraints(width: 100));
