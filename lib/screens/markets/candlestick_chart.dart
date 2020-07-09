@@ -8,6 +8,8 @@ double _priceScaleFactor;
 double _originPrice;
 double _priceDivision;
 Map<int, CandlePosition> _renderedCandles = {};
+Offset _tapPosition;
+Map<String, dynamic> _selectedPoint; // {'timestamp': int, 'price': double}
 
 class CandleChart extends StatefulWidget {
   const CandleChart(
@@ -50,6 +52,7 @@ class CandleChartState extends State<CandleChart>
   double staticZoom;
   bool isZooming = false;
   bool shouldRescalePrice = true;
+  Offset tapDownPosition;
 
   @override
   void initState() {
@@ -115,6 +118,17 @@ class CandleChartState extends State<CandleChart>
                       (staticZoom * dynamicZoom);
 
               if (timeAxisShift < 0) timeAxisShift = 0;
+            });
+          },
+          onTapDown: (TapDownDetails details) {
+            setState(() {
+              _tapPosition = null;
+              tapDownPosition = details.localPosition;
+            });
+          },
+          onTap: () {
+            setState(() {
+              _tapPosition = tapDownPosition;
             });
           },
           child: CustomPaint(
@@ -264,20 +278,24 @@ class _ChartPainter extends CustomPainter {
         currentPriceDy = size.height - bottomMargin - fieldHeight;
       }
       final Color currentPriceColor = outside
-          ? const Color.fromARGB(80, 239, 236, 167)
-          : const Color.fromARGB(180, 239, 236, 167);
+          ? const Color.fromARGB(120, 200, 200, 150)
+          : const Color.fromARGB(255, 200, 200, 150);
       paint.color = currentPriceColor;
+
       double startX = 0;
       while (startX < size.width) {
         canvas.drawLine(Offset(startX, currentPriceDy),
             Offset(startX + 5, currentPriceDy), paint);
         startX += 10;
       }
+
       _drawText(
         canvas: canvas,
-        point: Offset(size.width - 100 - 2, currentPriceDy),
-        text: double.parse(currentPrice.toStringAsPrecision(6)).toString(),
-        color: currentPriceColor,
+        point: Offset(size.width - 100 - 2, currentPriceDy - 2),
+        text:
+            ' ${double.parse(currentPrice.toStringAsPrecision(6)).toString()} ',
+        color: Colors.black,
+        backgroundColor: currentPriceColor,
         align: TextAlign.end,
       );
     }
@@ -342,6 +360,86 @@ class _ChartPainter extends CustomPainter {
         Offset(0, size.height - bottomMargin + 5), paint);
     canvas.drawLine(Offset(size.width, size.height - bottomMargin),
         Offset(size.width, size.height - bottomMargin + 5), paint);
+
+    // select point
+    if (_tapPosition != null) {
+      _selectedPoint = null;
+      double minDistance;
+      for (CandleData candle in visibleCandlesData) {
+        final List<double> prices = [
+          candle.openPrice,
+          candle.closePrice,
+          candle.highPrice,
+          candle.lowPrice
+        ].toList();
+
+        for (double price in prices) {
+          final double distance = sqrt(
+              pow(_tapPosition.dx - _time2dx(candle.closeTime), 2) +
+                  pow(_tapPosition.dy - _price2dy(price), 2));
+          if (distance > 30) continue;
+          if (minDistance != null && distance > minDistance) continue;
+
+          minDistance = distance;
+          _selectedPoint = <String, dynamic>{
+            'timestamp': candle.closeTime,
+            'price': price,
+          };
+        }
+      }
+      _tapPosition = null;
+    }
+
+    // draw selected point
+    if (_selectedPoint != null) {
+      CandleData selectedCandle;
+      try {
+        selectedCandle = visibleCandlesData.firstWhere((CandleData candle) {
+          return candle.closeTime == _selectedPoint['timestamp'];
+        });
+      } catch (_) {}
+
+      if (selectedCandle != null) {
+        const double radius = 3;
+        final double dx = _time2dx(selectedCandle.closeTime);
+        final double dy = _price2dy(_selectedPoint['price']);
+        paint.style = PaintingStyle.stroke;
+
+        canvas.drawCircle(Offset(dx, dy), radius, paint);
+
+        double startX = dx + radius;
+        while (startX < size.width) {
+          canvas.drawLine(Offset(startX, dy), Offset(startX + 5, dy), paint);
+          startX += 10;
+        }
+
+        _drawText(
+          canvas: canvas,
+          align: TextAlign.right,
+          color: Colors.black,
+          backgroundColor: Colors.white,
+          text:
+              ' ${double.parse(_selectedPoint['price'].toStringAsPrecision(6)).toString()} ',
+          point: Offset(size.width - 100 - 2, dy - 2),
+        );
+
+        double startY = dy + radius;
+        while (startY < size.height - bottomMargin + 10) {
+          canvas.drawLine(Offset(dx, startY), Offset(dx, startY + 5), paint);
+          startY += 10;
+        }
+
+        _drawText(
+          canvas: canvas,
+          align: TextAlign.center,
+          color: Colors.black,
+          backgroundColor: Colors.white,
+          text:
+              ' ${_formatTime(selectedCandle.closeTime * 1000, 'M/d/yy HH:mm')} ',
+          point: Offset(dx - 50, size.height - 7),
+        );
+      }
+    }
   }
 
   @override
@@ -435,11 +533,16 @@ void _drawText({
   Offset point,
   String text,
   Color color,
+  Color backgroundColor = Colors.transparent,
   TextAlign align,
 }) {
   final ParagraphBuilder builder =
       ParagraphBuilder(ParagraphStyle(textAlign: align))
-        ..pushStyle(TextStyle(color: color, fontSize: 10))
+        ..pushStyle(TextStyle(
+          color: color,
+          fontSize: 10,
+          background: Paint()..color = backgroundColor,
+        ))
         ..addText(text);
   final Paragraph paragraph = builder.build()
     ..layout(const ParagraphConstraints(width: 100));
