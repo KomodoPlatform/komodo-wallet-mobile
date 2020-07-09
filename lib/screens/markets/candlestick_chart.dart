@@ -21,6 +21,7 @@ class CandleChart extends StatefulWidget {
     this.filled = true,
     this.allowDynamicRescale = true,
     this.allowDynamicPriceGrid = false,
+    this.showCurrentPrice = true,
   });
 
   final List<CandleData> data;
@@ -33,6 +34,7 @@ class CandleChart extends StatefulWidget {
   final Color upColor;
   final Color downColor;
   final bool filled;
+  final bool showCurrentPrice;
 
   @override
   CandleChartState createState() => CandleChartState();
@@ -247,6 +249,38 @@ class _ChartPainter extends CustomPainter {
       }
     });
     _renderedCandles = candlesToRender;
+
+    //draw current price
+    if (widget.showCurrentPrice) {
+      final double currentPrice = data.first.closePrice;
+      double currentPriceDy = _price2dy(currentPrice);
+      bool outside = false;
+      if (currentPriceDy > size.height - bottomMargin) {
+        outside = true;
+        currentPriceDy = size.height - bottomMargin;
+      }
+      if (currentPriceDy < size.height - bottomMargin - fieldHeight) {
+        outside = true;
+        currentPriceDy = size.height - bottomMargin - fieldHeight;
+      }
+      final Color currentPriceColor = outside
+          ? const Color.fromARGB(80, 239, 236, 167)
+          : const Color.fromARGB(180, 239, 236, 167);
+      paint.color = currentPriceColor;
+      double startX = 0;
+      while (startX < size.width) {
+        canvas.drawLine(Offset(startX, currentPriceDy),
+            Offset(startX + 5, currentPriceDy), paint);
+        startX += 10;
+      }
+      _drawText(
+        canvas: canvas,
+        point: Offset(size.width - 100 - 2, currentPriceDy),
+        text: double.parse(currentPrice.toStringAsPrecision(6)).toString(),
+        color: currentPriceColor,
+        align: TextAlign.end,
+      );
+    }
 
     // draw price grid
     final int visibleDivisions =
