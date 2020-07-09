@@ -331,6 +331,17 @@ class _ChartPainter extends CustomPainter {
           sameDay ? 'M/d/yy HH:mm' : 'M/d/yy HH:mm'),
       align: TextAlign.start,
     );
+    paint.color = widget.gridColor;
+    for (CandleData candleData in visibleCandlesData) {
+      final double dx = _time2dx(candleData.closeTime);
+      canvas.drawLine(Offset(dx, size.height - bottomMargin),
+          Offset(dx, size.height - bottomMargin + 5), paint);
+    }
+    paint.color = widget.textColor;
+    canvas.drawLine(Offset(0, size.height - bottomMargin),
+        Offset(0, size.height - bottomMargin + 5), paint);
+    canvas.drawLine(Offset(size.width, size.height - bottomMargin),
+        Offset(size.width, size.height - bottomMargin + 5), paint);
   }
 
   @override
