@@ -188,7 +188,50 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(height: controlsBarHeight),
+                        Container(
+                          height: controlsBarHeight,
+                          padding: const EdgeInsets.only(
+                            left: 2,
+                            right: 2,
+                          ),
+                          child: Card(
+                            margin: EdgeInsets.all(2),
+                            color: Theme.of(context).primaryColor,
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                left: 10,
+                                right: 10,
+                              ),
+                              child: Row(
+                                children: <Widget>[
+                                  const Text('KMD/BTC'),
+                                  const SizedBox(width: 20),
+                                  Row(
+                                    children: <Widget>[
+                                      const Text('5min'),
+                                      Icon(Icons.arrow_drop_down),
+                                    ],
+                                  ),
+                                  Expanded(
+                                      child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.refresh,
+                                        size: 12,
+                                      ),
+                                      const SizedBox(width: 2),
+                                      Text(
+                                        'Updated: 1m',
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  )),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                         Container(
                             height: height - controlsBarHeight,
                             child: CandleChart(
