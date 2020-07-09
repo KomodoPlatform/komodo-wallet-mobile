@@ -177,7 +177,7 @@ class _ChartPainter extends CustomPainter {
     const double pricePaddingPercent = 15;
     const double pricePreferredDivisions = 4;
     const double gap = 2;
-    const double topMargin = 20;
+    const double topMargin = 0;
     const double bottomMargin = 30;
     final double fieldHeight = size.height - bottomMargin - topMargin;
 
@@ -264,6 +264,27 @@ class _ChartPainter extends CustomPainter {
     });
     _renderedCandles = candlesToRender;
 
+    // draw price grid
+    final int visibleDivisions =
+        (size.height / (_priceDivision * _priceScaleFactor)).floor() + 1;
+    for (int i = 0; i < visibleDivisions; i++) {
+      paint.color = widget.gridColor;
+      final double price = _originPrice + i * _priceDivision;
+      final double dy = _price2dy(price);
+      canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
+      final String formattedPrice =
+          double.parse(price.toStringAsPrecision(6)).toString();
+      paint.color = widget.textColor;
+      if (i < 1) continue;
+      _drawText(
+        canvas: canvas,
+        point: Offset(4, dy + 14),
+        text: formattedPrice,
+        color: widget.textColor,
+        align: TextAlign.start,
+      );
+    }
+
     //draw current price
     if (widget.showCurrentPrice) {
       final double currentPrice = data.first.closePrice;
@@ -297,26 +318,6 @@ class _ChartPainter extends CustomPainter {
         color: Colors.black,
         backgroundColor: currentPriceColor,
         align: TextAlign.end,
-      );
-    }
-
-    // draw price grid
-    final int visibleDivisions =
-        (size.height / (_priceDivision * _priceScaleFactor)).floor() + 1;
-    for (int i = 0; i < visibleDivisions; i++) {
-      paint.color = widget.gridColor;
-      final double price = _originPrice + i * _priceDivision;
-      final double dy = _price2dy(price);
-      canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
-      final String formattedPrice =
-          double.parse(price.toStringAsPrecision(6)).toString();
-      paint.color = widget.textColor;
-      _drawText(
-        canvas: canvas,
-        point: Offset(4, dy),
-        text: formattedPrice,
-        color: widget.textColor,
-        align: TextAlign.start,
       );
     }
 
