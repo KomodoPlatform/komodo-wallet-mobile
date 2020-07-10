@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart' hide TextStyle;
 import 'package:intl/intl.dart';
 
+const double _timeAxisMargin = 70;
+double _maxTimeShift;
+const double _labelWidth = 100;
 Size _canvasSize;
 double _priceScaleFactor;
 double _originPrice;
@@ -79,6 +82,19 @@ class CandleChartState extends State<CandleChart>
       _quoted = widget.quoted;
     }
 
+    double _constrainedTimeShift(double timeShift) {
+      if (timeShift * staticZoom * dynamicZoom < -_timeAxisMargin)
+        return -_timeAxisMargin / staticZoom / dynamicZoom;
+
+      if (_maxTimeShift == null) return timeShift;
+
+      if (timeShift * staticZoom * dynamicZoom >
+          _maxTimeShift + _timeAxisMargin)
+        return (_maxTimeShift + _timeAxisMargin) / staticZoom / dynamicZoom;
+
+      return timeShift;
+    }
+
     return Container(
       child: ClipRect(
         child: GestureDetector(
@@ -96,9 +112,8 @@ class CandleChartState extends State<CandleChart>
             if (isZooming) return;
 
             setState(() {
-              timeAxisShift =
-                  timeAxisShift + drag.delta.dx / staticZoom / dynamicZoom;
-              if (timeAxisShift < 0) timeAxisShift = 0;
+              timeAxisShift = _constrainedTimeShift(
+                  timeAxisShift + drag.delta.dx / staticZoom / dynamicZoom);
             });
           },
           onScaleStart: (_) {
@@ -119,13 +134,11 @@ class CandleChartState extends State<CandleChart>
           onScaleUpdate: (ScaleUpdateDetails scale) {
             setState(() {
               dynamicZoom = scale.scale;
-              timeAxisShift = prevTimeAxisShift -
+              timeAxisShift = _constrainedTimeShift(prevTimeAxisShift -
                   _canvasSize.width /
                       2 *
                       (1 - dynamicZoom) /
-                      (staticZoom * dynamicZoom);
-
-              if (timeAxisShift < 0) timeAxisShift = 0;
+                      (staticZoom * dynamicZoom));
             });
           },
           onTapDown: (TapDownDetails details) {
@@ -193,6 +206,9 @@ class _ChartPainter extends CustomPainter {
     if (visibleCandlesNumber < 1) visibleCandlesNumber = 1;
     final double timeRange = visibleCandlesNumber * period;
     final double timeScaleFactor = size.width / timeRange;
+    _maxTimeShift =
+        (data.first.closeTime - data.last.closeTime) * timeScaleFactor -
+            timeRange * timeScaleFactor;
     final double timeAxisMax =
         data[0].closeTime - timeAxisShift * zoom / timeScaleFactor;
     final double timeAxisMin = timeAxisMax - timeRange;
@@ -322,7 +338,7 @@ class _ChartPainter extends CustomPainter {
 
       _drawText(
         canvas: canvas,
-        point: Offset(size.width - 100 - 2, currentPriceDy - 2),
+        point: Offset(size.width - _labelWidth - 2, currentPriceDy - 2),
         text:
             ' ${double.parse(currentPrice.toStringAsPrecision(6)).toString()} ',
         color: Colors.black,
@@ -336,14 +352,21 @@ class _ChartPainter extends CustomPainter {
         DateTime.fromMillisecondsSinceEpoch(timeAxisMax.round() * 1000);
     final DateTime axisMin =
         DateTime.fromMillisecondsSinceEpoch(timeAxisMin.round() * 1000);
+    double rightMarkerPosition = size.width;
+    int rightMarkerTime = axisMax.millisecondsSinceEpoch;
+    if (timeAxisShift < 0) {
+      rightMarkerPosition = rightMarkerPosition -
+          (candleWidth / 2 + gap / 2 - timeAxisShift) * zoom;
+      rightMarkerTime = visibleCandlesData.first.closeTime * 1000;
+    }
     _drawText(
       canvas: canvas,
       color: widget.textColor,
       point: Offset(
-        size.width - 100 - 4,
+        rightMarkerPosition - _labelWidth - 4,
         size.height - 7,
       ),
-      text: _formatTime(axisMax.millisecondsSinceEpoch, 'M/d/yy HH:mm'),
+      text: _formatTime(rightMarkerTime, 'M/d/yy HH:mm'),
       align: TextAlign.end,
     );
     final bool sameDay = axisMax.year == axisMin.year &&
@@ -369,8 +392,8 @@ class _ChartPainter extends CustomPainter {
     paint.color = widget.textColor;
     canvas.drawLine(Offset(0, size.height - bottomMargin),
         Offset(0, size.height - bottomMargin + 5), paint);
-    canvas.drawLine(Offset(size.width, size.height - bottomMargin),
-        Offset(size.width, size.height - bottomMargin + 5), paint);
+    canvas.drawLine(Offset(rightMarkerPosition, size.height - bottomMargin),
+        Offset(rightMarkerPosition, size.height - bottomMargin + 5), paint);
 
     // select point
     if (_tapPosition != null) {
@@ -431,7 +454,7 @@ class _ChartPainter extends CustomPainter {
           backgroundColor: Colors.white,
           text:
               ' ${double.parse(_selectedPoint['price'].toStringAsPrecision(6)).toString()} ',
-          point: Offset(size.width - 100 - 2, dy - 2),
+          point: Offset(size.width - _labelWidth - 2, dy - 2),
         );
 
         double startY = dy + radius;
@@ -567,7 +590,7 @@ void _drawText({
         ))
         ..addText(text);
   final Paragraph paragraph = builder.build()
-    ..layout(const ParagraphConstraints(width: 100));
+    ..layout(const ParagraphConstraints(width: _labelWidth));
   canvas.drawParagraph(
       paragraph, Offset(point.dx, point.dy - paragraph.height));
 }
