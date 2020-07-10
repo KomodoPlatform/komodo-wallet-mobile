@@ -107,6 +107,10 @@ class _SettingPageState extends State<SettingPage> {
               const SizedBox(
                 height: 1,
               ),
+              _buildHideBalance(),
+              const SizedBox(
+                height: 1,
+              ),
               _buildChangePIN(),
               const SizedBox(
                 height: 1,
@@ -357,6 +361,44 @@ class _SettingPageState extends State<SettingPage> {
         });
   }
 
+  Widget _buildHideBalance() {
+    // TODO(MateusRodCosta): Try to sync the showBalance bool on settingsBloc with a SharedPreference
+    return CustomTile(
+      child: ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                'Hide Balance',
+                style: Theme.of(context).textTheme.body1.copyWith(
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white.withOpacity(0.7)),
+              ),
+            ),
+            StreamBuilder<bool>(
+              initialData: settingsBloc.showBalance,
+              stream: settingsBloc.outShowBalance,
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                return snapshot.hasData
+                    ? Switch(
+                        value: !snapshot.data,
+                        key: const Key('settings-hide-balance'),
+                        onChanged: (bool dataSwitch) {
+                          Log('setting_page:262', 'dataSwitch $dataSwitch');
+                          setState(() {
+                            settingsBloc.setShowBalance(!dataSwitch);
+                          });
+                        })
+                    : Container();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildChangePIN() {
     return CustomTile(
       onPressed: () => Navigator.push<dynamic>(
@@ -456,7 +498,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildUpdate() {
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
-        
+
     return CustomTile(
         child: ListTile(
           trailing:

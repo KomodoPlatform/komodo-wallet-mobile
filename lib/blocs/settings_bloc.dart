@@ -8,11 +8,18 @@ SettingsBloc settingsBloc = SettingsBloc();
 
 class SettingsBloc implements BlocBase {
   bool isDeleteLoading = true;
+  bool showBalance = true;
 
   final StreamController<bool> _isDeleteLoadingController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsDeleteLoading => _isDeleteLoadingController.sink;
   Stream<bool> get outIsDeleteLoading => _isDeleteLoadingController.stream;
+
+
+  final StreamController<bool> _showBalanceController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inShowBalance => _showBalanceController.sink;
+  Stream<bool> get outShowBalance => _showBalanceController.stream;
 
   @override
   void dispose() {
@@ -56,5 +63,10 @@ class SettingsBloc implements BlocBase {
       default:
         return AppLocalizations.of(context).englishLanguage;
     }
+  }
+
+  void setShowBalance(bool val) {
+    showBalance = val;
+    _inShowBalance.add(val);
   }
 }
