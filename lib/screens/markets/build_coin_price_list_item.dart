@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
@@ -24,6 +25,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   Coin coin;
   Balance balance;
   bool expanded = false;
+  bool fetching = false; // TODO(yurii): will get flag from CexProvider
+  bool quotedChart = false;
 
   @override
   Widget build(BuildContext context) {
@@ -152,11 +155,11 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
 
   Widget _buildChart() {
     const double controlsBarHeight = 60;
-    final double height =
-        controlsBarHeight + MediaQuery.of(context).size.height / 2;
+    final double chartHeight = MediaQuery.of(context).size.height / 2;
 
     return Container(
       color: Theme.of(context).backgroundColor,
+      height: controlsBarHeight + chartHeight,
       child: Row(
         children: <Widget>[
           Opacity(
@@ -164,92 +167,115 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
             child: Container(
               color: Color(int.parse(coin.colorCoin)),
               width: 8,
-              height: height,
+              height: controlsBarHeight + chartHeight,
             ),
           ),
           Expanded(
-            child: Container(
-              height: height,
-              child: FutureBuilder<List<CandleData>>(
-                  future: _getOHLCData(),
-                  builder: (
-                    BuildContext context,
-                    AsyncSnapshot<List<CandleData>> snapshot,
-                  ) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    if (snapshot.data == null) {
-                      return const Center(
-                          child: Text('Something went wrong...'));
-                    }
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          height: controlsBarHeight,
-                          padding: const EdgeInsets.only(
-                            left: 2,
-                            right: 2,
-                          ),
-                          child: Card(
-                            margin: EdgeInsets.all(2),
-                            color: Theme.of(context).primaryColor,
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                left: 10,
-                                right: 10,
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  const Text('KMD/BTC'),
-                                  const SizedBox(width: 20),
-                                  Row(
-                                    children: <Widget>[
-                                      const Text('5min'),
-                                      Icon(Icons.arrow_drop_down),
-                                    ],
-                                  ),
-                                  Expanded(
-                                      child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.refresh,
-                                        size: 12,
-                                      ),
-                                      const SizedBox(width: 2),
-                                      Text(
-                                        'Updated: 1m',
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                    ],
-                                  )),
-                                ],
-                              ),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: controlsBarHeight,
+                  padding: const EdgeInsets.only(
+                    left: 2,
+                    right: 2,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      SmallButton(
+                          onPressed: fetching
+                              ? null
+                              : () {
+                                  setState(() {
+                                    quotedChart = !quotedChart;
+                                  });
+                                },
+                          child: Text(
+                            quotedChart
+                                ? '${widget.coinBalance.coin.abbr}/USD'
+                                : 'USD/${widget.coinBalance.coin.abbr}',
+                            style: const TextStyle(fontSize: 12),
+                          )),
+                      const SizedBox(width: 5),
+                      SmallButton(
+                        onPressed: fetching ? null : () {},
+                        child: Row(
+                          children: <Widget>[
+                            const Text(
+                              '5min',
+                              style: TextStyle(fontSize: 12),
                             ),
-                          ),
+                            Icon(
+                              Icons.arrow_drop_down,
+                              size: 12,
+                            ),
+                          ],
                         ),
-                        Container(
-                            height: height - controlsBarHeight,
-                            child: CandleChart(
-                              snapshot.data,
-                              candleWidth: 8,
-                              strokeWidth: 1,
-                              textColor:
-                                  const Color.fromARGB(200, 255, 255, 255),
-                              gridColor:
-                                  const Color.fromARGB(50, 255, 255, 255),
-                              upColor: Colors.green,
-                              downColor: Colors.red,
-                              filled: true,
-                              allowDynamicRescale: true,
-                            )),
-                      ],
-                    );
-                  }),
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      SmallButton(
+                        onPressed: fetching ? null : () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Icon(
+                              Icons.refresh,
+                              size: 12,
+                            ),
+                            const SizedBox(width: 2),
+                            const Text(
+                              'Updated: 1m',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: chartHeight,
+                  child: FutureBuilder<List<CandleData>>(
+                      future: _getOHLCData(),
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<List<CandleData>> snapshot,
+                      ) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+
+                        if (snapshot.data == null) {
+                          return const Center(
+                              child: Text('Something went wrong...'));
+                        }
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                                height: chartHeight,
+                                child: CandleChart(
+                                  snapshot.data,
+                                  candleWidth: 8,
+                                  strokeWidth: 1,
+                                  textColor:
+                                      const Color.fromARGB(200, 255, 255, 255),
+                                  gridColor:
+                                      const Color.fromARGB(50, 255, 255, 255),
+                                  upColor: Colors.green,
+                                  downColor: Colors.red,
+                                  filled: true,
+                                  allowDynamicRescale: true,
+                                  quoted: quotedChart,
+                                )),
+                          ],
+                        );
+                      }),
+                ),
+              ],
             ),
           ),
         ],

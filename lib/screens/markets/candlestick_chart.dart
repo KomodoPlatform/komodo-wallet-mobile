@@ -10,6 +10,7 @@ double _priceDivision;
 Map<int, CandlePosition> _renderedCandles = {};
 Offset _tapPosition;
 Map<String, dynamic> _selectedPoint; // {'timestamp': int, 'price': double}
+bool _quoted = false;
 
 class CandleChart extends StatefulWidget {
   const CandleChart(
@@ -24,6 +25,7 @@ class CandleChart extends StatefulWidget {
     this.allowDynamicRescale = true,
     this.allowDynamicPriceGrid = false,
     this.showCurrentPrice = true,
+    this.quoted = false,
   });
 
   final List<CandleData> data;
@@ -37,6 +39,7 @@ class CandleChart extends StatefulWidget {
   final Color downColor;
   final bool filled;
   final bool showCurrentPrice;
+  final bool quoted;
 
   @override
   CandleChartState createState() => CandleChartState();
@@ -71,6 +74,11 @@ class CandleChartState extends State<CandleChart>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.quoted != _quoted) {
+      _selectedPoint = null;
+      _quoted = widget.quoted;
+    }
+
     return Container(
       child: ClipRect(
         child: GestureDetector(
@@ -177,7 +185,7 @@ class _ChartPainter extends CustomPainter {
     const double pricePaddingPercent = 15;
     const double pricePreferredDivisions = 4;
     const double gap = 2;
-    const double topMargin = 0;
+    const double topMargin = 14;
     const double bottomMargin = 30;
     final double fieldHeight = size.height - bottomMargin - topMargin;
 
@@ -236,16 +244,18 @@ class _ChartPainter extends CustomPainter {
     for (CandleData candle in visibleCandlesData) {
       final double dx = _time2dx(candle.closeTime);
 
-      final double top = _price2dy(max(candle.closePrice, candle.openPrice));
-      double bottom = _price2dy(min(candle.closePrice, candle.openPrice));
+      final double top =
+          _price2dy(max(_price(candle.closePrice), _price(candle.openPrice)));
+      double bottom =
+          _price2dy(min(_price(candle.closePrice), _price(candle.openPrice)));
       if (bottom - top < widget.strokeWidth) bottom = top + widget.strokeWidth;
 
       candlesToRender[candle.closeTime] = CandlePosition(
-        color: candle.closePrice < candle.openPrice
+        color: _price(candle.closePrice) < _price(candle.openPrice)
             ? widget.downColor
             : widget.upColor,
-        high: Offset(dx, _price2dy(candle.highPrice)),
-        low: Offset(dx, _price2dy(candle.lowPrice)),
+        high: Offset(dx, _price2dy(_price(candle.highPrice))),
+        low: Offset(dx, _price2dy(_price(candle.lowPrice))),
         left: dx - candleWidth * zoom / 2,
         right: dx + candleWidth * zoom / 2,
         top: top,
@@ -278,7 +288,7 @@ class _ChartPainter extends CustomPainter {
       if (i < 1) continue;
       _drawText(
         canvas: canvas,
-        point: Offset(4, dy + 14),
+        point: Offset(4, dy),
         text: formattedPrice,
         color: widget.textColor,
         align: TextAlign.start,
@@ -287,7 +297,7 @@ class _ChartPainter extends CustomPainter {
 
     //draw current price
     if (widget.showCurrentPrice) {
-      final double currentPrice = data.first.closePrice;
+      final double currentPrice = _price(data.first.closePrice);
       double currentPriceDy = _price2dy(currentPrice);
       bool outside = false;
       if (currentPriceDy > size.height - bottomMargin) {
@@ -368,10 +378,10 @@ class _ChartPainter extends CustomPainter {
       double minDistance;
       for (CandleData candle in visibleCandlesData) {
         final List<double> prices = [
-          candle.openPrice,
-          candle.closePrice,
-          candle.highPrice,
-          candle.lowPrice
+          _price(candle.openPrice),
+          _price(candle.closePrice),
+          _price(candle.highPrice),
+          _price(candle.lowPrice),
         ].toList();
 
         for (double price in prices) {
@@ -492,12 +502,20 @@ class _ChartPainter extends CustomPainter {
   }
 }
 
+double _price(double price) {
+  if (_quoted) return 1 / price;
+  return price;
+}
+
 double _getMinPrice(List<CandleData> data) {
   double minPrice;
 
   for (CandleData candle in data) {
-    final double lowest =
-        [candle.openPrice, candle.lowPrice, candle.closePrice].reduce(min);
+    final double lowest = [
+      _price(candle.openPrice),
+      _price(candle.lowPrice),
+      _price(candle.closePrice),
+    ].reduce(min);
 
     if (minPrice == null || lowest < minPrice) {
       minPrice = lowest;
@@ -511,8 +529,11 @@ double _getMaxPrice(List<CandleData> data) {
   double maxPrice;
 
   for (CandleData candle in data) {
-    final double highest =
-        [candle.openPrice, candle.highPrice, candle.closePrice].reduce(max);
+    final double highest = [
+      _price(candle.openPrice),
+      _price(candle.highPrice),
+      _price(candle.closePrice),
+    ].reduce(max);
 
     if (maxPrice == null || highest > maxPrice) {
       maxPrice = highest;
