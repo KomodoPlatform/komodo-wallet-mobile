@@ -133,7 +133,12 @@ class CandleChartState extends State<CandleChart>
           },
           onScaleUpdate: (ScaleUpdateDetails scale) {
             setState(() {
-              dynamicZoom = scale.scale;
+              final double maxZoom = _canvasSize.width / 5 / widget.candleWidth;
+              if (staticZoom * scale.scale > maxZoom) {
+                dynamicZoom = maxZoom / staticZoom;
+              } else {
+                dynamicZoom = scale.scale;
+              }
               timeAxisShift = _constrainedTimeShift(prevTimeAxisShift -
                   _canvasSize.width /
                       2 *
