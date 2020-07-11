@@ -59,6 +59,7 @@ class CandleChartState extends State<CandleChart>
   bool isZooming = false;
   bool shouldRescalePrice = true;
   Offset tapDownPosition;
+  int touchCounter = 0;
 
   @override
   void initState() {
@@ -97,79 +98,93 @@ class CandleChartState extends State<CandleChart>
 
     return Container(
       child: ClipRect(
-        child: GestureDetector(
-          onHorizontalDragStart: (_) {
+        child: Listener(
+          onPointerDown: (_) {
             setState(() {
-              shouldRescalePrice = false;
+              touchCounter++;
+              isZooming = touchCounter > 1;
             });
           },
-          onHorizontalDragEnd: (_) {
+          onPointerUp: (_) {
             setState(() {
-              shouldRescalePrice = true;
+              touchCounter--;
+              isZooming = touchCounter > 1;
             });
           },
-          onHorizontalDragUpdate: (DragUpdateDetails drag) {
-            if (isZooming) return;
+          child: GestureDetector(
+            onHorizontalDragStart: (_) {
+              if (isZooming) return;
+              setState(() {
+                shouldRescalePrice = false;
+              });
+            },
+            onHorizontalDragEnd: (_) {
+              setState(() {
+                shouldRescalePrice = true;
+              });
+            },
+            onHorizontalDragUpdate: (DragUpdateDetails drag) {
+              if (isZooming) return;
 
-            setState(() {
-              timeAxisShift = _constrainedTimeShift(
-                  timeAxisShift + drag.delta.dx / staticZoom / dynamicZoom);
-            });
-          },
-          onScaleStart: (_) {
-            setState(() {
-              isZooming = true;
-              shouldRescalePrice = false;
-              prevTimeAxisShift = timeAxisShift;
-            });
-          },
-          onScaleEnd: (_) {
-            setState(() {
-              isZooming = false;
-              staticZoom = staticZoom * dynamicZoom;
-              dynamicZoom = 1;
-              shouldRescalePrice = true;
-            });
-          },
-          onScaleUpdate: (ScaleUpdateDetails scale) {
-            setState(() {
-              final double maxZoom = _canvasSize.width / 5 / widget.candleWidth;
-              if (staticZoom * scale.scale > maxZoom) {
-                dynamicZoom = maxZoom / staticZoom;
-              } else {
-                dynamicZoom = scale.scale;
-              }
-              timeAxisShift = _constrainedTimeShift(prevTimeAxisShift -
-                  _canvasSize.width /
-                      2 *
-                      (1 - dynamicZoom) /
-                      (staticZoom * dynamicZoom));
-            });
-          },
-          onTapDown: (TapDownDetails details) {
-            setState(() {
-              _tapPosition = null;
-              tapDownPosition = details.localPosition;
-            });
-          },
-          onTap: () {
-            setState(() {
-              _tapPosition = tapDownPosition;
-            });
-          },
-          child: CustomPaint(
-            painter: _ChartPainter(
-              widget: widget,
-              data: sortedByTime,
-              period: period,
-              timeAxisShift: timeAxisShift,
-              candleWidth: widget.candleWidth,
-              shouldRescalePrice:
-                  widget.allowDynamicRescale || shouldRescalePrice,
-              zoom: staticZoom * dynamicZoom,
-            ),
-            child: Center(
-              child: Container(),
+              setState(() {
+                timeAxisShift = _constrainedTimeShift(
+                    timeAxisShift + drag.delta.dx / staticZoom / dynamicZoom);
+              });
+            },
+            onScaleStart: (_) {
+              setState(() {
+                shouldRescalePrice = false;
+                prevTimeAxisShift = timeAxisShift;
+              });
+            },
+            onScaleEnd: (_) {
+              setState(() {
+                staticZoom = staticZoom * dynamicZoom;
+                dynamicZoom = 1;
+                shouldRescalePrice = true;
+              });
+            },
+            onScaleUpdate: (ScaleUpdateDetails scale) {
+              setState(() {
+                final double maxZoom =
+                    _canvasSize.width / 5 / widget.candleWidth;
+                if (staticZoom * scale.scale > maxZoom) {
+                  dynamicZoom = maxZoom / staticZoom;
+                } else {
+                  dynamicZoom = scale.scale;
+                }
+                timeAxisShift = _constrainedTimeShift(prevTimeAxisShift -
+                    _canvasSize.width /
+                        2 *
+                        (1 - dynamicZoom) /
+                        (staticZoom * dynamicZoom));
+              });
+            },
+            onTapDown: (TapDownDetails details) {
+              setState(() {
+                _tapPosition = null;
+                tapDownPosition = details.localPosition;
+              });
+            },
+            onTap: () {
+              setState(() {
+                _tapPosition = tapDownPosition;
+              });
+            },
+            child: CustomPaint(
+              painter: _ChartPainter(
+                widget: widget,
+                data: sortedByTime,
+                period: period,
+                timeAxisShift: timeAxisShift,
+                candleWidth: widget.candleWidth,
+                shouldRescalePrice:
+                    widget.allowDynamicRescale || shouldRescalePrice,
+                zoom: staticZoom * dynamicZoom,
+              ),
+              child: Center(
+                child: Container(),
+              ),
             ),
           ),
         ),
