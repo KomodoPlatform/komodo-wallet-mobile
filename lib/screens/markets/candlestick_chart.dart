@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart' hide TextStyle;
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 
 const double _timeAxisMargin = 70;
 double _maxTimeShift;
@@ -626,26 +627,6 @@ List<CandleData> _sortByTime(List<CandleData> data) {
   });
 
   return sortedByTime;
-}
-
-class CandleData {
-  CandleData({
-    @required this.closeTime,
-    @required this.openPrice,
-    @required this.highPrice,
-    @required this.lowPrice,
-    @required this.closePrice,
-    this.volume,
-    this.quoteVolume,
-  });
-
-  int closeTime;
-  double openPrice;
-  double highPrice;
-  double lowPrice;
-  double closePrice;
-  double volume;
-  double quoteVolume;
 }
 
 class CandlePosition {
