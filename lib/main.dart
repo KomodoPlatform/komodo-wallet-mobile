@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -70,6 +71,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => UpdatesProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => CexProvider(),
             ),
           ],
           child: const MyApp(),

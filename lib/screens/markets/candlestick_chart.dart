@@ -19,6 +19,7 @@ bool _quoted = false;
 class CandleChart extends StatefulWidget {
   const CandleChart(
     this.data, {
+    this.duration,
     this.candleWidth = 7,
     this.strokeWidth = 1,
     this.textColor = Colors.black,
@@ -33,6 +34,7 @@ class CandleChart extends StatefulWidget {
   });
 
   final List<CandleData> data;
+  final int duration; // sec
   final double candleWidth;
   final double strokeWidth;
   final bool allowDynamicRescale;
@@ -51,8 +53,6 @@ class CandleChart extends StatefulWidget {
 
 class CandleChartState extends State<CandleChart>
     with TickerProviderStateMixin {
-  List<CandleData> sortedByTime;
-  int period;
   double timeAxisShift = 0;
   double prevTimeAxisShift = 0;
   double dynamicZoom;
@@ -66,13 +66,6 @@ class CandleChartState extends State<CandleChart>
   void initState() {
     dynamicZoom = 1;
     staticZoom = 1;
-
-    sortedByTime = _sortByTime(widget.data);
-    final List<int> periods = [];
-    for (int i = 0; i < sortedByTime.length - 1; i++) {
-      periods.add(sortedByTime[i].closeTime - sortedByTime[i + 1].closeTime);
-    }
-    period = (periods.reduce((a, b) => a + b) / periods.length).round();
 
     super.initState();
   }
@@ -175,8 +168,7 @@ class CandleChartState extends State<CandleChart>
             child: CustomPaint(
               painter: _ChartPainter(
                 widget: widget,
-                data: sortedByTime,
-                period: period,
+                data: _sortByTime(widget.data),
                 timeAxisShift: timeAxisShift,
                 candleWidth: widget.candleWidth,
                 shouldRescalePrice:
@@ -198,7 +190,6 @@ class _ChartPainter extends CustomPainter {
   _ChartPainter({
     @required this.widget,
     @required this.data,
-    @required this.period,
     @required this.candleWidth,
     this.timeAxisShift = 0,
     this.shouldRescalePrice,
@@ -207,7 +198,6 @@ class _ChartPainter extends CustomPainter {
 
   final CandleChart widget;
   final List<CandleData> data;
-  final int period;
   final double candleWidth;
   final double timeAxisShift;
   bool shouldRescalePrice;
@@ -225,7 +215,7 @@ class _ChartPainter extends CustomPainter {
 
     double visibleCandlesNumber = size.width / (candleWidth + gap) / zoom;
     if (visibleCandlesNumber < 1) visibleCandlesNumber = 1;
-    final double timeRange = visibleCandlesNumber * period;
+    final double timeRange = visibleCandlesNumber * widget.duration;
     final double timeScaleFactor = size.width / timeRange;
     _maxTimeShift =
         (data.first.closeTime - data.last.closeTime) * timeScaleFactor -
@@ -400,8 +390,8 @@ class _ChartPainter extends CustomPainter {
         4,
         size.height - 7,
       ),
-      text: _formatTime(axisMin.millisecondsSinceEpoch,
-          sameDay ? 'M/d/yy HH:mm' : 'M/d/yy HH:mm'),
+      text: _formatTime(
+          axisMin.millisecondsSinceEpoch, sameDay ? 'HH:mm' : 'M/d/yy HH:mm'),
       align: TextAlign.start,
     );
     paint.color = widget.gridColor;

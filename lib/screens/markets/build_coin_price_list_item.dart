@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -11,6 +9,7 @@ import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:provider/provider.dart';
 
 class BuildCoinPriceListItem extends StatefulWidget {
   const BuildCoinPriceListItem({this.coinBalance, this.onTap});
@@ -28,6 +27,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   bool expanded = false;
   bool fetching = false; // TODO(yurii): will get flag from CexProvider
   bool quotedChart = false;
+  String chartDuration = '3600';
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +157,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   Widget _buildChart() {
     const double controlsBarHeight = 60;
     final double chartHeight = MediaQuery.of(context).size.height / 2;
+    final CexProvider cexProvider = Provider.of<CexProvider>(context);
 
     return Container(
       color: Theme.of(context).backgroundColor,
@@ -172,155 +173,159 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
             ),
           ),
           Expanded(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: controlsBarHeight,
-                  padding: const EdgeInsets.only(
-                    left: 2,
-                    right: 2,
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      SmallButton(
-                          onPressed: fetching
-                              ? null
-                              : () {
-                                  setState(() {
-                                    quotedChart = !quotedChart;
-                                  });
-                                },
-                          child: Text(
-                            quotedChart
-                                ? '${widget.coinBalance.coin.abbr}/USD'
-                                : 'USD/${widget.coinBalance.coin.abbr}',
-                            style: const TextStyle(fontSize: 12),
-                          )),
-                      const SizedBox(width: 5),
-                      SmallButton(
-                        onPressed: fetching ? null : () {},
-                        child: Row(
-                          children: <Widget>[
-                            const Text(
-                              '5min',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              size: 12,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      SmallButton(
-                        onPressed: fetching ? null : () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Icon(
-                              Icons.refresh,
-                              size: 12,
-                            ),
-                            const SizedBox(width: 2),
-                            const Text(
-                              'Updated: 1m',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: chartHeight,
-                  child: FutureBuilder<List<CandleData>>(
-                      future: _getOHLCData(),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<List<CandleData>> snapshot,
-                      ) {
-                        if (!snapshot.hasData) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
+            child: FutureBuilder<ChartData>(
+              future:
+                  cexProvider.getCandles('${widget.coinBalance.coin.abbr}-USD'),
+              builder:
+                  (BuildContext context, AsyncSnapshot<ChartData> snapshot) {
+                List<CandleData> candles;
+                if (snapshot.hasData) {
+                  candles = snapshot.data.data[chartDuration];
+                  if (candles == null) {
+                    chartDuration = snapshot.data.data.keys.first;
+                    candles = snapshot.data.data[chartDuration];
+                  }
+                }
 
-                        if (snapshot.data == null) {
-                          return const Center(
-                              child: Text('Something went wrong...'));
-                        }
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                                height: chartHeight,
-                                child: CandleChart(
-                                  snapshot.data,
-                                  candleWidth: 8,
-                                  strokeWidth: 1,
-                                  textColor:
-                                      const Color.fromARGB(200, 255, 255, 255),
-                                  gridColor:
-                                      const Color.fromARGB(50, 255, 255, 255),
-                                  upColor: Colors.green,
-                                  downColor: Colors.red,
-                                  filled: true,
-                                  allowDynamicRescale: true,
-                                  quoted: quotedChart,
-                                )),
-                          ],
-                        );
-                      }),
-                ),
-              ],
+                return Column(
+                  children: <Widget>[
+                    Container(
+                      height: controlsBarHeight,
+                      padding: const EdgeInsets.only(
+                        left: 2,
+                        right: 2,
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          SmallButton(
+                              onPressed: snapshot.hasData
+                                  ? () {
+                                      setState(() {
+                                        quotedChart = !quotedChart;
+                                      });
+                                    }
+                                  : null,
+                              child: Text(
+                                quotedChart
+                                    ? 'USD/${widget.coinBalance.coin.abbr}'
+                                    : '${widget.coinBalance.coin.abbr}/USD',
+                                style: const TextStyle(fontSize: 12),
+                              )),
+                          Expanded(child: Container()),
+                          SmallButton(
+                            onPressed: snapshot.hasData
+                                ? () {
+                                    _buildDurationDialog(
+                                        snapshot.data.data.keys.toList());
+                                  }
+                                : null,
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  _durations[chartDuration] ?? 'duration',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  size: 12,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        height: chartHeight,
+                        child: snapshot.hasData
+                            ? CandleChart(
+                                candles,
+                                duration: int.parse(chartDuration),
+                                candleWidth: 8,
+                                strokeWidth: 1,
+                                textColor:
+                                    const Color.fromARGB(200, 255, 255, 255),
+                                gridColor:
+                                    const Color.fromARGB(50, 255, 255, 255),
+                                upColor: Colors.green,
+                                downColor: Colors.red,
+                                filled: true,
+                                allowDynamicRescale: true,
+                                quoted: quotedChart,
+                              )
+                            : const Center(
+                                child: CircularProgressIndicator(),
+                              )),
+                  ],
+                );
+              },
             ),
           ),
         ],
       ),
     );
   }
+
+  void _buildDurationDialog(List<String> durations) {
+    final List<SimpleDialogOption> options = [];
+
+    for (String duration in durations) {
+      if (_durations[duration] != null) {
+        options.add(
+          SimpleDialogOption(
+            onPressed: () {
+              setState(() {
+                chartDuration = duration;
+                dialogBloc.closeDialog(context);
+              });
+            },
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  duration == chartDuration
+                      ? Icons.radio_button_checked
+                      : Icons.radio_button_unchecked,
+                  size: 16,
+                  color: duration == chartDuration
+                      ? Theme.of(context).accentColor
+                      : null,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  _durations[duration] ?? '${duration}s',
+                  style: TextStyle(
+                      color: duration == chartDuration
+                          ? Theme.of(context).accentColor
+                          : null),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    }
+
+    dialogBloc.dialog = showDialog<String>(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Duration'),
+            children: options,
+          );
+        });
+  }
 }
 
-Future<List<CandleData>> _getOHLCData() async {
-  http.Response _res;
-  String _body;
-  try {
-    _res = await http.get('http://komodo.live:3333/api/v1/ohlc/kmd-btc');
-    _body = _res.body;
-  } catch (e) {
-    print('Failed to fetch data: $e');
-    rethrow;
-  }
-
-  dynamic json;
-  try {
-    json = jsonDecode(_body);
-  } catch (e) {
-    print('Failed to parse json: $e');
-    rethrow;
-  }
-
-  if (json == null) return null;
-
-  final List<CandleData> _data = [];
-
-  final List<dynamic> list = json['14400'];
-  for (var candle in list) {
-    final CandleData _candleData = CandleData(
-      closeTime: candle['timestamp'],
-      openPrice: candle['open'].toDouble(),
-      highPrice: candle['high'].toDouble(),
-      lowPrice: candle['low'].toDouble(),
-      closePrice: candle['close'].toDouble(),
-      volume: candle['volume'].toDouble(),
-      quoteVolume: candle['quote_volume'].toDouble(),
-    );
-    _data.add(_candleData);
-  }
-
-  return _data;
-}
+Map<String, String> _durations = {
+  '60': '1min',
+  '180': '3min',
+  '300': '5min',
+  '900': '15min',
+  '1800': '30min',
+  '3600': '1hour',
+  '7200': '2hours',
+  '14400': '4hours',
+  '21600': '6hours',
+  '43200': '12hours',
+  '86400': '24hours',
+};
