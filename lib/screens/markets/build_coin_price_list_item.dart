@@ -239,7 +239,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                         height: chartHeight,
                         child: snapshot.hasData
                             ? CandleChart(
-                                candles,
+                                data: candles,
                                 duration: int.parse(chartDuration),
                                 candleWidth: 8,
                                 strokeWidth: 1,
@@ -250,7 +250,6 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                 upColor: Colors.green,
                                 downColor: Colors.red,
                                 filled: true,
-                                allowDynamicRescale: true,
                                 quoted: quotedChart,
                               )
                             : const Center(
