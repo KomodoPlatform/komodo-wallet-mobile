@@ -252,12 +252,12 @@ void main() {
       }
     });
 
-
+    //MM2-Login-1
     test('-9- | Check if mm2 successfully connected', () async {
       await Future<void>.delayed(const Duration(milliseconds: 5000), () {});
       expect(await driver.getText(bitcoin), 'BITCOIN');
       expect(await driver.getText(komodo), 'KOMODO');
-    });
+    }, timeout: const Timeout(Duration(minutes: 1)));
 
 
     test('-10- | Logout from new wallet with cancel check.', () async {
@@ -281,7 +281,7 @@ void main() {
 
   //RELOG #1
   group('Test send/receive |', () {
-    test('-11- | Restore morty wallet (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
+    test('-11- | Restore MORTY wallet (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await Future<void>.delayed(const Duration(minutes: coolOffTime), () {});
       expect(await driver.getText(createWallet), 'CREATE A WALLET');
       expect(await driver.getText(restoreWallet), 'RESTORE');
@@ -352,14 +352,14 @@ void main() {
       }
     });
 
-
+    //MM2-Login-2
     test('-16- | Check if mm2 successfully connected', () async {
       await Future<void>.delayed(const Duration(milliseconds: 5000), () {});
       await driver.waitFor(bitcoin);
       await driver.waitFor(komodo);
       expect(await driver.getText(bitcoin), 'BITCOIN');
       expect(await driver.getText(komodo), 'KOMODO');
-    });
+    }, timeout: const Timeout(Duration(minutes: 1)));
 
 
     test('-17- | Activate rick and morty coins', () async {
@@ -436,7 +436,7 @@ void main() {
     }, timeout: const Timeout(Duration(minutes: coolOffTime + 1)));
     
 
-    test('-21- | Restore rick seed', () async {
+    test('-21- | Restore RICK seed', () async {
       await Future<void>.delayed(const Duration(milliseconds: 2000), () {});
       await driver.waitFor(find.byValueKey('restore-seed-field'));
       await driver.tap(find.byValueKey('restore-seed-field'));
@@ -463,7 +463,7 @@ void main() {
     });
 
 
-    test('-23- | Validate rick disclaimer', () async {
+    test('-23- | Validate RICK disclaimer', () async {
       await Future<void>.delayed(const Duration(milliseconds: 2000), () {});
       await driver.waitFor(find.text('Disclaimer & ToS'));
       await driver.scrollUntilVisible(find.byValueKey('scroll-disclaimer'),
@@ -480,7 +480,7 @@ void main() {
     });
 
 
-    test('-24- | Create rick PIN ', () async {
+    test('-24- | Create RICK PIN ', () async {
       await Future<void>.delayed(const Duration(milliseconds: 2000), () {});
       await driver.waitFor(find.text('Create PIN'));
       for (int i = 0; i < 6; i++) {
@@ -493,14 +493,14 @@ void main() {
       }
     });
 
-
+    //MM2-Login-3
     test('-25- | Check if mm2 successfully connected', () async {
       await Future<void>.delayed(const Duration(milliseconds: 5000), () {});
       await driver.waitFor(rick);
       await driver.waitFor(morty);
       expect(await driver.getText(morty), 'MORTY');
       expect(await driver.getText(rick), 'RICK');
-    });
+    }, timeout: const Timeout(Duration(minutes: 1)));
 
 
     test('-26- | Get ricksMortyAddress', () async {
@@ -572,7 +572,7 @@ void main() {
     
 
     //RELOG-3
-    test('-29- | Delay: $coolOffTime min - Let mm2 cool off a bit', () async {
+    test('-29- | Relog to MORTY (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await driver.scrollIntoView(morty);
       await driver.scrollIntoView(rick);
       await driver.scrollIntoView(morty);
@@ -602,14 +602,14 @@ void main() {
       }
     });
     */
-
+    //MM2-Login-4
     test('-32- | Check if mm2 successfully connected', () async {
       await Future<void>.delayed(const Duration(milliseconds: 2000), () {});
       await driver.waitFor(rick);
       await driver.waitFor(morty);
       expect(await driver.getText(morty), 'MORTY');
       expect(await driver.getText(rick), 'RICK');
-    });
+    }, timeout: const Timeout(Duration(minutes: 1)));
 
 
     test('-33- | Check RICK transfer confirmed', () async {
@@ -668,7 +668,7 @@ void main() {
 
     // TODO(dth): figure out tests failing even though they pass.
     //RELOG-4
-    test('-36- | Delay: $coolOffTime min - Let mm2 cool off a bit', () async {
+    test('-36- | Relog to RICK (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await driver.scrollIntoView(morty);
       await driver.scrollIntoView(rick);
       await driver.scrollIntoView(morty);
@@ -698,13 +698,14 @@ void main() {
       }
     });
     */
+    //MM2-Login-5
     test('-39- | Check if mm2 successfully connected', () async {
       await Future<void>.delayed(const Duration(milliseconds: 5000), () {});
       await driver.waitFor(rick);
       await driver.waitFor(morty);
       expect(await driver.getText(morty), 'MORTY');
       expect(await driver.getText(rick), 'RICK');
-    });
+    }, timeout: const Timeout(Duration(minutes: 1)));
 
 
     test('-40- | Check transfer from MORTY confirmed', () async {
