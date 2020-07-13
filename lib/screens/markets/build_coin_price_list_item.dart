@@ -252,9 +252,14 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                 filled: true,
                                 quoted: quotedChart,
                               )
-                            : const Center(
-                                child: CircularProgressIndicator(),
-                              )),
+                            : snapshot.hasError
+                                ? const Center(
+                                    child: Text(
+                                        'Something went wrong. Try again later.'), // TODO(yurii): localization
+                                  )
+                                : const Center(
+                                    child: CircularProgressIndicator(),
+                                  )),
                   ],
                 );
               },

@@ -29,6 +29,7 @@ class CexProvider extends ChangeNotifier {
           ..status = ChartStatus.error
           ..updated = DateTime.now().millisecondsSinceEpoch;
       }
+      rethrow;
     }
 
     if (json == null) return;
@@ -68,8 +69,14 @@ class CexProvider extends ChangeNotifier {
     String _body;
     print('Fetching $pair candles data...');
     try {
-      _res = await http
-          .get('$_baseUrl/kmd-btc'); // TODO(yurii): change to actual pair
+      _res = await http.get('$_baseUrl/kmd-btc').timeout(
+        // TODO(yurii): change to actual pair
+        const Duration(seconds: 10),
+        onTimeout: () {
+          print('Fetching $pair timed out');
+          throw 'Fetching $pair timed out';
+        },
+      );
       _body = _res.body;
     } catch (e) {
       print('Failed to fetch data: $e');
