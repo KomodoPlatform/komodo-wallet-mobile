@@ -128,7 +128,9 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                         width: 8,
                                         child: _hasChartData
                                             ? Icon(
-                                                Icons.arrow_drop_down,
+                                                expanded
+                                                    ? Icons.unfold_less
+                                                    : Icons.unfold_more,
                                                 color: cexColor,
                                                 size: 20,
                                               )
