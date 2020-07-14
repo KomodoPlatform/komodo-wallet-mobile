@@ -190,6 +190,23 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                   }
                 }
 
+                List<Widget> _buildDisclaimer() {
+                  if (!snapshot.hasData || snapshot.data.chain.length < 2)
+                    return [];
+
+                  final String mediateBase = snapshot.data.chain[0].reverse
+                      ? snapshot.data.chain[0].rel.toUpperCase()
+                      : snapshot.data.chain[0].base.toUpperCase();
+
+                  return [
+                    const SizedBox(width: 4),
+                    Text(
+                      '(based on ${widget.coinBalance.coin.abbr}/$mediateBase)',
+                      style: TextStyle(fontSize: 12, color: cexColor),
+                    )
+                  ];
+                }
+
                 return Column(
                   children: <Widget>[
                     Container(
@@ -214,6 +231,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                     : '${widget.coinBalance.coin.abbr}/USDC',
                                 style: const TextStyle(fontSize: 12),
                               )),
+                          ..._buildDisclaimer(),
                           Expanded(child: Container()),
                           SmallButton(
                             onPressed: snapshot.hasData
