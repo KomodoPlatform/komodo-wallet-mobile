@@ -19,21 +19,28 @@ class CexProvider extends ChangeNotifier {
     return _charts[pair];
   }
 
+  bool _updatingChart = false;
+
   Future<void> _updateChart(String pair) async {
+    if (_updatingChart) return;
+
     final List<ChainLink> chain = _findChain(pair);
     if (chain == null) throw 'No chart data available';
 
-    if (chain.length > 1) throw 'Chain is too complex';
-    final ChainLink link = chain[0];
+    Map<String, dynamic> json0;
+    Map<String, dynamic> json1;
 
-    Map<String, dynamic> json;
-
+    _updatingChart = true;
     if (_charts[pair] != null) {
       _charts[pair].status = ChartStatus.fetching;
     }
     try {
-      json = await _fetchChartData(link);
+      json0 = await _fetchChartData(chain[0]);
+      if (chain.length > 1) {
+        json1 = await _fetchChartData(chain[1]);
+      }
     } catch (_) {
+      _updatingChart = false;
       if (_charts[pair] != null) {
         _charts[pair]
           ..status = ChartStatus.error
@@ -42,33 +49,76 @@ class CexProvider extends ChangeNotifier {
       rethrow;
     }
 
-    if (json == null) return;
+    _updatingChart = false;
+
+    if (json0 == null) return;
+    if (chain.length > 1 && json1 == null) return;
 
     final Map<String, List<CandleData>> data = {};
-    json.forEach((String duration, dynamic list) {
+    json0.forEach((String duration, dynamic list) {
       final List<CandleData> _durationData = [];
 
       for (var candle in list) {
+        double open = chain[0].reverse
+            ? 1 / candle['open'].toDouble()
+            : candle['open'].toDouble();
+        double high = chain[0].reverse
+            ? 1 / candle['high'].toDouble()
+            : candle['high'].toDouble();
+        double low = chain[0].reverse
+            ? 1 / candle['low'].toDouble()
+            : candle['low'].toDouble();
+        double close = chain[0].reverse
+            ? 1 / candle['close'].toDouble()
+            : candle['close'].toDouble();
+        double volume = chain[0].reverse
+            ? candle['quote_volume'].toDouble()
+            : candle['volume'].toDouble();
+        double quoteVolume = chain[0].reverse
+            ? candle['volume'].toDouble()
+            : candle['quote_volume'].toDouble();
+        final int timestamp = candle['timestamp'];
+
+        if (chain.length > 1) {
+          dynamic secondCandle;
+          try {
+            secondCandle =
+                json1[duration].toList().firstWhere((dynamic candle) {
+              return candle['timestamp'] == timestamp;
+            });
+          } catch (_) {}
+
+          if (secondCandle == null) continue;
+
+          final double secondOpen = chain[1].reverse
+              ? 1 / secondCandle['open'].toDouble()
+              : secondCandle['open'].toDouble();
+          final double secondHigh = chain[1].reverse
+              ? 1 / secondCandle['high'].toDouble()
+              : secondCandle['high'].toDouble();
+          final double secondLow = chain[1].reverse
+              ? 1 / secondCandle['low'].toDouble()
+              : secondCandle['low'].toDouble();
+          final double secondClose = chain[1].reverse
+              ? 1 / secondCandle['close'].toDouble()
+              : secondCandle['close'].toDouble();
+
+          open = 1 / (open * secondOpen);
+          close = 1 / (close * secondClose);
+          high = 1 / (high * secondHigh);
+          low = 1 / (low * secondLow);
+          volume = null;
+          quoteVolume = null;
+        }
+
         final CandleData _candleData = CandleData(
-          closeTime: candle['timestamp'],
-          openPrice: link.reverse
-              ? 1 / candle['open'].toDouble()
-              : candle['open'].toDouble(),
-          highPrice: link.reverse
-              ? 1 / candle['high'].toDouble()
-              : candle['high'].toDouble(),
-          lowPrice: link.reverse
-              ? 1 / candle['low'].toDouble()
-              : candle['low'].toDouble(),
-          closePrice: link.reverse
-              ? 1 / candle['close'].toDouble()
-              : candle['close'].toDouble(),
-          volume: link.reverse
-              ? candle['quote_volume'].toDouble()
-              : candle['volume'].toDouble(),
-          quoteVolume: link.reverse
-              ? candle['volume'].toDouble()
-              : candle['quote_volume'].toDouble(),
+          closeTime: timestamp,
+          openPrice: open,
+          highPrice: high,
+          lowPrice: low,
+          closePrice: close,
+          volume: volume,
+          quoteVolume: quoteVolume,
         );
         _durationData.add(_candleData);
       }
@@ -88,8 +138,7 @@ class CexProvider extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> _fetchChartData(ChainLink link) async {
-    final String pair =
-        link.reverse ? '${link.base}-${link.rel}' : '${link.rel}-${link.base}';
+    final String pair = '${link.rel}-${link.base}';
     http.Response _res;
     String _body;
     print('Fetching $pair candles data...');
@@ -128,28 +177,70 @@ class CexProvider extends ChangeNotifier {
     // try to find simple chain, direct or reverse
     for (String available in _chartsAvailable) {
       final List<String> availableAbbr = available.split('-');
-      if (rel == availableAbbr[0] && base == availableAbbr[1]) {
-        chain = [ChainLink(availableAbbr[0], availableAbbr[1], false)];
-        break;
+      if (!(availableAbbr.contains(rel) && availableAbbr.contains(base))) {
+        continue;
       }
 
-      if (rel == availableAbbr[1] && base == availableAbbr[0]) {
-        chain = [ChainLink(availableAbbr[1], availableAbbr[0], true)];
-        break;
+      chain = [
+        ChainLink(
+          rel: availableAbbr[0],
+          base: availableAbbr[1],
+          reverse: availableAbbr[0] != rel,
+        )
+      ];
+    }
+
+    if (chain != null) return chain;
+
+    OUTER:
+    for (String firstLinkStr in _chartsAvailable) {
+      final List<String> firstLinkCoins = firstLinkStr.split('-');
+      if (!firstLinkCoins.contains(rel) && !firstLinkCoins.contains(base)) {
+        continue;
+      }
+      final ChainLink firstLink = ChainLink(
+        rel: firstLinkCoins[0],
+        base: firstLinkCoins[1],
+        reverse: firstLinkCoins[1] == rel || firstLinkCoins[1] == base,
+      );
+      final String secondRel =
+          firstLink.reverse ? firstLink.rel : firstLink.base;
+      final String secondBase = secondRel == rel ? base : rel;
+
+      if (pair == 'KMD/USDC') {}
+
+      for (String secondLink in _chartsAvailable) {
+        final List<String> secondLinkCoins = secondLink.split('-');
+        if (!(secondLinkCoins.contains(secondRel) &&
+            secondLinkCoins.contains(secondBase))) {
+          continue;
+        }
+
+        chain = [
+          firstLink,
+          ChainLink(
+            rel: secondLinkCoins[0],
+            base: secondLinkCoins[1],
+            reverse: secondLinkCoins[0] == secondBase ||
+                secondLinkCoins[1] == secondRel,
+          ),
+        ];
+        break OUTER;
       }
     }
 
     if (chain != null) return chain;
+
     return null;
   }
 }
 
 class ChainLink {
-  ChainLink(
+  ChainLink({
     this.rel,
     this.base,
     this.reverse,
-  );
+  });
   String rel;
   String base;
   bool reverse;
