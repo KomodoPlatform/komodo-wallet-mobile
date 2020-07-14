@@ -103,10 +103,14 @@ class CexProvider extends ChangeNotifier {
               ? 1 / secondCandle['close'].toDouble()
               : secondCandle['close'].toDouble();
 
-          open = 1 / (open * secondOpen);
-          close = 1 / (close * secondClose);
-          high = 1 / (high * secondHigh);
-          low = 1 / (low * secondLow);
+          final bool reversed =
+              chain[0].base == pair.split('-')[1].toLowerCase() ||
+                  chain[0].rel == pair.split('-')[1].toLowerCase();
+
+          open = reversed ? 1 / (open * secondOpen) : open * secondOpen;
+          close = reversed ? 1 / (close * secondClose) : close * secondClose;
+          high = reversed ? 1 / (high * secondHigh) : high * secondHigh;
+          low = reversed ? 1 / (low * secondLow) : low * secondLow;
           volume = null;
           quoteVolume = null;
         }
@@ -205,9 +209,7 @@ class CexProvider extends ChangeNotifier {
       );
       final String secondRel =
           firstLink.reverse ? firstLink.rel : firstLink.base;
-      final String secondBase = secondRel == rel ? base : rel;
-
-      if (pair == 'KMD/USDC') {}
+      final String secondBase = firstLinkCoins.contains(rel) ? base : rel;
 
       for (String secondLink in _chartsAvailable) {
         final List<String> secondLinkCoins = secondLink.split('-');

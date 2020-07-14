@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/screens/markets/order_book_chart.dart';
 import 'package:komodo_dex/screens/markets/order_book_table.dart';
@@ -16,10 +18,12 @@ class OrderBookPage extends StatefulWidget {
 
 class _OrderBookPageState extends State<OrderBookPage> {
   OrderBookProvider _orderBookProvider;
+  CexProvider _cexProvider;
 
   @override
   Widget build(BuildContext context) {
     _orderBookProvider = Provider.of<OrderBookProvider>(context);
+    _cexProvider = Provider.of<CexProvider>(context);
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -28,6 +32,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _buildPairSelect(),
+            ..._buildCandleChart(),
             _buildOrderBook(),
           ],
         ),
@@ -93,6 +98,40 @@ class _OrderBookPageState extends State<OrderBookPage> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildCandleChart() {
+    if (_orderBookProvider.activePair?.buy == null ||
+        _orderBookProvider.activePair?.sell == null) {
+      return [];
+    }
+
+    final String pair =
+        '${_orderBookProvider.activePair.buy.abbr}-${_orderBookProvider.activePair.sell.abbr}';
+
+    if (!_cexProvider.isChartsAvailable(pair)) return [];
+
+    return [
+      Container(
+          height: MediaQuery.of(context).size.height / 2,
+          child: FutureBuilder<ChartData>(
+            future: _cexProvider.getCandles(pair),
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<ChartData> snapshot,
+            ) {
+              if (!snapshot.hasData)
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+
+              return CandleChart(
+                data: snapshot.data.data['3600'],
+                duration: 3600,
+              );
+            },
+          )),
+    ];
   }
 
   Widget _buildOrderBook() {
