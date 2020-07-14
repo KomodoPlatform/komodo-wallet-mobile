@@ -28,16 +28,18 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   bool fetching = false; // TODO(yurii): will get flag from CexProvider
   bool quotedChart = false;
   String chartDuration = '3600';
+  CexProvider cexProvider;
 
   @override
   Widget build(BuildContext context) {
+    cexProvider = Provider.of<CexProvider>(context);
     final bool _hasNonzeroPrice =
         double.parse(widget.coinBalance.priceForOne ?? '0') > 0;
     coin = widget.coinBalance.coin;
     balance = widget.coinBalance.balance;
 
-    // TODO(yurii): check if have charts data here
-    final bool _hasChartData = _hasNonzeroPrice;
+    final bool _hasChartData =
+        cexProvider.isChartsAvailable('${widget.coinBalance.coin.abbr}-USDC');
 
     return Container(
       child: Column(
@@ -159,7 +161,6 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   Widget _buildChart() {
     const double controlsBarHeight = 60;
     final double chartHeight = MediaQuery.of(context).size.height / 2;
-    final CexProvider cexProvider = Provider.of<CexProvider>(context);
 
     return Container(
       color: Theme.of(context).backgroundColor,
@@ -176,8 +177,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
           ),
           Expanded(
             child: FutureBuilder<ChartData>(
-              future:
-                  cexProvider.getCandles('${widget.coinBalance.coin.abbr}-USD'),
+              future: cexProvider
+                  .getCandles('${widget.coinBalance.coin.abbr}-USDC'),
               builder:
                   (BuildContext context, AsyncSnapshot<ChartData> snapshot) {
                 List<CandleData> candles;
@@ -209,8 +210,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                   : null,
                               child: Text(
                                 quotedChart
-                                    ? 'USD/${widget.coinBalance.coin.abbr}'
-                                    : '${widget.coinBalance.coin.abbr}/USD',
+                                    ? 'USDC/${widget.coinBalance.coin.abbr}'
+                                    : '${widget.coinBalance.coin.abbr}/USDC',
                                 style: const TextStyle(fontSize: 12),
                               )),
                           Expanded(child: Container()),
