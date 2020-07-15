@@ -128,7 +128,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                         ),
                                       Container(
                                         width: 8,
-                                        child: _hasChartData
+                                        child: _hasNonzeroPrice && _hasChartData
                                             ? Icon(
                                                 expanded
                                                     ? Icons.unfold_less
@@ -262,15 +262,6 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                             ? CandleChart(
                                 data: candles,
                                 duration: int.parse(chartDuration),
-                                candleWidth: 8,
-                                strokeWidth: 1,
-                                textColor:
-                                    const Color.fromARGB(200, 255, 255, 255),
-                                gridColor:
-                                    const Color.fromARGB(50, 255, 255, 255),
-                                upColor: Colors.green,
-                                downColor: Colors.red,
-                                filled: true,
                                 quoted: quotedChart,
                               )
                             : snapshot.hasError
