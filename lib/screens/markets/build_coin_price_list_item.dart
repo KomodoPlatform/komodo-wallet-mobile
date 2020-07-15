@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
 
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -7,6 +6,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:komodo_dex/widgets/duration_select.dart';
 import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -233,25 +233,15 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                               )),
                           ..._buildDisclaimer(),
                           Expanded(child: Container()),
-                          SmallButton(
-                            onPressed: snapshot.hasData
-                                ? () {
-                                    _buildDurationDialog(
-                                        snapshot.data.data.keys.toList());
-                                  }
-                                : null,
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  _durations[chartDuration] ?? 'duration',
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                                Icon(
-                                  Icons.arrow_drop_down,
-                                  size: 12,
-                                ),
-                              ],
-                            ),
+                          DurationSelect(
+                            value: chartDuration,
+                            options: snapshot.data?.data?.keys?.toList(),
+                            disabled: !snapshot.hasData,
+                            onChange: (String value) {
+                              setState(() {
+                                chartDuration = value;
+                              });
+                            },
                           ),
                         ],
                       ),
@@ -281,67 +271,4 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
       ),
     );
   }
-
-  void _buildDurationDialog(List<String> durations) {
-    final List<SimpleDialogOption> options = [];
-
-    for (String duration in durations) {
-      if (_durations[duration] != null) {
-        options.add(
-          SimpleDialogOption(
-            onPressed: () {
-              setState(() {
-                chartDuration = duration;
-                dialogBloc.closeDialog(context);
-              });
-            },
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  duration == chartDuration
-                      ? Icons.radio_button_checked
-                      : Icons.radio_button_unchecked,
-                  size: 16,
-                  color: duration == chartDuration
-                      ? Theme.of(context).accentColor
-                      : null,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  _durations[duration] ?? '${duration}s',
-                  style: TextStyle(
-                      color: duration == chartDuration
-                          ? Theme.of(context).accentColor
-                          : null),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-    }
-
-    dialogBloc.dialog = showDialog<String>(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            title: const Text('Duration'),
-            children: options,
-          );
-        });
-  }
 }
-
-Map<String, String> _durations = {
-  '60': '1min',
-  '180': '3min',
-  '300': '5min',
-  '900': '15min',
-  '1800': '30min',
-  '3600': '1hour',
-  '7200': '2hours',
-  '14400': '4hours',
-  '21600': '6hours',
-  '43200': '12hours',
-  '86400': '24hours',
-};

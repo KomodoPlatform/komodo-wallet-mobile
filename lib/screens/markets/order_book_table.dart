@@ -158,7 +158,8 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 4),
               child: Text(
-                OrderBookProvider.formatPrice((1/double.parse(bid.price)).toString()),
+                OrderBookProvider.formatPrice(
+                    (1 / double.parse(bid.price)).toString()),
                 maxLines: 1,
                 style: TextStyle(color: Colors.green, fontSize: 14),
               ),
@@ -223,7 +224,6 @@ class OrderBookTable extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.only(
-        top: 20,
         left: 8,
         right: 8,
       ),
