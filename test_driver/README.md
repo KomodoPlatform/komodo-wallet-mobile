@@ -1,4 +1,4 @@
-###How to run tests:
+### How to run tests:
 
     Because of the issue that was uncovered here https://github.com/ca333/komodoDEX/issues/732
     TL;DR - mm2 refuses to launch alongside flutter_driver on the same run.
@@ -12,7 +12,7 @@
     PIN: 000000
     password: '           a'; ---> (11 spaces + 'a')
 
-###Another way to run tests: 
+### Another way to run tests: 
 Would probably be used in ci pipeline is to put generated link into a file and then read it from it.
 
 ```
