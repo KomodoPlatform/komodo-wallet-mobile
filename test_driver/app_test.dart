@@ -486,10 +486,20 @@ void main() {
     }, timeout: const Timeout(Duration(minutes: 1)));
 
 
-    test('-1.21- | Delete new wallet', () async {
+    test('-1.21- | Check cancel-logout.', () async {
       await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(settings);
       await driver.tap(settings);
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(logout);
+      await driver.tap(logout);
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(logoutCancel);
+      await driver.tap(logoutCancel);
+    });
+
+
+    test('-1.22- | Delete new wallet', () async {
       await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollUntilVisible(settingsScrollable,
           settingsDeleteWallet,
@@ -529,23 +539,14 @@ void main() {
 
 
   group('Settings |', () {
-    test('-10- | Check cancel-logout.', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      await driver.waitFor(settings);
-      await driver.tap(settings);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      await driver.waitFor(logout);
-      await driver.tap(logout);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      await driver.waitFor(logoutCancel);
-      await driver.tap(logoutCancel);
+    
       //await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       //await driver.waitFor(logout);
       //await driver.tap(logout);
       //await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       //await driver.waitFor(logoutYes);
       //await driver.tap(logoutYes);
-    });
+
   });
   
 
