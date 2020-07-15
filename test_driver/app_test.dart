@@ -61,30 +61,38 @@ void main() {
   final SerializableFinder seedRefresh = find.byValueKey('seed-refresh');           //
   final SerializableFinder seedCopy = find.byValueKey('seed-copy');                 //
   final SerializableFinder next = find.text('NEXT');                                //
-  //---------------------- 4 - Verify seed phrase screen ---------------------------\\
-  final SerializableFinder pasteIOS = find.text('Paste');
-  final SerializableFinder pasteAndroid = find.text('PASTE');
-  final SerializableFinder continueSeedVerification = find.text('CONTINUE');
+  //---------------------- 4 - Verify seed phrase screen ----------------------------\\
+  final SerializableFinder pasteIOS = find.text('Paste');                             //
+  final SerializableFinder pasteAndroid = find.text('PASTE');                         //
+  final SerializableFinder continueSeedVerification = find.text('CONTINUE');          //
   final SerializableFinder goBackAndCheckSeedAgain = find.text('GO BACK AND CHECK AGAIN');
-  final SerializableFinder whichWordField = find.byValueKey('which-word-field');
-  final SerializableFinder whichWordText = find.byValueKey('which-word');
+  final SerializableFinder whichWordField = find.byValueKey('which-word-field');        //
+  final SerializableFinder whichWordText = find.byValueKey('which-word');              //\\
   //---------------------- 5 - Create password screen  -----------------------------------\\
-  final SerializableFinder passwordCreate = find.byValueKey('create-password-field');
+  final SerializableFinder passwordCreate = find.byValueKey('create-password-field');     //
   final SerializableFinder passwordRetype = find.byValueKey('create-password-field-confirm');
-  final SerializableFinder passwordConfirm = find.text('CONFIRM PASSWORD');
+  final SerializableFinder passwordConfirm = find.text('CONFIRM PASSWORD');             //
   //---------------------- 6 - Accept disclaimer screen  -------------------------------\\
-  final SerializableFinder disclamerScrollable = find.byValueKey('scroll-disclaimer');
+  final SerializableFinder disclamerScrollable = find.byValueKey('scroll-disclaimer');   //
   final SerializableFinder endDisclamerScrollable = find.byValueKey('end-list-disclaimer');
-  final SerializableFinder checkEula = find.byValueKey('checkbox-eula');
-  final SerializableFinder checkTOC = find.byValueKey('checkbox-toc');
-  final SerializableFinder disclaimerNext= find.byValueKey('next-disclaimer');
+  final SerializableFinder checkEula = find.byValueKey('checkbox-eula');                  //
+  final SerializableFinder checkTOC = find.byValueKey('checkbox-toc');                   //
+  final SerializableFinder disclaimerNext= find.byValueKey('next-disclaimer');          //
   //-------------------------- 7 - Create PIN screen ----------------------------------\\
-  final SerializableFinder enterYourPIN = find.text('Enter your PIN code');
-  final SerializableFinder confirmPIN = find.text('Confirm PIN code');
-  final SerializableFinder connectingOnLogin = find.text('Connecting...');
   //-----------------------------------------------------------------------------------\\
   //---------------------------END-(Scenario-1)-END------------------------------------\\
   //-----------------------------------------------------------------------------------\\
+
+
+
+  final SerializableFinder settingsScrollable = find.byValueKey('settings-scrollable');
+  final SerializableFinder settingsDeleteWallet = find.text('Delete Wallet');
+  final SerializableFinder unlock = find.byValueKey('unlock-wallet');
+  final SerializableFinder delete = find.byValueKey('delete-wallet');
+
+
+
+
 
   
 
@@ -143,9 +151,7 @@ void main() {
   //final SerializableFinder news = find.byValueKey('nav-news');
   final SerializableFinder login = find.text('LOGIN');
   // Scrollables
-  final SerializableFinder settingsScrollable = find.byValueKey('settings-scrollable');
-  final SerializableFinder settingsDeleteWallet = find.text('Delete Wallet');
-  final SerializableFinder delete = find.text('DELETE');
+  
   //final SerializableFinder portfolioCoinsScrollable = find.byValueKey('list-view-coins');
   // Input fields
   final SerializableFinder amountField = find.byValueKey('send-amount-field');
@@ -443,21 +449,19 @@ void main() {
     test('-1.18- | Validate disclaimer', () async {
       expect(await driver.getText(disclaimerScreen), 'Disclaimer & ToS');
 
-      //await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollUntilVisible(disclamerScrollable,
           endDisclamerScrollable,
-          dyScroll: -5000);
+          dyScroll: -5450);
       await driver.waitFor(checkEula);
       await driver.tap(checkEula);
-      //await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(checkTOC);
       await driver.tap(checkTOC);
-      //await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(disclaimerNext);
       await driver.tap(disclaimerNext);
 
       expect(await driver.getText(createaPINScreen), 'Create PIN');
-    });
+    }, timeout: const Timeout(Duration(minutes: 1)));
 
 
     
@@ -477,14 +481,39 @@ void main() {
 
 
     test('-1.20- | Check if mm2 successfully connected', () async {
-      await driver.waitForAbsent(connectingOnLogin);
       expect(await driver.getText(bitcoin), 'BITCOIN');
       expect(await driver.getText(komodo), 'KOMODO');
     }, timeout: const Timeout(Duration(minutes: 1)));
-  });
-  //\\----------------------END-(Scenario-1)-END------------------------\\//   
-  ////----------------------GroupCreateNewWallet------------------------////
-  //\\----------------------END-(Scenario-1)-END------------------------//\\
+
+
+    test('-1.21- | Delete new wallet', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(settings);
+      await driver.tap(settings);
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.scrollUntilVisible(settingsScrollable,
+          settingsDeleteWallet,
+          dyScroll: -500);
+      await driver.waitFor(settingsDeleteWallet);
+      await driver.tap(settingsDeleteWallet);
+
+      await driver.waitFor(enterPasswordField);
+      await driver.tap(enterPasswordField);
+      await driver.enterText(password);
+
+      await driver.scrollIntoView(unlock);
+      await driver.waitFor(unlock);
+      await driver.tap(unlock);
+
+      await driver.waitFor(delete);
+      await driver.tap(delete);
+
+      expect(await driver.getText(createWalletScreen), 'CREATE A WALLET');
+    });//\\--------------------END-(Scenario-1)-END------------------------\\// 
+  });////------------------- Group Create New Wallet ----------------------////
+     //\\----------------------END-(Scenario-1)-END------------------------//\\ 
+  
+  
 
 
   /*
@@ -499,7 +528,7 @@ void main() {
 
 
 
-  group('Settings |', () {/*
+  group('Settings |', () {
     test('-10- | Check cancel-logout.', () async {
       await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(settings);
@@ -516,31 +545,6 @@ void main() {
       //await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       //await driver.waitFor(logoutYes);
       //await driver.tap(logoutYes);
-    });*/
-
-    test('-11- | Delete new wallet', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      await driver.waitFor(settings);
-      await driver.tap(settings);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      await driver.scrollUntilVisible(settingsScrollable,
-          settingsDeleteWallet,
-          dyScroll: -1000);
-      await driver.waitFor(settingsDeleteWallet);
-      await driver.tap(settingsDeleteWallet);
-
-      await driver.waitFor(enterPasswordField);
-      await driver.tap(enterPasswordField);
-      await driver.enterText(password);
-
-      await driver.scrollIntoView(unlock);
-      await driver.waitFor(unlock);
-      await driver.tap(unlock);
-
-      await driver.waitFor(delete);
-      await driver.tap(delete);
-
-      expect(await driver.getText(createWalletScreen), 'CREATE A WALLET');
     });
   });
   
@@ -1045,6 +1049,11 @@ void main() {
     
 
 */
+
+
+
+
+
 /*
   group('Restore wallet', () {
     test('Name Wallet', () async {
@@ -1123,17 +1132,3 @@ void main() {
   
 */
 }
-
-
-
-
-/*
-  Future<bool> isPresent(String finder, {Duration timeout = const Duration(milliseconds: 6000)}) async {
-    try {
-      await driver.waitFor(find.text(finder), timeout: timeout);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-*/
