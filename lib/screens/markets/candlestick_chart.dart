@@ -79,6 +79,21 @@ class CandleChartState extends State<CandleChart>
       return timeShift;
     }
 
+    double _constrainedZoom(double scale) {
+      double constrained = scale;
+
+      final double maxZoom = canvasSize.width / 5 / widget.candleWidth;
+      if (staticZoom * scale > maxZoom) {
+        constrained = maxZoom / staticZoom;
+      }
+      final double minZoom = canvasSize.width / 500 / widget.candleWidth;
+      if (staticZoom * scale < minZoom) {
+        constrained = minZoom / staticZoom;
+      }
+
+      return constrained;
+    }
+
     return Container(
       child: ClipRect(
         child: Listener(
@@ -114,13 +129,7 @@ class CandleChartState extends State<CandleChart>
             },
             onScaleUpdate: (ScaleUpdateDetails scale) {
               setState(() {
-                final double maxZoom =
-                    canvasSize.width / 5 / widget.candleWidth;
-                if (staticZoom * scale.scale > maxZoom) {
-                  dynamicZoom = maxZoom / staticZoom;
-                } else {
-                  dynamicZoom = scale.scale;
-                }
+                dynamicZoom = _constrainedZoom(scale.scale);
                 timeAxisShift = _constrainedTimeShift(prevTimeAxisShift -
                     canvasSize.width /
                         2 *
