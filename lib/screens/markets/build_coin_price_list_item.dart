@@ -213,6 +213,18 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                       ),
                       child: Row(
                         children: <Widget>[
+                          DurationSelect(
+                            value: chartDuration,
+                            options: snapshot.data?.data?.keys?.toList(),
+                            disabled: !snapshot.hasData,
+                            onChange: (String value) {
+                              setState(() {
+                                chartDuration = value;
+                              });
+                            },
+                          ),
+                          ..._buildDisclaimer(),
+                          Expanded(child: Container()),
                           SmallButton(
                               onPressed: snapshot.hasData
                                   ? () {
@@ -227,18 +239,6 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                     : '${widget.coinBalance.coin.abbr}/USDC',
                                 style: const TextStyle(fontSize: 12),
                               )),
-                          ..._buildDisclaimer(),
-                          Expanded(child: Container()),
-                          DurationSelect(
-                            value: chartDuration,
-                            options: snapshot.data?.data?.keys?.toList(),
-                            disabled: !snapshot.hasData,
-                            onChange: (String value) {
-                              setState(() {
-                                chartDuration = value;
-                              });
-                            },
-                          ),
                         ],
                       ),
                     ),
