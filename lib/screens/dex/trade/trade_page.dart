@@ -339,7 +339,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Widget buildCexPrice(double price, [double size = 12]) {
     if (price == null || price == 0) return Container();
 
-    final String priceStr = OrderBookProvider.formatPrice(price.toString(), 4);
+    final String priceStr = formatPrice(price.toString(), 4);
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -60,8 +61,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     Text(_isAsk ? _activePair.buy.abbr : _activePair.sell.abbr),
                     const SizedBox(width: 12),
                     Text(
-                      OrderBookProvider.formatPrice(
-                          widget.order.maxvolume.toString()),
+                      formatPrice(widget.order.maxvolume.toString()),
                       style: Theme.of(context).textTheme.subtitle.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
@@ -91,7 +91,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                     Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
                     const SizedBox(width: 12),
                     Text(
-                      OrderBookProvider.formatPrice(
+                      formatPrice(
                           '${widget.order.maxvolume.toDouble() * double.parse(widget.order.price)}'),
                       style: Theme.of(context).textTheme.subtitle.copyWith(
                             fontWeight: FontWeight.normal,
@@ -117,7 +117,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 Row(
                   children: <Widget>[
                     Text(
-                      OrderBookProvider.formatPrice(
+                      formatPrice(
                           '${_isAsk ? widget.order.price : (1 / double.parse(widget.order.price)).toString()}'),
                       style: Theme.of(context)
                           .textTheme
@@ -138,7 +138,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 Row(
                   children: <Widget>[
                     Text(
-                      OrderBookProvider.formatPrice(
+                      formatPrice(
                           '${!_isAsk ? widget.order.price : (1 / double.parse(widget.order.price)).toString()}'),
                       style: TextStyle(
                         fontSize: 13,

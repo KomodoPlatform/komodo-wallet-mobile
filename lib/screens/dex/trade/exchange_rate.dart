@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 
@@ -24,10 +24,8 @@ class _ExchangeRateState extends State<ExchangeRate> {
     Widget _buildExchangeRate() {
       if (rate == null) return Container();
 
-      final String exchangeRate =
-          OrderBookProvider.formatPrice(rate.toString());
-      final String exchangeRateQuoted =
-          OrderBookProvider.formatPrice((1 / rate).toString());
+      final String exchangeRate = formatPrice(rate.toString());
+      final String exchangeRateQuoted = formatPrice((1 / rate).toString());
 
       return Column(
         children: <Widget>[
@@ -56,10 +54,8 @@ class _ExchangeRateState extends State<ExchangeRate> {
     Widget _buildCExchangeRate() {
       if (cexRate == null) return Container();
 
-      final String cExchangeRate =
-          OrderBookProvider.formatPrice(cexRate.toString());
-      final String cExchangeRateQuoted =
-          OrderBookProvider.formatPrice((1 / cexRate).toString());
+      final String cExchangeRate = formatPrice(cexRate.toString());
+      final String cExchangeRateQuoted = formatPrice((1 / cexRate).toString());
 
       return Column(
         children: <Widget>[
@@ -109,8 +105,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
       final double percent = ((rate - cexRate) * 100 / rate).abs();
       int indicatorRange = (neutralRange * 2).round();
       if (percent > indicatorRange) indicatorRange = percent.ceil();
-      final percentString =
-          OrderBookProvider.formatPrice(percent.toString(), 2);
+      final percentString = formatPrice(percent.toString(), 2);
       String message;
       Color color;
 
