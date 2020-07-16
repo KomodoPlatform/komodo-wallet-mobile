@@ -219,6 +219,7 @@ class CexProvider extends ChangeNotifier {
 
   List<ChainLink> _findChain(String pair) {
     final List<String> abbr = pair.split('-');
+    if (abbr[0] == abbr[1]) return null;
     final String base = abbr[1].toLowerCase();
     final String rel = abbr[0].toLowerCase();
     final List<String> tickers = _getTickers();
