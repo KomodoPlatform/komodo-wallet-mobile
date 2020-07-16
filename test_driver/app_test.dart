@@ -19,7 +19,7 @@ void main() {
   const password = '           a';
   var postRefreshSeed = '';
   const int coolOffTime = 2;
-  int globalDelay() => 1000 + rnd.nextInt(500);
+  int globalDelay() => 500 + rnd.nextInt(500);
   const testNewWalletName = 'testNewWalletName';
 
                               
@@ -673,7 +673,7 @@ void main() {
 
   
   
-
+/*
   group(     ' | (Scenario 3) Restore a wallet  |', () {
   //--------------------------(Scenario 3)---------------------------------\\ 
   //----------------------Group-Restore-A-Wallet---------------------------//
@@ -682,19 +682,7 @@ void main() {
       await Future<void>.delayed(const Duration(minutes: coolOffTime), () {});
       expect(await driver.getText(restoreWalletScreen), 'RESTORE');
     }, timeout: const Timeout(Duration(minutes: coolOffTime + 1)));
-
-
-
-
-
-      //----------------------END-(Scenario-3)-END------------------------\\
-  });//---------------------- Group Restore A Wallet ----------------------//
-  //---------------------------END-(Scenario-3)-END------------------------//
-
-
-
-
-  /*
+/*
   group('Check Markets |', () {
     test('-10- | Logout from new wallet with cancel check.', () async {
       await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
@@ -732,19 +720,31 @@ void main() {
       //await driver.tap(logoutYes);
 
   //});
+      //----------------------END-(Scenario-3)-END------------------------\\
+  });//---------------------- Group Restore A Wallet ----------------------//
+  //---------------------------END-(Scenario-3)-END------------------------//
+*/
+
+
+
+  
   
 
-/*
+
   //RELOG #1
-  group('Test send/receive |', () {
-    test('-11- | Restore MORTY wallet (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
+  group(     ' | (Scenario 4) Send/Receive and Swaps!~  |', () {
+  //--------------------------(Scenario 2)---------------------------------\\ 
+  //----------------------Group-Restore-A-Wallet---------------------------//
+  //-----------------------------------------------------------------------//
+
+    test('-4.1- | Restore MORTY wallet (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await Future<void>.delayed(const Duration(minutes: coolOffTime), () {});
-      expect(await driver.getText(createWallet), 'CREATE A WALLET');
-      expect(await driver.getText(restoreWallet), 'RESTORE');
-      await driver.waitFor(restoreWallet);
-      await driver.tap(restoreWallet);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
-      expect(await driver.getText(titleWelcome), 'WELCOME');
+      expect(await driver.getText(createWalletScreen), 'CREATE A WALLET');
+      expect(await driver.getText(restoreWalletScreen), 'RESTORE');
+      await driver.waitFor(restoreWalletBtn);
+      await driver.tap(restoreWalletBtn);
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      expect(await driver.getText(createWalletNameScreen), 'WELCOME');
       await driver.waitFor(nameWalletField);
       await driver.tap(nameWalletField);
       await driver.enterText('MORTY');
@@ -755,53 +755,53 @@ void main() {
     }, timeout: const Timeout(Duration(minutes: coolOffTime + 1)));
     
 
-    test('-12- | Enter MORTY seed', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.2- | Enter MORTY seed', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('restore-seed-field'));
       await driver.tap(find.byValueKey('restore-seed-field'));
       await driver.enterText(envVars['MORTY']);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('confirm-seed-button'));
       await driver.tap(find.byValueKey('confirm-seed-button'));
     });
 
 
-    test('-13- | Create MORTY password', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.3- | Create MORTY password', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       expect(await driver.getText(find.text('CREATE A PASSWORD')),'CREATE A PASSWORD');
       await driver.waitFor(passwordCreate);
       await driver.tap(passwordCreate);
       await driver.enterText(password);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
-      await driver.waitFor(passwordConfirm);
-      await driver.tap(passwordConfirm);
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(passwordRetype);
+      await driver.tap(passwordRetype);
       await driver.enterText(password);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.text('CONFIRM PASSWORD'));
       await driver.tap(find.text('CONFIRM PASSWORD'));
     });
 
 
-    test('-14- | Validate MORTY disclaimer', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.4- | Validate MORTY disclaimer', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollUntilVisible(find.byValueKey('scroll-disclaimer'),
           find.byValueKey('end-list-disclaimer'),
           dyScroll: -3500);
       await driver.tap(find.byValueKey('checkbox-eula'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.tap(find.byValueKey('checkbox-toc'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.tap(find.byValueKey('next-disclaimer'));
     });
 
 
-    test('-15- | Create MORTY PIN ', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.5- | Create MORTY PIN ', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.text('Create PIN'));
       for (int i = 0; i < 6; i++) {
         await driver.tap(find.text('0'));
       }
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.text('Confirm PIN code'));
       for (int i = 0; i < 6; i++) {
         await driver.tap(find.text('0'));
@@ -809,8 +809,8 @@ void main() {
     });
 
     //MM2-Login-2
-    test('-16- | Check if mm2 successfully connected', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.6- | Check if mm2 successfully connected', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(bitcoin);
       await driver.waitFor(komodo);
       expect(await driver.getText(bitcoin), 'BITCOIN');
@@ -818,19 +818,19 @@ void main() {
     }, timeout: const Timeout(Duration(minutes: 1)));
 
 
-    test('-17- | Activate rick and morty coins', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.7- | Activate rick and morty coins', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('adding-coins'));
       await driver.tap(find.byValueKey('adding-coins'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(mortyAdd);
       await driver.waitFor(mortyAdd);
       await driver.tap(mortyAdd);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(rickAdd);
       await driver.waitFor(rickAdd);
       await driver.tap(rickAdd);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('done-activate-coins'));
       await driver.tap(find.byValueKey('done-activate-coins'));
       await driver.waitForAbsent(loadingCoins);
@@ -838,111 +838,111 @@ void main() {
 
 
     
-    test('-18- | Get mortysRickAddress', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.8- | Get mortysRickAddress', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(rick);
       await driver.waitFor(rick);
       await driver.tap(rick);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.runUnsynchronized(() async {
       await driver.waitFor(receive);
       await driver.tap(receive);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(address);
       await driver.getText(address).then((val) {
         mortysRickAddress = val;
       });
       await driver.waitFor(close);
       await driver.tap(close);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(back);
       await driver.tap(back);
     });});
 
 
-    test('-19- | Logout from MORTY wallet', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.9- | Logout from MORTY wallet', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(settings);
       await driver.tap(settings);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(logout);
       await driver.tap(logout);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(logoutYes);
       await driver.tap(logoutYes);
     });
 
     //RELOG-2
-    test('-20- | Restore RICK wallet (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
+    test('-4.10- | Restore RICK wallet (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await Future<void>.delayed(const Duration(minutes: coolOffTime), () {});
-      expect(await driver.getText(createWallet), 'CREATE A WALLET');
-      expect(await driver.getText(restoreWallet), 'RESTORE');
-      await driver.waitFor(restoreWallet);
-      await driver.tap(restoreWallet);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
-      expect(await driver.getText(titleWelcome), 'WELCOME');
+      expect(await driver.getText(createWalletScreen), 'CREATE A WALLET');
+      expect(await driver.getText(restoreWalletScreen), 'RESTORE');
+      await driver.waitFor(restoreWalletScreen);
+      await driver.tap(restoreWalletScreen);
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      expect(await driver.getText(createWalletNameScreen), 'WELCOME');
       await driver.waitFor(nameWalletField);
       await driver.tap(nameWalletField);
       await driver.enterText('RICK');
       await driver.waitFor(find.text('RICK'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollUntilVisible(welcomeScrollable, setup, dyScroll: -300);
       await driver.waitFor(setup);
       await driver.tap(setup);
     }, timeout: const Timeout(Duration(minutes: coolOffTime + 1)));
     
 
-    test('-21- | Restore RICK seed', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.11- | Restore RICK seed', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('restore-seed-field'));
       await driver.tap(find.byValueKey('restore-seed-field'));
       await driver.enterText(envVars['RICK']);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('confirm-seed-button'));
       await driver.tap(find.byValueKey('confirm-seed-button'));
     });
 
 
-    test('-22- | Create RICK password', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.12- | Create RICK password', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       expect(await driver.getText(find.text('CREATE A PASSWORD')), 'CREATE A PASSWORD');
       await driver.waitFor(passwordCreate);
       await driver.tap(passwordCreate);
       await driver.enterText(password);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
-      await driver.waitFor(passwordConfirm);
-      await driver.tap(passwordConfirm);
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(passwordRetype);
+      await driver.tap(passwordRetype);
       await driver.enterText(password);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.text('CONFIRM PASSWORD'));
       await driver.tap(find.text('CONFIRM PASSWORD'));
     });
 
 
-    test('-23- | Validate RICK disclaimer', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.13- | Validate RICK disclaimer', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.text('Disclaimer & ToS'));
       await driver.scrollUntilVisible(find.byValueKey('scroll-disclaimer'),
           find.byValueKey('end-list-disclaimer'),
           dyScroll: -5000);
       await driver.waitFor(find.byValueKey('checkbox-eula'));
       await driver.tap(find.byValueKey('checkbox-eula'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('checkbox-toc'));
       await driver.tap(find.byValueKey('checkbox-toc'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('next-disclaimer'));
       await driver.tap(find.byValueKey('next-disclaimer'));
     });
 
 
-    test('-24- | Create RICK PIN ', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.14- | Create RICK PIN ', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.text('Create PIN'));
       for (int i = 0; i < 6; i++) {
         await driver.tap(find.text('0'));
       }
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.text('Confirm PIN code'));
       for (int i = 0; i < 6; i++) {
         await driver.tap(find.text('0'));
@@ -950,8 +950,8 @@ void main() {
     });
 
     //MM2-Login-3
-    test('-25- | Check if mm2 successfully connected', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.15- | Check if mm2 successfully connected', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(rick);
       await driver.waitFor(morty);
       expect(await driver.getText(morty), 'MORTY');
@@ -959,76 +959,76 @@ void main() {
     }, timeout: const Timeout(Duration(minutes: 1)));
 
 
-    test('-26- | Get ricksMortyAddress', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.16- | Get ricksMortyAddress', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(morty);
       await driver.waitFor(morty);
       await driver.tap(morty);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.runUnsynchronized(() async {
       await driver.waitFor(receive);
       await driver.tap(receive);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(address);
       await driver.getText(address).then((val) {
         ricksMortyAddress = val;
       });
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(close);
       await driver.tap(close);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(back);
       await driver.tap(back);
     });});
     
 
-    test('-27- | Send RICK from rick to morty', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.17- | Send RICK from rick to morty', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(rick);
       await driver.tap(rick);
       print('from rick $ricksMortyAddress to morty $mortysRickAddress');
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.runUnsynchronized(() async {
       await driver.waitFor(send);
       await driver.tap(send);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(amountField);
       await driver.tap(amountField);
       await driver.enterText(sendAmount);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(recipientsAddress);
       await driver.tap(recipientsAddress);
       await driver.enterText(mortysRickAddress);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(withdraw);
       await driver.tap(withdraw);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(confirm);
       await driver.tap(confirm);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(successSend);
       await driver.waitForAbsent(successSend);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(back);
       await driver.tap(back);
     });},timeout: const Timeout(Duration(minutes: 2)));
 
 
-    test('-28- | Logout from RICK wallet', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.18- | Logout from RICK wallet', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(settings);
       await driver.tap(settings);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(logout);
       await driver.tap(logout);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(logoutYes);
       await driver.tap(logoutYes);
     });
     
 
     //RELOG-3
-    test('-29- | Relog to MORTY (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
+    test('-4.19- | Relog to MORTY (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await driver.scrollIntoView(morty);
       await driver.scrollIntoView(rick);
       await driver.scrollIntoView(morty);
@@ -1039,13 +1039,13 @@ void main() {
     },timeout: const Timeout(Duration(minutes: coolOffTime + 1)));
 
 
-    test('-30- | Login to MORTY wallet', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.20- | Login to MORTY wallet', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.tap(morty);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.tap(enterPasswordField);
       await driver.enterText(password);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(login);
       await driver.tap(login);
     });
@@ -1059,8 +1059,8 @@ void main() {
     });
     */
     //MM2-Login-4
-    test('-32- | Check if mm2 successfully connected', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.21- | Check if mm2 successfully connected', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(rick);
       await driver.waitFor(morty);
       expect(await driver.getText(morty), 'MORTY');
@@ -1068,10 +1068,10 @@ void main() {
     }, timeout: const Timeout(Duration(minutes: 1)));
 
 
-    test('-33- | Check RICK transfer confirmed', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.22- | Check RICK transfer confirmed', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.tap(rick);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.runUnsynchronized(() async {
       await driver.waitFor(find.text('+$sendAmount RICK'));
       await driver.waitFor(back);
@@ -1079,52 +1079,52 @@ void main() {
     });});
 
 
-    test('-34- | Send MORTY from morty to rick', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.23- | Send MORTY from morty to rick', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.tap(morty);
       print('from morty $mortysRickAddress to rick $ricksMortyAddress'); // TODO(dth): proper logging
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.runUnsynchronized(() async {
       await driver.waitFor(send);
       await driver.tap(send);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(amountField);
       await driver.tap(amountField);
       await driver.enterText(sendAmount);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(recipientsAddress);
       await driver.tap(recipientsAddress);
       await driver.enterText(ricksMortyAddress);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(withdraw);
       await driver.tap(withdraw);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(confirm);
       await driver.tap(confirm);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(successSend);
       await driver.waitForAbsent(successSend);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(back);
       await driver.tap(back);
     });},timeout: const Timeout(Duration(minutes: 2)));
 
 
-    test('-35- | LOGOUT from MORTY wallet', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.24- | LOGOUT from MORTY wallet', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(settings);
       await driver.tap(settings);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(logout);
       await driver.tap(logout);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(logoutYes);
       await driver.tap(logoutYes);
     });
 
     // TODO(dth): figure out tests failing even though they pass.
     //RELOG-4
-    test('-36- | Relog to RICK (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
+    test('-4.24- | Relog to RICK (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await driver.scrollIntoView(morty);
       await driver.scrollIntoView(rick);
       await driver.scrollIntoView(morty);
@@ -1135,13 +1135,13 @@ void main() {
     },timeout: const Timeout(Duration(minutes: coolOffTime + 1)));
 
 
-    test('-37- | LOGIN to RICK wallet ', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.25- | LOGIN to RICK wallet ', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.tap(rick);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.tap(enterPasswordField);
       await driver.enterText(password);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(login);
       await driver.tap(login);
     });
@@ -1155,8 +1155,8 @@ void main() {
     });
     */
     //MM2-Login-5
-    test('-39- | Check if mm2 successfully connected', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.26- | Check if mm2 successfully connected', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(rick);
       await driver.waitFor(morty);
       expect(await driver.getText(morty), 'MORTY');
@@ -1164,65 +1164,60 @@ void main() {
     }, timeout: const Timeout(Duration(minutes: 1)));
 
 
-    test('-40- | Check transfer from MORTY confirmed', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+    test('-4.27- | Check transfer from MORTY confirmed', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(morty);
       await driver.tap(morty);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.runUnsynchronized(() async {
       await driver.waitFor(find.text('+$sendAmount MORTY'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(back);
       await driver.tap(back);
     });});
   });
 
 
-  group('Make Swaps |', (){
-    test('-41- | Swap MORTY for RICK', () async{
+    test('-4.28- | Swap MORTY for RICK', () async{
       await driver.waitFor(dex);
       await driver.tap(dex);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('coin-select-market.sell'));
       await driver.tap(find.byValueKey('coin-select-market.sell'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(find.byValueKey('item-dialog-morty-market.sell'));
       await driver.waitFor(find.byValueKey('item-dialog-morty-market.sell'));
       await driver.tap(find.byValueKey('item-dialog-morty-market.sell'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(find.byValueKey('input-text-market.sell'));
       await driver.waitFor(find.byValueKey('input-text-market.sell'));
       await driver.tap(find.byValueKey('input-text-market.sell'));
       await driver.enterText('1');
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('coin-select-market.receive'));
       await driver.tap(find.byValueKey('coin-select-market.receive'));
       await driver.scrollIntoView(find.byValueKey('orderbook-item-rick'));
       await driver.waitFor(find.byValueKey('orderbook-item-rick'));
       await driver.waitFor(find.byValueKey('orderbook-item-rick'));
       await driver.tap(find.byValueKey('orderbook-item-rick'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(find.byValueKey('ask-item-0'));
       await driver.waitFor(find.byValueKey('ask-item-0'));
       await driver.tap(find.byValueKey('ask-item-0'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.scrollIntoView(find.byValueKey('trade-button'));
       await driver.waitFor(find.byValueKey('trade-button'));
       await driver.tap(find.byValueKey('trade-button'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.waitFor(find.byValueKey('swap-detail-title'));
       await driver.scrollIntoView(find.byValueKey('confirm-swap-button'));
       await driver.waitFor(find.byValueKey('confirm-swap-button'));
       await driver.tap(find.byValueKey('confirm-swap-button'));
-      await Future<void>.delayed(Duration(milliseconds: globalDelay), () {});
-      await driver.waitFor(find.text('Order matched'));
-      await driver.waitFor(find.text('Swap successful'));
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
       await driver.tap(find.byValueKey('swap-detail-back-button'));
-    }, timeout: Timeout.none);
-  });
+    });
   
-  group('Settings |', () {
-    test('-42- | Send feedback', () async {
+    test('-4.29- | Send feedback', () async {
       await driver.tap(settings);
       await driver.scrollUntilVisible(settingsScrollable,
           find.byValueKey('setting-title-feedback'),
@@ -1230,10 +1225,6 @@ void main() {
       await driver.tap(find.byValueKey('setting-title-feedback'));
       await driver.tap(find.byValueKey('setting-share-button'));
     });
-  });
-    
-
-*/
 
 
 
