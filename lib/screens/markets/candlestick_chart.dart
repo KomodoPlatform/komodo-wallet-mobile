@@ -355,16 +355,10 @@ class _ChartPainter extends CustomPainter {
     );
 
     // draw time grid
-    final DateTime axisMax =
-        DateTime.fromMillisecondsSinceEpoch(timeAxisMax.round() * 1000);
-    final DateTime axisMin =
-        DateTime.fromMillisecondsSinceEpoch(timeAxisMin.round() * 1000);
     double rightMarkerPosition = size.width;
-    int rightMarkerTime = axisMax.millisecondsSinceEpoch;
     if (timeAxisShift < 0) {
       rightMarkerPosition = rightMarkerPosition -
           (candleWidth / 2 + gap / 2 - timeAxisShift) * zoom;
-      rightMarkerTime = visibleCandlesData.first.closeTime * 1000;
     }
     _drawText(
       canvas: canvas,
@@ -373,13 +367,10 @@ class _ChartPainter extends CustomPainter {
         rightMarkerPosition - labelWidth - 4,
         size.height - 7,
       ),
-      text: _formatTime(rightMarkerTime, 'M/d/yy HH:mm'),
+      text: _formatTime(visibleCandlesData.first.closeTime * 1000),
       align: TextAlign.end,
       width: labelWidth,
     );
-    final bool sameDay = axisMax.year == axisMin.year &&
-        axisMax.month == axisMin.month &&
-        axisMax.day == axisMin.day;
     _drawText(
       canvas: canvas,
       color: widget.textColor,
@@ -387,8 +378,7 @@ class _ChartPainter extends CustomPainter {
         4,
         size.height - 7,
       ),
-      text: _formatTime(
-          axisMin.millisecondsSinceEpoch, sameDay ? 'HH:mm' : 'M/d/yy HH:mm'),
+      text: _formatTime(visibleCandlesData.last.closeTime * 1000),
       align: TextAlign.start,
       width: labelWidth,
     );
@@ -477,8 +467,7 @@ class _ChartPainter extends CustomPainter {
           align: TextAlign.center,
           color: Colors.black,
           backgroundColor: Colors.white,
-          text:
-              ' ${_formatTime(selectedCandle.closeTime * 1000, 'M/d/yy HH:mm')} ',
+          text: ' ${_formatTime(selectedCandle.closeTime * 1000)} ',
           point: Offset(dx - 50, size.height - 7),
           width: labelWidth,
         );
@@ -559,11 +548,21 @@ class _ChartPainter extends CustomPainter {
     return maxPrice;
   }
 
-  String _formatTime(int millisecondsSinceEpoch, String format) {
-    final DateTime local =
-        DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
+  String _formatTime(int millisecondsSinceEpoch) {
+    final DateTime utc = DateTime.fromMillisecondsSinceEpoch(
+      millisecondsSinceEpoch,
+      isUtc: true,
+    );
+    final bool thisYear = DateTime.now().year ==
+        DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch).year;
 
-    return DateFormat(format).format(local.toLocal());
+    String format = 'MMM dd yyyy';
+    if (widget.duration < 60 * 60 * 24)
+      format = 'MMM dd${thisYear ? '' : ' yyyy'}, HH:00';
+    if (widget.duration < 60 * 60)
+      format = 'MMM dd${thisYear ? '' : ' yyyy'}, HH:mm';
+
+    return DateFormat(format).format(utc);
   }
 
   void _drawText({
