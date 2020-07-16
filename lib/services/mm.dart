@@ -640,7 +640,6 @@ class ApiProvider {
       final r = await userBody.client
           .post(Uri.parse(url), body: getPrivKeyToJson(userBody.body));
       _assert200(r);
-      _saveRes('getPrivKey', r);
 
       // Parse JSON once, then check if the JSON is an error.
       final dynamic jbody = json.decode(r.body);
