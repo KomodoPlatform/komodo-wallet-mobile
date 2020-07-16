@@ -560,7 +560,7 @@ class _ChartPainter extends CustomPainter {
   String _formatTime(int millisecondsSinceEpoch) {
     final DateTime utc = DateTime.fromMillisecondsSinceEpoch(
       millisecondsSinceEpoch,
-      isUtc: true,
+      isUtc: false,
     );
     final bool thisYear = DateTime.now().year ==
         DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch).year;
