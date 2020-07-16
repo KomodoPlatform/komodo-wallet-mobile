@@ -198,7 +198,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                     const SizedBox(width: 4),
                     Text(
                       '(based on ${widget.coinBalance.coin.abbr}/$mediateBase)',
-                      style: TextStyle(fontSize: 12, color: cexColor),
+                      style: const TextStyle(fontSize: 12, color: cexColor),
                     )
                   ];
                 }

@@ -520,3 +520,13 @@ String humanDate(int epoch) {
   if (_isThisYear) return DateFormat('MMMM d, H:m').format(_dateTime);
   return DateFormat('MMMM d y, H:m').format(_dateTime);
 }
+
+String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
+  if (value is String) value = double.parse(value);
+  final String rounded = value.toStringAsFixed(fraction);
+  if (rounded.length >= digits + 1) {
+    return rounded;
+  } else {
+    return value.toStringAsPrecision(digits);
+  }
+}

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart' hide TextStyle;
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class CandleChart extends StatefulWidget {
   const CandleChart({
@@ -306,8 +307,7 @@ class _ChartPainter extends CustomPainter {
       final double price = originPrice + i * priceDivision;
       final double dy = _price2dy(price);
       canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
-      final String formattedPrice =
-          double.parse(price.toStringAsPrecision(6)).toString();
+      final String formattedPrice = formatPrice(price, 8);
       paint.color = widget.textColor;
       if (i < 1) continue;
       _drawText(
@@ -347,7 +347,7 @@ class _ChartPainter extends CustomPainter {
     _drawText(
       canvas: canvas,
       point: Offset(size.width - labelWidth - 2, currentPriceDy - 2),
-      text: ' ${double.parse(currentPrice.toStringAsPrecision(6)).toString()} ',
+      text: ' ${formatPrice(currentPrice, 8)} ',
       color: Colors.black,
       backgroundColor: currentPriceColor,
       align: TextAlign.end,
@@ -461,8 +461,7 @@ class _ChartPainter extends CustomPainter {
           align: TextAlign.right,
           color: Colors.black,
           backgroundColor: Colors.white,
-          text:
-              ' ${double.parse(selectedPoint['price'].toStringAsPrecision(6)).toString()} ',
+          text: ' ${formatPrice(selectedPoint['price'], 8)} ',
           point: Offset(size.width - labelWidth - 2, dy - 2),
           width: labelWidth,
         );

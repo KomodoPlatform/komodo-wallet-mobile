@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/markets/order_details_page.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class OrderBookTable extends StatelessWidget {
@@ -83,7 +84,7 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 4),
               child: Text(
-                OrderBookProvider.formatPrice(ask.price),
+                formatPrice(ask.price),
                 maxLines: 1,
                 style: TextStyle(color: Colors.red, fontSize: 14),
               ),
@@ -95,7 +96,7 @@ class OrderBookTable extends StatelessWidget {
               height: 26,
               alignment: Alignment.centerRight,
               child: Text(
-                OrderBookProvider.formatPrice(ask.maxvolume.toString()),
+                formatPrice(ask.maxvolume.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
@@ -109,7 +110,7 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 4),
               child: Text(
-                OrderBookProvider.formatPrice(_askTotal.toString()),
+                formatPrice(_askTotal.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
@@ -158,8 +159,7 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 4),
               child: Text(
-                OrderBookProvider.formatPrice(
-                    (1 / double.parse(bid.price)).toString()),
+                formatPrice((1 / double.parse(bid.price)).toString()),
                 maxLines: 1,
                 style: TextStyle(color: Colors.green, fontSize: 14),
               ),
@@ -171,7 +171,7 @@ class OrderBookTable extends StatelessWidget {
               height: 26,
               alignment: Alignment.centerRight,
               child: Text(
-                OrderBookProvider.formatPrice(_bidVolume.toString()),
+                formatPrice(_bidVolume.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
@@ -185,7 +185,7 @@ class OrderBookTable extends StatelessWidget {
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 4),
               child: Text(
-                OrderBookProvider.formatPrice(_bidTotal.toString()),
+                formatPrice(_bidTotal.toString()),
                 maxLines: 1,
                 style: TextStyle(
                     color: Theme.of(context).disabledColor, fontSize: 14),
