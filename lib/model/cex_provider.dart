@@ -4,8 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CexProvider extends ChangeNotifier {
+  CexProvider() {
+    _updateTickersList();
+  }
   final String _baseUrl = 'http://komodo.live:3333/api/v1/ohlc';
+  final String _tickersListUrl =
+      'http://komodo.live:3333/api/v1/ohlc/tickers_list';
   final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
+  bool _updatingChart = false;
+  List<String> _tickers;
 
   bool isChartsAvailable(String pair) {
     return _findChain(pair) != null;
@@ -19,12 +26,51 @@ class CexProvider extends ChangeNotifier {
     return _charts[pair];
   }
 
-  bool _updatingChart = false;
+  Future<List<String>> _getTickers() async {
+    if (_tickers != null) return _tickers;
+    await _updateTickersList();
+    if (_tickers != null) {
+      return _tickers;
+    } else {
+      return _tickersFallBack;
+    }
+  }
+
+  Future<void> _updateTickersList() async {
+    http.Response _res;
+    String _body;
+    print('Fetching tickers list...');
+    try {
+      _res = await http.get(_tickersListUrl).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          print('Fetching tickers timed out');
+          throw 'Fetching tickers timed out';
+        },
+      );
+      _body = _res.body;
+    } catch (e) {
+      print('Failed to fetch tickers list: $e');
+      rethrow;
+    }
+
+    List<dynamic> json;
+    try {
+      json = jsonDecode(_body);
+    } catch (e) {
+      print('Failed to parse tickers json: $e');
+      rethrow;
+    }
+
+    if (json != null)
+      _tickers =
+          json.map<String>((dynamic ticker) => ticker.toString()).toList();
+  }
 
   Future<void> _updateChart(String pair) async {
     if (_updatingChart) return;
 
-    final List<ChainLink> chain = _findChain(pair);
+    final List<ChainLink> chain = await _findChain(pair);
     if (chain == null) throw 'No chart data available';
 
     Map<String, dynamic> json0;
@@ -171,16 +217,16 @@ class CexProvider extends ChangeNotifier {
     return json;
   }
 
-  List<ChainLink> _findChain(String pair) {
+  Future<List<ChainLink>> _findChain(String pair) async {
     final List<String> abbr = pair.split('-');
     final String base = abbr[1].toLowerCase();
     final String rel = abbr[0].toLowerCase();
-
+    final List<String> tickers = await _getTickers();
     List<ChainLink> chain;
 
     // try to find simple chain, direct or reverse
-    for (String available in _chartsAvailable) {
-      final List<String> availableAbbr = available.split('-');
+    for (String ticker in tickers) {
+      final List<String> availableAbbr = ticker.split('-');
       if (!(availableAbbr.contains(rel) && availableAbbr.contains(base))) {
         continue;
       }
@@ -196,7 +242,7 @@ class CexProvider extends ChangeNotifier {
 
     if (chain != null) return chain;
 
-    _chartsAvailable.sort((String a, String b) {
+    tickers.sort((String a, String b) {
       if (a.toLowerCase().contains('btc') && !b.toLowerCase().contains('btc'))
         return -1;
       if (b.toLowerCase().contains('btc') && !a.toLowerCase().contains('btc'))
@@ -205,7 +251,7 @@ class CexProvider extends ChangeNotifier {
     });
 
     OUTER:
-    for (String firstLinkStr in _chartsAvailable) {
+    for (String firstLinkStr in tickers) {
       final List<String> firstLinkCoins = firstLinkStr.split('-');
       if (!firstLinkCoins.contains(rel) && !firstLinkCoins.contains(base)) {
         continue;
@@ -219,7 +265,7 @@ class CexProvider extends ChangeNotifier {
           firstLink.reverse ? firstLink.rel : firstLink.base;
       final String secondBase = firstLinkCoins.contains(rel) ? base : rel;
 
-      for (String secondLink in _chartsAvailable) {
+      for (String secondLink in tickers) {
         final List<String> secondLinkCoins = secondLink.split('-');
         if (!(secondLinkCoins.contains(secondRel) &&
             secondLinkCoins.contains(secondBase))) {
@@ -298,7 +344,7 @@ class CandleData {
   double quoteVolume;
 }
 
-List<String> _chartsAvailable = [
+List<String> _tickersFallBack = [
   'eth-btc',
   'eth-usdc',
   'btc-usdc',
@@ -338,5 +384,5 @@ List<String> _chartsAvailable = [
   'zec-eth',
   'zec-usdc',
   'zec-tusd',
-  'zec-busd',
+  'zec-busd'
 ];
