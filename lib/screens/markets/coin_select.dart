@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -172,7 +174,8 @@ class _CoinSelectState extends State<CoinSelect> {
         context: context,
         builder: (BuildContext context) {
           if (_coinsList != null) {
-            final List<CoinBalance> _sortedList = coinsBloc.sortCoins(_coinsList);
+            final List<CoinBalance> _sortedList =
+                coinsBloc.sortCoins(_coinsList);
             if (_sortedList.isEmpty) {
               return const SimpleDialog(
                 title: Text('Select Coin'), // TODO(yurii): localization
@@ -370,9 +373,35 @@ class _CoinSelectState extends State<CoinSelect> {
         }
     }
 
+    Widget _buildCandlesIcon() {
+      if (widget.pairedCoin == null) return Container();
+      if (widget.pairedCoin.abbr == coinBalance.coin.abbr) return Container();
+
+      final CexProvider cexProvider = Provider.of<CexProvider>(context);
+      final String pair =
+          '${widget.pairedCoin.abbr.toLowerCase()}-${coinBalance.coin.abbr.toLowerCase()}';
+      final bool available = cexProvider.isChartsAvailable(pair);
+
+      if (!available) return Container();
+
+      return Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: const <Widget>[
+            CandlesIcon(size: 14),
+          ],
+        ),
+      );
+    }
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: widget.compact ? 3 : 6),
-      child: _optionTitle,
+      child: Row(
+        children: <Widget>[
+          _optionTitle,
+          _buildCandlesIcon(),
+        ],
+      ),
     );
   }
 }

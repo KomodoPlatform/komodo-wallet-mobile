@@ -7,6 +7,7 @@ import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/screens/markets/order_book_chart.dart';
 import 'package:komodo_dex/screens/markets/order_book_table.dart';
+import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/duration_select.dart';
 import 'package:provider/provider.dart';
 
@@ -148,13 +149,23 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 _showChart = true;
               });
             },
-            child: Text(
-              'Chart', // TODO(yurii): localization
-              style: _showChart
-                  ? TextStyle(
-                      color: Theme.of(context).accentColor,
-                    )
-                  : null,
+            child: Row(
+              children: <Widget>[
+                CandlesIcon(
+                    size: 14,
+                    color: _showChart
+                        ? Theme.of(context).accentColor
+                        : Colors.white),
+                const SizedBox(width: 2),
+                Text(
+                  'Chart', // TODO(yurii): localization
+                  style: _showChart
+                      ? TextStyle(
+                          color: Theme.of(context).accentColor,
+                        )
+                      : null,
+                ),
+              ],
             )),
         FlatButton(
             onPressed: () {

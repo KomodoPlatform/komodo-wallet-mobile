@@ -26,14 +26,11 @@ class CexProvider extends ChangeNotifier {
     return _charts[pair];
   }
 
-  Future<List<String>> _getTickers() async {
+  List<String> _getTickers() {
     if (_tickers != null) return _tickers;
-    await _updateTickersList();
-    if (_tickers != null) {
-      return _tickers;
-    } else {
-      return _tickersFallBack;
-    }
+
+    _updateTickersList();
+    return _tickersFallBack;
   }
 
   Future<void> _updateTickersList() async {
@@ -62,15 +59,17 @@ class CexProvider extends ChangeNotifier {
       rethrow;
     }
 
-    if (json != null)
+    if (json != null) {
       _tickers =
           json.map<String>((dynamic ticker) => ticker.toString()).toList();
+      notifyListeners();
+    }
   }
 
   Future<void> _updateChart(String pair) async {
     if (_updatingChart) return;
 
-    final List<ChainLink> chain = await _findChain(pair);
+    final List<ChainLink> chain = _findChain(pair);
     if (chain == null) throw 'No chart data available';
 
     Map<String, dynamic> json0;
@@ -174,6 +173,7 @@ class CexProvider extends ChangeNotifier {
       }
 
       data[duration] = _durationData;
+      notifyListeners();
     });
 
     _charts[pair] = ChartData(
@@ -217,12 +217,14 @@ class CexProvider extends ChangeNotifier {
     return json;
   }
 
-  Future<List<ChainLink>> _findChain(String pair) async {
+  List<ChainLink> _findChain(String pair) {
     final List<String> abbr = pair.split('-');
     final String base = abbr[1].toLowerCase();
     final String rel = abbr[0].toLowerCase();
-    final List<String> tickers = await _getTickers();
+    final List<String> tickers = _getTickers();
     List<ChainLink> chain;
+
+    if (tickers == null) return null;
 
     // try to find simple chain, direct or reverse
     for (String ticker in tickers) {

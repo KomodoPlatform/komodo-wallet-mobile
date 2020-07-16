@@ -5,6 +5,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
+import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/duration_select.dart';
 import 'package:komodo_dex/widgets/small_button.dart';
@@ -127,14 +128,9 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                           ],
                                         ),
                                       Container(
-                                        width: 8,
                                         child: _hasNonzeroPrice && _hasChartData
-                                            ? Icon(
-                                                expanded
-                                                    ? Icons.unfold_less
-                                                    : Icons.unfold_more,
-                                                color: cexColor,
-                                                size: 20,
+                                            ? const CandlesIcon(
+                                                size: 14,
                                               )
                                             : null,
                                       ),
