@@ -196,6 +196,14 @@ class CexProvider extends ChangeNotifier {
 
     if (chain != null) return chain;
 
+    _chartsAvailable.sort((String a, String b) {
+      if (a.toLowerCase().contains('btc') && !b.toLowerCase().contains('btc'))
+        return -1;
+      if (b.toLowerCase().contains('btc') && !a.toLowerCase().contains('btc'))
+        return 1;
+      return 0;
+    });
+
     OUTER:
     for (String firstLinkStr in _chartsAvailable) {
       final List<String> firstLinkCoins = firstLinkStr.split('-');
