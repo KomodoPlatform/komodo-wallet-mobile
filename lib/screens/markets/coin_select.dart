@@ -380,7 +380,7 @@ class _CoinSelectState extends State<CoinSelect> {
       final CexProvider cexProvider = Provider.of<CexProvider>(context);
       final String pair =
           '${widget.pairedCoin.abbr.toLowerCase()}-${coinBalance.coin.abbr.toLowerCase()}';
-      final bool available = cexProvider.isChartsAvailable(pair);
+      final bool available = cexProvider.isChartAvailable(pair);
 
       if (!available) return Container();
 

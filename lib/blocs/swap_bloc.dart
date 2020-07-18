@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -265,12 +265,8 @@ class SwapBloc implements BlocBase {
 
       _inAmountReceiveCoin.add(amountReceive);
 
-      final getPrice = GetPriceService();
-      final buyCoinUsd = await getPrice.getPrice(
-              swapBloc.orderCoin.coinBase.abbr,
-              swapBloc.orderCoin.coinBase.coingeckoId,
-              'USD') ??
-          0;
+      final buyCoinUsd =
+          cexPrices.getPrice(swapBloc.orderCoin.coinBase.abbr, 'usd');
       _inBuyCoinUsd.add(buyCoinUsd);
 
       return amountReceive;

@@ -37,7 +37,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
     _pairStr = _hasBothCoins
         ? '${_orderBookProvider.activePair.buy.abbr}-${_orderBookProvider.activePair.sell.abbr}'
         : null;
-    _hasChartsData = _hasBothCoins && _cexProvider.isChartsAvailable(_pairStr);
+    _hasChartsData = _hasBothCoins && _cexProvider.isChartAvailable(_pairStr);
 
     return Container(
       child: SingleChildScrollView(

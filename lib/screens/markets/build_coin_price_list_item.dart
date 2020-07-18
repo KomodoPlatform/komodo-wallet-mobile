@@ -40,7 +40,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
     balance = widget.coinBalance.balance;
 
     final bool _hasChartData =
-        cexProvider.isChartsAvailable('${widget.coinBalance.coin.abbr}-USDC');
+        cexProvider.isChartAvailable('${widget.coinBalance.coin.abbr}-USDC');
 
     return Container(
       child: Column(

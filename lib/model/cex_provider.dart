@@ -1,20 +1,20 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 
 class CexProvider extends ChangeNotifier {
   CexProvider() {
     _updateTickersList();
-  }
-  final String _baseUrl = 'http://komodo.live:3333/api/v1/ohlc';
-  final String _tickersListUrl =
-      'http://komodo.live:3333/api/v1/ohlc/tickers_list';
-  final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
-  bool _updatingChart = false;
-  List<String> _tickers;
 
-  bool isChartsAvailable(String pair) {
+    cexPrices.linkProvider(this);
+  }
+
+  bool isChartAvailable(String pair) {
     return _findChain(pair) != null;
   }
 
@@ -25,6 +25,24 @@ class CexProvider extends ChangeNotifier {
 
     return _charts[pair];
   }
+
+  double getPrice(String abbr, [String currency = 'usd']) =>
+      cexPrices.getPrice(abbr, currency);
+
+  void notify() => notifyListeners();
+
+  @override
+  void dispose() {
+    super.dispose();
+    cexPrices.unlinkProvider(this);
+  }
+
+  final String _chartsUrl = 'http://komodo.live:3333/api/v1/ohlc';
+  final String _tickersListUrl =
+      'http://komodo.live:3333/api/v1/ohlc/tickers_list';
+  final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
+  bool _updatingChart = false;
+  List<String> _tickers;
 
   List<String> _getTickers() {
     if (_tickers != null) return _tickers;
@@ -193,7 +211,7 @@ class CexProvider extends ChangeNotifier {
     String _body;
     print('Fetching $pair candles data...');
     try {
-      _res = await http.get('$_baseUrl/${pair.toLowerCase()}').timeout(
+      _res = await http.get('$_chartsUrl/${pair.toLowerCase()}').timeout(
         const Duration(seconds: 10),
         onTimeout: () {
           print('Fetching $pair timed out');
@@ -291,6 +309,99 @@ class CexProvider extends ChangeNotifier {
     if (chain != null) return chain;
 
     return null;
+  }
+}
+
+CexData cexPrices = CexData();
+
+class CexData {
+  CexData() {
+    Timer.periodic(const Duration(seconds: 60), (_) {
+      updatePrices();
+    });
+  }
+
+  final List<CexProvider> _providers = [];
+  final Map<String, Map<String, double>> _prices = {};
+
+  double getPrice(String abbr, [String currency = 'usd']) {
+    double price;
+    try {
+      price = _prices[abbr][currency];
+    } catch (_) {}
+
+    return price ?? 0;
+  }
+
+  Future<void> updatePrices([List<Coin> coinsList]) async {
+    coinsList ??= coinsBloc.coinBalance
+        ?.map((CoinBalance balance) => balance.coin)
+        ?.toList();
+
+    if (coinsList == null) return;
+
+    final List<String> ids =
+        coinsList.map((Coin coin) => coin.coingeckoId).toList();
+
+    http.Response _res;
+    String _body;
+    try {
+      _res = await http
+          .get('https://api.coingecko.com/api/v3/simple/price?ids=' +
+              ids.join(',') +
+              '&vs_currencies=' +
+              'usd')
+          .timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw 'Fetching usd prices timed out';
+        },
+      );
+      _body = _res.body;
+    } catch (e) {
+      print('Failed to fetch usd prices');
+      rethrow;
+    }
+
+    Map<String, dynamic> json;
+    try {
+      json = jsonDecode(_body);
+    } catch (e) {
+      print('Failed to parse prices json: $e');
+      rethrow;
+    }
+
+    if (json == null) return;
+
+    json.forEach((String coingeckoId, dynamic pricesData) {
+      String coinAbbr;
+      try {
+        coinAbbr = coinsList
+            .firstWhere((coin) => coin.coingeckoId == coingeckoId)
+            .abbr;
+      } catch (_) {}
+
+      if (coinAbbr != null) {
+        _prices[coinAbbr] = {};
+        pricesData.forEach((String currency, dynamic price) {
+          _prices[coinAbbr][currency] = price;
+        });
+      }
+    });
+
+    _notifyListeners();
+  }
+
+  void linkProvider(CexProvider provider) {
+    _providers.add(provider);
+  }
+
+  void unlinkProvider(CexProvider provider) {
+    _providers.remove(provider);
+  }
+
+  void _notifyListeners() {
+    for (CexProvider provider in _providers) provider.notify();
   }
 }
 

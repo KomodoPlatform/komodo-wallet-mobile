@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
@@ -17,7 +18,6 @@ import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -422,6 +422,8 @@ class CoinsBloc implements BlocBase {
     while (_coinsLock) await sleepMs(77);
     _coinsLock = true;
 
+    await cexPrices.updatePrices(coins);
+
     // NB: Loading balances sequentially in order to better reuse HTTP file descriptors
     for (Coin coin in coins) {
       try {
@@ -459,9 +461,7 @@ class CoinsBloc implements BlocBase {
       balance = null;
     }
 
-    final double price = await getPriceObj
-        .getPrice(coin.abbr, coin.coingeckoId, 'USD')
-        .timeout(const Duration(seconds: 5), onTimeout: () => 0.0);
+    final double price = cexPrices.getPrice(coin.abbr);
 
     dynamic coinBalance;
     if (balance != null && coin.abbr == balance.coin) {
@@ -507,20 +507,6 @@ class CoinsBloc implements BlocBase {
     });
 
     return _sorted;
-  }
-
-  double priceByAbbr(String abbr) {
-    if (coinBalance == null) return null;
-
-    for (CoinBalance balance in coinBalance) {
-      if (balance.coin.abbr != abbr) continue;
-
-      final String priceForOne = balance.priceForOne;
-      if (priceForOne == null) return null;
-
-      return double.parse(priceForOne);
-    }
-    return null;
   }
 }
 
