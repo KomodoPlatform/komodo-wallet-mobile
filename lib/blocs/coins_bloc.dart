@@ -461,7 +461,7 @@ class CoinsBloc implements BlocBase {
       balance = null;
     }
 
-    final double price = cexPrices.getPrice(coin.abbr);
+    final double price = cexPrices.getUsdPrice(coin.abbr);
 
     dynamic coinBalance;
     if (balance != null && coin.abbr == balance.coin) {

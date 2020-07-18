@@ -266,7 +266,7 @@ class SwapBloc implements BlocBase {
       _inAmountReceiveCoin.add(amountReceive);
 
       final buyCoinUsd =
-          cexPrices.getPrice(swapBloc.orderCoin.coinBase.abbr, 'usd');
+          cexPrices.getUsdPrice(swapBloc.orderCoin.coinBase.abbr);
       _inBuyCoinUsd.add(buyCoinUsd);
 
       return amountReceive;

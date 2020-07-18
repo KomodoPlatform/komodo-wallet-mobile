@@ -26,8 +26,23 @@ class CexProvider extends ChangeNotifier {
     return _charts[pair];
   }
 
-  double getPrice(String abbr, [String currency = 'usd']) =>
-      cexPrices.getPrice(abbr, currency);
+  double getPrice(String abbr) => cexPrices.getUsdPrice(abbr);
+
+  String get currency => cexPrices.currency;
+  set currency(String value) {
+    if (cexPrices.currencies.contains(value.toLowerCase())) {
+      cexPrices.currency = value;
+      notifyListeners();
+    }
+  }
+
+  void switchCurrency() {
+    int current = cexPrices.currencies.indexOf(cexPrices.currency);
+    current++;
+    if (current + 1 > cexPrices.currencies.length) current = 0;
+    cexPrices.currency = cexPrices.currencies[current];
+    notifyListeners();
+  }
 
   void notify() => notifyListeners();
 
@@ -312,25 +327,30 @@ class CexProvider extends ChangeNotifier {
   }
 }
 
-CexData cexPrices = CexData();
+CexPrices cexPrices = CexPrices();
 
-class CexData {
-  CexData() {
+class CexPrices {
+  CexPrices() {
     Timer.periodic(const Duration(seconds: 60), (_) {
       updatePrices();
     });
   }
 
+  final List<String> currencies = ['usd', 'btc', 'kmd'];
+  String currency = 'usd';
+
   final List<CexProvider> _providers = [];
   final Map<String, Map<String, double>> _prices = {};
 
-  double getPrice(String abbr, [String currency = 'usd']) {
+  double getUsdPrice(String abbr) {
     double price;
     try {
-      price = _prices[abbr][currency];
+      price = _prices[abbr]['usd'];
     } catch (_) {}
 
-    return price ?? 0;
+    if (price == null) updatePrices();
+
+    return price;
   }
 
   Future<void> updatePrices([List<Coin> coinsList]) async {
