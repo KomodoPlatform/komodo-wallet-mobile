@@ -130,11 +130,11 @@ void main() {
 
   final SerializableFinder settings = find.byValueKey('nav-settings');
 
-  final SerializableFinder switchTile = find.text('Activate PIN protection');
-  final SerializableFinder switchPin = find.byValueKey('settings-activate-pin');
+  //final SerializableFinder switchTile = find.text('Activate PIN protection');
+  //final SerializableFinder switchPin = find.byValueKey('settings-activate-pin');
   final SerializableFinder logout = find.byValueKey('settings-logout');
   final SerializableFinder logoutYes = find.byValueKey('settings-logout-yes');
-  final SerializableFinder logoutCancel = find.byValueKey('settings-logout-cancel');
+  //final SerializableFinder logoutCancel = find.byValueKey('settings-logout-cancel');
   //                                                                                          //  - 6 Accept Disclaimer Screen
   //                                                                                          //  - 7 Create PIN Code Screen
   //                                                                                          //  - 8 Portfolio Screen
@@ -150,8 +150,8 @@ void main() {
   //-------------------------- Scenario 4 Finders --------------------------------------------//
   //           Scenario 4 is reserved for testing send/receive and swaps.                     //
   //-----(Scenario 4)------- Test send/receive and swaps -------(Scenario 4)------------------//
-  final SerializableFinder portfolio = find.byValueKey('nav-portfolio');
-  final SerializableFinder portfolioCoinsScrollable = find.byValueKey('list-view-coins');
+  //final SerializableFinder portfolio = find.byValueKey('nav-portfolio');
+  //final SerializableFinder portfolioCoinsScrollable = find.byValueKey('list-view-coins');
   final SerializableFinder loadingCoins = find.text('Loading coins');
   final SerializableFinder rickAdd = find.text('Morty (MORTY)');
   final SerializableFinder mortyAdd = find.text('Rick (RICK)');
@@ -170,10 +170,10 @@ void main() {
   final SerializableFinder receive = find.text('RECEIVE');
   final SerializableFinder close = find.text('CLOSE');
   final SerializableFinder send = find.byValueKey('secondary-button-send');
-  final SerializableFinder cancel = find.byValueKey('secondary-button-cancel');
+  //final SerializableFinder cancel = find.byValueKey('secondary-button-cancel');
   final SerializableFinder withdraw = find.byValueKey('primary-button-withdraw');
   final SerializableFinder confirm = find.byValueKey('primary-button-confirm');
-  final SerializableFinder customFee = find.byValueKey('send-toggle-customfee');
+  //final SerializableFinder customFee = find.byValueKey('send-toggle-customfee');
 
 
   final SerializableFinder orderMatched = find.text('Order matched');
