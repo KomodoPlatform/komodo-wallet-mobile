@@ -21,7 +21,8 @@ class CoinSelect extends StatefulWidget {
     this.compact = false,
     this.hideInactiveCoins = false,
     this.onChange,
-  });
+    Key key
+  }): super(key: key);
 
   final Coin value;
   final CoinType type;

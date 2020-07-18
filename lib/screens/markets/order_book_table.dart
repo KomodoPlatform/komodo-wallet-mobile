@@ -228,6 +228,7 @@ class OrderBookTable extends StatelessWidget {
         right: 8,
       ),
       child: Table(
+        key: const Key('order-book-table'),
         columnWidths: const {
           0: FlexColumnWidth(1.0),
           1: FlexColumnWidth(1.0),

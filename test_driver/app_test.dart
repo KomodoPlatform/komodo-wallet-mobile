@@ -23,9 +23,9 @@ void main() {
 
                               
                               
-  //------------------------ Scenario 1 Finders ----------------------------------------------\\
-  //         Scenario 1 is reserved for creation of new wallet route.                         \\
-  //-----(Scenario 1)----- Create New Wallet Screens ------(Scenario 1)-----------------------\\
+  //------------------------ Scenario 1 Finders ----------------------------------------------//
+  //           Scenario 1 is reserved for creation of a new wallet.                           //
+  //-----(Scenario 1)----- Create New Wallet Screens ------(Scenario 1)-----------------------//
   final SerializableFinder createWalletScreen = find.text('CREATE A WALLET');                 // - 1 Create Wallet Screen
   final SerializableFinder createWalletNameScreen = find.text('WELCOME');                     // - 2 Create Wallet Name Screen
   final SerializableFinder newSeedPhraseScreen = find.text('New Account');                    // - 3 New Seed Phrase Screen
@@ -34,107 +34,135 @@ void main() {
   final SerializableFinder disclaimerScreen = find.text('Disclaimer & ToS');                  // - 6 Accept Disclaimer Screen
   final SerializableFinder createaPINScreen = find.text('Create PIN');                        // - 7 Create PIN Code Screen
   final SerializableFinder settingsScreen = find.byValueKey('settings-title');                // - 8 Settings Screen (Delete Wallet)
-  //------------------------------------------------------------------------------------------\\
+  //------------------------------------------------------------------------------------------//
   /*--------*/ final SerializableFinder back = find.byTooltip('Back'); /*---------------------*/
-  //---------------------- 1 - Create wallet screen ------------------------------------------\\
+  //---------------------- 1 - Create wallet screen ------------------------------------------//
   final SerializableFinder createWalletBtn = find.byValueKey('createWalletButton');           //
-  //---------------------- 2 - Create wallet name screen  ------------------------------------\\
+  //---------------------- 2 - Create wallet name screen  ------------------------------------//
   final SerializableFinder welcomeScrollable = find.byValueKey('welcome-scrollable');         //
   final SerializableFinder nameWalletField = find.byValueKey('name-wallet-field');            //
   final SerializableFinder setup = find.text('LET\'S GET SET UP!');                           //
-  //---------------------- 3 - New seed phrase screen ----------------------------------------\\
+  //---------------------- 3 - New seed phrase screen ----------------------------------------//
   final SerializableFinder newAccountScrollable = find.byValueKey('new-account-scrollable');  //
   final SerializableFinder seedPhrase = find.byValueKey('seed-phrase');                       //
   final SerializableFinder seedRefresh = find.byValueKey('seed-refresh');                     //
   final SerializableFinder seedCopy = find.byValueKey('seed-copy');                           //
   final SerializableFinder next = find.text('NEXT');                                          //
-  //---------------------- 4 - Verify seed phrase screen -------------------------------------\\
+  //---------------------- 4 - Verify seed phrase screen -------------------------------------//
   final SerializableFinder pasteIOS = find.text('Paste');                                     //
   final SerializableFinder pasteAndroid = find.text('PASTE');                                 //
   final SerializableFinder continueSeedVerification = find.text('CONTINUE');                  //
   final SerializableFinder goBackAndCheckSeedAgain = find.text('GO BACK AND CHECK AGAIN');    //
   final SerializableFinder whichWordField = find.byValueKey('which-word-field');              //
   final SerializableFinder whichWordText = find.byValueKey('which-word');                     //
-  //---------------------- 5 - Create password screen  ---------------------------------------\\
+  //---------------------- 5 - Create password screen  ---------------------------------------//
   final SerializableFinder passwordCreate = find.byValueKey('create-password-field');         //
   final SerializableFinder passwordRetype = find.byValueKey('create-password-field-confirm'); //
   final SerializableFinder passwordConfirm = find.text('CONFIRM PASSWORD');                   //
-  //---------------------- 6 - Accept disclaimer screen  -------------------------------------\\
+  //---------------------- 6 - Accept disclaimer screen  -------------------------------------//
   final SerializableFinder disclamerScrollable = find.byValueKey('scroll-disclaimer');        //
   final SerializableFinder endDisclamerScrollable = find.byValueKey('end-list-disclaimer');   //
   final SerializableFinder checkEula = find.byValueKey('checkbox-eula');                      //
   final SerializableFinder checkTOC = find.byValueKey('checkbox-toc');                        //
   final SerializableFinder disclaimerNext= find.byValueKey('next-disclaimer');                //
-  //-------------------------- 7 - Create PIN screen -----------------------------------------\\
+  //-------------------------- 7 - Create PIN screen -----------------------------------------//
   //   Its better not to expect() Create/Confirm PIN code, driver gets confused.              //
-  //-------------------------- 8 - Settings Screen -------------------------------------------\\
+  //-------------------------- 8 - Settings Screen -------------------------------------------//
   final SerializableFinder settingsScrollable = find.byValueKey('settings-scrollable');       //
   final SerializableFinder settingsDeleteWallet = find.text('Delete Wallet');                 //
-  final SerializableFinder settings = find.byValueKey('nav-settings');                        //
   final SerializableFinder enterPasswordField = find.byValueKey('enter-password-field');      //
   final SerializableFinder unlock = find.byValueKey('unlock-wallet');                         //
   final SerializableFinder delete = find.byValueKey('delete-wallet');                         //
-  //-----------------------------------END----------------------------------------------------\\
-  //---------------------------END-(Scenario-1)-END-------------------------------------------\\
-  //-----------------------------------END----------------------------------------------------\\
+  //-----------------------------------END----------------------------------------------------//
+  //---------------------------END-(Scenario-1)-END-------------------------------------------//
+  //-----------------------------------END----------------------------------------------------//
 
 
-  //----------------------------- Scenario 2 Finders -----------------------------------------\\   - 1 Restore Wallet Screen
-  //              Scenario 2 is reserved for restoration of a wallet.                         \\   - 2 Create Wallet Name Screen
+
+
+
+  //----------------------------- Scenario 2 Finders -----------------------------------------//   - 1 Restore Wallet Screen
+  //              Scenario 2 is reserved for restoration of a wallet.                         //   - 2 Create Wallet Name Screen
   //----------(Scenario 2)---------- Restore Wallet ----------(Scenario 2)--------------------//   - 3 Enter Your Seed Screen
-  //         !!!!----- Mostly the same Finders as per Scenario 1 ------!!!!!                  \\   - 4 Create Password Screen
+  //         !!!!----- Mostly the same Finders as per Scenario 1 ------!!!!!                  //   - 4 Create Password Screen
   final SerializableFinder restoreWalletScreen = find.text('RESTORE');                        //   - 5 Accept Disclaimer Screen
   final SerializableFinder restoreWalletBtn = find.byValueKey('restoreWallet');               //   - 6 Create PIN Code Screen
   final SerializableFinder enterYourSeedScreen = find.text('Enter Your Seed Phrase');         //   - 7 Setting Screen (Delete Wallet)
   final SerializableFinder restoreSeedField = find.byValueKey('restore-seed-field');          //
   final SerializableFinder confirmSeedBtn = find.byValueKey('confirm-seed-button');           //
   final SerializableFinder allowCustomSeed = find.byValueKey('checkbox-custom-seed');         //
-  //-----------------------------------END----------------------------------------------------\\  
+  //-----------------------------------END----------------------------------------------------//
   //---------------------------END-(Scenario-2)-END-------------------------------------------//  
-  //-----------------------------------END----------------------------------------------------\\  
+  //-----------------------------------END----------------------------------------------------//
 
 
 
 
-  //-------------------------- Scenario 3 Finders --------------------------------------------\\  - 1 Create Wallet Screen
-  //             Scenario 3 is reserved for screens such as Portfolio,                        //  - 2 Create Wallet Name Screen
-  //                Markets, Feed and playing around with Settings                            \\  - 3 New Seed Phrase Screen
-  //-----(Scenario 3)----- Add Coins, Browse Markets, Feed ------(Scenario 3)-----------------//  - 4 Verify Seed Phrase Screen 
+
+
+  //-------------------------- Scenario 3 Finders --------------------------------------------//  - 1 Create Wallet Screen
+  //             Scenario 3 is reserved for screens such as Markets,                          //  - 2 Create Wallet Name Screen
+  //                  Feed and playing around with Settings                                   //  - 3 New Seed Phrase Screen
+  //-----(Scenario 3)----- Add Coins, Browse Markets, Feed ------(Scenario 3)-----------------//  - 4 Verify Seed Phrase Screen
   //        !!!!----- Mostly the same Finders as per Scenario 1------!!!!!                    //  - 5 Create Password Screen
+  final SerializableFinder markets = find.byValueKey('nav-markets');
+  final SerializableFinder marketsPriceScreen = find.text('PRICE');
+  final SerializableFinder marketsOrderBookScreen = find.text('ORDER BOOK');
+  final SerializableFinder marketsPriceBtn = find.text('PRICE');
+  final SerializableFinder marketsOrderBookBtn = find.text('ORDER BOOK');
+
+  final SerializableFinder marketsSelectCoinPopupScreen = find.text('Select Coin');
+  final SerializableFinder marketsOrderBookEmptyScreen = find.text('Please select coins');
+
+  final SerializableFinder marketsOrderBookTable = find.byValueKey('order-book-table');
+  final SerializableFinder marketsCoinSelectLeft = find.byValueKey('coin-select-left');
+  final SerializableFinder marketsCoinSelectRight = find.byValueKey('coin-select-right');
+  final SerializableFinder marketsCoinSelectSwap = find.byValueKey('coin-select-swap');
+
+  final SerializableFinder marketsCoinSelectClear = find.text('Clear');
+  final SerializableFinder marketsCoinSelectBTC = find.byValueKey('coin-select-option-BTC');
+  final SerializableFinder marketsCoinSelectKMD = find.byValueKey('coin-select-option-KMD');
+  
+
+
+  final SerializableFinder feed = find.byValueKey('nav-news');
+  final SerializableFinder feedScreen = find.text('NEWS FEED');
+
+  final SerializableFinder settings = find.byValueKey('nav-settings');
+
+  final SerializableFinder switchTile = find.text('Activate PIN protection');
+  final SerializableFinder switchPin = find.byValueKey('settings-activate-pin');
+  final SerializableFinder logout = find.byValueKey('settings-logout');
+  final SerializableFinder logoutYes = find.byValueKey('settings-logout-yes');
+  final SerializableFinder logoutCancel = find.byValueKey('settings-logout-cancel');
   //                                                                                          //  - 6 Accept Disclaimer Screen
   //                                                                                          //  - 7 Create PIN Code Screen
   //                                                                                          //  - 8 Portfolio Screen
-  //-----------------------------------END----------------------------------------------------\\  - 9 Markets Screen  
-  //---------------------------END-(Scenario-3)-END-------------------------------------------\\  - 10 Feed Screen  
-  //-----------------------------------END----------------------------------------------------\\  - 11 Setting Screen  
+  //-----------------------------------END----------------------------------------------------//  - 9 Markets Screen  
+  //---------------------------END-(Scenario-3)-END-------------------------------------------//  - 10 Feed Screen  
+  //-----------------------------------END----------------------------------------------------//  - 11 Setting Screen  
 
 
 
-  //-------------------------- Scenario 4 Finders --------------------------------------------\\
+
+
+
+  //-------------------------- Scenario 4 Finders --------------------------------------------//
   //           Scenario 4 is reserved for testing send/receive and swaps.                     //
   //-----(Scenario 4)------- Test send/receive and swaps -------(Scenario 4)------------------//
-  //-----------------------------------END----------------------------------------------------\\
-  //---------------------------END-(Scenario-4)-END-------------------------------------------\\
-  //-----------------------------------END----------------------------------------------------\\
-  
-
-  
-  // Unknown
-  //final SerializableFinder confirmPassword = find.byValueKey('confirm-password');
-  //final SerializableFinder welcomeSetup = find.byValueKey('welcome-setup');
-
-  // Coins Add
+  final SerializableFinder portfolio = find.byValueKey('nav-portfolio');
+  final SerializableFinder portfolioCoinsScrollable = find.byValueKey('list-view-coins');
   final SerializableFinder loadingCoins = find.text('Loading coins');
   final SerializableFinder rickAdd = find.text('Morty (MORTY)');
   final SerializableFinder mortyAdd = find.text('Rick (RICK)');
-  // Coins Portfolio
-  final SerializableFinder portfolio = find.byValueKey('nav-portfolio');
-  final SerializableFinder portfolioCoinsScrollable = find.byValueKey('list-view-coins');
   final SerializableFinder morty = find.text('MORTY');
   final SerializableFinder rick = find.text('RICK');
   final SerializableFinder bitcoin = find.text('BITCOIN');
   final SerializableFinder komodo = find.text('KOMODO');
-  // Send/Receive
+
+  final SerializableFinder login = find.text('LOGIN');
+
+  final SerializableFinder dex = find.byValueKey('nav-dex');
   final SerializableFinder amountField = find.byValueKey('send-amount-field');
   final SerializableFinder recipientsAddress = find.byValueKey('send-address-field');
   final SerializableFinder successSend = find.text('Success!');
@@ -146,21 +174,17 @@ void main() {
   final SerializableFinder withdraw = find.byValueKey('primary-button-withdraw');
   final SerializableFinder confirm = find.byValueKey('primary-button-confirm');
   final SerializableFinder customFee = find.byValueKey('send-toggle-customfee');
-  // Swaps
+
+
   final SerializableFinder orderMatched = find.text('Order matched');
   final SerializableFinder step0outOf3 = find.byValueKey('Step 0/3');
-  // Main Navigation
-  final SerializableFinder dex = find.byValueKey('nav-dex');
-  final SerializableFinder markets = find.byValueKey('nav-markets');
-  final SerializableFinder news = find.byValueKey('nav-news');
-  // Relog
-  final SerializableFinder login = find.text('LOGIN');
-  // Settings
-  final SerializableFinder switchTile = find.text('Activate PIN protection');
-  final SerializableFinder switchPin = find.byValueKey('settings-activate-pin');
-  final SerializableFinder logout = find.byValueKey('settings-logout');
-  final SerializableFinder logoutYes = find.byValueKey('settings-logout-yes');
-  final SerializableFinder logoutCancel = find.byValueKey('settings-logout-cancel');
+  
+  //-----------------------------------END----------------------------------------------------//
+  //---------------------------END-(Scenario-4)-END-------------------------------------------//
+  //-----------------------------------END----------------------------------------------------//
+
+
+  
 
   setUpAll(() async {
     driver = await FlutterDriver.connect();
@@ -190,9 +214,9 @@ void main() {
 
 
   group(     ' | (Scenario 1) Create new wallet  |', () {
-//\\------------------------(Scenario 1)------------------------------\\//   
-////--------------------Group-Create-New-Wallet-----------------------////
-//\\------------------------------------------------------------------//\\
+//------------------------(Scenario 1)------------------------------//
+//----------------- Group Create New Wallet ------------------------//
+//------------------------------------------------------------------//
     test('-1.1- | Check create wallet btn works', () async {
       expect(await driver.getText(createWalletScreen), 'CREATE A WALLET');
 
@@ -203,7 +227,7 @@ void main() {
     });
 
 
-    //(1)back-btn test from wallet-naming-screen
+    // (1)back-btn test from wallet-naming-screen
     test('-1.2- | Check back-btn from wallet-naming-screen (works)', () async {
       expect(await driver.getText(createWalletNameScreen), 'WELCOME');
 
@@ -238,7 +262,7 @@ void main() {
     });
 
 
-    //(2)back-btn test from save-seed-screen
+    // (2)back-btn test from save-seed-screen
     test('-1.5- | Check back-btn from save-seed-screen (works)', () async {
       expect(await driver.getText(newSeedPhraseScreen), 'New Account');
 
@@ -258,7 +282,7 @@ void main() {
     });
 
 
-    //(3)back-btn test from wallet-naming-screen
+    // (3)back-btn test from wallet-naming-screen
     test('-1.7- | Check back-btn from wallet-naming-screen works (2nd time)', () async {
       expect(await driver.getText(createWalletNameScreen), 'WELCOME');
 
@@ -504,15 +528,17 @@ void main() {
       await driver.tap(delete);
 
       expect(await driver.getText(createWalletScreen), 'CREATE A WALLET');
-    });//----------------------END-(Scenario-1)-END------------------------\\
+    });//----------------------END-(Scenario-1)-END------------------------//
   });//--------------------- Group Create New Wallet ----------------------//
   //---------------------------END-(Scenario-1)-END------------------------//
   
   
 
+
+
   group(     ' | (Scenario 2) Restore a wallet  |', () {
-  //--------------------------(Scenario 2)---------------------------------\\ 
-  //----------------------Group-Restore-A-Wallet---------------------------//
+  //--------------------------(Scenario 2)---------------------------------//
+  //-------------------- Group Restore A Wallet ---------------------------//
   //-----------------------------------------------------------------------//
     test('-2.0- | Delay: $coolOffTime min - Let mm2 cool off a bit', () async {
       await Future<void>.delayed(const Duration(minutes: coolOffTime), () {});
@@ -529,7 +555,7 @@ void main() {
     });
 
 
-    //(1)back-btn test from wallet-naming-screen
+    // (1)back-btn test from wallet-naming-screen
     test('-2.2- | Check back-btn from wallet-naming-screen (works)', () async {
       expect(await driver.getText(createWalletNameScreen), 'WELCOME');
 
@@ -667,74 +693,316 @@ void main() {
       await driver.tap(delete);
 
       expect(await driver.getText(restoreWalletScreen), 'RESTORE');
-    });//----------------------END-(Scenario-2)-END------------------------\\
+    });//----------------------END-(Scenario-2)-END------------------------//
   });//---------------------- Group Restore A Wallet ----------------------//
   //---------------------------END-(Scenario-2)-END------------------------//
 
   
   
-/*
-  group(     ' | (Scenario 3) Restore a wallet  |', () {
-  //--------------------------(Scenario 3)---------------------------------\\ 
-  //----------------------Group-Restore-A-Wallet---------------------------//
+
+
+  group(     ' | (Scenario 3) Markets, Feed and Settings  |', () {
+  //--------------------------(Scenario 3)---------------------------------//
+  //---------------- Group Markets, Feed and Settings ---------------------//
   //-----------------------------------------------------------------------//
-    test('-2.0- | Delay: $coolOffTime min - Let mm2 cool off a bit', () async {
+    test('-3.0- | Delay: $coolOffTime min - Let mm2 cool off a bit', () async {
       await Future<void>.delayed(const Duration(minutes: coolOffTime), () {});
       expect(await driver.getText(restoreWalletScreen), 'RESTORE');
     }, timeout: const Timeout(Duration(minutes: coolOffTime + 1)));
-/*
-  group('Check Markets |', () {
-    test('-10- | Logout from new wallet with cancel check.', () async {
-      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      await driver.waitFor(settings);
 
+
+    test('-3.1- | Check restore-wallet-btn works', () async {
+      expect(await driver.getText(restoreWalletScreen), 'RESTORE');
+
+      await driver.waitFor(restoreWalletBtn);
+      await driver.tap(restoreWalletBtn);
+
+      expect(await driver.getText(createWalletNameScreen), 'WELCOME');
     });
-  });
 
 
-  test('-1.21- | Check cancel-logout.', () async {
+    //(1)back-btn test from wallet-naming-screen
+    test('-3.2- | Check back-btn from wallet-naming-screen (works)', () async {
+      expect(await driver.getText(createWalletNameScreen), 'WELCOME');
+
+      await driver.waitFor(back);
+      await driver.tap(back);
+
+      expect(await driver.getText(restoreWalletScreen), 'RESTORE');
+    });
+
+
+    test('-3.3- | Check restore-wallet-btn works (2nd time)', () async {
+      expect(await driver.getText(restoreWalletScreen), 'RESTORE');
+
+      await driver.waitFor(restoreWalletBtn);
+      await driver.tap(restoreWalletBtn);
+
+      expect(await driver.getText(createWalletNameScreen), 'WELCOME');
+    });
+
+
+    test('-3.4- | Create wallet name', () async {
+      expect(await driver.getText(createWalletNameScreen), 'WELCOME');
+
+      await driver.waitFor(nameWalletField);
+      await driver.tap(nameWalletField);
+      await driver.enterText(testNewWalletName);
+      await driver.scrollUntilVisible(welcomeScrollable, setup, dyScroll: -300);
+      await driver.waitFor(setup);
+      await driver.tap(setup);
+
+      expect(await driver.getText(enterYourSeedScreen), 'Enter Your Seed Phrase');
+    });
+
+
+    test('-3.5- | Restore wallet from seed "a" ', () async {
+      expect(await driver.getText(enterYourSeedScreen), 'Enter Your Seed Phrase');
+
+      await driver.waitFor(restoreSeedField);
+      await driver.tap(restoreSeedField);
+      await driver.enterText('a');
+      await driver.waitFor(allowCustomSeed);
+      await driver.tap(allowCustomSeed);
       await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(confirmSeedBtn);
+      await driver.tap(confirmSeedBtn);
+
+      expect(await driver.getText(createPasswordScreen), 'CREATE A PASSWORD');
+    });
+
+
+    test('-3.6- | Create password', () async {
+      expect(await driver.getText(createPasswordScreen), 'CREATE A PASSWORD');
+
+      await driver.waitFor(passwordCreate);
+      await driver.tap(passwordCreate);
+      await driver.enterText(password);
+      await driver.waitFor(passwordRetype);
+      await driver.tap(passwordRetype);
+      await driver.enterText(password);
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(passwordConfirm);
+      await driver.tap(passwordConfirm);
+      
+      expect(await driver.getText(disclaimerScreen), 'Disclaimer & ToS');
+    });
+
+
+    test('-3.7- | Validate disclaimer', () async {
+      expect(await driver.getText(disclaimerScreen), 'Disclaimer & ToS');
+
+      await driver.scrollUntilVisible(disclamerScrollable,
+          endDisclamerScrollable,
+          dyScroll: -5300);
+      await driver.waitFor(checkEula);
+      await driver.tap(checkEula);
+      await driver.waitFor(checkTOC);
+      await driver.tap(checkTOC);
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(disclaimerNext);
+      await driver.tap(disclaimerNext);
+
+      expect(await driver.getText(createaPINScreen), 'Create PIN');
+    }, timeout: const Timeout(Duration(minutes: 1)));
+
+
+    test('-3.8- | Create PIN', () async {
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(find.text('Create PIN'));
+      for (int i = 0; i < 6; i++) {
+        await driver.tap(find.text('0'));
+      }
+      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
+      await driver.waitFor(find.text('Confirm PIN code'));
+      for (int i = 0; i < 6; i++) {
+        await driver.tap(find.text('0'));
+      }
+    });
+
+
+    test('-3.9- | Check if mm2 successfully connected', () async {
+      expect(await driver.getText(bitcoin), 'BITCOIN');
+      expect(await driver.getText(komodo), 'KOMODO');
+    }, timeout: const Timeout(Duration(minutes: 1)));
+
+
+    test('-3.10- | Check Markets-tab-nav-btn works', () async {
+      expect(await driver.getText(bitcoin), 'BITCOIN');
+      expect(await driver.getText(komodo), 'KOMODO');
+
+      await driver.waitFor(markets);
+      await driver.tap(markets);
+
+      expect(await driver.getText(marketsPriceScreen), 'PRICE');
+      expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
+    });
+
+
+    test('-3.11- | Check order-book-nav-btn works', () async {
+      expect(await driver.getText(marketsPriceScreen), 'PRICE');
+      expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
+
+      await driver.waitFor(marketsOrderBookBtn);
+      await driver.tap(marketsOrderBookBtn);
+
+      expect(await driver.getText(marketsOrderBookEmptyScreen), 'Please select coins');
+    });
+
+
+    test('-3.12- | Check price-nav-btn works', () async {
+      expect(await driver.getText(marketsOrderBookEmptyScreen), 'Please select coins');
+
+      await driver.waitFor(marketsPriceBtn);
+      await driver.tap(marketsPriceBtn);
+
+      expect(await driver.getText(bitcoin), 'BITCOIN');
+      expect(await driver.getText(komodo), 'KOMODO');
+    });
+
+
+    test('-3.13- | Check pressing on coin in price-screen moves you to order-book-screen and pops-up Select-Coin-Popup-Screen', () async {
+      expect(await driver.getText(marketsPriceScreen), 'PRICE');
+      expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
+
+      await driver.waitFor(bitcoin);
+      await driver.tap(bitcoin);
+
+      expect(await driver.getText(marketsSelectCoinPopupScreen), 'Select Coin');
+    });
+
+
+    test('-3.14- | Check pressing on grey btn BTC/BTC in select-coin-pop-up does not do anything', () async {
+      expect(await driver.getText(marketsSelectCoinPopupScreen), 'Select Coin');
+
+      await driver.waitFor(marketsCoinSelectBTC);
+      await driver.tap(marketsCoinSelectBTC);
+
+      expect(await driver.getText(marketsSelectCoinPopupScreen), 'Select Coin');
+    });
+
+
+    test('-3.15- | Check pressing on BTC/KMD in select-coin-pop-up brings up order-book-table', () async {
+      expect(await driver.getText(marketsSelectCoinPopupScreen), 'Select Coin');
+
+      await driver.waitFor(marketsCoinSelectKMD);
+      await driver.tap(marketsCoinSelectKMD);
+
+      await driver.waitFor(marketsOrderBookTable);
+
+      expect(await driver.getText(marketsPriceScreen), 'PRICE');
+      expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
+    });
+
+    
+    // TODO(dth): enhancement - get values from both fields and make sure they ,indeed, swap.
+    test('-3.16- | Confirm coin-swap-btn works.', () async {
+      expect(await driver.getText(marketsPriceScreen), 'PRICE');
+      expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
+
+      await driver.waitFor(marketsCoinSelectSwap);
+      await driver.tap(marketsCoinSelectSwap);
+
+      expect(await driver.getText(marketsPriceScreen), 'PRICE');
+      expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
+    });
+
+
+    test('-3.17- | Check coin-select-left button brings up select-coin-screen', () async {
+      expect(await driver.getText(marketsPriceScreen), 'PRICE');
+      expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
+
+      await driver.waitFor(marketsCoinSelectLeft);
+      await driver.tap(marketsCoinSelectLeft);
+
+      expect(await driver.getText(marketsSelectCoinPopupScreen), 'Select Coin');
+    });
+
+
+    test('-3.18- | Confirm you can clear coin-select-left-btn field and order-book-table will dissapear', () async {
+      expect(await driver.getText(marketsSelectCoinPopupScreen), 'Select Coin');
+
+      await driver.waitFor(marketsCoinSelectClear);
+      await driver.tap(marketsCoinSelectClear);
+      
+      expect(await driver.getText(marketsOrderBookEmptyScreen), 'Please select coins');
+    });
+
+
+    test('-3.19- | Confirm coin-select-right button brings up select-coin-screen', () async {
+      expect(await driver.getText(marketsOrderBookEmptyScreen), 'Please select coins');
+
+      await driver.waitFor(marketsCoinSelectRight);
+      await driver.tap(marketsCoinSelectRight);
+      
+      expect(await driver.getText(marketsSelectCoinPopupScreen), 'Select Coin');
+    });
+
+
+    test('-3.20- | Confirm you can clear coin-select-right field', () async {
+      expect(await driver.getText(marketsSelectCoinPopupScreen), 'Select Coin');
+
+      await driver.waitFor(marketsCoinSelectClear);
+      await driver.tap(marketsCoinSelectClear);
+      
+      expect(await driver.getText(marketsOrderBookEmptyScreen), 'Please select coins');
+    });
+
+
+    test('-3.21- | Check FEED screen navigation works', () async {
+      expect(await driver.getText(marketsPriceScreen), 'PRICE');
+      expect(await driver.getText(marketsOrderBookScreen), 'ORDER BOOK');
+
+      await driver.waitFor(feed);
+      await driver.tap(feed);
+      
+      expect(await driver.getText(feedScreen), 'NEWS FEED');
+    });
+
+
+    test('-3.22- | Check SETTINGS screen navigation works', () async {
+      expect(await driver.getText(feedScreen), 'NEWS FEED');
+
       await driver.waitFor(settings);
       await driver.tap(settings);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      await driver.waitFor(logout);
-      await driver.tap(logout);
-      await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      await driver.waitFor(logoutCancel);
-      await driver.tap(logoutCancel);
+      
+      expect(await driver.getText(settingsScreen), 'SETTINGS');
     });
-
-
-
-  */
-
-
-
-  //group('Settings |', () {
     
-      //await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      //await driver.waitFor(logout);
-      //await driver.tap(logout);
-      //await Future<void>.delayed(Duration(milliseconds: globalDelay()), () {});
-      //await driver.waitFor(logoutYes);
-      //await driver.tap(logoutYes);
 
-  //});
-      //----------------------END-(Scenario-3)-END------------------------\\
-  });//---------------------- Group Restore A Wallet ----------------------//
+    test('-3.23- | Delete new wallet', () async {
+      expect(await driver.getText(settingsScreen), 'SETTINGS');
+
+      await driver.scrollUntilVisible(settingsScrollable,
+          settingsDeleteWallet,
+          dyScroll: -500);
+      await driver.waitFor(settingsDeleteWallet);
+      await driver.tap(settingsDeleteWallet);
+
+      await driver.waitFor(enterPasswordField);
+      await driver.tap(enterPasswordField);
+      await driver.enterText(password);
+
+      await driver.scrollIntoView(unlock);
+      await driver.waitFor(unlock);
+      await driver.tap(unlock);
+
+      await driver.waitFor(delete);
+      await driver.tap(delete);
+
+      expect(await driver.getText(createWalletScreen), 'CREATE A WALLET');
+    });//----------------------END-(Scenario-3)-END------------------------//
+  });//---------------- Group Markets, Feed and Settings ------------------//
   //---------------------------END-(Scenario-3)-END------------------------//
-*/
 
 
 
-  
-  
 
 
-  //RELOG #1
+
   group(     ' | (Scenario 4) Send/Receive and Swaps!  |', () {
-  //--------------------------(Scenario 2)---------------------------------\\ 
-  //----------------------Group-Restore-A-Wallet---------------------------//
+  //--------------------------(Scenario 4)---------------------------------//
+  //---------------- Group Send/Receive and Swaps -------------------------//
   //-----------------------------------------------------------------------//
     test('-4.0- | Delay: $coolOffTime min - Let mm2 cool off a bit', () async {
       expect(await driver.getText(restoreWalletScreen), 'RESTORE');
@@ -830,7 +1098,7 @@ void main() {
       }
     });
 
-    // MM2-Login-2
+
     test('-4.7- | Check if mm2 successfully connected', () async {
       expect(await driver.getText(bitcoin), 'BITCOIN');
       expect(await driver.getText(komodo), 'KOMODO');
@@ -891,7 +1159,7 @@ void main() {
       expect(await driver.getText(restoreWalletScreen), 'RESTORE');
     });
 
-    //RELOG-2
+    // RELOG-2
     test('-4.10- | Restore RICK wallet (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await Future<void>.delayed(const Duration(minutes: coolOffTime), () {});
 
@@ -977,7 +1245,7 @@ void main() {
       }
     });
 
-    //MM2-Login-3
+
     test('-4.15- | Check if mm2 successfully connected', () async {
       expect(await driver.getText(morty), 'MORTY');
       expect(await driver.getText(rick), 'RICK');
@@ -1045,7 +1313,7 @@ void main() {
     });
     
 
-    //RELOG-3
+    // RELOG-3
     test('-4.19- | Relog to MORTY (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await driver.scrollIntoView(morty);
       await driver.scrollIntoView(rick);
@@ -1067,6 +1335,7 @@ void main() {
       await driver.tap(login);
     });
 
+
     /* for PIN protection
     test('-31- | Enter PIN for MORTY wallet', () async {
       await Future<void>.delayed(const Duration(milliseconds: 1000), () {});
@@ -1075,7 +1344,9 @@ void main() {
       }
     });
     */
-    //MM2-Login-4
+
+
+    // MM2-Login-4
     test('-4.21- | Check if mm2 successfully connected', () async {
       expect(await driver.getText(morty), 'MORTY');
       expect(await driver.getText(rick), 'RICK');
@@ -1132,8 +1403,9 @@ void main() {
       await driver.tap(logoutYes);
     });
 
+
     // TODO(dth): figure out tests failing even though they pass.
-    //RELOG-4
+    // RELOG-4
     test('-4.24- | Relog to RICK (Delay: $coolOffTime min) - Let mm2 cool off a bit', () async {
       await driver.scrollIntoView(morty);
       await driver.scrollIntoView(rick);
@@ -1155,6 +1427,7 @@ void main() {
       await driver.tap(login);
     });
 
+
     /* for PIN protection
     test('-38- | Enter PIN for RICK wallet', () async {
       await Future<void>.delayed(const Duration(milliseconds: 1000), () {});
@@ -1163,7 +1436,9 @@ void main() {
       }
     });
     */
-    //MM2-Login-5
+
+
+    // MM2-Login-5
     test('-4.26- | Check if mm2 successfully connected', () async {
       expect(await driver.getText(morty), 'MORTY');
       expect(await driver.getText(rick), 'RICK');
@@ -1180,7 +1455,6 @@ void main() {
       await driver.waitFor(back);
       await driver.tap(back);
     });});
-  });
 
 
     test('-4.28- | Swap MORTY for RICK', () async{
@@ -1232,8 +1506,10 @@ void main() {
           dyScroll: -300);
       await driver.tap(find.byValueKey('setting-title-feedback'));
       await driver.tap(find.byValueKey('setting-share-button'));
-    });
-
+    });//----------------------END-(Scenario-4)-END------------------------//
+  });//------------------ Group Send/Receive and Swaps --------------------//
+  //---------------------------END-(Scenario-4)-END------------------------//
+  
 
 
 
