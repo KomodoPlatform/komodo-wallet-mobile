@@ -18,7 +18,7 @@ In order to test swaps and send/receive (Scenario 4) I used the following seeds 
     export RICK='offer venue embark tank eyebrow grape great era nothing top unveil pear'
     export MORTY='pear enforce exit dial spell draft chief lobster cabin refuse swift scan'
 
-or simply do: source test_driversource_me_for_test_seeds
+or simply do: source test_driver/source_me_for_test_seeds
 
 For every created wallet auth is as follows:
 PIN: 000000
