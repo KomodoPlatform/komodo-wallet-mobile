@@ -377,8 +377,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       if (txErcFee != null &&
           swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty) {
         final double relPrice =
-            cexProvider.getPrice(swapBloc.sellCoinBalance.coin.abbr);
-        final double ethPrice = cexProvider.getPrice('ETH');
+            cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
+        final double ethPrice = cexProvider.getUsdPrice('ETH');
 
         final double totalUsdFee = relPrice == 0 || ethPrice == 0
             ? null
@@ -417,7 +417,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 ? swapBloc.sellCoinBalance.coin.abbr
                 : 'ETH';
         final double usdFee =
-            (factor * txFee).toDouble() * cexProvider.getPrice(abbr);
+            (factor * txFee).toDouble() * cexProvider.getUsdPrice(abbr);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
@@ -544,7 +544,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             if (amount == null || coin == null || amount == 0)
               return Container();
 
-            final double price = cexProvider.getPrice(coin.abbr);
+            final double price = cexProvider.getUsdPrice(coin.abbr);
             if (price == null || price == 0) return Container();
 
             final double usd = amount * price;
@@ -821,7 +821,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                                       .data
                                                                       .toDouble() *
                                                                   cexProvider
-                                                                      .getPrice(
+                                                                      .getUsdPrice(
                                                                           abbr)),
                                                           ],
                                                         );

@@ -11,6 +11,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
@@ -19,6 +20,7 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class CoinsPage extends StatefulWidget {
   @override
@@ -26,6 +28,7 @@ class CoinsPage extends StatefulWidget {
 }
 
 class _CoinsPageState extends State<CoinsPage> {
+  CexProvider _cexProvider;
   ScrollController _scrollController;
   double _heightFactor = 7;
   BuildContext contextMain;
@@ -50,6 +53,7 @@ class _CoinsPageState extends State<CoinsPage> {
 
   @override
   Widget build(BuildContext context) {
+    _cexProvider = Provider.of<CexProvider>(context);
     _heightScreen = MediaQuery.of(context).size.height;
     _widthScreen = MediaQuery.of(context).size.width;
     _heightSliver = _heightScreen * 0.25;
@@ -90,7 +94,8 @@ class _CoinsPageState extends State<CoinsPage> {
                                             coinBalance.balanceUSD;
                                       }
                                       return AutoSizeText(
-                                        '\$${f.format(totalBalanceUSD)} USD',
+                                        _cexProvider.convert(
+                                            totalBalanceUSD, 'usd'),
                                         maxFontSize: 18,
                                         minFontSize: 12,
                                         style:

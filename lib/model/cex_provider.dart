@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class CexProvider extends ChangeNotifier {
   CexProvider() {
@@ -26,21 +27,31 @@ class CexProvider extends ChangeNotifier {
     return _charts[pair];
   }
 
-  double getPrice(String abbr) => cexPrices.getUsdPrice(abbr);
+  double getUsdPrice(String abbr) => cexPrices.getUsdPrice(abbr);
+  String convert(double volume, String from, [String to]) =>
+      cexPrices.convert(volume, from, to);
 
   String get currency => cexPrices.currency;
   set currency(String value) {
-    if (cexPrices.currencies.contains(value.toLowerCase())) {
+    final List<String> currencies = [
+      ...cexPrices.fiatCurrencies,
+      ...cexPrices.coinCurrencies,
+    ];
+    if (currencies.contains(value.toLowerCase())) {
       cexPrices.currency = value;
       notifyListeners();
     }
   }
 
   void switchCurrency() {
-    int current = cexPrices.currencies.indexOf(cexPrices.currency);
+    final List<String> currencies = [
+      ...cexPrices.fiatCurrencies,
+      ...cexPrices.coinCurrencies,
+    ];
+    int current = currencies.indexOf(cexPrices.currency);
     current++;
-    if (current + 1 > cexPrices.currencies.length) current = 0;
-    cexPrices.currency = cexPrices.currencies[current];
+    if (current + 1 > currencies.length) current = 0;
+    cexPrices.currency = currencies[current];
     notifyListeners();
   }
 
@@ -336,13 +347,19 @@ class CexPrices {
     });
   }
 
-  final List<String> currencies = ['usd', 'btc', 'kmd'];
+  final List<String> coinCurrencies = ['btc', 'kmd'];
+  final List<String> fiatCurrencies = ['usd', 'eur'];
   String currency = 'usd';
 
   final List<CexProvider> _providers = [];
   final Map<String, Map<String, double>> _prices = {};
 
   double getUsdPrice(String abbr) {
+    if (abbr.toLowerCase() == 'usd') return 1;
+    if (fiatCurrencies.contains(abbr.toLowerCase())) {
+      return _getFiatRate(abbr);
+    }
+
     double price;
     try {
       price = _prices[abbr]['usd'];
@@ -351,6 +368,35 @@ class CexPrices {
     if (price == null) updatePrices();
 
     return price;
+  }
+
+  String convert(double volume, String from, [String to]) {
+    to ??= currency;
+    final double usdPrice = getUsdPrice(from.toUpperCase());
+    final double usdVolume = volume * usdPrice;
+    double convertedVolume;
+    if (from.toLowerCase() == to.toLowerCase()) {
+      convertedVolume = volume;
+    } else {
+      double convertionPrice;
+      try {
+        convertionPrice = _prices[from.toUpperCase()][to.toLowerCase()];
+      } catch (_) {}
+      convertionPrice ??= usdPrice / getUsdPrice(to.toUpperCase());
+      convertedVolume = usdVolume * convertionPrice;
+    }
+
+    if (convertedVolume == null) return '';
+
+    final String converted = formatPrice(convertedVolume);
+
+    if (to.toLowerCase() == 'usd') return '\$$converted';
+    if (to.toLowerCase() == 'eur') return '€$converted';
+    return '$converted ${to.toUpperCase()}';
+  }
+
+  double _getFiatRate(String abbr) {
+    return 1; // TODO(yurii): implement usdRate
   }
 
   Future<void> updatePrices([List<Coin> coinsList]) async {
@@ -367,10 +413,12 @@ class CexPrices {
     String _body;
     try {
       _res = await http
-          .get('https://api.coingecko.com/api/v3/simple/price?ids=' +
-              ids.join(',') +
-              '&vs_currencies=' +
-              'usd')
+          .get(
+        'https://api.coingecko.com/api/v3/simple/price?ids=' +
+            ids.join(',') +
+            '&vs_currencies=' +
+            fiatCurrencies.join(','),
+      )
           .timeout(
         const Duration(seconds: 10),
         onTimeout: () {
@@ -400,6 +448,9 @@ class CexPrices {
             .firstWhere((coin) => coin.coingeckoId == coingeckoId)
             .abbr;
       } catch (_) {}
+
+      if (coinAbbr == null && fiatCurrencies.contains(coingeckoId))
+        coinAbbr = coingeckoId.toUpperCase();
 
       if (coinAbbr != null) {
         _prices[coinAbbr] = {};
