@@ -696,6 +696,7 @@ class _SettingPageState extends State<SettingPage> {
                                 Expanded(
                                   child: PrimaryButton(
                                     text: AppLocalizations.of(context).delete,
+                                    key: const Key('delete-wallet'),
                                     onPressed: () async {
                                       Navigator.of(context).pop();
                                       settingsBloc.setDeleteLoading(true);

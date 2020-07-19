@@ -72,6 +72,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               CoinSelect(
+                  key: const Key('coin-select-left'),
                   value: _orderBookProvider.activePair?.buy,
                   type: CoinType.base,
                   pairedCoin: _orderBookProvider.activePair?.sell,
@@ -92,6 +93,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
               ButtonTheme(
                 minWidth: 40,
                 child: FlatButton(
+                    key: const Key('coin-select-swap'),
                     padding: const EdgeInsets.all(0),
                     onPressed: () {
                       _orderBookProvider.activePair = CoinsPair(
@@ -103,6 +105,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
               ),
               const SizedBox(width: 12),
               CoinSelect(
+                key: const Key('coin-select-right'),
                 value: _orderBookProvider.activePair?.sell,
                 type: CoinType.rel,
                 pairedCoin: _orderBookProvider.activePair?.buy,
