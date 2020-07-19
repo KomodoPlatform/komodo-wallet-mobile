@@ -9,6 +9,7 @@ import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
@@ -567,44 +568,77 @@ class _CoinDetailState extends State<CoinDetail> {
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, top: 8),
-                            child: Builder(builder: (BuildContext context) {
-                              final amount = deci(transaction.myBalanceChange);
-
-                              return AutoSizeText(
-                                '${amount.toDouble() > 0 ? '+' : ''}${deci2s(amount)} ${currentCoinBalance.coin.abbr}',
-                                maxLines: 1,
-                                style: subtitle,
-                                textAlign: TextAlign.end,
-                              );
-                            }),
-                          ),
-                          Builder(builder: (context) {
-                            if (currentCoinBalance.priceForOne == null) {
-                              return const Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 16, right: 16, bottom: 16, top: 8),
-                                  child: SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: CircularProgressIndicator(strokeWidth: 2.0,),
-                                  ));
-                            } else {
-                              final usdAmount =
-                                  deci(currentCoinBalance.priceForOne) *
+                            child: StreamBuilder<bool>(
+                                initialData: settingsBloc.showBalance,
+                                stream: settingsBloc.outShowBalance,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<bool> snapshot) {
+                                  final amount =
                                       deci(transaction.myBalanceChange);
-                              if (usdAmount != deci(0)) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, right: 16, bottom: 16, top: 8),
-                                  child: Text(
-                                    usdAmount.toStringAsFixed(2) + ' USD',
-                                    style: Theme.of(context).textTheme.body2,
-                                  ),
-                                );
-                              }
-                              return Container();
-                            }
-                          }),
+                                  String amountString = deci2s(amount);
+                                  if (snapshot.hasData &&
+                                      snapshot.data == false) {
+                                    amountString =
+                                        (amount.toDouble() < 0 ? '-' : '') +
+                                            '**.**';
+                                  }
+                                  return AutoSizeText(
+                                    '${amount.toDouble() > 0 ? '+' : ''}$amountString ${currentCoinBalance.coin.abbr}',
+                                    maxLines: 1,
+                                    style: subtitle,
+                                    textAlign: TextAlign.end,
+                                  );
+                                }),
+                          ),
+                          StreamBuilder<bool>(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                if (currentCoinBalance.priceForOne == null) {
+                                  return const Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          bottom: 16,
+                                          top: 8),
+                                      child: SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2.0,
+                                        ),
+                                      ));
+                                } else {
+                                  final usdAmount =
+                                      deci(currentCoinBalance.priceForOne) *
+                                          deci(transaction.myBalanceChange);
+                                  if (usdAmount != deci(0)) {
+                                    String usdString =
+                                        usdAmount.toStringAsFixed(2);
+                                    if (snapshot.hasData &&
+                                        snapshot.data == false) {
+                                      usdString = (usdAmount.toDouble() < 0
+                                              ? '-'
+                                              : '') +
+                                          '**.**';
+                                    }
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          bottom: 16,
+                                          top: 8),
+                                      child: Text(
+                                        '$usdString USD',
+                                        style:
+                                            Theme.of(context).textTheme.body2,
+                                      ),
+                                    );
+                                  }
+                                  return Container();
+                                }
+                              }),
                         ],
                       ),
                     ),
@@ -678,18 +712,33 @@ class _CoinDetailState extends State<CoinDetail> {
                     }
                   }
 
-                  return Column(
-                    children: <Widget>[
-                      Text(
-                        currentCoinBalance.balance.getBalance() +
-                            ' ' +
-                            currentCoinBalance.balance.coin.toString(),
-                        style: Theme.of(context).textTheme.title,
-                        textAlign: TextAlign.center,
-                      ),
-                      Text('\$${currentCoinBalance.getBalanceUSD()} USD')
-                    ],
-                  );
+                  return StreamBuilder<bool>(
+                      initialData: settingsBloc.showBalance,
+                      stream: settingsBloc.outShowBalance,
+                      builder:
+                          (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                        String coinBalance =
+                            currentCoinBalance.balance.getBalance();
+                        String coinBalanceUsd =
+                            currentCoinBalance.getBalanceUSD();
+
+                        if (snapshot.hasData && snapshot.data == false) {
+                          coinBalance = '**.**';
+                          coinBalanceUsd = '**.**';
+                        }
+                        return Column(
+                          children: <Widget>[
+                            Text(
+                              coinBalance +
+                                  ' ' +
+                                  currentCoinBalance.balance.coin.toString(),
+                              style: Theme.of(context).textTheme.title,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text('\$$coinBalanceUsd USD')
+                          ],
+                        );
+                      });
                 } else {
                   return Container();
                 }
