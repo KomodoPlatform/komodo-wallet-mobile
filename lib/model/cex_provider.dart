@@ -21,6 +21,9 @@ class CexProvider extends ChangeNotifier {
   Future<ChartData> getCandles(String pair) async {
     if (_charts[pair] == null) {
       await _updateChart(pair);
+    } else if (DateTime.now().millisecondsSinceEpoch - _charts[pair].updated >
+        30 * 1000) {
+      await _updateChart(pair);
     }
 
     return _charts[pair];
