@@ -521,15 +521,18 @@ class _CoinDetailState extends State<CoinDetail> {
           elevation: 8.0,
           child: InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            onTap: () {
-              Navigator.push<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                    builder: (BuildContext context) => TransactionDetail(
-                        transaction: transaction,
-                        coinBalance: currentCoinBalance)),
-              );
-            },
+            // TODO(MateusRodCosta): See if moving the StreamBuilder up is a better idea
+            onTap: settingsBloc.showBalance == true
+                ? () {
+                    Navigator.push<dynamic>(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => TransactionDetail(
+                              transaction: transaction,
+                              coinBalance: currentCoinBalance)),
+                    );
+                  }
+                : null,
             child: Container(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
