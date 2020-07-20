@@ -194,7 +194,10 @@ class _OrderBookPageState extends State<OrderBookPage> {
       child: Container(
         height: MediaQuery.of(context).size.height / 2,
         child: FutureBuilder<ChartData>(
-          future: _cexProvider.getCandles(_pairStr),
+          future: _cexProvider.getCandles(
+            _pairStr,
+            double.parse(_chartDuration),
+          ),
           builder: (
             BuildContext context,
             AsyncSnapshot<ChartData> snapshot,

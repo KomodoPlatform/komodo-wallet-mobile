@@ -18,11 +18,14 @@ class CexProvider extends ChangeNotifier {
     return _findChain(pair) != null;
   }
 
-  Future<ChartData> getCandles(String pair) async {
+  Future<ChartData> getCandles(
+    String pair, [
+    double duration = 5.0 * 60,
+  ]) async {
     if (_charts[pair] == null) {
       await _updateChart(pair);
     } else if (DateTime.now().millisecondsSinceEpoch - _charts[pair].updated >
-        30 * 1000) {
+        duration * 1000) {
       await _updateChart(pair);
     }
 
