@@ -173,8 +173,10 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
           ),
           Expanded(
             child: FutureBuilder<ChartData>(
-              future: cexProvider
-                  .getCandles('${widget.coinBalance.coin.abbr}-USDC'),
+              future: cexProvider.getCandles(
+                '${widget.coinBalance.coin.abbr}-USDC',
+                double.parse(chartDuration),
+              ),
               builder:
                   (BuildContext context, AsyncSnapshot<ChartData> snapshot) {
                 List<CandleData> candles;
