@@ -30,7 +30,7 @@ class CoinsPage extends StatefulWidget {
 class _CoinsPageState extends State<CoinsPage> {
   CexProvider _cexProvider;
   ScrollController _scrollController;
-  double _heightFactor = 7;
+  double _heightFactor = 2.3;
   BuildContext contextMain;
   NumberFormat f = NumberFormat('###,##0.0#');
   double _heightScreen;
@@ -39,7 +39,7 @@ class _CoinsPageState extends State<CoinsPage> {
 
   void _scrollListener() {
     setState(() {
-      _heightFactor = (exp(-_scrollController.offset / 60) * 6) + 1;
+      _heightFactor = (exp(-_scrollController.offset / 60) * 1.3) + 1;
     });
   }
 
