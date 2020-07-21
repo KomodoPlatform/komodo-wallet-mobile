@@ -45,7 +45,12 @@ class _OrderBookPageState extends State<OrderBookPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+              padding: const EdgeInsets.only(
+                top: 8,
+                left: 8,
+                right: 8,
+                bottom: 20,
+              ),
               child: _buildPairSelect(),
             ),
             if (_hasChartsData)
