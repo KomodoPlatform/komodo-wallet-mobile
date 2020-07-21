@@ -37,7 +37,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
     _pairStr = _hasBothCoins
         ? '${_orderBookProvider.activePair.buy.abbr}-${_orderBookProvider.activePair.sell.abbr}'
         : null;
-    _hasChartsData = _hasBothCoins && _cexProvider.isChartsAvailable(_pairStr);
+    _hasChartsData = _hasBothCoins && _cexProvider.isChartAvailable(_pairStr);
 
     return Container(
       child: SingleChildScrollView(
@@ -45,7 +45,12 @@ class _OrderBookPageState extends State<OrderBookPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+              padding: const EdgeInsets.only(
+                top: 8,
+                left: 8,
+                right: 8,
+                bottom: 20,
+              ),
               child: _buildPairSelect(),
             ),
             if (_hasChartsData)

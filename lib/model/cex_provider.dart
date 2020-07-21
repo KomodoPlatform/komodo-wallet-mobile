@@ -1,20 +1,24 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/utils/log.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class CexProvider extends ChangeNotifier {
   CexProvider() {
     _updateTickersList();
-  }
-  final String _baseUrl = 'http://komodo.live:3333/api/v1/ohlc';
-  final String _tickersListUrl =
-      'http://komodo.live:3333/api/v1/ohlc/tickers_list';
-  final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
-  bool _updatingChart = false;
-  List<String> _tickers;
+    _updateRates();
 
-  bool isChartsAvailable(String pair) {
+    cexPrices.linkProvider(this);
+  }
+
+  bool isChartAvailable(String pair) {
     return _findChain(pair) != null;
   }
 
@@ -32,6 +36,40 @@ class CexProvider extends ChangeNotifier {
     return _charts[pair];
   }
 
+  double getUsdPrice(String abbr) => cexPrices.getUsdPrice(abbr);
+
+  String convert(double volume, {String from, String to}) =>
+      cexPrices.convert(volume, from: from, to: to);
+
+  List<String> get fiatList => cexPrices.fiatList;
+  String get currency => cexPrices.currencies[cexPrices.activeCurrency];
+  String get selectedFiat => cexPrices.selectedFiat;
+  set selectedFiat(String value) => cexPrices.selectedFiat = value;
+
+  void switchCurrency() {
+    int idx = cexPrices.activeCurrency;
+    idx++;
+    if (idx + 1 > cexPrices.currencies.length) idx = 0;
+    cexPrices.activeCurrency = idx;
+  }
+
+  void notify() => notifyListeners();
+
+  @override
+  void dispose() {
+    super.dispose();
+    cexPrices.unlinkProvider(this);
+  }
+
+  final String _chartsUrl = 'http://komodo.live:3333/api/v1/ohlc';
+  final String _tickersListUrl =
+      'http://komodo.live:3333/api/v1/ohlc/tickers_list';
+  final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
+  bool _updatingChart = false;
+  List<String> _tickers;
+
+  void _updateRates() => cexPrices.updateRates();
+
   List<String> _getTickers() {
     if (_tickers != null) return _tickers;
 
@@ -42,18 +80,17 @@ class CexProvider extends ChangeNotifier {
   Future<void> _updateTickersList() async {
     http.Response _res;
     String _body;
-    print('Fetching tickers list...');
     try {
       _res = await http.get(_tickersListUrl).timeout(
         const Duration(seconds: 10),
         onTimeout: () {
-          print('Fetching tickers timed out');
+          Log('cex_provider', 'Fetching tickers timed out');
           throw 'Fetching tickers timed out';
         },
       );
       _body = _res.body;
     } catch (e) {
-      print('Failed to fetch tickers list: $e');
+      Log('cex_provider', 'Failed to fetch tickers list: $e');
       rethrow;
     }
 
@@ -61,7 +98,7 @@ class CexProvider extends ChangeNotifier {
     try {
       json = jsonDecode(_body);
     } catch (e) {
-      print('Failed to parse tickers json: $e');
+      Log('cex_provider', 'Failed to parse tickers json: $e');
       rethrow;
     }
 
@@ -197,18 +234,17 @@ class CexProvider extends ChangeNotifier {
     final String pair = '${link.rel}-${link.base}';
     http.Response _res;
     String _body;
-    print('Fetching $pair candles data...');
     try {
-      _res = await http.get('$_baseUrl/${pair.toLowerCase()}').timeout(
+      _res = await http.get('$_chartsUrl/${pair.toLowerCase()}').timeout(
         const Duration(seconds: 10),
         onTimeout: () {
-          print('Fetching $pair timed out');
+          Log('cex_provider', 'Fetching $pair data timed out');
           throw 'Fetching $pair timed out';
         },
       );
       _body = _res.body;
     } catch (e) {
-      print('Failed to fetch data: $e');
+      Log('cex_provider', 'Failed to fetch data: $e');
       rethrow;
     }
 
@@ -216,7 +252,7 @@ class CexProvider extends ChangeNotifier {
     try {
       json = jsonDecode(_body);
     } catch (e) {
-      print('Failed to parse json: $e');
+      Log('cex_provider', 'Failed to parse json: $e');
       rethrow;
     }
 
@@ -297,6 +333,222 @@ class CexProvider extends ChangeNotifier {
     if (chain != null) return chain;
 
     return null;
+  }
+}
+
+CexPrices cexPrices = CexPrices();
+
+class CexPrices {
+  CexPrices() {
+    _init();
+  }
+
+  Future<void> _init() async {
+    prefs = await SharedPreferences.getInstance();
+    activeCurrency = prefs.getInt('activeCurrency') ?? 0;
+    _selectedFiat = prefs.getString('selectedFiat') ?? 'USD';
+    currencies = [_selectedFiat, 'BTC', 'KMD'];
+
+    Timer.periodic(const Duration(seconds: 60), (_) {
+      updatePrices();
+      updateRates();
+    });
+  }
+
+  List<String> currencies;
+
+  int get activeCurrency => _activeCurrency;
+  set activeCurrency(int value) {
+    _activeCurrency = value;
+    prefs?.setInt('activeCurrency', value);
+    _notifyListeners();
+  }
+
+  String get selectedFiat => _selectedFiat;
+  set selectedFiat(String value) {
+    if (_isFiat(value)) {
+      _selectedFiat = value;
+      currencies[0] = value;
+      prefs?.setString('selectedFiat', value);
+      _notifyListeners();
+    }
+  }
+
+  List<String> get fiatList => _fiatCurrencies?.keys?.toList();
+
+  SharedPreferences prefs;
+  String _selectedFiat;
+  int _activeCurrency;
+  final Map<String, double> _fiatCurrencies = {};
+  final List<CexProvider> _providers = [];
+  final Map<String, Map<String, double>> _prices = {};
+
+  Future<void> updateRates() async {
+    http.Response _res;
+    String _body;
+    try {
+      _res = await http.get('https://api.openrates.io/latest?base=USD').timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw 'Fetching rates prices timed out';
+        },
+      );
+      _body = _res.body;
+    } catch (e) {
+      Log('cex_provider', 'Failed to fetch rates: $e');
+    }
+
+    Map<String, dynamic> json;
+    try {
+      json = jsonDecode(_body);
+    } catch (e) {
+      Log('cex_provider', 'Failed to parse rates json: $e');
+    }
+
+    if (json == null || json['rates'] == null) {
+      if (_fiatCurrencies.isEmpty) _selectedFiat = 'usd';
+      return;
+    }
+
+    json['rates'].forEach((String fiat, dynamic rate) {
+      _fiatCurrencies[fiat] = rate;
+    });
+
+    _notifyListeners();
+  }
+
+  double getUsdPrice(String abbr) {
+    if (abbr == 'USD') return 1;
+    if (_isFiat(abbr)) {
+      return 1 / _getFiatRate(abbr);
+    }
+
+    double price;
+    try {
+      price = _prices[abbr]['usd'];
+    } catch (_) {}
+
+    if (price == null) updatePrices();
+
+    return price;
+  }
+
+  String convert(double volume, {String from, String to}) {
+    from ??= 'USD';
+    to ??= currencies == null ? null : currencies[_activeCurrency];
+
+    if (from == null || to == null) return '';
+
+    final double fromUsdPrice = getUsdPrice(from);
+    final double usdVolume = volume * fromUsdPrice;
+    double convertedVolume;
+    if (from == to) {
+      convertedVolume = volume;
+    } else {
+      double convertionPrice;
+      try {
+        convertionPrice = _prices[from][to.toLowerCase()];
+      } catch (_) {}
+      final double toUsdPrice = getUsdPrice(to);
+      if (toUsdPrice != null) {
+        convertionPrice ??= fromUsdPrice / toUsdPrice;
+        convertedVolume = usdVolume * convertionPrice;
+      }
+    }
+
+    if (convertedVolume == null || convertedVolume == 0) return '';
+
+    String converted;
+    if (_isFiat(to)) {
+      converted = convertedVolume.toStringAsFixed(2);
+      if (converted == '0.00') converted = formatPrice(convertedVolume, 4);
+    } else {
+      converted = formatPrice(convertedVolume);
+    }
+
+    if (to == 'USD') return '\$$converted';
+    if (to == 'EUR') return '€$converted';
+    if (to == 'GBP') return '£$converted';
+    return '$converted $to';
+  }
+
+  double _getFiatRate(String abbr) {
+    return _fiatCurrencies[abbr];
+  }
+
+  bool _isFiat(String abbr) {
+    if (abbr == 'USD') return true;
+    return _fiatCurrencies[abbr] != null;
+  }
+
+  Future<void> updatePrices([List<Coin> coinsList]) async {
+    coinsList ??= coinsBloc.coinBalance
+        ?.map((CoinBalance balance) => balance.coin)
+        ?.toList();
+
+    if (coinsList == null) return;
+
+    final List<String> ids =
+        coinsList.map((Coin coin) => coin.coingeckoId).toList();
+
+    http.Response _res;
+    String _body;
+    try {
+      _res = await http
+          .get('https://api.coingecko.com/api/v3/simple/price?ids=' +
+              ids.join(',') +
+              '&vs_currencies=usd')
+          .timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw 'Fetching usd prices timed out';
+        },
+      );
+      _body = _res.body;
+    } catch (e) {
+      Log('cex_provider', 'Failed to fetch usd prices: $e');
+      rethrow;
+    }
+
+    Map<String, dynamic> json;
+    try {
+      json = jsonDecode(_body);
+    } catch (e) {
+      Log('cex_provider', 'Failed to parse prices json: $e');
+      rethrow;
+    }
+
+    if (json == null) return;
+
+    json.forEach((String coingeckoId, dynamic pricesData) {
+      String coinAbbr;
+      try {
+        coinAbbr = coinsList
+            .firstWhere((coin) => coin.coingeckoId == coingeckoId)
+            .abbr;
+      } catch (_) {}
+
+      if (coinAbbr != null) {
+        _prices[coinAbbr] = {};
+        pricesData.forEach((String currency, dynamic price) {
+          _prices[coinAbbr][currency] = price;
+        });
+      }
+    });
+
+    _notifyListeners();
+  }
+
+  void linkProvider(CexProvider provider) {
+    _providers.add(provider);
+  }
+
+  void unlinkProvider(CexProvider provider) {
+    _providers.remove(provider);
+  }
+
+  void _notifyListeners() {
+    for (CexProvider provider in _providers) provider.notify();
   }
 }
 

@@ -11,6 +11,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
@@ -19,6 +20,7 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class CoinsPage extends StatefulWidget {
   @override
@@ -26,8 +28,9 @@ class CoinsPage extends StatefulWidget {
 }
 
 class _CoinsPageState extends State<CoinsPage> {
+  CexProvider _cexProvider;
   ScrollController _scrollController;
-  double _heightFactor = 7;
+  double _heightFactor = 2.3;
   BuildContext contextMain;
   NumberFormat f = NumberFormat('###,##0.0#');
   double _heightScreen;
@@ -36,7 +39,7 @@ class _CoinsPageState extends State<CoinsPage> {
 
   void _scrollListener() {
     setState(() {
-      _heightFactor = (exp(-_scrollController.offset / 60) * 6) + 1;
+      _heightFactor = (exp(-_scrollController.offset / 60) * 1.3) + 1;
     });
   }
 
@@ -50,6 +53,7 @@ class _CoinsPageState extends State<CoinsPage> {
 
   @override
   Widget build(BuildContext context) {
+    _cexProvider = Provider.of<CexProvider>(context);
     _heightScreen = MediaQuery.of(context).size.height;
     _widthScreen = MediaQuery.of(context).size.width;
     _heightSliver = _heightScreen * 0.25;
@@ -89,13 +93,18 @@ class _CoinsPageState extends State<CoinsPage> {
                                         totalBalanceUSD +=
                                             coinBalance.balanceUSD;
                                       }
-                                      return AutoSizeText(
-                                        '\$${f.format(totalBalanceUSD)} USD',
-                                        maxFontSize: 18,
-                                        minFontSize: 12,
-                                        style:
-                                            Theme.of(context).textTheme.title,
-                                        maxLines: 1,
+                                      return FlatButton(
+                                        onPressed: () {
+                                          _cexProvider.switchCurrency();
+                                        },
+                                        child: AutoSizeText(
+                                          _cexProvider.convert(totalBalanceUSD),
+                                          maxFontSize: 18,
+                                          minFontSize: 12,
+                                          style:
+                                              Theme.of(context).textTheme.title,
+                                          maxLines: 1,
+                                        ),
                                       );
                                     } else {
                                       return Center(
@@ -362,6 +371,7 @@ class ItemCoin extends StatefulWidget {
 class _ItemCoinState extends State<ItemCoin> {
   @override
   Widget build(BuildContext context) {
+    final CexProvider cexProvider = Provider.of<CexProvider>(context);
     final Coin coin = widget.coinBalance.coin;
     final Balance balance = widget.coinBalance.balance;
     final NumberFormat f = NumberFormat('###,##0.########');
@@ -503,9 +513,9 @@ class _ItemCoinState extends State<ItemCoin> {
                             height: 4,
                           ),
                           Builder(builder: (BuildContext context) {
-                            final NumberFormat f = NumberFormat('###,##0.##');
                             return Text(
-                              '\$${f.format(widget.coinBalance.balanceUSD)} USD',
+                              cexProvider
+                                  .convert(widget.coinBalance.balanceUSD),
                               style: Theme.of(context).textTheme.body2,
                             );
                           }),

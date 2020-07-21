@@ -30,6 +30,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   bool quotedChart = false;
   String chartDuration = '3600';
   CexProvider cexProvider;
+  String _currency;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +40,11 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
     coin = widget.coinBalance.coin;
     balance = widget.coinBalance.balance;
 
-    final bool _hasChartData =
-        cexProvider.isChartsAvailable('${widget.coinBalance.coin.abbr}-USDC');
+    _currency = cexProvider.currency.toLowerCase() == 'usd'
+        ? 'USDC'
+        : cexProvider.currency.toUpperCase();
+    final bool _hasChartData = cexProvider
+        .isChartAvailable('${widget.coinBalance.coin.abbr}-$_currency');
 
     return Container(
       child: Column(
@@ -115,7 +119,9 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                               width: 4,
                                             ),
                                             Text(
-                                              '\$${widget.coinBalance.priceForOne}',
+                                              cexProvider.convert(double.parse(
+                                                widget.coinBalance.priceForOne,
+                                              )),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle
@@ -174,7 +180,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
           Expanded(
             child: FutureBuilder<ChartData>(
               future: cexProvider.getCandles(
-                '${widget.coinBalance.coin.abbr}-USDC',
+                '${widget.coinBalance.coin.abbr}-$_currency',
                 double.parse(chartDuration),
               ),
               builder:
@@ -237,8 +243,8 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                   : null,
                               child: Text(
                                 quotedChart
-                                    ? 'USDC/${widget.coinBalance.coin.abbr}'
-                                    : '${widget.coinBalance.coin.abbr}/USDC',
+                                    ? '$_currency/${widget.coinBalance.coin.abbr}'
+                                    : '${widget.coinBalance.coin.abbr}/$_currency',
                                 style: const TextStyle(fontSize: 12),
                               )),
                         ],

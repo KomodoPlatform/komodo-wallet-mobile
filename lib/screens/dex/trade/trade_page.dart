@@ -9,6 +9,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -63,6 +64,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Ask currentAsk;
   bool isLoadingMax = false;
   bool showDetailedFees = false;
+  CexProvider cexProvider;
 
   @override
   void initState() {
@@ -128,6 +130,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     _updateMarketsPair();
+    cexProvider = Provider.of<CexProvider>(context);
 
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -339,7 +342,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Widget buildCexPrice(double price, [double size = 12]) {
     if (price == null || price == 0) return Container();
 
-    final String priceStr = formatPrice(price.toString(), 4);
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -349,7 +351,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         ),
         const SizedBox(width: 2),
         Text(
-          '\$$priceStr',
+          cexProvider.convert(price),
           style: TextStyle(fontSize: size, color: cexColor),
         ),
       ],
@@ -374,8 +376,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       if (txErcFee != null &&
           swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty) {
         final double relPrice =
-            coinsBloc.priceByAbbr(swapBloc.sellCoinBalance.coin.abbr);
-        final double ethPrice = coinsBloc.priceByAbbr('ETH');
+            cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
+        final double ethPrice = cexProvider.getUsdPrice('ETH');
 
         final double totalUsdFee = relPrice == 0 || ethPrice == 0
             ? null
@@ -414,7 +416,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 ? swapBloc.sellCoinBalance.coin.abbr
                 : 'ETH';
         final double usdFee =
-            (factor * txFee).toDouble() * coinsBloc.priceByAbbr(abbr);
+            (factor * txFee).toDouble() * cexProvider.getUsdPrice(abbr);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
@@ -541,7 +543,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             if (amount == null || coin == null || amount == 0)
               return Container();
 
-            final double price = coinsBloc.priceByAbbr(coin.abbr);
+            final double price = cexProvider.getUsdPrice(coin.abbr);
             if (price == null || price == 0) return Container();
 
             final double usd = amount * price;
@@ -817,8 +819,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                               buildCexPrice(snapshot
                                                                       .data
                                                                       .toDouble() *
-                                                                  coinsBloc
-                                                                      .priceByAbbr(
+                                                                  cexProvider
+                                                                      .getUsdPrice(
                                                                           abbr)),
                                                           ],
                                                         );
