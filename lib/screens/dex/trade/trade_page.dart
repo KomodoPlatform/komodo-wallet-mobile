@@ -342,7 +342,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Widget buildCexPrice(double price, [double size = 12]) {
     if (price == null || price == 0) return Container();
 
-    final String priceStr = formatPrice(price.toString(), 4);
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -352,7 +351,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         ),
         const SizedBox(width: 2),
         Text(
-          '\$$priceStr',
+          cexProvider.convert(price),
           style: TextStyle(fontSize: size, color: cexColor),
         ),
       ],

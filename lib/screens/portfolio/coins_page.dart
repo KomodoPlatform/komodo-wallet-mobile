@@ -93,14 +93,18 @@ class _CoinsPageState extends State<CoinsPage> {
                                         totalBalanceUSD +=
                                             coinBalance.balanceUSD;
                                       }
-                                      return AutoSizeText(
-                                        _cexProvider.convert(
-                                            totalBalanceUSD, 'usd'),
-                                        maxFontSize: 18,
-                                        minFontSize: 12,
-                                        style:
-                                            Theme.of(context).textTheme.title,
-                                        maxLines: 1,
+                                      return FlatButton(
+                                        onPressed: () {
+                                          _cexProvider.switchCurrency();
+                                        },
+                                        child: AutoSizeText(
+                                          _cexProvider.convert(totalBalanceUSD),
+                                          maxFontSize: 18,
+                                          minFontSize: 12,
+                                          style:
+                                              Theme.of(context).textTheme.title,
+                                          maxLines: 1,
+                                        ),
                                       );
                                     } else {
                                       return Center(
@@ -367,6 +371,7 @@ class ItemCoin extends StatefulWidget {
 class _ItemCoinState extends State<ItemCoin> {
   @override
   Widget build(BuildContext context) {
+    final CexProvider cexProvider = Provider.of<CexProvider>(context);
     final Coin coin = widget.coinBalance.coin;
     final Balance balance = widget.coinBalance.balance;
     final NumberFormat f = NumberFormat('###,##0.########');
@@ -508,9 +513,9 @@ class _ItemCoinState extends State<ItemCoin> {
                             height: 4,
                           ),
                           Builder(builder: (BuildContext context) {
-                            final NumberFormat f = NumberFormat('###,##0.##');
                             return Text(
-                              '\$${f.format(widget.coinBalance.balanceUSD)} USD',
+                              cexProvider
+                                  .convert(widget.coinBalance.balanceUSD),
                               style: Theme.of(context).textTheme.body2,
                             );
                           }),

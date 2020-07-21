@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/utils/log.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -11,6 +13,7 @@ import 'package:komodo_dex/utils/utils.dart';
 class CexProvider extends ChangeNotifier {
   CexProvider() {
     _updateTickersList();
+    _updateRates();
 
     cexPrices.linkProvider(this);
   }
@@ -28,31 +31,17 @@ class CexProvider extends ChangeNotifier {
   }
 
   double getUsdPrice(String abbr) => cexPrices.getUsdPrice(abbr);
-  String convert(double volume, String from, [String to]) =>
-      cexPrices.convert(volume, from, to);
 
-  String get currency => cexPrices.currency;
-  set currency(String value) {
-    final List<String> currencies = [
-      ...cexPrices.fiatCurrencies,
-      ...cexPrices.coinCurrencies,
-    ];
-    if (currencies.contains(value.toLowerCase())) {
-      cexPrices.currency = value;
-      notifyListeners();
-    }
-  }
+  String convert(double volume, {String from, String to}) =>
+      cexPrices.convert(volume, from: from, to: to);
+
+  String get currency => cexPrices.currencies[cexPrices.activeCurrency];
 
   void switchCurrency() {
-    final List<String> currencies = [
-      ...cexPrices.fiatCurrencies,
-      ...cexPrices.coinCurrencies,
-    ];
-    int current = currencies.indexOf(cexPrices.currency);
-    current++;
-    if (current + 1 > currencies.length) current = 0;
-    cexPrices.currency = currencies[current];
-    notifyListeners();
+    int idx = cexPrices.activeCurrency;
+    idx++;
+    if (idx + 1 > cexPrices.currencies.length) idx = 0;
+    cexPrices.activeCurrency = idx;
   }
 
   void notify() => notifyListeners();
@@ -70,6 +59,8 @@ class CexProvider extends ChangeNotifier {
   bool _updatingChart = false;
   List<String> _tickers;
 
+  void _updateRates() => cexPrices.updateRates();
+
   List<String> _getTickers() {
     if (_tickers != null) return _tickers;
 
@@ -80,18 +71,17 @@ class CexProvider extends ChangeNotifier {
   Future<void> _updateTickersList() async {
     http.Response _res;
     String _body;
-    print('Fetching tickers list...');
     try {
       _res = await http.get(_tickersListUrl).timeout(
         const Duration(seconds: 10),
         onTimeout: () {
-          print('Fetching tickers timed out');
+          Log('cex_provider', 'Fetching tickers timed out');
           throw 'Fetching tickers timed out';
         },
       );
       _body = _res.body;
     } catch (e) {
-      print('Failed to fetch tickers list: $e');
+      Log('cex_provider', 'Failed to fetch tickers list: $e');
       rethrow;
     }
 
@@ -99,7 +89,7 @@ class CexProvider extends ChangeNotifier {
     try {
       json = jsonDecode(_body);
     } catch (e) {
-      print('Failed to parse tickers json: $e');
+      Log('cex_provider', 'Failed to parse tickers json: $e');
       rethrow;
     }
 
@@ -235,18 +225,17 @@ class CexProvider extends ChangeNotifier {
     final String pair = '${link.rel}-${link.base}';
     http.Response _res;
     String _body;
-    print('Fetching $pair candles data...');
     try {
       _res = await http.get('$_chartsUrl/${pair.toLowerCase()}').timeout(
         const Duration(seconds: 10),
         onTimeout: () {
-          print('Fetching $pair timed out');
+          Log('cex_provider', 'Fetching $pair data timed out');
           throw 'Fetching $pair timed out';
         },
       );
       _body = _res.body;
     } catch (e) {
-      print('Failed to fetch data: $e');
+      Log('cex_provider', 'Failed to fetch data: $e');
       rethrow;
     }
 
@@ -254,7 +243,7 @@ class CexProvider extends ChangeNotifier {
     try {
       json = jsonDecode(_body);
     } catch (e) {
-      print('Failed to parse json: $e');
+      Log('cex_provider', 'Failed to parse json: $e');
       rethrow;
     }
 
@@ -342,22 +331,75 @@ CexPrices cexPrices = CexPrices();
 
 class CexPrices {
   CexPrices() {
+    _init();
+  }
+
+  Future<void> _init() async {
+    prefs = await SharedPreferences.getInstance();
+    _selectedFiat = 'usd'; // TODO(yurii): implement fiat selection
+    currencies = [_selectedFiat, 'btc', 'kmd'];
+    activeCurrency = prefs.getInt('activeCurrency') ?? 0;
+
     Timer.periodic(const Duration(seconds: 60), (_) {
       updatePrices();
+      updateRates();
     });
   }
 
-  final List<String> coinCurrencies = ['btc', 'kmd'];
-  final List<String> fiatCurrencies = ['usd', 'eur'];
-  String currency = 'usd';
+  List<String> currencies;
 
+  int get activeCurrency => _activeCurrency;
+  set activeCurrency(int value) {
+    _activeCurrency = value;
+    prefs?.setInt('activeCurrency', value);
+    _notifyListeners();
+  }
+
+  SharedPreferences prefs;
+  String _selectedFiat;
+  int _activeCurrency;
+  final Map<String, double> _fiatCurrencies = {};
   final List<CexProvider> _providers = [];
   final Map<String, Map<String, double>> _prices = {};
 
+  Future<void> updateRates() async {
+    http.Response _res;
+    String _body;
+    try {
+      _res = await http.get('https://api.openrates.io/latest?base=USD').timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw 'Fetching rates prices timed out';
+        },
+      );
+      _body = _res.body;
+    } catch (e) {
+      Log('cex_provider', 'Failed to fetch rates: $e');
+    }
+
+    Map<String, dynamic> json;
+    try {
+      json = jsonDecode(_body);
+    } catch (e) {
+      Log('cex_provider', 'Failed to parse rates json: $e');
+    }
+
+    if (json == null || json['rates'] == null) {
+      if (_fiatCurrencies.isEmpty) _selectedFiat = 'usd';
+      return;
+    }
+
+    json['rates'].forEach((String fiat, dynamic rate) {
+      _fiatCurrencies[fiat.toLowerCase()] = rate;
+    });
+
+    _notifyListeners();
+  }
+
   double getUsdPrice(String abbr) {
     if (abbr.toLowerCase() == 'usd') return 1;
-    if (fiatCurrencies.contains(abbr.toLowerCase())) {
-      return _getFiatRate(abbr);
+    if (_fiatCurrencies[abbr.toLowerCase()] != null) {
+      return 1 / _getFiatRate(abbr);
     }
 
     double price;
@@ -370,10 +412,14 @@ class CexPrices {
     return price;
   }
 
-  String convert(double volume, String from, [String to]) {
-    to ??= currency;
-    final double usdPrice = getUsdPrice(from.toUpperCase());
-    final double usdVolume = volume * usdPrice;
+  String convert(double volume, {String from, String to}) {
+    from ??= 'usd';
+    to ??= currencies == null ? null : currencies[_activeCurrency];
+
+    if (from == null || to == null) return '';
+
+    final double fromUsdPrice = getUsdPrice(from.toUpperCase());
+    final double usdVolume = volume * fromUsdPrice;
     double convertedVolume;
     if (from.toLowerCase() == to.toLowerCase()) {
       convertedVolume = volume;
@@ -382,13 +428,22 @@ class CexPrices {
       try {
         convertionPrice = _prices[from.toUpperCase()][to.toLowerCase()];
       } catch (_) {}
-      convertionPrice ??= usdPrice / getUsdPrice(to.toUpperCase());
-      convertedVolume = usdVolume * convertionPrice;
+      final double toUsdPrice = getUsdPrice(to.toUpperCase());
+      if (toUsdPrice != null) {
+        convertionPrice ??= fromUsdPrice / toUsdPrice;
+        convertedVolume = usdVolume * convertionPrice;
+      }
     }
 
-    if (convertedVolume == null) return '';
+    if (convertedVolume == null || convertedVolume == 0) return '';
 
-    final String converted = formatPrice(convertedVolume);
+    String converted;
+    if (_isFiat(to)) {
+      converted = convertedVolume.toStringAsFixed(2);
+      if (converted == '0.00') converted = formatPrice(convertedVolume, 4);
+    } else {
+      converted = formatPrice(convertedVolume);
+    }
 
     if (to.toLowerCase() == 'usd') return '\$$converted';
     if (to.toLowerCase() == 'eur') return '€$converted';
@@ -396,7 +451,12 @@ class CexPrices {
   }
 
   double _getFiatRate(String abbr) {
-    return 1; // TODO(yurii): implement usdRate
+    return _fiatCurrencies[abbr.toLowerCase()];
+  }
+
+  bool _isFiat(String abbr) {
+    if (abbr.toLowerCase() == 'usd') return true;
+    return _fiatCurrencies[abbr.toUpperCase()] != null;
   }
 
   Future<void> updatePrices([List<Coin> coinsList]) async {
@@ -413,12 +473,9 @@ class CexPrices {
     String _body;
     try {
       _res = await http
-          .get(
-        'https://api.coingecko.com/api/v3/simple/price?ids=' +
-            ids.join(',') +
-            '&vs_currencies=' +
-            fiatCurrencies.join(','),
-      )
+          .get('https://api.coingecko.com/api/v3/simple/price?ids=' +
+              ids.join(',') +
+              '&vs_currencies=usd')
           .timeout(
         const Duration(seconds: 10),
         onTimeout: () {
@@ -427,7 +484,7 @@ class CexPrices {
       );
       _body = _res.body;
     } catch (e) {
-      print('Failed to fetch usd prices');
+      Log('cex_provider', 'Failed to fetch usd prices: $e');
       rethrow;
     }
 
@@ -435,7 +492,7 @@ class CexPrices {
     try {
       json = jsonDecode(_body);
     } catch (e) {
-      print('Failed to parse prices json: $e');
+      Log('cex_provider', 'Failed to parse prices json: $e');
       rethrow;
     }
 
@@ -448,9 +505,6 @@ class CexPrices {
             .firstWhere((coin) => coin.coingeckoId == coingeckoId)
             .abbr;
       } catch (_) {}
-
-      if (coinAbbr == null && fiatCurrencies.contains(coingeckoId))
-        coinAbbr = coingeckoId.toUpperCase();
 
       if (coinAbbr != null) {
         _prices[coinAbbr] = {};

@@ -10,6 +10,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -30,6 +31,7 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class CoinDetail extends StatefulWidget {
@@ -185,6 +187,7 @@ class _CoinDetailState extends State<CoinDetail> {
   List<Widget> listSteps = <Widget>[];
   Timer timer;
   bool isDeleteLoading = false;
+  CexProvider cexProvider;
 
   @override
   void initState() {
@@ -277,6 +280,7 @@ class _CoinDetailState extends State<CoinDetail> {
     if (listSteps.isEmpty) {
       initSteps();
     }
+    cexProvider = Provider.of<CexProvider>(context);
 
     return LockScreen(
       context: context,
@@ -586,7 +590,9 @@ class _CoinDetailState extends State<CoinDetail> {
                                   child: SizedBox(
                                     width: 16,
                                     height: 16,
-                                    child: CircularProgressIndicator(strokeWidth: 2.0,),
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.0,
+                                    ),
                                   ));
                             } else {
                               final usdAmount =
@@ -597,7 +603,7 @@ class _CoinDetailState extends State<CoinDetail> {
                                   padding: const EdgeInsets.only(
                                       left: 16, right: 16, bottom: 16, top: 8),
                                   child: Text(
-                                    usdAmount.toStringAsFixed(2) + ' USD',
+                                    cexProvider.convert(usdAmount.toDouble()),
                                     style: Theme.of(context).textTheme.body2,
                                   ),
                                 );
@@ -687,7 +693,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         style: Theme.of(context).textTheme.title,
                         textAlign: TextAlign.center,
                       ),
-                      Text('\$${currentCoinBalance.getBalanceUSD()} USD')
+                      Text(cexProvider.convert(currentCoinBalance.balanceUSD)),
                     ],
                   );
                 } else {
