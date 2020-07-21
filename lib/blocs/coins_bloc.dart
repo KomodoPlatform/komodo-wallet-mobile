@@ -447,6 +447,8 @@ class CoinsBloc implements BlocBase {
       coins.add(coinToActivate.coin);
     }
     await coinsBloc.enableCoins(coins);
+    updateCoinBalances();
+
     coinsBloc.setCloseViewSelectCoin(true);
   }
 
