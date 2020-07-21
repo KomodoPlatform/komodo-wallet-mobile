@@ -11,7 +11,7 @@ void showCurrenciesDialog(BuildContext context) {
   final List<String> available = cexProvider.fiatList;
   if (available == null || available.isEmpty) return;
 
-  const List<String> primary = ['usd', 'eur', 'gbp', 'cny', 'rub', 'try'];
+  const List<String> primary = ['USD', 'EUR', 'GBP', 'CNY', 'RUB', 'TRY'];
 
   final List<String> sorted = List.from(available);
   sorted.sort((String a, String b) {
@@ -31,7 +31,7 @@ void showCurrenciesDialog(BuildContext context) {
         dialogBloc.closeDialog(context);
       },
       child: Text(
-        currency.toUpperCase(),
+        currency,
         style: TextStyle(
           color: currency == current ? Theme.of(context).accentColor : null,
         ),

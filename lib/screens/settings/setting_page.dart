@@ -171,7 +171,7 @@ class _SettingPageState extends State<SettingPage> {
       child: ListTile(
         trailing: Icon(Icons.more_vert, color: Colors.white.withOpacity(0.7)),
         title: Text(
-          cexProvider.selectedFiat.toUpperCase() ?? '',
+          cexProvider.selectedFiat ?? '',
           style: Theme.of(context).textTheme.body1.copyWith(
               fontWeight: FontWeight.w300,
               color: Colors.white.withOpacity(0.7)),

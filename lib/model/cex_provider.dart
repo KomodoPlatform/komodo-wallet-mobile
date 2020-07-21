@@ -347,7 +347,7 @@ class CexPrices {
     prefs = await SharedPreferences.getInstance();
     activeCurrency = prefs.getInt('activeCurrency') ?? 0;
     _selectedFiat = prefs.getString('selectedFiat') ?? 'USD';
-    currencies = [_selectedFiat, 'btc', 'kmd'];
+    currencies = [_selectedFiat, 'BTC', 'KMD'];
 
     Timer.periodic(const Duration(seconds: 60), (_) {
       updatePrices();
@@ -367,8 +367,8 @@ class CexPrices {
   String get selectedFiat => _selectedFiat;
   set selectedFiat(String value) {
     if (_isFiat(value)) {
-      _selectedFiat = value.toLowerCase();
-      currencies[0] = value.toLowerCase();
+      _selectedFiat = value;
+      currencies[0] = value;
       prefs?.setString('selectedFiat', value);
       _notifyListeners();
     }
@@ -411,21 +411,21 @@ class CexPrices {
     }
 
     json['rates'].forEach((String fiat, dynamic rate) {
-      _fiatCurrencies[fiat.toLowerCase()] = rate;
+      _fiatCurrencies[fiat] = rate;
     });
 
     _notifyListeners();
   }
 
   double getUsdPrice(String abbr) {
-    if (abbr.toLowerCase() == 'usd') return 1;
+    if (abbr == 'USD') return 1;
     if (_isFiat(abbr)) {
       return 1 / _getFiatRate(abbr);
     }
 
     double price;
     try {
-      price = _prices[abbr.toUpperCase()]['usd'];
+      price = _prices[abbr]['usd'];
     } catch (_) {}
 
     if (price == null) updatePrices();
@@ -434,7 +434,7 @@ class CexPrices {
   }
 
   String convert(double volume, {String from, String to}) {
-    from ??= 'usd';
+    from ??= 'USD';
     to ??= currencies == null ? null : currencies[_activeCurrency];
 
     if (from == null || to == null) return '';
@@ -442,12 +442,12 @@ class CexPrices {
     final double fromUsdPrice = getUsdPrice(from);
     final double usdVolume = volume * fromUsdPrice;
     double convertedVolume;
-    if (from.toLowerCase() == to.toLowerCase()) {
+    if (from == to) {
       convertedVolume = volume;
     } else {
       double convertionPrice;
       try {
-        convertionPrice = _prices[from.toUpperCase()][to.toLowerCase()];
+        convertionPrice = _prices[from][to.toLowerCase()];
       } catch (_) {}
       final double toUsdPrice = getUsdPrice(to);
       if (toUsdPrice != null) {
@@ -466,19 +466,19 @@ class CexPrices {
       converted = formatPrice(convertedVolume);
     }
 
-    if (to.toLowerCase() == 'usd') return '\$$converted';
-    if (to.toLowerCase() == 'eur') return '€$converted';
-    if (to.toLowerCase() == 'gbp') return '£$converted';
-    return '$converted ${to.toUpperCase()}';
+    if (to == 'USD') return '\$$converted';
+    if (to == 'EUR') return '€$converted';
+    if (to == 'GBP') return '£$converted';
+    return '$converted $to';
   }
 
   double _getFiatRate(String abbr) {
-    return _fiatCurrencies[abbr.toLowerCase()];
+    return _fiatCurrencies[abbr];
   }
 
   bool _isFiat(String abbr) {
-    if (abbr.toLowerCase() == 'usd') return true;
-    return _fiatCurrencies[abbr.toLowerCase()] != null;
+    if (abbr == 'USD') return true;
+    return _fiatCurrencies[abbr] != null;
   }
 
   Future<void> updatePrices([List<Coin> coinsList]) async {
