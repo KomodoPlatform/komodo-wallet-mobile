@@ -633,11 +633,10 @@ class _CoinDetailState extends State<CoinDetail> {
                                           bottom: 16,
                                           top: 8),
                                       child: Text(
-                                        (usdAmount.toDouble() < 0 ? '-' : '') +
-                                            cexProvider.convert(
-                                              usdAmount.toDouble(),
-                                              hidden: hidden,
-                                            ),
+                                        cexProvider.convert(
+                                          usdAmount.toDouble(),
+                                          hidden: hidden,
+                                        ),
                                         style:
                                             Theme.of(context).textTheme.body2,
                                       ),
