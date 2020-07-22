@@ -458,6 +458,9 @@ class CexPrices {
 
     if (convertedVolume == null || convertedVolume == 0) return '';
 
+    final String sign = convertedVolume < 0 ? '-' : '';
+    convertedVolume = convertedVolume.abs();
+
     String converted;
     if (_isFiat(to)) {
       converted = convertedVolume.toStringAsFixed(2);
@@ -471,10 +474,10 @@ class CexPrices {
       }
     }
 
-    if (to == 'USD') return '\$$converted';
-    if (to == 'EUR') return '€$converted';
-    if (to == 'GBP') return '£$converted';
-    return '$converted $to';
+    if (to == 'USD') return '$sign\$$converted';
+    if (to == 'EUR') return '$sign€$converted';
+    if (to == 'GBP') return '$sign£$converted';
+    return '$sign$converted $to';
   }
 
   double _getFiatRate(String abbr) {
