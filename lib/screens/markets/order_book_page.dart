@@ -49,7 +49,6 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 top: 8,
                 left: 8,
                 right: 8,
-                bottom: 20,
               ),
               child: _buildPairSelect(),
             ),
@@ -195,7 +194,10 @@ class _OrderBookPageState extends State<OrderBookPage> {
 
   Widget _buildCandleChart() {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(
+        top: 20.0,
+        bottom: 20.0,
+      ),
       child: Container(
         height: MediaQuery.of(context).size.height / 2,
         child: FutureBuilder<ChartData>(
