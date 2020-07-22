@@ -57,7 +57,7 @@ class _CoinsPageState extends State<CoinsPage> {
     _cexProvider = Provider.of<CexProvider>(context);
     _heightScreen = MediaQuery.of(context).size.height;
     _widthScreen = MediaQuery.of(context).size.width;
-    _heightSliver = _heightScreen * 0.25;
+    _heightSliver = _heightScreen * 0.25 - MediaQuery.of(context).padding.top;
     if (_heightSliver < 125) _heightSliver = 125;
 
     return Scaffold(
