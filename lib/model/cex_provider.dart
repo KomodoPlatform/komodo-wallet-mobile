@@ -433,7 +433,12 @@ class CexPrices {
     return price;
   }
 
-  String convert(double volume, {String from, String to}) {
+  String convert(
+    double volume, {
+    String from,
+    String to,
+    bool hidden = false,
+  }) {
     from ??= 'USD';
     to ??= currencies == null ? null : currencies[_activeCurrency];
 
@@ -473,6 +478,8 @@ class CexPrices {
         converted = convertedVolume.toStringAsFixed(8);
       }
     }
+
+    if (hidden) converted = '**.**';
 
     if (to == 'USD') return '$sign\$$converted';
     if (to == 'EUR') return '$sign€$converted';
