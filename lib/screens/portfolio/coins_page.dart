@@ -12,6 +12,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
@@ -20,6 +21,7 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class CoinsPage extends StatefulWidget {
   @override
@@ -27,8 +29,9 @@ class CoinsPage extends StatefulWidget {
 }
 
 class _CoinsPageState extends State<CoinsPage> {
+  CexProvider _cexProvider;
   ScrollController _scrollController;
-  double _heightFactor = 7;
+  double _heightFactor = 2.3;
   BuildContext contextMain;
   NumberFormat f = NumberFormat('###,##0.0#');
   double _heightScreen;
@@ -37,7 +40,7 @@ class _CoinsPageState extends State<CoinsPage> {
 
   void _scrollListener() {
     setState(() {
-      _heightFactor = (exp(-_scrollController.offset / 60) * 6) + 1;
+      _heightFactor = (exp(-_scrollController.offset / 60) * 1.3) + 1;
     });
   }
 
@@ -51,6 +54,7 @@ class _CoinsPageState extends State<CoinsPage> {
 
   @override
   Widget build(BuildContext context) {
+    _cexProvider = Provider.of<CexProvider>(context);
     _heightScreen = MediaQuery.of(context).size.height;
     _widthScreen = MediaQuery.of(context).size.width;
     _heightSliver = _heightScreen * 0.25;
@@ -95,21 +99,29 @@ class _CoinsPageState extends State<CoinsPage> {
                                         stream: settingsBloc.outShowBalance,
                                         builder: (BuildContext context,
                                             AsyncSnapshot<bool> snapshot) {
-                                          String amountText =
-                                              f.format(totalBalanceUSD);
+                                          bool hidden = false;
                                           if (snapshot.hasData &&
                                               !snapshot.data) {
-                                            amountText = '**.**';
+                                            hidden = true;
                                           }
-                                          return AutoSizeText(
-                                            '\$$amountText USD',
-                                            maxFontSize: 18,
-                                            minFontSize: 12,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .title,
-                                            maxLines: 1,
+                                          final String amountText =
+                                              _cexProvider.convert(
+                                            totalBalanceUSD,
+                                            hidden: hidden,
                                           );
+                                          return FlatButton(
+                                              onPressed: () {
+                                                _cexProvider.switchCurrency();
+                                              },
+                                              child: AutoSizeText(
+                                                amountText,
+                                                maxFontSize: 18,
+                                                minFontSize: 12,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .title,
+                                                maxLines: 1,
+                                              ));
                                         },
                                       );
                                     } else {
@@ -385,6 +397,7 @@ class ItemCoin extends StatefulWidget {
 class _ItemCoinState extends State<ItemCoin> {
   @override
   Widget build(BuildContext context) {
+    final CexProvider cexProvider = Provider.of<CexProvider>(context);
     final Coin coin = widget.coinBalance.coin;
     final Balance balance = widget.coinBalance.balance;
     final NumberFormat f = NumberFormat('###,##0.########');
@@ -540,14 +553,14 @@ class _ItemCoinState extends State<ItemCoin> {
                               stream: settingsBloc.outShowBalance,
                               builder: (BuildContext context,
                                   AsyncSnapshot<bool> snapshot) {
-                                final NumberFormat f =
-                                    NumberFormat('###,##0.##');
-                                String amount =
-                                    f.format(widget.coinBalance.balanceUSD);
+                                bool hidden = false;
                                 if (snapshot.hasData && !snapshot.data)
-                                  amount = '**.**';
+                                  hidden = true;
                                 return Text(
-                                  '\$$amount USD',
+                                  cexProvider.convert(
+                                    widget.coinBalance.balanceUSD,
+                                    hidden: hidden,
+                                  ),
                                   style: Theme.of(context).textTheme.body2,
                                 );
                               }),

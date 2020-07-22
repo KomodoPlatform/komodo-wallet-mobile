@@ -11,6 +11,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -31,6 +32,7 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class CoinDetail extends StatefulWidget {
@@ -186,6 +188,7 @@ class _CoinDetailState extends State<CoinDetail> {
   List<Widget> listSteps = <Widget>[];
   Timer timer;
   bool isDeleteLoading = false;
+  CexProvider cexProvider;
 
   @override
   void initState() {
@@ -278,6 +281,7 @@ class _CoinDetailState extends State<CoinDetail> {
     if (listSteps.isEmpty) {
       initSteps();
     }
+    cexProvider = Provider.of<CexProvider>(context);
 
     return LockScreen(
       context: context,
@@ -617,14 +621,10 @@ class _CoinDetailState extends State<CoinDetail> {
                                       deci(currentCoinBalance.priceForOne) *
                                           deci(transaction.myBalanceChange);
                                   if (usdAmount != deci(0)) {
-                                    String usdString =
-                                        usdAmount.toStringAsFixed(2);
+                                    bool hidden = false;
                                     if (snapshot.hasData &&
                                         snapshot.data == false) {
-                                      usdString = (usdAmount.toDouble() < 0
-                                              ? '-'
-                                              : '') +
-                                          '**.**';
+                                      hidden = true;
                                     }
                                     return Padding(
                                       padding: const EdgeInsets.only(
@@ -633,7 +633,11 @@ class _CoinDetailState extends State<CoinDetail> {
                                           bottom: 16,
                                           top: 8),
                                       child: Text(
-                                        '$usdString USD',
+                                        (usdAmount.toDouble() < 0 ? '-' : '') +
+                                            cexProvider.convert(
+                                              usdAmount.toDouble(),
+                                              hidden: hidden,
+                                            ),
                                         style:
                                             Theme.of(context).textTheme.body2,
                                       ),
@@ -722,12 +726,12 @@ class _CoinDetailState extends State<CoinDetail> {
                           (BuildContext context, AsyncSnapshot<bool> snapshot) {
                         String coinBalance =
                             currentCoinBalance.balance.getBalance();
-                        String coinBalanceUsd =
+                        final String coinBalanceUsd =
                             currentCoinBalance.getBalanceUSD();
-
+                        bool hidden = false;
                         if (snapshot.hasData && snapshot.data == false) {
                           coinBalance = '**.**';
-                          coinBalanceUsd = '**.**';
+                          hidden = true;
                         }
                         return Column(
                           children: <Widget>[
@@ -738,7 +742,10 @@ class _CoinDetailState extends State<CoinDetail> {
                               style: Theme.of(context).textTheme.title,
                               textAlign: TextAlign.center,
                             ),
-                            Text('\$$coinBalanceUsd USD')
+                            Text(cexProvider.convert(
+                              double.parse(coinBalanceUsd),
+                              hidden: hidden,
+                            ))
                           ],
                         );
                       });

@@ -61,6 +61,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                 elevation: 0,
               ),
         body: ListView(
+          key: const Key('unlock-wallet-scrollable'),
           children: <Widget>[
             Center(
               child: ClipRRect(
@@ -175,6 +176,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                     : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 100),
                         child: PrimaryButton(
+                          key: const Key('unlock-wallet'),
                           onPressed: isButtonLoginEnabled
                               ? () => _login(context)
                               : null,
