@@ -476,7 +476,12 @@ class CexPrices {
       converted = convertedVolume.toStringAsFixed(2);
       if (converted == '0.00') converted = formatPrice(convertedVolume, 4);
     } else {
-      converted = formatPrice(convertedVolume);
+      if (convertedVolume < 0.00000001) convertedVolume = 0.00000001;
+      if (convertedVolume > 1) {
+        converted = formatPrice(convertedVolume, 9);
+      } else {
+        converted = convertedVolume.toStringAsFixed(8);
+      }
     }
 
     if (hidden) converted = '**.**';
