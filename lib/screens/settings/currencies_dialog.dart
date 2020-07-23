@@ -25,16 +25,44 @@ void showCurrenciesDialog(BuildContext context) {
 
   final List<Widget> options = [];
   for (String currency in sorted) {
+    Image flag;
+    try {
+      flag = Image.asset('assets/currency-flags/${currency.toLowerCase()}.png');
+    } catch (_) {}
+
     options.add(SimpleDialogOption(
       onPressed: () {
         cexProvider.selectedFiat = currency;
         dialogBloc.closeDialog(context);
       },
-      child: Text(
-        currency,
-        style: TextStyle(
-          color: currency == current ? Theme.of(context).accentColor : null,
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          currency == current
+              ? Icon(
+                  Icons.radio_button_checked,
+                  color: Theme.of(context).accentColor,
+                  size: 14,
+                )
+              : Icon(Icons.radio_button_unchecked, size: 14),
+          if (flag != null)
+            Row(
+              children: <Widget>[
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: 18,
+                  child: flag,
+                ),
+              ],
+            ),
+          const SizedBox(width: 8),
+          Text(
+            currency,
+            style: TextStyle(
+              color: currency == current ? Theme.of(context).accentColor : null,
+            ),
+          ),
+        ],
       ),
     ));
   }
@@ -45,8 +73,6 @@ void showCurrenciesDialog(BuildContext context) {
         return SimpleDialog(
           title: const Text('Currency'), // TODO(yurii): localization
           contentPadding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
             bottom: 20,
           ),
           titlePadding: const EdgeInsets.all(20),

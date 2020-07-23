@@ -45,7 +45,7 @@ class FeedProvider extends ChangeNotifier {
 
     try {
       response = await http.get(
-          'http://komodo.live/messages'); // TODO(yurii): change to domain name after DNS being updated
+          'https://komodo.live/messages'); // TODO(yurii): change to domain name after DNS being updated
     } catch (e) {
       Log('feed_provider:44', '_updateNews] $e');
     }
