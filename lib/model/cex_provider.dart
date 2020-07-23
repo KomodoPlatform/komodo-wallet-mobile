@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/utils/log.dart';
@@ -481,10 +482,18 @@ class CexPrices {
 
     if (hidden) converted = '**.**';
 
-    if (to == 'USD') return '$sign\$$converted';
-    if (to == 'EUR') return '$sign€$converted';
-    if (to == 'GBP') return '$sign£$converted';
-    return '$sign$converted $to';
+    final NumberFormat format = NumberFormat.simpleCurrency(name: to);
+    final String currencySymbol = format.currencySymbol;
+
+    if (_isFiat(to)) {
+      if (currencySymbol.length > 1) {
+        return '$sign$converted $currencySymbol';
+      } else {
+        return '$sign$currencySymbol$converted';
+      }
+    } else {
+      return '$sign$converted $to';
+    }
   }
 
   double _getFiatRate(String abbr) {
