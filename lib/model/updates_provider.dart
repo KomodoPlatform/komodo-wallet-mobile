@@ -17,7 +17,7 @@ class UpdatesProvider extends ChangeNotifier {
   String newVersion;
   String message;
 
-  final String url = 'http://komodo.live/adexversion';
+  final String url = 'https://komodo.live/adexversion';
 
   Future<void> check() => _check();
 

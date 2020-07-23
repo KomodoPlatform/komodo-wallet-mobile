@@ -61,9 +61,9 @@ class CexProvider extends ChangeNotifier {
     cexPrices.unlinkProvider(this);
   }
 
-  final String _chartsUrl = 'http://komodo.live:3333/api/v1/ohlc';
+  final String _chartsUrl = 'https://komodo.live:3333/api/v1/ohlc';
   final String _tickersListUrl =
-      'http://komodo.live:3333/api/v1/ohlc/tickers_list';
+      'https://komodo.live:3333/api/v1/ohlc/tickers_list';
   final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
   bool _updatingChart = false;
   List<String> _tickers;
