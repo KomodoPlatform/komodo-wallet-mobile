@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart' as arch;
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -22,6 +23,7 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
+import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
@@ -48,6 +50,7 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   String version = '';
+  CexProvider cexProvider;
 
   @override
   void initState() {
@@ -67,6 +70,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    cexProvider = Provider.of<CexProvider>(context);
     // final Locale myLocale = Localizations.localeOf(context);
     // Log('setting_page:67', 'current locale: $myLocale');
     return Scaffold(
@@ -96,6 +100,8 @@ class _SettingPageState extends State<SettingPage> {
               _buildLogOutOnExit(),
               _buildTitle(AppLocalizations.of(context).settingLanguageTitle),
               _buildLanguages(),
+              _buildTitle('Currency'), // TODO(yurii): localization
+              _buildCurrency(),
               _buildTitle(AppLocalizations.of(context).soundTitle),
               _buildSound(),
               _buildTitle(AppLocalizations.of(context).security),
@@ -155,6 +161,23 @@ class _SettingPageState extends State<SettingPage> {
       rethrow;
     }
     return version;
+  }
+
+  Widget _buildCurrency() {
+    return CustomTile(
+      onPressed: () {
+        showCurrenciesDialog(context);
+      },
+      child: ListTile(
+        trailing: Icon(Icons.more_vert, color: Colors.white.withOpacity(0.7)),
+        title: Text(
+          cexProvider.selectedFiat ?? '',
+          style: Theme.of(context).textTheme.body1.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
+      ),
+    );
   }
 
   Widget _buildLanguages() {
@@ -456,7 +479,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildUpdate() {
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
-        
+
     return CustomTile(
         child: ListTile(
           trailing:
@@ -696,6 +719,7 @@ class _SettingPageState extends State<SettingPage> {
                                 Expanded(
                                   child: PrimaryButton(
                                     text: AppLocalizations.of(context).delete,
+                                    key: const Key('delete-wallet'),
                                     onPressed: () async {
                                       Navigator.of(context).pop();
                                       settingsBloc.setDeleteLoading(true);

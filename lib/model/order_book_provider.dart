@@ -41,15 +41,6 @@ class OrderBookProvider extends ChangeNotifier {
     return [Swap()];
   }
 
-  static String formatPrice(String value, [int digits = 6, int fraction = 2]) {
-    final String rounded = double.parse(value).toStringAsFixed(fraction);
-    if (rounded.length >= digits + 1) {
-      return rounded;
-    } else {
-      return double.parse(value).toStringAsPrecision(digits);
-    }
-  }
-
   /// Returns [list] of Ask(), sorted by price (DESC),
   /// then by volume (DESC),
   /// then by age (DESC)
