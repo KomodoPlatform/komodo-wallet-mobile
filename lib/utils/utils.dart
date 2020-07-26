@@ -516,9 +516,9 @@ String humanDate(int epoch) {
   final bool _isThisMonth = _isThisYear && _dateTime.month == _now.month;
   final bool _isToday = _isThisMonth && _dateTime.day == _now.day;
 
-  if (_isToday) return DateFormat('H:m').format(_dateTime);
-  if (_isThisYear) return DateFormat('MMMM d, H:m').format(_dateTime);
-  return DateFormat('MMMM d y, H:m').format(_dateTime);
+  if (_isToday) return DateFormat('HH:mm').format(_dateTime);
+  if (_isThisYear) return DateFormat('MMMM d, HH:mm').format(_dateTime);
+  return DateFormat('MMMM d y, HH:mm').format(_dateTime);
 }
 
 String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
