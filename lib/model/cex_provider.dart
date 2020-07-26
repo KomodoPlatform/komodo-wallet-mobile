@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/utils/log.dart';
@@ -71,9 +72,9 @@ class CexProvider extends ChangeNotifier {
     cexPrices.unlinkProvider(this);
   }
 
-  final String _chartsUrl = 'http://komodo.live:3333/api/v1/ohlc';
+  final String _chartsUrl = 'https://komodo.live:3333/api/v1/ohlc';
   final String _tickersListUrl =
-      'http://komodo.live:3333/api/v1/ohlc/tickers_list';
+      'https://komodo.live:3333/api/v1/ohlc/tickers_list';
   final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
   bool _updatingChart = false;
   List<String> _tickers;
@@ -392,6 +393,7 @@ class CexPrices {
   final Map<String, double> _fiatCurrencies = {};
   final List<CexProvider> _providers = [];
   final Map<String, Map<String, double>> _prices = {};
+  bool _fetchingPrices = false;
 
   Future<void> updateRates() async {
     http.Response _res;
@@ -438,9 +440,7 @@ class CexPrices {
       price = _prices[abbr]['usd'];
     } catch (_) {}
 
-    if (price == null) updatePrices();
-
-    return price;
+    return price ?? (_fetchingPrices ? null : 0.0);
   }
 
   String convert(
@@ -491,10 +491,18 @@ class CexPrices {
 
     if (hidden) converted = '**.**';
 
-    if (to == 'USD') return '$sign\$$converted';
-    if (to == 'EUR') return '$sign€$converted';
-    if (to == 'GBP') return '$sign£$converted';
-    return '$sign$converted $to';
+    final NumberFormat format = NumberFormat.simpleCurrency(name: to);
+    final String currencySymbol = format.currencySymbol;
+
+    if (_isFiat(to)) {
+      if (currencySymbol.length > 1) {
+        return '$sign$converted $currencySymbol';
+      } else {
+        return '$sign$currencySymbol$converted';
+      }
+    } else {
+      return '$sign$converted $to';
+    }
   }
 
   double _getFiatRate(String abbr) {
@@ -516,6 +524,8 @@ class CexPrices {
     final List<String> ids =
         coinsList.map((Coin coin) => coin.coingeckoId).toList();
 
+    if (_fetchingPrices) return;
+    _fetchingPrices = true;
     http.Response _res;
     String _body;
     try {
@@ -531,9 +541,12 @@ class CexPrices {
       );
       _body = _res.body;
     } catch (e) {
+      _fetchingPrices = false;
       Log('cex_provider', 'Failed to fetch usd prices: $e');
       rethrow;
     }
+
+    _fetchingPrices = false;
 
     Map<String, dynamic> json;
     try {
