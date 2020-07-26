@@ -145,6 +145,7 @@ class _CoinsPageState extends State<CoinsPage> {
                           ));
                     },
                   ),
+                  automaticallyImplyLeading: false,
                 ),
               ];
             },

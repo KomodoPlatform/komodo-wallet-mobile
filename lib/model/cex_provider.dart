@@ -45,6 +45,7 @@ class CexProvider extends ChangeNotifier {
   List<String> get fiatList => cexPrices.fiatList;
   String get currency => cexPrices.currencies[cexPrices.activeCurrency];
   String get selectedFiat => cexPrices.selectedFiat;
+  String get selectedFiatSymbol => cexPrices.selectedFiatSymbol;
   set selectedFiat(String value) => cexPrices.selectedFiat = value;
 
   void switchCurrency() {
@@ -373,6 +374,11 @@ class CexPrices {
       prefs?.setString('selectedFiat', value);
       _notifyListeners();
     }
+  }
+
+  String get selectedFiatSymbol {
+    if (selectedFiat == null) return null;
+    return NumberFormat.simpleCurrency(name: selectedFiat).currencySymbol;
   }
 
   List<String> get fiatList => _fiatCurrencies?.keys?.toList();
