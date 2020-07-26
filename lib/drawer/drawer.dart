@@ -46,8 +46,8 @@ class _AppDrawerState extends State<AppDrawer> {
                     begin: Alignment.centerRight,
                     stops: <double>[0.01, 1],
                     colors: <Color>[
-                      Color.fromRGBO(39, 71, 110, 1),
-                      Color.fromRGBO(65, 234, 213, 0.7),
+                      Color.fromRGBO(39, 71, 110, 0.6),
+                      Color.fromRGBO(65, 234, 213, 0.1),
                     ],
                   )),
                   child: Container(
@@ -64,7 +64,7 @@ class _AppDrawerState extends State<AppDrawer> {
                           SizedBox(
                             height: headerHeight * 0.4,
                             child: Image.asset(
-                                'assets/mark_and_text_vertical_knockout.png'),
+                                'assets/mark_and_text_vertical_light.png'),
                           ),
                           Divider(
                             color: Colors.white,
