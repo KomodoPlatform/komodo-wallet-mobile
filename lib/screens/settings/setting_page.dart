@@ -78,7 +78,6 @@ class _SettingPageState extends State<SettingPage> {
           key: const Key('settings-title'),
         ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).backgroundColor,
         elevation: 0,
       ),
       body: Theme(
