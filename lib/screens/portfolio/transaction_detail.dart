@@ -5,10 +5,12 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class TransactionDetail extends StatefulWidget {
@@ -151,6 +153,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
   }
 
   Widget _buildUsdAmount() {
+    final CexProvider cexProvider = Provider.of<CexProvider>(context);
+
     const Widget _progressIndicator = SizedBox(
       width: 16,
       height: 16,
@@ -168,14 +172,13 @@ class _TransactionDetailState extends State<TransactionDetail> {
           initialData: settingsBloc.showBalance,
           stream: settingsBloc.outShowBalance,
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            final amount = Decimal.parse(priceForOne) *
-                Decimal.parse(widget.transaction.myBalanceChange.toString());
-            String amountString = amount.toStringAsFixed(2);
-            if (snapshot.hasData && snapshot.data == false) {
-              amountString = (amount < deci(0) ? '-' : '') + '**.**';
-            }
+            bool hidden = false;
+            final double amount = double.parse(priceForOne) *
+                double.parse(widget.transaction.myBalanceChange);
+            if (snapshot.hasData && snapshot.data == false) hidden = true;
+
             return Text(
-              '$amountString USD',
+              cexProvider.convert(amount, hidden: hidden),
               style: Theme.of(context).textTheme.body2,
             );
           });
