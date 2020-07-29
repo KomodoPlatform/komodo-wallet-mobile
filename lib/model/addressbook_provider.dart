@@ -17,8 +17,25 @@ class AddressBookProvider extends ChangeNotifier {
     return _contacts;
   }
 
-  Contact createContact(String name) {
-    final Contact contact = Contact.create(name);
+  void updateContact(Contact contact) {
+    final Contact existing = _contacts.firstWhere(
+      (Contact c) => c.uid == contact.uid,
+      orElse: null,
+    );
+
+    if (existing != null) {
+      existing.name = contact.name;
+      existing.addresses = contact.addresses;
+      _saveContacts();
+      notifyListeners();
+    }
+  }
+
+  Contact createContact({
+    String name,
+    Map<String, String> addresses,
+  }) {
+    final Contact contact = Contact.create(name, addresses);
     _contacts.add(contact);
     _saveContacts();
     notifyListeners();
@@ -41,21 +58,51 @@ class AddressBookProvider extends ChangeNotifier {
   }
 
   void _loadContacts() {
-    List<Contact> saved;
+    String saved;
     try {
-      saved = jsonDecode(_prefs.getString('addressBook'));
+      saved = _prefs.getString('addressBook');
     } catch (_) {}
 
     if (saved == null) {
       _contacts = [];
     } else {
-      _contacts = saved;
+      final List<dynamic> json = jsonDecode(saved);
+      final List<Contact> contactsFromJson = [];
+      for (dynamic contact in json) {
+        final Map<String, String> addresses = {};
+        contact['addresses']?.forEach((String key, dynamic value) {
+          addresses[key] = value;
+        });
+        contactsFromJson.add(Contact(
+          name: contact['name'],
+          uid: contact['uid'],
+          addresses: addresses,
+        ));
+      }
+
+      _contacts = contactsFromJson;
     }
+
     notifyListeners();
   }
 
   void _saveContacts() {
-    _prefs.setString('addressBook', jsonEncode(_contacts));
+    final List<dynamic> json = <dynamic>[];
+
+    for (Contact contact in _contacts) {
+      Map<String, String> addresses;
+      contact.addresses?.forEach((String key, String value) {
+        addresses ??= {};
+        addresses[key] = value;
+      });
+      json.add(<String, dynamic>{
+        'name': contact.name,
+        'uid': contact.uid,
+        'addresses': addresses,
+      });
+    }
+
+    _prefs.setString('addressBook', jsonEncode(json));
   }
 }
 
@@ -66,8 +113,13 @@ class Contact {
     this.addresses,
   });
 
-  factory Contact.create(String name) => Contact(
+  factory Contact.create(
+    String name,
+    Map<String, String> addresses,
+  ) =>
+      Contact(
         name: name,
+        addresses: addresses,
         uid: Uuid().v1(),
       );
 

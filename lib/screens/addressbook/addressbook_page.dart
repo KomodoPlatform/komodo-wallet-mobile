@@ -33,36 +33,58 @@ class _AddressBookState extends State<AddressBookPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 RoundButton(
-                  onPressed: () => _createContact(),
+                  onPressed: () => _editContact(null),
                   child: Icon(Icons.add),
                 ),
               ],
             ),
           ),
-          FutureBuilder(
-            future: provider.contacts,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Contact>> snapshot) {
-              if (!snapshot.hasData || snapshot.data == null) {
-                return const Center(child: CircularProgressIndicator());
-              }
+          Expanded(
+            child: FutureBuilder(
+              future: provider.contacts,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Contact>> snapshot) {
+                if (!snapshot.hasData || snapshot.data == null) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-              if (snapshot.data.isEmpty)
-                return const Center(child: Text('Address book is empty'));
+                final List<Contact> contacts = List.from(snapshot.data);
+                contacts.sort((Contact a, Contact b) {
+                  return a.name.compareTo(b.name);
+                });
 
-              return Text(snapshot.data.length.toString());
-            },
+                if (contacts.isEmpty)
+                  return const Center(child: Text('Address book is empty'));
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: contacts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildContactItem(contacts[index]);
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
     );
   }
 
-  void _createContact() {
+  Widget _buildContactItem(Contact contact) {
+    return ListTile(
+      onTap: () => _editContact(contact),
+      title: Text(contact.name),
+    );
+  }
+
+  void _editContact([Contact contact]) {
     Navigator.push<dynamic>(
         context,
         MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => const ContactEdit(),
+          builder: (BuildContext context) => ContactEdit(
+            contact: contact,
+          ),
         ));
   }
 }
