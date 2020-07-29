@@ -69,10 +69,6 @@ class Contact {
   factory Contact.create(String name) => Contact(
         name: name,
         uid: Uuid().v1(),
-        addresses: {
-          'KMD': '',
-          'BTC': '',
-        },
       );
 
   String uid;
