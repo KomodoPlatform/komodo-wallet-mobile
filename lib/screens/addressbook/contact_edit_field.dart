@@ -7,12 +7,14 @@ class ContactEditField extends StatefulWidget {
     this.removable = false,
     this.autofocus = false,
     this.onChange,
+    this.color,
   });
 
   final bool autofocus;
   final bool removable;
   final String name;
   final String value;
+  final Color color;
   final Function(String) onChange;
 
   @override
@@ -38,7 +40,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
         Expanded(
             child: Card(
                 margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
-                color: Theme.of(context).primaryColor,
+                color: widget.color ?? Theme.of(context).backgroundColor,
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -62,6 +64,8 @@ class _ContactEditFieldState extends State<ContactEditField> {
                         enableInteractiveSelection: true,
                         style: Theme.of(context).textTheme.body1,
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Theme.of(context).backgroundColor,
                           border: const OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(

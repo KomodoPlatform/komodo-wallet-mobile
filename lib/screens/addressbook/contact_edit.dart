@@ -37,39 +37,74 @@ class _ContactEditState extends State<ContactEdit> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            ContactEditField(
-                name: 'Name',
-                value: editContact.name,
-                removable: false,
-                autofocus: widget.contact == null,
-                onChange: (String value) {
-                  editContact.name = value;
-                }),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: RoundButton(
-                    child: Icon(Icons.add),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  ContactEditField(
+                      name: 'Name',
+                      color: Theme.of(context).primaryColor,
+                      value: editContact.name,
+                      removable: false,
+                      autofocus: widget.contact == null,
+                      onChange: (String value) {
+                        editContact.name = value;
+                      }),
+                  ContactEditField(
+                      name: 'Name',
+                      value: editContact.name,
+                      removable: false,
+                      autofocus: widget.contact == null,
+                      onChange: (String value) {
+                        editContact.name = value;
+                      }),
+                  ContactEditField(
+                      name: 'Name',
+                      value: editContact.name,
+                      removable: false,
+                      autofocus: widget.contact == null,
+                      onChange: (String value) {
+                        editContact.name = value;
+                      }),
+                  ContactEditField(
+                      name: 'Name',
+                      value: editContact.name,
+                      removable: false,
+                      autofocus: widget.contact == null,
+                      onChange: (String value) {
+                        editContact.name = value;
+                      }),
+                  ContactEditField(
+                      name: 'Name',
+                      value: editContact.name,
+                      removable: false,
+                      autofocus: widget.contact == null,
+                      onChange: (String value) {
+                        editContact.name = value;
+                      }),
+                ],
+              ),
             ),
-            Row(
+          ),
+          Container(
+            color: Theme.of(context).primaryColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 FlatButton(
                   onPressed: () {},
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'), // TODO(yurii): localization
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  child: const Text('Save'), // TODO(yurii): localization
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
