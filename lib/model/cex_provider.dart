@@ -39,8 +39,18 @@ class CexProvider extends ChangeNotifier {
 
   double getUsdPrice(String abbr) => cexPrices.getUsdPrice(abbr);
 
-  String convert(double volume, {String from, String to}) =>
-      cexPrices.convert(volume, from: from, to: to);
+  String convert(
+    double volume, {
+    String from,
+    String to,
+    bool hidden = false,
+  }) =>
+      cexPrices.convert(
+        volume,
+        from: from,
+        to: to,
+        hidden: hidden,
+      );
 
   List<String> get fiatList => cexPrices.fiatList;
   String get currency => cexPrices.currencies[cexPrices.activeCurrency];

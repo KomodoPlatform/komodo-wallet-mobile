@@ -3,11 +3,14 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class TransactionDetail extends StatefulWidget {
@@ -94,16 +97,24 @@ class _TransactionDetailState extends State<TransactionDetail> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
-                      child: Builder(builder: (BuildContext context) {
-                        final amount = deci(tx.myBalanceChange);
-
-                        return AutoSizeText(
-                          deci2s(amount) + ' ' + tx.coin,
-                          style: Theme.of(context).textTheme.title,
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        );
-                      }),
+                      child: StreamBuilder<bool>(
+                          initialData: settingsBloc.showBalance,
+                          stream: settingsBloc.outShowBalance,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<bool> snapshot) {
+                            final amount = deci(tx.myBalanceChange);
+                            String amountString = deci2s(amount);
+                            if (snapshot.hasData && snapshot.data == false) {
+                              amountString =
+                                  (amount < deci(0) ? '-' : '') + '**.**';
+                            }
+                            return AutoSizeText(
+                              '$amountString ${tx.coin}',
+                              style: Theme.of(context).textTheme.title,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                            );
+                          }),
                     ),
                   ),
                   _buildUsdAmount(),
@@ -142,6 +153,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
   }
 
   Widget _buildUsdAmount() {
+    final CexProvider cexProvider = Provider.of<CexProvider>(context);
+
     const Widget _progressIndicator = SizedBox(
       width: 16,
       height: 16,
@@ -155,14 +168,20 @@ class _TransactionDetailState extends State<TransactionDetail> {
 
       if (double.parse(priceForOne) == 0) return Container();
 
-      return Text(
-        (Decimal.parse(priceForOne) *
-                    Decimal.parse(
-                        widget.transaction.myBalanceChange.toString()))
-                .toStringAsFixed(2) +
-            ' USD',
-        style: Theme.of(context).textTheme.body2,
-      );
+      return StreamBuilder<bool>(
+          initialData: settingsBloc.showBalance,
+          stream: settingsBloc.outShowBalance,
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            bool hidden = false;
+            final double amount = double.parse(priceForOne) *
+                double.parse(widget.transaction.myBalanceChange);
+            if (snapshot.hasData && snapshot.data == false) hidden = true;
+
+            return Text(
+              cexProvider.convert(amount, hidden: hidden),
+              style: Theme.of(context).textTheme.body2,
+            );
+          });
     }
 
     if (widget.coinBalance.priceForOne != null)
