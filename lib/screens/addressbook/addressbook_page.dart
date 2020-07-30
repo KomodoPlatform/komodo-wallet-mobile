@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
+import 'package:komodo_dex/screens/addressbook/contacts_list.dart';
 import 'package:komodo_dex/widgets/round_button.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,15 @@ class _AddressBookState extends State<AddressBookPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 RoundButton(
-                  onPressed: () => _editContact(null),
+                  onPressed: () {
+                    Navigator.push<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => const ContactEdit(
+                            contact: null,
+                          ),
+                        ));
+                  },
                   child: Icon(Icons.add),
                 ),
               ],
@@ -56,35 +65,12 @@ class _AddressBookState extends State<AddressBookPage> {
                 if (contacts.isEmpty)
                   return const Center(child: Text('Address book is empty'));
 
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: contacts.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _buildContactItem(contacts[index]);
-                  },
-                );
+                return ContactsList(contacts);
               },
             ),
           ),
         ],
       ),
     );
-  }
-
-  Widget _buildContactItem(Contact contact) {
-    return ListTile(
-      onTap: () => _editContact(contact),
-      title: Text(contact.name),
-    );
-  }
-
-  void _editContact([Contact contact]) {
-    Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => ContactEdit(
-            contact: contact,
-          ),
-        ));
   }
 }

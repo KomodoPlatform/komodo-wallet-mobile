@@ -28,7 +28,9 @@ class _ContactEditState extends State<ContactEdit> {
 
   @override
   void initState() {
-    editContact = Contact.fromJson(widget.contact.toJson()) ?? Contact();
+    editContact = widget.contact != null
+        ? Contact.fromJson(widget.contact.toJson())
+        : Contact();
     hashBeforeEdit = jsonEncode(editContact.toJson());
     super.initState();
   }
@@ -149,11 +151,9 @@ class _ContactEditState extends State<ContactEdit> {
           message: 'Discard your changes?',
           onConfirm: () {
             Navigator.of(context).pop();
-            return true;
           });
     } else {
       Navigator.of(context).pop();
-      return true;
     }
 
     return false;
@@ -164,7 +164,7 @@ class _ContactEditState extends State<ContactEdit> {
       invalidFields.clear();
     });
     bool valid = true;
-    if (editContact.name.isEmpty) {
+    if (editContact.name == null || editContact.name.isEmpty) {
       valid = false;
       setState(() {
         invalidFields.add('name');
@@ -220,17 +220,7 @@ class _ContactEditState extends State<ContactEdit> {
               focusOn = '';
               FocusScope.of(context).requestFocus(FocusNode());
             });
-            showConfirmationDialog(
-              context: context,
-              title: 'Remove',
-              confirmButtonText: 'Remove', // TODO(yurii): localization
-              icon: Icons.remove_circle,
-              message:
-                  'Are you sure you want to remove ${name ?? ''} address?', // TODO(yurii): localization
-              onConfirm: () {
-                editContact.addresses.removeWhere((k, v) => k == abbr);
-              },
-            );
+            editContact.addresses.removeWhere((k, v) => k == abbr);
           },
           autofocus: abbr == focusOn,
         ),
