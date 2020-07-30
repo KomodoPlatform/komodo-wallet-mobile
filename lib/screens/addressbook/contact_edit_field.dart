@@ -3,6 +3,7 @@ import 'package:komodo_dex/widgets/round_button.dart';
 
 class ContactEditField extends StatefulWidget {
   const ContactEditField({
+    this.name,
     this.label,
     this.value,
     this.removable = false,
@@ -12,8 +13,10 @@ class ContactEditField extends StatefulWidget {
     this.color,
     this.padding,
     this.icon,
+    this.invalid = false,
   });
 
+  final String name;
   final bool autofocus;
   final bool removable;
   final String label;
@@ -23,6 +26,7 @@ class ContactEditField extends StatefulWidget {
   final Function onRemove;
   final EdgeInsets padding;
   final Widget icon;
+  final bool invalid;
 
   @override
   _ContactEditFieldState createState() => _ContactEditFieldState();
@@ -79,7 +83,6 @@ class _ContactEditFieldState extends State<ContactEditField> {
                             child: TextField(
                               controller: controller,
                               focusNode: focusNode,
-                              autofocus: widget.autofocus,
                               textCapitalization: TextCapitalization.words,
                               onChanged: (String value) {
                                 if (widget.onChange == null) return;
@@ -94,11 +97,15 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                 border: const OutlineInputBorder(),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .primaryColorLight)),
+                                        color: widget.invalid
+                                            ? Colors.red
+                                            : Theme.of(context)
+                                                .primaryColorLight)),
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor)),
+                                        color: widget.invalid
+                                            ? Colors.red
+                                            : Theme.of(context).accentColor)),
                                 hintStyle: Theme.of(context).textTheme.body2,
                                 labelStyle: Theme.of(context).textTheme.body1,
                                 labelText: null,

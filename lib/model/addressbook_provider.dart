@@ -69,15 +69,7 @@ class AddressBookProvider extends ChangeNotifier {
       final List<dynamic> json = jsonDecode(saved);
       final List<Contact> contactsFromJson = [];
       for (dynamic contact in json) {
-        final Map<String, String> addresses = {};
-        contact['addresses']?.forEach((String key, dynamic value) {
-          addresses[key] = value;
-        });
-        contactsFromJson.add(Contact(
-          name: contact['name'],
-          uid: contact['uid'],
-          addresses: addresses,
-        ));
+        contactsFromJson.add(Contact.fromJson(contact));
       }
 
       _contacts = contactsFromJson;
@@ -90,16 +82,7 @@ class AddressBookProvider extends ChangeNotifier {
     final List<dynamic> json = <dynamic>[];
 
     for (Contact contact in _contacts) {
-      Map<String, String> addresses;
-      contact.addresses?.forEach((String key, String value) {
-        addresses ??= {};
-        addresses[key] = value;
-      });
-      json.add(<String, dynamic>{
-        'name': contact.name,
-        'uid': contact.uid,
-        'addresses': addresses,
-      });
+      json.add(contact.toJson());
     }
 
     _prefs.setString('addressBook', jsonEncode(json));
@@ -113,6 +96,20 @@ class Contact {
     this.addresses,
   });
 
+  factory Contact.fromJson(Map<String, dynamic> json) {
+    Map<String, String> addresses;
+    json['addresses']?.forEach((String key, dynamic value) {
+      addresses ??= {};
+      addresses[key] = value;
+    });
+
+    return Contact(
+      name: json['name'],
+      uid: json['uid'],
+      addresses: addresses,
+    );
+  }
+
   factory Contact.create(
     String name,
     Map<String, String> addresses,
@@ -122,6 +119,20 @@ class Contact {
         addresses: addresses,
         uid: Uuid().v1(),
       );
+
+  Map<String, dynamic> toJson() {
+    Map<String, String> addresses;
+    this.addresses?.forEach((String key, String value) {
+      addresses ??= {};
+      addresses[key] = value;
+    });
+
+    return <String, dynamic>{
+      'name': name,
+      'uid': uid,
+      'addresses': addresses,
+    };
+  }
 
   String uid;
   String name;

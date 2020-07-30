@@ -6,6 +6,7 @@ void showConfirmationDialog({
   BuildContext context,
   String title = 'Confirm',
   IconData icon = Icons.warning,
+  Color iconColor = Colors.red,
   String message = 'Are you sure?',
   Function onConfirm,
   String confirmButtonText = 'Confirm',
@@ -19,7 +20,7 @@ void showConfirmationDialog({
             children: <Widget>[
               Icon(
                 icon,
-                color: Colors.red,
+                color: iconColor,
               ),
               const SizedBox(width: 12),
               Text(title),
