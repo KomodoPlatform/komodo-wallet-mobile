@@ -471,7 +471,10 @@ class CexPrices {
       }
     }
 
-    if (convertedVolume == null || convertedVolume == 0) return '';
+    if (convertedVolume == null || convertedVolume == 0) {
+      if (hidden) return '\$**.**';
+      return '\$0.00';
+    }
 
     final String sign = convertedVolume < 0 ? '-' : '';
     convertedVolume = convertedVolume.abs();
