@@ -8,19 +8,30 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:bs58check/bs58check.dart' as bs58check;
 
 class AddressField extends StatefulWidget {
-  const AddressField(
-      {Key key, this.onScan, this.controller, this.isERCToken = false})
-      : super(key: key);
+  const AddressField({
+    Key key,
+    this.onScan,
+    this.controller,
+    this.isERCToken = false,
+    this.value,
+  }) : super(key: key);
 
   final Function onScan;
   final TextEditingController controller;
   final bool isERCToken;
+  final String value;
 
   @override
   _AddressFieldState createState() => _AddressFieldState();
 }
 
 class _AddressFieldState extends State<AddressField> {
+  @override
+  void initState() {
+    if (widget.value != null) widget.controller.text = widget.value;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(

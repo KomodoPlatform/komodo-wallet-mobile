@@ -18,6 +18,7 @@ class AmountAddressStep extends StatefulWidget {
       this.focusNode,
       this.amountController,
       this.addressController,
+      this.addressValue,
       this.autoFocus = false,
       this.balance,
       this.isERCToken = false,
@@ -32,6 +33,7 @@ class AmountAddressStep extends StatefulWidget {
   final Function onConfirm;
   final TextEditingController amountController;
   final TextEditingController addressController;
+  final String addressValue;
   final bool autoFocus;
   final double balance;
   final bool isERCToken;
@@ -66,6 +68,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               isERCToken: widget.isERCToken,
               controller: widget.addressController,
               onScan: scan,
+              value: widget.addressValue,
             ),
             CustomFee(
               coin: widget.coin,
