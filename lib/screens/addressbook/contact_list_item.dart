@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
-import 'package:komodo_dex/widgets/small_button.dart';
 
 class ContactListItem extends StatefulWidget {
   const ContactListItem(this.contact);
@@ -30,8 +29,8 @@ class _ContactListItemState extends State<ContactListItem> {
             padding: const EdgeInsets.all(16),
             child: Text(
               widget.contact.name,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              style: const TextStyle(
+                fontSize: 20,
               ),
             ),
           ),
@@ -80,25 +79,72 @@ class _ContactListItemState extends State<ContactListItem> {
       addresses.add(
         Padding(
           padding: const EdgeInsets.only(
-            left: 4.0,
-            right: 4,
-            top: 8,
-            bottom: 8,
+            left: 8,
+            right: 8,
           ),
           child: Row(
             children: <Widget>[
               CircleAvatar(
-                maxRadius: 8,
+                maxRadius: 6,
                 backgroundImage: AssetImage('assets/${abbr.toLowerCase()}.png'),
               ),
               const SizedBox(width: 4),
-              Text('$abbr: '),
-              Text(value),
+              Text(
+                '$abbr: ',
+                style: const TextStyle(fontSize: 14),
+              ),
+              Flexible(
+                child: InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 6,
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            value,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right,
+                          color: Theme.of(context).accentColor,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       );
     });
+
+    if (addresses.isEmpty) {
+      addresses.add(Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: <Widget>[
+            Text(
+              'Nothing found',
+              style: TextStyle(
+                color: Theme.of(context).accentColor,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+      ));
+    }
 
     return Column(
       children: addresses,

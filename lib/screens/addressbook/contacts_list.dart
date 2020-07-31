@@ -44,7 +44,7 @@ class _ContactsListState extends State<ContactsList> {
               indexLetter,
               style: TextStyle(
                 color: Theme.of(context).accentColor,
-                fontSize: 20,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
