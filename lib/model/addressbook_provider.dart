@@ -19,6 +19,18 @@ class AddressBookProvider extends ChangeNotifier {
     return _contacts;
   }
 
+  Contact contactByAddress(String address) {
+    Contact found;
+
+    for (Contact contact in _contacts) {
+      contact.addresses?.forEach((String abbr, String value) {
+        if (value == address) found = contact;
+      });
+    }
+
+    return found;
+  }
+
   void updateContact(Contact contact) {
     final Contact existing = _contacts.firstWhere(
       (Contact c) => c.uid == contact.uid,

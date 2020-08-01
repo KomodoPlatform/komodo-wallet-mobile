@@ -6,12 +6,14 @@ class ContactsList extends StatefulWidget {
   const ContactsList(
     this.contacts, {
     this.shouldPop = false,
-    this.filter,
+    this.coin,
+    this.contact,
   });
 
   final List<Contact> contacts;
   final bool shouldPop;
-  final String filter;
+  final String coin;
+  final Contact contact;
 
   @override
   _ContactsListState createState() => _ContactsListState();
@@ -45,13 +47,13 @@ class _ContactsListState extends State<ContactsList> {
     final List<Widget> list = [];
     final List<Contact> filteredContacts = widget.contacts.where(
       (Contact contact) {
-        if (widget.filter == null || widget.filter.isEmpty) {
+        if (widget.coin == null || widget.coin.isEmpty) {
           return true;
         }
         if (contact.addresses == null || contact.addresses.isEmpty) {
           return false;
         }
-        if (contact.addresses.containsKey(widget.filter)) {
+        if (contact.addresses.containsKey(widget.coin)) {
           return true;
         }
         return false;
@@ -62,28 +64,37 @@ class _ContactsListState extends State<ContactsList> {
     List<Widget> indexBlock;
 
     for (Contact contact in filteredContacts) {
+      if (widget.contact != null && contact != widget.contact) {
+        continue;
+      }
+
       if (contact.name[0] != indexLetter) {
         indexLetter = contact.name[0];
         _addBlockToList(indexBlock, list);
-        list.add(
-          Padding(
-            padding: const EdgeInsets.only(left: 14.0),
-            child: Text(
-              indexLetter,
-              style: TextStyle(
-                color: Theme.of(context).accentColor,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+        indexBlock = [];
+
+        if (widget.contact == null) {
+          list.add(
+            Padding(
+              padding: const EdgeInsets.only(left: 14.0),
+              child: Text(
+                indexLetter,
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-        );
-        indexBlock = [];
+          );
+        }
       }
+
       indexBlock.add(ContactListItem(
         contact,
         shouldPop: widget.shouldPop,
-        filter: widget.filter,
+        coin: widget.coin,
+        expanded: widget.contact != null,
       ));
     }
 

@@ -12,12 +12,14 @@ class ContactListItem extends StatefulWidget {
   const ContactListItem(
     this.contact, {
     this.shouldPop = false,
-    this.filter,
+    this.coin,
+    this.expanded = false,
   });
 
   final Contact contact;
   final bool shouldPop;
-  final String filter;
+  final String coin;
+  final bool expanded;
 
   @override
   _ContactListItemState createState() => _ContactListItemState();
@@ -26,6 +28,12 @@ class ContactListItem extends StatefulWidget {
 class _ContactListItemState extends State<ContactListItem> {
   bool expanded = false;
   AddressBookProvider addressBookProvider;
+
+  @override
+  void initState() {
+    expanded = widget.expanded;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +99,9 @@ class _ContactListItemState extends State<ContactListItem> {
     final List<Widget> addresses = [];
 
     widget.contact.addresses?.forEach((String abbr, String value) {
-      if (widget.filter != null &&
-          widget.filter.isNotEmpty &&
-          widget.filter != abbr) {
+      if (widget.coin != null &&
+          widget.coin.isNotEmpty &&
+          widget.coin != abbr) {
         return;
       }
 

@@ -93,7 +93,7 @@ class _AddressFieldState extends State<AddressField> {
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => AddressBookPage(
                             shouldPop: true,
-                            filter: widget.coin.abbr,
+                            coin: widget.coin.abbr,
                           ),
                         ));
                   },

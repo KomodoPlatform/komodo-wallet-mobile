@@ -7,12 +7,14 @@ import 'package:provider/provider.dart';
 
 class AddressBookPage extends StatefulWidget {
   const AddressBookPage({
-    this.filter,
+    this.coin,
     this.shouldPop = false,
+    this.contact,
   });
 
-  final String filter;
+  final String coin;
   final bool shouldPop;
+  final Contact contact;
 
   @override
   _AddressBookState createState() => _AddressBookState();
@@ -20,11 +22,11 @@ class AddressBookPage extends StatefulWidget {
 
 class _AddressBookState extends State<AddressBookPage> {
   AddressBookProvider provider;
-  String filter;
+  String coin;
 
   @override
   void initState() {
-    filter = widget.filter;
+    coin = widget.coin;
     super.initState();
   }
 
@@ -35,9 +37,11 @@ class _AddressBookState extends State<AddressBookPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: const Text(
-          'Address Book', // TODO(yurii): localization
-          key: Key('addressbook-title'),
+        title: Text(
+          widget.contact == null
+              ? 'Address Book'
+              : 'Contact details', // TODO(yurii): localization
+          key: const Key('addressbook-title'),
         ),
         centerTitle: true,
         elevation: 0,
@@ -45,27 +49,29 @@ class _AddressBookState extends State<AddressBookPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                RoundButton(
-                  onPressed: () {
-                    Navigator.push<dynamic>(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => const ContactEdit(
-                            contact: null,
-                          ),
-                        ));
-                  },
-                  child: Icon(Icons.add),
-                ),
-              ],
+          if (widget.contact == null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  RoundButton(
+                    onPressed: () {
+                      Navigator.push<dynamic>(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                const ContactEdit(
+                              contact: null,
+                            ),
+                          ));
+                    },
+                    child: Icon(Icons.add),
+                  ),
+                ],
+              ),
             ),
-          ),
-          _buildActiveFilters(),
+          if (widget.contact == null) _buildActiveFilters(),
           Expanded(
             child: FutureBuilder(
               future: provider.contacts,
@@ -87,7 +93,8 @@ class _AddressBookState extends State<AddressBookPage> {
                 return ContactsList(
                   contacts,
                   shouldPop: widget.shouldPop,
-                  filter: filter,
+                  coin: coin,
+                  contact: widget.contact,
                 );
               },
             ),
@@ -98,14 +105,14 @@ class _AddressBookState extends State<AddressBookPage> {
   }
 
   Widget _buildActiveFilters() {
-    if (filter == null || filter.isEmpty) return Container();
+    if (coin == null || coin.isEmpty) return Container();
 
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Center(
         child: Text(
           // TODO(yurii): localization
-          'Only show contacts with $filter addresses',
+          'Only showing contacts with $coin addresses',
           style: TextStyle(
             fontSize: 12,
             color: Theme.of(context).accentColor,

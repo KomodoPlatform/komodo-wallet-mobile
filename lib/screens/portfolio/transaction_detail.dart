@@ -11,6 +11,8 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import 'package:komodo_dex/model/addressbook_provider.dart';
+import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 
 class TransactionDetail extends StatefulWidget {
   const TransactionDetail({this.transaction, this.coinBalance});
@@ -256,31 +258,65 @@ class ItemTransationDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        copyToClipBoard(context, data);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              title,
-              style: Theme.of(context).textTheme.subtitle,
-            ),
-            const SizedBox(
-              width: 16,
-            ),
-            Expanded(
-              child: AutoSizeText(
-                data,
-                style: Theme.of(context).textTheme.body2,
-                textAlign: TextAlign.end,
+    final AddressBookProvider addressBookProvider =
+        Provider.of<AddressBookProvider>(context);
+    final Contact contact = addressBookProvider.contactByAddress(data);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            title,
+            style: Theme.of(context).textTheme.subtitle,
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                if (contact == null) {
+                  copyToClipBoard(context, data);
+                } else {
+                  Navigator.push<dynamic>(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => AddressBookPage(
+                          contact: contact,
+                        ),
+                      ));
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: contact == null
+                    ? AutoSizeText(
+                        data,
+                        style: Theme.of(context).textTheme.body2,
+                        textAlign: TextAlign.end,
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Icon(
+                            Icons.account_circle,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 4),
+                          AutoSizeText(
+                            contact.name,
+                            style: Theme.of(context).textTheme.body2.copyWith(
+                                  color: Colors.white,
+                                ),
+                          )
+                        ],
+                      ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
