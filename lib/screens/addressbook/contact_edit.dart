@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -187,12 +186,12 @@ class _ContactEditState extends State<ContactEdit> {
       return Container();
 
     final List<Widget> addresses = [];
-    final List<Coin> coins = await coinsBloc.electrumCoins();
+    final List<Coin> all = (await coins).values.toList();
 
     for (var abbr in editContact.addresses.keys) {
       final String value = editContact.addresses[abbr];
 
-      final String name = coins
+      final String name = all
           .firstWhere((Coin coin) => coin.abbr == abbr, orElse: () => null)
           ?.name;
 
@@ -276,15 +275,14 @@ class _ContactEditState extends State<ContactEdit> {
           return const Center(child: CircularProgressIndicator());
         });
 
-    final List<Coin> elCoins = await coinsBloc.electrumCoins();
-    final List<Coin> coins = List.from(elCoins);
-    coins.sort((Coin a, Coin b) => a.name.compareTo(b.name));
+    final List<Coin> all = (await coins).values.toList();
+    all.sort((Coin a, Coin b) => a.name.compareTo(b.name));
     dialogBloc.closeDialog(context);
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (BuildContext context) {
           final List<SimpleDialogOption> coinsList = [];
-          for (Coin coin in coins) {
+          for (Coin coin in all) {
             bool exist = false;
             if (editContact.addresses != null &&
                 editContact.addresses.containsKey(coin.abbr)) {

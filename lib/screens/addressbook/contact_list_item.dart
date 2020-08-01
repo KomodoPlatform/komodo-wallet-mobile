@@ -130,7 +130,7 @@ class _ContactListItemState extends State<ContactListItem> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 4,
-                      vertical: 6,
+                      vertical: 8,
                     ),
                     child: Row(
                       children: <Widget>[
