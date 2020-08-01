@@ -20,7 +20,7 @@ class AddressBookProvider extends ChangeNotifier {
   void updateContact(Contact contact) {
     final Contact existing = _contacts.firstWhere(
       (Contact c) => c.uid == contact.uid,
-      orElse: null,
+      orElse: () => null,
     );
 
     if (existing != null) {

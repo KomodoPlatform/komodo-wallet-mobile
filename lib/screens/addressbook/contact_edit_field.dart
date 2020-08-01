@@ -45,6 +45,12 @@ class _ContactEditFieldState extends State<ContactEditField> {
   }
 
   @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.autofocus) focusNode.requestFocus();

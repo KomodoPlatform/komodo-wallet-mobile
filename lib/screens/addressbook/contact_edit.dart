@@ -187,13 +187,13 @@ class _ContactEditState extends State<ContactEdit> {
       return Container();
 
     final List<Widget> addresses = [];
+    final List<Coin> coins = await coinsBloc.electrumCoins();
 
     for (var abbr in editContact.addresses.keys) {
       final String value = editContact.addresses[abbr];
 
-      final List<Coin> coins = await coinsBloc.electrumCoins();
       final String name = coins
-          .firstWhere((Coin coin) => coin.abbr == abbr, orElse: null)
+          .firstWhere((Coin coin) => coin.abbr == abbr, orElse: () => null)
           ?.name;
 
       addresses.add(
@@ -301,12 +301,21 @@ class _ContactEditState extends State<ContactEdit> {
                 });
                 dialogBloc.closeDialog(context);
               },
-              child: Row(
-                children: <Widget>[
-                  _buildCoinIcon(coin.abbr),
-                  const SizedBox(width: 4),
-                  Text(coin.name),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 8.0,
+                  bottom: 8.0,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    _buildCoinIcon(coin.abbr),
+                    const SizedBox(width: 6),
+                    Text(
+                      coin.name,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
               ),
             ));
           }
