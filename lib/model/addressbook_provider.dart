@@ -9,6 +9,8 @@ class AddressBookProvider extends ChangeNotifier {
     _init();
   }
 
+  String clipboard;
+
   Future<List<Contact>> get contacts async {
     while (_contacts == null) {
       await Future<dynamic>.delayed(const Duration(milliseconds: 50));

@@ -39,12 +39,10 @@ class CoinDetail extends StatefulWidget {
   const CoinDetail({
     this.coinBalance,
     this.isSendIsActive = false,
-    this.sendToAddress,
   });
 
   final CoinBalance coinBalance;
   final bool isSendIsActive;
-  final String sendToAddress;
 
   @override
   _CoinDetailState createState() => _CoinDetailState();
@@ -904,7 +902,6 @@ class _CoinDetailState extends State<CoinDetail> {
     listSteps.clear();
     listSteps.add(AmountAddressStep(
       coin: widget.coinBalance.coin,
-      addressValue: widget.sendToAddress,
       onCancel: () {
         setState(() {
           isExpanded = false;

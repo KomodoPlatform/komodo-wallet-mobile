@@ -3,9 +3,15 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/screens/addressbook/contact_list_item.dart';
 
 class ContactsList extends StatefulWidget {
-  const ContactsList(this.contacts);
+  const ContactsList(
+    this.contacts, {
+    this.shouldPop = false,
+    this.filter,
+  });
 
   final List<Contact> contacts;
+  final bool shouldPop;
+  final String filter;
 
   @override
   _ContactsListState createState() => _ContactsListState();
@@ -14,6 +20,13 @@ class ContactsList extends StatefulWidget {
 class _ContactsListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
+    final List<Widget> list = _buildList();
+
+    if (list.isEmpty)
+      return const Center(
+        child: Text('No contacts found'), // TODO(yurii): localization
+      );
+
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.only(
@@ -22,7 +35,7 @@ class _ContactsListState extends State<ContactsList> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: _buildList(),
+          children: list,
         ),
       ),
     );
@@ -30,10 +43,25 @@ class _ContactsListState extends State<ContactsList> {
 
   List<Widget> _buildList() {
     final List<Widget> list = [];
+    final List<Contact> filteredContacts = widget.contacts.where(
+      (Contact contact) {
+        if (widget.filter == null || widget.filter.isEmpty) {
+          return true;
+        }
+        if (contact.addresses == null || contact.addresses.isEmpty) {
+          return false;
+        }
+        if (contact.addresses.containsKey(widget.filter)) {
+          return true;
+        }
+        return false;
+      },
+    ).toList();
+
     String indexLetter = '';
     List<Widget> indexBlock;
 
-    for (Contact contact in widget.contacts) {
+    for (Contact contact in filteredContacts) {
       if (contact.name[0] != indexLetter) {
         indexLetter = contact.name[0];
         _addBlockToList(indexBlock, list);
@@ -52,7 +80,11 @@ class _ContactsListState extends State<ContactsList> {
         );
         indexBlock = [];
       }
-      indexBlock.add(ContactListItem(contact));
+      indexBlock.add(ContactListItem(
+        contact,
+        shouldPop: widget.shouldPop,
+        filter: widget.filter,
+      ));
     }
 
     _addBlockToList(indexBlock, list);

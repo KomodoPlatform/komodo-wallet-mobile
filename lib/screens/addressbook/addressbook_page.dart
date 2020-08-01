@@ -6,12 +6,28 @@ import 'package:komodo_dex/widgets/round_button.dart';
 import 'package:provider/provider.dart';
 
 class AddressBookPage extends StatefulWidget {
+  const AddressBookPage({
+    this.filter,
+    this.shouldPop = false,
+  });
+
+  final String filter;
+  final bool shouldPop;
+
   @override
   _AddressBookState createState() => _AddressBookState();
 }
 
 class _AddressBookState extends State<AddressBookPage> {
   AddressBookProvider provider;
+  String filter;
+
+  @override
+  void initState() {
+    filter = widget.filter;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<AddressBookProvider>(context);
@@ -27,6 +43,7 @@ class _AddressBookState extends State<AddressBookPage> {
         elevation: 0,
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -48,6 +65,7 @@ class _AddressBookState extends State<AddressBookPage> {
               ],
             ),
           ),
+          _buildActiveFilters(),
           Expanded(
             child: FutureBuilder(
               future: provider.contacts,
@@ -63,13 +81,36 @@ class _AddressBookState extends State<AddressBookPage> {
                 });
 
                 if (contacts.isEmpty)
+                  // TODO(yurii): localization
                   return const Center(child: Text('Address book is empty'));
 
-                return ContactsList(contacts);
+                return ContactsList(
+                  contacts,
+                  shouldPop: widget.shouldPop,
+                  filter: filter,
+                );
               },
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildActiveFilters() {
+    if (filter == null || filter.isEmpty) return Container();
+
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Center(
+        child: Text(
+          // TODO(yurii): localization
+          'Only show contacts with $filter addresses',
+          style: TextStyle(
+            fontSize: 12,
+            color: Theme.of(context).accentColor,
+          ),
+        ),
       ),
     );
   }

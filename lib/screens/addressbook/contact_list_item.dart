@@ -6,11 +6,18 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:provider/provider.dart';
 
 class ContactListItem extends StatefulWidget {
-  const ContactListItem(this.contact);
+  const ContactListItem(
+    this.contact, {
+    this.shouldPop = false,
+    this.filter,
+  });
 
   final Contact contact;
+  final bool shouldPop;
+  final String filter;
 
   @override
   _ContactListItemState createState() => _ContactListItemState();
@@ -18,9 +25,12 @@ class ContactListItem extends StatefulWidget {
 
 class _ContactListItemState extends State<ContactListItem> {
   bool expanded = false;
+  AddressBookProvider addressBookProvider;
 
   @override
   Widget build(BuildContext context) {
+    addressBookProvider = Provider.of<AddressBookProvider>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -65,7 +75,7 @@ class _ContactListItemState extends State<ContactListItem> {
                           children: <Widget>[
                             Icon(Icons.edit, size: 16),
                             const SizedBox(width: 4),
-                            const Text('Edit'),
+                            const Text('Edit'), // TODO(yurii): localization
                           ],
                         )),
                   ),
@@ -81,6 +91,12 @@ class _ContactListItemState extends State<ContactListItem> {
     final List<Widget> addresses = [];
 
     widget.contact.addresses?.forEach((String abbr, String value) {
+      if (widget.filter != null &&
+          widget.filter.isNotEmpty &&
+          widget.filter != abbr) {
+        return;
+      }
+
       addresses.add(
         Padding(
           padding: const EdgeInsets.only(
@@ -142,9 +158,9 @@ class _ContactListItemState extends State<ContactListItem> {
         child: Row(
           children: <Widget>[
             Text(
-              'Nothing found',
+              'Nothing found', // TODO(yurii): localization
               style: TextStyle(
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).disabledColor,
                 fontSize: 14,
               ),
             ),
@@ -167,6 +183,7 @@ class _ContactListItemState extends State<ContactListItem> {
     );
     if (coinBalance == null) {
       _showWarning(
+        // TODO(yurii): localization
         title: 'No such coin',
         message: 'You can not send funds to $abbr address, '
             'because $abbr is not activated. Please go to portfolio.',
@@ -174,15 +191,19 @@ class _ContactListItemState extends State<ContactListItem> {
       return;
     }
 
-    Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => CoinDetail(
-            sendToAddress: value,
-            coinBalance: coinBalance,
-            isSendIsActive: true,
-          ),
-        ));
+    addressBookProvider.clipboard = value;
+    if (widget.shouldPop) {
+      Navigator.of(context).pop();
+    } else {
+      Navigator.push<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => CoinDetail(
+              coinBalance: coinBalance,
+              isSendIsActive: true,
+            ),
+          ));
+    }
   }
 
   void _showWarning({String title, String message}) {
@@ -224,7 +245,7 @@ class _ContactListItemState extends State<ContactListItem> {
                 onPressed: () {
                   dialogBloc.closeDialog(context);
                 },
-                child: const Text('OK'),
+                child: const Text('OK'), // TODO(yurii): localization
               ),
             )
           ],
