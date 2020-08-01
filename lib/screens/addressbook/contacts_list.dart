@@ -8,12 +8,14 @@ class ContactsList extends StatefulWidget {
     this.shouldPop = false,
     this.coin,
     this.contact,
+    this.searchPhrase,
   });
 
   final List<Contact> contacts;
   final bool shouldPop;
   final String coin;
   final Contact contact;
+  final String searchPhrase;
 
   @override
   _ContactsListState createState() => _ContactsListState();
@@ -32,6 +34,7 @@ class _ContactsListState extends State<ContactsList> {
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.only(
+          top: 8,
           left: 16,
           right: 16,
         ),
@@ -68,12 +71,22 @@ class _ContactsListState extends State<ContactsList> {
         continue;
       }
 
-      if (contact.name[0] != indexLetter) {
+      if (widget.searchPhrase != null && !_isRelevant(contact)) {
+        continue;
+      }
+
+      final bool shouldCreateBlock =
+          contact.name[0] != indexLetter || widget.searchPhrase != '';
+
+      if (shouldCreateBlock) {
         indexLetter = contact.name[0];
         _addBlockToList(indexBlock, list);
         indexBlock = [];
 
-        if (widget.contact == null) {
+        final bool needIndexes =
+            widget.contact == null && widget.searchPhrase == '';
+
+        if (needIndexes) {
           list.add(
             Padding(
               padding: const EdgeInsets.only(left: 14.0),
@@ -125,9 +138,9 @@ class _ContactsListState extends State<ContactsList> {
 
     list.add(
       Padding(
-        padding: const EdgeInsets.only(
-          top: 16,
-          bottom: 16,
+        padding: EdgeInsets.only(
+          top: widget.searchPhrase == '' ? 16 : 4,
+          bottom: widget.searchPhrase == '' ? 16 : 4,
         ),
         child: Card(
           margin: const EdgeInsets.all(0),
@@ -140,5 +153,11 @@ class _ContactsListState extends State<ContactsList> {
         ),
       ),
     );
+  }
+
+  bool _isRelevant(Contact contact) {
+    return contact.name
+        .toLowerCase()
+        .contains(widget.searchPhrase.toLowerCase());
   }
 }

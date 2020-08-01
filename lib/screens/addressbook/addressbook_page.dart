@@ -23,6 +23,8 @@ class AddressBookPage extends StatefulWidget {
 class _AddressBookState extends State<AddressBookPage> {
   AddressBookProvider provider;
   String coin;
+  bool isSearchOpen = false;
+  String searchPhrase = '';
 
   @override
   void initState() {
@@ -49,28 +51,7 @@ class _AddressBookState extends State<AddressBookPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (widget.contact == null)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  RoundButton(
-                    onPressed: () {
-                      Navigator.push<dynamic>(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                const ContactEdit(
-                              contact: null,
-                            ),
-                          ));
-                    },
-                    child: Icon(Icons.add),
-                  ),
-                ],
-              ),
-            ),
+          if (widget.contact == null) _buildHeader(),
           if (widget.contact == null) _buildActiveFilters(),
           Expanded(
             child: FutureBuilder(
@@ -95,12 +76,82 @@ class _AddressBookState extends State<AddressBookPage> {
                   shouldPop: widget.shouldPop,
                   coin: coin,
                   contact: widget.contact,
+                  searchPhrase: searchPhrase,
                 );
               },
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: isSearchOpen ? _buildSearchBar() : _buildToolBar(),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.only(
+            left: 8,
+            right: 8,
+          ),
+          child: TextField(
+            autofocus: true,
+            onChanged: (String value) {
+              setState(() {
+                searchPhrase = value;
+              });
+            },
+          ),
+        )),
+        const SizedBox(width: 4),
+        RoundButton(
+          onPressed: () {
+            setState(() {
+              searchPhrase = '';
+              isSearchOpen = false;
+            });
+          },
+          child: Icon(Icons.close),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildToolBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        RoundButton(
+          onPressed: () {
+            Navigator.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => const ContactEdit(
+                    contact: null,
+                  ),
+                ));
+          },
+          child: Icon(Icons.add),
+        ),
+        const SizedBox(width: 4),
+        RoundButton(
+          onPressed: () {
+            setState(() {
+              isSearchOpen = true;
+            });
+          },
+          child: Icon(Icons.search),
+        ),
+      ],
     );
   }
 
