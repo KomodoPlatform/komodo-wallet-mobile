@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/widgets/round_button.dart';
+import 'package:komodo_dex/services/lock_service.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 class ContactEditField extends StatefulWidget {
   const ContactEditField({
@@ -85,6 +87,22 @@ class _ContactEditFieldState extends State<ContactEditField> {
                       const SizedBox(height: 16),
                       Row(
                         children: <Widget>[
+                          if (widget.name != 'name')
+                            ButtonTheme(
+                              minWidth: 0,
+                              child: FlatButton(
+                                padding: const EdgeInsets.only(
+                                  right: 6,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6.0)),
+                                onPressed: () => _scan(),
+                                child: Icon(
+                                  Icons.add_a_photo,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           Expanded(
                             child: TextField(
                               controller: controller,
@@ -139,5 +157,17 @@ class _ContactEditFieldState extends State<ContactEditField> {
                 ))),
       ],
     );
+  }
+
+  Future<void> _scan() async {
+    final int lockCookie = lockService.enteringQrScanner();
+    try {
+      final String barcode = await BarcodeScanner.scan();
+      setState(() {
+        controller.text = barcode;
+      });
+      widget.onChange(barcode);
+    } catch (_) {}
+    lockService.qrScannerReturned(lockCookie);
   }
 }
