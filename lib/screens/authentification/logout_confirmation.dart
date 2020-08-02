@@ -11,6 +11,7 @@ void showLogoutConfirmation(BuildContext context) {
         'Are you sure you want to logout now?', // TODO(yurii): localization
     confirmButtonText: AppLocalizations.of(context).logout,
     icon: Icons.exit_to_app,
+    key: const Key('settings-logout-yes'),
     onConfirm: () async {
       await authBloc.logout();
     },

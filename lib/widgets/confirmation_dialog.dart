@@ -10,6 +10,7 @@ void showConfirmationDialog({
   String message = 'Are you sure?',
   Function onConfirm,
   String confirmButtonText = 'Confirm',
+  Key key,
 }) {
   dialogBloc.dialog = showDialog(
       context: context,
@@ -33,6 +34,7 @@ void showConfirmationDialog({
               children: <Widget>[
                 Expanded(
                     child: RaisedButton(
+                  key: key ?? const Key('confirm-button-key'),
                   color: Theme.of(context).dialogBackgroundColor,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
