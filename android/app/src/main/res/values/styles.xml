@@ -10,7 +10,8 @@
         <item name="android:windowBackground">@drawable/launch_background</item>
         <!-- With the fullscreen mode turned on app can not detect 
         on-screen keyboard, and if opened, keyboard overlaps part of the screen,
-        with no scrolling available https://bit.ly/333l9RZ -->
+        with no scrolling available
+        https://bit.ly/333l9RZ https://github.com/flutter/flutter/issues/51165 -->
         <!-- <item name= "android:windowFullscreen">true</item> -->
     </style>
 </resources>
