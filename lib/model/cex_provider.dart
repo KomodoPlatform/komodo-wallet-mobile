@@ -471,22 +471,21 @@ class CexPrices {
       }
     }
 
-    if (convertedVolume == null || convertedVolume == 0) {
-      if (hidden) return '\$**.**';
-      return '\$0.00';
-    }
-
     final String sign = convertedVolume < 0 ? '-' : '';
     convertedVolume = convertedVolume.abs();
 
     String converted;
     if (_isFiat(to)) {
       converted = convertedVolume.toStringAsFixed(2);
-      if (converted == '0.00') converted = formatPrice(convertedVolume, 4);
+      if (convertedVolume != 0.00 && converted == '0.00')
+        converted = formatPrice(convertedVolume, 4);
     } else {
-      if (convertedVolume < 0.00000001) convertedVolume = 0.00000001;
+      if (convertedVolume != 0.00 && convertedVolume < 0.00000001)
+        convertedVolume = 0.00000001;
       if (convertedVolume > 1) {
         converted = formatPrice(convertedVolume, 9);
+      } else if (convertedVolume == 0.00) {
+        converted = convertedVolume.toStringAsFixed(2);
       } else {
         converted = convertedVolume.toStringAsFixed(8);
       }
