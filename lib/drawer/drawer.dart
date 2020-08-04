@@ -50,51 +50,59 @@ class _AppDrawerState extends State<AppDrawer> {
                       Color.fromRGBO(65, 234, 213, 0.1),
                     ],
                   )),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 5,
-                      bottom: 5,
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SizedBox(
-                            height: headerHeight * 0.4,
+                  child: SafeArea(
+                    bottom: false,
+                    child: Flex(
+                      direction: Axis.vertical,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          flex: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
                             child: Image.asset(
                                 'assets/mark_and_text_vertical_light.png'),
                           ),
-                          Divider(
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Divider(
                             color: Colors.white,
-                            height: headerHeight * 0.22,
                             indent: drawerWidth * 0.1,
                             endIndent: drawerWidth * 0.1,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              SvgPicture.asset(
-                                'assets/wallet.svg',
-                                height: 18,
-                              ),
-                              const SizedBox(width: 4),
-                              FutureBuilder<Wallet>(
-                                  future: Db.getCurrentWallet(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<Wallet> snapshot) {
-                                    if (!snapshot.hasData) return Container();
-                                    return Text(
-                                      snapshot.data.name,
-                                      style: const TextStyle(fontSize: 18),
-                                      overflow: TextOverflow.ellipsis,
-                                    );
-                                  })
-                            ],
+                        ),
+                        Flexible(
+                          flex: 4,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8,
+                              bottom: 8,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                SvgPicture.asset(
+                                  'assets/wallet.svg',
+                                  height: 18,
+                                ),
+                                const SizedBox(width: 4),
+                                FutureBuilder<Wallet>(
+                                    future: Db.getCurrentWallet(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Wallet> snapshot) {
+                                      if (!snapshot.hasData) return Container();
+                                      return Text(
+                                        snapshot.data.name,
+                                        style: const TextStyle(fontSize: 18),
+                                        overflow: TextOverflow.ellipsis,
+                                      );
+                                    })
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
