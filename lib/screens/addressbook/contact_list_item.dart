@@ -138,14 +138,7 @@ class _ContactListItemState extends State<ContactListItem> {
                     child: Row(
                       children: <Widget>[
                         Flexible(
-                          child: Text(
-                            value,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Theme.of(context).accentColor,
-                              fontSize: 14,
-                            ),
-                          ),
+                          child: _truncateMiddle(value),
                         ),
                         Icon(
                           Icons.chevron_right,
@@ -182,6 +175,39 @@ class _ContactListItemState extends State<ContactListItem> {
 
     return Column(
       children: addresses,
+    );
+  }
+
+  Widget _truncateMiddle(String string) {
+    if (string.length < 6)
+      return Text(
+        string,
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+          fontSize: 14,
+        ),
+      );
+
+    return Row(
+      children: <Widget>[
+        Flexible(
+          child: Text(
+            string.substring(0, string.length - 5),
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Theme.of(context).accentColor,
+              fontSize: 14,
+            ),
+          ),
+        ),
+        Text(
+          string.substring(string.length - 5),
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+            fontSize: 14,
+          ),
+        )
+      ],
     );
   }
 
