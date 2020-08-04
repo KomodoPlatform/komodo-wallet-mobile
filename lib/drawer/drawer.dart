@@ -222,34 +222,25 @@ class _AppDrawerState extends State<AppDrawer> {
                               size: 16,
                               color: Colors.white.withAlpha(200),
                             )),
+                        Divider(
+                          indent: 20,
+                          endIndent: 20,
+                          color: Theme.of(context).hintColor,
+                        ),
+                        _buildDrawerItem(
+                          leading: Icon(
+                            Icons.exit_to_app,
+                            size: 16,
+                            color: Colors.white.withAlpha(200),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            showLogoutConfirmation(context);
+                          },
+                          title: Text(AppLocalizations.of(context).logout),
+                        ),
                       ],
                     ),
-                  ],
-                ),
-                Expanded(child: Container()),
-                Row(
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                        showLogoutConfirmation(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.exit_to_app,
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(AppLocalizations.of(context).logout),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(child: Container()),
                   ],
                 ),
               ],
