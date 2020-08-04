@@ -203,10 +203,14 @@ class _ContactEditState extends State<ContactEdit> {
           .firstWhere((Coin coin) => coin.abbr == abbr, orElse: () => null)
           ?.name;
 
+      String label = '$name ($abbr)';
+      if (abbr == 'KMD') label = '$name (KMD & SmartChains)';
+      if (abbr == 'ETH') label = '$name (ETH & ERC tokens)';
+
       addresses.add(
         ContactEditField(
           name: abbr,
-          label: name == null ? '$abbr' : '$name ($abbr)',
+          label: name == null ? '$abbr' : label,
           value: value,
           padding: const EdgeInsets.only(
             top: 10,
@@ -299,14 +303,7 @@ class _ContactEditState extends State<ContactEdit> {
             if (exist) continue;
 
             coinsList.add(SimpleDialogOption(
-              onPressed: () {
-                setState(() {
-                  focusOn = coin.abbr;
-                  editContact.addresses ??= {};
-                  editContact.addresses[coin.abbr] = '';
-                });
-                dialogBloc.closeDialog(context);
-              },
+              onPressed: () => _createAddress(coin),
               child: Padding(
                 padding: const EdgeInsets.only(
                   top: 8.0,
@@ -316,10 +313,15 @@ class _ContactEditState extends State<ContactEdit> {
                   children: <Widget>[
                     _buildCoinIcon(coin.abbr),
                     const SizedBox(width: 6),
-                    Text(
-                      coin.name,
-                      style: const TextStyle(fontSize: 18),
+                    Expanded(
+                      child: Text(
+                        coin.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 18),
+                      ),
                     ),
+                    if (coin.type == 'erc') _buildErcChip(),
+                    if (coin.type == 'smartChain') _buildKmdChip(),
                   ],
                 ),
               ),
@@ -333,6 +335,70 @@ class _ContactEditState extends State<ContactEdit> {
             ],
           );
         });
+  }
+
+  Widget _buildErcChip() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 2,
+      ),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(20, 117, 186, 1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: const <Widget>[
+          Text(
+            'ERC20',
+            style: TextStyle(fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKmdChip() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 2,
+      ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: const <Widget>[
+          CircleAvatar(
+            maxRadius: 6,
+            backgroundImage: AssetImage('assets/kmd.png'),
+          ),
+          SizedBox(width: 3),
+          Text(
+            'KMD',
+            style: TextStyle(fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _createAddress(Coin coin) {
+    String abbr = coin.abbr;
+    editContact.addresses ??= {};
+
+    if (coin.type == 'smartChain') {
+      abbr = 'KMD';
+    } else if (coin.type == 'erc') {
+      abbr = 'ETH';
+    }
+
+    setState(() {
+      editContact.addresses[abbr] = editContact.addresses[abbr] ?? '';
+      focusOn = abbr;
+    });
+    dialogBloc.closeDialog(context);
   }
 
   void _showDeleteConfiramtion() {

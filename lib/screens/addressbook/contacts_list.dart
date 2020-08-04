@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/contact_list_item.dart';
 
 class ContactsList extends StatefulWidget {
@@ -13,7 +14,7 @@ class ContactsList extends StatefulWidget {
 
   final List<Contact> contacts;
   final bool shouldPop;
-  final String coin;
+  final Coin coin;
   final Contact contact;
   final String searchPhrase;
 
@@ -50,13 +51,20 @@ class _ContactsListState extends State<ContactsList> {
     final List<Widget> list = [];
     final List<Contact> filteredContacts = widget.contacts.where(
       (Contact contact) {
-        if (widget.coin == null || widget.coin.isEmpty) {
+        if (widget.coin == null) {
           return true;
         }
         if (contact.addresses == null || contact.addresses.isEmpty) {
           return false;
         }
         if (contact.addresses.containsKey(widget.coin)) {
+          return true;
+        }
+        if (widget.coin.type == 'smartChain' &&
+            contact.addresses.containsKey('KMD')) {
+          return true;
+        }
+        if (widget.coin.type == 'erc' && contact.addresses.containsKey('ETH')) {
           return true;
         }
         return false;

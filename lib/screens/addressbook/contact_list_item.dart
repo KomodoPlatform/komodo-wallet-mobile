@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
@@ -18,7 +19,7 @@ class ContactListItem extends StatefulWidget {
 
   final Contact contact;
   final bool shouldPop;
-  final String coin;
+  final Coin coin;
   final bool expanded;
 
   @override
@@ -99,10 +100,12 @@ class _ContactListItemState extends State<ContactListItem> {
     final List<Widget> addresses = [];
 
     widget.contact.addresses?.forEach((String abbr, String value) {
-      if (widget.coin != null &&
-          widget.coin.isNotEmpty &&
-          widget.coin != abbr) {
-        return;
+      if (widget.coin != null) {
+        String coinAbbr = widget.coin.abbr;
+        if (widget.coin.type == 'erc') coinAbbr = 'ETH';
+        if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
+
+        if (coinAbbr != abbr) return;
       }
 
       addresses.add(

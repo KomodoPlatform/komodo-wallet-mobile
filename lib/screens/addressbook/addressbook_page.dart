@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
 import 'package:komodo_dex/screens/addressbook/contacts_list.dart';
 import 'package:komodo_dex/widgets/round_button.dart';
@@ -12,7 +13,7 @@ class AddressBookPage extends StatefulWidget {
     this.contact,
   });
 
-  final String coin;
+  final Coin coin;
   final bool shouldPop;
   final Contact contact;
 
@@ -22,7 +23,7 @@ class AddressBookPage extends StatefulWidget {
 
 class _AddressBookState extends State<AddressBookPage> {
   AddressBookProvider provider;
-  String coin;
+  Coin coin;
   bool isSearchOpen = false;
   String searchPhrase = '';
 
@@ -156,14 +157,20 @@ class _AddressBookState extends State<AddressBookPage> {
   }
 
   Widget _buildActiveFilters() {
-    if (coin == null || coin.isEmpty) return Container();
+    if (coin == null) return Container();
+
+    String title = coin.abbr;
+
+    if (coin.type == 'smartChain') title = 'KMD & SmartChains';
+    if (coin.type == 'erc') title = 'ETH & ERC tokens';
 
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Center(
         child: Text(
           // TODO(yurii): localization
-          'Only showing contacts with $coin addresses',
+          'Only showing contacts with $title addresses',
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 12,
             color: Theme.of(context).accentColor,
