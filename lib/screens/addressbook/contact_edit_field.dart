@@ -108,6 +108,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                               controller: controller,
                               focusNode: focusNode,
                               textCapitalization: TextCapitalization.words,
+                              maxLength: 100,
                               onChanged: (String value) {
                                 if (widget.onChange == null) return;
                                 widget.onChange(value);
