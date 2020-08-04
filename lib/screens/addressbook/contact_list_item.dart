@@ -192,7 +192,7 @@ class _ContactListItemState extends State<ContactListItem> {
       },
       orElse: () => null,
     );
-    if (coinBalance == null) {
+    if (widget.coin == null && coinBalance == null) {
       _showWarning(
         // TODO(yurii): localization
         title: 'No such coin',
