@@ -66,6 +66,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               isERCToken: widget.isERCToken,
               controller: widget.addressController,
               onScan: scan,
+              coin: widget.coin,
             ),
             CustomFee(
               coin: widget.coin,

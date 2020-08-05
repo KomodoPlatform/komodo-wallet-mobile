@@ -7,7 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/drawer/drawer.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -18,7 +20,6 @@ import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
-import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -75,6 +76,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ChangeNotifierProvider(
               create: (context) => CexProvider(),
             ),
+            ChangeNotifierProvider(
+              create: (context) => AddressBookProvider(),
+            ),
           ],
           child: const MyApp(),
         ));
@@ -111,6 +115,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: getTheme().backgroundColor,
       systemNavigationBarIconBrightness: Brightness.light,
@@ -165,13 +170,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Timer timer;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   final List<Widget> _children = <Widget>[
     CoinsPage(),
     SwapPage(),
     MarketsPage(),
     FeedPage(),
-    SettingPage()
   ];
 
   Future<void> _initLanguage() async {
@@ -249,6 +254,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         stream: mainBloc.outCurrentIndex,
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           return Scaffold(
+            key: _scaffoldKey,
+            endDrawer: AppDrawer(),
             resizeToAvoidBottomPadding: false,
             backgroundColor: Theme.of(context).backgroundColor,
             body: _children[snapshot.data],
@@ -339,22 +346,18 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: const Text(
-                                              'Feed')), // TODO(yurii): localization
+                                          title: const Text('Feed')),
                                       BottomNavigationBarItem(
                                           icon: Stack(
                                             children: <Widget>[
-                                              Icon(Icons.settings,
-                                                  key: const Key(
-                                                      'nav-settings')),
+                                              Icon(Icons.dehaze,
+                                                  key: const Key('nav-more')),
                                               if (updatesProvider.status !=
                                                   UpdateStatus.upToDate)
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: Text(
-                                              AppLocalizations.of(context)
-                                                  .settings)),
+                                          title: const Text('More')),
                                     ],
                                   )
                                 ],
@@ -371,6 +374,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   void onTabTapped(int index) {
-    mainBloc.setCurrentIndexTab(index);
+    if (index < _children.length) {
+      mainBloc.setCurrentIndexTab(index);
+    } else {
+      _scaffoldKey.currentState.openEndDrawer();
+    }
   }
 }

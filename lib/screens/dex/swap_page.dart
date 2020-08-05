@@ -79,6 +79,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     _tabsPanel,
                   ],
                 )),
+                automaticallyImplyLeading: false,
               ),
             )
           : AppBar(
@@ -96,7 +97,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     const SizedBox(height: 15),
                   ],
                 ),
-              ));
+              ),
+              automaticallyImplyLeading: false,
+            );
     }
 
     return GestureDetector(
