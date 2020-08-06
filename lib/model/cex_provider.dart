@@ -463,11 +463,9 @@ class CexPrices {
       double convertionPrice;
       try {
         convertionPrice = _prices[from][to.toLowerCase()];
-      } catch (_) {
-        convertionPrice = 0.00;
-      }
+      } catch (_) {}
       final double toUsdPrice = getUsdPrice(to);
-      if (toUsdPrice != null) {
+      if (toUsdPrice != null && toUsdPrice != 0.00) {
         convertionPrice ??= fromUsdPrice / toUsdPrice;
         convertedVolume = usdVolume * convertionPrice;
       } else {
