@@ -36,7 +36,10 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class CoinDetail extends StatefulWidget {
-  const CoinDetail({this.coinBalance, this.isSendIsActive = false});
+  const CoinDetail({
+    this.coinBalance,
+    this.isSendIsActive = false,
+  });
 
   final CoinBalance coinBalance;
   final bool isSendIsActive;

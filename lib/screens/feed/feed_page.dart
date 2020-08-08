@@ -63,6 +63,7 @@ class _FeedPageState extends State<FeedPage>
                     _tabsPanel,
                   ],
                 )),
+                automaticallyImplyLeading: false,
               ),
             )
           : AppBar(
@@ -71,6 +72,7 @@ class _FeedPageState extends State<FeedPage>
                 'News Feed'.toUpperCase(), // TODO(yurii): localization
                 style: Theme.of(context).textTheme.subtitle,
               )),
+              automaticallyImplyLeading: false,
             );
     }
 

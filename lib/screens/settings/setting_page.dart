@@ -20,11 +20,8 @@ import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
-import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
-import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -81,7 +78,6 @@ class _SettingPageState extends State<SettingPage> {
           key: const Key('settings-title'),
         ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).backgroundColor,
         elevation: 0,
       ),
       body: Theme(
@@ -93,15 +89,7 @@ class _SettingPageState extends State<SettingPage> {
             key: const Key('settings-scrollable'),
             children: <Widget>[
               _buildTitle(AppLocalizations.of(context).logoutsettings),
-              _buildLogout(),
-              const SizedBox(
-                height: 1,
-              ),
               _buildLogOutOnExit(),
-              _buildTitle(AppLocalizations.of(context).settingLanguageTitle),
-              _buildLanguages(),
-              _buildTitle('Currency'), // TODO(yurii): localization
-              _buildCurrency(),
               _buildTitle(AppLocalizations.of(context).soundTitle),
               _buildSound(),
               _buildTitle(AppLocalizations.of(context).security),
@@ -110,10 +98,6 @@ class _SettingPageState extends State<SettingPage> {
                 height: 1,
               ),
               _buildActivateBiometric(),
-              const SizedBox(
-                height: 1,
-              ),
-              _buildHideBalance(),
               const SizedBox(
                 height: 1,
               ),
@@ -165,52 +149,6 @@ class _SettingPageState extends State<SettingPage> {
       rethrow;
     }
     return version;
-  }
-
-  Widget _buildCurrency() {
-    return CustomTile(
-      onPressed: () {
-        showCurrenciesDialog(context);
-      },
-      child: ListTile(
-        trailing: Icon(Icons.more_vert, color: Colors.white.withOpacity(0.7)),
-        title: Text(
-          cexProvider.selectedFiat ?? '',
-          style: Theme.of(context).textTheme.body1.copyWith(
-              fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLanguages() {
-    return CustomTile(
-      onPressed: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => SelectLanguagePage(
-                      currentLoc: Localizations.localeOf(context),
-                    )));
-      },
-      child: SharedPreferencesBuilder<dynamic>(
-          pref: 'current_languages',
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            return ListTile(
-              trailing: Icon(Icons.chevron_right,
-                  color: Colors.white.withOpacity(0.7)),
-              title: Text(
-                snapshot.hasData
-                    ? settingsBloc.getNameLanguage(context, snapshot.data)
-                    : '',
-                style: Theme.of(context).textTheme.body1.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
-              ),
-            );
-          }),
-    );
   }
 
   Widget _buildSound() {
@@ -384,44 +322,6 @@ class _SettingPageState extends State<SettingPage> {
         });
   }
 
-  Widget _buildHideBalance() {
-    // TODO(MateusRodCosta): Try to sync the showBalance bool on settingsBloc with a SharedPreference
-    return CustomTile(
-      child: ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                'Hide Balance',
-                style: Theme.of(context).textTheme.body1.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
-              ),
-            ),
-            StreamBuilder<bool>(
-              initialData: settingsBloc.showBalance,
-              stream: settingsBloc.outShowBalance,
-              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                return snapshot.hasData
-                    ? Switch(
-                        value: !snapshot.data,
-                        key: const Key('settings-hide-balance'),
-                        onChanged: (bool dataSwitch) {
-                          Log('setting_page:262', 'dataSwitch $dataSwitch');
-                          setState(() {
-                            settingsBloc.setShowBalance(!dataSwitch);
-                          });
-                        })
-                    : Container();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildChangePIN() {
     return CustomTile(
       onPressed: () => Navigator.push<dynamic>(
@@ -554,26 +454,6 @@ class _SettingPageState extends State<SettingPage> {
                     )),
           );
         });
-  }
-
-  Widget _buildLogout() {
-    return CustomTile(
-      onPressed: () {
-        Log('setting_page:454', 'PRESSED');
-        showLogoutConfirmation(context);
-      },
-      child: ListTile(
-        leading: Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset('assets/logout_setting.svg'),
-        ),
-        title: Text(AppLocalizations.of(context).logout,
-            key: const Key('settings-logout'),
-            style: Theme.of(context).textTheme.body1.copyWith(
-                fontWeight: FontWeight.w300,
-                color: Colors.white.withOpacity(0.7))),
-      ),
-    );
   }
 
   Widget _buildLogOutOnExit() {

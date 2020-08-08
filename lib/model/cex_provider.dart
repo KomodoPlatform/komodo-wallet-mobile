@@ -55,6 +55,7 @@ class CexProvider extends ChangeNotifier {
   List<String> get fiatList => cexPrices.fiatList;
   String get currency => cexPrices.currencies[cexPrices.activeCurrency];
   String get selectedFiat => cexPrices.selectedFiat;
+  String get selectedFiatSymbol => cexPrices.selectedFiatSymbol;
   set selectedFiat(String value) => cexPrices.selectedFiat = value;
 
   void switchCurrency() {
@@ -93,7 +94,7 @@ class CexProvider extends ChangeNotifier {
     String _body;
     try {
       _res = await http.get(_tickersListUrl).timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching tickers timed out');
           throw 'Fetching tickers timed out';
@@ -247,7 +248,7 @@ class CexProvider extends ChangeNotifier {
     String _body;
     try {
       _res = await http.get('$_chartsUrl/${pair.toLowerCase()}').timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching $pair data timed out');
           throw 'Fetching $pair timed out';
@@ -385,6 +386,11 @@ class CexPrices {
     }
   }
 
+  String get selectedFiatSymbol {
+    if (selectedFiat == null) return null;
+    return NumberFormat.simpleCurrency(name: selectedFiat).currencySymbol;
+  }
+
   List<String> get fiatList => _fiatCurrencies?.keys?.toList();
 
   SharedPreferences prefs;
@@ -400,7 +406,7 @@ class CexPrices {
     String _body;
     try {
       _res = await http.get('https://api.openrates.io/latest?base=USD').timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 60),
         onTimeout: () {
           throw 'Fetching rates prices timed out';
         },
@@ -538,7 +544,7 @@ class CexPrices {
               ids.join(',') +
               '&vs_currencies=usd')
           .timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 60),
         onTimeout: () {
           throw 'Fetching usd prices timed out';
         },
