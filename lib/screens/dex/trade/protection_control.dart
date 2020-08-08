@@ -17,176 +17,177 @@ class ProtectionControl extends StatefulWidget {
 }
 
 class _ProtectionControlState extends State<ProtectionControl> {
-  final int recommendedConfirmations = 3;
-  int confirmations;
-  bool isSliderActive = false;
-  bool useDefaults = true;
+  SwapProvider swapProvider;
+  bool dpowRequired = false;
+  bool dpowAvailable = false;
+  final int minConfs = 0;
+  final int maxConfs = 5;
+  int confs;
 
   @override
   void initState() {
     super.initState();
-    confirmations = recommendedConfirmations;
+    setState(() {
+      dpowRequired = widget.coinBase.requiresNotarization;
+      confs = widget.coinBase.requiredConfirmations ?? 0;
+      if (confs < minConfs) confs = minConfs;
+      if (confs > maxConfs) confs = maxConfs;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final SwapProvider swapProvider = Provider.of<SwapProvider>(context);
-    final defaultNota = widget.coinBase.requiresNotarization;
+    swapProvider = Provider.of<SwapProvider>(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        dpowAvailable = swapProvider.notarizationAvailable(widget.coinBase);
+      });
+    });
 
-    return Container(
-      color: Theme.of(context).primaryColor,
-      padding: const EdgeInsets.only(
-        left: 24,
-        right: 24,
-        top: 12,
-        bottom: 12,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Protection settings:',
-            style: Theme.of(context).textTheme.body2,
+    return Column(
+      children: <Widget>[
+        Text(
+          'Protection settings:',
+          style: Theme.of(context).textTheme.body2,
+        ),
+        const SizedBox(height: 6),
+        Container(
+          color: Theme.of(context).primaryColor,
+          padding: const EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 6,
+            bottom: 6,
           ),
-          const SizedBox(height: 6),
-          _buildDefaults(),
-          const SizedBox(height: 4),
-          _buildCustomToggle(),
-          if (!useDefaults)
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              alignment: WrapAlignment.center,
-              children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const SizedBox(width: 13),
-                    Text('Confirmations: ', // TODO(yurii): localization
-                        style: Theme.of(context).textTheme.body2),
-                    const SizedBox(width: 4),
-                    _buildConfirmationsButton(),
-                  ],
-                ),
-              ],
-            ),
-          _buildSlider(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCustomToggle() {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            useDefaults = !useDefaults;
-          });
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Icon(
-                useDefaults ? Icons.check_box_outline_blank : Icons.check_box,
-                size: 20,
+              _buildNotarizaton(),
+              Container(
+                height: 2,
+                color: Theme.of(context).backgroundColor,
               ),
-              const SizedBox(width: 4),
-              const Text('Use custom settings'), // TODO(yurii): localization
+              _buildConfirmations(),
+              _buildWarning(),
             ],
           ),
         ),
-      ),
+      ],
     );
   }
 
-  Widget _buildDefaults() {
+  Widget _buildWarning() {
+    if (dpowRequired || confs > 0) return Container();
+
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 2,
+          color: Theme.of(context).backgroundColor,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            'Warning, this atomic swap is not '
+            'dPoW/blockchain confirmation protected.',
+            style: TextStyle(
+              fontSize: 13,
+              color: Colors.red.withAlpha(200),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNotarizaton() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.only(left: 8),
       child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
-              const Text('Notarization: '), // TODO(yurii): localization
-              Text(
-                // TODO(yurii): localization
-                widget.coinBase.requiresNotarization ? 'Enabled' : 'Disabled',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+              const Expanded(
+                  child: Text(
+                'Notarization: ',
+              )), // TODO(yurii): localization
+              Opacity(
+                opacity: dpowAvailable ? 1 : 0.5,
+                child: Switch(
+                  onChanged: dpowAvailable
+                      ? (bool value) {
+                          setState(() {
+                            dpowRequired = value;
+                          });
+                        }
+                      : null,
+                  value: dpowRequired,
+                  inactiveThumbColor:
+                      dpowAvailable ? null : Theme.of(context).highlightColor,
                 ),
-              )
+              ),
             ],
           ),
-          const SizedBox(height: 2),
-          Row(children: <Widget>[
-            const Text('Confirmations: '),
-            Text(
-              // TODO(yurii): localization
-              widget.coinBase.requiredConfirmations.toString(),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ]),
         ],
       ),
     );
   }
 
-  Widget _buildConfirmationsButton() {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isSliderActive = !isSliderActive;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.only(left: 12, right: 0, top: 8, bottom: 8),
-        decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-                  width: isSliderActive ? 2 : 1,
-                  color: isSliderActive
-                      ? Theme.of(context).accentColor
-                      : Theme.of(context).primaryColorLight)),
+  Widget _buildConfirmations() {
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.only(
+            left: 8,
+            right: 12,
+            top: 15,
+            bottom: 15,
+          ),
+          child: Row(
+            children: <Widget>[
+              const Expanded(
+                child: Text('Confirmations:'),
+              ),
+              dpowRequired
+                  ? Text(
+                      'ON',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : Text(
+                      confs.toString(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+            ],
+          ),
         ),
-        child: Row(
-          children: <Widget>[
-            Text(confirmations.toString(),
-                style: Theme.of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(width: 6),
-            Icon(Icons.unfold_more, size: 16)
-          ],
-        ),
-      ),
+        if (!dpowRequired) _buildSlider(),
+      ],
     );
   }
 
   Widget _buildSlider() {
-    return isSliderActive
-        ? SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-                valueIndicatorTextStyle:
-                    TextStyle(color: Theme.of(context).backgroundColor)),
-            child: Slider(
-                activeColor: Theme.of(context).accentColor,
-                divisions: 4,
-                label: confirmations == recommendedConfirmations
-                    ? '${confirmations.toString()} (recommended)' // TODO(yurii): localization
-                    : confirmations.toString(),
-                min: 1,
-                max: 5,
-                value: confirmations.toDouble(),
-                onChanged: (double value) {
-                  setState(() {
-                    confirmations = value.round();
-                  });
-                }),
-          )
-        : Container();
+    return Container(
+      child: SliderTheme(
+        data: SliderTheme.of(context).copyWith(
+          valueIndicatorTextStyle:
+              TextStyle(color: Theme.of(context).backgroundColor),
+        ),
+        child: Slider(
+            activeColor: Theme.of(context).accentColor,
+            divisions: maxConfs - minConfs,
+            label: confs.toString(),
+            min: minConfs.toDouble(),
+            max: maxConfs.toDouble(),
+            value: confs.toDouble(),
+            onChanged: (double value) {
+              setState(() {
+                confs = value.round();
+              });
+            }),
+      ),
+    );
   }
 }

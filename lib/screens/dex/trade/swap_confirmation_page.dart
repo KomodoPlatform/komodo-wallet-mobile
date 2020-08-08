@@ -88,6 +88,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 const SizedBox(height: 24),
                 _buildCoinSwapDetail(),
                 ExchangeRate(),
+                const SizedBox(height: 8),
                 ProtectionControl(
                   coinBase: widget.coinBase,
                   coinRel: widget.coinRel,

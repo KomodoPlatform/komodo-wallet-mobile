@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -37,6 +38,11 @@ class SwapProvider extends ChangeNotifier {
 
   Iterable<Swap> get swaps => syncSwaps.swaps;
   Swap swap(String uuid) => syncSwaps.swap(uuid);
+
+  bool notarizationAvailable(Coin coin) {
+    // TODO(yurii): implement notarization availability check
+    return coin.type == 'smartChain';
+  }
 
   String swapDescription(String uuid) {
     final Swap swap = this.swap(uuid);
