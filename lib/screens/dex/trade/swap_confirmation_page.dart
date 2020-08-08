@@ -50,6 +50,16 @@ class SwapConfirmation extends StatefulWidget {
 
 class _SwapConfirmationState extends State<SwapConfirmation> {
   bool isSwapMaking = false;
+  ProtectionSettings protectionSettings;
+
+  @override
+  void initState() {
+    protectionSettings = ProtectionSettings(
+      requiredConfirmations: widget.coinBase.requiredConfirmations,
+      requiresNotarization: widget.coinBase.requiresNotarization,
+    );
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -90,8 +100,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 ExchangeRate(),
                 const SizedBox(height: 8),
                 ProtectionControl(
-                  coinBase: widget.coinBase,
-                  coinRel: widget.coinRel,
+                  coin: widget.coinBase,
+                  onChange: (ProtectionSettings settings) {},
                 ),
                 const SizedBox(height: 8),
                 _buildButtons(),
@@ -350,10 +360,13 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       final dynamic re = await MM.postBuy(
           mmSe.client,
           GetBuySell(
-              base: coinBase.abbr,
-              rel: coinRel.abbr,
-              volume: (satoshiBuyAmount / satoshi).toString(),
-              price: (satoshiPrice / satoshi).toString()));
+            base: coinBase.abbr,
+            rel: coinRel.abbr,
+            volume: (satoshiBuyAmount / satoshi).toString(),
+            price: (satoshiPrice / satoshi).toString(),
+            baseNota: protectionSettings.requiresNotarization,
+            baseConfs: protectionSettings.requiredConfirmations,
+          ));
       if (re is BuyResponse) {
         _goToNextScreen(mContext, re, amountToSell, satoshiBuyAmount / satoshi);
       } else {
@@ -364,12 +377,15 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           .postSetPrice(
               mmSe.client,
               GetSetPrice(
-                  base: coinRel.abbr,
-                  rel: coinBase.abbr,
-                  cancelPrevious: false,
-                  max: false,
-                  volume: amountToSell,
-                  price: Decimal.parse(widget.bestPrice).toString()))
+                base: coinRel.abbr,
+                rel: coinBase.abbr,
+                cancelPrevious: false,
+                max: false,
+                volume: amountToSell,
+                price: Decimal.parse(widget.bestPrice).toString(),
+                relNota: protectionSettings.requiresNotarization,
+                relConfs: protectionSettings.requiredConfirmations,
+              ))
           .then<dynamic>((dynamic onValue) => onValue is SetPriceResponse
               ? _goToNextScreen(
                   mContext,

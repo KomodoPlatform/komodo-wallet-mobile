@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 
 class ProtectionControl extends StatefulWidget {
   const ProtectionControl({
-    @required this.coinBase,
-    @required this.coinRel,
+    @required this.coin,
+    this.onChange,
   });
 
-  final Coin coinBase;
-  final Coin coinRel;
+  final Coin coin;
+  final Function(ProtectionSettings) onChange;
 
   @override
   _ProtectionControlState createState() => _ProtectionControlState();
@@ -28,8 +28,8 @@ class _ProtectionControlState extends State<ProtectionControl> {
   void initState() {
     super.initState();
     setState(() {
-      dpowRequired = widget.coinBase.requiresNotarization;
-      confs = widget.coinBase.requiredConfirmations ?? 0;
+      dpowRequired = widget.coin.requiresNotarization;
+      confs = widget.coin.requiredConfirmations ?? 0;
       if (confs < minConfs) confs = minConfs;
       if (confs > maxConfs) confs = maxConfs;
     });
@@ -40,7 +40,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
     swapProvider = Provider.of<SwapProvider>(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        dpowAvailable = swapProvider.notarizationAvailable(widget.coinBase);
+        dpowAvailable = swapProvider.notarizationAvailable(widget.coin);
       });
     });
 
@@ -76,6 +76,15 @@ class _ProtectionControlState extends State<ProtectionControl> {
     );
   }
 
+  void _onChange() {
+    if (widget.onChange != null) {
+      widget.onChange(ProtectionSettings(
+        requiresNotarization: dpowRequired,
+        requiredConfirmations: confs,
+      ));
+    }
+  }
+
   Widget _buildWarning() {
     if (dpowRequired || confs > 0) return Container();
 
@@ -88,6 +97,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
         Padding(
           padding: const EdgeInsets.all(8),
           child: Text(
+            // TODO(yurii): localization
             'Warning, this atomic swap is not '
             'dPoW/blockchain confirmation protected.',
             style: TextStyle(
@@ -119,6 +129,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
                           setState(() {
                             dpowRequired = value;
                           });
+                          _onChange();
                         }
                       : null,
                   value: dpowRequired,
@@ -146,11 +157,11 @@ class _ProtectionControlState extends State<ProtectionControl> {
           child: Row(
             children: <Widget>[
               const Expanded(
-                child: Text('Confirmations:'),
+                child: Text('Confirmations:'), // TODO(yurii): localization
               ),
               dpowRequired
                   ? Text(
-                      'ON',
+                      'ON', // TODO(yurii): localization
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   : Text(
@@ -186,8 +197,16 @@ class _ProtectionControlState extends State<ProtectionControl> {
               setState(() {
                 confs = value.round();
               });
+              _onChange();
             }),
       ),
     );
   }
+}
+
+class ProtectionSettings {
+  ProtectionSettings({this.requiresNotarization, this.requiredConfirmations});
+
+  bool requiresNotarization;
+  int requiredConfirmations;
 }

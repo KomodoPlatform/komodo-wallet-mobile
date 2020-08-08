@@ -18,6 +18,10 @@ class GetBuySell {
     this.rel,
     this.volume,
     this.price,
+    this.baseNota,
+    this.baseConfs,
+    this.relNota,
+    this.relConfs,
   });
 
   factory GetBuySell.fromJson(Map<String, dynamic> json) => GetBuySell(
@@ -27,6 +31,10 @@ class GetBuySell {
         rel: json['rel'] ?? '',
         volume: json['volume'] ?? '',
         price: json['price'] ?? '',
+        baseNota: json['base_nota'],
+        baseConfs: json['base_confs'],
+        relNota: json['rel_nota'],
+        relConfs: json['rel_confs'],
       );
 
   String userpass;
@@ -35,6 +43,10 @@ class GetBuySell {
   String rel;
   String volume;
   String price;
+  bool baseNota;
+  int baseConfs;
+  bool relNota;
+  int relConfs;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass ?? '',
@@ -43,5 +55,9 @@ class GetBuySell {
         'rel': rel ?? '',
         'volume': volume ?? '',
         'price': price ?? '',
+        'base_nota': baseNota,
+        'base_confs': baseConfs,
+        'rel_nota': relNota,
+        'rel_confs': relConfs,
       };
 }

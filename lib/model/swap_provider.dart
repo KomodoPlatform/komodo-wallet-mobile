@@ -41,7 +41,9 @@ class SwapProvider extends ChangeNotifier {
 
   bool notarizationAvailable(Coin coin) {
     // TODO(yurii): implement notarization availability check
-    return coin.type == 'smartChain';
+    if (coin.requiresNotarization != null) return true;
+    if (dPoWFallback.contains(coin.abbr)) return true;
+    return false;
   }
 
   String swapDescription(String uuid) {
@@ -419,3 +421,40 @@ class SwapGossip {
         'maker': maker
       };
 }
+
+List<String> dPoWFallback = [
+  'KMD',
+  'BTC',
+  'AXO',
+  'AYA',
+  'BET',
+  'BOTS',
+  'CCL',
+  'CHIPS',
+  'COQUICASH',
+  'CRYPTO',
+  'DEX',
+  'EMC2',
+  'HODL',
+  'HUSH3',
+  'ILN',
+  'JUMBLR',
+  'KOIN',
+  'MCL',
+  'MESH',
+  'MGW',
+  'MORTY',
+  'MSHARK',
+  'OOT',
+  'PANGEA',
+  'PGT',
+  'PIRATE',
+  'REVS',
+  'RFOX',
+  'RICK',
+  'STBL',
+  'SUPERNET',
+  'THC',
+  'VRSC',
+  'WLC21',
+];

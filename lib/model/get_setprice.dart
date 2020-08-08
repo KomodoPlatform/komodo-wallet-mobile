@@ -19,6 +19,10 @@ class GetSetPrice {
     this.max,
     this.cancelPrevious,
     this.volume,
+    this.baseNota,
+    this.baseConfs,
+    this.relNota,
+    this.relConfs,
   });
 
   factory GetSetPrice.fromJson(Map<String, dynamic> json) => GetSetPrice(
@@ -30,6 +34,10 @@ class GetSetPrice {
         max: json['max'],
         cancelPrevious: json['cancel_previous'],
         volume: json['volume'],
+        baseNota: json['base_nota'],
+        baseConfs: json['base_confs'],
+        relNota: json['rel_nota'],
+        relConfs: json['rel_confs'],
       );
 
   String userpass;
@@ -40,6 +48,10 @@ class GetSetPrice {
   bool max;
   bool cancelPrevious;
   String volume;
+  bool baseNota;
+  int baseConfs;
+  bool relNota;
+  int relConfs;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass,
@@ -50,5 +62,9 @@ class GetSetPrice {
         'max': max,
         'cancel_previous': cancelPrevious,
         'volume': volume,
+        'base_nota': baseNota,
+        'base_confs': baseConfs,
+        'rel_nota': relNota,
+        'rel_confs': relConfs,
       };
 }
