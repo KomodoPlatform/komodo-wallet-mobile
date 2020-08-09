@@ -64,7 +64,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
             children: <Widget>[
               _buildNotarizaton(),
               Container(
-                height: 2,
+                height: 1,
                 color: Theme.of(context).backgroundColor,
               ),
               _buildConfirmations(),

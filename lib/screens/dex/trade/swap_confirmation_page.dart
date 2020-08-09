@@ -101,7 +101,11 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 const SizedBox(height: 8),
                 ProtectionControl(
                   coin: widget.coinBase,
-                  onChange: (ProtectionSettings settings) {},
+                  onChange: (ProtectionSettings settings) {
+                    setState(() {
+                      protectionSettings = settings;
+                    });
+                  },
                 ),
                 const SizedBox(height: 8),
                 _buildButtons(),
