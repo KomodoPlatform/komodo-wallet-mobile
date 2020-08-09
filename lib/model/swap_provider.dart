@@ -41,7 +41,7 @@ class SwapProvider extends ChangeNotifier {
 
   bool notarizationAvailable(Coin coin) {
     // TODO(yurii): implement notarization availability check
-    if (coin.requiresNotarization != null) return true;
+    if (coin.requiresNotarization) return true;
     if (dPoWFallback.contains(coin.abbr)) return true;
     return false;
   }

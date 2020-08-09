@@ -18,6 +18,7 @@ class ProtectionControl extends StatefulWidget {
 
 class _ProtectionControlState extends State<ProtectionControl> {
   SwapProvider swapProvider;
+  bool useCustom = false;
   bool dpowRequired = false;
   bool dpowAvailable = false;
   final int minConfs = 0;
@@ -50,9 +51,9 @@ class _ProtectionControlState extends State<ProtectionControl> {
           'Protection settings:',
           style: Theme.of(context).textTheme.body2,
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: useCustom ? 6 : 0),
         Container(
-          color: Theme.of(context).primaryColor,
+          color: useCustom ? Theme.of(context).primaryColor : null,
           padding: const EdgeInsets.only(
             left: 24,
             right: 24,
@@ -62,27 +63,122 @@ class _ProtectionControlState extends State<ProtectionControl> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildNotarizaton(),
-              Container(
-                height: 1,
-                color: Theme.of(context).backgroundColor,
-              ),
-              _buildConfirmations(),
-              _buildWarning(),
+              useCustom ? _buildConfigs() : _buildDefaults(),
             ],
           ),
         ),
+        _buildToggle(),
       ],
     );
   }
 
-  void _onChange() {
-    if (widget.onChange != null) {
-      widget.onChange(ProtectionSettings(
-        requiresNotarization: dpowRequired,
-        requiredConfirmations: confs,
-      ));
-    }
+  Widget _buildConfigs() {
+    return Column(
+      children: <Widget>[
+        _buildNotarizaton(),
+        Container(
+          height: 1,
+          color: Theme.of(context).backgroundColor,
+        ),
+        _buildConfirmations(),
+        _buildWarning(),
+      ],
+    );
+  }
+
+  Widget _buildDefaults() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          border: Border(
+        top: BorderSide(
+          color: Theme.of(context).highlightColor,
+        ),
+        bottom: BorderSide(
+          color: Theme.of(context).highlightColor,
+        ),
+      )),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              const Expanded(
+                  child: Text(
+                'Notarization: ', // TODO(yurii): localization
+              )),
+              Text(
+                // TODO(yurii): localization
+                widget.coin.requiresNotarization ? 'ON' : 'OFF',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          Row(
+            children: <Widget>[
+              const Expanded(
+                  child: Text(
+                'Confirmations: ', // TODO(yurii): localization
+              )),
+              Text(
+                widget.coin.requiresNotarization
+                    ? 'ON'
+                    : widget.coin.requiredConfirmations == null
+                        ? 'OFF' // TODO(yurii): localization
+                        : widget.coin.requiredConfirmations.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToggle() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        InkWell(
+          onTap: () {
+            setState(() {
+              useCustom = !useCustom;
+            });
+            _onChange();
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 12,
+            ),
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  useCustom ? Icons.check_box : Icons.check_box_outline_blank,
+                  size: 15,
+                ),
+                const SizedBox(width: 3),
+                const Text(
+                  // TODO(yurii): localization
+                  'Use custom protection settings',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildWarning() {
@@ -201,6 +297,22 @@ class _ProtectionControlState extends State<ProtectionControl> {
             }),
       ),
     );
+  }
+
+  void _onChange() {
+    if (widget.onChange == null) return;
+
+    final ProtectionSettings protectionSettings = useCustom
+        ? ProtectionSettings(
+            requiresNotarization: dpowRequired,
+            requiredConfirmations: confs,
+          )
+        : ProtectionSettings(
+            requiredConfirmations: widget.coin.requiredConfirmations,
+            requiresNotarization: widget.coin.requiresNotarization,
+          );
+
+    widget.onChange(protectionSettings);
   }
 }
 
