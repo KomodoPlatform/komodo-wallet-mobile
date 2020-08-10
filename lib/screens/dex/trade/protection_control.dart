@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class ProtectionControl extends StatefulWidget {
@@ -24,6 +26,8 @@ class _ProtectionControlState extends State<ProtectionControl> {
   final int minConfs = 0;
   final int maxConfs = 5;
   int confs;
+  final String dPoWInfoUrl =
+      'https://komodoplatform.com/security-delayed-proof-of-work-dpow/';
 
   @override
   void initState() {
@@ -102,10 +106,9 @@ class _ProtectionControlState extends State<ProtectionControl> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              const Expanded(
-                  child: Text(
-                'Notarization: ', // TODO(yurii): localization
-              )),
+              Expanded(
+                child: _builddPowLink(),
+              ),
               Text(
                 // TODO(yurii): localization
                 widget.coin.requiresNotarization ? 'ON' : 'OFF',
@@ -137,6 +140,30 @@ class _ProtectionControlState extends State<ProtectionControl> {
                 ),
               )
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _builddPowLink() {
+    return GestureDetector(
+      onTap: () {
+        launchURL(dPoWInfoUrl);
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          const Text(
+            'Komodo dPoW security ', // TODO(yurii): localization
+          ),
+          Icon(
+            Icons.open_in_new,
+            size: 14,
+            color: Theme.of(context).accentColor,
+          ),
+          const Text(
+            ': ', // TODO(yurii): localization
           ),
         ],
       ),
@@ -209,10 +236,9 @@ class _ProtectionControlState extends State<ProtectionControl> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              const Expanded(
-                  child: Text(
-                'Notarization: ',
-              )), // TODO(yurii): localization
+              Expanded(
+                child: _builddPowLink(),
+              ), // TODO(yurii): localization
               Opacity(
                 opacity: dpowAvailable ? 1 : 0.5,
                 child: Switch(
