@@ -22,7 +22,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class MainActivity extends FlutterFragmentActivity {
   private EventChannel logC;
   private EventChannel.EventSink logSink;
-  boolean notifications = false;  // !BuildConfig.DEBUG
+  boolean notifications = true;
 
   private void createNotificationChannel() {
     if (!notifications) return;  // WIP
@@ -42,14 +42,14 @@ public class MainActivity extends FlutterFragmentActivity {
     }
   }
 
-  void createNotification() {
+  void createNotification(String title, String text) {
     if (!notifications) return;  // WIP
 
     Activity activity = (Activity) (Object) this;
     NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, "com.komodoplatform.atomicdex/notification")
       .setSmallIcon(R.mipmap.launcher_icon)
-      .setContentTitle("Test notification")
-      .setContentText("Test text")
+      .setContentTitle(title)
+      .setContentText(text)
       .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
     NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(activity);
@@ -70,6 +70,9 @@ public class MainActivity extends FlutterFragmentActivity {
           //     logSink?.success ("ping] Logging from MainActivity.kt; BUILD_TIME: " + BuildConfig.BUILD_TIME)
 
           result.success("pong");
+        } else if (call.method.equals("show_notification")) {
+          createNotification(call.argument("title"), call.argument("text"));
+          result.success(null);
         } else if (call.method.equals("BUILD_TIME")) {
           // NB: If Kotlin is missing the “BUILD_TIME” then use “flutter build apk --debug”
           // to generate the “komodoDEX/build/app/intermediates/javac/debug/classes/com/komodoplatform/atomicdex/BuildConfig.class”.
@@ -92,7 +95,6 @@ public class MainActivity extends FlutterFragmentActivity {
       public void onListen(Object arguments, EventChannel.EventSink eventSink) {
         logSink = eventSink;
         createNotificationChannel();
-        createNotification();
       }
 
       @Override
