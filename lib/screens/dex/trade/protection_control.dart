@@ -145,7 +145,6 @@ class _ProtectionControlState extends State<ProtectionControl> {
 
   Widget _buildToggle() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         InkWell(
           onTap: () {
@@ -157,21 +156,18 @@ class _ProtectionControlState extends State<ProtectionControl> {
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 30,
-              vertical: 12,
+              vertical: 8,
             ),
             child: Row(
               children: <Widget>[
                 Icon(
                   useCustom ? Icons.check_box : Icons.check_box_outline_blank,
-                  size: 15,
+                  size: 18,
                 ),
                 const SizedBox(width: 3),
                 const Text(
                   // TODO(yurii): localization
                   'Use custom protection settings',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
                 ),
               ],
             ),
