@@ -22,18 +22,19 @@ class _ProtectionControlState extends State<ProtectionControl> {
   bool useCustom = false;
   bool dpowRequired = false;
   bool dpowAvailable = false;
-  final int minConfs = 0;
+  final int minConfs = 1;
   final int maxConfs = 5;
   int confs;
   final String dPoWInfoUrl =
       'https://komodoplatform.com/security-delayed-proof-of-work-dpow/';
+  final Color warningColor = Colors.red.withAlpha(200);
 
   @override
   void initState() {
     super.initState();
     setState(() {
       dpowRequired = widget.coin.requiresNotarization;
-      confs = widget.coin.requiredConfirmations ?? 0;
+      confs = widget.coin.requiredConfirmations ?? minConfs;
       if (confs < minConfs) confs = minConfs;
       if (confs > maxConfs) confs = maxConfs;
     });
@@ -70,6 +71,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
             ],
           ),
         ),
+        _buildWarning(),
         _buildToggle(),
       ],
     );
@@ -84,7 +86,6 @@ class _ProtectionControlState extends State<ProtectionControl> {
           color: Theme.of(context).backgroundColor,
         ),
         _buildConfirmations(),
-        _buildWarning(),
       ],
     );
   }
@@ -131,7 +132,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
                 widget.coin.requiresNotarization
                     ? 'ON'
                     : widget.coin.requiredConfirmations == null
-                        ? 'OFF' // TODO(yurii): localization
+                        ? '1' // TODO(yurii): localization
                         : widget.coin.requiredConfirmations.toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -159,7 +160,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
           Icon(
             Icons.open_in_new,
             size: 14,
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).accentColor.withAlpha(180),
           ),
           const Text(
             ': ', // TODO(yurii): localization
@@ -204,24 +205,40 @@ class _ProtectionControlState extends State<ProtectionControl> {
   }
 
   Widget _buildWarning() {
-    if (dpowRequired || confs > 0) return Container();
+    final bool checkDPow =
+        useCustom ? dpowRequired : widget.coin.requiresNotarization;
+
+    if (!dpowAvailable || checkDPow) return Container();
 
     return Column(
       children: <Widget>[
-        Container(
-          height: 2,
-          color: Theme.of(context).backgroundColor,
-        ),
         Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            // TODO(yurii): localization
-            'Warning, this atomic swap is not '
-            'dPoW/blockchain confirmation protected.',
-            style: TextStyle(
-              fontSize: 13,
-              color: Colors.red.withAlpha(200),
-            ),
+          padding: const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 30,
+          ),
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 1),
+                child: Icon(
+                  Icons.warning,
+                  color: warningColor,
+                  size: 16,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  // TODO(yurii): localization
+                  'Warning, this atomic swap is not '
+                  'dPoW protected. ',
+                  style: TextStyle(
+                    color: warningColor,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
