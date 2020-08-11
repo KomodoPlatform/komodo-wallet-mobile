@@ -33,7 +33,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
   void initState() {
     super.initState();
     setState(() {
-      dpowRequired = widget.coin.requiresNotarization;
+      dpowRequired = widget.coin.requiresNotarization ?? false;
       confs = widget.coin.requiredConfirmations ?? minConfs;
       if (confs < minConfs) confs = minConfs;
       if (confs > maxConfs) confs = maxConfs;
@@ -111,7 +111,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
               ),
               Text(
                 // TODO(yurii): localization
-                widget.coin.requiresNotarization ? 'ON' : 'OFF',
+                (widget.coin.requiresNotarization ?? false) ? 'ON' : 'OFF',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -129,7 +129,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
                 'Confirmations: ', // TODO(yurii): localization
               )),
               Text(
-                widget.coin.requiresNotarization
+                (widget.coin.requiresNotarization ?? false)
                     ? 'ON'
                     : widget.coin.requiredConfirmations == null
                         ? '1' // TODO(yurii): localization
@@ -205,44 +205,45 @@ class _ProtectionControlState extends State<ProtectionControl> {
   }
 
   Widget _buildWarning() {
-    final bool checkDPow =
-        useCustom ? dpowRequired : widget.coin.requiresNotarization;
-
-    if (!dpowAvailable || checkDPow) return Container();
-
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 30,
-          ),
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 1),
-                child: Icon(
-                  Icons.warning,
-                  color: warningColor,
-                  size: 16,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  // TODO(yurii): localization
-                  'Warning, this atomic swap is not '
-                  'dPoW protected. ',
-                  style: TextStyle(
+    if (useCustom &&
+        (widget.coin.requiresNotarization ?? false) &&
+        !dpowRequired) {
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 30,
+            ),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 1),
+                  child: Icon(
+                    Icons.warning,
                     color: warningColor,
+                    size: 16,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    // TODO(yurii): localization
+                    'Warning, this atomic swap is not '
+                    'dPoW protected. ',
+                    style: TextStyle(
+                      color: warningColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildNotarizaton() {
@@ -347,7 +348,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
           )
         : ProtectionSettings(
             requiredConfirmations: widget.coin.requiredConfirmations,
-            requiresNotarization: widget.coin.requiresNotarization,
+            requiresNotarization: widget.coin.requiresNotarization ?? false,
           );
 
     widget.onChange(protectionSettings);

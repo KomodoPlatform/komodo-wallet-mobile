@@ -40,10 +40,7 @@ class SwapProvider extends ChangeNotifier {
   Swap swap(String uuid) => syncSwaps.swap(uuid);
 
   bool notarizationAvailable(Coin coin) {
-    // TODO(yurii): implement notarization availability check
-    if (coin.requiresNotarization) return true;
-    if (dPoWFallback.contains(coin.abbr)) return true;
-    return false;
+    return coin.requiresNotarization != null;
   }
 
   String swapDescription(String uuid) {
@@ -421,40 +418,3 @@ class SwapGossip {
         'maker': maker
       };
 }
-
-List<String> dPoWFallback = [
-  'KMD',
-  'BTC',
-  'AXO',
-  'AYA',
-  'BET',
-  'BOTS',
-  'CCL',
-  'CHIPS',
-  'COQUICASH',
-  'CRYPTO',
-  'DEX',
-  'EMC2',
-  'HODL',
-  'HUSH3',
-  'ILN',
-  'JUMBLR',
-  'KOIN',
-  'MCL',
-  'MESH',
-  'MGW',
-  'MORTY',
-  'MSHARK',
-  'OOT',
-  'PANGEA',
-  'PGT',
-  'PIRATE',
-  'REVS',
-  'RFOX',
-  'RICK',
-  'STBL',
-  'SUPERNET',
-  'THC',
-  'VRSC',
-  'WLC21',
-];

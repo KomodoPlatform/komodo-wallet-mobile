@@ -56,7 +56,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   void initState() {
     protectionSettings = ProtectionSettings(
       requiredConfirmations: widget.coinBase.requiredConfirmations,
-      requiresNotarization: widget.coinBase.requiresNotarization,
+      requiresNotarization: widget.coinBase.requiresNotarization ?? false,
     );
     super.initState();
   }
