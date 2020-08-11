@@ -51,9 +51,13 @@ class _ProtectionControlState extends State<ProtectionControl> {
 
     return Column(
       children: <Widget>[
-        Text(
-          'Protection settings:',
-          style: Theme.of(context).textTheme.body2,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            'Incoming  ${widget.coin.abbr} txs protection settings:',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.body2,
+          ),
         ),
         SizedBox(height: useCustom ? 6 : 0),
         Container(

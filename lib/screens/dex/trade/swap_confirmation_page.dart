@@ -250,7 +250,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                             height: 16,
                           ),
                           Text(
-                            AppLocalizations.of(context).infoTrade2,
+                            // TODO(yurii): localization
+                            'The swap can take up to 60 minutes. '
+                            'DONT close this application!',
                             style: Theme.of(context).textTheme.body1,
                           )
                         ],
