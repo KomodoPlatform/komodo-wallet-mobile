@@ -19,7 +19,6 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -472,12 +471,6 @@ class _ItemCoinState extends State<ItemCoin> {
               borderRadius: const BorderRadius.all(Radius.circular(4)),
               onLongPress: () {
                 Slidable.of(context).open(actionType: SlideActionType.primary);
-
-                // WIP: notifications testing
-                notifService.show(NotifObj(
-                  title: 'Hi!',
-                  text: 'Its me, notification!',
-                ));
               },
               onTap: () {
                 if (widget.slidableController != null &&

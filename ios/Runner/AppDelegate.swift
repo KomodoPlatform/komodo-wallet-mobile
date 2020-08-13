@@ -54,7 +54,7 @@ import UserNotifications
         content.subtitle = dic["text"] as! String
         content.sound = UNNotificationSound.default
         
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
+        let request = UNNotificationRequest(identifier: dic["uid"], content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
         
         result(nil);

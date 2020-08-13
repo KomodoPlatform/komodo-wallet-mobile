@@ -42,7 +42,7 @@ public class MainActivity extends FlutterFragmentActivity {
     }
   }
 
-  void createNotification(String title, String text) {
+  void createNotification(String title, String text, int uid) {
     if (!notifications) return;  // WIP
 
     Activity activity = (Activity) (Object) this;
@@ -54,7 +54,7 @@ public class MainActivity extends FlutterFragmentActivity {
 
     NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(activity);
     // notificationId is a unique int for each notification that you must define
-    int notificationId = 1;
+    int notificationId = uid;
     notificationManagerCompat.notify(notificationId, builder.build());
   }
 
@@ -71,7 +71,7 @@ public class MainActivity extends FlutterFragmentActivity {
 
           result.success("pong");
         } else if (call.method.equals("show_notification")) {
-          createNotification(call.argument("title"), call.argument("text"));
+          createNotification(call.argument("title"), call.argument("text"), call.argument("uid"));
           result.success(null);
         } else if (call.method.equals("BUILD_TIME")) {
           // NB: If Kotlin is missing the “BUILD_TIME” then use “flutter build apk --debug”
