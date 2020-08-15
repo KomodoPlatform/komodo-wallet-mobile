@@ -245,7 +245,7 @@ class ApiProvider {
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
-      'requires_notarization': coin.requiresNotarization
+      'requires_notarization': coin.requiresNotarization ?? false
     };
     final js = json.encode(electrum);
     Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
@@ -404,7 +404,7 @@ class ApiProvider {
   /// Reduce log noise
   int _lastMetricsLog = 0;
 
-  /// Returns a parsed JSON of the MM metrics  
+  /// Returns a parsed JSON of the MM metrics
   /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-tutorials/atomicdex-metrics.html
   Future<dynamic> getMetricsMM2(BaseService body, {http.Client client}) async {
     client ??= mmSe.client;
