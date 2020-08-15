@@ -11,6 +11,7 @@ NotifService notifService = NotifService();
 class NotifService {
   bool initialized = false;
   MethodChannel chanell = MMService.nativeC;
+  bool isInBackground = false;
 
   AppLocalizations _localizations;
   final Map<String, Swap> _swaps = {};
@@ -29,6 +30,8 @@ class NotifService {
   }
 
   Future<void> show(NotifObj notif) async {
+    if (!isInBackground) return;
+
     int nativeId;
     if (_notifIds.contains(notif.uid)) {
       nativeId = _notifIds.indexOf(notif.uid);

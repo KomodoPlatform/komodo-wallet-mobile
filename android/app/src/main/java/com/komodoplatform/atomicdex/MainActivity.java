@@ -29,8 +29,8 @@ public class MainActivity extends FlutterFragmentActivity {
 
     // TBD: Use AndroidX to create the channel.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannel channel = new NotificationChannel("com.komodoplatform.atomicdex/notification", "NotificationChannel name", NotificationManager.IMPORTANCE_DEFAULT);
-      channel.setDescription("NotificationChannel description");
+      NotificationChannel channel = new NotificationChannel("com.komodoplatform.atomicdex/notification", "General notifications", NotificationManager.IMPORTANCE_HIGH);
+      channel.setDescription("AtomicDEX general notifications");
 
       // Workaround the Flutter classpath issues (unavailability of the `android.support.v4.app.FragmentActivity` on the classpath).
       logSink.success("createNotificationChannel] Casting `this` to `Activity`..");
