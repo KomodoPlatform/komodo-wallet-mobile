@@ -49,12 +49,13 @@ import UserNotifications
         result (Int (audio_volume (volume)))
       } else if call.method == "show_notification" {
         let dic = call.arguments as! Dictionary<String, Any>
+        let id = String(dic["uid"] as! Int)
         let content = UNMutableNotificationContent()
         content.title = dic["title"] as! String
         content.subtitle = dic["text"] as! String
         content.sound = UNNotificationSound.default
         
-        let request = UNNotificationRequest(identifier: dic["uid"], content: content, trigger: nil)
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
         
         result(nil);

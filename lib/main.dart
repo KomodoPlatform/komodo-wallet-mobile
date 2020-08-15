@@ -123,7 +123,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    print(state);
     switch (state) {
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
