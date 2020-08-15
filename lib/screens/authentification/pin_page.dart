@@ -202,10 +202,31 @@ class _PinPageState extends State<PinPage> {
                         context, materialPage);
                   }
                 } else {
+                  String camouflagePin = '000000';
+                  if (_correctPin == camouflagePin) camouflagePin = '111111';
+                  if (code == camouflagePin) {
+                    print('Camouflage: $code');
+                    if (widget.pinStatus == PinStatus.NORMAL_PIN) {
+                      setState(() {
+                        authBloc.setCamouflage(true);
+                      });
+                      authBloc.showLock = false;
+                      if (!mmSe.running) {
+                        await authBloc.login(
+                            await EncryptionTool().read('passphrase'), null);
+                      }
+                      if (widget.onSuccess != null) {
+                        widget.onSuccess();
+                      }
+                    }
+                  } else {
                   _errorPin();
+                    authBloc.setCamouflage(false);
+                  }
                 }
               },
               onCodeSuccess: (dynamic code) {
+                authBloc.setCamouflage(false);
                 _onCodeSuccess(widget.pinStatus, code);
               },
             )
