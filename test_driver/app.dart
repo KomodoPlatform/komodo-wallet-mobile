@@ -15,11 +15,7 @@ void main() {
       default: return '';
     }
   }
-
-  // This line enables the extension
+  
   enableFlutterDriverExtension(handler: dataHandler);
-
-  // Call the `main()` function of your app or call `runApp` with any widget you
-  // are interested in testing.
   app.main();
 }
