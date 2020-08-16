@@ -143,6 +143,7 @@ class _AppDrawerState extends State<AppDrawer> {
                             },
                             leading: Icon(
                               Icons.language,
+                              key: const Key('side-nav-language'),
                               size: 16,
                               color: Colors.white.withAlpha(200),
                             )),
@@ -161,6 +162,7 @@ class _AppDrawerState extends State<AppDrawer> {
                             leading: cexProvider.selectedFiatSymbol.length > 1
                                 ? Icon(
                                     Icons.account_balance_wallet,
+                                    key: const Key('side-nav-currency'),
                                     size: 16,
                                     color: Colors.white.withAlpha(200),
                                   )
@@ -207,6 +209,7 @@ class _AppDrawerState extends State<AppDrawer> {
                             },
                             leading: Icon(
                               Icons.import_contacts,
+                              key: const Key('side-nav-addressbook'),
                               size: 16,
                               color: Colors.white.withAlpha(200),
                             )),
@@ -227,6 +230,7 @@ class _AppDrawerState extends State<AppDrawer> {
                             },
                             leading: Icon(
                               Icons.settings,
+                              key: const Key('side-nav-settings'),
                               size: 16,
                               color: Colors.white.withAlpha(200),
                             )),
@@ -238,6 +242,7 @@ class _AppDrawerState extends State<AppDrawer> {
                         _buildDrawerItem(
                           leading: Icon(
                             Icons.exit_to_app,
+                            key: const Key('side-nav-logout'),
                             size: 16,
                             color: Colors.white.withAlpha(200),
                           ),
