@@ -111,6 +111,7 @@ class UpdatesProvider extends ChangeNotifier {
           text: newVersion == null
               ? 'New version available. Please update.'
               : 'Version $newVersion available. Please update.',
+          uid: 'version_update',
         ),
       );
     }
