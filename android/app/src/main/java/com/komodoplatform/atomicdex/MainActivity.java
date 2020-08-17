@@ -35,6 +35,9 @@ public class MainActivity extends FlutterFragmentActivity {
       NotificationChannel channel = new NotificationChannel("com.komodoplatform.atomicdex/notification",
           "General notifications", NotificationManager.IMPORTANCE_HIGH);
       channel.setDescription("AtomicDEX general notifications");
+      channel.enableLights(true);
+      channel.setLightColor(0xFF64ffbf);
+      channel.enableVibration(true);
 
       // Workaround the Flutter classpath issues (unavailability of the
       // `android.support.v4.app.FragmentActivity` on the classpath).
