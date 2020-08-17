@@ -97,8 +97,9 @@ class NotifService {
 
     for (Transaction tx in transactions) {
       if (_transactions.contains(tx.internalId)) continue;
-      if (DateTime.now().millisecondsSinceEpoch * 1000 - tx.timestamp > 3600)
-        continue;
+
+      final double now = DateTime.now().millisecondsSinceEpoch / 1000;
+      if (tx.timestamp > 0 && (now - tx.timestamp > 3600)) continue;
 
       show(NotifObj(
         title: 'Incoming transaction',
