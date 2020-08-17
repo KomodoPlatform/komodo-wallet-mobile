@@ -67,10 +67,10 @@ void main() {
   final SerializableFinder orderMatched = find.text('Order matched');
   final SerializableFinder step0outOf3 = find.byValueKey('Step 0/3');
   final SerializableFinder dex = find.byValueKey('main-nav-dex');
-  final SerializableFinder morty = find.text('MORTY');
-  final SerializableFinder rick = find.text('RICK');
-  final SerializableFinder confirmDeactivateBtn = find.text('CONFIRM');
-  final SerializableFinder coinDeactivateBtn = find.byValueKey('coin-deactivate');  
+  //final SerializableFinder morty = find.text('MORTY');
+  //final SerializableFinder rick = find.text('RICK');
+  //final SerializableFinder confirmDeactivateBtn = find.text('CONFIRM');
+  //final SerializableFinder coinDeactivateBtn = find.byValueKey('coin-deactivate');  
   //-----------------------------------END----------------------------------------------------//
   //---------------------------END-(Scenario-6)-END-------------------------------------------//
   //-----------------------------------END----------------------------------------------------//
