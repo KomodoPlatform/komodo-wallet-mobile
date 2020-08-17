@@ -1,8 +1,8 @@
-### !!!IMPORTANT!!!
+### IMPORTANT
 
 Full test-runs should be performed only on fresh build. 
-There're a lot of variables that can change during a single run. 
-The only way to ensure the default environment is fresh build.
+There're lots of variables that can change during a single run. 
+The only way to ensure the default environment is a fresh build.
 
 ### How to run tests:
 
@@ -11,36 +11,34 @@ TL;DR - mm2 refuses to launch alongside flutter_driver on the same run.
 
 Until this is fixed we have to run tests the following way:
 
-```
-flutter run -t test_driver/app.dart
-flutter drive --target=test_driver/app.dart --use-existing-app=[link_from flutter run]
-```
-
-In order to test swaps and send/receive (Scenario 4) I used the following seeds as env variables:
+#### Launching tests all together:
 
 ```
-    export RICK='offer venue embark tank eyebrow grape great era nothing top unveil pear'
-    export MORTY='pear enforce exit dial spell draft chief lobster cabin refuse swift scan'
+flutter run -t test_driver/app.dart --vmservice-out-file=test_driver/link.txt --pid-file=test_driver/pid.txt
+test_driver/run_all.sh
 ```
 
-or simply do: 
+
+#### Launching tests individually:
 
 ```
-source test_driver/source_me_for_test_seeds
+flutter run -t test_driver/app.dart --vmservice-out-file=test_driver/link.txt
+flutter drive --target=test_driver/1-create-wallet.dart --use-existing-app="$(cat test_driver/link.txt)"
+flutter drive --target=test_driver/2-restore-wallet.dart --use-existing-app="$(cat test_driver/link.txt)"
+flutter drive --target=test_driver/4-markets-and-feed.dart --use-existing-app="$(cat test_driver/link.txt)"
+
+source test_driver/source_me_for_test_seeds - only needed for below tests
+flutter drive --target=test_driver/5-send-receive.dart --use-existing-app="$(cat test_driver/link.txt)"
+flutter drive --target=test_driver/6-swaps.dart --use-existing-app="$(cat test_driver/link.txt)"
+
+- not yet implemented:
+flutter drive --target=test_driver/3-portfolio-and-settings.dart --use-existing-app="$(cat test_driver/link.txt)" 
 ```
+
 
 For every created wallet auth is as follows:
+
 ```
 PIN: 000000
 password: '           a'; ---> (11 spaces + 'a')
-```
-
-### Another way to run tests: 
-
-Would probably be used in ci pipeline: put generated link into a file and then read it from this file.
-
-```
-flutter run -t test_driver/app.dart --vmservice-out-file=test.txt
-source test_driver/source_me_for_test_seeds
-flutter drive --target=test_driver/app.dart --use-existing-app="$(cat test.txt)"
 ```
