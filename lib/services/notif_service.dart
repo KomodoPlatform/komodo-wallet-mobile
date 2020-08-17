@@ -34,6 +34,7 @@ class NotifService {
     _localizations = localizations;
     _subscribeSwapStatus();
     _subscribeTxs();
+    _subscribeRewards();
   }
 
   Future<void> show(NotifObj notif) async {
@@ -54,8 +55,15 @@ class NotifService {
     });
   }
 
+  void _subscribeRewards() {
+    // TODO(yurii): implement after mm2 update
+    jobService.install('checkRewards', 10, (j) async {
+      await MM.getRewardsInfo();
+    });
+  }
+
   Future<void> _subscribeTxs() async {
-    jobService.install('checkTransactions', 2, (j) async {
+    jobService.install('checkTransactions', 10, (j) async {
       final List<dynamic> coins = await MM.getEnabledCoins();
       final List<Transaction> transactions = [];
 

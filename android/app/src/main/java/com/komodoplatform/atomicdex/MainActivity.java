@@ -24,12 +24,8 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class MainActivity extends FlutterFragmentActivity {
   private EventChannel logC;
   private EventChannel.EventSink logSink;
-  boolean notifications = true;
 
   private void createNotificationChannel() {
-    if (!notifications)
-      return; // WIP
-
     // TBD: Use AndroidX to create the channel.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel channel = new NotificationChannel("com.komodoplatform.atomicdex/notification",
@@ -50,11 +46,7 @@ public class MainActivity extends FlutterFragmentActivity {
     }
   }
 
-  void createNotification(String title, String text, int uid) {
-    if (!notifications)
-      return; // WIP
-
-    Activity activity = (Activity) (Object) this;
+  void createNotification(String title, String text, int uid) {Activity activity = (Activity) (Object) this;
     NotificationCompat.Builder builder = new NotificationCompat
     .Builder(activity,
         "com.komodoplatform.atomicdex/notification")
