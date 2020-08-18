@@ -78,6 +78,7 @@ class FeedProvider extends ChangeNotifier {
     _news = news;
 
     notifService.show(NotifObj(
+      // TODO(yurii): localization
       title: 'Komodo news',
       text: _news[0].content,
       uid: 'feed_${_news[0].date}',

@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 NotifService notifService = NotifService();
 
@@ -48,17 +49,21 @@ class NotifService {
       nativeId = _notifIds.length - 1;
     }
 
-    await chanell.invokeMethod<void>('show_notification', <String, dynamic>{
-      'title': notif.title,
-      'text': notif.text,
-      'uid': nativeId,
-    });
+    try {
+      await chanell.invokeMethod<void>('show_notification', <String, dynamic>{
+        'title': notif.title,
+        'text': notif.text,
+        'uid': nativeId,
+      });
+    } catch (e) {
+      Log('notif_service', 'show] $e');
+    }
   }
 
   void _subscribeRewards() {
     // TODO(yurii): implement after mm2 update
     jobService.install('checkRewards', 10, (j) async {
-      await MM.getRewardsInfo();
+      // await MM.getRewardsInfo();
     });
   }
 
@@ -102,6 +107,7 @@ class NotifService {
       if (tx.timestamp > 0 && (now - tx.timestamp > 3600)) continue;
 
       show(NotifObj(
+        // TODO(yurii): localization
         title: 'Incoming transaction',
         text: 'You have received ${tx.coin} transaction!',
         uid: tx.internalId,
@@ -137,6 +143,7 @@ class NotifService {
         switch (swap.status) {
           case Status.SWAP_SUCCESSFUL:
             {
+              // TODO(yurii): localization
               title = 'Swap completed';
               text = '${swap.result.myInfo.myCoin}/'
                   '${swap.result.myInfo.otherCoin}'
@@ -145,6 +152,7 @@ class NotifService {
             }
           case Status.SWAP_FAILED:
             {
+              // TODO(yurii): localization
               title = 'Swap failed';
               text = '${swap.result.myInfo.myCoin}/'
                   '${swap.result.myInfo.otherCoin}'
@@ -153,6 +161,7 @@ class NotifService {
             }
           case Status.TIME_OUT:
             {
+              // TODO(yurii): localization
               title = 'Swap timed out';
               text = '${swap.result.myInfo.myCoin}/'
                   '${swap.result.myInfo.otherCoin}'
@@ -161,6 +170,7 @@ class NotifService {
             }
           default:
             {
+              // TODO(yurii): localization
               title = 'Swap status changed';
               text = '${swap.result.myInfo.myCoin}/'
                   '${swap.result.myInfo.otherCoin}'
@@ -172,6 +182,7 @@ class NotifService {
         switch (swap.status) {
           case Status.ORDER_MATCHED:
             {
+              // TODO(yurii): localization
               title = 'New swap started';
               text = '${swap.result.myInfo.myCoin}/'
                   '${swap.result.myInfo.otherCoin}'

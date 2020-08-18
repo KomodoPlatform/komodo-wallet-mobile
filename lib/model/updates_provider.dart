@@ -107,6 +107,7 @@ class UpdatesProvider extends ChangeNotifier {
     if (status != UpdateStatus.upToDate) {
       notifService.show(
         NotifObj(
+          // TODO(yurii): localization
           title: 'Update available',
           text: newVersion == null
               ? 'New version available. Please update.'
