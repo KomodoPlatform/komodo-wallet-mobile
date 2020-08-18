@@ -208,20 +208,20 @@ class _PinPageState extends State<PinPage> {
                   if (_correctPin == camouflagePin) camouflagePin = '111111';
 
                   if (code == camouflagePin) {
-                    if (!authBloc.isCamouflage) {
+                    if (!authBloc.isCamouflageActive) {
                       coinsBloc.resetCoinBalance();
-                      authBloc.setCamouflage(true);
+                      authBloc.setCamouflageActive(true);
                     }
 
                     _onCodeSuccess(widget.pinStatus, code);
                   } else {
                     _errorPin();
-                    authBloc.setCamouflage(false);
+                    authBloc.setCamouflageActive(false);
                   }
                 }
               },
               onCodeSuccess: (dynamic code) {
-                authBloc.setCamouflage(false);
+                authBloc.setCamouflageActive(false);
                 _onCodeSuccess(widget.pinStatus, code);
               },
             )

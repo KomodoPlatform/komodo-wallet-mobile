@@ -13,13 +13,18 @@ class SettingsBloc implements BlocBase {
     _loadPrefs();
   }
 
+  SharedPreferences _prefs;
+
   Future<void> _loadPrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    showBalance = prefs.getBool('showBalance') ?? showBalance;
+    _prefs = await SharedPreferences.getInstance();
+
+    showBalance = _prefs.getBool('showBalance') ?? showBalance;
+    isCamoEnabled = _prefs.getBool('isCamoEnabled') ?? isCamoEnabled;
   }
 
   bool isDeleteLoading = true;
   bool showBalance = true;
+  bool isCamoEnabled = false;
 
   final StreamController<bool> _isDeleteLoadingController =
       StreamController<bool>.broadcast();
@@ -30,6 +35,11 @@ class SettingsBloc implements BlocBase {
       StreamController<bool>.broadcast();
   Sink<bool> get _inShowBalance => _showBalanceController.sink;
   Stream<bool> get outShowBalance => _showBalanceController.stream;
+
+  final StreamController<bool> _camoEnabledController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inCamoEnabled => _camoEnabledController.sink;
+  Stream<bool> get outCamoEnabled => _camoEnabledController.stream;
 
   @override
   void dispose() {
@@ -78,11 +88,12 @@ class SettingsBloc implements BlocBase {
   void setShowBalance(bool val) {
     showBalance = val;
     _inShowBalance.add(val);
-    _saveBalancePref(val);
+    _prefs.setBool('showBalance', val);
   }
 
-  Future<void> _saveBalancePref(bool pref) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('showBalance', pref);
+  void setCamoEnabled(bool val) {
+    isCamoEnabled = val;
+    _inCamoEnabled.add(val);
+    _prefs.setBool('isCamoEnabled', val);
   }
 }
