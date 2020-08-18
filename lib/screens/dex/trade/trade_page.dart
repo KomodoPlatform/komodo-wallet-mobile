@@ -560,7 +560,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 child: Card(
                   elevation: 8,
                   margin: const EdgeInsets.all(8),
-                  color: Theme.of(context).primaryColor,
                   child: Stack(
                     children: <Widget>[
                       Padding(
@@ -1275,16 +1274,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     StreamBuilder<bool>(
-                      initialData: settingsBloc.showBalance,
-                      stream: settingsBloc.outShowBalance,
-                      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                        String amount = coin.balance.getBalance();
-                        if(snapshot.hasData && snapshot.data == false) {
-                          amount = '**.**';
-                        }
-                        return Text(amount);
-                      }
-                    ),
+                        initialData: settingsBloc.showBalance,
+                        stream: settingsBloc.outShowBalance,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<bool> snapshot) {
+                          String amount = coin.balance.getBalance();
+                          if (snapshot.hasData && snapshot.data == false) {
+                            amount = '**.**';
+                          }
+                          return Text(amount);
+                        }),
                     const SizedBox(
                       width: 4,
                     ),

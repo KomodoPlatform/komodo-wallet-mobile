@@ -50,7 +50,6 @@ class _BuildNewsItemState extends State<BuildNewsItem>
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(top: 12, left: 12, right: 12),
-      color: Theme.of(context).primaryColor,
       child: Container(
         padding: const EdgeInsets.only(left: 12, right: 12, top: 20),
         width: double.infinity,

@@ -27,6 +27,7 @@ ThemeData getTheme() => ThemeData(
       buttonColor: const Color.fromRGBO(39, 68, 108, 1),
       cursorColor: const Color.fromRGBO(65, 234, 213, 1),
       textSelectionHandleColor: const Color.fromRGBO(65, 234, 213, 1),
+      cardColor: primaryColor,
       textTheme: TextTheme(
           headline: TextStyle(
               fontSize: 40, fontWeight: FontWeight.w700, color: Colors.white),
