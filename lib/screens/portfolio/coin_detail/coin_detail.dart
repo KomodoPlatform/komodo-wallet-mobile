@@ -295,6 +295,7 @@ class _CoinDetailState extends State<CoinDetail> {
           elevation: elevationHeader,
           actions: <Widget>[
             IconButton(
+              key: const Key('coin-deactivate'),
               icon: isDeleteLoading
                   ? Container(
                       height: 20,
