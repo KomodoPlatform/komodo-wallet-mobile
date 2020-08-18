@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
@@ -202,25 +203,19 @@ class _PinPageState extends State<PinPage> {
                         context, materialPage);
                   }
                 } else {
+                  // TODO(yurii): get actual camouflage pin from settings
                   String camouflagePin = '000000';
                   if (_correctPin == camouflagePin) camouflagePin = '111111';
+
                   if (code == camouflagePin) {
-                    print('Camouflage: $code');
-                    if (widget.pinStatus == PinStatus.NORMAL_PIN) {
-                      setState(() {
-                        authBloc.setCamouflage(true);
-                      });
-                      authBloc.showLock = false;
-                      if (!mmSe.running) {
-                        await authBloc.login(
-                            await EncryptionTool().read('passphrase'), null);
-                      }
-                      if (widget.onSuccess != null) {
-                        widget.onSuccess();
-                      }
+                    if (!authBloc.isCamouflage) {
+                      coinsBloc.resetCoinBalance();
+                      authBloc.setCamouflage(true);
                     }
+
+                    _onCodeSuccess(widget.pinStatus, code);
                   } else {
-                  _errorPin();
+                    _errorPin();
                     authBloc.setCamouflage(false);
                   }
                 }

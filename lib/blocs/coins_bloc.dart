@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -473,13 +472,6 @@ class CoinsBloc implements BlocBase {
       coinBalance.balanceUSD = (Decimal.parse(coinBalance.priceForOne) *
               Decimal.parse(coinBalance.balance.getBalance()))
           .toDouble();
-      if (authBloc.isCamouflage == true) {
-        coinBalance.priceForOne = (price * 0.1).toString();
-        coinBalance.balanceUSD = (Decimal.parse(coinBalance.priceForOne) *
-                Decimal.parse(coinBalance.balance.getBalance()) *
-                deci(0.1))
-            .toDouble();
-      }
     } else {
       coinBalance = CoinBalance(
           coin, Balance(address: '', balance: deci('0'), coin: coin.abbr));

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:decimal/decimal.dart';
 
@@ -34,10 +33,6 @@ class Balance {
         'coin': coin ?? '',
       };
 
-  String getBalance() {
-    if (authBloc.isCamouflage) return deci2s(balance * deci(0.1));
-    return deci2s(balance);
-  }
-
+  String getBalance() => deci2s(balance);
   String getRealBalance() => deci2s(balance - lockedBySwaps);
 }
