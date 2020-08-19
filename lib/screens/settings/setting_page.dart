@@ -22,7 +22,7 @@ import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
-import 'package:komodo_dex/screens/settings/camouflage_pin_page.dart';
+import 'package:komodo_dex/screens/settings/camo_pin_setup_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -333,7 +333,7 @@ class _SettingPageState extends State<SettingPage> {
         Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => CamouflagePinPage()));
+                builder: (BuildContext context) => CamoPinSetupPage()));
       },
       child: ListTile(
         trailing:

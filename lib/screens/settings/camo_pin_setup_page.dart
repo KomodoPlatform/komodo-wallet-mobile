@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 
-class CamouflagePinPage extends StatefulWidget {
+class CamoPinSetupPage extends StatefulWidget {
   @override
-  _CamouflagePinPageState createState() => _CamouflagePinPageState();
+  _CamoPinSetupPageState createState() => _CamoPinSetupPageState();
 }
 
-class _CamouflagePinPageState extends State<CamouflagePinPage> {
+class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,9 +143,9 @@ class _CamouflagePinPageState extends State<CamouflagePinPage> {
               child: Padding(
                 padding: const EdgeInsets.only(
                   left: 20,
-                  top: 12,
-                  bottom: 12,
-                  right: 12,
+                  top: 8,
+                  bottom: 8,
+                  right: 8,
                 ),
                 child: Row(
                   children: <Widget>[
@@ -153,7 +153,7 @@ class _CamouflagePinPageState extends State<CamouflagePinPage> {
                       child: Text(
                         isEnabled ? 'On' : 'Off',
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                         ),
                       ),
                     ),
