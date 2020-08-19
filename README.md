@@ -1,4 +1,4 @@
-# atomicDEX v0.1
+# AtomicDeFi v0.1
 
 Komodo Platform's hybrid mutlicoin DEX-wallet. 
 
