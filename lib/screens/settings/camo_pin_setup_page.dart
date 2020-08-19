@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/blocs/wallet_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/screens/authentification/pin_page.dart';
+import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 
 class CamoPinSetupPage extends StatefulWidget {
@@ -10,26 +16,40 @@ class CamoPinSetupPage extends StatefulWidget {
 class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        // TODO(yurii): localization
-        title: const Text('Camouflage PIN'),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _buildSwitcher(),
-              _buildDescription(),
-              _buildPinSetup(),
-            ],
-          ),
-        ),
-      ),
-    );
+    return StreamBuilder<bool>(
+        initialData: authBloc.isCamoActive,
+        stream: authBloc.outIsCamoActive,
+        builder: (context, AsyncSnapshot<bool> snapshot) {
+          if (!snapshot.hasData) return Container();
+          if (snapshot.data) {
+            Navigator.popUntil(context, ModalRoute.withName('/'));
+            return Container();
+          }
+
+          return LockScreen(
+            context: context,
+            child: Scaffold(
+              backgroundColor: Theme.of(context).backgroundColor,
+              appBar: AppBar(
+                // TODO(yurii): localization
+                title: const Text('Camouflage PIN'),
+              ),
+              body: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      _buildSwitcher(),
+                      _buildDescription(),
+                      _buildPinSetup(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Widget _buildPinSetup() {
@@ -50,7 +70,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                   opacity: isEnabled ? 1 : 0.5,
                   child: Card(
                     child: InkWell(
-                      onTap: isEnabled ? () {} : null,
+                      onTap: isEnabled ? () => _startPinSetup() : null,
                       child: Padding(
                         padding: const EdgeInsets.all(12),
                         child: Row(
@@ -109,6 +129,27 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         });
   }
 
+  void _startPinSetup() {
+    Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => UnlockWalletPage(
+                  textButton: AppLocalizations.of(context).unlock,
+                  wallet: walletBloc.currentWallet,
+                  isSignWithSeedIsEnabled: false,
+                  onSuccess: (_, String password) {
+                    Navigator.push<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => PinPage(
+                                title: 'Camouflage PIN Setup',
+                                subTitle: 'Enter new Camouflage PIN',
+                                pinStatus: PinStatus.CREATE_CAMO_PIN,
+                                password: password)));
+                  },
+                )));
+  }
+
   Widget _buildDescription() {
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -138,7 +179,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
           return Card(
             child: InkWell(
               onTap: () {
-                settingsBloc.setCamoEnabled(!isEnabled);
+                _switchEnabled(!isEnabled);
               },
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -160,7 +201,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                     Switch(
                       value: isEnabled,
                       onChanged: (bool value) {
-                        settingsBloc.setCamoEnabled(value);
+                        _switchEnabled(value);
                       },
                     ),
                   ],
@@ -169,5 +210,12 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
             ),
           );
         });
+  }
+
+  Future<void> _switchEnabled(bool val) async {
+    settingsBloc.setCamoEnabled(val);
+
+    final String savedPin = await EncryptionTool().read('camoPin');
+    if (val && savedPin == null) _startPinSetup();
   }
 }

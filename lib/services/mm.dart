@@ -170,7 +170,7 @@ class ApiProvider {
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
       final Balance balance = Balance.fromJson(jbody);
-      if (authBloc.isCamouflageActive) {
+      if (authBloc.isCamoActive) {
         // TODO(yurii): change 0.1 to some user specified (or random) value
         balance.balance = deci((balance.balance).toDouble() * 0.1);
       }

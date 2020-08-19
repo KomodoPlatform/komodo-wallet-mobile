@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
@@ -44,6 +45,7 @@ class _PinPageState extends State<PinPage> {
   String _error = '';
   bool isLoading = false;
   String _correctPin;
+  String _camoPin;
 
   @override
   void initState() {
@@ -53,8 +55,10 @@ class _PinPageState extends State<PinPage> {
 
   Future<void> setNormalPin() async {
     final String normalPin = await EncryptionTool().read('pin');
+    final String camoPin = await EncryptionTool().read('camoPin');
     setState(() {
       _correctPin = normalPin;
+      _camoPin = camoPin;
     });
   }
 
@@ -69,6 +73,15 @@ class _PinPageState extends State<PinPage> {
       setState(() {
         _correctPin = prefs.getString('pin_create');
       });
+    } else if (pinStatus == PinStatus.CREATE_CAMO_PIN) {
+      setState(() {
+        _correctPin = null;
+      });
+    } else if (pinStatus == PinStatus.CONFIRM_CAMO_PIN) {
+      authBloc.showLock = false;
+      setState(() {
+        _correctPin = prefs.getString('camo_pin_create');
+      });
     } else {
       await setNormalPin();
     }
@@ -80,6 +93,7 @@ class _PinPageState extends State<PinPage> {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isPinIsCreated', true);
         break;
+
       case PinStatus.CONFIRM_PIN:
         final Wallet wallet = await Db.getCurrentWallet();
         setState(() {
@@ -111,8 +125,22 @@ class _PinPageState extends State<PinPage> {
         setState(() {
           isLoading = false;
         });
-
         break;
+
+      case PinStatus.CREATE_CAMO_PIN:
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isCamoPinCreated', true);
+        break;
+
+      case PinStatus.CONFIRM_CAMO_PIN:
+        await EncryptionTool().write('camoPin', code.toString());
+
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isCamoPinCreated', false);
+
+        Navigator.popUntil(context, ModalRoute.withName('/camoSetup'));
+        break;
+
       case PinStatus.NORMAL_PIN:
         authBloc.showLock = false;
         if (!mmSe.running) {
@@ -123,6 +151,7 @@ class _PinPageState extends State<PinPage> {
         }
 
         break;
+
       case PinStatus.DISABLED_PIN:
         SharedPreferences.getInstance().then((SharedPreferences data) {
           data.setBool('switch_pin', false);
@@ -135,6 +164,7 @@ class _PinPageState extends State<PinPage> {
         });
         Navigator.pop(context);
         break;
+
       case PinStatus.CHANGE_PIN:
         Navigator.pushReplacement<dynamic, dynamic>(
             context,
@@ -202,26 +232,47 @@ class _PinPageState extends State<PinPage> {
                     Navigator.pushReplacement<dynamic, dynamic>(
                         context, materialPage);
                   }
-                } else {
-                  // TODO(yurii): get actual camouflage pin from settings
-                  String camouflagePin = '000000';
-                  if (_correctPin == camouflagePin) camouflagePin = '111111';
+                } else if (widget.pinStatus == PinStatus.CREATE_CAMO_PIN) {
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setBool('isCamoPinCreated', true);
+                  await prefs.setString('camo_pin_create', code);
+                  final MaterialPageRoute<dynamic> materialPage =
+                      MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => PinPage(
+                                title: 'Camouflage PIN Setup',
+                                subTitle: 'Confirm Camouflage PIN',
+                                code: code,
+                                pinStatus: PinStatus.CONFIRM_CAMO_PIN,
+                                password: widget.password,
+                              ));
 
-                  if (code == camouflagePin) {
-                    if (!authBloc.isCamouflageActive) {
+                  Navigator.pushReplacement<dynamic, dynamic>(
+                      context, materialPage);
+                } else {
+                  final bool shouldEnterCamoMode =
+                      widget.pinStatus == PinStatus.NORMAL_PIN &&
+                          settingsBloc.isCamoEnabled &&
+                          _camoPin != null &&
+                          code == _camoPin;
+
+                  if (shouldEnterCamoMode) {
+                    if (!authBloc.isCamoActive) {
                       coinsBloc.resetCoinBalance();
-                      authBloc.setCamouflageActive(true);
+                      authBloc.switchCamoActive(true);
                     }
 
                     _onCodeSuccess(widget.pinStatus, code);
                   } else {
                     _errorPin();
-                    authBloc.setCamouflageActive(false);
+                    authBloc.switchCamoActive(false);
                   }
                 }
               },
               onCodeSuccess: (dynamic code) {
-                authBloc.setCamouflageActive(false);
+                if (widget.pinStatus == PinStatus.NORMAL_PIN) {
+                  authBloc.switchCamoActive(false);
+                }
                 _onCodeSuccess(widget.pinStatus, code);
               },
             )
@@ -265,36 +316,42 @@ class AppBarStatus extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!(pinStatus == PinStatus.CONFIRM_PIN)) {
-      return AppBar(
-        centerTitle: true,
-        actions: <Widget>[
-          InkWell(
-              onTap: () {
-                showLogoutConfirmation(context);
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 12.0,
-                  left: 12,
-                ),
-                child: Icon(
-                  Icons.exit_to_app,
-                  key: const Key('settings-pin-logout'),
-                  color: Colors.red,
-                ),
-              )),
-        ],
-        backgroundColor: Theme.of(context).backgroundColor,
-        title: Text(title),
-        elevation: 0,
-      );
-    } else {
-      return AppBar(
-        centerTitle: true,
-        backgroundColor: Theme.of(context).backgroundColor,
-        title: Text(title),
-      );
+    switch (pinStatus) {
+      case PinStatus.CREATE_PIN:
+      case PinStatus.CONFIRM_PIN:
+      case PinStatus.CREATE_CAMO_PIN:
+      case PinStatus.CONFIRM_CAMO_PIN:
+        return AppBar(
+          centerTitle: true,
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: Text(title),
+        );
+        break;
+      default:
+        return AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: pinStatus != PinStatus.NORMAL_PIN,
+          actions: <Widget>[
+            InkWell(
+                onTap: () {
+                  showLogoutConfirmation(context);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 12.0,
+                    left: 12,
+                  ),
+                  child: Icon(
+                    Icons.exit_to_app,
+                    key: const Key('settings-pin-logout'),
+                    color: Colors.red,
+                  ),
+                )),
+          ],
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: Text(title),
+          elevation: 0,
+        );
     }
   }
 

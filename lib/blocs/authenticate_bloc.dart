@@ -35,11 +35,11 @@ class AuthenticateBloc extends BlocBase {
   Sink<PinStatus> get _inpinStatus => _pinStatusController.sink;
   Stream<PinStatus> get outpinStatus => _pinStatusController.stream;
 
-  bool _isCamouflageActive = false;
-  final StreamController<bool> _isCamouflageController =
+  bool _isCamoActive = false;
+  final StreamController<bool> _isCamoController =
       StreamController<bool>.broadcast();
-  Sink<bool> get _inIsCamouflageActive => _isCamouflageController.sink;
-  Stream<bool> get outIsCamouflageActive => _isCamouflageController.stream;
+  Sink<bool> get _inIsCamoActive => _isCamoController.sink;
+  Stream<bool> get outIsCamoActive => _isCamoController.stream;
 
   Future<void> init() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -165,18 +165,20 @@ class AuthenticateBloc extends BlocBase {
     _inpinStatus.add(this.pinStatus);
   }
 
-  void setCamouflageActive(bool isCamouflage) {
-    _isCamouflageActive = isCamouflage;
-    _inIsCamouflageActive.add(isCamouflage);
-    print('Camouflage mode set to $isCamouflage');
+  void switchCamoActive(bool val) {
+    _isCamoActive = val;
+    _inIsCamoActive.add(val);
+    print('Camouflage mode set to $val');
   }
 
-  bool get isCamouflageActive => _isCamouflageActive;
+  bool get isCamoActive => _isCamoActive;
 }
 
 enum PinStatus {
   CREATE_PIN,
   CONFIRM_PIN,
+  CREATE_CAMO_PIN,
+  CONFIRM_CAMO_PIN,
   DISABLED_PIN,
   CHANGE_PIN,
   NORMAL_PIN,
