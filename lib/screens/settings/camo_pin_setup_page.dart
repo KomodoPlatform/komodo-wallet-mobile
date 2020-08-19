@@ -22,7 +22,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) return Container();
           if (snapshot.data) {
-            Navigator.popUntil(context, ModalRoute.withName('/'));
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.popUntil(context, ModalRoute.withName('/'));
+            });
             return Container();
           }
 

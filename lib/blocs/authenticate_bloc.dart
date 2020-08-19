@@ -9,6 +9,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -168,7 +169,7 @@ class AuthenticateBloc extends BlocBase {
   void switchCamoActive(bool val) {
     _isCamoActive = val;
     _inIsCamoActive.add(val);
-    print('Camouflage mode set to $val');
+    Log('authenticate_bloc', 'switchCamoActive] Camouflage mode set to $val');
   }
 
   bool get isCamoActive => _isCamoActive;

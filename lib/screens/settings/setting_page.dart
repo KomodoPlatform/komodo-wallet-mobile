@@ -330,11 +330,14 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildCamouflagePin() {
+    // workaround for the case, when user gets to
+    // the settings page right after lock screen
+    authBloc.switchCamoActive(authBloc.isCamoActive);
+
     return StreamBuilder<bool>(
-        initialData: authBloc.isCamoActive,
         stream: authBloc.outIsCamoActive,
         builder: (context, AsyncSnapshot<bool> snapshot) {
-          if ((!snapshot.hasData) || snapshot.data) return Container();
+          if (snapshot.data == true) return Container();
 
           return Column(
             children: <Widget>[
