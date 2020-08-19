@@ -170,15 +170,19 @@ class ApiProvider {
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
       final Balance balance = Balance.fromJson(jbody);
-      if (authBloc.isCamoActive) {
-        // TODO(yurii): change 0.1 to some user specified (or random) value
-        balance.balance = deci((balance.balance).toDouble() * 0.1);
-      }
+      await _camouflageIfNeeded(balance);
 
       return balance;
     } catch (e) {
       throw _catchErrorString(
           'getBalance', e, 'Error getting ${gb.coin} balance');
+    }
+  }
+
+  Future<void> _camouflageIfNeeded(Balance balance) async {
+    if (authBloc.isCamoActive) {
+      // TODO(yurii): change 0.1 to some user specified (or random) value
+      balance.balance = deci((balance.balance).toDouble() * 0.1);
     }
   }
 
