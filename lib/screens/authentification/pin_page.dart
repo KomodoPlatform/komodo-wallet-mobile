@@ -270,7 +270,9 @@ class _PinPageState extends State<PinPage> {
                 }
               },
               onCodeSuccess: (dynamic code) {
-                if (widget.pinStatus == PinStatus.NORMAL_PIN) {
+                if (widget.pinStatus == PinStatus.NORMAL_PIN &&
+                    authBloc.isCamoActive) {
+                  coinsBloc.resetCoinBalance();
                   authBloc.switchCamoActive(false);
                 }
                 _onCodeSuccess(widget.pinStatus, code);
