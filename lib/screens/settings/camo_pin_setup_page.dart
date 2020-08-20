@@ -7,6 +7,7 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 
 class CamoPinSetupPage extends StatefulWidget {
   @override
@@ -45,12 +46,73 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                       _buildSwitcher(),
                       _buildDescription(),
                       _buildPinSetup(),
+                      _buildWarnings(),
                     ],
                   ),
                 ),
               ),
             ),
           );
+        });
+  }
+
+  Widget _buildWarnings() {
+    return StreamBuilder<bool>(
+        initialData: settingsBloc.isCamoEnabled,
+        stream: settingsBloc.outCamoEnabled,
+        builder: (context, camoEnabled) {
+          if (camoEnabled.data != true) return Container();
+
+          return FutureBuilder<String>(
+              future: EncryptionTool().read('pin'),
+              builder: (context, AsyncSnapshot<String> normalPin) {
+                if (!normalPin.hasData) return Container();
+
+                return SharedPreferencesBuilder<dynamic>(
+                    pref: 'switch_pin',
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> normalPinEnabled) {
+                      if (!normalPinEnabled.hasData) return Container();
+
+                      if (normalPinEnabled.data) {
+                        return FutureBuilder<String>(
+                            future: EncryptionTool().read('camoPin'),
+                            builder: (context, AsyncSnapshot<String> camoPin) {
+                              if (!camoPin.hasData) return Container();
+                              if (camoPin.data != normalPin.data)
+                                return Container();
+
+                              return Container(
+                                padding: const EdgeInsets.all(18),
+                                child: Text(
+                                  // TODO(yurii): localization
+                                  'Your general PIN and Camouflage PIN are the same.\n'
+                                  'Camouflage mode will not be available.'
+                                  '\nPlease change Camouflage PIN.',
+                                  style: TextStyle(
+                                    color: Theme.of(context).errorColor,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              );
+                            });
+                      } else {
+                        return Container(
+                          padding: const EdgeInsets.all(18),
+                          child: Text(
+                            // TODO(yurii): localization
+                            'General PIN protection is not active.\n'
+                            'Camouflage mode will not be available.'
+                            '\nPlease activate PIN protection.',
+                            style: TextStyle(
+                              color: Theme.of(context).errorColor,
+                              height: 1.2,
+                            ),
+                          ),
+                        );
+                      }
+                    });
+              });
         });
   }
 
