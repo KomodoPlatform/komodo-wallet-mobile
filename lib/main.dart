@@ -135,7 +135,7 @@ class _MyAppState extends State<MyApp> {
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
                     return MaterialApp(
-                        title: 'AtomicDeFi',
+                        title: 'atomicDeFi',
                         localizationsDelegates: <
                             LocalizationsDelegate<dynamic>>[
                           const AppLocalizationsDelegate(),
