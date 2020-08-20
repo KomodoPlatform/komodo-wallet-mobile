@@ -83,7 +83,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 SvgPicture.asset(
-                                  'assets/wallet.svg',
+                                  'assets/svg/wallet.svg',
                                   height: 18,
                                 ),
                                 const SizedBox(width: 4),

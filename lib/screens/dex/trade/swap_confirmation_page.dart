@@ -213,7 +213,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 4),
                         color: Theme.of(context).backgroundColor,
-                        child: SvgPicture.asset('assets/icon_swap.svg')),
+                        child: SvgPicture.asset('assets/svg/icon_swap.svg')),
                   ))
             ],
           ),

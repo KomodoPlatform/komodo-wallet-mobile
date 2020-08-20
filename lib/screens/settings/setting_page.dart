@@ -501,7 +501,7 @@ class _SettingPageState extends State<SettingPage> {
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset('assets/delete_setting.svg'),
+          child: SvgPicture.asset('assets/svg/delete_setting.svg'),
         ),
         title: Text(AppLocalizations.of(context).deleteWallet,
             style: Theme.of(context).textTheme.body1.copyWith(
@@ -532,7 +532,7 @@ class _SettingPageState extends State<SettingPage> {
                           backgroundColor: Colors.white,
                           title: Column(
                             children: <Widget>[
-                              SvgPicture.asset('assets/delete_wallet.svg'),
+                              SvgPicture.asset('assets/svg/delete_wallet.svg'),
                               const SizedBox(
                                 height: 16,
                               ),
