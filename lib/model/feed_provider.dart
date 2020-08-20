@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -75,6 +76,14 @@ class FeedProvider extends ChangeNotifier {
     prefs.setString('cachedNews', response.body);
     _hasNewItems = true;
     _news = news;
+
+    notifService.show(NotifObj(
+      // TODO(yurii): localization
+      title: 'Komodo news',
+      text: _news[0].content,
+      uid: 'feed_${_news[0].date}',
+    ));
+
     notifyListeners();
     return 'ok';
   }

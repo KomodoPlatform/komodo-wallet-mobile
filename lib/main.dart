@@ -23,6 +23,7 @@ import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
+import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
@@ -104,18 +105,41 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final LocalAuthentication auth = LocalAuthentication();
 
   @override
   void initState() {
     super.initState();
     _checkNetworkStatus();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        notifService.isInBackground = true;
+        break;
+      default:
+        notifService.isInBackground = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIOverlays([
+      SystemUiOverlay.bottom,
+      SystemUiOverlay.top,
+    ]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: getTheme().backgroundColor,
       systemNavigationBarIconBrightness: Brightness.light,
@@ -248,6 +272,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
+
+    notifService.init(AppLocalizations.of(context));
 
     return StreamBuilder<int>(
         initialData: mainBloc.currentIndexTab,
