@@ -16,7 +16,7 @@ ThemeData getTheme() => ThemeData(
       primaryColor: primaryColor,
       backgroundColor: const Color.fromRGBO(30, 42, 58, 1),
       primaryColorDark: const Color.fromRGBO(28, 36, 48, 1),
-      accentColor: const Color.fromRGBO(65, 234, 213, 1),
+      accentColor: const Color.fromRGBO(57, 161, 238, 1),
       textSelectionColor:
           const Color.fromRGBO(65, 234, 213, 1).withOpacity(0.3),
       dialogBackgroundColor: primaryColor,
