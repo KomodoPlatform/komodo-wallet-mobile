@@ -163,9 +163,9 @@ class _CoinsPageState extends State<CoinsPage> {
                               begin: Alignment.bottomLeft,
                               end: Alignment.topRight,
                               stops: const <double>[0.01, 1],
-                              colors: <Color>[
-                                const Color.fromRGBO(39, 71, 110, 1),
-                                Theme.of(context).accentColor,
+                              colors: const <Color>[
+                                Color.fromRGBO(98, 90, 229, 1),
+                                Color.fromRGBO(45, 184, 240, 1),
                               ],
                             )),
                           ));
