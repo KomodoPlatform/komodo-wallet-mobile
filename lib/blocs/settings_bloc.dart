@@ -20,11 +20,13 @@ class SettingsBloc implements BlocBase {
 
     showBalance = _prefs.getBool('showBalance') ?? showBalance;
     isCamoEnabled = _prefs.getBool('isCamoEnabled') ?? isCamoEnabled;
+    camoPercent = _prefs.getInt('camoPercent') ?? camoPercent;
   }
 
   bool isDeleteLoading = true;
   bool showBalance = true;
   bool isCamoEnabled = false;
+  int camoPercent = 10;
 
   final StreamController<bool> _isDeleteLoadingController =
       StreamController<bool>.broadcast();
@@ -41,9 +43,17 @@ class SettingsBloc implements BlocBase {
   Sink<bool> get _inCamoEnabled => _camoEnabledController.sink;
   Stream<bool> get outCamoEnabled => _camoEnabledController.stream;
 
+  final StreamController<int> _camoPercentController =
+      StreamController<int>.broadcast();
+  Sink<int> get _inCamoPercent => _camoPercentController.sink;
+  Stream<int> get outCamoPercent => _camoPercentController.stream;
+
   @override
   void dispose() {
     _isDeleteLoadingController.close();
+    _showBalanceController?.close();
+    _camoEnabledController?.close();
+    _camoPercentController?.close();
   }
 
   void setDeleteLoading(bool isLoading) {
@@ -95,5 +105,11 @@ class SettingsBloc implements BlocBase {
     isCamoEnabled = val;
     _inCamoEnabled.add(val);
     _prefs.setBool('isCamoEnabled', val);
+  }
+
+  void setCamoPercent(int val) {
+    camoPercent = val;
+    _inCamoPercent.add(val);
+    _prefs.setInt('camoPercent', val);
   }
 }

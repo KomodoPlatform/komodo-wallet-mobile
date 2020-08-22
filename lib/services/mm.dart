@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_rewards_info.dart';
@@ -182,10 +183,9 @@ class ApiProvider {
   }
 
   Future<void> _camouflageIfNeeded(Balance balance) async {
-    if (authBloc.isCamoActive) {
-      // TODO(yurii): change 0.1 to some user specified (or random) value
-      balance.balance = deci((balance.balance).toDouble() * 0.1);
-    }
+    if (!authBloc.isCamoActive) return;
+    balance.balance =
+        deci((balance.balance).toDouble() * settingsBloc.camoPercent / 100);
   }
 
   Future<dynamic> postBuy(

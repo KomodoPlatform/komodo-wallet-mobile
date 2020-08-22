@@ -46,6 +46,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                       _buildSwitcher(),
                       _buildDescription(),
                       _buildPinSetup(),
+                      _buildPercentSetup(),
                       _buildWarnings(),
                     ],
                   ),
@@ -54,6 +55,72 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
             ),
           );
         });
+  }
+
+  Widget _buildPercentSetup() {
+    return StreamBuilder<int>(
+      initialData: settingsBloc.camoPercent,
+      stream: settingsBloc.outCamoPercent,
+      builder: (context, AsyncSnapshot<int> camoPercent) {
+        if (!camoPercent.hasData) return Container();
+
+        return StreamBuilder<bool>(
+            initialData: settingsBloc.isCamoEnabled,
+            stream: settingsBloc.outCamoEnabled,
+            builder: (context, AsyncSnapshot<bool> camoEnabled) {
+              if (!camoEnabled.hasData) return Container();
+
+              return Opacity(
+                opacity: camoEnabled.data ? 1 : 0.5,
+                child: Card(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        child: Row(
+                          children: <Widget>[
+                            const Expanded(
+                                child: Text(
+                              // TODO(yurii): localization
+                              'Fake balance amount:',
+                              style: TextStyle(fontSize: 18),
+                            )),
+                            Text(
+                              '${camoPercent.data}%',
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          valueIndicatorTextStyle: TextStyle(
+                              color: Theme.of(context).backgroundColor),
+                        ),
+                        child: Slider(
+                            activeColor: Theme.of(context).accentColor,
+                            divisions: 50,
+                            label: camoPercent.data.toString(),
+                            min: 1,
+                            max: 50,
+                            value: camoPercent.data.toDouble(),
+                            onChanged: camoEnabled.data
+                                ? (double value) {
+                                    settingsBloc.setCamoPercent(value.round());
+                                  }
+                                : null),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
+    );
   }
 
   Widget _buildWarnings() {
@@ -145,13 +212,18 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        const Text(
+                                        Text(
+                                          // TODO(yurii): localization
                                           'Camouflage PIN not found',
                                           style: TextStyle(
                                             fontSize: 18,
+                                            color: isEnabled
+                                                ? Colors.pinkAccent
+                                                : null,
                                           ),
                                         ),
                                         Text(
+                                          // TODO(yurii): localization
                                           'Create Camouflage PIN',
                                           style: TextStyle(
                                             color:
@@ -166,12 +238,14 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         const Text(
+                                          // TODO(yurii): localization
                                           'Camouflage PIN saved',
                                           style: TextStyle(
                                             fontSize: 18,
                                           ),
                                         ),
                                         Text(
+                                          // TODO(yurii): localization
                                           'Change Camouflage PIN',
                                           style: TextStyle(
                                             color:
@@ -206,6 +280,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                         context,
                         MaterialPageRoute<dynamic>(
                             builder: (BuildContext context) => PinPage(
+                                // TODO(yurii): localization
                                 title: 'Camouflage PIN Setup',
                                 subTitle: 'Enter new Camouflage PIN',
                                 pinStatus: PinStatus.CREATE_CAMO_PIN,
@@ -221,6 +296,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         vertical: 24,
       ),
       child: Text(
+          // TODO(yurii): localization
           'If You\'ll unlock the app with the Camouflage PIN, a fake'
           ' LOW balance will be shown'
           ' and the Camouflage PIN config option will'
