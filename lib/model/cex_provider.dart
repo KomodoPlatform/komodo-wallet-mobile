@@ -558,14 +558,14 @@ class CexPrices {
           .timeout(
         const Duration(seconds: 60),
         onTimeout: () {
-          throw 'Fetching usd prices timed out';
+          Log('cex_provider', 'Fetching usd prices timed out');
+          _fetchingPrices = false;
+          return;
         },
       );
       _body = _res.body;
     } catch (e) {
-      _fetchingPrices = false;
       Log('cex_provider', 'Failed to fetch usd prices: $e');
-      rethrow;
     }
 
     _fetchingPrices = false;
@@ -575,7 +575,6 @@ class CexPrices {
       json = jsonDecode(_body);
     } catch (e) {
       Log('cex_provider', 'Failed to parse prices json: $e');
-      rethrow;
     }
 
     if (json == null) return;
