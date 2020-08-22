@@ -531,8 +531,20 @@ class CexPrices {
 
     if (coinsList == null) return;
 
+    // All available coins, inculding not active.
+    final List<Coin> allCoins = (await coins).values.toList();
     final List<String> ids =
         coinsList.map((Coin coin) => coin.coingeckoId).toList();
+
+    for (String abbr in currencies) {
+      if (ids.contains(abbr)) continue;
+
+      final Coin coin =
+          allCoins.firstWhere((Coin c) => c.abbr == abbr, orElse: () => null);
+      if (coin == null) continue;
+
+      ids.add(coin.coingeckoId);
+    }
 
     if (_fetchingPrices) return;
     _fetchingPrices = true;
@@ -571,9 +583,8 @@ class CexPrices {
     json.forEach((String coingeckoId, dynamic pricesData) {
       String coinAbbr;
       try {
-        coinAbbr = coinsList
-            .firstWhere((coin) => coin.coingeckoId == coingeckoId)
-            .abbr;
+        coinAbbr =
+            allCoins.firstWhere((coin) => coin.coingeckoId == coingeckoId).abbr;
       } catch (_) {}
 
       if (coinAbbr != null) {
