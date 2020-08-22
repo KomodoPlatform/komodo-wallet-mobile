@@ -159,7 +159,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
                     return MaterialApp(
-                        title: 'atomicDEX',
+                        title: 'atomicDeFi',
                         localizationsDelegates: <
                             LocalizationsDelegate<dynamic>>[
                           const AppLocalizationsDelegate(),
@@ -344,7 +344,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       BottomNavigationBarItem(
                                           icon: Icon(
                                             Icons.account_balance_wallet,
-                                            key: const Key('main-nav-portfolio'),
+                                            key:
+                                                const Key('main-nav-portfolio'),
                                           ),
                                           title: Text(
                                               AppLocalizations.of(context)
@@ -367,7 +368,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           icon: Stack(
                                             children: <Widget>[
                                               Icon(Icons.library_books,
-                                                  key: const Key('main-nav-feed')),
+                                                  key: const Key(
+                                                      'main-nav-feed')),
                                               if (feedProvider.hasNewItems)
                                                 buildRedDot(context),
                                             ],
@@ -377,7 +379,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           icon: Stack(
                                             children: <Widget>[
                                               Icon(Icons.dehaze,
-                                                  key: const Key('main-nav-more')),
+                                                  key: const Key(
+                                                      'main-nav-more')),
                                               if (updatesProvider.status !=
                                                   UpdateStatus.upToDate)
                                                 buildRedDot(context),

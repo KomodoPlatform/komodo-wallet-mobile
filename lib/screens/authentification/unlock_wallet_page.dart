@@ -70,7 +70,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   color: Theme.of(context).primaryColor,
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
-                    child: SvgPicture.asset('assets/lock.svg',
+                    child: SvgPicture.asset('assets/svg/lock.svg',
                         semanticsLabel: 'Lock'),
                   ),
                 ),
