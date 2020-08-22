@@ -35,7 +35,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
       backgroundColor: Theme.of(context).backgroundColor,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: const Text('atomicDEX update'), // TODO(yurii): localization
+        title: const Text('atomicDeFi update'), // TODO(yurii): localization
       ),
       body: RefreshIndicator(
         onRefresh: () async {

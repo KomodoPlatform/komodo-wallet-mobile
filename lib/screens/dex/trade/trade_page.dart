@@ -880,7 +880,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                         color: Theme.of(context).backgroundColor,
                       ),
                       child: SvgPicture.asset(
-                        'assets/icon_swap.svg',
+                        'assets/svg/icon_swap.svg',
                         height: 40,
                       )),
                 )

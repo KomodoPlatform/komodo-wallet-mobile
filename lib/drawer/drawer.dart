@@ -46,8 +46,8 @@ class _AppDrawerState extends State<AppDrawer> {
                     begin: Alignment.centerRight,
                     stops: <double>[0.01, 1],
                     colors: <Color>[
-                      Color.fromRGBO(39, 71, 110, 0.6),
-                      Color.fromRGBO(65, 234, 213, 0.1),
+                      Color.fromRGBO(98, 90, 229, 0.4),
+                      Color.fromRGBO(45, 184, 240, 0.6),
                     ],
                   )),
                   child: SafeArea(
@@ -61,7 +61,7 @@ class _AppDrawerState extends State<AppDrawer> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: Image.asset(
-                                'assets/mark_and_text_vertical_light.png'),
+                                'assets/mark_and_text_vertical_white.png'),
                           ),
                         ),
                         Flexible(
@@ -83,7 +83,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 SvgPicture.asset(
-                                  'assets/wallet.svg',
+                                  'assets/svg/wallet.svg',
                                   height: 18,
                                 ),
                                 const SizedBox(width: 4),

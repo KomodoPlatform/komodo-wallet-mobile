@@ -367,7 +367,7 @@ class MMService {
     initUsername(passphrase);
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
-    gui = 'atomicDEX ${packageInfo.version} $os';
+    gui = 'atomicDeFi ${packageInfo.version} $os';
     if (Platform.isAndroid) {
       final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
       gui += '; BT=${buildTime ~/ 1000}';
