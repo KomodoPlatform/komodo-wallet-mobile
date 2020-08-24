@@ -97,13 +97,12 @@ class CexProvider extends ChangeNotifier {
         const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching tickers timed out');
-          throw 'Fetching tickers timed out';
+          return;
         },
       );
       _body = _res.body;
     } catch (e) {
       Log('cex_provider', 'Failed to fetch tickers list: $e');
-      rethrow;
     }
 
     List<dynamic> json;
@@ -111,7 +110,6 @@ class CexProvider extends ChangeNotifier {
       json = jsonDecode(_body);
     } catch (e) {
       Log('cex_provider', 'Failed to parse tickers json: $e');
-      rethrow;
     }
 
     if (json != null) {
