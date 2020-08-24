@@ -221,7 +221,8 @@ class CoinsBloc implements BlocBase {
     try {
       dynamic transactions;
       if (coin.type == 'erc') {
-        transactions = await getErcTransactions.getTransactions(coin);
+        transactions = await getErcTransactions.getTransactions(
+            coin: coin, fromId: fromId);
       } else {
         transactions = await MM.getTransactions(mmSe.client,
             GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -24,16 +22,19 @@ class GetErcTransactions {
   final String ethUrl = 'https://komodo.live:3334/api/v1/eth_tx_history';
   final String ercUrl = 'https://komodo.live:3334/api/v1/erc_tx_history';
 
-  Future<dynamic> getTransactions(Coin coin) async {
+  Future<dynamic> getTransactions({Coin coin, String fromId}) async {
     if (coin.type != 'erc') return;
+
+    // Endpoint returns all tx at ones, and `fromId` only has value
+    // if some txs was already fetched, so no need to fetch same txs again
+    if (fromId != null) return;
 
     final CoinBalance coinBalance = coinsBloc.coinBalance.firstWhere(
         (balance) => balance.coin.abbr == coin.abbr,
         orElse: () => null);
     if (coinBalance == null) return;
 
-    final String address = '0x3AC609B427EE0179cc3a571478Fe8038f123bCBE';
-    // coinBalance.balance.address;
+    final String address = coinBalance.balance.address;
 
     final String url = coin.abbr == 'ETH'
         ? '$ethUrl/$address'
@@ -49,6 +50,12 @@ class GetErcTransactions {
       return ErrorCode(error: e);
     }
 
-    return transactionsFromJson('{"result": $body}');
+    final String result = body.isNotEmpty ? body : '{"transactions": []}';
+    final Transactions transactions =
+        transactionsFromJson('{"result": $result}');
+    transactions.result.transactions
+        .sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+    return transactions;
   }
 }
