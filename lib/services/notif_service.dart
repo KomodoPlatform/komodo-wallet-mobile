@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -69,12 +71,17 @@ class NotifService {
 
   Future<void> _subscribeTxs() async {
     jobService.install('checkTransactions', 10, (j) async {
-      final List<dynamic> coins = await MM.getEnabledCoins();
+      final List<CoinBalance> coins = coinsBloc.coinBalance;
       final List<Transaction> transactions = [];
 
-      for (var coin in coins) {
-        final String abbr = coin['ticker'];
-        final String address = coin['address'];
+      for (CoinBalance coin in coins) {
+        // For ETH/ERC20 tokens we use komodo.live endpoint for txs history
+        // Notifications for ETH/ERC20 txs are not available for now
+        // https://github.com/ca333/komodoDEX/issues/872
+        if (coin.coin.type == 'erc') continue;
+
+        final String abbr = coin.coin.abbr;
+        final String address = coin.balance.address;
         final dynamic res = await MM.getTransactions(
             mmSe.client,
             GetTxHistory(

@@ -16,6 +16,7 @@ import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/transactions.dart';
+import 'package:komodo_dex/services/get_erc_transactions.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -218,8 +219,14 @@ class CoinsBloc implements BlocBase {
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
-      final dynamic transactions = await MM.getTransactions(mmSe.client,
-          GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+      dynamic transactions;
+      if (coin.type == 'erc') {
+        transactions = await getErcTransactions.getTransactions(
+            coin: coin, fromId: fromId);
+      } else {
+        transactions = await MM.getTransactions(mmSe.client,
+            GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+      }
 
       if (transactions is Transactions) {
         if (fromId == null || fromId.isEmpty) {
