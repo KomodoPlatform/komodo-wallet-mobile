@@ -48,12 +48,28 @@ class GetErcTransactions {
       body = response.body;
     } catch (e) {
       Log('get_erc_transactions', 'getTransactions/fetch] $e');
-      return ErrorCode(error: e);
+      return ErrorCode(error: Error(message: e));
     }
 
     final String result =
         body.isNotEmpty ? body : '{"result": {"transactions": []}}';
-    final Transactions transactions = transactionsFromJson(result);
+    Transactions transactions;
+
+    try {
+      transactions = transactionsFromJson(result);
+    } catch (_) {
+      if (body == 'Limit exceeded') {
+        return ErrorCode(
+            error: Error(
+          // TODO(yurii): localization
+          message: 'Too many requests.\n'
+              'Transactions history requests limit exceeded.\n'
+              'Please try again later.',
+        ));
+      }
+      return;
+    }
+
     transactions.result.transactions
         .sort((a, b) => b.timestamp.compareTo(a.timestamp));
     transactions.result?.syncStatus?.state ??= 'Finished';
