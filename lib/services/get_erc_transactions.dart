@@ -56,16 +56,7 @@ class GetErcTransactions {
     final Transactions transactions = transactionsFromJson(result);
     transactions.result.transactions
         .sort((a, b) => b.timestamp.compareTo(a.timestamp));
-
-    for (Transaction tx in transactions.result.transactions) {
-      if (tx.from.contains(address.toLowerCase())) {
-        if (double.parse(tx.spentByMe) == 0) tx.spentByMe = tx.receivedByMe;
-        tx.receivedByMe = '0';
-        if (double.parse(tx.myBalanceChange) > 0) {
-          tx.myBalanceChange = '-${tx.myBalanceChange}';
-        }
-      }
-    }
+    transactions.result?.syncStatus?.state ??= 'Finished';
 
     return transactions;
   }
