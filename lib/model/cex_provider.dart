@@ -97,13 +97,12 @@ class CexProvider extends ChangeNotifier {
         const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching tickers timed out');
-          throw 'Fetching tickers timed out';
+          return;
         },
       );
       _body = _res.body;
     } catch (e) {
       Log('cex_provider', 'Failed to fetch tickers list: $e');
-      rethrow;
     }
 
     List<dynamic> json;
@@ -111,7 +110,6 @@ class CexProvider extends ChangeNotifier {
       json = jsonDecode(_body);
     } catch (e) {
       Log('cex_provider', 'Failed to parse tickers json: $e');
-      rethrow;
     }
 
     if (json != null) {
@@ -531,8 +529,20 @@ class CexPrices {
 
     if (coinsList == null) return;
 
+    // All available coins, inculding not active.
+    final List<Coin> allCoins = (await coins).values.toList();
     final List<String> ids =
         coinsList.map((Coin coin) => coin.coingeckoId).toList();
+
+    for (String abbr in currencies) {
+      if (ids.contains(abbr)) continue;
+
+      final Coin coin =
+          allCoins.firstWhere((Coin c) => c.abbr == abbr, orElse: () => null);
+      if (coin == null) continue;
+
+      ids.add(coin.coingeckoId);
+    }
 
     if (_fetchingPrices) return;
     _fetchingPrices = true;
@@ -546,14 +556,14 @@ class CexPrices {
           .timeout(
         const Duration(seconds: 60),
         onTimeout: () {
-          throw 'Fetching usd prices timed out';
+          Log('cex_provider', 'Fetching usd prices timed out');
+          _fetchingPrices = false;
+          return;
         },
       );
       _body = _res.body;
     } catch (e) {
-      _fetchingPrices = false;
       Log('cex_provider', 'Failed to fetch usd prices: $e');
-      rethrow;
     }
 
     _fetchingPrices = false;
@@ -563,7 +573,6 @@ class CexPrices {
       json = jsonDecode(_body);
     } catch (e) {
       Log('cex_provider', 'Failed to parse prices json: $e');
-      rethrow;
     }
 
     if (json == null) return;
@@ -571,9 +580,8 @@ class CexPrices {
     json.forEach((String coingeckoId, dynamic pricesData) {
       String coinAbbr;
       try {
-        coinAbbr = coinsList
-            .firstWhere((coin) => coin.coingeckoId == coingeckoId)
-            .abbr;
+        coinAbbr =
+            allCoins.firstWhere((coin) => coin.coingeckoId == coingeckoId).abbr;
       } catch (_) {}
 
       if (coinAbbr != null) {
