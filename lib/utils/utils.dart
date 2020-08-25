@@ -526,6 +526,10 @@ String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
   final String rounded = value.toStringAsFixed(fraction);
   if (rounded.length >= digits + 1) {
     return rounded;
+  } else if (value <= 0.00000001) {
+    return '0.00000001';
+  } else if (value <= 0.000001) {
+    return value.toStringAsFixed(8);
   } else {
     return value.toStringAsPrecision(digits);
   }
