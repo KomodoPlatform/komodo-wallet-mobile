@@ -236,7 +236,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
   String _getFee() {
     String fee = '';
 
-    if (widget.transaction.feeDetails.amount == null) {
+    if (widget.transaction.feeDetails.amount == null ||
+        widget.transaction.feeDetails.amount.isEmpty) {
       fee = widget.transaction.feeDetails?.totalFee.toString();
     } else {
       fee = widget.transaction.feeDetails?.amount.toString();
