@@ -5,6 +5,7 @@ import 'package:komodo_dex/model/error_code.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/transactions.dart';
+import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/utils/log.dart';
 
 // At the moment (8/24/2020) tx history is disabled on parity nodes,
@@ -50,11 +51,21 @@ class GetErcTransactions {
       return ErrorCode(error: e);
     }
 
-    final String result = body.isNotEmpty ? body : '{"transactions": []}';
-    final Transactions transactions =
-        transactionsFromJson('{"result": $result}');
+    final String result =
+        body.isNotEmpty ? body : '{"result": {"transactions": []}}';
+    final Transactions transactions = transactionsFromJson(result);
     transactions.result.transactions
         .sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+    for (Transaction tx in transactions.result.transactions) {
+      if (tx.from.contains(address.toLowerCase())) {
+        if (double.parse(tx.spentByMe) == 0) tx.spentByMe = tx.receivedByMe;
+        tx.receivedByMe = '0';
+        if (double.parse(tx.myBalanceChange) > 0) {
+          tx.myBalanceChange = '-${tx.myBalanceChange}';
+        }
+      }
+    }
 
     return transactions;
   }
