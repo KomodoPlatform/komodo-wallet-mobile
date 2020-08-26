@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+
 GetWithdraw getWithdrawFromJson(String str) =>
     GetWithdraw.fromJson(json.decode(str));
 
@@ -12,7 +14,7 @@ String getWithdrawToJson(GetWithdraw data) {
   if (data.amount == null) {
     tmpJson.remove('amount');
   }
-  if (data.max == null || !data.max) {
+  if (data.max == null || !data.max || authBloc.isCamoActive) {
     tmpJson.remove('max');
   }
   if (data.fee == null || data.fee.type == null) {
@@ -74,9 +76,12 @@ class Fee {
         gasPrice: json['gas_price'],
         gas: json['gas'],
       );
-  String type; // type of transaction fee, possible values: UtxoFixed, UtxoPerKbyte, EthGas
-  String amount; // fee amount in coin units, used only when type is UtxoFixed (fixed amount not depending on tx size) or UtxoPerKbyte (amount per Kbyte).
-  String gasPrice; // used only when fee type is EthGas. Sets the gas price in `gwei` units
+  String
+      type; // type of transaction fee, possible values: UtxoFixed, UtxoPerKbyte, EthGas
+  String
+      amount; // fee amount in coin units, used only when type is UtxoFixed (fixed amount not depending on tx size) or UtxoPerKbyte (amount per Kbyte).
+  String
+      gasPrice; // used only when fee type is EthGas. Sets the gas price in `gwei` units
   int gas; // used only when fee type is EthGas. Sets the gas limit for transaction
 
   Map<String, dynamic> toJson() => <String, dynamic>{

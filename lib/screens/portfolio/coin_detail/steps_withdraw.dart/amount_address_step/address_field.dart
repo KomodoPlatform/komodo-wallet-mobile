@@ -102,7 +102,6 @@ class _AddressFieldState extends State<AddressField> {
               ),
               // The validator receives the text the user has typed in
               validator: (String value) {
-                print(coinsDetailBloc.isCancel);
                 if (value.isEmpty && coinsDetailBloc.isCancel) {
                   return null;
                 }
