@@ -173,19 +173,13 @@ class ApiProvider {
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
       final Balance balance = Balance.fromJson(jbody);
-      await _camouflageIfNeeded(balance);
+      balance.camouflageIfNeeded();
 
       return balance;
     } catch (e) {
       throw _catchErrorString(
           'getBalance', e, 'Error getting ${gb.coin} balance');
     }
-  }
-
-  Future<void> _camouflageIfNeeded(Balance balance) async {
-    if (!authBloc.isCamoActive) return;
-    balance.balance =
-        deci((balance.balance).toDouble() * settingsBloc.camoPercent / 100);
   }
 
   Future<dynamic> postBuy(

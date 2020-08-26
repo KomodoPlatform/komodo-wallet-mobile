@@ -290,11 +290,10 @@ class CoinsBloc implements BlocBase {
       await Db.coinActive(coin);
       final bal = Balance(
           address: acc.address,
-          balance: authBloc.isCamoActive
-              ? deci(double.parse(acc.balance) * settingsBloc.camoPercent / 100)
-              : deci(acc.balance),
+          balance: deci(acc.balance),
           lockedBySwaps: deci(acc.lockedBySwaps),
           coin: acc.coin);
+      bal.camouflageIfNeeded();
       final cb = CoinBalance(coin, bal);
       // TODO(AG): Load previous USD balance from database
       cb.balanceUSD = 0;
