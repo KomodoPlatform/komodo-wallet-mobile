@@ -2,14 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_rewards_info.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/services/music_service.dart';
-import 'package:komodo_dex/utils/utils.dart';
 
 import '../model/active_coin.dart';
 import '../model/balance.dart';

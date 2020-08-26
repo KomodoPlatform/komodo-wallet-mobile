@@ -7,6 +7,7 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/widgets/confirmation_dialog.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 
 class CamoPinSetupPage extends StatefulWidget {
@@ -15,8 +16,16 @@ class CamoPinSetupPage extends StatefulWidget {
 }
 
 class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
+  final String _matchingPinErrorMessage =
+      // TODO(yurii): localization
+      'Your general PIN and Camouflage PIN are the same.\n'
+      'Camouflage mode will not be available.\n'
+      'Please change Camouflage PIN.';
+
   @override
   Widget build(BuildContext context) {
+    _showMatchingPinPopupIfNeeded();
+
     return StreamBuilder<bool>(
         initialData: authBloc.isCamoActive,
         stream: authBloc.outIsCamoActive,
@@ -152,10 +161,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                               return Container(
                                 padding: const EdgeInsets.all(18),
                                 child: Text(
-                                  // TODO(yurii): localization
-                                  'Your general PIN and Camouflage PIN are the same.\n'
-                                  'Camouflage mode will not be available.'
-                                  '\nPlease change Camouflage PIN.',
+                                  _matchingPinErrorMessage,
                                   style: TextStyle(
                                     color: Theme.of(context).errorColor,
                                     height: 1.2,
@@ -218,7 +224,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                           style: TextStyle(
                                             fontSize: 18,
                                             color: isEnabled
-                                                ? Colors.pinkAccent
+                                                ? Theme.of(context).errorColor
                                                 : null,
                                           ),
                                         ),
@@ -237,13 +243,35 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        const Text(
-                                          // TODO(yurii): localization
-                                          'Camouflage PIN saved',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
+                                        FutureBuilder<String>(
+                                            future:
+                                                EncryptionTool().read('pin'),
+                                            builder: (context,
+                                                AsyncSnapshot<String>
+                                                    normalPin) {
+                                              if (!normalPin.hasData)
+                                                return Container();
+
+                                              if (normalPin.data !=
+                                                  camoPinSnapshot.data)
+                                                return const Text(
+                                                  // TODO(yurii): localization
+                                                  'Camouflage PIN saved',
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                  ),
+                                                );
+
+                                              return Text(
+                                                // TODO(yurii): localization
+                                                'Invalid Camouflage PIN',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Theme.of(context)
+                                                      .errorColor,
+                                                ),
+                                              );
+                                            }),
                                         Text(
                                           // TODO(yurii): localization
                                           'Change Camouflage PIN',
@@ -357,5 +385,29 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
     final String savedPin = await EncryptionTool().read('camoPin');
     if (val && savedPin == null) _startPinSetup();
+  }
+
+  Future<void> _showMatchingPinPopupIfNeeded() async {
+    if (!settingsBloc.shouldWarnBadCamoPin) return;
+
+    final String normalPin = await EncryptionTool().read('pin');
+    final String camoPin = await EncryptionTool().read('camoPin');
+
+    if (normalPin == null || camoPin == null) return;
+    if (normalPin.isEmpty || camoPin.isEmpty) return;
+    if (normalPin != camoPin) return;
+
+    showConfirmationDialog(
+        context: context,
+        title: 'Invalid PIN',
+        message: _matchingPinErrorMessage,
+        confirmButtonText: 'Change',
+        onConfirm: () {
+          _startPinSetup();
+        });
+
+    setState(() {
+      settingsBloc.shouldWarnBadCamoPin = false;
+    });
   }
 }

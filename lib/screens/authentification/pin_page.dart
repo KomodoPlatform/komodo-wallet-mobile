@@ -138,6 +138,7 @@ class _PinPageState extends State<PinPage> {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isCamoPinCreated', false);
 
+        settingsBloc.shouldWarnBadCamoPin = true;
         Navigator.popUntil(context, ModalRoute.withName('/camoSetup'));
         break;
 

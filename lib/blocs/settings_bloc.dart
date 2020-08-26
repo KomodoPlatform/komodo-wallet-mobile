@@ -27,6 +27,7 @@ class SettingsBloc implements BlocBase {
   bool showBalance = true;
   bool isCamoEnabled = false;
   int camoPercent = 10;
+  bool shouldWarnBadCamoPin = false;
 
   final StreamController<bool> _isDeleteLoadingController =
       StreamController<bool>.broadcast();

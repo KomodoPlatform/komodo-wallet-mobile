@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
