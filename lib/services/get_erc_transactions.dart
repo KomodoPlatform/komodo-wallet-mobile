@@ -5,7 +5,6 @@ import 'package:komodo_dex/model/error_code.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/transactions.dart';
-import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/utils/log.dart';
 
 // At the moment (8/24/2020) tx history is disabled on parity nodes,
