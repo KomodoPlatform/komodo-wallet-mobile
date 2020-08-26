@@ -35,10 +35,12 @@ class _AddressFieldState extends State<AddressField> {
   @override
   Widget build(BuildContext context) {
     addressBookProvider = Provider.of<AddressBookProvider>(context);
-    if (addressBookProvider.clipboard != null) {
-      widget.controller.text = addressBookProvider.clipboard;
-      addressBookProvider.clipboard = null;
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (addressBookProvider.clipboard != null) {
+        widget.controller.text = addressBookProvider.clipboard;
+        addressBookProvider.clipboard = null;
+      }
+    });
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
