@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
@@ -288,7 +290,9 @@ class CoinsBloc implements BlocBase {
       await Db.coinActive(coin);
       final bal = Balance(
           address: acc.address,
-          balance: deci(acc.balance),
+          balance: authBloc.isCamoActive
+              ? deci(double.parse(acc.balance) * settingsBloc.camoPercent / 100)
+              : deci(acc.balance),
           lockedBySwaps: deci(acc.lockedBySwaps),
           coin: acc.coin);
       final cb = CoinBalance(coin, bal);
