@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -104,7 +106,12 @@ class _ExchangeRateState extends State<ExchangeRate> {
       final num sign = (rate - cexRate).sign;
       final double percent = ((rate - cexRate) * 100 / rate).abs();
       int indicatorRange = (neutralRange * 2).round();
-      if (percent > indicatorRange) indicatorRange = percent.ceil();
+      if (percent > indicatorRange) {
+        // log_n(x) = log_e(x) / log_e(n)
+        final power = (math.log(percent) / math.log(10)).ceil();
+        // Round up to the closest power of 10
+        indicatorRange = math.pow(10, power);
+      }
       final percentString = formatPrice(percent.toString(), 2);
       String message;
       Color color;
