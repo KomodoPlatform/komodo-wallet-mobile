@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -38,6 +39,7 @@ class CexProvider extends ChangeNotifier {
   }
 
   double getUsdPrice(String abbr) => cexPrices.getUsdPrice(abbr);
+  double getCexRate(CoinsPair pair) => cexPrices.getCexRate(pair);
 
   String convert(
     double volume, {
@@ -445,6 +447,16 @@ class CexPrices {
     } catch (_) {}
 
     return price ?? (_fetchingPrices ? null : 0.0);
+  }
+
+  double getCexRate(CoinsPair pair) {
+    final double buyUsdPrice = getUsdPrice(pair.buy.abbr);
+    final double sellUsdPrice = getUsdPrice(pair.sell.abbr);
+
+    if (buyUsdPrice == null || sellUsdPrice == null) return null;
+    if (buyUsdPrice == 0.0 || sellUsdPrice == 0.0) return 0.0;
+
+    return buyUsdPrice / sellUsdPrice;
   }
 
   String convert(

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/markets/order_details_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
-class OrderBookTable extends StatelessWidget {
+class OrderBookTable extends StatefulWidget {
   const OrderBookTable({
     @required this.sortedAsks,
     @required this.sortedBids,
@@ -15,20 +18,53 @@ class OrderBookTable extends StatelessWidget {
   final List<Ask> sortedBids;
 
   @override
+  _OrderBookTableState createState() => _OrderBookTableState();
+}
+
+class _OrderBookTableState extends State<OrderBookTable> {
+  OrderBookProvider orderBookProvider;
+  CexProvider cexProvider;
+
+  @override
   Widget build(BuildContext context) {
-    final OrderBookProvider _orderBookProvider =
-        Provider.of<OrderBookProvider>(context);
+    orderBookProvider = Provider.of<OrderBookProvider>(context);
+    cexProvider = Provider.of<CexProvider>(context);
 
-    void _showOrderDetails(Ask order) {
-      Navigator.push<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => OrderDetailsPage(
-                    order: order,
-                  )));
-    }
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 8,
+        right: 8,
+      ),
+      child: Table(
+        key: const Key('order-book-table'),
+        columnWidths: const {
+          0: FlexColumnWidth(1.0),
+          1: FlexColumnWidth(1.0),
+          2: FlexColumnWidth(1.0),
+          3: IntrinsicColumnWidth(),
+        },
+        children: [
+          _buildTableHeader(),
+          _buildSpacer(),
+          ..._buildAsksList(),
+          _buildCexRate(),
+          ..._buildBidsList(),
+        ],
+      ),
+    );
+  }
 
-    final TableRow _tableHeader = TableRow(
+  void _showOrderDetails(Ask order) {
+    Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => OrderDetailsPage(
+                  order: order,
+                )));
+  }
+
+  TableRow _buildTableHeader() {
+    return TableRow(
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: Colors.grey),
@@ -40,7 +76,7 @@ class OrderBookTable extends StatelessWidget {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 4),
           child: Text(
-            'Price (${_orderBookProvider.activePair.sell.abbr})',
+            'Price (${orderBookProvider.activePair.sell.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -49,7 +85,7 @@ class OrderBookTable extends StatelessWidget {
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            'Amt. (${_orderBookProvider.activePair.buy.abbr})',
+            'Amt. (${orderBookProvider.activePair.buy.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -59,88 +95,17 @@ class OrderBookTable extends StatelessWidget {
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            'Total (${_orderBookProvider.activePair.buy.abbr})',
+            'Total (${orderBookProvider.activePair.buy.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ), // TODO(yurii): localization
         ),
       ],
     );
+  }
 
-    final List<Ask> _sortedAsks = sortedAsks;
-    List<TableRow> _asksList = [];
-    double _askTotal = 0;
-
-    for (int i = 0; i < _sortedAsks.length; i++) {
-      final Ask ask = _sortedAsks[i];
-      _askTotal += ask.maxvolume.toDouble();
-
-      _asksList.add(TableRow(
-        children: <Widget>[
-          TableRowInkWell(
-            onTap: () => _showOrderDetails(ask),
-            child: Container(
-              height: 26,
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 4),
-              child: Text(
-                formatPrice(ask.price),
-                maxLines: 1,
-                style: TextStyle(color: Colors.red, fontSize: 14),
-              ),
-            ),
-          ),
-          TableRowInkWell(
-            onTap: () => _showOrderDetails(ask),
-            child: Container(
-              height: 26,
-              alignment: Alignment.centerRight,
-              child: Text(
-                formatPrice(ask.maxvolume.toString()),
-                maxLines: 1,
-                style: TextStyle(
-                    color: Theme.of(context).disabledColor, fontSize: 14),
-              ),
-            ),
-          ),
-          TableRowInkWell(
-            onTap: () => _showOrderDetails(ask),
-            child: Container(
-              height: 26,
-              alignment: Alignment.centerRight,
-              padding: const EdgeInsets.only(right: 4),
-              child: Text(
-                formatPrice(_askTotal.toString()),
-                maxLines: 1,
-                style: TextStyle(
-                    color: Theme.of(context).disabledColor, fontSize: 14),
-              ),
-            ),
-          ),
-        ],
-      ));
-    }
-    _asksList = List.from(_asksList.reversed);
-    if (_asksList.isEmpty) {
-      _asksList.add(TableRow(
-        children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            height: 26,
-            padding: const EdgeInsets.only(left: 4),
-            child: Text(
-              'No asks found', // TODO(yurii): localization
-              maxLines: 1,
-              style: TextStyle(color: Colors.red, fontSize: 14),
-            ),
-          ),
-          Container(),
-          Container(),
-        ],
-      ));
-    }
-
-    final List<Ask> _sortedBids = List.from(sortedBids);
+  List<TableRow> _buildBidsList() {
+    final List<Ask> _sortedBids = List.from(widget.sortedBids);
     final List<TableRow> _bidsList = [];
     double _bidTotal = 0;
 
@@ -214,35 +179,136 @@ class OrderBookTable extends StatelessWidget {
       ));
     }
 
-    const TableRow _spacer = TableRow(
+    return _bidsList;
+  }
+
+  List<TableRow> _buildAsksList() {
+    final List<Ask> _sortedAsks = widget.sortedAsks;
+    List<TableRow> _asksList = [];
+    double _askTotal = 0;
+
+    for (int i = 0; i < _sortedAsks.length; i++) {
+      final Ask ask = _sortedAsks[i];
+      _askTotal += ask.maxvolume.toDouble();
+
+      _asksList.add(TableRow(
+        children: <Widget>[
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(ask),
+            child: Container(
+              height: 26,
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                formatPrice(ask.price),
+                maxLines: 1,
+                style: TextStyle(color: Colors.red, fontSize: 14),
+              ),
+            ),
+          ),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(ask),
+            child: Container(
+              height: 26,
+              alignment: Alignment.centerRight,
+              child: Text(
+                formatPrice(ask.maxvolume.toString()),
+                maxLines: 1,
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor, fontSize: 14),
+              ),
+            ),
+          ),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(ask),
+            child: Container(
+              height: 26,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 4),
+              child: Text(
+                formatPrice(_askTotal.toString()),
+                maxLines: 1,
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor, fontSize: 14),
+              ),
+            ),
+          ),
+        ],
+      ));
+    }
+    _asksList = List.from(_asksList.reversed);
+    if (_asksList.isEmpty) {
+      _asksList.add(TableRow(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            height: 26,
+            padding: const EdgeInsets.only(left: 4),
+            child: Text(
+              'No asks found', // TODO(yurii): localization
+              maxLines: 1,
+              style: TextStyle(color: Colors.red, fontSize: 14),
+            ),
+          ),
+          Container(),
+          Container(),
+        ],
+      ));
+    }
+
+    return _asksList;
+  }
+
+  TableRow _buildCexRate() {
+    final double cexRate =
+        cexProvider.getCexRate(orderBookProvider.activePair) ?? 0.0;
+
+    return TableRow(
+      children: [
+        SizedBox(
+          height: 26,
+          child: cexRate > 0
+              ? Opacity(
+                  opacity: 0.8,
+                  child: Row(
+                    children: <Widget>[
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        formatPrice(cexRate),
+                        maxLines: 1,
+                        style: Theme.of(context).textTheme.subtitle.copyWith(
+                              color: cexColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w100,
+                            ),
+                      ),
+                      const SizedBox(
+                        width: 2,
+                      ),
+                      CexMarker(
+                        context,
+                        size: const Size.fromHeight(13),
+                      ),
+                    ],
+                  ),
+                )
+              : Container(),
+        ),
+        const SizedBox(height: 26),
+        const SizedBox(height: 26),
+      ],
+    );
+  }
+
+  TableRow _buildSpacer() {
+    return const TableRow(
       children: [
         SizedBox(height: 12),
         SizedBox(height: 12),
         SizedBox(height: 12),
       ],
-    );
-
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
-      ),
-      child: Table(
-        key: const Key('order-book-table'),
-        columnWidths: const {
-          0: FlexColumnWidth(1.0),
-          1: FlexColumnWidth(1.0),
-          2: FlexColumnWidth(1.0),
-          3: IntrinsicColumnWidth(),
-        },
-        children: [
-          _tableHeader,
-          _spacer,
-          ..._asksList,
-          _spacer,
-          ..._bidsList,
-        ],
-      ),
     );
   }
 }

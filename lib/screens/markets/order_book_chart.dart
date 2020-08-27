@@ -126,7 +126,7 @@ class OrderBookChart extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           ..._asksList.reversed.toList(),
-          const SizedBox(height: 12),
+          const SizedBox(height: 26),
           ..._bidsList,
         ],
       ),
