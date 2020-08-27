@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class ReceiveOrders extends StatefulWidget {
   const ReceiveOrders(
@@ -142,13 +144,27 @@ class AsksOrder extends StatefulWidget {
 }
 
 class _AsksOrderState extends State<AsksOrder> {
+  OrderBookProvider orderBookProvider;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      orderBookProvider.activePair = CoinsPair(
+        buy: coinsBloc.getCoinByAbbr(widget.baseCoin),
+        sell: orderBookProvider.activePair.sell,
+      );
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    orderBookProvider = Provider.of<OrderBookProvider>(context);
     final List<DataRow> asksWidget = <DataRow>[];
-    final List<Ask> asksList = OrderBookProvider.sortByPrice(widget.asks);
+    final List<Ask> asksList = orderBookProvider?.getOrderBook()?.asks;
     asksList
-        .asMap()
-        .forEach((int index, Ask ask) => asksWidget.add(tableRow(ask, index)));
+        ?.asMap()
+        ?.forEach((int index, Ask ask) => asksWidget.add(tableRow(ask, index)));
 
     return LockScreen(
       context: context,
