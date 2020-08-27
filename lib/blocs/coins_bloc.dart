@@ -229,6 +229,8 @@ class CoinsBloc implements BlocBase {
       }
 
       if (transactions is Transactions) {
+        transactions.camouflageIfNeeded();
+
         if (fromId == null || fromId.isEmpty) {
           this.transactions = transactions;
         } else {

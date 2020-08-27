@@ -261,6 +261,7 @@ class _PinPageState extends State<PinPage> {
                     if (!authBloc.isCamoActive) {
                       coinsBloc.resetCoinBalance();
                       authBloc.switchCamoActive(true);
+                      Navigator.popUntil(context, ModalRoute.withName('/'));
                     }
 
                     _onCodeSuccess(widget.pinStatus, code);
