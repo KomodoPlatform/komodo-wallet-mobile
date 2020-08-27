@@ -549,6 +549,23 @@
 		]
 	},
 	{
+		"name": "HempCoin",
+		"type": "smartChain",
+		"address": "165.22.52.123",
+		"port": 10022,
+		"proto": "tcp",
+		"abbr": "THC",
+		"coingeckoId": "hempcoin-thc",
+		"colorCoin": "0xFF447224",
+		"serverList": [
+			"165.22.52.123:10022",
+			"157.230.45.184:10022"
+		],
+		"explorerUrl": [
+			"https://thc.explorer.dexstats.info/"
+		]
+	},
+	{
 		"name": "TrueUSD",
 		"type": "erc",
 		"address": "http://eth1.cipig.net",
