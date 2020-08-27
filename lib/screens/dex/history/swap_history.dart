@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -289,6 +291,18 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
   }
 
   Widget _buildTextAmount(String coin, String amount) {
+    // Only apply camouflage to swap history,
+    // show current active swaps as is
+    final bool shouldCamouflage = authBloc.isCamoActive &&
+        (widget.swap.status == Status.SWAP_SUCCESSFUL ||
+            widget.swap.status == Status.SWAP_FAILED ||
+            widget.swap.status == Status.TIME_OUT);
+
+    if (shouldCamouflage) {
+      amount =
+          (double.parse(amount) * settingsBloc.camoPercent / 100).toString();
+    }
+
     return Text(
       '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
       style: Theme.of(context).textTheme.body1,
