@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -880,7 +881,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                         color: Theme.of(context).backgroundColor,
                       ),
                       child: SvgPicture.asset(
-                        'assets/icon_swap.svg',
+                        'assets/svg/icon_swap.svg',
                         height: 40,
                       )),
                 )
@@ -1273,7 +1274,17 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    Text(coin.balance.getBalance()),
+                    StreamBuilder<bool>(
+                        initialData: settingsBloc.showBalance,
+                        stream: settingsBloc.outShowBalance,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<bool> snapshot) {
+                          String amount = coin.balance.getBalance();
+                          if (snapshot.hasData && snapshot.data == false) {
+                            amount = '**.**';
+                          }
+                          return Text(amount);
+                        }),
                     const SizedBox(
                       width: 4,
                     ),

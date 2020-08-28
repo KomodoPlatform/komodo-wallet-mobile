@@ -7,7 +7,7 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.2.18
+version: 0.2.19
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
@@ -190,6 +190,7 @@ flutter:
   - assets/audio/
   - assets/mocks/
   - assets/currency-flags/
+  - assets/svg/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

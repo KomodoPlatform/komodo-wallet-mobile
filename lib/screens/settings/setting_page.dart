@@ -20,11 +20,8 @@ import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
-import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
-import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -81,7 +78,6 @@ class _SettingPageState extends State<SettingPage> {
           key: const Key('settings-title'),
         ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).backgroundColor,
         elevation: 0,
       ),
       body: Theme(
@@ -93,15 +89,7 @@ class _SettingPageState extends State<SettingPage> {
             key: const Key('settings-scrollable'),
             children: <Widget>[
               _buildTitle(AppLocalizations.of(context).logoutsettings),
-              _buildLogout(),
-              const SizedBox(
-                height: 1,
-              ),
               _buildLogOutOnExit(),
-              _buildTitle(AppLocalizations.of(context).settingLanguageTitle),
-              _buildLanguages(),
-              _buildTitle('Currency'), // TODO(yurii): localization
-              _buildCurrency(),
               _buildTitle(AppLocalizations.of(context).soundTitle),
               _buildSound(),
               _buildTitle(AppLocalizations.of(context).security),
@@ -161,52 +149,6 @@ class _SettingPageState extends State<SettingPage> {
       rethrow;
     }
     return version;
-  }
-
-  Widget _buildCurrency() {
-    return CustomTile(
-      onPressed: () {
-        showCurrenciesDialog(context);
-      },
-      child: ListTile(
-        trailing: Icon(Icons.more_vert, color: Colors.white.withOpacity(0.7)),
-        title: Text(
-          cexProvider.selectedFiat ?? '',
-          style: Theme.of(context).textTheme.body1.copyWith(
-              fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLanguages() {
-    return CustomTile(
-      onPressed: () {
-        Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => SelectLanguagePage(
-                      currentLoc: Localizations.localeOf(context),
-                    )));
-      },
-      child: SharedPreferencesBuilder<dynamic>(
-          pref: 'current_languages',
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            return ListTile(
-              trailing: Icon(Icons.chevron_right,
-                  color: Colors.white.withOpacity(0.7)),
-              title: Text(
-                snapshot.hasData
-                    ? settingsBloc.getNameLanguage(context, snapshot.data)
-                    : '',
-                style: Theme.of(context).textTheme.body1.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
-              ),
-            );
-          }),
-    );
   }
 
   Widget _buildSound() {
@@ -514,26 +456,6 @@ class _SettingPageState extends State<SettingPage> {
         });
   }
 
-  Widget _buildLogout() {
-    return CustomTile(
-      onPressed: () {
-        Log('setting_page:454', 'PRESSED');
-        showLogoutConfirmation(context);
-      },
-      child: ListTile(
-        leading: Padding(
-          padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset('assets/logout_setting.svg'),
-        ),
-        title: Text(AppLocalizations.of(context).logout,
-            key: const Key('settings-logout'),
-            style: Theme.of(context).textTheme.body1.copyWith(
-                fontWeight: FontWeight.w300,
-                color: Colors.white.withOpacity(0.7))),
-      ),
-    );
-  }
-
   Widget _buildLogOutOnExit() {
     return CustomTile(
       child: ListTile(
@@ -579,7 +501,7 @@ class _SettingPageState extends State<SettingPage> {
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset('assets/delete_setting.svg'),
+          child: SvgPicture.asset('assets/svg/delete_setting.svg'),
         ),
         title: Text(AppLocalizations.of(context).deleteWallet,
             style: Theme.of(context).textTheme.body1.copyWith(
@@ -610,7 +532,7 @@ class _SettingPageState extends State<SettingPage> {
                           backgroundColor: Colors.white,
                           title: Column(
                             children: <Widget>[
-                              SvgPicture.asset('assets/delete_wallet.svg'),
+                              SvgPicture.asset('assets/svg/delete_wallet.svg'),
                               const SizedBox(
                                 height: 16,
                               ),
@@ -780,7 +702,7 @@ class _SettingPageState extends State<SettingPage> {
       }
       log.sink.write('\n\n--- / my recent swaps ---\n\n');
       // TBD: Replace these with a pretty-printed metrics JSON
-      log.sink.write('AtomicDEX mobile ${packageInfo.version} $os\n');
+      log.sink.write('atomicDeFi mobile ${packageInfo.version} $os\n');
       log.sink.write('mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
       log.sink.write('netid ${mmSe.netid} pubkey ${mmSe.pubkey}\n');
       await log.sink.flush();
@@ -815,7 +737,7 @@ class _SettingPageState extends State<SettingPage> {
     mainBloc.isUrlLaucherIsOpen = true;
     await Share.shareFile(af,
         mimeType: 'application/octet-stream',
-        subject: 'AtomicDEX logs at ${DateTime.now().toIso8601String()}');
+        subject: 'atomicDeFi logs at ${DateTime.now().toIso8601String()}');
   }
 
   Future<void> _shareFileDialog() async {

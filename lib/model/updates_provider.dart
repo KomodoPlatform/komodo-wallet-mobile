@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/services/job_service.dart';
+import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:package_info/package_info.dart';
 
@@ -24,6 +26,10 @@ class UpdatesProvider extends ChangeNotifier {
   Future<void> _init() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     currentVersion = packageInfo.version;
+
+    jobService.install('checkUpdates', 300, (_) async {
+      if (notifService.isInBackground) _check();
+    });
 
     notifyListeners();
   }
@@ -70,8 +76,6 @@ class UpdatesProvider extends ChangeNotifier {
       }
     }
 
-    print(newVersion);
-
     switch (json['status']) {
       case 'upToDate':
         {
@@ -99,6 +103,20 @@ class UpdatesProvider extends ChangeNotifier {
     }
 
     isFetching = false;
+
+    if (status != UpdateStatus.upToDate) {
+      notifService.show(
+        NotifObj(
+          // TODO(yurii): localization
+          title: 'Update available',
+          text: newVersion == null
+              ? 'New version available. Please update.'
+              : 'Version $newVersion available. Please update.',
+          uid: 'version_update',
+        ),
+      );
+    }
+
     notifyListeners();
   }
 }

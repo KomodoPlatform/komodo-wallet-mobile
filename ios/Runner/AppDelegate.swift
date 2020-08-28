@@ -3,6 +3,7 @@ import Flutter
 import Foundation
 import CoreLocation
 import os.log
+import UserNotifications
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
@@ -25,6 +26,14 @@ import os.log
     let mm2main = FlutterMethodChannel (name: "mm2", binaryMessenger: vcbm)
     let chargingChannel = FlutterEventChannel (name: "AtomicDEX/logC", binaryMessenger: vcbm)
     chargingChannel.setStreamHandler (self)
+    
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+        if success {
+            print("Notifications allowed!")
+        } else if let error = error {
+            print(error.localizedDescription)
+        }
+    }
 
     mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
       if call.method == "audio_bg" {
@@ -38,6 +47,18 @@ import os.log
       } else if call.method == "audio_volume" {
         let volume = NSNumber (value: call.arguments as! Double)
         result (Int (audio_volume (volume)))
+      } else if call.method == "show_notification" {
+        let dic = call.arguments as! Dictionary<String, Any>
+        let id = String(dic["uid"] as! Int)
+        let content = UNMutableNotificationContent()
+        content.title = dic["title"] as! String
+        content.subtitle = dic["text"] as! String
+        content.sound = UNNotificationSound.default
+        
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request)
+        
+        result(nil);
       } else if call.method == "start" {
                 guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
                 

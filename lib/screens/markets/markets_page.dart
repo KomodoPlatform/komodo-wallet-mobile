@@ -72,6 +72,7 @@ class _MarketsPageState extends State<MarketsPage>
                     _tabsPanel,
                   ],
                 )),
+                automaticallyImplyLeading: false,
               ),
             )
           : AppBar(
@@ -89,7 +90,9 @@ class _MarketsPageState extends State<MarketsPage>
                     const SizedBox(height: 15),
                   ],
                 ),
-              ));
+              ),
+              automaticallyImplyLeading: false,
+            );
     }
 
     return Scaffold(

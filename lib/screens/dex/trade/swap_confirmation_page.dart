@@ -17,6 +17,7 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
+import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -49,6 +50,16 @@ class SwapConfirmation extends StatefulWidget {
 
 class _SwapConfirmationState extends State<SwapConfirmation> {
   bool isSwapMaking = false;
+  ProtectionSettings protectionSettings;
+
+  @override
+  void initState() {
+    protectionSettings = ProtectionSettings(
+      requiredConfirmations: widget.coinBase.requiredConfirmations,
+      requiresNotarization: widget.coinBase.requiresNotarization ?? false,
+    );
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -73,20 +84,34 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppBar(
             leading: InkWell(
-                onTap: () {
-                  _resetSwapPage();
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.arrow_back)),
+              onTap: () {
+                _resetSwapPage();
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back),
+            ),
+            title: Text(AppLocalizations.of(context).swapDetailTitle),
           ),
-          body: ListView(
-            children: <Widget>[
-              _buildTitle(),
-              _buildCoinSwapDetail(),
-              ExchangeRate(),
-              _buildButtons(),
-              _buildInfoSwap()
-            ],
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 24),
+                _buildCoinSwapDetail(),
+                ExchangeRate(),
+                const SizedBox(height: 8),
+                ProtectionControl(
+                  coin: widget.coinBase,
+                  onChange: (ProtectionSettings settings) {
+                    setState(() {
+                      protectionSettings = settings;
+                    });
+                  },
+                ),
+                const SizedBox(height: 8),
+                _buildButtons(),
+                _buildInfoSwap()
+              ],
+            ),
           ),
         ),
       ),
@@ -100,116 +125,99 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     swapBloc.enabledReceiveField = false;
   }
 
-  Widget _buildTitle() {
-    return Column(
-      children: <Widget>[
-        const SizedBox(
-          height: 24,
-        ),
-        Text(
-          AppLocalizations.of(context).swapDetailTitle,
-          key: const Key('swap-detail-title'),
-          textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .title
-              .copyWith(color: Theme.of(context).accentColor),
-        ),
-        const SizedBox(
-          height: 24,
-        )
-      ],
-    );
-  }
-
   Widget _buildCoinSwapDetail() {
     return Column(
       children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8)),
-                    child: Container(
-                        width: double.infinity,
-                        height: 120,
-                        color: Colors.white.withOpacity(0.15),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              '${widget.amountToSell} ${widget?.coinRel?.abbr}',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.title,
-                            ),
-                            Text(AppLocalizations.of(context).sell,
-                                style:
-                                    Theme.of(context).textTheme.body1.copyWith(
-                                          color: Theme.of(context).accentColor,
-                                          fontWeight: FontWeight.w100,
-                                        ))
-                          ],
-                        )),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+            child: Container(
+              padding: const EdgeInsets.only(
+                left: 8,
+                right: 8,
+                bottom: 30,
+                top: 20,
+              ),
+              width: double.infinity,
+              color: Colors.white.withOpacity(0.15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '${widget.amountToSell} ${widget?.coinRel?.abbr}',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.title,
                   ),
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(8),
-                        bottomRight: Radius.circular(8)),
-                    child: Container(
-                        width: double.infinity,
-                        height: 120,
-                        color: Colors.white.withOpacity(0.15),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              '${widget.amountToBuy} ${widget.coinBase.abbr}',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.title,
-                            ),
-                            Text(
-                                AppLocalizations.of(context)
-                                        .receive
-                                        .substring(0, 1) +
-                                    AppLocalizations.of(context)
-                                        .receive
-                                        .toLowerCase()
-                                        .substring(1),
-                                style:
-                                    Theme.of(context).textTheme.body1.copyWith(
-                                          color: Theme.of(context).accentColor,
-                                          fontWeight: FontWeight.w100,
-                                        ))
-                          ],
-                        )),
-                  ),
-                ),
-              ],
+                  Text(AppLocalizations.of(context).sell,
+                      style: Theme.of(context).textTheme.body1.copyWith(
+                            color: Theme.of(context).accentColor,
+                            fontWeight: FontWeight.w100,
+                          ))
+                ],
+              ),
             ),
-            Positioned(
-                left: (MediaQuery.of(context).size.width / 2) - 43,
-                top: 100,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(32)),
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 4, horizontal: 4),
-                      color: Theme.of(context).backgroundColor,
-                      child: SvgPicture.asset('assets/icon_swap.svg')),
-                ))
-          ],
-        )
+          ),
+        ),
+        const SizedBox(
+          height: 2,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(8),
+                    bottomRight: Radius.circular(8)),
+                child: Container(
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                      right: 8,
+                      bottom: 20,
+                      top: 26,
+                    ),
+                    width: double.infinity,
+                    color: Colors.white.withOpacity(0.15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          '${widget.amountToBuy} ${widget.coinBase.abbr}',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        Text(
+                            AppLocalizations.of(context)
+                                    .receive
+                                    .substring(0, 1) +
+                                AppLocalizations.of(context)
+                                    .receive
+                                    .toLowerCase()
+                                    .substring(1),
+                            style: Theme.of(context).textTheme.body1.copyWith(
+                                  color: Theme.of(context).accentColor,
+                                  fontWeight: FontWeight.w100,
+                                ))
+                      ],
+                    )),
+              ),
+              Positioned(
+                  left: (MediaQuery.of(context).size.width / 2) - 70,
+                  top: -22,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(32)),
+                    child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 4),
+                        color: Theme.of(context).backgroundColor,
+                        child: SvgPicture.asset('assets/svg/icon_swap.svg')),
+                  ))
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -242,7 +250,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                             height: 16,
                           ),
                           Text(
-                            AppLocalizations.of(context).infoTrade2,
+                            // TODO(yurii): localization
+                            'The swap can take up to 60 minutes. '
+                            'DONT close this application!',
                             style: Theme.of(context).textTheme.body1,
                           )
                         ],
@@ -356,10 +366,13 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       final dynamic re = await MM.postBuy(
           mmSe.client,
           GetBuySell(
-              base: coinBase.abbr,
-              rel: coinRel.abbr,
-              volume: (satoshiBuyAmount / satoshi).toString(),
-              price: (satoshiPrice / satoshi).toString()));
+            base: coinBase.abbr,
+            rel: coinRel.abbr,
+            volume: (satoshiBuyAmount / satoshi).toString(),
+            price: (satoshiPrice / satoshi).toString(),
+            baseNota: protectionSettings.requiresNotarization,
+            baseConfs: protectionSettings.requiredConfirmations,
+          ));
       if (re is BuyResponse) {
         _goToNextScreen(mContext, re, amountToSell, satoshiBuyAmount / satoshi);
       } else {
@@ -370,12 +383,15 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           .postSetPrice(
               mmSe.client,
               GetSetPrice(
-                  base: coinRel.abbr,
-                  rel: coinBase.abbr,
-                  cancelPrevious: false,
-                  max: false,
-                  volume: amountToSell,
-                  price: Decimal.parse(widget.bestPrice).toString()))
+                base: coinRel.abbr,
+                rel: coinBase.abbr,
+                cancelPrevious: false,
+                max: false,
+                volume: amountToSell,
+                price: Decimal.parse(widget.bestPrice).toString(),
+                relNota: protectionSettings.requiresNotarization,
+                relConfs: protectionSettings.requiredConfirmations,
+              ))
           .then<dynamic>((dynamic onValue) => onValue is SetPriceResponse
               ? _goToNextScreen(
                   mContext,

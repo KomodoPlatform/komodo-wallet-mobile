@@ -7,6 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -75,7 +76,8 @@ class _CoinsPageState extends State<CoinsPage> {
                           collapseMode: CollapseMode.pin,
                           centerTitle: true,
                           title: Container(
-                            padding: const EdgeInsets.only(top: 20),
+                            padding: EdgeInsets.only(
+                                top: 20 + MediaQuery.of(context).padding.top),
                             width: _widthScreen * 0.5,
                             child: Center(
                               heightFactor: _heightFactor,
@@ -93,18 +95,35 @@ class _CoinsPageState extends State<CoinsPage> {
                                         totalBalanceUSD +=
                                             coinBalance.balanceUSD;
                                       }
-                                      return FlatButton(
-                                        onPressed: () {
-                                          _cexProvider.switchCurrency();
+                                      return StreamBuilder<bool>(
+                                        initialData: settingsBloc.showBalance,
+                                        stream: settingsBloc.outShowBalance,
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<bool> snapshot) {
+                                          bool hidden = false;
+                                          if (snapshot.hasData &&
+                                              !snapshot.data) {
+                                            hidden = true;
+                                          }
+                                          final String amountText =
+                                              _cexProvider.convert(
+                                            totalBalanceUSD,
+                                            hidden: hidden,
+                                          );
+                                          return FlatButton(
+                                              onPressed: () {
+                                                _cexProvider.switchCurrency();
+                                              },
+                                              child: AutoSizeText(
+                                                amountText,
+                                                maxFontSize: 18,
+                                                minFontSize: 12,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .title,
+                                                maxLines: 1,
+                                              ));
                                         },
-                                        child: AutoSizeText(
-                                          _cexProvider.convert(totalBalanceUSD),
-                                          maxFontSize: 18,
-                                          minFontSize: 12,
-                                          style:
-                                              Theme.of(context).textTheme.title,
-                                          maxLines: 1,
-                                        ),
                                       );
                                     } else {
                                       return Center(
@@ -127,7 +146,15 @@ class _CoinsPageState extends State<CoinsPage> {
                                   const SizedBox(
                                     height: 14.0,
                                   ),
-                                  BarGraph()
+                                  StreamBuilder<bool>(
+                                      initialData: settingsBloc.showBalance,
+                                      stream: settingsBloc.outShowBalance,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<bool> snapshot) {
+                                        return snapshot.hasData && snapshot.data
+                                            ? BarGraph()
+                                            : Container();
+                                      })
                                 ],
                               ),
                             ),
@@ -137,14 +164,15 @@ class _CoinsPageState extends State<CoinsPage> {
                               begin: Alignment.bottomLeft,
                               end: Alignment.topRight,
                               stops: const <double>[0.01, 1],
-                              colors: <Color>[
-                                const Color.fromRGBO(39, 71, 110, 1),
-                                Theme.of(context).accentColor,
+                              colors: const <Color>[
+                                Color.fromRGBO(98, 90, 229, 1),
+                                Color.fromRGBO(45, 184, 240, 1),
                               ],
                             )),
                           ));
                     },
                   ),
+                  automaticallyImplyLeading: false,
                 ),
               ];
             },
@@ -503,22 +531,41 @@ class _ItemCoinState extends State<ItemCoin> {
                             height: 4,
                           ),
                           Container(
-                            child: AutoSizeText(
-                              '${f.format(double.parse(balance.getBalance()))} ${coin.abbr}',
-                              maxLines: 1,
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
+                            child: StreamBuilder<bool>(
+                                initialData: settingsBloc.showBalance,
+                                stream: settingsBloc.outShowBalance,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<bool> snapshot) {
+                                  String amount = f.format(
+                                      double.parse(balance.getBalance()));
+                                  if (snapshot.hasData && !snapshot.data)
+                                    amount = '**.**';
+                                  return AutoSizeText(
+                                    '$amount ${coin.abbr}',
+                                    maxLines: 1,
+                                    style: Theme.of(context).textTheme.subtitle,
+                                  );
+                                }),
                           ),
                           const SizedBox(
                             height: 4,
                           ),
-                          Builder(builder: (BuildContext context) {
-                            return Text(
-                              cexProvider
-                                  .convert(widget.coinBalance.balanceUSD),
-                              style: Theme.of(context).textTheme.body2,
-                            );
-                          }),
+                          StreamBuilder(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                bool hidden = false;
+                                if (snapshot.hasData && !snapshot.data)
+                                  hidden = true;
+                                return Text(
+                                  cexProvider.convert(
+                                    widget.coinBalance.balanceUSD,
+                                    hidden: hidden,
+                                  ),
+                                  style: Theme.of(context).textTheme.body2,
+                                );
+                              }),
                           widget.coinBalance.coin.abbr == 'KMD' &&
                                   double.parse(widget.coinBalance.balance
                                           .getBalance()) >=

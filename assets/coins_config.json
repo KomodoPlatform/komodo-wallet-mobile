@@ -549,6 +549,23 @@
 		]
 	},
 	{
+		"name": "HempCoin",
+		"type": "smartChain",
+		"address": "165.22.52.123",
+		"port": 10022,
+		"proto": "tcp",
+		"abbr": "THC",
+		"coingeckoId": "hempcoin-thc",
+		"colorCoin": "0xFF447224",
+		"serverList": [
+			"165.22.52.123:10022",
+			"157.230.45.184:10022"
+		],
+		"explorerUrl": [
+			"https://thc.explorer.dexstats.info/"
+		]
+	},
+	{
 		"name": "TrueUSD",
 		"type": "erc",
 		"address": "http://eth1.cipig.net",
@@ -598,7 +615,7 @@
 		"serverList": [
 			"electrum1.cipig.net:10021",
 			"electrum2.cipig.net:10021",
-                        "electrum3.cipig.net:10021"
+			"electrum3.cipig.net:10021"
 		],
 		"explorerUrl": [
 			"https://explorer.utrum.io/"
@@ -614,10 +631,10 @@
 		"coingeckoId": "verus-coin",
 		"colorCoin": "0xFF659dda",
 		"serverList": [
-                        "el0.veruscoin.io:17485",
-                        "el1.veruscoin.io:17485",
-                        "el2.veruscoin.io:17485",
-                        "electrum.vrsc.0x03.services:17485"
+			"el0.veruscoin.io:17485",
+			"el1.veruscoin.io:17485",
+			"el2.veruscoin.io:17485",
+			"electrum.vrsc.0x03.services:17485"
 		],
 		"explorerUrl": [
 			"https://vrsc.kmdexplorer.io/"
@@ -675,6 +692,24 @@
 		],
 		"explorerUrl": [
 			"https://zero.cryptonode.cloud/insight/"
+		]
+	},
+	{
+		"name": "tBitcoin",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10068,
+		"proto": "tcp",
+		"abbr": "tBTC",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFFf7931a",
+		"serverList": [
+			"electrum1.cipig.net:10068",
+			"electrum2.cipig.net:10068",
+			"electrum3.cipig.net:10068"
+		],
+		"explorerUrl": [
+			"https://blockstream.info/testnet/"
 		]
 	}
 ]

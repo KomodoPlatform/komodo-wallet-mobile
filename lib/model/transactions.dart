@@ -44,7 +44,9 @@ class Result {
         skipped: json['skipped'] ?? 0,
         total: json['total'] ?? 0,
         currentBlock: json['current_block'] ?? 0,
-        syncStatus: SyncStatus.fromJson(json['sync_status']) ?? SyncStatus(),
+        syncStatus: json['sync_status'] == null
+            ? SyncStatus()
+            : SyncStatus.fromJson(json['sync_status']),
         transactions: List<Transaction>.from(
             json['transactions'].map((dynamic x) => Transaction.fromJson(x))),
       );
@@ -64,7 +66,8 @@ class Result {
         'skipped': skipped ?? 0,
         'total': total ?? 0,
         'sync_status': syncStatus.toJson() ?? SyncStatus().toJson(),
-        'transactions': List<dynamic>.from(transactions.map<dynamic>((dynamic x) => x.toJson())),
+        'transactions': List<dynamic>.from(
+            transactions.map<dynamic>((dynamic x) => x.toJson())),
       };
 }
 
