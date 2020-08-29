@@ -39,6 +39,6 @@ class Balance {
 
   void camouflageIfNeeded() {
     if (!camoBloc.isCamoActive) return;
-    balance = deci(balance.toDouble() * camoBloc.camoFraction / 100);
+    camoBloc.camouflageBalance(this);
   }
 }
