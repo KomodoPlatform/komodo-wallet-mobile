@@ -30,20 +30,7 @@ class Transactions {
   void camouflageIfNeeded() {
     if (!camoBloc.isCamoActive) return;
 
-    final double coeff = camoBloc.camoFraction / 100;
-    for (Transaction transaction in result.transactions) {
-      if (transaction.spentByMe.isNotEmpty)
-        transaction.spentByMe =
-            (double.parse(transaction.spentByMe) * coeff).toString();
-
-      if (transaction.receivedByMe.isNotEmpty)
-        transaction.receivedByMe =
-            (double.parse(transaction.receivedByMe) * coeff).toString();
-
-      if (transaction.myBalanceChange.isNotEmpty)
-        transaction.myBalanceChange =
-            (double.parse(transaction.myBalanceChange) * coeff).toString();
-    }
+    result.transactions.forEach(camoBloc.camouflageTransaction);
   }
 }
 

@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
+import 'package:komodo_dex/model/transaction_data.dart';
 
 CamoBloc camoBloc = CamoBloc();
 
@@ -76,6 +76,32 @@ class CamoBloc implements BlocBase {
 
     if (fakeBalance < 0) fakeBalance = 0;
     balance.balance = deci(fakeBalance);
+  }
+
+  void camouflageTransaction(Transaction transaction) {
+    if (_isNewTransaction(transaction)) return;
+
+    if (transaction.spentByMe.isNotEmpty)
+      transaction.spentByMe =
+          (double.parse(transaction.spentByMe) * _camoFraction / 100)
+              .toString();
+
+    if (transaction.receivedByMe.isNotEmpty)
+      transaction.receivedByMe =
+          (double.parse(transaction.receivedByMe) * _camoFraction / 100)
+              .toString();
+
+    if (transaction.myBalanceChange.isNotEmpty)
+      transaction.myBalanceChange =
+          (double.parse(transaction.myBalanceChange) * _camoFraction / 100)
+              .toString();
+  }
+
+  bool _isNewTransaction(Transaction transaction) {
+    if (transaction.timestamp == 0) return true;
+    if (transaction.timestamp * 1000 > _sessionStartedAt) return true;
+
+    return false;
   }
 
   bool get isCamoActive => _isCamoActive;
