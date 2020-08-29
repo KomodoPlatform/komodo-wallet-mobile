@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:decimal/decimal.dart';
 
@@ -39,7 +38,7 @@ class Balance {
   String getRealBalance() => deci2s(balance - lockedBySwaps);
 
   void camouflageIfNeeded() {
-    if (!authBloc.isCamoActive) return;
-    balance = deci(balance.toDouble() * settingsBloc.camoPercent / 100);
+    if (!camoBloc.isCamoActive) return;
+    balance = deci(balance.toDouble() * camoBloc.camoFraction / 100);
   }
 }

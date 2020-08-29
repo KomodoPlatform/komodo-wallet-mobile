@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart' as arch;
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -330,12 +331,9 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildCamouflagePin() {
-    // workaround for the case, when user gets to
-    // the settings page right after lock screen
-    authBloc.switchCamoActive(authBloc.isCamoActive);
-
     return StreamBuilder<bool>(
-        stream: authBloc.outIsCamoActive,
+        initialData: camoBloc.isCamoActive,
+        stream: camoBloc.outIsCamoActive,
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.data == true) return Container();
 

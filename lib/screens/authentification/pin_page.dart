@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
@@ -138,7 +138,7 @@ class _PinPageState extends State<PinPage> {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isCamoPinCreated', false);
 
-        settingsBloc.shouldWarnBadCamoPin = true;
+        camoBloc.shouldWarnBadCamoPin = true;
         Navigator.popUntil(context, ModalRoute.withName('/camoSetup'));
         break;
 
@@ -253,29 +253,29 @@ class _PinPageState extends State<PinPage> {
                 } else {
                   final bool shouldEnterCamoMode =
                       widget.pinStatus == PinStatus.NORMAL_PIN &&
-                          settingsBloc.isCamoEnabled &&
+                          camoBloc.isCamoEnabled &&
                           _camoPin != null &&
                           code == _camoPin;
 
                   if (shouldEnterCamoMode) {
-                    if (!authBloc.isCamoActive) {
+                    if (!camoBloc.isCamoActive) {
                       coinsBloc.resetCoinBalance();
-                      authBloc.switchCamoActive(true);
+                      camoBloc.isCamoActive = true;
                       Navigator.popUntil(context, ModalRoute.withName('/'));
                     }
 
                     _onCodeSuccess(widget.pinStatus, code);
                   } else {
                     _errorPin();
-                    authBloc.switchCamoActive(false);
+                    camoBloc.isCamoActive = false;
                   }
                 }
               },
               onCodeSuccess: (dynamic code) {
                 if (widget.pinStatus == PinStatus.NORMAL_PIN &&
-                    authBloc.isCamoActive) {
+                    camoBloc.isCamoActive) {
                   coinsBloc.resetCoinBalance();
-                  authBloc.switchCamoActive(false);
+                  camoBloc.isCamoActive = false;
                 }
                 _onCodeSuccess(widget.pinStatus, code);
               },

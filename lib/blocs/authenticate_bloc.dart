@@ -1,16 +1,15 @@
 import 'dart:async';
 
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,12 +35,6 @@ class AuthenticateBloc extends BlocBase {
       StreamController<PinStatus>.broadcast();
   Sink<PinStatus> get _inpinStatus => _pinStatusController.sink;
   Stream<PinStatus> get outpinStatus => _pinStatusController.stream;
-
-  bool _isCamoActive = false;
-  final StreamController<bool> _isCamoController =
-      StreamController<bool>.broadcast();
-  Sink<bool> get _inIsCamoActive => _isCamoController.sink;
-  Stream<bool> get outIsCamoActive => _isCamoController.stream;
 
   Future<void> init() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -145,9 +138,9 @@ class AuthenticateBloc extends BlocBase {
     await prefs.setBool('isPinIsSet', false);
     await prefs.setBool('isPassphraseIsSaved', false);
 
-    switchCamoActive(false);
+    camoBloc.isCamoActive = false;
     await EncryptionTool().delete('camoPin');
-    settingsBloc.setCamoEnabled(false);
+    camoBloc.isCamoEnabled = false;
 
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');
@@ -170,14 +163,6 @@ class AuthenticateBloc extends BlocBase {
     this.pinStatus = pinStatus;
     _inpinStatus.add(this.pinStatus);
   }
-
-  void switchCamoActive(bool val) {
-    _isCamoActive = val;
-    _inIsCamoActive.add(val);
-    Log('authenticate_bloc', 'switchCamoActive] Camouflage mode set to $val');
-  }
-
-  bool get isCamoActive => _isCamoActive;
 }
 
 enum PinStatus {

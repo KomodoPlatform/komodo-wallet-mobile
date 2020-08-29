@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 
 Transactions transactionsFromJson(String str) =>
@@ -29,9 +28,9 @@ class Transactions {
       };
 
   void camouflageIfNeeded() {
-    if (!authBloc.isCamoActive) return;
+    if (!camoBloc.isCamoActive) return;
 
-    final double coeff = settingsBloc.camoPercent / 100;
+    final double coeff = camoBloc.camoFraction / 100;
     for (Transaction transaction in result.transactions) {
       if (transaction.spentByMe.isNotEmpty)
         transaction.spentByMe =

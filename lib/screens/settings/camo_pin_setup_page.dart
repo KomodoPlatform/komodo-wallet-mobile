@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -27,8 +27,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
     _showMatchingPinPopupIfNeeded();
 
     return StreamBuilder<bool>(
-        initialData: authBloc.isCamoActive,
-        stream: authBloc.outIsCamoActive,
+        initialData: camoBloc.isCamoActive,
+        stream: camoBloc.outIsCamoActive,
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) return Container();
           if (snapshot.data) {
@@ -68,14 +68,14 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
   Widget _buildPercentSetup() {
     return StreamBuilder<int>(
-      initialData: settingsBloc.camoPercent,
-      stream: settingsBloc.outCamoPercent,
-      builder: (context, AsyncSnapshot<int> camoPercent) {
-        if (!camoPercent.hasData) return Container();
+      initialData: camoBloc.camoFraction,
+      stream: camoBloc.outCamoFraction,
+      builder: (context, AsyncSnapshot<int> camoFraction) {
+        if (!camoFraction.hasData) return Container();
 
         return StreamBuilder<bool>(
-            initialData: settingsBloc.isCamoEnabled,
-            stream: settingsBloc.outCamoEnabled,
+            initialData: camoBloc.isCamoEnabled,
+            stream: camoBloc.outCamoEnabled,
             builder: (context, AsyncSnapshot<bool> camoEnabled) {
               if (!camoEnabled.hasData) return Container();
 
@@ -95,7 +95,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                               style: TextStyle(fontSize: 18),
                             )),
                             Text(
-                              '${camoPercent.data}%',
+                              '${camoFraction.data}%',
                               style: TextStyle(
                                 color: Theme.of(context).accentColor,
                                 fontSize: 18,
@@ -113,13 +113,13 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                         child: Slider(
                             activeColor: Theme.of(context).accentColor,
                             divisions: 50,
-                            label: camoPercent.data.toString(),
+                            label: camoFraction.data.toString(),
                             min: 1,
                             max: 50,
-                            value: camoPercent.data.toDouble(),
+                            value: camoFraction.data.toDouble(),
                             onChanged: camoEnabled.data
                                 ? (double value) {
-                                    settingsBloc.setCamoPercent(value.round());
+                                    camoBloc.camoFraction = value.round();
                                   }
                                 : null),
                       ),
@@ -134,8 +134,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
   Widget _buildWarnings() {
     return StreamBuilder<bool>(
-        initialData: settingsBloc.isCamoEnabled,
-        stream: settingsBloc.outCamoEnabled,
+        initialData: camoBloc.isCamoEnabled,
+        stream: camoBloc.outCamoEnabled,
         builder: (context, camoEnabled) {
           if (camoEnabled.data != true) return Container();
 
@@ -197,8 +197,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
               camoPinSnapshot.hasData ? camoPinSnapshot.data : null;
 
           return StreamBuilder<bool>(
-              initialData: settingsBloc.isCamoEnabled,
-              stream: settingsBloc.outCamoEnabled,
+              initialData: camoBloc.isCamoEnabled,
+              stream: camoBloc.outCamoEnabled,
               builder: (context, AsyncSnapshot<bool> camoEnabledSnapshot) {
                 if (!camoEnabledSnapshot.hasData) return Container();
 
@@ -338,8 +338,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
   Widget _buildSwitcher() {
     return StreamBuilder<bool>(
-        initialData: settingsBloc.isCamoEnabled,
-        stream: settingsBloc.outCamoEnabled,
+        initialData: camoBloc.isCamoEnabled,
+        stream: camoBloc.outCamoEnabled,
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) return Container();
 
@@ -381,14 +381,14 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
   }
 
   Future<void> _switchEnabled(bool val) async {
-    settingsBloc.setCamoEnabled(val);
+    camoBloc.isCamoEnabled = val;
 
     final String savedPin = await EncryptionTool().read('camoPin');
     if (val && savedPin == null) _startPinSetup();
   }
 
   Future<void> _showMatchingPinPopupIfNeeded() async {
-    if (!settingsBloc.shouldWarnBadCamoPin) return;
+    if (!camoBloc.shouldWarnBadCamoPin) return;
 
     final String normalPin = await EncryptionTool().read('pin');
     final String camoPin = await EncryptionTool().read('camoPin');
@@ -407,7 +407,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         });
 
     setState(() {
-      settingsBloc.shouldWarnBadCamoPin = false;
+      camoBloc.shouldWarnBadCamoPin = false;
     });
   }
 }

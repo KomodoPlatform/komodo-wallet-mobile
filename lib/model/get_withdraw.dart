@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 
 GetWithdraw getWithdrawFromJson(String str) =>
     GetWithdraw.fromJson(json.decode(str));
@@ -14,7 +14,7 @@ String getWithdrawToJson(GetWithdraw data) {
   if (data.amount == null) {
     tmpJson.remove('amount');
   }
-  if (data.max == null || !data.max || authBloc.isCamoActive) {
+  if (data.max == null || !data.max || camoBloc.isCamoActive) {
     tmpJson.remove('max');
   }
   if (data.fee == null || data.fee.type == null) {
