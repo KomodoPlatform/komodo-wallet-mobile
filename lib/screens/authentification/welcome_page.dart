@@ -34,7 +34,7 @@ class _WelcomePageState extends State<WelcomePage> {
           const SizedBox(
             height: 16,
           ),
-          SvgPicture.asset('assets/svg/welcome_wallet.svg'),
+          SvgPicture.asset('assets/welcome_wallet.svg'),
           Center(
             child: Text(
               AppLocalizations.of(context).welcomeTitle,

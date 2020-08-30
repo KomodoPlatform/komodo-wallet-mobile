@@ -881,7 +881,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                         color: Theme.of(context).backgroundColor,
                       ),
                       child: SvgPicture.asset(
-                        'assets/svg/icon_swap.svg',
+                        'assets/icon_swap.svg',
                         height: 40,
                       )),
                 )
@@ -1275,16 +1275,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     StreamBuilder<bool>(
-                        initialData: settingsBloc.showBalance,
-                        stream: settingsBloc.outShowBalance,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<bool> snapshot) {
-                          String amount = coin.balance.getBalance();
-                          if (snapshot.hasData && snapshot.data == false) {
-                            amount = '**.**';
-                          }
-                          return Text(amount);
-                        }),
+                      initialData: settingsBloc.showBalance,
+                      stream: settingsBloc.outShowBalance,
+                      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                        String amount = coin.balance.getBalance();
+                        if(snapshot.hasData && snapshot.data == false) {
+                          amount = '**.**';
+                        }
+                        return Text(amount);
+                      }
+                    ),
                     const SizedBox(
                       width: 4,
                     ),

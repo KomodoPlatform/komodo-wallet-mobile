@@ -501,7 +501,7 @@ class _SettingPageState extends State<SettingPage> {
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.all(6.0),
-          child: SvgPicture.asset('assets/svg/delete_setting.svg'),
+          child: SvgPicture.asset('assets/delete_setting.svg'),
         ),
         title: Text(AppLocalizations.of(context).deleteWallet,
             style: Theme.of(context).textTheme.body1.copyWith(
@@ -532,7 +532,7 @@ class _SettingPageState extends State<SettingPage> {
                           backgroundColor: Colors.white,
                           title: Column(
                             children: <Widget>[
-                              SvgPicture.asset('assets/svg/delete_wallet.svg'),
+                              SvgPicture.asset('assets/delete_wallet.svg'),
                               const SizedBox(
                                 height: 16,
                               ),
@@ -702,7 +702,7 @@ class _SettingPageState extends State<SettingPage> {
       }
       log.sink.write('\n\n--- / my recent swaps ---\n\n');
       // TBD: Replace these with a pretty-printed metrics JSON
-      log.sink.write('atomicDeFi mobile ${packageInfo.version} $os\n');
+      log.sink.write('AtomicDEX mobile ${packageInfo.version} $os\n');
       log.sink.write('mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
       log.sink.write('netid ${mmSe.netid} pubkey ${mmSe.pubkey}\n');
       await log.sink.flush();
@@ -737,7 +737,7 @@ class _SettingPageState extends State<SettingPage> {
     mainBloc.isUrlLaucherIsOpen = true;
     await Share.shareFile(af,
         mimeType: 'application/octet-stream',
-        subject: 'atomicDeFi logs at ${DateTime.now().toIso8601String()}');
+        subject: 'AtomicDEX logs at ${DateTime.now().toIso8601String()}');
   }
 
   Future<void> _shareFileDialog() async {
