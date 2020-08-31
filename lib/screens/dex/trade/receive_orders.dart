@@ -147,21 +147,17 @@ class _AsksOrderState extends State<AsksOrder> {
   OrderBookProvider orderBookProvider;
 
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      orderBookProvider.activePair = CoinsPair(
-        buy: coinsBloc.getCoinByAbbr(widget.baseCoin),
-        sell: orderBookProvider.activePair.sell,
-      );
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     orderBookProvider = Provider.of<OrderBookProvider>(context);
     final List<DataRow> asksWidget = <DataRow>[];
-    final List<Ask> asksList = orderBookProvider?.getOrderBook()?.asks;
+    List<Ask> asksList = orderBookProvider
+        ?.getOrderBook(CoinsPair(
+          buy: coinsBloc.getCoinByAbbr(widget.baseCoin),
+          sell: orderBookProvider.activePair.sell,
+        ))
+        ?.asks;
+
+    asksList = OrderBookProvider.sortByPrice(asksList);
     asksList
         ?.asMap()
         ?.forEach((int index, Ask ask) => asksWidget.add(tableRow(ask, index)));

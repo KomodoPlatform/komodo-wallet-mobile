@@ -44,6 +44,8 @@ class OrderBookProvider extends ChangeNotifier {
   /// then by volume (DESC),
   /// then by age (DESC)
   static List<Ask> sortByPrice(List<Ask> list, {bool quotePrice = false}) {
+    if (list == null || list.isEmpty) return list;
+
     final List<Ask> sorted = quotePrice
         ? list.map((Ask ask) {
             final double price = 1 / double.parse(ask.price);
