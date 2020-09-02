@@ -334,7 +334,7 @@ class _AsksOrderState extends State<AsksOrder> {
                   ))),
               key: Key('ask-item-$index'),
               child: Text(
-                deci2s(ask.getReceivePrice()),
+                formatPrice(ask.getReceivePrice().toDouble()),
                 style: Theme.of(context).textTheme.body1.copyWith(
                       fontSize: 12,
                       color: Colors.greenAccent,
@@ -359,7 +359,7 @@ class _AsksOrderState extends State<AsksOrder> {
                     color: Theme.of(context).highlightColor,
                   ))),
               child: Text(
-                ask.maxvolume.toStringAsFixed(8),
+                formatPrice(ask.maxvolume.toDouble()),
                 style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
               ),
             ),
@@ -382,7 +382,8 @@ class _AsksOrderState extends State<AsksOrder> {
                     color: Theme.of(context).highlightColor,
                   ))),
               child: Text(
-                deci2s(ask.getReceiveAmount(deci(widget.sellAmount))),
+                formatPrice(
+                    ask.getReceiveAmount(deci(widget.sellAmount)).toDouble()),
                 style: Theme.of(context)
                     .textTheme
                     .body1
