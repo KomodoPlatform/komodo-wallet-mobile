@@ -5,6 +5,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/screens/dex/trade/receive_orders_chart.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
@@ -147,6 +148,8 @@ class AsksOrder extends StatefulWidget {
 }
 
 class _AsksOrderState extends State<AsksOrder> {
+  final double headerHeight = 50;
+  final double lineHeight = 40;
   OrderBookProvider orderBookProvider;
   CexProvider cexProvider;
 
@@ -162,9 +165,8 @@ class _AsksOrderState extends State<AsksOrder> {
     List<Ask> asksList = orderbook?.asks;
 
     asksList = OrderBookProvider.sortByPrice(asksList);
-    asksList
-        ?.asMap()
-        ?.forEach((int index, Ask ask) => asksWidget.add(tableRow(ask, index)));
+    asksList?.asMap()?.forEach(
+        (int index, Ask ask) => asksWidget.add(_tableRow(ask, index)));
 
     return LockScreen(
       context: context,
@@ -218,58 +220,73 @@ class _AsksOrderState extends State<AsksOrder> {
                                   width: 1,
                                   color: Theme.of(context).highlightColor,
                                 ))),
-                                child: Table(
-                                  children: [
-                                    TableRow(children: [
-                                      Container(
-                                        height: 50,
-                                        alignment: const Alignment(-1, 0),
-                                        padding: const EdgeInsets.only(
-                                          left: 12,
-                                          right: 6,
-                                        ),
-                                        child: Text(
-                                          '${AppLocalizations.of(context).price}'
-                                          ' (${widget.baseCoin})',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle
-                                              .copyWith(fontSize: 14),
-                                        ),
+                                child: Stack(
+                                  children: <Widget>[
+                                    Table(
+                                      children: [
+                                        TableRow(children: [
+                                          Container(
+                                            height: headerHeight,
+                                            alignment: const Alignment(-1, 0),
+                                            padding: const EdgeInsets.only(
+                                              left: 12,
+                                              right: 6,
+                                            ),
+                                            child: Text(
+                                              '${AppLocalizations.of(context).price}'
+                                              ' (${widget.baseCoin})',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle
+                                                  .copyWith(fontSize: 14),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: headerHeight,
+                                            alignment: const Alignment(1, 0),
+                                            padding: const EdgeInsets.only(
+                                              left: 6,
+                                            ),
+                                            child: Text(
+                                              '${AppLocalizations.of(context).availableVolume}'
+                                              ' (${widget.baseCoin})',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle
+                                                  .copyWith(fontSize: 14),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: headerHeight,
+                                            alignment: const Alignment(1, 0),
+                                            padding: const EdgeInsets.only(
+                                              left: 6,
+                                              right: 12,
+                                            ),
+                                            child: Text(
+                                              '${AppLocalizations.of(context).receive.toLowerCase()}'
+                                              ' (${widget.baseCoin})',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle
+                                                  .copyWith(fontSize: 14),
+                                            ),
+                                          ),
+                                        ]),
+                                        ...asksWidget,
+                                      ],
+                                    ),
+                                    Positioned(
+                                      left: 6,
+                                      top: 50,
+                                      right: 6,
+                                      bottom: 0,
+                                      child: ReceiveOrdersChart(
+                                        asksList: asksList,
+                                        sellAmount: widget.sellAmount,
+                                        lineHeight: lineHeight,
                                       ),
-                                      Container(
-                                        height: 50,
-                                        alignment: const Alignment(1, 0),
-                                        padding: const EdgeInsets.only(
-                                          left: 6,
-                                        ),
-                                        child: Text(
-                                          '${AppLocalizations.of(context).availableVolume}'
-                                          ' (${widget.baseCoin})',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle
-                                              .copyWith(fontSize: 14),
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 50,
-                                        alignment: const Alignment(1, 0),
-                                        padding: const EdgeInsets.only(
-                                          left: 6,
-                                          right: 12,
-                                        ),
-                                        child: Text(
-                                          '${AppLocalizations.of(context).receive.toLowerCase()}'
-                                          ' (${widget.baseCoin})',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle
-                                              .copyWith(fontSize: 14),
-                                        ),
-                                      ),
-                                    ]),
-                                    ...asksWidget,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -312,12 +329,12 @@ class _AsksOrderState extends State<AsksOrder> {
     );
   }
 
-  TableRow tableRow(Ask ask, int index) {
+  TableRow _tableRow(Ask ask, int index) {
     return TableRow(
       children: [
         TableRowInkWell(
             child: Container(
-              height: 40,
+              height: lineHeight,
               alignment: const Alignment(-1, 0),
               padding: const EdgeInsets.only(
                 left: 12,
@@ -341,10 +358,10 @@ class _AsksOrderState extends State<AsksOrder> {
                     ),
               ),
             ),
-            onTap: () => createOrder(ask)),
+            onTap: () => _createOrder(ask)),
         TableRowInkWell(
             child: Container(
-              height: 40,
+              height: lineHeight,
               alignment: const Alignment(1, 0),
               padding: const EdgeInsets.only(
                 left: 6,
@@ -363,10 +380,10 @@ class _AsksOrderState extends State<AsksOrder> {
                 style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
               ),
             ),
-            onTap: () => createOrder(ask)),
+            onTap: () => _createOrder(ask)),
         TableRowInkWell(
             child: Container(
-              height: 40,
+              height: lineHeight,
               alignment: const Alignment(1, 0),
               padding: const EdgeInsets.only(
                 left: 6,
@@ -390,12 +407,12 @@ class _AsksOrderState extends State<AsksOrder> {
                     .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
               ),
             ),
-            onTap: () => createOrder(ask))
+            onTap: () => _createOrder(ask))
       ],
     );
   }
 
-  void createOrder(Ask ask) {
+  void _createOrder(Ask ask) {
     Navigator.of(context).pop();
     widget.onCreateOrder(ask);
   }
