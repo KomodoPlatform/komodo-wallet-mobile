@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class ReceiveOrders extends StatefulWidget {
@@ -145,9 +148,11 @@ class AsksOrder extends StatefulWidget {
 
 class _AsksOrderState extends State<AsksOrder> {
   OrderBookProvider orderBookProvider;
+  CexProvider cexProvider;
 
   @override
   Widget build(BuildContext context) {
+    cexProvider = Provider.of<CexProvider>(context);
     orderBookProvider = Provider.of<OrderBookProvider>(context);
     final List<TableRow> asksWidget = <TableRow>[];
     final Orderbook orderbook = orderBookProvider?.getOrderBook(CoinsPair(
@@ -167,12 +172,15 @@ class _AsksOrderState extends State<AsksOrder> {
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                AppLocalizations.of(context).receiveLower,
-                key: const Key('title-ask-orders'),
+              Expanded(
+                child: Text(
+                  AppLocalizations.of(context).receiveLower,
+                  key: const Key('title-ask-orders'),
+                ),
               ),
+              _buildCexRate(),
+              const SizedBox(width: 4),
               Container(
                   height: 30,
                   width: 30,
@@ -275,6 +283,32 @@ class _AsksOrderState extends State<AsksOrder> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCexRate() {
+    final double cexRate = cexProvider.getCexRate(CoinsPair(
+          sell: coinsBloc.getCoinByAbbr(widget.baseCoin),
+          buy: orderBookProvider.activePair.sell,
+        )) ??
+        0.0;
+
+    if (cexRate == 0.0) return Container();
+
+    return Row(
+      children: <Widget>[
+        CexMarker(
+          context,
+          size: const Size.fromHeight(13),
+        ),
+        const SizedBox(width: 2),
+        Text(
+          formatPrice(cexRate),
+          style: TextStyle(
+              fontSize: 14, color: cexColor, fontWeight: FontWeight.w400),
+        ),
+        const SizedBox(width: 4),
+      ],
     );
   }
 
