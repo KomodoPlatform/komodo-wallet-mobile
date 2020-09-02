@@ -149,13 +149,12 @@ class _AsksOrderState extends State<AsksOrder> {
   @override
   Widget build(BuildContext context) {
     orderBookProvider = Provider.of<OrderBookProvider>(context);
-    final List<DataRow> asksWidget = <DataRow>[];
-    List<Ask> asksList = orderBookProvider
-        ?.getOrderBook(CoinsPair(
-          buy: coinsBloc.getCoinByAbbr(widget.baseCoin),
-          sell: orderBookProvider.activePair.sell,
-        ))
-        ?.asks;
+    final List<TableRow> asksWidget = <TableRow>[];
+    final Orderbook orderbook = orderBookProvider?.getOrderBook(CoinsPair(
+      buy: coinsBloc.getCoinByAbbr(widget.baseCoin),
+      sell: orderBookProvider.activePair.sell,
+    ));
+    List<Ask> asksList = orderbook?.asks;
 
     asksList = OrderBookProvider.sortByPrice(asksList);
     asksList
@@ -185,36 +184,93 @@ class _AsksOrderState extends State<AsksOrder> {
         body: Column(
           children: <Widget>[
             Expanded(
-              child: ListView(
-                children: <Widget>[
-                  DataTable(
-                    columnSpacing: 4,
-                    horizontalMargin: 12,
-                    columns: <DataColumn>[
-                      DataColumn(
-                          label: Text(
-                        AppLocalizations.of(context).price,
-                        style: Theme.of(context).textTheme.subtitle,
-                      )),
-                      DataColumn(
-                          label: Text(
-                        AppLocalizations.of(context).availableVolume,
-                        style: Theme.of(context).textTheme.subtitle,
-                      )),
-                      DataColumn(
-                          label: Text(
-                        AppLocalizations.of(context).receive.toLowerCase(),
-                        style: Theme.of(context).textTheme.subtitle,
-                      ))
-                    ],
-                    rows: asksWidget,
-                  ),
-                  CreateOrder(
-                    onCreateNoOrder: widget.onCreateNoOrder,
-                    baseCoin: widget.baseCoin,
-                  )
-                ],
-              ),
+              child: orderbook == null
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView(
+                      children: <Widget>[
+                        asksWidget.isEmpty
+                            ? Container(
+                                alignment: const Alignment(0, 0),
+                                padding: const EdgeInsets.only(top: 30),
+                                child: Text(
+                                  'No matching orders found',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context).disabledColor,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                padding: const EdgeInsets.only(top: 4),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                  width: 1,
+                                  color: Theme.of(context).highlightColor,
+                                ))),
+                                child: Table(
+                                  children: [
+                                    TableRow(children: [
+                                      Container(
+                                        height: 50,
+                                        alignment: const Alignment(-1, 0),
+                                        padding: const EdgeInsets.only(
+                                          left: 12,
+                                          right: 6,
+                                        ),
+                                        child: Text(
+                                          '${AppLocalizations.of(context).price}'
+                                          ' (${widget.baseCoin})',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle
+                                              .copyWith(fontSize: 14),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 50,
+                                        alignment: const Alignment(1, 0),
+                                        padding: const EdgeInsets.only(
+                                          left: 6,
+                                        ),
+                                        child: Text(
+                                          '${AppLocalizations.of(context).availableVolume}'
+                                          ' (${widget.baseCoin})',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle
+                                              .copyWith(fontSize: 14),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 50,
+                                        alignment: const Alignment(1, 0),
+                                        padding: const EdgeInsets.only(
+                                          left: 6,
+                                          right: 12,
+                                        ),
+                                        child: Text(
+                                          '${AppLocalizations.of(context).receive.toLowerCase()}'
+                                          ' (${widget.baseCoin})',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle
+                                              .copyWith(fontSize: 14),
+                                        ),
+                                      ),
+                                    ]),
+                                    ...asksWidget,
+                                  ],
+                                ),
+                              ),
+                        CreateOrder(
+                          onCreateNoOrder: widget.onCreateNoOrder,
+                          baseCoin: widget.baseCoin,
+                        )
+                      ],
+                    ),
             ),
           ],
         ),
@@ -222,39 +278,86 @@ class _AsksOrderState extends State<AsksOrder> {
     );
   }
 
-  DataRow tableRow(Ask ask, int index) {
-    return DataRow(selected: index % 2 == 1, cells: <DataCell>[
-      DataCell(
-          Container(
-            key: Key('ask-item-$index'),
-            child: Text(
-              deci2s(ask.getReceivePrice()) + ' ' + ask.coin.toUpperCase(),
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+  TableRow tableRow(Ask ask, int index) {
+    return TableRow(
+      children: [
+        TableRowInkWell(
+            child: Container(
+              height: 40,
+              alignment: const Alignment(-1, 0),
+              padding: const EdgeInsets.only(
+                left: 12,
+                right: 6,
+              ),
+              decoration: BoxDecoration(
+                  color: index % 2 > 0
+                      ? null
+                      : Theme.of(context).primaryColor.withAlpha(150),
+                  border: Border(
+                      top: BorderSide(
+                    width: 1,
+                    color: Theme.of(context).highlightColor,
+                  ))),
+              key: Key('ask-item-$index'),
+              child: Text(
+                deci2s(ask.getReceivePrice()),
+                style: Theme.of(context).textTheme.body1.copyWith(
+                      fontSize: 12,
+                      color: Colors.greenAccent,
+                    ),
+              ),
             ),
-          ),
-          onTap: () => createOrder(ask)),
-      DataCell(
-          Container(
-            child: Text(
-              ask.maxvolume.toStringAsFixed(8) + ' ' + ask.coin.toUpperCase(),
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+            onTap: () => createOrder(ask)),
+        TableRowInkWell(
+            child: Container(
+              height: 40,
+              alignment: const Alignment(1, 0),
+              padding: const EdgeInsets.only(
+                left: 6,
+              ),
+              decoration: BoxDecoration(
+                  color: index % 2 > 0
+                      ? null
+                      : Theme.of(context).primaryColor.withAlpha(150),
+                  border: Border(
+                      top: BorderSide(
+                    width: 1,
+                    color: Theme.of(context).highlightColor,
+                  ))),
+              child: Text(
+                ask.maxvolume.toStringAsFixed(8),
+                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+              ),
             ),
-          ),
-          onTap: () => createOrder(ask)),
-      DataCell(
-          Container(
-            child: Text(
-              deci2s(ask.getReceiveAmount(deci(widget.sellAmount))) +
-                  ' ' +
-                  ask.coin.toUpperCase(),
-              style: Theme.of(context)
-                  .textTheme
-                  .body1
-                  .copyWith(fontWeight: FontWeight.bold, fontSize: 14),
+            onTap: () => createOrder(ask)),
+        TableRowInkWell(
+            child: Container(
+              height: 40,
+              alignment: const Alignment(1, 0),
+              padding: const EdgeInsets.only(
+                left: 6,
+                right: 12,
+              ),
+              decoration: BoxDecoration(
+                  color: index % 2 > 0
+                      ? null
+                      : Theme.of(context).primaryColor.withAlpha(150),
+                  border: Border(
+                      top: BorderSide(
+                    width: 1,
+                    color: Theme.of(context).highlightColor,
+                  ))),
+              child: Text(
+                deci2s(ask.getReceiveAmount(deci(widget.sellAmount))),
+                style: Theme.of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
+              ),
             ),
-          ),
-          onTap: () => createOrder(ask))
-    ]);
+            onTap: () => createOrder(ask))
+      ],
+    );
   }
 
   void createOrder(Ask ask) {

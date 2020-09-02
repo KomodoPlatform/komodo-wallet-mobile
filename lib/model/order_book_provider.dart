@@ -106,9 +106,9 @@ class SyncOrderbook {
 
   Orderbook getOrderBook([CoinsPair coinsPair]) {
     coinsPair ??= activePair;
-    if (!_tickers.contains(coinsPair)) _tickers.add(coinsPair);
-
     if (coinsPair.buy == null || coinsPair.sell == null) return null;
+
+    if (!_tickers.contains(coinsPair)) _tickers.add(coinsPair);
 
     return _orderBooks['${coinsPair.buy.abbr}-${coinsPair.sell.abbr}'];
   }
