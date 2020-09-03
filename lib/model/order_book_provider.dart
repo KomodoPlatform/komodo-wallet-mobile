@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/job_service.dart';
@@ -27,6 +29,12 @@ class OrderBookProvider extends ChangeNotifier {
 
   Orderbook getOrderBook([CoinsPair coinsPair]) =>
       syncOrderbook.getOrderBook(coinsPair);
+
+  List<Orderbook> orderbooksForCoin([Coin coin]) =>
+      syncOrderbook.orderbooksForCoin(coin);
+
+  Future<void> subscribeCoin([Coin coin]) => syncOrderbook.subscribeCoin(coin);
+  bool hasAsks([Coin coin]) => syncOrderbook.hasAsks(coin);
 
   CoinsPair get activePair => syncOrderbook.activePair;
   set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
@@ -95,7 +103,7 @@ class SyncOrderbook {
   CoinsPair _activePair;
 
   /// Maps short order IDs to latest liveliness markers.
-  final List<CoinsPair> _tickers = [];
+  final List<String> _tickers = [];
 
   CoinsPair get activePair => _activePair;
 
@@ -108,26 +116,83 @@ class SyncOrderbook {
     coinsPair ??= activePair;
     if (coinsPair.buy == null || coinsPair.sell == null) return null;
 
-    if (!_tickers.contains(coinsPair)) _tickers.add(coinsPair);
+    if (!_tickers.contains(_tickerStr(coinsPair)))
+      _tickers.add(_tickerStr(coinsPair));
 
-    return _orderBooks['${coinsPair.buy.abbr}-${coinsPair.sell.abbr}'];
+    return _orderBooks[_tickerStr(coinsPair)];
+  }
+
+  Future<void> subscribeCoin([Coin coin]) async {
+    coin ??= activePair.sell;
+
+    bool wasChanged = false;
+    final List<CoinBalance> coinsList = coinsBloc.coinBalance;
+
+    for (CoinBalance coinBalance in coinsList) {
+      if (coinBalance.coin.abbr == coin.abbr) continue;
+
+      final String ticker = _tickerStr(CoinsPair(
+        sell: coin,
+        buy: coinBalance.coin,
+      ));
+
+      if (!_tickers.contains(ticker)) {
+        _tickers.add(ticker);
+        wasChanged = true;
+      }
+    }
+
+    if (wasChanged) await _updateOrderBooks();
+  }
+
+  bool hasAsks([Coin coin]) {
+    coin ??= activePair.sell;
+
+    bool hasAsks = false;
+
+    _orderBooks.forEach((ticker, orderbook) {
+      if (ticker.split('-')[1] != coin.abbr) return;
+      if (orderbook.asks == null || orderbook.asks.isEmpty) return;
+
+      hasAsks = true;
+    });
+
+    return hasAsks;
+  }
+
+  List<Orderbook> orderbooksForCoin([Coin coin]) {
+    coin ??= activePair.sell;
+
+    final List<Orderbook> list = [];
+    _orderBooks.forEach((ticker, orderbook) {
+      if (ticker.split('-')[1] == coin.abbr) {
+        list.add(orderbook);
+      }
+    });
+
+    return list;
   }
 
   Future<void> _updateOrderBooks() async {
     final Map<String, Orderbook> orderBooks = {};
-    for (CoinsPair pair in _tickers) {
+    for (String pair in _tickers) {
+      final List<String> abbr = pair.split('-');
       final Orderbook orderbook = await MM.getOrderbook(
           MMService().client,
           GetOrderbook(
-            base: pair.buy.abbr,
-            rel: pair.sell.abbr,
+            base: abbr[0],
+            rel: abbr[1],
           ));
 
-      orderBooks['${pair.buy.abbr}-${pair.sell.abbr}'] = orderbook;
+      orderBooks[pair] = orderbook;
     }
 
     _orderBooks = orderBooks;
     _notifyListeners();
+  }
+
+  String _tickerStr(CoinsPair pair) {
+    return '${pair.buy.abbr}-${pair.sell.abbr}';
   }
 
   /// Link a [ChangeNotifier] proxy to this singleton.

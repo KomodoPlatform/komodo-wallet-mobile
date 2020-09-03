@@ -66,6 +66,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   bool isLoadingMax = false;
   bool showDetailedFees = false;
   CexProvider cexProvider;
+  OrderBookProvider orderBookProvider;
 
   @override
   void initState() {
@@ -132,6 +133,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     _updateMarketsPair();
     cexProvider = Provider.of<CexProvider>(context);
+    orderBookProvider = Provider.of<OrderBookProvider>(context);
 
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -994,7 +996,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
-  void pushNewScreenChoiseOrder(List<Orderbook> orderbooks) {
+  void pushNewScreenChoiseOrder() {
+    final List<Orderbook> orderbooks = orderBookProvider.orderbooksForCoin();
+
     replaceAllCommas();
     dialogBloc.dialog = showDialog<void>(
         context: context,
@@ -1029,7 +1033,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               return DialogLooking(
                 onDone: () {
                   Navigator.of(context).pop();
-                  pushNewScreenChoiseOrder(swapBloc.orderCoins);
+                  pushNewScreenChoiseOrder();
                 },
               );
             }).then((dynamic _) => dialogBloc.dialog = null);
@@ -1483,40 +1487,28 @@ class DialogLooking extends StatefulWidget {
 
 class _DialogLookingState extends State<DialogLooking> {
   Timer timerGetOrderbook;
+  OrderBookProvider orderBookProvider;
 
   @override
   void initState() {
-    startLooking();
+    WidgetsBinding.instance.addPostFrameCallback((_) => startLooking());
     super.initState();
-  }
-
-  bool checkIfAsks() {
-    bool orderHasAsks = false;
-    if (swapBloc.orderCoins != null && swapBloc.orderCoins.isNotEmpty) {
-      for (Orderbook orderbook in swapBloc.orderCoins) {
-        if (orderbook.asks != null && orderbook.asks.isNotEmpty) {
-          orderHasAsks = true;
-        }
-      }
-    }
-    return orderHasAsks;
   }
 
   Future<void> startLooking() async {
     const int timerEnd = 10;
     int timerCurrent = 0;
-    await swapBloc.getBuyCoins(swapBloc.sellCoinBalance.coin);
-    if (checkIfAsks()) {
+    await orderBookProvider.subscribeCoin();
+
+    if (orderBookProvider.hasAsks()) {
       widget.onDone();
     } else {
       timerGetOrderbook = Timer.periodic(const Duration(seconds: 5), (_) {
         timerCurrent += 5;
 
-        if (timerCurrent >= timerEnd || checkIfAsks()) {
+        if (timerCurrent >= timerEnd || orderBookProvider.hasAsks()) {
           timerGetOrderbook.cancel();
           widget.onDone();
-        } else {
-          swapBloc.getBuyCoins(swapBloc.sellCoinBalance.coin);
         }
       });
     }
@@ -1530,6 +1522,8 @@ class _DialogLookingState extends State<DialogLooking> {
 
   @override
   Widget build(BuildContext context) {
+    orderBookProvider = Provider.of<OrderBookProvider>(context);
+
     return Dialog(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
