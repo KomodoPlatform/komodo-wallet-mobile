@@ -408,41 +408,34 @@ class _CoinSelectState extends State<CoinSelect> {
       if (orderbook == null) return Container();
 
       return Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 4,
-          vertical: 2,
-        ),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(3),
             border: Border.all(
               color: orderbook.asks.isNotEmpty || orderbook.bids.isNotEmpty
-                  ? Theme.of(context).hintColor.withAlpha(100)
-                  : Theme.of(context).highlightColor,
+                  ? Theme.of(context).highlightColor
+                  : Theme.of(context).backgroundColor,
             )),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              orderbook.asks.length.toString(),
+              ' ${orderbook.asks.length.toString()} ',
               style: TextStyle(
+                backgroundColor: orderbook.asks.isNotEmpty
+                    ? const Color.fromARGB(60, 255, 0, 0)
+                    : null,
                 color: orderbook.asks.isNotEmpty
-                    ? Colors.red
+                    ? Colors.red.withAlpha(220)
                     : Theme.of(context).highlightColor,
                 fontSize: 12,
               ),
             ),
             Text(
-              ' | ',
+              ' ${orderbook.bids.length.toString()} ',
               style: TextStyle(
-                fontSize: 12,
-                color: orderbook.asks.isNotEmpty || orderbook.bids.isNotEmpty
-                    ? Theme.of(context).hintColor.withAlpha(110)
-                    : Theme.of(context).highlightColor,
-              ),
-            ),
-            Text(
-              orderbook.bids.length.toString(),
-              style: TextStyle(
+                backgroundColor: orderbook.bids.isNotEmpty
+                    ? const Color.fromARGB(40, 0, 255, 0)
+                    : null,
                 color: orderbook.bids.isNotEmpty
                     ? Colors.green
                     : Theme.of(context).highlightColor,
