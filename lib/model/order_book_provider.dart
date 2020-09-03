@@ -34,7 +34,6 @@ class OrderBookProvider extends ChangeNotifier {
       syncOrderbook.orderbooksForCoin(coin);
 
   Future<void> subscribeCoin([Coin coin]) => syncOrderbook.subscribeCoin(coin);
-  bool hasAsks([Coin coin]) => syncOrderbook.hasAsks(coin);
 
   CoinsPair get activePair => syncOrderbook.activePair;
   set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
@@ -143,21 +142,6 @@ class SyncOrderbook {
     }
 
     if (wasChanged) await _updateOrderBooks();
-  }
-
-  bool hasAsks([Coin coin]) {
-    coin ??= activePair.sell;
-
-    bool hasAsks = false;
-
-    _orderBooks.forEach((ticker, orderbook) {
-      if (ticker.split('-')[1] != coin.abbr) return;
-      if (orderbook.asks == null || orderbook.asks.isEmpty) return;
-
-      hasAsks = true;
-    });
-
-    return hasAsks;
   }
 
   List<Orderbook> orderbooksForCoin([Coin coin]) {

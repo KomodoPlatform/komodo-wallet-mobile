@@ -12,30 +12,36 @@ import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class ReceiveOrders extends StatefulWidget {
-  const ReceiveOrders(
-      {Key key,
-      this.orderbooks,
-      this.sellAmount,
-      this.onCreateNoOrder,
-      this.onCreateOrder})
-      : super(key: key);
+  const ReceiveOrders({
+    Key key,
+    this.sellAmount,
+    this.onCreateNoOrder,
+    this.onCreateOrder,
+    this.orderbooks,
+  }) : super(key: key);
 
-  final List<Orderbook> orderbooks;
   final double sellAmount;
   final Function(String) onCreateNoOrder;
   final Function(Ask) onCreateOrder;
+  final List<Orderbook> orderbooks; // for integration tests
 
   @override
   _ReceiveOrdersState createState() => _ReceiveOrdersState();
 }
 
 class _ReceiveOrdersState extends State<ReceiveOrders> {
+  OrderBookProvider orderBookProvider;
+
   @override
   Widget build(BuildContext context) {
+    orderBookProvider = Provider.of<OrderBookProvider>(context);
+    final List<Orderbook> orderbooks =
+        widget.orderbooks ?? orderBookProvider.orderbooksForCoin();
+
     return SimpleDialog(
       title: Text(AppLocalizations.of(context).receiveLower),
       key: const Key('receive-list-coins'),
-      children: widget.orderbooks
+      children: orderbooks
           .map((Orderbook orderbook) => OrderbookItem(
               key: Key('orderbook-item-${orderbook.base.toLowerCase()}'),
               orderbook: orderbook,
@@ -222,6 +228,17 @@ class _AsksOrderState extends State<AsksOrder> {
                                 ))),
                                 child: Stack(
                                   children: <Widget>[
+                                    Positioned(
+                                      left: 6,
+                                      top: 50,
+                                      right: 6,
+                                      bottom: 0,
+                                      child: ReceiveOrdersChart(
+                                        asksList: asksList,
+                                        sellAmount: widget.sellAmount,
+                                        lineHeight: lineHeight,
+                                      ),
+                                    ),
                                     Table(
                                       children: [
                                         TableRow(children: [
@@ -275,17 +292,6 @@ class _AsksOrderState extends State<AsksOrder> {
                                         ]),
                                         ...asksWidget,
                                       ],
-                                    ),
-                                    Positioned(
-                                      left: 6,
-                                      top: 50,
-                                      right: 6,
-                                      bottom: 0,
-                                      child: ReceiveOrdersChart(
-                                        asksList: asksList,
-                                        sellAmount: widget.sellAmount,
-                                        lineHeight: lineHeight,
-                                      ),
                                     ),
                                   ],
                                 ),
@@ -341,9 +347,7 @@ class _AsksOrderState extends State<AsksOrder> {
                 right: 6,
               ),
               decoration: BoxDecoration(
-                  color: index % 2 > 0
-                      ? null
-                      : Theme.of(context).primaryColor.withAlpha(150),
+                  color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
                   border: Border(
                       top: BorderSide(
                     width: 1,
@@ -367,9 +371,7 @@ class _AsksOrderState extends State<AsksOrder> {
                 left: 6,
               ),
               decoration: BoxDecoration(
-                  color: index % 2 > 0
-                      ? null
-                      : Theme.of(context).primaryColor.withAlpha(150),
+                  color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
                   border: Border(
                       top: BorderSide(
                     width: 1,
@@ -390,9 +392,7 @@ class _AsksOrderState extends State<AsksOrder> {
                 right: 12,
               ),
               decoration: BoxDecoration(
-                  color: index % 2 > 0
-                      ? null
-                      : Theme.of(context).primaryColor.withAlpha(150),
+                  color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
                   border: Border(
                       top: BorderSide(
                     width: 1,
