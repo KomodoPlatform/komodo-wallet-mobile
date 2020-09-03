@@ -265,37 +265,49 @@ class _OrderBookTableState extends State<OrderBookTable> {
 
     return TableRow(
       children: [
-        SizedBox(
-          height: 26,
-          child: cexRate > 0
-              ? Opacity(
-                  opacity: 0.8,
-                  child: Row(
-                    children: <Widget>[
-                      const SizedBox(
-                        width: 4,
+        cexRate > 0
+            ? Container(
+                height: 26,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        color: cexColor.withAlpha(50),
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
                       ),
-                      Text(
-                        formatPrice(cexRate),
-                        maxLines: 1,
-                        style: Theme.of(context).textTheme.subtitle.copyWith(
-                              color: cexColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w100,
-                            ),
+                      padding: const EdgeInsets.only(
+                        left: 4,
+                        right: 4,
+                        top: 2,
+                        bottom: 2,
                       ),
-                      const SizedBox(
-                        width: 2,
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            formatPrice(cexRate),
+                            maxLines: 1,
+                            style:
+                                Theme.of(context).textTheme.subtitle.copyWith(
+                                      color: cexColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w100,
+                                    ),
+                          ),
+                        ],
                       ),
-                      CexMarker(
-                        context,
-                        size: const Size.fromHeight(13),
-                      ),
-                    ],
-                  ),
-                )
-              : Container(),
-        ),
+                    ),
+                    const SizedBox(
+                      width: 2,
+                    ),
+                    CexMarker(
+                      context,
+                      size: const Size.fromHeight(12),
+                    ),
+                  ],
+                ),
+              )
+            : Container(),
         const SizedBox(height: 26),
         const SizedBox(height: 26),
       ],

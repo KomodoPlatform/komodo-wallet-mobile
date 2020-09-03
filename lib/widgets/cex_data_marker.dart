@@ -5,9 +5,14 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 
 class CexMarker extends StatelessWidget {
-  const CexMarker(this.context, {this.size = const Size(16, 16)});
+  const CexMarker(
+    this.context, {
+    this.size = const Size(16, 16),
+    this.color = cexColor,
+  });
 
   final Size size;
+  final Color color;
   final BuildContext context;
 
   @override
@@ -19,7 +24,7 @@ class CexMarker extends StatelessWidget {
         child: Icon(
           Icons.info_outline,
           size: size.height,
-          color: cexColor,
+          color: color,
         ),
       ),
     );
