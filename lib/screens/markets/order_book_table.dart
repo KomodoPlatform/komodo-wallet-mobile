@@ -38,10 +38,9 @@ class _OrderBookTableState extends State<OrderBookTable> {
       child: Table(
         key: const Key('order-book-table'),
         columnWidths: const {
-          0: FlexColumnWidth(1.0),
+          0: IntrinsicColumnWidth(),
           1: FlexColumnWidth(1.0),
           2: FlexColumnWidth(1.0),
-          3: IntrinsicColumnWidth(),
         },
         children: [
           _buildTableHeader(),
@@ -274,7 +273,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                     Container(
                       decoration: BoxDecoration(
                         color: cexColor.withAlpha(50),
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
                       ),
                       padding: const EdgeInsets.only(
                         left: 4,

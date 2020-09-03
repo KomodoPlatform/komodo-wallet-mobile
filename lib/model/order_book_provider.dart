@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -33,7 +34,8 @@ class OrderBookProvider extends ChangeNotifier {
   List<Orderbook> orderbooksForCoin([Coin coin]) =>
       syncOrderbook.orderbooksForCoin(coin);
 
-  Future<void> subscribeCoin([Coin coin]) => syncOrderbook.subscribeCoin(coin);
+  Future<void> subscribeCoin([Coin coin, CoinType type]) =>
+      syncOrderbook.subscribeCoin(coin, type);
 
   CoinsPair get activePair => syncOrderbook.activePair;
   set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
@@ -121,8 +123,9 @@ class SyncOrderbook {
     return _orderBooks[_tickerStr(coinsPair)];
   }
 
-  Future<void> subscribeCoin([Coin coin]) async {
+  Future<void> subscribeCoin([Coin coin, CoinType type]) async {
     coin ??= activePair.sell;
+    type ??= CoinType.base;
 
     bool wasChanged = false;
     final List<CoinBalance> coinsList = coinsBloc.coinBalance;
@@ -131,8 +134,8 @@ class SyncOrderbook {
       if (coinBalance.coin.abbr == coin.abbr) continue;
 
       final String ticker = _tickerStr(CoinsPair(
-        sell: coin,
-        buy: coinBalance.coin,
+        sell: type == CoinType.base ? coin : coinBalance.coin,
+        buy: type == CoinType.rel ? coin : coinBalance.coin,
       ));
 
       if (!_tickers.contains(ticker)) {
