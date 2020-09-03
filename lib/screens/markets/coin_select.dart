@@ -12,6 +12,7 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class CoinSelect extends StatefulWidget {
@@ -425,7 +426,7 @@ class _CoinSelectState extends State<CoinSelect> {
                     ? const Color.fromARGB(60, 255, 0, 0)
                     : null,
                 color: orderbook.asks.isNotEmpty
-                    ? Colors.red.withAlpha(220)
+                    ? Colors.white.withAlpha(160)
                     : Theme.of(context).highlightColor,
                 fontSize: 12,
               ),
@@ -437,7 +438,7 @@ class _CoinSelectState extends State<CoinSelect> {
                     ? const Color.fromARGB(40, 0, 255, 0)
                     : null,
                 color: orderbook.bids.isNotEmpty
-                    ? Colors.green
+                    ? Colors.white.withAlpha(160)
                     : Theme.of(context).highlightColor,
                 fontSize: 12,
               ),
@@ -460,8 +461,11 @@ class _CoinSelectState extends State<CoinSelect> {
 
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: const <Widget>[
-          CandlesIcon(size: 14),
+        children: <Widget>[
+          CandlesIcon(
+            size: 14,
+            color: cexColor.withAlpha(120),
+          ),
         ],
       );
     }
