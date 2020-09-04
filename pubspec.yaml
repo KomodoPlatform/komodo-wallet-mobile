@@ -55,6 +55,8 @@ dependencies:
       url: https://github.com/KomodoPlatform/provider
       ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
 
+  mailer: ^3.0.4
+
 dev_dependencies:
   flutter_driver: # flutter.dev
     sdk: flutter

@@ -9,6 +9,7 @@ import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
+import 'package:komodo_dex/screens/settings/ticket_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
@@ -231,6 +232,22 @@ class _AppDrawerState extends State<AppDrawer> {
                             leading: Icon(
                               Icons.settings,
                               key: const Key('side-nav-settings'),
+                              size: 16,
+                              color: Colors.white.withAlpha(200),
+                            )),
+                        _buildDrawerItem(
+                            title: const Text('Tickets'),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push<dynamic>(
+                                  context,
+                                  MaterialPageRoute<dynamic>(
+                                      builder: (BuildContext context) =>
+                                          TicketPage()));
+                            },
+                            leading: Icon(
+                              Icons.live_help,
+                              key: const Key('side-nav-tickets'),
                               size: 16,
                               color: Colors.white.withAlpha(200),
                             )),
