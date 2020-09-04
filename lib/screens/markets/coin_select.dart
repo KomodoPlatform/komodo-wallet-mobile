@@ -408,43 +408,36 @@ class _CoinSelectState extends State<CoinSelect> {
 
       if (orderbook == null) return Container();
 
-      return Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3),
-            border: Border.all(
-              color: orderbook.asks.isNotEmpty || orderbook.bids.isNotEmpty
-                  ? Theme.of(context).highlightColor
-                  : Theme.of(context).backgroundColor,
-            )),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              ' ${orderbook.asks.length.toString()} ',
-              style: TextStyle(
-                backgroundColor: orderbook.asks.isNotEmpty
-                    ? const Color.fromARGB(60, 255, 0, 0)
-                    : null,
-                color: orderbook.asks.isNotEmpty
-                    ? Colors.white.withAlpha(160)
-                    : Theme.of(context).highlightColor,
-                fontSize: 12,
-              ),
+      return Row(
+        children: <Widget>[
+          Text(
+            '${orderbook.asks.length}',
+            style: TextStyle(
+              color: orderbook.asks.isNotEmpty
+                  ? Colors.red
+                  : Theme.of(context).highlightColor,
+              fontSize: 13,
             ),
-            Text(
-              ' ${orderbook.bids.length.toString()} ',
-              style: TextStyle(
-                backgroundColor: orderbook.bids.isNotEmpty
-                    ? const Color.fromARGB(40, 0, 255, 0)
-                    : null,
-                color: orderbook.bids.isNotEmpty
-                    ? Colors.white.withAlpha(160)
-                    : Theme.of(context).highlightColor,
-                fontSize: 12,
-              ),
+          ),
+          const SizedBox(width: 2),
+          Container(
+            width: 1,
+            height: 10,
+            color: orderbook.asks.isNotEmpty && orderbook.bids.isNotEmpty
+                ? cexColor.withAlpha(100)
+                : Theme.of(context).highlightColor,
+          ),
+          const SizedBox(width: 2),
+          Text(
+            '${orderbook.bids.length}',
+            style: TextStyle(
+              color: orderbook.bids.isNotEmpty
+                  ? Colors.green
+                  : Theme.of(context).highlightColor,
+              fontSize: 13,
             ),
-          ],
-        ),
+          ),
+        ],
       );
     }
 
