@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/get_enabled_coins.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_rewards_info.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/services/music_service.dart';
 
 import '../model/active_coin.dart';
@@ -491,7 +492,7 @@ class ApiProvider {
     return jbody['result'].toList();
   }
 
-  Future<dynamic> getRewardsInfo({http.Client client}) async {
+  Future<List<RewardsItem>> getRewardsInfo({http.Client client}) async {
     client ??= mmSe.client;
     final userBody = await _assertUserpass(
       client,
@@ -507,8 +508,16 @@ class ApiProvider {
     final error = ErrorString.fromJson(jbody);
     if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
-    print(jbody);
+    List<RewardsItem> list;
+    try {
+      for (dynamic item in jbody['result']) {
+        list ??= [];
+        list.add(RewardsItem.fromJson(item));
+      }
+    } catch (e) {
+      print('$e');
+    }
 
-    return jbody;
+    return list;
   }
 }

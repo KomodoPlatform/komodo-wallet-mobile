@@ -16,6 +16,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
+import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -582,9 +583,12 @@ class _ItemCoinState extends State<ItemCoin> {
                                         borderRadius:
                                             BorderRadius.circular(30.0)),
                                     onPressed: () {
-                                      CoinDetail(
-                                              coinBalance: widget.coinBalance)
-                                          .showDialogClaim(context);
+                                      Navigator.push<dynamic>(
+                                        context,
+                                        MaterialPageRoute<dynamic>(
+                                            builder: (BuildContext context) =>
+                                                RewardsPage()),
+                                      );
                                     },
                                     child: Text(
                                       'CLAIM YOUR REWARDS',
