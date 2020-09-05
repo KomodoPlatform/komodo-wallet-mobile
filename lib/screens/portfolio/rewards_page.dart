@@ -245,7 +245,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   ),
                 )
               : Container(
-                  color: Colors.green.withAlpha(30),
+                  color: const Color.fromARGB(60, 1, 102, 129),
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 12, bottom: 12),
                   child: Text(
@@ -284,9 +284,9 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 8, right: 12, top: 12, bottom: 12),
                   child: Icon(
-                    Icons.check,
+                    Icons.check_circle,
                     size: 14,
-                    color: Colors.green,
+                    color: const Color.fromARGB(255, 1, 102, 129),
                   ),
                 )
               : Container(
