@@ -155,7 +155,7 @@ class AsksOrder extends StatefulWidget {
 
 class _AsksOrderState extends State<AsksOrder> {
   final double headerHeight = 50;
-  final double lineHeight = 40;
+  final double lineHeight = 50;
   OrderBookProvider orderBookProvider;
   CexProvider cexProvider;
 
@@ -283,6 +283,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                             child: Text(
                                               '${AppLocalizations.of(context).receive.toLowerCase()}'
                                               ' (${widget.baseCoin})',
+                                              textAlign: TextAlign.right,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle
@@ -327,7 +328,7 @@ class _AsksOrderState extends State<AsksOrder> {
         const SizedBox(width: 2),
         Text(
           formatPrice(cexRate),
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 14, color: cexColor, fontWeight: FontWeight.w400),
         ),
         const SizedBox(width: 4),
@@ -357,7 +358,7 @@ class _AsksOrderState extends State<AsksOrder> {
               child: Text(
                 formatPrice(ask.getReceivePrice().toDouble()),
                 style: Theme.of(context).textTheme.body1.copyWith(
-                      fontSize: 12,
+                      fontSize: 13,
                       color: Colors.greenAccent,
                     ),
               ),
@@ -379,7 +380,7 @@ class _AsksOrderState extends State<AsksOrder> {
                   ))),
               child: Text(
                 formatPrice(ask.maxvolume.toDouble()),
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
               ),
             ),
             onTap: () => _createOrder(ask)),
@@ -404,7 +405,7 @@ class _AsksOrderState extends State<AsksOrder> {
                 style: Theme.of(context)
                     .textTheme
                     .body1
-                    .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
+                    .copyWith(fontWeight: FontWeight.w500, fontSize: 14),
               ),
             ),
             onTap: () => _createOrder(ask))
