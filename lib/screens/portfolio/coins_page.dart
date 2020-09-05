@@ -586,13 +586,13 @@ class _ItemCoinState extends State<ItemCoin> {
                                         borderRadius:
                                             BorderRadius.circular(30.0)),
                                     onPressed: () async {
+                                      rewardsProvider.update();
                                       Navigator.push<dynamic>(
                                         context,
                                         MaterialPageRoute<dynamic>(
                                             builder: (BuildContext context) =>
                                                 RewardsPage()),
                                       );
-                                      rewardsProvider.update();
                                     },
                                     child: Text(
                                       'CLAIM YOUR REWARDS',

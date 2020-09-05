@@ -23,7 +23,7 @@ class _RewardsPageState extends State<RewardsPage> {
       context: context,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Rewards info'),
+          title: const Text('Rewards information'),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: rewards == null
@@ -55,7 +55,11 @@ class _RewardsPageState extends State<RewardsPage> {
   Widget _buildLink() {
     return Container(
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          launchURL('https://support.komodoplatform.com/support/'
+              'solutions/articles/'
+              '29000024428-komodo-5-active-user-reward-all-you-need-to-know');
+        },
         child: Container(
           padding: const EdgeInsets.all(12),
           child: Row(
@@ -81,6 +85,7 @@ class _RewardsPageState extends State<RewardsPage> {
   }
 
   Widget _buildButtons() {
+    final double total = rewardsProvider.total;
     return Container(
       padding: const EdgeInsets.only(
         left: 24,
@@ -89,14 +94,27 @@ class _RewardsPageState extends State<RewardsPage> {
       ),
       child: Row(
         children: <Widget>[
-          Expanded(child: SecondaryButton(onPressed: () {}, text: 'Cancel')),
+          Expanded(
+            child: SecondaryButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                text: 'Cancel'),
+          ),
           const SizedBox(width: 12),
           Expanded(
-              child: PrimaryButton(
-            onPressed: () {},
-            text: 'Receive',
-            backgroundColor: const Color.fromARGB(255, 1, 102, 129),
-            isDarkMode: false,
+              child: Opacity(
+            opacity: total > 0 ? 1 : 0.6,
+            child: PrimaryButton(
+              onPressed: total > 0
+                  ? () {
+                      rewardsProvider.receive();
+                    }
+                  : null,
+              text: 'Receive',
+              backgroundColor: const Color.fromARGB(255, 1, 102, 129),
+              isDarkMode: false,
+            ),
           )),
         ],
       ),
@@ -104,6 +122,8 @@ class _RewardsPageState extends State<RewardsPage> {
   }
 
   Widget _buildTotal() {
+    final double total = rewardsProvider.total;
+
     return Container(
       padding: const EdgeInsets.all(12),
       height: MediaQuery.of(context).size.height / 4,
@@ -112,13 +132,15 @@ class _RewardsPageState extends State<RewardsPage> {
         children: <Widget>[
           SizedBox(width: 50, child: Image.asset('assets/kmd.png')),
           const SizedBox(height: 8),
-          Text(
-            'KMD ${formatPrice(rewardsProvider.total)}',
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
+          total > 0
+              ? Text(
+                  'KMD ${formatPrice(total)}',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                  ),
+                )
+              : const Text('No rewards available'),
         ],
       ),
     );

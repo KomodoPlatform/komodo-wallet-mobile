@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/get_send_raw_transaction.dart';
+import 'package:komodo_dex/model/get_withdraw.dart';
+import 'package:komodo_dex/model/send_raw_transaction_response.dart';
+import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 
 class RewardsProvider extends ChangeNotifier {
   List<RewardsItem> _rewards;
@@ -30,6 +37,34 @@ class RewardsProvider extends ChangeNotifier {
 
     _rewards = list;
     notifyListeners();
+  }
+
+  Future<void> receive() async {
+    final CoinBalance kmd = coinsBloc.coinBalance.firstWhere(
+        (balance) => balance.coin.abbr == 'KMD',
+        orElse: () => null);
+
+    if (kmd == null) return;
+
+    final dynamic res = await ApiProvider().postWithdraw(
+        MMService().client,
+        GetWithdraw(
+          userpass: MMService().userpass,
+          coin: 'KMD',
+          to: kmd.balance.address,
+          max: true,
+        ));
+
+    if (res is WithdrawResponse) {
+      final dynamic tx = await ApiProvider().postRawTransaction(
+          MMService().client,
+          GetSendRawTransaction(coin: 'KMD', txHex: res.txHex));
+
+      if (tx is SendRawTransactionResponse && tx.txHash.isNotEmpty) {
+        await Future<dynamic>.delayed(const Duration(seconds: 3));
+        update();
+      }
+    }
   }
 }
 
