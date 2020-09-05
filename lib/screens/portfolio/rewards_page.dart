@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
+import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
 
 class RewardsPage extends StatefulWidget {
@@ -16,31 +19,108 @@ class _RewardsPageState extends State<RewardsPage> {
     rewardsProvider = Provider.of<RewardsProvider>(context);
     final List<RewardsItem> rewards = rewardsProvider.rewards;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Rewards info'),
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: rewards == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : RefreshIndicator(
-              onRefresh: () async {
-                rewardsProvider.update();
-              },
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 12),
-                      _buildTable(),
-                    ],
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Rewards info'),
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: rewards == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : RefreshIndicator(
+                onRefresh: () async {
+                  rewardsProvider.update();
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        _buildTotal(),
+                        _buildButtons(),
+                        _buildLink(),
+                        _buildTable(),
+                      ],
+                    ),
                   ),
                 ),
               ),
+      ),
+    );
+  }
+
+  Widget _buildLink() {
+    return Container(
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: <Widget>[
+              const Text(
+                'Read more about KMD active user rewards',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Icon(
+                Icons.open_in_new,
+                size: 12,
+                color: Colors.blue,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtons() {
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 24,
+        right: 24,
+        bottom: 24,
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(child: SecondaryButton(onPressed: () {}, text: 'Cancel')),
+          const SizedBox(width: 12),
+          Expanded(
+              child: PrimaryButton(
+            onPressed: () {},
+            text: 'Receive',
+            backgroundColor: const Color.fromARGB(255, 1, 102, 129),
+            isDarkMode: false,
+          )),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTotal() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      height: MediaQuery.of(context).size.height / 4,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(width: 50, child: Image.asset('assets/kmd.png')),
+          const SizedBox(height: 8),
+          Text(
+            'KMD ${formatPrice(rewardsProvider.total)}',
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w400,
             ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -51,71 +131,88 @@ class _RewardsPageState extends State<RewardsPage> {
       rows.add(_buildTableRow(i, item));
     }
 
-    return Table(
-      border: TableBorder.all(color: Colors.white.withAlpha(15)),
-      columnWidths: const {
-        0: IntrinsicColumnWidth(),
-        2: IntrinsicColumnWidth(),
-        3: IntrinsicColumnWidth(),
-      },
-      children: [
-        TableRow(
-          decoration: BoxDecoration(
-              border: Border(
-            bottom: BorderSide(
-              color: Colors.white.withAlpha(15),
-            ),
-          )),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(height: 16),
+        Container(
+          padding: const EdgeInsets.only(
+            left: 12,
+            right: 12,
+            bottom: 4,
+          ),
+          child: Text(
+            'Rewards information:',
+            style: Theme.of(context).textTheme.body2,
+          ),
+        ),
+        Table(
+          border: TableBorder.all(color: Colors.white.withAlpha(15)),
+          columnWidths: const {
+            0: IntrinsicColumnWidth(),
+            2: IntrinsicColumnWidth(),
+            3: IntrinsicColumnWidth(),
+          },
           children: [
-            Container(
-              padding:
-                  const EdgeInsets.only(left: 12, right: 8, top: 8, bottom: 8),
-              child: Text(
-                'UTXO amt,\nKMD',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+            TableRow(
+              decoration: BoxDecoration(
+                  border: Border(
+                bottom: BorderSide(
+                  color: Colors.white.withAlpha(15),
                 ),
-              ),
-            ),
-            Container(
-              padding:
-                  const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
-              child: Text(
-                'Rewards,\nKMD',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+              )),
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 12, right: 8, top: 8, bottom: 8),
+                  child: Text(
+                    'UTXO amt,\nKMD',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Container(
-              alignment: const Alignment(0, 0),
-              padding:
-                  const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
-              child: Text(
-                'Time left',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 8, top: 8, bottom: 8),
+                  child: Text(
+                    'Rewards,\nKMD',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Container(
-              padding:
-                  const EdgeInsets.only(left: 8, right: 12, top: 8, bottom: 8),
-              alignment: const Alignment(1, 0),
-              child: Text(
-                'Status',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+                Container(
+                  alignment: const Alignment(0, 0),
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 8, top: 8, bottom: 8),
+                  child: Text(
+                    'Time left',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
-              ),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 12, top: 8, bottom: 8),
+                  alignment: const Alignment(0, 0),
+                  child: Text(
+                    'Status',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
             ),
+            ...rows,
           ],
         ),
-        ...rows,
       ],
     );
   }

@@ -9,6 +9,14 @@ class RewardsProvider extends ChangeNotifier {
     return _rewards;
   }
 
+  double get total {
+    double t = 0;
+    for (RewardsItem item in _rewards) {
+      t += item.reward ?? 0.0;
+    }
+    return t;
+  }
+
   void update() => _updateInfo();
 
   Future<void> _updateInfo() async {
