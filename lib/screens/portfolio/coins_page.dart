@@ -15,6 +15,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
@@ -401,6 +402,8 @@ class _ItemCoinState extends State<ItemCoin> {
   @override
   Widget build(BuildContext context) {
     final CexProvider cexProvider = Provider.of<CexProvider>(context);
+    final RewardsProvider rewardsProvider =
+        Provider.of<RewardsProvider>(context);
     final Coin coin = widget.coinBalance.coin;
     final Balance balance = widget.coinBalance.balance;
     final NumberFormat f = NumberFormat('###,##0.########');
@@ -582,13 +585,14 @@ class _ItemCoinState extends State<ItemCoin> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(30.0)),
-                                    onPressed: () {
+                                    onPressed: () async {
                                       Navigator.push<dynamic>(
                                         context,
                                         MaterialPageRoute<dynamic>(
                                             builder: (BuildContext context) =>
                                                 RewardsPage()),
                                       );
+                                      rewardsProvider.update();
                                     },
                                     child: Text(
                                       'CLAIM YOUR REWARDS',
