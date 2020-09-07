@@ -17,6 +17,7 @@ import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
@@ -30,6 +31,7 @@ import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
@@ -192,6 +194,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Timer timer;
   bool isDeleteLoading = false;
   CexProvider cexProvider;
+  RewardsProvider rewardsProvider;
 
   @override
   void initState() {
@@ -284,7 +287,8 @@ class _CoinDetailState extends State<CoinDetail> {
     if (listSteps.isEmpty) {
       initSteps();
     }
-    cexProvider = Provider.of<CexProvider>(context);
+    cexProvider ??= Provider.of<CexProvider>(context);
+    rewardsProvider ??= Provider.of<RewardsProvider>(context);
 
     return LockScreen(
       context: context,
@@ -803,8 +807,26 @@ class _CoinDetailState extends State<CoinDetail> {
         break;
       case StatusButton.CLAIM:
         text = AppLocalizations.of(context).claim.toUpperCase();
-        break;
+        return Expanded(
+            child: Stack(
+          children: <Widget>[
+            SecondaryButton(
+              text: text,
+              onPressed: () {
+                widget.showDialogClaim(mContext);
+              },
+            ),
+            if (rewardsProvider.needClaim)
+              buildRedDot(
+                context,
+                right: null,
+                left: 14,
+                top: 20,
+              )
+          ],
+        ));
     }
+
     return Expanded(
       child: SecondaryButton(
         text: text,
@@ -828,9 +850,6 @@ class _CoinDetailState extends State<CoinDetail> {
                   isExpanded = !isExpanded;
                 });
               }
-              break;
-            case StatusButton.CLAIM:
-              widget.showDialogClaim(mContext);
               break;
             default:
           }

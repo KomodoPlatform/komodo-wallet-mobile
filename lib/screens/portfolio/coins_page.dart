@@ -23,6 +23,7 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:provider/provider.dart';
 
 class CoinsPage extends StatefulWidget {
@@ -399,11 +400,12 @@ class ItemCoin extends StatefulWidget {
 }
 
 class _ItemCoinState extends State<ItemCoin> {
+  RewardsProvider rewardsProvider;
+
   @override
   Widget build(BuildContext context) {
     final CexProvider cexProvider = Provider.of<CexProvider>(context);
-    final RewardsProvider rewardsProvider =
-        Provider.of<RewardsProvider>(context);
+    rewardsProvider ??= Provider.of<RewardsProvider>(context);
     final Coin coin = widget.coinBalance.coin;
     final Balance balance = widget.coinBalance.balance;
     final NumberFormat f = NumberFormat('###,##0.########');
@@ -594,12 +596,30 @@ class _ItemCoinState extends State<ItemCoin> {
                                                 RewardsPage()),
                                       );
                                     },
-                                    child: Text(
-                                      'CLAIM YOUR REWARDS',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .body1
-                                          .copyWith(fontSize: 12),
+                                    child: Row(
+                                      children: <Widget>[
+                                        if (rewardsProvider.needClaim)
+                                          Container(
+                                            padding:
+                                                const EdgeInsets.only(right: 4),
+                                            child: Stack(
+                                              children: <Widget>[
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                ),
+                                                buildRedDot(context)
+                                              ],
+                                            ),
+                                          ),
+                                        Text(
+                                          'CLAIM YOUR REWARDS',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body1
+                                              .copyWith(fontSize: 12),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 )

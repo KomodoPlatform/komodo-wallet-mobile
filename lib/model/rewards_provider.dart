@@ -11,6 +11,10 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class RewardsProvider extends ChangeNotifier {
+  RewardsProvider() {
+    update();
+  }
+
   List<RewardsItem> _rewards;
 
   bool claimInProgress = false;
@@ -28,6 +32,24 @@ class RewardsProvider extends ChangeNotifier {
       t += item.reward ?? 0.0;
     }
     return t;
+  }
+
+  bool get needClaim {
+    if (_rewards == null) return false;
+
+    for (RewardsItem item in _rewards) {
+      if (item.stopAt == null) continue;
+
+      final Duration timeLeft = Duration(
+        milliseconds:
+            item.stopAt * 1000 - DateTime.now().millisecondsSinceEpoch,
+      );
+      if (timeLeft.inDays < 2 && (item.reward ?? 0) > 0) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   Future<void> update() => _updateInfo();
