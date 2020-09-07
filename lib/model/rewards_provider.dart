@@ -19,7 +19,6 @@ class RewardsProvider extends ChangeNotifier {
   String successMessage;
 
   List<RewardsItem> get rewards {
-    if (_rewards == null || _rewards.isEmpty) _updateInfo();
     return _rewards;
   }
 

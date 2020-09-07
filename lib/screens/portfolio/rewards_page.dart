@@ -200,6 +200,8 @@ class _RewardsPageState extends State<RewardsPage> {
       rows.add(_buildTableRow(i, item));
     }
 
+    if (rows.isEmpty) return Container();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
