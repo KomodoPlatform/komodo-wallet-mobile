@@ -39,7 +39,13 @@ class _RewardsPageState extends State<RewardsPage> {
                   child: Container(
                     child: Column(
                       children: <Widget>[
-                        _buildTotal(),
+                        rewardsProvider.updateInProgress
+                            ? const SizedBox(
+                                height: 1,
+                                child: LinearProgressIndicator(),
+                              )
+                            : Container(height: 1),
+                        _buildHeader(),
                         _buildButtons(),
                         _buildLink(),
                         _buildTable(),
@@ -48,6 +54,20 @@ class _RewardsPageState extends State<RewardsPage> {
                   ),
                 ),
               ),
+      ),
+    );
+  }
+
+  Widget _buildErrorMessage() {
+    if (rewardsProvider.errorMessage == null) return Container();
+
+    return Container(
+      alignment: const Alignment(0, 0),
+      height: 36,
+      child: Text(
+        rewardsProvider.errorMessage,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.pink),
       ),
     );
   }
@@ -104,13 +124,13 @@ class _RewardsPageState extends State<RewardsPage> {
           const SizedBox(width: 12),
           Expanded(
               child: Opacity(
-            opacity: total > 0 ? 1 : 0.6,
+            opacity: total == 0 || rewardsProvider.claimInProgress ? 0.6 : 1,
             child: PrimaryButton(
-              onPressed: total > 0
-                  ? () {
+              onPressed: total == 0 || rewardsProvider.claimInProgress
+                  ? null
+                  : () {
                       rewardsProvider.receive();
-                    }
-                  : null,
+                    },
               text: 'Receive',
               backgroundColor: const Color.fromARGB(255, 1, 102, 129),
               isDarkMode: false,
@@ -121,26 +141,53 @@ class _RewardsPageState extends State<RewardsPage> {
     );
   }
 
-  Widget _buildTotal() {
+  Widget _buildHeader() {
     final double total = rewardsProvider.total;
 
     return Container(
-      padding: const EdgeInsets.all(12),
-      height: MediaQuery.of(context).size.height / 4,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      height: 170,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          const SizedBox(height: 40),
           SizedBox(width: 50, child: Image.asset('assets/kmd.png')),
           const SizedBox(height: 8),
-          total > 0
-              ? Text(
-                  'KMD ${formatPrice(total)}',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
+          rewardsProvider.errorMessage == null &&
+                  rewardsProvider.successMessage != null
+              ? Container(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    rewardsProvider.successMessage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.green),
                   ),
                 )
-              : const Text('No rewards available'),
+              : total > 0
+                  ? Column(
+                      children: <Widget>[
+                        Text(
+                          'KMD ${formatPrice(total)}',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 2,
+                          height: 1,
+                          child: rewardsProvider.claimInProgress
+                              ? const LinearProgressIndicator()
+                              : Container(),
+                        )
+                      ],
+                    )
+                  : Container(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: const Text(
+                        'No claimable rewards',
+                      ),
+                    ),
+          _buildErrorMessage(),
         ],
       ),
     );

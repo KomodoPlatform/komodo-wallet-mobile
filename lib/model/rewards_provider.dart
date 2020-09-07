@@ -7,9 +7,16 @@ import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class RewardsProvider extends ChangeNotifier {
   List<RewardsItem> _rewards;
+
+  bool claimInProgress = false;
+  bool updateInProgress = false;
+  String errorMessage;
+  String successMessage;
 
   List<RewardsItem> get rewards {
     if (_rewards == null || _rewards.isEmpty) _updateInfo();
@@ -24,47 +31,92 @@ class RewardsProvider extends ChangeNotifier {
     return t;
   }
 
-  void update() => _updateInfo();
+  Future<void> update() => _updateInfo();
 
   Future<void> _updateInfo() async {
+    if (updateInProgress) return;
+    updateInProgress = true;
+    errorMessage = null;
+    successMessage = null;
+    notifyListeners();
+
     List<RewardsItem> list;
     try {
       list = await MM.getRewardsInfo();
     } catch (e) {
+      updateInProgress = false;
       print(e);
+      notifyListeners();
       return;
     }
 
     _rewards = list;
+    updateInProgress = false;
     notifyListeners();
   }
 
   Future<void> receive() async {
+    if (claimInProgress) return;
+    claimInProgress = true;
+    errorMessage = null;
+    successMessage = null;
+    notifyListeners();
+
     final CoinBalance kmd = coinsBloc.coinBalance.firstWhere(
         (balance) => balance.coin.abbr == 'KMD',
         orElse: () => null);
 
     if (kmd == null) return;
 
-    final dynamic res = await ApiProvider().postWithdraw(
-        MMService().client,
-        GetWithdraw(
-          userpass: MMService().userpass,
-          coin: 'KMD',
-          to: kmd.balance.address,
-          max: true,
-        ));
-
-    if (res is WithdrawResponse) {
-      final dynamic tx = await ApiProvider().postRawTransaction(
+    dynamic res;
+    try {
+      res = await ApiProvider().postWithdraw(
           MMService().client,
-          GetSendRawTransaction(coin: 'KMD', txHex: res.txHex));
-
-      if (tx is SendRawTransactionResponse && tx.txHash.isNotEmpty) {
-        await Future<dynamic>.delayed(const Duration(seconds: 3));
-        update();
-      }
+          GetWithdraw(
+            userpass: MMService().userpass,
+            coin: 'KMD',
+            to: kmd.balance.address,
+            max: true,
+          ));
+    } catch (e) {
+      Log('rewards_provider', 'receive/postWithdraw] $e');
+      _setError(e);
     }
+
+    if (!(res is WithdrawResponse)) {
+      _setError();
+      claimInProgress = false;
+      return;
+    }
+
+    dynamic tx;
+    try {
+      tx = await ApiProvider().postRawTransaction(MMService().client,
+          GetSendRawTransaction(coin: 'KMD', txHex: res.txHex));
+    } catch (e) {
+      Log('rewards_provider', 'receive/postRawTransaction] $e');
+      _setError(e);
+    }
+
+    if (!(tx is SendRawTransactionResponse) || tx.txHash.isEmpty) {
+      _setError();
+      claimInProgress = false;
+      return;
+    }
+
+    await Future<dynamic>.delayed(const Duration(seconds: 2));
+    await _updateInfo();
+    successMessage =
+        'Success! ${formatPrice(res.myBalanceChange)} KMD received.';
+
+    claimInProgress = false;
+    notifyListeners();
+  }
+
+  void _setError([String e]) {
+    // TODO(yurii): verbose error message
+    errorMessage = 'Something went wrong. Please try again later.';
+    notifyListeners();
   }
 }
 
@@ -92,7 +144,7 @@ class RewardsItem {
         errorMessageLong = 'UTXO amount less than 10 KMD';
         break;
       case 'TransactionInMempool':
-        errorMessage = '...';
+        errorMessage = 'processing';
         errorMessageLong = 'Transaction is in progress';
         break;
       case 'OneHourNotPassedYet':
