@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
@@ -24,11 +25,13 @@ class OrderBookTable extends StatefulWidget {
 class _OrderBookTableState extends State<OrderBookTable> {
   OrderBookProvider orderBookProvider;
   CexProvider cexProvider;
+  AddressBookProvider addressBookProvider;
 
   @override
   Widget build(BuildContext context) {
-    orderBookProvider = Provider.of<OrderBookProvider>(context);
-    cexProvider = Provider.of<CexProvider>(context);
+    orderBookProvider ??= Provider.of<OrderBookProvider>(context);
+    cexProvider ??= Provider.of<CexProvider>(context);
+    addressBookProvider ??= Provider.of<AddressBookProvider>(context);
 
     return Container(
       padding: const EdgeInsets.only(
@@ -122,10 +125,23 @@ class _OrderBookTableState extends State<OrderBookTable> {
               height: 26,
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 4),
-              child: Text(
-                formatPrice((1 / double.parse(bid.price)).toString()),
-                maxLines: 1,
-                style: TextStyle(color: Colors.green, fontSize: 14),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    formatPrice((1 / double.parse(bid.price)).toString()),
+                    maxLines: 1,
+                    style: TextStyle(color: Colors.green, fontSize: 14),
+                  ),
+                  if (_isInAdressBook(bid.address))
+                    Container(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 11,
+                        color: Colors.white.withAlpha(150),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
@@ -198,10 +214,23 @@ class _OrderBookTableState extends State<OrderBookTable> {
               height: 26,
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 4),
-              child: Text(
-                formatPrice(ask.price),
-                maxLines: 1,
-                style: TextStyle(color: Colors.red, fontSize: 14),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    formatPrice(ask.price),
+                    maxLines: 1,
+                    style: TextStyle(color: Colors.red, fontSize: 14),
+                  ),
+                  if (_isInAdressBook(ask.address))
+                    Container(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 11,
+                        color: Colors.white.withAlpha(150),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
@@ -322,5 +351,9 @@ class _OrderBookTableState extends State<OrderBookTable> {
         SizedBox(height: 12),
       ],
     );
+  }
+
+  bool _isInAdressBook(String address) {
+    return addressBookProvider.contactByAddress(address) != null;
   }
 }

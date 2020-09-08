@@ -20,8 +20,9 @@ class AddressBookProvider extends ChangeNotifier {
   }
 
   Contact contactByAddress(String address) {
-    Contact found;
+    if (_contacts == null) return null;
 
+    Contact found;
     for (Contact contact in _contacts) {
       contact.addresses?.forEach((String abbr, String value) {
         if (value == address) found = contact;
