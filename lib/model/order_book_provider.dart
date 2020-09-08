@@ -152,7 +152,7 @@ class SyncOrderbook {
 
     final List<Orderbook> list = [];
     _orderBooks.forEach((ticker, orderbook) {
-      if (ticker.split('-')[1] == coin.abbr) {
+      if (ticker.split('-')[0] == coin.abbr) {
         list.add(orderbook);
       }
     });
@@ -179,7 +179,7 @@ class SyncOrderbook {
   }
 
   String _tickerStr(CoinsPair pair) {
-    return '${pair.buy.abbr}-${pair.sell.abbr}';
+    return '${pair.sell.abbr}-${pair.buy.abbr}';
   }
 
   /// Link a [ChangeNotifier] proxy to this singleton.

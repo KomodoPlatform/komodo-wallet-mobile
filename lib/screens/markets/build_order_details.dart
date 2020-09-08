@@ -92,7 +92,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   height: 40,
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(right: 6),
-                  child: Text('Selling', // TODO(yurii): localization
+                  child: Text('Sells', // TODO(yurii): localization
                       style: Theme.of(context).textTheme.body2),
                 ),
                 Container(

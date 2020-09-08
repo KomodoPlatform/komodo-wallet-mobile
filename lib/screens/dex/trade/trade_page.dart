@@ -65,6 +65,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   bool isLoadingMax = false;
   bool showDetailedFees = false;
   CexProvider cexProvider;
+  OrderBookProvider orderBookProvider;
 
   @override
   void initState() {
@@ -126,8 +127,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    _updateMarketsPair();
-    cexProvider = Provider.of<CexProvider>(context);
+    cexProvider ??= Provider.of<CexProvider>(context);
+    orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -149,30 +150,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             }),
       ],
     );
-  }
-
-  void _updateMarketsPair() {
-    if (swapBloc.sellCoinBalance?.coin == null && swapBloc.receiveCoin == null)
-      return;
-
-    final OrderBookProvider _orderBookProvider =
-        Provider.of<OrderBookProvider>(context);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (swapBloc.receiveCoin != _orderBookProvider.activePair?.buy) {
-        _orderBookProvider.activePair = CoinsPair(
-          buy: swapBloc.receiveCoin,
-          sell: _orderBookProvider.activePair?.sell,
-        );
-      }
-      if (swapBloc.sellCoinBalance?.coin !=
-          _orderBookProvider.activePair?.sell) {
-        _orderBookProvider.activePair = CoinsPair(
-          buy: _orderBookProvider.activePair?.buy,
-          sell: swapBloc.sellCoinBalance?.coin,
-        );
-      }
-    });
   }
 
   void initListenerAmountReceive() {
@@ -1246,6 +1223,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 swapBloc.setEnabledSellField(true);
               });
               swapBloc.updateSellCoin(coin);
+              orderBookProvider.activePair = CoinsPair(
+                sell: coin.coin,
+                buy: orderBookProvider.activePair?.buy,
+              );
               swapBloc.updateBuyCoin(null);
 
               Navigator.pop(context);

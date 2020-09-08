@@ -130,7 +130,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
                   Text(
                     formatPrice((1 / double.parse(bid.price)).toString()),
                     maxLines: 1,
-                    style: TextStyle(color: Colors.green, fontSize: 14),
+                    style: const TextStyle(color: Colors.green, fontSize: 14),
                   ),
                   if (_isInAdressBook(bid.address))
                     Container(
@@ -182,7 +182,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
             height: 26,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 4.0),
-            child: Text(
+            child: const Text(
               'No bids found', // TODO(yurii): localization
               maxLines: 1,
               style: TextStyle(color: Colors.green, fontSize: 14),

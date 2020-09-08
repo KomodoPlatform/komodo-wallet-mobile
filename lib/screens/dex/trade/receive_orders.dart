@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders_chart.dart';
+import 'package:komodo_dex/screens/markets/build_order_details.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
@@ -43,7 +46,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
       key: const Key('receive-list-coins'),
       children: orderbooks
           .map((Orderbook orderbook) => OrderbookItem(
-              key: Key('orderbook-item-${orderbook.base.toLowerCase()}'),
+              key: Key('orderbook-item-${orderbook.rel.toLowerCase()}'),
               orderbook: orderbook,
               onCreateNoOrder: widget.onCreateNoOrder,
               onCreateOrder: widget.onCreateOrder,
@@ -69,8 +72,15 @@ class OrderbookItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final OrderBookProvider orderBookProvider =
+        Provider.of<OrderBookProvider>(context);
     return InkWell(
       onTap: () {
+        orderBookProvider.activePair = CoinsPair(
+          sell: orderBookProvider.activePair.sell,
+          buy: coinsBloc.getCoinByAbbr(orderbook.rel),
+        );
+
         if (orderbook.asks.isEmpty) {
           onCreateNoOrder(orderbook.base);
           Navigator.pop(context);
@@ -79,7 +89,6 @@ class OrderbookItem extends StatelessWidget {
             context,
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) => AsksOrder(
-                    asks: orderbook.asks,
                     baseCoin: orderbook.base,
                     sellAmount: sellAmount,
                     onCreateNoOrder: onCreateNoOrder,
@@ -96,11 +105,11 @@ class OrderbookItem extends StatelessWidget {
               height: 30,
               width: 30,
               child: Image.asset(
-                'assets/${orderbook.base.toLowerCase()}.png',
+                'assets/${orderbook.rel.toLowerCase()}.png',
               ),
             ),
             Flexible(
-              child: orderbook.asks != null && orderbook.asks.isNotEmpty
+              child: orderbook.bids != null && orderbook.bids.isNotEmpty
                   ? RichText(
                       text: TextSpan(
                           style: Theme.of(context).textTheme.body1,
@@ -109,7 +118,7 @@ class OrderbookItem extends StatelessWidget {
                                 text: AppLocalizations.of(context).clickToSee,
                                 style: Theme.of(context).textTheme.body1),
                             TextSpan(
-                                text: orderbook.asks.length.toString() + ' ',
+                                text: orderbook.bids.length.toString() + ' ',
                                 style: Theme.of(context)
                                     .textTheme
                                     .body1
@@ -137,13 +146,11 @@ class OrderbookItem extends StatelessWidget {
 class AsksOrder extends StatefulWidget {
   const AsksOrder(
       {Key key,
-      this.asks,
       this.sellAmount,
       this.onCreateOrder,
       this.onCreateNoOrder,
       this.baseCoin})
       : super(key: key);
-  final List<Ask> asks;
   final double sellAmount;
   final Function(Ask) onCreateOrder;
   final Function(String) onCreateNoOrder;
@@ -158,21 +165,22 @@ class _AsksOrderState extends State<AsksOrder> {
   final double lineHeight = 50;
   OrderBookProvider orderBookProvider;
   CexProvider cexProvider;
+  AddressBookProvider addressBookProvider;
 
   @override
   Widget build(BuildContext context) {
-    cexProvider = Provider.of<CexProvider>(context);
-    orderBookProvider = Provider.of<OrderBookProvider>(context);
-    final List<TableRow> asksWidget = <TableRow>[];
-    final Orderbook orderbook = orderBookProvider?.getOrderBook(CoinsPair(
-      buy: coinsBloc.getCoinByAbbr(widget.baseCoin),
-      sell: orderBookProvider.activePair.sell,
-    ));
-    List<Ask> asksList = orderbook?.asks;
+    cexProvider ??= Provider.of<CexProvider>(context);
+    orderBookProvider ??= Provider.of<OrderBookProvider>(context);
+    addressBookProvider ??= Provider.of<AddressBookProvider>(context);
 
-    asksList = OrderBookProvider.sortByPrice(asksList);
-    asksList?.asMap()?.forEach(
-        (int index, Ask ask) => asksWidget.add(_tableRow(ask, index)));
+    final relCoin = orderBookProvider.activePair.buy.abbr;
+    final List<TableRow> asksWidget = <TableRow>[];
+    final Orderbook orderbook = orderBookProvider?.getOrderBook();
+    List<Ask> bidsList = orderbook?.bids;
+
+    bidsList = OrderBookProvider.sortByPrice(bidsList, quotePrice: true);
+    bidsList?.asMap()?.forEach(
+        (int index, Ask bid) => asksWidget.add(_tableRow(bid, index)));
 
     return LockScreen(
       context: context,
@@ -192,8 +200,7 @@ class _AsksOrderState extends State<AsksOrder> {
               Container(
                   height: 30,
                   width: 30,
-                  child: Image.asset(
-                      'assets/${widget.baseCoin.toLowerCase()}.png')),
+                  child: Image.asset('assets/${relCoin.toLowerCase()}.png')),
             ],
           ),
         ),
@@ -234,7 +241,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                       right: 6,
                                       bottom: 0,
                                       child: ReceiveOrdersChart(
-                                        asksList: asksList,
+                                        asksList: bidsList,
                                         sellAmount: widget.sellAmount,
                                         lineHeight: lineHeight,
                                       ),
@@ -251,7 +258,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                             ),
                                             child: Text(
                                               '${AppLocalizations.of(context).price}'
-                                              ' (${widget.baseCoin})',
+                                              ' ($relCoin)',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle
@@ -266,7 +273,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                             ),
                                             child: Text(
                                               '${AppLocalizations.of(context).availableVolume}'
-                                              ' (${widget.baseCoin})',
+                                              ' ($relCoin)',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle
@@ -336,79 +343,103 @@ class _AsksOrderState extends State<AsksOrder> {
     );
   }
 
-  TableRow _tableRow(Ask ask, int index) {
+  TableRow _tableRow(Ask bid, int index) {
     return TableRow(
       children: [
         TableRowInkWell(
-            child: Container(
-              height: lineHeight,
-              alignment: const Alignment(-1, 0),
-              padding: const EdgeInsets.only(
-                left: 12,
-                right: 6,
-              ),
-              decoration: BoxDecoration(
-                  color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
-                  border: Border(
-                      top: BorderSide(
-                    width: 1,
-                    color: Theme.of(context).highlightColor,
-                  ))),
-              key: Key('ask-item-$index'),
-              child: Text(
-                formatPrice(ask.getReceivePrice().toDouble()),
-                style: Theme.of(context).textTheme.body1.copyWith(
-                      fontSize: 13,
-                      color: Colors.greenAccent,
+          child: Container(
+            height: lineHeight,
+            alignment: const Alignment(-1, 0),
+            padding: const EdgeInsets.only(
+              left: 12,
+              right: 6,
+            ),
+            decoration: BoxDecoration(
+                color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
+                border: Border(
+                    top: BorderSide(
+                  width: 1,
+                  color: Theme.of(context).highlightColor,
+                ))),
+            key: Key('ask-item-$index'),
+            child: Row(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Text(
+                      formatPrice(1 / double.parse(bid.price)),
+                      style: Theme.of(context).textTheme.body1.copyWith(
+                            fontSize: 13,
+                            color: Colors.greenAccent,
+                          ),
                     ),
-              ),
+                    if (addressBookProvider.contactByAddress(bid.address) !=
+                        null)
+                      Container(
+                        padding: const EdgeInsets.only(left: 2),
+                        child: Icon(
+                          Icons.account_circle,
+                          size: 11,
+                          color: Colors.white.withAlpha(150),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
             ),
-            onTap: () => _createOrder(ask)),
+          ),
+          onTap: () => _createOrder(bid),
+          onLongPress: () => _showDetails(bid),
+        ),
         TableRowInkWell(
-            child: Container(
-              height: lineHeight,
-              alignment: const Alignment(1, 0),
-              padding: const EdgeInsets.only(
-                left: 6,
-              ),
-              decoration: BoxDecoration(
-                  color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
-                  border: Border(
-                      top: BorderSide(
-                    width: 1,
-                    color: Theme.of(context).highlightColor,
-                  ))),
-              child: Text(
-                formatPrice(ask.maxvolume.toDouble()),
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
-              ),
+          child: Container(
+            height: lineHeight,
+            alignment: const Alignment(1, 0),
+            padding: const EdgeInsets.only(
+              left: 6,
             ),
-            onTap: () => _createOrder(ask)),
+            decoration: BoxDecoration(
+                color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
+                border: Border(
+                    top: BorderSide(
+                  width: 1,
+                  color: Theme.of(context).highlightColor,
+                ))),
+            child: Text(
+              formatPrice(bid.maxvolume.toDouble()),
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
+            ),
+          ),
+          onTap: () => _createOrder(bid),
+          onLongPress: () => _showDetails(bid),
+        ),
         TableRowInkWell(
-            child: Container(
-              height: lineHeight,
-              alignment: const Alignment(1, 0),
-              padding: const EdgeInsets.only(
-                left: 6,
-                right: 12,
-              ),
-              decoration: BoxDecoration(
-                  color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
-                  border: Border(
-                      top: BorderSide(
-                    width: 1,
-                    color: Theme.of(context).highlightColor,
-                  ))),
-              child: Text(
-                formatPrice(
-                    ask.getReceiveAmount(deci(widget.sellAmount)).toDouble()),
-                style: Theme.of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(fontWeight: FontWeight.w500, fontSize: 14),
-              ),
+          child: Container(
+            height: lineHeight,
+            alignment: const Alignment(1, 0),
+            padding: const EdgeInsets.only(
+              left: 6,
+              right: 12,
             ),
-            onTap: () => _createOrder(ask))
+            decoration: BoxDecoration(
+                color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
+                border: Border(
+                    top: BorderSide(
+                  width: 1,
+                  color: Theme.of(context).highlightColor,
+                ))),
+            child: Text(
+              formatPrice(
+                  bid.getReceiveAmount(deci(widget.sellAmount)).toDouble()),
+              style: Theme.of(context)
+                  .textTheme
+                  .body1
+                  .copyWith(fontWeight: FontWeight.w500, fontSize: 14),
+            ),
+          ),
+          onTap: () => _createOrder(bid),
+          onLongPress: () => _showDetails(bid),
+        )
       ],
     );
   }
@@ -416,6 +447,19 @@ class _AsksOrderState extends State<AsksOrder> {
   void _createOrder(Ask ask) {
     Navigator.of(context).pop();
     widget.onCreateOrder(ask);
+  }
+
+  void _showDetails(Ask ask) {
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Order details'),
+            children: <Widget>[
+              BuildOrderDetails(ask),
+            ],
+          );
+        });
   }
 }
 
