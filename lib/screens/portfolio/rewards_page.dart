@@ -23,6 +23,7 @@ class _RewardsPageState extends State<RewardsPage> {
       context: context,
       child: Scaffold(
         appBar: AppBar(
+          // TODO(yurii): localization
           title: const Text('Rewards information'),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
@@ -85,6 +86,7 @@ class _RewardsPageState extends State<RewardsPage> {
           child: Row(
             children: <Widget>[
               const Text(
+                // TODO(yurii): localization
                 'Read more about KMD active user rewards',
                 style: TextStyle(
                   fontSize: 14,
@@ -119,6 +121,7 @@ class _RewardsPageState extends State<RewardsPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+                // TODO(yurii): localization
                 text: 'Cancel'),
           ),
           const SizedBox(width: 12),
@@ -131,6 +134,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   : () {
                       rewardsProvider.receive();
                     },
+              // TODO(yurii): localization
               text: 'Receive',
               backgroundColor: const Color.fromARGB(255, 1, 102, 129),
               isDarkMode: false,
@@ -184,6 +188,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   : Container(
                       padding: const EdgeInsets.only(top: 10),
                       child: const Text(
+                        // TODO(yurii): localization
                         'No claimable rewards',
                       ),
                     ),
@@ -213,6 +218,7 @@ class _RewardsPageState extends State<RewardsPage> {
             bottom: 4,
           ),
           child: Text(
+            // TODO(yurii): localization
             'Rewards information:',
             style: Theme.of(context).textTheme.body2,
           ),
@@ -237,6 +243,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 12, right: 8, top: 8, bottom: 8),
                   child: Text(
+                    // TODO(yurii): localization
                     'UTXO amt,\nKMD',
                     style: TextStyle(
                       fontSize: 13,
@@ -248,6 +255,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 8),
                   child: Text(
+                    // TODO(yurii): localization
                     'Rewards,\nKMD',
                     style: TextStyle(
                       fontSize: 13,
@@ -260,6 +268,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 8),
                   child: Text(
+                    // TODO(yurii): localization
                     'Time left',
                     style: TextStyle(
                       fontSize: 13,
@@ -272,6 +281,7 @@ class _RewardsPageState extends State<RewardsPage> {
                       left: 8, right: 12, top: 8, bottom: 8),
                   alignment: const Alignment(0, 0),
                   child: Text(
+                    // TODO(yurii): localization
                     'Status',
                     style: TextStyle(
                       fontSize: 13,
@@ -340,7 +350,7 @@ class _RewardsPageState extends State<RewardsPage> {
                             DateTime.now().millisecondsSinceEpoch);
 
                     return Text(
-                      _timeLeft(duration),
+                      _formatTimeLeft(duration),
                       maxLines: 1,
                       style: TextStyle(
                         fontSize: 13,
@@ -360,35 +370,41 @@ class _RewardsPageState extends State<RewardsPage> {
                     color: const Color.fromARGB(255, 1, 102, 129),
                   ),
                 )
-              : Container(
-                  alignment: const Alignment(1, 0),
-                  padding: const EdgeInsets.only(
-                      left: 8, right: 12, top: 12, bottom: 12),
-                  child: Text(
-                    item.error['short'],
-                    maxLines: 1,
-                    style: TextStyle(
-                      color: Theme.of(context).hintColor.withAlpha(150),
-                      fontSize: 13,
+              : TableRowInkWell(
+                  onTap: () {},
+                  child: Container(
+                    alignment: const Alignment(1, 0),
+                    padding: const EdgeInsets.only(
+                        left: 8, right: 12, top: 12, bottom: 12),
+                    child: Text(
+                      item.error['short'],
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Theme.of(context).hintColor.withAlpha(150),
+                        fontSize: 13,
+                      ),
                     ),
                   ),
                 ),
         ]);
   }
 
-  String _timeLeft(Duration duration) {
+  String _formatTimeLeft(Duration duration) {
     final int dd = duration.inDays;
     final int hh = duration.inHours;
     final int mm = duration.inMinutes;
 
     if (dd > 0) {
+      // TODO(yurii): localization
       return '$dd day${dd > 1 ? 's' : ''}';
     }
     if (hh > 0) {
       String minutes = mm.remainder(60).toString();
       if (minutes.length < 2) minutes = '0$minutes';
+      // TODO(yurii): localization
       return '${hh}h ${minutes}m';
     }
+    // TODO(yurii): localization
     return '${mm}min';
   }
 }

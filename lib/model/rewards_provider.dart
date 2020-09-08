@@ -85,7 +85,7 @@ class RewardsProvider extends ChangeNotifier {
       list = await MM.getRewardsInfo();
     } catch (e) {
       updateInProgress = false;
-      print(e);
+      Log('rewards_provider', '_updateInfo] $e');
       notifyListeners();
       return;
     }
@@ -140,6 +140,7 @@ class RewardsProvider extends ChangeNotifier {
 
     await Future<dynamic>.delayed(const Duration(seconds: 2));
     await _updateInfo();
+    // TODO(yurii): localization
     successMessage =
         'Success! ${formatPrice(res.myBalanceChange)} KMD received.';
 
@@ -148,6 +149,7 @@ class RewardsProvider extends ChangeNotifier {
   }
 
   void _setError([String e]) {
+    // TODO(yurii): localization
     // TODO(yurii): verbose error message
     errorMessage = 'Something went wrong. Please try again later.';
     notifyListeners();
@@ -178,6 +180,7 @@ class RewardsItem {
     final String error = json['accrued_rewards']['NotAccruedReason'];
     String errorMessage;
     String errorMessageLong;
+    // TODO(yurii): localization
     switch (error) {
       case 'UtxoAmountLessThanTen':
         errorMessage = '<10 KMD';
