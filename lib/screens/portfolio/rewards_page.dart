@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -371,7 +372,9 @@ class _RewardsPageState extends State<RewardsPage> {
                   ),
                 )
               : TableRowInkWell(
-                  onTap: () {},
+                  onTap: () {
+                    _showStatusHint(item);
+                  },
                   child: Container(
                     alignment: const Alignment(1, 0),
                     padding: const EdgeInsets.only(
@@ -387,6 +390,43 @@ class _RewardsPageState extends State<RewardsPage> {
                   ),
                 ),
         ]);
+  }
+
+  void _showStatusHint(RewardsItem item) {
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            // TODO(yurii): localization
+            title: const Text('Rewards status:'),
+            contentPadding: const EdgeInsets.only(
+              left: 25,
+              right: 25,
+              top: 25,
+              bottom: 15,
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(item.error['long']),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: () {
+                        dialogBloc.closeDialog(context);
+                      },
+                      // TODO(yurii): localization
+                      child: const Text('Ok'),
+                    )
+                  ],
+                )
+              ],
+            ),
+          );
+        });
   }
 
   String _formatTimeLeft(Duration duration) {
