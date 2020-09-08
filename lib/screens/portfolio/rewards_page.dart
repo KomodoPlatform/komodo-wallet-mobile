@@ -124,9 +124,9 @@ class _RewardsPageState extends State<RewardsPage> {
           const SizedBox(width: 12),
           Expanded(
               child: Opacity(
-            opacity: total == 0 || rewardsProvider.claimInProgress ? 0.6 : 1,
+            opacity: total <= 0 || rewardsProvider.claimInProgress ? 0.6 : 1,
             child: PrimaryButton(
-              onPressed: total == 0 || rewardsProvider.claimInProgress
+              onPressed: total <= 0 || rewardsProvider.claimInProgress
                   ? null
                   : () {
                       rewardsProvider.receive();

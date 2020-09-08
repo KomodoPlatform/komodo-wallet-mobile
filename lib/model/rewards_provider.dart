@@ -16,23 +16,15 @@ class RewardsProvider extends ChangeNotifier {
   }
 
   List<RewardsItem> _rewards;
+  double _total = 0.0;
 
   bool claimInProgress = false;
   bool updateInProgress = false;
   String errorMessage;
   String successMessage;
 
-  List<RewardsItem> get rewards {
-    return _rewards;
-  }
-
-  double get total {
-    double t = 0;
-    for (RewardsItem item in _rewards) {
-      t += item.reward ?? 0.0;
-    }
-    return t;
-  }
+  List<RewardsItem> get rewards => _rewards;
+  double get total => _total;
 
   bool get needClaim {
     if (_rewards == null) return false;
@@ -52,7 +44,34 @@ class RewardsProvider extends ChangeNotifier {
     return false;
   }
 
-  Future<void> update() => _updateInfo();
+  Future<void> update() async {
+    await _updateInfo();
+    await _updateTotal();
+  }
+
+  Future<void> _updateTotal() async {
+    dynamic res;
+    try {
+      res = await ApiProvider().postWithdraw(
+          MMService().client,
+          GetWithdraw(
+            userpass: MMService().userpass,
+            coin: 'KMD',
+            to: _kmdBalance().balance.address,
+            max: true,
+          ));
+    } catch (e) {
+      Log('rewards_provider', '_updateTotal] $e');
+    }
+
+    if (res is WithdrawResponse) {
+      _total = double.parse(res.myBalanceChange);
+    } else {
+      _total = 0.0;
+    }
+
+    notifyListeners();
+  }
 
   Future<void> _updateInfo() async {
     if (updateInProgress) return;
@@ -83,12 +102,6 @@ class RewardsProvider extends ChangeNotifier {
     successMessage = null;
     notifyListeners();
 
-    final CoinBalance kmd = coinsBloc.coinBalance.firstWhere(
-        (balance) => balance.coin.abbr == 'KMD',
-        orElse: () => null);
-
-    if (kmd == null) return;
-
     dynamic res;
     try {
       res = await ApiProvider().postWithdraw(
@@ -96,7 +109,7 @@ class RewardsProvider extends ChangeNotifier {
           GetWithdraw(
             userpass: MMService().userpass,
             coin: 'KMD',
-            to: kmd.balance.address,
+            to: _kmdBalance().balance.address,
             max: true,
           ));
     } catch (e) {
@@ -138,6 +151,12 @@ class RewardsProvider extends ChangeNotifier {
     // TODO(yurii): verbose error message
     errorMessage = 'Something went wrong. Please try again later.';
     notifyListeners();
+  }
+
+  CoinBalance _kmdBalance() {
+    return coinsBloc.coinBalance.firstWhere(
+        (balance) => balance.coin.abbr == 'KMD',
+        orElse: () => null);
   }
 }
 
