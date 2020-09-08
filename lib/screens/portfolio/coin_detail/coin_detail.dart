@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -26,10 +24,10 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_address_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
+import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
@@ -48,128 +46,6 @@ class CoinDetail extends StatefulWidget {
 
   @override
   _CoinDetailState createState() => _CoinDetailState();
-
-  void showDialogClaim(BuildContext mContext) {
-    dialogBloc.dialog = showDialog<dynamic>(
-        context: mContext,
-        builder: (BuildContext context) {
-          return Dialog(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const CircularProgressIndicator(),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Text(AppLocalizations.of(context).loading),
-                ],
-              ),
-            ),
-          );
-        }).then((dynamic _) {
-      dialogBloc.dialog = null;
-    });
-
-    ApiProvider()
-        .postWithdraw(
-            MMService().client,
-            GetWithdraw(
-                userpass: MMService().userpass,
-                fee: null,
-                coin: coinBalance.coin.abbr,
-                to: coinBalance.balance.address,
-                amount: (Decimal.parse(coinBalance.balance.getBalance()) -
-                        (Decimal.parse(coinBalance.coin.txfee.toString()) /
-                            Decimal.parse('100000000')))
-                    .toString(),
-                max: true))
-        .then((dynamic data) {
-      Navigator.of(mContext).pop();
-      if (data is WithdrawResponse) {
-        Log.println('coin_detail:83', data.myBalanceChange);
-        if (double.parse(data.myBalanceChange) > 0) {
-          dialogBloc.dialog = showDialog<dynamic>(
-            context: mContext,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(AppLocalizations.of(context).claimTitle),
-                content: Text(AppLocalizations.of(context).youWillReceiveClaim(
-                    data.myBalanceChange.toString(), coinBalance.coin.abbr)),
-                actions: <Widget>[
-                  FlatButton(
-                    child:
-                        Text(AppLocalizations.of(context).close.toUpperCase()),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  RaisedButton(
-                    child: Text(
-                        AppLocalizations.of(context).confirm.toUpperCase(),
-                        style: Theme.of(context).textTheme.button),
-                    onPressed: () {
-                      ApiProvider()
-                          .postRawTransaction(
-                              MMService().client,
-                              GetSendRawTransaction(
-                                  method: 'send_raw_transaction',
-                                  coin: coinBalance.coin.abbr,
-                                  txHex: data.txHex))
-                          .then((dynamic dataRawTx) {
-                        if (dataRawTx is SendRawTransactionResponse) {
-                          Navigator.of(context).pop();
-                          dialogBloc.dialog = showDialog<dynamic>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                      AppLocalizations.of(context).success),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text(AppLocalizations.of(context)
-                                          .close
-                                          .toUpperCase()),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              }).then((dynamic _) {
-                            dialogBloc.dialog = null;
-                          });
-                        }
-                      }).catchError((dynamic onError) {
-                        generateSnackBar(mContext,
-                            AppLocalizations.of(mContext).errorTryLater);
-                      });
-                    },
-                  )
-                ],
-              );
-            },
-          ).then((dynamic _) {
-            dialogBloc.dialog = null;
-          });
-        } else {
-          generateSnackBar(mContext, AppLocalizations.of(mContext).noRewardYet);
-        }
-      } else {
-        generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
-      }
-    }).catchError((dynamic onError) {
-      generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
-    });
-  }
-
-  void generateSnackBar(BuildContext mContext, String text) {
-    Scaffold.of(mContext).showSnackBar(SnackBar(
-      duration: const Duration(seconds: 2),
-      content: Text(text),
-    ));
-  }
 }
 
 class _CoinDetailState extends State<CoinDetail> {
@@ -813,7 +689,12 @@ class _CoinDetailState extends State<CoinDetail> {
             SecondaryButton(
               text: text,
               onPressed: () {
-                widget.showDialogClaim(mContext);
+                rewardsProvider.update();
+                Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => RewardsPage()),
+                );
               },
             ),
             if (rewardsProvider.needClaim)
