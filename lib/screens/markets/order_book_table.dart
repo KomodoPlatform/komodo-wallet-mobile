@@ -288,8 +288,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
   }
 
   TableRow _buildCexRate() {
-    final double cexRate =
-        cexProvider.getCexRate(orderBookProvider.activePair) ?? 0.0;
+    final double cexRate = cexProvider.getCexRate() ?? 0.0;
 
     return TableRow(
       children: [

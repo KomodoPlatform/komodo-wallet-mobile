@@ -175,17 +175,7 @@ class SwapBloc implements BlocBase {
     if (currentAmountSell == null) return null;
     if (currentAmountBuy == null || currentAmountBuy == 0) return null;
 
-    return currentAmountSell / currentAmountBuy;
-  }
-
-  double getCExchangeRate() {
-    if (buyCoinBalance?.priceForOne == null ||
-        double.parse(buyCoinBalance.priceForOne) == 0) return null;
-    if (sellCoinBalance?.priceForOne == null ||
-        double.parse(sellCoinBalance.priceForOne) == 0) return null;
-
-    return double.parse(buyCoinBalance.priceForOne) /
-        double.parse(sellCoinBalance.priceForOne);
+    return currentAmountBuy / currentAmountSell;
   }
 
   void setFocusTextField(bool focus) {

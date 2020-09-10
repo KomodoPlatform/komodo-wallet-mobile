@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 
 class ReceiveOrdersChart extends StatefulWidget {
   const ReceiveOrdersChart({
-    this.asksList,
+    this.ordersList,
     this.sellAmount,
     this.lineHeight,
   });
 
-  final List<Ask> asksList;
+  final List<Ask> ordersList;
   final double sellAmount;
   final double lineHeight;
 
@@ -53,8 +53,8 @@ class _ChartPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..color = Colors.green.withAlpha(70);
 
-    for (int i = 0; i < widget.asksList.length; i++) {
-      final Ask ask = widget.asksList[i];
+    for (int i = 0; i < widget.ordersList.length; i++) {
+      final Ask ask = widget.ordersList[i];
       double barWidth = _baseVolume(ask) * baseVolumeRatio;
       if (barWidth < 1) barWidth = 1;
 
@@ -90,7 +90,7 @@ class _ChartPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 
   List<double> _baseVolumes() {
-    return widget.asksList.map((ask) => _baseVolume(ask)).toList();
+    return widget.ordersList.map((ask) => _baseVolume(ask)).toList();
   }
 
   double _baseVolume(Ask ask) {

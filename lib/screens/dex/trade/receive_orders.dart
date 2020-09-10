@@ -241,7 +241,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                       right: 6,
                                       bottom: 0,
                                       child: ReceiveOrdersChart(
-                                        asksList: bidsList,
+                                        ordersList: bidsList,
                                         sellAmount: widget.sellAmount,
                                         lineHeight: lineHeight,
                                       ),
@@ -289,7 +289,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                             ),
                                             child: Text(
                                               '${AppLocalizations.of(context).receive.toLowerCase()}'
-                                              ' (${widget.baseCoin})',
+                                              ' ($relCoin)',
                                               textAlign: TextAlign.right,
                                               style: Theme.of(context)
                                                   .textTheme
@@ -318,11 +318,7 @@ class _AsksOrderState extends State<AsksOrder> {
   }
 
   Widget _buildCexRate() {
-    final double cexRate = cexProvider.getCexRate(CoinsPair(
-          sell: coinsBloc.getCoinByAbbr(widget.baseCoin),
-          buy: orderBookProvider.activePair.sell,
-        )) ??
-        0.0;
+    final double cexRate = cexProvider.getCexRate() ?? 0.0;
 
     if (cexRate == 0.0) return Container();
 
@@ -449,14 +445,48 @@ class _AsksOrderState extends State<AsksOrder> {
     widget.onCreateOrder(ask);
   }
 
-  void _showDetails(Ask ask) {
+  void _showDetails(Ask bid) {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (context) {
           return SimpleDialog(
-            title: const Text('Order details'),
+            // TODO(yurii): localization
+            title: const Text('Details'),
+            titlePadding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: 20,
+              bottom: 4,
+            ),
+            contentPadding: const EdgeInsets.only(
+              left: 8,
+              right: 0,
+              bottom: 20,
+            ),
             children: <Widget>[
-              BuildOrderDetails(ask),
+              BuildOrderDetails(
+                bid,
+                sellAmount: widget.sellAmount,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () => dialogBloc.closeDialog(context),
+                    // TODO(yurii): localization
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 12),
+                  RaisedButton(
+                    onPressed: () {
+                      dialogBloc.closeDialog(context);
+                      _createOrder(bid);
+                    },
+                    // TODO(yurii): localization
+                    child: const Text('Select'),
+                  )
+                ],
+              )
             ],
           );
         });
