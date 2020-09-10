@@ -82,7 +82,7 @@ class OrderbookItem extends StatelessWidget {
         );
 
         if (orderbook.bids.isEmpty) {
-          onCreateNoOrder(orderbook.base);
+          onCreateNoOrder(orderbook.rel);
           Navigator.pop(context);
         } else {
           Navigator.pushReplacement<dynamic, dynamic>(
