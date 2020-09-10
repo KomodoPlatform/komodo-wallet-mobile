@@ -116,10 +116,13 @@ class CoinsBloc implements BlocBase {
   }
 
   Coin getCoinByAbbr(String abbr) {
-    return coinBalance
-        .firstWhere((CoinBalance balance) => balance.coin.abbr == abbr,
-            orElse: () => null)
-        ?.coin;
+    return getBalanceByAbbr(abbr)?.coin;
+  }
+
+  CoinBalance getBalanceByAbbr(String abbr) {
+    return coinBalance.firstWhere(
+        (CoinBalance balance) => balance.coin.abbr == abbr,
+        orElse: () => null);
   }
 
   Future<void> initCoinBeforeActivation() async {

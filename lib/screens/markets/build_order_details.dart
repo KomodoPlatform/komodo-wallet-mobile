@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -44,22 +45,46 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
         top: 12,
         bottom: 24,
       ),
-      child: Table(
-        columnWidths: const {
-          0: IntrinsicColumnWidth(),
-          1: FlexColumnWidth(1.0),
-        },
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: [
-          ..._buildSellDetails(),
-          ..._buildContact(),
-          ..._buildOrderDetails(),
-          const TableRow(children: [
-            SizedBox(height: 15),
-            SizedBox(height: 15),
-          ]),
-          ..._buildPrice(),
+      child: Column(
+        children: <Widget>[
+          _buildOwnerWarning(),
+          Table(
+            columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              1: FlexColumnWidth(1.0),
+            },
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            children: [
+              ..._buildSellDetails(),
+              ..._buildContact(),
+              ..._buildOrderDetails(),
+              const TableRow(children: [
+                SizedBox(height: 15),
+                SizedBox(height: 15),
+              ]),
+              ..._buildPrice(),
+            ],
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildOwnerWarning() {
+    final String orderAdress = widget.order.address;
+    final String myAddress =
+        coinsBloc.getBalanceByAbbr(widget.order.coin)?.balance?.address;
+
+    if (orderAdress.toLowerCase() != myAddress.toLowerCase())
+      return Container();
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      alignment: Alignment.centerLeft,
+      child: Text(
+        '⬤ This is your own order!',
+        style:
+            TextStyle(color: _isAsk ? Colors.red : Colors.green, fontSize: 20),
       ),
     );
   }

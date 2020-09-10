@@ -141,6 +141,15 @@ class _OrderBookTableState extends State<OrderBookTable> {
                         color: Colors.white.withAlpha(150),
                       ),
                     ),
+                  if (bid.isMine())
+                    Container(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.brightness_1,
+                        size: 11,
+                        color: Colors.green.withAlpha(150),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -228,6 +237,15 @@ class _OrderBookTableState extends State<OrderBookTable> {
                         Icons.account_circle,
                         size: 11,
                         color: Colors.white.withAlpha(150),
+                      ),
+                    ),
+                  if (ask.isMine())
+                    Container(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.brightness_1,
+                        size: 11,
+                        color: Colors.red.withAlpha(150),
                       ),
                     ),
                 ],

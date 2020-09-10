@@ -379,6 +379,15 @@ class _AsksOrderState extends State<AsksOrder> {
                           color: Colors.white.withAlpha(150),
                         ),
                       ),
+                    if (bid.isMine())
+                      Container(
+                        padding: const EdgeInsets.only(left: 2),
+                        child: Icon(
+                          Icons.brightness_1,
+                          size: 11,
+                          color: Colors.green.withAlpha(150),
+                        ),
+                      ),
                   ],
                 ),
               ],
