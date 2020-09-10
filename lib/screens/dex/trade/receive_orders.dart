@@ -81,7 +81,7 @@ class OrderbookItem extends StatelessWidget {
           buy: coinsBloc.getCoinByAbbr(orderbook.rel),
         );
 
-        if (orderbook.asks.isEmpty) {
+        if (orderbook.bids.isEmpty) {
           onCreateNoOrder(orderbook.base);
           Navigator.pop(context);
         } else {
@@ -306,7 +306,7 @@ class _AsksOrderState extends State<AsksOrder> {
                               ),
                         CreateOrder(
                           onCreateNoOrder: widget.onCreateNoOrder,
-                          baseCoin: widget.baseCoin,
+                          coin: relCoin,
                         )
                       ],
                     ),
@@ -552,9 +552,9 @@ class AskItem extends StatelessWidget {
 }
 
 class CreateOrder extends StatelessWidget {
-  const CreateOrder({this.onCreateNoOrder, this.baseCoin});
+  const CreateOrder({this.onCreateNoOrder, this.coin});
   final Function(String) onCreateNoOrder;
-  final String baseCoin;
+  final String coin;
 
   @override
   Widget build(BuildContext context) {
@@ -562,7 +562,7 @@ class CreateOrder extends StatelessWidget {
       padding: const EdgeInsets.only(top: 16),
       child: InkWell(
         onTap: () {
-          onCreateNoOrder(baseCoin);
+          onCreateNoOrder(coin);
           Navigator.of(context).pop();
         },
         child: Padding(
