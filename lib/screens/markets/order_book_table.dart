@@ -78,7 +78,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 4),
           child: Text(
-            'Price (${orderBookProvider.activePair.sell.abbr})',
+            'Price (${orderBookProvider.activePair.buy.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -87,7 +87,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            'Amt. (${orderBookProvider.activePair.buy.abbr})',
+            'Amt. (${orderBookProvider.activePair.sell.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -97,7 +97,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            'Total (${orderBookProvider.activePair.buy.abbr})',
+            'Total (${orderBookProvider.activePair.sell.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ), // TODO(yurii): localization
