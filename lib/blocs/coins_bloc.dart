@@ -239,6 +239,8 @@ class CoinsBloc implements BlocBase {
       }
 
       if (transactions is Transactions) {
+        transactions.camouflageIfNeeded();
+
         if (fromId == null || fromId.isEmpty) {
           this.transactions = transactions;
         } else {
@@ -301,6 +303,7 @@ class CoinsBloc implements BlocBase {
           balance: deci(acc.balance),
           lockedBySwaps: deci(acc.lockedBySwaps),
           coin: acc.coin);
+      bal.camouflageIfNeeded();
       final cb = CoinBalance(coin, bal);
       // TODO(AG): Load previous USD balance from database
       cb.balanceUSD = 0;

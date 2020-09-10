@@ -69,7 +69,6 @@ class _OrderBookPageState extends State<OrderBookPage> {
     return Container(
       child: Card(
         elevation: 8,
-        color: Theme.of(context).primaryColor,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Row(
