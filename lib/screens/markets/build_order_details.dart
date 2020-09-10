@@ -24,7 +24,6 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
 
     return Card(
       elevation: 8,
-      color: Theme.of(context).primaryColor,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.only(

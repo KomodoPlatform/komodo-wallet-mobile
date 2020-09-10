@@ -32,6 +32,12 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
   }
 
   @override
+  void dispose() {
+    animationController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: animationController.drive(CurveTween(curve: Curves.easeOut)),

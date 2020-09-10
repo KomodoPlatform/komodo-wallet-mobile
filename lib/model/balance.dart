@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:decimal/decimal.dart';
 
@@ -34,5 +35,10 @@ class Balance {
       };
 
   String getBalance() => deci2s(balance);
-  String getRealBalance() => deci2s (balance - lockedBySwaps);
+  String getRealBalance() => deci2s(balance - lockedBySwaps);
+
+  void camouflageIfNeeded() {
+    if (!camoBloc.isCamoActive) return;
+    camoBloc.camouflageBalance(this);
+  }
 }

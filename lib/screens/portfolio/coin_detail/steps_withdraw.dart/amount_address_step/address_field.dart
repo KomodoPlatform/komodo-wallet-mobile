@@ -35,10 +35,12 @@ class _AddressFieldState extends State<AddressField> {
   @override
   Widget build(BuildContext context) {
     addressBookProvider = Provider.of<AddressBookProvider>(context);
-    if (addressBookProvider.clipboard != null) {
-      widget.controller.text = addressBookProvider.clipboard;
-      addressBookProvider.clipboard = null;
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (addressBookProvider.clipboard != null) {
+        widget.controller.text = addressBookProvider.clipboard;
+        addressBookProvider.clipboard = null;
+      }
+    });
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -102,7 +104,6 @@ class _AddressFieldState extends State<AddressField> {
               ),
               // The validator receives the text the user has typed in
               validator: (String value) {
-                print(coinsDetailBloc.isCancel);
                 if (value.isEmpty && coinsDetailBloc.isCancel) {
                   return null;
                 }

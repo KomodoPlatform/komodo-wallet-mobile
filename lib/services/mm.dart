@@ -170,7 +170,10 @@ class ApiProvider {
       final error = ErrorString.fromJson(jbody);
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
-      return Balance.fromJson(jbody);
+      final Balance balance = Balance.fromJson(jbody);
+      balance.camouflageIfNeeded();
+
+      return balance;
     } catch (e) {
       throw _catchErrorString(
           'getBalance', e, 'Error getting ${gb.coin} balance');
