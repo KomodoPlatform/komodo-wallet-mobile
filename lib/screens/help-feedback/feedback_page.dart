@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
-class TicketPage extends StatefulWidget {
+class FeedbackPage extends StatefulWidget {
   @override
-  _TicketPageState createState() => _TicketPageState();
+  _FeedbackPageState createState() => _FeedbackPageState();
 }
 
-class _TicketPageState extends State<TicketPage> {
+class _FeedbackPageState extends State<FeedbackPage> {
   final subjectController = TextEditingController();
+  final emailAddressController = TextEditingController();
   final descriptionController = TextEditingController();
 
   Future<void> _send() async {
@@ -26,6 +27,7 @@ class _TicketPageState extends State<TicketPage> {
     // Create our message.
 
     const recipientAddress = '******';
+    // TODO(MateusRodCosta): Add user email to the message
 
     final message = Message()
       ..from = Address(username, 'AtomicDEX test')
@@ -45,13 +47,22 @@ class _TicketPageState extends State<TicketPage> {
   }
 
   @override
+  void dispose() {
+    subjectController.dispose();
+    emailAddressController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tickets'),
+        title: const Text('Send Feedback'),
         actions: <Widget>[IconButton(icon: Icon(Icons.send), onPressed: _send)],
       ),
       body: Column(
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           TextField(
             controller: subjectController,
@@ -61,12 +72,25 @@ class _TicketPageState extends State<TicketPage> {
             ),
           ),
           TextField(
-            controller: descriptionController,
+            controller: emailAddressController,
             decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Description',
+              border: const OutlineInputBorder(),
+              labelText: 'Email Address',
             ),
           ),
+          Expanded(
+            child: TextField(
+              keyboardType: TextInputType.multiline,
+              minLines: null,
+              maxLines: null,
+              controller: descriptionController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Description',
+              ),
+            ),
+          ),
+          Text('For your convenience logs will be attached'),
         ],
       ),
     );
