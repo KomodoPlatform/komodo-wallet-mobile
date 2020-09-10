@@ -13,9 +13,12 @@ class SettingsBloc implements BlocBase {
     _loadPrefs();
   }
 
+  SharedPreferences _prefs;
+
   Future<void> _loadPrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    showBalance = prefs.getBool('showBalance') ?? showBalance;
+    _prefs = await SharedPreferences.getInstance();
+
+    showBalance = _prefs.getBool('showBalance') ?? showBalance;
   }
 
   bool isDeleteLoading = true;
@@ -34,6 +37,7 @@ class SettingsBloc implements BlocBase {
   @override
   void dispose() {
     _isDeleteLoadingController.close();
+    _showBalanceController?.close();
   }
 
   void setDeleteLoading(bool isLoading) {
@@ -78,11 +82,6 @@ class SettingsBloc implements BlocBase {
   void setShowBalance(bool val) {
     showBalance = val;
     _inShowBalance.add(val);
-    _saveBalancePref(val);
-  }
-
-  Future<void> _saveBalancePref(bool pref) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('showBalance', pref);
+    _prefs.setBool('showBalance', val);
   }
 }

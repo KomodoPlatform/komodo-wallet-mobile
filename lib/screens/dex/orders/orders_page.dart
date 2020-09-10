@@ -54,7 +54,6 @@ class _OrdersPageState extends State<OrdersPage> {
 
   Widget _buildItemOrder(Order order) {
     return Card(
-      color: Theme.of(context).primaryColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
