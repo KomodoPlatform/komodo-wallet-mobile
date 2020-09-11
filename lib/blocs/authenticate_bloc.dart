@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/media_bloc.dart';
@@ -137,6 +138,10 @@ class AuthenticateBloc extends BlocBase {
     await prefs.setBool('isPinIsSet', false);
     await prefs.setBool('isPassphraseIsSaved', false);
 
+    camoBloc.isCamoActive = false;
+    await EncryptionTool().delete('camoPin');
+    camoBloc.isCamoEnabled = false;
+
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');
     coinsBloc.resetCoinBalance();
@@ -163,6 +168,8 @@ class AuthenticateBloc extends BlocBase {
 enum PinStatus {
   CREATE_PIN,
   CONFIRM_PIN,
+  CREATE_CAMO_PIN,
+  CONFIRM_CAMO_PIN,
   DISABLED_PIN,
   CHANGE_PIN,
   NORMAL_PIN,

@@ -28,6 +28,7 @@ ThemeData getTheme() => ThemeData(
       disabledColor: const Color.fromRGBO(201, 201, 201, 1),
       buttonColor: const Color.fromRGBO(39, 68, 108, 1),
       textSelectionHandleColor: const Color.fromRGBO(57, 161, 238, 1),
+      cardColor: primaryColor,
       textTheme: TextTheme(
           headline: TextStyle(
               fontSize: 40, fontWeight: FontWeight.w700, color: Colors.white),
