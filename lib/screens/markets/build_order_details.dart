@@ -81,10 +81,22 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       alignment: Alignment.centerLeft,
-      child: Text(
-        '⬤ This is your own order!',
-        style:
-            TextStyle(color: _isAsk ? Colors.red : Colors.green, fontSize: 20),
+      child: RichText(
+        text: TextSpan(children: [
+          WidgetSpan(
+              alignment: PlaceholderAlignment.top,
+              child: Icon(
+                Icons.brightness_1,
+                size: 13,
+                color: _isAsk ? Colors.red : Colors.green,
+              )),
+          TextSpan(
+            // TODO(yurii): localization
+            text: ' This is your own order!',
+            style: TextStyle(
+                color: _isAsk ? Colors.red : Colors.green, fontSize: 20),
+          ),
+        ]),
       ),
     );
   }
