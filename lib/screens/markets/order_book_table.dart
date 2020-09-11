@@ -363,7 +363,8 @@ class _OrderBookTableState extends State<OrderBookTable> {
                           ),
                           Text(
                             '≈ ${cexProvider.convert(cexRate, from: orderBookProvider.activePair.buy.abbr)}',
-                            style: TextStyle(color: cexColor, fontSize: 14),
+                            style:
+                                const TextStyle(color: cexColor, fontSize: 14),
                           ),
                         ],
                       ),
