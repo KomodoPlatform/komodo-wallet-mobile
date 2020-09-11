@@ -313,42 +313,60 @@ class _OrderBookTableState extends State<OrderBookTable> {
         cexRate > 0
             ? Container(
                 height: 26,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: Stack(
+                  overflow: Overflow.visible,
                   children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: cexColor.withAlpha(50),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(4)),
-                      ),
-                      padding: const EdgeInsets.only(
-                        left: 4,
-                        right: 4,
-                        top: 2,
-                        bottom: 2,
-                      ),
+                    Positioned(
+                      top: 0,
+                      bottom: 0,
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              color: cexColor.withAlpha(50),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(4)),
+                            ),
+                            padding: const EdgeInsets.only(
+                              left: 4,
+                              right: 4,
+                              top: 2,
+                              bottom: 2,
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  formatPrice(cexRate),
+                                  maxLines: 1,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle
+                                      .copyWith(
+                                        color: cexColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w100,
+                                      ),
+                                ),
+                                const SizedBox(
+                                  width: 2,
+                                ),
+                                CexMarker(
+                                  context,
+                                  size: const Size.fromHeight(12),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 2,
+                          ),
                           Text(
-                            formatPrice(cexRate),
-                            maxLines: 1,
-                            style:
-                                Theme.of(context).textTheme.subtitle.copyWith(
-                                      color: cexColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w100,
-                                    ),
+                            '≈ ${cexProvider.convert(cexRate, from: orderBookProvider.activePair.buy.abbr)}',
+                            style: TextStyle(color: cexColor, fontSize: 14),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(
-                      width: 2,
-                    ),
-                    CexMarker(
-                      context,
-                      size: const Size.fromHeight(12),
                     ),
                   ],
                 ),

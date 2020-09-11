@@ -473,7 +473,6 @@ class CexPrices {
     if (from == null || to == null) return '';
 
     final double fromUsdPrice = getUsdPrice(from);
-    final double usdVolume = volume * fromUsdPrice;
     double convertedVolume;
     if (from == to) {
       convertedVolume = volume;
@@ -485,7 +484,7 @@ class CexPrices {
       final double toUsdPrice = getUsdPrice(to);
       if (toUsdPrice != null && toUsdPrice != 0.00) {
         convertionPrice ??= fromUsdPrice / toUsdPrice;
-        convertedVolume = usdVolume * convertionPrice;
+        convertedVolume = volume * convertionPrice;
       } else {
         convertedVolume = 0.00;
       }
