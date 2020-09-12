@@ -10,7 +10,6 @@ import 'package:komodo_dex/screens/help-feedback/help_page.dart';
 import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
-import 'package:komodo_dex/screens/help-feedback/feedback_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';

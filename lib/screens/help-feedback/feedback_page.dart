@@ -66,15 +66,15 @@ class _FeedbackPageState extends State<FeedbackPage> {
         children: <Widget>[
           TextField(
             controller: subjectController,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               labelText: 'Subject',
             ),
           ),
           TextField(
             controller: emailAddressController,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
               labelText: 'Email Address',
             ),
           ),
@@ -84,13 +84,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
               minLines: null,
               maxLines: null,
               controller: descriptionController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Description',
               ),
             ),
           ),
-          Text('For your convenience logs will be attached'),
+          const Text('For your convenience logs will be attached'),
         ],
       ),
     );
