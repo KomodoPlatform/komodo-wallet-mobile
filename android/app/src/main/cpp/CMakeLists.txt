@@ -9,5 +9,6 @@ add_library(mm2-lib SHARED mm2_native.cpp)
 
 target_link_libraries(mm2-lib
     # TODO consider using ${CMAKE_PREFIX_PATH}
-    ${CMAKE_SOURCE_DIR}/libmm2.a ${log-lib}
+    ${CMAKE_SOURCE_DIR}/libmm2.a
+    ${log-lib}
 )
