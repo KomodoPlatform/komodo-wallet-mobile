@@ -386,29 +386,33 @@ class MMService {
         .receiveBroadcastStream()
         .listen(_onNativeLog, onError: _onNativeLogError);
 
-    if (Platform.isAndroid) {
-      await stopmm2();
-      await waitUntilMM2isStop();
-
-      await File('${filesPath}MM2.json').writeAsString(startParam);
-
+    // if (Platform.isAndroid) {
+    //   await stopmm2();
+    //   await waitUntilMM2isStop();
+    //
+    //   await File('${filesPath}MM2.json').writeAsString(startParam);
+    //
+    //   try {
+    //     await initCheckLogs();
+    //     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    //     Process.run('./mm2', <String>[],
+    //             environment: <String, String>{'MM_LOG': '${filesPath}mm.log'},
+    //             workingDirectory: filesPath)
+    //         .then((ProcessResult onValue) {
+    //       prefs.setInt('mm2ProcessPID', onValue.pid);
+    //     });
+    //   } catch (e) {
+    //     print(e);
+    //     rethrow;
+    //   }
+    // } else if (Platform.isIOS) {
       try {
-        await initCheckLogs();
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        Process.run('./mm2', <String>[],
-                environment: <String, String>{'MM_LOG': '${filesPath}mm.log'},
-                workingDirectory: filesPath)
-            .then((ProcessResult onValue) {
-          prefs.setInt('mm2ProcessPID', onValue.pid);
-        });
-      } catch (e) {
-        print(e);
-        rethrow;
-      }
-    } else if (Platform.isIOS) {
-      try {
-        await nativeC.invokeMethod<dynamic>(
+        final int errorCode = await nativeC.invokeMethod<dynamic>(
             'start', <String, String>{'params': startParam}); //start mm2
+        final Mm2Error error = mm2ErrorFrom(errorCode);
+        if (error != Mm2Error.ok) {
+          throw Exception('Error on start mm2: $error');
+        }
 
         // check when mm2 is ready then load coins
         final int timerTmp = DateTime.now().millisecondsSinceEpoch;
@@ -420,8 +424,9 @@ class MMService {
           }
 
           checkStatusmm2().then((int onValue) {
-            Log('mm_service:423', 'mm2_main_status: $onValue');
-            if (onValue == 3) {
+            final status = mm2StatusFrom(onValue);
+            Log('mm_service:428', 'mm2_main_status: $status');
+            if (status == Mm2Status.ready) {
               _running = true;
               _.cancel();
               initCoinsAndLoad();
@@ -433,7 +438,7 @@ class MMService {
         print(e);
         rethrow;
       }
-    }
+    // }
   }
 
   void log2file(String chunk, {DateTime now}) {
@@ -464,7 +469,7 @@ class MMService {
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
-    Log('mm_service:467', chunk);
+    Log('mm_service:472', chunk);
 
     final pkr =
         RegExp(r'initialize] netid (\d+) public key (\w+) preferred port');
@@ -492,7 +497,7 @@ class MMService {
     final sending = RegExp(
         r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
     for (RegExpMatch mat in sending.allMatches(chunk)) {
-      //Log('mm_service:495', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:500', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
     }
 
@@ -500,7 +505,7 @@ class MMService {
     // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
     final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
     for (RegExpMatch mat in dashboard.allMatches(chunk)) {
-      //Log('mm_service:503', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:508', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
     }
 
@@ -523,7 +528,7 @@ class MMService {
   }
 
   void _onNativeLogError(Object error) {
-    Log('mm_service:526', error);
+    Log('mm_service:531', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -540,9 +545,9 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
       await coinsBloc.enableCoins(active);
-      Log('mm_service:543', 'All coins activated');
+      Log('mm_service:548', 'All coins activated');
       await coinsBloc.updateCoinBalances();
-      Log('mm_service:545', 'loadCoin finished');
+      Log('mm_service:550', 'loadCoin finished');
     } catch (e) {
       print(e);
     }
@@ -590,7 +595,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:593', 'getAllBalances');
+    Log('mm_service:598', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
@@ -621,4 +626,55 @@ class FileAndSink {
   FileAndSink(this.file, this.sink);
   File file;
   IOSink sink;
+}
+
+/// mm2_main error codes defined in "mm2_lib.rs".
+enum Mm2Error {
+  ok,
+  already_runs,
+  conf_is_null,
+  conf_not_utf8,
+  cant_thread,
+  unknown,
+}
+
+/// mm2_main_status codes defined in "mm2_lib.rs".
+enum Mm2Status {
+  not_running,
+  no_context,
+  no_rpc,
+  ready,
+  unknown,
+}
+
+Mm2Error mm2ErrorFrom(int errorCode) {
+  switch (errorCode) {
+    case 0:
+      return Mm2Error.ok;
+    case 1:
+      return Mm2Error.already_runs;
+    case 2:
+      return Mm2Error.conf_is_null;
+    case 3:
+      return Mm2Error.conf_not_utf8;
+    case 5:
+      return Mm2Error.cant_thread;
+    default:
+      return Mm2Error.unknown;
+  }
+}
+
+Mm2Status mm2StatusFrom(int statusCode) {
+  switch (statusCode) {
+    case 0:
+      return Mm2Status.not_running;
+    case 1:
+      return Mm2Status.no_context;
+    case 2:
+      return Mm2Status.no_rpc;
+    case 3:
+      return Mm2Status.ready;
+    default:
+      return Mm2Status.unknown;
+  }
 }

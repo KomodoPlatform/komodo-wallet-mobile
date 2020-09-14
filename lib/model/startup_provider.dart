@@ -46,11 +46,11 @@ class Startup {
   }
 
   Future<void> _start() async {
-    if (Platform.isAndroid)
-      await mmSe.updateMmBinary((String line) {
-        _log += '\n$line';
-        _notifyListeners();
-      });
+    // if (Platform.isAndroid)
+    //   await mmSe.updateMmBinary((String line) {
+    //     _log += '\n$line';
+    //     _notifyListeners();
+    //   });
 
     // We'd *like* to jump-start MM as part of the initial startup sequence
     // but this is unlikely to happen because the passphrase needs to be unlocked first.

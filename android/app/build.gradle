@@ -39,12 +39,24 @@ android {
 
     defaultConfig {
         applicationId "com.komodoplatform.atomicdex"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         buildConfigField "Long", "BUILD_TIME", "" + System.currentTimeMillis() + "L"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                // mm2_lib.a requires libc++
+                cppFlags "-std=c++17 -stdlib=libc++"
+            }
+        }
+
+        ndk {
+            // mm2_lib.a is compiled for armeabi-v7a
+            abiFilters 'armeabi-v7a'
+        }
     }
 
 
@@ -62,6 +74,12 @@ android {
             signingConfig signingConfigs.release
             shrinkResources false
             minifyEnabled false
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
         }
     }
 }
