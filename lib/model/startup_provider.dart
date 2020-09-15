@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,6 +47,9 @@ class Startup {
   }
 
   Future<void> _start() async {
+    // restore saved camouflage session if any
+    await camoBloc.init();
+
     // We'd *like* to jump-start MM as part of the initial startup sequence
     // but this is unlikely to happen because the passphrase needs to be unlocked first.
     // So invoking this method here might be seen as a wishful thinking.

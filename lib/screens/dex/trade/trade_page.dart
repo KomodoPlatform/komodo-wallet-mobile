@@ -560,7 +560,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 child: Card(
                   elevation: 8,
                   margin: const EdgeInsets.all(8),
-                  color: Theme.of(context).primaryColor,
                   child: Stack(
                     children: <Widget>[
                       Padding(

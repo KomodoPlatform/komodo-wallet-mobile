@@ -525,7 +525,6 @@ class _CoinDetailState extends State<CoinDetail> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Card(
-          color: Theme.of(context).primaryColor,
           elevation: 8.0,
           child: InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
@@ -853,7 +852,6 @@ class _CoinDetailState extends State<CoinDetail> {
             margin:
                 const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
             elevation: 8.0,
-            color: Theme.of(context).primaryColor,
             child: SingleChildScrollView(child: listSteps[currentIndex])),
       ),
     );
