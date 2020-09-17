@@ -192,6 +192,7 @@ class _CoinDetailState extends State<CoinDetail> {
   Timer timer;
   bool isDeleteLoading = false;
   CexProvider cexProvider;
+  bool _shouldRefresh = false;
 
   @override
   void initState() {
@@ -376,7 +377,10 @@ class _CoinDetailState extends State<CoinDetail> {
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
               timer ??= Timer.periodic(const Duration(seconds: 15), (_) {
-                _refresh();
+                // TODO(MateusRodCosta): Fix detection of received tx
+                if (_shouldRefresh) {
+                  _refresh();
+                }
               });
 
               if (tx.result.syncStatus.state == syncState) {
@@ -440,6 +444,7 @@ class _CoinDetailState extends State<CoinDetail> {
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
+                    _shouldRefresh = true;
                     return const Center(child: CircularProgressIndicator());
                   }
                   if (snapshot.data is Transactions) {
@@ -509,6 +514,8 @@ class _CoinDetailState extends State<CoinDetail> {
         ),
       ),
     ));
+
+    _shouldRefresh = false;
 
     return Column(
       children: transactionsWidget,
