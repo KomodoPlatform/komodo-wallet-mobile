@@ -45,7 +45,7 @@ class _ChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    double maxBaseVolume = _baseVolumes().reduce(max);
+    double maxBaseVolume = _volumes().reduce(max);
     if (maxBaseVolume < widget.sellAmount) maxBaseVolume = widget.sellAmount;
     final double baseVolumeRatio = size.width / maxBaseVolume;
 
@@ -55,7 +55,7 @@ class _ChartPainter extends CustomPainter {
 
     for (int i = 0; i < widget.ordersList.length; i++) {
       final Ask ask = widget.ordersList[i];
-      double barWidth = _baseVolume(ask) * baseVolumeRatio;
+      double barWidth = ask.maxvolume.toDouble() * baseVolumeRatio;
       if (barWidth < 1) barWidth = 1;
 
       canvas.drawRect(
@@ -67,33 +67,12 @@ class _ChartPainter extends CustomPainter {
           ),
           paint);
     }
-
-    paint
-      ..color = Colors.green.withAlpha(200)
-      ..strokeWidth = 1;
-
-    double sellVolumeWidth = widget.sellAmount * baseVolumeRatio;
-    if (sellVolumeWidth < 1) sellVolumeWidth = 1;
-    final double sellVolumeX = size.width - sellVolumeWidth;
-    double startY = -5;
-    while (startY < size.height + 6) {
-      canvas.drawLine(
-        Offset(sellVolumeX, startY),
-        Offset(sellVolumeX, startY + 3),
-        paint,
-      );
-      startY += 6;
-    }
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 
-  List<double> _baseVolumes() {
-    return widget.ordersList.map((ask) => _baseVolume(ask)).toList();
-  }
-
-  double _baseVolume(Ask ask) {
-    return ask.maxvolume.toDouble() * double.parse(ask.price);
+  List<double> _volumes() {
+    return widget.ordersList.map((ask) => ask.maxvolume.toDouble()).toList();
   }
 }
