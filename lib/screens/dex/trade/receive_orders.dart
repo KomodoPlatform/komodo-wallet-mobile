@@ -385,12 +385,14 @@ class _AsksOrderState extends State<AsksOrder> {
                       ),
                 ),
                 if (addressBookProvider.contactByAddress(bid.address) != null)
-                  Container(
-                    padding: const EdgeInsets.only(left: 2),
-                    child: Icon(
-                      Icons.account_circle,
-                      size: 11,
-                      color: Colors.white.withAlpha(150),
+                  Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 11,
+                        color: Colors.white.withAlpha(150),
+                      ),
                     ),
                   ),
                 if (bid.isMine())

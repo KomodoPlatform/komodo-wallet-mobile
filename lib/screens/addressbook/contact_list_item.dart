@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
 
@@ -138,7 +139,13 @@ class _ContactListItemState extends State<ContactListItem> {
                     child: Row(
                       children: <Widget>[
                         Flexible(
-                          child: _truncateMiddle(value),
+                          child: truncateMiddle(
+                            value,
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                         Icon(
                           Icons.chevron_right,
@@ -175,39 +182,6 @@ class _ContactListItemState extends State<ContactListItem> {
 
     return Column(
       children: addresses,
-    );
-  }
-
-  Widget _truncateMiddle(String string) {
-    if (string.length < 6)
-      return Text(
-        string,
-        style: TextStyle(
-          color: Theme.of(context).accentColor,
-          fontSize: 14,
-        ),
-      );
-
-    return Row(
-      children: <Widget>[
-        Flexible(
-          child: Text(
-            string.substring(0, string.length - 5),
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Text(
-          string.substring(string.length - 5),
-          style: TextStyle(
-            color: Theme.of(context).accentColor,
-            fontSize: 14,
-          ),
-        )
-      ],
     );
   }
 

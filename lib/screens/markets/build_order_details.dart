@@ -56,7 +56,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: [
               ..._buildSellDetails(),
-              ..._buildContact(),
+              ..._buildAddress(),
               ..._buildOrderDetails(),
               const TableRow(children: [
                 SizedBox(height: 15),
@@ -371,9 +371,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     ];
   }
 
-  List<TableRow> _buildContact() {
-    if (_contact == null) return [];
-
+  List<TableRow> _buildAddress() {
     return [
       TableRow(
         children: [
@@ -384,35 +382,52 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             child: Text('Address', // TODO(yurii): localization
                 style: Theme.of(context).textTheme.body2),
           ),
-          InkWell(
-            onTap: () {
-              Navigator.push<dynamic>(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                    builder: (BuildContext context) => AddressBookPage(
-                      contact: _contact,
-                    ),
-                  ));
-            },
-            child: Container(
-              padding: const EdgeInsets.only(left: 6),
-              height: 40,
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.account_circle,
-                    size: 14,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    _contact.name,
-                  )
-                ],
-              ),
-            ),
-          ),
+          _contact == null ? _buildAddressButton() : _buildContactButton(),
         ],
       ),
     ];
+  }
+
+  Widget _buildAddressButton() {
+    return InkWell(
+      onTap: () {
+        copyToClipBoard(context, widget.order.address);
+      },
+      child: Container(
+        padding: const EdgeInsets.only(left: 6, right: 12),
+        height: 40,
+        child: truncateMiddle(widget.order.address),
+      ),
+    );
+  }
+
+  Widget _buildContactButton() {
+    return InkWell(
+      onTap: () {
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) => AddressBookPage(
+                contact: _contact,
+              ),
+            ));
+      },
+      child: Container(
+        padding: const EdgeInsets.only(left: 6),
+        height: 40,
+        child: Row(
+          children: <Widget>[
+            Icon(
+              Icons.account_circle,
+              size: 14,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              _contact.name,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
