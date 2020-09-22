@@ -520,6 +520,32 @@ class CoinsBloc implements BlocBase {
 
     return _sorted;
   }
+
+  Future<dynamic> getLatestTransaction(Coin coin) async {
+    const int limit = 1;
+    const String fromId = null;
+    try {
+      dynamic transactions;
+      if (coin.type == 'erc') {
+        transactions = await getErcTransactions.getTransactions(
+            coin: coin, fromId: fromId);
+      } else {
+        transactions = await MM.getTransactions(mmSe.client,
+            GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+      }
+
+      if (transactions is Transactions) {
+        transactions.camouflageIfNeeded();
+
+        return transactions;
+      } else if (transactions is ErrorCode) {
+        return transactions;
+      }
+    } catch (e) {
+      Log('coins_bloc:545', e);
+      rethrow;
+    }
+  }
 }
 
 CoinsBloc coinsBloc = CoinsBloc();

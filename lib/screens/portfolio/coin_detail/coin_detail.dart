@@ -193,6 +193,7 @@ class _CoinDetailState extends State<CoinDetail> {
   bool isDeleteLoading = false;
   CexProvider cexProvider;
   bool _shouldRefresh = false;
+  Transaction latestTransaction;
 
   @override
   void initState() {
@@ -353,6 +354,17 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               _buildForm(),
               _buildHeaderCoinDetail(context),
+              _shouldRefresh
+                  ? RaisedButton(
+                      child: Text('Transaction Updates'),
+                      onPressed: () {
+                        _refresh();
+                        setState(() {
+                          _shouldRefresh = false;
+                        });
+                      },
+                    )
+                  : SizedBox(),
               _buildSyncChain(),
               _buildTransactionsList(context),
             ],
@@ -376,11 +388,25 @@ class _CoinDetailState extends State<CoinDetail> {
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
-              timer ??= Timer.periodic(const Duration(seconds: 15), (_) {
-                // TODO(MateusRodCosta): Fix detection of received tx
-                if (_shouldRefresh) {
-                  _refresh();
+              timer ??= Timer.periodic(const Duration(seconds: 15), (_) async {
+                print('latestTransaction = $latestTransaction');
+                final dynamic transactions = await coinsBloc
+                    .getLatestTransaction(currentCoinBalance.coin);
+                Transaction newTr;
+                if (transactions is Transactions) {
+                  final Transactions tr = transactions;
+                  final t = tr.result.transactions[0];
+                  if (t != null) newTr = t;
                 }
+                print('t = $newTr');
+                // TODO(MateusRodCosta): Fix detection of received tx
+                if (latestTransaction == null || latestTransaction != newTr) {
+                  _shouldRefresh = true;
+                }
+
+                print('latestTransaction = $latestTransaction');
+                print('t = $newTr');
+                latestTransaction = newTr;
               });
 
               if (tx.result.syncStatus.state == syncState) {
@@ -514,8 +540,6 @@ class _CoinDetailState extends State<CoinDetail> {
         ),
       ),
     ));
-
-    _shouldRefresh = false;
 
     return Column(
       children: transactionsWidget,
