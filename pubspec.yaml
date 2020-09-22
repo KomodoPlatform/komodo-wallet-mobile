@@ -56,6 +56,8 @@ dependencies:
       ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
 
   mailer: ^3.0.4
+  
+  flutter_email_sender: ^3.0.1
 
 dev_dependencies:
   flutter_driver: # flutter.dev

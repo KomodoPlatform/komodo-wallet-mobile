@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:komodo_dex/screens/help-feedback/feedback_page.dart';
+import 'package:archive/archive.dart' as arch;
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class HelpPage extends StatefulWidget {
@@ -88,11 +93,18 @@ class _HelpPageState extends State<HelpPage> {
           child: RaisedButton(
             // TODO(yurii): localization
             child: const Text('Get support'),
-            onPressed: () {
-              Navigator.push<dynamic>(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                      builder: (BuildContext context) => FeedbackPage()));
+            onPressed: () async {
+              final Email email = Email(
+                body: 'Email body',
+                subject: 'Email subject',
+                recipients: ['example@example.com'],
+                cc: ['cc@example.com'],
+                bcc: ['bcc@example.com'],
+                //attachmentPaths: ['/path/to/attachment.zip'],
+                isHTML: false,
+              );
+
+              await FlutterEmailSender.send(email);
             },
           ),
         ),
