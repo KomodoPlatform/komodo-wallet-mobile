@@ -79,40 +79,13 @@ build/
 
 **/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 
+# JNI related
+/android/app/.cxx/
+/android/app/src/main/cpp/libs/
+
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
-android/app/.cxx/ndk_locator_record.json
-android/app/.cxx/cmake/debug/arm64-v8a/.ninja_deps
-android/app/.cxx/cmake/debug/arm64-v8a/.ninja_log
-android/app/.cxx/cmake/debug/arm64-v8a/android_gradle_build_mini.json
-android/app/.cxx/cmake/debug/arm64-v8a/android_gradle_build_mm2-lib_arm64-v8a.command.txt
-android/app/.cxx/cmake/debug/arm64-v8a/android_gradle_build_mm2-lib_arm64-v8a.stderr.txt
-android/app/.cxx/cmake/debug/arm64-v8a/android_gradle_build_mm2-lib_arm64-v8a.stdout.txt
-android/app/.cxx/cmake/debug/arm64-v8a/android_gradle_build.json
-android/app/.cxx/cmake/debug/arm64-v8a/android_gradle_generate_cmake_ninja_json_arm64-v8a.command.txt
-android/app/.cxx/cmake/debug/arm64-v8a/android_gradle_generate_cmake_ninja_json_arm64-v8a.stderr.txt
-android/app/.cxx/cmake/debug/arm64-v8a/android_gradle_generate_cmake_ninja_json_arm64-v8a.stdout.txt
-android/app/.cxx/cmake/debug/arm64-v8a/build_command.txt
-android/app/.cxx/cmake/debug/arm64-v8a/build_model.json
-android/app/.cxx/cmake/debug/arm64-v8a/build_output.txt
-android/app/.cxx/cmake/debug/arm64-v8a/build.ninja
-android/app/.cxx/cmake/debug/arm64-v8a/cmake_install.cmake
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeCache.txt
-android/app/.cxx/cmake/debug/arm64-v8a/json_generation_record.json
-android/app/.cxx/cmake/debug/arm64-v8a/rules.ninja
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/cmake.check_cache
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.bin
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.c
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/feature_tests.cxx
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/TargetDirectories.txt
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/3.6.0-rc2/CMakeCCompiler.cmake
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/3.6.0-rc2/CMakeCXXCompiler.cmake
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/3.6.0-rc2/CMakeDetermineCompilerABI_C.bin
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/3.6.0-rc2/CMakeDetermineCompilerABI_CXX.bin
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/3.6.0-rc2/CMakeSystem.cmake
-android/app/.cxx/cmake/debug/arm64-v8a/CMakeFiles/mm2-lib.dir/mm2_native.cpp.o
-android/app/src/main/cpp/libmm2.a
