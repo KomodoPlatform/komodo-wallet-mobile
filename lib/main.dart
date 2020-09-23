@@ -13,6 +13,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
@@ -67,6 +68,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => FeedProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => RewardsProvider(),
             ),
             ChangeNotifierProvider(
               create: (context) => StartupProvider(),
@@ -344,7 +348,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       BottomNavigationBarItem(
                                           icon: Icon(
                                             Icons.account_balance_wallet,
-                                            key: const Key('main-nav-portfolio'),
+                                            key:
+                                                const Key('main-nav-portfolio'),
                                           ),
                                           title: Text(
                                               AppLocalizations.of(context)
@@ -367,7 +372,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           icon: Stack(
                                             children: <Widget>[
                                               Icon(Icons.library_books,
-                                                  key: const Key('main-nav-feed')),
+                                                  key: const Key(
+                                                      'main-nav-feed')),
                                               if (feedProvider.hasNewItems)
                                                 buildRedDot(context),
                                             ],
@@ -377,7 +383,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           icon: Stack(
                                             children: <Widget>[
                                               Icon(Icons.dehaze,
-                                                  key: const Key('main-nav-more')),
+                                                  key: const Key(
+                                                      'main-nav-more')),
                                               if (updatesProvider.status !=
                                                   UpdateStatus.upToDate)
                                                 buildRedDot(context),

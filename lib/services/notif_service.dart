@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
@@ -63,9 +64,29 @@ class NotifService {
   }
 
   void _subscribeRewards() {
-    // TODO(yurii): implement after mm2 update
-    jobService.install('checkRewards', 10, (j) async {
-      // await MM.getRewardsInfo();
+    jobService.install('checkRewards', 300, (j) async {
+      final List<RewardsItem> rewards = await MM.getRewardsInfo();
+      if (rewards == null || rewards.isEmpty) return;
+
+      for (RewardsItem item in rewards) {
+        if (item.stopAt == null) continue;
+
+        final Duration timeLeft = Duration(
+            milliseconds:
+                item.stopAt * 1000 - DateTime.now().millisecondsSinceEpoch);
+        if (timeLeft.inDays < 2 && (item.reward ?? 0) > 0) {
+          final String uid = 'rewards_${item.stopAt}';
+          if (!_notifIds.contains(uid)) {
+            show(NotifObj(
+              title: 'Claim your rewards!',
+              text: 'KMD Active User Rewards need claim.',
+              uid: uid,
+            ));
+          }
+
+          break;
+        }
+      }
     });
   }
 
@@ -130,7 +151,7 @@ class NotifService {
   }
 
   void _subscribeSwapStatus() {
-    jobService.install('checkSwaps', 1, (j) async {
+    jobService.install('checkSwaps', 10, (j) async {
       _checkOrdersStatusChange(syncSwaps.swaps);
       _saveOrders(syncSwaps.swaps);
     });
