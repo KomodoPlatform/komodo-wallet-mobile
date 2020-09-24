@@ -1,10 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:komodo_dex/screens/help-feedback/feedback_page.dart';
-import 'package:archive/archive.dart' as arch;
-import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class HelpPage extends StatefulWidget {
@@ -21,6 +15,51 @@ class _HelpPageState extends State<HelpPage> {
           ' data, including your private keys, seed phrases, or PIN. They'
           ' never leave your device.'
           ' You are in full control of your assets.',
+      'isExpanded': false,
+    },
+    {
+      'q': 'How is trading on AtomicDEX different from trading on other DEXs?',
+      'a': 'Other DEXs generally only allow you to trade assets that are based'
+          ' on a single blockchain network, use proxy tokens, and'
+          ' only allow placing a single order with the same funds.'
+          '\n\nAtomicDEX enables you to natively trade across two different'
+          ' blockchain networks without proxy tokens. You can also place multiple'
+          ' orders with the same funds. For example, you can sell 0.1 BTC for'
+          ' KMD, QTUM, or VRSC — the first order that fills automatically'
+          ' cancels all other orders.',
+      'isExpanded': false,
+    },
+    {
+      'q': 'How long does each atomic swap take?',
+      'a': 'Several factors determine the processing time for each swap.'
+          ' The block time of the traded assets depends on each network'
+          ' (Bitcoin typically being the slowest) Additionally, the user can'
+          ' customize security preferences. For example,  (you can ask AtomicDEX'
+          ' to consider a KMD transaction as final after just 3 confirmations'
+          ' which makes the swap time shorter compared to waiting'
+          ' for a notarization.',
+      'isExpanded': false,
+    },
+    {
+      'q': 'Do I need to be online for the duration of the swap?',
+      'a': 'Yes. You must remain connected to the internet and have your app'
+          ' running to successfully complete each atomic swap (very short breaks'
+          ' in connectivity are usually fine). Otherwise, there is risk of trade'
+          ' cancellation if you are a maker, and risk of loss of funds if you are'
+          ' a taker. The atomic swap protocol requires both participants to stay'
+          ' online and monitor the involved blockchains for'
+          ' the process to stay atomic. ',
+      'isExpanded': false,
+    },
+    {
+      'q': 'How are the fees on atomicDEX calculated?',
+      'a': 'There are two fee categories to consider when trading on AtomicDEX.\n\n'
+          '1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but'
+          ' not lower than 0.0001) as the trading fee for taker orders, and maker'
+          ' orders have zero fees.\n\n2. Both makers and takers will need to pay'
+          ' normal network fees to the involved blockchains when making atomic'
+          ' swap transactions.\n\nNetwork fees can vary greatly depending on'
+          ' your selected trading pair.',
       'isExpanded': false,
     },
     {
@@ -44,6 +83,21 @@ class _HelpPageState extends State<HelpPage> {
           ' interoperable multi-chain architecture.',
       'isExpanded': false,
     },
+    {
+      'q':
+          'Is it possible to develop my own white-label exchange on AtomicDEX?',
+      'a': 'Absolutely! You can read our developer documentation for more'
+          ' details or contact us with your partnership inquiries. Have a specific'
+          ' technical question? The AtomicDEX developer community'
+          ' is always ready to help!',
+      'isExpanded': false,
+    },
+    {
+      'q': 'Which devices can I use AtomicDEX on?',
+      'a': 'AtomicDEX is available for mobile on both Android and iPhone,'
+          ' and for desktop on Windows, Mac, and Linux operating systems.',
+      'isExpanded': false,
+    },
   ];
 
   @override
@@ -51,7 +105,7 @@ class _HelpPageState extends State<HelpPage> {
     return Scaffold(
       appBar: AppBar(
         // TODO(yurii): localization
-        title: const Text('Help and Feedback'),
+        title: const Text('Help and Support'),
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
@@ -60,55 +114,9 @@ class _HelpPageState extends State<HelpPage> {
           children: <Widget>[
             _buildFAQ(),
             _buildLinks(),
-            _buildButton(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildButton() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-          child: Text(
-            // TODO(yurii): localization
-            'Report a problem:',
-            style: Theme.of(context).textTheme.subtitle,
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
-          child: Text(
-            'If you think you\'ve found a technical problem with'
-            ' the atomicDEX app, you can report it and get support'
-            ' from our team.',
-            style: Theme.of(context).textTheme.body2,
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(15, 0, 15, 50),
-          child: RaisedButton(
-            // TODO(yurii): localization
-            child: const Text('Get support'),
-            onPressed: () async {
-              final Email email = Email(
-                body: 'Email body',
-                subject: 'Email subject',
-                recipients: ['example@example.com'],
-                cc: ['cc@example.com'],
-                bcc: ['bcc@example.com'],
-                //attachmentPaths: ['/path/to/attachment.zip'],
-                isHTML: false,
-              );
-
-              await FlutterEmailSender.send(email);
-            },
-          ),
-        ),
-      ],
     );
   }
 
@@ -160,45 +168,42 @@ class _HelpPageState extends State<HelpPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.only(
-            left: 15,
-            right: 15,
-            top: 20,
-            bottom: 10,
-          ),
+          padding: const EdgeInsets.fromLTRB(15, 15, 20, 10),
           child: Text(
             // TODO(yurii): localization
-            'Connect with us also on:',
+            'Support:',
             style: Theme.of(context).textTheme.subtitle,
           ),
         ),
         Container(
-          padding: const EdgeInsets.only(
-            left: 15,
-            right: 15,
-            bottom: 10,
+          padding: const EdgeInsets.fromLTRB(15, 0, 20, 0),
+          child: Text(
+            'If you have any questions,'
+            ' or think you\'ve found a technical problem with'
+            ' the atomicDEX app, you can report it and get support'
+            ' from our team.',
+            style: Theme.of(context).textTheme.body2,
           ),
-          child: Wrap(
-            children: <Widget>[
-              _buildSocialPlatform(
-                text: 'DISCORD',
-                link: 'http://komodoplatform.com/discord',
-                icon: SizedBox(
-                  width: 60,
-                  child: Image.asset('assets/discord_logo.png'),
+        ),
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.width / 2,
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Center(
+            child: Wrap(
+              alignment: WrapAlignment.spaceAround,
+              children: <Widget>[
+                _buildSocialPlatform(
+                  title: 'DISCORD',
+                  subtitle: 'Komodo #support',
+                  link: 'http://komodoplatform.com/discord',
+                  icon: SizedBox(
+                    width: 60,
+                    child: Image.asset('assets/discord_logo.png'),
+                  ),
                 ),
-              ),
-              _buildSocialPlatform(
-                text: 'Twitter',
-                link: 'https://twitter.com/KomodoPlatform',
-                icon: Container(
-                  width: 60,
-                  padding: const EdgeInsets.only(
-                      left: 7, right: 7, top: 5, bottom: 8),
-                  child: Image.asset('assets/twitter_logo.png'),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],
@@ -207,7 +212,8 @@ class _HelpPageState extends State<HelpPage> {
 
   Widget _buildSocialPlatform({
     Widget icon,
-    String text,
+    String title,
+    String subtitle,
     String link,
   }) {
     return FlatButton(
@@ -216,10 +222,17 @@ class _HelpPageState extends State<HelpPage> {
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             icon,
-            Text(text),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(subtitle),
+                Text(title),
+              ],
+            ),
           ],
         ),
       ),

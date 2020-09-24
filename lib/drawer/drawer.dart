@@ -236,7 +236,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               color: Colors.white.withAlpha(200),
                             )),
                         _buildDrawerItem(
-                            title: const Text('Help and Feedback'),
+                            title: const Text('Help'),
                             onTap: () {
                               Navigator.pop(context);
                               Navigator.push<dynamic>(
