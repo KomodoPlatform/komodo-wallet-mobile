@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -125,8 +126,13 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                       .copyWith(color: _isAsk ? Colors.red : Colors.green),
                 ),
                 const SizedBox(width: 6),
-                Text(
-                  '${_activePair.buy.abbr} / 1${_activePair.sell.abbr}',
+                Expanded(
+                  child: AutoSizeText(
+                    '${_activePair.buy.abbr} / 1${_activePair.sell.abbr}',
+                    minFontSize: 14,
+                    maxFontSize: 18,
+                    maxLines: 1,
+                  ),
                 ),
               ],
             ),

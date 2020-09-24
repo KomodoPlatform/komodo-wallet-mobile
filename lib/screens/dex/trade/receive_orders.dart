@@ -11,6 +11,8 @@ import 'package:komodo_dex/screens/dex/trade/receive_orders_chart.dart';
 import 'package:komodo_dex/screens/markets/build_order_details.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
@@ -163,6 +165,7 @@ class AsksOrder extends StatefulWidget {
 class _AsksOrderState extends State<AsksOrder> {
   final double headerHeight = 50;
   final double lineHeight = 50;
+  bool popupSettingsVisible = false;
   OrderBookProvider orderBookProvider;
   CexProvider cexProvider;
   AddressBookProvider addressBookProvider;
@@ -395,8 +398,8 @@ class _AsksOrderState extends State<AsksOrder> {
               ],
             ),
           ),
-          onTap: () => _createOrder(bid),
-          onLongPress: () => _showDetails(bid),
+          onTap: () => _onBidTap(bid),
+          onLongPress: () => _onBidLongPress(bid),
         ),
         TableRowInkWell(
           child: Container(
@@ -417,8 +420,8 @@ class _AsksOrderState extends State<AsksOrder> {
               style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
             ),
           ),
-          onTap: () => _createOrder(bid),
-          onLongPress: () => _showDetails(bid),
+          onTap: () => _onBidTap(bid),
+          onLongPress: () => _onBidLongPress(bid),
         ),
         TableRowInkWell(
           child: Container(
@@ -444,11 +447,27 @@ class _AsksOrderState extends State<AsksOrder> {
                   .copyWith(fontWeight: FontWeight.w500, fontSize: 14),
             ),
           ),
-          onTap: () => _createOrder(bid),
-          onLongPress: () => _showDetails(bid),
+          onTap: () => _onBidTap(bid),
+          onLongPress: () => _onBidLongPress(bid),
         )
       ],
     );
+  }
+
+  Future<void> _onBidTap(Ask bid) async {
+    final bool showOrderDetailsByTap = (await SharedPreferences.getInstance())
+            .getBool('showOrderDetailsByTap') ??
+        true;
+
+    showOrderDetailsByTap ? _showDetails(bid) : _createOrder(bid);
+  }
+
+  Future<void> _onBidLongPress(Ask bid) async {
+    final bool showOrderDetailsByTap = (await SharedPreferences.getInstance())
+            .getBool('showOrderDetailsByTap') ??
+        true;
+
+    showOrderDetailsByTap ? _createOrder(bid) : _showDetails(bid);
   }
 
   void _createOrder(Ask ask) {
@@ -457,49 +476,109 @@ class _AsksOrderState extends State<AsksOrder> {
   }
 
   void _showDetails(Ask bid) {
+    setState(() {
+      popupSettingsVisible = false;
+    });
+    _openDetailsDialog(bid);
+  }
+
+  void _openDetailsDialog(Ask bid) {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (context) {
-          return SimpleDialog(
-            // TODO(yurii): localization
-            title: const Text('Details'),
-            titlePadding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 20,
-              bottom: 4,
-            ),
-            contentPadding: const EdgeInsets.only(
-              left: 8,
-              right: 0,
-              bottom: 20,
-            ),
-            children: <Widget>[
-              BuildOrderDetails(
-                bid,
-                sellAmount: widget.sellAmount,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () => dialogBloc.closeDialog(context),
-                    // TODO(yurii): localization
-                    child: const Text('Cancel'),
+          return SharedPreferencesBuilder<bool>(
+              pref: 'showOrderDetailsByTap',
+              builder: (context, snapshot) {
+                return SimpleDialog(
+                  title: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      // TODO(yurii): localization
+                      const Expanded(child: Text('Details')),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            popupSettingsVisible = !popupSettingsVisible;
+                          });
+                          dialogBloc.closeDialog(context);
+                          _openDetailsDialog(bid);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          child: Icon(
+                            Icons.settings,
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 12),
-                  RaisedButton(
-                    onPressed: () {
-                      dialogBloc.closeDialog(context);
-                      _createOrder(bid);
-                    },
-                    // TODO(yurii): localization
-                    child: const Text('Select'),
-                  )
-                ],
-              )
-            ],
-          );
+                  titlePadding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                    bottom: 4,
+                  ),
+                  contentPadding: const EdgeInsets.only(
+                    left: 8,
+                    right: 0,
+                    bottom: 20,
+                  ),
+                  children: <Widget>[
+                    if (popupSettingsVisible)
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(14, 12, 6, 0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Text(
+                                'Open this popup by default'
+                                ' and select order by long tap',
+                                style: Theme.of(context).textTheme.body2,
+                              ),
+                            ),
+                            !snapshot.hasData
+                                ? Container()
+                                : Switch(
+                                    value: snapshot.data,
+                                    onChanged: (bool val) async {
+                                      (await SharedPreferences.getInstance())
+                                          .setBool(
+                                        'showOrderDetailsByTap',
+                                        val,
+                                      );
+                                      dialogBloc.closeDialog(context);
+                                      _openDetailsDialog(bid);
+                                    }),
+                          ],
+                        ),
+                      ),
+                    BuildOrderDetails(
+                      bid,
+                      sellAmount: widget.sellAmount,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () => dialogBloc.closeDialog(context),
+                          // TODO(yurii): localization
+                          child: const Text('Cancel'),
+                        ),
+                        const SizedBox(width: 12),
+                        RaisedButton(
+                          onPressed: () {
+                            dialogBloc.closeDialog(context);
+                            _createOrder(bid);
+                          },
+                          // TODO(yurii): localization
+                          child: const Text('Select'),
+                        )
+                      ],
+                    )
+                  ],
+                );
+              });
         });
   }
 }
