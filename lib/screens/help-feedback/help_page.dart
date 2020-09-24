@@ -11,9 +11,9 @@ class _HelpPageState extends State<HelpPage> {
   final data = [
     {
       'q': 'Do you store my private keys?',
-      'a': 'No! AtomicDEX is non-custodial. We never store any sensitive'
-          ' data, including your private keys, seed phrases, or PIN. They'
-          ' never leave your device.'
+      'a': 'No! AtomicDEX is non-custodial. We never store any sensitive data,'
+          ' including your private keys, seed phrases, or PIN. This data is only'
+          ' stored on the user’s device and never leaves it.'
           ' You are in full control of your assets.',
       'isExpanded': false,
     },
@@ -64,22 +64,21 @@ class _HelpPageState extends State<HelpPage> {
     },
     {
       'q': 'Do you provide user support?',
-      'a': 'Yes! Unlike most open source blockchain projects,'
-          ' AtomicDEX offers 24/7 support. Join our Discord,'
-          ' we are happy to help!',
+      'a': 'Yes! AtomicDEX offers support through the Komodo Discord server.'
+          ' The team and the community are always happy to help!',
       'isExpanded': false,
     },
     {
       'q': 'Do you have country restrictions?',
-      'a': 'No! AtomicDEX is fully decentralized. It is not possible'
-          ' to limit user access by any third party.',
+      'a': 'No! AtomicDEX is fully decentralized.'
+          ' It is not possible to limit user access by any third party.',
       'isExpanded': false,
     },
     {
       'q': 'Who is behind AtomicDEX?',
-      'a': 'AtomicDEX is developed by the Komodo team. Komodo is one'
-          ' of the most established blockchain projects working on innovative'
-          ' solutions like atomic swaps, Delayed Proof-of-Work, and an'
+      'a': 'AtomicDEX is developed by the Komodo team. Komodo is one of'
+          ' the most established blockchain projects working on innovative'
+          ' solutions like atomic swaps, Delayed Proof of Work, and an'
           ' interoperable multi-chain architecture.',
       'isExpanded': false,
     },
