@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -177,6 +179,7 @@ class _AsksOrderState extends State<AsksOrder> {
     addressBookProvider ??= Provider.of<AddressBookProvider>(context);
 
     final relCoin = orderBookProvider.activePair.buy.abbr;
+    final baseCoin = orderBookProvider.activePair.sell.abbr;
     final List<TableRow> asksWidget = <TableRow>[];
     final Orderbook orderbook = orderBookProvider?.getOrderBook();
     List<Ask> bidsList = orderbook?.bids;
@@ -280,6 +283,23 @@ class _AsksOrderState extends State<AsksOrder> {
                                             child: Text(
                                               '${AppLocalizations.of(context).availableVolume}'
                                               ' ($relCoin)',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle
+                                                  .copyWith(fontSize: 14),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: headerHeight,
+                                            alignment: const Alignment(1, 0),
+                                            padding: const EdgeInsets.only(
+                                              left: 6,
+                                            ),
+                                            child: Text(
+                                              // TODO(yurii): localization
+                                              'spend'
+                                              ' ($baseCoin)',
+                                              textAlign: TextAlign.right,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle
@@ -417,6 +437,29 @@ class _AsksOrderState extends State<AsksOrder> {
                 ))),
             child: Text(
               formatPrice(bid.maxvolume.toDouble()),
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
+            ),
+          ),
+          onTap: () => _onBidTap(bid),
+          onLongPress: () => _onBidLongPress(bid),
+        ),
+        TableRowInkWell(
+          child: Container(
+            height: lineHeight,
+            alignment: const Alignment(1, 0),
+            padding: const EdgeInsets.only(
+              left: 6,
+            ),
+            decoration: BoxDecoration(
+                color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
+                border: Border(
+                    top: BorderSide(
+                  width: 1,
+                  color: Theme.of(context).highlightColor,
+                ))),
+            child: Text(
+              formatPrice(min(widget.sellAmount.toDouble(),
+                  bid.maxvolume.toDouble() * double.parse(bid.price))),
               style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
             ),
           ),
