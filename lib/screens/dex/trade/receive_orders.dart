@@ -297,7 +297,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                             ),
                                             child: Text(
                                               // TODO(yurii): localization
-                                              'spend'
+                                              '${AppLocalizations.of(context).availableVolume}'
                                               ' ($baseCoin)',
                                               textAlign: TextAlign.right,
                                               style: Theme.of(context)
@@ -458,8 +458,7 @@ class _AsksOrderState extends State<AsksOrder> {
                   color: Theme.of(context).highlightColor,
                 ))),
             child: Text(
-              formatPrice(min(widget.sellAmount.toDouble(),
-                  bid.maxvolume.toDouble() * double.parse(bid.price))),
+              formatPrice(bid.maxvolume.toDouble() * double.parse(bid.price)),
               style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
             ),
           ),
