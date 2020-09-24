@@ -532,8 +532,9 @@ class _AsksOrderState extends State<AsksOrder> {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                'Open this popup by default'
-                                ' and select order by long tap',
+                                // TODO(yurii): localization
+                                'Open Details on single tap'
+                                ' and select Order by long tap',
                                 style: Theme.of(context).textTheme.body2,
                               ),
                             ),
