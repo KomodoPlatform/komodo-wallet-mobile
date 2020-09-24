@@ -71,6 +71,7 @@ class _CoinDetailState extends State<CoinDetail> {
   bool isDeleteLoading = false;
   CexProvider cexProvider;
   bool _shouldRefresh = false;
+  bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
 
@@ -94,6 +95,15 @@ class _CoinDetailState extends State<CoinDetail> {
         setState(() {
           isLoading = false;
         });
+      }
+    });
+    coinsBloc
+        .getLatestTransaction(currentCoinBalance.coin)
+        .then((dynamic transactions) {
+      if (transactions is Transactions) {
+        final Transactions tr = transactions;
+        final t = tr.result.transactions[0];
+        if (t != null) latestTransaction = t;
       }
     });
     _amountController.addListener(onChange);
@@ -237,8 +247,9 @@ class _CoinDetailState extends State<CoinDetail> {
               _shouldRefresh
                   ? RaisedButton(
                       child: Text('Transaction Updates'),
-                      onPressed: () {
-                        _refresh();
+                      onPressed: () async {
+                        await _refresh();
+                        _scrollController.position.jumpTo(0.0);
                         setState(() {
                           _shouldRefresh = false;
                         });
@@ -279,8 +290,13 @@ class _CoinDetailState extends State<CoinDetail> {
                   if (t != null) newTr = t;
                 }
                 print('t = $newTr');
-                // TODO(MateusRodCosta): Fix detection of received tx
-                if (latestTransaction == null || latestTransaction != newTr) {
+                if (_isWaiting) {
+                  _refresh();
+                  setState(() {
+                    _shouldRefresh = false;
+                  });
+                } else if (latestTransaction == null ||
+                    latestTransaction.internalId != newTr.internalId) {
                   _shouldRefresh = true;
                 }
 
@@ -350,8 +366,10 @@ class _CoinDetailState extends State<CoinDetail> {
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    _shouldRefresh = true;
+                    _isWaiting = true;
                     return const Center(child: CircularProgressIndicator());
+                  } else {
+                    _isWaiting = false;
                   }
                   if (snapshot.data is Transactions) {
                     final Transactions transactions = snapshot.data;
@@ -915,8 +933,11 @@ class _CoinDetailState extends State<CoinDetail> {
                     if (dataRawTx is SendRawTransactionResponse &&
                         dataRawTx.txHash.isNotEmpty) {
                       setState(() {
+                        /*
                         coinsBloc.updateTransactions(
-                            widget.coinBalance.coin, 10, null);
+                          widget.coinBalance.coin, 10, null);
+                          */
+                        _shouldRefresh = true;
                         coinsBloc.updateCoinBalances();
                         Future<dynamic>.delayed(const Duration(seconds: 5), () {
                           coinsBloc.updateCoinBalances();
