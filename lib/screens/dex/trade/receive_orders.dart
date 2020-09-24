@@ -247,8 +247,8 @@ class _AsksOrderState extends State<AsksOrder> {
                                       ),
                                     ),
                                     Table(
-                                      columnWidths: {
-                                        1: const IntrinsicColumnWidth(),
+                                      columnWidths: const {
+                                        1: IntrinsicColumnWidth(),
                                       },
                                       children: [
                                         TableRow(children: [
@@ -277,20 +277,6 @@ class _AsksOrderState extends State<AsksOrder> {
                                             child: Text(
                                               '${AppLocalizations.of(context).availableVolume}'
                                               ' ($relCoin)',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle
-                                                  .copyWith(fontSize: 14),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: headerHeight,
-                                            alignment: const Alignment(0, 0),
-                                            padding: const EdgeInsets.only(
-                                              left: 6,
-                                            ),
-                                            child: Text(
-                                              'fill', // TODO(yurii): localization
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle
@@ -437,28 +423,6 @@ class _AsksOrderState extends State<AsksOrder> {
         TableRowInkWell(
           child: Container(
             height: lineHeight,
-            alignment: const Alignment(0, 0),
-            padding: const EdgeInsets.only(
-              left: 6,
-            ),
-            decoration: BoxDecoration(
-                color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
-                border: Border(
-                    top: BorderSide(
-                  width: 1,
-                  color: Theme.of(context).highlightColor,
-                ))),
-            child: Text(
-              _getFill(bid),
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
-            ),
-          ),
-          onTap: () => _createOrder(bid),
-          onLongPress: () => _showDetails(bid),
-        ),
-        TableRowInkWell(
-          child: Container(
-            height: lineHeight,
             alignment: const Alignment(1, 0),
             padding: const EdgeInsets.only(
               left: 6,
@@ -485,26 +449,6 @@ class _AsksOrderState extends State<AsksOrder> {
         )
       ],
     );
-  }
-
-  String _getFill(Ask bid) {
-    double fill;
-    final double baseVolume =
-        bid.maxvolume.toDouble() * double.parse(bid.price);
-    if (baseVolume >= widget.sellAmount) {
-      fill = 100;
-    } else {
-      fill = baseVolume * 100 / widget.sellAmount;
-    }
-
-    String formatted;
-    if (fill < 1) {
-      formatted = '<1';
-    } else {
-      formatted = fill.toStringAsPrecision(3);
-    }
-
-    return '$formatted%';
   }
 
   void _createOrder(Ask ask) {

@@ -54,8 +54,9 @@ class _ChartPainter extends CustomPainter {
       ..color = Colors.green.withAlpha(70);
 
     for (int i = 0; i < widget.ordersList.length; i++) {
-      final Ask ask = widget.ordersList[i];
-      double barWidth = ask.maxvolume.toDouble() * baseVolumeRatio;
+      final Ask bid = widget.ordersList[i];
+      double barWidth =
+          bid.maxvolume.toDouble() * double.parse(bid.price) * baseVolumeRatio;
       if (barWidth < 1) barWidth = 1;
 
       canvas.drawRect(
@@ -73,6 +74,8 @@ class _ChartPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 
   List<double> _volumes() {
-    return widget.ordersList.map((ask) => ask.maxvolume.toDouble()).toList();
+    return widget.ordersList
+        .map((ask) => ask.maxvolume.toDouble() * double.parse(ask.price))
+        .toList();
   }
 }
