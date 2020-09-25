@@ -103,7 +103,7 @@ class _MarketsPageState extends State<MarketsPage>
           controller: tabController,
           children: <Widget>[
             CoinsPriceList(onItemTap: (Coin coin) {
-              _orderBookProvider.activePair = CoinsPair(buy: coin, sell: null);
+              _orderBookProvider.activePair = CoinsPair(sell: coin, buy: null);
               tabController.index = 1;
             }),
             const OrderBookPage(),

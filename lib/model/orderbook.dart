@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 Orderbook orderbookFromJson(String str) => Orderbook.fromJson(json.decode(str));
@@ -118,4 +119,10 @@ class Ask {
   }
 
   Decimal getReceivePrice() => deci('1') / deci(price);
+
+  bool isMine() {
+    final String myAddress = coinsBloc.getBalanceByAbbr(coin).balance.address;
+
+    return myAddress.toLowerCase() == address.toLowerCase();
+  }
 }

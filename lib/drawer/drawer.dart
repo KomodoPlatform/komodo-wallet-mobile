@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
+import 'package:komodo_dex/screens/help-feedback/help_page.dart';
 import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
@@ -231,6 +232,22 @@ class _AppDrawerState extends State<AppDrawer> {
                             leading: Icon(
                               Icons.settings,
                               key: const Key('side-nav-settings'),
+                              size: 16,
+                              color: Colors.white.withAlpha(200),
+                            )),
+                        _buildDrawerItem(
+                            title: const Text('Help'),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push<dynamic>(
+                                  context,
+                                  MaterialPageRoute<dynamic>(
+                                      builder: (BuildContext context) =>
+                                          HelpPage()));
+                            },
+                            leading: Icon(
+                              Icons.help,
+                              key: const Key('side-nav-help-feedback'),
                               size: 16,
                               color: Colors.white.withAlpha(200),
                             )),
