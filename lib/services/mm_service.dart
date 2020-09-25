@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:io' show File, Platform, Process, ProcessResult;
+import 'dart:io' show File, Platform, Process;
 
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
-    show ByteData, EventChannel, MethodChannel, rootBundle;
-import 'package:flutter/services.dart' show ByteData, rootBundle;
+    show EventChannel, MethodChannel, rootBundle;
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -26,7 +26,6 @@ import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:package_info/package_info.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
