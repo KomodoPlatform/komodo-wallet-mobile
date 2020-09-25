@@ -242,8 +242,9 @@ class _HelpPageState extends State<HelpPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _buildFAQ(),
             _buildLinks(),
+            _buildFAQ(),
+            const SizedBox(height: 50),
           ],
         ),
       ),
@@ -255,10 +256,7 @@ class _HelpPageState extends State<HelpPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 20,
-          ),
+          padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
           child: Text(
             // TODO(yurii): localization
             'Frequently Asked Questions:',
@@ -305,6 +303,7 @@ class _HelpPageState extends State<HelpPage> {
         Container(
           padding: const EdgeInsets.fromLTRB(15, 0, 20, 0),
           child: Text(
+            // TODO(yurii): localization
             'If you have any questions,'
             ' or think you\'ve found a technical problem with'
             ' the atomicDEX app, you can report it and get support'
@@ -315,7 +314,6 @@ class _HelpPageState extends State<HelpPage> {
         Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.width / 2,
-          padding: const EdgeInsets.only(bottom: 20),
           child: Center(
             child: Wrap(
               alignment: WrapAlignment.spaceAround,
