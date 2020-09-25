@@ -402,8 +402,9 @@ class _CoinSelectState extends State<CoinSelect> {
 
       final Orderbook orderbook = _orderBookProvider.getOrderBook(CoinsPair(
         sell:
+            widget.type == CoinType.rel ? widget.pairedCoin : coinBalance.coin,
+        buy:
             widget.type == CoinType.base ? widget.pairedCoin : coinBalance.coin,
-        buy: widget.type == CoinType.rel ? widget.pairedCoin : coinBalance.coin,
       ));
 
       if (orderbook == null) return Container();
