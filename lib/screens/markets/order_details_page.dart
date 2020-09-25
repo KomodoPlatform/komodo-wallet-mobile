@@ -25,7 +25,10 @@ class OrderDetailsPage extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Column(
               children: <Widget>[
-                BuildOrderDetails(order),
+                Card(
+                    elevation: 8,
+                    color: Theme.of(context).primaryColor,
+                    child: BuildOrderDetails(order)),
                 const SizedBox(height: 10),
               ],
             ),

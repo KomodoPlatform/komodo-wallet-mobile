@@ -29,10 +29,17 @@ import 'package:intl/intl.dart';
 import '../localizations.dart';
 
 void copyToClipBoard(BuildContext context, String str) {
-  Scaffold.of(context).showSnackBar(SnackBar(
-    duration: const Duration(seconds: 2),
-    content: Text(AppLocalizations.of(context).clipboard),
-  ));
+  ScaffoldState scaffold;
+  try {
+    scaffold = Scaffold.of(context);
+  } catch (_) {}
+
+  if (scaffold != null) {
+    scaffold.showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
+      content: Text(AppLocalizations.of(context).clipboard),
+    ));
+  }
   Clipboard.setData(ClipboardData(text: str));
 }
 
@@ -533,4 +540,28 @@ String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
   } else {
     return value.toStringAsPrecision(digits);
   }
+}
+
+Widget truncateMiddle(String string, {TextStyle style}) {
+  if (string.length < 6)
+    return Text(
+      string,
+      style: style,
+    );
+
+  return Row(
+    children: <Widget>[
+      Flexible(
+        child: Text(
+          string.substring(0, string.length - 5),
+          overflow: TextOverflow.ellipsis,
+          style: style,
+        ),
+      ),
+      Text(
+        string.substring(string.length - 5),
+        style: style,
+      )
+    ],
+  );
 }
