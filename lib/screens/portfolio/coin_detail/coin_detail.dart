@@ -276,8 +276,7 @@ class _CoinDetailState extends State<CoinDetail> {
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
-              timer ??= Timer.periodic(const Duration(seconds: 15), (_) async {
-                print('latestTransaction = $latestTransaction');
+              timer ??= Timer.periodic(const Duration(seconds: 3), (_) async {
                 final dynamic transactions = await coinsBloc
                     .getLatestTransaction(currentCoinBalance.coin);
                 Transaction newTr;
@@ -286,20 +285,16 @@ class _CoinDetailState extends State<CoinDetail> {
                   final t = tr.result.transactions[0];
                   if (t != null) newTr = t;
                 }
-                print('t = $newTr');
+
                 if (_isWaiting) {
+                  _refresh();
+                } else if (_scrollController.position.pixels == 0.0) {
                   _refresh();
                 } else if (latestTransaction == null ||
                     latestTransaction.internalId != newTr.internalId) {
-                  if (_scrollController.position.pixels == 0.0) {
-                    _refresh();
-                  } else {
-                    _shouldRefresh = true;
-                  }
+                  _shouldRefresh = true;
                 }
 
-                print('latestTransaction = $latestTransaction');
-                print('t = $newTr');
                 latestTransaction = newTr;
               });
 
