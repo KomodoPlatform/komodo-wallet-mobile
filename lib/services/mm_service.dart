@@ -295,7 +295,13 @@ class MMService {
           'start', <String, String>{'params': startParam}); //start mm2
       final Mm2Error error = mm2ErrorFrom(errorCode);
       if (error != Mm2Error.ok) {
-        throw Exception('Error on start mm2: $error');
+        if (error == Mm2Error.already_runs) {
+          Log('mm_service', '$error, restarting mm2');
+          await stopmm2();
+          await runBin();
+        } else {
+          throw Exception('Error on start mm2: $error');
+        }
       }
 
       // check when mm2 is ready then load coins
