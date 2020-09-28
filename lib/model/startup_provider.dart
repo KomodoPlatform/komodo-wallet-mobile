@@ -30,7 +30,7 @@ Startup startup = Startup();
 class Startup {
   bool _started = false;
   bool _live = false;
-  String _log = '';
+  final String _log = '';
   int _startingMM = 0;
 
   bool get live => _live;
