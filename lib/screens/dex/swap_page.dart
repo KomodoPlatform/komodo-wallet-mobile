@@ -3,8 +3,8 @@ import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/history/swap_history.dart';
 import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
+import 'package:komodo_dex/screens/dex/trade/multi_order_create.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
@@ -61,8 +61,11 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
               Tab(
                 text: AppLocalizations.of(context).create.toUpperCase(),
               ),
+              const Tab(
+                // TODO(yurii): localization
+                text: 'MULTI',
+              ),
               Tab(text: AppLocalizations.of(context).orders.toUpperCase()),
-              Tab(text: AppLocalizations.of(context).history.toUpperCase()),
             ],
           ),
         ),
@@ -119,8 +122,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                 TradePage(
                   mContext: context,
                 ),
+                MultiOrderCreate(),
                 OrdersPage(),
-                SwapHistory(),
               ],
             );
           }),
