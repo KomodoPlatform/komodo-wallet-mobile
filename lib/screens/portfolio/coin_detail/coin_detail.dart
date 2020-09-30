@@ -250,9 +250,6 @@ class _CoinDetailState extends State<CoinDetail> {
                       onPressed: () async {
                         await _refresh();
                         _scrollController.position.jumpTo(0.0);
-                        setState(() {
-                          _shouldRefresh = false;
-                        });
                       },
                     )
                   : SizedBox(),
@@ -279,8 +276,7 @@ class _CoinDetailState extends State<CoinDetail> {
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
-              timer ??= Timer.periodic(const Duration(seconds: 15), (_) async {
-                print('latestTransaction = $latestTransaction');
+              timer ??= Timer.periodic(const Duration(seconds: 3), (_) async {
                 final dynamic transactions = await coinsBloc
                     .getLatestTransaction(currentCoinBalance.coin);
                 Transaction newTr;
@@ -289,19 +285,16 @@ class _CoinDetailState extends State<CoinDetail> {
                   final t = tr.result.transactions[0];
                   if (t != null) newTr = t;
                 }
-                print('t = $newTr');
+
                 if (_isWaiting) {
                   _refresh();
-                  setState(() {
-                    _shouldRefresh = false;
-                  });
+                } else if (_scrollController.position.pixels == 0.0) {
+                  _refresh();
                 } else if (latestTransaction == null ||
                     latestTransaction.internalId != newTr.internalId) {
                   _shouldRefresh = true;
                 }
 
-                print('latestTransaction = $latestTransaction');
-                print('t = $newTr');
                 latestTransaction = newTr;
               });
 
@@ -418,8 +411,10 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Future<void> _refresh() async {
-    return await coinsBloc.updateTransactions(
-        currentCoinBalance.coin, limit, null);
+    await coinsBloc.updateTransactions(currentCoinBalance.coin, limit, null);
+    setState(() {
+      _shouldRefresh = false;
+    });
   }
 
   Widget _buildTransactions(
@@ -937,7 +932,6 @@ class _CoinDetailState extends State<CoinDetail> {
                         coinsBloc.updateTransactions(
                           widget.coinBalance.coin, 10, null);
                           */
-                        _shouldRefresh = true;
                         coinsBloc.updateCoinBalances();
                         Future<dynamic>.delayed(const Duration(seconds: 5), () {
                           coinsBloc.updateCoinBalances();
