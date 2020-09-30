@@ -115,6 +115,16 @@ class CoinsBloc implements BlocBase {
     _isutxoActiveController.close();
   }
 
+  Coin getCoinByAbbr(String abbr) {
+    return getBalanceByAbbr(abbr)?.coin;
+  }
+
+  CoinBalance getBalanceByAbbr(String abbr) {
+    return coinBalance.firstWhere(
+        (CoinBalance balance) => balance.coin.abbr == abbr,
+        orElse: () => null);
+  }
+
   Future<void> initCoinBeforeActivation() async {
     final List<CoinToActivate> coinBeforeActivation = <CoinToActivate>[];
 

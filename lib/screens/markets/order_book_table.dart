@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/addressbook_provider.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/markets/order_details_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
-class OrderBookTable extends StatelessWidget {
+class OrderBookTable extends StatefulWidget {
   const OrderBookTable({
     @required this.sortedAsks,
     @required this.sortedBids,
@@ -15,20 +19,54 @@ class OrderBookTable extends StatelessWidget {
   final List<Ask> sortedBids;
 
   @override
+  _OrderBookTableState createState() => _OrderBookTableState();
+}
+
+class _OrderBookTableState extends State<OrderBookTable> {
+  OrderBookProvider orderBookProvider;
+  CexProvider cexProvider;
+  AddressBookProvider addressBookProvider;
+
+  @override
   Widget build(BuildContext context) {
-    final OrderBookProvider _orderBookProvider =
-        Provider.of<OrderBookProvider>(context);
+    orderBookProvider ??= Provider.of<OrderBookProvider>(context);
+    cexProvider ??= Provider.of<CexProvider>(context);
+    addressBookProvider ??= Provider.of<AddressBookProvider>(context);
 
-    void _showOrderDetails(Ask order) {
-      Navigator.push<dynamic>(
-          context,
-          MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => OrderDetailsPage(
-                    order: order,
-                  )));
-    }
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 8,
+        right: 8,
+      ),
+      child: Table(
+        key: const Key('order-book-table'),
+        columnWidths: const {
+          0: IntrinsicColumnWidth(),
+          1: FlexColumnWidth(1.0),
+          2: FlexColumnWidth(1.0),
+        },
+        children: [
+          _buildTableHeader(),
+          _buildSpacer(),
+          ..._buildAsksList(),
+          _buildCexRate(),
+          ..._buildBidsList(),
+        ],
+      ),
+    );
+  }
 
-    final TableRow _tableHeader = TableRow(
+  void _showOrderDetails(Ask order) {
+    Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => OrderDetailsPage(
+                  order: order,
+                )));
+  }
+
+  TableRow _buildTableHeader() {
+    return TableRow(
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: Colors.grey),
@@ -40,7 +78,7 @@ class OrderBookTable extends StatelessWidget {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 4),
           child: Text(
-            'Price (${_orderBookProvider.activePair.sell.abbr})',
+            'Price (${orderBookProvider.activePair.buy.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -49,7 +87,7 @@ class OrderBookTable extends StatelessWidget {
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            'Amt. (${_orderBookProvider.activePair.buy.abbr})',
+            'Amt. (${orderBookProvider.activePair.sell.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
@@ -59,15 +97,117 @@ class OrderBookTable extends StatelessWidget {
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            'Total (${_orderBookProvider.activePair.buy.abbr})',
+            'Total (${orderBookProvider.activePair.sell.abbr})',
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ), // TODO(yurii): localization
         ),
       ],
     );
+  }
 
-    final List<Ask> _sortedAsks = sortedAsks;
+  List<TableRow> _buildBidsList() {
+    final List<Ask> _sortedBids = List.from(widget.sortedBids);
+    final List<TableRow> _bidsList = [];
+    double _bidTotal = 0;
+
+    for (int i = 0; i < _sortedBids.length; i++) {
+      final Ask bid = _sortedBids[i];
+      final double _bidVolume =
+          bid.maxvolume.toDouble() * double.parse(bid.price);
+      _bidTotal += _bidVolume;
+
+      _bidsList.add(TableRow(
+        children: <Widget>[
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(bid),
+            child: Container(
+              height: 26,
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 4),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    formatPrice((1 / double.parse(bid.price)).toString()),
+                    maxLines: 1,
+                    style: const TextStyle(color: Colors.green, fontSize: 14),
+                  ),
+                  if (_isInAdressBook(bid.address))
+                    Container(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 11,
+                        color: Colors.white.withAlpha(150),
+                      ),
+                    ),
+                  if (bid.isMine())
+                    Container(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.brightness_1,
+                        size: 11,
+                        color: Colors.green.withAlpha(150),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(bid),
+            child: Container(
+              height: 26,
+              alignment: Alignment.centerRight,
+              child: Text(
+                formatPrice(_bidVolume.toString()),
+                maxLines: 1,
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor, fontSize: 14),
+              ),
+            ),
+          ),
+          TableRowInkWell(
+            onTap: () => _showOrderDetails(bid),
+            child: Container(
+              height: 26,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 4),
+              child: Text(
+                formatPrice(_bidTotal.toString()),
+                maxLines: 1,
+                style: TextStyle(
+                    color: Theme.of(context).disabledColor, fontSize: 14),
+              ),
+            ),
+          ),
+        ],
+      ));
+    }
+    if (_bidsList.isEmpty) {
+      _bidsList.add(TableRow(
+        children: [
+          Container(
+            height: 26,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(left: 4.0),
+            child: const Text(
+              'No bids found', // TODO(yurii): localization
+              maxLines: 1,
+              style: TextStyle(color: Colors.green, fontSize: 14),
+            ),
+          ),
+          Container(),
+          Container(),
+        ],
+      ));
+    }
+
+    return _bidsList;
+  }
+
+  List<TableRow> _buildAsksList() {
+    final List<Ask> _sortedAsks = widget.sortedAsks;
     List<TableRow> _asksList = [];
     double _askTotal = 0;
 
@@ -83,10 +223,32 @@ class OrderBookTable extends StatelessWidget {
               height: 26,
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 4),
-              child: Text(
-                formatPrice(ask.price),
-                maxLines: 1,
-                style: TextStyle(color: Colors.red, fontSize: 14),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    formatPrice(ask.price),
+                    maxLines: 1,
+                    style: TextStyle(color: Colors.red, fontSize: 14),
+                  ),
+                  if (_isInAdressBook(ask.address))
+                    Container(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 11,
+                        color: Colors.white.withAlpha(150),
+                      ),
+                    ),
+                  if (ask.isMine())
+                    Container(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Icon(
+                        Icons.brightness_1,
+                        size: 11,
+                        color: Colors.red.withAlpha(150),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
@@ -140,109 +302,94 @@ class OrderBookTable extends StatelessWidget {
       ));
     }
 
-    final List<Ask> _sortedBids = List.from(sortedBids);
-    final List<TableRow> _bidsList = [];
-    double _bidTotal = 0;
+    return _asksList;
+  }
 
-    for (int i = 0; i < _sortedBids.length; i++) {
-      final Ask bid = _sortedBids[i];
-      final double _bidVolume =
-          bid.maxvolume.toDouble() * double.parse(bid.price);
-      _bidTotal += _bidVolume;
+  TableRow _buildCexRate() {
+    final double cexRate = cexProvider.getCexRate() ?? 0.0;
 
-      _bidsList.add(TableRow(
-        children: <Widget>[
-          TableRowInkWell(
-            onTap: () => _showOrderDetails(bid),
-            child: Container(
-              height: 26,
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 4),
-              child: Text(
-                formatPrice((1 / double.parse(bid.price)).toString()),
-                maxLines: 1,
-                style: TextStyle(color: Colors.green, fontSize: 14),
-              ),
-            ),
-          ),
-          TableRowInkWell(
-            onTap: () => _showOrderDetails(bid),
-            child: Container(
-              height: 26,
-              alignment: Alignment.centerRight,
-              child: Text(
-                formatPrice(_bidVolume.toString()),
-                maxLines: 1,
-                style: TextStyle(
-                    color: Theme.of(context).disabledColor, fontSize: 14),
-              ),
-            ),
-          ),
-          TableRowInkWell(
-            onTap: () => _showOrderDetails(bid),
-            child: Container(
-              height: 26,
-              alignment: Alignment.centerRight,
-              padding: const EdgeInsets.only(right: 4),
-              child: Text(
-                formatPrice(_bidTotal.toString()),
-                maxLines: 1,
-                style: TextStyle(
-                    color: Theme.of(context).disabledColor, fontSize: 14),
-              ),
-            ),
-          ),
-        ],
-      ));
-    }
-    if (_bidsList.isEmpty) {
-      _bidsList.add(TableRow(
-        children: [
-          Container(
-            height: 26,
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(left: 4.0),
-            child: Text(
-              'No bids found', // TODO(yurii): localization
-              maxLines: 1,
-              style: TextStyle(color: Colors.green, fontSize: 14),
-            ),
-          ),
-          Container(),
-          Container(),
-        ],
-      ));
-    }
+    return TableRow(
+      children: [
+        cexRate > 0
+            ? Container(
+                height: 26,
+                child: Stack(
+                  overflow: Overflow.visible,
+                  children: <Widget>[
+                    Positioned(
+                      top: 0,
+                      bottom: 0,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              color: cexColor.withAlpha(50),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(4)),
+                            ),
+                            padding: const EdgeInsets.only(
+                              left: 4,
+                              right: 4,
+                              top: 2,
+                              bottom: 2,
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  formatPrice(cexRate),
+                                  maxLines: 1,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle
+                                      .copyWith(
+                                        color: cexColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w100,
+                                      ),
+                                ),
+                                const SizedBox(
+                                  width: 2,
+                                ),
+                                CexMarker(
+                                  context,
+                                  size: const Size.fromHeight(12),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 2,
+                          ),
+                          Text(
+                            '≈ ${cexProvider.convert(cexRate, from: orderBookProvider.activePair.buy.abbr)}',
+                            style:
+                                const TextStyle(color: cexColor, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Container(),
+        const SizedBox(height: 26),
+        const SizedBox(height: 26),
+      ],
+    );
+  }
 
-    const TableRow _spacer = TableRow(
+  TableRow _buildSpacer() {
+    return const TableRow(
       children: [
         SizedBox(height: 12),
         SizedBox(height: 12),
         SizedBox(height: 12),
       ],
     );
+  }
 
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
-      ),
-      child: Table(
-        key: const Key('order-book-table'),
-        columnWidths: const {
-          0: FlexColumnWidth(1.0),
-          1: FlexColumnWidth(1.0),
-          2: FlexColumnWidth(1.0),
-          3: IntrinsicColumnWidth(),
-        },
-        children: [
-          _tableHeader,
-          _spacer,
-          ..._asksList,
-          _spacer,
-          ..._bidsList,
-        ],
-      ),
-    );
+  bool _isInAdressBook(String address) {
+    return addressBookProvider.contactByAddress(address) != null;
   }
 }

@@ -76,11 +76,11 @@ class _OrderBookPageState extends State<OrderBookPage> {
             children: <Widget>[
               CoinSelect(
                   key: const Key('coin-select-left'),
-                  value: _orderBookProvider.activePair?.buy,
+                  value: _orderBookProvider.activePair?.sell,
                   type: CoinType.base,
-                  pairedCoin: _orderBookProvider.activePair?.sell,
-                  autoOpen: _orderBookProvider.activePair?.buy == null &&
-                      _orderBookProvider.activePair?.sell != null,
+                  pairedCoin: _orderBookProvider.activePair?.buy,
+                  autoOpen: _orderBookProvider.activePair?.sell == null &&
+                      _orderBookProvider.activePair?.buy != null,
                   compact: MediaQuery.of(context).size.width < 360,
                   hideInactiveCoins: false,
                   onChange: (Coin value) {
@@ -88,8 +88,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
                       _showChart = false;
                     });
                     _orderBookProvider.activePair = CoinsPair(
-                      buy: value,
-                      sell: _orderBookProvider.activePair?.sell,
+                      sell: value,
+                      buy: _orderBookProvider.activePair?.buy,
                     );
                   }),
               const SizedBox(width: 12),
@@ -109,11 +109,11 @@ class _OrderBookPageState extends State<OrderBookPage> {
               const SizedBox(width: 12),
               CoinSelect(
                 key: const Key('coin-select-right'),
-                value: _orderBookProvider.activePair?.sell,
+                value: _orderBookProvider.activePair?.buy,
                 type: CoinType.rel,
-                pairedCoin: _orderBookProvider.activePair?.buy,
-                autoOpen: _orderBookProvider.activePair?.sell == null &&
-                    _orderBookProvider.activePair?.buy != null,
+                pairedCoin: _orderBookProvider.activePair?.sell,
+                autoOpen: _orderBookProvider.activePair?.buy == null &&
+                    _orderBookProvider.activePair?.sell != null,
                 compact: MediaQuery.of(context).size.width < 360,
                 hideInactiveCoins: false,
                 onChange: (Coin value) {
@@ -121,8 +121,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
                     _showChart = false;
                   });
                   _orderBookProvider.activePair = CoinsPair(
-                    sell: value,
-                    buy: _orderBookProvider.activePair?.buy,
+                    buy: value,
+                    sell: _orderBookProvider.activePair?.sell,
                   );
                 },
               ),
