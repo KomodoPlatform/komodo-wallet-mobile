@@ -15,16 +15,18 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
   Widget build(BuildContext context) {
     multiOrderProvider ??= Provider.of<MultiOrderProvider>(context);
 
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          MultiOrderBase(),
-          const SizedBox(height: 10),
-          MultiOrderRelList(),
-          const SizedBox(height: 10),
-          _buildButton(),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            MultiOrderBase(),
+            const SizedBox(height: 10),
+            MultiOrderRelList(),
+            const SizedBox(height: 10),
+            _buildButton(),
+          ],
+        ),
       ),
     );
   }

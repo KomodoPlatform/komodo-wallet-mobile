@@ -44,7 +44,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
       width: double.infinity,
       child: Card(
         child: Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+          padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -128,6 +128,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
           }
 
           return SimpleDialog(
+            // TODO(yurii): localization
+            title: const Text('Sell'),
             children: coinsBloc
                 .sortCoins(availableForSell)
                 .map<Widget>((CoinBalance item) {
@@ -137,7 +139,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
                   child: Row(
                     children: <Widget>[
                       CircleAvatar(
