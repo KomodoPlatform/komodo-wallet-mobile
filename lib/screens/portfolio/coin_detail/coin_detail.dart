@@ -244,15 +244,7 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               _buildForm(),
               _buildHeaderCoinDetail(context),
-              _shouldRefresh
-                  ? RaisedButton(
-                      child: Text('Transaction Updates'),
-                      onPressed: () async {
-                        await _refresh();
-                        _scrollController.position.jumpTo(0.0);
-                      },
-                    )
-                  : SizedBox(),
+              _shouldRefresh ? _buildNewTransactionsButton() : const SizedBox(),
               _buildSyncChain(),
               _buildTransactionsList(context),
             ],
@@ -798,6 +790,29 @@ class _CoinDetailState extends State<CoinDetail> {
             elevation: 8.0,
             child: SingleChildScrollView(child: listSteps[currentIndex])),
       ),
+    );
+  }
+
+  Widget _buildNewTransactionsButton() {
+    return InkWell(
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        color: Colors.blue,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.refresh),
+            const SizedBox(
+              width: 8.0,
+            ),
+            const Text('Latest Transactions'),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+      ),
+      onTap: () async {
+        await _refresh();
+        _scrollController.position.jumpTo(0.0);
+      },
     );
   }
 
