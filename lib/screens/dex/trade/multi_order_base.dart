@@ -15,7 +15,7 @@ class MultiOrderBase extends StatefulWidget {
 
 class _MultiOrderBaseState extends State<MultiOrderBase> {
   MultiOrderProvider multiOrderProvider;
-  CoinBalance baseCoin;
+  String baseCoin;
   List<CoinBalance> coins = coinsBloc.coinBalance;
   bool isDialogOpen = false;
 
@@ -91,13 +91,12 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                     baseCoin == null ? Theme.of(context).accentColor : null,
                 backgroundImage: baseCoin == null
                     ? null
-                    : AssetImage(
-                        'assets/${baseCoin.coin.abbr.toLowerCase()}.png'),
+                    : AssetImage('assets/${baseCoin.toLowerCase()}.png'),
               ),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  baseCoin?.coin?.abbr ?? 'Coin', // TODO(yurii): localization
+                  baseCoin ?? 'Coin', // TODO(yurii): localization
                   style: Theme.of(context).textTheme.subtitle,
                 ),
               ),
@@ -135,7 +134,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                 .map<Widget>((CoinBalance item) {
               return InkWell(
                 onTap: () {
-                  multiOrderProvider.baseCoin = item;
+                  multiOrderProvider.baseCoin = item.coin.abbr;
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
@@ -220,8 +219,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         child: Container(
           padding: const EdgeInsets.all(4),
           child: Text(
-            // TODO: calculate actual max available balance
-            baseCoin == null ? 'Amount' : baseCoin.balance.balance.toString(),
+            baseCoin == null ? 'Amount' : multiOrderProvider.baseAmt.toString(),
             style: Theme.of(context).textTheme.subtitle,
           ),
         ),
