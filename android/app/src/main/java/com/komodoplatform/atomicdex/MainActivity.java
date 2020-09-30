@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.app.PendingIntent;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -24,6 +26,11 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class MainActivity extends FlutterFragmentActivity {
   private EventChannel logC;
   private EventChannel.EventSink logSink;
+  private Handler log_handler;
+
+  static {
+    System.loadLibrary("mm2-lib");
+  }
 
   private void createNotificationChannel() {
     // TBD: Use AndroidX to create the channel.
@@ -87,6 +94,12 @@ public class MainActivity extends FlutterFragmentActivity {
               // to generate the
               // “komodoDEX/build/app/intermediates/javac/debug/classes/com/komodoplatform/atomicdex/BuildConfig.class”.
               result.success(BuildConfig.BUILD_TIME);
+            } else if  (call.method.equals("start")) {
+              int ret = startMm2(call.argument("params"));
+              result.success(ret);
+            } else if (call.method.equals("status")) {
+              int status = (int)nativeMm2MainStatus();
+              result.success(status);
             } else {
               result.notImplemented();
             }
@@ -116,10 +129,41 @@ public class MainActivity extends FlutterFragmentActivity {
     logC = chan;
   }
 
+  private int startMm2(String conf) {
+    log_handler = new Handler(Looper.getMainLooper());
+
+    logSink.success("START MM2 --------------------------------");
+    byte ret = nativeMm2Main(conf, new JNILogListener() {
+      @Override
+      public void onLog(String line) {
+        // send the line to the main thread handler
+        log_handler.post(
+          new Runnable() {
+            @Override
+            public void run() {
+              // this will be called in main thread
+              logSink.success("MainActivity] ".concat(line));
+            }
+          });
+      }
+    });
+    return (int) ret;
+  }
+
+  /// Corresponds to Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2MainStatus in main.cpp
+  private native byte nativeMm2MainStatus();
+
+  /// Corresponds to Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2Main in main.cpp
+  private native byte nativeMm2Main(String conf, JNILogListener listener);
+
   @Override
   public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
     GeneratedPluginRegistrant.registerWith(flutterEngine);
     nativeC();
     logC();
   }
+}
+
+interface JNILogListener {
+  void onLog(String line);
 }

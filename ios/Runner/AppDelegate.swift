@@ -63,12 +63,12 @@ import UserNotifications
                 guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
                 
                 print("START MM2 --------------------------------")
-                mm2_main(arg, { (line) in
-                    let mm2log = ["log": "mm2] " + String(cString: line!)]
+                let error = Int32(mm2_main(arg, { (line) in
+                    let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
                     NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
-                });
+                }));
                 //print(arg)
-                result("starting mm2")
+                result(error)
             } else if call.method == "status" {
                 let ret = Int32(mm2_main_status());
 
