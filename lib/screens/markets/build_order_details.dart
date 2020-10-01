@@ -120,19 +120,11 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 Text(
                   formatPrice(
                       '${_isAsk ? widget.order.price : (1 / double.parse(widget.order.price)).toString()}'),
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle
-                      .copyWith(color: _isAsk ? Colors.red : Colors.green),
+                  style: TextStyle(color: _isAsk ? Colors.red : Colors.green),
                 ),
                 const SizedBox(width: 6),
-                Expanded(
-                  child: AutoSizeText(
-                    '${_activePair.buy.abbr} / 1${_activePair.sell.abbr}',
-                    minFontSize: 14,
-                    maxFontSize: 18,
-                    maxLines: 1,
-                  ),
+                Text(
+                  '${_activePair.buy.abbr} / 1${_activePair.sell.abbr}',
                 ),
               ],
             ),
@@ -200,13 +192,13 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
         children: [
           Container(
             height: 40,
-            alignment: Alignment.bottomLeft,
+            alignment: Alignment.centerLeft,
             child: CexMarker(context),
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
             height: 40,
-            alignment: Alignment.bottomLeft,
+            alignment: Alignment.centerLeft,
             child: Text(
               message,
               style: const TextStyle(color: cexColor),
