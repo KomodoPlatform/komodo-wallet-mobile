@@ -943,10 +943,6 @@ class _CoinDetailState extends State<CoinDetail> {
                     if (dataRawTx is SendRawTransactionResponse &&
                         dataRawTx.txHash.isNotEmpty) {
                       setState(() {
-                        /*
-                        coinsBloc.updateTransactions(
-                          widget.coinBalance.coin, 10, null);
-                          */
                         coinsBloc.updateCoinBalances();
                         Future<dynamic>.delayed(const Duration(seconds: 5), () {
                           coinsBloc.updateCoinBalances();
