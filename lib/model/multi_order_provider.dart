@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/services/mm.dart';
+import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/utils/log.dart';
+
+import 'get_trade_fee.dart';
 
 class MultiOrderProvider extends ChangeNotifier {
   String _baseCoin;
@@ -9,9 +15,9 @@ class MultiOrderProvider extends ChangeNotifier {
   String get baseCoin => _baseCoin;
   set baseCoin(String coin) {
     _baseCoin = coin;
-    // TODO: calculate actual max available balance
-    _sellAmt = coinsBloc.getBalanceByAbbr(coin).balance.balance.toDouble();
+    _calculateSellAmt(coin);
     selectRelCoin(coin, false);
+
     notifyListeners();
   }
 
@@ -40,5 +46,39 @@ class MultiOrderProvider extends ChangeNotifier {
   void setRelCoinAmt(String coin, double amt) {
     _relCoins[coin] = amt;
     notifyListeners();
+  }
+
+  Future<void> _calculateSellAmt(String coin) async {
+    final double balance =
+        coinsBloc.getBalanceByAbbr(coin).balance.balance.toDouble();
+    _sellAmt = balance - await _getBaseFee(coin, balance);
+    notifyListeners();
+  }
+
+  Future<double> _getBaseFee(String coin, double balance) async {
+    final double tradeFee = _getTradeFee(balance);
+    final double txFee = await _getTxFee(coin) ?? 0;
+
+    return tradeFee + txFee;
+  }
+
+  double _getTradeFee(double balance) {
+    return balance / 777;
+  }
+
+  Future<double> _getTxFee(String coin) async {
+    try {
+      final dynamic tradeFeeResponse =
+          await MM.getTradeFee(MMService().client, GetTradeFee(coin: coin));
+
+      if (tradeFeeResponse is TradeFee) {
+        return double.parse(tradeFeeResponse.result.amount);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      Log('multi_order_provider] failed to get tx fee', e);
+      rethrow;
+    }
   }
 }

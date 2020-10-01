@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
@@ -218,9 +219,20 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               },
         child: Container(
           padding: const EdgeInsets.all(4),
-          child: Text(
-            baseCoin == null ? 'Amount' : multiOrderProvider.baseAmt.toString(),
-            style: Theme.of(context).textTheme.subtitle,
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: <Widget>[
+              Text(
+                multiOrderProvider.baseAmt == null
+                    ? 'Amount'
+                    : '${formatPrice(multiOrderProvider.baseAmt, 8)} ',
+                style: Theme.of(context).textTheme.subtitle,
+              ),
+              Text(
+                '(MAX)',
+                style: Theme.of(context).textTheme.caption,
+              )
+            ],
           ),
         ),
       ),
