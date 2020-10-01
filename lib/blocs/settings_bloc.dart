@@ -19,6 +19,10 @@ class SettingsBloc implements BlocBase {
     _prefs = await SharedPreferences.getInstance();
 
     showBalance = _prefs.getBool('showBalance') ?? showBalance;
+
+    if (_prefs.getBool('showOrderDetailsByTap') == null) {
+      _prefs.setBool('showOrderDetailsByTap', true);
+    }
   }
 
   bool isDeleteLoading = true;

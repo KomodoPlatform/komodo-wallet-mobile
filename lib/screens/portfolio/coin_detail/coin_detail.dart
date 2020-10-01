@@ -70,7 +70,10 @@ class _CoinDetailState extends State<CoinDetail> {
   Timer timer;
   bool isDeleteLoading = false;
   CexProvider cexProvider;
+  bool _shouldRefresh = false;
+  bool _isWaiting = false;
   RewardsProvider rewardsProvider;
+  Transaction latestTransaction;
 
   @override
   void initState() {
@@ -92,6 +95,15 @@ class _CoinDetailState extends State<CoinDetail> {
         setState(() {
           isLoading = false;
         });
+      }
+    });
+    coinsBloc
+        .getLatestTransaction(currentCoinBalance.coin)
+        .then((dynamic transactions) {
+      if (transactions is Transactions) {
+        final Transactions tr = transactions;
+        final t = tr.result.transactions[0];
+        if (t != null) latestTransaction = t;
       }
     });
     _amountController.addListener(onChange);
@@ -232,6 +244,7 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               _buildForm(),
               _buildHeaderCoinDetail(context),
+              _shouldRefresh ? _buildNewTransactionsButton() : const SizedBox(),
               _buildSyncChain(),
               _buildTransactionsList(context),
             ],
@@ -255,8 +268,26 @@ class _CoinDetailState extends State<CoinDetail> {
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
-              timer ??= Timer.periodic(const Duration(seconds: 15), (_) {
-                _refresh();
+              timer ??= Timer.periodic(const Duration(seconds: 3), (_) async {
+                final dynamic transactions = await coinsBloc
+                    .getLatestTransaction(currentCoinBalance.coin);
+                Transaction newTr;
+                if (transactions is Transactions) {
+                  final Transactions tr = transactions;
+                  final t = tr.result.transactions[0];
+                  if (t != null) newTr = t;
+                }
+
+                if (_isWaiting) {
+                  _refresh();
+                } else if (_scrollController.position.pixels == 0.0) {
+                  _refresh();
+                } else if (latestTransaction == null ||
+                    latestTransaction.internalId != newTr.internalId) {
+                  _shouldRefresh = true;
+                }
+
+                latestTransaction = newTr;
               });
 
               if (tx.result.syncStatus.state == syncState) {
@@ -320,7 +351,10 @@ class _CoinDetailState extends State<CoinDetail> {
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
+                    _isWaiting = true;
                     return const Center(child: CircularProgressIndicator());
+                  } else {
+                    _isWaiting = false;
                   }
                   if (snapshot.data is Transactions) {
                     final Transactions transactions = snapshot.data;
@@ -369,8 +403,10 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Future<void> _refresh() async {
-    return await coinsBloc.updateTransactions(
-        currentCoinBalance.coin, limit, null);
+    await coinsBloc.updateTransactions(currentCoinBalance.coin, limit, null);
+    setState(() {
+      _shouldRefresh = false;
+    });
   }
 
   Widget _buildTransactions(
@@ -757,6 +793,29 @@ class _CoinDetailState extends State<CoinDetail> {
     );
   }
 
+  Widget _buildNewTransactionsButton() {
+    return InkWell(
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        color: Colors.blue,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.refresh),
+            const SizedBox(
+              width: 8.0,
+            ),
+            const Text('Latest Transactions'),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+      ),
+      onTap: () async {
+        await _refresh();
+        _scrollController.position.jumpTo(0.0);
+      },
+    );
+  }
+
   void catchError(BuildContext mContext) {
     resetSend();
     Scaffold.of(mContext).showSnackBar(SnackBar(
@@ -884,8 +943,6 @@ class _CoinDetailState extends State<CoinDetail> {
                     if (dataRawTx is SendRawTransactionResponse &&
                         dataRawTx.txHash.isNotEmpty) {
                       setState(() {
-                        coinsBloc.updateTransactions(
-                            widget.coinBalance.coin, 10, null);
                         coinsBloc.updateCoinBalances();
                         Future<dynamic>.delayed(const Duration(seconds: 5), () {
                           coinsBloc.updateCoinBalances();
