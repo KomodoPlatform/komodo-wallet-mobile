@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class MultiOrderRelList extends StatefulWidget {
@@ -189,24 +190,44 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
     if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr))
       return Container();
 
-    return SizedBox(
-      height: 34,
-      child: Container(
-        padding: const EdgeInsets.only(right: 12),
-        child: TextField(
-          controller: amtCtrls[item.coin.abbr],
-          focusNode: amtFocusNodes[item.coin.abbr],
-          textAlign: TextAlign.right,
-          keyboardType: TextInputType.number,
-          maxLines: 1,
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+    final double usdPrice = cexProvider.getUsdPrice(item.coin.abbr) ?? 0;
+    final double usdAmt =
+        (multiOrderProvider.getRelCoinAmt(item.coin.abbr) ?? 0) * usdPrice;
+    final String convertedAmt = usdAmt > 0 ? cexProvider.convert(usdAmt) : null;
+
+    return Container(
+      padding: const EdgeInsets.only(right: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SizedBox(
+            height: 36,
+            child: TextField(
+              controller: amtCtrls[item.coin.abbr],
+              focusNode: amtFocusNodes[item.coin.abbr],
+              textAlign: TextAlign.right,
+              keyboardType: TextInputType.number,
+              maxLines: 1,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+              ),
+              onChanged: (String value) {
+                multiOrderProvider.setRelCoinAmt(
+                    item.coin.abbr, value == '' ? null : double.parse(value));
+              },
+            ),
           ),
-          onChanged: (String value) {
-            multiOrderProvider.setRelCoinAmt(
-                item.coin.abbr, value == '' ? null : double.parse(value));
-          },
-        ),
+          if (convertedAmt != null)
+            Text(
+              convertedAmt,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: cexColor,
+                fontSize: 10,
+                height: 1.2,
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -214,36 +235,38 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   Widget _buildTitle(CoinBalance item) {
     return Opacity(
       opacity: multiOrderProvider.isRelCoinSelected(item.coin.abbr) ? 1 : 0.5,
-      child: Container(
-        height: 46,
-        padding: const EdgeInsets.fromLTRB(0, 6, 12, 6),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                CircleAvatar(
-                  maxRadius: 6,
-                  backgroundImage:
-                      AssetImage('assets/${item.coin.abbr.toLowerCase()}.png'),
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  item.coin.abbr,
-                  maxLines: 1,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 50),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(0, 6, 12, 6),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  CircleAvatar(
+                    maxRadius: 6,
+                    backgroundImage: AssetImage(
+                        'assets/${item.coin.abbr.toLowerCase()}.png'),
                   ),
-                ),
-              ],
-            ),
-            Container(
-                padding: const EdgeInsets.only(left: 2),
-                child: _buildPrice(item)),
-          ],
+                  const SizedBox(width: 4),
+                  Text(
+                    item.coin.abbr,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                  padding: const EdgeInsets.only(left: 2),
+                  child: _buildPrice(item)),
+            ],
+          ),
         ),
       ),
     );
@@ -266,7 +289,8 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
       if (delta < -100) delta = -100;
     }
 
-    return Row(
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.end,
       children: <Widget>[
         Text(
           formatPrice(price),
@@ -277,6 +301,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         ),
         if (delta != null)
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               const SizedBox(width: 3),
               Text(
@@ -301,7 +326,11 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
 
   void _updateAmtFields() {
     multiOrderProvider.relCoins.forEach((abbr, amount) {
-      amtCtrls[abbr].text = amount?.toString() ?? '';
+      if (amount == null || amount == 0) {
+        amtCtrls[abbr].text = '';
+      } else {
+        amtCtrls[abbr].text = cutTrailingZeros(formatPrice(amount));
+      }
     });
   }
 }

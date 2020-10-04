@@ -15,8 +15,8 @@ class MultiOrderProvider extends ChangeNotifier {
   String get baseCoin => _baseCoin;
   set baseCoin(String coin) {
     _baseCoin = coin;
-    _calculateSellAmt(coin);
-    selectRelCoin(coin, false);
+    _calculateSellAmt();
+    _relCoins.clear();
 
     notifyListeners();
   }
@@ -48,31 +48,41 @@ class MultiOrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _calculateSellAmt(String coin) async {
+  Future<void> _calculateSellAmt() async {
     final double balance =
-        coinsBloc.getBalanceByAbbr(coin).balance.balance.toDouble();
-    _sellAmt = balance - await _getBaseFee(coin, balance);
+        coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
+    _sellAmt = balance - await _getBaseFee();
+
     notifyListeners();
   }
 
-  Future<double> _getBaseFee(String coin, double balance) async {
-    final double tradeFee = _getTradeFee(balance);
-    final double txFee = await _getTxFee(coin) ?? 0;
+  Future<double> _getBaseFee() async {
+    final double tradeFee = getTradeFee();
+    final double txFee = await getTxFee() ?? 0;
 
     return tradeFee + txFee;
   }
 
-  double _getTradeFee(double balance) {
+  double getTradeFee() {
+    if (baseCoin == null) return null;
+
+    final double balance =
+        coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
+
     return balance / 777;
   }
 
-  Future<double> _getTxFee(String coin) async {
+  Future<double> getTxFee() async {
+    if (baseCoin == null) return null;
+
     try {
       final dynamic tradeFeeResponse =
-          await MM.getTradeFee(MMService().client, GetTradeFee(coin: coin));
+          await MM.getTradeFee(MMService().client, GetTradeFee(coin: baseCoin));
 
       if (tradeFeeResponse is TradeFee) {
-        return double.parse(tradeFeeResponse.result.amount);
+        // Magic x2 added to match fee, returned by
+        // TradePage.getTxFee (trade_page.dart:294)
+        return double.parse(tradeFeeResponse.result.amount) * 2;
       } else {
         return null;
       }
