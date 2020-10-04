@@ -265,11 +265,31 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               Container(
                   padding: const EdgeInsets.only(left: 2),
                   child: _buildPrice(item)),
+              _buildFee(item),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildFee(CoinBalance item) {
+    if (item.coin.swapContractAddress.isEmpty) return const SizedBox();
+
+    return FutureBuilder(
+        future: multiOrderProvider.getERCfee(item.coin.abbr),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return const SizedBox();
+
+          return Container(
+            padding: const EdgeInsets.only(left: 2),
+            child: Text(
+              '+fee: ${cutTrailingZeros(formatPrice(snapshot.data))}'
+              ' ETH',
+              style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),
+            ),
+          );
+        });
   }
 
   Widget _buildPrice(CoinBalance item) {

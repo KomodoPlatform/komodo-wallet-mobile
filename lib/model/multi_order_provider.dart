@@ -80,7 +80,7 @@ class MultiOrderProvider extends ChangeNotifier {
           await MM.getTradeFee(MMService().client, GetTradeFee(coin: baseCoin));
 
       if (tradeFeeResponse is TradeFee) {
-        // Magic x2 added to match fee, returned by
+        // Magic 'x2' added to match fee, returned by
         // TradePage.getTxFee (trade_page.dart:294)
         return double.parse(tradeFeeResponse.result.amount) * 2;
       } else {
@@ -90,5 +90,11 @@ class MultiOrderProvider extends ChangeNotifier {
       Log('multi_order_provider] failed to get tx fee', e);
       rethrow;
     }
+  }
+
+  Future<double> getERCfee(String coin) async {
+    final TradeFee tradeFeeResponseERC = await ApiProvider()
+        .getTradeFee(MMService().client, GetTradeFee(coin: coin));
+    return double.parse(tradeFeeResponseERC.result.amount);
   }
 }
