@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/multi_order_base.dart';
+import 'package:komodo_dex/screens/dex/trade/multi_order_confirm.dart';
 import 'package:komodo_dex/screens/dex/trade/multi_order_rel_list.dart';
 import 'package:provider/provider.dart';
 
@@ -17,14 +18,15 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
 
     return SingleChildScrollView(
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(4),
         child: Column(
           children: <Widget>[
             MultiOrderBase(),
-            const SizedBox(height: 10),
+            const SizedBox(height: 6),
             MultiOrderRelList(),
             const SizedBox(height: 10),
             _buildButton(),
+            const SizedBox(height: 50),
           ],
         ),
       ),
@@ -32,9 +34,36 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
   }
 
   Widget _buildButton() {
+    bool allowCreate = true;
+    if (multiOrderProvider.baseCoin == null) allowCreate = false;
+    if (multiOrderProvider.relCoins.isEmpty) allowCreate = false;
+
+    final int qtt = multiOrderProvider.relCoins.length;
+
     return RaisedButton(
-      onPressed: () {},
-      child: const Text('Create'),
+      disabledColor: Theme.of(context).disabledColor.withAlpha(100),
+      onPressed: allowCreate
+          ? () async {
+              if (await multiOrderProvider.validate()) {
+                Navigator.push<dynamic>(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
+                            MultiOrderConfirm()));
+              } else {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Theme.of(context).backgroundColor,
+                    content: Text(
+                      'Please fix all errors before continuing',
+                      style: TextStyle(
+                        color: Theme.of(context).errorColor,
+                      ),
+                    )));
+              }
+            }
+          : null,
+      child:
+          Text(qtt > 0 ? 'Create $qtt Order${qtt > 1 ? 's' : ''}' : 'Create'),
     );
   }
 }

@@ -50,15 +50,21 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
       width: double.infinity,
       child: Card(
         child: Container(
-          padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
+          padding: const EdgeInsets.fromLTRB(15, 10, 15, 6),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 padding: const EdgeInsets.fromLTRB(6, 6, 6, 12),
-                child: Text(
-                  'Sell:',
-                  style: Theme.of(context).textTheme.body2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Sell:',
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                    _buildResetButton(),
+                  ],
                 ),
               ),
               Row(
@@ -69,8 +75,42 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                   Expanded(flex: 5, child: _buildSellAmount()),
                 ],
               ),
+              const SizedBox(height: 12),
               _buildFees(),
+              _buildErrors(),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrors() {
+    final String error =
+        baseCoin == null ? null : multiOrderProvider.getError(baseCoin);
+    if (error == null) return Container();
+
+    return Container(
+      child: Text(
+        error,
+        style: Theme.of(context).textTheme.caption.copyWith(
+              color: Theme.of(context).errorColor,
+            ),
+      ),
+    );
+  }
+
+  Widget _buildResetButton() {
+    return InkWell(
+      onTap:
+          multiOrderProvider.baseCoin == null ? null : multiOrderProvider.reset,
+      child: Opacity(
+        opacity: multiOrderProvider.baseCoin == null ? 0.3 : 1,
+        child: Container(
+          padding: const EdgeInsets.all(2),
+          child: Icon(
+            Icons.clear,
+            size: 13,
           ),
         ),
       ),
@@ -87,14 +127,19 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
             tradeFee == null ||
             tradeFee == 0) return const SizedBox();
 
+        final bool hasCexPrice =
+            cexProvider.getUsdPrice(multiOrderProvider.baseCoin) > 0;
+
         return GestureDetector(
-          onTap: () {
-            setState(() {
-              showDetailedFees = !showDetailedFees;
-            });
-          },
+          onTap: hasCexPrice
+              ? () {
+                  setState(() {
+                    showDetailedFees = !showDetailedFees;
+                  });
+                }
+              : null,
           child: Container(
-            padding: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -110,7 +155,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Text(
-                                '${cutTrailingZeros(formatPrice(snapshot.data))} ${multiOrderProvider.baseCoin}',
+                                '${cutTrailingZeros(formatPrice(snapshot.data))}'
+                                ' ${multiOrderProvider.baseCoin}',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                               if (showDetailedFees)
@@ -138,7 +184,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Text(
-                                '${cutTrailingZeros(formatPrice(multiOrderProvider.getTradeFee()))} ${multiOrderProvider.baseCoin}',
+                                '${cutTrailingZeros(formatPrice(multiOrderProvider.getTradeFee()))}'
+                                ' ${multiOrderProvider.baseCoin}',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                               if (showDetailedFees)
@@ -159,14 +206,15 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Icon(
-                    showDetailedFees ? Icons.unfold_less : Icons.unfold_more,
-                    color: Theme.of(context).textTheme.caption.color,
-                    size: 18,
+                if (hasCexPrice)
+                  Container(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: Icon(
+                      showDetailedFees ? Icons.unfold_less : Icons.unfold_more,
+                      color: Theme.of(context).textTheme.caption.color,
+                      size: 18,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -325,11 +373,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
     return Opacity(
       opacity: baseCoin == null ? 0.3 : 1,
       child: InkWell(
-        onTap: baseCoin == null
-            ? null
-            : () {
-                // TODO: show max volume info dialog
-              },
+        onTap: baseCoin == null ? null : _showMaxAmountWarning,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -361,5 +405,26 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         ),
       ),
     );
+  }
+
+  void _showMaxAmountWarning() {
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            contentPadding: const EdgeInsets.all(20),
+            children: <Widget>[
+              // TODO(yurii): localization
+              const Text('Multi-Order requires MAX sell amount to proceed'),
+              const SizedBox(height: 20),
+              RaisedButton(
+                onPressed: () {
+                  dialogBloc.closeDialog(context);
+                },
+                child: const Text('Ok'),
+              )
+            ],
+          );
+        });
   }
 }

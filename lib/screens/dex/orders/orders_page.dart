@@ -37,8 +37,8 @@ class _OrdersPageState extends State<OrdersPage> {
                       'Active ',
                       style: TextStyle(
                           color: currentTab == OrdersTab.active
-                              ? Theme.of(context).accentColor
-                              : null),
+                              ? null
+                              : Theme.of(context).accentColor),
                     ),
                     _buildActiveOrdersNumber(),
                   ],
@@ -57,8 +57,8 @@ class _OrdersPageState extends State<OrdersPage> {
                     'History ',
                     style: TextStyle(
                         color: currentTab == OrdersTab.history
-                            ? Theme.of(context).accentColor
-                            : null),
+                            ? null
+                            : Theme.of(context).accentColor),
                   ),
                   _buildHistoryNumber(),
                 ],
@@ -95,8 +95,8 @@ class _OrdersPageState extends State<OrdersPage> {
               fontSize: 13,
               fontWeight: FontWeight.w400,
               color: currentTab == OrdersTab.history
-                  ? Theme.of(context).accentColor
-                  : null,
+                  ? null
+                  : Theme.of(context).accentColor,
             ),
           );
         });
@@ -119,8 +119,8 @@ class _OrdersPageState extends State<OrdersPage> {
             fontSize: 13,
             fontWeight: FontWeight.w400,
             color: currentTab == OrdersTab.active
-                ? Theme.of(context).accentColor
-                : null,
+                ? null
+                : Theme.of(context).accentColor,
           ),
         );
       },
