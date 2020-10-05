@@ -229,6 +229,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     ? widget.transaction.getToAddress()[0]
                     : ''),
         ItemTransationDetail(title: 'Tx Hash', data: widget.transaction.txHash),
+        const ItemTransactionNote(title: 'Note'),
       ],
     );
   }
@@ -320,5 +321,81 @@ class ItemTransationDetail extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ItemTransactionNote extends StatefulWidget {
+  const ItemTransactionNote({this.title});
+
+  final String title;
+
+  @override
+  _ItemTransactionNoteState createState() => _ItemTransactionNoteState();
+}
+
+class _ItemTransactionNoteState extends State<ItemTransactionNote> {
+  String noteText;
+  final noteTextController = TextEditingController();
+  bool isEdit = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            widget.title,
+            style: Theme.of(context).textTheme.subtitle,
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: isEdit
+                ? TextField(
+                    controller: noteTextController,
+                  )
+                : InkWell(
+                    onTap: () {
+                      if (noteText != null && noteText.isNotEmpty)
+                        copyToClipBoard(context, noteText);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: AutoSizeText(
+                        (noteText == null || noteText.isEmpty)
+                            ? 'Add a Note'
+                            : noteText,
+                        style: Theme.of(context).textTheme.body2,
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                  ),
+          ),
+          IconButton(
+            icon: Icon(isEdit ? Icons.check : Icons.edit),
+            onPressed: () {
+              setState(
+                () {
+                  if (isEdit) {
+                    noteTextController.text = noteTextController.text.trim();
+                    noteText = noteTextController.text;
+                  }
+                  isEdit = !isEdit;
+                },
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    noteTextController.dispose();
+    super.dispose();
   }
 }
