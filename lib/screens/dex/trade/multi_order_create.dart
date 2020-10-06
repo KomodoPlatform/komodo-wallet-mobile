@@ -12,6 +12,7 @@ class MultiOrderCreate extends StatefulWidget {
 
 class _MultiOrderCreateState extends State<MultiOrderCreate> {
   MultiOrderProvider multiOrderProvider;
+
   @override
   Widget build(BuildContext context) {
     multiOrderProvider ??= Provider.of<MultiOrderProvider>(context);
@@ -45,7 +46,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
       onPressed: allowCreate
           ? () async {
               if (await multiOrderProvider.validate()) {
-                Navigator.push<dynamic>(
+                Navigator.pushReplacement<dynamic, dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
                         builder: (BuildContext context) =>

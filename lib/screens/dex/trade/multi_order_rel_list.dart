@@ -33,6 +33,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   @override
   void dispose() {
     amtCtrls.forEach((_, ctrl) => ctrl.dispose());
+    fiatAmtCtrl.dispose();
     super.dispose();
   }
 
