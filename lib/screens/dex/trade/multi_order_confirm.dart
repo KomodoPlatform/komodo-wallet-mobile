@@ -28,6 +28,15 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
       appBar: AppBar(
         // TODO(yurii): localization
         title: const Text('Confirm'),
+        leading: BackButton(
+          onPressed: () {
+            Navigator.pushReplacement<dynamic, dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) =>
+                        const SwapPage(activeTabIndex: 2)));
+          },
+        ),
       ),
       body: Column(
         children: <Widget>[
