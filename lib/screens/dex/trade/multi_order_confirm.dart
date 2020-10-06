@@ -192,13 +192,13 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
+                        Text(multiOrderProvider.baseCoin),
+                        const SizedBox(width: 2),
                         CircleAvatar(
                           maxRadius: 9,
                           backgroundImage: AssetImage(
                               'assets/${multiOrderProvider.baseCoin.toLowerCase()}.png'),
                         ),
-                        const SizedBox(width: 2),
-                        Text(multiOrderProvider.baseCoin),
                       ],
                     ),
                     Text(
