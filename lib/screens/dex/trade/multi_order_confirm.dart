@@ -66,7 +66,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
   Widget _buildButton() {
     return Container(
       alignment: Alignment.center,
-      padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
+      padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

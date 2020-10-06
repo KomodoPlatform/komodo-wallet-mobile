@@ -170,7 +170,7 @@ class MultiOrderProvider extends ChangeNotifier {
         cancelPrevious: false,
         max: true,
         volume: baseAmt.toString(),
-        price: deci(amount / baseAmt).toString(),
+        price: deci2s(deci(amount / baseAmt)),
       );
 
       if (_protectionSettings[coin] != null) {
