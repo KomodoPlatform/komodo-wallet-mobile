@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
-import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class ActiveOrders extends StatefulWidget {
   @override
@@ -57,46 +56,61 @@ class _ActiveOrdersState extends State<ActiveOrders> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Container(
-                    child: _buildIcon(order.base),
-                  ),
-                  Container(
-                    child: _buildIcon(order.rel),
-                  ),
-                ]),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                _buildTextAmount(order.base, order.baseAmount),
-                Expanded(
-                  child: Container(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          order.base,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        const SizedBox(width: 2),
+                        _buildIcon(order.base),
+                      ],
+                    ),
+                    Text(
+                      '~${formatPrice(order.baseAmount, 8)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
                 ),
-                Icon(
-                  Icons.code,
-                  size: 20,
-                  color: Colors.white,
+                Container(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Icon(Icons.swap_horiz),
                 ),
-                Expanded(
-                  child: Container(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        _buildIcon(order.rel),
+                        const SizedBox(width: 2),
+                        Text(
+                          order.rel,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '~${formatPrice(order.relAmount, 8)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
                 ),
-                _buildTextAmount(order.rel, order.relAmount),
               ],
             ),
             const SizedBox(
-              height: 8,
-            ),
-            AutoSizeText(
-              'UUID: ' + order.uuid,
-              maxLines: 2,
-              style: Theme.of(context).textTheme.body2,
-            ),
-            const SizedBox(
-              height: 4,
+              height: 12,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -162,24 +176,12 @@ class _ActiveOrdersState extends State<ActiveOrders> {
     );
   }
 
-  Widget _buildTextAmount(String coin, String amount) {
-    if (coin != null && amount != null && amount.isNotEmpty) {
-      return Text(
-        '~ ${Decimal.parse(amount) % Decimal.parse('1') == Decimal.parse('0') ? Decimal.parse(amount) : Decimal.parse(amount).toStringAsFixed(6)} $coin ',
-        style: Theme.of(context).textTheme.body1,
-      );
-    } else {
-      return const Text('');
-    }
-  }
-
   Widget _buildIcon(String coin) {
-    return Container(
-      height: 30,
-      width: 30,
-      child: Image.asset(
+    return CircleAvatar(
+      maxRadius: 10,
+      backgroundColor: Colors.transparent,
+      backgroundImage: AssetImage(
         'assets/${coin.toLowerCase()}.png',
-        fit: BoxFit.cover,
       ),
     );
   }
