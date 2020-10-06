@@ -4,7 +4,6 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
-import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -24,45 +23,38 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
     multiOrderProvider ??= Provider.of<MultiOrderProvider>(context);
     final Map<String, double> rel = multiOrderProvider.relCoins;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        // TODO(yurii): localization
-        title: const Text('Confirm'),
-      ),
-      body: Column(
-        children: <Widget>[
-          inProgress
-              ? const SizedBox(
-                  height: 1,
-                  child: LinearProgressIndicator(),
-                )
-              : Container(height: 1),
-          Flexible(
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(6, 12, 6, 12),
-                      child: Text(
-                        // TODO(yurii): localization
-                        'Create ${rel.length} Order${rel.length > 1 ? 's' : ''}:',
-                        style: Theme.of(context).textTheme.subtitle,
-                      ),
+    return Column(
+      children: <Widget>[
+        inProgress
+            ? const SizedBox(
+                height: 1,
+                child: LinearProgressIndicator(),
+              )
+            : Container(height: 1),
+        Flexible(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(6, 12, 6, 12),
+                    child: Text(
+                      // TODO(yurii): localization
+                      'Create ${rel.length} Order${rel.length > 1 ? 's' : ''}:',
+                      style: Theme.of(context).textTheme.subtitle,
                     ),
-                    _buildList(),
-                    _buildButton(),
-                    _buildWarning(),
-                  ],
-                ),
+                  ),
+                  _buildList(),
+                  _buildButton(),
+                  _buildWarning(),
+                ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -77,7 +69,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
             onPressed: inProgress
                 ? null
                 : () {
-                    Navigator.pop(context);
+                    multiOrderProvider.validated = false;
                   },
             // TODO(yurii): localization
             child: const Text('Cancel'),
@@ -95,7 +87,6 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                       if (multiOrderProvider.relCoins.isEmpty) {
                         multiOrderProvider.reset();
                         swapBloc.setIndexTabDex(1);
-                        Navigator.pop(context);
                       }
                     });
                   },

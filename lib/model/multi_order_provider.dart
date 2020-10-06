@@ -16,6 +16,8 @@ import 'get_trade_fee.dart';
 class MultiOrderProvider extends ChangeNotifier {
   String _baseCoin;
   double _sellAmt;
+  bool _validated = false;
+
   final Map<String, double> _relCoins = {};
   final Map<String, ProtectionSettings> _protectionSettings = {};
   final Map<String, String> _errors = {};
@@ -32,6 +34,13 @@ class MultiOrderProvider extends ChangeNotifier {
 
   void reset() {
     baseCoin = null;
+    validated = false;
+  }
+
+  bool get validated => _validated;
+  set validated(bool val) {
+    _validated = val;
+    notifyListeners();
   }
 
   double get baseAmt => _sellAmt;

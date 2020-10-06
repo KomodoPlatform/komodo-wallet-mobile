@@ -46,11 +46,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
       onPressed: allowCreate
           ? () async {
               if (await multiOrderProvider.validate()) {
-                Navigator.push<dynamic>(
-                    context,
-                    MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) =>
-                            MultiOrderConfirm()));
+                multiOrderProvider.validated = true;
               } else {
                 Scaffold.of(context).showSnackBar(SnackBar(
                     backgroundColor: Theme.of(context).backgroundColor,
