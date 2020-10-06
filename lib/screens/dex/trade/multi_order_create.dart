@@ -46,7 +46,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
       onPressed: allowCreate
           ? () async {
               if (await multiOrderProvider.validate()) {
-                Navigator.pushReplacement<dynamic, dynamic>(
+                Navigator.push<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
                         builder: (BuildContext context) =>

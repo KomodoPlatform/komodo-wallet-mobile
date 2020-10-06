@@ -8,10 +8,6 @@ import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
 class SwapPage extends StatefulWidget {
-  const SwapPage({this.activeTabIndex = 0});
-
-  final int activeTabIndex;
-
   @override
   _SwapPageState createState() => _SwapPageState();
 }
@@ -29,9 +25,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
       setState(() {
         tabController.index = onData;
       });
-    });
-    setState(() {
-      tabController.index = widget.activeTabIndex;
     });
   }
 
