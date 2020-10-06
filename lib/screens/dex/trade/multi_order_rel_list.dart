@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
@@ -19,6 +20,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   CexProvider cexProvider;
   final Map<String, TextEditingController> amtCtrls = {};
   final Map<String, FocusNode> amtFocusNodes = {};
+  final TextEditingController fiatAmtCtrl = TextEditingController();
 
   @override
   void initState() {
@@ -87,7 +89,21 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                             style: Theme.of(context).textTheme.body2,
                           ),
                         ),
-                        Container(),
+                        Container(
+                          child: InkWell(
+                            onTap: () {
+                              _showAutoFillDialog();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(0, 16, 0, 12),
+                              child: Icon(
+                                Icons.flash_auto,
+                                size: 14,
+                                color: Theme.of(context).textTheme.body2.color,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     ..._buildRows(availableToBuy),
@@ -97,6 +113,65 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         ],
       )),
     );
+  }
+
+  void _showAutoFillDialog() {
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            contentPadding: const EdgeInsets.all(20),
+            children: <Widget>[
+              const Text('Please enter fiat amount to receive:'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('${cexProvider.selectedFiatSymbol} '),
+                  Flexible(
+                    flex: 1,
+                    child: TextField(
+                      controller: fiatAmtCtrl,
+                      autofocus: true,
+                      keyboardType: TextInputType.number,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      fiatAmtCtrl.text = '';
+                      dialogBloc.closeDialog(context);
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 12),
+                  RaisedButton(
+                    onPressed: () {
+                      double fiatAmt;
+                      try {
+                        fiatAmt = double.parse(fiatAmtCtrl.text);
+                      } catch (_) {}
+                      fiatAmtCtrl.text = '';
+                      dialogBloc.closeDialog(context);
+
+                      if (fiatAmt == null || fiatAmt == 0) return;
+
+                      final double usdAmt = fiatAmt *
+                          cexProvider.getUsdPrice(cexProvider.selectedFiat);
+                      _autofill(usdAmt);
+                    },
+                    child: const Text('Autofill'),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 
   List<TableRow> _buildRows(List<CoinBalance> data) {
@@ -193,19 +268,31 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         });
   }
 
-  void _calculateAmts() {
-    double sourceUsdAmt;
+  void _autofill(double sourceUsdAmt) {
+    for (CoinBalance item in coinsBloc.coinBalance) {
+      if (multiOrderProvider.baseCoin == item.coin.abbr) continue;
+      final double usdPrice = cexProvider.getUsdPrice(item.coin.abbr);
+      multiOrderProvider.selectRelCoin(item.coin.abbr, false);
+      if (usdPrice == null || usdPrice == 0) continue;
 
-    for (String abbr in multiOrderProvider.relCoins.keys) {
-      final double relAmt = multiOrderProvider.relCoins[abbr];
-      if (relAmt == null || relAmt == 0) continue;
-
-      final double sourceUsdPrice = cexProvider.getUsdPrice(abbr);
-      if (sourceUsdPrice == null || sourceUsdPrice == 0) continue;
-
-      sourceUsdAmt = relAmt * sourceUsdPrice;
-      break;
+      multiOrderProvider.selectRelCoin(item.coin.abbr, true);
     }
+
+    _calculateAmts(sourceUsdAmt);
+  }
+
+  void _calculateAmts([double sourceUsdAmt]) {
+    if (sourceUsdAmt == null)
+      for (String abbr in multiOrderProvider.relCoins.keys) {
+        final double relAmt = multiOrderProvider.relCoins[abbr];
+        if (relAmt == null || relAmt == 0) continue;
+
+        final double sourceUsdPrice = cexProvider.getUsdPrice(abbr);
+        if (sourceUsdPrice == null || sourceUsdPrice == 0) continue;
+
+        sourceUsdAmt = relAmt * sourceUsdPrice;
+        break;
+      }
 
     if (sourceUsdAmt == null) return;
 
