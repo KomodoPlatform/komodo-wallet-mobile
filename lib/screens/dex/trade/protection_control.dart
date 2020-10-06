@@ -8,10 +8,12 @@ class ProtectionControl extends StatefulWidget {
   const ProtectionControl({
     @required this.coin,
     this.onChange,
+    this.activeColor,
   });
 
   final Coin coin;
   final Function(ProtectionSettings) onChange;
+  final Color activeColor;
 
   @override
   _ProtectionControlState createState() => _ProtectionControlState();
@@ -61,7 +63,9 @@ class _ProtectionControlState extends State<ProtectionControl> {
         ),
         SizedBox(height: useCustom ? 6 : 0),
         Container(
-          color: useCustom ? Theme.of(context).primaryColor : null,
+          color: useCustom
+              ? widget.activeColor ?? Theme.of(context).primaryColor
+              : null,
           padding: const EdgeInsets.only(
             left: 24,
             right: 24,

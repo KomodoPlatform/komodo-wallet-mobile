@@ -55,7 +55,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.fromLTRB(6, 6, 6, 12),
+                padding: const EdgeInsets.fromLTRB(6, 6, 0, 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -107,7 +107,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
       child: Opacity(
         opacity: multiOrderProvider.baseCoin == null ? 0.3 : 1,
         child: Container(
-          padding: const EdgeInsets.all(2),
+          padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
           child: Icon(
             Icons.clear,
             size: 13,
@@ -128,7 +128,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
             tradeFee == 0) return const SizedBox();
 
         final bool hasCexPrice =
-            cexProvider.getUsdPrice(multiOrderProvider.baseCoin) > 0;
+            (cexProvider.getUsdPrice(multiOrderProvider.baseCoin) ?? 0) > 0;
 
         return GestureDetector(
           onTap: hasCexPrice
@@ -393,13 +393,16 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               ),
             ),
             if (convertedAmt != null)
-              Text(
-                convertedAmt,
-                textAlign: TextAlign.right,
-                style: Theme.of(context)
-                    .textTheme
-                    .caption
-                    .copyWith(color: cexColor),
+              Container(
+                padding: const EdgeInsets.only(right: 4),
+                child: Text(
+                  convertedAmt,
+                  textAlign: TextAlign.right,
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption
+                      .copyWith(color: cexColor),
+                ),
               ),
           ],
         ),

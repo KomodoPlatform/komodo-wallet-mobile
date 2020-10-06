@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -195,41 +194,29 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   }
 
   void _calculateAmts() {
-    final double baseAmt = multiOrderProvider.baseAmt;
-    if (baseAmt == null || baseAmt == 0) return;
-
-    double sourceDelta;
+    double sourceUsdAmt;
 
     for (String abbr in multiOrderProvider.relCoins.keys) {
       final double relAmt = multiOrderProvider.relCoins[abbr];
       if (relAmt == null || relAmt == 0) continue;
 
-      final double price = relAmt / baseAmt;
-      final double cexPrice = cexProvider.getCexRate(CoinsPair(
-        buy: Coin(abbr: abbr),
-        sell: Coin(abbr: multiOrderProvider.baseCoin),
-      ));
+      final double sourceUsdPrice = cexProvider.getUsdPrice(abbr);
+      if (sourceUsdPrice == null || sourceUsdPrice == 0) continue;
 
-      if (cexPrice == null || cexPrice == 0) continue;
-
-      sourceDelta = (cexPrice - price) * 100 / cexPrice;
+      sourceUsdAmt = relAmt * sourceUsdPrice;
       break;
     }
 
-    if (sourceDelta == null) return;
+    if (sourceUsdAmt == null) return;
 
     multiOrderProvider.relCoins.forEach((abbr, amt) {
       if (amt != null) return;
 
-      final double cexPrice = cexProvider.getCexRate(CoinsPair(
-        buy: Coin(abbr: abbr),
-        sell: Coin(abbr: multiOrderProvider.baseCoin),
-      ));
-      if (cexPrice == null || cexPrice == 0) return;
+      final double targetUsdPrice = cexProvider.getUsdPrice(abbr);
+      if (targetUsdPrice == null || targetUsdPrice == 0) return;
 
-      final double price = cexPrice - (sourceDelta * cexPrice) / 100;
       multiOrderProvider.setRelCoinAmt(
-          abbr, double.parse(formatPrice(baseAmt * price)));
+          abbr, double.parse(formatPrice(sourceUsdAmt / targetUsdPrice)));
     });
 
     _updateAmtFields();
@@ -326,7 +313,9 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   }
 
   Widget _buildFee(CoinBalance item) {
-    if (item.coin.swapContractAddress.isEmpty) return const SizedBox();
+    if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr))
+      return Container();
+    if (item.coin.swapContractAddress.isEmpty) return Container();
 
     return FutureBuilder(
         future: multiOrderProvider.getERCfee(item.coin.abbr),

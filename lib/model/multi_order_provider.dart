@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
+import 'error_string.dart';
+import 'get_setprice.dart';
 import 'get_trade_fee.dart';
 
 class MultiOrderProvider extends ChangeNotifier {
   String _baseCoin;
   double _sellAmt;
   final Map<String, double> _relCoins = {};
+  final Map<String, ProtectionSettings> _protectionSettings = {};
   final Map<String, String> _errors = {};
 
   String get baseCoin => _baseCoin;
@@ -44,6 +50,15 @@ class MultiOrderProvider extends ChangeNotifier {
       _errors.remove(coin);
     }
 
+    notifyListeners();
+  }
+
+  ProtectionSettings getProtectionSettings(String coin) {
+    return _protectionSettings[coin];
+  }
+
+  void setProtectionSettings(String coin, ProtectionSettings settings) {
+    _protectionSettings[coin] = settings;
     notifyListeners();
   }
 
@@ -139,6 +154,42 @@ class MultiOrderProvider extends ChangeNotifier {
     notifyListeners();
 
     return isValid;
+  }
+
+  Future<void> create() async {
+    if (!(await validate())) return;
+
+    final List<String> relCoins = List.from(_relCoins.keys);
+
+    for (String coin in relCoins) {
+      final double amount = _relCoins[coin];
+
+      final GetSetPrice getSetPrice = GetSetPrice(
+        base: baseCoin,
+        rel: coin,
+        cancelPrevious: false,
+        max: true,
+        volume: baseAmt.toString(),
+        price: deci(amount / baseAmt).toString(),
+      );
+
+      if (_protectionSettings[coin] != null) {
+        getSetPrice.relNota = _protectionSettings[coin].requiresNotarization;
+        getSetPrice.relConfs = _protectionSettings[coin].requiredConfirmations;
+      }
+
+      final dynamic response = await MM.postSetPrice(mmSe.client, getSetPrice);
+      if (response is SetPriceResponse) {
+        _relCoins.remove(coin);
+        _errors.remove(coin);
+        _protectionSettings.remove(coin);
+      } else if (response is ErrorString) {
+        print(response.error);
+        _errors[coin] = response.error;
+      }
+
+      notifyListeners();
+    }
   }
 
   Future<void> _calculateSellAmt() async {
