@@ -78,6 +78,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                         Container(
                           padding: const EdgeInsets.fromLTRB(16, 12, 0, 12),
                           child: Text(
+                            // TODO(yurii): localization
                             'Price/CEX',
                             style: Theme.of(context).textTheme.body2,
                           ),
@@ -85,6 +86,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                         Container(
                           padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
                           child: Text(
+                            // TODO(yurii): localization
                             'Receive Amt.',
                             style: Theme.of(context).textTheme.body2,
                           ),
@@ -122,6 +124,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           return SimpleDialog(
             contentPadding: const EdgeInsets.all(20),
             children: <Widget>[
+              // TODO(yurii): localization
               const Text('Please enter fiat amount to receive:'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -147,6 +150,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       fiatAmtCtrl.text = '';
                       dialogBloc.closeDialog(context);
                     },
+                    // TODO(yurii): localization
                     child: const Text('Cancel'),
                   ),
                   const SizedBox(width: 12),
@@ -165,6 +169,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                           cexProvider.getUsdPrice(cexProvider.selectedFiat);
                       _autofill(usdAmt);
                     },
+                    // TODO(yurii): localization
                     child: const Text('Autofill'),
                   ),
                 ],
@@ -412,6 +417,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           return Container(
             padding: const EdgeInsets.only(left: 2),
             child: Text(
+              // TODO(yurii): localization
               '+fee: ${cutTrailingZeros(formatPrice(snapshot.data))}'
               ' ETH',
               style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),

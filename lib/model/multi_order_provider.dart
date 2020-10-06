@@ -118,6 +118,7 @@ class MultiOrderProvider extends ChangeNotifier {
     final double minSellAmt = baseCoin == 'QTUM' ? 3 : 0.00777;
     if (baseAmt != null && baseAmt < minSellAmt) {
       isValid = false;
+      // TODO(yurii): localization
       _errors[baseCoin] = 'Min sell amount is $minSellAmt $baseCoin';
     }
 
@@ -127,6 +128,7 @@ class MultiOrderProvider extends ChangeNotifier {
       // check for empty amount field
       if (relAmt == null || relAmt == 0) {
         isValid = false;
+        // TODO(yurii): localization
         _errors[coin] = 'Amount cannot be empty';
       }
 
@@ -135,10 +137,12 @@ class MultiOrderProvider extends ChangeNotifier {
         final CoinBalance ethBalance = coinsBloc.getBalanceByAbbr('ETH');
         if (ethBalance == null) {
           isValid = false;
+          // TODO(yurii): localization
           _errors[coin] = 'Activate ETH and top-up balance first';
         } else if (ethBalance.balance.balance.toDouble() <
             await getERCfee(coin)) {
           isValid = false;
+          // TODO(yurii): localization
           _errors[coin] = 'ETH balance is too low';
         }
       }
@@ -147,6 +151,7 @@ class MultiOrderProvider extends ChangeNotifier {
       final double minReceiveAmt = baseCoin == 'QTUM' ? 3 : 0.00777;
       if (relAmt != null && relAmt < minReceiveAmt) {
         isValid = false;
+        // TODO(yurii): localization
         _errors[coin] = 'Min receive amount is $minReceiveAmt $coin';
       }
     }
@@ -184,7 +189,10 @@ class MultiOrderProvider extends ChangeNotifier {
         _errors.remove(coin);
         _protectionSettings.remove(coin);
       } else if (response is ErrorString) {
-        print(response.error);
+        Log(
+            'multi_order_provider]',
+            'Failed to post setprice:'
+                ' ${response.error}');
         _errors[coin] = response.error;
       }
     }

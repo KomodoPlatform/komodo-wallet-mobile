@@ -26,6 +26,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
+        // TODO(yurii): localization
         title: const Text('Confirm'),
       ),
       body: Column(
@@ -46,6 +47,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(6, 12, 6, 12),
                       child: Text(
+                        // TODO(yurii): localization
                         'Create ${rel.length} Order${rel.length > 1 ? 's' : ''}:',
                         style: Theme.of(context).textTheme.subtitle,
                       ),
@@ -76,6 +78,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                 : () {
                     Navigator.pop(context);
                   },
+            // TODO(yurii): localization
             child: const Text('Cancel'),
           ),
           RaisedButton(
@@ -96,6 +99,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                     });
                   },
             disabledColor: Theme.of(context).disabledColor.withAlpha(100),
+            // TODO(yurii): localization
             child: const Text('Confirm'),
           ),
         ],

@@ -54,6 +54,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
                 Scaffold.of(context).showSnackBar(SnackBar(
                     backgroundColor: Theme.of(context).backgroundColor,
                     content: Text(
+                      // TODO(yurii): localization
                       'Please fix all errors before continuing',
                       style: TextStyle(
                         color: Theme.of(context).errorColor,
@@ -62,6 +63,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
               }
             }
           : null,
+      // TODO(yurii): localization
       child:
           Text(qtt > 0 ? 'Create $qtt Order${qtt > 1 ? 's' : ''}' : 'Create'),
     );

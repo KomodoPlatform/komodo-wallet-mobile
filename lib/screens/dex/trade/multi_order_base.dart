@@ -384,6 +384,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       bottom: BorderSide(
                           width: 1, color: Theme.of(context).highlightColor))),
               child: Text(
+                // TODO(yurii): localization
                 multiOrderProvider.baseAmt == null
                     ? 'Amount'
                     : '${formatPrice(multiOrderProvider.baseAmt, 8)} ',
@@ -424,6 +425,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                 onPressed: () {
                   dialogBloc.closeDialog(context);
                 },
+                // TODO(yurii): localization
                 child: const Text('Ok'),
               )
             ],
