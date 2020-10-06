@@ -187,9 +187,9 @@ class MultiOrderProvider extends ChangeNotifier {
         print(response.error);
         _errors[coin] = response.error;
       }
-
-      notifyListeners();
     }
+
+    notifyListeners();
   }
 
   Future<void> _calculateSellAmt() async {
