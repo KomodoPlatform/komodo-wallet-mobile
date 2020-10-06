@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
+import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +28,15 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
       appBar: AppBar(
         // TODO(yurii): localization
         title: const Text('Confirm'),
+        leading: BackButton(
+          onPressed: () {
+            Navigator.pushReplacement<dynamic, dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) =>
+                        const SwapPage(activeTabIndex: 2)));
+          },
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -76,7 +85,12 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
             onPressed: inProgress
                 ? null
                 : () {
-                    Navigator.pop(context);
+                    Navigator.pushReplacement<dynamic, dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => const SwapPage(
+                                  activeTabIndex: 2,
+                                )));
                   },
             // TODO(yurii): localization
             child: const Text('Cancel'),
@@ -93,8 +107,11 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                       inProgress = false;
                       if (multiOrderProvider.relCoins.isEmpty) {
                         multiOrderProvider.reset();
-                        swapBloc.setIndexTabDex(1);
-                        Navigator.of(context).pop();
+                        Navigator.pushReplacement<dynamic, dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    const SwapPage(activeTabIndex: 1)));
                       }
                     });
                   },

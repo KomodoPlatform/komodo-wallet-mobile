@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
 import 'package:komodo_dex/screens/dex/trade/multi_order_create.dart';
@@ -9,6 +8,10 @@ import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
 class SwapPage extends StatefulWidget {
+  const SwapPage({this.activeTabIndex = 0});
+
+  final int activeTabIndex;
+
   @override
   _SwapPageState createState() => _SwapPageState();
 }
@@ -27,11 +30,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         tabController.index = onData;
       });
     });
-    if (swapHistoryBloc.isSwapsOnGoing) {
-      setState(() {
-        tabController.index = 1;
-      });
-    }
+    setState(() {
+      tabController.index = widget.activeTabIndex;
+    });
   }
 
   @override
