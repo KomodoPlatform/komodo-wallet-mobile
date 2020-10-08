@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/multi_order_base.dart';
-import 'package:komodo_dex/screens/dex/trade/multi_order_confirm.dart';
 import 'package:komodo_dex/screens/dex/trade/multi_order_rel_list.dart';
 import 'package:provider/provider.dart';
 

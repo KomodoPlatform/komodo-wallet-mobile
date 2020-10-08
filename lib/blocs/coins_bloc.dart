@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -279,9 +278,6 @@ class CoinsBloc implements BlocBase {
     _coinsLock = true;
 
     // Using a batch request to speed up the coin activation.
-    // NB: In the future we want to use a non-blocking API instead
-    // in order for the UI not to stuck if an activation of a particular coin is delayed.
-    // cf. https://github.com/KomodoPlatform/atomicDEX-API/issues/638
     final List<Map<String, dynamic>> batch = [];
     for (Coin coin in coins) {
       batch.add(json.decode(MM.enableCoinImpl(coin)));
@@ -312,7 +308,9 @@ class CoinsBloc implements BlocBase {
           coin: acc.coin);
       bal.camouflageIfNeeded();
       final cb = CoinBalance(coin, bal);
-      // TODO(AG): Load previous USD balance from database
+      // Before actual coin activation, coinBalance can store
+      // coins data (including balanceUSD) loaded from wallet snapshot,
+      // created during previous session (#898)
       final double preSavedUsdBalance = getBalanceByAbbr(acc.coin)?.balanceUSD;
       cb.balanceUSD = preSavedUsdBalance ?? 0;
       updateOneCoin(cb);
