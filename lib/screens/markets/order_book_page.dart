@@ -159,17 +159,15 @@ class _OrderBookPageState extends State<OrderBookPage> {
               children: <Widget>[
                 CandlesIcon(
                     size: 14,
-                    color: _showChart
-                        ? Theme.of(context).accentColor
-                        : Colors.white),
+                    color: _showChart ? null : Theme.of(context).accentColor),
                 const SizedBox(width: 2),
                 Text(
                   'Chart', // TODO(yurii): localization
                   style: _showChart
-                      ? TextStyle(
+                      ? null
+                      : TextStyle(
                           color: Theme.of(context).accentColor,
-                        )
-                      : null,
+                        ),
                 ),
               ],
             )),
@@ -182,10 +180,10 @@ class _OrderBookPageState extends State<OrderBookPage> {
             child: Text(
               'Depth', // TODO(yurii): localization
               style: !_showChart
-                  ? TextStyle(
+                  ? null
+                  : TextStyle(
                       color: Theme.of(context).accentColor,
-                    )
-                  : null,
+                    ),
             )),
       ],
     );
