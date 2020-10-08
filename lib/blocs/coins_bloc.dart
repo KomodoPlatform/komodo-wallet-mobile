@@ -572,17 +572,15 @@ class CoinsBloc implements BlocBase {
 
     _walletSnapshotInProgress = true;
 
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String jsonStr = json.encode(coinBalance);
-    prefs.setString('walletSnapshot', jsonStr);
+    await Db.saveWalletSnapshot(jsonStr);
     Log('coins_bloc]', 'Wallet snapshot created');
 
     _walletSnapshotInProgress = false;
   }
 
   Future<void> loadWalletSnapshot() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String jsonStr = prefs.getString('walletSnapshot');
+    final String jsonStr = await Db.getWalletSnapshot();
     if (jsonStr == null) return;
 
     List<dynamic> items;
