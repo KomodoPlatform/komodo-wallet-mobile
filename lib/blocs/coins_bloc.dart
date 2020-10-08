@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
@@ -26,6 +27,12 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/services/job_service.dart';
 
 class CoinsBloc implements BlocBase {
+  CoinsBloc() {
+    Timer.periodic(const Duration(seconds: 10), (_) {
+      _saveWalletSnapshot();
+    });
+  }
+
   List<CoinBalance> coinBalance = <CoinBalance>[];
 
   // Streams to handle the list coin
@@ -306,7 +313,8 @@ class CoinsBloc implements BlocBase {
       bal.camouflageIfNeeded();
       final cb = CoinBalance(coin, bal);
       // TODO(AG): Load previous USD balance from database
-      cb.balanceUSD = 0;
+      final double preSavedUsdBalance = getBalanceByAbbr(acc.coin)?.balanceUSD;
+      cb.balanceUSD = preSavedUsdBalance ?? 0;
       updateOneCoin(cb);
     }
 
@@ -555,6 +563,44 @@ class CoinsBloc implements BlocBase {
       Log('coins_bloc:545', e);
       rethrow;
     }
+  }
+
+  bool _walletSnapshotInProgress = false;
+  Future<void> _saveWalletSnapshot() async {
+    if (_walletSnapshotInProgress) return;
+    if (coinBalance == null || coinBalance.isEmpty) return;
+
+    _walletSnapshotInProgress = true;
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String jsonStr = json.encode(coinBalance);
+    prefs.setString('walletSnapshot', jsonStr);
+    Log('coins_bloc]', 'Wallet snapshot created');
+
+    _walletSnapshotInProgress = false;
+  }
+
+  Future<void> loadWalletSnapshot() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String jsonStr = prefs.getString('walletSnapshot');
+    if (jsonStr == null) return;
+
+    List<dynamic> items;
+    try {
+      items = json.decode(jsonStr);
+    } catch (e) {
+      print('Failed to parse wallet snapshot: $e');
+    }
+
+    if (items == null || items.isEmpty) return;
+
+    final List<CoinBalance> list = [];
+    for (dynamic item in items) {
+      list.add(CoinBalance.fromJson(item));
+    }
+
+    coinBalance = list;
+    _inCoins.add(coinBalance);
   }
 }
 

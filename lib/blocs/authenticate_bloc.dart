@@ -76,6 +76,8 @@ class AuthenticateBloc extends BlocBase {
     await prefs.setBool('isPinIsSet', false);
     await prefs.setBool('switch_pin_log_out_on_exit', false);
 
+    await coinsBloc.loadWalletSnapshot();
+
     await mmSe.init(passphrase);
 
     isLogin = true;
