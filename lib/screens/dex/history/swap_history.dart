@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/error_string.dart';
@@ -131,148 +129,162 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                _buildTextAmount(widget.swap.result.myInfo.myCoin,
-                    widget.swap.result.myInfo.myAmount),
-                Expanded(
-                  child: Container(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              widget.swap.result.myInfo.myCoin,
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            const SizedBox(width: 2),
+                            _buildIcon(widget.swap.result.myInfo.myCoin),
+                          ],
+                        ),
+                        Text(
+                          '${formatPrice(widget.swap.result.myInfo.myAmount, 8)}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Icon(Icons.swap_horiz),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            _buildIcon(widget.swap.result.myInfo.otherCoin),
+                            const SizedBox(width: 2),
+                            Text(
+                              widget.swap.result.myInfo.otherCoin,
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '${formatPrice(widget.swap.result.myInfo.otherAmount, 8)}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-                _buildIcon(widget.swap.result.myInfo.myCoin),
-                Icon(
-                  Icons.sync,
-                  size: 20,
-                  color: Colors.white,
+                const SizedBox(
+                  height: 12,
                 ),
-                _buildIcon(widget.swap.result.myInfo.otherCoin),
-                Expanded(
-                  child: Container(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      DateFormat('dd MMM yyyy HH:mm').format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              widget.swap.result.myInfo.startedAt * 1000)),
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  ],
                 ),
-                _buildTextAmount(widget.swap.result.myInfo.otherCoin,
-                    widget.swap.result.myInfo.otherAmount),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                AutoSizeText(
-                  'UUID: ' +
-                      widget.swap.result.uuid.substring(0, 5) +
-                      '...' +
-                      widget.swap.result.uuid.substring(
-                          widget.swap.result.uuid.length - 5,
-                          widget.swap.result.uuid.length),
-                  maxLines: 1,
-                  style: Theme.of(context).textTheme.body2,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  DateFormat('dd MMM yyyy HH:mm').format(
-                      DateTime.fromMillisecondsSinceEpoch(
-                          widget.swap.result.myInfo.startedAt * 1000)),
-                  style: Theme.of(context).textTheme.body2,
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Expanded(
-                child: Container(),
-              ),
-              Expanded(
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16, right: 16),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 6, horizontal: 12),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(24)),
-                        color: colorStatus,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 6, horizontal: 12),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(24)),
+                          color: colorStatus,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(stepStatus,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption
+                                    .copyWith(color: Colors.white)),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            Text(swapStatus,
+                                style:
+                                    Theme.of(context).textTheme.body2.copyWith(
+                                          color: Colors.white,
+                                        ))
+                          ],
+                        ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(stepStatus,
+                    )
+                  ],
+                ),
+                if (widget.swap.result.recoverable)
+                  recoverIsLoading
+                      ? Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Container(
+                              height: 25,
+                              width: 25,
+                              child: const CircularProgressIndicator(
+                                strokeWidth: 2,
+                              )))
+                      : Padding(
+                          padding: const EdgeInsets.only(right: 16, bottom: 16),
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0)),
+                            color: const Color.fromRGBO(191, 191, 191, 1),
+                            child: Text(
+                              'Unlock Funds',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption
-                                  .copyWith(color: Colors.white)),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(swapStatus,
-                              style: Theme.of(context).textTheme.body2.copyWith(
-                                    color: Colors.white,
-                                  ))
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
+                                  .button
+                                  .copyWith(
+                                      color: Theme.of(context).primaryColor),
+                            ),
+                            onPressed: () async {
+                              // recover call
+                              setState(() {
+                                recoverIsLoading = true;
+                              });
+                              swapHistoryBloc
+                                  .recoverFund(widget.swap)
+                                  .then((dynamic result) {
+                                if (result is RecoverFundsOfSwap) {
+                                  showMessage(
+                                      context,
+                                      'Successfully unlocked ' +
+                                          result.result.coin +
+                                          ' funds - TX: ' +
+                                          result.result.txHash);
+                                } else if (result is ErrorString) {
+                                  showErrorMessage(context, result.error);
+                                }
+                              }).then((_) => setState(() {
+                                        recoverIsLoading = false;
+                                      }));
+                            },
+                          )),
+              ],
+            ),
           ),
-          if (widget.swap.result.recoverable)
-            recoverIsLoading
-                ? Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Container(
-                        height: 25,
-                        width: 25,
-                        child: const CircularProgressIndicator(
-                          strokeWidth: 2,
-                        )))
-                : Padding(
-                    padding: const EdgeInsets.only(right: 16, bottom: 16),
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      color: const Color.fromRGBO(191, 191, 191, 1),
-                      child: Text(
-                        'Unlock Funds',
-                        style: Theme.of(context)
-                            .textTheme
-                            .button
-                            .copyWith(color: Theme.of(context).primaryColor),
-                      ),
-                      onPressed: () async {
-                        // recover call
-                        setState(() {
-                          recoverIsLoading = true;
-                        });
-                        swapHistoryBloc
-                            .recoverFund(widget.swap)
-                            .then((dynamic result) {
-                          if (result is RecoverFundsOfSwap) {
-                            showMessage(
-                                context,
-                                'Successfully unlocked ' +
-                                    result.result.coin +
-                                    ' funds - TX: ' +
-                                    result.result.txHash);
-                          } else if (result is ErrorString) {
-                            showErrorMessage(context, result.error);
-                          }
-                        }).then((_) => setState(() {
-                                  recoverIsLoading = false;
-                                }));
-                      },
-                    ))
         ],
       ),
     ));
@@ -286,24 +298,6 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
         'assets/${coin.toLowerCase()}.png',
         fit: BoxFit.cover,
       ),
-    );
-  }
-
-  Widget _buildTextAmount(String coin, String amount) {
-    // Only apply camouflage to swap history,
-    // show current active swaps as is
-    final bool shouldCamouflage = camoBloc.isCamoActive &&
-        (widget.swap.status == Status.SWAP_SUCCESSFUL ||
-            widget.swap.status == Status.SWAP_FAILED ||
-            widget.swap.status == Status.TIME_OUT);
-
-    if (shouldCamouflage) {
-      amount = (double.parse(amount) * camoBloc.camoFraction / 100).toString();
-    }
-
-    return Text(
-      '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
-      style: Theme.of(context).textTheme.body1,
     );
   }
 
