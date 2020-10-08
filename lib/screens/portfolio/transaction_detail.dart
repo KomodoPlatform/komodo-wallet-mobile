@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -229,7 +230,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     ? widget.transaction.getToAddress()[0]
                     : ''),
         ItemTransationDetail(title: 'Tx Hash', data: widget.transaction.txHash),
-        const ItemTransactionNote(title: 'Note'),
+        ItemTransactionNote(title: 'Note', txHash: widget.transaction.txHash),
       ],
     );
   }
@@ -325,9 +326,13 @@ class ItemTransationDetail extends StatelessWidget {
 }
 
 class ItemTransactionNote extends StatefulWidget {
-  const ItemTransactionNote({this.title});
+  const ItemTransactionNote({
+    @required this.title,
+    @required this.txHash,
+  }) : assert(txHash != null);
 
   final String title;
+  final String txHash;
 
   @override
   _ItemTransactionNoteState createState() => _ItemTransactionNoteState();
@@ -337,6 +342,15 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
   String noteText;
   final noteTextController = TextEditingController();
   bool isEdit = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      noteText = await Db.getTxNote(widget.txHash);
+      noteTextController.text = noteText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -382,6 +396,8 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                   if (isEdit) {
                     noteTextController.text = noteTextController.text.trim();
                     noteText = noteTextController.text;
+                    Db.saveTxNote(
+                        widget.txHash, noteText.isNotEmpty ? noteText : null);
                   }
                   isEdit = !isEdit;
                 },

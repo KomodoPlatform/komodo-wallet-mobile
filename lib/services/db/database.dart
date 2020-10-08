@@ -75,6 +75,13 @@ class Db {
       )
     ''');
 
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS TxNotes (
+        tx_hash TEXT PRIMARY KEY,
+        note TEXT
+      )
+    ''');
+
     return db;
   }
 
@@ -248,5 +255,44 @@ class Db {
     final Database db = await Db.db;
     await db.delete('CoinsActivated',
         where: 'abbr = ?', whereArgs: <dynamic>[ticker]);
+  }
+
+  static Future<int> saveTxNote(String txHash, String note) async {
+    final Database db = await Db.db;
+
+    final r = await db.rawQuery(
+        'SELECT COUNT(*) FROM TxNotes WHERE tx_hash = ?', <String>[txHash]);
+    final count = Sqflite.firstIntValue(r);
+
+    if (count == 0) {
+      final Map<String, dynamic> row = <String, dynamic>{
+        'tx_hash': txHash,
+        'note': note,
+      };
+
+      return await db.insert('TxNotes ', row);
+    } else {
+      final Map<String, dynamic> row = <String, dynamic>{
+        'note': note,
+      };
+      return await db.update('TxNotes', row,
+          where: 'tx_hash = ?', whereArgs: <String>[txHash]);
+    }
+  }
+
+  static Future<String> getTxNote(String txHash) async {
+    final Database db = await Db.db;
+
+    final List<Map<String, dynamic>> maps = await db
+        .query('TxNotes', where: 'tx_hash = ?', whereArgs: <String>[txHash]);
+
+    final List<String> notes = List<String>.generate(maps.length, (int i) {
+      return maps[i]['note'];
+    });
+    if (notes.isEmpty) {
+      return null;
+    } else {
+      return notes[0];
+    }
   }
 }
