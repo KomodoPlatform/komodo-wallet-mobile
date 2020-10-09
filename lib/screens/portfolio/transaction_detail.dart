@@ -346,9 +346,11 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
-      noteText = await Db.getTxNote(widget.txHash);
-      noteTextController.text = noteText;
+    Db.getNote(widget.txHash).then((n) {
+      setState(() {
+        noteText = n;
+        noteTextController.text = noteText;
+      });
     });
   }
 
@@ -396,7 +398,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                   if (isEdit) {
                     noteTextController.text = noteTextController.text.trim();
                     noteText = noteTextController.text;
-                    Db.saveTxNote(
+                    Db.saveNote(
                         widget.txHash, noteText.isNotEmpty ? noteText : null);
                   }
                   isEdit = !isEdit;

@@ -26,6 +26,7 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/bui
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
 import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -74,6 +75,7 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
+  Map<String, String> allNotes;
 
   @override
   void initState() {
@@ -123,6 +125,11 @@ class _CoinDetailState extends State<CoinDetail> {
           });
         });
       }
+    });
+    Db.getAllNotes().then((all) {
+      setState(() {
+        allNotes = all;
+      });
     });
   }
 
@@ -573,6 +580,13 @@ class _CoinDetailState extends State<CoinDetail> {
                     ),
                   ],
                 ),
+                (allNotes[transaction.txHash] != null)
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        child: Text(allNotes[transaction.txHash]),
+                      )
+                    : const SizedBox(),
                 Container(
                   color: Theme.of(context).backgroundColor,
                   height: 1,
