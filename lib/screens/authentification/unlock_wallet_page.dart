@@ -50,6 +50,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                     },
                     child: Icon(
                       Icons.exit_to_app,
+                      key: const Key('settings-pin-logout'),
                       color: Colors.red,
                     )),
                 backgroundColor: Theme.of(context).backgroundColor,
@@ -60,6 +61,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                 elevation: 0,
               ),
         body: ListView(
+          key: const Key('unlock-wallet-scrollable'),
           children: <Widget>[
             Center(
               child: ClipRRect(
@@ -68,7 +70,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   color: Theme.of(context).primaryColor,
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
-                    child: SvgPicture.asset('assets/lock.svg',
+                    child: SvgPicture.asset('assets/svg/lock.svg',
                         semanticsLabel: 'Lock'),
                   ),
                 ),
@@ -97,6 +99,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                 padding: const EdgeInsets.all(24.0),
                 child: Builder(builder: (BuildContext context) {
                   return TextField(
+                    key: const Key('enter-password-field'),
                     maxLength: 40,
                     controller: controller,
                     onChanged: (String str) {
@@ -173,6 +176,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                     : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 100),
                         child: PrimaryButton(
+                          key: const Key('unlock-wallet'),
                           onPressed: isButtonLoginEnabled
                               ? () => _login(context)
                               : null,

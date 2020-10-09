@@ -7,18 +7,24 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
+import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/buildRedDot.dart';
+import 'package:provider/provider.dart';
 
 class CoinsPage extends StatefulWidget {
   @override
@@ -26,8 +32,9 @@ class CoinsPage extends StatefulWidget {
 }
 
 class _CoinsPageState extends State<CoinsPage> {
+  CexProvider _cexProvider;
   ScrollController _scrollController;
-  double _heightFactor = 7;
+  double _heightFactor = 2.3;
   BuildContext contextMain;
   NumberFormat f = NumberFormat('###,##0.0#');
   double _heightScreen;
@@ -36,7 +43,7 @@ class _CoinsPageState extends State<CoinsPage> {
 
   void _scrollListener() {
     setState(() {
-      _heightFactor = (exp(-_scrollController.offset / 60) * 6) + 1;
+      _heightFactor = (exp(-_scrollController.offset / 60) * 1.3) + 1;
     });
   }
 
@@ -50,9 +57,10 @@ class _CoinsPageState extends State<CoinsPage> {
 
   @override
   Widget build(BuildContext context) {
+    _cexProvider = Provider.of<CexProvider>(context);
     _heightScreen = MediaQuery.of(context).size.height;
     _widthScreen = MediaQuery.of(context).size.width;
-    _heightSliver = _heightScreen * 0.25;
+    _heightSliver = _heightScreen * 0.25 - MediaQuery.of(context).padding.top;
     if (_heightSliver < 125) _heightSliver = 125;
 
     return Scaffold(
@@ -67,81 +75,145 @@ class _CoinsPageState extends State<CoinsPage> {
                   pinned: true,
                   flexibleSpace: Builder(
                     builder: (BuildContext context) {
-                      return FlexibleSpaceBar(
-                          collapseMode: CollapseMode.pin,
-                          centerTitle: true,
-                          title: Container(
-                            padding: const EdgeInsets.only(top: 20),
-                            width: _widthScreen * 0.5,
-                            child: Center(
-                              heightFactor: _heightFactor,
-                              child: StreamBuilder<List<CoinBalance>>(
-                                  initialData: coinsBloc.coinBalance,
-                                  stream: coinsBloc.outCoins,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<List<CoinBalance>>
-                                          snapshot) {
-                                    if (snapshot.data != null) {
-                                      double totalBalanceUSD = 0;
+                      return Stack(
+                        children: <Widget>[
+                          FlexibleSpaceBar(
+                              collapseMode: CollapseMode.pin,
+                              centerTitle: true,
+                              title: Container(
+                                padding: EdgeInsets.only(
+                                    top: 20 +
+                                        MediaQuery.of(context).padding.top),
+                                width: _widthScreen * 0.5,
+                                child: Center(
+                                  heightFactor: _heightFactor,
+                                  child: StreamBuilder<List<CoinBalance>>(
+                                      initialData: coinsBloc.coinBalance,
+                                      stream: coinsBloc.outCoins,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<List<CoinBalance>>
+                                              snapshot) {
+                                        if (snapshot.data != null) {
+                                          double totalBalanceUSD = 0;
 
-                                      for (CoinBalance coinBalance
-                                          in snapshot.data) {
-                                        totalBalanceUSD +=
-                                            coinBalance.balanceUSD;
-                                      }
-                                      return AutoSizeText(
-                                        '\$${f.format(totalBalanceUSD)} USD',
-                                        maxFontSize: 18,
-                                        minFontSize: 12,
-                                        style:
-                                            Theme.of(context).textTheme.title,
-                                        maxLines: 1,
-                                      );
-                                    } else {
-                                      return Center(
-                                          child: Container(
-                                        child:
-                                            const CircularProgressIndicator(),
-                                      ));
-                                    }
-                                  }),
-                            ),
-                          ),
-                          background: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  const LoadAsset(),
-                                  const SizedBox(
-                                    height: 14.0,
-                                  ),
-                                  BarGraph()
-                                ],
+                                          for (CoinBalance coinBalance
+                                              in snapshot.data) {
+                                            totalBalanceUSD +=
+                                                coinBalance.balanceUSD;
+                                          }
+                                          return StreamBuilder<bool>(
+                                            initialData:
+                                                settingsBloc.showBalance,
+                                            stream: settingsBloc.outShowBalance,
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<bool> snapshot) {
+                                              bool hidden = false;
+                                              if (snapshot.hasData &&
+                                                  !snapshot.data) {
+                                                hidden = true;
+                                              }
+                                              final String amountText =
+                                                  _cexProvider.convert(
+                                                totalBalanceUSD,
+                                                hidden: hidden,
+                                              );
+                                              return FlatButton(
+                                                  onPressed: () {
+                                                    _cexProvider
+                                                        .switchCurrency();
+                                                  },
+                                                  child: AutoSizeText(
+                                                    amountText,
+                                                    maxFontSize: 18,
+                                                    minFontSize: 12,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .title,
+                                                    maxLines: 1,
+                                                  ));
+                                            },
+                                          );
+                                        } else {
+                                          return Center(
+                                              child: Container(
+                                            child:
+                                                const CircularProgressIndicator(),
+                                          ));
+                                        }
+                                      }),
+                                ),
                               ),
-                            ),
-                            height: _heightScreen * 0.35,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: const <double>[0.01, 1],
-                              colors: <Color>[
-                                const Color.fromRGBO(39, 71, 110, 1),
-                                Theme.of(context).accentColor,
-                              ],
-                            )),
-                          ));
+                              background: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      const LoadAsset(),
+                                      const SizedBox(
+                                        height: 14.0,
+                                      ),
+                                      StreamBuilder<bool>(
+                                          initialData: settingsBloc.showBalance,
+                                          stream: settingsBloc.outShowBalance,
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<bool> snapshot) {
+                                            return snapshot.hasData &&
+                                                    snapshot.data
+                                                ? BarGraph()
+                                                : Container();
+                                          })
+                                    ],
+                                  ),
+                                ),
+                                height: _heightScreen * 0.35,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: const <double>[0.01, 1],
+                                  colors: const <Color>[
+                                    Color.fromRGBO(98, 90, 229, 1),
+                                    Color.fromRGBO(45, 184, 240, 1),
+                                  ],
+                                )),
+                              )),
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: _buildProgressIndicator(),
+                          ),
+                        ],
+                      );
                     },
                   ),
+                  automaticallyImplyLeading: false,
                 ),
               ];
             },
             body: Container(
                 color: Theme.of(context).backgroundColor,
                 child: const ListCoins())));
+  }
+
+  Widget _buildProgressIndicator() {
+    return StreamBuilder<CoinToActivate>(
+        initialData: coinsBloc.currentActiveCoin,
+        stream: coinsBloc.outcurrentActiveCoin,
+        builder:
+            (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+          if (snapshot.data != null) {
+            return const SizedBox(
+              height: 2,
+              child: LinearProgressIndicator(),
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 }
 
@@ -360,8 +432,12 @@ class ItemCoin extends StatefulWidget {
 }
 
 class _ItemCoinState extends State<ItemCoin> {
+  RewardsProvider rewardsProvider;
+
   @override
   Widget build(BuildContext context) {
+    final CexProvider cexProvider = Provider.of<CexProvider>(context);
+    rewardsProvider ??= Provider.of<RewardsProvider>(context);
     final Coin coin = widget.coinBalance.coin;
     final Balance balance = widget.coinBalance.balance;
     final NumberFormat f = NumberFormat('###,##0.########');
@@ -493,22 +569,41 @@ class _ItemCoinState extends State<ItemCoin> {
                             height: 4,
                           ),
                           Container(
-                            child: AutoSizeText(
-                              '${f.format(double.parse(balance.getBalance()))} ${coin.abbr}',
-                              maxLines: 1,
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
+                            child: StreamBuilder<bool>(
+                                initialData: settingsBloc.showBalance,
+                                stream: settingsBloc.outShowBalance,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<bool> snapshot) {
+                                  String amount = f.format(
+                                      double.parse(balance.getBalance()));
+                                  if (snapshot.hasData && !snapshot.data)
+                                    amount = '**.**';
+                                  return AutoSizeText(
+                                    '$amount ${coin.abbr}',
+                                    maxLines: 1,
+                                    style: Theme.of(context).textTheme.subtitle,
+                                  );
+                                }),
                           ),
                           const SizedBox(
                             height: 4,
                           ),
-                          Builder(builder: (BuildContext context) {
-                            final NumberFormat f = NumberFormat('###,##0.##');
-                            return Text(
-                              '\$${f.format(widget.coinBalance.balanceUSD)} USD',
-                              style: Theme.of(context).textTheme.body2,
-                            );
-                          }),
+                          StreamBuilder(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                bool hidden = false;
+                                if (snapshot.hasData && !snapshot.data)
+                                  hidden = true;
+                                return Text(
+                                  cexProvider.convert(
+                                    widget.coinBalance.balanceUSD,
+                                    hidden: hidden,
+                                  ),
+                                  style: Theme.of(context).textTheme.body2,
+                                );
+                              }),
                           widget.coinBalance.coin.abbr == 'KMD' &&
                                   double.parse(widget.coinBalance.balance
                                           .getBalance()) >=
@@ -524,17 +619,39 @@ class _ItemCoinState extends State<ItemCoin> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(30.0)),
-                                    onPressed: () {
-                                      CoinDetail(
-                                              coinBalance: widget.coinBalance)
-                                          .showDialogClaim(context);
+                                    onPressed: () async {
+                                      rewardsProvider.update();
+                                      Navigator.push<dynamic>(
+                                        context,
+                                        MaterialPageRoute<dynamic>(
+                                            builder: (BuildContext context) =>
+                                                RewardsPage()),
+                                      );
                                     },
-                                    child: Text(
-                                      'CLAIM YOUR REWARDS',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .body1
-                                          .copyWith(fontSize: 12),
+                                    child: Row(
+                                      children: <Widget>[
+                                        if (rewardsProvider.needClaim)
+                                          Container(
+                                            padding:
+                                                const EdgeInsets.only(right: 4),
+                                            child: Stack(
+                                              children: <Widget>[
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                ),
+                                                buildRedDot(context)
+                                              ],
+                                            ),
+                                          ),
+                                        Text(
+                                          'CLAIM YOUR REWARDS',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body1
+                                              .copyWith(fontSize: 12),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 )

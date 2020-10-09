@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/history/swap_history.dart';
 import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
+import 'package:komodo_dex/screens/dex/trade/multi_order_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
@@ -27,11 +26,6 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
         tabController.index = onData;
       });
     });
-    if (swapHistoryBloc.isSwapsOnGoing) {
-      setState(() {
-        tabController.index = 1;
-      });
-    }
   }
 
   @override
@@ -62,7 +56,10 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                 text: AppLocalizations.of(context).create.toUpperCase(),
               ),
               Tab(text: AppLocalizations.of(context).orders.toUpperCase()),
-              Tab(text: AppLocalizations.of(context).history.toUpperCase()),
+              const Tab(
+                // TODO(yurii): localization
+                text: 'MULTI',
+              ),
             ],
           ),
         ),
@@ -79,6 +76,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     _tabsPanel,
                   ],
                 )),
+                automaticallyImplyLeading: false,
               ),
             )
           : AppBar(
@@ -96,7 +94,9 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                     const SizedBox(height: 15),
                   ],
                 ),
-              ));
+              ),
+              automaticallyImplyLeading: false,
+            );
     }
 
     return GestureDetector(
@@ -117,7 +117,7 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                   mContext: context,
                 ),
                 OrdersPage(),
-                SwapHistory(),
+                MultiOrderPage(),
               ],
             );
           }),

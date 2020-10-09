@@ -32,17 +32,24 @@ class _AmountFieldState extends State<AmountField> {
         children: <Widget>[
           Container(
             height: 60,
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0)),
-              child: Text(
-                AppLocalizations.of(context).max,
-                style: Theme.of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(color: Theme.of(context).accentColor),
+            child: ButtonTheme(
+              minWidth: 50,
+              child: FlatButton(
+                padding: const EdgeInsets.only(
+                  left: 6,
+                  right: 6,
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0)),
+                child: Text(
+                  AppLocalizations.of(context).max,
+                  style: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(color: Theme.of(context).accentColor),
+                ),
+                onPressed: widget.onMaxValue,
               ),
-              onPressed: widget.onMaxValue,
             ),
           ),
           const SizedBox(
@@ -50,6 +57,7 @@ class _AmountFieldState extends State<AmountField> {
           ),
           Expanded(
             child: TextFormField(
+              key: const Key('send-amount-field'),
               inputFormatters: <TextInputFormatter>[
                 WhitelistingTextInputFormatter(
                     RegExp('^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$'))

@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 
 Transactions transactionsFromJson(String str) =>
@@ -25,6 +26,12 @@ class Transactions {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'result': result.toJson(),
       };
+
+  void camouflageIfNeeded() {
+    if (!camoBloc.isCamoActive) return;
+
+    result.transactions.forEach(camoBloc.camouflageTransaction);
+  }
 }
 
 class Result {
@@ -44,7 +51,9 @@ class Result {
         skipped: json['skipped'] ?? 0,
         total: json['total'] ?? 0,
         currentBlock: json['current_block'] ?? 0,
-        syncStatus: SyncStatus.fromJson(json['sync_status']) ?? SyncStatus(),
+        syncStatus: json['sync_status'] == null
+            ? SyncStatus()
+            : SyncStatus.fromJson(json['sync_status']),
         transactions: List<Transaction>.from(
             json['transactions'].map((dynamic x) => Transaction.fromJson(x))),
       );
@@ -64,7 +73,8 @@ class Result {
         'skipped': skipped ?? 0,
         'total': total ?? 0,
         'sync_status': syncStatus.toJson() ?? SyncStatus().toJson(),
-        'transactions': List<dynamic>.from(transactions.map<dynamic>((dynamic x) => x.toJson())),
+        'transactions': List<dynamic>.from(
+            transactions.map<dynamic>((dynamic x) => x.toJson())),
       };
 }
 

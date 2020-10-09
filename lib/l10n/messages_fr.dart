@@ -349,7 +349,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "seedPhraseTitle":
             MessageLookupByLibrary.simpleMessage("Votre nouvelle passphrase"),
         "selectCoin": MessageLookupByLibrary.simpleMessage(
-            "Sélectionnez une crypto-monnaie"),
+            "Cryptomonnaie"),
         "selectCoinInfo": MessageLookupByLibrary.simpleMessage(
             "Sélectionnez les crypto-monnaie que vous souhaitez ajouter à votre portefeuille."),
         "selectCoinTitle":

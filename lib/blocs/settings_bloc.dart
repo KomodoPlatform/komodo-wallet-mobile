@@ -4,19 +4,44 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 SettingsBloc settingsBloc = SettingsBloc();
 
 class SettingsBloc implements BlocBase {
+  SettingsBloc() {
+    _loadPrefs();
+  }
+
+  SharedPreferences _prefs;
+
+  Future<void> _loadPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+
+    showBalance = _prefs.getBool('showBalance') ?? showBalance;
+
+    if (_prefs.getBool('showOrderDetailsByTap') == null) {
+      _prefs.setBool('showOrderDetailsByTap', true);
+    }
+  }
+
   bool isDeleteLoading = true;
+  bool showBalance = true;
 
   final StreamController<bool> _isDeleteLoadingController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsDeleteLoading => _isDeleteLoadingController.sink;
   Stream<bool> get outIsDeleteLoading => _isDeleteLoadingController.stream;
 
+  final StreamController<bool> _showBalanceController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inShowBalance => _showBalanceController.sink;
+  Stream<bool> get outShowBalance => _showBalanceController.stream;
+
   @override
   void dispose() {
     _isDeleteLoadingController.close();
+    _showBalanceController?.close();
   }
 
   void setDeleteLoading(bool isLoading) {
@@ -56,5 +81,11 @@ class SettingsBloc implements BlocBase {
       default:
         return AppLocalizations.of(context).englishLanguage;
     }
+  }
+
+  void setShowBalance(bool val) {
+    showBalance = val;
+    _inShowBalance.add(val);
+    _prefs.setBool('showBalance', val);
   }
 }

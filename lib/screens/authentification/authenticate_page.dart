@@ -293,7 +293,7 @@ class _CreateWalletButtonState extends State<CreateWalletButton> {
     return BoxButton(
       key: const Key('createWalletButton'),
       text: AppLocalizations.of(context).createAWallet,
-      assetPath: 'assets/create_wallet.svg',
+      assetPath: 'assets/svg/create_wallet.svg',
       onPressed: () {
         Navigator.push<dynamic>(
           context,
@@ -316,7 +316,7 @@ class _RestoreButtonState extends State<RestoreButton> {
     return BoxButton(
       key: const Key('restoreWallet'),
       text: AppLocalizations.of(context).restoreWallet,
-      assetPath: 'assets/lock_off.svg',
+      assetPath: 'assets/svg/lock_off.svg',
       onPressed: () {
         Navigator.push<dynamic>(
           context,

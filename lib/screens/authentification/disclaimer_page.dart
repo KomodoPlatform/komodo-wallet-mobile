@@ -317,9 +317,16 @@ class _DisclaimerPageState extends State<DisclaimerPage>
             scale: _scaleTransition,
             child: GestureDetector(
               onLongPress: () {
-                  _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-                      duration: const Duration(seconds: 3), curve: Curves.ease);
-                },
+                _scrollController.animateTo(
+                    _scrollController.position.maxScrollExtent,
+                    duration: const Duration(seconds: 3),
+                    curve: Curves.ease);
+                setState(() {
+                  isEndOfScroll = true;
+                  _controllerScale.reverse();
+                  timer.cancel();
+                });
+              },
               child: FloatingActionButton(
                 child: Icon(Icons.arrow_downward),
                 onPressed: () {

@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -40,14 +40,6 @@ class SwapBloc implements BlocBase {
       StreamController<CoinBalance>.broadcast();
   Sink<CoinBalance> get _inSellCoin => _sellCoinController.sink;
   Stream<CoinBalance> get outSellCoin => _sellCoinController.stream;
-
-  List<Orderbook> orderCoins = <Orderbook>[];
-
-  final StreamController<List<Orderbook>> _listOrderCoinController =
-      StreamController<List<Orderbook>>.broadcast();
-  Sink<List<Orderbook>> get _inListOrderCoin => _listOrderCoinController.sink;
-  Stream<List<Orderbook>> get outListOrderCoin =>
-      _listOrderCoinController.stream;
 
   bool focusTextField = false;
 
@@ -110,7 +102,6 @@ class SwapBloc implements BlocBase {
   void dispose() {
     _orderCoinController.close();
     _sellCoinController.close();
-    _listOrderCoinController.close();
     _focusTextFieldController.close();
     _receiveCoinController.close();
     _amountReceiveController.close();
@@ -180,46 +171,11 @@ class SwapBloc implements BlocBase {
     _inSellCoin.add(sellCoinBalance);
   }
 
-  Future<void> getBuyCoins(Coin rel) async {
-    final List<Coin> coins = await coinsBloc.electrumCoins();
-    final List<Future<dynamic>> futureOrderbook = <Future<dynamic>>[];
-
-    for (Coin coin in coins) {
-      if (coin.abbr != rel.abbr) {
-        futureOrderbook.add(MM.getOrderbook(
-            MMService().client, GetOrderbook(base: coin.abbr, rel: rel.abbr)));
-      }
-    }
-
-    final List<dynamic> orderbooks =
-        await Future.wait<dynamic>(futureOrderbook);
-
-    final List<Orderbook> orderBooksList = <Orderbook>[];
-
-    for (dynamic item in orderbooks) {
-      if (item is Orderbook) {
-        orderBooksList.add(item);
-      }
-    }
-    orderCoins = orderBooksList;
-    _inListOrderCoin.add(orderCoins);
-  }
-
   double getExchangeRate() {
     if (currentAmountSell == null) return null;
     if (currentAmountBuy == null || currentAmountBuy == 0) return null;
 
-    return currentAmountSell / currentAmountBuy;
-  }
-
-  double getCExchangeRate() {
-    if (buyCoinBalance?.priceForOne == null ||
-        double.parse(buyCoinBalance.priceForOne) == 0) return null;
-    if (sellCoinBalance?.priceForOne == null ||
-        double.parse(sellCoinBalance.priceForOne) == 0) return null;
-
-    return double.parse(buyCoinBalance.priceForOne) /
-        double.parse(sellCoinBalance.priceForOne);
+    return currentAmountBuy / currentAmountSell;
   }
 
   void setFocusTextField(bool focus) {
@@ -265,12 +221,8 @@ class SwapBloc implements BlocBase {
 
       _inAmountReceiveCoin.add(amountReceive);
 
-      final getPrice = GetPriceService();
-      final buyCoinUsd = await getPrice.getPrice(
-              swapBloc.orderCoin.coinBase.abbr,
-              swapBloc.orderCoin.coinBase.coingeckoId,
-              'USD') ??
-          0;
+      final buyCoinUsd =
+          cexPrices.getUsdPrice(swapBloc.orderCoin.coinBase.abbr);
       _inBuyCoinUsd.add(buyCoinUsd);
 
       return amountReceive;

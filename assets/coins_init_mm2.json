@@ -215,7 +215,7 @@
 		"pubtype": 0,
 		"p2shtype": 5,
 		"wiftype": 128,
-		"txfee": 1000,
+		"txfee": 0,
 		"segwit": true,
 		"address_format": {"format":"cashaddress","network":"bitcoincash"},
 		"mm2": 1,
@@ -2892,6 +2892,20 @@
 		"rpcport": 80
 	},
 	{
+		"coin": "tBTC",
+		"name": "tbitcoin",
+		"fname": "tBitcoin",
+		"rpcport": 18332,
+		"pubtype": 111,
+		"p2shtype": 196,
+		"wiftype": 239,
+		"segwit": true,
+		"txfee": 0,
+		"estimate_fee_mode": "ECONOMICAL",
+		"mm2": 1,
+		"required_confirmations": 0
+	},
+	{
 		"coin": "THC",
 		"asset": "THC",
 		"fname": "HempCoin",
@@ -3292,7 +3306,7 @@
 		"txversion": 4,
 		"overwintered": 1,
 		"version_group_id": "0x892f2085",
-		"consensus_branch_id": "0x2BB40E60",
+		"consensus_branch_id": "0xf5b9230b",
 		"txfee": 10000,
 		"mm2": 1,
 		"required_confirmations": 3

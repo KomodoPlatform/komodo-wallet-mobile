@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:decimal/decimal.dart';
 
@@ -27,12 +28,17 @@ class Balance {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address ?? '',
-        'balance': balance ?? double.parse('0').toStringAsFixed(8),
+        'balance': balance.toString() ?? double.parse('0').toStringAsFixed(8),
         'locked_by_swaps':
-            lockedBySwaps ?? double.parse('0').toStringAsFixed(8),
+            lockedBySwaps.toString() ?? double.parse('0').toStringAsFixed(8),
         'coin': coin ?? '',
       };
 
   String getBalance() => deci2s(balance);
-  String getRealBalance() => deci2s (balance - lockedBySwaps);
+  String getRealBalance() => deci2s(balance - lockedBySwaps);
+
+  void camouflageIfNeeded() {
+    if (!camoBloc.isCamoActive) return;
+    camoBloc.camouflageBalance(this);
+  }
 }

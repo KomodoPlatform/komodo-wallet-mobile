@@ -76,7 +76,7 @@ class Coin {
     serverList = List<String>.from(config['serverList']);
     explorerUrl = List<String>.from(config['explorerUrl']);
     requiredConfirmations = init['required_confirmations'];
-    requiresNotarization = init['requires_notarization'] ?? false;
+    requiresNotarization = init['requires_notarization'];
     addressFormat = init['address_format'];
   }
 

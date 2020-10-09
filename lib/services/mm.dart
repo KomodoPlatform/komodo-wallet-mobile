@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/get_enabled_coins.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
+import 'package:komodo_dex/model/get_rewards_info.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/services/music_service.dart';
 
 import '../model/active_coin.dart';
@@ -167,7 +170,10 @@ class ApiProvider {
       final error = ErrorString.fromJson(jbody);
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
-      return Balance.fromJson(jbody);
+      final Balance balance = Balance.fromJson(jbody);
+      balance.camouflageIfNeeded();
+
+      return balance;
     } catch (e) {
       throw _catchErrorString(
           'getBalance', e, 'Error getting ${gb.coin} balance');
@@ -245,7 +251,7 @@ class ApiProvider {
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
-      'requires_notarization': coin.requiresNotarization,
+      'requires_notarization': coin.requiresNotarization ?? false,
       'address_format': coin.addressFormat,
     };
     final js = json.encode(electrum);
@@ -405,7 +411,7 @@ class ApiProvider {
   /// Reduce log noise
   int _lastMetricsLog = 0;
 
-  /// Returns a parsed JSON of the MM metrics  
+  /// Returns a parsed JSON of the MM metrics
   /// https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-tutorials/atomicdex-metrics.html
   Future<dynamic> getMetricsMM2(BaseService body, {http.Client client}) async {
     client ??= mmSe.client;
@@ -469,5 +475,53 @@ class ApiProvider {
     _assert200(r);
     _saveRes('batch', r);
     return List<dynamic>.from(json.decode(r.body));
+  }
+
+  Future<List<dynamic>> getEnabledCoins({http.Client client}) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(
+      client,
+      GetEnabledCoins(),
+    );
+
+    final r = await client.post(url, body: jsonEncode(userBody.body));
+    _assert200(r);
+    _saveRes('getEnabledCoins', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return jbody['result'].toList();
+  }
+
+  Future<List<RewardsItem>> getRewardsInfo({http.Client client}) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(
+      client,
+      GetRewardsInfo(),
+    );
+
+    final r = await client.post(url, body: jsonEncode(userBody.body));
+    _assert200(r);
+    _saveRes('getRewardsInfo', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    List<RewardsItem> list;
+    try {
+      for (dynamic item in jbody['result']) {
+        list ??= [];
+        list.add(RewardsItem.fromJson(item));
+      }
+    } catch (e) {
+      print('$e');
+    }
+
+    return list;
   }
 }

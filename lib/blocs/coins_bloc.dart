@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/model/active_coin.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/base_service.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/coin_to_kick_start.dart';
@@ -15,9 +16,9 @@ import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/transactions.dart';
+import 'package:komodo_dex/services/get_erc_transactions.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/services/getprice_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -25,6 +26,12 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/services/job_service.dart';
 
 class CoinsBloc implements BlocBase {
+  CoinsBloc() {
+    Timer.periodic(const Duration(seconds: 10), (_) {
+      _saveWalletSnapshot();
+    });
+  }
+
   List<CoinBalance> coinBalance = <CoinBalance>[];
 
   // Streams to handle the list coin
@@ -112,6 +119,16 @@ class CoinsBloc implements BlocBase {
     _isAllSmartChainActiveController.close();
     _coinBeforeActivationController.close();
     _isutxoActiveController.close();
+  }
+
+  Coin getCoinByAbbr(String abbr) {
+    return getBalanceByAbbr(abbr)?.coin;
+  }
+
+  CoinBalance getBalanceByAbbr(String abbr) {
+    return coinBalance.firstWhere(
+        (CoinBalance balance) => balance.coin.abbr == abbr,
+        orElse: () => null);
   }
 
   Future<void> initCoinBeforeActivation() async {
@@ -218,10 +235,18 @@ class CoinsBloc implements BlocBase {
 
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
-      final dynamic transactions = await MM.getTransactions(mmSe.client,
-          GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+      dynamic transactions;
+      if (coin.type == 'erc') {
+        transactions = await getErcTransactions.getTransactions(
+            coin: coin, fromId: fromId);
+      } else {
+        transactions = await MM.getTransactions(mmSe.client,
+            GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+      }
 
       if (transactions is Transactions) {
+        transactions.camouflageIfNeeded();
+
         if (fromId == null || fromId.isEmpty) {
           this.transactions = transactions;
         } else {
@@ -253,9 +278,6 @@ class CoinsBloc implements BlocBase {
     _coinsLock = true;
 
     // Using a batch request to speed up the coin activation.
-    // NB: In the future we want to use a non-blocking API instead
-    // in order for the UI not to stuck if an activation of a particular coin is delayed.
-    // cf. https://github.com/KomodoPlatform/atomicDEX-API/issues/638
     final List<Map<String, dynamic>> batch = [];
     for (Coin coin in coins) {
       batch.add(json.decode(MM.enableCoinImpl(coin)));
@@ -284,9 +306,13 @@ class CoinsBloc implements BlocBase {
           balance: deci(acc.balance),
           lockedBySwaps: deci(acc.lockedBySwaps),
           coin: acc.coin);
+      bal.camouflageIfNeeded();
       final cb = CoinBalance(coin, bal);
-      // TODO(AG): Load previous USD balance from database
-      cb.balanceUSD = 0;
+      // Before actual coin activation, coinBalance can store
+      // coins data (including balanceUSD) loaded from wallet snapshot,
+      // created during previous session (#898)
+      final double preSavedUsdBalance = getBalanceByAbbr(acc.coin)?.balanceUSD;
+      cb.balanceUSD = preSavedUsdBalance ?? 0;
       updateOneCoin(cb);
     }
 
@@ -422,6 +448,8 @@ class CoinsBloc implements BlocBase {
     while (_coinsLock) await sleepMs(77);
     _coinsLock = true;
 
+    await cexPrices.updatePrices(coins);
+
     // NB: Loading balances sequentially in order to better reuse HTTP file descriptors
     for (Coin coin in coins) {
       try {
@@ -445,6 +473,8 @@ class CoinsBloc implements BlocBase {
       coins.add(coinToActivate.coin);
     }
     await coinsBloc.enableCoins(coins);
+    updateCoinBalances();
+
     coinsBloc.setCloseViewSelectCoin(true);
   }
 
@@ -459,9 +489,7 @@ class CoinsBloc implements BlocBase {
       balance = null;
     }
 
-    final double price = await getPriceObj
-        .getPrice(coin.abbr, coin.coingeckoId, 'USD')
-        .timeout(const Duration(seconds: 5), onTimeout: () => 0.0);
+    final double price = cexPrices.getUsdPrice(coin.abbr);
 
     dynamic coinBalance;
     if (balance != null && coin.abbr == balance.coin) {
@@ -509,11 +537,66 @@ class CoinsBloc implements BlocBase {
     return _sorted;
   }
 
-  double priceByAbbr(String abbr) {
-    for (CoinBalance balance in coinBalance) {
-      if (balance.coin.abbr == abbr) return double.parse(balance.priceForOne);
+  Future<dynamic> getLatestTransaction(Coin coin) async {
+    const int limit = 1;
+    const String fromId = null;
+    try {
+      dynamic transactions;
+      if (coin.type == 'erc') {
+        transactions = await getErcTransactions.getTransactions(
+            coin: coin, fromId: fromId);
+      } else {
+        transactions = await MM.getTransactions(mmSe.client,
+            GetTxHistory(coin: coin.abbr, limit: limit, fromId: fromId));
+      }
+
+      if (transactions is Transactions) {
+        transactions.camouflageIfNeeded();
+
+        return transactions;
+      } else if (transactions is ErrorCode) {
+        return transactions;
+      }
+    } catch (e) {
+      Log('coins_bloc:545', e);
+      rethrow;
     }
-    return null;
+  }
+
+  bool _walletSnapshotInProgress = false;
+  Future<void> _saveWalletSnapshot() async {
+    if (_walletSnapshotInProgress) return;
+    if (coinBalance == null || coinBalance.isEmpty) return;
+
+    _walletSnapshotInProgress = true;
+
+    final String jsonStr = json.encode(coinBalance);
+    await Db.saveWalletSnapshot(jsonStr);
+    Log('coins_bloc]', 'Wallet snapshot created');
+
+    _walletSnapshotInProgress = false;
+  }
+
+  Future<void> loadWalletSnapshot() async {
+    final String jsonStr = await Db.getWalletSnapshot();
+    if (jsonStr == null) return;
+
+    List<dynamic> items;
+    try {
+      items = json.decode(jsonStr);
+    } catch (e) {
+      print('Failed to parse wallet snapshot: $e');
+    }
+
+    if (items == null || items.isEmpty) return;
+
+    final List<CoinBalance> list = [];
+    for (dynamic item in items) {
+      list.add(CoinBalance.fromJson(item));
+    }
+
+    coinBalance = list;
+    _inCoins.add(coinBalance);
   }
 }
 

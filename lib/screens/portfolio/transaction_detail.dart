@@ -1,13 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import 'package:komodo_dex/model/addressbook_provider.dart';
+import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 
 class TransactionDetail extends StatefulWidget {
   const TransactionDetail({this.transaction, this.coinBalance});
@@ -93,25 +98,27 @@ class _TransactionDetailState extends State<TransactionDetail> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
-                      child: Builder(builder: (BuildContext context) {
-                        final amount = deci(tx.myBalanceChange);
-
-                        return AutoSizeText(
-                          deci2s(amount) + ' ' + tx.coin,
-                          style: Theme.of(context).textTheme.title,
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                        );
-                      }),
+                      child: StreamBuilder<bool>(
+                          initialData: settingsBloc.showBalance,
+                          stream: settingsBloc.outShowBalance,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<bool> snapshot) {
+                            final amount = deci(tx.myBalanceChange);
+                            String amountString = deci2s(amount);
+                            if (snapshot.hasData && snapshot.data == false) {
+                              amountString =
+                                  (amount < deci(0) ? '-' : '') + '**.**';
+                            }
+                            return AutoSizeText(
+                              '$amountString ${tx.coin}',
+                              style: Theme.of(context).textTheme.title,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                            );
+                          }),
                     ),
                   ),
-                  Text(
-                    (Decimal.parse(widget.coinBalance.priceForOne) *
-                                Decimal.parse(tx.myBalanceChange.toString()))
-                            .toStringAsFixed(2) +
-                        ' USD',
-                    style: Theme.of(context).textTheme.body2,
-                  )
+                  _buildUsdAmount(),
                 ],
               ),
             ),
@@ -146,6 +153,59 @@ class _TransactionDetailState extends State<TransactionDetail> {
     );
   }
 
+  Widget _buildUsdAmount() {
+    final CexProvider cexProvider = Provider.of<CexProvider>(context);
+
+    const Widget _progressIndicator = SizedBox(
+      width: 16,
+      height: 16,
+      child: CircularProgressIndicator(
+        strokeWidth: 2.0,
+      ),
+    );
+
+    Widget _usdAmount(String priceForOne) {
+      if (priceForOne == null) return _progressIndicator;
+
+      if (double.parse(priceForOne) == 0) return Container();
+
+      return StreamBuilder<bool>(
+          initialData: settingsBloc.showBalance,
+          stream: settingsBloc.outShowBalance,
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            bool hidden = false;
+            final double amount = double.parse(priceForOne) *
+                double.parse(widget.transaction.myBalanceChange);
+            if (snapshot.hasData && snapshot.data == false) hidden = true;
+
+            return Text(
+              cexProvider.convert(amount, hidden: hidden),
+              style: Theme.of(context).textTheme.body2,
+            );
+          });
+    }
+
+    if (widget.coinBalance.priceForOne != null)
+      return _usdAmount(widget.coinBalance.priceForOne);
+
+    return StreamBuilder(
+        stream: coinsBloc.outCoins,
+        builder:
+            (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
+          if (!snapshot.hasData) return _progressIndicator;
+
+          String priceForOne;
+          try {
+            priceForOne = snapshot.data
+                .firstWhere((CoinBalance balance) =>
+                    balance.coin.abbr == widget.coinBalance.coin.abbr)
+                .priceForOne;
+          } catch (_) {}
+
+          return _usdAmount(priceForOne);
+        });
+  }
+
   Widget _buildListDetails() {
     return Column(
       children: <Widget>[
@@ -176,7 +236,8 @@ class _TransactionDetailState extends State<TransactionDetail> {
   String _getFee() {
     String fee = '';
 
-    if (widget.transaction.feeDetails.amount == null) {
+    if (widget.transaction.feeDetails.amount == null ||
+        widget.transaction.feeDetails.amount.isEmpty) {
       fee = widget.transaction.feeDetails?.totalFee.toString();
     } else {
       fee = widget.transaction.feeDetails?.amount.toString();
@@ -198,31 +259,65 @@ class ItemTransationDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        copyToClipBoard(context, data);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              title,
-              style: Theme.of(context).textTheme.subtitle,
-            ),
-            const SizedBox(
-              width: 16,
-            ),
-            Expanded(
-              child: AutoSizeText(
-                data,
-                style: Theme.of(context).textTheme.body2,
-                textAlign: TextAlign.end,
+    final AddressBookProvider addressBookProvider =
+        Provider.of<AddressBookProvider>(context);
+    final Contact contact = addressBookProvider.contactByAddress(data);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            title,
+            style: Theme.of(context).textTheme.subtitle,
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                if (contact == null) {
+                  copyToClipBoard(context, data);
+                } else {
+                  Navigator.push<dynamic>(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => AddressBookPage(
+                          contact: contact,
+                        ),
+                      ));
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: contact == null
+                    ? AutoSizeText(
+                        data,
+                        style: Theme.of(context).textTheme.body2,
+                        textAlign: TextAlign.end,
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Icon(
+                            Icons.account_circle,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 4),
+                          AutoSizeText(
+                            contact.name,
+                            style: Theme.of(context).textTheme.body2.copyWith(
+                                  color: Colors.white,
+                                ),
+                          )
+                        ],
+                      ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

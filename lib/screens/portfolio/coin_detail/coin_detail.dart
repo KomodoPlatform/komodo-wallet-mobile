@@ -1,20 +1,21 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
@@ -23,145 +24,28 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_address_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
+import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class CoinDetail extends StatefulWidget {
-  const CoinDetail({this.coinBalance, this.isSendIsActive = false});
+  const CoinDetail({
+    this.coinBalance,
+    this.isSendIsActive = false,
+  });
 
   final CoinBalance coinBalance;
   final bool isSendIsActive;
 
   @override
   _CoinDetailState createState() => _CoinDetailState();
-
-  void showDialogClaim(BuildContext mContext) {
-    dialogBloc.dialog = showDialog<dynamic>(
-        context: mContext,
-        builder: (BuildContext context) {
-          return Dialog(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const CircularProgressIndicator(),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Text(AppLocalizations.of(context).loading),
-                ],
-              ),
-            ),
-          );
-        }).then((dynamic _) {
-      dialogBloc.dialog = null;
-    });
-
-    ApiProvider()
-        .postWithdraw(
-            MMService().client,
-            GetWithdraw(
-                userpass: MMService().userpass,
-                fee: null,
-                coin: coinBalance.coin.abbr,
-                to: coinBalance.balance.address,
-                amount: (Decimal.parse(coinBalance.balance.getBalance()) -
-                        (Decimal.parse(coinBalance.coin.txfee.toString()) /
-                            Decimal.parse('100000000')))
-                    .toString(),
-                max: true))
-        .then((dynamic data) {
-      Navigator.of(mContext).pop();
-      if (data is WithdrawResponse) {
-        Log.println('coin_detail:83', data.myBalanceChange);
-        if (double.parse(data.myBalanceChange) > 0) {
-          dialogBloc.dialog = showDialog<dynamic>(
-            context: mContext,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(AppLocalizations.of(context).claimTitle),
-                content: Text(AppLocalizations.of(context).youWillReceiveClaim(
-                    data.myBalanceChange.toString(), coinBalance.coin.abbr)),
-                actions: <Widget>[
-                  FlatButton(
-                    child:
-                        Text(AppLocalizations.of(context).close.toUpperCase()),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  RaisedButton(
-                    child: Text(
-                        AppLocalizations.of(context).confirm.toUpperCase(),
-                        style: Theme.of(context).textTheme.button),
-                    onPressed: () {
-                      ApiProvider()
-                          .postRawTransaction(
-                              MMService().client,
-                              GetSendRawTransaction(
-                                  method: 'send_raw_transaction',
-                                  coin: coinBalance.coin.abbr,
-                                  txHex: data.txHex))
-                          .then((dynamic dataRawTx) {
-                        if (dataRawTx is SendRawTransactionResponse) {
-                          Navigator.of(context).pop();
-                          dialogBloc.dialog = showDialog<dynamic>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                      AppLocalizations.of(context).success),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text(AppLocalizations.of(context)
-                                          .close
-                                          .toUpperCase()),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              }).then((dynamic _) {
-                            dialogBloc.dialog = null;
-                          });
-                        }
-                      }).catchError((dynamic onError) {
-                        generateSnackBar(mContext,
-                            AppLocalizations.of(mContext).errorTryLater);
-                      });
-                    },
-                  )
-                ],
-              );
-            },
-          ).then((dynamic _) {
-            dialogBloc.dialog = null;
-          });
-        } else {
-          generateSnackBar(mContext, AppLocalizations.of(mContext).noRewardYet);
-        }
-      } else {
-        generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
-      }
-    }).catchError((dynamic onError) {
-      generateSnackBar(mContext, AppLocalizations.of(mContext).errorTryLater);
-    });
-  }
-
-  void generateSnackBar(BuildContext mContext, String text) {
-    Scaffold.of(mContext).showSnackBar(SnackBar(
-      duration: const Duration(seconds: 2),
-      content: Text(text),
-    ));
-  }
 }
 
 class _CoinDetailState extends State<CoinDetail> {
@@ -185,6 +69,11 @@ class _CoinDetailState extends State<CoinDetail> {
   List<Widget> listSteps = <Widget>[];
   Timer timer;
   bool isDeleteLoading = false;
+  CexProvider cexProvider;
+  bool _shouldRefresh = false;
+  bool _isWaiting = false;
+  RewardsProvider rewardsProvider;
+  Transaction latestTransaction;
 
   @override
   void initState() {
@@ -206,6 +95,15 @@ class _CoinDetailState extends State<CoinDetail> {
         setState(() {
           isLoading = false;
         });
+      }
+    });
+    coinsBloc
+        .getLatestTransaction(currentCoinBalance.coin)
+        .then((dynamic transactions) {
+      if (transactions is Transactions) {
+        final Transactions tr = transactions;
+        final t = tr.result.transactions[0];
+        if (t != null) latestTransaction = t;
       }
     });
     _amountController.addListener(onChange);
@@ -277,6 +175,8 @@ class _CoinDetailState extends State<CoinDetail> {
     if (listSteps.isEmpty) {
       initSteps();
     }
+    cexProvider ??= Provider.of<CexProvider>(context);
+    rewardsProvider ??= Provider.of<RewardsProvider>(context);
 
     return LockScreen(
       context: context,
@@ -287,6 +187,7 @@ class _CoinDetailState extends State<CoinDetail> {
           elevation: elevationHeader,
           actions: <Widget>[
             IconButton(
+              key: const Key('coin-deactivate'),
               icon: isDeleteLoading
                   ? Container(
                       height: 20,
@@ -343,6 +244,7 @@ class _CoinDetailState extends State<CoinDetail> {
             children: <Widget>[
               _buildForm(),
               _buildHeaderCoinDetail(context),
+              _shouldRefresh ? _buildNewTransactionsButton() : const SizedBox(),
               _buildSyncChain(),
               _buildTransactionsList(context),
             ],
@@ -355,6 +257,13 @@ class _CoinDetailState extends State<CoinDetail> {
   bool isRefresh = false;
 
   Widget _buildSyncChain() {
+    // Since we currently fething erc20 transactions history
+    // from the http endpoint, sync status indicator is hidden
+    // for erc20 tokens
+    if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+      return Container();
+    }
+
     return StreamBuilder<dynamic>(
         stream: coinsBloc.outTransactions,
         initialData: coinsBloc.transactions,
@@ -366,8 +275,26 @@ class _CoinDetailState extends State<CoinDetail> {
             if (tx.result != null &&
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
-              timer ??= Timer.periodic(const Duration(seconds: 15), (_) {
-                _refresh();
+              timer ??= Timer.periodic(const Duration(seconds: 3), (_) async {
+                final dynamic transactions = await coinsBloc
+                    .getLatestTransaction(currentCoinBalance.coin);
+                Transaction newTr;
+                if (transactions is Transactions) {
+                  final Transactions tr = transactions;
+                  final t = tr.result.transactions[0];
+                  if (t != null) newTr = t;
+                }
+
+                if (_isWaiting) {
+                  _refresh();
+                } else if (_scrollController.position.pixels == 0.0) {
+                  _refresh();
+                } else if (latestTransaction == null ||
+                    latestTransaction.internalId != newTr.internalId) {
+                  _shouldRefresh = true;
+                }
+
+                latestTransaction = newTr;
               });
 
               if (tx.result.syncStatus.state == syncState) {
@@ -431,7 +358,10 @@ class _CoinDetailState extends State<CoinDetail> {
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
+                    _isWaiting = true;
                     return const Center(child: CircularProgressIndicator());
+                  } else {
+                    _isWaiting = false;
                   }
                   if (snapshot.data is Transactions) {
                     final Transactions transactions = snapshot.data;
@@ -480,8 +410,10 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 
   Future<void> _refresh() async {
-    return await coinsBloc.updateTransactions(
-        currentCoinBalance.coin, limit, null);
+    await coinsBloc.updateTransactions(currentCoinBalance.coin, limit, null);
+    setState(() {
+      _shouldRefresh = false;
+    });
   }
 
   Widget _buildTransactions(
@@ -516,7 +448,6 @@ class _CoinDetailState extends State<CoinDetail> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Card(
-          color: Theme.of(context).primaryColor,
           elevation: 8.0,
           child: InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
@@ -567,30 +498,76 @@ class _CoinDetailState extends State<CoinDetail> {
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, top: 8),
-                            child: Builder(builder: (BuildContext context) {
-                              final amount = deci(transaction.myBalanceChange);
-
-                              return AutoSizeText(
-                                '${amount.toDouble() > 0 ? '+' : ''}${deci2s(amount)} ${currentCoinBalance.coin.abbr}',
-                                maxLines: 1,
-                                style: subtitle,
-                                textAlign: TextAlign.end,
-                              );
-                            }),
+                            child: StreamBuilder<bool>(
+                                initialData: settingsBloc.showBalance,
+                                stream: settingsBloc.outShowBalance,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<bool> snapshot) {
+                                  final amount =
+                                      deci(transaction.myBalanceChange);
+                                  String amountString = deci2s(amount);
+                                  if (snapshot.hasData &&
+                                      snapshot.data == false) {
+                                    amountString =
+                                        (amount.toDouble() < 0 ? '-' : '') +
+                                            '**.**';
+                                  }
+                                  return AutoSizeText(
+                                    '${amount.toDouble() > 0 ? '+' : ''}$amountString ${currentCoinBalance.coin.abbr}',
+                                    maxLines: 1,
+                                    style: subtitle,
+                                    textAlign: TextAlign.end,
+                                  );
+                                }),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 16, top: 8),
-                            child: Text(
-                              (Decimal.parse(currentCoinBalance.priceForOne) *
-                                          Decimal.parse(transaction
-                                              .myBalanceChange
-                                              .toString()))
-                                      .toStringAsFixed(2) +
-                                  ' USD',
-                              style: Theme.of(context).textTheme.body2,
-                            ),
-                          ),
+                          StreamBuilder<bool>(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                if (currentCoinBalance.priceForOne == null) {
+                                  return const Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          bottom: 16,
+                                          top: 8),
+                                      child: SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2.0,
+                                        ),
+                                      ));
+                                } else {
+                                  final usdAmount =
+                                      deci(currentCoinBalance.priceForOne) *
+                                          deci(transaction.myBalanceChange);
+                                  if (usdAmount != deci(0)) {
+                                    bool hidden = false;
+                                    if (snapshot.hasData &&
+                                        snapshot.data == false) {
+                                      hidden = true;
+                                    }
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          bottom: 16,
+                                          top: 8),
+                                      child: Text(
+                                        cexProvider.convert(
+                                          usdAmount.toDouble(),
+                                          hidden: hidden,
+                                        ),
+                                        style:
+                                            Theme.of(context).textTheme.body2,
+                                      ),
+                                    );
+                                  }
+                                  return Container();
+                                }
+                              }),
                         ],
                       ),
                     ),
@@ -664,18 +641,36 @@ class _CoinDetailState extends State<CoinDetail> {
                     }
                   }
 
-                  return Column(
-                    children: <Widget>[
-                      Text(
-                        currentCoinBalance.balance.getBalance() +
-                            ' ' +
-                            currentCoinBalance.balance.coin.toString(),
-                        style: Theme.of(context).textTheme.title,
-                        textAlign: TextAlign.center,
-                      ),
-                      Text('\$${currentCoinBalance.getBalanceUSD()} USD')
-                    ],
-                  );
+                  return StreamBuilder<bool>(
+                      initialData: settingsBloc.showBalance,
+                      stream: settingsBloc.outShowBalance,
+                      builder:
+                          (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                        String coinBalance =
+                            currentCoinBalance.balance.getBalance();
+                        final String coinBalanceUsd =
+                            currentCoinBalance.getBalanceUSD();
+                        bool hidden = false;
+                        if (snapshot.hasData && snapshot.data == false) {
+                          coinBalance = '**.**';
+                          hidden = true;
+                        }
+                        return Column(
+                          children: <Widget>[
+                            Text(
+                              coinBalance +
+                                  ' ' +
+                                  currentCoinBalance.balance.coin.toString(),
+                              style: Theme.of(context).textTheme.title,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(cexProvider.convert(
+                              double.parse(coinBalanceUsd),
+                              hidden: hidden,
+                            ))
+                          ],
+                        );
+                      });
                 } else {
                   return Container();
                 }
@@ -730,8 +725,31 @@ class _CoinDetailState extends State<CoinDetail> {
         break;
       case StatusButton.CLAIM:
         text = AppLocalizations.of(context).claim.toUpperCase();
-        break;
+        return Expanded(
+            child: Stack(
+          children: <Widget>[
+            SecondaryButton(
+              text: text,
+              onPressed: () {
+                rewardsProvider.update();
+                Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => RewardsPage()),
+                );
+              },
+            ),
+            if (rewardsProvider.needClaim)
+              buildRedDot(
+                context,
+                right: null,
+                left: 14,
+                top: 20,
+              )
+          ],
+        ));
     }
+
     return Expanded(
       child: SecondaryButton(
         text: text,
@@ -756,9 +774,6 @@ class _CoinDetailState extends State<CoinDetail> {
                 });
               }
               break;
-            case StatusButton.CLAIM:
-              widget.showDialogClaim(mContext);
-              break;
             default:
           }
         },
@@ -780,9 +795,31 @@ class _CoinDetailState extends State<CoinDetail> {
             margin:
                 const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 16),
             elevation: 8.0,
-            color: Theme.of(context).primaryColor,
             child: SingleChildScrollView(child: listSteps[currentIndex])),
       ),
+    );
+  }
+
+  Widget _buildNewTransactionsButton() {
+    return InkWell(
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        color: Colors.blue,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.refresh),
+            const SizedBox(
+              width: 8.0,
+            ),
+            const Text('Latest Transactions'),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+      ),
+      onTap: () async {
+        await _refresh();
+        _scrollController.position.jumpTo(0.0);
+      },
     );
   }
 
@@ -913,8 +950,6 @@ class _CoinDetailState extends State<CoinDetail> {
                     if (dataRawTx is SendRawTransactionResponse &&
                         dataRawTx.txHash.isNotEmpty) {
                       setState(() {
-                        coinsBloc.updateTransactions(
-                            widget.coinBalance.coin, 10, null);
                         coinsBloc.updateCoinBalances();
                         Future<dynamic>.delayed(const Duration(seconds: 5), () {
                           coinsBloc.updateCoinBalances();

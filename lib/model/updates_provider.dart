@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/services/job_service.dart';
+import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:package_info/package_info.dart';
 
@@ -17,13 +19,17 @@ class UpdatesProvider extends ChangeNotifier {
   String newVersion;
   String message;
 
-  final String url = 'http://komodo.live/adexversion';
+  final String url = 'https://komodo.live/adexversion';
 
   Future<void> check() => _check();
 
   Future<void> _init() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     currentVersion = packageInfo.version;
+
+    jobService.install('checkUpdates', 300, (_) async {
+      if (notifService.isInBackground) _check();
+    });
 
     notifyListeners();
   }
@@ -59,7 +65,7 @@ class UpdatesProvider extends ChangeNotifier {
 
     message = json['message'];
     final String jsonVersion = json['newVersion'];
-    if (jsonVersion != null) {
+    if (jsonVersion != null && currentVersion != null) {
       if (jsonVersion.compareTo(currentVersion) > 0) {
         newVersion = jsonVersion;
       } else {
@@ -69,8 +75,6 @@ class UpdatesProvider extends ChangeNotifier {
         return;
       }
     }
-
-    print(newVersion);
 
     switch (json['status']) {
       case 'upToDate':
@@ -99,6 +103,20 @@ class UpdatesProvider extends ChangeNotifier {
     }
 
     isFetching = false;
+
+    if (status != UpdateStatus.upToDate) {
+      notifService.show(
+        NotifObj(
+          // TODO(yurii): localization
+          title: 'Update available',
+          text: newVersion == null
+              ? 'New version available. Please update.'
+              : 'Version $newVersion available. Please update.',
+          uid: 'version_update',
+        ),
+      );
+    }
+
     notifyListeners();
   }
 }

@@ -71,7 +71,9 @@ class NewsArticle {
           symbol: '\n',
           startFrom: _prefferedCut,
         );
-        if (_closestLineBreak != null) _closestLineBreak--;
+        if (_closestLineBreak != null && _closestLineBreak > 0) {
+          _closestLineBreak--;
+        }
         final int _closestSpace = _closest(
           string: span.text,
           symbol: ' ',

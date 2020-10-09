@@ -67,6 +67,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
               isERCToken: widget.isERCToken,
               controller: widget.addressController,
               onScan: scan,
+              coin: widget.coin,
             ),
             CustomFee(
               coin: widget.coin,
@@ -104,6 +105,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     return Builder(
       builder: (BuildContext mContext) {
         return PrimaryButton(
+          key: const Key('primary-button-withdraw'),
           text: AppLocalizations.of(context).withdraw.toUpperCase(),
           onPressed: () async {
             // Validate will return true if the form is valid, or false if

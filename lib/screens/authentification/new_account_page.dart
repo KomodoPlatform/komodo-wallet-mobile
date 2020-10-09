@@ -49,6 +49,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
           title: Text(AppLocalizations.of(context).newAccountUpper),
         ),
         body: ListView(
+          key: const Key('new-account-scrollable'),
           children: <Widget>[
             _buildTitle(),
             _buildSeedGenerator(),
@@ -91,6 +92,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
           child: Row(
             children: <Widget>[
               InkWell(
+                key: const Key('seed-refresh'),
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -111,6 +113,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
               Expanded(
                   child: Text(
                 seed,
+                key: const Key('seed-phrase'),
                 style: Theme.of(context)
                     .textTheme
                     .body1
@@ -121,6 +124,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 width: 6,
               ),
               InkWell(
+                  key: const Key('seed-copy'),
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: seed));

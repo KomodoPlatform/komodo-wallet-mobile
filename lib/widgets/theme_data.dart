@@ -16,17 +16,19 @@ ThemeData getTheme() => ThemeData(
       primaryColor: primaryColor,
       backgroundColor: const Color.fromRGBO(30, 42, 58, 1),
       primaryColorDark: const Color.fromRGBO(28, 36, 48, 1),
-      accentColor: const Color.fromRGBO(65, 234, 213, 1),
+      accentColor: const Color.fromRGBO(57, 161, 238, 1),
       textSelectionColor:
-          const Color.fromRGBO(65, 234, 213, 1).withOpacity(0.3),
+          const Color.fromRGBO(57, 161, 238, 1).withOpacity(0.3),
+      toggleableActiveColor: const Color.fromRGBO(57, 161, 238, 1),
+      cursorColor: const Color.fromRGBO(57, 161, 238, 1),
       dialogBackgroundColor: primaryColor,
       fontFamily: 'Ubuntu',
       hintColor: Colors.white,
       errorColor: const Color.fromRGBO(220, 3, 51, 1),
       disabledColor: const Color.fromRGBO(201, 201, 201, 1),
       buttonColor: const Color.fromRGBO(39, 68, 108, 1),
-      cursorColor: const Color.fromRGBO(65, 234, 213, 1),
-      textSelectionHandleColor: const Color.fromRGBO(65, 234, 213, 1),
+      textSelectionHandleColor: const Color.fromRGBO(57, 161, 238, 1),
+      cardColor: primaryColor,
       textTheme: TextTheme(
           headline: TextStyle(
               fontSize: 40, fontWeight: FontWeight.w700, color: Colors.white),

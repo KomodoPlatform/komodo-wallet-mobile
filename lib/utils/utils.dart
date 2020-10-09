@@ -29,10 +29,17 @@ import 'package:intl/intl.dart';
 import '../localizations.dart';
 
 void copyToClipBoard(BuildContext context, String str) {
-  Scaffold.of(context).showSnackBar(SnackBar(
-    duration: const Duration(seconds: 2),
-    content: Text(AppLocalizations.of(context).clipboard),
-  ));
+  ScaffoldState scaffold;
+  try {
+    scaffold = Scaffold.of(context);
+  } catch (_) {}
+
+  if (scaffold != null) {
+    scaffold.showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
+      content: Text(AppLocalizations.of(context).clipboard),
+    ));
+  }
   Clipboard.setData(ClipboardData(text: str));
 }
 
@@ -192,6 +199,7 @@ void showAddressDialog(BuildContext mContext, String address, Coin coin) {
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                     child: AutoSizeText(
                       address,
+                      textKey: const Key('coin-details-address'),
                       style: Theme.of(context).textTheme.body1,
                       maxLines: 2,
                     ),
@@ -515,7 +523,63 @@ String humanDate(int epoch) {
   final bool _isThisMonth = _isThisYear && _dateTime.month == _now.month;
   final bool _isToday = _isThisMonth && _dateTime.day == _now.day;
 
-  if (_isToday) return DateFormat('H:m').format(_dateTime);
-  if (_isThisYear) return DateFormat('MMMM d, H:m').format(_dateTime);
-  return DateFormat('MMMM d y, H:m').format(_dateTime);
+  if (_isToday) return DateFormat('HH:mm').format(_dateTime);
+  if (_isThisYear) return DateFormat('MMMM d, HH:mm').format(_dateTime);
+  return DateFormat('MMMM d y, HH:mm').format(_dateTime);
+}
+
+String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
+  if (value is String) value = double.parse(value);
+  final String rounded = value.toStringAsFixed(fraction);
+  if (rounded.length >= digits + 1) {
+    return rounded;
+  } else if (value > 0 && value <= 0.00000001) {
+    return '0.00000001';
+  } else if (value > 0 && value <= 0.000001) {
+    return value.toStringAsFixed(8);
+  } else {
+    return value.toStringAsPrecision(digits);
+  }
+}
+
+String cutTrailingZeros(String str) {
+  if (str == null) return null;
+
+  String loop(String input) {
+    if (input.length == 1) return input;
+    if (!input.contains('.')) return input;
+
+    if (input[input.length - 1] == '0' || input[input.length - 1] == '.') {
+      input = input.substring(0, input.length - 1);
+      return loop(input);
+    } else {
+      return input;
+    }
+  }
+
+  return loop(str);
+}
+
+Widget truncateMiddle(String string, {TextStyle style}) {
+  if (string.length < 6)
+    return Text(
+      string,
+      style: style,
+    );
+
+  return Row(
+    children: <Widget>[
+      Flexible(
+        child: Text(
+          string.substring(0, string.length - 5),
+          overflow: TextOverflow.ellipsis,
+          style: style,
+        ),
+      ),
+      Text(
+        string.substring(string.length - 5),
+        style: style,
+      )
+    ],
+  );
 }

@@ -32,6 +32,12 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
   }
 
   @override
+  void dispose() {
+    animationController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: animationController.drive(CurveTween(curve: Curves.easeOut)),
@@ -43,7 +49,7 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
             ),
             Container(
               height: 200,
-              child: SvgPicture.asset('assets/trade_success.svg',
+              child: SvgPicture.asset('assets/svg/trade_success.svg',
                   semanticsLabel: 'Trade Success'),
             ),
             const SizedBox(

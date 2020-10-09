@@ -1,9 +1,14 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:provider/provider.dart';
 
 class ExchangeRate extends StatefulWidget {
   @override
@@ -11,23 +16,27 @@ class ExchangeRate extends StatefulWidget {
 }
 
 class _ExchangeRateState extends State<ExchangeRate> {
+  CexProvider cexProvider;
+  OrderBookProvider orderBookProvider;
+
   @override
   Widget build(BuildContext context) {
+    cexProvider ??= Provider.of<CexProvider>(context);
+    orderBookProvider ??= Provider.of<OrderBookProvider>(context);
+
     final String buyAbbr = swapBloc.buyCoinBalance?.coin?.abbr;
     final String sellAbbr = swapBloc.sellCoinBalance?.coin?.abbr;
 
     if (buyAbbr == null || sellAbbr == null) return Container();
 
     final double rate = swapBloc.getExchangeRate();
-    final double cexRate = swapBloc.getCExchangeRate();
+    final double cexRate = cexProvider.getCexRate();
 
     Widget _buildExchangeRate() {
       if (rate == null) return Container();
 
-      final String exchangeRate =
-          OrderBookProvider.formatPrice(rate.toString());
-      final String exchangeRateQuoted =
-          OrderBookProvider.formatPrice((1 / rate).toString());
+      final String exchangeRate = formatPrice(rate);
+      final String exchangeRateBack = formatPrice(1 / rate);
 
       return Column(
         children: <Widget>[
@@ -36,14 +45,14 @@ class _ExchangeRateState extends State<ExchangeRate> {
             style: Theme.of(context).textTheme.body2,
           ),
           Text(
-            '1 $buyAbbr = $exchangeRate $sellAbbr',
+            '1 $buyAbbr = $exchangeRateBack $sellAbbr',
             style: Theme.of(context)
                 .textTheme
                 .body1
                 .copyWith(fontWeight: FontWeight.bold),
           ),
           Text(
-            '1 $sellAbbr = $exchangeRateQuoted $buyAbbr',
+            '1 $sellAbbr = $exchangeRate $buyAbbr',
             style: const TextStyle(fontSize: 13),
           ),
           const SizedBox(
@@ -54,12 +63,10 @@ class _ExchangeRateState extends State<ExchangeRate> {
     }
 
     Widget _buildCExchangeRate() {
-      if (cexRate == null) return Container();
+      if (cexRate == null || cexRate == 0.0) return Container();
 
-      final String cExchangeRate =
-          OrderBookProvider.formatPrice(cexRate.toString());
-      final String cExchangeRateQuoted =
-          OrderBookProvider.formatPrice((1 / cexRate).toString());
+      final String cExchangeRate = formatPrice(cexRate);
+      final String cExchangeRateBack = formatPrice(1 / cexRate);
 
       return Column(
         children: <Widget>[
@@ -81,14 +88,14 @@ class _ExchangeRateState extends State<ExchangeRate> {
             ],
           ),
           Text(
-            '1 $buyAbbr = $cExchangeRate $sellAbbr',
+            '1 $buyAbbr = $cExchangeRateBack $sellAbbr',
             style: Theme.of(context).textTheme.body1.copyWith(
                   fontWeight: FontWeight.bold,
                   color: cexColor,
                 ),
           ),
           Text(
-            '1 $sellAbbr = $cExchangeRateQuoted $buyAbbr',
+            '1 $sellAbbr = $cExchangeRate $buyAbbr',
             style: const TextStyle(
               fontSize: 13,
               color: cexColor,
@@ -100,17 +107,21 @@ class _ExchangeRateState extends State<ExchangeRate> {
     }
 
     Widget _buildIndicator() {
-      if (rate == null || cexRate == null) return Container();
+      if (rate == null || cexRate == null || cexRate == 0.0) return Container();
 
       const double indicatorH = 4;
       final double indicatorW = MediaQuery.of(context).size.width * 2 / 3;
       const double neutralRange = 5;
-      final num sign = (rate - cexRate).sign;
-      final double percent = ((rate - cexRate) * 100 / rate).abs();
+      final num sign = (cexRate - rate).sign;
+      final double percent = ((cexRate - rate) * 100 / rate).abs();
       int indicatorRange = (neutralRange * 2).round();
-      if (percent > indicatorRange) indicatorRange = percent.ceil();
-      final percentString =
-          OrderBookProvider.formatPrice(percent.toString(), 2);
+      if (percent > indicatorRange) {
+        // log_n(x) = log_e(x) / log_e(n)
+        final power = (math.log(percent) / math.log(10)).ceil();
+        // Round up to the closest power of 10
+        indicatorRange = math.pow(10, power);
+      }
+      final percentString = formatPrice(percent.toString(), 2);
       String message;
       Color color;
 

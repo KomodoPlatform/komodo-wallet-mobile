@@ -7,9 +7,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/drawer/drawer.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/addressbook_provider.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
@@ -17,10 +21,10 @@ import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/swap_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
-import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
+import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
@@ -29,6 +33,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
+import 'model/multi_order_provider.dart';
 import 'model/startup_provider.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
@@ -66,10 +71,22 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
               create: (context) => FeedProvider(),
             ),
             ChangeNotifierProvider(
+              create: (context) => RewardsProvider(),
+            ),
+            ChangeNotifierProvider(
               create: (context) => StartupProvider(),
             ),
             ChangeNotifierProvider(
               create: (context) => UpdatesProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => CexProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => AddressBookProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => MultiOrderProvider(),
             ),
           ],
           child: const MyApp(),
@@ -96,17 +113,41 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final LocalAuthentication auth = LocalAuthentication();
 
   @override
   void initState() {
     super.initState();
     _checkNetworkStatus();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        notifService.isInBackground = true;
+        break;
+      default:
+        notifService.isInBackground = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([
+      SystemUiOverlay.bottom,
+      SystemUiOverlay.top,
+    ]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: getTheme().backgroundColor,
       systemNavigationBarIconBrightness: Brightness.light,
@@ -161,13 +202,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   Timer timer;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   final List<Widget> _children = <Widget>[
     CoinsPage(),
     SwapPage(),
     MarketsPage(),
     FeedPage(),
-    SettingPage()
   ];
 
   Future<void> _initLanguage() async {
@@ -240,12 +281,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
 
+    notifService.init(AppLocalizations.of(context));
+
     return StreamBuilder<int>(
         initialData: mainBloc.currentIndexTab,
         stream: mainBloc.outCurrentIndex,
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           return Scaffold(
-            resizeToAvoidBottomPadding: false,
+            key: _scaffoldKey,
+            endDrawer: AppDrawer(),
+            resizeToAvoidBottomPadding: true,
             backgroundColor: Theme.of(context).backgroundColor,
             body: _children[snapshot.data],
             bottomNavigationBar: Container(
@@ -307,22 +352,22 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       BottomNavigationBarItem(
                                           icon: Icon(
                                             Icons.account_balance_wallet,
-                                            key: const Key(
-                                                'icon-bloc-coins-page'),
+                                            key:
+                                                const Key('main-nav-portfolio'),
                                           ),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .portfolio)),
                                       BottomNavigationBarItem(
                                           icon: Icon(Icons.swap_vert,
-                                              key: const Key('icon-swap-page')),
+                                              key: const Key('main-nav-dex')),
                                           title: Text(
                                               AppLocalizations.of(context)
                                                   .dex)),
                                       BottomNavigationBarItem(
                                         icon: Icon(
                                           Icons.show_chart,
-                                          key: const Key('icon-markets-page'),
+                                          key: const Key('main-nav-markets'),
                                         ),
                                         title: const Text(
                                             'Markets'), // TODO(yurii): localization
@@ -331,28 +376,25 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           icon: Stack(
                                             children: <Widget>[
                                               Icon(Icons.library_books,
-                                                  key: const Key('icon-media')),
+                                                  key: const Key(
+                                                      'main-nav-feed')),
                                               if (feedProvider.hasNewItems)
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: const Text(
-                                              'Feed')), // TODO(yurii): localization
+                                          title: const Text('Feed')),
                                       BottomNavigationBarItem(
                                           icon: Stack(
                                             children: <Widget>[
-                                              Icon(Icons.settings,
+                                              Icon(Icons.dehaze,
                                                   key: const Key(
-                                                      'icon-setting-page')),
-                                              if (updatesProvider
-                                                      .status !=
+                                                      'main-nav-more')),
+                                              if (updatesProvider.status !=
                                                   UpdateStatus.upToDate)
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: Text(
-                                              AppLocalizations.of(context)
-                                                  .settings)),
+                                          title: const Text('More')),
                                     ],
                                   )
                                 ],
@@ -369,6 +411,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   void onTabTapped(int index) {
-    mainBloc.setCurrentIndexTab(index);
+    if (index < _children.length) {
+      mainBloc.setCurrentIndexTab(index);
+    } else {
+      _scaffoldKey.currentState.openEndDrawer();
+    }
   }
 }

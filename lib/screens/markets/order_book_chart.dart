@@ -26,7 +26,8 @@ class OrderBookChart extends StatelessWidget {
     for (int i = 0; i < sortedBids.length; i++) {
       final double prevTotal = i > 0 ? _bidTotals[_bidTotals.length - 1] : 0;
       final Ask bid = sortedBids[i];
-      _bidTotals.add(prevTotal + (bid.maxvolume.toDouble() * double.parse(bid.price)));
+      _bidTotals.add(
+          prevTotal + (bid.maxvolume.toDouble() * double.parse(bid.price)));
     }
 
     _maxAmount = max(
@@ -120,12 +121,12 @@ class OrderBookChart extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 66, left: 8, right: 8),
+      padding: const EdgeInsets.only(top: 46, left: 8, right: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           ..._asksList.reversed.toList(),
-          const SizedBox(height: 12),
+          const SizedBox(height: 26),
           ..._bidsList,
         ],
       ),
