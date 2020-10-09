@@ -33,6 +33,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
+import 'model/multi_order_provider.dart';
 import 'model/startup_provider.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
@@ -83,6 +84,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => AddressBookProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => MultiOrderProvider(),
             ),
           ],
           child: const MyApp(),
@@ -286,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           return Scaffold(
             key: _scaffoldKey,
             endDrawer: AppDrawer(),
-            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomPadding: true,
             backgroundColor: Theme.of(context).backgroundColor,
             body: _children[snapshot.data],
             bottomNavigationBar: Container(

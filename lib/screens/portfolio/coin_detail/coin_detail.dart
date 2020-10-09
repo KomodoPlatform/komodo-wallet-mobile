@@ -257,6 +257,13 @@ class _CoinDetailState extends State<CoinDetail> {
   bool isRefresh = false;
 
   Widget _buildSyncChain() {
+    // Since we currently fething erc20 transactions history
+    // from the http endpoint, sync status indicator is hidden
+    // for erc20 tokens
+    if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+      return Container();
+    }
+
     return StreamBuilder<dynamic>(
         stream: coinsBloc.outTransactions,
         initialData: coinsBloc.transactions,

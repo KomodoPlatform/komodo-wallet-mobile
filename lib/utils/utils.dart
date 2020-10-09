@@ -542,6 +542,24 @@ String formatPrice(dynamic value, [int digits = 6, int fraction = 2]) {
   }
 }
 
+String cutTrailingZeros(String str) {
+  if (str == null) return null;
+
+  String loop(String input) {
+    if (input.length == 1) return input;
+    if (!input.contains('.')) return input;
+
+    if (input[input.length - 1] == '0' || input[input.length - 1] == '.') {
+      input = input.substring(0, input.length - 1);
+      return loop(input);
+    } else {
+      return input;
+    }
+  }
+
+  return loop(str);
+}
+
 Widget truncateMiddle(String string, {TextStyle style}) {
   if (string.length < 6)
     return Text(
