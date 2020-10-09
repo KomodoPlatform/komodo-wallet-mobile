@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/get_convert_address.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_rewards_info.dart';
@@ -556,5 +557,36 @@ class ApiProvider {
     } else {
       return jbody['result']['reason'];
     }
+  }
+
+  Future<String> convertLegacyAddress({
+    @required String address,
+    @required String coin,
+    http.Client client,
+  }) async {
+    if (await validateAddress(address: address, coin: coin) == null) {
+      // address already valid
+      return address;
+    }
+
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(
+      client,
+      GetConvertAddress(
+        from: address,
+        coin: coin,
+      ),
+    );
+
+    final r = await client.post(url, body: jsonEncode(userBody.body));
+    _assert200(r);
+    _saveRes('validateAddress', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return jbody['result']['address'];
   }
 }
