@@ -1,14 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
-import 'package:bs58check/bs58check.dart' as bs58check;
+import 'package:komodo_dex/services/mm.dart';
 import 'package:provider/provider.dart';
 
 class AddressField extends StatefulWidget {
@@ -33,6 +29,7 @@ class AddressField extends StatefulWidget {
 
 class _AddressFieldState extends State<AddressField> {
   AddressBookProvider addressBookProvider;
+  bool mm2Validated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +39,21 @@ class _AddressFieldState extends State<AddressField> {
         widget.controller.text = addressBookProvider.clipboard;
         addressBookProvider.clipboard = null;
       }
+
+      widget.controller.addListener(() {
+        if (!mounted) return;
+
+        MM
+            .validateAddress(
+          address: widget.controller.text,
+          coin: widget.coin.abbr,
+        )
+            .then((String reason) {
+          setState(() {
+            mm2Validated = reason == null;
+          });
+        });
+      });
     });
 
     return Padding(
@@ -112,34 +124,10 @@ class _AddressFieldState extends State<AddressField> {
                 if (value.isEmpty) {
                   return AppLocalizations.of(context).errorValueNotEmpty;
                 }
-                if (widget.isERCToken) {
-                  if (!isAddress(value)) {
-                    return AppLocalizations.of(context).errorNotAValidAddress;
-                  }
-                } else if (widget.addressFormat != null &&
-                    widget.addressFormat['network'] == 'bitcoincash' &&
-                    widget.addressFormat['format'] == 'cashaddress') {
-                  // TODO(yurii): implement reliable cashaddr validation
-                  // cf: https://github.com/bitcoincashorg/bitcoincash.org/blob/master/spec/cashaddr.md
-                  if (!value.startsWith('bitcoincash:'))
-                    return AppLocalizations.of(context).errorNotAValidAddress;
-                } else {
-                  try {
-                    final Uint8List decoded = bs58check.decode(value);
-                    Log.println('address_field:80', bs58check.encode(decoded));
-                  } catch (e) {
-                    Log.println('address_field:82', e);
-                    if (value.length > 3 &&
-                        (value.startsWith('bc1') ||
-                            value.startsWith('3') ||
-                            value.startsWith('M') ||
-                            value.startsWith('ltc1'))) {
-                      return AppLocalizations.of(context)
-                          .errorNotAValidAddressSegWit;
-                    }
-                    return AppLocalizations.of(context).errorNotAValidAddress;
-                  }
+                if (!mm2Validated) {
+                  return 'Invalid ${widget.coin.abbr} address';
                 }
+
                 return null;
               },
             ),

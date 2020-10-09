@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/get_enabled_coins.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_rewards_info.dart';
+import 'package:komodo_dex/model/get_validate_address.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -523,5 +525,36 @@ class ApiProvider {
     }
 
     return list;
+  }
+
+  /// returns `null` if address is valid, and String [reason] if not
+  Future<String> validateAddress({
+    @required String address,
+    @required String coin,
+    http.Client client,
+  }) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(
+      client,
+      GetValidateAddress(
+        address: address,
+        coin: coin,
+      ),
+    );
+
+    final r = await client.post(url, body: jsonEncode(userBody.body));
+    _assert200(r);
+    _saveRes('validateAddress', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    if (jbody['result']['is_valid']) {
+      return null;
+    } else {
+      return jbody['result']['reason'];
+    }
   }
 }
