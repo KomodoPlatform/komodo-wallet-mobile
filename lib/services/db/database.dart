@@ -75,6 +75,13 @@ class Db {
       )
     ''');
 
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS WalletSnapshot (
+        wallet_id TEXT PRIMARY KEY,
+        snapshot TEXT
+      )
+    ''');
+
     return db;
   }
 
@@ -248,5 +255,37 @@ class Db {
     final Database db = await Db.db;
     await db.delete('CoinsActivated',
         where: 'abbr = ?', whereArgs: <dynamic>[ticker]);
+  }
+
+  static Future<void> saveWalletSnapshot(String jsonStr) async {
+    final Wallet wallet = await getCurrentWallet();
+    if (wallet == null) return;
+
+    final Database db = await Db.db;
+    try {
+      await db.insert('WalletSnapshot',
+          <String, dynamic>{'wallet_id': wallet.id, 'snapshot': jsonStr},
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    } catch (_) {}
+  }
+
+  static Future<String> getWalletSnapshot() async {
+    final Wallet wallet = await getCurrentWallet();
+    if (wallet == null) return null;
+
+    final Database db = await Db.db;
+    List<Map<String, dynamic>> maps;
+    try {
+      maps = await db.query('WalletSnapshot');
+    } catch (_) {}
+    if (maps == null) return null;
+
+    final Map<String, dynamic> entry = maps.firstWhere(
+      (item) => item['wallet_id'] == wallet.id,
+      orElse: () => null,
+    );
+
+    if (entry == null) return null;
+    return entry['snapshot'];
   }
 }
