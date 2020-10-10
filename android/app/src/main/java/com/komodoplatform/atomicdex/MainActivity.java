@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
