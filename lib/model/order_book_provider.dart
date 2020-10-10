@@ -40,6 +40,8 @@ class OrderBookProvider extends ChangeNotifier {
   CoinsPair get activePair => syncOrderbook.activePair;
   set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
 
+  void updateActivePair() => syncOrderbook.updateActivePair();
+
   // TODO(AG): historical swap data for [coinsPair]
   List<Swap> getSwapHistory(CoinsPair coinsPair) {
     if (coinsPair.sell.abbr == 'VOTE2020' || coinsPair.buy.abbr == 'VOTE2020') {
@@ -110,6 +112,20 @@ class SyncOrderbook {
 
   set activePair(CoinsPair coinsPair) {
     _activePair = coinsPair;
+    _notifyListeners();
+  }
+
+  void updateActivePair() {
+    // Check if coins in activePair are still activated
+    if (_activePair?.sell != null &&
+        coinsBloc.getCoinByAbbr(_activePair.sell.abbr) == null) {
+      _activePair.sell = null;
+    }
+    if (_activePair?.buy != null &&
+        coinsBloc.getCoinByAbbr(_activePair.buy.abbr) == null) {
+      _activePair.buy = null;
+    }
+
     _notifyListeners();
   }
 
