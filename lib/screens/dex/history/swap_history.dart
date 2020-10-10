@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -183,6 +184,19 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                     ),
                   ],
                 ),
+                FutureBuilder<String>(
+                    future: Db.getNote(widget.swap.result.uuid),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        child: Text(snapshot.data),
+                      );
+                    }),
                 const SizedBox(
                   height: 12,
                 ),

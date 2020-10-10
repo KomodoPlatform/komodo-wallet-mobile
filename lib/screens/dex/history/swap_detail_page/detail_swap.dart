@@ -5,6 +5,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_steps.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class DetailSwap extends StatefulWidget {
@@ -17,6 +18,10 @@ class DetailSwap extends StatefulWidget {
 }
 
 class _DetailSwapState extends State<DetailSwap> {
+  String noteText;
+  bool isEdit = false;
+  final noteTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -56,12 +61,87 @@ class _DetailSwapState extends State<DetailSwap> {
                 swapHistoryBloc.isAnimationStepFinalIsFinish
             ? _buildInfosDetail()
             : Container(),
+        _buildNote('Note'),
         const SizedBox(
           height: 32,
         ),
         DetailedSwapSteps(uuid: widget.swap.result.uuid),
         const SizedBox(
           height: 32,
+        ),
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Db.getNote(widget.swap.result.uuid).then((n) {
+      setState(() {
+        noteText = n;
+        noteTextController.text = noteText;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    noteTextController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildNote(String title) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: InkWell(
+            onTap: () {
+              if (noteText != null) copyToClipBoard(context, noteText);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Text(
+                      '$title:',
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  ),
+                  isEdit
+                      ? TextField(
+                          controller: noteTextController,
+                        )
+                      : Text(
+                          (noteText == null || noteText.isEmpty)
+                              ? 'Add a Note'
+                              : noteText,
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        IconButton(
+          icon: Icon(isEdit ? Icons.check : Icons.edit),
+          onPressed: () {
+            setState(
+              () {
+                if (isEdit) {
+                  noteTextController.text = noteTextController.text.trim();
+                  noteText = noteTextController.text;
+                  Db.saveNote(widget.swap.result.uuid,
+                      noteText.isNotEmpty ? noteText : null);
+                }
+                isEdit = !isEdit;
+              },
+            );
+          },
         ),
       ],
     );
