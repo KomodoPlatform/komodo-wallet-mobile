@@ -15,6 +15,7 @@ import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
+import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/get_erc_transactions.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -205,6 +206,7 @@ class CoinsBloc implements BlocBase {
     await removeCoinBalance(coin);
     final res = await MM.disableCoin(GetDisableCoin(coin: coin.abbr));
     removeCoinLocal(coin, res);
+    syncOrderbook.updateActivePair();
   }
 
   void updateOneCoin(CoinBalance coin) {
