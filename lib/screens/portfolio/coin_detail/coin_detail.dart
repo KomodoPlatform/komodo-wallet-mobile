@@ -75,7 +75,6 @@ class _CoinDetailState extends State<CoinDetail> {
   bool _isWaiting = false;
   RewardsProvider rewardsProvider;
   Transaction latestTransaction;
-  Map<String, String> allNotes;
 
   @override
   void initState() {
@@ -125,11 +124,6 @@ class _CoinDetailState extends State<CoinDetail> {
           });
         });
       }
-    });
-    Db.getAllNotes().then((all) {
-      setState(() {
-        allNotes = all;
-      });
     });
   }
 
@@ -580,13 +574,19 @@ class _CoinDetailState extends State<CoinDetail> {
                     ),
                   ],
                 ),
-                (allNotes[transaction.txHash] != null)
-                    ? Padding(
+                FutureBuilder<String>(
+                    future: Db.getNote(transaction.txHash),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+                      return Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
-                        child: Text(allNotes[transaction.txHash]),
-                      )
-                    : const SizedBox(),
+                        child: Text(snapshot.data),
+                      );
+                    }),
                 Container(
                   color: Theme.of(context).backgroundColor,
                   height: 1,
