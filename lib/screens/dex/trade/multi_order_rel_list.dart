@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -344,8 +345,13 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                 contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 8),
               ),
               onChanged: (String value) {
+                double amnt;
+                try {
+                  amnt = double.parse(value);
+                } catch (_) {}
+
                 multiOrderProvider.setRelCoinAmt(
-                    item.coin.abbr, value == '' ? null : double.parse(value));
+                    item.coin.abbr, value == '' ? null : amnt);
               },
             ),
           ),

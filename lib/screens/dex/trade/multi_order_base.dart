@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -21,6 +22,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
   CexProvider cexProvider;
   String baseCoin;
   List<CoinBalance> coins = coinsBloc.coinBalance;
+  TextEditingController amountCtrl = TextEditingController();
   bool isDialogOpen = false;
   bool showDetailedFees = false;
 
@@ -37,7 +39,21 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         _showCoinSelectDialog();
       }
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (multiOrderProvider.baseAmt != null) {
+        amountCtrl.text =
+            cutTrailingZeros(formatPrice(multiOrderProvider.baseAmt, 8));
+      }
+    });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    amountCtrl?.dispose();
+    super.dispose();
   }
 
   @override
@@ -102,8 +118,12 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
 
   Widget _buildResetButton() {
     return InkWell(
-      onTap:
-          multiOrderProvider.baseCoin == null ? null : multiOrderProvider.reset,
+      onTap: multiOrderProvider.baseCoin == null
+          ? null
+          : () {
+              multiOrderProvider.reset();
+              amountCtrl.text = '';
+            },
       child: Opacity(
         opacity: multiOrderProvider.baseCoin == null ? 0.3 : 1,
         child: Container(
@@ -289,6 +309,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               return InkWell(
                 onTap: () {
                   multiOrderProvider.baseCoin = item.coin.abbr;
+                  amountCtrl.text = '';
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
@@ -372,64 +393,49 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
 
     return Opacity(
       opacity: baseCoin == null ? 0.3 : 1,
-      child: InkWell(
-        onTap: baseCoin == null ? null : _showMaxAmountWarning,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.fromLTRB(4, 6, 4, 7),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                          width: 1, color: Theme.of(context).highlightColor))),
-              child: Text(
-                // TODO(yurii): localization
-                multiOrderProvider.baseAmt == null
-                    ? 'Amount'
-                    : '${formatPrice(multiOrderProvider.baseAmt, 8)} ',
-                style: Theme.of(context).textTheme.subtitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.fromLTRB(4, 0, 4, 7),
+            child: SizedBox(
+              height: 36,
+              child: TextFormField(
+                controller: amountCtrl,
+                keyboardType: TextInputType.number,
                 textAlign: TextAlign.right,
-                maxLines: 1,
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.fromLTRB(0, 4, 0, 16),
+                    // TODO(yurii): localization
+                    hintText: 'Amount',
+                    hintStyle:
+                        TextStyle(color: Theme.of(context).disabledColor)),
+                onChanged: (String value) {
+                  double amnt;
+                  try {
+                    amnt = double.parse(value);
+                  } catch (_) {}
+
+                  multiOrderProvider.baseAmt = value.isEmpty ? null : amnt;
+                },
+                enabled: multiOrderProvider.baseCoin != null,
               ),
             ),
-            if (convertedAmt != null)
-              Container(
-                padding: const EdgeInsets.only(right: 4),
-                child: Text(
-                  convertedAmt,
-                  textAlign: TextAlign.right,
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption
-                      .copyWith(color: cexColor),
-                ),
+          ),
+          if (convertedAmt != null)
+            Container(
+              padding: const EdgeInsets.only(right: 4),
+              child: Text(
+                convertedAmt,
+                textAlign: TextAlign.right,
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    .copyWith(color: cexColor),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
-  }
-
-  void _showMaxAmountWarning() {
-    dialogBloc.dialog = showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            contentPadding: const EdgeInsets.all(20),
-            children: <Widget>[
-              // TODO(yurii): localization
-              const Text('Multi-Order requires MAX sell amount to proceed'),
-              const SizedBox(height: 20),
-              RaisedButton(
-                onPressed: () {
-                  dialogBloc.closeDialog(context);
-                },
-                // TODO(yurii): localization
-                child: const Text('Ok'),
-              )
-            ],
-          );
-        });
   }
 }
