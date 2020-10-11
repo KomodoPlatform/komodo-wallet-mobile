@@ -113,6 +113,7 @@ class _DetailSwapState extends State<DetailSwap> {
                   ),
                   isEdit
                       ? TextField(
+                          decoration: const InputDecoration(isDense: true),
                           controller: noteTextController,
                         )
                       : Text(

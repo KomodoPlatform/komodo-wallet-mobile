@@ -584,7 +584,10 @@ class _CoinDetailState extends State<CoinDetail> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
-                        child: Text(snapshot.data),
+                        child: Text(
+                          snapshot.data,
+                          style: Theme.of(context).textTheme.body2,
+                        ),
                       );
                     }),
                 Container(

@@ -184,6 +184,9 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 12,
+                ),
                 FutureBuilder<String>(
                     future: Db.getNote(widget.swap.result.uuid),
                     builder:
@@ -191,10 +194,12 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                       if (!snapshot.hasData) {
                         return Container();
                       }
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
-                        child: Text(snapshot.data),
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(snapshot.data,
+                              style: Theme.of(context).textTheme.body2),
+                        ],
                       );
                     }),
                 const SizedBox(

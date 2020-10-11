@@ -76,7 +76,7 @@ class Db {
       )
     ''');
 
-    // id is the tx_hash for transactions
+    // id is the tx_hash for transactions and the swap id for swaps
     await db.execute('''
       CREATE TABLE IF NOT EXISTS Notes (
         id TEXT PRIMARY KEY,
