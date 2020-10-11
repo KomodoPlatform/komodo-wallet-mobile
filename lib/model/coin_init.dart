@@ -30,7 +30,8 @@ class CoinInit {
     this.requiredConfirmations,
     this.asset,
     this.etomic,
-    this.segwit
+    this.segwit,
+    this.addressFormat,
   });
 
   factory CoinInit.fromJson(Map<String, dynamic> json) => CoinInit(
@@ -52,7 +53,8 @@ class CoinInit {
         consensusBranchId: json['consensus_branch_id'],
         asset: json['asset'],
         etomic: json['etomic'],
-        segwit: json['segwit']
+        segwit: json['segwit'],
+        addressFormat: json['address_format'],
       );
 
   String coin;
@@ -74,6 +76,7 @@ class CoinInit {
   String asset;
   String etomic;
   bool segwit;
+  Map<String, dynamic> addressFormat;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'coin': coin,
@@ -94,6 +97,7 @@ class CoinInit {
         'required_confirmations': requiredConfirmations,
         'asset': asset,
         'etomic': etomic,
-        'segwit': segwit
+        'segwit': segwit,
+        'address_format': addressFormat,
       };
 }

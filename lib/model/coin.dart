@@ -77,6 +77,7 @@ class Coin {
     explorerUrl = List<String>.from(config['explorerUrl']);
     requiredConfirmations = init['required_confirmations'];
     requiresNotarization = init['requires_notarization'];
+    addressFormat = init['address_format'];
   }
 
   String type; // 'other', 'erc' or 'smartChain'
@@ -99,6 +100,7 @@ class Coin {
   /// NB: If the initial value is `null` then it might be updated from MM during the coin activation.
   int requiredConfirmations;
   bool requiresNotarization;
+  Map<String, dynamic> addressFormat;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type ?? '',
@@ -120,7 +122,8 @@ class Coin {
             List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ??
                 <String>[],
         'required_confirmations': requiredConfirmations,
-        'requires_notarization': requiresNotarization
+        'requires_notarization': requiresNotarization,
+        'address_format': addressFormat,
       };
 
   String getTxFeeSatoshi() {
