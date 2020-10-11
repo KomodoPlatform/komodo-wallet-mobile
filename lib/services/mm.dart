@@ -559,6 +559,7 @@ class ApiProvider {
     }
   }
 
+  /// Returns converted address, or `null` if convertion failed
   Future<String> convertLegacyAddress({
     @required String address,
     @required String coin,
@@ -579,8 +580,7 @@ class ApiProvider {
     );
 
     final r = await client.post(url, body: jsonEncode(userBody.body));
-    _assert200(r);
-    _saveRes('validateAddress', r);
+    if (r.statusCode != 200) return null;
 
     // Parse JSON once, then check if the JSON is an error.
     final dynamic jbody = json.decode(r.body);
