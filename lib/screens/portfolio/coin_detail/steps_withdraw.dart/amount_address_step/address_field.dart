@@ -30,8 +30,18 @@ class AddressField extends StatefulWidget {
 class _AddressFieldState extends State<AddressField> {
   AddressBookProvider addressBookProvider;
   bool mm2Validated = false;
-  bool showConvertButton = false;
   bool autovalidate = false;
+  String convertMessage;
+
+  @override
+  void initState() {
+    widget.controller.addListener(() {
+      if (!mounted) return;
+      _validate();
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,32 +51,6 @@ class _AddressFieldState extends State<AddressField> {
         widget.controller.text = addressBookProvider.clipboard;
         addressBookProvider.clipboard = null;
       }
-
-      widget.controller.addListener(() {
-        if (!mounted) return;
-
-        MM
-            .validateAddress(
-          address: widget.controller.text,
-          coin: widget.coin.abbr,
-        )
-            .then((String reason) {
-          if (reason == null) {
-            setState(() {
-              mm2Validated = true;
-              showConvertButton = false;
-            });
-          } else {
-            setState(() {
-              mm2Validated = false;
-              // if address format is wrong, reason may look like this:
-              // "Cashaddress address format activated for BCH,
-              // but legacy format used instead. Try to call 'convertaddress'"
-              showConvertButton = reason.contains('convertaddress');
-            });
-          }
-        });
-      });
     });
 
     return Padding(
@@ -103,6 +87,8 @@ class _AddressFieldState extends State<AddressField> {
                   controller: widget.controller,
                   autofocus: false,
                   autovalidate: autovalidate,
+                  autocorrect: false,
+                  enableSuggestions: false,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.text,
                   style: Theme.of(context).textTheme.body1,
@@ -158,14 +144,13 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   Widget _buildConvertButton() {
-    if (!showConvertButton) return Container();
+    if (convertMessage == null) return Container();
 
     return Row(
       children: <Widget>[
         Expanded(
             child: Text(
-          'It seems like you are using legacy address format.'
-          ' Please try to convert.',
+          convertMessage,
           style: Theme.of(context)
               .textTheme
               .caption
@@ -177,6 +162,8 @@ class _AddressFieldState extends State<AddressField> {
               address: widget.controller.text,
               coin: widget.coin.abbr,
             );
+            if (converted == null) return;
+
             setState(() {
               autovalidate = true;
             });
@@ -190,5 +177,55 @@ class _AddressFieldState extends State<AddressField> {
         ),
       ],
     );
+  }
+
+  Future<void> _validate() async {
+    final dynamic error = await MM.validateAddress(
+      address: widget.controller.text,
+      coin: widget.coin.abbr,
+    );
+
+    // if valid
+    if (error == null) {
+      setState(() {
+        mm2Validated = true;
+        convertMessage = null;
+      });
+      return;
+    }
+
+    // if not valid
+    setState(() {
+      mm2Validated = false;
+    });
+    if (_isBchLegacyFormat(error)) {
+      setState(() {
+        convertMessage = 'It seems like you are using legacy'
+            ' address format. Please try to convert.';
+      });
+    } else if (_isErcNonMixedCase(error)) {
+      setState(() {
+        convertMessage = 'If you are using non mixed case'
+            ' address, please try to convert to mixed case one.';
+      });
+    } else {
+      setState(() {
+        convertMessage = null;
+      });
+    }
+  }
+
+  bool _isBchLegacyFormat(String error) {
+    // if BCH address format is wrong, error message may look like this:
+    // "Cashaddress address format activated for BCH,
+    // but legacy format used instead. Try to call 'convertaddress'"
+    return error.contains('convertaddress');
+  }
+
+  bool _isErcNonMixedCase(String error) {
+    if (widget.coin.swapContractAddress.isEmpty) return false;
+    if (!error.contains('Invalid address checksum')) return false;
+
+    return true;
   }
 }
