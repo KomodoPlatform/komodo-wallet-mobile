@@ -449,27 +449,30 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                 ],
               ),
             ),
-            const SizedBox(width: 10),
-            InkWell(
-              onTap: multiOrderProvider.baseCoin == null
-                  ? null
-                  : () async {
-                      multiOrderProvider.baseAmt =
-                          await multiOrderProvider.getMaxSellAmt();
-                      amountCtrl.text = cutTrailingZeros(
-                          formatPrice(multiOrderProvider.baseAmt));
-                    },
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
-                child: Text(
-                  'MAX',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Theme.of(context).accentColor,
+            if (multiOrderProvider.baseCoin != null)
+              Container(
+                padding: const EdgeInsets.only(left: 10),
+                child: InkWell(
+                  onTap: multiOrderProvider.baseCoin == null
+                      ? null
+                      : () async {
+                          multiOrderProvider.baseAmt =
+                              await multiOrderProvider.getMaxSellAmt();
+                          amountCtrl.text = cutTrailingZeros(
+                              formatPrice(multiOrderProvider.baseAmt));
+                        },
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
+                    child: Text(
+                      'MAX',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),

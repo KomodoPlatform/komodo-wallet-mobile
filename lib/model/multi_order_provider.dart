@@ -57,6 +57,7 @@ class MultiOrderProvider extends ChangeNotifier {
 
   void selectRelCoin(String coin, bool val) {
     if (val) {
+      if (coin == baseCoin) return;
       if (!isRelCoinSelected(coin)) _relCoins[coin] = null;
     } else {
       _relCoins.remove(coin);

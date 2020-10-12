@@ -50,6 +50,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          _buildHeader(),
           StreamBuilder<List<CoinBalance>>(
               initialData: coinsBloc.coinBalance,
               stream: coinsBloc.outCoins,
@@ -77,9 +78,16 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                   },
                   children: [
                     TableRow(
+                      decoration: BoxDecoration(
+                          border: Border(
+                        top: BorderSide(
+                          width: 1,
+                          color: Theme.of(context).highlightColor,
+                        ),
+                      )),
                       children: [
                         Container(
-                          padding: const EdgeInsets.fromLTRB(16, 12, 0, 12),
+                          padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                           child: Text(
                             // TODO(yurii): localization
                             'Price/CEX',
@@ -87,28 +95,14 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                          padding: const EdgeInsets.fromLTRB(0, 16, 12, 0),
                           child: Text(
                             // TODO(yurii): localization
                             'Receive Amt.',
                             style: Theme.of(context).textTheme.body2,
                           ),
                         ),
-                        Container(
-                          child: InkWell(
-                            onTap: () {
-                              _showAutoFillDialog();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(0, 16, 0, 12),
-                              child: Icon(
-                                Icons.flash_auto,
-                                size: 14,
-                                color: Theme.of(context).textTheme.body2.color,
-                              ),
-                            ),
-                          ),
-                        ),
+                        _buildToggleAll(),
                       ],
                     ),
                     ..._buildRows(availableToBuy),
@@ -117,6 +111,71 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               }),
         ],
       )),
+    );
+  }
+
+  Widget _buildToggleAll() {
+    return StreamBuilder<List<CoinBalance>>(
+        initialData: coinsBloc.coinBalance,
+        stream: coinsBloc.outCoins,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Container();
+
+          bool allSelected = true;
+          for (CoinBalance item in snapshot.data) {
+            if (item.coin.abbr == multiOrderProvider.baseCoin) continue;
+
+            if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr)) {
+              allSelected = false;
+              break;
+            }
+          }
+
+          return Switch(
+            value: allSelected,
+            onChanged: (bool val) {
+              for (CoinBalance item in snapshot.data) {
+                if (!val) {
+                  amtCtrls[item.coin.abbr]?.text = '';
+                  multiOrderProvider.selectRelCoin(item.coin.abbr, false);
+                } else {
+                  multiOrderProvider.selectRelCoin(item.coin.abbr, true);
+                }
+              }
+              _updateAmtFields();
+              _calculateAmts();
+            },
+          );
+        });
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              // TODO(yurii): localization
+              'Receive:',
+              style: Theme.of(context).textTheme.body2,
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              _showAutoFillDialog();
+            },
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+              child: Icon(
+                Icons.flash_auto,
+                size: 14,
+                color: Theme.of(context).textTheme.body2.color,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -494,9 +553,9 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   void _updateAmtFields() {
     multiOrderProvider.relCoins.forEach((abbr, amount) {
       if (amount == null || amount == 0) {
-        amtCtrls[abbr].text = '';
+        amtCtrls[abbr]?.text = '';
       } else {
-        amtCtrls[abbr].text = cutTrailingZeros(formatPrice(amount));
+        amtCtrls[abbr]?.text = cutTrailingZeros(formatPrice(amount));
       }
     });
   }
