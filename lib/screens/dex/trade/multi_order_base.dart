@@ -7,6 +7,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
+import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
@@ -393,48 +394,84 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
 
     return Opacity(
       opacity: baseCoin == null ? 0.3 : 1,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.fromLTRB(4, 0, 4, 7),
-            child: SizedBox(
-              height: 36,
-              child: TextFormField(
-                controller: amountCtrl,
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.right,
-                decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.fromLTRB(0, 4, 0, 16),
-                    // TODO(yurii): localization
-                    hintText: 'Amount',
-                    hintStyle:
-                        TextStyle(color: Theme.of(context).disabledColor)),
-                onChanged: (String value) {
-                  double amnt;
-                  try {
-                    amnt = double.parse(value);
-                  } catch (_) {}
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(4, 0, 0, 7),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SizedBox(
+                    height: 36,
+                    child: TextFormField(
+                      controller: amountCtrl,
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(0, 4, 0, 16),
+                          // TODO(yurii): localization
+                          hintText: 'Amount',
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).disabledColor)),
+                      onChanged: (String value) {
+                        double amnt;
+                        try {
+                          amnt = double.parse(value);
+                        } catch (_) {}
 
-                  multiOrderProvider.baseAmt = value.isEmpty ? null : amnt;
-                },
-                enabled: multiOrderProvider.baseCoin != null,
+                        multiOrderProvider.baseAmt =
+                            value.isEmpty ? null : amnt;
+                      },
+                      enabled: multiOrderProvider.baseCoin != null,
+                      maxLines: 1,
+                      inputFormatters: <TextInputFormatter>[
+                        DecimalTextInputFormatter(decimalRange: 8),
+                        WhitelistingTextInputFormatter(RegExp(
+                            '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
+                      ],
+                    ),
+                  ),
+                  if (convertedAmt != null)
+                    Container(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: Text(
+                        convertedAmt,
+                        textAlign: TextAlign.right,
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption
+                            .copyWith(color: cexColor),
+                      ),
+                    ),
+                ],
               ),
             ),
-          ),
-          if (convertedAmt != null)
-            Container(
-              padding: const EdgeInsets.only(right: 4),
-              child: Text(
-                convertedAmt,
-                textAlign: TextAlign.right,
-                style: Theme.of(context)
-                    .textTheme
-                    .caption
-                    .copyWith(color: cexColor),
+            const SizedBox(width: 10),
+            InkWell(
+              onTap: multiOrderProvider.baseCoin == null
+                  ? null
+                  : () async {
+                      multiOrderProvider.baseAmt =
+                          await multiOrderProvider.getMaxSellAmt();
+                      amountCtrl.text = cutTrailingZeros(
+                          formatPrice(multiOrderProvider.baseAmt));
+                    },
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
+                child: Text(
+                  'MAX',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }

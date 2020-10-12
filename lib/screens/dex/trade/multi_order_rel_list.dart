@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -139,6 +140,11 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       autofocus: true,
                       keyboardType: TextInputType.number,
                       maxLines: 1,
+                      inputFormatters: <TextInputFormatter>[
+                        DecimalTextInputFormatter(decimalRange: 8),
+                        WhitelistingTextInputFormatter(RegExp(
+                            '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
+                      ],
                     ),
                   ),
                 ],
