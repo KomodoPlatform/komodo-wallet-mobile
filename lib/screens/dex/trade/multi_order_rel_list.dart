@@ -404,11 +404,16 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               controller: amtCtrls[item.coin.abbr],
               focusNode: amtFocusNodes[item.coin.abbr],
               textAlign: TextAlign.right,
-              keyboardType: TextInputType.number,
-              maxLines: 1,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 8),
               ),
+              maxLines: 1,
+              inputFormatters: <TextInputFormatter>[
+                LengthLimitingTextInputFormatter(16),
+                DecimalTextInputFormatter(decimalRange: 8),
+              ],
               onChanged: (String value) {
                 double amnt;
                 try {

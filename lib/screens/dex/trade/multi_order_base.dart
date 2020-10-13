@@ -407,7 +407,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                     height: 36,
                     child: TextFormField(
                       controller: amountCtrl,
-                      keyboardType: TextInputType.number,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
                           contentPadding:
@@ -428,9 +429,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       enabled: multiOrderProvider.baseCoin != null,
                       maxLines: 1,
                       inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(16),
                         DecimalTextInputFormatter(decimalRange: 8),
-                        WhitelistingTextInputFormatter(RegExp(
-                            '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
                       ],
                     ),
                   ),
