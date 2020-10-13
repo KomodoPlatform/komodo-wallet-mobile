@@ -197,12 +197,12 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                     child: TextField(
                       controller: fiatAmtCtrl,
                       autofocus: true,
-                      keyboardType: TextInputType.number,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       maxLines: 1,
                       inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(16),
                         DecimalTextInputFormatter(decimalRange: 8),
-                        WhitelistingTextInputFormatter(RegExp(
-                            '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
                       ],
                     ),
                   ),
@@ -244,6 +244,23 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
             ],
           );
         });
+
+    final double baseFiatAmt = _getBaseFiatAmt();
+    if (baseFiatAmt != null) {
+      fiatAmtCtrl.text = cutTrailingZeros(formatPrice(baseFiatAmt, 2));
+    }
+  }
+
+  double _getBaseFiatAmt() {
+    if (multiOrderProvider.baseAmt == null) return null;
+
+    final double baseUsdPrice =
+        cexProvider.getUsdPrice(multiOrderProvider.baseCoin);
+    if (baseUsdPrice == null || baseUsdPrice == 0) return null;
+
+    return multiOrderProvider.baseAmt *
+        baseUsdPrice /
+        cexProvider.getUsdPrice(cexProvider.selectedFiat);
   }
 
   List<TableRow> _buildRows(List<CoinBalance> data) {
@@ -366,7 +383,10 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         break;
       }
 
-    if (sourceUsdAmt == null) return;
+    sourceUsdAmt ??= (multiOrderProvider.baseAmt ?? 0) *
+        cexProvider.getUsdPrice(multiOrderProvider.baseCoin);
+
+    if (sourceUsdAmt == null || sourceUsdAmt == 0) return;
 
     multiOrderProvider.relCoins.forEach((abbr, amt) {
       if (amt != null) return;
@@ -530,10 +550,28 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
             color: Theme.of(context).disabledColor,
           ),
         ),
-        if (delta != null)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+        _buildDelta(delta),
+      ],
+    );
+  }
+
+  Widget _buildDelta(double delta) {
+    if (delta == null) return Container();
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: delta.abs() < 0.01
+          ? <Widget>[
+              const SizedBox(width: 3),
+              Text(
+                '≈0.00%',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: cexColor,
+                ),
+              ),
+            ]
+          : <Widget>[
               const SizedBox(width: 3),
               Text(
                 delta > 0 ? '+' : '',
@@ -550,8 +588,6 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                 ),
               ),
             ],
-          ),
-      ],
     );
   }
 
