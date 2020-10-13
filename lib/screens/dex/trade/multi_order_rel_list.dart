@@ -418,8 +418,9 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          SizedBox(
-            height: 36,
+          Container(
+            height: 32,
+            padding: const EdgeInsets.only(top: 8),
             child: TextField(
               controller: amtCtrls[item.coin.abbr],
               focusNode: amtFocusNodes[item.coin.abbr],
@@ -427,7 +428,8 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               decoration: const InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+                isDense: true,
+                contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
               ),
               maxLines: 1,
               inputFormatters: <TextInputFormatter>[

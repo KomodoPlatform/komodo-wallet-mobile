@@ -403,16 +403,18 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  SizedBox(
-                    height: 36,
+                  Container(
+                    height: 38,
+                    padding: const EdgeInsets.only(top: 4),
                     child: TextFormField(
                       controller: amountCtrl,
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
+                          isDense: true,
                           contentPadding:
-                              const EdgeInsets.fromLTRB(0, 4, 0, 16),
+                              const EdgeInsets.fromLTRB(0, 4, 0, 10),
                           // TODO(yurii): localization
                           hintText: 'Amount',
                           hintStyle: TextStyle(
