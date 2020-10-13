@@ -87,7 +87,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       )),
                       children: [
                         Container(
-                          padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(16, 14, 0, 0),
                           child: Text(
                             // TODO(yurii): localization
                             'Price/CEX',
@@ -95,7 +95,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.fromLTRB(0, 16, 12, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 14, 12, 0),
                           child: Text(
                             // TODO(yurii): localization
                             'Receive Amt.',
@@ -131,20 +131,44 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
             }
           }
 
-          return Switch(
-            value: allSelected,
-            onChanged: (bool val) {
-              for (CoinBalance item in snapshot.data) {
-                if (!val) {
-                  amtCtrls[item.coin.abbr]?.text = '';
-                  multiOrderProvider.selectRelCoin(item.coin.abbr, false);
-                } else {
-                  multiOrderProvider.selectRelCoin(item.coin.abbr, true);
+          return Container(
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+            alignment: Alignment.center,
+            child: InkWell(
+              onTap: () {
+                final bool val = !allSelected;
+                for (CoinBalance item in snapshot.data) {
+                  if (!val) {
+                    amtCtrls[item.coin.abbr]?.text = '';
+                    multiOrderProvider.selectRelCoin(item.coin.abbr, false);
+                  } else {
+                    multiOrderProvider.selectRelCoin(item.coin.abbr, true);
+                  }
                 }
-              }
-              _updateAmtFields();
-              _calculateAmts();
-            },
+                _updateAmtFields();
+                _calculateAmts();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      border: Border.all(
+                        color: allSelected
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).textTheme.body2.color,
+                      )),
+                  child: Icon(
+                    Icons.done_all,
+                    size: 11,
+                    color: allSelected
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).textTheme.body2.color,
+                  ),
+                ),
+              ),
+            ),
           );
         });
   }
