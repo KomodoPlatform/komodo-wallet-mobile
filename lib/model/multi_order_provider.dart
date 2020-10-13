@@ -25,7 +25,7 @@ class MultiOrderProvider extends ChangeNotifier {
   String get baseCoin => _baseCoin;
   set baseCoin(String coin) {
     _baseCoin = coin;
-    _calculateSellAmt();
+    _sellAmt = null;
     _relCoins.clear();
     _errors.clear();
 
@@ -44,6 +44,10 @@ class MultiOrderProvider extends ChangeNotifier {
   }
 
   double get baseAmt => _sellAmt;
+  set baseAmt(double value) {
+    _sellAmt = value;
+    notifyListeners();
+  }
 
   Map<String, double> get relCoins => _relCoins;
 
@@ -53,6 +57,7 @@ class MultiOrderProvider extends ChangeNotifier {
 
   void selectRelCoin(String coin, bool val) {
     if (val) {
+      if (coin == baseCoin) return;
       if (!isRelCoinSelected(coin)) _relCoins[coin] = null;
     } else {
       _relCoins.remove(coin);
@@ -123,6 +128,24 @@ class MultiOrderProvider extends ChangeNotifier {
     bool isValid = true;
     _errors.clear();
 
+    // check if sell amount is empty
+    if (baseAmt == null) {
+      isValid = false;
+      // TODO(yurii): localization
+      _errors[baseCoin] = 'Invalid sell amount';
+    }
+
+    // check if sell amount is lower than available balance
+    if (baseAmt != null) {
+      final double max = await getMaxSellAmt();
+      if (baseAmt > max) {
+        isValid = false;
+        // TODO(yurii): localization
+        _errors[baseCoin] = 'Max sell amount is'
+            ' ${cutTrailingZeros(formatPrice(max, 8))} $baseCoin';
+      }
+    }
+
     // check min sell amount
     final double minSellAmt = baseCoin == 'QTUM' ? 3 : 0.00777;
     if (baseAmt != null && baseAmt < minSellAmt) {
@@ -138,7 +161,7 @@ class MultiOrderProvider extends ChangeNotifier {
       if (relAmt == null || relAmt == 0) {
         isValid = false;
         // TODO(yurii): localization
-        _errors[coin] = 'Amount cannot be empty';
+        _errors[coin] = 'Invalid amount';
       }
 
       // check for ETH balance
@@ -182,7 +205,7 @@ class MultiOrderProvider extends ChangeNotifier {
         base: baseCoin,
         rel: coin,
         cancelPrevious: false,
-        max: true,
+        max: false,
         volume: baseAmt.toString(),
         price: deci2s(deci(amount / baseAmt)),
       );
@@ -209,16 +232,17 @@ class MultiOrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _calculateSellAmt() async {
+  Future<double> getMaxSellAmt() async {
+    double maxAmt;
     if (baseCoin == null) {
-      _sellAmt = null;
+      maxAmt = null;
     } else {
       final double balance =
           coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-      _sellAmt = balance - await _getBaseFee();
+      maxAmt = balance - await _getBaseFee();
     }
 
-    notifyListeners();
+    return maxAmt;
   }
 
   Future<double> _getBaseFee() async {

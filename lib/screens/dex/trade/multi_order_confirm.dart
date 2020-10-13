@@ -194,8 +194,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                       ],
                     ),
                     Text(
-                      cutTrailingZeros(
-                          formatPrice(multiOrderProvider.baseAmt, 8)),
+                      formatPrice(multiOrderProvider.baseAmt, 8),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

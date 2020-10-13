@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +50,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          _buildHeader(),
           StreamBuilder<List<CoinBalance>>(
               initialData: coinsBloc.coinBalance,
               stream: coinsBloc.outCoins,
@@ -75,9 +78,16 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                   },
                   children: [
                     TableRow(
+                      decoration: BoxDecoration(
+                          border: Border(
+                        top: BorderSide(
+                          width: 1,
+                          color: Theme.of(context).highlightColor,
+                        ),
+                      )),
                       children: [
                         Container(
-                          padding: const EdgeInsets.fromLTRB(16, 12, 0, 12),
+                          padding: const EdgeInsets.fromLTRB(16, 14, 0, 0),
                           child: Text(
                             // TODO(yurii): localization
                             'Price/CEX',
@@ -85,28 +95,14 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                          padding: const EdgeInsets.fromLTRB(0, 14, 12, 0),
                           child: Text(
                             // TODO(yurii): localization
                             'Receive Amt.',
                             style: Theme.of(context).textTheme.body2,
                           ),
                         ),
-                        Container(
-                          child: InkWell(
-                            onTap: () {
-                              _showAutoFillDialog();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(0, 16, 0, 12),
-                              child: Icon(
-                                Icons.flash_auto,
-                                size: 14,
-                                color: Theme.of(context).textTheme.body2.color,
-                              ),
-                            ),
-                          ),
-                        ),
+                        _buildToggleAll(),
                       ],
                     ),
                     ..._buildRows(availableToBuy),
@@ -115,6 +111,95 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               }),
         ],
       )),
+    );
+  }
+
+  Widget _buildToggleAll() {
+    return StreamBuilder<List<CoinBalance>>(
+        initialData: coinsBloc.coinBalance,
+        stream: coinsBloc.outCoins,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Container();
+
+          bool allSelected = true;
+          for (CoinBalance item in snapshot.data) {
+            if (item.coin.abbr == multiOrderProvider.baseCoin) continue;
+
+            if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr)) {
+              allSelected = false;
+              break;
+            }
+          }
+
+          return Container(
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+            alignment: Alignment.center,
+            child: InkWell(
+              onTap: () {
+                final bool val = !allSelected;
+                for (CoinBalance item in snapshot.data) {
+                  if (!val) {
+                    amtCtrls[item.coin.abbr]?.text = '';
+                    multiOrderProvider.selectRelCoin(item.coin.abbr, false);
+                  } else {
+                    multiOrderProvider.selectRelCoin(item.coin.abbr, true);
+                  }
+                }
+                _updateAmtFields();
+                _calculateAmts();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      border: Border.all(
+                        color: allSelected
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).textTheme.body2.color,
+                      )),
+                  child: Icon(
+                    Icons.done_all,
+                    size: 11,
+                    color: allSelected
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).textTheme.body2.color,
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              // TODO(yurii): localization
+              'Receive:',
+              style: Theme.of(context).textTheme.body2,
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              _showAutoFillDialog();
+            },
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+              child: Icon(
+                Icons.flash_auto,
+                size: 14,
+                color: Theme.of(context).textTheme.body2.color,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -136,8 +221,13 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                     child: TextField(
                       controller: fiatAmtCtrl,
                       autofocus: true,
-                      keyboardType: TextInputType.number,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       maxLines: 1,
+                      inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(16),
+                        DecimalTextInputFormatter(decimalRange: 8),
+                      ],
                     ),
                   ),
                 ],
@@ -178,6 +268,23 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
             ],
           );
         });
+
+    final double baseFiatAmt = _getBaseFiatAmt();
+    if (baseFiatAmt != null) {
+      fiatAmtCtrl.text = cutTrailingZeros(formatPrice(baseFiatAmt, 2));
+    }
+  }
+
+  double _getBaseFiatAmt() {
+    if (multiOrderProvider.baseAmt == null) return null;
+
+    final double baseUsdPrice =
+        cexProvider.getUsdPrice(multiOrderProvider.baseCoin);
+    if (baseUsdPrice == null || baseUsdPrice == 0) return null;
+
+    return multiOrderProvider.baseAmt *
+        baseUsdPrice /
+        cexProvider.getUsdPrice(cexProvider.selectedFiat);
   }
 
   List<TableRow> _buildRows(List<CoinBalance> data) {
@@ -300,7 +407,10 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         break;
       }
 
-    if (sourceUsdAmt == null) return;
+    sourceUsdAmt ??= (multiOrderProvider.baseAmt ?? 0) *
+        cexProvider.getUsdPrice(multiOrderProvider.baseCoin);
+
+    if (sourceUsdAmt == null || sourceUsdAmt == 0) return;
 
     multiOrderProvider.relCoins.forEach((abbr, amt) {
       if (amt != null) return;
@@ -332,20 +442,32 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          SizedBox(
-            height: 36,
+          Container(
+            height: 32,
+            padding: const EdgeInsets.only(top: 8),
             child: TextField(
               controller: amtCtrls[item.coin.abbr],
               focusNode: amtFocusNodes[item.coin.abbr],
               textAlign: TextAlign.right,
-              keyboardType: TextInputType.number,
-              maxLines: 1,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               decoration: const InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+                isDense: true,
+                contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
               ),
+              maxLines: 1,
+              inputFormatters: <TextInputFormatter>[
+                LengthLimitingTextInputFormatter(16),
+                DecimalTextInputFormatter(decimalRange: 8),
+              ],
               onChanged: (String value) {
+                double amnt;
+                try {
+                  amnt = double.parse(value);
+                } catch (_) {}
+
                 multiOrderProvider.setRelCoinAmt(
-                    item.coin.abbr, value == '' ? null : double.parse(value));
+                    item.coin.abbr, value == '' ? null : amnt);
               },
             ),
           ),
@@ -454,10 +576,28 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
             color: Theme.of(context).disabledColor,
           ),
         ),
-        if (delta != null)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+        _buildDelta(delta),
+      ],
+    );
+  }
+
+  Widget _buildDelta(double delta) {
+    if (delta == null) return Container();
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: delta.abs() < 0.01
+          ? <Widget>[
+              const SizedBox(width: 3),
+              Text(
+                '≈0.00%',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: cexColor,
+                ),
+              ),
+            ]
+          : <Widget>[
               const SizedBox(width: 3),
               Text(
                 delta > 0 ? '+' : '',
@@ -474,17 +614,15 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                 ),
               ),
             ],
-          ),
-      ],
     );
   }
 
   void _updateAmtFields() {
     multiOrderProvider.relCoins.forEach((abbr, amount) {
       if (amount == null || amount == 0) {
-        amtCtrls[abbr].text = '';
+        amtCtrls[abbr]?.text = '';
       } else {
-        amtCtrls[abbr].text = cutTrailingZeros(formatPrice(amount));
+        amtCtrls[abbr]?.text = cutTrailingZeros(formatPrice(amount));
       }
     });
   }
