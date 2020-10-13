@@ -581,11 +581,14 @@ class _CoinDetailState extends State<CoinDetail> {
                       if (!snapshot.hasData) {
                         return Container();
                       }
+                      final length = snapshot.data.length;
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
                         child: Text(
-                          snapshot.data,
+                          length > 35
+                              ? snapshot.data.substring(0, 35) + '…'
+                              : snapshot.data,
                           style: Theme.of(context).textTheme.body2,
                         ),
                       );

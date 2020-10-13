@@ -115,6 +115,7 @@ class _DetailSwapState extends State<DetailSwap> {
                       ? TextField(
                           decoration: const InputDecoration(isDense: true),
                           controller: noteTextController,
+                          maxLength: 200,
                         )
                       : Text(
                           (noteText == null || noteText.isEmpty)

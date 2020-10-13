@@ -372,6 +372,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
             child: isEdit
                 ? TextField(
                     controller: noteTextController,
+                    maxLength: 200,
                   )
                 : InkWell(
                     onTap: () {
