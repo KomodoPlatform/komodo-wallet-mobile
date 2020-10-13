@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -30,6 +31,18 @@ public class MainActivity extends FlutterFragmentActivity {
 
   static {
     System.loadLibrary("mm2-lib");
+  }
+
+  @Override
+  protected void onPause() {
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    super.onPause();
+  }
+
+  @Override
+  protected void onResume() {
+    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    super.onResume();
   }
 
   private void createNotificationChannel() {

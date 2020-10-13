@@ -119,6 +119,19 @@ import UserNotifications
         eventSink = nil
         return nil
     }
+    
+    public override func applicationWillResignActive(_ application: UIApplication) {
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = window!.frame
+        blurEffectView.tag = 61007
+
+        self.window?.addSubview(blurEffectView)
+    }
+    
+    public override func applicationDidBecomeActive(_ application: UIApplication) {
+        self.window?.viewWithTag(61007)?.removeFromSuperview()
+    }
 }
 
 extension Notification.Name {
