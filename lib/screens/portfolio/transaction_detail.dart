@@ -374,6 +374,8 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                 ? TextField(
                     controller: noteTextController,
                     maxLength: 200,
+                    minLines: 1,
+                    maxLines: 8,
                   )
                 : InkWell(
                     onTap: () {
@@ -405,9 +407,12 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                     noteText = noteTextController.text;
                     Db.saveNote(
                         widget.txHash, noteText.isNotEmpty ? noteText : null);
+
+                    setState(() {
+                      isExpanded = false;
+                    });
                   }
                   setState(() {
-                    isExpanded = false;
                     isEdit = !isEdit;
                   });
                 },

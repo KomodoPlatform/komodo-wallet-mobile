@@ -19,8 +19,26 @@ class DetailSwap extends StatefulWidget {
 
 class _DetailSwapState extends State<DetailSwap> {
   String noteText;
-  bool isEdit = false;
+  bool isNoteEdit = false;
+  bool isNoteExpanded = false;
   final noteTextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Db.getNote(widget.swap.result.uuid).then((n) {
+      setState(() {
+        noteText = n;
+        noteTextController.text = noteText;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    noteTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,31 +91,20 @@ class _DetailSwapState extends State<DetailSwap> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    Db.getNote(widget.swap.result.uuid).then((n) {
-      setState(() {
-        noteText = n;
-        noteTextController.text = noteText;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    noteTextController.dispose();
-    super.dispose();
-  }
-
   Widget _buildNote(String title) {
     return Row(
       children: <Widget>[
         Expanded(
           child: InkWell(
-            onTap: () {
-              if (noteText != null) copyToClipBoard(context, noteText);
-            },
+            onTap: isNoteEdit
+                ? null
+                : () {
+                    if (noteText != null && noteText.isNotEmpty) {
+                      setState(() {
+                        isNoteExpanded = !isNoteExpanded;
+                      });
+                    }
+                  },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               child: Column(
@@ -111,11 +118,13 @@ class _DetailSwapState extends State<DetailSwap> {
                       style: Theme.of(context).textTheme.body2,
                     ),
                   ),
-                  isEdit
+                  isNoteEdit
                       ? TextField(
                           decoration: const InputDecoration(isDense: true),
                           controller: noteTextController,
                           maxLength: 200,
+                          maxLines: 7,
+                          minLines: 1,
                         )
                       : Text(
                           (noteText == null || noteText.isEmpty)
@@ -123,6 +132,9 @@ class _DetailSwapState extends State<DetailSwap> {
                               : noteText,
                           style: Theme.of(context).textTheme.body1.copyWith(
                               fontWeight: FontWeight.bold, fontSize: 18),
+                          maxLines: isNoteExpanded ? null : 1,
+                          overflow:
+                              isNoteExpanded ? null : TextOverflow.ellipsis,
                         ),
                 ],
               ),
@@ -130,17 +142,24 @@ class _DetailSwapState extends State<DetailSwap> {
           ),
         ),
         IconButton(
-          icon: Icon(isEdit ? Icons.check : Icons.edit),
+          icon: Icon(isNoteEdit ? Icons.check : Icons.edit),
           onPressed: () {
             setState(
               () {
-                if (isEdit) {
+                if (isNoteEdit) {
                   noteTextController.text = noteTextController.text.trim();
                   noteText = noteTextController.text;
                   Db.saveNote(widget.swap.result.uuid,
                       noteText.isNotEmpty ? noteText : null);
+
+                  setState(() {
+                    isNoteExpanded = false;
+                  });
                 }
-                isEdit = !isEdit;
+
+                setState(() {
+                  isNoteEdit = !isNoteEdit;
+                });
               },
             );
           },
