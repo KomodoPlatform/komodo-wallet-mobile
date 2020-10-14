@@ -194,10 +194,15 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                       if (!snapshot.hasData) {
                         return Container();
                       }
+                      final length = snapshot.data.length;
+
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(snapshot.data,
+                          Text(
+                              length > 35
+                                  ? snapshot.data.substring(0, 35) + '…'
+                                  : snapshot.data,
                               style: Theme.of(context).textTheme.body2),
                         ],
                       );
