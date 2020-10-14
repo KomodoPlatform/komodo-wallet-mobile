@@ -295,24 +295,6 @@
 		]
 	},
 	{
-		"name": "Hush",
-		"type": "smartChain",
-		"address": "electrum1.cipig.net",
-		"port": 10064,
-		"proto": "tcp",
-		"abbr": "HUSH",
-		"coingeckoId": "hush",
-		"colorCoin": "0xFF2D2D2D",
-		"serverList": [
-			"electrum3.cipig.net:10064",
-			"electrum2.cipig.net:10064",
-			"electrum1.cipig.net:10064"
-		],
-		"explorerUrl": [
-			"https://explorer.myhush.org/"
-		]
-	},
-	{
 		"name": "KMDLABS",
 		"type": "smartChain",
 		"address": "electrum1.cipig.net",
