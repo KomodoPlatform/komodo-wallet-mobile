@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,8 +23,8 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_address_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/build_confirmation_step.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/success_step.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/tx_list_item.dart';
 import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
-import 'package:komodo_dex/screens/portfolio/transaction_detail.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -102,6 +101,7 @@ class _CoinDetailState extends State<CoinDetail> {
         .then((dynamic transactions) {
       if (transactions is Transactions) {
         final Transactions tr = transactions;
+        if (tr.result.transactions.isEmpty) return;
         final t = tr.result.transactions[0];
         if (t != null) latestTransaction = t;
       }
@@ -418,10 +418,16 @@ class _CoinDetailState extends State<CoinDetail> {
 
   Widget _buildTransactions(
       BuildContext context, List<Transaction> transactionsData) {
-    final List<Widget> transactionsWidget = transactionsData
-        .map((Transaction transaction) =>
-            _buildItemTransaction(transaction, context))
-        .toList();
+    final List<Widget> transactionsWidget = [];
+
+    for (Transaction transaction in transactionsData) {
+      fromId = transaction.internalId;
+
+      transactionsWidget.add(TransactionListItem(
+        transaction: transaction,
+        currentCoinBalance: currentCoinBalance,
+      ));
+    }
 
     transactionsWidget.add(Padding(
       padding: const EdgeInsets.all(8.0),
@@ -435,192 +441,6 @@ class _CoinDetailState extends State<CoinDetail> {
 
     return Column(
       children: transactionsWidget,
-    );
-  }
-
-  Widget _buildItemTransaction(Transaction transaction, BuildContext context) {
-    fromId = transaction.internalId;
-
-    final TextStyle subtitle = Theme.of(context)
-        .textTheme
-        .subtitle
-        .copyWith(fontWeight: FontWeight.bold);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Card(
-          elevation: 8.0,
-          child: InkWell(
-            borderRadius: const BorderRadius.all(Radius.circular(4)),
-            onTap: () {
-              Navigator.push<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                    builder: (BuildContext context) => TransactionDetail(
-                        transaction: transaction,
-                        coinBalance: currentCoinBalance)),
-              );
-            },
-            child: Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  color: double.parse(
-                                              transaction.myBalanceChange) >
-                                          0
-                                      ? Colors.green
-                                      : Colors.redAccent,
-                                  width: 2)),
-                          child: double.parse(transaction.myBalanceChange) > 0
-                              ? Icon(
-                                  Icons.arrow_downward,
-                                  color: Colors.white,
-                                )
-                              : Icon(
-                                  Icons.arrow_upward,
-                                  color: Colors.white,
-                                )),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, top: 8),
-                            child: StreamBuilder<bool>(
-                                initialData: settingsBloc.showBalance,
-                                stream: settingsBloc.outShowBalance,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<bool> snapshot) {
-                                  final amount =
-                                      deci(transaction.myBalanceChange);
-                                  String amountString = deci2s(amount);
-                                  if (snapshot.hasData &&
-                                      snapshot.data == false) {
-                                    amountString =
-                                        (amount.toDouble() < 0 ? '-' : '') +
-                                            '**.**';
-                                  }
-                                  return AutoSizeText(
-                                    '${amount.toDouble() > 0 ? '+' : ''}$amountString ${currentCoinBalance.coin.abbr}',
-                                    maxLines: 1,
-                                    style: subtitle,
-                                    textAlign: TextAlign.end,
-                                  );
-                                }),
-                          ),
-                          StreamBuilder<bool>(
-                              initialData: settingsBloc.showBalance,
-                              stream: settingsBloc.outShowBalance,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<bool> snapshot) {
-                                if (currentCoinBalance.priceForOne == null) {
-                                  return const Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 16,
-                                          right: 16,
-                                          bottom: 16,
-                                          top: 8),
-                                      child: SizedBox(
-                                        width: 16,
-                                        height: 16,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2.0,
-                                        ),
-                                      ));
-                                } else {
-                                  final usdAmount =
-                                      deci(currentCoinBalance.priceForOne) *
-                                          deci(transaction.myBalanceChange);
-                                  if (usdAmount != deci(0)) {
-                                    bool hidden = false;
-                                    if (snapshot.hasData &&
-                                        snapshot.data == false) {
-                                      hidden = true;
-                                    }
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 16,
-                                          right: 16,
-                                          bottom: 16,
-                                          top: 8),
-                                      child: Text(
-                                        cexProvider.convert(
-                                          usdAmount.toDouble(),
-                                          hidden: hidden,
-                                        ),
-                                        style:
-                                            Theme.of(context).textTheme.body2,
-                                      ),
-                                    );
-                                  }
-                                  return Container();
-                                }
-                              }),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  color: Theme.of(context).backgroundColor,
-                  height: 1,
-                  width: double.infinity,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          transaction.getTimeFormat(),
-                          style: Theme.of(context).textTheme.body2,
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      Builder(
-                        builder: (BuildContext context) {
-                          return transaction.confirmations > 0
-                              ? Container(
-                                  height: 12,
-                                  width: 12,
-                                  decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(16)),
-                                      color: Colors.green),
-                                )
-                              : Container(
-                                  height: 12,
-                                  width: 12,
-                                  decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(16)),
-                                      color: Colors.red),
-                                );
-                        },
-                      )
-                    ],
-                  ),
-                )
-              ],
-            )),
-          )),
     );
   }
 

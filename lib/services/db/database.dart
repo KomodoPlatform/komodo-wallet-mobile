@@ -66,12 +66,21 @@ class Db {
     // Drop tables no longer in use.
     await db.execute('DROP TABLE IF EXISTS CoinsDefault');
     await db.execute('DROP TABLE IF EXISTS CoinsConfig');
+    await db.execute('DROP TABLE IF EXISTS TxNotes');
 
     // We're temporarily using a part of the CoinsActivated table but going to drop it in the future.
     await db.execute('''
       CREATE TABLE IF NOT EXISTS CoinsActivated (
         name TEXT PRIMARY KEY,
         abbr TEXT
+      )
+    ''');
+
+    // id is the tx_hash for transactions and the swap id for swaps
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS Notes (
+        id TEXT PRIMARY KEY,
+        note TEXT
       )
     ''');
 
@@ -255,6 +264,45 @@ class Db {
     final Database db = await Db.db;
     await db.delete('CoinsActivated',
         where: 'abbr = ?', whereArgs: <dynamic>[ticker]);
+  }
+
+  static Future<int> saveNote(String id, String note) async {
+    final Database db = await Db.db;
+
+    final r = await db
+        .rawQuery('SELECT COUNT(*) FROM Notes WHERE id = ?', <String>[id]);
+    final count = Sqflite.firstIntValue(r);
+
+    if (count == 0) {
+      final Map<String, dynamic> row = <String, dynamic>{
+        'id': id,
+        'note': note,
+      };
+
+      return await db.insert('Notes', row);
+    } else {
+      final Map<String, dynamic> row = <String, dynamic>{
+        'note': note,
+      };
+      return await db
+          .update('Notes', row, where: 'id = ?', whereArgs: <String>[id]);
+    }
+  }
+
+  static Future<String> getNote(String id) async {
+    final Database db = await Db.db;
+
+    final List<Map<String, dynamic>> maps =
+        await db.query('Notes', where: 'id = ?', whereArgs: <String>[id]);
+
+    final List<String> notes = List<String>.generate(maps.length, (int i) {
+      return maps[i]['note'];
+    });
+    if (notes.isEmpty) {
+      return null;
+    } else {
+      return notes[0];
+    }
   }
 
   static Future<void> saveWalletSnapshot(String jsonStr) async {

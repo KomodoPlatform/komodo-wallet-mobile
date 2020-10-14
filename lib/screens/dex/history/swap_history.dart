@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -103,6 +104,7 @@ class BuildItemSwap extends StatefulWidget {
 
 class _BuildItemSwapState extends State<BuildItemSwap> {
   bool recoverIsLoading = false;
+  bool isNoteExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +186,44 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                   ],
                 ),
                 const SizedBox(
-                  height: 12,
+                  height: 4,
+                ),
+                FutureBuilder<String>(
+                    future: Db.getNote(widget.swap.result.uuid),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+
+                      return InkWell(
+                        onTap: () {
+                          setState(() {
+                            isNoteExpanded = !isNoteExpanded;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(
+                                  snapshot.data,
+                                  style: Theme.of(context).textTheme.body2,
+                                  maxLines: isNoteExpanded ? null : 1,
+                                  overflow: isNoteExpanded
+                                      ? null
+                                      : TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                const SizedBox(
+                  height: 4,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,

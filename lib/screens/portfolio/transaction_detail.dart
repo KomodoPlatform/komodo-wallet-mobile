@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -229,6 +230,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                     ? widget.transaction.getToAddress()[0]
                     : ''),
         ItemTransationDetail(title: 'Tx Hash', data: widget.transaction.txHash),
+        ItemTransactionNote(title: 'Note', txHash: widget.transaction.txHash),
       ],
     );
   }
@@ -320,5 +322,111 @@ class ItemTransationDetail extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ItemTransactionNote extends StatefulWidget {
+  const ItemTransactionNote({
+    @required this.title,
+    @required this.txHash,
+  }) : assert(txHash != null);
+
+  final String title;
+  final String txHash;
+
+  @override
+  _ItemTransactionNoteState createState() => _ItemTransactionNoteState();
+}
+
+class _ItemTransactionNoteState extends State<ItemTransactionNote> {
+  String noteText;
+  final noteTextController = TextEditingController();
+  bool isEdit = false;
+  bool isExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Db.getNote(widget.txHash).then((n) {
+      setState(() {
+        noteText = n;
+        noteTextController.text = noteText;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            widget.title,
+            style: Theme.of(context).textTheme.subtitle,
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: isEdit
+                ? TextField(
+                    controller: noteTextController,
+                    maxLength: 200,
+                    minLines: 1,
+                    maxLines: 8,
+                  )
+                : InkWell(
+                    onTap: () {
+                      if (noteText != null && noteText.isNotEmpty)
+                        setState(() {
+                          isExpanded = !isExpanded;
+                        });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Text(
+                        (noteText == null || noteText.isEmpty)
+                            ? 'Add a Note'
+                            : noteText,
+                        style: Theme.of(context).textTheme.body2,
+                        maxLines: isExpanded ? null : 1,
+                        overflow: isExpanded ? null : TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+          ),
+          IconButton(
+            icon: Icon(isEdit ? Icons.check : Icons.edit),
+            onPressed: () {
+              setState(
+                () {
+                  if (isEdit) {
+                    noteTextController.text = noteTextController.text.trim();
+                    noteText = noteTextController.text;
+                    Db.saveNote(
+                        widget.txHash, noteText.isNotEmpty ? noteText : null);
+
+                    setState(() {
+                      isExpanded = false;
+                    });
+                  }
+                  setState(() {
+                    isEdit = !isEdit;
+                  });
+                },
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    noteTextController.dispose();
+    super.dispose();
   }
 }
