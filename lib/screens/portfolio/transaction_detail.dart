@@ -342,6 +342,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
   String noteText;
   final noteTextController = TextEditingController();
   bool isEdit = false;
+  bool isExpanded = false;
 
   @override
   void initState() {
@@ -377,16 +378,19 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                 : InkWell(
                     onTap: () {
                       if (noteText != null && noteText.isNotEmpty)
-                        copyToClipBoard(context, noteText);
+                        setState(() {
+                          isExpanded = !isExpanded;
+                        });
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: AutoSizeText(
+                      child: Text(
                         (noteText == null || noteText.isEmpty)
                             ? 'Add a Note'
                             : noteText,
                         style: Theme.of(context).textTheme.body2,
-                        textAlign: TextAlign.end,
+                        maxLines: isExpanded ? null : 1,
+                        overflow: isExpanded ? null : TextOverflow.ellipsis,
                       ),
                     ),
                   ),
@@ -402,7 +406,10 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                     Db.saveNote(
                         widget.txHash, noteText.isNotEmpty ? noteText : null);
                   }
-                  isEdit = !isEdit;
+                  setState(() {
+                    isExpanded = false;
+                    isEdit = !isEdit;
+                  });
                 },
               );
             },
