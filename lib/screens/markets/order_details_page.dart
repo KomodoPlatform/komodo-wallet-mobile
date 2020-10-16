@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/markets/build_order_details.dart';
 
@@ -14,7 +15,7 @@ class OrderDetailsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: const Text('Order Details'), // TODO(yurii): localization
+        title: Text(AppLocalizations.of(context).marketsOrderDetails),
       ),
       body: SingleChildScrollView(
         child: GestureDetector(

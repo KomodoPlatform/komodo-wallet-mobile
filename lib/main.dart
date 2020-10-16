@@ -369,8 +369,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           Icons.show_chart,
                                           key: const Key('main-nav-markets'),
                                         ),
-                                        title: const Text(
-                                            'Markets'), // TODO(yurii): localization
+                                        title: Text(AppLocalizations.of(context)
+                                            .marketsTab),
                                       ),
                                       BottomNavigationBarItem(
                                           icon: Stack(

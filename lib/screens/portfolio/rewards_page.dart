@@ -164,7 +164,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   child: Text(
                     rewardsProvider.successMessage,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.green),
+                    style: const TextStyle(color: Colors.green),
                   ),
                 )
               : total > 0

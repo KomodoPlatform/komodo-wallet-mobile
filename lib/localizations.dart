@@ -595,6 +595,57 @@ class AppLocalizations {
           name: 'soundPlayedWhen',
           args: [description],
           examples: const {'description': 'a swap runs to completion'});
+
+  // --- Markets section ---
+
+  String get marketsTab => Intl.message('Markets', name: 'marketsTab');
+  String get marketsTitle => Intl.message('MARKETS', name: 'marketsTitle');
+  String get marketsPrice => Intl.message('PRICE', name: 'marketsPrice');
+  String get marketsOrderbook =>
+      Intl.message('ORDER BOOK', name: 'marketsOrderbook');
+  String get marketsChart => Intl.message('Chart', name: 'marketsChart');
+  String get marketsDepth => Intl.message('Depth', name: 'marketsDepth');
+  String get orderDetailsPrice =>
+      Intl.message('Price', name: 'orderDetailsPrice');
+  String get orderDetailsSells =>
+      Intl.message('Sells', name: 'orderDetailsSells');
+  String get orderDetailsFor => Intl.message('for', name: 'orderDetailsFor');
+  String get orderDetailsAddress =>
+      Intl.message('Address', name: 'orderDetailsAddress');
+  String orderDetailsExpedient(String delta) =>
+      Intl.message('Expedient: CEX -$delta%', name: 'orderDetailsExpedient');
+  String orderDetailsExpensive(String delta) =>
+      Intl.message('Expensive: CEX +$delta%', name: 'orderDetailsExpensive');
+  String get orderDetailsIdentical =>
+      Intl.message('Identical to CEX', name: 'orderDetailsIdentical');
+  String get orderDetailsReceive =>
+      Intl.message('Receive', name: 'orderDetailsReceive');
+  String get orderDetailsSpend =>
+      Intl.message('Spend', name: 'orderDetailsSpend');
+  String get ownOrder =>
+      Intl.message(' This is your own order!', name: 'ownOrder');
+  String get marketsSelectCoins =>
+      Intl.message('Please select coins', name: 'marketsSelectCoins');
+  String get coinSelectTitle =>
+      Intl.message('Select Coin', name: 'coinSelectTitle');
+  String get coinSelectNotFound =>
+      Intl.message('No active coins', name: 'coinSelectNotFound');
+  String get coinSelectClear => Intl.message('Clear', name: 'coinSelectClear');
+  String ordersTablePrice(String coin) =>
+      Intl.message('Price ($coin)', name: 'ordersTablePrice');
+  String ordersTableAmount(String coin) =>
+      Intl.message('Amt. ($coin)', name: 'ordersTableAmount');
+  String ordersTableTotal(String coin) =>
+      Intl.message('Total ($coin)', name: 'ordersTableTotal');
+  String get marketsNoBids =>
+      Intl.message('No bids found', name: 'marketsNoBids');
+  String get marketsNoAsks =>
+      Intl.message('No asks found', name: 'marketsNoAsks');
+  String get marketsOrderDetails =>
+      Intl.message('Order Details', name: 'marketsOrderDetails');
+  String get candleChartError =>
+      Intl.message('Something went wrong. Try again later.',
+          name: 'candleChartError');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
