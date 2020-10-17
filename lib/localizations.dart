@@ -767,6 +767,29 @@ class AppLocalizations {
       Intl.message('ETH balance is too low', name: 'multiLowEth');
   String get multiMinReceiveAmt =>
       Intl.message('Min receive amount is', name: 'multiMinReceiveAmt');
+
+  // --- Updates ---
+  String get updatesTitle =>
+      Intl.message('atomicDEX update', name: 'updatesTitle');
+  String updatesCurrentVersion(String version) =>
+      Intl.message('You are using version $version',
+          name: 'updatesCurrentVersion');
+  String get updatesChecking =>
+      Intl.message('Checking for updates...', name: 'updatesChecking');
+  String get updatesUpToDate =>
+      Intl.message('Already up to date', name: 'updatesUpToDate');
+  String get updatesAvailable =>
+      Intl.message('New version available', name: 'updatesAvailable');
+  String get updatesUpdate => Intl.message('Update', name: 'updatesUpdate');
+  String get updatesSkip => Intl.message('Skip for now', name: 'updatesSkip');
+  String get updatesNotifTitle =>
+      Intl.message('Update available', name: 'updatesNotifTitle');
+  String get updatesNotifAvailable =>
+      Intl.message('New version available. Please update.',
+          name: 'updatesNotifAvailable');
+  String updatesNotifAvailableVersion(String version) =>
+      Intl.message('Version $version available. Please update.',
+          name: 'updatesNotifAvailableVersion');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
