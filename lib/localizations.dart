@@ -658,6 +658,15 @@ class AppLocalizations {
   String get snackbarDismiss =>
       Intl.message('Dismiss', name: 'snackbarDismiss');
   String get feedNewsTab => Intl.message('News', name: 'feedNewsTab');
+  String get feedUnableToUpdate =>
+      Intl.message('Unable to get news update', name: 'feedUnableToUpdate');
+  String get feedUnableToProceed =>
+      Intl.message('Unable to proceed news update',
+          name: 'feedUnableToProceed');
+  String get feedUpToDate =>
+      Intl.message('Already up to date', name: 'feedUpToDate');
+  String get feedNotifTitle =>
+      Intl.message('Komodo news', name: 'feedNotifTitle');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

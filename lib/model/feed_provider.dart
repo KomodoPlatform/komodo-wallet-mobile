@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +20,7 @@ class FeedProvider extends ChangeNotifier {
   List<NewsItem> _news;
   bool _isNewsFetching = false;
   bool _hasNewItems = false;
+  AppLocalizations localizations = AppLocalizations();
 
   @override
   void dispose() {
@@ -45,15 +47,14 @@ class FeedProvider extends ChangeNotifier {
     http.Response response;
 
     try {
-      response = await http.get(
-          'https://komodo.live/messages'); // TODO(yurii): change to domain name after DNS being updated
+      response = await http.get('https://komodo.live/messages');
     } catch (e) {
       Log('feed_provider:44', '_updateNews] $e');
     }
     _isNewsFetching = false;
     notifyListeners();
     if (response?.statusCode != 200) {
-      return 'Unable to get news update'; // TODO(yurii): localization
+      return localizations.feedUnableToUpdate;
     }
 
     List<NewsItem> news;
@@ -63,14 +64,14 @@ class FeedProvider extends ChangeNotifier {
       Log('feed_provider:52', '_updateNews] $e');
     }
     if (news == null) {
-      return 'Unable to proceed news update'; // TODO(yurii): localization
+      return localizations.feedUnableToProceed;
     }
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String cachedNews = prefs.getString('cachedNews');
     if (cachedNews != null &&
         _newsFromJson(cachedNews)[0].date == news[0].date) {
-      return 'Already up to date'; // TODO(yurii): localization
+      return localizations.feedUpToDate;
     }
 
     prefs.setString('cachedNews', response.body);
@@ -78,8 +79,7 @@ class FeedProvider extends ChangeNotifier {
     _news = news;
 
     notifService.show(NotifObj(
-      // TODO(yurii): localization
-      title: 'Komodo news',
+      title: localizations.feedNotifTitle,
       text: _news[0].content,
       uid: 'feed_${_news[0].date}',
     ));
