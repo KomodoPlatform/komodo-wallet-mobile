@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/multi_order_base.dart';
 import 'package:komodo_dex/screens/dex/trade/multi_order_rel_list.dart';
@@ -50,8 +51,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
                 Scaffold.of(context).showSnackBar(SnackBar(
                     backgroundColor: Theme.of(context).backgroundColor,
                     content: Text(
-                      // TODO(yurii): localization
-                      'Please fix all errors before continuing',
+                      AppLocalizations.of(context).multiFixErrors,
                       style: TextStyle(
                         color: Theme.of(context).errorColor,
                       ),
@@ -59,9 +59,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
               }
             }
           : null,
-      // TODO(yurii): localization
-      child:
-          Text(qtt > 0 ? 'Create $qtt Order${qtt > 1 ? 's' : ''}' : 'Create'),
+      child: Text(AppLocalizations.of(context).multiCreateBtn(qtt)),
     );
   }
 }

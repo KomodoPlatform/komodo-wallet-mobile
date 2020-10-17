@@ -56,9 +56,8 @@ class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
                 text: AppLocalizations.of(context).create.toUpperCase(),
               ),
               Tab(text: AppLocalizations.of(context).orders.toUpperCase()),
-              const Tab(
-                // TODO(yurii): localization
-                text: 'MULTI',
+              Tab(
+                text: AppLocalizations.of(context).multiTab.toUpperCase(),
               ),
             ],
           ),

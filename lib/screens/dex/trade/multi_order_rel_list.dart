@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
@@ -89,16 +90,14 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                         Container(
                           padding: const EdgeInsets.fromLTRB(16, 14, 0, 0),
                           child: Text(
-                            // TODO(yurii): localization
-                            'Price/CEX',
+                            AppLocalizations.of(context).multiTablePrice,
                             style: Theme.of(context).textTheme.body2,
                           ),
                         ),
                         Container(
                           padding: const EdgeInsets.fromLTRB(0, 14, 12, 0),
                           child: Text(
-                            // TODO(yurii): localization
-                            'Receive Amt.',
+                            AppLocalizations.of(context).multiTableAmt,
                             style: Theme.of(context).textTheme.body2,
                           ),
                         ),
@@ -180,8 +179,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
         children: <Widget>[
           Expanded(
             child: Text(
-              // TODO(yurii): localization
-              'Receive:',
+              AppLocalizations.of(context).multiReceiveTitle,
               style: Theme.of(context).textTheme.body2,
             ),
           ),
@@ -210,8 +208,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           return SimpleDialog(
             contentPadding: const EdgeInsets.all(20),
             children: <Widget>[
-              // TODO(yurii): localization
-              const Text('Please enter fiat amount to receive:'),
+              Text(AppLocalizations.of(context).multiFiatDesc),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -241,8 +238,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       fiatAmtCtrl.text = '';
                       dialogBloc.closeDialog(context);
                     },
-                    // TODO(yurii): localization
-                    child: const Text('Cancel'),
+                    child: Text(AppLocalizations.of(context).multiFiatCancel),
                   ),
                   const SizedBox(width: 12),
                   RaisedButton(
@@ -260,8 +256,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                           cexProvider.getUsdPrice(cexProvider.selectedFiat);
                       _autofill(usdAmt);
                     },
-                    // TODO(yurii): localization
-                    child: const Text('Autofill'),
+                    child: Text(AppLocalizations.of(context).multiFiatFill),
                   ),
                 ],
               ),
@@ -540,9 +535,10 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           return Container(
             padding: const EdgeInsets.only(left: 2),
             child: Text(
-              // TODO(yurii): localization
-              '+fee: ${cutTrailingZeros(formatPrice(snapshot.data))}'
-              ' ETH',
+              '+' +
+                  AppLocalizations.of(context).multiEthFee +
+                  ': ${cutTrailingZeros(formatPrice(snapshot.data))}'
+                      ' ETH',
               style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),
             ),
           );

@@ -208,7 +208,7 @@ class AppLocalizations {
       Intl.message('The swap request can not be undone and is a final event!',
           name: 'infoTrade1');
   String get infoTrade2 => Intl.message(
-      'This transaction can take up to 10 mins - DONT close this application!',
+      'The swap can take up to 60 minutes. DONT close this application!',
       name: 'infoTrade2');
   String get swapDetailTitle =>
       Intl.message('CONFIRM EXCHANGE DETAILS', name: 'swapDetailTitle');
@@ -716,6 +716,57 @@ class AppLocalizations {
       Intl.message('<1 hour', name: 'rewardsOneHourShort');
   String get rewardsOneHourLong =>
       Intl.message('One hour not passed yet', name: 'rewardsOneHourLong');
+
+  // --- Multi Order---
+
+  String get multiTab => Intl.message('Multi', name: 'multiTab');
+  String get multiFixErrors =>
+      Intl.message('Please fix all errors before continuing',
+          name: 'multiFixErrors');
+  String multiCreateBtn(int qtt) => Intl.message(
+      qtt > 0 ? 'Create $qtt Order${qtt > 1 ? 's' : ''}' : 'Create',
+      name: 'multiCreateBtn');
+  String get multiBasePlaceholder =>
+      Intl.message('Coin', name: 'multiBasePlaceholder');
+  String get multiSellTitle => Intl.message('Sell:', name: 'multiSellTitle');
+  String get multiBaseSelectTitle =>
+      Intl.message('Sell', name: 'multiBaseSelectTitle');
+  String get multiBaseAmtPlaceholder =>
+      Intl.message('Amount', name: 'multiBaseAmtPlaceholder');
+  String get multiReceiveTitle =>
+      Intl.message('Receive:', name: 'multiReceiveTitle');
+  String get multiTablePrice =>
+      Intl.message('Price/CEX', name: 'multiTablePrice');
+  String get multiTableAmt =>
+      Intl.message('Receive Amt.', name: 'multiTableAmt');
+  String get multiFiatDesc =>
+      Intl.message('Please enter fiat amount to receive:',
+          name: 'multiFiatDesc');
+  String get multiFiatCancel => Intl.message('Cancel', name: 'multiFiatCancel');
+  String get multiFiatFill => Intl.message('Autofill', name: 'multiFiatFill');
+  String get multiEthFee => Intl.message('fee', name: 'multiEthFee');
+  String multiConfirmTitle(int number) =>
+      Intl.message('Create $number Order${number > 1 ? 's' : ''}:',
+          name: 'multiConfirmTitle');
+  String get multiConfirmCancel =>
+      Intl.message('Cancel', name: 'multiConfirmCancel');
+  String get multiConfirmConfirm =>
+      Intl.message('Confirm', name: 'multiConfirmConfirm');
+  String get multiInvalidSellAmt =>
+      Intl.message('Invalid sell amount', name: 'multiInvalidSellAmt');
+  String get multiMaxSellAmt =>
+      Intl.message('Max sell amount is', name: 'multiMaxSellAmt');
+  String get multiMinSellAmt =>
+      Intl.message('Min sell amount is', name: 'multiMinSellAmt');
+  String get multiInvalidAmt =>
+      Intl.message('Invalid amount', name: 'multiInvalidAmt');
+  String get multiActivateEth =>
+      Intl.message('Activate ETH and top-up balance first',
+          name: 'multiActivateEth');
+  String get multiLowEth =>
+      Intl.message('ETH balance is too low', name: 'multiLowEth');
+  String get multiMinReceiveAmt =>
+      Intl.message('Min receive amount is', name: 'multiMinReceiveAmt');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
