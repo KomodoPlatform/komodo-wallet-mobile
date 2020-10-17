@@ -382,7 +382,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: const Text('Feed')),
+                                          title: Text(
+                                              AppLocalizations.of(context)
+                                                  .feedTab)),
                                       BottomNavigationBarItem(
                                           icon: Stack(
                                             children: <Widget>[

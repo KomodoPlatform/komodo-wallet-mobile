@@ -646,6 +646,18 @@ class AppLocalizations {
   String get candleChartError =>
       Intl.message('Something went wrong. Try again later.',
           name: 'candleChartError');
+
+  // --- Feed section ---
+
+  String get feedTab => Intl.message('Feed', name: 'feedTab');
+  String get feedTitle => Intl.message('News Feed', name: 'feedTitle');
+  String get feedReadMore => Intl.message('Read more...', name: 'feedReadMore');
+  String get feedNotFound => Intl.message('Nothing here', name: 'feedNotFound');
+  String get feedUpdated =>
+      Intl.message('News feed updated', name: 'feedUpdated');
+  String get snackbarDismiss =>
+      Intl.message('Dismiss', name: 'snackbarDismiss');
+  String get feedNewsTab => Intl.message('News', name: 'feedNewsTab');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
