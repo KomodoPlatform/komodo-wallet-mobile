@@ -667,6 +667,55 @@ class AppLocalizations {
       Intl.message('Already up to date', name: 'feedUpToDate');
   String get feedNotifTitle =>
       Intl.message('Komodo news', name: 'feedNotifTitle');
+
+  // --- Rewards ---
+
+  String get rewardsTitle =>
+      Intl.message('Rewards information', name: 'rewardsTitle');
+  String get rewardsReadMore =>
+      Intl.message('Read more about KMD active user rewards',
+          name: 'rewardsReadMore');
+  String get rewardsCancel => Intl.message('Cancel', name: 'rewardsCancel');
+  String get rewardsReceive => Intl.message('Receive', name: 'rewardsReceive');
+  String get noRewards =>
+      Intl.message('No claimable rewards', name: 'noRewards');
+  String get rewardsTableTitle =>
+      Intl.message('Rewards information:', name: 'rewardsTableTitle');
+  String get rewardsTableUXTO =>
+      Intl.message('UTXO amt,\nKMD', name: 'rewardsTableUXTO');
+  String get rewardsTableRewards =>
+      Intl.message('Rewards,\nKMD', name: 'rewardsTableRewards');
+  String get rewardsTableTime =>
+      Intl.message('Time left', name: 'rewardsTableTime');
+  String get rewardsTableStatus =>
+      Intl.message('Status', name: 'rewardsTableStatus');
+  String get rewardsPopupTitle =>
+      Intl.message('Rewards status:', name: 'rewardsPopupTitle');
+  String get rewardsPopupOk => Intl.message('Ok', name: 'rewardsPopupOk');
+  String rewardsTimeDays(int dd) =>
+      Intl.message('$dd day${dd > 1 ? 's' : ''}', name: 'rewardsTimeDays');
+  String rewardsTimeHours(int hh, String minutes) =>
+      Intl.message('${hh}h ${minutes}m', name: 'rewardsTimeHours');
+  String rewardsTimeMin(int mm) =>
+      Intl.message('${mm}min', name: 'rewardsTimeMin');
+  String rewardsSuccess(String amount) =>
+      Intl.message('Success! $amount KMD received.', name: 'rewardsSuccess');
+  String get rewardsError =>
+      Intl.message('Something went wrong. Please try again later.',
+          name: 'rewardsError');
+  String get rewardsLowAmountShort =>
+      Intl.message('<10 KMD', name: 'rewardsLowAmount');
+  String get rewardsLowAmountLong =>
+      Intl.message('UTXO amount less than 10 KMD',
+          name: 'rewardsLowAmountLong');
+  String get rewardsInProgressShort =>
+      Intl.message('processing', name: 'rewardsInProgressShort');
+  String get rewardsInProgressLong =>
+      Intl.message('Transaction is in progress', name: 'rewardsInProgressLong');
+  String get rewardsOneHourShort =>
+      Intl.message('<1 hour', name: 'rewardsOneHourShort');
+  String get rewardsOneHourLong =>
+      Intl.message('One hour not passed yet', name: 'rewardsOneHourLong');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

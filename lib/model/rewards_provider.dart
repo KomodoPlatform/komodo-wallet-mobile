@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
@@ -15,6 +16,7 @@ class RewardsProvider extends ChangeNotifier {
     update();
   }
 
+  final AppLocalizations _localizations = AppLocalizations();
   List<RewardsItem> _rewards;
   double _total = 0.0;
 
@@ -140,18 +142,15 @@ class RewardsProvider extends ChangeNotifier {
 
     await Future<dynamic>.delayed(const Duration(seconds: 2));
     await _updateInfo();
-    // TODO(yurii): localization
     successMessage =
-        'Success! ${formatPrice(res.myBalanceChange)} KMD received.';
+        _localizations.rewardsSuccess(formatPrice(res.myBalanceChange));
 
     claimInProgress = false;
     notifyListeners();
   }
 
   void _setError([String e]) {
-    // TODO(yurii): localization
-    // TODO(yurii): verbose error message
-    errorMessage = 'Something went wrong. Please try again later.';
+    errorMessage = _localizations.rewardsError;
     notifyListeners();
   }
 
@@ -173,6 +172,8 @@ class RewardsItem {
   });
 
   factory RewardsItem.fromJson(Map<String, dynamic> json) {
+    final AppLocalizations _localizations = AppLocalizations();
+
     final double reward = json['accrued_rewards']['Accrued'] != null
         ? double.parse(json['accrued_rewards']['Accrued'])
         : null;
@@ -180,19 +181,18 @@ class RewardsItem {
     final String error = json['accrued_rewards']['NotAccruedReason'];
     String errorMessage;
     String errorMessageLong;
-    // TODO(yurii): localization
     switch (error) {
       case 'UtxoAmountLessThanTen':
-        errorMessage = '<10 KMD';
-        errorMessageLong = 'UTXO amount less than 10 KMD';
+        errorMessage = _localizations.rewardsLowAmountShort;
+        errorMessageLong = _localizations.rewardsLowAmountLong;
         break;
       case 'TransactionInMempool':
-        errorMessage = 'processing';
-        errorMessageLong = 'Transaction is in progress';
+        errorMessage = _localizations.rewardsInProgressShort;
+        errorMessageLong = _localizations.rewardsInProgressLong;
         break;
       case 'OneHourNotPassedYet':
-        errorMessage = '<1 hour';
-        errorMessageLong = 'One hour not passed yet';
+        errorMessage = _localizations.rewardsOneHourShort;
+        errorMessageLong = _localizations.rewardsOneHourLong;
         break;
       default:
         errorMessage = '?';
