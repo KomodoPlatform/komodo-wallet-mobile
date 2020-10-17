@@ -199,7 +199,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           color: Theme.of(context).hintColor,
                         ),
                         _buildDrawerItem(
-                            title: const Text('Address book'),
+                            title:
+                                Text(AppLocalizations.of(context).addressBook),
                             onTap: () {
                               Navigator.pop(context);
                               Navigator.push<dynamic>(

@@ -790,6 +790,50 @@ class AppLocalizations {
   String updatesNotifAvailableVersion(String version) =>
       Intl.message('Version $version available. Please update.',
           name: 'updatesNotifAvailableVersion');
+
+  // --- Address book ---
+
+  String get addressBook => Intl.message('Address book', name: 'addressBook');
+  String get addressBookTitle =>
+      Intl.message('Address Book', name: 'addressBookTitle');
+  String get contactTitle =>
+      Intl.message('Contact details', name: 'contactTitle');
+  String get addressBookEmpty =>
+      Intl.message('Address book is empty', name: 'addressBookEmpty');
+  String addressBookFilter(String title) =>
+      Intl.message('Only showing contacts with $title addresses',
+          name: 'addressBookFilter');
+  String get createContact =>
+      Intl.message('Create Contact', name: 'createContact');
+  String get editContact => Intl.message('Edit Contact', name: 'editContact');
+  String get contactCancel => Intl.message('Cancel', name: 'contactCancel');
+  String get contactSave => Intl.message('Save', name: 'contactSave');
+  String get contactDiscardBtn =>
+      Intl.message('Discard', name: 'contactDiscardBtn');
+  String get contactExit => Intl.message('Exit', name: 'contactExit');
+  String get contactExitWarning =>
+      Intl.message('Discard your changes?', name: 'contactExitWarning');
+  String get addressAdd => Intl.message('Add Address', name: 'addressAdd');
+  String get addressSelectCoin =>
+      Intl.message('Select Coin', name: 'addressSelectCoin');
+  String get contactDelete =>
+      Intl.message('Delete Contact', name: 'contactDelete');
+  String contactDeleteWarning(String name) =>
+      Intl.message('Are you sure you want to delete contact $name?',
+          name: 'contactDeleteWarning');
+  String get contactDeleteBtn =>
+      Intl.message('Delete', name: 'contactDeleteBtn');
+  String get contactNotFound =>
+      Intl.message('No contacts found', name: 'contactNotFound');
+  String get contactEdit => Intl.message('Edit', name: 'contactEdit');
+  String get addressNotFound =>
+      Intl.message('Nothing found', name: 'addressNotFound');
+  String get noSuchCoin => Intl.message('No such coin', name: 'noSuchCoin');
+  String addressCoinInactive(String abbr) => Intl.message(
+      'You can not send funds to $abbr address, '
+      'because $abbr is not activated. Please go to portfolio.',
+      name: 'addressCoinInactive');
+  String get warningOkBtn => Intl.message('OK', name: 'warningOkBtn');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
