@@ -294,7 +294,6 @@ class _AsksOrderState extends State<AsksOrder> {
                                               left: 6,
                                             ),
                                             child: Text(
-                                              // TODO(yurii): localization
                                               '${AppLocalizations.of(context).availableVolume}'
                                               ' ($baseCoin)',
                                               textAlign: TextAlign.right,
@@ -533,8 +532,9 @@ class _AsksOrderState extends State<AsksOrder> {
                   title: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      // TODO(yurii): localization
-                      const Expanded(child: Text('Details')),
+                      Expanded(
+                          child: Text(
+                              AppLocalizations.of(context).orderDetailsTitle)),
                       InkWell(
                         onTap: () {
                           setState(() {
@@ -572,9 +572,8 @@ class _AsksOrderState extends State<AsksOrder> {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                // TODO(yurii): localization
-                                'Open Details on single tap'
-                                ' and select Order by long tap',
+                                AppLocalizations.of(context)
+                                    .orderDetailsSettings,
                                 style: Theme.of(context).textTheme.body2,
                               ),
                             ),
@@ -603,8 +602,8 @@ class _AsksOrderState extends State<AsksOrder> {
                       children: <Widget>[
                         FlatButton(
                           onPressed: () => dialogBloc.closeDialog(context),
-                          // TODO(yurii): localization
-                          child: const Text('Cancel'),
+                          child: Text(
+                              AppLocalizations.of(context).orderDetailsCancel),
                         ),
                         const SizedBox(width: 12),
                         RaisedButton(
@@ -612,8 +611,8 @@ class _AsksOrderState extends State<AsksOrder> {
                             dialogBloc.closeDialog(context);
                             _createOrder(bid);
                           },
-                          // TODO(yurii): localization
-                          child: const Text('Select'),
+                          child: Text(
+                              AppLocalizations.of(context).orderDetailsSelect),
                         )
                       ],
                     )

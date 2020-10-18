@@ -873,6 +873,46 @@ class AppLocalizations {
       Intl.message('Camouflage PIN Setup', name: 'camoSetupTitle');
   String get camoSetupSubtitle =>
       Intl.message('Enter new Camouflage PIN', name: 'camoSetupSubtitle');
+
+  // --- DEX ---
+
+  String get protectionCtrlOn => Intl.message('ON', name: 'protectionCtrlOn');
+  String get protectionCtrlOff =>
+      Intl.message('OFF', name: 'protectionCtrlOff');
+  String get protectionCtrlConfirmations =>
+      Intl.message('Confirmations', name: 'protectionCtrlConfirmations');
+  String get dPow => Intl.message('Komodo dPoW security', name: 'dPow');
+  String get protectionCtrlCustom =>
+      Intl.message('Use custom protection settings',
+          name: 'protectionCtrlCustom');
+  String get protectionCtrlWarning => Intl.message(
+      'Warning, this atomic swap is not '
+      'dPoW protected. ',
+      name: 'protectionCtrlWarning');
+
+  String get cexChangeRate =>
+      Intl.message('CEXchange rate', name: 'cexChangeRate');
+  String exchangeExpedient(String delta) =>
+      Intl.message('Expedient: -$delta% compared to CEX',
+          name: 'exchangeExpedient');
+  String exchangeExpensive(String delta) =>
+      Intl.message('Expensive: +$delta% compared to CEX',
+          name: 'exchangeExpensive');
+  String get echangeIdentical =>
+      Intl.message('Identical to CEX', name: 'echangeIdentical');
+
+  String get ordersActive => Intl.message('Active', name: 'ordersActive');
+  String get ordersHistory => Intl.message('History', name: 'ordersHistory');
+  String get orderDetailsTitle =>
+      Intl.message('Details', name: 'orderDetailsTitle');
+  String get orderDetailsSettings => Intl.message(
+      'Open Details on single tap'
+      ' and select Order by long tap',
+      name: 'orderDetailsSettings');
+  String get orderDetailsCancel =>
+      Intl.message('Cancel', name: 'orderDetailsCancel');
+  String get orderDetailsSelect =>
+      Intl.message('Select', name: 'orderDetailsSelect');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
