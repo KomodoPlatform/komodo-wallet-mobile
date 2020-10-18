@@ -73,7 +73,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           Decimal ethfee = deci(0);
           if (snapshot.hasData && coinsDetailBloc.customFee == null) {
             try {
-              fee = snapshot.data;
+              fee = deci(snapshot.data);
             } catch (e) {
               Log.println('build_confirmation_step:78', e);
             }
