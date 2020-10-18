@@ -49,6 +49,7 @@ void showConfirmationDialog({
                   child: Text(
                     confirmButtonText.toUpperCase(),
                     style: TextStyle(fontWeight: FontWeight.normal),
+                    maxLines: 1,
                   ),
                 )),
                 const SizedBox(width: 12),
@@ -67,6 +68,7 @@ void showConfirmationDialog({
                   child: Text(
                     AppLocalizations.of(context).cancel.toUpperCase(),
                     style: TextStyle(fontWeight: FontWeight.normal),
+                    maxLines: 1,
                   ),
                 )),
               ],

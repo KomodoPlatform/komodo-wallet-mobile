@@ -769,6 +769,7 @@ class AppLocalizations {
       Intl.message('Min receive amount is', name: 'multiMinReceiveAmt');
 
   // --- Updates ---
+
   String get updatesTitle =>
       Intl.message('atomicDEX update', name: 'updatesTitle');
   String updatesCurrentVersion(String version) =>
@@ -834,6 +835,44 @@ class AppLocalizations {
       'because $abbr is not activated. Please go to portfolio.',
       name: 'addressCoinInactive');
   String get warningOkBtn => Intl.message('OK', name: 'warningOkBtn');
+
+  // --- Camouflage Pin ---
+
+  String get camoPinTitle =>
+      Intl.message('Camouflage PIN', name: 'camoPinTitle');
+  String get camoPinLink => Intl.message('Camouflage PIN', name: 'camoPinLink');
+  String get camoPinDesc => Intl.message(
+      'If You\'ll unlock the app with the Camouflage PIN, a fake'
+      ' LOW balance will be shown'
+      ' and the Camouflage PIN config option will'
+      ' NOT be visible in the settings',
+      name: 'camoPinDesc');
+  String get matchingCamoPinError => Intl.message(
+      'Your general PIN and Camouflage PIN are the same.\n'
+      'Camouflage mode will not be available.\n'
+      'Please change Camouflage PIN.',
+      name: 'matchingCamoPinError');
+  String get generalPinNotActive => Intl.message(
+      'General PIN protection is not active.\n'
+      'Camouflage mode will not be available.'
+      '\nPlease activate PIN protection.',
+      name: 'generalPinNotActive');
+  String get fakeBalanceAmt =>
+      Intl.message('Fake balance amount:', name: 'fakeBalanceAmt');
+  String get camoPinNotFound =>
+      Intl.message('Camouflage PIN not found', name: 'camoPinNotFound');
+  String get camoPinCreate =>
+      Intl.message('Create Camouflage PIN', name: 'camoPinCreate');
+  String get camoPinSaved =>
+      Intl.message('Camouflage PIN saved', name: 'camoPinSaved');
+  String get camoPinInvalid =>
+      Intl.message('Invalid Camouflage PIN', name: 'camoPinInvalid');
+  String get camoPinChange =>
+      Intl.message('Change Camouflage PIN', name: 'camoPinChange');
+  String get camoSetupTitle =>
+      Intl.message('Camouflage PIN Setup', name: 'camoSetupTitle');
+  String get camoSetupSubtitle =>
+      Intl.message('Enter new Camouflage PIN', name: 'camoSetupSubtitle');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
