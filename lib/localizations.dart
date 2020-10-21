@@ -913,6 +913,120 @@ class AppLocalizations {
       Intl.message('Cancel', name: 'orderDetailsCancel');
   String get orderDetailsSelect =>
       Intl.message('Select', name: 'orderDetailsSelect');
+
+  // --- Help & FAQ ---
+
+  String get helpLink => Intl.message('Help', name: 'helpLink');
+  String get helpTitle => Intl.message('Help and Support', name: 'helpTitle');
+  String get faqTitle =>
+      Intl.message('Frequently Asked Questions', name: 'faqTitle');
+  String get support => Intl.message('Support', name: 'support');
+  String get supportLinksDesc => Intl.message(
+      'If you have any questions,'
+      ' or think you\'ve found a technical problem with'
+      ' the atomicDEX app, you can report it and get support'
+      ' from our team.',
+      name: 'supportLinksDesc');
+
+  String get question_1 =>
+      Intl.message('Do you store my private keys?', name: 'question_1');
+  String get answer_1 => Intl.message(
+      'No! AtomicDEX is non-custodial. We never store any sensitive data,'
+      ' including your private keys, seed phrases, or PIN. This data is only'
+      ' stored on the user’s device and never leaves it.'
+      ' You are in full control of your assets.',
+      name: 'answer_1');
+  String get question_2 => Intl.message(
+      'How is trading on AtomicDEX different from trading on other DEXs?',
+      name: 'question_2');
+  String get answer_2 => Intl.message(
+      'Other DEXs generally only allow you to trade assets that are based'
+      ' on a single blockchain network, use proxy tokens, and'
+      ' only allow placing a single order with the same funds.'
+      '\n\nAtomicDEX enables you to natively trade across two different'
+      ' blockchain networks without proxy tokens. You can also place multiple'
+      ' orders with the same funds. For example, you can sell 0.1 BTC for'
+      ' KMD, QTUM, or VRSC — the first order that fills automatically'
+      ' cancels all other orders.',
+      name: 'answer_2');
+  String get question_3 =>
+      Intl.message('How long does each atomic swap take?', name: 'question_3');
+  String get answer_3 => Intl.message(
+      'Several factors determine the processing time for each swap.'
+      ' The block time of the traded assets depends on each network'
+      ' (Bitcoin typically being the slowest) Additionally, the user can'
+      ' customize security preferences. For example, you can ask AtomicDEX'
+      ' to consider a KMD transaction as final after just 3 confirmations'
+      ' which makes the swap time shorter compared to waiting'
+      ' for a <a href="'
+      'https://komodoplatform.com/security-delayed-proof-of-work-dpow/'
+      '">notarization</a>.',
+      name: 'answer_3');
+  String get question_4 =>
+      Intl.message('Do I need to be online for the duration of the swap?',
+          name: 'question_4');
+  String get answer_4 => Intl.message(
+      'Yes. You must remain connected to the internet and have your app'
+      ' running to successfully complete each atomic swap (very short breaks'
+      ' in connectivity are usually fine). Otherwise, there is risk of trade'
+      ' cancellation if you are a maker, and risk of loss of funds if you are'
+      ' a taker. The atomic swap protocol requires both participants to stay'
+      ' online and monitor the involved blockchains for'
+      ' the process to stay atomic.',
+      name: 'answer_4');
+  String get question_5 =>
+      Intl.message('How are the fees on atomicDEX calculated?',
+          name: 'question_5');
+  String get answer_5 => Intl.message(
+      'There are two fee categories to consider when trading on AtomicDEX.\n\n'
+      '1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but'
+      ' not lower than 0.0001) as the trading fee for taker orders, and maker'
+      ' orders have zero fees.\n\n2. Both makers and takers will need to pay'
+      ' normal network fees to the involved blockchains when making atomic'
+      ' swap transactions.\n\nNetwork fees can vary greatly depending on'
+      ' your selected trading pair.',
+      name: 'answer_5');
+  String get question_6 =>
+      Intl.message('Do you provide user support?', name: 'question_6');
+  String get answer_6 => Intl.message(
+      'Yes! AtomicDEX offers support through the'
+      ' <a href="https://komodoplatform.com/discord">'
+      'Komodo Discord server'
+      '</a>. The team and the community are always happy to help!',
+      name: 'answer_6');
+  String get question_7 =>
+      Intl.message('Do you have country restrictions?', name: 'question_7');
+  String get answer_7 => Intl.message(
+      'No! AtomicDEX is fully decentralized.'
+      ' It is not possible to limit user access by any third party.',
+      name: 'answer_7');
+  String get question_8 =>
+      Intl.message('Who is behind AtomicDEX?', name: 'question_8');
+  String get answer_8 => Intl.message(
+      'AtomicDEX is developed by the Komodo team. Komodo is one of'
+      ' the most established blockchain projects working on innovative'
+      ' solutions like atomic swaps, Delayed Proof of Work, and an'
+      ' interoperable multi-chain architecture.',
+      name: 'answer_8');
+  String get question_9 => Intl.message(
+      'Is it possible to develop my own white-label'
+      ' exchange on AtomicDEX?',
+      name: 'question_9');
+  String get answer_9 => Intl.message(
+      'Absolutely! You can read our'
+      ' <a href="https://developers.atomicdex.io/">'
+      'developer documentation</a> for more'
+      ' details or contact us with your partnership inquiries. Have a specific'
+      ' technical question? The AtomicDEX developer community'
+      ' is always ready to help!',
+      name: 'answer_9');
+  String get question_10 =>
+      Intl.message('Which devices can I use AtomicDEX on?',
+          name: 'question_10');
+  String get answer_10 => Intl.message(
+      'AtomicDEX is available for mobile on both Android and iPhone,'
+      ' and for desktop on Windows, Mac, and Linux operating systems.',
+      name: 'answer_10');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

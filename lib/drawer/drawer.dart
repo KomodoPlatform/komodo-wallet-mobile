@@ -237,7 +237,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               color: Colors.white.withAlpha(200),
                             )),
                         _buildDrawerItem(
-                            title: const Text('Help'),
+                            title: Text(AppLocalizations.of(context).helpLink),
                             onTap: () {
                               Navigator.pop(context);
                               Navigator.push<dynamic>(

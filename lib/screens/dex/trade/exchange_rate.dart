@@ -142,7 +142,6 @@ class _ExchangeRateState extends State<ExchangeRate> {
             }
             message =
                 AppLocalizations.of(context).exchangeExpensive(percentString);
-            ;
             break;
           }
         default:
