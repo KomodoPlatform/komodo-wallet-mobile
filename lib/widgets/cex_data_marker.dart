@@ -1,7 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/widgets/html_parser.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 
 class CexMarker extends StatelessWidget {
@@ -32,8 +32,6 @@ class CexMarker extends StatelessWidget {
 }
 
 void showCexDialog(BuildContext context) {
-  const TextStyle style = TextStyle(fontSize: 16);
-
   dialogBloc.dialog = showDialog(
     context: context,
     builder: (BuildContext context) => SimpleDialog(
@@ -47,46 +45,15 @@ void showCexDialog(BuildContext context) {
           const SizedBox(
             width: 8,
           ),
-          const Text('CEX data'), // TODO(yurii): localization
+          Text(AppLocalizations.of(context).cexData),
         ],
       ),
       contentPadding: const EdgeInsets.all(20),
       children: <Widget>[
-        RichText(
-            textScaleFactor: 1,
-            text: TextSpan(
-              children: [
-                const TextSpan(
-                  text:
-                      'Markets data (prices, charts, etc.) marked with the ', // TODO(yurii): localization
-                  style: style,
-                ),
-                WidgetSpan(
-                    child: Icon(
-                  Icons.info_outline,
-                  size: 16,
-                  color: cexColor,
-                )),
-                const TextSpan(
-                    text:
-                        ' icon originates from third party sources (', // TODO(yurii): localization
-                    style: style),
-                TextSpan(
-                    text: 'coingecko.com',
-                    style: style,
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () => launchURL('https://www.coingecko.com/')),
-                WidgetSpan(
-                    child: Icon(
-                  Icons.open_in_new,
-                  size: 16,
-                )),
-                const TextSpan(
-                  text: ')', // TODO(yurii): localization
-                  style: style,
-                ),
-              ],
-            )),
+        HtmlParser(
+          AppLocalizations.of(context).cexDataDesc,
+          linkStyle: TextStyle(color: Colors.blue),
+        ),
       ],
     ),
   );

@@ -1069,6 +1069,17 @@ class AppLocalizations {
   String get language => Intl.message('Language', name: 'language');
   String get currency => Intl.message('Currency', name: 'currency');
   String get hideBalance => Intl.message('Hide balances', name: 'hideBalance');
+
+  // --- CEX Marker ---
+
+  String get cexData => Intl.message('CEX data', name: 'cexData');
+  String get cexDataDesc => Intl.message(
+      'Markets data (prices, charts, etc.) marked with this'
+      ' icon originates from third party sources ('
+      '<a href="https://www.coingecko.com/">coingecko.com</a>, '
+      '<a href="https://openrates.io/">openrates.io</a>'
+      ').',
+      name: 'cexDataDesc');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
