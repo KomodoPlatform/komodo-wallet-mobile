@@ -1036,6 +1036,33 @@ class AppLocalizations {
   String get swapTotal => Intl.message('Total', name: 'swapTotal');
   String get swappProgress =>
       Intl.message('Progress details', name: 'swappProgress');
+
+  // -- Notifications --
+
+  String get notifTxTitle =>
+      Intl.message('Incoming transaction', name: 'notifTxTitle');
+  String notifTxText(String coin) =>
+      Intl.message('You have received $coin transaction!', name: 'notifTxText');
+  String get notifSwapCompletedTitle =>
+      Intl.message('Swap completed', name: 'notifSwapCompletedTitle');
+  String notifSwapCompletedText(String sell, String buy) =>
+      Intl.message('$sell/$buy swap was completed successfully',
+          name: 'notifSwapCompletedText');
+  String get notifSwapFailedTitle =>
+      Intl.message('Swap failed', name: 'notifSwapFailedTitle');
+  String notifSwapFailedText(String sell, String buy) =>
+      Intl.message('$sell/$buy swap failed', name: 'notifSwapFailedText');
+  String get notifSwapTimeoutTitle =>
+      Intl.message('Swap timed out', name: 'notifSwapTimeoutTitle');
+  String notifSwapTimeoutText(String sell, String buy) =>
+      Intl.message('$sell/$buy swap was timed out',
+          name: 'notifSwapTimeoutText');
+  String get notifSwapStatusTitle =>
+      Intl.message('Swap status changed', name: 'notifSwapStatusTitle');
+  String get notifSwapStartedTitle =>
+      Intl.message('New swap started', name: 'notifSwapStartedTitle');
+  String notifSwapStartedText(String sell, String buy) =>
+      Intl.message('$sell/$buy swap started', name: 'notifSwapStartedText');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
