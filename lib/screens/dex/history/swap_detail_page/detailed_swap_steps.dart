@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_step.dart';
@@ -127,7 +128,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
 
     Widget _buildFirstStep() {
       return DetailedSwapStep(
-        title: 'Started', // TODO(yurii): localization
+        title: AppLocalizations.of(context).swapStarted,
         status: _getStatus(0),
         estimatedSpeed: _getEstimatedSpeed(0),
         estimatedDeviation: _getEstimatedDeviation(0),
@@ -264,7 +265,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text('Total:'), // TODO(yurii): localization
+                  Text(AppLocalizations.of(context).swapTotal + ':'),
                   estimatedTotalSpeed == null
                       ? Container()
                       : ProgressStep(
@@ -275,7 +276,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                         ),
                   Row(
                     children: <Widget>[
-                      Text('act: ', // TODO(yurii): localization
+                      Text(AppLocalizations.of(context).swapActual + ': ',
                           style: TextStyle(
                             fontSize: 13,
                             color: Theme.of(context).accentColor,
@@ -294,7 +295,9 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                                       fontSize: 13,
                                     )),
                                 const SizedBox(width: 4),
-                                Text('est: ', // TODO(yurii): localization
+                                Text(
+                                    AppLocalizations.of(context).swapEstimated +
+                                        ': ',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: Theme.of(context).accentColor,
@@ -323,7 +326,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Progress details:', // TODO(yurii): localization
+            AppLocalizations.of(context).swappProgress + ':',
             style: Theme.of(context).textTheme.body2,
           ),
           const SizedBox(height: 20),

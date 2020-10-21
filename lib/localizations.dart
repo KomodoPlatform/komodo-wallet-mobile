@@ -1027,6 +1027,15 @@ class AppLocalizations {
       'AtomicDEX is available for mobile on both Android and iPhone,'
       ' and for desktop on Windows, Mac, and Linux operating systems.',
       name: 'answer_10');
+
+  // --- Swaps ---
+
+  String get swapActual => Intl.message('act', name: 'swapActual');
+  String get swapEstimated => Intl.message('est', name: 'swapEstimated');
+  String get swapStarted => Intl.message('Started', name: 'swapStarted');
+  String get swapTotal => Intl.message('Total', name: 'swapTotal');
+  String get swappProgress =>
+      Intl.message('Progress details', name: 'swappProgress');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
