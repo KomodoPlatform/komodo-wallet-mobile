@@ -424,18 +424,18 @@ String durationFormat(Duration duration) {
   final int ss = duration.inSeconds;
   final int ms = duration.inMilliseconds;
 
-  if (ms < 1000) return '${ms}ms'; // TODO(yurii): localization
+  if (ms < 1000) return '$ms' + AppLocalizations().milliseconds;
 
   String formatted = '';
   if (ss.remainder(60) > 0) {
-    formatted = '${ss.remainder(60)}s'; // TODO(yurii): localization
+    formatted = '${ss.remainder(60)}' + AppLocalizations().seconds;
   }
   if (mm > 0) {
     formatted =
-        '${mm.remainder(60)}m ' + formatted; // TODO(yurii): localization
+        '${mm.remainder(60)}' + AppLocalizations().minutes + ' ' + formatted;
   }
   if (hh > 0) {
-    formatted = '${hh}h ' + formatted; // TODO(yurii): localization
+    formatted = '$hh' + AppLocalizations().hours + ' ' + formatted;
   }
 
   return formatted;

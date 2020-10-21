@@ -1080,6 +1080,27 @@ class AppLocalizations {
       '<a href="https://openrates.io/">openrates.io</a>'
       ').',
       name: 'cexDataDesc');
+
+  // --- Miscellaneous ---
+
+  String get checkingUpdates =>
+      Intl.message('Checking for updates...', name: 'checkingUpdates');
+  String get checkForUpdates =>
+      Intl.message('Check for updates', name: 'checkForUpdates');
+  String get logoutWarning =>
+      Intl.message('Are you sure you want to logout now?',
+          name: 'logoutWarning');
+  String get currencyDialogTitle =>
+      Intl.message('Currency', name: 'currencyDialogTitle');
+  String get txLimitExceeded => Intl.message(
+      'Too many requests.\n'
+      'Transactions history requests limit exceeded.\n'
+      'Please try again later.',
+      name: 'txLimitExceeded');
+  String get milliseconds => Intl.message('ms', name: 'milliseconds');
+  String get seconds => Intl.message('s', name: 'seconds');
+  String get minutes => Intl.message('m', name: 'minutes');
+  String get hours => Intl.message('h', name: 'hours');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

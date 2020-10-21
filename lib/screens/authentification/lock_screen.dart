@@ -138,8 +138,7 @@ class _LockScreenState extends State<LockScreen> {
       final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
       return _buildSplash(_logTail);
     } else if (updatesProvider.status == null) {
-      return _buildSplash(
-          'Checking for updates...'); // TODO(yurii): localization
+      return _buildSplash(AppLocalizations.of(context).checkingUpdates);
     }
 
     return StreamBuilder<bool>(
