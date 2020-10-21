@@ -1063,6 +1063,12 @@ class AppLocalizations {
       Intl.message('New swap started', name: 'notifSwapStartedTitle');
   String notifSwapStartedText(String sell, String buy) =>
       Intl.message('$sell/$buy swap started', name: 'notifSwapStartedText');
+
+  // --- Drawer ---
+
+  String get language => Intl.message('Language', name: 'language');
+  String get currency => Intl.message('Currency', name: 'currency');
+  String get hideBalance => Intl.message('Hide balances', name: 'hideBalance');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

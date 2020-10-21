@@ -121,8 +121,8 @@ class _AppDrawerState extends State<AppDrawer> {
                                     AsyncSnapshot<dynamic> snapshot) {
                                   return Row(
                                     children: <Widget>[
-                                      const Text(
-                                          'Language'), // TODO(yurii): localization
+                                      Text(AppLocalizations.of(context)
+                                          .language),
                                       Text(
                                         snapshot.hasData
                                             ? ' (${snapshot.data})'
@@ -151,8 +151,7 @@ class _AppDrawerState extends State<AppDrawer> {
                         _buildDrawerItem(
                             title: Row(
                               children: <Widget>[
-                                const Text(
-                                    'Currency'), // TODO(yurii): localization
+                                Text(AppLocalizations.of(context).currency),
                                 if (cexProvider.selectedFiat != null)
                                   Text(' (${cexProvider.selectedFiat})'),
                               ],
@@ -169,8 +168,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                   )
                                 : Text(' ${cexProvider.selectedFiatSymbol}')),
                         _buildDrawerItem(
-                          title: const Text(
-                              'Hide balances'), // TODO(yurii): localization
+                          title: Text(AppLocalizations.of(context).hideBalance),
                           leading: Icon(
                             Icons.money_off,
                             size: 16,
