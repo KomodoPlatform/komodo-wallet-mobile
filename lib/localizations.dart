@@ -841,6 +841,12 @@ class AppLocalizations {
   String get camoPinTitle =>
       Intl.message('Camouflage PIN', name: 'camoPinTitle');
   String get camoPinLink => Intl.message('Camouflage PIN', name: 'camoPinLink');
+  String get camoPinOn => Intl.message('On', name: 'camoPinOn');
+  String get camoPinOff => Intl.message('Off', name: 'camoPinOff');
+  String get matchingCamoTitle =>
+      Intl.message('Invalid PIN', name: 'matchingCamoTitle');
+  String get matchingCamoChange =>
+      Intl.message('Change', name: 'matchingCamoChange');
   String get camoPinDesc => Intl.message(
       'If You\'ll unlock the app with the Camouflage PIN, a fake'
       ' LOW balance will be shown'
@@ -913,6 +919,8 @@ class AppLocalizations {
       Intl.message('Cancel', name: 'orderDetailsCancel');
   String get orderDetailsSelect =>
       Intl.message('Select', name: 'orderDetailsSelect');
+  String get noMatchingOrders =>
+      Intl.message('No matching orders found', name: 'noMatchingOrders');
 
   // --- Help & FAQ ---
 
@@ -1101,6 +1109,7 @@ class AppLocalizations {
   String get seconds => Intl.message('s', name: 'seconds');
   String get minutes => Intl.message('m', name: 'minutes');
   String get hours => Intl.message('h', name: 'hours');
+  String get moreTab => Intl.message('More', name: 'moreTab');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

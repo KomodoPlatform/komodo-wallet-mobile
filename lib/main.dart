@@ -396,7 +396,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: const Text('More')),
+                                          title: Text(
+                                              AppLocalizations.of(context)
+                                                  .moreTab)),
                                     ],
                                   )
                                 ],

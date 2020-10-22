@@ -349,7 +349,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        isEnabled ? 'On' : 'Off',
+                        isEnabled
+                            ? AppLocalizations.of(context).camoPinOn
+                            : AppLocalizations.of(context).camoPinOff,
                         style: const TextStyle(
                           fontSize: 18,
                         ),
@@ -388,9 +390,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
     showConfirmationDialog(
         context: context,
-        title: 'Invalid PIN',
+        title: AppLocalizations.of(context).matchingCamoTitle,
         message: _matchingPinErrorMessage,
-        confirmButtonText: 'Change',
+        confirmButtonText: AppLocalizations.of(context).matchingCamoChange,
         onConfirm: () {
           _startPinSetup();
         });

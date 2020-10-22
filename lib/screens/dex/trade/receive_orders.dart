@@ -222,7 +222,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                 alignment: const Alignment(0, 0),
                                 padding: const EdgeInsets.only(top: 30),
                                 child: Text(
-                                  'No matching orders found',
+                                  AppLocalizations.of(context).noMatchingOrders,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Theme.of(context).disabledColor,
@@ -251,9 +251,6 @@ class _AsksOrderState extends State<AsksOrder> {
                                       ),
                                     ),
                                     Table(
-                                      columnWidths: const {
-                                        1: IntrinsicColumnWidth(),
-                                      },
                                       children: [
                                         TableRow(children: [
                                           Container(
@@ -281,6 +278,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                             child: Text(
                                               '${AppLocalizations.of(context).availableVolume}'
                                               ' ($relCoin)',
+                                              textAlign: TextAlign.end,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle
