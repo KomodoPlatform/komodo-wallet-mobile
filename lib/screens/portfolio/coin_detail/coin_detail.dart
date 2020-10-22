@@ -832,7 +832,6 @@ class _CoinDetailState extends State<CoinDetail> {
       focusNode: _focus,
       addressController: _addressController,
       amountController: _amountController,
-      balance: double.parse(widget.coinBalance.balance.getBalance()),
     ));
   }
 }
