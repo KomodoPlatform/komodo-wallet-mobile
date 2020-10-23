@@ -59,7 +59,13 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
               }
             }
           : null,
-      child: Text(AppLocalizations.of(context).multiCreateBtn(qtt)),
+      child: Text(qtt > 0
+          ? (AppLocalizations.of(context).multiCreate +
+              ' $qtt ' +
+              (qtt > 1
+                  ? AppLocalizations.of(context).multiCreateOrders
+                  : AppLocalizations.of(context).multiCreateOrder))
+          : AppLocalizations.of(context).multiCreate),
     );
   }
 }

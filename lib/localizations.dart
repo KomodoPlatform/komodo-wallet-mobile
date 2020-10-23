@@ -613,9 +613,11 @@ class AppLocalizations {
   String get orderDetailsAddress =>
       Intl.message('Address', name: 'orderDetailsAddress');
   String orderDetailsExpedient(String delta) =>
-      Intl.message('Expedient: CEX -$delta%', name: 'orderDetailsExpedient');
+      Intl.message('Expedient: CEX -$delta%',
+          args: <Object>[delta], name: 'orderDetailsExpedient');
   String orderDetailsExpensive(String delta) =>
-      Intl.message('Expensive: CEX +$delta%', name: 'orderDetailsExpensive');
+      Intl.message('Expensive: CEX +$delta%',
+          args: <Object>[delta], name: 'orderDetailsExpensive');
   String get orderDetailsIdentical =>
       Intl.message('Identical to CEX', name: 'orderDetailsIdentical');
   String get orderDetailsReceive =>
@@ -631,12 +633,12 @@ class AppLocalizations {
   String get coinSelectNotFound =>
       Intl.message('No active coins', name: 'coinSelectNotFound');
   String get coinSelectClear => Intl.message('Clear', name: 'coinSelectClear');
-  String ordersTablePrice(String coin) =>
-      Intl.message('Price ($coin)', name: 'ordersTablePrice');
-  String ordersTableAmount(String coin) =>
-      Intl.message('Amt. ($coin)', name: 'ordersTableAmount');
-  String ordersTableTotal(String coin) =>
-      Intl.message('Total ($coin)', name: 'ordersTableTotal');
+  String ordersTablePrice(String coin) => Intl.message('Price ($coin)',
+      args: <Object>[coin], name: 'ordersTablePrice');
+  String ordersTableAmount(String coin) => Intl.message('Amt. ($coin)',
+      args: <Object>[coin], name: 'ordersTableAmount');
+  String ordersTableTotal(String coin) => Intl.message('Total ($coin)',
+      args: <Object>[coin], name: 'ordersTableTotal');
   String get marketsNoBids =>
       Intl.message('No bids found', name: 'marketsNoBids');
   String get marketsNoAsks =>
@@ -693,18 +695,20 @@ class AppLocalizations {
       Intl.message('Rewards status:', name: 'rewardsPopupTitle');
   String get rewardsPopupOk => Intl.message('Ok', name: 'rewardsPopupOk');
   String rewardsTimeDays(int dd) =>
-      Intl.message('$dd day${dd > 1 ? 's' : ''}', name: 'rewardsTimeDays');
+      Intl.message('$dd day(s)}', args: <Object>[dd], name: 'rewardsTimeDays');
   String rewardsTimeHours(int hh, String minutes) =>
-      Intl.message('${hh}h ${minutes}m', name: 'rewardsTimeHours');
+      Intl.message('${hh}h ${minutes}m',
+          args: <Object>[hh, minutes], name: 'rewardsTimeHours');
   String rewardsTimeMin(int mm) =>
-      Intl.message('${mm}min', name: 'rewardsTimeMin');
+      Intl.message('${mm}min', args: <Object>[mm], name: 'rewardsTimeMin');
   String rewardsSuccess(String amount) =>
-      Intl.message('Success! $amount KMD received.', name: 'rewardsSuccess');
+      Intl.message('Success! $amount KMD received.',
+          args: <Object>[amount], name: 'rewardsSuccess');
   String get rewardsError =>
       Intl.message('Something went wrong. Please try again later.',
           name: 'rewardsError');
   String get rewardsLowAmountShort =>
-      Intl.message('<10 KMD', name: 'rewardsLowAmount');
+      Intl.message('<10 KMD', name: 'rewardsLowAmountShort');
   String get rewardsLowAmountLong =>
       Intl.message('UTXO amount less than 10 KMD',
           name: 'rewardsLowAmountLong');
@@ -723,9 +727,11 @@ class AppLocalizations {
   String get multiFixErrors =>
       Intl.message('Please fix all errors before continuing',
           name: 'multiFixErrors');
-  String multiCreateBtn(int qtt) => Intl.message(
-      qtt > 0 ? 'Create $qtt Order${qtt > 1 ? 's' : ''}' : 'Create',
-      name: 'multiCreateBtn');
+  String get multiCreate => Intl.message('Create', name: 'multiCreate');
+  String get multiCreateOrder =>
+      Intl.message('Order', name: 'multiCreateOrder');
+  String get multiCreateOrders =>
+      Intl.message('Orders', name: 'multiCreateOrders');
   String get multiBasePlaceholder =>
       Intl.message('Coin', name: 'multiBasePlaceholder');
   String get multiSellTitle => Intl.message('Sell:', name: 'multiSellTitle');
@@ -746,8 +752,8 @@ class AppLocalizations {
   String get multiFiatFill => Intl.message('Autofill', name: 'multiFiatFill');
   String get multiEthFee => Intl.message('fee', name: 'multiEthFee');
   String multiConfirmTitle(int number) =>
-      Intl.message('Create $number Order${number > 1 ? 's' : ''}:',
-          name: 'multiConfirmTitle');
+      Intl.message('Create $number Order(s)}:',
+          args: <Object>[number], name: 'multiConfirmTitle');
   String get multiConfirmCancel =>
       Intl.message('Cancel', name: 'multiConfirmCancel');
   String get multiConfirmConfirm =>
@@ -774,7 +780,7 @@ class AppLocalizations {
       Intl.message('atomicDEX update', name: 'updatesTitle');
   String updatesCurrentVersion(String version) =>
       Intl.message('You are using version $version',
-          name: 'updatesCurrentVersion');
+          args: <Object>[version], name: 'updatesCurrentVersion');
   String get updatesChecking =>
       Intl.message('Checking for updates...', name: 'updatesChecking');
   String get updatesUpToDate =>
@@ -790,7 +796,7 @@ class AppLocalizations {
           name: 'updatesNotifAvailable');
   String updatesNotifAvailableVersion(String version) =>
       Intl.message('Version $version available. Please update.',
-          name: 'updatesNotifAvailableVersion');
+          args: <Object>[version], name: 'updatesNotifAvailableVersion');
 
   // --- Address book ---
 
@@ -803,7 +809,7 @@ class AppLocalizations {
       Intl.message('Address book is empty', name: 'addressBookEmpty');
   String addressBookFilter(String title) =>
       Intl.message('Only showing contacts with $title addresses',
-          name: 'addressBookFilter');
+          args: <Object>[title], name: 'addressBookFilter');
   String get createContact =>
       Intl.message('Create Contact', name: 'createContact');
   String get editContact => Intl.message('Edit Contact', name: 'editContact');
@@ -821,7 +827,7 @@ class AppLocalizations {
       Intl.message('Delete Contact', name: 'contactDelete');
   String contactDeleteWarning(String name) =>
       Intl.message('Are you sure you want to delete contact $name?',
-          name: 'contactDeleteWarning');
+          args: <Object>[name], name: 'contactDeleteWarning');
   String get contactDeleteBtn =>
       Intl.message('Delete', name: 'contactDeleteBtn');
   String get contactNotFound =>
@@ -833,6 +839,7 @@ class AppLocalizations {
   String addressCoinInactive(String abbr) => Intl.message(
       'You can not send funds to $abbr address, '
       'because $abbr is not activated. Please go to portfolio.',
+      args: <Object>[abbr],
       name: 'addressCoinInactive');
   String get warningOkBtn => Intl.message('OK', name: 'warningOkBtn');
 
@@ -900,10 +907,10 @@ class AppLocalizations {
       Intl.message('CEXchange rate', name: 'cexChangeRate');
   String exchangeExpedient(String delta) =>
       Intl.message('Expedient: -$delta% compared to CEX',
-          name: 'exchangeExpedient');
+          args: <Object>[delta], name: 'exchangeExpedient');
   String exchangeExpensive(String delta) =>
       Intl.message('Expensive: +$delta% compared to CEX',
-          name: 'exchangeExpensive');
+          args: <Object>[delta], name: 'exchangeExpensive');
   String get echangeIdentical =>
       Intl.message('Identical to CEX', name: 'echangeIdentical');
 
@@ -1050,27 +1057,30 @@ class AppLocalizations {
   String get notifTxTitle =>
       Intl.message('Incoming transaction', name: 'notifTxTitle');
   String notifTxText(String coin) =>
-      Intl.message('You have received $coin transaction!', name: 'notifTxText');
+      Intl.message('You have received $coin transaction!',
+          args: <Object>[coin], name: 'notifTxText');
   String get notifSwapCompletedTitle =>
       Intl.message('Swap completed', name: 'notifSwapCompletedTitle');
   String notifSwapCompletedText(String sell, String buy) =>
       Intl.message('$sell/$buy swap was completed successfully',
-          name: 'notifSwapCompletedText');
+          args: <Object>[sell, buy], name: 'notifSwapCompletedText');
   String get notifSwapFailedTitle =>
       Intl.message('Swap failed', name: 'notifSwapFailedTitle');
   String notifSwapFailedText(String sell, String buy) =>
-      Intl.message('$sell/$buy swap failed', name: 'notifSwapFailedText');
+      Intl.message('$sell/$buy swap failed',
+          args: <Object>[sell, buy], name: 'notifSwapFailedText');
   String get notifSwapTimeoutTitle =>
       Intl.message('Swap timed out', name: 'notifSwapTimeoutTitle');
   String notifSwapTimeoutText(String sell, String buy) =>
       Intl.message('$sell/$buy swap was timed out',
-          name: 'notifSwapTimeoutText');
+          args: <Object>[sell, buy], name: 'notifSwapTimeoutText');
   String get notifSwapStatusTitle =>
       Intl.message('Swap status changed', name: 'notifSwapStatusTitle');
   String get notifSwapStartedTitle =>
       Intl.message('New swap started', name: 'notifSwapStartedTitle');
   String notifSwapStartedText(String sell, String buy) =>
-      Intl.message('$sell/$buy swap started', name: 'notifSwapStartedText');
+      Intl.message('$sell/$buy swap started',
+          args: <Object>[sell, buy], name: 'notifSwapStartedText');
 
   // --- Drawer ---
 
