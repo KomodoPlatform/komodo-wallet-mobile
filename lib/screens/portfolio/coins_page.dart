@@ -667,57 +667,57 @@ class _ItemCoinState extends State<ItemCoin> {
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(16)),
                                     child: Container(
-                                        color: widget.coinBalance.coin.type ==
+                                      color: widget.coinBalance.coin.type ==
+                                              'erc'
+                                          ? const Color.fromRGBO(
+                                              20, 117, 186, 1)
+                                          : Theme.of(context).backgroundColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 4, horizontal: 8),
+                                        child: widget.coinBalance.coin.type ==
                                                 'erc'
-                                            ? const Color.fromRGBO(
-                                                20, 117, 186, 1)
-                                            : Theme.of(context).backgroundColor,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 4, horizontal: 8),
-                                          child: widget.coinBalance.coin.type ==
-                                                  'erc'
-                                              ? Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      AppLocalizations.of(
-                                                              context)
-                                                          .tagERC20,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle,
-                                                    ),
-                                                  ],
-                                                )
-                                              : Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Image.asset(
-                                                      'assets/kmd.png',
-                                                      width: 18,
-                                                      height: 18,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 8,
-                                                    ),
-                                                    Text(
-                                                      AppLocalizations.of(
-                                                              context)
-                                                          .tagKMD,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle,
-                                                    ),
-                                                  ],
+                                            ? Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Text(
+                                                    AppLocalizations.of(context)
+                                                        .tagERC20,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle,
+                                                  ),
+                                                ],
+                                              )
+                                            : InkWell(
+                                                onTap: () {
+                                                  ScaffoldState scaffold;
+                                                  try {
+                                                    scaffold =
+                                                        Scaffold.of(context);
+                                                  } catch (_) {}
+
+                                                  if (scaffold != null) {
+                                                    scaffold
+                                                        .showSnackBar(SnackBar(
+                                                      duration: const Duration(
+                                                          seconds: 2),
+                                                      content: Text(
+                                                          'Built on Komodo'),
+                                                    ));
+                                                  }
+                                                },
+                                                child: Image.asset(
+                                                  'assets/kmd.png',
+                                                  width: 18,
+                                                  height: 18,
                                                 ),
-                                        )),
+                                              ),
+                                      ),
+                                    ),
                                   ),
                                 )
                               : Container()
