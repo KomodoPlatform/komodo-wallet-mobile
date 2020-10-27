@@ -750,14 +750,15 @@ class _CoinDetailState extends State<CoinDetail> {
                   .postWithdraw(
                       MMService().client,
                       GetWithdraw(
-                          userpass: MMService().userpass,
-                          fee: fee,
-                          coin: widget.coinBalance.coin.abbr,
-                          to: _addressController.text,
-                          amount: _amountController.text,
-                          max: double.parse(
-                                  widget.coinBalance.balance.getBalance()) ==
-                              double.parse(_amountController.text)))
+                        userpass: MMService().userpass,
+                        fee: fee,
+                        coin: widget.coinBalance.coin.abbr,
+                        to: _addressController.text,
+                        amount: _amountController.text,
+                        max: double.parse(
+                                currentCoinBalance.balance.getBalance()) ==
+                            double.parse(_amountController.text),
+                      ))
                   .then((dynamic data) {
                 if (data is WithdrawResponse) {
                   ApiProvider()
