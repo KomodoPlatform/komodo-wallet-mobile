@@ -278,7 +278,8 @@ class MMService {
     }
     final String startParam = configMm2ToJson(ConfigMm2(
         gui: gui,
-        netid: 9999,
+        netid: 7777,
+        seednodes: ['195.201.91.96', '195.201.91.53', '168.119.174.126'],
         client: 1,
         userhome: filesPath,
         passphrase: passphrase,
