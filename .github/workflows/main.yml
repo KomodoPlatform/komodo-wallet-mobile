@@ -1,6 +1,6 @@
 on: [push, pull_request]
 
-name: Build atomicDeFi APK
+name: Build atomicDEX APK
 jobs:
   build:
     name: Build APK on ${{ matrix.os }}

@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -28,9 +31,16 @@ class OrderBookProvider extends ChangeNotifier {
   Orderbook getOrderBook([CoinsPair coinsPair]) =>
       syncOrderbook.getOrderBook(coinsPair);
 
-  CoinsPair get activePair => syncOrderbook.activePair;
+  List<Orderbook> orderbooksForCoin([Coin coin]) =>
+      syncOrderbook.orderbooksForCoin(coin);
 
+  Future<void> subscribeCoin([Coin coin, CoinType type]) =>
+      syncOrderbook.subscribeCoin(coin, type);
+
+  CoinsPair get activePair => syncOrderbook.activePair;
   set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;
+
+  void updateActivePair() => syncOrderbook.updateActivePair();
 
   // TODO(AG): historical swap data for [coinsPair]
   List<Swap> getSwapHistory(CoinsPair coinsPair) {
@@ -45,6 +55,8 @@ class OrderBookProvider extends ChangeNotifier {
   /// then by volume (DESC),
   /// then by age (DESC)
   static List<Ask> sortByPrice(List<Ask> list, {bool quotePrice = false}) {
+    if (list == null || list.isEmpty) return list;
+
     final List<Ask> sorted = quotePrice
         ? list.map((Ask ask) {
             final double price = 1 / double.parse(ask.price);
@@ -94,7 +106,7 @@ class SyncOrderbook {
   CoinsPair _activePair;
 
   /// Maps short order IDs to latest liveliness markers.
-  final List<CoinsPair> _tickers = [];
+  final List<String> _tickers = [];
 
   CoinsPair get activePair => _activePair;
 
@@ -103,28 +115,87 @@ class SyncOrderbook {
     _notifyListeners();
   }
 
+  void updateActivePair() {
+    // Check if coins in activePair are still activated
+    if (_activePair?.sell != null &&
+        coinsBloc.getCoinByAbbr(_activePair.sell.abbr) == null) {
+      _activePair.sell = null;
+    }
+    if (_activePair?.buy != null &&
+        coinsBloc.getCoinByAbbr(_activePair.buy.abbr) == null) {
+      _activePair.buy = null;
+    }
+
+    _notifyListeners();
+  }
+
   Orderbook getOrderBook([CoinsPair coinsPair]) {
     coinsPair ??= activePair;
-    if (!_tickers.contains(coinsPair)) _tickers.add(coinsPair);
+    if (coinsPair.buy == null || coinsPair.sell == null) return null;
 
-    return _orderBooks['${coinsPair.buy.abbr}-${coinsPair.sell.abbr}'];
+    if (!_tickers.contains(_tickerStr(coinsPair)))
+      _tickers.add(_tickerStr(coinsPair));
+
+    return _orderBooks[_tickerStr(coinsPair)];
+  }
+
+  Future<void> subscribeCoin([Coin coin, CoinType type]) async {
+    coin ??= activePair.sell;
+    type ??= CoinType.base;
+
+    bool wasChanged = false;
+    final List<CoinBalance> coinsList = coinsBloc.coinBalance;
+
+    for (CoinBalance coinBalance in coinsList) {
+      if (coinBalance.coin.abbr == coin.abbr) continue;
+
+      final String ticker = _tickerStr(CoinsPair(
+        sell: type == CoinType.base ? coin : coinBalance.coin,
+        buy: type == CoinType.rel ? coin : coinBalance.coin,
+      ));
+
+      if (!_tickers.contains(ticker)) {
+        _tickers.add(ticker);
+        wasChanged = true;
+      }
+    }
+
+    if (wasChanged) await _updateOrderBooks();
+  }
+
+  List<Orderbook> orderbooksForCoin([Coin coin]) {
+    coin ??= activePair.sell;
+
+    final List<Orderbook> list = [];
+    _orderBooks.forEach((ticker, orderbook) {
+      if (ticker.split('-')[0] == coin.abbr) {
+        list.add(orderbook);
+      }
+    });
+
+    return list;
   }
 
   Future<void> _updateOrderBooks() async {
     final Map<String, Orderbook> orderBooks = {};
-    for (CoinsPair pair in _tickers) {
+    for (String pair in _tickers) {
+      final List<String> abbr = pair.split('-');
       final Orderbook orderbook = await MM.getOrderbook(
           MMService().client,
           GetOrderbook(
-            base: pair.buy.abbr,
-            rel: pair.sell.abbr,
+            base: abbr[0],
+            rel: abbr[1],
           ));
 
-      orderBooks['${pair.buy.abbr}-${pair.sell.abbr}'] = orderbook;
+      orderBooks[pair] = orderbook;
     }
 
     _orderBooks = orderBooks;
     _notifyListeners();
+  }
+
+  String _tickerStr(CoinsPair pair) {
+    return '${pair.sell.abbr}-${pair.buy.abbr}';
   }
 
   /// Link a [ChangeNotifier] proxy to this singleton.

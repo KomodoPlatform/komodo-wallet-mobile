@@ -1,10 +1,11 @@
-
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_steps.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class DetailSwap extends StatefulWidget {
@@ -17,6 +18,28 @@ class DetailSwap extends StatefulWidget {
 }
 
 class _DetailSwapState extends State<DetailSwap> {
+  String noteText;
+  bool isNoteEdit = false;
+  bool isNoteExpanded = false;
+  final noteTextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Db.getNote(widget.swap.result.uuid).then((n) {
+      setState(() {
+        noteText = n;
+        noteTextController.text = noteText;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    noteTextController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -56,12 +79,90 @@ class _DetailSwapState extends State<DetailSwap> {
                 swapHistoryBloc.isAnimationStepFinalIsFinish
             ? _buildInfosDetail()
             : Container(),
+        _buildNote('Note'),
         const SizedBox(
           height: 32,
         ),
         DetailedSwapSteps(uuid: widget.swap.result.uuid),
         const SizedBox(
           height: 32,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNote(String title) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: InkWell(
+            onTap: isNoteEdit
+                ? null
+                : () {
+                    if (noteText != null && noteText.isNotEmpty) {
+                      setState(() {
+                        isNoteExpanded = !isNoteExpanded;
+                      });
+                    }
+                  },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Text(
+                      '$title:',
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  ),
+                  isNoteEdit
+                      ? TextField(
+                          decoration: const InputDecoration(isDense: true),
+                          controller: noteTextController,
+                          maxLength: 200,
+                          maxLines: 7,
+                          minLines: 1,
+                        )
+                      : Text(
+                          (noteText == null || noteText.isEmpty)
+                              ? 'Add a Note'
+                              : noteText,
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                          maxLines: isNoteExpanded ? null : 1,
+                          overflow:
+                              isNoteExpanded ? null : TextOverflow.ellipsis,
+                        ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        IconButton(
+          icon: Icon(isNoteEdit ? Icons.check : Icons.edit),
+          onPressed: () {
+            setState(
+              () {
+                if (isNoteEdit) {
+                  noteTextController.text = noteTextController.text.trim();
+                  noteText = noteTextController.text;
+                  Db.saveNote(widget.swap.result.uuid,
+                      noteText.isNotEmpty ? noteText : null);
+
+                  setState(() {
+                    isNoteExpanded = false;
+                  });
+                }
+
+                setState(() {
+                  isNoteEdit = !isNoteEdit;
+                });
+              },
+            );
+          },
         ),
       ],
     );
@@ -188,6 +289,17 @@ class _DetailSwapState extends State<DetailSwap> {
   }
 
   Widget _buildTextAmount(String coin, String amount) {
+    // Only apply camouflage to swap history,
+    // show current active swaps as is
+    final bool shouldCamouflage = camoBloc.isCamoActive &&
+        (widget.swap.status == Status.SWAP_SUCCESSFUL ||
+            widget.swap.status == Status.SWAP_FAILED ||
+            widget.swap.status == Status.TIME_OUT);
+
+    if (shouldCamouflage) {
+      amount = (double.parse(amount) * camoBloc.camoFraction / 100).toString();
+    }
+
     return Text(
       '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
       style: Theme.of(context)

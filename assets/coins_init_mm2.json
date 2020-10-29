@@ -217,6 +217,7 @@
 		"wiftype": 128,
 		"txfee": 0,
 		"segwit": true,
+		"address_format": {"format":"cashaddress","network":"bitcoincash"},
 		"mm2": 1,
 		"required_confirmations": 1
 	},
@@ -1238,6 +1239,19 @@
 		"confpath": "USERHOME/.galaxycash/galaxycash.conf"
 	},
 	{
+		"coin": "GLEEC",
+		"name": "GleecBTC",
+		"fname": "GleecBTC",
+		"rpcport": 8332,
+		"pubtype": 35,
+		"p2shtype": 38,
+		"wiftype": 65,
+		"segwit": true,
+		"txfee": 0,
+		"mm2": 1,
+		"required_confirmations": 2
+	},
+	{
 		"coin": "GIN",
 		"name": "gincoin",
 		"fname": "GINcoin",
@@ -1437,17 +1451,6 @@
 		"p2shtype": 13,
 		"wiftype": 168,
 		"txfee": 100000
-	},
-	{
-		"coin": "HUSH",
-		"asset": "HUSH3",
-		"fname": "Hush",
-		"rpcport": 18031,
-		"txversion": 4,
-		"overwintered": 1,
-		"mm2": 1,
-		"required_confirmations": 2,
-		"requires_notarization": true
 	},
 	{
 		"coin": "HYD",

@@ -506,8 +506,8 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: c0b6516aae9a3321fcce7391447351ad73a50f0a
-      resolved-ref: c0b6516aae9a3321fcce7391447351ad73a50f0a
+      ref: "5920e1b5e9d51fc145d28e83cfcaaf0a28cde0a3"
+      resolved-ref: "5920e1b5e9d51fc145d28e83cfcaaf0a28cde0a3"
       url: "git://github.com/KomodoPlatform/pin_code_view.git"
     source: git
     version: "0.2.1"

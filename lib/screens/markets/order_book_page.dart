@@ -69,7 +69,6 @@ class _OrderBookPageState extends State<OrderBookPage> {
     return Container(
       child: Card(
         elevation: 8,
-        color: Theme.of(context).primaryColor,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Row(
@@ -77,11 +76,11 @@ class _OrderBookPageState extends State<OrderBookPage> {
             children: <Widget>[
               CoinSelect(
                   key: const Key('coin-select-left'),
-                  value: _orderBookProvider.activePair?.buy,
+                  value: _orderBookProvider.activePair?.sell,
                   type: CoinType.base,
-                  pairedCoin: _orderBookProvider.activePair?.sell,
-                  autoOpen: _orderBookProvider.activePair?.buy == null &&
-                      _orderBookProvider.activePair?.sell != null,
+                  pairedCoin: _orderBookProvider.activePair?.buy,
+                  autoOpen: _orderBookProvider.activePair?.sell == null &&
+                      _orderBookProvider.activePair?.buy != null,
                   compact: MediaQuery.of(context).size.width < 360,
                   hideInactiveCoins: false,
                   onChange: (Coin value) {
@@ -89,8 +88,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
                       _showChart = false;
                     });
                     _orderBookProvider.activePair = CoinsPair(
-                      buy: value,
-                      sell: _orderBookProvider.activePair?.sell,
+                      sell: value,
+                      buy: _orderBookProvider.activePair?.buy,
                     );
                   }),
               const SizedBox(width: 12),
@@ -110,11 +109,11 @@ class _OrderBookPageState extends State<OrderBookPage> {
               const SizedBox(width: 12),
               CoinSelect(
                 key: const Key('coin-select-right'),
-                value: _orderBookProvider.activePair?.sell,
+                value: _orderBookProvider.activePair?.buy,
                 type: CoinType.rel,
-                pairedCoin: _orderBookProvider.activePair?.buy,
-                autoOpen: _orderBookProvider.activePair?.sell == null &&
-                    _orderBookProvider.activePair?.buy != null,
+                pairedCoin: _orderBookProvider.activePair?.sell,
+                autoOpen: _orderBookProvider.activePair?.buy == null &&
+                    _orderBookProvider.activePair?.sell != null,
                 compact: MediaQuery.of(context).size.width < 360,
                 hideInactiveCoins: false,
                 onChange: (Coin value) {
@@ -122,8 +121,8 @@ class _OrderBookPageState extends State<OrderBookPage> {
                     _showChart = false;
                   });
                   _orderBookProvider.activePair = CoinsPair(
-                    sell: value,
-                    buy: _orderBookProvider.activePair?.buy,
+                    buy: value,
+                    sell: _orderBookProvider.activePair?.sell,
                   );
                 },
               ),
@@ -160,17 +159,15 @@ class _OrderBookPageState extends State<OrderBookPage> {
               children: <Widget>[
                 CandlesIcon(
                     size: 14,
-                    color: _showChart
-                        ? Theme.of(context).accentColor
-                        : Colors.white),
+                    color: _showChart ? null : Theme.of(context).accentColor),
                 const SizedBox(width: 2),
                 Text(
                   'Chart', // TODO(yurii): localization
                   style: _showChart
-                      ? TextStyle(
+                      ? null
+                      : TextStyle(
                           color: Theme.of(context).accentColor,
-                        )
-                      : null,
+                        ),
                 ),
               ],
             )),
@@ -183,10 +180,10 @@ class _OrderBookPageState extends State<OrderBookPage> {
             child: Text(
               'Depth', // TODO(yurii): localization
               style: !_showChart
-                  ? TextStyle(
+                  ? null
+                  : TextStyle(
                       color: Theme.of(context).accentColor,
-                    )
-                  : null,
+                    ),
             )),
       ],
     );

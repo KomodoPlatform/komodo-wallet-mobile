@@ -13,6 +13,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
@@ -32,6 +33,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
+import 'model/multi_order_provider.dart';
 import 'model/startup_provider.dart';
 import 'utils/utils.dart';
 import 'widgets/shared_preferences_builder.dart';
@@ -69,6 +71,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
               create: (context) => FeedProvider(),
             ),
             ChangeNotifierProvider(
+              create: (context) => RewardsProvider(),
+            ),
+            ChangeNotifierProvider(
               create: (context) => StartupProvider(),
             ),
             ChangeNotifierProvider(
@@ -79,6 +84,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => AddressBookProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => MultiOrderProvider(),
             ),
           ],
           child: const MyApp(),
@@ -159,7 +167,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
                     return MaterialApp(
-                        title: 'atomicDeFi',
+                        title: 'atomicDEX',
                         localizationsDelegates: <
                             LocalizationsDelegate<dynamic>>[
                           const AppLocalizationsDelegate(),
@@ -282,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           return Scaffold(
             key: _scaffoldKey,
             endDrawer: AppDrawer(),
-            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomPadding: true,
             backgroundColor: Theme.of(context).backgroundColor,
             body: _children[snapshot.data],
             bottomNavigationBar: Container(

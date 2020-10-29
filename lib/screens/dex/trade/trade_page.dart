@@ -59,13 +59,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Animation<double> animationCoinSell;
   AnimationController controllerAnimationCoinSell;
   String amountToBuy;
-  dynamic timerGetOrderbook;
   bool _noOrderFound = false;
   bool isMaxActive = false;
   Ask currentAsk;
   bool isLoadingMax = false;
   bool showDetailedFees = false;
   CexProvider cexProvider;
+  OrderBookProvider orderBookProvider;
 
   @override
   void initState() {
@@ -122,16 +122,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     _controllerAmountSell.dispose();
     controllerAnimationInputSell.dispose();
     controllerAnimationCoinSell.dispose();
-    if (timerGetOrderbook != null) {
-      timerGetOrderbook.cancel();
-    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _updateMarketsPair();
-    cexProvider = Provider.of<CexProvider>(context);
+    cexProvider ??= Provider.of<CexProvider>(context);
+    orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -153,30 +150,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             }),
       ],
     );
-  }
-
-  void _updateMarketsPair() {
-    if (swapBloc.sellCoinBalance?.coin == null && swapBloc.receiveCoin == null)
-      return;
-
-    final OrderBookProvider _orderBookProvider =
-        Provider.of<OrderBookProvider>(context);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (swapBloc.receiveCoin != _orderBookProvider.activePair?.buy) {
-        _orderBookProvider.activePair = CoinsPair(
-          buy: swapBloc.receiveCoin,
-          sell: _orderBookProvider.activePair?.sell,
-        );
-      }
-      if (swapBloc.sellCoinBalance?.coin !=
-          _orderBookProvider.activePair?.sell) {
-        _orderBookProvider.activePair = CoinsPair(
-          buy: _orderBookProvider.activePair?.buy,
-          sell: swapBloc.sellCoinBalance?.coin,
-        );
-      }
-    });
   }
 
   void initListenerAmountReceive() {
@@ -560,7 +533,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 child: Card(
                   elevation: 8,
                   margin: const EdgeInsets.all(8),
-                  color: Theme.of(context).primaryColor,
                   child: Stack(
                     children: <Widget>[
                       Padding(
@@ -994,13 +966,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
-  void pushNewScreenChoiseOrder(List<Orderbook> orderbooks) {
+  void pushNewScreenChoiseOrder() {
     replaceAllCommas();
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return ReceiveOrders(
-              orderbooks: orderbooks,
               sellAmount: double.parse(_controllerAmountSell.text),
               onCreateNoOrder: (String coin) => _noOrders(coin),
               onCreateOrder: (Ask ask) => _createOrder(ask));
@@ -1029,7 +1000,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               return DialogLooking(
                 onDone: () {
                   Navigator.of(context).pop();
-                  pushNewScreenChoiseOrder(swapBloc.orderCoins);
+                  pushNewScreenChoiseOrder();
                 },
               );
             }).then((dynamic _) => dialogBloc.dialog = null);
@@ -1126,7 +1097,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     });
     swapBloc.updateReceiveCoin(Coin(abbr: ask.coin));
     _controllerAmountReceive.text = '';
-    timerGetOrderbook?.cancel();
     _controllerAmountReceive.text =
         deci2s(ask.getReceiveAmount(deci(_controllerAmountSell.text)));
 
@@ -1182,9 +1152,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               });
               swapBloc.updateReceiveCoin(orderbook.coinBase);
               _controllerAmountReceive.text = '';
-              timerGetOrderbook?.cancel();
-
-              // _lookingForOrder();
 
               Navigator.pop(context);
             },
@@ -1255,6 +1222,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 swapBloc.setEnabledSellField(true);
               });
               swapBloc.updateSellCoin(coin);
+              orderBookProvider.activePair = CoinsPair(
+                sell: coin.coin,
+                buy: orderBookProvider.activePair?.buy,
+              );
               swapBloc.updateBuyCoin(null);
 
               Navigator.pop(context);
@@ -1482,54 +1453,21 @@ class DialogLooking extends StatefulWidget {
 }
 
 class _DialogLookingState extends State<DialogLooking> {
-  Timer timerGetOrderbook;
+  OrderBookProvider orderBookProvider;
 
   @override
   void initState() {
-    startLooking();
     super.initState();
-  }
-
-  bool checkIfAsks() {
-    bool orderHasAsks = false;
-    if (swapBloc.orderCoins != null && swapBloc.orderCoins.isNotEmpty) {
-      for (Orderbook orderbook in swapBloc.orderCoins) {
-        if (orderbook.asks != null && orderbook.asks.isNotEmpty) {
-          orderHasAsks = true;
-        }
-      }
-    }
-    return orderHasAsks;
-  }
-
-  Future<void> startLooking() async {
-    const int timerEnd = 10;
-    int timerCurrent = 0;
-    await swapBloc.getBuyCoins(swapBloc.sellCoinBalance.coin);
-    if (checkIfAsks()) {
-      widget.onDone();
-    } else {
-      timerGetOrderbook = Timer.periodic(const Duration(seconds: 5), (_) {
-        timerCurrent += 5;
-
-        if (timerCurrent >= timerEnd || checkIfAsks()) {
-          timerGetOrderbook.cancel();
-          widget.onDone();
-        } else {
-          swapBloc.getBuyCoins(swapBloc.sellCoinBalance.coin);
-        }
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    timerGetOrderbook?.cancel();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    orderBookProvider = Provider.of<OrderBookProvider>(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await orderBookProvider.subscribeCoin();
+      widget.onDone();
+    });
+
     return Dialog(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),

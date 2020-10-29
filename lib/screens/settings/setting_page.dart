@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart' as arch;
+import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -22,6 +23,7 @@ import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
+import 'package:komodo_dex/screens/settings/camo_pin_setup_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -70,63 +72,69 @@ class _SettingPageState extends State<SettingPage> {
     cexProvider = Provider.of<CexProvider>(context);
     // final Locale myLocale = Localizations.localeOf(context);
     // Log('setting_page:67', 'current locale: $myLocale');
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context).settings.toUpperCase(),
-          key: const Key('settings-title'),
+    return LockScreen(
+      context: context,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).settings.toUpperCase(),
+            key: const Key('settings-title'),
+          ),
+          centerTitle: true,
+          elevation: 0,
         ),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: Theme(
-        data: Theme.of(context).copyWith(
-            canvasColor: Theme.of(context).primaryColor,
-            textTheme: Theme.of(context).textTheme),
-        child: Container(
-          child: ListView(
-            key: const Key('settings-scrollable'),
-            children: <Widget>[
-              _buildTitle(AppLocalizations.of(context).logoutsettings),
-              _buildLogOutOnExit(),
-              _buildTitle(AppLocalizations.of(context).soundTitle),
-              _buildSound(),
-              _buildTitle(AppLocalizations.of(context).security),
-              _buildActivatePIN(),
-              const SizedBox(
-                height: 1,
-              ),
-              _buildActivateBiometric(),
-              const SizedBox(
-                height: 1,
-              ),
-              _buildChangePIN(),
-              const SizedBox(
-                height: 1,
-              ),
-              _buildSendFeedback(),
-              walletBloc.currentWallet != null
-                  ? _buildTitle(AppLocalizations.of(context).backupTitle)
-                  : Container(),
-              walletBloc.currentWallet != null ? _buildViewSeed() : Container(),
-              const SizedBox(
-                height: 1,
-              ),
-              _buildTitle(AppLocalizations.of(context).legalTitle),
-              _buildDisclaimerToS(),
-              _buildTitle(version),
-              _buildUpdate(),
-              const SizedBox(
-                height: 48,
-              ),
-              walletBloc.currentWallet != null
-                  ? _buildDeleteWallet()
-                  : Container(),
-              const SizedBox(
-                height: 24,
-              ),
-            ],
+        body: Theme(
+          data: Theme.of(context).copyWith(
+              canvasColor: Theme.of(context).primaryColor,
+              textTheme: Theme.of(context).textTheme),
+          child: Container(
+            child: ListView(
+              key: const Key('settings-scrollable'),
+              children: <Widget>[
+                _buildTitle(AppLocalizations.of(context).logoutsettings),
+                _buildLogOutOnExit(),
+                _buildTitle(AppLocalizations.of(context).soundTitle),
+                _buildSound(),
+                _buildTitle(AppLocalizations.of(context).security),
+                _buildActivatePIN(),
+                const SizedBox(
+                  height: 1,
+                ),
+                _buildActivateBiometric(),
+                _buildCamouflagePin(),
+                const SizedBox(
+                  height: 1,
+                ),
+                _buildChangePIN(),
+                const SizedBox(
+                  height: 1,
+                ),
+                _buildSendFeedback(),
+                walletBloc.currentWallet != null
+                    ? _buildTitle(AppLocalizations.of(context).backupTitle)
+                    : Container(),
+                walletBloc.currentWallet != null
+                    ? _buildViewSeed()
+                    : Container(),
+                const SizedBox(
+                  height: 1,
+                ),
+                _buildTitle(AppLocalizations.of(context).legalTitle),
+                _buildDisclaimerToS(),
+                _buildTitle(version),
+                _buildUpdate(),
+                const SizedBox(
+                  height: 48,
+                ),
+                walletBloc.currentWallet != null
+                    ? _buildDeleteWallet()
+                    : Container(),
+                const SizedBox(
+                  height: 24,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -319,6 +327,43 @@ class _SettingPageState extends State<SettingPage> {
           } else {
             return Container();
           }
+        });
+  }
+
+  Widget _buildCamouflagePin() {
+    return StreamBuilder<bool>(
+        initialData: camoBloc.isCamoActive,
+        stream: camoBloc.outIsCamoActive,
+        builder: (context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.data == true) return Container();
+
+          return Column(
+            children: <Widget>[
+              const SizedBox(
+                height: 1,
+              ),
+              CustomTile(
+                onPressed: () {
+                  Navigator.push<dynamic>(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                          settings: const RouteSettings(name: '/camoSetup'),
+                          builder: (BuildContext context) =>
+                              CamoPinSetupPage()));
+                },
+                child: ListTile(
+                  trailing: Icon(Icons.chevron_right,
+                      color: Colors.white.withOpacity(0.7)),
+                  title: Text(
+                    'Camouflage PIN',
+                    style: Theme.of(context).textTheme.body1.copyWith(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white.withOpacity(0.7)),
+                  ),
+                ),
+              ),
+            ],
+          );
         });
   }
 
@@ -702,7 +747,7 @@ class _SettingPageState extends State<SettingPage> {
       }
       log.sink.write('\n\n--- / my recent swaps ---\n\n');
       // TBD: Replace these with a pretty-printed metrics JSON
-      log.sink.write('atomicDeFi mobile ${packageInfo.version} $os\n');
+      log.sink.write('atomicDEX mobile ${packageInfo.version} $os\n');
       log.sink.write('mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
       log.sink.write('netid ${mmSe.netid} pubkey ${mmSe.pubkey}\n');
       await log.sink.flush();
@@ -737,7 +782,7 @@ class _SettingPageState extends State<SettingPage> {
     mainBloc.isUrlLaucherIsOpen = true;
     await Share.shareFile(af,
         mimeType: 'application/octet-stream',
-        subject: 'atomicDeFi logs at ${DateTime.now().toIso8601String()}');
+        subject: 'atomicDEX logs at ${DateTime.now().toIso8601String()}');
   }
 
   Future<void> _shareFileDialog() async {

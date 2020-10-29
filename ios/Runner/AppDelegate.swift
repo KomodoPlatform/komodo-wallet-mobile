@@ -63,12 +63,12 @@ import UserNotifications
                 guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
                 
                 print("START MM2 --------------------------------")
-                mm2_main(arg, { (line) in
-                    let mm2log = ["log": "mm2] " + String(cString: line!)]
+                let error = Int32(mm2_main(arg, { (line) in
+                    let mm2log = ["log": "AppDelegate] " + String(cString: line!)]
                     NotificationCenter.default.post(name: .didReceiveData, object: nil, userInfo: mm2log)
-                });
+                }));
                 //print(arg)
-                result("starting mm2")
+                result(error)
             } else if call.method == "status" {
                 let ret = Int32(mm2_main_status());
 
@@ -118,6 +118,19 @@ import UserNotifications
         NotificationCenter.default.removeObserver(self)
         eventSink = nil
         return nil
+    }
+    
+    public override func applicationWillResignActive(_ application: UIApplication) {
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = window!.frame
+        blurEffectView.tag = 61007
+
+        self.window?.addSubview(blurEffectView)
+    }
+    
+    public override func applicationDidBecomeActive(_ application: UIApplication) {
+        self.window?.viewWithTag(61007)?.removeFromSuperview()
     }
 }
 

@@ -295,24 +295,6 @@
 		]
 	},
 	{
-		"name": "Hush",
-		"type": "smartChain",
-		"address": "electrum1.cipig.net",
-		"port": 10064,
-		"proto": "tcp",
-		"abbr": "HUSH",
-		"coingeckoId": "hush",
-		"colorCoin": "0xFF2D2D2D",
-		"serverList": [
-			"electrum3.cipig.net:10064",
-			"electrum2.cipig.net:10064",
-			"electrum1.cipig.net:10064"
-		],
-		"explorerUrl": [
-			"https://explorer.myhush.org/"
-		]
-	},
-	{
 		"name": "KMDLABS",
 		"type": "smartChain",
 		"address": "electrum1.cipig.net",
@@ -710,6 +692,24 @@
 		],
 		"explorerUrl": [
 			"https://blockstream.info/testnet/"
+		]
+	},
+	{
+		"name": "GleecBTC",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10069,
+		"proto": "tcp",
+		"abbr": "GLEEC",
+		"coingeckoId": "gleec-coin",
+		"colorCoin": "0xFFA13FFF",
+		"serverList": [
+			"electrum1.cipig.net:10069",
+			"electrum2.cipig.net:10069",
+			"electrum3.cipig.net:10069"
+		],
+		"explorerUrl": [
+			"https://gleechain.com/"
 		]
 	}
 ]

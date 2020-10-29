@@ -15,12 +15,15 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
+import 'package:komodo_dex/screens/portfolio/rewards_page.dart';
 import 'package:komodo_dex/screens/portfolio/select_coins_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:provider/provider.dart';
 
 class CoinsPage extends StatefulWidget {
@@ -72,104 +75,119 @@ class _CoinsPageState extends State<CoinsPage> {
                   pinned: true,
                   flexibleSpace: Builder(
                     builder: (BuildContext context) {
-                      return FlexibleSpaceBar(
-                          collapseMode: CollapseMode.pin,
-                          centerTitle: true,
-                          title: Container(
-                            padding: EdgeInsets.only(
-                                top: 20 + MediaQuery.of(context).padding.top),
-                            width: _widthScreen * 0.5,
-                            child: Center(
-                              heightFactor: _heightFactor,
-                              child: StreamBuilder<List<CoinBalance>>(
-                                  initialData: coinsBloc.coinBalance,
-                                  stream: coinsBloc.outCoins,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<List<CoinBalance>>
-                                          snapshot) {
-                                    if (snapshot.data != null) {
-                                      double totalBalanceUSD = 0;
-
-                                      for (CoinBalance coinBalance
-                                          in snapshot.data) {
-                                        totalBalanceUSD +=
-                                            coinBalance.balanceUSD;
-                                      }
-                                      return StreamBuilder<bool>(
-                                        initialData: settingsBloc.showBalance,
-                                        stream: settingsBloc.outShowBalance,
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<bool> snapshot) {
-                                          bool hidden = false;
-                                          if (snapshot.hasData &&
-                                              !snapshot.data) {
-                                            hidden = true;
-                                          }
-                                          final String amountText =
-                                              _cexProvider.convert(
-                                            totalBalanceUSD,
-                                            hidden: hidden,
-                                          );
-                                          return FlatButton(
-                                              onPressed: () {
-                                                _cexProvider.switchCurrency();
-                                              },
-                                              child: AutoSizeText(
-                                                amountText,
-                                                maxFontSize: 18,
-                                                minFontSize: 12,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .title,
-                                                maxLines: 1,
-                                              ));
-                                        },
-                                      );
-                                    } else {
-                                      return Center(
-                                          child: Container(
-                                        child:
-                                            const CircularProgressIndicator(),
-                                      ));
-                                    }
-                                  }),
-                            ),
-                          ),
-                          background: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  const LoadAsset(),
-                                  const SizedBox(
-                                    height: 14.0,
-                                  ),
-                                  StreamBuilder<bool>(
-                                      initialData: settingsBloc.showBalance,
-                                      stream: settingsBloc.outShowBalance,
+                      return Stack(
+                        children: <Widget>[
+                          FlexibleSpaceBar(
+                              collapseMode: CollapseMode.pin,
+                              centerTitle: true,
+                              title: Container(
+                                padding: EdgeInsets.only(
+                                    top: 20 +
+                                        MediaQuery.of(context).padding.top),
+                                width: _widthScreen * 0.5,
+                                child: Center(
+                                  heightFactor: _heightFactor,
+                                  child: StreamBuilder<List<CoinBalance>>(
+                                      initialData: coinsBloc.coinBalance,
+                                      stream: coinsBloc.outCoins,
                                       builder: (BuildContext context,
-                                          AsyncSnapshot<bool> snapshot) {
-                                        return snapshot.hasData && snapshot.data
-                                            ? BarGraph()
-                                            : Container();
-                                      })
-                                ],
+                                          AsyncSnapshot<List<CoinBalance>>
+                                              snapshot) {
+                                        if (snapshot.data != null) {
+                                          double totalBalanceUSD = 0;
+
+                                          for (CoinBalance coinBalance
+                                              in snapshot.data) {
+                                            totalBalanceUSD +=
+                                                coinBalance.balanceUSD;
+                                          }
+                                          return StreamBuilder<bool>(
+                                            initialData:
+                                                settingsBloc.showBalance,
+                                            stream: settingsBloc.outShowBalance,
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<bool> snapshot) {
+                                              bool hidden = false;
+                                              if (snapshot.hasData &&
+                                                  !snapshot.data) {
+                                                hidden = true;
+                                              }
+                                              final String amountText =
+                                                  _cexProvider.convert(
+                                                totalBalanceUSD,
+                                                hidden: hidden,
+                                              );
+                                              return FlatButton(
+                                                  onPressed: () {
+                                                    _cexProvider
+                                                        .switchCurrency();
+                                                  },
+                                                  child: AutoSizeText(
+                                                    amountText,
+                                                    maxFontSize: 18,
+                                                    minFontSize: 12,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .title,
+                                                    maxLines: 1,
+                                                  ));
+                                            },
+                                          );
+                                        } else {
+                                          return Center(
+                                              child: Container(
+                                            child:
+                                                const CircularProgressIndicator(),
+                                          ));
+                                        }
+                                      }),
+                                ),
                               ),
-                            ),
-                            height: _heightScreen * 0.35,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: const <double>[0.01, 1],
-                              colors: const <Color>[
-                                Color.fromRGBO(98, 90, 229, 1),
-                                Color.fromRGBO(45, 184, 240, 1),
-                              ],
-                            )),
-                          ));
+                              background: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      const LoadAsset(),
+                                      const SizedBox(
+                                        height: 14.0,
+                                      ),
+                                      StreamBuilder<bool>(
+                                          initialData: settingsBloc.showBalance,
+                                          stream: settingsBloc.outShowBalance,
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<bool> snapshot) {
+                                            return snapshot.hasData &&
+                                                    snapshot.data
+                                                ? BarGraph()
+                                                : Container();
+                                          })
+                                    ],
+                                  ),
+                                ),
+                                height: _heightScreen * 0.35,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: const <double>[0.01, 1],
+                                  colors: const <Color>[
+                                    Color.fromRGBO(98, 90, 229, 1),
+                                    Color.fromRGBO(45, 184, 240, 1),
+                                  ],
+                                )),
+                              )),
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: _buildProgressIndicator(),
+                          ),
+                        ],
+                      );
                     },
                   ),
                   automaticallyImplyLeading: false,
@@ -179,6 +197,23 @@ class _CoinsPageState extends State<CoinsPage> {
             body: Container(
                 color: Theme.of(context).backgroundColor,
                 child: const ListCoins())));
+  }
+
+  Widget _buildProgressIndicator() {
+    return StreamBuilder<CoinToActivate>(
+        initialData: coinsBloc.currentActiveCoin,
+        stream: coinsBloc.outcurrentActiveCoin,
+        builder:
+            (BuildContext context, AsyncSnapshot<CoinToActivate> snapshot) {
+          if (snapshot.data != null) {
+            return const SizedBox(
+              height: 2,
+              child: LinearProgressIndicator(),
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 }
 
@@ -397,9 +432,12 @@ class ItemCoin extends StatefulWidget {
 }
 
 class _ItemCoinState extends State<ItemCoin> {
+  RewardsProvider rewardsProvider;
+
   @override
   Widget build(BuildContext context) {
     final CexProvider cexProvider = Provider.of<CexProvider>(context);
+    rewardsProvider ??= Provider.of<RewardsProvider>(context);
     final Coin coin = widget.coinBalance.coin;
     final Balance balance = widget.coinBalance.balance;
     final NumberFormat f = NumberFormat('###,##0.########');
@@ -581,17 +619,39 @@ class _ItemCoinState extends State<ItemCoin> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(30.0)),
-                                    onPressed: () {
-                                      CoinDetail(
-                                              coinBalance: widget.coinBalance)
-                                          .showDialogClaim(context);
+                                    onPressed: () async {
+                                      rewardsProvider.update();
+                                      Navigator.push<dynamic>(
+                                        context,
+                                        MaterialPageRoute<dynamic>(
+                                            builder: (BuildContext context) =>
+                                                RewardsPage()),
+                                      );
                                     },
-                                    child: Text(
-                                      'CLAIM YOUR REWARDS',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .body1
-                                          .copyWith(fontSize: 12),
+                                    child: Row(
+                                      children: <Widget>[
+                                        if (rewardsProvider.needClaim)
+                                          Container(
+                                            padding:
+                                                const EdgeInsets.only(right: 4),
+                                            child: Stack(
+                                              children: <Widget>[
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                ),
+                                                buildRedDot(context)
+                                              ],
+                                            ),
+                                          ),
+                                        Text(
+                                          'CLAIM YOUR REWARDS',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body1
+                                              .copyWith(fontSize: 12),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 )

@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:io' show File, Platform, Process, ProcessResult;
+import 'dart:io' show File, Platform, Process;
 
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
-    show ByteData, EventChannel, MethodChannel, rootBundle;
-import 'package:flutter/services.dart' show ByteData, rootBundle;
+    show EventChannel, MethodChannel, rootBundle;
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -26,7 +26,6 @@ import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:package_info/package_info.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Singleton shorthand for `MMService()`, Market Maker API.
 MMService mmSe = MMService._internal();
@@ -154,27 +153,7 @@ class MMService {
   }
 
   Future<void> init(String passphrase) async {
-    if (Platform.isAndroid) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final ProcessResult checkmm2process = await Process.run(
-          'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
-      if (prefs.getInt('mm2ProcessPID') == null ||
-          !checkmm2process.stdout
-              .toString()
-              .contains(prefs.getInt('mm2ProcessPID').toString())) {
-        await mmSe.runBin();
-      } else {
-        mmSe.initUsername(passphrase);
-        mmSe._running = true;
-        await mmSe.initCheckLogs();
-        coinsBloc.currentCoinActivate(null);
-        coinsBloc.updateCoinBalances();
-        coinsBloc.startCheckBalance();
-      }
-    } else {
-      await mmSe.runBin();
-    }
-
+    await mmSe.runBin();
     metrics();
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
@@ -186,65 +165,6 @@ class MMService {
         await syncSwaps.update('musicService');
       }
     });
-  }
-
-  /// Updates the executable copy of the Market Maker binary.
-  Future<void> updateMmBinary(Function uiLog) async {
-    uiLog('Loading preferences…');
-
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final ls = await Process.run('ls', <String>['${filesPath}mm2']);
-
-    // True if the "mm2" file is there AND if we can invoke shell commands, such as "ls".
-    final lsMatch = ls.stdout.toString().trim() == '${filesPath}mm2';
-
-    // Sanity check: native code must reply us with 'pong'.
-    final String pong = await nativeC.invokeMethod<String>('ping');
-    if (pong != 'pong') throw Exception('No pong');
-
-    final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
-    Log('mm_service:207', 'BUILD_TIME: $buildTime');
-    if (buildTime <= 0) throw Exception('No BUILD_TIME');
-    final ms = DateTime.now().millisecondsSinceEpoch;
-    if (ms <= buildTime) Log('mm_service:210', 'BUILD_TIME in the future!');
-
-    final lastHash = prefs.getString('mm2.lastHash') ?? '';
-    final lastCheck = prefs.getInt('mm2.lastCheck') ?? 0;
-    if (ms <= lastCheck) Log('mm_service:214', 'lastCheck in the future!');
-
-    // If there's a copy of mm2 binary and we've checked it recently then we're done.
-    if (lsMatch && buildTime < lastCheck) return;
-
-    // NB: Unpacking `mm2` from the assets archive is a CPU-intensive operation
-    // and locks the UI thread. Spawning a second Dart isolate is not an option
-    // because it would not have `rootBundle` access. If we need UI to stay
-    // responsive then we can move the MM update into the Java native code.
-
-    uiLog('Loading assets/mm2…');
-    Log('mm_service:225', 'Loading assets/mm2…');
-    await sleepMs(22); // Gives UI a chance to update before we CPU-lock
-    final ByteData mm2bytes = await rootBundle.load('assets/mm2');
-
-    uiLog('Calculating mm2 hash…');
-    Log('mm_service:230', 'Calculating assets/mm2 hash…');
-    await sleepMs(22); // Gives UI a chance to update before we CPU-lock
-    // AG: On my device it takes 7.7 seconds to calculate SHA1, 4.3 seconds to calculate MD5.
-    final md5h = md5.convert(mm2bytes.buffer.asUint8List()).toString();
-    if (md5h == lastHash) {
-      Log('mm_service:235', 'MM matches the assets/ hash, skipping update');
-      await prefs.setInt('mm2.lastCheck', ms);
-      return;
-    }
-
-    uiLog('Updating MM…');
-    Log('mm_service:241', 'Updating MM…');
-    await sleepMs(22); // Gives UI a chance to update before we CPU-lock
-    if (lsMatch) await deleteMmBin();
-    await saveMmBin(mm2bytes.buffer.asUint8List());
-    await Process.run('chmod', <String>['0544', '${filesPath}mm2']);
-    await prefs.setString('mm2.lastHash', md5h);
-    await prefs.setInt('mm2.lastCheck', ms);
   }
 
   void initUsername(String passphrase) {
@@ -280,22 +200,6 @@ class MMService {
         await truncSink.close();
       }
     });
-  }
-
-  Future<void> waitUntilMM2isStop() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getInt('mm2ProcessPID') != null) {
-      for (int i = 0; i < 100; i++) {
-        final ProcessResult checkmm2process = await Process.run(
-            'ps', <String>['-p', prefs.getInt('mm2ProcessPID').toString()]);
-        if (!checkmm2process.stdout
-            .toString()
-            .contains(prefs.getInt('mm2ProcessPID').toString())) {
-          break;
-        }
-        await Future<dynamic>.delayed(const Duration(milliseconds: 500));
-      }
-    }
   }
 
   String get filesPath => applicationDocumentsDirectorySync == null
@@ -367,7 +271,7 @@ class MMService {
     initUsername(passphrase);
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
-    gui = 'atomicDeFi ${packageInfo.version} $os';
+    gui = 'atomicDEX ${packageInfo.version} $os';
     if (Platform.isAndroid) {
       final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
       gui += '; BT=${buildTime ~/ 1000}';
@@ -386,53 +290,43 @@ class MMService {
         .receiveBroadcastStream()
         .listen(_onNativeLog, onError: _onNativeLogError);
 
-    if (Platform.isAndroid) {
-      await stopmm2();
-      await waitUntilMM2isStop();
-
-      await File('${filesPath}MM2.json').writeAsString(startParam);
-
-      try {
-        await initCheckLogs();
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        Process.run('./mm2', <String>[],
-                environment: <String, String>{'MM_LOG': '${filesPath}mm.log'},
-                workingDirectory: filesPath)
-            .then((ProcessResult onValue) {
-          prefs.setInt('mm2ProcessPID', onValue.pid);
-        });
-      } catch (e) {
-        print(e);
-        rethrow;
+    try {
+      final int errorCode = await nativeC.invokeMethod<dynamic>(
+          'start', <String, String>{'params': startParam}); //start mm2
+      final Mm2Error error = mm2ErrorFrom(errorCode);
+      if (error != Mm2Error.ok) {
+        if (error == Mm2Error.already_runs) {
+          Log('mm_service', '$error, restarting mm2');
+          await stopmm2();
+          await runBin();
+        } else {
+          throw Exception('Error on start mm2: $error');
+        }
       }
-    } else if (Platform.isIOS) {
-      try {
-        await nativeC.invokeMethod<dynamic>(
-            'start', <String, String>{'params': startParam}); //start mm2
 
-        // check when mm2 is ready then load coins
-        final int timerTmp = DateTime.now().millisecondsSinceEpoch;
-        Timer.periodic(const Duration(seconds: 2), (_) {
-          final int t1 = timerTmp + 20000;
-          final int t2 = DateTime.now().millisecondsSinceEpoch;
-          if (t1 <= t2) {
+      // check when mm2 is ready then load coins
+      final int timerTmp = DateTime.now().millisecondsSinceEpoch;
+      Timer.periodic(const Duration(seconds: 2), (_) {
+        final int t1 = timerTmp + 20000;
+        final int t2 = DateTime.now().millisecondsSinceEpoch;
+        if (t1 <= t2) {
+          _.cancel();
+        }
+
+        checkStatusMm2().then((int onValue) {
+          final status = mm2StatusFrom(onValue);
+          Log('mm_service:313', 'mm2_main_status: $status');
+          if (status == Mm2Status.ready) {
+            _running = true;
             _.cancel();
+            initCoinsAndLoad();
+            coinsBloc.startCheckBalance();
           }
-
-          checkStatusmm2().then((int onValue) {
-            Log('mm_service:423', 'mm2_main_status: $onValue');
-            if (onValue == 3) {
-              _running = true;
-              _.cancel();
-              initCoinsAndLoad();
-              coinsBloc.startCheckBalance();
-            }
-          });
         });
-      } catch (e) {
-        print(e);
-        rethrow;
-      }
+      });
+    } catch (e) {
+      print(e);
+      rethrow;
     }
   }
 
@@ -464,7 +358,7 @@ class MMService {
   /// Process a line of MM log,
   /// triggering an update of the swap and order lists whenever such changes are detected in the log.
   void _onLog(String chunk) {
-    Log('mm_service:467', chunk);
+    Log('mm_service:356', chunk);
 
     final pkr =
         RegExp(r'initialize] netid (\d+) public key (\w+) preferred port');
@@ -492,7 +386,7 @@ class MMService {
     final sending = RegExp(
         r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
     for (RegExpMatch mat in sending.allMatches(chunk)) {
-      //Log('mm_service:495', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:384', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
     }
 
@@ -500,7 +394,7 @@ class MMService {
     // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
     final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
     for (RegExpMatch mat in dashboard.allMatches(chunk)) {
-      //Log('mm_service:503', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
+      //Log('mm_service:392', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
       reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
     }
 
@@ -523,7 +417,7 @@ class MMService {
   }
 
   void _onNativeLogError(Object error) {
-    Log('mm_service:526', error);
+    Log('mm_service:415', error);
   }
 
   Future<List<CoinInit>> readJsonCoinInit() async {
@@ -540,15 +434,15 @@ class MMService {
       await coinsBloc.activateCoinKickStart();
       final active = await coinsBloc.electrumCoins();
       await coinsBloc.enableCoins(active);
-      Log('mm_service:543', 'All coins activated');
+      Log('mm_service:432', 'All coins activated');
       await coinsBloc.updateCoinBalances();
-      Log('mm_service:545', 'loadCoin finished');
+      Log('mm_service:434', 'loadCoin finished');
     } catch (e) {
       print(e);
     }
   }
 
-  Future<int> checkStatusmm2() async {
+  Future<int> checkStatusMm2() async {
     return await nativeC.invokeMethod('status');
   }
 
@@ -590,7 +484,7 @@ class MMService {
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:593', 'getAllBalances');
+    Log('mm_service:482', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {
@@ -621,4 +515,55 @@ class FileAndSink {
   FileAndSink(this.file, this.sink);
   File file;
   IOSink sink;
+}
+
+/// mm2_main error codes defined in "mm2_lib.rs".
+enum Mm2Error {
+  ok,
+  already_runs,
+  conf_is_null,
+  conf_not_utf8,
+  cant_thread,
+  unknown,
+}
+
+/// mm2_main_status codes defined in "mm2_lib.rs".
+enum Mm2Status {
+  not_running,
+  no_context,
+  no_rpc,
+  ready,
+  unknown,
+}
+
+Mm2Error mm2ErrorFrom(int errorCode) {
+  switch (errorCode) {
+    case 0:
+      return Mm2Error.ok;
+    case 1:
+      return Mm2Error.already_runs;
+    case 2:
+      return Mm2Error.conf_is_null;
+    case 3:
+      return Mm2Error.conf_not_utf8;
+    case 5:
+      return Mm2Error.cant_thread;
+    default:
+      return Mm2Error.unknown;
+  }
+}
+
+Mm2Status mm2StatusFrom(int statusCode) {
+  switch (statusCode) {
+    case 0:
+      return Mm2Status.not_running;
+    case 1:
+      return Mm2Status.no_context;
+    case 2:
+      return Mm2Status.no_rpc;
+    case 3:
+      return Mm2Status.ready;
+    default:
+      return Mm2Status.unknown;
+  }
 }

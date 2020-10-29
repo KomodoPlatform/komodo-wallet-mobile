@@ -73,7 +73,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           Decimal ethfee = deci(0);
           if (snapshot.hasData && coinsDetailBloc.customFee == null) {
             try {
-              fee = snapshot.data;
+              fee = deci(snapshot.data);
             } catch (e) {
               Log.println('build_confirmation_step:78', e);
             }
@@ -87,7 +87,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           if (coinsDetailBloc.customFee != null &&
               widget.coinBalance.coin.type == 'erc') {
             fee = deci(coinsDetailBloc.customFee.gas) *
-                deci(coinsDetailBloc.customFee.gasPrice) / deci(1000000000);
+                deci(coinsDetailBloc.customFee.gasPrice) /
+                deci(1000000000);
           }
 
           Decimal amountToPay = deci(widget.amountToPay);
@@ -113,9 +114,6 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
 
           isEthActive = !(ethCoin == null);
           ethfee = fee;
-
-          print(Decimal.parse(ethfee.toString()));
-          print(Decimal.parse(widget.amountToPay));
 
           if ((ethCoin != null && ethfee > ethCoin.balance.balance) ||
               (ethCoin != null &&

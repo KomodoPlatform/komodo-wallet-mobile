@@ -153,7 +153,6 @@ class _ContactsListState extends State<ContactsList> {
         child: Card(
           margin: const EdgeInsets.all(0),
           elevation: 3,
-          color: Theme.of(context).primaryColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: blockList,

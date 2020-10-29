@@ -73,18 +73,11 @@ void main() {
 
   testWidgets('Test if asks list have title', (WidgetTester tester) async {
     await tester.runAsync(() async {
-      final List<Orderbook> orderbooks = await loadOrderbooks();
-      final Orderbook orderbook = orderbooks
-          .where((Orderbook orderbook) => orderbook.base == 'MORTY')
-          .toList()
-          .first;
-
       await createWidget(
         tester,
         ChangeNotifierProvider(
           create: (context) => StartupProvider(),
-          child: AsksOrder(
-            asks: orderbook.asks,
+          child: const AsksOrder(
             sellAmount: 10.0,
             baseCoin: 'MORTY',
           ),
@@ -97,18 +90,11 @@ void main() {
 
   testWidgets('Test if asks list have 0 orders', (WidgetTester tester) async {
     await tester.runAsync(() async {
-      final List<Orderbook> orderbooks = await loadOrderbooks();
-      final Orderbook orderbook = orderbooks
-          .where((Orderbook orderbook) => orderbook.base == 'BTC')
-          .toList()
-          .first;
-
       await createWidget(
         tester,
         ChangeNotifierProvider(
           create: (context) => StartupProvider(),
-          child: AsksOrder(
-            asks: orderbook.asks,
+          child: const AsksOrder(
             sellAmount: 10.0,
             baseCoin: 'BTC',
           ),
