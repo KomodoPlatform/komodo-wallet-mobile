@@ -36,6 +36,7 @@ class ReceiveOrders extends StatefulWidget {
 
 class _ReceiveOrdersState extends State<ReceiveOrders> {
   OrderBookProvider orderBookProvider;
+  final searchTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +47,36 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
     return SimpleDialog(
       title: Text(AppLocalizations.of(context).receiveLower),
       key: const Key('receive-list-coins'),
-      children: orderbooks
-          .map((Orderbook orderbook) => OrderbookItem(
-              key: Key('orderbook-item-${orderbook.rel.toLowerCase()}'),
-              orderbook: orderbook,
-              onCreateNoOrder: widget.onCreateNoOrder,
-              onCreateOrder: widget.onCreateOrder,
-              sellAmount: widget.sellAmount))
-          .toList(),
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: TextField(
+            controller: searchTextController,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Search for Ticker',
+            ),
+          ),
+        ),
+        ...orderbooks
+            .where((ob) => ob.rel
+                .toLowerCase()
+                .startsWith(searchTextController.text.toLowerCase()))
+            .map((Orderbook orderbook) => OrderbookItem(
+                key: Key('orderbook-item-${orderbook.rel.toLowerCase()}'),
+                orderbook: orderbook,
+                onCreateNoOrder: widget.onCreateNoOrder,
+                onCreateOrder: widget.onCreateOrder,
+                sellAmount: widget.sellAmount))
+            .toList(),
+      ],
     );
+  }
+
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
   }
 }
 
