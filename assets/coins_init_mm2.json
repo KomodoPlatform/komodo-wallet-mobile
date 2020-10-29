@@ -1239,6 +1239,19 @@
 		"confpath": "USERHOME/.galaxycash/galaxycash.conf"
 	},
 	{
+		"coin": "GLEEC",
+		"name": "GleecBTC",
+		"fname": "GleecBTC",
+		"rpcport": 8332,
+        "pubtype": 35,
+        "p2shtype": 38,
+        "wiftype": 65,
+        "segwit": true,
+        "txfee": 0,
+        "mm2": 1,
+        "required_confirmations": 2
+	},
+	{
 		"coin": "GIN",
 		"name": "gincoin",
 		"fname": "GINcoin",
