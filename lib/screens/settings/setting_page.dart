@@ -355,7 +355,7 @@ class _SettingPageState extends State<SettingPage> {
                   trailing: Icon(Icons.chevron_right,
                       color: Colors.white.withOpacity(0.7)),
                   title: Text(
-                    'Camouflage PIN',
+                    AppLocalizations.of(context).camoPinLink,
                     style: Theme.of(context).textTheme.body1.copyWith(
                         fontWeight: FontWeight.w300,
                         color: Colors.white.withOpacity(0.7)),
@@ -477,7 +477,7 @@ class _SettingPageState extends State<SettingPage> {
                 overflow: Overflow.visible,
                 children: <Widget>[
                   Text(
-                    'Check for updates', // TODO(yurii): localization
+                    AppLocalizations.of(context).checkForUpdates,
                     style: Theme.of(context).textTheme.body1.copyWith(
                         fontWeight: FontWeight.w300,
                         color: Colors.white.withOpacity(0.7)),

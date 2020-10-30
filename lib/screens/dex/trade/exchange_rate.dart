@@ -80,7 +80,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
                     width: 4,
                   ),
                   Text(
-                    'CEXchange rate', // TODO(yurii): localization
+                    AppLocalizations.of(context).cexChangeRate,
                     style: Theme.of(context).textTheme.body2,
                   ),
                 ],
@@ -132,7 +132,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
               color = Colors.greenAccent;
             }
             message =
-                'Expedient: -$percentString% compared to CEX'; // TODO(yurii): localization
+                AppLocalizations.of(context).exchangeExpedient(percentString);
             break;
           }
         case 1:
@@ -141,12 +141,12 @@ class _ExchangeRateState extends State<ExchangeRate> {
               color = Colors.orange;
             }
             message =
-                'Expensive: +$percentString% compared to CEX'; // TODO(yurii): localization
+                AppLocalizations.of(context).exchangeExpensive(percentString);
             break;
           }
         default:
           {
-            message = 'Identical to CEX'; // TODO(yurii): localization
+            message = AppLocalizations.of(context).echangeIdentical;
           }
       }
 

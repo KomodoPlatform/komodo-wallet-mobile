@@ -369,8 +369,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           Icons.show_chart,
                                           key: const Key('main-nav-markets'),
                                         ),
-                                        title: const Text(
-                                            'Markets'), // TODO(yurii): localization
+                                        title: Text(AppLocalizations.of(context)
+                                            .marketsTab),
                                       ),
                                       BottomNavigationBarItem(
                                           icon: Stack(
@@ -382,7 +382,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: const Text('Feed')),
+                                          title: Text(
+                                              AppLocalizations.of(context)
+                                                  .feedTab)),
                                       BottomNavigationBarItem(
                                           icon: Stack(
                                             children: <Widget>[
@@ -394,7 +396,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: const Text('More')),
+                                          title: Text(
+                                              AppLocalizations.of(context)
+                                                  .moreTab)),
                                     ],
                                   )
                                 ],

@@ -16,14 +16,12 @@ class CamoPinSetupPage extends StatefulWidget {
 }
 
 class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
-  final String _matchingPinErrorMessage =
-      // TODO(yurii): localization
-      'Your general PIN and Camouflage PIN are the same.\n'
-      'Camouflage mode will not be available.\n'
-      'Please change Camouflage PIN.';
+  String _matchingPinErrorMessage;
 
   @override
   Widget build(BuildContext context) {
+    _matchingPinErrorMessage =
+        AppLocalizations.of(context).matchingCamoPinError;
     _showMatchingPinPopupIfNeeded();
 
     return StreamBuilder<bool>(
@@ -43,8 +41,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
             child: Scaffold(
               backgroundColor: Theme.of(context).backgroundColor,
               appBar: AppBar(
-                // TODO(yurii): localization
-                title: const Text('Camouflage PIN'),
+                title: Text(AppLocalizations.of(context).camoPinTitle),
               ),
               body: SingleChildScrollView(
                 child: Container(
@@ -88,11 +85,10 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                         padding: const EdgeInsets.all(12),
                         child: Row(
                           children: <Widget>[
-                            const Expanded(
+                            Expanded(
                                 child: Text(
-                              // TODO(yurii): localization
-                              'Fake balance amount:',
-                              style: TextStyle(fontSize: 18),
+                              AppLocalizations.of(context).fakeBalanceAmt,
+                              style: const TextStyle(fontSize: 18),
                             )),
                             Text(
                               '${camoFraction.data}%',
@@ -173,10 +169,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                         return Container(
                           padding: const EdgeInsets.all(18),
                           child: Text(
-                            // TODO(yurii): localization
-                            'General PIN protection is not active.\n'
-                            'Camouflage mode will not be available.'
-                            '\nPlease activate PIN protection.',
+                            AppLocalizations.of(context).generalPinNotActive,
                             style: TextStyle(
                               color: Theme.of(context).errorColor,
                               height: 1.2,
@@ -219,8 +212,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
-                                          // TODO(yurii): localization
-                                          'Camouflage PIN not found',
+                                          AppLocalizations.of(context)
+                                              .camoPinNotFound,
                                           style: TextStyle(
                                             fontSize: 18,
                                             color: isEnabled
@@ -229,8 +222,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                           ),
                                         ),
                                         Text(
-                                          // TODO(yurii): localization
-                                          'Create Camouflage PIN',
+                                          AppLocalizations.of(context)
+                                              .camoPinCreate,
                                           style: TextStyle(
                                             color:
                                                 Theme.of(context).disabledColor,
@@ -254,17 +247,17 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
                                               if (normalPin.data !=
                                                   camoPinSnapshot.data)
-                                                return const Text(
-                                                  // TODO(yurii): localization
-                                                  'Camouflage PIN saved',
-                                                  style: TextStyle(
+                                                return Text(
+                                                  AppLocalizations.of(context)
+                                                      .camoPinSaved,
+                                                  style: const TextStyle(
                                                     fontSize: 18,
                                                   ),
                                                 );
 
                                               return Text(
-                                                // TODO(yurii): localization
-                                                'Invalid Camouflage PIN',
+                                                AppLocalizations.of(context)
+                                                    .camoPinInvalid,
                                                 style: TextStyle(
                                                   fontSize: 18,
                                                   color: Theme.of(context)
@@ -273,8 +266,8 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                               );
                                             }),
                                         Text(
-                                          // TODO(yurii): localization
-                                          'Change Camouflage PIN',
+                                          AppLocalizations.of(context)
+                                              .camoPinChange,
                                           style: TextStyle(
                                             color:
                                                 Theme.of(context).disabledColor,
@@ -308,9 +301,10 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                         context,
                         MaterialPageRoute<dynamic>(
                             builder: (BuildContext context) => PinPage(
-                                // TODO(yurii): localization
-                                title: 'Camouflage PIN Setup',
-                                subTitle: 'Enter new Camouflage PIN',
+                                title:
+                                    AppLocalizations.of(context).camoSetupTitle,
+                                subTitle: AppLocalizations.of(context)
+                                    .camoSetupSubtitle,
                                 pinStatus: PinStatus.CREATE_CAMO_PIN,
                                 password: password)));
                   },
@@ -323,12 +317,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         horizontal: 12,
         vertical: 24,
       ),
-      child: Text(
-          // TODO(yurii): localization
-          'If You\'ll unlock the app with the Camouflage PIN, a fake'
-          ' LOW balance will be shown'
-          ' and the Camouflage PIN config option will'
-          ' NOT be visible in the settings',
+      child: Text(AppLocalizations.of(context).camoPinDesc,
           style: TextStyle(
             height: 1.3,
             color: Theme.of(context).disabledColor,
@@ -360,7 +349,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        isEnabled ? 'On' : 'Off',
+                        isEnabled
+                            ? AppLocalizations.of(context).camoPinOn
+                            : AppLocalizations.of(context).camoPinOff,
                         style: const TextStyle(
                           fontSize: 18,
                         ),
@@ -399,9 +390,9 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
 
     showConfirmationDialog(
         context: context,
-        title: 'Invalid PIN',
+        title: AppLocalizations.of(context).matchingCamoTitle,
         message: _matchingPinErrorMessage,
-        confirmButtonText: 'Change',
+        confirmButtonText: AppLocalizations.of(context).matchingCamoChange,
         onConfirm: () {
           _startPinSetup();
         });

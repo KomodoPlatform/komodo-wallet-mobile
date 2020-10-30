@@ -41,8 +41,8 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                   Container(
                     padding: const EdgeInsets.fromLTRB(6, 12, 6, 12),
                     child: Text(
-                      // TODO(yurii): localization
-                      'Create ${rel.length} Order${rel.length > 1 ? 's' : ''}:',
+                      AppLocalizations.of(context)
+                          .multiConfirmTitle(rel.length),
                       style: Theme.of(context).textTheme.subtitle,
                     ),
                   ),
@@ -71,8 +71,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                 : () {
                     multiOrderProvider.validated = false;
                   },
-            // TODO(yurii): localization
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context).multiConfirmCancel),
           ),
           RaisedButton(
             onPressed: inProgress
@@ -91,8 +90,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                     });
                   },
             disabledColor: Theme.of(context).disabledColor.withAlpha(100),
-            // TODO(yurii): localization
-            child: const Text('Confirm'),
+            child: Text(AppLocalizations.of(context).multiConfirmConfirm),
           ),
         ],
       ),
@@ -285,9 +283,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                             height: 16,
                           ),
                           Text(
-                            // TODO(yurii): localization
-                            'The swap can take up to 60 minutes. '
-                            'DONT close this application!',
+                            AppLocalizations.of(context).infoTrade2,
                             style: Theme.of(context).textTheme.body1,
                           )
                         ],
