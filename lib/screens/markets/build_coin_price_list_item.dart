@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -259,9 +260,9 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                 quoted: quotedChart,
                               )
                             : snapshot.hasError
-                                ? const Center(
-                                    child: Text(
-                                        'Something went wrong. Try again later.'), // TODO(yurii): localization
+                                ? Center(
+                                    child: Text(AppLocalizations.of(context)
+                                        .candleChartError),
                                   )
                                 : const Center(
                                     child: CircularProgressIndicator(),

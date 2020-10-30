@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -13,6 +14,7 @@ class UpdatesProvider extends ChangeNotifier {
     _init();
   }
 
+  final AppLocalizations _localizations = AppLocalizations();
   bool isFetching = false;
   UpdateStatus status;
   String currentVersion;
@@ -107,11 +109,10 @@ class UpdatesProvider extends ChangeNotifier {
     if (status != UpdateStatus.upToDate) {
       notifService.show(
         NotifObj(
-          // TODO(yurii): localization
-          title: 'Update available',
+          title: _localizations.updatesNotifTitle,
           text: newVersion == null
-              ? 'New version available. Please update.'
-              : 'Version $newVersion available. Please update.',
+              ? _localizations.updatesNotifAvailable
+              : _localizations.updatesNotifAvailableVersion(newVersion),
           uid: 'version_update',
         ),
       );
