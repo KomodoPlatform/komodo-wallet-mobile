@@ -136,6 +136,13 @@ void audio_init (const char* assets_maker) {
   dex_engine = engine;
   dex_player = player;}
 
+void audio_resume() {
+    NSError* err;
+    [dex_engine startAndReturnError: &err];
+    if (err) {os_log (OS_LOG_DEFAULT, "audio_resume]: %{public}@", err); return;}
+    [dex_player play];
+}
+
 AVAudioFile* audio_load_file (NSString* rpath) {
   // See if there is a custom sound in Documents.
   const char* documents = documentDirectory();
