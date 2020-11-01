@@ -97,17 +97,17 @@ class _ProgressSwapState extends State<ProgressSwap>
                   children: <Widget>[
                     Text(
                       '${AppLocalizations.of(context).step} ',
-                      style: Theme.of(context).textTheme.subtitle,
+                      style: Theme.of(context).textTheme.subtitle2,
                     ),
                     Text(
                       swap.statusStep.toString(),
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle
+                          .subtitle2
                           .copyWith(color: Theme.of(context).accentColor),
                     ),
                     Text('/${swap.statusSteps}',
-                        style: Theme.of(context).textTheme.subtitle),
+                        style: Theme.of(context).textTheme.subtitle2),
                   ],
                 ),
               ),
@@ -115,7 +115,7 @@ class _ProgressSwapState extends State<ProgressSwap>
           ),
           Text(
             swapHistoryBloc.getSwapStatusString(context, swap.status),
-            style: Theme.of(context).textTheme.body1.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                 fontWeight: FontWeight.w300,
                 color: Colors.white.withOpacity(0.5)),
           )

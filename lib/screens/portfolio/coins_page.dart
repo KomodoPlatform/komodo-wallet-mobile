@@ -128,7 +128,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                                     minFontSize: 12,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .title,
+                                                        .headline6,
                                                     maxLines: 1,
                                                   ));
                                             },
@@ -550,7 +550,7 @@ class _ItemCoinState extends State<ItemCoin> {
                             coin.name.toUpperCase(),
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle
+                                .subtitle2
                                 .copyWith(fontSize: 14),
                           ),
                         ],
@@ -581,7 +581,8 @@ class _ItemCoinState extends State<ItemCoin> {
                                   return AutoSizeText(
                                     '$amount ${coin.abbr}',
                                     maxLines: 1,
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle2,
                                   );
                                 }),
                           ),
@@ -601,7 +602,7 @@ class _ItemCoinState extends State<ItemCoin> {
                                     widget.coinBalance.balanceUSD,
                                     hidden: hidden,
                                   ),
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 );
                               }),
                           widget.coinBalance.coin.abbr == 'KMD' &&
@@ -648,7 +649,7 @@ class _ItemCoinState extends State<ItemCoin> {
                                           'CLAIM YOUR REWARDS',
                                           style: Theme.of(context)
                                               .textTheme
-                                              .body1
+                                              .bodyText2
                                               .copyWith(fontSize: 12),
                                         )
                                       ],
@@ -689,7 +690,7 @@ class _ItemCoinState extends State<ItemCoin> {
                                                           .tagERC20,
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .subtitle,
+                                                          .subtitle2,
                                                     ),
                                                   ],
                                                 )
@@ -713,7 +714,7 @@ class _ItemCoinState extends State<ItemCoin> {
                                                           .tagKMD,
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .subtitle,
+                                                          .subtitle2,
                                                     ),
                                                   ],
                                                 ),

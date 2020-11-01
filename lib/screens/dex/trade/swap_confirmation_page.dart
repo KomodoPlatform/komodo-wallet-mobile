@@ -148,10 +148,10 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                   Text(
                     '${widget.amountToSell} ${widget?.coinRel?.abbr}',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   Text(AppLocalizations.of(context).sell,
-                      style: Theme.of(context).textTheme.body1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
                             color: Theme.of(context).accentColor,
                             fontWeight: FontWeight.w100,
                           ))
@@ -187,7 +187,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                         Text(
                           '${widget.amountToBuy} ${widget.coinBase.abbr}',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.title,
+                          style: Theme.of(context).textTheme.headline6,
                         ),
                         Text(
                             AppLocalizations.of(context)
@@ -197,10 +197,11 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                                     .receive
                                     .toLowerCase()
                                     .substring(1),
-                            style: Theme.of(context).textTheme.body1.copyWith(
-                                  color: Theme.of(context).accentColor,
-                                  fontWeight: FontWeight.w100,
-                                ))
+                            style:
+                                Theme.of(context).textTheme.bodyText2.copyWith(
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.w100,
+                                    ))
                       ],
                     )),
               ),
@@ -244,14 +245,14 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).infoTrade1,
-                            style: Theme.of(context).textTheme.subtitle,
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                           const SizedBox(
                             height: 16,
                           ),
                           Text(
                             AppLocalizations.of(context).infoTrade2,
-                            style: Theme.of(context).textTheme.body1,
+                            style: Theme.of(context).textTheme.bodyText2,
                           )
                         ],
                       ),

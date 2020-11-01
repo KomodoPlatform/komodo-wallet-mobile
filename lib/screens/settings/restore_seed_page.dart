@@ -59,7 +59,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         Center(
           child: Text(
             AppLocalizations.of(context).enterSeedPhrase,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
             textAlign: TextAlign.center,
           ),
         ),
@@ -84,13 +84,13 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         obscureText: _isSeedHidden,
         enableInteractiveSelection: true,
         toolbarOptions: ToolbarOptions(
-            paste: controllerSeed.text.isEmpty,
-            copy: false,
-            cut: false,
-            selectAll: false,
-          ),
+          paste: controllerSeed.text.isEmpty,
+          copy: false,
+          cut: false,
+          selectAll: false,
+        ),
         maxLines: _isSeedHidden ? 1 : null,
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
           enabledBorder: OutlineInputBorder(
@@ -98,8 +98,8 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
                   BorderSide(color: Theme.of(context).primaryColorLight)),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).accentColor)),
-          hintStyle: Theme.of(context).textTheme.body2,
-          labelStyle: Theme.of(context).textTheme.body1,
+          hintStyle: Theme.of(context).textTheme.bodyText1,
+          labelStyle: Theme.of(context).textTheme.bodyText2,
           hintText: AppLocalizations.of(context).exampleHintSeed,
           labelText: null,
           suffixIcon: PasswordVisibilityControl(
@@ -153,7 +153,7 @@ class _RestoreSeedPageState extends State<RestoreSeedPage> {
         ),
         Text(
           AppLocalizations.of(context).allowCustomSeed,
-          style: Theme.of(context).textTheme.body2,
+          style: Theme.of(context).textTheme.bodyText1,
         )
       ],
     );

@@ -54,7 +54,7 @@ class _DetailSwapState extends State<DetailSwap> {
           padding: const EdgeInsets.only(top: 32, left: 24, right: 24),
           child: Text(
             '${AppLocalizations.of(context).tradeDetail}:',
-            style: Theme.of(context).textTheme.subtitle.copyWith(
+            style: Theme.of(context).textTheme.subtitle2.copyWith(
                 color: Theme.of(context).accentColor,
                 fontWeight: FontWeight.bold),
           ),
@@ -66,7 +66,7 @@ class _DetailSwapState extends State<DetailSwap> {
             '${AppLocalizations.of(context).requestedTrade}:',
             style: Theme.of(context)
                 .textTheme
-                .body2
+                .bodyText1
                 .copyWith(fontWeight: FontWeight.w400),
           ),
         ),
@@ -115,7 +115,7 @@ class _DetailSwapState extends State<DetailSwap> {
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Text(
                       '$title:',
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
                   isNoteEdit
@@ -130,7 +130,7 @@ class _DetailSwapState extends State<DetailSwap> {
                           (noteText == null || noteText.isEmpty)
                               ? 'Add a Note'
                               : noteText,
-                          style: Theme.of(context).textTheme.body1.copyWith(
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
                               fontWeight: FontWeight.bold, fontSize: 18),
                           maxLines: isNoteExpanded ? null : 1,
                           overflow:
@@ -219,14 +219,14 @@ class _DetailSwapState extends State<DetailSwap> {
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(
                 '$title:',
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
             Text(
               id,
               style: Theme.of(context)
                   .textTheme
-                  .body1
+                  .bodyText2
                   .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
             ),
           ],
@@ -251,7 +251,7 @@ class _DetailSwapState extends State<DetailSwap> {
                 AppLocalizations.of(context).sell,
                 style: Theme.of(context)
                     .textTheme
-                    .body2
+                    .bodyText1
                     .copyWith(fontWeight: FontWeight.w400),
               )
             ],
@@ -278,7 +278,7 @@ class _DetailSwapState extends State<DetailSwap> {
                 '${AppLocalizations.of(context).receive[0].toUpperCase()}${AppLocalizations.of(context).receive.substring(1)}',
                 style: Theme.of(context)
                     .textTheme
-                    .body2
+                    .bodyText1
                     .copyWith(fontWeight: FontWeight.w400),
               )
             ],
@@ -304,7 +304,7 @@ class _DetailSwapState extends State<DetailSwap> {
       '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
       style: Theme.of(context)
           .textTheme
-          .body1
+          .bodyText2
           .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
     );
   }

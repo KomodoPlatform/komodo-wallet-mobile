@@ -20,7 +20,7 @@ class _SoundVolumeButtonState extends State<SoundVolumeButton> {
         icon: Icon(Icons.audiotrack),
         color: musicService.on()
             ? Theme.of(context).toggleableActiveColor
-            : Theme.of(context).textTheme.body2.color,
+            : Theme.of(context).textTheme.bodyText1.color,
         onPressed: () {
           setState(() {
             musicService.flip();

@@ -355,22 +355,20 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                             key:
                                                 const Key('main-nav-portfolio'),
                                           ),
-                                          title: Text(
-                                              AppLocalizations.of(context)
-                                                  .portfolio)),
+                                          label: AppLocalizations.of(context)
+                                              .portfolio),
                                       BottomNavigationBarItem(
                                           icon: Icon(Icons.swap_vert,
                                               key: const Key('main-nav-dex')),
-                                          title: Text(
-                                              AppLocalizations.of(context)
-                                                  .dex)),
+                                          label:
+                                              AppLocalizations.of(context).dex),
                                       BottomNavigationBarItem(
                                         icon: Icon(
                                           Icons.show_chart,
                                           key: const Key('main-nav-markets'),
                                         ),
-                                        title: Text(AppLocalizations.of(context)
-                                            .marketsTab),
+                                        label: AppLocalizations.of(context)
+                                            .marketsTab,
                                       ),
                                       BottomNavigationBarItem(
                                           icon: Stack(
@@ -382,9 +380,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: Text(
-                                              AppLocalizations.of(context)
-                                                  .feedTab)),
+                                          label: AppLocalizations.of(context)
+                                              .feedTab),
                                       BottomNavigationBarItem(
                                           icon: Stack(
                                             children: <Widget>[
@@ -396,9 +393,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                                 buildRedDot(context),
                                             ],
                                           ),
-                                          title: Text(
-                                              AppLocalizations.of(context)
-                                                  .moreTab)),
+                                          label: AppLocalizations.of(context)
+                                              .moreTab),
                                     ],
                                   )
                                 ],

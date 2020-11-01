@@ -31,7 +31,7 @@ class _CustomFeeState extends State<CustomFee> {
             children: <Widget>[
               Text(
                 'Custom fee',
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               Switch(
                 key: const Key('send-toggle-customfee'),
@@ -56,7 +56,7 @@ class _CustomFeeState extends State<CustomFee> {
                   AppLocalizations.of(context).customFeeWarning,
                   style: Theme.of(context)
                       .textTheme
-                      .body1
+                      .bodyText2
                       .copyWith(color: Theme.of(context).errorColor),
                 ),
                 widget.isERCToken
@@ -109,7 +109,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                   textInputAction: TextInputAction.done,
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),
-                  style: Theme.of(context).textTheme.body1,
+                  style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
@@ -119,8 +119,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                       focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Theme.of(context).accentColor)),
-                      hintStyle: Theme.of(context).textTheme.body1,
-                      labelStyle: Theme.of(context).textTheme.body1,
+                      hintStyle: Theme.of(context).textTheme.bodyText2,
+                      labelStyle: Theme.of(context).textTheme.bodyText2,
                       labelText: AppLocalizations.of(context).gas + ' [Gwei]'),
                   validator: (String value) {
                     if (widget.isCustomFeeActive) {
@@ -153,7 +153,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
             ],
             textInputAction: TextInputAction.done,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            style: Theme.of(context).textTheme.body1,
+            style: Theme.of(context).textTheme.bodyText2,
             textAlign: TextAlign.end,
             decoration: InputDecoration(
                 border: const OutlineInputBorder(),
@@ -163,8 +163,8 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                 focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Theme.of(context).accentColor)),
-                hintStyle: Theme.of(context).textTheme.body1,
-                labelStyle: Theme.of(context).textTheme.body1,
+                hintStyle: Theme.of(context).textTheme.bodyText2,
+                labelStyle: Theme.of(context).textTheme.bodyText2,
                 labelText: AppLocalizations.of(context).gasPrice + ' [Gwei]'),
             validator: (String value) {
               if (widget.isCustomFeeActive) {
@@ -214,7 +214,7 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
               textInputAction: TextInputAction.done,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText2,
               textAlign: TextAlign.end,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
@@ -224,8 +224,8 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
                   focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Theme.of(context).accentColor)),
-                  hintStyle: Theme.of(context).textTheme.body1,
-                  labelStyle: Theme.of(context).textTheme.body1,
+                  hintStyle: Theme.of(context).textTheme.bodyText2,
+                  labelStyle: Theme.of(context).textTheme.bodyText2,
                   labelText: AppLocalizations.of(context).customFee +
                       ' [' +
                       widget.coin.abbr +

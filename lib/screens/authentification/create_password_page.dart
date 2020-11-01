@@ -81,7 +81,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
             ),
             Text(
               AppLocalizations.of(context).titleCreatePassword,
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.headline6,
             ),
             const SizedBox(
               height: 24,
@@ -112,10 +112,10 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                     ? 'Password must contain at least 12 characters, with one lower-case, one upper-case and one special symbol.'
                     : null;
               },
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText2,
               decoration: InputDecoration(
                 errorMaxLines: 6,
-                errorStyle: Theme.of(context).textTheme.body1.copyWith(
+                errorStyle: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontSize: 12, color: Theme.of(context).errorColor),
                 border: const OutlineInputBorder(),
                 enabledBorder: OutlineInputBorder(
@@ -124,8 +124,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Theme.of(context).accentColor)),
-                hintStyle: Theme.of(context).textTheme.body2,
-                labelStyle: Theme.of(context).textTheme.body1,
+                hintStyle: Theme.of(context).textTheme.bodyText1,
+                labelStyle: Theme.of(context).textTheme.bodyText2,
                 hintText: AppLocalizations.of(context).hintPassword,
                 labelText: null,
                 suffixIcon: PasswordVisibilityControl(
@@ -159,7 +159,7 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                 onFieldSubmitted: (String data) {
                   _checkValidation(context);
                 },
-                style: Theme.of(context).textTheme.body1,
+                style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
@@ -168,8 +168,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
                   focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Theme.of(context).accentColor)),
-                  hintStyle: Theme.of(context).textTheme.body2,
-                  labelStyle: Theme.of(context).textTheme.body1,
+                  hintStyle: Theme.of(context).textTheme.bodyText1,
+                  labelStyle: Theme.of(context).textTheme.bodyText2,
                   hintText: AppLocalizations.of(context).hintConfirmPassword,
                   labelText: null,
                 ),

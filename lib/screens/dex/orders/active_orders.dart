@@ -119,7 +119,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                   DateFormat('dd MMM yyyy HH:mm').format(
                       DateTime.fromMillisecondsSinceEpoch(
                           order.createdAt * 1000)),
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -154,7 +154,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                                           .toUpperCase(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .body2
+                                          .bodyText1
                                           .copyWith(
                                             color: Colors.white,
                                           ))

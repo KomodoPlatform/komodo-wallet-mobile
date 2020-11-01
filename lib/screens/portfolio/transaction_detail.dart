@@ -112,7 +112,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
                             }
                             return AutoSizeText(
                               '$amountString ${tx.coin}',
-                              style: Theme.of(context).textTheme.title,
+                              style: Theme.of(context).textTheme.headline6,
                               maxLines: 1,
                               textAlign: TextAlign.center,
                             );
@@ -131,7 +131,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
               children: <Widget>[
                 Text(
                   tx.getTimeFormat(),
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -181,7 +181,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
 
             return Text(
               cexProvider.convert(amount, hidden: hidden),
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.bodyText1,
             );
           });
     }
@@ -272,7 +272,7 @@ class ItemTransationDetail extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context).textTheme.subtitle2,
           ),
           const SizedBox(
             width: 16,
@@ -297,7 +297,7 @@ class ItemTransationDetail extends StatelessWidget {
                 child: contact == null
                     ? AutoSizeText(
                         data,
-                        style: Theme.of(context).textTheme.body2,
+                        style: Theme.of(context).textTheme.bodyText1,
                         textAlign: TextAlign.end,
                       )
                     : Row(
@@ -310,9 +310,10 @@ class ItemTransationDetail extends StatelessWidget {
                           const SizedBox(width: 4),
                           AutoSizeText(
                             contact.name,
-                            style: Theme.of(context).textTheme.body2.copyWith(
-                                  color: Colors.white,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.bodyText1.copyWith(
+                                      color: Colors.white,
+                                    ),
                           )
                         ],
                       ),
@@ -364,7 +365,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
         children: <Widget>[
           Text(
             widget.title,
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context).textTheme.subtitle2,
           ),
           const SizedBox(
             width: 16,
@@ -390,7 +391,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                         (noteText == null || noteText.isEmpty)
                             ? 'Add a Note'
                             : noteText,
-                        style: Theme.of(context).textTheme.body2,
+                        style: Theme.of(context).textTheme.bodyText1,
                         maxLines: isExpanded ? null : 1,
                         overflow: isExpanded ? null : TextOverflow.ellipsis,
                       ),

@@ -88,18 +88,20 @@ class _ViewSeedState extends State<ViewSeed> {
     for (String word in widget.seed.split(' ')) {
       seedWord.add(RichText(
         text: TextSpan(
-            style:
-                Theme.of(widget.context).textTheme.body1.copyWith(fontSize: 22),
+            style: Theme.of(widget.context)
+                .textTheme
+                .bodyText2
+                .copyWith(fontSize: 22),
             children: <InlineSpan>[
               TextSpan(
                   text: i.toString().padLeft(2, '0'),
                   style: Theme.of(widget.context)
                       .textTheme
-                      .body1
+                      .bodyText2
                       .copyWith(color: Theme.of(widget.context).accentColor)),
               TextSpan(
                   text: '. $word',
-                  style: Theme.of(widget.context).textTheme.body1)
+                  style: Theme.of(widget.context).textTheme.bodyText2)
             ]),
       ));
       i++;
@@ -174,7 +176,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
         const SizedBox(height: 100),
         Text(
           AppLocalizations.of(context).enterpassword,
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
         const SizedBox(height: 8),
         TextField(
@@ -200,7 +202,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
             cut: false,
             selectAll: false,
           ),
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
@@ -208,8 +210,8 @@ class _UnlockPasswordState extends State<UnlockPassword> {
                     BorderSide(color: Theme.of(context).primaryColorLight)),
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(context).accentColor)),
-            hintStyle: Theme.of(context).textTheme.body2,
-            labelStyle: Theme.of(context).textTheme.body1,
+            hintStyle: Theme.of(context).textTheme.bodyText1,
+            labelStyle: Theme.of(context).textTheme.bodyText2,
             hintText: AppLocalizations.of(context).hintCurrentPassword,
             labelText: null,
             suffixIcon: PasswordVisibilityControl(

@@ -30,15 +30,15 @@ ThemeData getTheme() => ThemeData(
       textSelectionHandleColor: const Color.fromRGBO(57, 161, 238, 1),
       cardColor: primaryColor,
       textTheme: TextTheme(
-          headline: TextStyle(
+          headline5: TextStyle(
               fontSize: 40, fontWeight: FontWeight.w700, color: Colors.white),
-          title: TextStyle(
+          headline6: TextStyle(
               fontSize: 26.0, color: Colors.white, fontWeight: FontWeight.w700),
-          subtitle: const TextStyle(fontSize: 18.0, color: Colors.white),
-          body1: TextStyle(
+          subtitle2: const TextStyle(fontSize: 18.0, color: Colors.white),
+          bodyText2: TextStyle(
               fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.w300),
           button: const TextStyle(fontSize: 16.0, color: Colors.white),
-          body2:
+          bodyText1:
               TextStyle(fontSize: 14.0, color: Colors.white.withOpacity(0.5)),
           caption: TextStyle(
               fontSize: 12.0,

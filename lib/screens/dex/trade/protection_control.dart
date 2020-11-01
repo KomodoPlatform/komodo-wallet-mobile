@@ -59,7 +59,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
           child: Text(
             'Incoming  ${widget.coin.abbr} txs protection settings:',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
         SizedBox(height: useCustom ? 6 : 0),
