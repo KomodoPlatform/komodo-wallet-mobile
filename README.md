@@ -19,14 +19,15 @@ cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 ## Flutter version
 
-Currently using flutter 1.12.13+hotfix.7 in order to enjoy some recent UI fixes/updates, cf. https://github.com/ca333/komodoDEX/pull/656/commits/010c276b3aec9cb2231527ef18e9c2969c47f3ce
+Currently using flutter 1.22.3 in order to enjoy some recent UI fixes/updates, ref: https://github.com/ca333/komodoDEX/issues/913
 
-Upgrading from v1.9.1+hotfix.6  
+Upgrading from v1.12.13+hotfix.7
 
-    flutter version 1.12.13+hotfix.7
+    flutter channel stable
+    flutter version v1.22.3
+    flutter pub get
     flutter clean
     (cd ios && rm -rf Podfile.lock Podfile Pods)
-    flutter packages upgrade
 
 (If the "flutter version" doesn't have the required version in the list yet then one way to get it is to go to the flutter directory (cf. `which flutter`) and invoke `git pull` there).
 
@@ -43,14 +44,6 @@ Git tags can be used instead (that is, when we want to experiment with beta vers
 ### Kotlin vs Flutter
 
 In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Flutter “1.12.13+hotfix.7”. To fix it - [uninstall the latest Kotlin](https://github.com/flutter/flutter/issues/52077#issuecomment-600459786) - then the Kotlin version 1.3.61, bundled with the Android Studio, will reappear.
-
-## Flutter 1.22.2
-
-To upgrade your SDK and get the updated packages:
-
-    flutter version 1.22.2
-    flutter clean
-    flutter packages get
 
 ## Accessing the database
 
