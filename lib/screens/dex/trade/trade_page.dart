@@ -599,8 +599,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                             TextInputFormatter>[
                                                           DecimalTextInputFormatter(
                                                               decimalRange: 8),
-                                                          WhitelistingTextInputFormatter(
-                                                              RegExp(
+                                                          FilteringTextInputFormatter
+                                                              .allow(RegExp(
                                                                   '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
                                                         ],
                                                         focusNode:

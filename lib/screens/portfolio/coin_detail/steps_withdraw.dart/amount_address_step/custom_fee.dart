@@ -103,7 +103,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                 child: TextFormField(
                   controller: _gasController,
                   inputFormatters: <TextInputFormatter>[
-                    WhitelistingTextInputFormatter(RegExp(
+                    FilteringTextInputFormatter.allow(RegExp(
                         '^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
                   ],
                   textInputAction: TextInputAction.done,
@@ -148,7 +148,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
           child: TextFormField(
             controller: _gasPriceController,
             inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter(
+              FilteringTextInputFormatter.allow(
                   RegExp('^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
             ],
             textInputAction: TextInputAction.done,
@@ -208,7 +208,7 @@ class _CustomFeeFieldSmartChainState extends State<CustomFeeFieldSmartChain> {
           Expanded(
             child: TextFormField(
               inputFormatters: <TextInputFormatter>[
-                WhitelistingTextInputFormatter(
+                FilteringTextInputFormatter.allow(
                     RegExp('^\$|^(0|([1-9][0-9]{0,8}))([.,]{1}[0-9]{0,8})?\$'))
               ],
               textInputAction: TextInputAction.done,

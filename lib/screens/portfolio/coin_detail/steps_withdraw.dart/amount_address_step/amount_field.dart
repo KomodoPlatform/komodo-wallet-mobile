@@ -74,7 +74,7 @@ class _AmountFieldState extends State<AmountField> {
                   return TextFormField(
                     key: const Key('send-amount-field'),
                     inputFormatters: <TextInputFormatter>[
-                      WhitelistingTextInputFormatter(RegExp(
+                      FilteringTextInputFormatter.allow(RegExp(
                           '^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$'))
                     ],
                     focusNode: widget.focusNode,
