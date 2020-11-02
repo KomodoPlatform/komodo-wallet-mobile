@@ -86,7 +86,9 @@ class _AddressFieldState extends State<AddressField> {
                   key: const Key('send-address-field'),
                   controller: widget.controller,
                   autofocus: false,
-                  autovalidate: autovalidate,
+                  autovalidateMode: autovalidate
+                      ? AutovalidateMode.always
+                      : AutovalidateMode.disabled,
                   autocorrect: false,
                   enableSuggestions: false,
                   textInputAction: TextInputAction.done,

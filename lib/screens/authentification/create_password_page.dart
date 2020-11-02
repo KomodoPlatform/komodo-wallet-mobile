@@ -72,7 +72,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
       backgroundColor: Theme.of(context).backgroundColor,
       body: Form(
         key: _formKey,
-        autovalidate: _autoValidate,
+        autovalidateMode:
+            _autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: <Widget>[
