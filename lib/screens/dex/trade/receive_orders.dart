@@ -56,6 +56,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
               prefixIcon: Icon(Icons.search),
               hintText: 'Search for Ticker',
             ),
+            maxLength: 16,
           ),
         ),
         ...orderbooks
