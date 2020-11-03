@@ -25,6 +25,7 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:provider/provider.dart';
+import 'receive_dialog.dart';
 
 class CoinsPage extends StatefulWidget {
   @override
@@ -468,7 +469,7 @@ class _ItemCoinState extends State<ItemCoin> {
       color: Theme.of(context).backgroundColor,
       icon: Icons.arrow_downward,
       onTap: () {
-        showAddressDialog(context, balance.address, coin);
+        showReceiveDialog(context, balance.address, coin);
       },
     ));
     if (double.parse(balance.getBalance()) > 0) {

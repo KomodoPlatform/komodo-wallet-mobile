@@ -33,6 +33,7 @@ import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import '../receive_dialog.dart';
 
 class CoinDetail extends StatefulWidget {
   const CoinDetail({
@@ -576,7 +577,7 @@ class _CoinDetailState extends State<CoinDetail> {
         onPressed: () {
           switch (statusButton) {
             case StatusButton.RECEIVE:
-              showAddressDialog(mContext, currentCoinBalance.balance.address,
+              showReceiveDialog(mContext, currentCoinBalance.balance.address,
                   widget.coinBalance.coin);
               break;
             case StatusButton.SEND:
