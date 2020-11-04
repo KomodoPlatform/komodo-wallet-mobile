@@ -551,7 +551,7 @@ class _CoinDetailState extends State<CoinDetail> {
             : AppLocalizations.of(context).send.toUpperCase();
         break;
       case StatusButton.FAUCET:
-        text = 'Faucet'; // TODO(yurii): localization
+        text = AppLocalizations.of(context).faucetName;
         break;
       case StatusButton.CLAIM:
         text = AppLocalizations.of(context).claim.toUpperCase();

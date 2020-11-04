@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:komodo_dex/screens/portfolio/faucet_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -209,123 +210,13 @@ class _ItemCoinState extends State<ItemCoin> {
                                   style: Theme.of(context).textTheme.body2,
                                 );
                               }),
-                          widget.coinBalance.coin.abbr == 'KMD' &&
-                                  double.parse(widget.coinBalance.balance
-                                          .getBalance()) >=
-                                      10
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: OutlineButton(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context).accentColor),
-                                    highlightedBorderColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 6, horizontal: 16),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)),
-                                    onPressed: () async {
-                                      rewardsProvider.update();
-                                      Navigator.push<dynamic>(
-                                        context,
-                                        MaterialPageRoute<dynamic>(
-                                            builder: (BuildContext context) =>
-                                                RewardsPage()),
-                                      );
-                                    },
-                                    child: Row(
-                                      children: <Widget>[
-                                        if (rewardsProvider.needClaim)
-                                          Container(
-                                            padding:
-                                                const EdgeInsets.only(right: 4),
-                                            child: Stack(
-                                              children: <Widget>[
-                                                Container(
-                                                  width: 10,
-                                                  height: 10,
-                                                ),
-                                                buildRedDot(context)
-                                              ],
-                                            ),
-                                          ),
-                                        Text(
-                                          'CLAIM YOUR REWARDS',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .body1
-                                              .copyWith(fontSize: 12),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : Container(),
-                          (widget.coinBalance.coin.type == 'erc' ||
-                                      widget.coinBalance.coin.type ==
-                                          'smartChain') &&
-                                  widget.coinBalance.coin.abbr != 'KMD' &&
-                                  widget.coinBalance.coin.abbr != 'ETH'
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 14),
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(16)),
-                                    child: Container(
-                                        color: widget.coinBalance.coin.type ==
-                                                'erc'
-                                            ? const Color.fromRGBO(
-                                                20, 117, 186, 1)
-                                            : Theme.of(context).backgroundColor,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 4, horizontal: 8),
-                                          child: widget.coinBalance.coin.type ==
-                                                  'erc'
-                                              ? Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      AppLocalizations.of(
-                                                              context)
-                                                          .tagERC20,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle,
-                                                    ),
-                                                  ],
-                                                )
-                                              : Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Image.asset(
-                                                      'assets/kmd.png',
-                                                      width: 18,
-                                                      height: 18,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 8,
-                                                    ),
-                                                    Text(
-                                                      AppLocalizations.of(
-                                                              context)
-                                                          .tagKMD,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle,
-                                                    ),
-                                                  ],
-                                                ),
-                                        )),
-                                  ),
-                                )
-                              : Container()
+                          _buildClaimButton(),
+                          Row(
+                            children: <Widget>[
+                              _buildFaucetButton(),
+                              _buildNetworkLabel(),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -339,6 +230,136 @@ class _ItemCoinState extends State<ItemCoin> {
           height: 0,
         ),
       ],
+    );
+  }
+
+  Widget _buildClaimButton() {
+    final bool needClaimButton = widget.coinBalance.coin.abbr == 'KMD' &&
+        double.parse(widget.coinBalance.balance.getBalance()) >= 10;
+
+    if (!needClaimButton) return Container();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: OutlineButton(
+        borderSide: BorderSide(color: Theme.of(context).accentColor),
+        highlightedBorderColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        onPressed: () async {
+          rewardsProvider.update();
+          Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => RewardsPage()),
+          );
+        },
+        child: Row(
+          children: <Widget>[
+            if (rewardsProvider.needClaim)
+              Container(
+                padding: const EdgeInsets.only(right: 4),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      width: 10,
+                      height: 10,
+                    ),
+                    buildRedDot(context)
+                  ],
+                ),
+              ),
+            Text(
+              'CLAIM YOUR REWARDS',
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFaucetButton() {
+    if (widget.coinBalance.coin.abbr == 'RICK' ||
+        widget.coinBalance.coin.abbr == 'MORTY') {
+      return Padding(
+        padding: const EdgeInsets.only(
+          top: 12,
+          right: 8,
+        ),
+        child: OutlineButton(
+          borderSide: BorderSide(color: Theme.of(context).accentColor),
+          highlightedBorderColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          onPressed: () async {
+            showFaucetDialog(
+                context: context,
+                coin: widget.coinBalance.coin.abbr,
+                address: widget.coinBalance.balance.address);
+          },
+          child: Text(
+            AppLocalizations.of(context).faucetName,
+            style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _buildNetworkLabel() {
+    final bool needLabel = (widget.coinBalance.coin.type == 'erc' ||
+            widget.coinBalance.coin.type == 'smartChain') &&
+        widget.coinBalance.coin.abbr != 'KMD' &&
+        widget.coinBalance.coin.abbr != 'ETH';
+
+    if (!needLabel) return Container();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 14),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        child: Container(
+            color: widget.coinBalance.coin.type == 'erc'
+                ? const Color.fromRGBO(20, 117, 186, 1)
+                : Theme.of(context).backgroundColor,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              child: widget.coinBalance.coin.type == 'erc'
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          AppLocalizations.of(context).tagERC20,
+                          style: Theme.of(context).textTheme.subtitle,
+                        ),
+                      ],
+                    )
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/kmd.png',
+                          width: 18,
+                          height: 18,
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          AppLocalizations.of(context).tagKMD,
+                          style: Theme.of(context).textTheme.subtitle,
+                        ),
+                      ],
+                    ),
+            )),
+      ),
     );
   }
 }
