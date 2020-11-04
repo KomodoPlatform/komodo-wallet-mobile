@@ -33,6 +33,7 @@ import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import '../faucet_dialog.dart';
 import '../receive_dialog.dart';
 
 class CoinDetail extends StatefulWidget {
@@ -498,28 +499,33 @@ class _CoinDetailState extends State<CoinDetail> {
               }),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const SizedBox(
-              width: 16,
-            ),
-            _buildButtonLight(StatusButton.RECEIVE, mContext),
-            const SizedBox(
-              width: 8,
-            ),
-            currentCoinBalance.coin.abbr == 'KMD' &&
-                    double.parse(currentCoinBalance.balance.getBalance()) >= 10
-                ? _buildButtonLight(StatusButton.CLAIM, mContext)
-                : Container(),
-            const SizedBox(
-              width: 8,
-            ),
-            double.parse(currentCoinBalance.balance.getBalance()) > 0
-                ? _buildButtonLight(StatusButton.SEND, mContext)
-                : Container(),
-            const SizedBox(
-              width: 16,
-            ),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 8),
+              child: _buildButtonLight(StatusButton.RECEIVE, mContext),
+            )),
+            if (currentCoinBalance.coin.abbr == 'KMD' &&
+                double.parse(currentCoinBalance.balance.getBalance()) >= 10)
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: _buildButtonLight(StatusButton.CLAIM, mContext),
+              )),
+            if (currentCoinBalance.coin.abbr == 'RICK' ||
+                currentCoinBalance.coin.abbr == 'MORTY')
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: _buildButtonLight(StatusButton.FAUCET, mContext),
+              )),
+            if (double.parse(currentCoinBalance.balance.getBalance()) > 0)
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: _buildButtonLight(StatusButton.SEND, mContext),
+              )),
           ],
         ),
         const SizedBox(
@@ -544,10 +550,12 @@ class _CoinDetailState extends State<CoinDetail> {
             ? AppLocalizations.of(context).close.toUpperCase()
             : AppLocalizations.of(context).send.toUpperCase();
         break;
+      case StatusButton.FAUCET:
+        text = 'Faucet'; // TODO(yurii): localization
+        break;
       case StatusButton.CLAIM:
         text = AppLocalizations.of(context).claim.toUpperCase();
-        return Expanded(
-            child: Stack(
+        return Stack(
           children: <Widget>[
             SecondaryButton(
               text: text,
@@ -568,37 +576,41 @@ class _CoinDetailState extends State<CoinDetail> {
                 top: 20,
               )
           ],
-        ));
+        );
     }
 
-    return Expanded(
-      child: SecondaryButton(
-        text: text,
-        onPressed: () {
-          switch (statusButton) {
-            case StatusButton.RECEIVE:
-              showReceiveDialog(mContext, currentCoinBalance.balance.address,
-                  widget.coinBalance.coin);
-              break;
-            case StatusButton.SEND:
-              if (currentIndex == 3) {
-                setState(() {
-                  isExpanded = false;
-                  _waitForInit();
-                });
-              } else {
-                setState(() {
-                  elevationHeader == 8.0
-                      ? elevationHeader = 8.0
-                      : elevationHeader = 0.0;
-                  isExpanded = !isExpanded;
-                });
-              }
-              break;
-            default:
-          }
-        },
-      ),
+    return SecondaryButton(
+      text: text,
+      onPressed: () {
+        switch (statusButton) {
+          case StatusButton.RECEIVE:
+            showReceiveDialog(mContext, currentCoinBalance.balance.address,
+                widget.coinBalance.coin);
+            break;
+          case StatusButton.FAUCET:
+            showFaucetDialog(
+                context: mContext,
+                coin: currentCoinBalance.coin.abbr,
+                address: currentCoinBalance.balance.address);
+            break;
+          case StatusButton.SEND:
+            if (currentIndex == 3) {
+              setState(() {
+                isExpanded = false;
+                _waitForInit();
+              });
+            } else {
+              setState(() {
+                elevationHeader == 8.0
+                    ? elevationHeader = 8.0
+                    : elevationHeader = 0.0;
+                isExpanded = !isExpanded;
+              });
+            }
+            break;
+          default:
+        }
+      },
     );
   }
 
@@ -838,4 +850,4 @@ class _CoinDetailState extends State<CoinDetail> {
   }
 }
 
-enum StatusButton { SEND, RECEIVE, CLAIM }
+enum StatusButton { SEND, RECEIVE, FAUCET, CLAIM }

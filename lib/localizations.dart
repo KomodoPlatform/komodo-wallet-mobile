@@ -695,7 +695,7 @@ class AppLocalizations {
       Intl.message('Rewards status:', name: 'rewardsPopupTitle');
   String get rewardsPopupOk => Intl.message('Ok', name: 'rewardsPopupOk');
   String rewardsTimeDays(int dd) =>
-      Intl.message('$dd day(s)}', args: <Object>[dd], name: 'rewardsTimeDays');
+      Intl.message('$dd day(s)', args: <Object>[dd], name: 'rewardsTimeDays');
   String rewardsTimeHours(int hh, String minutes) =>
       Intl.message('${hh}h ${minutes}m',
           args: <Object>[hh, minutes], name: 'rewardsTimeHours');
