@@ -127,14 +127,14 @@ class MusicService {
   }
 
   String _customName(MusicMode mode) => mode == MusicMode.TAKER
-      ? 'taker.mp3'
+      ? 'tick-tock.mp3'
       : mode == MusicMode.MAKER
-          ? 'maker.mp3'
+          ? 'tick-tock.mp3'
           : mode == MusicMode.ACTIVE
-              ? 'active.mp3'
+              ? 'tick-tock.mp3'
               : mode == MusicMode.FAILED
-                  ? 'failed.mp3'
-                  : mode == MusicMode.APPLAUSE ? 'applause.mp3' : null;
+                  ? 'none.mp3'
+                  : mode == MusicMode.APPLAUSE ? 'none.mp3' : null;
 
   Future<void> setSoundPath(MusicMode mode, String path) async {
     final String name = _customName(mode);
@@ -216,16 +216,16 @@ class MusicService {
     final Random rng = Random();
 
     final String defaultPath = newMode == MusicMode.TAKER
-        ? (rng.nextBool() ? 'taker1.mp3' : 'taker2.mp3')
+        ? (rng.nextBool() ? 'tick-tock.mp3' : 'tick-tock.mp3')
         : newMode == MusicMode.MAKER
-            ? 'maker.mp3'
+            ? 'tick-tock.mp3'
             : newMode == MusicMode.ACTIVE
-                ? 'active.mp3'
+                ? 'tick-tock.mp3'
                 : newMode == MusicMode.FAILED
-                    ? (rng.nextBool() ? 'failed1.mp3' : 'failed2.mp3')
+                    ? (rng.nextBool() ? 'tick-tock.mp3' : 'tick-tock.mp3')
                     : newMode == MusicMode.APPLAUSE
-                        ? 'applause.mp3'
-                        : newMode == MusicMode.SILENT ? 'lastSound.mp3' : null;
+                        ? 'none.mp3'
+                        : newMode == MusicMode.SILENT ? 'none.mp3' : null;
 
     final String path = customFile != null
         ? (Platform.isAndroid ? customFile.path : customName)
@@ -295,7 +295,7 @@ class MusicService {
   /// and resume only when the user returns back to the application.
   void justPlay() {
     if (!Platform.isAndroid) return;
-    _player.loop('maker.mp3', volume: 0.1);
+    _player.loop('tick-tock.mp3', volume: 0.1);
   }
 
   /// True when we want to periodically update the orders and swaps.
