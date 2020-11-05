@@ -95,11 +95,13 @@ void audio_init (const char* assets_maker) {
   }];
 
   if (!assets_maker) {os_log (OS_LOG_DEFAULT, "audio_init] !assets_maker"); return;}
+  // TODO: change with actual sound-scheme samples
   const char* end = strstr (assets_maker, "/tick-tock.mp3");
   if (!end) {os_log (OS_LOG_DEFAULT, "audio_init] !end"); return;}
   dex_assets_audio = [[[NSString alloc] initWithUTF8String: assets_maker] substringToIndex: end - assets_maker];
   //os_log (OS_LOG_DEFAULT, "audio_init] dex_assets_audio set to %{public}@", dex_assets_audio);
 
+  // TODO: change with actual sound-scheme samples
   NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "start.mp3"];  // “Standing by”
 
   NSURL* url = [[NSURL alloc] initFileURLWithPath: path];

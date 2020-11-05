@@ -126,6 +126,7 @@ class MusicService {
     return MusicMode.SILENT;
   }
 
+  // TODO(yurii): change with actual sound-scheme samples
   String _customName(MusicMode mode) => mode == MusicMode.TAKER
       ? 'tick-tock.mp3'
       : mode == MusicMode.MAKER
@@ -215,6 +216,7 @@ class MusicService {
 
     final Random rng = Random();
 
+    // TODO(yurii): change with actual sound-scheme samples
     final String defaultPath = newMode == MusicMode.TAKER
         ? (rng.nextBool() ? 'tick-tock.mp3' : 'tick-tock.mp3')
         : newMode == MusicMode.MAKER
@@ -295,6 +297,7 @@ class MusicService {
   /// and resume only when the user returns back to the application.
   void justPlay() {
     if (!Platform.isAndroid) return;
+    // TODO(yurii): change with actual sound-scheme samples
     _player.loop('tick-tock.mp3', volume: 0.1);
   }
 
