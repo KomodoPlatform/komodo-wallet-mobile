@@ -18,8 +18,6 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rational/rational.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -158,99 +156,6 @@ bool isNumeric(String s) {
     return false;
   }
   return double.tryParse(s) != null;
-}
-
-void showAddressDialog(BuildContext mContext, String address, Coin coin) {
-  dialogBloc.dialog = showDialog<dynamic>(
-    context: mContext,
-    builder: (BuildContext context) {
-      // return object of type Dialog
-      return AlertDialog(
-        contentPadding: const EdgeInsets.all(16),
-        titlePadding: const EdgeInsets.all(0),
-        shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.circular(6.0)),
-        content: Container(
-          height: MediaQuery.of(context).size.height * 0.4,
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    copyToClipBoard(mContext, address);
-                  },
-                  child: QrImage(
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.white,
-                    data: address,
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  copyToClipBoard(mContext, address);
-                },
-                child: Container(
-                  child: Center(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-                    child: AutoSizeText(
-                      address,
-                      textKey: const Key('coin-details-address'),
-                      style: Theme.of(context).textTheme.body1,
-                      maxLines: 2,
-                    ),
-                  )),
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  coin.abbr == 'RICK' || coin.abbr == 'MORTY'
-                      ? RaisedButton(
-                          child: Text(AppLocalizations.of(context).faucetName,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .button
-                                  .copyWith(
-                                      color: Theme.of(context).primaryColor)),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
-                          elevation: 0,
-                          color: Theme.of(context).accentColor,
-                          onPressed: () {
-                            Clipboard.setData(ClipboardData(text: address));
-                            launchURL(
-                                'https://www.atomicexplorer.com/#/faucet/${coin.abbr.toLowerCase()}');
-                          },
-                        )
-                      : Expanded(
-                          child: Container(),
-                        ),
-                  FlatButton(
-                    child: Text(
-                      AppLocalizations.of(context).close.toUpperCase(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .button
-                          .copyWith(color: Theme.of(context).accentColor),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  ).then((dynamic data) {
-    dialogBloc.dialog = null;
-  });
 }
 
 void showMessage(BuildContext mContext, String error) {
