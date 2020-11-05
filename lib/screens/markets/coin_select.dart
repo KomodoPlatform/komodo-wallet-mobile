@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -206,12 +207,12 @@ class _CoinSelectState extends State<CoinSelect> {
 
           final List<CoinBalance> _sortedList = coinsBloc.sortCoins(_coinsList);
           if (_sortedList.isEmpty) {
-            return const SimpleDialog(
-              title: Text('Select Coin'), // TODO(yurii): localization
+            return SimpleDialog(
+              title: Text(AppLocalizations.of(context).coinSelectTitle),
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(25.0),
-                  child: Text('No active coins'), // TODO(yurii): localization
+                  padding: const EdgeInsets.all(25.0),
+                  child: Text(AppLocalizations.of(context).coinSelectNotFound),
                 ),
               ],
             );
@@ -231,7 +232,7 @@ class _CoinSelectState extends State<CoinSelect> {
                       children: <Widget>[
                         Icon(Icons.cancel),
                         const SizedBox(width: 8),
-                        const Text('Clear'),
+                        Text(AppLocalizations.of(context).coinSelectClear),
                       ],
                     ),
                   ),
@@ -261,14 +262,14 @@ class _CoinSelectState extends State<CoinSelect> {
 
           if (coinsList.isEmpty) {
             coinsList.add(
-              const SimpleDialogOption(
-                child: Text('No coins to show'), // TODO(yurii): localization
+              SimpleDialogOption(
+                child: Text(AppLocalizations.of(context).coinSelectNotFound),
               ),
             );
           }
 
           return SimpleDialog(
-            title: const Text('Select Coin'), // TODO(yurii): localization
+            title: Text(AppLocalizations.of(context).coinSelectTitle),
             children: [
               ...resetSelect,
               ...coinsList,

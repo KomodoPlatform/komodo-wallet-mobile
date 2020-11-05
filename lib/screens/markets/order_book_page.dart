@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -162,7 +163,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
                     color: _showChart ? null : Theme.of(context).accentColor),
                 const SizedBox(width: 2),
                 Text(
-                  'Chart', // TODO(yurii): localization
+                  AppLocalizations.of(context).marketsChart,
                   style: _showChart
                       ? null
                       : TextStyle(
@@ -178,7 +179,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
               });
             },
             child: Text(
-              'Depth', // TODO(yurii): localization
+              AppLocalizations.of(context).marketsDepth,
               style: !_showChart
                   ? null
                   : TextStyle(
@@ -235,9 +236,9 @@ class _OrderBookPageState extends State<OrderBookPage> {
 
   Widget _buildOrderBook() {
     if (!_hasBothCoins) {
-      return const Center(
+      return Center(
         heightFactor: 10,
-        child: Text('Please select coins'), // TODO(yurii): localization
+        child: Text(AppLocalizations.of(context).marketsSelectCoins),
       );
     }
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 
 class AmountField extends StatefulWidget {
   const AmountField(
@@ -10,14 +12,14 @@ class AmountField extends StatefulWidget {
       this.focusNode,
       this.controller,
       this.autoFocus = false,
-      this.balance})
+      this.coinAbbr})
       : super(key: key);
 
   final Function onMaxValue;
   final FocusNode focusNode;
   final TextEditingController controller;
   final bool autoFocus;
-  final double balance;
+  final String coinAbbr;
 
   @override
   _AmountFieldState createState() => _AmountFieldState();
@@ -56,53 +58,69 @@ class _AmountFieldState extends State<AmountField> {
             width: 8,
           ),
           Expanded(
-            child: TextFormField(
-              key: const Key('send-amount-field'),
-              inputFormatters: <TextInputFormatter>[
-                WhitelistingTextInputFormatter(
-                    RegExp('^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$'))
-              ],
-              focusNode: widget.focusNode,
-              controller: widget.controller,
-              autofocus: widget.autoFocus,
-              textInputAction: TextInputAction.done,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              style: Theme.of(context).textTheme.body1,
-              textAlign: TextAlign.end,
-              onChanged: (String amount) {
-                coinsDetailBloc.setAmountToSend(amount);
-              },
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColorLight)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor)),
-                  hintStyle: Theme.of(context).textTheme.body1,
-                  labelStyle: Theme.of(context).textTheme.body1,
-                  labelText: AppLocalizations.of(context).amount),
-              // The validator receives the text the user has typed in
-              validator: (String value) {
-                if (value.isEmpty && coinsDetailBloc.isCancel) {
-                  return null;
-                }
-                value = value.replaceAll(',', '.');
+            child: StreamBuilder<List<CoinBalance>>(
+                initialData: coinsBloc.coinBalance,
+                stream: coinsBloc.outCoins,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<CoinBalance>> snapshot) {
+                  CoinBalance currentCoinBalance;
+                  if (snapshot.hasData) {
+                    for (CoinBalance coinBalance in snapshot.data) {
+                      if (coinBalance.coin.abbr == widget.coinAbbr) {
+                        currentCoinBalance = coinBalance;
+                      }
+                    }
+                  }
+                  return TextFormField(
+                    key: const Key('send-amount-field'),
+                    inputFormatters: <TextInputFormatter>[
+                      WhitelistingTextInputFormatter(RegExp(
+                          '^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$'))
+                    ],
+                    focusNode: widget.focusNode,
+                    controller: widget.controller,
+                    autofocus: widget.autoFocus,
+                    textInputAction: TextInputAction.done,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    style: Theme.of(context).textTheme.body1,
+                    textAlign: TextAlign.end,
+                    onChanged: (String amount) {
+                      coinsDetailBloc.setAmountToSend(amount);
+                    },
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColorLight)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).accentColor)),
+                        hintStyle: Theme.of(context).textTheme.body1,
+                        labelStyle: Theme.of(context).textTheme.body1,
+                        labelText: AppLocalizations.of(context).amount),
+                    // The validator receives the text the user has typed in
+                    validator: (String value) {
+                      if (value.isEmpty && coinsDetailBloc.isCancel) {
+                        return null;
+                      }
+                      value = value.replaceAll(',', '.');
 
-                if (value.isEmpty || double.parse(value) <= 0) {
-                  return AppLocalizations.of(context).errorValueNotEmpty;
-                }
+                      if (value.isEmpty || double.parse(value) <= 0) {
+                        return AppLocalizations.of(context).errorValueNotEmpty;
+                      }
 
-                final double currentAmount = double.parse(value);
+                      final double currentAmount = double.parse(value);
 
-                if (currentAmount > widget.balance) {
-                  return AppLocalizations.of(context).errorAmountBalance;
-                }
-                return null;
-              },
-            ),
+                      if (currentAmount >
+                          double.parse(
+                              currentCoinBalance.balance.getBalance())) {
+                        return AppLocalizations.of(context).errorAmountBalance;
+                      }
+                      return null;
+                    },
+                  );
+                }),
           ),
         ],
       ),

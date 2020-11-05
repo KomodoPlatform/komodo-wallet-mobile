@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +36,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
       backgroundColor: Theme.of(context).backgroundColor,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: const Text('atomicDEX update'), // TODO(yurii): localization
+        title: Text(AppLocalizations.of(context).updatesTitle),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -55,28 +56,30 @@ class _UpdatesPageState extends State<UpdatesPage> {
                     children: <Widget>[
                       Image.asset('assets/logo_kmd.png'),
                       const SizedBox(height: 12),
-                      Text(
-                          'You are using version ${updatesProvider.currentVersion}'), // TODO(yurii): localization
+                      Text(AppLocalizations.of(context).updatesCurrentVersion(
+                          updatesProvider.currentVersion)),
                       const SizedBox(height: 4),
                       updatesProvider.isFetching
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                SizedBox(
+                              children: <Widget>[
+                                const SizedBox(
                                     width: 14,
                                     height: 14,
                                     child: CircularProgressIndicator(
                                         strokeWidth: 2)),
-                                SizedBox(width: 6),
-                                Text(
-                                    'Checking for updates...') // TODO(yurii): localization
+                                const SizedBox(width: 6),
+                                Text(AppLocalizations.of(context)
+                                    .updatesChecking)
                               ],
                             )
                           : updatesProvider.status == UpdateStatus.upToDate
-                              ? const Text(
-                                  'Already up to date') // TODO(yurii): localization
+                              ? Text(
+                                  AppLocalizations.of(context).updatesUpToDate)
                               : Text(
-                                  'New version available${updatesProvider.newVersion == null ? '' : ': ${updatesProvider.newVersion}'}', // TODO(yurii): localization
+                                  AppLocalizations.of(context)
+                                          .updatesAvailable +
+                                      '${updatesProvider.newVersion == null ? '' : ': ${updatesProvider.newVersion}'}',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )
                     ],
@@ -121,7 +124,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
                             : launchURL(
                                 'https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex');
                       },
-                      child: const Text('Update'), // TODO(yurii): localization
+                      child: Text(AppLocalizations.of(context).updatesUpdate),
                     ),
                     if (updatesProvider.status == UpdateStatus.available ||
                         updatesProvider.status == UpdateStatus.recommended) ...[
@@ -137,8 +140,7 @@ class _UpdatesPageState extends State<UpdatesPage> {
                         onPressed: () {
                           if (widget.onSkip != null) widget.onSkip();
                         },
-                        child: const Text(
-                            'Skip for now'), // TODO(yurii): localization
+                        child: Text(AppLocalizations.of(context).updatesSkip),
                       )
                     ]
                   ],

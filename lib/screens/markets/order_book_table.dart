@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -78,29 +79,32 @@ class _OrderBookTableState extends State<OrderBookTable> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 4),
           child: Text(
-            'Price (${orderBookProvider.activePair.buy.abbr})',
+            AppLocalizations.of(context)
+                .ordersTablePrice(orderBookProvider.activePair.buy.abbr),
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
-        ), // TODO(yurii): localization
+        ),
         Container(
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            'Amt. (${orderBookProvider.activePair.sell.abbr})',
+            AppLocalizations.of(context)
+                .ordersTableAmount(orderBookProvider.activePair.sell.abbr),
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
           ),
-        ), // TODO(yurii): localization
+        ),
         Container(
           padding: const EdgeInsets.only(right: 4),
           height: 34,
           alignment: Alignment.centerRight,
           child: Text(
-            'Total (${orderBookProvider.activePair.sell.abbr})',
+            AppLocalizations.of(context)
+                .ordersTableTotal(orderBookProvider.activePair.sell.abbr),
             maxLines: 1,
             style: const TextStyle(fontSize: 14),
-          ), // TODO(yurii): localization
+          ),
         ),
       ],
     );
@@ -191,10 +195,10 @@ class _OrderBookTableState extends State<OrderBookTable> {
             height: 26,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 4.0),
-            child: const Text(
-              'No bids found', // TODO(yurii): localization
+            child: Text(
+              AppLocalizations.of(context).marketsNoBids,
               maxLines: 1,
-              style: TextStyle(color: Colors.green, fontSize: 14),
+              style: const TextStyle(color: Colors.green, fontSize: 14),
             ),
           ),
           Container(),
@@ -228,7 +232,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
                   Text(
                     formatPrice(ask.price),
                     maxLines: 1,
-                    style: TextStyle(color: Colors.red, fontSize: 14),
+                    style: const TextStyle(color: Colors.red, fontSize: 14),
                   ),
                   if (_isInAdressBook(ask.address))
                     Container(
@@ -291,9 +295,9 @@ class _OrderBookTableState extends State<OrderBookTable> {
             height: 26,
             padding: const EdgeInsets.only(left: 4),
             child: Text(
-              'No asks found', // TODO(yurii): localization
+              AppLocalizations.of(context).marketsNoAsks,
               maxLines: 1,
-              style: TextStyle(color: Colors.red, fontSize: 14),
+              style: const TextStyle(color: Colors.red, fontSize: 14),
             ),
           ),
           Container(),
