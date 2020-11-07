@@ -340,23 +340,25 @@ class _ItemCoinState extends State<ItemCoin> {
                         ),
                       ],
                     )
-                  : Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/kmd.png',
-                          width: 18,
-                          height: 18,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          AppLocalizations.of(context).tagKMD,
-                          style: Theme.of(context).textTheme.subtitle,
-                        ),
-                      ],
+                  : InkWell(
+                      onTap: () {
+                        ScaffoldState scaffold;
+                        try {
+                          scaffold = Scaffold.of(context);
+                        } catch (_) {}
+
+                        if (scaffold != null) {
+                          scaffold.showSnackBar(const SnackBar(
+                            duration: Duration(seconds: 2),
+                            content: Text('Built on Komodo'),
+                          ));
+                        }
+                      },
+                      child: Image.asset(
+                        'assets/kmd.png',
+                        width: 18,
+                        height: 18,
+                      ),
                     ),
             )),
       ),
