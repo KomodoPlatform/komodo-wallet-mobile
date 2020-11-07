@@ -130,9 +130,9 @@ class MusicService {
   String _customName(MusicMode mode) => mode == MusicMode.TAKER
       ? 'tick-tock.mp3'
       : mode == MusicMode.MAKER
-          ? 'tick-tock.mp3'
+          ? 'maker_order_placed_sample.mp3'
           : mode == MusicMode.ACTIVE
-              ? 'tick-tock.mp3'
+              ? 'swap_in_progress_sample.mp3'
               : mode == MusicMode.FAILED
                   ? 'none.mp3'
                   : mode == MusicMode.APPLAUSE ? 'none.mp3' : null;
@@ -220,11 +220,11 @@ class MusicService {
     final String defaultPath = newMode == MusicMode.TAKER
         ? (rng.nextBool() ? 'tick-tock.mp3' : 'tick-tock.mp3')
         : newMode == MusicMode.MAKER
-            ? 'tick-tock.mp3'
+            ? 'maker_order_placed_sample.mp3'
             : newMode == MusicMode.ACTIVE
-                ? 'tick-tock.mp3'
+                ? 'swap_in_progress_sample.mp3'
                 : newMode == MusicMode.FAILED
-                    ? (rng.nextBool() ? 'tick-tock.mp3' : 'tick-tock.mp3')
+                    ? (rng.nextBool() ? 'none.mp3' : 'none.mp3')
                     : newMode == MusicMode.APPLAUSE
                         ? 'none.mp3'
                         : newMode == MusicMode.SILENT ? 'none.mp3' : null;
