@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -19,6 +20,7 @@ class RewardsProvider extends ChangeNotifier {
   final AppLocalizations _localizations = AppLocalizations();
   List<RewardsItem> _rewards;
   double _total = 0.0;
+  int _updateTimer;
 
   bool claimInProgress = false;
   bool updateInProgress = false;
@@ -97,6 +99,41 @@ class RewardsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Assumably mm2 requires some time shift to update data returned by
+  // 'kmd_rewards_info' request. So, in order to show updated info
+  // table right after rewards was claimed, we'll try to update rewards info
+  // every second for 30 seconds until 'kmd_rewards_info'
+  // will return updated data, while 'receive' step is in progress.
+  Future<void> _updateInfoUntilSuccessOrTimeOut(int timeOut) async {
+    _updateTimer ??= DateTime.now().millisecondsSinceEpoch;
+    final List<RewardsItem> prevRewards = List.from(_rewards);
+
+    await _updateInfo();
+    await _updateTotal();
+
+    final bool isTimedOut =
+        DateTime.now().millisecondsSinceEpoch - _updateTimer > timeOut;
+    final bool isUpdated = !_rewardsEquals(prevRewards, _rewards);
+
+    if (isUpdated || isTimedOut) {
+      _updateTimer = null;
+      return;
+    }
+
+    await Future<dynamic>.delayed(const Duration(milliseconds: 1000));
+    await _updateInfoUntilSuccessOrTimeOut(timeOut);
+  }
+
+  bool _rewardsEquals(List<RewardsItem> a, List<RewardsItem> b) {
+    if (a.length != b.length) return false;
+
+    for (int i = 0; i < a.length; i++) {
+      if (a[i].startAt != b[i].startAt) return false;
+    }
+
+    return true;
+  }
+
   Future<void> receive() async {
     if (claimInProgress) return;
     claimInProgress = true;
@@ -140,8 +177,7 @@ class RewardsProvider extends ChangeNotifier {
       return;
     }
 
-    await Future<dynamic>.delayed(const Duration(seconds: 2));
-    await update();
+    await _updateInfoUntilSuccessOrTimeOut(30000);
     successMessage =
         _localizations.rewardsSuccess(formatPrice(res.myBalanceChange));
 
