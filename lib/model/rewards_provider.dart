@@ -141,7 +141,7 @@ class RewardsProvider extends ChangeNotifier {
     }
 
     await Future<dynamic>.delayed(const Duration(seconds: 2));
-    await _updateInfo();
+    await update();
     successMessage =
         _localizations.rewardsSuccess(formatPrice(res.myBalanceChange));
 
