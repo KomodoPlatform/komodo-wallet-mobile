@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
-import 'package:intl/intl.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
 import 'package:komodo_dex/utils/utils.dart';
+
+import 'order_fill.dart';
 
 class ActiveOrders extends StatefulWidget {
   @override
@@ -123,53 +125,55 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                 ),
               ],
             ),
-            order.cancelable
-                ? Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Container(),
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 30,
-                          child: OutlineButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                            borderSide: const BorderSide(color: Colors.white),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 6, horizontal: 12),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(24)),
-                                color: Colors.transparent,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                      AppLocalizations.of(context)
-                                          .cancel
-                                          .toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .body2
-                                          .copyWith(
-                                            color: Colors.white,
-                                          ))
-                                ],
-                              ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                OrderFill(
+                  order,
+                  size: 15,
+                ),
+                order.cancelable
+                    ? Container(
+                        height: 30,
+                        child: OutlineButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          borderSide: const BorderSide(color: Colors.white),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(24)),
+                              color: Colors.transparent,
                             ),
-                            onPressed: () {
-                              ordersBloc.cancelOrder(order.uuid);
-                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                    AppLocalizations.of(context)
+                                        .cancel
+                                        .toUpperCase(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .body2
+                                        .copyWith(
+                                          color: Colors.white,
+                                        ))
+                              ],
+                            ),
                           ),
+                          onPressed: () {
+                            ordersBloc.cancelOrder(order.uuid);
+                          },
                         ),
                       )
-                    ],
-                  )
-                : Container()
+                    : Container()
+              ],
+            ),
           ],
         ),
       ),
