@@ -1,7 +1,9 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 
 void showFaucetDialog({
   @required BuildContext context,
@@ -41,9 +43,10 @@ void showFaucetDialog({
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                // TODO(yurii): localization
                                 child: Text(
-                                  'Close'.toUpperCase(),
+                                  AppLocalizations.of(context)
+                                      .close
+                                      .toUpperCase(),
                                   style: TextStyle(
                                     color: Theme.of(context).accentColor,
                                   ),
@@ -73,8 +76,7 @@ Widget _buildFaucetProgress({
         ),
         const SizedBox(height: 35),
         Text(
-          // TODO(yurii): localization
-          'Sending request to $coin faucet...',
+          AppLocalizations.of(context).faucetInProgress(coin),
           style: Theme.of(context).textTheme.body2,
         ),
       ],
@@ -91,9 +93,8 @@ Widget _buildFaucetResponse({
       return Column(
         children: <Widget>[
           Text(
-            // TODO(yurii): localization
-            'Success'.toUpperCase(),
-            style: TextStyle(
+            AppLocalizations.of(context).faucetSuccess.toUpperCase(),
+            style: const TextStyle(
               color: Colors.green,
               fontSize: 20,
             ),
@@ -110,8 +111,7 @@ Widget _buildFaucetResponse({
       return Column(
         children: <Widget>[
           Text(
-            // TODO(yurii): localization
-            'Error'.toUpperCase(),
+            AppLocalizations.of(context).faucetError.toUpperCase(),
             style: TextStyle(
               color: Theme.of(context).errorColor,
               fontSize: 20,
@@ -152,7 +152,7 @@ Future<Map<String, dynamic>> callFaucet(String coin, String address) async {
     response = await http
         .get('https://faucet.komodo.live/faucet/$coin/$address')
         .timeout(const Duration(seconds: 30), onTimeout: () {
-      throw 'Request timed out'; // TODO(yurii): localization
+      throw AppLocalizations().faucetTimedOut;
     });
     body = response.body;
   } catch (e) {

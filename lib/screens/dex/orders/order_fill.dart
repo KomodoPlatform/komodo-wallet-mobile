@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -35,8 +36,8 @@ class _OrderFillState extends State<OrderFill> {
         ),
         const SizedBox(width: 8),
         Text(
-          // TODO(yurii): localization
-          cutTrailingZeros((fill * 100).toStringAsPrecision(3)) + '% filled',
+          AppLocalizations.of(context).orderFilled(
+              cutTrailingZeros((fill * 100).toStringAsPrecision(3))),
           style: Theme.of(context).textTheme.body2,
         ),
       ],

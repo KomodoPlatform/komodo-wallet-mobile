@@ -566,6 +566,10 @@ class AppLocalizations {
   String get hungarianLanguage =>
       Intl.message('Hungarian', name: 'hungarianLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
+  String get faucetSuccess => Intl.message('Success', name: 'faucetSuccess');
+  String get faucetError => Intl.message('Error', name: 'faucetError');
+  String get faucetTimedOut =>
+      Intl.message('Request timed out', name: 'faucetTimedOut');
 
   // --- sound configuration ---
 
@@ -1120,6 +1124,11 @@ class AppLocalizations {
   String get minutes => Intl.message('m', name: 'minutes');
   String get hours => Intl.message('h', name: 'hours');
   String get moreTab => Intl.message('More', name: 'moreTab');
+  String orderFilled(String fill) =>
+      Intl.message('$fill% filled', args: <Object>[fill], name: 'orderFilled');
+  String faucetInProgress(String coin) =>
+      Intl.message('Sending request to $coin faucet...',
+          args: <Object>[coin], name: 'faucetInProgress');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
