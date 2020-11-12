@@ -99,7 +99,7 @@ dev_dependencies:
       ref: 1494b043d03799dd14e689552d1218918435f9f5
   # https://pub.dev/packages/local_auth, canCheckBiometrics, getAvailableBiometrics
   local_auth: 0.6.3+3 # flutter.dev
-  flutter_svg: 0.18.1
+  flutter_svg: 0.18.1 # SECURE REVIEW REQUIRED. Reviewed: 0.13.1, diff 39cbfdb (0.13.0+2) a05263d (0.13.1), sub dependencies - path_drawing(1ad9895), xml(6e6547a)
   keccak: # 1.0.3 - DONE: Secure code reviewed 4202080 (1.0.3)
     git:
       url: git://github.com/KomodoPlatform/keccak.git
