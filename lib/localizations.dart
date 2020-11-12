@@ -1129,6 +1129,11 @@ class AppLocalizations {
   String faucetInProgress(String coin) =>
       Intl.message('Sending request to $coin faucet...',
           args: <Object>[coin], name: 'faucetInProgress');
+
+  // --- Maker order details ---
+
+  String get makerDetailsTitle =>
+      Intl.message('Order details', name: 'makerDetailsTitle');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
