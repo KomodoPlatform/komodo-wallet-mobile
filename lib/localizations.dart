@@ -617,7 +617,7 @@ class AppLocalizations {
   String get orderDetailsAddress =>
       Intl.message('Address', name: 'orderDetailsAddress');
   String orderDetailsExpedient(String delta) =>
-      Intl.message('Expedient: CEX -$delta%',
+      Intl.message('Expedient: CEX $delta%',
           args: <Object>[delta], name: 'orderDetailsExpedient');
   String orderDetailsExpensive(String delta) =>
       Intl.message('Expensive: CEX +$delta%',
