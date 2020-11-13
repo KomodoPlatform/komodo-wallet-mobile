@@ -5,6 +5,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
+import 'package:komodo_dex/screens/dex/orders/maker_order_details_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 import 'order_fill.dart';
@@ -54,127 +55,136 @@ class _ActiveOrdersState extends State<ActiveOrders> {
   }
 
   Widget _buildItemOrder(Order order) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          order.base,
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                        const SizedBox(width: 2),
-                        _buildIcon(order.base),
-                      ],
-                    ),
-                    Text(
-                      '~${formatPrice(order.baseAmount, 8)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: Icon(Icons.swap_horiz),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        _buildIcon(order.rel),
-                        const SizedBox(width: 2),
-                        Text(
-                          order.rel,
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      '~${formatPrice(order.relAmount, 8)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  DateFormat('dd MMM yyyy HH:mm').format(
-                      DateTime.fromMillisecondsSinceEpoch(
-                          order.createdAt * 1000)),
-                  style: Theme.of(context).textTheme.body2,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                OrderFill(
-                  order,
-                  size: 15,
-                ),
-                order.cancelable
-                    ? Container(
-                        height: 30,
-                        child: OutlineButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
-                          borderSide: const BorderSide(color: Colors.white),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 12),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(24)),
-                              color: Colors.transparent,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                    AppLocalizations.of(context)
-                                        .cancel
-                                        .toUpperCase(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body2
-                                        .copyWith(
-                                          color: Colors.white,
-                                        ))
-                              ],
-                            ),
+    return InkWell(
+      onTap: () {
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) =>
+                    MakerOrderDetailsPage(order)));
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            order.base,
+                            style: const TextStyle(fontSize: 20),
                           ),
-                          onPressed: () {
-                            ordersBloc.cancelOrder(order.uuid);
-                          },
+                          const SizedBox(width: 2),
+                          _buildIcon(order.base),
+                        ],
+                      ),
+                      Text(
+                        '~${formatPrice(order.baseAmount, 8)}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       )
-                    : Container()
-              ],
-            ),
-          ],
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Icon(Icons.swap_horiz),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          _buildIcon(order.rel),
+                          const SizedBox(width: 2),
+                          Text(
+                            order.rel,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        '~${formatPrice(order.relAmount, 8)}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    DateFormat('dd MMM yyyy HH:mm').format(
+                        DateTime.fromMillisecondsSinceEpoch(
+                            order.createdAt * 1000)),
+                    style: Theme.of(context).textTheme.body2,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  OrderFill(
+                    order,
+                    size: 15,
+                  ),
+                  order.cancelable
+                      ? Container(
+                          height: 30,
+                          child: OutlineButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0)),
+                            borderSide: const BorderSide(color: Colors.white),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 12),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(24)),
+                                color: Colors.transparent,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                      AppLocalizations.of(context)
+                                          .cancel
+                                          .toUpperCase(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body2
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ))
+                                ],
+                              ),
+                            ),
+                            onPressed: () {
+                              ordersBloc.cancelOrder(order.uuid);
+                            },
+                          ),
+                        )
+                      : Container()
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

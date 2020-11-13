@@ -1133,7 +1133,12 @@ class AppLocalizations {
   // --- Maker order details ---
 
   String get makerDetailsTitle =>
-      Intl.message('Order details', name: 'makerDetailsTitle');
+      Intl.message('Maker Order details', name: 'makerDetailsTitle');
+  String get makerDetailsSell => Intl.message('Sell', name: 'makerDetailsSell');
+  String get makerDetailsFor =>
+      Intl.message('Receive', name: 'makerDetailsFor');
+  String get makerDetailsPrice =>
+      Intl.message('Price', name: 'makerDetailsPrice');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
