@@ -4,6 +4,8 @@ import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/screens/dex/orders/maker_order_amount_price.dart';
+import 'package:komodo_dex/screens/dex/orders/maker_order_swaps.dart';
+import 'package:komodo_dex/screens/dex/orders/order_fill.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class MakerOrderDetailsPage extends StatefulWidget {
@@ -23,29 +25,68 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).makerDetailsTitle),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Card(
-              elevation: 8,
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 12,
-                  top: 12,
-                  bottom: 16,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Card(
+                elevation: 8,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 12, 16),
+                  child: MakerOrderAmtAndPrice(widget.order),
                 ),
-                child: MakerOrderAmtAndPrice(widget.order),
               ),
-            ),
-            if (widget.order.cancelable) _buildCancelButton(),
-            _buildId(),
-            _buildDate(),
-          ],
+              if (widget.order.cancelable) _buildCancelButton(),
+              _buildId(),
+              _buildDate(),
+              _buildFill(),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildFill() {
+    final bool hasSwaps = widget.order.startedSwaps != null &&
+        widget.order.startedSwaps.isNotEmpty;
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: OrderFill(
+              widget.order,
+              size: 18,
+            ),
+          ),
+          Container(
+              padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+              child: !hasSwaps
+                  ? Container(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: Text(
+                          AppLocalizations.of(context).makerDetailsNoSwaps))
+                  : _buildSwaps()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSwaps() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+            padding: const EdgeInsets.fromLTRB(4, 4, 0, 8),
+            child: Text(AppLocalizations.of(context).makerDetailsSwaps + ':')),
+        MakerOrderSwaps(widget.order),
+      ],
     );
   }
 
@@ -62,13 +103,11 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
               style: Theme.of(context).textTheme.body2,
             ),
           ),
-          Builder(builder: (context) {
-            return Container(
-                padding: const EdgeInsets.all(8),
-                child: Text(DateFormat().format(
-                    DateTime.fromMillisecondsSinceEpoch(
-                        widget.order.createdAt * 1000))));
-          }),
+          Container(
+              padding: const EdgeInsets.all(8),
+              child: Text(DateFormat('dd MMM yyyy HH:mm').format(
+                  DateTime.fromMillisecondsSinceEpoch(
+                      widget.order.createdAt * 1000)))),
         ],
       ),
     );
@@ -130,6 +169,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
             ),
           ),
           onPressed: () {
+            Navigator.of(context).pop();
             ordersBloc.cancelOrder(widget.order.uuid);
           },
         ),

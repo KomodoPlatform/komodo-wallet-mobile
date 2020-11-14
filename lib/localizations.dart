@@ -1094,6 +1094,7 @@ class AppLocalizations {
 
   // --- CEX Marker ---
 
+  String get cex => Intl.message('CEX', name: 'cex');
   String get cexData => Intl.message('CEX data', name: 'cexData');
   String get cexDataDesc => Intl.message(
       'Markets data (prices, charts, etc.) marked with this'
@@ -1145,6 +1146,11 @@ class AppLocalizations {
   String get makerDetailsId => Intl.message('Order ID', name: 'makerDetailsId');
   String get makerDetailsCreated =>
       Intl.message('Created at', name: 'makerDetailsCreated');
+  String get makerDetailsNoSwaps =>
+      Intl.message('No swaps were started by this order',
+          name: 'makerDetailsNoSwaps');
+  String get makerDetailsSwaps =>
+      Intl.message('Swaps started by this order', name: 'makerDetailsSwaps');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

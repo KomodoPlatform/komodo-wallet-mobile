@@ -56,20 +56,19 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
           child: Row(
             children: <Widget>[
               CircleAvatar(
-                radius: 7,
+                radius: 12,
                 backgroundColor: Colors.transparent,
                 backgroundImage: AssetImage('assets/'
                     '${widget.order.base.toLowerCase()}.png'),
               ),
               const SizedBox(width: 4),
-              Text(widget.order.base),
-              const SizedBox(width: 12),
               Text(
-                formatPrice(double.parse(widget.order.baseAmount)),
-                style: Theme.of(context).textTheme.subtitle.copyWith(
-                      fontWeight: FontWeight.normal,
-                    ),
+                widget.order.base,
+                style: TextStyle(fontSize: 20),
               ),
+              const SizedBox(width: 12),
+              Text(formatPrice(double.parse(widget.order.baseAmount)),
+                  style: TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
         )
@@ -94,19 +93,20 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
           child: Row(
             children: <Widget>[
               CircleAvatar(
-                radius: 7,
+                radius: 12,
                 backgroundColor: Colors.transparent,
                 backgroundImage: AssetImage('assets/'
                     '${widget.order.rel.toLowerCase()}.png'),
               ),
               const SizedBox(width: 4),
-              Text(widget.order.rel),
+              Text(
+                widget.order.rel,
+                style: TextStyle(fontSize: 20),
+              ),
               const SizedBox(width: 12),
               Text(
                 formatPrice(double.parse(widget.order.relAmount)),
-                style: Theme.of(context).textTheme.subtitle.copyWith(
-                      fontWeight: FontWeight.normal,
-                    ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -216,9 +216,18 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
           Container(
             height: 40,
             alignment: Alignment.centerLeft,
-            child: CexMarker(
-              context,
-              color: Theme.of(context).textTheme.body2.color,
+            child: Row(
+              children: <Widget>[
+                CexMarker(
+                  context,
+                  color: Theme.of(context).textTheme.body2.color,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  AppLocalizations.of(context).cex,
+                  style: Theme.of(context).textTheme.body2,
+                ),
+              ],
             ),
           ),
           Container(

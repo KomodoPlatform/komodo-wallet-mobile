@@ -81,7 +81,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                             order.base,
                             style: const TextStyle(fontSize: 20),
                           ),
-                          const SizedBox(width: 2),
+                          const SizedBox(width: 4),
                           _buildIcon(order.base),
                         ],
                       ),
@@ -103,7 +103,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                       Row(
                         children: <Widget>[
                           _buildIcon(order.rel),
-                          const SizedBox(width: 2),
+                          const SizedBox(width: 4),
                           Text(
                             order.rel,
                             style: const TextStyle(fontSize: 20),
@@ -192,7 +192,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
 
   Widget _buildIcon(String coin) {
     return CircleAvatar(
-      maxRadius: 10,
+      maxRadius: 12,
       backgroundColor: Colors.transparent,
       backgroundImage: AssetImage(
         'assets/${coin.toLowerCase()}.png',
