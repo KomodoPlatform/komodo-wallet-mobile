@@ -19,12 +19,8 @@ class OrderFill extends StatefulWidget {
 }
 
 class _OrderFillState extends State<OrderFill> {
-  SwapProvider swapProvider;
-
   @override
   Widget build(BuildContext context) {
-    swapProvider ??= Provider.of<SwapProvider>(context);
-
     return Row(
       children: <Widget>[
         SizedBox(
@@ -34,31 +30,17 @@ class _OrderFillState extends State<OrderFill> {
             painter: FillPainter(
               context: context,
               order: widget.order,
-              swapProvider: swapProvider,
             ),
           ),
         ),
         const SizedBox(width: 8),
         Text(
           AppLocalizations.of(context).orderFilled(cutTrailingZeros(
-              (_getFill(widget.order) * 100).toStringAsPrecision(3))),
+              (getFill(widget.order) * 100).toStringAsPrecision(3))),
           style: Theme.of(context).textTheme.body2,
         ),
       ],
     );
-  }
-
-  double _getFill(Order order) {
-    if (order.startedSwaps == null || order.startedSwaps.isEmpty) return 0;
-
-    double fill = 0;
-    for (String swapId in order.startedSwaps) {
-      final Swap swap = swapProvider.swap(swapId);
-      if (swap == null) continue;
-      fill += double.parse(swap.result.myInfo.myAmount) /
-          double.parse(order.baseAmount);
-    }
-    return fill;
   }
 }
 
@@ -66,12 +48,10 @@ class FillPainter extends CustomPainter {
   FillPainter({
     @required this.context,
     @required this.order,
-    @required this.swapProvider,
   });
 
   final BuildContext context;
   final Order order;
-  final SwapProvider swapProvider;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -89,7 +69,7 @@ class FillPainter extends CustomPainter {
 
     double fillProgress = 0;
     for (String swapId in order.startedSwaps) {
-      final Swap swap = swapProvider.swap(swapId);
+      final Swap swap = syncSwaps.swap(swapId);
       if (swap == null) continue;
 
       fillPaint..color = swapHistoryBloc.getColorStatus(swap.status);
@@ -111,4 +91,20 @@ class FillPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
   }
+}
+
+/// Returns fraction of maker [order] amount (same for base and rel),
+/// filled by started swaps.
+/// '0' if no swaps were started, '1' if order was filled in full.
+double getFill(Order order) {
+  if (order.startedSwaps == null || order.startedSwaps.isEmpty) return 0;
+
+  double fill = 0;
+  for (String swapId in order.startedSwaps) {
+    final Swap swap = syncSwaps.swap(swapId);
+    if (swap == null) continue;
+    fill += double.parse(swap.result.myInfo.myAmount) /
+        double.parse(order.baseAmount);
+  }
+  return fill;
 }

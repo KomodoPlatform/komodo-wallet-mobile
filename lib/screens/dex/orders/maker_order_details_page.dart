@@ -36,7 +36,9 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                 orElse: () => null);
 
             if (order == null) {
-              Navigator.of(context).pop();
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) Navigator.of(context).pop();
+              });
               return Container();
             }
 
@@ -184,7 +186,6 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
             ),
           ),
           onPressed: () {
-            Navigator.of(context).pop();
             ordersBloc.cancelOrder(order.uuid);
           },
         ),

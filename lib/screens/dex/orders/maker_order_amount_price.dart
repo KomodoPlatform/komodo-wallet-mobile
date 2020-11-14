@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/screens/dex/orders/order_fill.dart';
 import 'package:provider/provider.dart';
 
 class MakerOrderAmtAndPrice extends StatefulWidget {
@@ -40,6 +41,9 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
   }
 
   List<TableRow> _buildBase() {
+    final double filled =
+        getFill(widget.order) * double.parse(widget.order.baseAmount);
+
     return [
       TableRow(children: [
         Container(
@@ -67,8 +71,20 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                 style: TextStyle(fontSize: 20),
               ),
               const SizedBox(width: 12),
-              Text(formatPrice(double.parse(widget.order.baseAmount)),
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(formatPrice(double.parse(widget.order.baseAmount)),
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  if (filled > 0)
+                    Text(
+                        formatPrice(
+                            double.parse(widget.order.baseAmount) - filled),
+                        style: TextStyle(
+                          fontSize: 10,
+                        )),
+                ],
+              ),
             ],
           ),
         )
@@ -77,6 +93,9 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
   }
 
   List<TableRow> _buildRel() {
+    final double filled =
+        getFill(widget.order) * double.parse(widget.order.relAmount);
+
     return [
       TableRow(children: [
         Container(
@@ -104,9 +123,21 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
                 style: TextStyle(fontSize: 20),
               ),
               const SizedBox(width: 12),
-              Text(
-                formatPrice(double.parse(widget.order.relAmount)),
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    formatPrice(double.parse(widget.order.relAmount)),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  if (filled > 0)
+                    Text(
+                        formatPrice(
+                            double.parse(widget.order.relAmount) - filled),
+                        style: TextStyle(
+                          fontSize: 10,
+                        )),
+                ],
               ),
             ],
           ),
