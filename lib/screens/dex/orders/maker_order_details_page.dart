@@ -35,7 +35,10 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                 (dynamic item) => item is Order && item.uuid == widget.orderId,
                 orElse: () => null);
 
-            if (order == null) return Container();
+            if (order == null) {
+              Navigator.of(context).pop();
+              return Container();
+            }
 
             return SingleChildScrollView(
               child: Container(

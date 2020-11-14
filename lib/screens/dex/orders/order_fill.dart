@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -23,7 +24,6 @@ class _OrderFillState extends State<OrderFill> {
   @override
   Widget build(BuildContext context) {
     swapProvider ??= Provider.of<SwapProvider>(context);
-    final double fill = _getFill(widget.order);
 
     return Row(
       children: <Widget>[
@@ -31,13 +31,17 @@ class _OrderFillState extends State<OrderFill> {
           width: widget.size,
           height: widget.size,
           child: CustomPaint(
-            painter: FillPainter(context: context, fill: fill),
+            painter: FillPainter(
+              context: context,
+              order: widget.order,
+              swapProvider: swapProvider,
+            ),
           ),
         ),
         const SizedBox(width: 8),
         Text(
-          AppLocalizations.of(context).orderFilled(
-              cutTrailingZeros((fill * 100).toStringAsPrecision(3))),
+          AppLocalizations.of(context).orderFilled(cutTrailingZeros(
+              (_getFill(widget.order) * 100).toStringAsPrecision(3))),
           style: Theme.of(context).textTheme.body2,
         ),
       ],
@@ -61,11 +65,13 @@ class _OrderFillState extends State<OrderFill> {
 class FillPainter extends CustomPainter {
   FillPainter({
     @required this.context,
-    @required this.fill,
+    @required this.order,
+    @required this.swapProvider,
   });
 
   final BuildContext context;
-  final double fill;
+  final Order order;
+  final SwapProvider swapProvider;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -77,13 +83,28 @@ class FillPainter extends CustomPainter {
     final Offset center = Offset(size.width / 2, size.height / 2);
     canvas.drawCircle(center, size.width / 2, paint);
 
-    final Paint progressPaint = Paint()
-      ..color = Colors.green
+    final Paint fillPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * 1.1 / 2;
 
-    canvas.drawArc(Rect.fromCircle(center: center, radius: size.width / 4),
-        math.radians(-90), math.radians(fill * 360), false, progressPaint);
+    double fillProgress = 0;
+    for (String swapId in order.startedSwaps) {
+      final Swap swap = swapProvider.swap(swapId);
+      if (swap == null) continue;
+
+      fillPaint..color = swapHistoryBloc.getColorStatus(swap.status);
+
+      final double swapFill = double.parse(swap.result.myInfo.myAmount) /
+          double.parse(order.baseAmount);
+
+      canvas.drawArc(
+          Rect.fromCircle(center: center, radius: size.width / 4),
+          math.radians(-90 + fillProgress * 360),
+          math.radians(swapFill * 360),
+          false,
+          fillPaint);
+      fillProgress += swapFill;
+    }
   }
 
   @override
