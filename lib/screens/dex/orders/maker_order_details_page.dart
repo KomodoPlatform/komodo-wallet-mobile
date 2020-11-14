@@ -29,11 +29,11 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
           initialData: ordersBloc.orderSwaps,
           stream: ordersBloc.outOrderSwaps,
           builder: (context, snapshot) {
-            if (!snapshot.hasData || snapshot.data.isEmpty) return Container();
-
-            final Order order = snapshot.data.firstWhere(
-                (dynamic item) => item is Order && item.uuid == widget.orderId,
-                orElse: () => null);
+            Order order;
+            try {
+              order = snapshot.data.firstWhere((dynamic item) =>
+                  item is Order && item.uuid == widget.orderId);
+            } catch (_) {}
 
             if (order == null) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
