@@ -1129,6 +1129,7 @@ class AppLocalizations {
   String faucetInProgress(String coin) =>
       Intl.message('Sending request to $coin faucet...',
           args: <Object>[coin], name: 'faucetInProgress');
+  String get copied => Intl.message('More', name: 'copied');
 
   // --- Maker order details ---
 
@@ -1139,6 +1140,11 @@ class AppLocalizations {
       Intl.message('Receive', name: 'makerDetailsFor');
   String get makerDetailsPrice =>
       Intl.message('Price', name: 'makerDetailsPrice');
+  String get makerDetailsCancel =>
+      Intl.message('Cancel order', name: 'makerDetailsCancel');
+  String get makerDetailsId => Intl.message('Order ID', name: 'makerDetailsId');
+  String get makerDetailsCreated =>
+      Intl.message('Created at', name: 'makerDetailsCreated');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
