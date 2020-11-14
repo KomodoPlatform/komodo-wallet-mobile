@@ -9,9 +9,9 @@ import 'package:komodo_dex/screens/dex/orders/order_fill.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class MakerOrderDetailsPage extends StatefulWidget {
-  const MakerOrderDetailsPage(this.order);
+  const MakerOrderDetailsPage(this.orderId);
 
-  final Order order;
+  final String orderId;
 
   @override
   _MakerOrderDetailsPageState createState() => _MakerOrderDetailsPageState();
@@ -25,33 +25,46 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).makerDetailsTitle),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Card(
-                elevation: 8,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 12, 16),
-                  child: MakerOrderAmtAndPrice(widget.order),
+      body: StreamBuilder<List<dynamic>>(
+          initialData: ordersBloc.orderSwaps,
+          stream: ordersBloc.outOrderSwaps,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData || snapshot.data.isEmpty) return Container();
+
+            final Order order = snapshot.data.firstWhere(
+                (dynamic item) => item is Order && item.uuid == widget.orderId,
+                orElse: () => null);
+
+            if (order == null) return Container();
+
+            return SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Card(
+                      elevation: 8,
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(16, 12, 12, 16),
+                        child: MakerOrderAmtAndPrice(order),
+                      ),
+                    ),
+                    if (order.cancelable) _buildCancelButton(order),
+                    _buildId(order),
+                    _buildDate(order),
+                    _buildHistory(order),
+                  ],
                 ),
               ),
-              if (widget.order.cancelable) _buildCancelButton(),
-              _buildId(),
-              _buildDate(),
-              _buildFill(),
-            ],
-          ),
-        ),
-      ),
+            );
+          }),
     );
   }
 
-  Widget _buildFill() {
-    final bool hasSwaps = widget.order.startedSwaps != null &&
-        widget.order.startedSwaps.isNotEmpty;
+  Widget _buildHistory(Order order) {
+    final bool hasSwaps =
+        order.startedSwaps != null && order.startedSwaps.isNotEmpty;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -61,7 +74,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
           Container(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: OrderFill(
-              widget.order,
+              order,
               size: 18,
             ),
           ),
@@ -72,25 +85,25 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                       padding: const EdgeInsets.only(left: 4),
                       child: Text(
                           AppLocalizations.of(context).makerDetailsNoSwaps))
-                  : _buildSwaps()),
+                  : _buildSwaps(order)),
         ],
       ),
     );
   }
 
-  Widget _buildSwaps() {
+  Widget _buildSwaps(Order order) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
             padding: const EdgeInsets.fromLTRB(4, 4, 0, 8),
             child: Text(AppLocalizations.of(context).makerDetailsSwaps + ':')),
-        MakerOrderSwaps(widget.order),
+        MakerOrderSwaps(order),
       ],
     );
   }
 
-  Widget _buildDate() {
+  Widget _buildDate(Order order) {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
       child: Column(
@@ -107,13 +120,13 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
               padding: const EdgeInsets.all(8),
               child: Text(DateFormat('dd MMM yyyy HH:mm').format(
                   DateTime.fromMillisecondsSinceEpoch(
-                      widget.order.createdAt * 1000)))),
+                      order.createdAt * 1000)))),
         ],
       ),
     );
   }
 
-  Widget _buildId() {
+  Widget _buildId(Order order) {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
       child: Column(
@@ -129,18 +142,17 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
           Builder(builder: (context) {
             return InkWell(
                 onTap: () {
-                  copyToClipBoard(context, widget.order.uuid);
+                  copyToClipBoard(context, order.uuid);
                 },
                 child: Container(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(widget.order.uuid)));
+                    padding: const EdgeInsets.all(8), child: Text(order.uuid)));
           }),
         ],
       ),
     );
   }
 
-  Widget _buildCancelButton() {
+  Widget _buildCancelButton(Order order) {
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 20, 8, 20),
       child: SizedBox(
@@ -170,7 +182,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
           ),
           onPressed: () {
             Navigator.of(context).pop();
-            ordersBloc.cancelOrder(widget.order.uuid);
+            ordersBloc.cancelOrder(order.uuid);
           },
         ),
       ),

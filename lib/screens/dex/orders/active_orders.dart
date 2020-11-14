@@ -61,7 +61,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
             context,
             MaterialPageRoute<dynamic>(
                 builder: (BuildContext context) =>
-                    MakerOrderDetailsPage(order)));
+                    MakerOrderDetailsPage(order.uuid)));
       },
       child: Card(
         child: Padding(
