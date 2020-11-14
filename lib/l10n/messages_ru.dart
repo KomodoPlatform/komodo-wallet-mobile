@@ -12,93 +12,94 @@
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-final messages = new MessageLookup();
+final MessageLookup messages = new MessageLookup();
 
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ru';
 
-  static m0(name) => "${name} активирован успешно!";
+  static dynamic m0(name) => "${name} активирован успешно!";
 
-  static m1(title) => "Отображаются только контакты с ${title} адресами";
+  static dynamic m1(title) => "Отображаются только контакты с ${title} адресами";
 
-  static m2(abbr) => "Вы не можете отправить средства на адрес ${abbr}, потому что ${abbr} не активирован. Пожалуйста, перейдите в портфолио.";
+  static dynamic m2(abbr) => "Вы не можете отправить средства на адрес ${abbr}, потому что ${abbr} не активирован. Пожалуйста, перейдите в портфолио.";
 
-  static m3(seconde) => "Поиск сделки в процессе, пожалуйста , подождите ${seconde} секунд!";
+  static dynamic m3(seconde) => "Поиск сделки в процессе, пожалуйста , подождите ${seconde} секунд!";
 
-  static m4(index) => "Введите ${index} слово";
+  static dynamic m4(index) => "Введите ${index} слово";
 
-  static m5(index) => "Какое ${index} слово в вашем seed-ключе?";
+  static dynamic m5(index) => "Какое ${index} слово в вашем seed-ключе?";
 
-  static m6(name) => "Вы уверены, что хотите удалить ${name}?";
+  static dynamic m6(name) => "Вы уверены, что хотите удалить ${name}?";
 
-  static m7(gas) => "Установитье как минимум ${gas} Gwei";
+  static dynamic m7(gas) => "Установитье как минимум ${gas} Gwei";
 
-  static m8(delta) => "На -${delta}% ниже цен CEX";
+  static dynamic m8(delta) => "На -${delta}% ниже цен CEX";
 
-  static m9(delta) => "На +${delta}% выше цен CEX";
+  static dynamic m9(delta) => "На +${delta}% выше цен CEX";
 
-  static m10(coinName, number) => "Минимальная сумма продажи составляет ${number} ${coinName}.";
+  static dynamic m10(coinName, number) => "Минимальная сумма продажи составляет ${number} ${coinName}.";
 
-  static m11(coinName, number) => "Минимальная сумма покупки: ${number} ${coinName}";
+  static dynamic m11(coinName, number) => "Минимальная сумма покупки: ${number} ${coinName}";
 
-  static m12(number) => "Создать ${number} ордер(ов):";
+  static dynamic m12(number) => "Создать ${number} ордер(ов):";
 
-  static m13(coinName) => "Пожалуйста, введите сумму ${coinName}.";
+  static dynamic m13(coinName) => "Пожалуйста, введите сумму ${coinName}.";
 
-  static m14(sell, buy) => "Своп ${sell}/${buy} успешно завершен";
+  static dynamic m14(sell, buy) => "Своп ${sell}/${buy} успешно завершен";
 
-  static m15(sell, buy) => "Своп ${sell}/${buy} не прошел";
+  static dynamic m15(sell, buy) => "Своп ${sell}/${buy} не прошел";
 
-  static m16(sell, buy) => "Своп ${sell}/${buy} начат";
+  static dynamic m16(sell, buy) => "Своп ${sell}/${buy} начат";
 
-  static m17(sell, buy) => "Превышен тайм-аут свопа ${sell}/${buy}";
+  static dynamic m17(sell, buy) => "Превышен тайм-аут свопа ${sell}/${buy}";
 
-  static m18(coin) => "Вы получили ${coin} транзакцию";
+  static dynamic m18(coin) => "Вы получили ${coin} транзакцию";
 
-  static m19(assets) => "${assets} Активов";
+  static dynamic m19(assets) => "${assets} Активов";
 
-  static m20(coin) => "Все {монеты} ордеры будут отменены.";
+  static dynamic m20(coin) => "Все {монеты} ордеры будут отменены.";
 
-  static m21(delta) => "На -${delta}% ниже цен CEX";
+  static dynamic m21(delta) => "На -${delta}% ниже цен CEX";
 
-  static m22(delta) => "На +${delta}% выше цен CEX";
+  static dynamic m22(delta) => "На +${delta}% выше цен CEX";
 
-  static m23(coin) => "Сумма (${coin})";
+  static dynamic m23(coin) => "Сумма (${coin})";
 
-  static m24(coin) => "Цена (${coin})";
+  static dynamic m24(coin) => "Цена (${coin})";
 
-  static m25(coin) => "Всего (${coin})";
+  static dynamic m25(coin) => "Всего (${coin})";
 
-  static m26(amount) => "Получено ${amount} KMD.";
+  static dynamic m26(amount) => "Получено ${amount} KMD.";
 
-  static m27(dd) => "${dd} дней}";
+  static dynamic m27(dd) => "${dd} дней}";
 
-  static m28(hh, minutes) => "${hh}ч ${minutes}мин";
+  static dynamic m28(hh, minutes) => "${hh}ч ${minutes}мин";
 
-  static m29(mm) => "мин ${mm}";
+  static dynamic m29(mm) => "мин ${mm}";
 
-  static m30(amount) => "Нажмите, чтобы увидеть ${amount} ордеров";
+  static dynamic m30(amount) => "Нажмите, чтобы увидеть ${amount} ордеров";
 
-  static m31(coinName, address) => "Мой ${coinName} адрес: ${address}";
+  static dynamic m31(coinName, address) => "Мой ${coinName} адрес: ${address}";
 
-  static m32(description) => "Выберите файл в формате mp3 или wav. Воспроизводится, когда ${description}.";
+  static dynamic m32(description) => "Выберите файл в формате mp3 или wav. Воспроизводится, когда ${description}.";
 
-  static m33(description) => "Воспроизводится, когда ${description}";
+  static dynamic m33(description) => "Воспроизводится, когда ${description}";
 
-  static m34(amount) => "Для этого свопа нужно ${amount} ETH для комиссий сети.";
+  static dynamic m34(amount) => "Для этого свопа нужно ${amount} ETH для комиссий сети.";
 
-  static m35(version) => "Установлена версия ${version}";
+  static dynamic m35(version) => "Установлена версия ${version}";
 
-  static m36(version) => "Доступна версия {версия}. Пожалуйста, обновитесь.";
+  static dynamic m36(version) => "Доступна версия {версия}. Пожалуйста, обновитесь.";
 
-  static m37(amount, coinName) => "ВЫВЕСТИ ${amount} ${coinName}";
+  static dynamic m37(amount, coinName) => "ВЫВЕСТИ ${amount} ${coinName}";
 
-  static m38(amount, coin) => "Вы получите ${amount} ${coin}";
+  static dynamic m38(amount, coin) => "Вы получите ${amount} ${coin}";
 
-  final messages = _notInlinedMessages(_notInlinedMessages);
-  static _notInlinedMessages(_) => <String, Function> {
+  final Map<String, dynamic> messages =
+      _notInlinedMessages(_notInlinedMessages);
+  static dynamic _notInlinedMessages(dynamic _) => <String, Function>{
     "Active" : MessageLookupByLibrary.simpleMessage("Активные"),
     "Applause" : MessageLookupByLibrary.simpleMessage("Аплодисменты"),
     "Can\'t play that" : MessageLookupByLibrary.simpleMessage("Невозможно воспроизвести"),
