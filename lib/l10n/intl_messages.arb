@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-10-23T08:59:54.486050",
+  "@@last_modified": "2020-11-15T10:10:56.086365",
   "createPin": "Create PIN",
   "@createPin": {
     "type": "text",
@@ -1425,6 +1425,28 @@
     "type": "text",
     "placeholders": {}
   },
+  "faucetSuccess": "Success",
+  "@faucetSuccess": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faucetError": "Error",
+  "@faucetError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faucetTimedOut": "Request timed out",
+  "@faucetTimedOut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faucetInProgress": "Sending request to {coin} faucet...",
+  "@faucetInProgress": {
+    "type": "text",
+    "placeholders": {
+      "coin": {}
+    }
+  },
   "Sound": "Sound",
   "@Sound": {
     "type": "text",
@@ -1558,7 +1580,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "orderDetailsExpedient": "Expedient: CEX -{delta}%",
+  "orderDetailsExpedient": "Expedient: CEX {delta}%",
   "@orderDetailsExpedient": {
     "type": "text",
     "placeholders": {
@@ -1768,7 +1790,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "rewardsTimeDays": "{dd} day(s)}",
+  "rewardsTimeDays": "{dd} day(s)",
   "@rewardsTimeDays": {
     "type": "text",
     "placeholders": {
@@ -1829,6 +1851,11 @@
   },
   "rewardsOneHourLong": "One hour not passed yet",
   "@rewardsOneHourLong": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsButton": "Claim your rewards",
+  "@rewardsButton": {
     "type": "text",
     "placeholders": {}
   },
@@ -1912,7 +1939,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "multiConfirmTitle": "Create {number} Order(s)}:",
+  "multiConfirmTitle": "Create {number} Order(s):",
   "@multiConfirmTitle": {
     "type": "text",
     "placeholders": {
@@ -2047,6 +2074,11 @@
   },
   "createContact": "Create Contact",
   "@createContact": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactTitleName": "Name",
+  "@contactTitleName": {
     "type": "text",
     "placeholders": {}
   },
@@ -2604,6 +2636,16 @@
   },
   "moreTab": "More",
   "@moreTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noteTitle": "Note",
+  "@noteTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notePlaceholder": "Add a Note",
+  "@notePlaceholder": {
     "type": "text",
     "placeholders": {}
   }

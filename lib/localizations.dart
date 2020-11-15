@@ -570,6 +570,9 @@ class AppLocalizations {
   String get faucetError => Intl.message('Error', name: 'faucetError');
   String get faucetTimedOut =>
       Intl.message('Request timed out', name: 'faucetTimedOut');
+  String faucetInProgress(String coin) =>
+      Intl.message('Sending request to $coin faucet...',
+          args: <Object>[coin], name: 'faucetInProgress');
 
   // --- sound configuration ---
 
@@ -724,6 +727,8 @@ class AppLocalizations {
       Intl.message('<1 hour', name: 'rewardsOneHourShort');
   String get rewardsOneHourLong =>
       Intl.message('One hour not passed yet', name: 'rewardsOneHourLong');
+  String get rewardsButton =>
+      Intl.message('Claim your rewards', name: 'rewardsButton');
 
   // --- Multi Order---
 
@@ -816,6 +821,7 @@ class AppLocalizations {
           args: <Object>[title], name: 'addressBookFilter');
   String get createContact =>
       Intl.message('Create Contact', name: 'createContact');
+  String get contactTitleName => Intl.message('Name', name: 'contactTitleName');
   String get editContact => Intl.message('Edit Contact', name: 'editContact');
   String get contactCancel => Intl.message('Cancel', name: 'contactCancel');
   String get contactSave => Intl.message('Save', name: 'contactSave');
@@ -1125,12 +1131,6 @@ class AppLocalizations {
   String get minutes => Intl.message('m', name: 'minutes');
   String get hours => Intl.message('h', name: 'hours');
   String get moreTab => Intl.message('More', name: 'moreTab');
-  String orderFilled(String fill) =>
-      Intl.message('$fill% filled', args: <Object>[fill], name: 'orderFilled');
-  String faucetInProgress(String coin) =>
-      Intl.message('Sending request to $coin faucet...',
-          args: <Object>[coin], name: 'faucetInProgress');
-  String get copied => Intl.message('More', name: 'copied');
 
   // --- Maker order details ---
 
@@ -1151,6 +1151,14 @@ class AppLocalizations {
           name: 'makerDetailsNoSwaps');
   String get makerDetailsSwaps =>
       Intl.message('Swaps started by this order', name: 'makerDetailsSwaps');
+  String orderFilled(String fill) =>
+      Intl.message('$fill% filled', args: <Object>[fill], name: 'orderFilled');
+
+  // --- Notes ---
+
+  String get noteTitle => Intl.message('Note', name: 'noteTitle');
+  String get notePlaceholder =>
+      Intl.message('Add a Note', name: 'notePlaceholder');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
