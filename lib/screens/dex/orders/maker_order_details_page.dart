@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/screens/dex/orders/maker_order_amount_price.dart';
+import 'package:komodo_dex/screens/dex/orders/maker_order_note.dart';
 import 'package:komodo_dex/screens/dex/orders/maker_order_swaps.dart';
 import 'package:komodo_dex/screens/dex/orders/order_fill.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -58,12 +59,29 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                     if (order.cancelable) _buildCancelButton(order),
                     _buildId(order),
                     _buildDate(order),
+                    _buildNote(order),
                     _buildHistory(order),
                   ],
                 ),
               ),
             );
           }),
+    );
+  }
+
+  Widget _buildNote(Order order) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            AppLocalizations.of(context).noteTitle + ':',
+            style: Theme.of(context).textTheme.body2,
+          ),
+          MakerOrderNote(order),
+        ],
+      ),
     );
   }
 
