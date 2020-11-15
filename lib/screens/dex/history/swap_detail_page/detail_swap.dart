@@ -79,7 +79,7 @@ class _DetailSwapState extends State<DetailSwap> {
                 swapHistoryBloc.isAnimationStepFinalIsFinish
             ? _buildInfosDetail()
             : Container(),
-        _buildNote('Note'),
+        _buildNote(AppLocalizations.of(context).noteTitle),
         const SizedBox(
           height: 32,
         ),
@@ -128,7 +128,7 @@ class _DetailSwapState extends State<DetailSwap> {
                         )
                       : Text(
                           (noteText == null || noteText.isEmpty)
-                              ? 'Add a Note'
+                              ? AppLocalizations.of(context).notePlaceholder
                               : noteText,
                           style: Theme.of(context).textTheme.body1.copyWith(
                               fontWeight: FontWeight.bold, fontSize: 18),

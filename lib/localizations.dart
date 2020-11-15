@@ -566,6 +566,13 @@ class AppLocalizations {
   String get hungarianLanguage =>
       Intl.message('Hungarian', name: 'hungarianLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
+  String get faucetSuccess => Intl.message('Success', name: 'faucetSuccess');
+  String get faucetError => Intl.message('Error', name: 'faucetError');
+  String get faucetTimedOut =>
+      Intl.message('Request timed out', name: 'faucetTimedOut');
+  String faucetInProgress(String coin) =>
+      Intl.message('Sending request to $coin faucet...',
+          args: <Object>[coin], name: 'faucetInProgress');
 
   // --- sound configuration ---
 
@@ -613,7 +620,7 @@ class AppLocalizations {
   String get orderDetailsAddress =>
       Intl.message('Address', name: 'orderDetailsAddress');
   String orderDetailsExpedient(String delta) =>
-      Intl.message('Expedient: CEX -$delta%',
+      Intl.message('Expedient: CEX $delta%',
           args: <Object>[delta], name: 'orderDetailsExpedient');
   String orderDetailsExpensive(String delta) =>
       Intl.message('Expensive: CEX +$delta%',
@@ -720,6 +727,8 @@ class AppLocalizations {
       Intl.message('<1 hour', name: 'rewardsOneHourShort');
   String get rewardsOneHourLong =>
       Intl.message('One hour not passed yet', name: 'rewardsOneHourLong');
+  String get rewardsButton =>
+      Intl.message('Claim your rewards', name: 'rewardsButton');
 
   // --- Multi Order---
 
@@ -752,7 +761,7 @@ class AppLocalizations {
   String get multiFiatFill => Intl.message('Autofill', name: 'multiFiatFill');
   String get multiEthFee => Intl.message('fee', name: 'multiEthFee');
   String multiConfirmTitle(int number) =>
-      Intl.message('Create $number Order(s)}:',
+      Intl.message('Create $number Order(s):',
           args: <Object>[number], name: 'multiConfirmTitle');
   String get multiConfirmCancel =>
       Intl.message('Cancel', name: 'multiConfirmCancel');
@@ -812,6 +821,7 @@ class AppLocalizations {
           args: <Object>[title], name: 'addressBookFilter');
   String get createContact =>
       Intl.message('Create Contact', name: 'createContact');
+  String get contactTitleName => Intl.message('Name', name: 'contactTitleName');
   String get editContact => Intl.message('Edit Contact', name: 'editContact');
   String get contactCancel => Intl.message('Cancel', name: 'contactCancel');
   String get contactSave => Intl.message('Save', name: 'contactSave');
@@ -1120,6 +1130,12 @@ class AppLocalizations {
   String get minutes => Intl.message('m', name: 'minutes');
   String get hours => Intl.message('h', name: 'hours');
   String get moreTab => Intl.message('More', name: 'moreTab');
+
+  // --- Notes ---
+
+  String get noteTitle => Intl.message('Note', name: 'noteTitle');
+  String get notePlaceholder =>
+      Intl.message('Add a Note', name: 'notePlaceholder');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

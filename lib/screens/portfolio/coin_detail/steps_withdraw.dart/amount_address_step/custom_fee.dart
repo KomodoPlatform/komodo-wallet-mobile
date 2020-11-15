@@ -30,7 +30,7 @@ class _CustomFeeState extends State<CustomFee> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(
-                'Custom fee',
+                AppLocalizations.of(context).customFee,
                 style: Theme.of(context).textTheme.body2,
               ),
               Switch(

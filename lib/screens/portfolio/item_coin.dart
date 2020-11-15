@@ -271,7 +271,7 @@ class _ItemCoinState extends State<ItemCoin> {
                 ),
               ),
             Text(
-              'CLAIM YOUR REWARDS',
+              AppLocalizations.of(context).rewardsButton.toUpperCase(),
               style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
             )
           ],

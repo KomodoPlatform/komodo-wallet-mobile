@@ -75,7 +75,7 @@ class _ContactEditState extends State<ContactEdit> {
                     children: <Widget>[
                       ContactEditField(
                           name: 'name',
-                          label: 'Name',
+                          label: AppLocalizations.of(context).contactTitleName,
                           invalid: invalidFields.contains('name'),
                           icon: Icon(
                             Icons.account_circle,
