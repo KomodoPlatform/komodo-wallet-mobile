@@ -79,7 +79,7 @@ class _DetailSwapState extends State<DetailSwap> {
                 swapHistoryBloc.isAnimationStepFinalIsFinish
             ? _buildInfosDetail()
             : Container(),
-        _buildNote('Note'),
+        _buildNote(AppLocalizations.of(context).noteTitle),
         const SizedBox(
           height: 32,
         ),
@@ -128,7 +128,7 @@ class _DetailSwapState extends State<DetailSwap> {
                         )
                       : Text(
                           (noteText == null || noteText.isEmpty)
-                              ? 'Add a Note'
+                              ? AppLocalizations.of(context).notePlaceholder
                               : noteText,
                           style: Theme.of(context).textTheme.body1.copyWith(
                               fontWeight: FontWeight.bold, fontSize: 18),
@@ -188,9 +188,10 @@ class _DetailSwapState extends State<DetailSwap> {
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'TakerPaymentSent') {
         takerpaymentID = event.event.data.txHash;
+      } else if (event.event.type == 'TakerPaymentSpent') {
+        takerpaymentID = event.event.data.txHash;
       }
     }
-
     return takerpaymentID;
   }
 
@@ -198,6 +199,8 @@ class _DetailSwapState extends State<DetailSwap> {
     String makepaymentID = '';
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'MakerPaymentSpent') {
+        makepaymentID = event.event.data.txHash;
+      } else if (event.event.type == 'MakerPaymentSent') {
         makepaymentID = event.event.data.txHash;
       }
     }

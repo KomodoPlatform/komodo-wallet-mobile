@@ -146,7 +146,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                               widget.swap.result.myInfo.myCoin,
                               style: const TextStyle(fontSize: 20),
                             ),
-                            const SizedBox(width: 2),
+                            const SizedBox(width: 4),
                             _buildIcon(widget.swap.result.myInfo.myCoin),
                           ],
                         ),
@@ -168,7 +168,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                         Row(
                           children: <Widget>[
                             _buildIcon(widget.swap.result.myInfo.otherCoin),
-                            const SizedBox(width: 2),
+                            const SizedBox(width: 4),
                             Text(
                               widget.swap.result.myInfo.otherCoin,
                               style: const TextStyle(fontSize: 20),

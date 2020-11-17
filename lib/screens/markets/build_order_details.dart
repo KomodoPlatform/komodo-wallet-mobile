@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -91,8 +92,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 color: _isAsk ? Colors.red : Colors.green,
               )),
           TextSpan(
-            // TODO(yurii): localization
-            text: ' This is your own order!',
+            text: AppLocalizations.of(context).ownOrder,
             style: TextStyle(
                 color: _isAsk ? Colors.red : Colors.green, fontSize: 20),
           ),
@@ -109,8 +109,8 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 30,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            // TODO(yurii): localization
-            child: Text('Price', style: Theme.of(context).textTheme.body2),
+            child: Text(AppLocalizations.of(context).orderDetailsPrice,
+                style: Theme.of(context).textTheme.body2),
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
@@ -170,19 +170,19 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     switch (sign) {
       case -1:
         {
-          message =
-              'Expedient: CEX -${formatPrice(delta, 2)}%'; // TODO(yurii): localization
+          message = AppLocalizations.of(context)
+              .orderDetailsExpedient(formatPrice(delta, 2));
           break;
         }
       case 1:
         {
-          message =
-              'Expensive: CEX +${formatPrice(delta, 2)}%'; // TODO(yurii): localization
+          message = AppLocalizations.of(context)
+              .orderDetailsExpensive(formatPrice(delta, 2));
           break;
         }
       default:
         {
-          message = 'Identical to CEX'; // TODO(yurii): localization
+          message = AppLocalizations.of(context).orderDetailsIdentical;
         }
     }
 
@@ -218,7 +218,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text('Sells', // TODO(yurii): localization
+            child: Text(AppLocalizations.of(context).orderDetailsSells,
                 style: Theme.of(context).textTheme.body2),
           ),
           Container(
@@ -253,7 +253,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text('for', // TODO(yurii): localization
+            child: Text(AppLocalizations.of(context).orderDetailsFor,
                 style: Theme.of(context).textTheme.body2),
           ),
           Container(
@@ -296,7 +296,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text('Receive', // TODO(yurii): localization
+            child: Text(AppLocalizations.of(context).orderDetailsReceive,
                 style: Theme.of(context).textTheme.body2),
           ),
           Container(
@@ -333,7 +333,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text('Spend', // TODO(yurii): localization
+            child: Text(AppLocalizations.of(context).orderDetailsSpend,
                 style: Theme.of(context).textTheme.body2),
           ),
           Container(
@@ -376,7 +376,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             height: 40,
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
-            child: Text('Address', // TODO(yurii): localization
+            child: Text(AppLocalizations.of(context).orderDetailsAddress,
                 style: Theme.of(context).textTheme.body2),
           ),
           _contact == null ? _buildAddressButton() : _buildContactButton(),

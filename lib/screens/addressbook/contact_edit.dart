@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit_field.dart';
@@ -52,8 +53,8 @@ class _ContactEditState extends State<ContactEdit> {
           appBar: AppBar(
             title: Text(
               widget.contact == null
-                  ? 'Create Contact' // TODO(yurii): localization
-                  : 'Edit Contact', // TODO(yurii): localization
+                  ? AppLocalizations.of(context).createContact
+                  : AppLocalizations.of(context).editContact,
               key: const Key('contact_edit-title'),
             ),
             actions: <Widget>[
@@ -74,7 +75,7 @@ class _ContactEditState extends State<ContactEdit> {
                     children: <Widget>[
                       ContactEditField(
                           name: 'name',
-                          label: 'Name',
+                          label: AppLocalizations.of(context).contactTitleName,
                           invalid: invalidFields.contains('name'),
                           icon: Icon(
                             Icons.account_circle,
@@ -128,13 +129,13 @@ class _ContactEditState extends State<ContactEdit> {
                       onPressed: () {
                         _exitPage();
                       },
-                      child: const Text('Cancel'), // TODO(yurii): localization
+                      child: Text(AppLocalizations.of(context).contactCancel),
                     ),
                     FlatButton(
                       onPressed: () {
                         _saveContact();
                       },
-                      child: const Text('Save'), // TODO(yurii): localization
+                      child: Text(AppLocalizations.of(context).contactSave),
                     ),
                   ],
                 ),
@@ -150,12 +151,12 @@ class _ContactEditState extends State<ContactEdit> {
     final bool wasEdited = hashBeforeEdit != jsonEncode(editContact.toJson());
     if (wasEdited) {
       showConfirmationDialog(
-          confirmButtonText: 'Discard', // TODO(yurii): localization
+          confirmButtonText: AppLocalizations.of(context).contactDiscardBtn,
           context: context,
           icon: Icons.arrow_back,
           iconColor: Colors.white,
-          title: 'Exit', // TODO(yurii): localization
-          message: 'Discard your changes?',
+          title: AppLocalizations.of(context).contactExit,
+          message: AppLocalizations.of(context).contactExitWarning,
           onConfirm: () {
             Navigator.of(context).pop();
           });
@@ -267,7 +268,7 @@ class _ContactEditState extends State<ContactEdit> {
           child: Row(
             children: <Widget>[
               Icon(Icons.add, size: 16),
-              const Text('Add Address'), // TODO(yurii): localization
+              Text(AppLocalizations.of(context).addressAdd),
             ],
           ),
         ),
@@ -329,7 +330,7 @@ class _ContactEditState extends State<ContactEdit> {
           }
 
           return SimpleDialog(
-            title: const Text('Select Coin'), // TODO(yurii): localization
+            title: Text(AppLocalizations.of(context).addressSelectCoin),
             children: [
               ...coinsList,
             ],
@@ -404,11 +405,11 @@ class _ContactEditState extends State<ContactEdit> {
   void _showDeleteConfiramtion() {
     showConfirmationDialog(
       context: context,
-      title: 'Delete Contact', // TODO(yurii): localization
+      title: AppLocalizations.of(context).contactDelete,
       icon: Icons.delete,
       message:
-          'Are you sure you want to delete contact ${editContact.name}?', // TODO(yurii): localization
-      confirmButtonText: 'Delete', // TODO(yurii): localization
+          AppLocalizations.of(context).contactDeleteWarning(editContact.name),
+      confirmButtonText: AppLocalizations.of(context).contactDeleteBtn,
       onConfirm: () => _deleteContact(),
     );
   }

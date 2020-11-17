@@ -36,6 +36,7 @@ class ReceiveOrders extends StatefulWidget {
 
 class _ReceiveOrdersState extends State<ReceiveOrders> {
   OrderBookProvider orderBookProvider;
+  final searchTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +47,37 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
     return SimpleDialog(
       title: Text(AppLocalizations.of(context).receiveLower),
       key: const Key('receive-list-coins'),
-      children: orderbooks
-          .map((Orderbook orderbook) => OrderbookItem(
-              key: Key('orderbook-item-${orderbook.rel.toLowerCase()}'),
-              orderbook: orderbook,
-              onCreateNoOrder: widget.onCreateNoOrder,
-              onCreateOrder: widget.onCreateOrder,
-              sellAmount: widget.sellAmount))
-          .toList(),
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: TextField(
+            controller: searchTextController,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Search for Ticker',
+            ),
+            maxLength: 16,
+          ),
+        ),
+        ...orderbooks
+            .where((ob) => ob.rel
+                .toLowerCase()
+                .startsWith(searchTextController.text.toLowerCase()))
+            .map((Orderbook orderbook) => OrderbookItem(
+                key: Key('orderbook-item-${orderbook.rel.toLowerCase()}'),
+                orderbook: orderbook,
+                onCreateNoOrder: widget.onCreateNoOrder,
+                onCreateOrder: widget.onCreateOrder,
+                sellAmount: widget.sellAmount))
+            .toList(),
+      ],
     );
+  }
+
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
   }
 }
 
@@ -222,7 +245,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                 alignment: const Alignment(0, 0),
                                 padding: const EdgeInsets.only(top: 30),
                                 child: Text(
-                                  'No matching orders found',
+                                  AppLocalizations.of(context).noMatchingOrders,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Theme.of(context).disabledColor,
@@ -251,9 +274,6 @@ class _AsksOrderState extends State<AsksOrder> {
                                       ),
                                     ),
                                     Table(
-                                      columnWidths: const {
-                                        1: IntrinsicColumnWidth(),
-                                      },
                                       children: [
                                         TableRow(children: [
                                           Container(
@@ -281,6 +301,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                             child: Text(
                                               '${AppLocalizations.of(context).availableVolume}'
                                               ' ($relCoin)',
+                                              textAlign: TextAlign.end,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle
@@ -294,7 +315,6 @@ class _AsksOrderState extends State<AsksOrder> {
                                               left: 6,
                                             ),
                                             child: Text(
-                                              // TODO(yurii): localization
                                               '${AppLocalizations.of(context).availableVolume}'
                                               ' ($baseCoin)',
                                               textAlign: TextAlign.right,
@@ -533,8 +553,9 @@ class _AsksOrderState extends State<AsksOrder> {
                   title: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      // TODO(yurii): localization
-                      const Expanded(child: Text('Details')),
+                      Expanded(
+                          child: Text(
+                              AppLocalizations.of(context).orderDetailsTitle)),
                       InkWell(
                         onTap: () {
                           setState(() {
@@ -572,9 +593,8 @@ class _AsksOrderState extends State<AsksOrder> {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                // TODO(yurii): localization
-                                'Open Details on single tap'
-                                ' and select Order by long tap',
+                                AppLocalizations.of(context)
+                                    .orderDetailsSettings,
                                 style: Theme.of(context).textTheme.body2,
                               ),
                             ),
@@ -603,8 +623,8 @@ class _AsksOrderState extends State<AsksOrder> {
                       children: <Widget>[
                         FlatButton(
                           onPressed: () => dialogBloc.closeDialog(context),
-                          // TODO(yurii): localization
-                          child: const Text('Cancel'),
+                          child: Text(
+                              AppLocalizations.of(context).orderDetailsCancel),
                         ),
                         const SizedBox(width: 12),
                         RaisedButton(
@@ -612,8 +632,8 @@ class _AsksOrderState extends State<AsksOrder> {
                             dialogBloc.closeDialog(context);
                             _createOrder(bid);
                           },
-                          // TODO(yurii): localization
-                          child: const Text('Select'),
+                          child: Text(
+                              AppLocalizations.of(context).orderDetailsSelect),
                         )
                       ],
                     )

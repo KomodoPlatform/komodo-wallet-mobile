@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-11-19T18:39:56.504106",
+  "@@last_modified": "2020-11-15T10:10:56.086365",
   "createPin": "Create PIN",
   "@createPin": {
     "type": "text",
@@ -597,7 +597,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "infoTrade2": "This transaction can take up to 10 mins - DONT close this application!",
+  "infoTrade2": "The swap can take up to 60 minutes. DONT close this application!",
   "@infoTrade2": {
     "type": "text",
     "placeholders": {}
@@ -1114,7 +1114,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "eulaParagraphe6": "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. You must immediately notify us of any unauthorized uses of your account or any other breaches of security. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. \n\n AtomicDEX mobile is a non-custodial wallet implementation and thus Komodo Platform can not access nor restore your account in case of (data) loss.\n\n",
+  "eulaParagraphe6": "If you create an account in the Mobile Application, you are responsible for maintaining the security of your account and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it. We will not be liable for any acts or omissions by you, including any damages of any kind incurred as a result of such acts or omissions. \n\n AtomicDEX mobile is a non-custodial wallet implementation and thus Komodo Platform can not access nor restore your account in case of (data) loss.\n\n",
   "@eulaParagraphe6": {
     "type": "text",
     "placeholders": {}
@@ -1422,6 +1422,1230 @@
   },
   "faucetName": "FAUCET",
   "@faucetName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faucetSuccess": "Success",
+  "@faucetSuccess": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faucetError": "Error",
+  "@faucetError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faucetTimedOut": "Request timed out",
+  "@faucetTimedOut": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faucetInProgress": "Sending request to {coin} faucet...",
+  "@faucetInProgress": {
+    "type": "text",
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "Sound": "Sound",
+  "@Sound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Play at full volume": "Play at full volume",
+  "@Play at full volume": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Taker": "Taker",
+  "@Taker": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "you have a fresh order that is trying to match with an existing order": "you have a fresh order that is trying to match with an existing order",
+  "@you have a fresh order that is trying to match with an existing order": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Maker": "Maker",
+  "@Maker": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "you have an order that new orders can match with": "you have an order that new orders can match with",
+  "@you have an order that new orders can match with": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Active": "Active",
+  "@Active": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "you have an active swap in progress": "you have an active swap in progress",
+  "@you have an active swap in progress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Failed": "Failed",
+  "@Failed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "a swap fails": "a swap fails",
+  "@a swap fails": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Applause": "Applause",
+  "@Applause": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "a swap runs to completion": "a swap runs to completion",
+  "@a swap runs to completion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Can't play that": "Can't play that",
+  "@Can't play that": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "soundCantPlayThatMsg": "Pick an mp3 or wav file please. We'll play it when {description}.",
+  "@soundCantPlayThatMsg": {
+    "type": "text",
+    "placeholders": {
+      "description": {
+        "example": "a swap runs to completion"
+      }
+    }
+  },
+  "soundPlayedWhen": "Played when {description}",
+  "@soundPlayedWhen": {
+    "type": "text",
+    "placeholders": {
+      "description": {
+        "example": "a swap runs to completion"
+      }
+    }
+  },
+  "marketsTab": "Markets",
+  "@marketsTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketsTitle": "MARKETS",
+  "@marketsTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketsPrice": "PRICE",
+  "@marketsPrice": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketsOrderbook": "ORDER BOOK",
+  "@marketsOrderbook": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketsChart": "Chart",
+  "@marketsChart": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketsDepth": "Depth",
+  "@marketsDepth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsPrice": "Price",
+  "@orderDetailsPrice": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsSells": "Sells",
+  "@orderDetailsSells": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsFor": "for",
+  "@orderDetailsFor": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsAddress": "Address",
+  "@orderDetailsAddress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsExpedient": "Expedient: CEX {delta}%",
+  "@orderDetailsExpedient": {
+    "type": "text",
+    "placeholders": {
+      "delta": {}
+    }
+  },
+  "orderDetailsExpensive": "Expensive: CEX +{delta}%",
+  "@orderDetailsExpensive": {
+    "type": "text",
+    "placeholders": {
+      "delta": {}
+    }
+  },
+  "orderDetailsIdentical": "Identical to CEX",
+  "@orderDetailsIdentical": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsReceive": "Receive",
+  "@orderDetailsReceive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsSpend": "Spend",
+  "@orderDetailsSpend": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ownOrder": " This is your own order!",
+  "@ownOrder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketsSelectCoins": "Please select coins",
+  "@marketsSelectCoins": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "coinSelectTitle": "Select Coin",
+  "@coinSelectTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "coinSelectNotFound": "No active coins",
+  "@coinSelectNotFound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "coinSelectClear": "Clear",
+  "@coinSelectClear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ordersTablePrice": "Price ({coin})",
+  "@ordersTablePrice": {
+    "type": "text",
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "ordersTableAmount": "Amt. ({coin})",
+  "@ordersTableAmount": {
+    "type": "text",
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "ordersTableTotal": "Total ({coin})",
+  "@ordersTableTotal": {
+    "type": "text",
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "marketsNoBids": "No bids found",
+  "@marketsNoBids": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketsNoAsks": "No asks found",
+  "@marketsNoAsks": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "marketsOrderDetails": "Order Details",
+  "@marketsOrderDetails": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "candleChartError": "Something went wrong. Try again later.",
+  "@candleChartError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedTab": "Feed",
+  "@feedTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedTitle": "News Feed",
+  "@feedTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedReadMore": "Read more...",
+  "@feedReadMore": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedNotFound": "Nothing here",
+  "@feedNotFound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedUpdated": "News feed updated",
+  "@feedUpdated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "snackbarDismiss": "Dismiss",
+  "@snackbarDismiss": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedNewsTab": "News",
+  "@feedNewsTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedUnableToUpdate": "Unable to get news update",
+  "@feedUnableToUpdate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedUnableToProceed": "Unable to proceed news update",
+  "@feedUnableToProceed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedUpToDate": "Already up to date",
+  "@feedUpToDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedNotifTitle": "Komodo news",
+  "@feedNotifTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsTitle": "Rewards information",
+  "@rewardsTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsReadMore": "Read more about KMD active user rewards",
+  "@rewardsReadMore": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsCancel": "Cancel",
+  "@rewardsCancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsReceive": "Receive",
+  "@rewardsReceive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noRewards": "No claimable rewards",
+  "@noRewards": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsTableTitle": "Rewards information:",
+  "@rewardsTableTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsTableUXTO": "UTXO amt,\nKMD",
+  "@rewardsTableUXTO": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsTableRewards": "Rewards,\nKMD",
+  "@rewardsTableRewards": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsTableTime": "Time left",
+  "@rewardsTableTime": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsTableStatus": "Status",
+  "@rewardsTableStatus": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsPopupTitle": "Rewards status:",
+  "@rewardsPopupTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsPopupOk": "Ok",
+  "@rewardsPopupOk": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsTimeDays": "{dd} day(s)",
+  "@rewardsTimeDays": {
+    "type": "text",
+    "placeholders": {
+      "dd": {}
+    }
+  },
+  "rewardsTimeHours": "{hh}h {minutes}m",
+  "@rewardsTimeHours": {
+    "type": "text",
+    "placeholders": {
+      "hh": {},
+      "minutes": {}
+    }
+  },
+  "rewardsTimeMin": "{mm}min",
+  "@rewardsTimeMin": {
+    "type": "text",
+    "placeholders": {
+      "mm": {}
+    }
+  },
+  "rewardsSuccess": "Success! {amount} KMD received.",
+  "@rewardsSuccess": {
+    "type": "text",
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "rewardsError": "Something went wrong. Please try again later.",
+  "@rewardsError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsLowAmountShort": "<10 KMD",
+  "@rewardsLowAmountShort": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsLowAmountLong": "UTXO amount less than 10 KMD",
+  "@rewardsLowAmountLong": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsInProgressShort": "processing",
+  "@rewardsInProgressShort": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsInProgressLong": "Transaction is in progress",
+  "@rewardsInProgressLong": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsOneHourShort": "<1 hour",
+  "@rewardsOneHourShort": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsOneHourLong": "One hour not passed yet",
+  "@rewardsOneHourLong": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "rewardsButton": "Claim your rewards",
+  "@rewardsButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiTab": "Multi",
+  "@multiTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiFixErrors": "Please fix all errors before continuing",
+  "@multiFixErrors": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiCreate": "Create",
+  "@multiCreate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiCreateOrder": "Order",
+  "@multiCreateOrder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiCreateOrders": "Orders",
+  "@multiCreateOrders": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiBasePlaceholder": "Coin",
+  "@multiBasePlaceholder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiSellTitle": "Sell:",
+  "@multiSellTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiBaseSelectTitle": "Sell",
+  "@multiBaseSelectTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiBaseAmtPlaceholder": "Amount",
+  "@multiBaseAmtPlaceholder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiReceiveTitle": "Receive:",
+  "@multiReceiveTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiTablePrice": "Price/CEX",
+  "@multiTablePrice": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiTableAmt": "Receive Amt.",
+  "@multiTableAmt": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiFiatDesc": "Please enter fiat amount to receive:",
+  "@multiFiatDesc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiFiatCancel": "Cancel",
+  "@multiFiatCancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiFiatFill": "Autofill",
+  "@multiFiatFill": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiEthFee": "fee",
+  "@multiEthFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiConfirmTitle": "Create {number} Order(s):",
+  "@multiConfirmTitle": {
+    "type": "text",
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "multiConfirmCancel": "Cancel",
+  "@multiConfirmCancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiConfirmConfirm": "Confirm",
+  "@multiConfirmConfirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiInvalidSellAmt": "Invalid sell amount",
+  "@multiInvalidSellAmt": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiMaxSellAmt": "Max sell amount is",
+  "@multiMaxSellAmt": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiMinSellAmt": "Min sell amount is",
+  "@multiMinSellAmt": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiInvalidAmt": "Invalid amount",
+  "@multiInvalidAmt": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiActivateEth": "Activate ETH and top-up balance first",
+  "@multiActivateEth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiLowEth": "ETH balance is too low",
+  "@multiLowEth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "multiMinReceiveAmt": "Min receive amount is",
+  "@multiMinReceiveAmt": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatesTitle": "atomicDEX update",
+  "@updatesTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatesCurrentVersion": "You are using version {version}",
+  "@updatesCurrentVersion": {
+    "type": "text",
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "updatesChecking": "Checking for updates...",
+  "@updatesChecking": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatesUpToDate": "Already up to date",
+  "@updatesUpToDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatesAvailable": "New version available",
+  "@updatesAvailable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatesUpdate": "Update",
+  "@updatesUpdate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatesSkip": "Skip for now",
+  "@updatesSkip": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatesNotifTitle": "Update available",
+  "@updatesNotifTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatesNotifAvailable": "New version available. Please update.",
+  "@updatesNotifAvailable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatesNotifAvailableVersion": "Version {version} available. Please update.",
+  "@updatesNotifAvailableVersion": {
+    "type": "text",
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "addressBook": "Address book",
+  "@addressBook": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addressBookTitle": "Address Book",
+  "@addressBookTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactTitle": "Contact details",
+  "@contactTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addressBookEmpty": "Address book is empty",
+  "@addressBookEmpty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addressBookFilter": "Only showing contacts with {title} addresses",
+  "@addressBookFilter": {
+    "type": "text",
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "createContact": "Create Contact",
+  "@createContact": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactTitleName": "Name",
+  "@contactTitleName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editContact": "Edit Contact",
+  "@editContact": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactCancel": "Cancel",
+  "@contactCancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactSave": "Save",
+  "@contactSave": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactDiscardBtn": "Discard",
+  "@contactDiscardBtn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactExit": "Exit",
+  "@contactExit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactExitWarning": "Discard your changes?",
+  "@contactExitWarning": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addressAdd": "Add Address",
+  "@addressAdd": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addressSelectCoin": "Select Coin",
+  "@addressSelectCoin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactDelete": "Delete Contact",
+  "@contactDelete": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactDeleteWarning": "Are you sure you want to delete contact {name}?",
+  "@contactDeleteWarning": {
+    "type": "text",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "contactDeleteBtn": "Delete",
+  "@contactDeleteBtn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactNotFound": "No contacts found",
+  "@contactNotFound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactEdit": "Edit",
+  "@contactEdit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addressNotFound": "Nothing found",
+  "@addressNotFound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noSuchCoin": "No such coin",
+  "@noSuchCoin": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addressCoinInactive": "You can not send funds to {abbr} address, because {abbr} is not activated. Please go to portfolio.",
+  "@addressCoinInactive": {
+    "type": "text",
+    "placeholders": {
+      "abbr": {}
+    }
+  },
+  "warningOkBtn": "OK",
+  "@warningOkBtn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinTitle": "Camouflage PIN",
+  "@camoPinTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinLink": "Camouflage PIN",
+  "@camoPinLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinOn": "On",
+  "@camoPinOn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinOff": "Off",
+  "@camoPinOff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "matchingCamoTitle": "Invalid PIN",
+  "@matchingCamoTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "matchingCamoChange": "Change",
+  "@matchingCamoChange": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinDesc": "If You'll unlock the app with the Camouflage PIN, a fake LOW balance will be shown and the Camouflage PIN config option will NOT be visible in the settings",
+  "@camoPinDesc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "matchingCamoPinError": "Your general PIN and Camouflage PIN are the same.\nCamouflage mode will not be available.\nPlease change Camouflage PIN.",
+  "@matchingCamoPinError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "generalPinNotActive": "General PIN protection is not active.\nCamouflage mode will not be available.\nPlease activate PIN protection.",
+  "@generalPinNotActive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "fakeBalanceAmt": "Fake balance amount:",
+  "@fakeBalanceAmt": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinNotFound": "Camouflage PIN not found",
+  "@camoPinNotFound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinCreate": "Create Camouflage PIN",
+  "@camoPinCreate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinSaved": "Camouflage PIN saved",
+  "@camoPinSaved": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinInvalid": "Invalid Camouflage PIN",
+  "@camoPinInvalid": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoPinChange": "Change Camouflage PIN",
+  "@camoPinChange": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoSetupTitle": "Camouflage PIN Setup",
+  "@camoSetupTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "camoSetupSubtitle": "Enter new Camouflage PIN",
+  "@camoSetupSubtitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "protectionCtrlOn": "ON",
+  "@protectionCtrlOn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "protectionCtrlOff": "OFF",
+  "@protectionCtrlOff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "protectionCtrlConfirmations": "Confirmations",
+  "@protectionCtrlConfirmations": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dPow": "Komodo dPoW security",
+  "@dPow": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "protectionCtrlCustom": "Use custom protection settings",
+  "@protectionCtrlCustom": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "protectionCtrlWarning": "Warning, this atomic swap is not dPoW protected. ",
+  "@protectionCtrlWarning": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cexChangeRate": "CEXchange rate",
+  "@cexChangeRate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exchangeExpedient": "Expedient: -{delta}% compared to CEX",
+  "@exchangeExpedient": {
+    "type": "text",
+    "placeholders": {
+      "delta": {}
+    }
+  },
+  "exchangeExpensive": "Expensive: +{delta}% compared to CEX",
+  "@exchangeExpensive": {
+    "type": "text",
+    "placeholders": {
+      "delta": {}
+    }
+  },
+  "echangeIdentical": "Identical to CEX",
+  "@echangeIdentical": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ordersActive": "Active",
+  "@ordersActive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ordersHistory": "History",
+  "@ordersHistory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsTitle": "Details",
+  "@orderDetailsTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsSettings": "Open Details on single tap and select Order by long tap",
+  "@orderDetailsSettings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsCancel": "Cancel",
+  "@orderDetailsCancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "orderDetailsSelect": "Select",
+  "@orderDetailsSelect": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noMatchingOrders": "No matching orders found",
+  "@noMatchingOrders": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpLink": "Help",
+  "@helpLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpTitle": "Help and Support",
+  "@helpTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "faqTitle": "Frequently Asked Questions",
+  "@faqTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "support": "Support",
+  "@support": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "supportLinksDesc": "If you have any questions, or think you've found a technical problem with the atomicDEX app, you can report it and get support from our team.",
+  "@supportLinksDesc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_1": "Do you store my private keys?",
+  "@question_1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_1": "No! AtomicDEX is non-custodial. We never store any sensitive data, including your private keys, seed phrases, or PIN. This data is only stored on the user’s device and never leaves it. You are in full control of your assets.",
+  "@answer_1": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_2": "How is trading on AtomicDEX different from trading on other DEXs?",
+  "@question_2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_2": "Other DEXs generally only allow you to trade assets that are based on a single blockchain network, use proxy tokens, and only allow placing a single order with the same funds.\n\nAtomicDEX enables you to natively trade across two different blockchain networks without proxy tokens. You can also place multiple orders with the same funds. For example, you can sell 0.1 BTC for KMD, QTUM, or VRSC — the first order that fills automatically cancels all other orders.",
+  "@answer_2": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_3": "How long does each atomic swap take?",
+  "@question_3": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_3": "Several factors determine the processing time for each swap. The block time of the traded assets depends on each network (Bitcoin typically being the slowest) Additionally, the user can customize security preferences. For example, you can ask AtomicDEX to consider a KMD transaction as final after just 3 confirmations which makes the swap time shorter compared to waiting for a <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">notarization</a>.",
+  "@answer_3": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_4": "Do I need to be online for the duration of the swap?",
+  "@question_4": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_4": "Yes. You must remain connected to the internet and have your app running to successfully complete each atomic swap (very short breaks in connectivity are usually fine). Otherwise, there is risk of trade cancellation if you are a maker, and risk of loss of funds if you are a taker. The atomic swap protocol requires both participants to stay online and monitor the involved blockchains for the process to stay atomic.",
+  "@answer_4": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_5": "How are the fees on atomicDEX calculated?",
+  "@question_5": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_5": "There are two fee categories to consider when trading on AtomicDEX.\n\n1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but not lower than 0.0001) as the trading fee for taker orders, and maker orders have zero fees.\n\n2. Both makers and takers will need to pay normal network fees to the involved blockchains when making atomic swap transactions.\n\nNetwork fees can vary greatly depending on your selected trading pair.",
+  "@answer_5": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_6": "Do you provide user support?",
+  "@question_6": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_6": "Yes! AtomicDEX offers support through the <a href=\"https://komodoplatform.com/discord\">Komodo Discord server</a>. The team and the community are always happy to help!",
+  "@answer_6": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_7": "Do you have country restrictions?",
+  "@question_7": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_7": "No! AtomicDEX is fully decentralized. It is not possible to limit user access by any third party.",
+  "@answer_7": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_8": "Who is behind AtomicDEX?",
+  "@question_8": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_8": "AtomicDEX is developed by the Komodo team. Komodo is one of the most established blockchain projects working on innovative solutions like atomic swaps, Delayed Proof of Work, and an interoperable multi-chain architecture.",
+  "@answer_8": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_9": "Is it possible to develop my own white-label exchange on AtomicDEX?",
+  "@question_9": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_9": "Absolutely! You can read our <a href=\"https://developers.atomicdex.io/\">developer documentation</a> for more details or contact us with your partnership inquiries. Have a specific technical question? The AtomicDEX developer community is always ready to help!",
+  "@answer_9": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "question_10": "Which devices can I use AtomicDEX on?",
+  "@question_10": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "answer_10": "AtomicDEX is available for mobile on both Android and iPhone, and for desktop on Windows, Mac, and Linux operating systems.",
+  "@answer_10": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapActual": "act",
+  "@swapActual": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapEstimated": "est",
+  "@swapEstimated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapStarted": "Started",
+  "@swapStarted": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swapTotal": "Total",
+  "@swapTotal": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "swappProgress": "Progress details",
+  "@swappProgress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifTxTitle": "Incoming transaction",
+  "@notifTxTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifTxText": "You have received {coin} transaction!",
+  "@notifTxText": {
+    "type": "text",
+    "placeholders": {
+      "coin": {}
+    }
+  },
+  "notifSwapCompletedTitle": "Swap completed",
+  "@notifSwapCompletedTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifSwapCompletedText": "{sell}/{buy} swap was completed successfully",
+  "@notifSwapCompletedText": {
+    "type": "text",
+    "placeholders": {
+      "sell": {},
+      "buy": {}
+    }
+  },
+  "notifSwapFailedTitle": "Swap failed",
+  "@notifSwapFailedTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifSwapFailedText": "{sell}/{buy} swap failed",
+  "@notifSwapFailedText": {
+    "type": "text",
+    "placeholders": {
+      "sell": {},
+      "buy": {}
+    }
+  },
+  "notifSwapTimeoutTitle": "Swap timed out",
+  "@notifSwapTimeoutTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifSwapTimeoutText": "{sell}/{buy} swap was timed out",
+  "@notifSwapTimeoutText": {
+    "type": "text",
+    "placeholders": {
+      "sell": {},
+      "buy": {}
+    }
+  },
+  "notifSwapStatusTitle": "Swap status changed",
+  "@notifSwapStatusTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifSwapStartedTitle": "New swap started",
+  "@notifSwapStartedTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifSwapStartedText": "{sell}/{buy} swap started",
+  "@notifSwapStartedText": {
+    "type": "text",
+    "placeholders": {
+      "sell": {},
+      "buy": {}
+    }
+  },
+  "language": "Language",
+  "@language": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "currency": "Currency",
+  "@currency": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hideBalance": "Hide balances",
+  "@hideBalance": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cexData": "CEX data",
+  "@cexData": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cexDataDesc": "Markets data (prices, charts, etc.) marked with this icon originates from third party sources (<a href=\"https://www.coingecko.com/\">coingecko.com</a>, <a href=\"https://openrates.io/\">openrates.io</a>).",
+  "@cexDataDesc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkingUpdates": "Checking for updates...",
+  "@checkingUpdates": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkForUpdates": "Check for updates",
+  "@checkForUpdates": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logoutWarning": "Are you sure you want to logout now?",
+  "@logoutWarning": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "currencyDialogTitle": "Currency",
+  "@currencyDialogTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "txLimitExceeded": "Too many requests.\nTransactions history requests limit exceeded.\nPlease try again later.",
+  "@txLimitExceeded": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "milliseconds": "ms",
+  "@milliseconds": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "seconds": "s",
+  "@seconds": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "minutes": "m",
+  "@minutes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hours": "h",
+  "@hours": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "moreTab": "More",
+  "@moreTab": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noteTitle": "Note",
+  "@noteTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notePlaceholder": "Add a Note",
+  "@notePlaceholder": {
     "type": "text",
     "placeholders": {}
   }

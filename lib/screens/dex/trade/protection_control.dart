@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -118,8 +119,9 @@ class _ProtectionControlState extends State<ProtectionControl> {
                 child: _builddPowLink(),
               ),
               Text(
-                // TODO(yurii): localization
-                (widget.coin.requiresNotarization ?? false) ? 'ON' : 'OFF',
+                (widget.coin.requiresNotarization ?? false)
+                    ? AppLocalizations.of(context).protectionCtrlOn
+                    : AppLocalizations.of(context).protectionCtrlOff,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -132,15 +134,15 @@ class _ProtectionControlState extends State<ProtectionControl> {
           ),
           Row(
             children: <Widget>[
-              const Expanded(
+              Expanded(
                   child: Text(
-                'Confirmations: ', // TODO(yurii): localization
+                AppLocalizations.of(context).protectionCtrlConfirmations + ': ',
               )),
               Text(
                 (widget.coin.requiresNotarization ?? false)
-                    ? 'ON'
+                    ? AppLocalizations.of(context).protectionCtrlOn
                     : widget.coin.requiredConfirmations == null
-                        ? '1' // TODO(yurii): localization
+                        ? '1'
                         : widget.coin.requiredConfirmations.toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -162,8 +164,8 @@ class _ProtectionControlState extends State<ProtectionControl> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          const Text(
-            'Komodo dPoW security ', // TODO(yurii): localization
+          Text(
+            AppLocalizations.of(context).dPow + ' ',
           ),
           Icon(
             Icons.open_in_new,
@@ -171,7 +173,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
             color: Theme.of(context).accentColor.withAlpha(180),
           ),
           const Text(
-            ': ', // TODO(yurii): localization
+            ': ',
           ),
         ],
       ),
@@ -200,9 +202,8 @@ class _ProtectionControlState extends State<ProtectionControl> {
                   size: 18,
                 ),
                 const SizedBox(width: 3),
-                const Text(
-                  // TODO(yurii): localization
-                  'Use custom protection settings',
+                Text(
+                  AppLocalizations.of(context).protectionCtrlCustom,
                 ),
               ],
             ),
@@ -236,9 +237,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    // TODO(yurii): localization
-                    'Warning, this atomic swap is not '
-                    'dPoW protected. ',
+                    AppLocalizations.of(context).protectionCtrlWarning,
                     style: TextStyle(
                       color: warningColor,
                     ),
@@ -263,7 +262,7 @@ class _ProtectionControlState extends State<ProtectionControl> {
             children: <Widget>[
               Expanded(
                 child: _builddPowLink(),
-              ), // TODO(yurii): localization
+              ),
               Opacity(
                 opacity: dpowAvailable ? 1 : 0.5,
                 child: Switch(
@@ -299,12 +298,14 @@ class _ProtectionControlState extends State<ProtectionControl> {
           ),
           child: Row(
             children: <Widget>[
-              const Expanded(
-                child: Text('Confirmations:'), // TODO(yurii): localization
+              Expanded(
+                child: Text(
+                    AppLocalizations.of(context).protectionCtrlConfirmations +
+                        ':'),
               ),
               dpowRequired
                   ? Text(
-                      'ON', // TODO(yurii): localization
+                      AppLocalizations.of(context).protectionCtrlOn,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   : Text(

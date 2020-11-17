@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/screens/feed/news/build_news_item.dart';
 import 'package:provider/provider.dart';
@@ -28,10 +29,10 @@ class _NewsTabState extends State<NewsTab> {
     }
 
     if (_news.isEmpty) {
-      return const Center(
+      return Center(
           child: Text(
-        'Nothing here', // TODO(yurii): localization
-        style: TextStyle(fontSize: 13),
+        AppLocalizations.of(context).feedNotFound,
+        style: const TextStyle(fontSize: 13),
       ));
     }
 
@@ -54,7 +55,7 @@ class _NewsTabState extends State<NewsTab> {
                 final String updateResponse = await _feedProvider.updateNews();
                 String message;
                 if (updateResponse == 'ok') {
-                  message = 'News feed updated'; // TODO(yurii): localization
+                  message = AppLocalizations.of(context).feedUpdated;
                 } else {
                   message = updateResponse;
                 }
@@ -68,7 +69,7 @@ class _NewsTabState extends State<NewsTab> {
                   duration: const Duration(seconds: 1),
                   action: SnackBarAction(
                     textColor: Theme.of(context).accentColor,
-                    label: 'Dismiss', // TODO(yurii): localization
+                    label: AppLocalizations.of(context).snackbarDismiss,
                     onPressed: () {
                       Scaffold.of(context).hideCurrentSnackBar();
                     },
