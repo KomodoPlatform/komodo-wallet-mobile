@@ -19,6 +19,9 @@ class SettingsBloc implements BlocBase {
     _prefs = await SharedPreferences.getInstance();
 
     showBalance = _prefs.getBool('showBalance') ?? showBalance;
+    showSoundsExplanationDialog =
+        _prefs.getBool('showSoundsExplanationDialog') ??
+            showSoundsExplanationDialog;
 
     if (_prefs.getBool('showOrderDetailsByTap') == null) {
       _prefs.setBool('showOrderDetailsByTap', true);
@@ -27,6 +30,7 @@ class SettingsBloc implements BlocBase {
 
   bool isDeleteLoading = true;
   bool showBalance = true;
+  bool showSoundsExplanationDialog = true;
 
   final StreamController<bool> _isDeleteLoadingController =
       StreamController<bool>.broadcast();
@@ -38,10 +42,16 @@ class SettingsBloc implements BlocBase {
   Sink<bool> get _inShowBalance => _showBalanceController.sink;
   Stream<bool> get outShowBalance => _showBalanceController.stream;
 
+  final StreamController<bool> _showSoundsDialogCtrl =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inShowSoundsDialog => _showSoundsDialogCtrl.sink;
+  Stream<bool> get outShowSoundsDialog => _showSoundsDialogCtrl.stream;
+
   @override
   void dispose() {
     _isDeleteLoadingController.close();
     _showBalanceController?.close();
+    _showSoundsDialogCtrl?.close();
   }
 
   void setDeleteLoading(bool isLoading) {
@@ -87,5 +97,11 @@ class SettingsBloc implements BlocBase {
     showBalance = val;
     _inShowBalance.add(val);
     _prefs.setBool('showBalance', val);
+  }
+
+  void setShowSoundsDialog(bool val) {
+    showSoundsExplanationDialog = val;
+    _inShowSoundsDialog.add(val);
+    _prefs.setBool('showSoundsExplanationDialog', val);
   }
 }
