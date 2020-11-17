@@ -117,7 +117,7 @@ void audio_init (const char* assets_maker) {
 
   //os_log (OS_LOG_DEFAULT, "audio_init] Category..");
   err = nil;
-  [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &err];
+  [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback withOptions: AVAudioSessionCategoryOptionMixWithOthers error: &err];
   if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !setCategory: %{public}@", err); return;}
 
   //os_log (OS_LOG_DEFAULT, "audio_init] Starting..");
@@ -135,6 +135,13 @@ void audio_init (const char* assets_maker) {
   //os_log (OS_LOG_DEFAULT, "audio_init] Done");
   dex_engine = engine;
   dex_player = player;}
+
+void audio_resume() {
+    NSError* err;
+    [dex_engine startAndReturnError: &err];
+    if (err) {os_log (OS_LOG_DEFAULT, "audio_resume]: %{public}@", err); return;}
+    [dex_player play];
+}
 
 AVAudioFile* audio_load_file (NSString* rpath) {
   // See if there is a custom sound in Documents.

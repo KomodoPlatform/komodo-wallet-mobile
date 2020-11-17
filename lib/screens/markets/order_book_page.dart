@@ -36,7 +36,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
     _hasBothCoins = _orderBookProvider.activePair?.sell != null &&
         _orderBookProvider.activePair?.buy != null;
     _pairStr = _hasBothCoins
-        ? '${_orderBookProvider.activePair.buy.abbr}-${_orderBookProvider.activePair.sell.abbr}'
+        ? '${_orderBookProvider.activePair.sell.abbr}-${_orderBookProvider.activePair.buy.abbr}'
         : null;
     _hasChartsData = _hasBothCoins && _cexProvider.isChartAvailable(_pairStr);
 
@@ -219,6 +219,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
             }
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
               setState(() {
                 _durationData = snapshot.data.data.keys.toList();
               });

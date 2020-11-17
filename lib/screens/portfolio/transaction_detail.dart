@@ -229,8 +229,12 @@ class _TransactionDetailState extends State<TransactionDetail> {
                 data: widget.transaction.getToAddress().isNotEmpty
                     ? widget.transaction.getToAddress()[0]
                     : ''),
-        ItemTransationDetail(title: 'Tx Hash', data: widget.transaction.txHash),
-        ItemTransactionNote(title: 'Note', txHash: widget.transaction.txHash),
+        ItemTransationDetail(
+            title: AppLocalizations.of(context).txHash,
+            data: widget.transaction.txHash),
+        ItemTransactionNote(
+            title: AppLocalizations.of(context).noteTitle,
+            txHash: widget.transaction.txHash),
       ],
     );
   }
@@ -389,7 +393,7 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Text(
                         (noteText == null || noteText.isEmpty)
-                            ? 'Add a Note'
+                            ? AppLocalizations.of(context).notePlaceholder
                             : noteText,
                         style: Theme.of(context).textTheme.bodyText1,
                         maxLines: isExpanded ? null : 1,
