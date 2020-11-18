@@ -54,6 +54,10 @@ class AuthenticateBloc extends BlocBase {
       pinStatus = PinStatus.CREATE_PIN;
       _inpinStatus.add(PinStatus.CREATE_PIN);
     }
+
+    if (prefs.getBool('switch_pin') == false) {
+      showLock = false;
+    }
   }
 
   @override

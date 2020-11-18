@@ -603,18 +603,24 @@ class AppLocalizations {
           args: [description],
           examples: const {'description': 'a swap runs to completion'});
   String get soundsDialogTitle =>
-      Intl.message('Sounds...', name: 'soundsDialogTitle');
+      Intl.message('Sounds', name: 'soundsDialogTitle');
   String get soundsExplanation => Intl.message(
       'You\'ll hear sound notifications during the swap process and when you have'
       ' an active maker order placed.'
       '\nAtomic swaps protocol requires participants'
       ' to be online for a successful trade, and sound notifications help to'
-      ' achieve that.'
-      '\nNote that you can set your custom sounds in application settings.',
+      ' achieve that.',
       name: 'soundsExplanation');
+  String get soundsNote => Intl.message(
+      'Note that you can set your custom sounds in application settings.',
+      name: 'soundsNote');
   String get soundsDoNotShowAgain =>
       Intl.message('Understood, don\'t show it anymore',
           name: 'soundsDoNotShowAgain');
+  String get soundSettingsTitle =>
+      Intl.message('Sound settings', name: 'soundSettingsTitle');
+  String get soundSettingsLink =>
+      Intl.message('Sound', name: 'soundSettingsLink');
 
   // --- Markets section ---
 
