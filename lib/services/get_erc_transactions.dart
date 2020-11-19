@@ -1,4 +1,5 @@
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
@@ -60,10 +61,7 @@ class GetErcTransactions {
       if (body == 'Limit exceeded') {
         return ErrorCode(
             error: Error(
-          // TODO(yurii): localization
-          message: 'Too many requests.\n'
-              'Transactions history requests limit exceeded.\n'
-              'Please try again later.',
+          message: AppLocalizations().txLimitExceeded,
         ));
       }
       return;

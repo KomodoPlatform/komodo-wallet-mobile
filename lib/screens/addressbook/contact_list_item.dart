@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -85,7 +86,7 @@ class _ContactListItemState extends State<ContactListItem> {
                           children: <Widget>[
                             Icon(Icons.edit, size: 16),
                             const SizedBox(width: 4),
-                            const Text('Edit'), // TODO(yurii): localization
+                            Text(AppLocalizations.of(context).contactEdit),
                           ],
                         )),
                   ),
@@ -169,7 +170,7 @@ class _ContactListItemState extends State<ContactListItem> {
         child: Row(
           children: <Widget>[
             Text(
-              'Nothing found', // TODO(yurii): localization
+              AppLocalizations.of(context).addressNotFound,
               style: TextStyle(
                 color: Theme.of(context).disabledColor,
                 fontSize: 14,
@@ -194,10 +195,8 @@ class _ContactListItemState extends State<ContactListItem> {
     );
     if (widget.coin == null && coinBalance == null) {
       _showWarning(
-        // TODO(yurii): localization
-        title: 'No such coin',
-        message: 'You can not send funds to $abbr address, '
-            'because $abbr is not activated. Please go to portfolio.',
+        title: AppLocalizations.of(context).noSuchCoin,
+        message: AppLocalizations.of(context).addressCoinInactive(abbr),
       );
       return;
     }
@@ -256,7 +255,7 @@ class _ContactListItemState extends State<ContactListItem> {
                 onPressed: () {
                   dialogBloc.closeDialog(context);
                 },
-                child: const Text('OK'), // TODO(yurii): localization
+                child: Text(AppLocalizations.of(context).warningOkBtn),
               ),
             )
           ],

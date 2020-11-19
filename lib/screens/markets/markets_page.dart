@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/screens/markets/coins_price_list.dart';
@@ -49,12 +50,12 @@ class _MarketsPageState extends State<MarketsPage>
             labelPadding: const EdgeInsets.symmetric(horizontal: 16),
             indicator: CustomTabIndicator(context: context),
             controller: tabController,
-            tabs: const <Widget>[
+            tabs: <Widget>[
               Tab(
-                text: 'PRICE', // TODO(yurii): localization
+                text: AppLocalizations.of(context).marketsPrice,
               ),
               Tab(
-                text: 'ORDER BOOK', // TODO(yurii): localization
+                text: AppLocalizations.of(context).marketsOrderbook,
               )
             ],
           ),
@@ -78,7 +79,7 @@ class _MarketsPageState extends State<MarketsPage>
           : AppBar(
               title: Center(
                   child: Text(
-                'MARKETS', // TODO(yurii): localization
+                AppLocalizations.of(context).marketsTitle,
                 key: const Key('markets-title'),
                 style: Theme.of(context).textTheme.subtitle,
               )),

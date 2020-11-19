@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
@@ -42,8 +43,8 @@ class _AddressBookState extends State<AddressBookPage> {
       appBar: AppBar(
         title: Text(
           widget.contact == null
-              ? 'Address Book'
-              : 'Contact details', // TODO(yurii): localization
+              ? AppLocalizations.of(context).addressBookTitle
+              : AppLocalizations.of(context).contactTitle,
           key: const Key('addressbook-title'),
         ),
         centerTitle: true,
@@ -69,8 +70,9 @@ class _AddressBookState extends State<AddressBookPage> {
                 });
 
                 if (contacts.isEmpty)
-                  // TODO(yurii): localization
-                  return const Center(child: Text('Address book is empty'));
+                  return Center(
+                      child:
+                          Text(AppLocalizations.of(context).addressBookEmpty));
 
                 return ContactsList(
                   contacts,
@@ -168,8 +170,7 @@ class _AddressBookState extends State<AddressBookPage> {
       padding: const EdgeInsets.all(12),
       child: Center(
         child: Text(
-          // TODO(yurii): localization
-          'Only showing contacts with $title addresses',
+          AppLocalizations.of(context).addressBookFilter(title),
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 12,

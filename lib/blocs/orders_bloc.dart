@@ -106,24 +106,6 @@ class OrdersBloc implements BlocBase {
 
     final List<Order> orders = this.orders;
 
-    for (Swap swap in swaps) {
-      orders.removeWhere((Order order) {
-        bool isSwapUUIDExist = false;
-        if (order.uuid == swap.result.uuid) {
-          isSwapUUIDExist = true;
-        } else {
-          if (order.startedSwaps != null) {
-            for (String startedSwap in order.startedSwaps) {
-              if (startedSwap == swap.result.uuid) {
-                isSwapUUIDExist = true;
-              }
-            }
-          }
-        }
-        return isSwapUUIDExist;
-      });
-    }
-
     await musicService.play(orders);
 
     final List<dynamic> ordersSwaps = <dynamic>[];

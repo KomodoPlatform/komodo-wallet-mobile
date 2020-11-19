@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -24,8 +25,7 @@ class _RewardsPageState extends State<RewardsPage> {
       context: context,
       child: Scaffold(
         appBar: AppBar(
-          // TODO(yurii): localization
-          title: const Text('Rewards information'),
+          title: Text(AppLocalizations.of(context).rewardsTitle),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: rewards == null
@@ -86,9 +86,8 @@ class _RewardsPageState extends State<RewardsPage> {
           padding: const EdgeInsets.all(12),
           child: Row(
             children: <Widget>[
-              const Text(
-                // TODO(yurii): localization
-                'Read more about KMD active user rewards',
+              Text(
+                AppLocalizations.of(context).rewardsReadMore,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.blue,
@@ -122,8 +121,7 @@ class _RewardsPageState extends State<RewardsPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                // TODO(yurii): localization
-                text: 'Cancel'),
+                text: AppLocalizations.of(context).rewardsCancel),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -135,8 +133,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   : () {
                       rewardsProvider.receive();
                     },
-              // TODO(yurii): localization
-              text: 'Receive',
+              text: AppLocalizations.of(context).rewardsReceive,
               backgroundColor: const Color.fromARGB(255, 1, 102, 129),
               isDarkMode: false,
             ),
@@ -164,7 +161,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   child: Text(
                     rewardsProvider.successMessage,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.green),
+                    style: const TextStyle(color: Colors.green),
                   ),
                 )
               : total > 0
@@ -188,9 +185,8 @@ class _RewardsPageState extends State<RewardsPage> {
                     )
                   : Container(
                       padding: const EdgeInsets.only(top: 10),
-                      child: const Text(
-                        // TODO(yurii): localization
-                        'No claimable rewards',
+                      child: Text(
+                        AppLocalizations.of(context).noRewards,
                       ),
                     ),
           _buildErrorMessage(),
@@ -219,8 +215,7 @@ class _RewardsPageState extends State<RewardsPage> {
             bottom: 4,
           ),
           child: Text(
-            // TODO(yurii): localization
-            'Rewards information:',
+            AppLocalizations.of(context).rewardsTableTitle,
             style: Theme.of(context).textTheme.body2,
           ),
         ),
@@ -244,8 +239,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 12, right: 8, top: 8, bottom: 8),
                   child: Text(
-                    // TODO(yurii): localization
-                    'UTXO amt,\nKMD',
+                    AppLocalizations.of(context).rewardsTableUXTO,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -256,8 +250,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 8),
                   child: Text(
-                    // TODO(yurii): localization
-                    'Rewards,\nKMD',
+                    AppLocalizations.of(context).rewardsTableRewards,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -269,8 +262,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 8),
                   child: Text(
-                    // TODO(yurii): localization
-                    'Time left',
+                    AppLocalizations.of(context).rewardsTableTime,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -282,8 +274,7 @@ class _RewardsPageState extends State<RewardsPage> {
                       left: 8, right: 12, top: 8, bottom: 8),
                   alignment: const Alignment(0, 0),
                   child: Text(
-                    // TODO(yurii): localization
-                    'Status',
+                    AppLocalizations.of(context).rewardsTableStatus,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -397,8 +388,7 @@ class _RewardsPageState extends State<RewardsPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            // TODO(yurii): localization
-            title: const Text('Rewards status:'),
+            title: Text(AppLocalizations.of(context).rewardsPopupTitle),
             contentPadding: const EdgeInsets.only(
               left: 25,
               right: 25,
@@ -418,8 +408,7 @@ class _RewardsPageState extends State<RewardsPage> {
                       onPressed: () {
                         dialogBloc.closeDialog(context);
                       },
-                      // TODO(yurii): localization
-                      child: const Text('Ok'),
+                      child: Text(AppLocalizations.of(context).rewardsPopupOk),
                     )
                   ],
                 )
@@ -435,16 +424,13 @@ class _RewardsPageState extends State<RewardsPage> {
     final int mm = duration.inMinutes;
 
     if (dd > 0) {
-      // TODO(yurii): localization
-      return '$dd day${dd > 1 ? 's' : ''}';
+      return AppLocalizations.of(context).rewardsTimeDays(dd);
     }
     if (hh > 0) {
       String minutes = mm.remainder(60).toString();
       if (minutes.length < 2) minutes = '0$minutes';
-      // TODO(yurii): localization
-      return '${hh}h ${minutes}m';
+      return AppLocalizations.of(context).rewardsTimeHours(hh, minutes);
     }
-    // TODO(yurii): localization
-    return '${mm}min';
+    return AppLocalizations.of(context).rewardsTimeMin(mm);
   }
 }

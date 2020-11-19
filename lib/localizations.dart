@@ -208,7 +208,7 @@ class AppLocalizations {
       Intl.message('The swap request can not be undone and is a final event!',
           name: 'infoTrade1');
   String get infoTrade2 => Intl.message(
-      'This transaction can take up to 10 mins - DONT close this application!',
+      'The swap can take up to 60 minutes. DONT close this application!',
       name: 'infoTrade2');
   String get swapDetailTitle =>
       Intl.message('CONFIRM EXCHANGE DETAILS', name: 'swapDetailTitle');
@@ -566,6 +566,13 @@ class AppLocalizations {
   String get hungarianLanguage =>
       Intl.message('Hungarian', name: 'hungarianLanguage');
   String get faucetName => Intl.message('FAUCET', name: 'faucetName');
+  String get faucetSuccess => Intl.message('Success', name: 'faucetSuccess');
+  String get faucetError => Intl.message('Error', name: 'faucetError');
+  String get faucetTimedOut =>
+      Intl.message('Request timed out', name: 'faucetTimedOut');
+  String faucetInProgress(String coin) =>
+      Intl.message('Sending request to $coin faucet...',
+          args: <Object>[coin], name: 'faucetInProgress');
 
   // --- sound configuration ---
 
@@ -595,6 +602,582 @@ class AppLocalizations {
           name: 'soundPlayedWhen',
           args: [description],
           examples: const {'description': 'a swap runs to completion'});
+  String get soundsDialogTitle =>
+      Intl.message('Sounds', name: 'soundsDialogTitle');
+  String get soundsExplanation => Intl.message(
+      'You\'ll hear sound notifications during the swap process and when you have'
+      ' an active maker order placed.'
+      '\nAtomic swaps protocol requires participants'
+      ' to be online for a successful trade, and sound notifications help to'
+      ' achieve that.',
+      name: 'soundsExplanation');
+  String get soundsNote => Intl.message(
+      'Note that you can set your custom sounds in application settings.',
+      name: 'soundsNote');
+  String get soundsDoNotShowAgain =>
+      Intl.message('Understood, don\'t show it anymore',
+          name: 'soundsDoNotShowAgain');
+  String get soundSettingsTitle =>
+      Intl.message('Sound settings', name: 'soundSettingsTitle');
+  String get soundSettingsLink =>
+      Intl.message('Sound', name: 'soundSettingsLink');
+
+  // --- Markets section ---
+
+  String get marketsTab => Intl.message('Markets', name: 'marketsTab');
+  String get marketsTitle => Intl.message('MARKETS', name: 'marketsTitle');
+  String get marketsPrice => Intl.message('PRICE', name: 'marketsPrice');
+  String get marketsOrderbook =>
+      Intl.message('ORDER BOOK', name: 'marketsOrderbook');
+  String get marketsChart => Intl.message('Chart', name: 'marketsChart');
+  String get marketsDepth => Intl.message('Depth', name: 'marketsDepth');
+  String get orderDetailsPrice =>
+      Intl.message('Price', name: 'orderDetailsPrice');
+  String get orderDetailsSells =>
+      Intl.message('Sells', name: 'orderDetailsSells');
+  String get orderDetailsFor => Intl.message('for', name: 'orderDetailsFor');
+  String get orderDetailsAddress =>
+      Intl.message('Address', name: 'orderDetailsAddress');
+  String orderDetailsExpedient(String delta) =>
+      Intl.message('Expedient: CEX $delta%',
+          args: <Object>[delta], name: 'orderDetailsExpedient');
+  String orderDetailsExpensive(String delta) =>
+      Intl.message('Expensive: CEX +$delta%',
+          args: <Object>[delta], name: 'orderDetailsExpensive');
+  String get orderDetailsIdentical =>
+      Intl.message('Identical to CEX', name: 'orderDetailsIdentical');
+  String get orderDetailsReceive =>
+      Intl.message('Receive', name: 'orderDetailsReceive');
+  String get orderDetailsSpend =>
+      Intl.message('Spend', name: 'orderDetailsSpend');
+  String get ownOrder =>
+      Intl.message(' This is your own order!', name: 'ownOrder');
+  String get marketsSelectCoins =>
+      Intl.message('Please select coins', name: 'marketsSelectCoins');
+  String get coinSelectTitle =>
+      Intl.message('Select Coin', name: 'coinSelectTitle');
+  String get coinSelectNotFound =>
+      Intl.message('No active coins', name: 'coinSelectNotFound');
+  String get coinSelectClear => Intl.message('Clear', name: 'coinSelectClear');
+  String ordersTablePrice(String coin) => Intl.message('Price ($coin)',
+      args: <Object>[coin], name: 'ordersTablePrice');
+  String ordersTableAmount(String coin) => Intl.message('Amt. ($coin)',
+      args: <Object>[coin], name: 'ordersTableAmount');
+  String ordersTableTotal(String coin) => Intl.message('Total ($coin)',
+      args: <Object>[coin], name: 'ordersTableTotal');
+  String get marketsNoBids =>
+      Intl.message('No bids found', name: 'marketsNoBids');
+  String get marketsNoAsks =>
+      Intl.message('No asks found', name: 'marketsNoAsks');
+  String get marketsOrderDetails =>
+      Intl.message('Order Details', name: 'marketsOrderDetails');
+  String get candleChartError =>
+      Intl.message('Something went wrong. Try again later.',
+          name: 'candleChartError');
+
+  // --- Feed section ---
+
+  String get feedTab => Intl.message('Feed', name: 'feedTab');
+  String get feedTitle => Intl.message('News Feed', name: 'feedTitle');
+  String get feedReadMore => Intl.message('Read more...', name: 'feedReadMore');
+  String get feedNotFound => Intl.message('Nothing here', name: 'feedNotFound');
+  String get feedUpdated =>
+      Intl.message('News feed updated', name: 'feedUpdated');
+  String get snackbarDismiss =>
+      Intl.message('Dismiss', name: 'snackbarDismiss');
+  String get feedNewsTab => Intl.message('News', name: 'feedNewsTab');
+  String get feedUnableToUpdate =>
+      Intl.message('Unable to get news update', name: 'feedUnableToUpdate');
+  String get feedUnableToProceed =>
+      Intl.message('Unable to proceed news update',
+          name: 'feedUnableToProceed');
+  String get feedUpToDate =>
+      Intl.message('Already up to date', name: 'feedUpToDate');
+  String get feedNotifTitle =>
+      Intl.message('Komodo news', name: 'feedNotifTitle');
+
+  // --- Rewards ---
+
+  String get rewardsTitle =>
+      Intl.message('Rewards information', name: 'rewardsTitle');
+  String get rewardsReadMore =>
+      Intl.message('Read more about KMD active user rewards',
+          name: 'rewardsReadMore');
+  String get rewardsCancel => Intl.message('Cancel', name: 'rewardsCancel');
+  String get rewardsReceive => Intl.message('Receive', name: 'rewardsReceive');
+  String get noRewards =>
+      Intl.message('No claimable rewards', name: 'noRewards');
+  String get rewardsTableTitle =>
+      Intl.message('Rewards information:', name: 'rewardsTableTitle');
+  String get rewardsTableUXTO =>
+      Intl.message('UTXO amt,\nKMD', name: 'rewardsTableUXTO');
+  String get rewardsTableRewards =>
+      Intl.message('Rewards,\nKMD', name: 'rewardsTableRewards');
+  String get rewardsTableTime =>
+      Intl.message('Time left', name: 'rewardsTableTime');
+  String get rewardsTableStatus =>
+      Intl.message('Status', name: 'rewardsTableStatus');
+  String get rewardsPopupTitle =>
+      Intl.message('Rewards status:', name: 'rewardsPopupTitle');
+  String get rewardsPopupOk => Intl.message('Ok', name: 'rewardsPopupOk');
+  String rewardsTimeDays(int dd) =>
+      Intl.message('$dd day(s)', args: <Object>[dd], name: 'rewardsTimeDays');
+  String rewardsTimeHours(int hh, String minutes) =>
+      Intl.message('${hh}h ${minutes}m',
+          args: <Object>[hh, minutes], name: 'rewardsTimeHours');
+  String rewardsTimeMin(int mm) =>
+      Intl.message('${mm}min', args: <Object>[mm], name: 'rewardsTimeMin');
+  String rewardsSuccess(String amount) =>
+      Intl.message('Success! $amount KMD received.',
+          args: <Object>[amount], name: 'rewardsSuccess');
+  String get rewardsError =>
+      Intl.message('Something went wrong. Please try again later.',
+          name: 'rewardsError');
+  String get rewardsLowAmountShort =>
+      Intl.message('<10 KMD', name: 'rewardsLowAmountShort');
+  String get rewardsLowAmountLong =>
+      Intl.message('UTXO amount less than 10 KMD',
+          name: 'rewardsLowAmountLong');
+  String get rewardsInProgressShort =>
+      Intl.message('processing', name: 'rewardsInProgressShort');
+  String get rewardsInProgressLong =>
+      Intl.message('Transaction is in progress', name: 'rewardsInProgressLong');
+  String get rewardsOneHourShort =>
+      Intl.message('<1 hour', name: 'rewardsOneHourShort');
+  String get rewardsOneHourLong =>
+      Intl.message('One hour not passed yet', name: 'rewardsOneHourLong');
+  String get rewardsButton =>
+      Intl.message('Claim your rewards', name: 'rewardsButton');
+
+  // --- Multi Order---
+
+  String get multiTab => Intl.message('Multi', name: 'multiTab');
+  String get multiFixErrors =>
+      Intl.message('Please fix all errors before continuing',
+          name: 'multiFixErrors');
+  String get multiCreate => Intl.message('Create', name: 'multiCreate');
+  String get multiCreateOrder =>
+      Intl.message('Order', name: 'multiCreateOrder');
+  String get multiCreateOrders =>
+      Intl.message('Orders', name: 'multiCreateOrders');
+  String get multiBasePlaceholder =>
+      Intl.message('Coin', name: 'multiBasePlaceholder');
+  String get multiSellTitle => Intl.message('Sell:', name: 'multiSellTitle');
+  String get multiBaseSelectTitle =>
+      Intl.message('Sell', name: 'multiBaseSelectTitle');
+  String get multiBaseAmtPlaceholder =>
+      Intl.message('Amount', name: 'multiBaseAmtPlaceholder');
+  String get multiReceiveTitle =>
+      Intl.message('Receive:', name: 'multiReceiveTitle');
+  String get multiTablePrice =>
+      Intl.message('Price/CEX', name: 'multiTablePrice');
+  String get multiTableAmt =>
+      Intl.message('Receive Amt.', name: 'multiTableAmt');
+  String get multiFiatDesc =>
+      Intl.message('Please enter fiat amount to receive:',
+          name: 'multiFiatDesc');
+  String get multiFiatCancel => Intl.message('Cancel', name: 'multiFiatCancel');
+  String get multiFiatFill => Intl.message('Autofill', name: 'multiFiatFill');
+  String get multiEthFee => Intl.message('fee', name: 'multiEthFee');
+  String multiConfirmTitle(int number) =>
+      Intl.message('Create $number Order(s):',
+          args: <Object>[number], name: 'multiConfirmTitle');
+  String get multiConfirmCancel =>
+      Intl.message('Cancel', name: 'multiConfirmCancel');
+  String get multiConfirmConfirm =>
+      Intl.message('Confirm', name: 'multiConfirmConfirm');
+  String get multiInvalidSellAmt =>
+      Intl.message('Invalid sell amount', name: 'multiInvalidSellAmt');
+  String get multiMaxSellAmt =>
+      Intl.message('Max sell amount is', name: 'multiMaxSellAmt');
+  String get multiMinSellAmt =>
+      Intl.message('Min sell amount is', name: 'multiMinSellAmt');
+  String get multiInvalidAmt =>
+      Intl.message('Invalid amount', name: 'multiInvalidAmt');
+  String get multiActivateEth =>
+      Intl.message('Activate ETH and top-up balance first',
+          name: 'multiActivateEth');
+  String get multiLowEth =>
+      Intl.message('ETH balance is too low', name: 'multiLowEth');
+  String get multiMinReceiveAmt =>
+      Intl.message('Min receive amount is', name: 'multiMinReceiveAmt');
+
+  // --- Updates ---
+
+  String get updatesTitle =>
+      Intl.message('atomicDEX update', name: 'updatesTitle');
+  String updatesCurrentVersion(String version) =>
+      Intl.message('You are using version $version',
+          args: <Object>[version], name: 'updatesCurrentVersion');
+  String get updatesChecking =>
+      Intl.message('Checking for updates...', name: 'updatesChecking');
+  String get updatesUpToDate =>
+      Intl.message('Already up to date', name: 'updatesUpToDate');
+  String get updatesAvailable =>
+      Intl.message('New version available', name: 'updatesAvailable');
+  String get updatesUpdate => Intl.message('Update', name: 'updatesUpdate');
+  String get updatesSkip => Intl.message('Skip for now', name: 'updatesSkip');
+  String get updatesNotifTitle =>
+      Intl.message('Update available', name: 'updatesNotifTitle');
+  String get updatesNotifAvailable =>
+      Intl.message('New version available. Please update.',
+          name: 'updatesNotifAvailable');
+  String updatesNotifAvailableVersion(String version) =>
+      Intl.message('Version $version available. Please update.',
+          args: <Object>[version], name: 'updatesNotifAvailableVersion');
+
+  // --- Address book ---
+
+  String get addressBook => Intl.message('Address book', name: 'addressBook');
+  String get addressBookTitle =>
+      Intl.message('Address Book', name: 'addressBookTitle');
+  String get contactTitle =>
+      Intl.message('Contact details', name: 'contactTitle');
+  String get addressBookEmpty =>
+      Intl.message('Address book is empty', name: 'addressBookEmpty');
+  String addressBookFilter(String title) =>
+      Intl.message('Only showing contacts with $title addresses',
+          args: <Object>[title], name: 'addressBookFilter');
+  String get createContact =>
+      Intl.message('Create Contact', name: 'createContact');
+  String get contactTitleName => Intl.message('Name', name: 'contactTitleName');
+  String get editContact => Intl.message('Edit Contact', name: 'editContact');
+  String get contactCancel => Intl.message('Cancel', name: 'contactCancel');
+  String get contactSave => Intl.message('Save', name: 'contactSave');
+  String get contactDiscardBtn =>
+      Intl.message('Discard', name: 'contactDiscardBtn');
+  String get contactExit => Intl.message('Exit', name: 'contactExit');
+  String get contactExitWarning =>
+      Intl.message('Discard your changes?', name: 'contactExitWarning');
+  String get addressAdd => Intl.message('Add Address', name: 'addressAdd');
+  String get addressSelectCoin =>
+      Intl.message('Select Coin', name: 'addressSelectCoin');
+  String get contactDelete =>
+      Intl.message('Delete Contact', name: 'contactDelete');
+  String contactDeleteWarning(String name) =>
+      Intl.message('Are you sure you want to delete contact $name?',
+          args: <Object>[name], name: 'contactDeleteWarning');
+  String get contactDeleteBtn =>
+      Intl.message('Delete', name: 'contactDeleteBtn');
+  String get contactNotFound =>
+      Intl.message('No contacts found', name: 'contactNotFound');
+  String get contactEdit => Intl.message('Edit', name: 'contactEdit');
+  String get addressNotFound =>
+      Intl.message('Nothing found', name: 'addressNotFound');
+  String get noSuchCoin => Intl.message('No such coin', name: 'noSuchCoin');
+  String addressCoinInactive(String abbr) => Intl.message(
+      'You can not send funds to $abbr address, '
+      'because $abbr is not activated. Please go to portfolio.',
+      args: <Object>[abbr],
+      name: 'addressCoinInactive');
+  String get warningOkBtn => Intl.message('OK', name: 'warningOkBtn');
+
+  // --- Camouflage Pin ---
+
+  String get camoPinTitle =>
+      Intl.message('Camouflage PIN', name: 'camoPinTitle');
+  String get camoPinLink => Intl.message('Camouflage PIN', name: 'camoPinLink');
+  String get camoPinOn => Intl.message('On', name: 'camoPinOn');
+  String get camoPinOff => Intl.message('Off', name: 'camoPinOff');
+  String get matchingCamoTitle =>
+      Intl.message('Invalid PIN', name: 'matchingCamoTitle');
+  String get matchingCamoChange =>
+      Intl.message('Change', name: 'matchingCamoChange');
+  String get camoPinDesc => Intl.message(
+      'If You\'ll unlock the app with the Camouflage PIN, a fake'
+      ' LOW balance will be shown'
+      ' and the Camouflage PIN config option will'
+      ' NOT be visible in the settings',
+      name: 'camoPinDesc');
+  String get matchingCamoPinError => Intl.message(
+      'Your general PIN and Camouflage PIN are the same.\n'
+      'Camouflage mode will not be available.\n'
+      'Please change Camouflage PIN.',
+      name: 'matchingCamoPinError');
+  String get generalPinNotActive => Intl.message(
+      'General PIN protection is not active.\n'
+      'Camouflage mode will not be available.'
+      '\nPlease activate PIN protection.',
+      name: 'generalPinNotActive');
+  String get fakeBalanceAmt =>
+      Intl.message('Fake balance amount:', name: 'fakeBalanceAmt');
+  String get camoPinNotFound =>
+      Intl.message('Camouflage PIN not found', name: 'camoPinNotFound');
+  String get camoPinCreate =>
+      Intl.message('Create Camouflage PIN', name: 'camoPinCreate');
+  String get camoPinSaved =>
+      Intl.message('Camouflage PIN saved', name: 'camoPinSaved');
+  String get camoPinInvalid =>
+      Intl.message('Invalid Camouflage PIN', name: 'camoPinInvalid');
+  String get camoPinChange =>
+      Intl.message('Change Camouflage PIN', name: 'camoPinChange');
+  String get camoSetupTitle =>
+      Intl.message('Camouflage PIN Setup', name: 'camoSetupTitle');
+  String get camoSetupSubtitle =>
+      Intl.message('Enter new Camouflage PIN', name: 'camoSetupSubtitle');
+
+  // --- DEX ---
+
+  String get protectionCtrlOn => Intl.message('ON', name: 'protectionCtrlOn');
+  String get protectionCtrlOff =>
+      Intl.message('OFF', name: 'protectionCtrlOff');
+  String get protectionCtrlConfirmations =>
+      Intl.message('Confirmations', name: 'protectionCtrlConfirmations');
+  String get dPow => Intl.message('Komodo dPoW security', name: 'dPow');
+  String get protectionCtrlCustom =>
+      Intl.message('Use custom protection settings',
+          name: 'protectionCtrlCustom');
+  String get protectionCtrlWarning => Intl.message(
+      'Warning, this atomic swap is not '
+      'dPoW protected. ',
+      name: 'protectionCtrlWarning');
+
+  String get cexChangeRate =>
+      Intl.message('CEXchange rate', name: 'cexChangeRate');
+  String exchangeExpedient(String delta) =>
+      Intl.message('Expedient: -$delta% compared to CEX',
+          args: <Object>[delta], name: 'exchangeExpedient');
+  String exchangeExpensive(String delta) =>
+      Intl.message('Expensive: +$delta% compared to CEX',
+          args: <Object>[delta], name: 'exchangeExpensive');
+  String get echangeIdentical =>
+      Intl.message('Identical to CEX', name: 'echangeIdentical');
+
+  String get ordersActive => Intl.message('Active', name: 'ordersActive');
+  String get ordersHistory => Intl.message('History', name: 'ordersHistory');
+  String get orderDetailsTitle =>
+      Intl.message('Details', name: 'orderDetailsTitle');
+  String get orderDetailsSettings => Intl.message(
+      'Open Details on single tap'
+      ' and select Order by long tap',
+      name: 'orderDetailsSettings');
+  String get orderDetailsCancel =>
+      Intl.message('Cancel', name: 'orderDetailsCancel');
+  String get orderDetailsSelect =>
+      Intl.message('Select', name: 'orderDetailsSelect');
+  String get noMatchingOrders =>
+      Intl.message('No matching orders found', name: 'noMatchingOrders');
+
+  // --- Help & FAQ ---
+
+  String get helpLink => Intl.message('Help', name: 'helpLink');
+  String get helpTitle => Intl.message('Help and Support', name: 'helpTitle');
+  String get faqTitle =>
+      Intl.message('Frequently Asked Questions', name: 'faqTitle');
+  String get support => Intl.message('Support', name: 'support');
+  String get supportLinksDesc => Intl.message(
+      'If you have any questions,'
+      ' or think you\'ve found a technical problem with'
+      ' the atomicDEX app, you can report it and get support'
+      ' from our team.',
+      name: 'supportLinksDesc');
+
+  String get question_1 =>
+      Intl.message('Do you store my private keys?', name: 'question_1');
+  String get answer_1 => Intl.message(
+      'No! AtomicDEX is non-custodial. We never store any sensitive data,'
+      ' including your private keys, seed phrases, or PIN. This data is only'
+      ' stored on the user’s device and never leaves it.'
+      ' You are in full control of your assets.',
+      name: 'answer_1');
+  String get question_2 => Intl.message(
+      'How is trading on AtomicDEX different from trading on other DEXs?',
+      name: 'question_2');
+  String get answer_2 => Intl.message(
+      'Other DEXs generally only allow you to trade assets that are based'
+      ' on a single blockchain network, use proxy tokens, and'
+      ' only allow placing a single order with the same funds.'
+      '\n\nAtomicDEX enables you to natively trade across two different'
+      ' blockchain networks without proxy tokens. You can also place multiple'
+      ' orders with the same funds. For example, you can sell 0.1 BTC for'
+      ' KMD, QTUM, or VRSC — the first order that fills automatically'
+      ' cancels all other orders.',
+      name: 'answer_2');
+  String get question_3 =>
+      Intl.message('How long does each atomic swap take?', name: 'question_3');
+  String get answer_3 => Intl.message(
+      'Several factors determine the processing time for each swap.'
+      ' The block time of the traded assets depends on each network'
+      ' (Bitcoin typically being the slowest) Additionally, the user can'
+      ' customize security preferences. For example, you can ask AtomicDEX'
+      ' to consider a KMD transaction as final after just 3 confirmations'
+      ' which makes the swap time shorter compared to waiting'
+      ' for a <a href="'
+      'https://komodoplatform.com/security-delayed-proof-of-work-dpow/'
+      '">notarization</a>.',
+      name: 'answer_3');
+  String get question_4 =>
+      Intl.message('Do I need to be online for the duration of the swap?',
+          name: 'question_4');
+  String get answer_4 => Intl.message(
+      'Yes. You must remain connected to the internet and have your app'
+      ' running to successfully complete each atomic swap (very short breaks'
+      ' in connectivity are usually fine). Otherwise, there is risk of trade'
+      ' cancellation if you are a maker, and risk of loss of funds if you are'
+      ' a taker. The atomic swap protocol requires both participants to stay'
+      ' online and monitor the involved blockchains for'
+      ' the process to stay atomic.',
+      name: 'answer_4');
+  String get question_5 =>
+      Intl.message('How are the fees on atomicDEX calculated?',
+          name: 'question_5');
+  String get answer_5 => Intl.message(
+      'There are two fee categories to consider when trading on AtomicDEX.\n\n'
+      '1. AtomicDEX charges approximately 0.13% (1/777 of trading volume but'
+      ' not lower than 0.0001) as the trading fee for taker orders, and maker'
+      ' orders have zero fees.\n\n2. Both makers and takers will need to pay'
+      ' normal network fees to the involved blockchains when making atomic'
+      ' swap transactions.\n\nNetwork fees can vary greatly depending on'
+      ' your selected trading pair.',
+      name: 'answer_5');
+  String get question_6 =>
+      Intl.message('Do you provide user support?', name: 'question_6');
+  String get answer_6 => Intl.message(
+      'Yes! AtomicDEX offers support through the'
+      ' <a href="https://komodoplatform.com/discord">'
+      'Komodo Discord server'
+      '</a>. The team and the community are always happy to help!',
+      name: 'answer_6');
+  String get question_7 =>
+      Intl.message('Do you have country restrictions?', name: 'question_7');
+  String get answer_7 => Intl.message(
+      'No! AtomicDEX is fully decentralized.'
+      ' It is not possible to limit user access by any third party.',
+      name: 'answer_7');
+  String get question_8 =>
+      Intl.message('Who is behind AtomicDEX?', name: 'question_8');
+  String get answer_8 => Intl.message(
+      'AtomicDEX is developed by the Komodo team. Komodo is one of'
+      ' the most established blockchain projects working on innovative'
+      ' solutions like atomic swaps, Delayed Proof of Work, and an'
+      ' interoperable multi-chain architecture.',
+      name: 'answer_8');
+  String get question_9 => Intl.message(
+      'Is it possible to develop my own white-label'
+      ' exchange on AtomicDEX?',
+      name: 'question_9');
+  String get answer_9 => Intl.message(
+      'Absolutely! You can read our'
+      ' <a href="https://developers.atomicdex.io/">'
+      'developer documentation</a> for more'
+      ' details or contact us with your partnership inquiries. Have a specific'
+      ' technical question? The AtomicDEX developer community'
+      ' is always ready to help!',
+      name: 'answer_9');
+  String get question_10 =>
+      Intl.message('Which devices can I use AtomicDEX on?',
+          name: 'question_10');
+  String get answer_10 => Intl.message(
+      'AtomicDEX is available for mobile on both Android and iPhone,'
+      ' and for desktop on Windows, Mac, and Linux operating systems.',
+      name: 'answer_10');
+
+  // --- Swaps ---
+
+  String get swapActual => Intl.message('act', name: 'swapActual');
+  String get swapEstimated => Intl.message('est', name: 'swapEstimated');
+  String get swapStarted => Intl.message('Started', name: 'swapStarted');
+  String get swapTotal => Intl.message('Total', name: 'swapTotal');
+  String get swappProgress =>
+      Intl.message('Progress details', name: 'swappProgress');
+
+  // -- Notifications --
+
+  String get notifTxTitle =>
+      Intl.message('Incoming transaction', name: 'notifTxTitle');
+  String notifTxText(String coin) =>
+      Intl.message('You have received $coin transaction!',
+          args: <Object>[coin], name: 'notifTxText');
+  String get notifSwapCompletedTitle =>
+      Intl.message('Swap completed', name: 'notifSwapCompletedTitle');
+  String notifSwapCompletedText(String sell, String buy) =>
+      Intl.message('$sell/$buy swap was completed successfully',
+          args: <Object>[sell, buy], name: 'notifSwapCompletedText');
+  String get notifSwapFailedTitle =>
+      Intl.message('Swap failed', name: 'notifSwapFailedTitle');
+  String notifSwapFailedText(String sell, String buy) =>
+      Intl.message('$sell/$buy swap failed',
+          args: <Object>[sell, buy], name: 'notifSwapFailedText');
+  String get notifSwapTimeoutTitle =>
+      Intl.message('Swap timed out', name: 'notifSwapTimeoutTitle');
+  String notifSwapTimeoutText(String sell, String buy) =>
+      Intl.message('$sell/$buy swap was timed out',
+          args: <Object>[sell, buy], name: 'notifSwapTimeoutText');
+  String get notifSwapStatusTitle =>
+      Intl.message('Swap status changed', name: 'notifSwapStatusTitle');
+  String get notifSwapStartedTitle =>
+      Intl.message('New swap started', name: 'notifSwapStartedTitle');
+  String notifSwapStartedText(String sell, String buy) =>
+      Intl.message('$sell/$buy swap started',
+          args: <Object>[sell, buy], name: 'notifSwapStartedText');
+
+  // --- Drawer ---
+
+  String get language => Intl.message('Language', name: 'language');
+  String get currency => Intl.message('Currency', name: 'currency');
+  String get hideBalance => Intl.message('Hide balances', name: 'hideBalance');
+
+  // --- CEX Marker ---
+
+  String get cex => Intl.message('CEX', name: 'cex');
+  String get cexData => Intl.message('CEX data', name: 'cexData');
+  String get cexDataDesc => Intl.message(
+      'Markets data (prices, charts, etc.) marked with this'
+      ' icon originates from third party sources ('
+      '<a href="https://www.coingecko.com/">coingecko.com</a>, '
+      '<a href="https://openrates.io/">openrates.io</a>'
+      ').',
+      name: 'cexDataDesc');
+
+  // --- Miscellaneous ---
+
+  String get checkingUpdates =>
+      Intl.message('Checking for updates...', name: 'checkingUpdates');
+  String get checkForUpdates =>
+      Intl.message('Check for updates', name: 'checkForUpdates');
+  String get logoutWarning =>
+      Intl.message('Are you sure you want to logout now?',
+          name: 'logoutWarning');
+  String get currencyDialogTitle =>
+      Intl.message('Currency', name: 'currencyDialogTitle');
+  String get txLimitExceeded => Intl.message(
+      'Too many requests.\n'
+      'Transactions history requests limit exceeded.\n'
+      'Please try again later.',
+      name: 'txLimitExceeded');
+  String get milliseconds => Intl.message('ms', name: 'milliseconds');
+  String get seconds => Intl.message('s', name: 'seconds');
+  String get minutes => Intl.message('m', name: 'minutes');
+  String get hours => Intl.message('h', name: 'hours');
+  String get moreTab => Intl.message('More', name: 'moreTab');
+
+  // --- Maker order details ---
+
+  String get makerDetailsTitle =>
+      Intl.message('Maker Order details', name: 'makerDetailsTitle');
+  String get makerDetailsSell => Intl.message('Sell', name: 'makerDetailsSell');
+  String get makerDetailsFor =>
+      Intl.message('Receive', name: 'makerDetailsFor');
+  String get makerDetailsPrice =>
+      Intl.message('Price', name: 'makerDetailsPrice');
+  String get makerDetailsCancel =>
+      Intl.message('Cancel order', name: 'makerDetailsCancel');
+  String get makerDetailsId => Intl.message('Order ID', name: 'makerDetailsId');
+  String get makerDetailsCreated =>
+      Intl.message('Created at', name: 'makerDetailsCreated');
+  String get makerDetailsNoSwaps =>
+      Intl.message('No swaps were started by this order',
+          name: 'makerDetailsNoSwaps');
+  String get makerDetailsSwaps =>
+      Intl.message('Swaps started by this order', name: 'makerDetailsSwaps');
+  String orderFilled(String fill) =>
+      Intl.message('$fill% filled', args: <Object>[fill], name: 'orderFilled');
+
+  // --- Notes ---
+
+  String get noteTitle => Intl.message('Note', name: 'noteTitle');
+  String get notePlaceholder =>
+      Intl.message('Add a Note', name: 'notePlaceholder');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

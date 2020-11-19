@@ -7,7 +7,6 @@ import 'package:komodo_dex/blocs/camo_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
@@ -24,19 +23,17 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/settings/camo_pin_setup_page.dart';
+import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
 import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
-import 'package:komodo_dex/widgets/sound_volume_button.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -160,48 +157,23 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildSound() {
-    return Column(
-      children: [
-        CustomTile(
-          child: ListTile(
-            title: Text(
-              AppLocalizations.of(context).soundOption,
-              style: Theme.of(context).textTheme.body1.copyWith(
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white.withOpacity(0.7)),
-            ),
-            trailing:
-                const SoundVolumeButton(key: Key('settings-sound-button')),
-          ),
+    return CustomTile(
+      onPressed: () {
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => SoundSettingsPage()));
+      },
+      child: ListTile(
+        trailing:
+            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        title: Text(
+          AppLocalizations.of(context).soundSettingsTitle,
+          style: Theme.of(context).textTheme.body1.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
         ),
-        const SizedBox(
-          height: 1,
-        ),
-        SoundPicker(MusicMode.TAKER, AppLocalizations.of(context).soundTaker,
-            AppLocalizations.of(context).soundTakerDesc),
-        const SizedBox(
-          height: 1,
-        ),
-        SoundPicker(MusicMode.MAKER, AppLocalizations.of(context).soundMaker,
-            AppLocalizations.of(context).soundMakerDesc),
-        const SizedBox(
-          height: 1,
-        ),
-        SoundPicker(MusicMode.ACTIVE, AppLocalizations.of(context).soundActive,
-            AppLocalizations.of(context).soundActiveDesc),
-        const SizedBox(
-          height: 1,
-        ),
-        SoundPicker(MusicMode.FAILED, AppLocalizations.of(context).soundFailed,
-            AppLocalizations.of(context).soundFailedDesc),
-        const SizedBox(
-          height: 1,
-        ),
-        SoundPicker(
-            MusicMode.APPLAUSE,
-            AppLocalizations.of(context).soundApplause,
-            AppLocalizations.of(context).soundApplauseDesc),
-      ],
+      ),
     );
   }
 
@@ -355,7 +327,7 @@ class _SettingPageState extends State<SettingPage> {
                   trailing: Icon(Icons.chevron_right,
                       color: Colors.white.withOpacity(0.7)),
                   title: Text(
-                    'Camouflage PIN',
+                    AppLocalizations.of(context).camoPinLink,
                     style: Theme.of(context).textTheme.body1.copyWith(
                         fontWeight: FontWeight.w300,
                         color: Colors.white.withOpacity(0.7)),
@@ -477,7 +449,7 @@ class _SettingPageState extends State<SettingPage> {
                 overflow: Overflow.visible,
                 children: <Widget>[
                   Text(
-                    'Check for updates', // TODO(yurii): localization
+                    AppLocalizations.of(context).checkForUpdates,
                     style: Theme.of(context).textTheme.body1.copyWith(
                         fontWeight: FontWeight.w300,
                         color: Colors.white.withOpacity(0.7)),
@@ -808,83 +780,6 @@ class _SettingPageState extends State<SettingPage> {
         }).then((dynamic _) {
       dialogBloc.dialog = null;
     });
-  }
-}
-
-/// See if the file is an auudio file we can play.
-bool checkAudioFile(String path) {
-  if (path == null) return false;
-  return path.endsWith('.mp3') || path.endsWith('.wav');
-}
-
-class FilePickerButton extends StatelessWidget {
-  const FilePickerButton(this.musicMode, this.description);
-  final MusicMode musicMode;
-  final String description;
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-        key: const Key('file-picker-button'),
-        icon: Icon(Icons.folder_open),
-        color: Theme.of(context).toggleableActiveColor,
-        onPressed: () async {
-          String path;
-          final int lockCookie = lockService.enteringFilePicker();
-          try {
-            path = await FilePicker.getFilePath();
-          } catch (err) {
-            Log('setting_page:804', 'file picker exception: $err');
-          }
-          lockService.filePickerReturned(lockCookie);
-
-          // On iOS this happens *after* pin lock, but very close in time to it (same second),
-          // on Android/debug *before* pin lock,
-          // chance is it's unordered.
-          Log('setting_page:811', 'file picked: $path');
-
-          final bool ck = checkAudioFile(path);
-          if (!ck) {
-            showDialog<dynamic>(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text(AppLocalizations.of(context).soundCantPlayThat),
-                content: Text(AppLocalizations.of(context)
-                    .soundCantPlayThatMsg(description)),
-                actions: <Widget>[
-                  FlatButton(
-                    child: const Text('Ok'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            );
-            return;
-          }
-          await musicService.setSoundPath(musicMode, path);
-        });
-  }
-}
-
-class SoundPicker extends StatelessWidget {
-  const SoundPicker(this.musicMode, this.name, this.description);
-  final MusicMode musicMode;
-  final String name, description;
-  @override
-  Widget build(BuildContext context) {
-    return CustomTile(
-        child: Tooltip(
-            message: AppLocalizations.of(context).soundPlayedWhen(description),
-            child: ListTile(
-              title: Text(
-                name,
-                style: Theme.of(context).textTheme.body1.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
-              ),
-              trailing: FilePickerButton(musicMode, description),
-            )));
   }
 }
 

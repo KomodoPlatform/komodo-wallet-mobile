@@ -4,7 +4,7 @@ import 'package:komodo_dex/widgets/theme_data.dart';
 class CandlesIcon extends StatelessWidget {
   const CandlesIcon({
     this.size = 12,
-    this.color = cexColor,
+    this.color,
   });
 
   final double size;
@@ -15,7 +15,7 @@ class CandlesIcon extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      child: CustomPaint(painter: _IconPainter(color)),
+      child: CustomPaint(painter: _IconPainter(color ?? cexColor)),
     );
   }
 }
