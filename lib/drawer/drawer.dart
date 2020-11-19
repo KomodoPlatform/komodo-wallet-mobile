@@ -10,7 +10,9 @@ import 'package:komodo_dex/screens/help-feedback/help_page.dart';
 import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
+import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:provider/provider.dart';
 
@@ -107,170 +109,218 @@ class _AppDrawerState extends State<AppDrawer> {
                     ),
                   ),
                 ),
-                ListView(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _buildDrawerItem(
-                            title: SharedPreferencesBuilder<dynamic>(
-                                pref: 'current_languages',
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<dynamic> snapshot) {
-                                  return Row(
-                                    children: <Widget>[
-                                      Text(AppLocalizations.of(context)
-                                          .language),
-                                      Text(
-                                        snapshot.hasData
-                                            ? ' (${snapshot.data})'
-                                                .toUpperCase()
-                                            : '',
-                                      ),
-                                    ],
-                                  );
-                                }),
-                            onTap: () {
-                              Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          SelectLanguagePage(
-                                            currentLoc:
-                                                Localizations.localeOf(context),
-                                          )));
-                            },
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _buildDrawerItem(
+                              title: Row(
+                                children: <Widget>[
+                                  Text(AppLocalizations.of(context)
+                                      .soundSettingsLink),
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                Navigator.push<dynamic>(
+                                    context,
+                                    MaterialPageRoute<dynamic>(
+                                        builder: (BuildContext context) =>
+                                            SoundSettingsPage()));
+                              },
+                              leading: Icon(
+                                Icons.audiotrack,
+                                size: 16,
+                                color: Colors.white.withAlpha(200),
+                              ),
+                              trailing: InkWell(
+                                child: Container(
+                                  padding: EdgeInsets.all(4),
+                                  child: Icon(
+                                    musicService.on()
+                                        ? Icons.volume_up
+                                        : Icons.volume_down,
+                                    size: 22,
+                                    color: musicService.on()
+                                        ? Theme.of(context)
+                                            .toggleableActiveColor
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .body2
+                                            .color,
+                                  ),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    musicService.flip();
+                                  });
+                                },
+                              )),
+                          _buildDrawerItem(
+                              title: SharedPreferencesBuilder<dynamic>(
+                                  pref: 'current_languages',
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<dynamic> snapshot) {
+                                    return Row(
+                                      children: <Widget>[
+                                        Text(AppLocalizations.of(context)
+                                            .language),
+                                        Text(
+                                          snapshot.hasData
+                                              ? ' (${snapshot.data})'
+                                                  .toUpperCase()
+                                              : '',
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                              onTap: () {
+                                Navigator.push<dynamic>(
+                                    context,
+                                    MaterialPageRoute<dynamic>(
+                                        builder: (BuildContext context) =>
+                                            SelectLanguagePage(
+                                              currentLoc:
+                                                  Localizations.localeOf(
+                                                      context),
+                                            )));
+                              },
+                              leading: Icon(
+                                Icons.language,
+                                key: const Key('side-nav-language'),
+                                size: 16,
+                                color: Colors.white.withAlpha(200),
+                              )),
+                          _buildDrawerItem(
+                              title: Row(
+                                children: <Widget>[
+                                  Text(AppLocalizations.of(context).currency),
+                                  if (cexProvider.selectedFiat != null)
+                                    Text(' (${cexProvider.selectedFiat})'),
+                                ],
+                              ),
+                              onTap: () {
+                                showCurrenciesDialog(context);
+                              },
+                              leading: cexProvider.selectedFiatSymbol.length > 1
+                                  ? Icon(
+                                      Icons.account_balance_wallet,
+                                      key: const Key('side-nav-currency'),
+                                      size: 16,
+                                      color: Colors.white.withAlpha(200),
+                                    )
+                                  : Text(' ${cexProvider.selectedFiatSymbol}')),
+                          _buildDrawerItem(
+                            title:
+                                Text(AppLocalizations.of(context).hideBalance),
                             leading: Icon(
-                              Icons.language,
-                              key: const Key('side-nav-language'),
+                              Icons.money_off,
                               size: 16,
                               color: Colors.white.withAlpha(200),
-                            )),
-                        _buildDrawerItem(
-                            title: Row(
-                              children: <Widget>[
-                                Text(AppLocalizations.of(context).currency),
-                                if (cexProvider.selectedFiat != null)
-                                  Text(' (${cexProvider.selectedFiat})'),
-                              ],
+                            ),
+                            trailing: StreamBuilder<bool>(
+                              initialData: settingsBloc.showBalance,
+                              stream: settingsBloc.outShowBalance,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                return snapshot.hasData
+                                    ? Switch(
+                                        value: !snapshot.data,
+                                        key: const Key('settings-hide-balance'),
+                                        onChanged: (bool dataSwitch) {
+                                          settingsBloc
+                                              .setShowBalance(!dataSwitch);
+                                        })
+                                    : Container();
+                              },
+                            ),
+                          ),
+                          Divider(
+                            indent: 20,
+                            endIndent: 20,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          _buildDrawerItem(
+                              title: Text(
+                                  AppLocalizations.of(context).addressBook),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push<dynamic>(
+                                    context,
+                                    MaterialPageRoute<dynamic>(
+                                        builder: (BuildContext context) =>
+                                            const AddressBookPage()));
+                              },
+                              leading: Icon(
+                                Icons.import_contacts,
+                                key: const Key('side-nav-addressbook'),
+                                size: 16,
+                                color: Colors.white.withAlpha(200),
+                              )),
+                          Divider(
+                            indent: 20,
+                            endIndent: 20,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          _buildDrawerItem(
+                              title:
+                                  Text(AppLocalizations.of(context).settings),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push<dynamic>(
+                                    context,
+                                    MaterialPageRoute<dynamic>(
+                                        builder: (BuildContext context) =>
+                                            SettingPage()));
+                              },
+                              leading: Icon(
+                                Icons.settings,
+                                key: const Key('side-nav-settings'),
+                                size: 16,
+                                color: Colors.white.withAlpha(200),
+                              )),
+                          _buildDrawerItem(
+                              title:
+                                  Text(AppLocalizations.of(context).helpLink),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push<dynamic>(
+                                    context,
+                                    MaterialPageRoute<dynamic>(
+                                        builder: (BuildContext context) =>
+                                            HelpPage()));
+                              },
+                              leading: Icon(
+                                Icons.help,
+                                key: const Key('side-nav-help-feedback'),
+                                size: 16,
+                                color: Colors.white.withAlpha(200),
+                              )),
+                          Divider(
+                            indent: 20,
+                            endIndent: 20,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          _buildDrawerItem(
+                            leading: Icon(
+                              Icons.exit_to_app,
+                              key: const Key('side-nav-logout'),
+                              size: 16,
+                              color: Colors.white.withAlpha(200),
                             ),
                             onTap: () {
-                              showCurrenciesDialog(context);
-                            },
-                            leading: cexProvider.selectedFiatSymbol.length > 1
-                                ? Icon(
-                                    Icons.account_balance_wallet,
-                                    key: const Key('side-nav-currency'),
-                                    size: 16,
-                                    color: Colors.white.withAlpha(200),
-                                  )
-                                : Text(' ${cexProvider.selectedFiatSymbol}')),
-                        _buildDrawerItem(
-                          title: Text(AppLocalizations.of(context).hideBalance),
-                          leading: Icon(
-                            Icons.money_off,
-                            size: 16,
-                            color: Colors.white.withAlpha(200),
-                          ),
-                          trailing: StreamBuilder<bool>(
-                            initialData: settingsBloc.showBalance,
-                            stream: settingsBloc.outShowBalance,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<bool> snapshot) {
-                              return snapshot.hasData
-                                  ? Switch(
-                                      value: !snapshot.data,
-                                      key: const Key('settings-hide-balance'),
-                                      onChanged: (bool dataSwitch) {
-                                        settingsBloc
-                                            .setShowBalance(!dataSwitch);
-                                      })
-                                  : Container();
-                            },
-                          ),
-                        ),
-                        Divider(
-                          indent: 20,
-                          endIndent: 20,
-                          color: Theme.of(context).hintColor,
-                        ),
-                        _buildDrawerItem(
-                            title:
-                                Text(AppLocalizations.of(context).addressBook),
-                            onTap: () {
                               Navigator.pop(context);
-                              Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          const AddressBookPage()));
+                              showLogoutConfirmation(context);
                             },
-                            leading: Icon(
-                              Icons.import_contacts,
-                              key: const Key('side-nav-addressbook'),
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
-                            )),
-                        Divider(
-                          indent: 20,
-                          endIndent: 20,
-                          color: Theme.of(context).hintColor,
-                        ),
-                        _buildDrawerItem(
-                            title: Text(AppLocalizations.of(context).settings),
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          SettingPage()));
-                            },
-                            leading: Icon(
-                              Icons.settings,
-                              key: const Key('side-nav-settings'),
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
-                            )),
-                        _buildDrawerItem(
-                            title: Text(AppLocalizations.of(context).helpLink),
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          HelpPage()));
-                            },
-                            leading: Icon(
-                              Icons.help,
-                              key: const Key('side-nav-help-feedback'),
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
-                            )),
-                        Divider(
-                          indent: 20,
-                          endIndent: 20,
-                          color: Theme.of(context).hintColor,
-                        ),
-                        _buildDrawerItem(
-                          leading: Icon(
-                            Icons.exit_to_app,
-                            key: const Key('side-nav-logout'),
-                            size: 16,
-                            color: Colors.white.withAlpha(200),
+                            title: Text(AppLocalizations.of(context).logout),
                           ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            showLogoutConfirmation(context);
-                          },
-                          title: Text(AppLocalizations.of(context).logout),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),

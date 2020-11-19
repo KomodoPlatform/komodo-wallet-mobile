@@ -17,7 +17,9 @@ class _SoundVolumeButtonState extends State<SoundVolumeButton> {
   Widget build(BuildContext context) {
     return IconButton(
         key: const Key('sound-volume-button'),
-        icon: Icon(Icons.audiotrack),
+        icon: Icon(
+          musicService.on() ? Icons.volume_up : Icons.volume_down,
+        ),
         color: musicService.on()
             ? Theme.of(context).toggleableActiveColor
             : Theme.of(context).textTheme.body2.color,
