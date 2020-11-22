@@ -527,6 +527,8 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
       return Container();
     if (item.coin.swapContractAddress.isEmpty) return Container();
 
+    // TODO: build fee for QRC20 tokens?
+
     return FutureBuilder(
         future: multiOrderProvider.getERCfee(item.coin.abbr),
         builder: (context, snapshot) {

@@ -127,7 +127,9 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           final bool isButtonActive =
               (widget.coinBalance.coin.swapContractAddress.isEmpty &&
                       amountToPay > deci(0)) ||
-                  (amountToPay > deci(0) && !notEnoughEth && isEthActive);
+                  (amountToPay > deci(0) &&
+                      !notEnoughEth &&
+                      isEthActive); // TODO: add QRC
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -192,7 +194,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                           ),
                         ],
                       ),
-                widget.coinBalance.coin.swapContractAddress.isNotEmpty &&
+                // TODO: add QRC
+                widget.coinBalance.coin.type == 'erc' &&
                         notEnoughEth &&
                         isEthActive
                     ? Row(
@@ -208,8 +211,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                         ],
                       )
                     : Container(),
-                widget.coinBalance.coin.swapContractAddress.isNotEmpty &&
-                        !isEthActive
+                // TODO: add QRC
+                widget.coinBalance.coin.type == 'erc' && !isEthActive
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[

@@ -294,9 +294,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
         Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
         if (swapBloc.receiveCoin != null) {
-          if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
+          if (swapBloc.receiveCoin.type == 'erc') {
             txFee += await getERCfee(swapBloc.receiveCoin);
           }
+
+          // TODO: implement fee for QRC tokens
         }
         return txFee;
       } else {
@@ -343,13 +345,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
       Decimal txErcFee;
       if (swapBloc.receiveCoin != null) {
-        if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
+        if (swapBloc.receiveCoin.type == 'erc') {
           txErcFee = await getERCfee(swapBloc.receiveCoin);
         }
+
+        // TODO: implement QRC tokens fee
       }
 
-      if (txErcFee != null &&
-          swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty) {
+      // TODO: add QRC
+      if (txErcFee != null && swapBloc.sellCoinBalance.coin.type != 'erc') {
         final double relPrice =
             cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
         final double ethPrice = cexProvider.getUsdPrice('ETH');
@@ -380,16 +384,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ],
         );
       } else {
+        // TODO: add QRC
         Decimal factor = Decimal.parse('2');
         if (swapBloc.receiveCoin != null &&
-            swapBloc.sellCoinBalance.coin.swapContractAddress.isNotEmpty &&
-            swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
+            swapBloc.sellCoinBalance.coin.type == 'erc' &&
+            swapBloc.receiveCoin.type == 'erc') {
           factor = Decimal.parse('3');
         }
-        final String abbr =
-            swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty
-                ? swapBloc.sellCoinBalance.coin.abbr
-                : 'ETH';
+        final String abbr = swapBloc.sellCoinBalance.coin.type != 'erc'
+            ? swapBloc.sellCoinBalance.coin.abbr
+            : 'ETH';
         final double usdFee =
             (factor * txFee).toDouble() * cexProvider.getUsdPrice(abbr);
         return Column(
@@ -1319,8 +1323,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<void> _confirmSwap(BuildContext mContext) async {
     replaceAllCommas();
 
-    if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty ||
-        swapBloc.sellCoinBalance.coin.swapContractAddress.isNotEmpty) {
+    // TODO: add QRC
+    if (swapBloc.receiveCoin.type == 'erc' ||
+        swapBloc.sellCoinBalance.coin.type == 'erc') {
       CoinBalance ethBalance;
       try {
         ethBalance = coinsBloc.coinBalance
@@ -1338,16 +1343,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       }
       if (ethBalance != null) {
         final Decimal feeERC = await getERCfee(
-                swapBloc.receiveCoin.swapContractAddress.isNotEmpty
+                swapBloc.receiveCoin.type == 'erc'
                     ? swapBloc.receiveCoin
                     : swapBloc.sellCoinBalance.coin) *
-            ((swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                    swapBloc
-                        .sellCoinBalance.coin.swapContractAddress.isNotEmpty)
+            ((swapBloc.receiveCoin.type == 'erc' &&
+                    swapBloc.sellCoinBalance.coin.type == 'erc')
                 ? Decimal.parse('3')
-                : (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                        swapBloc
-                            .sellCoinBalance.coin.swapContractAddress.isEmpty
+                : (swapBloc.receiveCoin.type == 'erc' &&
+                        swapBloc.sellCoinBalance.coin.type != 'erc'
                     ? Decimal.parse('1')
                     : Decimal.parse('2')));
 

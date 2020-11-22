@@ -164,7 +164,7 @@ class MultiOrderProvider extends ChangeNotifier {
       }
 
       // check for ETH balance
-      if (coinsBloc.getCoinByAbbr(coin).swapContractAddress.isNotEmpty) {
+      if (coinsBloc.getCoinByAbbr(coin).type == 'erc') {
         final CoinBalance ethBalance = coinsBloc.getBalanceByAbbr('ETH');
         if (ethBalance == null) {
           isValid = false;
@@ -175,6 +175,8 @@ class MultiOrderProvider extends ChangeNotifier {
           _errors[coin] = _localizations.multiLowEth;
         }
       }
+
+      // TODO: check for QTUM balance
 
       // check min receive amount
       final double minReceiveAmt = baseCoin == 'QTUM' ? 3 : 0.00777;

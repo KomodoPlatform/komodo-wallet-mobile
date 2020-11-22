@@ -65,7 +65,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
               icon: Icon(Icons.open_in_browser),
               onPressed: () {
                 String urlPostTx = 'tx/';
-                if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+                if (widget.coinBalance.coin.type == 'erc') {
                   urlPostTx = 'tx/0x';
                 }
                 launchURL(widget.coinBalance.coin.explorerUrl[0] +
@@ -249,8 +249,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
       fee = widget.transaction.feeDetails?.amount.toString();
     }
 
-    if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+    if (widget.coinBalance.coin.type == 'erc') {
       return fee + ' ETH';
+      // TODO: add QRC
     } else {
       return fee + ' ' + widget.transaction.coin;
     }

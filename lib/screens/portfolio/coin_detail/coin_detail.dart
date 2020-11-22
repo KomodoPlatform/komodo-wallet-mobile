@@ -262,7 +262,7 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fething erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
-    if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+    if (widget.coinBalance.coin.type == 'erc') {
       return Container();
     }
 
@@ -300,14 +300,10 @@ class _CoinDetailState extends State<CoinDetail> {
               });
 
               if (tx.result.syncStatus.state == syncState) {
-                String txLeft;
-                if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
-                  txLeft =
-                      tx.result.syncStatus.additionalInfo.blocksLeft.toString();
-                } else {
-                  txLeft = tx.result.syncStatus.additionalInfo.transactionsLeft
-                      .toString();
-                }
+                final String txLeft = tx
+                    .result.syncStatus.additionalInfo.transactionsLeft
+                    .toString();
+
                 return Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -330,10 +326,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       Expanded(
                         child: Container(),
                       ),
-                      Text(
-                          widget.coinBalance.coin.swapContractAddress.isNotEmpty
-                              ? 'Syncing $txLeft TXs'
-                              : 'Transactions left $txLeft'),
+                      Text('Transactions left $txLeft'),
                     ],
                   ),
                 );
@@ -706,7 +699,8 @@ class _CoinDetailState extends State<CoinDetail> {
           _waitForInit();
         });
       },
-      isERCToken: widget.coinBalance.coin.swapContractAddress.isNotEmpty,
+      isERCToken: widget.coinBalance.coin.type == 'erc',
+      // TODO: add QRC
       onConfirm: () async {
         setState(() {
           isExpanded = false;
@@ -750,10 +744,11 @@ class _CoinDetailState extends State<CoinDetail> {
 
               final Fee fee = Fee();
               if (coinsDetailBloc.customFee != null) {
-                if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+                if (widget.coinBalance.coin.type == 'erc') {
                   fee.type = 'EthGas';
                   fee.gas = coinsDetailBloc.customFee.gas;
                   fee.gasPrice = coinsDetailBloc.customFee.gasPrice;
+                  // TODO: add QRC
                 } else {
                   fee.type = 'UtxoFixed';
                   fee.amount = coinsDetailBloc.customFee.amount;
