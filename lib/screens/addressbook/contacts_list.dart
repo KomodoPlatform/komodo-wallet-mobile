@@ -68,6 +68,10 @@ class _ContactsListState extends State<ContactsList> {
         if (widget.coin.type == 'erc' && contact.addresses.containsKey('ETH')) {
           return true;
         }
+        if (widget.coin.type == 'qrc' &&
+            contact.addresses.containsKey('QTUM')) {
+          return true;
+        }
         return false;
       },
     ).toList();

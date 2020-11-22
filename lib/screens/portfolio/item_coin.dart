@@ -313,9 +313,11 @@ class _ItemCoinState extends State<ItemCoin> {
 
   Widget _buildNetworkLabel() {
     final bool needLabel = (widget.coinBalance.coin.type == 'erc' ||
+            widget.coinBalance.coin.type == 'qrc' ||
             widget.coinBalance.coin.type == 'smartChain') &&
         widget.coinBalance.coin.abbr != 'KMD' &&
-        widget.coinBalance.coin.abbr != 'ETH';
+        widget.coinBalance.coin.abbr != 'ETH' &&
+        widget.coinBalance.coin.abbr != 'QTUM';
 
     if (!needLabel) return Container();
 
@@ -324,42 +326,65 @@ class _ItemCoinState extends State<ItemCoin> {
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         child: Container(
-            color: widget.coinBalance.coin.type == 'erc'
+            color: widget.coinBalance.coin.type == 'erc' ||
+                    widget.coinBalance.coin.type == 'qrc'
                 ? const Color.fromRGBO(20, 117, 186, 1)
                 : Theme.of(context).backgroundColor,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-              child: widget.coinBalance.coin.type == 'erc'
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          AppLocalizations.of(context).tagERC20,
-                          style: Theme.of(context).textTheme.subtitle,
-                        ),
-                      ],
-                    )
-                  : InkWell(
-                      onTap: () {
-                        ScaffoldState scaffold;
-                        try {
-                          scaffold = Scaffold.of(context);
-                        } catch (_) {}
+              child: Builder(builder: (context) {
+                switch (widget.coinBalance.coin.type) {
+                  case 'erc':
+                    {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            AppLocalizations.of(context).tagERC20,
+                            style: Theme.of(context).textTheme.subtitle,
+                          ),
+                        ],
+                      );
+                    }
+                  case 'qrc':
+                    {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            AppLocalizations.of(context).tagQRC20,
+                            style: Theme.of(context).textTheme.subtitle,
+                          ),
+                        ],
+                      );
+                    }
+                  default:
+                    {
+                      return InkWell(
+                        onTap: () {
+                          ScaffoldState scaffold;
+                          try {
+                            scaffold = Scaffold.of(context);
+                          } catch (_) {}
 
-                        if (scaffold != null) {
-                          scaffold.showSnackBar(const SnackBar(
-                            duration: Duration(seconds: 2),
-                            content: Text('Built on Komodo'),
-                          ));
-                        }
-                      },
-                      child: Image.asset(
-                        'assets/kmd.png',
-                        width: 18,
-                        height: 18,
-                      ),
-                    ),
+                          if (scaffold != null) {
+                            scaffold.showSnackBar(const SnackBar(
+                              duration: Duration(seconds: 2),
+                              content: Text('Built on Komodo'),
+                            ));
+                          }
+                        },
+                        child: Image.asset(
+                          'assets/kmd.png',
+                          width: 18,
+                          height: 18,
+                        ),
+                      );
+                    }
+                }
+              }),
             )),
       ),
     );

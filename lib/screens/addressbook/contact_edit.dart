@@ -322,6 +322,7 @@ class _ContactEditState extends State<ContactEdit> {
                       ),
                     ),
                     if (coin.type == 'erc') _buildErcChip(),
+                    if (coin.type == 'qrc') _buildQrcChip(),
                     if (coin.type == 'smartChain') _buildKmdChip(),
                   ],
                 ),
@@ -352,6 +353,27 @@ class _ContactEditState extends State<ContactEdit> {
         children: const <Widget>[
           Text(
             'ERC20',
+            style: TextStyle(fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQrcChip() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 2,
+      ),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(20, 117, 186, 1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: const <Widget>[
+          Text(
+            'QRC20',
             style: TextStyle(fontSize: 12),
           ),
         ],
@@ -393,6 +415,8 @@ class _ContactEditState extends State<ContactEdit> {
       abbr = 'KMD';
     } else if (coin.type == 'erc') {
       abbr = 'ETH';
+    } else if (coin.type == 'qrc') {
+      abbr = 'QTUM';
     }
 
     setState(() {

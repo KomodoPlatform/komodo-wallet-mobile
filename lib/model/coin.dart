@@ -80,7 +80,7 @@ class Coin {
     addressFormat = init['address_format'];
   }
 
-  String type; // 'other', 'erc' or 'smartChain'
+  String type; // 'other', 'erc', 'qrc' or 'smartChain'
   String name;
   String address;
   int port;

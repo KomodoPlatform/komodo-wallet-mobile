@@ -90,6 +90,14 @@ class CoinsBloc implements BlocBase {
   Sink<bool> get _inIsERCActive => _isERCActiveController.sink;
   Stream<bool> get outIsERCActive => _isERCActiveController.stream;
 
+  bool isQRCActive = false;
+
+  final StreamController<bool> _isQRCActiveController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inIsQRCActive => _isQRCActiveController.sink;
+  Stream<bool> get outIsQRCActive => _isQRCActiveController.stream;
+
   bool isutxoActive = false;
 
   final StreamController<bool> _isutxoActiveController =
@@ -157,6 +165,11 @@ class CoinsBloc implements BlocBase {
   void setIsERCActive(bool isERCActive) {
     this.isERCActive = isERCActive;
     _inIsERCActive.add(this.isERCActive);
+  }
+
+  void setIsQRCActive(bool isQRCActive) {
+    this.isQRCActive = isQRCActive;
+    _inIsQRCActive.add(this.isQRCActive);
   }
 
   void setIsAllSmartChainActive(bool isAllSmartChainActive) {

@@ -91,6 +91,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 deci(1000000000);
           }
 
+          // TODO: implement qrc gas fee here
+
           Decimal amountToPay = deci(widget.amountToPay);
           if (!isErcCoin) amountToPay += fee;
           Decimal amountUserReceive = deci(widget.amountToPay);

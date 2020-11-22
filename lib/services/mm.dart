@@ -245,6 +245,11 @@ class ApiProvider {
               swapContractAddress: coin.swapContractAddress,
               urls: coin.serverList)
           .toJson());
+
+    // TODO: implement QRC20 tokens adding by 'enable' call
+    // (QTUM tQTUM adding by 'electrum' call)
+    // ref: https://github.com/ca333/komodoDEX/issues/951#issue-747583132
+
     // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
     final electrum = <String, dynamic>{
       'method': 'electrum',

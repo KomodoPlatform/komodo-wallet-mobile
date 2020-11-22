@@ -256,6 +256,9 @@ class _BuildHeaderChainState extends State<BuildHeaderChain> {
       case 'erc':
         return AppLocalizations.of(context).searchFilterSubtitleERC;
         break;
+      case 'qrc':
+        return AppLocalizations.of(context).searchFilterSubtitleQRC;
+        break;
       case 'utxo':
         return AppLocalizations.of(context).searchFilterSubtitleutxo;
         break;
@@ -279,6 +282,11 @@ class _BuildHeaderChainState extends State<BuildHeaderChain> {
             isActive
                 ? coinsBloc.setIsERCActive(true)
                 : coinsBloc.setIsERCActive(false);
+            break;
+          case 'qrc':
+            isActive
+                ? coinsBloc.setIsQRCActive(true)
+                : coinsBloc.setIsQRCActive(false);
             break;
           case 'utxo':
             isActive
@@ -335,6 +343,12 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
       case 'erc':
         isActive = !coinsBloc.isERCActive;
         coinsBloc.outIsERCActive.listen((bool onData) {
+          listenActiveCoin(onData);
+        });
+        break;
+      case 'qrc':
+        isActive = !coinsBloc.isQRCActive;
+        coinsBloc.outIsQRCActive.listen((bool onData) {
           listenActiveCoin(onData);
         });
         break;
