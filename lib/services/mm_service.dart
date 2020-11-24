@@ -361,6 +361,7 @@ class MMService {
   void _onLog(String chunk) {
     Log('mm_service:356', chunk);
 
+    // TODO: find out what this log entry stands for
     final pkr =
         RegExp(r'initialize] netid (\d+) public key (\w+) preferred port');
     final pkm = pkr.firstMatch(chunk);
@@ -378,7 +379,9 @@ class MMService {
 
     final reasons = _lookupReasons(chunk);
     // TBD: Use the obtained swap UUIDs for targeted swap updates.
-    if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
+    if (reasons.isNotEmpty) {
+      shouldUpdateOrdersAndSwaps = reasons.first.sample;
+    }
   }
 
   /// Checks a [chunk] of MM log to see if there's a reason to reload swap status.
