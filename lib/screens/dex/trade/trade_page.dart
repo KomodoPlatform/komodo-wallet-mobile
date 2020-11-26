@@ -31,6 +31,7 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
@@ -1401,6 +1402,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                     onPressed: () {
                                       swapBloc.setIndexTabDex(1);
                                       Navigator.of(context).pop();
+                                      showSoundsDialog(context);
                                     },
                                   ),
                                   const SizedBox(
@@ -1410,6 +1412,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                     text: AppLocalizations.of(context).close,
                                     onPressed: () {
                                       Navigator.of(context).pop();
+                                      showSoundsDialog(context);
                                     },
                                   )
                                 ],
