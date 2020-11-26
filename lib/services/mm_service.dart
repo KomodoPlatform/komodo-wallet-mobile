@@ -151,6 +151,7 @@ class MMService {
     metrics();
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
+      if (!mmSe.running) return;
       await updateOrdersAndSwaps();
     });
   }
