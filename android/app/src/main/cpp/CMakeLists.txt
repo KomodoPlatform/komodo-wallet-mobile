@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 find_library(log-lib log)
+find_package(ZLIB)
 
 set(IMPORT_DIR ${CMAKE_SOURCE_DIR}/libs)
 
@@ -22,4 +23,5 @@ set_target_properties(mm2-api
 target_link_libraries(mm2-lib
                       mm2-api
                       ${log-lib}
+                      ZLIB::ZLIB
 )
