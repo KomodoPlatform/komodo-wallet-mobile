@@ -38,9 +38,6 @@ static AVAudioPlayerNode* dex_player;
 /// We keep a pointer to it in order to keep rescheduling it into the end of the `player` queue.
 static AVAudioFile* dex_bg_file;
 
-/// A part of it is used as a ballast to keep the audio engine busy between reschedules.
-static AVAudioFile* dex_failed1;
-
 /// The number of files in the `player` queue.
 static volatile atomic_int_fast32_t dex_scheduled = 0;
 
@@ -52,7 +49,13 @@ static NSString* dex_assets_audio;
 
 /// Scheduled between files in order to hold to the `isPlayingProcessAssertion`.
 void audio_ballast() {
-  [dex_player scheduleSegment: dex_failed1 startingFrame: 60000 frameCount: 30000 atTime: nil completionHandler: nil];}
+    NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "none.mp3"];  // “Standing by”
+
+    NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
+    NSError* err;
+    AVAudioFile* file = [[AVAudioFile alloc] initForReading: url error: &err];
+    if (err) {os_log (OS_LOG_DEFAULT, "audio_ballast] !file: %{public}@", err); return;}
+    [dex_player scheduleSegment: file startingFrame: 60000 frameCount: 30000 atTime: nil completionHandler: nil];}
 
 /// Invoked by completion handlers in order to maintain the background audio loop.
 void audio_reschedule (int generation) {
@@ -77,7 +80,7 @@ void audio_reschedule (int generation) {
     audio_ballast();});}
 
 // TBD: dispatch_async, go off the main thread and run initialization in background.
-void audio_init (const char* assets_maker) {
+void audio_init (const char* assets_ticking) {
   //os_log (OS_LOG_DEFAULT, "audio_init] Entered..");
 
   AVAudioEngine* engine = [[AVAudioEngine alloc] init];
@@ -94,19 +97,20 @@ void audio_init (const char* assets_maker) {
     //os_log (OS_LOG_DEFAULT, "audio_init] Documents file: %{public}s", filename.UTF8String);
   }];
 
-  if (!assets_maker) {os_log (OS_LOG_DEFAULT, "audio_init] !assets_maker"); return;}
-  const char* end = strstr (assets_maker, "/maker.mp3");
+  if (!assets_ticking) {os_log (OS_LOG_DEFAULT, "audio_init] !assets_ticking"); return;}
+  // TODO: change with actual sound-scheme samples
+  const char* end = strstr (assets_ticking, "/tick-tock.mp3");
   if (!end) {os_log (OS_LOG_DEFAULT, "audio_init] !end"); return;}
-  dex_assets_audio = [[[NSString alloc] initWithUTF8String: assets_maker] substringToIndex: end - assets_maker];
+  dex_assets_audio = [[[NSString alloc] initWithUTF8String: assets_ticking] substringToIndex: end - assets_ticking];
   //os_log (OS_LOG_DEFAULT, "audio_init] dex_assets_audio set to %{public}@", dex_assets_audio);
 
-  NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "failed1.mp3"];  // “Standing by”
+  // TODO: change with actual sound-scheme samples
+  NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "start.mp3"];  // “Standing by”
 
   NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
   NSError* err;
   AVAudioFile* file = [[AVAudioFile alloc] initForReading: url error: &err];
   if (err) {os_log (OS_LOG_DEFAULT, "audio_init] !file: %{public}@", err); return;}
-  dex_failed1 = file;
 
   AVAudioMixerNode* mixer = [engine mainMixerNode];
   //os_log (OS_LOG_DEFAULT, "audio_init] Attaching..");
@@ -129,8 +133,7 @@ void audio_init (const char* assets_maker) {
   audio_volume ([[NSNumber alloc] initWithDouble: 0.1]);
 
   //os_log (OS_LOG_DEFAULT, "audio_init] Playing..");
-  // `frameCount` corresponds to the number of “samples” in Audacity.
-  [player scheduleSegment: file startingFrame: 0 frameCount: 63333 atTime: nil completionHandler: nil];
+  [player scheduleFile:file atTime:nil completionHandler:nil];
 
   //os_log (OS_LOG_DEFAULT, "audio_init] Done");
   dex_engine = engine;
