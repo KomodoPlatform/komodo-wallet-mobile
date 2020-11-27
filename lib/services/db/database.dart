@@ -305,6 +305,25 @@ class Db {
     }
   }
 
+  static Future<Map<String, String>> getAllNotes() async {
+    final Database db = await Db.db;
+
+    final List<Map<String, dynamic>> maps = await db.query('Notes');
+    Log('database:312', maps.length);
+
+    final Map<String, String> r = {for (var m in maps) m['id']: m['note']};
+
+    return r;
+  }
+
+  static Future<void> addAllNotes(Map<String, String> allNotes) async {
+    //final Database db = await Db.db;
+
+    allNotes.forEach((k, v) async {
+      await saveNote(k, v);
+    });
+  }
+
   static Future<void> saveWalletSnapshot(String jsonStr) async {
     final Wallet wallet = await getCurrentWallet();
     if (wallet == null) return;
