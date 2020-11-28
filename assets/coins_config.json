@@ -440,6 +440,25 @@
 		]
  },
  {
+  "name": "Qcash",
+  "type": "qrc",
+  "address": "electrum1.cipig.net",
+  "port": 50001,
+  "proto": "tcp",
+  "abbr": "QC",
+  "coingeckoId": "qcash",
+  "swap_contract_address":"0xf2033ede578e17fa6231047265010445bca8cf1c",
+  "colorCoin": "0xFF52a5da",
+  "serverList": [
+			"electrum1.cipig.net:10050",
+			"electrum2.cipig.net:10050",
+			"electrum3.cipig.net:10050"
+  ],
+  "explorerUrl": [
+   "https://explorer.qtum.org/token/f2033ede578e17fa6231047265010445bca8cf1c"
+  ]
+ },
+ {
   "name": "QRC20",
   "type": "qrc",
   "address": "95.217.83.126",
@@ -447,7 +466,7 @@
   "proto": "tcp",
   "abbr": "QRC20",
   "coingeckoId": "test-coin",
-  "swap_contract_address":"0xba8b71f3544b93e2f681f996da519a98ace0107a",
+  "swap_contract_address":"0xd362e096e873eb7907e205fadc6175c6fec7bc44",
   "colorCoin": "0xFF52a5da",
   "serverList": [
    "95.217.83.126:10001"
