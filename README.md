@@ -48,3 +48,9 @@ In Android Studio (3.6.2) the latest Kotlin plugin (1.3.71) doesn't work with Fl
 
     adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
     sqlite3 AtomicDEX.db
+
+## Audio samples sources
+
+ - [ticking sound](https://freesound.org/people/FoolBoyMedia/sounds/264498/)
+ - [silence](https://freesound.org/people/Mullabfuhr/sounds/540483/)
+ - [start (iOs)](https://freesound.org/people/pizzaiolo/sounds/320664/)

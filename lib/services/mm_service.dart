@@ -21,7 +21,6 @@ import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/job_service.dart';
-import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -93,11 +92,6 @@ class MMService {
   /// so the map helps us with always picking the file that corresponds to the actual date.
   final Map<String, FileAndSink> _logs = {};
 
-  /// Flips on temporarily when we see an indication of swap activity,
-  /// possibly a change of swap status, in MM logs,
-  /// triggering a Timer-based invocation of `updateOrdersAndSwaps`.
-  String shouldUpdateOrdersAndSwaps;
-
   Future<void> _trafficMetrics() async {
     dynamic metrics = await MM.getMetricsMM2(BaseService(method: 'metrics'));
     // I/flutter (23292): metrics: {metrics: [{key: tx.history.request.count, labels: {client: electrum, coin: DEX, method: blockchain.scripthash.get_history}, type: counter, value: 1}, {key: rpc_client.response.count, labels: {client: electrum, coin: RICK}, type: counter, value: 13}, {key: tx.history.response.total_length, labels: {client: electrum, coin: KMD, method: blockchain.scripthash.get_history}, type: counter, value: 290}, {key: tx.history.request.count, labels: {client: electrum, coin: KMD, method: blockchain.scripthash.get_history}, type: counter, value: 1}, {key: rpc_client.request.count, labels: {client: electrum, coin: DEX}, type: counter, value: 14}, {key: tx.history.response.total_length, labels: {client: electrum, coin: RICK, method: blockchain.scripthash.get_history}, type: counter, value: 177}, {key: rpc_client.request.count, labels: {client: electrum, coin: BTC}, type: counter, value: 14}, {key: rpc_client.response.count, labels: {client: electrum, coin: BTC}, type: counter, value: 13}, {key: tx.history.response.c
@@ -157,13 +151,8 @@ class MMService {
     metrics();
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
-      final String reason = shouldUpdateOrdersAndSwaps;
-      shouldUpdateOrdersAndSwaps = null;
-      if (reason != null) {
-        await updateOrdersAndSwaps(reason);
-      } else if (musicService.recommendsPeriodicUpdates) {
-        await syncSwaps.update('musicService');
-      }
+      if (!mmSe.running) return;
+      await updateOrdersAndSwaps();
     });
   }
 
@@ -351,8 +340,8 @@ class MMService {
   }
 
   /// Load fresh lists of orders and swaps from MM.
-  Future<void> updateOrdersAndSwaps(String reason) async {
-    await syncSwaps.update(reason);
+  Future<void> updateOrdersAndSwaps() async {
+    await syncSwaps.update();
     await ordersBloc.updateOrdersSwaps();
   }
 
@@ -375,42 +364,6 @@ class MMService {
       mmVersion = mvm[1];
       mmDate = mvm[2];
     }
-
-    final reasons = _lookupReasons(chunk);
-    // TBD: Use the obtained swap UUIDs for targeted swap updates.
-    if (reasons.isNotEmpty) shouldUpdateOrdersAndSwaps = reasons.first.sample;
-  }
-
-  /// Checks a [chunk] of MM log to see if there's a reason to reload swap status.
-  List<_UpdReason> _lookupReasons(String chunk) {
-    final List<_UpdReason> reasons = [];
-    final sending = RegExp(
-        r'\d+ \d{2}:\d{2}:\d{2}, \w+:\d+] Sending \W[\w-]+@([\w-]+)\W \(\d+ bytes');
-    for (RegExpMatch mat in sending.allMatches(chunk)) {
-      //Log('mm_service:384', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
-      reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
-    }
-
-    // | (0:46) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Started...
-    // | (1:18) [swap uuid=9d590dcf-98b8-4990-9d3d-ab3b81af9e41] Negotiated...
-    final dashboard = RegExp(r'\| \(\d+:\d+\) \[swap uuid=([\w-]+)\] \w.*');
-    for (RegExpMatch mat in dashboard.allMatches(chunk)) {
-      //Log('mm_service:392', 'uuid: ${mat.group(1)}; sample: ${mat.group(0)}');
-      reasons.add(_UpdReason(sample: mat[0], uuid: mat[1]));
-    }
-
-    const samples = [
-      'CONNECTED',
-      '[dht-boot]',
-      'Entering the taker_swap_loop',
-      'Finished'
-    ];
-    for (String sample in samples) {
-      if (chunk.contains(sample)) {
-        reasons.add(_UpdReason(sample: 'MM log: $sample'));
-      }
-    }
-    return reasons;
   }
 
   void _onNativeLog(Object event) {
@@ -499,17 +452,6 @@ class MMService {
       return [];
     }
   }
-}
-
-/// Reason for updating the list of orders and swaps.
-class _UpdReason {
-  _UpdReason({this.sample, this.uuid});
-
-  /// MM log sample that was the reason for update.
-  String sample;
-
-  /// Swap UUID that ought to be updated.
-  String uuid;
 }
 
 class FileAndSink {

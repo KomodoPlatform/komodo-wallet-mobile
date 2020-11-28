@@ -706,7 +706,7 @@ class _SettingPageState extends State<SettingPage> {
 
     final now = DateTime.now();
     final log = mmSe.currentLog(now: now);
-    if (syncSwaps.swaps.isEmpty) await syncSwaps.update('share logs');
+    if (syncSwaps.swaps.isEmpty) await syncSwaps.update();
     try {
       log.sink.write('\n\n--- my recent swaps ---\n\n');
       for (Swap swap in syncSwaps.swaps) {
