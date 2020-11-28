@@ -7,6 +7,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
+import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -25,7 +26,6 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
   List<CoinBalance> coins = coinsBloc.coinBalance;
   TextEditingController amountCtrl = TextEditingController();
   bool isDialogOpen = false;
-  bool showDetailedFees = false;
 
   @override
   void initState() {
@@ -93,7 +93,10 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                 ],
               ),
               const SizedBox(height: 12),
-              _buildFees(),
+              BuildTradeFees(
+                coin: multiOrderProvider.baseCoin,
+                amount: multiOrderProvider.baseAmt,
+              ),
               _buildErrors(),
             ],
           ),
@@ -135,112 +138,6 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildFees() {
-    return FutureBuilder(
-      future: multiOrderProvider.getTxFee(),
-      builder: (context, snapshot) {
-        final double tradeFee = multiOrderProvider.getTradeFee();
-        if (!snapshot.hasData ||
-            snapshot.data == 0 ||
-            tradeFee == null ||
-            tradeFee == 0) return const SizedBox();
-
-        final bool hasCexPrice =
-            (cexProvider.getUsdPrice(multiOrderProvider.baseCoin) ?? 0) > 0;
-
-        return GestureDetector(
-          onTap: hasCexPrice
-              ? () {
-                  setState(() {
-                    showDetailedFees = !showDetailedFees;
-                  });
-                }
-              : null,
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context).txFeeTitle,
-                              style: Theme.of(context).textTheme.caption),
-                          Expanded(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                '${cutTrailingZeros(formatPrice(snapshot.data))}'
-                                ' ${multiOrderProvider.baseCoin}',
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                              if (showDetailedFees)
-                                Text(
-                                  cexProvider.convert(
-                                    snapshot.data,
-                                    from: multiOrderProvider.baseCoin,
-                                  ),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .caption
-                                      .copyWith(color: cexColor),
-                                ),
-                            ],
-                          )),
-                        ],
-                      ),
-                      if (showDetailedFees) const SizedBox(height: 4),
-                      Row(
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context).tradingFee,
-                              style: Theme.of(context).textTheme.caption),
-                          Expanded(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                '${cutTrailingZeros(formatPrice(multiOrderProvider.getTradeFee()))}'
-                                ' ${multiOrderProvider.baseCoin}',
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                              if (showDetailedFees)
-                                Text(
-                                  cexProvider.convert(
-                                    multiOrderProvider.getTradeFee(),
-                                    from: multiOrderProvider.baseCoin,
-                                  ),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .caption
-                                      .copyWith(color: cexColor),
-                                ),
-                            ],
-                          )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                if (hasCexPrice)
-                  Container(
-                    padding: const EdgeInsets.only(left: 4),
-                    child: Icon(
-                      showDetailedFees ? Icons.unfold_less : Icons.unfold_more,
-                      color: Theme.of(context).textTheme.caption.color,
-                      size: 18,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 

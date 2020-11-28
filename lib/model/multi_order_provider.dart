@@ -5,6 +5,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
+import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -89,35 +90,6 @@ class MultiOrderProvider extends ChangeNotifier {
   void setRelCoinAmt(String coin, double amt) {
     _relCoins[coin] = amt;
     notifyListeners();
-  }
-
-  double getTradeFee() {
-    if (baseCoin == null) return null;
-
-    final double balance =
-        coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-
-    return balance / 777;
-  }
-
-  Future<double> getTxFee() async {
-    if (baseCoin == null) return null;
-
-    try {
-      final dynamic tradeFeeResponse =
-          await MM.getTradeFee(MMService().client, GetTradeFee(coin: baseCoin));
-
-      if (tradeFeeResponse is TradeFee) {
-        // Magic 'x2' added to match fee, returned by
-        // TradePage.getTxFee (trade_page.dart:294)
-        return double.parse(tradeFeeResponse.result.amount) * 2;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      Log('multi_order_provider] failed to get tx fee', e);
-      rethrow;
-    }
   }
 
   Future<double> getERCfee(String coin) async {
@@ -238,15 +210,17 @@ class MultiOrderProvider extends ChangeNotifier {
     } else {
       final double balance =
           coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-      maxAmt = balance - await _getBaseFee();
+      maxAmt = balance - await _getBaseFee(balance);
     }
 
     return maxAmt;
   }
 
-  Future<double> _getBaseFee() async {
-    final double tradeFee = getTradeFee();
-    final double txFee = await getTxFee() ?? 0;
+  Future<double> _getBaseFee(double amt) async {
+    if (baseCoin == null || amt == null) return null;
+
+    final double tradeFee = getTradeFee(amt);
+    final double txFee = await getTxFee(baseCoin) ?? 0;
 
     return tradeFee + txFee;
   }
