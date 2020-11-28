@@ -55,6 +55,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.search),
               hintText: 'Search for Ticker',
+              counterText: '',
             ),
             maxLength: 16,
           ),
@@ -124,18 +125,22 @@ class OrderbookItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: 30,
-              width: 30,
+              height: 20,
+              width: 20,
               child: Image.asset(
                 'assets/${orderbook.rel.toLowerCase()}.png',
               ),
             ),
-            Flexible(
+            SizedBox(width: 4),
+            Text(orderbook.rel),
+            SizedBox(width: 4),
+            Expanded(
               child: orderbook.bids != null && orderbook.bids.isNotEmpty
                   ? RichText(
+                      textAlign: TextAlign.end,
                       text: TextSpan(
                           style: Theme.of(context).textTheme.body1,
                           children: <InlineSpan>[
@@ -155,6 +160,7 @@ class OrderbookItem extends StatelessWidget {
                     )
                   : Text(
                       AppLocalizations.of(context).noOrderAvailable,
+                      textAlign: TextAlign.end,
                       style: Theme.of(context)
                           .textTheme
                           .body1
