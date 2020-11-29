@@ -94,8 +94,9 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               ),
               const SizedBox(height: 12),
               BuildTradeFees(
-                coin: multiOrderProvider.baseCoin,
-                amount: multiOrderProvider.baseAmt,
+                baseCoin: multiOrderProvider.baseCoin,
+                baseAmount: multiOrderProvider.baseAmt,
+                includeGasFee: false,
               ),
               _buildErrors(),
             ],

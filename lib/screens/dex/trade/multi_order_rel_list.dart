@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
@@ -530,7 +531,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
     // TODO: build fee for QRC20 tokens?
 
     return FutureBuilder(
-        future: multiOrderProvider.getERCfee(item.coin.abbr),
+        future: getGasFee(item.coin.abbr),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const SizedBox();
 

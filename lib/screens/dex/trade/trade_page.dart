@@ -19,6 +19,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
@@ -692,134 +693,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                             ),
                             market == Market.SELL &&
                                     _controllerAmountSell.text.isNotEmpty
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showDetailedFees = !showDetailedFees;
-                                      });
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 16, left: 0),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Text(
-                                                        AppLocalizations.of(
-                                                                context)
-                                                            .txFeeTitle,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .body2),
-                                                    FutureBuilder<Widget>(
-                                                      future: getTxFeeErc(),
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<Widget>
-                                                              snapshot) {
-                                                        if (snapshot.hasData)
-                                                          return snapshot.data;
-
-                                                        return const SizedBox(
-                                                            width: 10,
-                                                            height: 10,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              strokeWidth: 1,
-                                                            ));
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Text(
-                                                        AppLocalizations.of(
-                                                                context)
-                                                            .tradingFee,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .body2),
-                                                    FutureBuilder<Decimal>(
-                                                      future: getTradeFee(
-                                                          isMaxActive),
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<Decimal>
-                                                              snapshot) {
-                                                        if (!snapshot.hasData) {
-                                                          return const SizedBox(
-                                                              width: 10,
-                                                              height: 10,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                strokeWidth: 1,
-                                                              ));
-                                                        }
-
-                                                        final String abbr =
-                                                            swapBloc
-                                                                .sellCoinBalance
-                                                                .coin
-                                                                .abbr;
-
-                                                        return Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: <Widget>[
-                                                            Text(
-                                                                snapshot.data
-                                                                        .toString() +
-                                                                    ' ' +
-                                                                    abbr,
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .body2),
-                                                            if (showDetailedFees)
-                                                              buildCexPrice(snapshot
-                                                                      .data
-                                                                      .toDouble() *
-                                                                  cexProvider
-                                                                      .getUsdPrice(
-                                                                          abbr)),
-                                                          ],
-                                                        );
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Icon(
-                                            showDetailedFees
-                                                ? Icons.unfold_less
-                                                : Icons.unfold_more,
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .body2
-                                                .color,
-                                          ),
-                                        ],
-                                      ),
+                                ? Container(
+                                    padding: EdgeInsets.only(top: 12),
+                                    child: BuildTradeFees(
+                                      baseCoin: currentCoinBalance.coin.abbr,
+                                      baseAmount: double.parse(
+                                          _controllerAmountSell.text),
+                                      includeGasFee: true,
+                                      relCoin: swapBloc.receiveCoin?.abbr,
                                     ),
                                   )
                                 : Container()

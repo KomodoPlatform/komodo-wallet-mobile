@@ -3,7 +3,6 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
-import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -13,7 +12,6 @@ import 'package:komodo_dex/utils/utils.dart';
 
 import 'error_string.dart';
 import 'get_setprice.dart';
-import 'get_trade_fee.dart';
 
 class MultiOrderProvider extends ChangeNotifier {
   final AppLocalizations _localizations = AppLocalizations();
@@ -92,12 +90,6 @@ class MultiOrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<double> getERCfee(String coin) async {
-    final TradeFee tradeFeeResponseERC = await ApiProvider()
-        .getTradeFee(MMService().client, GetTradeFee(coin: coin));
-    return double.parse(tradeFeeResponseERC.result.amount);
-  }
-
   Future<bool> validate() async {
     bool isValid = true;
     _errors.clear();
@@ -142,7 +134,7 @@ class MultiOrderProvider extends ChangeNotifier {
           isValid = false;
           _errors[coin] = _localizations.multiActivateEth;
         } else if (ethBalance.balance.balance.toDouble() <
-            await getERCfee(coin)) {
+            await getGasFee(coin)) {
           isValid = false;
           _errors[coin] = _localizations.multiLowEth;
         }
