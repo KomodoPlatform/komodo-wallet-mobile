@@ -128,14 +128,16 @@ class ApiProvider {
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
-              .post(url, body: getOrderbookToJson(userBody.body))
-              .then(
-                  (Response r) => _saveRes('getOrderbook_api_providers:110', r))
-              .then<dynamic>((Response res) => orderbookFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'getOrderbook_api_providers:111',
-                  e,
-                  'Error on get orderbook')));
+                  .post(url, body: getOrderbookToJson(userBody.body))
+                  .then((Response r) =>
+                      _saveRes('getOrderbook_api_providers:110', r))
+                  .then<dynamic>((Response res) {
+                _assert200(res);
+                return orderbookFromJson(res.body);
+              }).catchError((dynamic e) => _catchErrorString(
+                      'getOrderbook_api_providers:111',
+                      e,
+                      'Error on get orderbook')));
 
   void _assert200(Response r) {
     if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
