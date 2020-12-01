@@ -257,6 +257,8 @@ class ApiProvider {
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
+      if (coin.matureConfirmations != null)
+        'mature_confirmations': coin.matureConfirmations,
       'requires_notarization': coin.requiresNotarization ?? false,
       'address_format': coin.addressFormat,
       if (coin.swapContractAddress.isNotEmpty)
