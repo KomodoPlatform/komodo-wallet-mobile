@@ -641,7 +641,7 @@
 		]
 	},
 	{
-		"name": "firo",
+		"name": "Firo",
 		"type": "utxo",
 		"address": "electrumx.zcoin.io",
 		"port": 50001,
