@@ -458,23 +458,6 @@
    "https://explorer.qtum.org/token/f2033ede578e17fa6231047265010445bca8cf1c"
   ]
  },
- {
-  "name": "QRC20",
-  "type": "qrc",
-  "address": "95.217.83.126",
-  "port": 10001,
-  "proto": "tcp",
-  "abbr": "QRC20",
-  "coingeckoId": "test-coin",
-  "swap_contract_address":"0xd362e096e873eb7907e205fadc6175c6fec7bc44",
-  "colorCoin": "0xFF52a5da",
-  "serverList": [
-   "95.217.83.126:10001"
-  ],
-  "explorerUrl": [
-   "https://testnet.qtum.info/"
-  ]
- },
 	{
 		"name": "Ravencoin",
 		"type": "utxo",
