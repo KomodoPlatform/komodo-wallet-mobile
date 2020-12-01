@@ -677,12 +677,12 @@
 		]
 	},
 	{
-		"name": "ZCoin",
+		"name": "Firo",
 		"type": "utxo",
 		"address": "electrumx.zcoin.io",
 		"port": 50001,
 		"proto": "tcp",
-		"abbr": "XZC",
+		"abbr": "FIRO",
 		"coingeckoId": "zcoin",
 		"colorCoin": "0xFF24B852",
 		"serverList": [
