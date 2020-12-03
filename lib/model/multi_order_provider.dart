@@ -205,6 +205,7 @@ class MultiOrderProvider extends ChangeNotifier {
       maxAmt = balance - await _getBaseFee(balance);
     }
 
+    if (maxAmt < 0) maxAmt = 0;
     return maxAmt;
   }
 
