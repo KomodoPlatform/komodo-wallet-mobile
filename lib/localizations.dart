@@ -499,10 +499,10 @@ class AppLocalizations {
       Intl.message('Order selected', name: 'titleCurrentAsk');
   String get txFeeTitle => Intl.message('transaction fee:', name: 'txFeeTitle');
   String get tradingFee => Intl.message('trading fee:', name: 'tradingFee');
-  String swapErcAmount(String amount) => Intl.message(
-        'This swap requires $amount ETH for transaction fees',
-        name: 'swapErcAmount',
-        args: <Object>[amount],
+  String swapGasAmount(String amount, String coin) => Intl.message(
+        'This swap requires $amount $coin for transaction fees',
+        name: 'swapGasAmount',
+        args: <Object>[amount, coin],
       );
   String get remove => Intl.message('Disable', name: 'remove');
   String get searchFilterCoin =>

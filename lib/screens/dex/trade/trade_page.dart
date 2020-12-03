@@ -13,18 +13,13 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
@@ -267,54 +262,21 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     setState(() {
       isLoadingMax = true;
     });
-    try {
-      final Decimal fee = await getTxFee() + await getTradeFee(isMax);
-      setState(() {
-        isLoadingMax = false;
-      });
-      return fee;
-    } catch (e) {
-      Log.println('trade_page:286', e);
-      return deci(0);
+
+    double fee = await getTxFee(currentCoinBalance.coin.abbr) +
+        getTradeFee(isMax
+            ? currentCoinBalance.balance.balance.toDouble()
+            : double.parse(_controllerAmountSell.text));
+
+    if (swapBloc.receiveCoin?.payGasIn == currentCoinBalance.coin.abbr) {
+      fee += await getGasFee(swapBloc.receiveCoin.payGasIn);
     }
-  }
 
-  Future<Decimal> getTradeFee(bool isMax) async {
-    Decimal amount = deci(_controllerAmountSell.text);
-    if (isMax) amount = currentCoinBalance.balance.balance;
-    return deci(1) / deci(777) * amount;
-  }
+    setState(() {
+      isLoadingMax = false;
+    });
 
-  Future<Decimal> getTxFee() async {
-    try {
-      final dynamic tradeFeeResponse = await MM.getTradeFee(
-          MMService().client, GetTradeFee(coin: currentCoinBalance.coin.abbr));
-
-      if (tradeFeeResponse is TradeFee) {
-        final double tradeFee = double.parse(tradeFeeResponse.result.amount);
-
-        Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
-        if (swapBloc.receiveCoin != null) {
-          if (swapBloc.receiveCoin.type == 'erc') {
-            txFee += await getERCfee(swapBloc.receiveCoin);
-          }
-
-          // TODO: implement fee for QRC tokens
-        }
-        return txFee;
-      } else {
-        if (tradeFeeResponse is ErrorString) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 2),
-            content: Text(tradeFeeResponse.error),
-          ));
-        }
-        return Decimal.parse('0');
-      }
-    } catch (e) {
-      Log.println('trade_page:322', e);
-      rethrow;
-    }
+    return deci(fee);
   }
 
   Widget buildCexPrice(double price, [double size = 12]) {
@@ -334,94 +296,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         ),
       ],
     );
-  }
-
-  Future<Widget> getTxFeeErc() async {
-    try {
-      final TradeFee tradeFeeResponse = await MM.getTradeFee(
-          MMService().client, GetTradeFee(coin: currentCoinBalance.coin.abbr));
-      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
-
-      final Decimal txFee = Decimal.parse(tradeFee.toString());
-
-      Decimal txErcFee;
-      if (swapBloc.receiveCoin != null) {
-        if (swapBloc.receiveCoin.type == 'erc') {
-          txErcFee = await getERCfee(swapBloc.receiveCoin);
-        }
-
-        // TODO: implement QRC tokens fee
-      }
-
-      // TODO: add QRC
-      if (txErcFee != null && swapBloc.sellCoinBalance.coin.type != 'erc') {
-        final double relPrice =
-            cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
-        final double ethPrice = cexProvider.getUsdPrice('ETH');
-
-        final double totalUsdFee = relPrice == 0 || ethPrice == 0
-            ? null
-            : 2 * txFee.toDouble() * relPrice +
-                (txErcFee.toDouble() * ethPrice);
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Text(
-                (Decimal.parse('2') * txFee).toStringAsFixed(5) +
-                    ' ' +
-                    swapBloc.sellCoinBalance.coin.abbr +
-                    ' + ' +
-                    txErcFee.toStringAsFixed(5) +
-                    ' ETH',
-                style: Theme.of(context).textTheme.body2),
-            if (showDetailedFees)
-              Column(
-                children: <Widget>[
-                  buildCexPrice(totalUsdFee),
-                  const SizedBox(height: 4),
-                ],
-              ),
-          ],
-        );
-      } else {
-        // TODO: add QRC
-        Decimal factor = Decimal.parse('2');
-        if (swapBloc.receiveCoin != null &&
-            swapBloc.sellCoinBalance.coin.type == 'erc' &&
-            swapBloc.receiveCoin.type == 'erc') {
-          factor = Decimal.parse('3');
-        }
-        final String abbr = swapBloc.sellCoinBalance.coin.type != 'erc'
-            ? swapBloc.sellCoinBalance.coin.abbr
-            : 'ETH';
-        final double usdFee =
-            (factor * txFee).toDouble() * cexProvider.getUsdPrice(abbr);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Text((factor * txFee).toStringAsFixed(8) + ' ' + abbr,
-                style: Theme.of(context).textTheme.body2),
-            if (showDetailedFees)
-              Column(
-                children: <Widget>[
-                  buildCexPrice(usdFee),
-                  const SizedBox(height: 4),
-                ],
-              ),
-          ],
-        );
-      }
-    } catch (e) {
-      Log.println('trade_page:364', e);
-      rethrow;
-    }
-  }
-
-  Future<Decimal> getERCfee(Coin coin) async {
-    final TradeFee tradeFeeResponseERC = await ApiProvider()
-        .getTradeFee(MMService().client, GetTradeFee(coin: coin.abbr));
-    return Decimal.parse(tradeFeeResponseERC.result.amount);
   }
 
   Future<void> setMaxValue() async {
@@ -1201,127 +1075,129 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
+  Future<bool> _ableToPayGas(BuildContext mContext) async {
+    final String gasCoin = swapBloc.receiveCoin.payGasIn;
+    if (gasCoin == null) return true;
+
+    CoinBalance gasBalance;
+    try {
+      gasBalance = coinsBloc.coinBalance
+          .singleWhere((CoinBalance coin) => coin.coin.abbr == gasCoin);
+    } catch (e) {
+      Scaffold.of(mContext).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 2),
+        backgroundColor: Theme.of(context).primaryColor,
+        content: Text(
+          'Please activate $gasCoin and top-up balance first',
+          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+        ),
+      ));
+      return false;
+    }
+
+    double gasFee = await getGasFee(swapBloc.receiveCoin.abbr);
+    if (gasCoin == swapBloc.sellCoinBalance.coin.abbr) {
+      gasFee = gasFee +
+          await getTxFee(gasCoin) +
+          getTradeFee(double.parse(_controllerAmountSell.text));
+    }
+
+    if (gasBalance.balance.balance < deci(gasFee)) {
+      Scaffold.of(mContext).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 2),
+        backgroundColor: Theme.of(context).primaryColor,
+        content: Text(
+          AppLocalizations.of(context)
+              .swapGasAmount(cutTrailingZeros(formatPrice(gasFee)), gasCoin),
+          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+        ),
+      ));
+      return false;
+    }
+
+    return true;
+  }
+
   Future<void> _confirmSwap(BuildContext mContext) async {
     replaceAllCommas();
 
-    // TODO: add QRC
-    if (swapBloc.receiveCoin.type == 'erc' ||
-        swapBloc.sellCoinBalance.coin.type == 'erc') {
-      CoinBalance ethBalance;
-      try {
-        ethBalance = coinsBloc.coinBalance
-            .singleWhere((CoinBalance coin) => coin.coin.abbr == 'ETH');
-      } catch (e) {
-        Scaffold.of(mContext).showSnackBar(SnackBar(
-          duration: const Duration(seconds: 2),
-          backgroundColor: Theme.of(context).primaryColor,
-          content: Text(
-            'Please activate ETH and top-up balance first',
-            style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
-          ),
-        ));
-        return;
-      }
-      if (ethBalance != null) {
-        final Decimal feeERC = await getERCfee(
-                swapBloc.receiveCoin.type == 'erc'
-                    ? swapBloc.receiveCoin
-                    : swapBloc.sellCoinBalance.coin) *
-            ((swapBloc.receiveCoin.type == 'erc' &&
-                    swapBloc.sellCoinBalance.coin.type == 'erc')
-                ? Decimal.parse('3')
-                : (swapBloc.receiveCoin.type == 'erc' &&
-                        swapBloc.sellCoinBalance.coin.type != 'erc'
-                    ? Decimal.parse('1')
-                    : Decimal.parse('2')));
+    if (!(await _ableToPayGas(mContext))) return;
 
-        if (ethBalance.balance.balance < feeERC) {
-          Scaffold.of(mContext).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 2),
-            backgroundColor: Theme.of(context).primaryColor,
-            content: Text(
-              AppLocalizations.of(context).swapErcAmount(feeERC.toString()),
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
-            ),
-          ));
-          return;
-        }
-      }
-    }
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,
         content: Text(AppLocalizations.of(context).noInternet),
       ));
+      return;
     }
-    if (_checkValueMin() && !mainBloc.isNetworkOffline) {
+
+    if (!_checkValueMin()) return;
+
+    setState(() {
+      _noOrderFound = false;
+    });
+    Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => SwapConfirmation(
+                orderSuccess: () {
+                  dialogBloc.dialog = showDialog<dynamic>(
+                          builder: (BuildContext context) {
+                            return SimpleDialog(
+                              title: Text(
+                                  AppLocalizations.of(context).orderCreated),
+                              contentPadding: const EdgeInsets.all(24),
+                              children: <Widget>[
+                                Text(AppLocalizations.of(context)
+                                    .orderCreatedInfo),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                PrimaryButton(
+                                  text:
+                                      AppLocalizations.of(context).showMyOrders,
+                                  onPressed: () {
+                                    swapBloc.setIndexTabDex(1);
+                                    Navigator.of(context).pop();
+                                    showSoundsDialog(context);
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                SecondaryButton(
+                                  text: AppLocalizations.of(context).close,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    showSoundsDialog(context);
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                          context: context)
+                      .then((dynamic _) {
+                    dialogBloc.dialog = null;
+                  });
+                },
+                order: currentAsk,
+                bestPrice: deci2s(swapBloc.orderCoin.bestPrice),
+                coinBase: swapBloc.orderCoin?.coinBase,
+                coinRel: swapBloc.orderCoin?.coinRel,
+                swapStatus: swapBloc.enabledReceiveField
+                    ? SwapStatus.SELL
+                    : SwapStatus.BUY,
+                amountToSell: _controllerAmountSell.text.replaceAll(',', '.'),
+                amountToBuy: _controllerAmountReceive.text.replaceAll(',', '.'),
+              )),
+    ).then((dynamic _) {
       setState(() {
-        _noOrderFound = false;
+        currentAsk = null;
       });
-      Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => SwapConfirmation(
-                  orderSuccess: () {
-                    dialogBloc.dialog = showDialog<dynamic>(
-                            builder: (BuildContext context) {
-                              return SimpleDialog(
-                                title: Text(
-                                    AppLocalizations.of(context).orderCreated),
-                                contentPadding: const EdgeInsets.all(24),
-                                children: <Widget>[
-                                  Text(AppLocalizations.of(context)
-                                      .orderCreatedInfo),
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                  PrimaryButton(
-                                    text: AppLocalizations.of(context)
-                                        .showMyOrders,
-                                    onPressed: () {
-                                      swapBloc.setIndexTabDex(1);
-                                      Navigator.of(context).pop();
-                                      showSoundsDialog(context);
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  SecondaryButton(
-                                    text: AppLocalizations.of(context).close,
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      showSoundsDialog(context);
-                                    },
-                                  )
-                                ],
-                              );
-                            },
-                            context: context)
-                        .then((dynamic _) {
-                      dialogBloc.dialog = null;
-                    });
-                  },
-                  order: currentAsk,
-                  bestPrice: deci2s(swapBloc.orderCoin.bestPrice),
-                  coinBase: swapBloc.orderCoin?.coinBase,
-                  coinRel: swapBloc.orderCoin?.coinRel,
-                  swapStatus: swapBloc.enabledReceiveField
-                      ? SwapStatus.SELL
-                      : SwapStatus.BUY,
-                  amountToSell: _controllerAmountSell.text.replaceAll(',', '.'),
-                  amountToBuy:
-                      _controllerAmountReceive.text.replaceAll(',', '.'),
-                )),
-      ).then((dynamic _) {
-        setState(() {
-          currentAsk = null;
-        });
-        _controllerAmountReceive.clear();
-        _controllerAmountSell.clear();
-      });
-    }
+      _controllerAmountReceive.clear();
+      _controllerAmountSell.clear();
+    });
   }
 }
 

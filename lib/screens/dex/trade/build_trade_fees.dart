@@ -182,7 +182,8 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
   Widget _buildTxFeeInFiat(double txFee, double gasFee) {
     final double baseUsdPrice = cexProvider.getUsdPrice(widget.baseCoin);
     final double gasUsdPrice = cexProvider
-        .getUsdPrice(coinsBloc.getCoinByAbbr(widget.relCoin)?.payGasIn);
+            .getUsdPrice(coinsBloc.getCoinByAbbr(widget.relCoin)?.payGasIn) ??
+        0.0;
 
     double totalTxFeeUsd = txFee * baseUsdPrice;
     if (widget.includeGasFee && gasUsdPrice != 0) {
