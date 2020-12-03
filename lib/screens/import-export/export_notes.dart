@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/import_export_selection.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:aes_crypt/aes_crypt.dart';
 
 class ExportNotesScreen extends StatefulWidget {
   @override
@@ -27,22 +27,67 @@ class _ExportNotesScreenState extends State<ExportNotesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Export Notes'),
+        title: const Text('Export Notes'),
         actions: <Widget>[
           FlatButton(
-            child: Text('Export'),
+            child: const Text('Export'),
             onPressed: () async {
-              final a = <String, String>{};
+              final pass = await showDialog<String>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    final passController = TextEditingController();
+                    return SimpleDialog(
+                      title: const Text('Type encryption key'),
+                      children: <Widget>[
+                        TextField(
+                          controller: passController,
+                        ),
+                        const Divider(height: 1),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            FlatButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Cancel'),
+                            ),
+                            FlatButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, passController.text),
+                              child: const Text('Ok'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  });
+              if (pass == null) return;
+              final crypt = AesCrypt(pass);
+
+              final n = <String, String>{};
               notes.forEach((k, v) {
                 if (selectedNotes[k]) {
-                  a.putIfAbsent(k, () => v);
+                  n.putIfAbsent(k, () => v);
                 }
               });
-              print(a);
-              Directory d = await getApplicationDocumentsDirectory();
-              File f = File('${d.path}/a.json');
-              final js = json.encode(a);
-              f.writeAsStringSync(js.toString(), mode: FileMode.writeOnly);
+              print(n);
+
+              final d = await getApplicationDocumentsDirectory();
+              final js = json.encode(n);
+              final tmpFilePath = '${d.path}/notes_encrypt.tmp';
+              await File(tmpFilePath).delete();
+              await crypt.encryptTextToFile(js, tmpFilePath);
+              final f2 = File(tmpFilePath);
+              final bytes = await f2.readAsBytes();
+              final b64 = base64.encode(bytes);
+              final r = <String, dynamic>{
+                'version': 1,
+                'db': b64,
+              };
+              final rjs = json.encode(r);
+              print(rjs);
+              final rf = File('${d.path}/notes_crypt.json');
+              await rf.writeAsString(rjs.toString(), mode: FileMode.writeOnly);
             },
           ),
         ],
@@ -51,8 +96,8 @@ class _ExportNotesScreenState extends State<ExportNotesScreen> {
           future: allNotes,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
-              return CircularProgressIndicator();
-            else if (!snapshot.hasData) return SizedBox();
+              return const CircularProgressIndicator();
+            else if (!snapshot.hasData) return const SizedBox();
             notes = snapshot.data;
             final widgets = <Widget>[];
             notes.forEach((k, v) {

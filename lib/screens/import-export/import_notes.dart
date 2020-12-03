@@ -4,6 +4,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:aes_crypt/aes_crypt.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/import_export_selection.dart';
@@ -15,37 +16,78 @@ class ImportNotesScreen extends StatefulWidget {
 }
 
 class _ImportNotesScreenState extends State<ImportNotesScreen> {
-  Future<Map<String, String>> allNotes;
+  Map<String, String> allNotes;
   final selectedNotes = <String, bool>{};
-  Map<String, String> notes;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Future.microtask(() async {
-      Directory d = await getApplicationDocumentsDirectory();
-      File f = File('${d.path}/a.json');
-      String str = f.readAsStringSync();
-      final dynamic j = json.decode(str);
-      final a = Map<String, String>.from(j);
-      setState(() {
-        allNotes = Future.delayed(Duration(seconds: 5), () => a);
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Import Notes'),
+        title: const Text('Import Notes'),
         actions: <Widget>[
           FlatButton(
-            child: Text('Import'),
+            child: const Text('Load'),
+            onPressed: () async {
+              final pass = await showDialog<String>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    final passController = TextEditingController();
+                    return SimpleDialog(
+                      title: const Text('Type encryption key'),
+                      children: <Widget>[
+                        TextField(
+                          controller: passController,
+                        ),
+                        const Divider(height: 1),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            FlatButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Cancel'),
+                            ),
+                            FlatButton(
+                              onPressed: () =>
+                                  Navigator.pop(context, passController.text),
+                              child: const Text('Ok'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  });
+              if (pass == null) return;
+
+              print(pass);
+
+              final d = await getApplicationDocumentsDirectory();
+              final f = File('${d.path}/notes_crypt.json');
+              final str = f.readAsStringSync();
+              final dynamic j = json.decode(str);
+              final String db = j['db'];
+              final dbBytes = base64.decode(db);
+              final tmpFilePath = '${d.path}/notes_decrypt.tmp';
+              final f1 = File(tmpFilePath);
+              await f1.writeAsBytes(dbBytes, mode: FileMode.writeOnly);
+
+              final crypt = AesCrypt(pass);
+
+              final dbDecrypt = await crypt.decryptTextFromFile(tmpFilePath);
+
+              final dynamic dbJson = json.decode(dbDecrypt);
+
+              final a = Map<String, String>.from(dbJson);
+              setState(() {
+                allNotes = a;
+              });
+            },
+          ),
+          FlatButton(
+            child: const Text('Import'),
             onPressed: () async {
               final a = <String, String>{};
-              notes.forEach((k, v) {
+              allNotes.forEach((k, v) {
                 if (selectedNotes[k]) {
                   a.putIfAbsent(k, () => v);
                 }
@@ -56,31 +98,26 @@ class _ImportNotesScreenState extends State<ImportNotesScreen> {
           ),
         ],
       ),
-      body: FutureBuilder<Map<String, String>>(
-          future: allNotes,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return CircularProgressIndicator();
-            else if (!snapshot.hasData) return SizedBox();
-            notes = snapshot.data;
-            final widgets = <Widget>[];
-            notes.forEach((k, v) {
-              selectedNotes.putIfAbsent(k, () => true);
-              widgets.add(ImportExportSelection(
-                title: k,
-                content: v,
-                selected: selectedNotes[k],
-                changedCallback: (val) {
-                  setState(() {
-                    selectedNotes[k] = val;
-                  });
-                },
-              ));
-            });
-            return Column(
-              children: widgets,
-            );
-          }),
+      body: Builder(builder: (context) {
+        final widgets = <Widget>[];
+        allNotes?.forEach((k, v) {
+          selectedNotes.putIfAbsent(k, () => true);
+          widgets.add(ImportExportSelection(
+            title: k,
+            content: v,
+            selected: selectedNotes[k],
+            changedCallback: (val) {
+              setState(() {
+                selectedNotes[k] = val;
+              });
+            },
+          ));
+        });
+
+        return Column(
+          children: widgets,
+        );
+      }),
     );
   }
 }

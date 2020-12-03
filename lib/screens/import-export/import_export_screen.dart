@@ -16,7 +16,7 @@ class _ImportExportScreenState extends State<ImportExportScreen> {
         child: Column(
           children: <Widget>[
             RaisedButton(
-              child: Text('Import Notes'),
+              child: const Text('Import Notes'),
               onPressed: () {
                 Navigator.push<dynamic>(
                     context,
@@ -26,7 +26,7 @@ class _ImportExportScreenState extends State<ImportExportScreen> {
               },
             ),
             RaisedButton(
-              child: Text('Export Notes'),
+              child: const Text('Export Notes'),
               onPressed: () {
                 Navigator.push<dynamic>(
                     context,

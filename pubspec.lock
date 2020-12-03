@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  aes_crypt:
+    dependency: "direct main"
+    description:
+      name: aes_crypt
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   analyzer:
     dependency: transitive
     description:
