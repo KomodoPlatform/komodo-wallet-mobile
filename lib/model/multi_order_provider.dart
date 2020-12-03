@@ -91,13 +91,11 @@ class MultiOrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  double getTradeFee() {
+  double getTradeFee([double amt]) {
     if (baseCoin == null) return null;
-
-    final double balance =
-        coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-
-    return balance / 777;
+    amt ??= baseAmt;
+    if (amt == null || amt == 0) return null;
+    return amt / 777;
   }
 
   Future<double> getTxFee() async {
@@ -236,14 +234,15 @@ class MultiOrderProvider extends ChangeNotifier {
     } else {
       final double balance =
           coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-      maxAmt = balance - await _getBaseFee();
+      maxAmt = balance - await _getBaseFee(balance);
     }
 
+    if (maxAmt < 0) maxAmt = 0;
     return maxAmt;
   }
 
-  Future<double> _getBaseFee() async {
-    final double tradeFee = getTradeFee();
+  Future<double> _getBaseFee([double amt]) async {
+    final double tradeFee = getTradeFee(amt);
     final double txFee = await getTxFee() ?? 0;
 
     return tradeFee + txFee;

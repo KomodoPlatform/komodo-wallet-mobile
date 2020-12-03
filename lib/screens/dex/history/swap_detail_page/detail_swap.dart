@@ -187,8 +187,10 @@ class _DetailSwapState extends State<DetailSwap> {
     String takerpaymentID = '';
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'TakerPaymentSent') {
+        // taker-swap
         takerpaymentID = event.event.data.txHash;
-      } else if (event.event.type == 'TakerPaymentSpent') {
+      } else if (event.event.type == 'TakerPaymentReceived') {
+        // maker-swap
         takerpaymentID = event.event.data.txHash;
       }
     }
@@ -198,9 +200,11 @@ class _DetailSwapState extends State<DetailSwap> {
   String _getMakerpaymentID(Swap swap) {
     String makepaymentID = '';
     for (SwapEL event in swap.result.events) {
-      if (event.event.type == 'MakerPaymentSpent') {
+      if (event.event.type == 'MakerPaymentReceived') {
+        // taker-swap
         makepaymentID = event.event.data.txHash;
       } else if (event.event.type == 'MakerPaymentSent') {
+        // maker-swap
         makepaymentID = event.event.data.txHash;
       }
     }
