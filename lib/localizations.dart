@@ -797,11 +797,11 @@ class AppLocalizations {
       Intl.message('Min sell amount is', name: 'multiMinSellAmt');
   String get multiInvalidAmt =>
       Intl.message('Invalid amount', name: 'multiInvalidAmt');
-  String get multiActivateEth =>
-      Intl.message('Activate ETH and top-up balance first',
-          name: 'multiActivateEth');
-  String get multiLowEth =>
-      Intl.message('ETH balance is too low', name: 'multiLowEth');
+  String multiActivateGas(String coin) =>
+      Intl.message('Activate $coin and top-up balance first',
+          name: 'multiActivateGas', args: <Object>[coin]);
+  String multiLowGas(String coin) => Intl.message('$coin balance is too low',
+      name: 'multiLowGas', args: <Object>[coin]);
   String get multiMinReceiveAmt =>
       Intl.message('Min receive amount is', name: 'multiMinReceiveAmt');
 

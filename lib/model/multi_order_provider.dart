@@ -127,20 +127,24 @@ class MultiOrderProvider extends ChangeNotifier {
         _errors[coin] = _localizations.multiInvalidAmt;
       }
 
-      // check for ETH balance
-      if (coinsBloc.getCoinByAbbr(coin).type == 'erc') {
-        final CoinBalance ethBalance = coinsBloc.getBalanceByAbbr('ETH');
-        if (ethBalance == null) {
+      // check for gas balance
+      final String gasCoin = coinsBloc.getCoinByAbbr(coin).payGasIn;
+      if (gasCoin != null) {
+        final CoinBalance gasBalance = coinsBloc.getBalanceByAbbr(gasCoin);
+        if (gasBalance == null) {
           isValid = false;
-          _errors[coin] = _localizations.multiActivateEth;
-        } else if (ethBalance.balance.balance.toDouble() <
-            await getGasFee(coin)) {
-          isValid = false;
-          _errors[coin] = _localizations.multiLowEth;
+          _errors[coin] = _localizations.multiActivateGas(gasCoin);
+        } else {
+          double gasFee = await getGasFee(coin);
+          if (baseCoin == gasCoin) {
+            gasFee = gasFee + await getTxFee(baseCoin) + getTradeFee(baseAmt);
+          }
+          if (gasBalance.balance.balance.toDouble() < gasFee) {
+            isValid = false;
+            _errors[coin] = _localizations.multiLowGas(gasCoin);
+          }
         }
       }
-
-      // TODO: check for QTUM balance
 
       // check min receive amount
       final double minReceiveAmt = baseCoin == 'QTUM' ? 3 : 0.00777;

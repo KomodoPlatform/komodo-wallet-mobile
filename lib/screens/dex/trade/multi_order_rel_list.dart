@@ -526,9 +526,8 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   Widget _buildFee(CoinBalance item) {
     if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr))
       return Container();
-    if (item.coin.swapContractAddress.isEmpty) return Container();
-
-    // TODO: build fee for QRC20 tokens?
+    final String gasCoin = item.coin.payGasIn;
+    if (gasCoin == null) return Container();
 
     return FutureBuilder(
         future: getGasFee(item.coin.abbr),
@@ -541,7 +540,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               '+' +
                   AppLocalizations.of(context).multiEthFee +
                   ': ${cutTrailingZeros(formatPrice(snapshot.data))}'
-                      ' ETH',
+                      ' $gasCoin',
               style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),
             ),
           );
