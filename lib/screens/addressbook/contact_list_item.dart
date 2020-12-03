@@ -66,7 +66,7 @@ class _ContactListItemState extends State<ContactListItem> {
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: Column(
               children: <Widget>[
-                _buildAddressessList(),
+                _buildAddressesList(),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: SizedBox(
@@ -98,7 +98,7 @@ class _ContactListItemState extends State<ContactListItem> {
     );
   }
 
-  Widget _buildAddressessList() {
+  Widget _buildAddressesList() {
     final List<Widget> addresses = [];
 
     widget.contact.addresses?.forEach((String abbr, String value) {
