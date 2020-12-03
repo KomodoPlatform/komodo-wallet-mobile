@@ -423,7 +423,7 @@
 	},
 	{
 		"name": "QTUM",
-		"type": "qrc",
+		"type": "utxo",
 		"address": "electrum1.cipig.net",
 		"port": 50001,
 		"proto": "tcp",
