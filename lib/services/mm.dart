@@ -383,16 +383,18 @@ class ApiProvider {
   Future<dynamic> postWithdraw(
     http.Client client,
     GetWithdraw body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getWithdrawToJson(userBody.body))
-              .then((Response r) => _saveRes('postWithdraw', r))
-              .then<dynamic>(
-                  (Response res) => withdrawResponseFromJson(res.body))
-              .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'postWithdraw', e, 'Error on post withdraw')));
+  ) async {
+    return await _assertUserpass(client, body).then<dynamic>(
+        (UserpassBody userBody) => userBody.client
+            .post(url, body: getWithdrawToJson(userBody.body))
+            .then((Response r) => _saveRes('postWithdraw', r))
+            .then<dynamic>((Response res) {
+              return withdrawResponseFromJson(res.body);
+            })
+            .catchError((dynamic _) => errorStringFromJson(res.body))
+            .catchError((dynamic e) => _catchErrorString(
+                'postWithdraw', e, 'Error on post withdraw')));
+  }
 
   Future<dynamic> getTradeFee(
     http.Client client,

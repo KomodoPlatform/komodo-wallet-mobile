@@ -207,7 +207,7 @@ class _ContactEditState extends State<ContactEdit> {
       String label = '$name ($abbr)';
       if (abbr == 'KMD') label = '$name (KMD & SmartChains)';
       if (abbr == 'ETH') label = '$name (ETH & ERC tokens)';
-      if (abbr == 'QTUM') label = '$name (QTUM & ERC tokens)';
+      if (abbr == 'QTUM') label = '$name (QTUM & QRC tokens)';
 
       addresses.add(
         ContactEditField(

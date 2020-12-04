@@ -699,8 +699,6 @@ class _CoinDetailState extends State<CoinDetail> {
           _waitForInit();
         });
       },
-      isERCToken: widget.coinBalance.coin.type == 'erc',
-      // TODO: add QRC
       onConfirm: () async {
         setState(() {
           isExpanded = false;
@@ -748,7 +746,6 @@ class _CoinDetailState extends State<CoinDetail> {
                   fee.type = 'EthGas';
                   fee.gas = coinsDetailBloc.customFee.gas;
                   fee.gasPrice = coinsDetailBloc.customFee.gasPrice;
-                  // TODO: add QRC
                 } else {
                   fee.type = 'UtxoFixed';
                   fee.amount = coinsDetailBloc.customFee.amount;

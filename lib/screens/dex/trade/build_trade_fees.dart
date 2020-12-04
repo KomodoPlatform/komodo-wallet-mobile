@@ -205,7 +205,7 @@ Future<double> getTxFee(String coin) async {
         await MM.getTradeFee(MMService().client, GetTradeFee(coin: coin));
 
     if (tradeFeeResponse is TradeFee) {
-      // TODO: deal with 'magic' x2
+      // x2 since user sends two transactions (payment and fee)
       return double.parse(tradeFeeResponse.result.amount) * 2;
     } else {
       return null;

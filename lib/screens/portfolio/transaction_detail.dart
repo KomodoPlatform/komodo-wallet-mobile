@@ -244,14 +244,15 @@ class _TransactionDetailState extends State<TransactionDetail> {
 
     if (widget.transaction.feeDetails.amount == null ||
         widget.transaction.feeDetails.amount.isEmpty) {
+      // TODO(yurii): add support for qrc20 gas fee into FeeDetails()
       fee = widget.transaction.feeDetails?.totalFee.toString();
     } else {
       fee = widget.transaction.feeDetails?.amount.toString();
     }
 
-    if (widget.coinBalance.coin.type == 'erc') {
-      return fee + ' ETH';
-      // TODO: add QRC
+    final String gasCoin = widget.coinBalance.coin.payGasIn;
+    if (gasCoin != null) {
+      return fee + ' $gasCoin';
     } else {
       return fee + ' ' + widget.transaction.coin;
     }

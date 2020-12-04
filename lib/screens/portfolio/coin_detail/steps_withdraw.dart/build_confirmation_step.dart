@@ -64,13 +64,13 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     return FutureBuilder<Object>(
         future: getFee(),
         builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-          final bool isErcCoin =
-              widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
-          bool notEnoughEth = false;
-          bool isEthActive = false;
+          final String gasCoin = widget.coinBalance.coin.payGasIn;
+          final bool needGas = gasCoin != null;
+          bool notEnoughGas = false;
+          bool isGasActive = false;
 
           Decimal fee = deci(0);
-          Decimal ethfee = deci(0);
+          Decimal gasFee = deci(0);
           if (snapshot.hasData && coinsDetailBloc.customFee == null) {
             try {
               fee = deci(snapshot.data);
@@ -79,22 +79,18 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
             }
           }
 
-          if (coinsDetailBloc.customFee != null &&
-              widget.coinBalance.coin.type != 'erc') {
-            fee = deci(coinsDetailBloc.customFee.amount);
+          if (coinsDetailBloc.customFee != null) {
+            if (widget.coinBalance.coin.type == 'erc') {
+              fee = deci(coinsDetailBloc.customFee.gas) *
+                  deci(coinsDetailBloc.customFee.gasPrice) /
+                  deci(1000000000); // eth gwei
+            } else {
+              fee = deci(coinsDetailBloc.customFee.amount);
+            }
           }
-
-          if (coinsDetailBloc.customFee != null &&
-              widget.coinBalance.coin.type == 'erc') {
-            fee = deci(coinsDetailBloc.customFee.gas) *
-                deci(coinsDetailBloc.customFee.gasPrice) /
-                deci(1000000000);
-          }
-
-          // TODO: implement qrc gas fee here
 
           Decimal amountToPay = deci(widget.amountToPay);
-          if (!isErcCoin) amountToPay += fee;
+          if (!needGas) amountToPay += fee;
           Decimal amountUserReceive = deci(widget.amountToPay);
           final Decimal userBalance = widget.coinBalance.balance.balance;
 
@@ -102,34 +98,36 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
 
           if (userBalance == amountUserReceive) {
             amountToPay = amountUserReceive;
-            if (!isErcCoin || widget.coinBalance.coin.abbr == 'ETH') {
+            if (!needGas || widget.coinBalance.coin.abbr == 'ETH') {
               amountUserReceive -= fee;
             }
           }
 
-          CoinBalance ethCoin;
+          CoinBalance gasBalance;
           for (CoinBalance coinBalance in coinsBloc.coinBalance) {
-            if (coinBalance.coin.abbr == 'ETH') {
-              ethCoin = coinBalance;
+            if (coinBalance.coin.abbr == gasCoin) {
+              gasBalance = coinBalance;
             }
           }
 
-          isEthActive = !(ethCoin == null);
-          ethfee = fee;
+          isGasActive = gasBalance != null;
+          gasFee = fee;
 
-          if ((ethCoin != null && ethfee > ethCoin.balance.balance) ||
-              (ethCoin != null &&
-                  widget.coinBalance.coin.abbr == 'ETH' &&
-                  amountUserReceive > ethCoin.balance.balance)) {
-            notEnoughEth = true;
+          if (isGasActive) {
+            if (gasFee > gasBalance.balance.balance) notEnoughGas = true;
+
+            if (widget.coinBalance.coin.abbr == 'ETH' &&
+                amountUserReceive > gasBalance.balance.balance)
+              notEnoughGas = true;
           }
 
-          final bool isButtonActive =
-              (widget.coinBalance.coin.swapContractAddress.isEmpty &&
-                      amountToPay > deci(0)) ||
-                  (amountToPay > deci(0) &&
-                      !notEnoughEth &&
-                      isEthActive); // TODO: add QRC
+          bool isButtonActive;
+          if (needGas) {
+            isButtonActive =
+                isGasActive && (!notEnoughGas) && amountToPay > deci(0);
+          } else {
+            isButtonActive = amountToPay > deci(0);
+          }
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -178,31 +176,28 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                             style: Theme.of(context).textTheme.body2,
                           ),
                           Text(
-                            !isErcCoin
+                            !needGas
                                 ? fee.toStringAsFixed(8)
-                                : ethfee.toString(),
+                                : gasFee.toString(),
                             style: Theme.of(context).textTheme.body2,
                           ),
                           const SizedBox(
                             width: 4,
                           ),
                           Text(
-                            isErcCoin
-                                ? AppLocalizations.of(context).ethFee
+                            needGas
+                                ? AppLocalizations.of(context).gasFee(gasCoin)
                                 : AppLocalizations.of(context).networkFee,
                             style: Theme.of(context).textTheme.body2,
                           ),
                         ],
                       ),
-                // TODO: add QRC
-                widget.coinBalance.coin.type == 'erc' &&
-                        notEnoughEth &&
-                        isEthActive
+                needGas && isGasActive && notEnoughGas
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Text(
-                            AppLocalizations.of(context).notEnoughEth,
+                            AppLocalizations.of(context).notEnoughGas(gasCoin),
                             style: Theme.of(context)
                                 .textTheme
                                 .body2
@@ -211,13 +206,12 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                         ],
                       )
                     : Container(),
-                // TODO: add QRC
-                widget.coinBalance.coin.type == 'erc' && !isEthActive
+                needGas && !isGasActive
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Text(
-                            AppLocalizations.of(context).ethNotActive,
+                            AppLocalizations.of(context).gasNotActive(gasCoin),
                             style: Theme.of(context)
                                 .textTheme
                                 .body2

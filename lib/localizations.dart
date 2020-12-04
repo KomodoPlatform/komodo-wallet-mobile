@@ -473,11 +473,13 @@ class AppLocalizations {
   String get eulaParagraphe19 => Intl.message(
       'AtomicDEX mobile is a non-custodial, decentralized and blockchain based application and as such does Komodo Platform never store any user-data (accounts and authentication data). \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020\n\n',
       name: 'eulaParagraphe19');
-  String get ethFee => Intl.message('ETH fee', name: 'ethFee');
-  String get notEnoughEth =>
-      Intl.message('Not enough ETH for transaction!', name: 'notEnoughEth');
-  String get ethNotActive =>
-      Intl.message('Please activate ETH.', name: 'ethNotActive');
+  String gasFee(String coin) =>
+      Intl.message('$coin fee', name: 'gasFee', args: <Object>[coin]);
+  String notEnoughGas(String coin) =>
+      Intl.message('Not enough $coin for transaction!',
+          name: 'notEnoughGas', args: <Object>[coin]);
+  String gasNotActive(String coin) => Intl.message('Please activate $coin.',
+      name: 'gasNotActive', args: <Object>[coin]);
   String youWillReceiveClaim(String amount, String coin) => Intl.message(
         'You will receive $amount $coin',
         name: 'youWillReceiveClaim',
@@ -515,7 +517,7 @@ class AppLocalizations {
   String get searchFilterSubtitleQRC =>
       Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
-  String get gas => Intl.message('Gas', name: 'gas');
+  String get gasLimit => Intl.message('Gas limit', name: 'gasLimit');
   String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
   String get customFeeWarning =>
       Intl.message('Only use custom fees if you know what you are doing!',

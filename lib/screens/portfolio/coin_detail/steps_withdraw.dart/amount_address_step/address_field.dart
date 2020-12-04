@@ -12,14 +12,12 @@ class AddressField extends StatefulWidget {
     Key key,
     this.onScan,
     this.controller,
-    this.isERCToken = false,
     this.addressFormat,
     this.coin,
   }) : super(key: key);
 
   final Function onScan;
   final TextEditingController controller;
-  final bool isERCToken;
   final Map<String, dynamic> addressFormat;
   final Coin coin;
 

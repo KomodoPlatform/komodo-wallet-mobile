@@ -96,28 +96,34 @@ class FeeDetails {
     this.amount,
     this.coin,
     this.gas,
+    this.gasLimit,
     this.gasPrice,
     this.totalFee,
   });
 
-  factory FeeDetails.fromJson(Map<String, dynamic> json) => FeeDetails(
-        amount: json['amount'] ?? '',
-        coin: json['coin'] ?? '',
-        gas: json['gas'] ?? 0,
-        gasPrice: json['gas_price'] ?? '',
-        totalFee: json['total_fee'] ?? '',
-      );
+  factory FeeDetails.fromJson(Map<String, dynamic> json) {
+    return FeeDetails(
+      amount: json['amount'] ?? '',
+      coin: json['coin'] ?? '',
+      gas: json['gas'] ?? 0,
+      gasLimit: json['gas_limit'],
+      gasPrice: json['gas_price'] ?? '',
+      totalFee: json['total_fee'] ?? '',
+    );
+  }
 
   String amount;
   String coin;
   int gas;
-  String gasPrice;
+  int gasLimit;
+  dynamic gasPrice; // String for erc, int for qrc
   String totalFee;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'amount': amount ?? 0.0,
         'coin': coin ?? '',
         'gas': gas ?? 0,
+        if (gasLimit != null) 'gas_limit': gasLimit,
         'gas_price': gasPrice ?? '',
         'total_fee': totalFee ?? '',
       };
