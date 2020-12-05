@@ -314,9 +314,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             duration: const Duration(seconds: 2),
             backgroundColor: Theme.of(context).errorColor,
             content: tradeFee < deci(0.00777)
-                ? Text(AppLocalizations.of(context).minValueBuy(
+                ? Text(AppLocalizations.of(context).minValueSell(
                     currentCoinBalance.coin.abbr, 0.00777.toString()))
-                : Text(AppLocalizations.of(context).minValueBuy(
+                : Text(AppLocalizations.of(context).minValueSell(
                     currentCoinBalance.coin.abbr, tradeFee.toStringAsFixed(8))),
           ));
           _focusSell.unfocus();

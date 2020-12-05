@@ -353,6 +353,11 @@ class AppLocalizations {
         name: 'minValueBuy',
         args: <Object>[coinName, number],
       );
+  String minValueSell(String coinName, String number) => Intl.message(
+        'The minimun amount to sell is $number $coinName',
+        name: 'minValueSell',
+        args: <Object>[coinName, number],
+      );
   String get encryptingWallet =>
       Intl.message('Encrypting wallet', name: 'encryptingWallet');
   String get decryptingWallet =>
