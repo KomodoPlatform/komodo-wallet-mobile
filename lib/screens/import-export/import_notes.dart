@@ -18,51 +18,70 @@ class ImportNotesScreen extends StatefulWidget {
 class _ImportNotesScreenState extends State<ImportNotesScreen> {
   Map<String, String> allNotes;
   final selectedNotes = <String, bool>{};
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Import Notes'),
         actions: <Widget>[
           FlatButton(
             child: const Text('Load'),
             onPressed: () async {
-              final pass = await showDialog<String>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    final passController = TextEditingController();
-                    return SimpleDialog(
-                      title: const Text('Type encryption key'),
-                      children: <Widget>[
-                        TextField(
-                          controller: passController,
-                        ),
-                        const Divider(height: 1),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            FlatButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Cancel'),
-                            ),
-                            FlatButton(
-                              onPressed: () =>
-                                  Navigator.pop(context, passController.text),
-                              child: const Text('Ok'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  });
-              if (pass == null) return;
-
-              print(pass);
+              final sc = _scaffoldKey.currentState;
 
               final d = await getApplicationDocumentsDirectory();
-              final f = File('${d.path}/notes_crypt.json');
+              final filePath = '${d.path}/notes_crypt.json';
+              final f = File(filePath);
+              final fExists = f.existsSync();
+              if (!fExists) {
+                sc.showSnackBar(
+                    const SnackBar(content: Text('Exported file not found')));
+                return;
+              }
+
+              final pass = await showDialog<String>(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  final passController = TextEditingController();
+                  return SimpleDialog(
+                    title: const Text('Type encryption key'),
+                    children: <Widget>[
+                      TextField(
+                        controller: passController,
+                      ),
+                      const Divider(height: 1),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          FlatButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancel'),
+                          ),
+                          FlatButton(
+                            onPressed: () =>
+                                Navigator.pop(context, passController.text),
+                            child: const Text('Ok'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              );
+
+              if (pass == null) return;
+              if (pass.isEmpty) {
+                sc.showSnackBar(const SnackBar(
+                    content: Text("Decryption password can't be empty")));
+
+                return;
+              }
+              print('Decryption password: $pass');
+
               final str = f.readAsStringSync();
               final dynamic j = json.decode(str);
               final String db = j['db'];
@@ -73,19 +92,24 @@ class _ImportNotesScreenState extends State<ImportNotesScreen> {
 
               final crypt = AesCrypt(pass);
 
-              final dbDecrypt = await crypt.decryptTextFromFile(tmpFilePath);
-
-              final dynamic dbJson = json.decode(dbDecrypt);
-
-              final a = Map<String, String>.from(dbJson);
-              setState(() {
-                allNotes = a;
-              });
+              try {
+                final dbDecrypt = await crypt.decryptTextFromFile(tmpFilePath);
+                final dynamic dbJson = json.decode(dbDecrypt);
+                final a = Map<String, String>.from(dbJson);
+                setState(() {
+                  allNotes = a;
+                });
+              } catch (e) {
+                print(e);
+                sc.showSnackBar(SnackBar(content: Text('Error: $e')));
+              }
             },
           ),
           FlatButton(
             child: const Text('Import'),
             onPressed: () async {
+              final sc = _scaffoldKey.currentState;
+
               final a = <String, String>{};
               allNotes.forEach((k, v) {
                 if (selectedNotes[k]) {
@@ -93,31 +117,42 @@ class _ImportNotesScreenState extends State<ImportNotesScreen> {
                 }
               });
               print(a);
-              await Db.addAllNotes(a);
+              try {
+                await Db.addAllNotes(a);
+                sc.showSnackBar(
+                    const SnackBar(content: Text('Imported successfully')));
+              } catch (e) {
+                sc.showSnackBar(SnackBar(content: Text('Error:  $e')));
+                return;
+              }
             },
           ),
         ],
       ),
-      body: Builder(builder: (context) {
-        final widgets = <Widget>[];
-        allNotes?.forEach((k, v) {
-          selectedNotes.putIfAbsent(k, () => true);
-          widgets.add(ImportExportSelection(
-            title: k,
-            content: v,
-            selected: selectedNotes[k],
-            changedCallback: (val) {
-              setState(() {
-                selectedNotes[k] = val;
+      body: allNotes == null
+          ? const Center(
+              child: Text('Press Load to load exported notes'),
+            )
+          : Builder(builder: (context) {
+              final widgets = <Widget>[];
+              allNotes?.forEach((k, v) {
+                selectedNotes.putIfAbsent(k, () => true);
+                widgets.add(ImportExportSelection(
+                  title: k,
+                  content: v,
+                  selected: selectedNotes[k],
+                  changedCallback: (val) {
+                    setState(() {
+                      selectedNotes[k] = val;
+                    });
+                  },
+                ));
               });
-            },
-          ));
-        });
 
-        return Column(
-          children: widgets,
-        );
-      }),
+              return Column(
+                children: widgets,
+              );
+            }),
     );
   }
 }

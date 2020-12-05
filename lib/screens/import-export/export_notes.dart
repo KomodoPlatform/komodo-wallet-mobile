@@ -16,6 +16,7 @@ class _ExportNotesScreenState extends State<ExportNotesScreen> {
   Future<Map<String, String>> allNotes;
   final selectedNotes = <String, bool>{};
   Map<String, String> notes;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _ExportNotesScreenState extends State<ExportNotesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Export Notes'),
         actions: <Widget>[
@@ -33,35 +35,45 @@ class _ExportNotesScreenState extends State<ExportNotesScreen> {
             child: const Text('Export'),
             onPressed: () async {
               final pass = await showDialog<String>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    final passController = TextEditingController();
-                    return SimpleDialog(
-                      title: const Text('Type encryption key'),
-                      children: <Widget>[
-                        TextField(
-                          controller: passController,
-                        ),
-                        const Divider(height: 1),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            FlatButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Cancel'),
-                            ),
-                            FlatButton(
-                              onPressed: () =>
-                                  Navigator.pop(context, passController.text),
-                              child: const Text('Ok'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  });
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  final passController = TextEditingController();
+                  return SimpleDialog(
+                    title: const Text('Type encryption key'),
+                    children: <Widget>[
+                      TextField(
+                        controller: passController,
+                      ),
+                      const Divider(height: 1),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          FlatButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancel'),
+                          ),
+                          FlatButton(
+                            onPressed: () =>
+                                Navigator.pop(context, passController.text),
+                            child: const Text('Ok'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              );
+              final sc = _scaffoldKey.currentState;
+
               if (pass == null) return;
+              if (pass.isEmpty) {
+                sc.showSnackBar(const SnackBar(
+                    content: Text("Encryption password can't be empty")));
+
+                return;
+              }
+              print('Encryption password: $pass');
               final crypt = AesCrypt(pass);
 
               final n = <String, String>{};
@@ -70,12 +82,12 @@ class _ExportNotesScreenState extends State<ExportNotesScreen> {
                   n.putIfAbsent(k, () => v);
                 }
               });
-              print(n);
 
               final d = await getApplicationDocumentsDirectory();
               final js = json.encode(n);
               final tmpFilePath = '${d.path}/notes_encrypt.tmp';
-              await File(tmpFilePath).delete();
+              final File f = File(tmpFilePath);
+              if (f.existsSync()) await f.delete();
               await crypt.encryptTextToFile(js, tmpFilePath);
               final f2 = File(tmpFilePath);
               final bytes = await f2.readAsBytes();
@@ -88,6 +100,9 @@ class _ExportNotesScreenState extends State<ExportNotesScreen> {
               print(rjs);
               final rf = File('${d.path}/notes_crypt.json');
               await rf.writeAsString(rjs.toString(), mode: FileMode.writeOnly);
+
+              sc.showSnackBar(
+                  const SnackBar(content: Text('Exported successfully')));
             },
           ),
         ],
