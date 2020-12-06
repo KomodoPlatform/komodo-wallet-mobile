@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/get_trade_fee.dart';
-import 'package:komodo_dex/model/trade_fee.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -39,13 +34,13 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     if (widget.baseCoin == null || widget.baseAmount == null)
       return Container();
 
-    return FutureBuilder<double>(
-      future: getTxFee(widget.baseCoin),
+    return FutureBuilder<Fee>(
+      future: GetFee.tx(widget.baseCoin),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox();
 
-        final double tradeFee = getTradeFee(widget.baseAmount);
-        final double txFee = snapshot.data;
+        final double tradeFee = GetFee.trading(widget.baseAmount).amount;
+        final double txFee = snapshot.data.amount;
 
         if (txFee == 0 || tradeFee == null || tradeFee == 0)
           return const SizedBox();
@@ -111,7 +106,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
 
   Widget _buildTradeFee() {
     return Text(
-      '${cutTrailingZeros(formatPrice(getTradeFee(widget.baseAmount)))}'
+      '${cutTrailingZeros(formatPrice(GetFee.trading(widget.baseAmount).amount))}'
       ' ${widget.baseCoin}',
       style: Theme.of(context).textTheme.caption,
     );
@@ -120,7 +115,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
   Widget _buildTradeFeeInFiat() {
     return Text(
       cexProvider.convert(
-        getTradeFee(widget.baseAmount),
+        GetFee.trading(widget.baseAmount).amount,
         from: widget.baseCoin,
       ),
       style: Theme.of(context).textTheme.caption.copyWith(color: cexColor),
@@ -133,10 +128,10 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
         Text(AppLocalizations.of(context).txFeeTitle,
             style: Theme.of(context).textTheme.caption),
         Expanded(
-            child: FutureBuilder<double>(
-                future: getGasFee(widget.relCoin),
+            child: FutureBuilder<Fee>(
+                future: GetFee.gas(widget.relCoin),
                 builder: (context, snapshot) {
-                  final double gasFee = snapshot.data ?? 0;
+                  final double gasFee = snapshot.data?.amount;
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -169,21 +164,21 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     if (!widget.includeGasFee) return SizedBox();
     if (widget.relCoin == null) return SizedBox();
 
-    final String payGasIn = coinsBloc.getCoinByAbbr(widget.relCoin).payGasIn;
-    if (payGasIn == null) return SizedBox();
+    final String gasCoin = GetFee.gasCoin(widget.relCoin);
+    if (gasCoin == null) return SizedBox();
 
     return Text(
       ' + ${cutTrailingZeros(formatPrice(gasFee))}'
-      ' $payGasIn',
+      ' $gasCoin',
       style: Theme.of(context).textTheme.caption,
     );
   }
 
   Widget _buildTxFeeInFiat(double txFee, double gasFee) {
+    gasFee ??= 0;
     final double baseUsdPrice = cexProvider.getUsdPrice(widget.baseCoin);
-    final double gasUsdPrice = cexProvider
-            .getUsdPrice(coinsBloc.getCoinByAbbr(widget.relCoin)?.payGasIn) ??
-        0.0;
+    final double gasUsdPrice =
+        cexProvider.getUsdPrice(GetFee.gasCoin(widget.relCoin)) ?? 0.0;
 
     double totalTxFeeUsd = txFee * baseUsdPrice;
     if (widget.includeGasFee && gasUsdPrice != 0) {
@@ -195,46 +190,4 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
       style: Theme.of(context).textTheme.caption.copyWith(color: cexColor),
     );
   }
-}
-
-Future<double> getTxFee(String coin) async {
-  if (coin == null) return null;
-
-  try {
-    final dynamic tradeFeeResponse =
-        await MM.getTradeFee(MMService().client, GetTradeFee(coin: coin));
-
-    if (tradeFeeResponse is TradeFee) {
-      // x2 since user sends two transactions (payment and fee)
-      return double.parse(tradeFeeResponse.result.amount) * 2;
-    } else {
-      return null;
-    }
-  } catch (e) {
-    Log('build_trade_fees] failed to get tx fee', e);
-    rethrow;
-  }
-}
-
-Future<double> getGasFee(String coin) async {
-  if (coin == null) return null;
-
-  try {
-    final dynamic tradeFeeResponse =
-        await MM.getTradeFee(MMService().client, GetTradeFee(coin: coin));
-
-    if (tradeFeeResponse is TradeFee) {
-      return double.parse(tradeFeeResponse.result.amount);
-    } else {
-      return null;
-    }
-  } catch (e) {
-    Log('build_trade_fees] failed to get gas fee', e);
-    rethrow;
-  }
-}
-
-double getTradeFee(double amt) {
-  if (amt == null) return null;
-  return amt / 777;
 }

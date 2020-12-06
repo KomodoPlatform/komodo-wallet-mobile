@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -250,7 +251,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
       fee = widget.transaction.feeDetails?.amount.toString();
     }
 
-    final String gasCoin = widget.coinBalance.coin.payGasIn;
+    final String gasCoin = GetFee.gasCoin(widget.coinBalance.coin.abbr);
     if (gasCoin != null) {
       return fee + ' $gasCoin';
     } else {

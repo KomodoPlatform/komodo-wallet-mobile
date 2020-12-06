@@ -8,7 +8,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
@@ -526,11 +526,11 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   Widget _buildFee(CoinBalance item) {
     if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr))
       return Container();
-    final String gasCoin = item.coin.payGasIn;
+    final String gasCoin = GetFee.gasCoin(item.coin.abbr);
     if (gasCoin == null) return Container();
 
-    return FutureBuilder(
-        future: getGasFee(item.coin.abbr),
+    return FutureBuilder<Fee>(
+        future: GetFee.gas(item.coin.abbr),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const SizedBox();
 
@@ -539,7 +539,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
             child: Text(
               '+' +
                   AppLocalizations.of(context).multiEthFee +
-                  ': ${cutTrailingZeros(formatPrice(snapshot.data))}'
+                  ': ${cutTrailingZeros(formatPrice(snapshot.data.amount))}'
                       ' $gasCoin',
               style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),
             ),

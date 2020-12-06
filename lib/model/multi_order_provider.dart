@@ -3,8 +3,8 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
-import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -128,16 +128,18 @@ class MultiOrderProvider extends ChangeNotifier {
       }
 
       // check for gas balance
-      final String gasCoin = coinsBloc.getCoinByAbbr(coin).payGasIn;
+      final String gasCoin = GetFee.gasCoin(coin);
       if (gasCoin != null) {
         final CoinBalance gasBalance = coinsBloc.getBalanceByAbbr(gasCoin);
         if (gasBalance == null) {
           isValid = false;
           _errors[coin] = _localizations.multiActivateGas(gasCoin);
         } else {
-          double gasFee = await getGasFee(coin);
+          double gasFee = (await GetFee.gas(coin)).amount;
           if (baseCoin == gasCoin) {
-            gasFee = gasFee + await getTxFee(baseCoin) + getTradeFee(baseAmt);
+            gasFee = gasFee +
+                (await GetFee.tx(baseCoin)).amount +
+                GetFee.trading(baseAmt).amount;
           }
           if (gasBalance.balance.balance.toDouble() < gasFee) {
             isValid = false;
@@ -216,8 +218,8 @@ class MultiOrderProvider extends ChangeNotifier {
   Future<double> _getBaseFee(double amt) async {
     if (baseCoin == null || amt == null) return null;
 
-    final double tradeFee = getTradeFee(amt);
-    final double txFee = await getTxFee(baseCoin) ?? 0;
+    final double tradeFee = GetFee.trading(amt).amount;
+    final double txFee = (await GetFee.tx(baseCoin)).amount ?? 0;
 
     return tradeFee + txFee;
   }

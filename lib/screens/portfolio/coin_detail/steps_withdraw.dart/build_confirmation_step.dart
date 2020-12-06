@@ -6,6 +6,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -64,7 +65,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     return FutureBuilder<Object>(
         future: getFee(),
         builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-          final String gasCoin = widget.coinBalance.coin.payGasIn;
+          final String gasCoin = GetFee.gasCoin(widget.coinBalance.coin.abbr);
           final bool needGas = gasCoin != null;
           bool notEnoughGas = false;
           bool isGasActive = false;

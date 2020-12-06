@@ -136,11 +136,4 @@ class Coin {
     }
     return (txFeeRes / 100000000).toString();
   }
-
-  String get payGasIn {
-    if (type == 'erc') return 'ETH';
-    if (type == 'qrc') return 'QTUM';
-
-    return null;
-  }
 }

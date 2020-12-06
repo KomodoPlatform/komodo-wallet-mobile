@@ -18,6 +18,7 @@ import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -263,13 +264,18 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       isLoadingMax = true;
     });
 
-    double fee = await getTxFee(currentCoinBalance.coin.abbr) +
-        getTradeFee(isMax
-            ? currentCoinBalance.balance.balance.toDouble()
-            : double.parse(_controllerAmountSell.text));
+    final double txFee =
+        (await GetFee.tx(currentCoinBalance.coin.abbr))?.amount ?? 0;
+    final double sellAmt = isMax
+        ? currentCoinBalance.balance.balance.toDouble()
+        : double.parse(_controllerAmountSell.text);
+    final double tradingFee = GetFee.trading(sellAmt)?.amount ?? 0;
 
-    if (swapBloc.receiveCoin?.payGasIn == currentCoinBalance.coin.abbr) {
-      fee += await getGasFee(swapBloc.receiveCoin.payGasIn);
+    double fee = txFee + tradingFee;
+
+    final String gasCoin = GetFee.gasCoin(swapBloc.receiveCoin?.abbr);
+    if (gasCoin == currentCoinBalance.coin.abbr) {
+      fee += (await GetFee.gas(currentCoinBalance.coin.abbr)).amount;
     }
 
     setState(() {
@@ -1076,7 +1082,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<bool> _ableToPayGas(BuildContext mContext) async {
-    final String gasCoin = swapBloc.receiveCoin.payGasIn;
+    final String gasCoin = GetFee.gasCoin(swapBloc.receiveCoin.abbr);
     if (gasCoin == null) return true;
 
     CoinBalance gasBalance;
@@ -1095,11 +1101,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       return false;
     }
 
-    double gasFee = await getGasFee(swapBloc.receiveCoin.abbr);
+    double gasFee = (await GetFee.gas(swapBloc.receiveCoin.abbr)).amount;
     if (gasCoin == swapBloc.sellCoinBalance.coin.abbr) {
       gasFee = gasFee +
-          await getTxFee(gasCoin) +
-          getTradeFee(double.parse(_controllerAmountSell.text));
+          (await GetFee.tx(gasCoin)).amount +
+          GetFee.trading(double.parse(_controllerAmountSell.text)).amount;
     }
 
     if (gasBalance.balance.balance < deci(gasFee)) {
