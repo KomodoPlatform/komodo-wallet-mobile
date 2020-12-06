@@ -189,8 +189,8 @@ class SyncSwaps {
   }
 
   /// (Re)load recent swaps from MM.
-  Future<void> update(String reason) async {
-    Log('swap_provider:188', 'update] reason: $reason');
+  Future<void> update() async {
+    Log('swap_provider:188', 'update]');
 
     final RecentSwaps rswaps =
         await MM.getRecentSwaps(GetRecentSwap(limit: 50, fromUuid: null));

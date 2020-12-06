@@ -641,12 +641,12 @@
 		]
 	},
 	{
-		"name": "ZCoin",
+		"name": "Firo",
 		"type": "utxo",
 		"address": "electrumx.zcoin.io",
 		"port": 50001,
 		"proto": "tcp",
-		"abbr": "XZC",
+		"abbr": "FIRO",
 		"coingeckoId": "zcoin",
 		"colorCoin": "0xFF24B852",
 		"serverList": [
@@ -710,6 +710,24 @@
 		],
 		"explorerUrl": [
 			"https://gleechain.com/"
+		]
+	},
+	{
+		"name": "Powerblockcoin",
+		"type": "utxo",
+		"address": "electrum1.cipig.net",
+		"port": 10070,
+		"proto": "tcp",
+		"abbr": "PBC",
+		"coingeckoId": "test-token",
+		"colorCoin": "0xFF34548C",
+		"serverList": [
+			"electrum1.cipig.net:10070",
+			"electrum2.cipig.net:10070",
+			"electrum3.cipig.net:10070"
+		],
+		"explorerUrl": [
+			"https://explorer.pbc.kmd.sh/"
 		]
 	}
 ]

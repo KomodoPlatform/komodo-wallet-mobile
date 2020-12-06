@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
@@ -14,6 +15,7 @@ import 'get_setprice.dart';
 import 'get_trade_fee.dart';
 
 class MultiOrderProvider extends ChangeNotifier {
+  final AppLocalizations _localizations = AppLocalizations();
   String _baseCoin;
   double _sellAmt;
   bool _validated = false;
@@ -89,13 +91,11 @@ class MultiOrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  double getTradeFee() {
+  double getTradeFee([double amt]) {
     if (baseCoin == null) return null;
-
-    final double balance =
-        coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-
-    return balance / 777;
+    amt ??= baseAmt;
+    if (amt == null || amt == 0) return null;
+    return amt / 777;
   }
 
   Future<double> getTxFee() async {
@@ -131,8 +131,7 @@ class MultiOrderProvider extends ChangeNotifier {
     // check if sell amount is empty
     if (baseAmt == null) {
       isValid = false;
-      // TODO(yurii): localization
-      _errors[baseCoin] = 'Invalid sell amount';
+      _errors[baseCoin] = _localizations.multiInvalidSellAmt;
     }
 
     // check if sell amount is lower than available balance
@@ -140,8 +139,7 @@ class MultiOrderProvider extends ChangeNotifier {
       final double max = await getMaxSellAmt();
       if (baseAmt > max) {
         isValid = false;
-        // TODO(yurii): localization
-        _errors[baseCoin] = 'Max sell amount is'
+        _errors[baseCoin] = _localizations.multiMaxSellAmt +
             ' ${cutTrailingZeros(formatPrice(max, 8))} $baseCoin';
       }
     }
@@ -150,8 +148,8 @@ class MultiOrderProvider extends ChangeNotifier {
     final double minSellAmt = baseCoin == 'QTUM' ? 3 : 0.00777;
     if (baseAmt != null && baseAmt < minSellAmt) {
       isValid = false;
-      // TODO(yurii): localization
-      _errors[baseCoin] = 'Min sell amount is $minSellAmt $baseCoin';
+      _errors[baseCoin] =
+          _localizations.multiMinSellAmt + ' $minSellAmt $baseCoin';
     }
 
     for (String coin in _relCoins.keys) {
@@ -160,8 +158,7 @@ class MultiOrderProvider extends ChangeNotifier {
       // check for empty amount field
       if (relAmt == null || relAmt == 0) {
         isValid = false;
-        // TODO(yurii): localization
-        _errors[coin] = 'Invalid amount';
+        _errors[coin] = _localizations.multiInvalidAmt;
       }
 
       // check for ETH balance
@@ -169,13 +166,11 @@ class MultiOrderProvider extends ChangeNotifier {
         final CoinBalance ethBalance = coinsBloc.getBalanceByAbbr('ETH');
         if (ethBalance == null) {
           isValid = false;
-          // TODO(yurii): localization
-          _errors[coin] = 'Activate ETH and top-up balance first';
+          _errors[coin] = _localizations.multiActivateEth;
         } else if (ethBalance.balance.balance.toDouble() <
             await getERCfee(coin)) {
           isValid = false;
-          // TODO(yurii): localization
-          _errors[coin] = 'ETH balance is too low';
+          _errors[coin] = _localizations.multiLowEth;
         }
       }
 
@@ -183,8 +178,8 @@ class MultiOrderProvider extends ChangeNotifier {
       final double minReceiveAmt = baseCoin == 'QTUM' ? 3 : 0.00777;
       if (relAmt != null && relAmt < minReceiveAmt) {
         isValid = false;
-        // TODO(yurii): localization
-        _errors[coin] = 'Min receive amount is $minReceiveAmt $coin';
+        _errors[coin] =
+            _localizations.multiMinReceiveAmt + ' $minReceiveAmt $coin';
       }
     }
 
@@ -239,14 +234,15 @@ class MultiOrderProvider extends ChangeNotifier {
     } else {
       final double balance =
           coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-      maxAmt = balance - await _getBaseFee();
+      maxAmt = balance - await _getBaseFee(balance);
     }
 
+    if (maxAmt < 0) maxAmt = 0;
     return maxAmt;
   }
 
-  Future<double> _getBaseFee() async {
-    final double tradeFee = getTradeFee();
+  Future<double> _getBaseFee([double amt]) async {
+    final double tradeFee = getTradeFee(amt);
     final double txFee = await getTxFee() ?? 0;
 
     return tradeFee + txFee;

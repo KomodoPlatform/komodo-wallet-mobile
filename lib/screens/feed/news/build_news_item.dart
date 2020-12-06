@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/screens/feed/news/news_article.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -163,7 +164,7 @@ class _BuildNewsItemState extends State<BuildNewsItem>
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(top: 12, bottom: 20, right: 12),
-                child: Text('Read more...', // TODO(yurii): localization
+                child: Text(AppLocalizations.of(context).feedReadMore,
                     style: TextStyle(fontSize: 16, color: Colors.blue)),
               )),
         if (_article.body != null && !_collapsed)

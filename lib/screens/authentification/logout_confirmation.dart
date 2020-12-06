@@ -7,8 +7,7 @@ void showLogoutConfirmation(BuildContext context) {
   showConfirmationDialog(
     context: context,
     title: AppLocalizations.of(context).logout,
-    message:
-        'Are you sure you want to logout now?', // TODO(yurii): localization
+    message: AppLocalizations.of(context).logoutWarning,
     confirmButtonText: AppLocalizations.of(context).logout,
     icon: Icons.exit_to_app,
     key: const Key('settings-logout-yes'),

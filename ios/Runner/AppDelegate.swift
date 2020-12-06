@@ -4,16 +4,54 @@ import Foundation
 import CoreLocation
 import os.log
 import UserNotifications
+import AVFoundation
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
   var eventSink: FlutterEventSink?
 
   func audio (vc: FlutterViewController) {
-    let mk = vc.lookupKey (forAsset: "assets/audio/maker.mp3")
+    // TODO: change with actual sound-scheme samples
+    let mk = vc.lookupKey (forAsset: "assets/audio/tick-tock.mp3")
     let mp = Bundle.main.path (forResource: mk, ofType: nil)
     audio_init (mp)
+    handleAudioInterruptions()
   }
+    
+    // Handle audio interruptions by Siri or calls.
+    // Regular audio, like 'Apple Music' will be mixed with the app playback.
+    func handleAudioInterruptions() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self,
+                       selector: #selector(onAudioInterrupted),
+                       name: AVAudioSession.interruptionNotification,
+                       object: nil)
+    }
+
+    @objc func onAudioInterrupted(notification: Notification) {
+            guard let userInfo = notification.userInfo,
+            let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+            let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                return
+        }
+
+        switch type {
+        // case .began:
+            // An interruption began.
+            
+        case .ended:
+           // An interruption ended. Resume playback, if appropriate.
+            guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+            let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+            if options.contains(.shouldResume) {
+                audio_resume ()
+            } else {
+                // Interruption ended. Playback should not resume.
+            }
+
+        default: ()
+        }
+    }
 
   override func application (_ application: UIApplication,
   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

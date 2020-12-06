@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/progress_step.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -95,7 +96,7 @@ class DetailedSwapStep extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
-                      Text('act: ', // TODO(yurii): localization
+                      Text(AppLocalizations.of(context).swapActual + ': ',
                           style: TextStyle(
                             fontSize: 13,
                             color: status == SwapStepStatus.pending
@@ -124,7 +125,9 @@ class DetailedSwapStep extends StatelessWidget {
                                           : null,
                                     )),
                                 const SizedBox(width: 4),
-                                Text('est: ', // TODO(yurii): localization
+                                Text(
+                                    AppLocalizations.of(context).swapEstimated +
+                                        ': ',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: status == SwapStepStatus.pending

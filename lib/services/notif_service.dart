@@ -135,9 +135,8 @@ class NotifService {
       if (tx.timestamp > 0 && (now - tx.timestamp > 3600)) continue;
 
       show(NotifObj(
-        // TODO(yurii): localization
-        title: 'Incoming transaction',
-        text: 'You have received ${tx.coin} transaction!',
+        title: _localizations.notifTxTitle,
+        text: _localizations.notifTxText(tx.coin),
         uid: tx.internalId,
       ));
     }
@@ -171,35 +170,28 @@ class NotifService {
         switch (swap.status) {
           case Status.SWAP_SUCCESSFUL:
             {
-              // TODO(yurii): localization
-              title = 'Swap completed';
-              text = '${swap.result.myInfo.myCoin}/'
-                  '${swap.result.myInfo.otherCoin}'
-                  ' swap was completed successfully';
+              title = _localizations.notifSwapCompletedTitle;
+              text = _localizations.notifSwapCompletedText(
+                  swap.result.myInfo.myCoin, swap.result.myInfo.otherCoin);
               break;
             }
           case Status.SWAP_FAILED:
             {
-              // TODO(yurii): localization
-              title = 'Swap failed';
-              text = '${swap.result.myInfo.myCoin}/'
-                  '${swap.result.myInfo.otherCoin}'
-                  ' swap failed';
+              title = _localizations.notifSwapFailedTitle;
+              text = _localizations.notifSwapFailedText(
+                  swap.result.myInfo.myCoin, swap.result.myInfo.otherCoin);
               break;
             }
           case Status.TIME_OUT:
             {
-              // TODO(yurii): localization
-              title = 'Swap timed out';
-              text = '${swap.result.myInfo.myCoin}/'
-                  '${swap.result.myInfo.otherCoin}'
-                  ' swap was timed out';
+              title = _localizations.notifSwapTimeoutTitle;
+              text = _localizations.notifSwapTimeoutText(
+                  swap.result.myInfo.myCoin, swap.result.myInfo.otherCoin);
               break;
             }
           default:
             {
-              // TODO(yurii): localization
-              title = 'Swap status changed';
+              title = _localizations.notifSwapStatusTitle;
               text = '${swap.result.myInfo.myCoin}/'
                   '${swap.result.myInfo.otherCoin}'
                   ' ${_translateSwapStatus(swap.status)}';
@@ -210,11 +202,9 @@ class NotifService {
         switch (swap.status) {
           case Status.ORDER_MATCHED:
             {
-              // TODO(yurii): localization
-              title = 'New swap started';
-              text = '${swap.result.myInfo.myCoin}/'
-                  '${swap.result.myInfo.otherCoin}'
-                  ' swap started';
+              title = _localizations.notifSwapStartedTitle;
+              text = _localizations.notifSwapStartedText(
+                  swap.result.myInfo.myCoin, swap.result.myInfo.otherCoin);
               break;
             }
           default:

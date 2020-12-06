@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/feed/news/news_tab.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -46,7 +47,7 @@ class _FeedPageState extends State<FeedPage>
             indicator: CustomTabIndicator(context: context),
             controller: _controllerTabs,
             tabs: <Widget>[
-              Tab(text: 'News'.toUpperCase()),
+              Tab(text: AppLocalizations.of(context).feedNewsTab.toUpperCase()),
             ],
           ),
         ),
@@ -69,7 +70,7 @@ class _FeedPageState extends State<FeedPage>
           : AppBar(
               title: Center(
                   child: Text(
-                'News Feed'.toUpperCase(), // TODO(yurii): localization
+                AppLocalizations.of(context).feedTitle.toUpperCase(),
                 style: Theme.of(context).textTheme.subtitle,
               )),
               automaticallyImplyLeading: false,

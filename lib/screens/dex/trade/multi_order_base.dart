@@ -77,7 +77,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'Sell:',
+                      AppLocalizations.of(context).multiSellTitle,
                       style: Theme.of(context).textTheme.body2,
                     ),
                     _buildResetButton(),
@@ -271,7 +271,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  baseCoin ?? 'Coin', // TODO(yurii): localization
+                  baseCoin ?? AppLocalizations.of(context).multiBasePlaceholder,
                   style: Theme.of(context).textTheme.subtitle,
                 ),
               ),
@@ -302,8 +302,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
           }
 
           return SimpleDialog(
-            // TODO(yurii): localization
-            title: const Text('Sell'),
+            title: Text(AppLocalizations.of(context).multiBaseSelectTitle),
             children: coinsBloc
                 .sortCoins(availableForSell)
                 .map<Widget>((CoinBalance item) {
@@ -324,7 +323,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        item.coin.abbr, // TODO(yurii): localization
+                        item.coin.abbr,
                         style: Theme.of(context).textTheme.subtitle,
                       ),
                       Expanded(
@@ -415,8 +414,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                           isDense: true,
                           contentPadding:
                               const EdgeInsets.fromLTRB(0, 4, 0, 10),
-                          // TODO(yurii): localization
-                          hintText: 'Amount',
+                          hintText: AppLocalizations.of(context)
+                              .multiBaseAmtPlaceholder,
                           hintStyle: TextStyle(
                               color: Theme.of(context).disabledColor)),
                       onChanged: (String value) {

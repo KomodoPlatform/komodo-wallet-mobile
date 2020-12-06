@@ -23,4 +23,6 @@ int audio_fg (NSString* rpath);
 
 int audio_volume (NSNumber* volume);
 
+void audio_resume(void);
+
 #endif /* audio_h */

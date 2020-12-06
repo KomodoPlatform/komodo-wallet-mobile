@@ -433,15 +433,17 @@ class Transaction {
         feeDetails: json['fee_details'] == null
             ? null
             : FeeDetails.fromJson(json['fee_details']),
-        from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
-            <String>[],
+        from: json['from'] != null
+            ? List<String>.from(json['from'].map<dynamic>((dynamic x) => x))
+            : <String>[],
         internalId: json['internal_id'] ?? '',
         myBalanceChange: json['my_balance_change'] ?? '',
         receivedByMe: json['received_by_me'] ?? '',
         spentByMe: json['spent_by_me'] ?? '',
         timestamp: json['timestamp'] ?? 0,
-        to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
-            <String>[],
+        to: json['to'] != null
+            ? List<String>.from(json['to'].map<dynamic>((dynamic x) => x))
+            : <String>[],
         totalAmount: json['total_amount'] ?? '',
         txHash: json['tx_hash'] ?? '',
         txHex: json['tx_hex'] ?? '',
