@@ -203,13 +203,22 @@ class MultiOrderProvider extends ChangeNotifier {
 
   Future<double> getMaxSellAmt() async {
     double maxAmt;
-    if (baseCoin != null) {
-      final double balance =
-          coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-      maxAmt = balance - await _getBaseFee(balance);
-    }
+    if (baseCoin == null) return null;
 
-    if (maxAmt < 0) maxAmt = 0;
+    final double balance =
+        coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
+    final double baseFee = await _getBaseFee(balance);
+    maxAmt = balance - baseFee;
+
+    if (maxAmt < 0) {
+      maxAmt = null;
+      _errors[baseCoin] = _localizations.multiLowerThanFee(
+          baseCoin, cutTrailingZeros(formatPrice(baseFee)));
+      notifyListeners();
+    } else {
+      _errors.remove(baseCoin);
+      notifyListeners();
+    }
     return maxAmt;
   }
 

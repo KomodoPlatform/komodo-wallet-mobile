@@ -789,6 +789,9 @@ class AppLocalizations {
   String get multiFiatCancel => Intl.message('Cancel', name: 'multiFiatCancel');
   String get multiFiatFill => Intl.message('Autofill', name: 'multiFiatFill');
   String get multiEthFee => Intl.message('fee', name: 'multiEthFee');
+  String multiLowerThanFee(String coin, String fee) =>
+      Intl.message('Not enough $coin to pay fees. MIN balance is $fee $coin',
+          args: <Object>[coin, fee], name: 'multiLowerThanFee');
   String multiConfirmTitle(int number) =>
       Intl.message('Create $number Order(s):',
           args: <Object>[number], name: 'multiConfirmTitle');

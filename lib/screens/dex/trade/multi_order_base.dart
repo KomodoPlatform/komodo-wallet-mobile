@@ -358,7 +358,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                           multiOrderProvider.baseAmt =
                               await multiOrderProvider.getMaxSellAmt();
                           amountCtrl.text = cutTrailingZeros(
-                              formatPrice(multiOrderProvider.baseAmt));
+                                  formatPrice(multiOrderProvider.baseAmt)) ??
+                              '';
                         },
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
