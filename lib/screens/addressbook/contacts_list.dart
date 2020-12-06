@@ -58,7 +58,7 @@ class _ContactsListState extends State<ContactsList> {
         if (contact.addresses == null || contact.addresses.isEmpty) {
           return false;
         }
-        if (contact.addresses.containsKey(widget.coin)) {
+        if (contact.addresses.containsKey(widget.coin.abbr)) {
           return true;
         }
         if (widget.coin.type == 'smartChain' &&
