@@ -39,11 +39,10 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox();
 
-        final double tradeFee = GetFee.trading(widget.baseAmount).amount;
-        final double txFee = snapshot.data.amount;
+        final Fee tradeFee = GetFee.trading(widget.baseAmount);
+        final Fee txFee = snapshot.data;
 
-        if (txFee == 0 || tradeFee == null || tradeFee == 0)
-          return const SizedBox();
+        if (txFee == null || tradeFee == null) return const SizedBox();
 
         final bool hasCexPrice =
             (cexProvider.getUsdPrice(widget.baseCoin) ?? 0) > 0;
@@ -122,7 +121,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     );
   }
 
-  Widget _buildTxFeeRow(double txFee) {
+  Widget _buildTxFeeRow(Fee txFee) {
     return Row(
       children: <Widget>[
         Text(AppLocalizations.of(context).txFeeTitle,
@@ -131,7 +130,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
             child: FutureBuilder<Fee>(
                 future: GetFee.gas(widget.relCoin),
                 builder: (context, snapshot) {
-                  final double gasFee = snapshot.data?.amount;
+                  final Fee gasFee = snapshot.data;
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -145,13 +144,13 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     );
   }
 
-  Widget _buildTxFee(double txFee, double gasFee) {
+  Widget _buildTxFee(Fee txFee, Fee gasFee) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-          '${cutTrailingZeros(formatPrice(txFee))}'
-          ' ${widget.baseCoin}',
+          '${cutTrailingZeros(formatPrice(txFee.amount))}'
+          ' ${txFee.coin}',
           style: Theme.of(context).textTheme.caption,
         ),
         _buildGasFee(gasFee),
@@ -159,30 +158,27 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     );
   }
 
-  Widget _buildGasFee(double gasFee) {
-    if (gasFee == null || gasFee == 0) return SizedBox();
+  Widget _buildGasFee(Fee gasFee) {
+    if (gasFee == null || gasFee.amount == 0) return SizedBox();
     if (!widget.includeGasFee) return SizedBox();
     if (widget.relCoin == null) return SizedBox();
 
-    final String gasCoin = GetFee.gasCoin(widget.relCoin);
-    if (gasCoin == null) return SizedBox();
-
     return Text(
-      ' + ${cutTrailingZeros(formatPrice(gasFee))}'
-      ' $gasCoin',
+      ' + ${cutTrailingZeros(formatPrice(gasFee.amount))}'
+      ' ${gasFee.coin}',
       style: Theme.of(context).textTheme.caption,
     );
   }
 
-  Widget _buildTxFeeInFiat(double txFee, double gasFee) {
-    gasFee ??= 0;
-    final double baseUsdPrice = cexProvider.getUsdPrice(widget.baseCoin);
-    final double gasUsdPrice =
-        cexProvider.getUsdPrice(GetFee.gasCoin(widget.relCoin)) ?? 0.0;
+  Widget _buildTxFeeInFiat(Fee txFee, Fee gasFee) {
+    if (txFee == null) return SizedBox();
 
-    double totalTxFeeUsd = txFee * baseUsdPrice;
+    final double txUsdPrice = cexProvider.getUsdPrice(txFee?.coin);
+    final double gasUsdPrice = cexProvider.getUsdPrice(gasFee?.coin) ?? 0.0;
+
+    double totalTxFeeUsd = txFee.amount * txUsdPrice;
     if (widget.includeGasFee && gasUsdPrice != 0) {
-      totalTxFeeUsd = totalTxFeeUsd + gasFee * gasUsdPrice;
+      totalTxFeeUsd += gasFee.amount * gasUsdPrice;
     }
 
     return Text(

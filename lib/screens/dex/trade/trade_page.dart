@@ -46,7 +46,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       TextEditingControllerWorkaroud();
   final TextEditingController _controllerAmountReceive =
       TextEditingController();
-  CoinBalance currentCoinBalance;
+  CoinBalance sellCoinBalance;
   Coin currentCoinToBuy;
   String tmpText = '';
   Decimal tmpAmountSell = deci(0);
@@ -232,10 +232,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 bestPrice: price,
                 maxVolume: maxVolume));
           }
-          getFee(false).then((Decimal tradeFee) async {
-            Log.println('trade_page:249', 'tradeFee $tradeFee');
-            if (currentCoinBalance != null &&
-                amountSell + tradeFee > currentCoinBalance.balance.balance) {
+          _getSellCoinFees(false).then((Decimal sellCoinFees) async {
+            Log.println('trade_page:249', 'sellCoinFees $sellCoinFees');
+            if (sellCoinBalance != null &&
+                amountSell + sellCoinFees > sellCoinBalance.balance.balance) {
               if (!swapBloc.isMaxActive) {
                 await setMaxValue();
               }
@@ -259,30 +259,24 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     });
   }
 
-  Future<Decimal> getFee(bool isMax) async {
+  Future<Decimal> _getSellCoinFees(bool isMax) async {
     setState(() {
       isLoadingMax = true;
     });
 
-    final double txFee =
-        (await GetFee.tx(currentCoinBalance.coin.abbr))?.amount ?? 0;
-    final double sellAmt = isMax
-        ? currentCoinBalance.balance.balance.toDouble()
-        : double.parse(_controllerAmountSell.text);
-    final double tradingFee = GetFee.trading(sellAmt)?.amount ?? 0;
-
-    double fee = txFee + tradingFee;
-
-    final String gasCoin = GetFee.gasCoin(swapBloc.receiveCoin?.abbr);
-    if (gasCoin == currentCoinBalance.coin.abbr) {
-      fee += (await GetFee.gas(currentCoinBalance.coin.abbr)).amount;
-    }
+    final Fee fee = await GetFee.totalSell(
+      sellCoin: sellCoinBalance.coin.abbr,
+      buyCoin: swapBloc.receiveCoin?.abbr,
+      sellAmt: isMax
+          ? sellCoinBalance.balance.balance.toDouble()
+          : double.parse(_controllerAmountSell.text),
+    );
 
     setState(() {
       isLoadingMax = false;
     });
 
-    return deci(fee);
+    return deci(fee.amount);
   }
 
   Widget buildCexPrice(double price, [double size = 12]) {
@@ -307,8 +301,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<void> setMaxValue() async {
     try {
       setState(() async {
-        final Decimal tradeFee = await getFee(true);
-        final Decimal maxValue = currentCoinBalance.balance.balance - tradeFee;
+        final Decimal sellCoinFee = await _getSellCoinFees(true);
+        final Decimal maxValue = sellCoinBalance.balance.balance - sellCoinFee;
         Log.println('trade_page:380', 'setting max: $maxValue');
 
         if (maxValue < deci(0)) {
@@ -319,11 +313,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
             backgroundColor: Theme.of(context).errorColor,
-            content: tradeFee < deci(0.00777)
+            content: sellCoinFee < deci(0.00777)
                 ? Text(AppLocalizations.of(context).minValueSell(
-                    currentCoinBalance.coin.abbr, 0.00777.toString()))
+                    sellCoinBalance.coin.abbr, 0.00777.toString()))
                 : Text(AppLocalizations.of(context).minValueSell(
-                    currentCoinBalance.coin.abbr, tradeFee.toStringAsFixed(8))),
+                    sellCoinBalance.coin.abbr, sellCoinFee.toStringAsFixed(8))),
           ));
           _focusSell.unfocus();
         } else {
@@ -576,7 +570,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                 ? Container(
                                     padding: EdgeInsets.only(top: 12),
                                     child: BuildTradeFees(
-                                      baseCoin: currentCoinBalance.coin.abbr,
+                                      baseCoin: sellCoinBalance.coin.abbr,
                                       baseAmount: double.parse(
                                           _controllerAmountSell.text),
                                       includeGasFee: true,
@@ -675,7 +669,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       if (snapshot.data != null &&
                           snapshot.data is CoinBalance) {
                         final CoinBalance coinBalance = snapshot.data;
-                        currentCoinBalance = coinBalance;
+                        sellCoinBalance = coinBalance;
                         return _buildSelectorCoin(coinBalance.coin);
                       } else if (snapshot.data != null &&
                           snapshot.data is OrderCoin) {
@@ -980,7 +974,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               swapBloc.setTimeout(true);
               _controllerAmountReceive.clear();
               setState(() {
-                currentCoinBalance = coin;
+                sellCoinBalance = coin;
                 final String tmp = _controllerAmountSell.text;
                 _controllerAmountSell.text = '';
                 _controllerAmountSell.text = tmp;
@@ -1081,40 +1075,46 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  Future<bool> _ableToPayGas(BuildContext mContext) async {
-    final String gasCoin = GetFee.gasCoin(swapBloc.receiveCoin.abbr);
-    if (gasCoin == null) return true;
+  Future<bool> _checkEnoughGas(BuildContext mContext) async {
+    if (!(await _checkGasFor(swapBloc.receiveCoin.abbr, mContext)))
+      return false;
+
+    return await _checkGasFor(sellCoinBalance.coin.abbr, mContext);
+  }
+
+  Future<bool> _checkGasFor(String coin, BuildContext mContext) async {
+    final Fee gasFee = await GetFee.gas(coin);
+    if (gasFee == null) return true;
 
     CoinBalance gasBalance;
     try {
       gasBalance = coinsBloc.coinBalance
-          .singleWhere((CoinBalance coin) => coin.coin.abbr == gasCoin);
+          .singleWhere((CoinBalance coin) => coin.coin.abbr == gasFee.coin);
     } catch (e) {
       Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(context).primaryColor,
         content: Text(
-          'Please activate $gasCoin and top-up balance first',
+          'Please activate ${gasFee.coin} and top-up balance first',
           style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
         ),
       ));
       return false;
     }
 
-    double gasFee = (await GetFee.gas(swapBloc.receiveCoin.abbr)).amount;
-    if (gasCoin == swapBloc.sellCoinBalance.coin.abbr) {
-      gasFee = gasFee +
-          (await GetFee.tx(gasCoin)).amount +
+    double requiredGasAmt = gasFee.amount;
+    if (gasFee.coin == swapBloc.sellCoinBalance.coin.abbr) {
+      requiredGasAmt +=
           GetFee.trading(double.parse(_controllerAmountSell.text)).amount;
     }
 
-    if (gasBalance.balance.balance < deci(gasFee)) {
+    if (gasBalance.balance.balance < deci(requiredGasAmt)) {
       Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(context).primaryColor,
         content: Text(
-          AppLocalizations.of(context)
-              .swapGasAmount(cutTrailingZeros(formatPrice(gasFee)), gasCoin),
+          AppLocalizations.of(context).swapGasAmount(
+              cutTrailingZeros(formatPrice(gasFee)), gasFee.coin),
           style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
         ),
       ));
@@ -1127,7 +1127,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<void> _confirmSwap(BuildContext mContext) async {
     replaceAllCommas();
 
-    if (!(await _ableToPayGas(mContext))) return;
+    if (!(await _checkEnoughGas(mContext))) return;
 
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mContext).showSnackBar(SnackBar(

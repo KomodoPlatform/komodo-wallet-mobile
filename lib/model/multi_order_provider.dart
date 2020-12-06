@@ -203,9 +203,7 @@ class MultiOrderProvider extends ChangeNotifier {
 
   Future<double> getMaxSellAmt() async {
     double maxAmt;
-    if (baseCoin == null) {
-      maxAmt = null;
-    } else {
+    if (baseCoin != null) {
       final double balance =
           coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
       maxAmt = balance - await _getBaseFee(balance);
@@ -218,9 +216,12 @@ class MultiOrderProvider extends ChangeNotifier {
   Future<double> _getBaseFee(double amt) async {
     if (baseCoin == null || amt == null) return null;
 
-    final double tradeFee = GetFee.trading(amt).amount;
-    final double txFee = (await GetFee.tx(baseCoin)).amount ?? 0;
+    double totalFee = 0;
+    totalFee += GetFee.trading(amt).amount;
 
-    return tradeFee + txFee;
+    final Fee txFee = await GetFee.tx(baseCoin);
+    if (txFee.coin == baseCoin) totalFee += txFee.amount;
+
+    return totalFee;
   }
 }

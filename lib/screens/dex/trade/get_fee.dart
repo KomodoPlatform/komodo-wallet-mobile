@@ -26,6 +26,27 @@ class GetFee {
     );
   }
 
+  static Future<Fee> totalSell({
+    String sellCoin,
+    String buyCoin,
+    double sellAmt,
+  }) async {
+    double totalAmt = 0;
+
+    final Fee txFee = await tx(sellCoin);
+    if (txFee.coin == sellCoin) totalAmt += txFee.amount;
+
+    final Fee gasFee = await gas(buyCoin);
+    if (gasFee?.coin == sellCoin) totalAmt += gasFee.amount;
+
+    totalAmt += trading(sellAmt).amount;
+
+    return Fee(
+      amount: totalAmt,
+      coin: sellCoin,
+    );
+  }
+
   static String gasCoin(String coin) {
     final String type = coinsBloc.getCoinByAbbr(coin)?.type;
 
