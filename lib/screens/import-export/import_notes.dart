@@ -118,7 +118,45 @@ class _ImportNotesScreenState extends State<ImportNotesScreen> {
               });
               print(a);
               try {
-                await Db.addAllNotes(a);
+                a.forEach((k, v) async {
+                  final n = await Db.getNote(k);
+                  if (n == null) {
+                    await Db.saveNote(k, v);
+                    return;
+                  }
+                  final overwrite = await showDialog<bool>(
+                    context: context,
+                    builder: (context) {
+                      return SimpleDialog(
+                        title: const Text(' Overwrite'),
+                        children: <Widget>[
+                          const Text('Current value:'),
+                          Text(n),
+                          const Text('New value:'),
+                          Text(v),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              FlatButton(
+                                child: const Text('Skip'),
+                                onPressed: () {
+                                  Navigator.pop(context, false);
+                                },
+                              ),
+                              FlatButton(
+                                child: const Text('Overwrite'),
+                                onPressed: () {
+                                  Navigator.pop(context, true);
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    },
+                  );
+                  if (overwrite) await Db.saveNote(k, v);
+                });
                 sc.showSnackBar(
                     const SnackBar(content: Text('Imported successfully')));
               } catch (e) {
