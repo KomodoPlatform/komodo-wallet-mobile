@@ -137,27 +137,27 @@ class OrderbookItem extends StatelessWidget {
               child: orderbook.bids != null && orderbook.bids.isNotEmpty
                   ? RichText(
                       text: TextSpan(
-                          style: Theme.of(context).textTheme.body1,
+                          style: Theme.of(context).textTheme.bodyText2,
                           children: <InlineSpan>[
                             TextSpan(
                                 text: AppLocalizations.of(context).clickToSee,
-                                style: Theme.of(context).textTheme.body1),
+                                style: Theme.of(context).textTheme.bodyText2),
                             TextSpan(
                                 text: orderbook.bids.length.toString() + ' ',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .body1
+                                    .bodyText2
                                     .copyWith(fontWeight: FontWeight.bold)),
                             TextSpan(
                                 text: AppLocalizations.of(context).orders,
-                                style: Theme.of(context).textTheme.body1)
+                                style: Theme.of(context).textTheme.bodyText2)
                           ]),
                     )
                   : Text(
                       AppLocalizations.of(context).noOrderAvailable,
                       style: Theme.of(context)
                           .textTheme
-                          .body1
+                          .bodyText2
                           .copyWith(color: Theme.of(context).accentColor),
                     ),
             )
@@ -288,7 +288,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                               ' ($relCoin)',
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle
+                                                  .subtitle2
                                                   .copyWith(fontSize: 14),
                                             ),
                                           ),
@@ -304,7 +304,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                               textAlign: TextAlign.end,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle
+                                                  .subtitle2
                                                   .copyWith(fontSize: 14),
                                             ),
                                           ),
@@ -320,7 +320,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                               textAlign: TextAlign.right,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle
+                                                  .subtitle2
                                                   .copyWith(fontSize: 14),
                                             ),
                                           ),
@@ -337,7 +337,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                               textAlign: TextAlign.right,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle
+                                                  .subtitle2
                                                   .copyWith(fontSize: 14),
                                             ),
                                           ),
@@ -406,7 +406,7 @@ class _AsksOrderState extends State<AsksOrder> {
               children: <Widget>[
                 Text(
                   formatPrice(1 / double.parse(bid.price)),
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 13,
                         color: Colors.greenAccent,
                       ),
@@ -455,7 +455,8 @@ class _AsksOrderState extends State<AsksOrder> {
                 ))),
             child: Text(
               formatPrice(bid.maxvolume.toDouble()),
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 13),
             ),
           ),
           onTap: () => _onBidTap(bid),
@@ -477,7 +478,8 @@ class _AsksOrderState extends State<AsksOrder> {
                 ))),
             child: Text(
               formatPrice(bid.maxvolume.toDouble() * double.parse(bid.price)),
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 13),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 13),
             ),
           ),
           onTap: () => _onBidTap(bid),
@@ -503,7 +505,7 @@ class _AsksOrderState extends State<AsksOrder> {
                   bid.getReceiveAmount(deci(widget.sellAmount)).toDouble()),
               style: Theme.of(context)
                   .textTheme
-                  .body1
+                  .bodyText2
                   .copyWith(fontWeight: FontWeight.w500, fontSize: 14),
             ),
           ),
@@ -595,7 +597,7 @@ class _AsksOrderState extends State<AsksOrder> {
                               child: Text(
                                 AppLocalizations.of(context)
                                     .orderDetailsSettings,
-                                style: Theme.of(context).textTheme.body2,
+                                style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),
                             !snapshot.hasData
@@ -668,8 +670,10 @@ class AskItem extends StatelessWidget {
                 color: Colors.red,
                 child: Text(
                   deci2s(ask.getReceivePrice()) + ' ' + ask.coin.toUpperCase(),
-                  style:
-                      Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .copyWith(fontSize: 12),
                 ),
               ),
             ),
@@ -678,7 +682,10 @@ class AskItem extends StatelessWidget {
               color: Colors.red,
               child: Text(
                 ask.maxvolume.toStringAsFixed(8) + ' ' + ask.coin.toUpperCase(),
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 12),
               ),
             )),
             Flexible(
@@ -690,7 +697,7 @@ class AskItem extends StatelessWidget {
                       ask.coin.toUpperCase(),
                   style: Theme.of(context)
                       .textTheme
-                      .body1
+                      .bodyText2
                       .copyWith(fontWeight: FontWeight.bold, fontSize: 12),
                 ),
               ),
@@ -733,7 +740,7 @@ class CreateOrder extends StatelessWidget {
                 AppLocalizations.of(context).noOrderAvailable,
                 style: Theme.of(context)
                     .textTheme
-                    .body1
+                    .bodyText2
                     .copyWith(color: Theme.of(context).accentColor),
               )
             ],

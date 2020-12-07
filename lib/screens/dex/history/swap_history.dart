@@ -54,7 +54,7 @@ class _SwapHistoryState extends State<SwapHistory> {
             return Center(
               child: Text(
                 AppLocalizations.of(context).noSwaps,
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             );
           } else if (snapshot.data != null && swaps.isNotEmpty) {
@@ -210,7 +210,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                               Expanded(
                                 child: Text(
                                   snapshot.data,
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                   maxLines: isNoteExpanded ? null : 1,
                                   overflow: isNoteExpanded
                                       ? null
@@ -232,7 +232,7 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                       DateFormat('dd MMM yyyy HH:mm').format(
                           DateTime.fromMillisecondsSinceEpoch(
                               widget.swap.result.myInfo.startedAt * 1000)),
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
                 ),
@@ -264,10 +264,12 @@ class _BuildItemSwapState extends State<BuildItemSwap> {
                               width: 4,
                             ),
                             Text(swapStatus,
-                                style:
-                                    Theme.of(context).textTheme.body2.copyWith(
-                                          color: Colors.white,
-                                        ))
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
+                                      color: Colors.white,
+                                    ))
                           ],
                         ),
                       ),

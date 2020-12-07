@@ -86,12 +86,14 @@ class _AddressFieldState extends State<AddressField> {
                   key: const Key('send-address-field'),
                   controller: widget.controller,
                   autofocus: false,
-                  autovalidate: autovalidate,
+                  autovalidateMode: autovalidate
+                      ? AutovalidateMode.always
+                      : AutovalidateMode.disabled,
                   autocorrect: false,
                   enableSuggestions: false,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.text,
-                  style: Theme.of(context).textTheme.body1,
+                  style: Theme.of(context).textTheme.bodyText2,
                   textAlign: TextAlign.end,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
@@ -101,8 +103,8 @@ class _AddressFieldState extends State<AddressField> {
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Theme.of(context).accentColor)),
-                    hintStyle: Theme.of(context).textTheme.body1,
-                    labelStyle: Theme.of(context).textTheme.body1,
+                    hintStyle: Theme.of(context).textTheme.bodyText2,
+                    labelStyle: Theme.of(context).textTheme.bodyText2,
                     labelText: AppLocalizations.of(context).addressSend,
                     suffixIcon: InkWell(
                       onTap: () {

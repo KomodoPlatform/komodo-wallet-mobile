@@ -77,7 +77,7 @@ class BoxButton extends StatelessWidget {
                 ),
                 Text(
                   text.toUpperCase(),
-                  style: Theme.of(context).textTheme.body1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 )
               ],
             )),
@@ -182,7 +182,7 @@ class _BuildScreenAuthMultiWalletsState
                         wallet.name.substring(0, 1),
                         style: Theme.of(context)
                             .textTheme
-                            .title
+                            .headline6
                             .copyWith(color: Theme.of(context).backgroundColor),
                       ),
                     ),
@@ -195,7 +195,7 @@ class _BuildScreenAuthMultiWalletsState
                 Expanded(
                   child: Text(
                     wallet.name,
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
                 Container(

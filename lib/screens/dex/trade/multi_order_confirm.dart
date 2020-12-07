@@ -43,7 +43,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                     child: Text(
                       AppLocalizations.of(context)
                           .multiConfirmTitle(rel.length),
-                      style: Theme.of(context).textTheme.subtitle,
+                      style: Theme.of(context).textTheme.subtitle2,
                     ),
                   ),
                   _buildList(),
@@ -277,14 +277,14 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).infoTrade1,
-                            style: Theme.of(context).textTheme.subtitle,
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                           const SizedBox(
                             height: 16,
                           ),
                           Text(
                             AppLocalizations.of(context).infoTrade2,
-                            style: Theme.of(context).textTheme.body1,
+                            style: Theme.of(context).textTheme.bodyText2,
                           )
                         ],
                       ),

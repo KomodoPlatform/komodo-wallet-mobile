@@ -30,7 +30,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
 
     final TextStyle subtitle = Theme.of(context)
         .textTheme
-        .subtitle
+        .subtitle2
         .copyWith(fontWeight: FontWeight.bold);
 
     return Padding(
@@ -151,8 +151,9 @@ class _TransactionListItemState extends State<TransactionListItem> {
                                           usdAmount.toDouble(),
                                           hidden: hidden,
                                         ),
-                                        style:
-                                            Theme.of(context).textTheme.body2,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
                                       ),
                                     );
                                   }
@@ -185,7 +186,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                             maxLines: isNoteExpanded ? null : 1,
                             overflow:
                                 isNoteExpanded ? null : TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.body2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                       );
@@ -205,7 +206,7 @@ class _TransactionListItemState extends State<TransactionListItem> {
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: Text(
                           widget.transaction.getTimeFormat(),
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       Expanded(

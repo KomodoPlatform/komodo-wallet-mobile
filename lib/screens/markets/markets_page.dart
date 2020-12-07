@@ -81,7 +81,7 @@ class _MarketsPageState extends State<MarketsPage>
                   child: Text(
                 AppLocalizations.of(context).marketsTitle,
                 key: const Key('markets-title'),
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.subtitle2,
               )),
               bottom: PreferredSize(
                 preferredSize: const Size(200.0, 70.0),

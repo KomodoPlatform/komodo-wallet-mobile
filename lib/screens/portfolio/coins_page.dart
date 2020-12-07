@@ -121,7 +121,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                                     minFontSize: 12,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .title,
+                                                        .headline6,
                                                     maxLines: 1,
                                                   ));
                                             },

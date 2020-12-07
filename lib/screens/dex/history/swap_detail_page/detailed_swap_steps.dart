@@ -327,7 +327,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         children: <Widget>[
           Text(
             AppLocalizations.of(context).swappProgress + ':',
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
           const SizedBox(height: 20),
           _buildTotal(),
