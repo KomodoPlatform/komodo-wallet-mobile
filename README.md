@@ -24,7 +24,7 @@ Currently using flutter 1.22.3 in order to enjoy some recent UI fixes/updates, r
 Upgrading from v1.12.13+hotfix.7
 
     flutter channel stable
-    flutter version v1.22.3
+    flutter version v1.22.4
     flutter pub get
     flutter clean
     (cd ios && rm -rf Podfile.lock Podfile Pods)
