@@ -149,8 +149,10 @@ class _DetailSwapState extends State<DetailSwap> {
                 if (isNoteEdit) {
                   noteTextController.text = noteTextController.text.trim();
                   noteText = noteTextController.text;
-                  Db.saveNote(widget.swap.result.uuid,
-                      noteText.isNotEmpty ? noteText : null);
+
+                  noteText.isNotEmpty
+                      ? Db.saveNote(widget.swap.result.uuid, noteText)
+                      : Db.deleteNote(widget.swap.result.uuid);
 
                   setState(() {
                     isNoteExpanded = false;

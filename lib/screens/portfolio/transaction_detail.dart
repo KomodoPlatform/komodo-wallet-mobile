@@ -409,8 +409,9 @@ class _ItemTransactionNoteState extends State<ItemTransactionNote> {
                   if (isEdit) {
                     noteTextController.text = noteTextController.text.trim();
                     noteText = noteTextController.text;
-                    Db.saveNote(
-                        widget.txHash, noteText.isNotEmpty ? noteText : null);
+                    noteText.isNotEmpty
+                        ? Db.saveNote(widget.txHash, noteText)
+                        : Db.deleteNote(widget.txHash);
 
                     setState(() {
                       isExpanded = false;

@@ -266,6 +266,12 @@ class Db {
         where: 'abbr = ?', whereArgs: <dynamic>[ticker]);
   }
 
+  static Future<void> deleteNote(String id) async {
+    final Database db = await Db.db;
+
+    return await db.delete('Notes', where: 'id = ?', whereArgs: <String>[id]);
+  }
+
   static Future<int> saveNote(String id, String note) async {
     final Database db = await Db.db;
 
