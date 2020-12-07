@@ -21,6 +21,7 @@ import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 
 enum SwapStatus { BUY, SELL }
 
@@ -447,6 +448,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                       )),
                 )),
       );
+      showSoundsDialog(context);
     } else if (widget.swapStatus == SwapStatus.SELL) {
       Navigator.of(context).pop();
       widget.orderSuccess();
