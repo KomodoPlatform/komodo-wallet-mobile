@@ -19,7 +19,7 @@ cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 ## Flutter version
 
-Currently using flutter 1.22.3 in order to enjoy some recent UI fixes/updates, ref: https://github.com/ca333/komodoDEX/issues/913
+Currently using flutter 1.22.4 in order to enjoy some recent UI fixes/updates, ref: https://github.com/ca333/komodoDEX/issues/913
 
 Upgrading from v1.12.13+hotfix.7
 
