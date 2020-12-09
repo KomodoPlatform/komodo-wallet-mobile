@@ -33,11 +33,15 @@ class Orderbook {
   factory Orderbook.fromJson(Map<String, dynamic> json) => Orderbook(
         bids: json['bids'] == null
             ? null
-            : List<Ask>.from(json['bids'].map((dynamic x) => Ask.fromJson(x))),
+            : List<Ask>.from(json['bids'].map((dynamic x) => Ask.fromJson(x)))
+                .where((Ask bid) => bid != null)
+                .toList(),
         numbids: json['numbids'] ?? 0,
         asks: json['asks'] == null
             ? null
-            : List<Ask>.from(json['asks'].map((dynamic x) => Ask.fromJson(x))),
+            : List<Ask>.from(json['asks'].map((dynamic x) => Ask.fromJson(x)))
+                .where((Ask ask) => ask != null)
+                .toList(),
         numasks: json['numasks'] ?? 0,
         askdepth: json['askdepth'] ?? 0,
         base: json['base'] ?? '',
@@ -84,15 +88,20 @@ class Ask {
     this.zcredits,
   });
 
-  factory Ask.fromJson(Map<String, dynamic> json) => Ask(
-        coin: json['coin'] ?? '',
-        address: json['address'] ?? '',
-        price: json['price'] ?? 0.0,
-        maxvolume: deci(json['maxvolume']),
-        pubkey: json['pubkey'] ?? '',
-        age: json['age'] ?? 0,
-        zcredits: json['zcredits'] ?? 0,
-      );
+  factory Ask.fromJson(Map<String, dynamic> json) {
+    if (!isFinite(json['price'] ?? 0.0)) return null;
+    if (!isFinite(json['maxvolume'] ?? 0.0)) return null;
+
+    return Ask(
+      coin: json['coin'] ?? '',
+      address: json['address'] ?? '',
+      price: json['price'] ?? 0.0,
+      maxvolume: deci(json['maxvolume']),
+      pubkey: json['pubkey'] ?? '',
+      age: json['age'] ?? 0,
+      zcredits: json['zcredits'] ?? 0,
+    );
+  }
 
   String coin;
   String address;
