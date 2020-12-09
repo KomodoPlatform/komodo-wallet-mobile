@@ -89,8 +89,8 @@ class Ask {
   });
 
   factory Ask.fromJson(Map<String, dynamic> json) {
-    if (!isFinite(json['price'] ?? 0.0)) return null;
-    if (!isFinite(json['maxvolume'] ?? 0.0)) return null;
+    if (isInfinite(json['price'])) return null;
+    if (isInfinite(json['maxvolume'])) return null;
 
     return Ask(
       coin: json['coin'] ?? '',

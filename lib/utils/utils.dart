@@ -489,14 +489,15 @@ Widget truncateMiddle(String string, {TextStyle style}) {
   );
 }
 
-bool isFinite(dynamic value) {
+bool isInfinite(dynamic value) {
+  if (value == null) return false;
+  if (value == 0.0 || value == '0.0' || value == '0') return false;
+
   if (value is String) value = double.parse(value);
-  if (value == 0) return true;
-
   value = value.abs();
-  if (value > double.maxFinite || 1 / value > double.maxFinite) return false;
-  if (value < double.minPositive || 1 / value < double.minPositive)
-    return false;
 
-  return true;
+  if (value > double.maxFinite || 1 / value > double.maxFinite) return true;
+  if (value < double.minPositive || 1 / value < double.minPositive) return true;
+
+  return false;
 }
