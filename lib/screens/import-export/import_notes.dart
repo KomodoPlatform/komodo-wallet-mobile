@@ -15,6 +15,8 @@ class ImportNotesScreen extends StatefulWidget {
   _ImportNotesScreenState createState() => _ImportNotesScreenState();
 }
 
+enum NoteImportChoice { Skip, Overwrite, Merge }
+
 class _ImportNotesScreenState extends State<ImportNotesScreen> {
   Map<String, String> allNotes;
   final selectedNotes = <String, bool>{};
@@ -124,9 +126,11 @@ class _ImportNotesScreenState extends State<ImportNotesScreen> {
                     await Db.saveNote(k, v);
                     return;
                   }
-                  final overwrite = await showDialog<bool>(
+                  final mergedNoteController = TextEditingController();
+                  final choice = await showDialog<NoteImportChoice>(
                     context: context,
                     builder: (context) {
+                      mergedNoteController.text = '$n + $v';
                       return SimpleDialog(
                         title: const Text(' Overwrite'),
                         children: <Widget>[
@@ -134,19 +138,31 @@ class _ImportNotesScreenState extends State<ImportNotesScreen> {
                           Text(n),
                           const Text('New value:'),
                           Text(v),
+                          const Text('Merged Value:'),
+                          TextField(
+                            controller: mergedNoteController,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               FlatButton(
+                                child: const Text('Merge'),
+                                onPressed: () {
+                                  Navigator.pop(
+                                      context, NoteImportChoice.Merge);
+                                },
+                              ),
+                              FlatButton(
                                 child: const Text('Skip'),
                                 onPressed: () {
-                                  Navigator.pop(context, false);
+                                  Navigator.pop(context, NoteImportChoice.Skip);
                                 },
                               ),
                               FlatButton(
                                 child: const Text('Overwrite'),
                                 onPressed: () {
-                                  Navigator.pop(context, true);
+                                  Navigator.pop(
+                                      context, NoteImportChoice.Overwrite);
                                 },
                               ),
                             ],
@@ -155,7 +171,11 @@ class _ImportNotesScreenState extends State<ImportNotesScreen> {
                       );
                     },
                   );
-                  if (overwrite) await Db.saveNote(k, v);
+                  if (choice == NoteImportChoice.Overwrite) {
+                    await Db.saveNote(k, v);
+                  } else if (choice == NoteImportChoice.Merge) {
+                    await Db.saveNote(k, mergedNoteController.text);
+                  }
                 });
                 sc.showSnackBar(
                     const SnackBar(content: Text('Imported successfully')));
