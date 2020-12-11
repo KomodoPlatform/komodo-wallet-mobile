@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:aes_crypt/aes_crypt.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/import-export/overwrite_dialog_content.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/widgets/import_export_selection.dart';
 import 'package:path_provider/path_provider.dart';
@@ -118,55 +119,41 @@ class _ImportNotesScreenState extends State<ImportNotesScreen> {
                   a.putIfAbsent(k, () => v);
                 }
               });
+
               print(a);
+
               try {
-                a.forEach((k, v) async {
+                for (String k in a.keys) {
+                  final String v = a[k];
+
                   final n = await Db.getNote(k);
                   if (n == null) {
                     await Db.saveNote(k, v);
                     return;
                   }
-                  final mergedNoteController = TextEditingController();
+                  String mergedValue = '';
                   final choice = await showDialog<NoteImportChoice>(
                     context: context,
                     builder: (context) {
-                      mergedNoteController.text = '$n + $v';
                       return SimpleDialog(
-                        title: const Text(' Overwrite'),
+                        title: const Text('Already exists'),
+                        titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 12),
+                        contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 12),
                         children: <Widget>[
-                          const Text('Current value:'),
-                          Text(n),
-                          const Text('New value:'),
-                          Text(v),
-                          const Text('Merged Value:'),
-                          TextField(
-                            controller: mergedNoteController,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              FlatButton(
-                                child: const Text('Merge'),
-                                onPressed: () {
-                                  Navigator.pop(
-                                      context, NoteImportChoice.Merge);
-                                },
-                              ),
-                              FlatButton(
-                                child: const Text('Skip'),
-                                onPressed: () {
-                                  Navigator.pop(context, NoteImportChoice.Skip);
-                                },
-                              ),
-                              FlatButton(
-                                child: const Text('Overwrite'),
-                                onPressed: () {
-                                  Navigator.pop(
-                                      context, NoteImportChoice.Overwrite);
-                                },
-                              ),
-                            ],
-                          )
+                          OverwriteDialogContent(
+                              currentValue: n,
+                              newValue: v,
+                              onSkip: () {
+                                Navigator.pop(context, NoteImportChoice.Skip);
+                              },
+                              onOverwrite: () {
+                                Navigator.pop(
+                                    context, NoteImportChoice.Overwrite);
+                              },
+                              onMerge: (String merged) {
+                                mergedValue = merged;
+                                Navigator.pop(context, NoteImportChoice.Merge);
+                              })
                         ],
                       );
                     },
@@ -174,9 +161,10 @@ class _ImportNotesScreenState extends State<ImportNotesScreen> {
                   if (choice == NoteImportChoice.Overwrite) {
                     await Db.saveNote(k, v);
                   } else if (choice == NoteImportChoice.Merge) {
-                    await Db.saveNote(k, mergedNoteController.text);
+                    await Db.saveNote(k, mergedValue);
                   }
-                });
+                }
+
                 sc.showSnackBar(
                     const SnackBar(content: Text('Imported successfully')));
               } catch (e) {
