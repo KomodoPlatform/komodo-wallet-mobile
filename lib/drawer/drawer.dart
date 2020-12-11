@@ -149,7 +149,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                             .toggleableActiveColor
                                         : Theme.of(context)
                                             .textTheme
-                                            .body2
+                                            .bodyText1
                                             .color,
                                   ),
                                 ),

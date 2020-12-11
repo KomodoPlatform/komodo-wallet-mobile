@@ -80,7 +80,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                             ),
                           Text(
                             '${widget.label}:',
-                            style: Theme.of(context).textTheme.body2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ],
                       ),
@@ -115,7 +115,7 @@ class _ContactEditFieldState extends State<ContactEditField> {
                               },
                               autocorrect: false,
                               enableInteractiveSelection: true,
-                              style: Theme.of(context).textTheme.body1,
+                              style: Theme.of(context).textTheme.bodyText2,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Theme.of(context).backgroundColor,
@@ -131,8 +131,10 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                         color: widget.invalid
                                             ? Colors.red
                                             : Theme.of(context).accentColor)),
-                                hintStyle: Theme.of(context).textTheme.body2,
-                                labelStyle: Theme.of(context).textTheme.body1,
+                                hintStyle:
+                                    Theme.of(context).textTheme.bodyText1,
+                                labelStyle:
+                                    Theme.of(context).textTheme.bodyText2,
                                 labelText: null,
                               ),
                             ),

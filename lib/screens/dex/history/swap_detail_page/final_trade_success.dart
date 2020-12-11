@@ -58,12 +58,12 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
             Column(
               children: <Widget>[
                 Text(AppLocalizations.of(context).trade,
-                    style: Theme.of(context).textTheme.title),
+                    style: Theme.of(context).textTheme.headline6),
                 Text(
                   AppLocalizations.of(context).tradeCompleted,
                   style: Theme.of(context)
                       .textTheme
-                      .title
+                      .headline6
                       .copyWith(color: Theme.of(context).accentColor),
                 ),
               ],

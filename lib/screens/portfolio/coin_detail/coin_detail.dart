@@ -387,7 +387,7 @@ class _CoinDetailState extends State<CoinDetail> {
                         return Center(
                             child: Text(
                           AppLocalizations.of(context).noTxs,
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ));
                       }
                     }
@@ -398,7 +398,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       child: Center(
                           child: Text(
                         snapshot.data.error.message,
-                        style: Theme.of(context).textTheme.body2,
+                        style: Theme.of(context).textTheme.bodyText1,
                         textAlign: TextAlign.center,
                       )),
                     );
@@ -483,7 +483,7 @@ class _CoinDetailState extends State<CoinDetail> {
                               coinBalance +
                                   ' ' +
                                   currentCoinBalance.balance.coin.toString(),
-                              style: Theme.of(context).textTheme.title,
+                              style: Theme.of(context).textTheme.headline6,
                               textAlign: TextAlign.center,
                             ),
                             Text(cexProvider.convert(

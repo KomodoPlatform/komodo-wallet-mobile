@@ -197,7 +197,7 @@ class _PinPageState extends State<PinPage> {
           ? PinCode(
               title: Text(
                 widget.subTitle,
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.subtitle2,
               ),
               subTitle: const Text(
                 '',

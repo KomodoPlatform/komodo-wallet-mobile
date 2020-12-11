@@ -88,7 +88,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                         coin.name.toUpperCase(),
                                         style: Theme.of(context)
                                             .textTheme
-                                            .subtitle
+                                            .subtitle2
                                             .copyWith(fontSize: 14),
                                       )
                                     ],
@@ -125,7 +125,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                               )),
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle
+                                                  .subtitle2
                                                   .copyWith(
                                                       color: cexColor,
                                                       fontSize: 14,
