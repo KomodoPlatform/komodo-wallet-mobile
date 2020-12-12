@@ -77,7 +77,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
         children: <Widget>[
           Text(
             AppLocalizations.of(context).noteTitle + ':',
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
           MakerOrderNote(order),
         ],
@@ -136,7 +136,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: Text(
               AppLocalizations.of(context).makerDetailsCreated + ':',
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           Container(
@@ -159,7 +159,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: Text(
               AppLocalizations.of(context).makerDetailsId + ':',
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           Builder(builder: (context) {
@@ -197,7 +197,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                     AppLocalizations.of(context)
                         .makerDetailsCancel
                         .toUpperCase(),
-                    style: Theme.of(context).textTheme.body2.copyWith(
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
                           color: Colors.white,
                         ))
               ],

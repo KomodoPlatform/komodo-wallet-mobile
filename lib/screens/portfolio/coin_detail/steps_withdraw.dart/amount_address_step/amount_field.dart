@@ -47,7 +47,7 @@ class _AmountFieldState extends State<AmountField> {
                   AppLocalizations.of(context).max,
                   style: Theme.of(context)
                       .textTheme
-                      .body1
+                      .bodyText2
                       .copyWith(color: Theme.of(context).accentColor),
                 ),
                 onPressed: widget.onMaxValue,
@@ -74,7 +74,7 @@ class _AmountFieldState extends State<AmountField> {
                   return TextFormField(
                     key: const Key('send-amount-field'),
                     inputFormatters: <TextInputFormatter>[
-                      WhitelistingTextInputFormatter(RegExp(
+                      FilteringTextInputFormatter.allow(RegExp(
                           '^\$|^(0|([1-9][0-9]{0,12}))([.,]{1}[0-9]{0,8})?\$'))
                     ],
                     focusNode: widget.focusNode,
@@ -83,7 +83,7 @@ class _AmountFieldState extends State<AmountField> {
                     textInputAction: TextInputAction.done,
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText2,
                     textAlign: TextAlign.end,
                     onChanged: (String amount) {
                       coinsDetailBloc.setAmountToSend(amount);
@@ -96,8 +96,8 @@ class _AmountFieldState extends State<AmountField> {
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 color: Theme.of(context).accentColor)),
-                        hintStyle: Theme.of(context).textTheme.body1,
-                        labelStyle: Theme.of(context).textTheme.body1,
+                        hintStyle: Theme.of(context).textTheme.bodyText2,
+                        labelStyle: Theme.of(context).textTheme.bodyText2,
                         labelText: AppLocalizations.of(context).amount),
                     // The validator receives the text the user has typed in
                     validator: (String value) {

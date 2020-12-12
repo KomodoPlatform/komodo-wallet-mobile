@@ -82,7 +82,10 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
             Center(
               child: Text(
                 'UNLOCK',
-                style: Theme.of(context).textTheme.title.copyWith(fontSize: 48),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(fontSize: 48),
               ),
             ),
             Center(
@@ -90,7 +93,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                 'your wallet',
                 style: Theme.of(context)
                     .textTheme
-                    .body1
+                    .bodyText2
                     .copyWith(fontWeight: FontWeight.w100, fontSize: 24),
               ),
             ),
@@ -125,7 +128,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       cut: false,
                       selectAll: false,
                     ),
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText2,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
@@ -134,8 +137,8 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Theme.of(context).accentColor)),
-                      hintStyle: Theme.of(context).textTheme.body2,
-                      labelStyle: Theme.of(context).textTheme.body1,
+                      hintStyle: Theme.of(context).textTheme.bodyText1,
+                      labelStyle: Theme.of(context).textTheme.bodyText2,
                       hintText: AppLocalizations.of(context).hintEnterPassword,
                       labelText: null,
                       suffixIcon: PasswordVisibilityControl(
@@ -168,7 +171,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                           isLoading
                               ? Text(
                                   AppLocalizations.of(context).decryptingWallet,
-                                  style: Theme.of(context).textTheme.body1,
+                                  style: Theme.of(context).textTheme.bodyText2,
                                 )
                               : Container()
                         ],
@@ -206,9 +209,12 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                           child: Text(
                             AppLocalizations.of(context).signInWithSeedPhrase,
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.body2.copyWith(
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.white),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white),
                           ),
                         ),
                       ),

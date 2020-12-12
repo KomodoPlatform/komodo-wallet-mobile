@@ -77,7 +77,7 @@ Widget _buildFaucetProgress({
         const SizedBox(height: 35),
         Text(
           AppLocalizations.of(context).faucetInProgress(coin),
-          style: Theme.of(context).textTheme.body2,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
     ),
@@ -102,7 +102,7 @@ Widget _buildFaucetResponse({
           const SizedBox(height: 30),
           Text(
             response['Result']['Message'],
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       );
@@ -120,7 +120,7 @@ Widget _buildFaucetResponse({
           const SizedBox(height: 30),
           Text(
             response['Result']['Message'],
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       );
@@ -138,7 +138,7 @@ Widget _buildFaucetResponse({
           const SizedBox(height: 30),
           Text(
             response['Result']['Message'],
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       );

@@ -57,7 +57,7 @@ Future<void> showSoundsDialog(BuildContext context) async {
                         },
                         child: Text(
                           AppLocalizations.of(context).soundsDoNotShowAgain,
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                     ),

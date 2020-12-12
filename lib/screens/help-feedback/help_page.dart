@@ -42,7 +42,7 @@ class _HelpPageState extends State<HelpPage> {
         'q': local.question_3,
         'a': HtmlParser(
           local.answer_3,
-          textStyle: Theme.of(context).textTheme.subhead.copyWith(
+          textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
                 fontWeight: FontWeight.w300,
                 height: 1.3,
                 fontSize: 15,
@@ -79,7 +79,7 @@ class _HelpPageState extends State<HelpPage> {
         'q': local.question_6,
         'a': HtmlParser(
           local.answer_6,
-          textStyle: Theme.of(context).textTheme.subhead.copyWith(
+          textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
                 fontWeight: FontWeight.w300,
                 height: 1.3,
                 fontSize: 15,
@@ -116,7 +116,7 @@ class _HelpPageState extends State<HelpPage> {
         'q': local.question_9,
         'a': HtmlParser(
           local.answer_9,
-          textStyle: Theme.of(context).textTheme.subhead.copyWith(
+          textStyle: Theme.of(context).textTheme.subtitle1.copyWith(
                 fontWeight: FontWeight.w300,
                 height: 1.3,
                 fontSize: 15,
@@ -166,7 +166,7 @@ class _HelpPageState extends State<HelpPage> {
           padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
           child: Text(
             AppLocalizations.of(context).faqTitle + ':',
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
         ExpansionPanelList(
@@ -204,14 +204,14 @@ class _HelpPageState extends State<HelpPage> {
           padding: const EdgeInsets.fromLTRB(15, 15, 20, 10),
           child: Text(
             AppLocalizations.of(context).support + ':',
-            style: Theme.of(context).textTheme.subtitle,
+            style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
         Container(
           padding: const EdgeInsets.fromLTRB(15, 0, 20, 0),
           child: Text(
             AppLocalizations.of(context).supportLinksDesc,
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
         Container(

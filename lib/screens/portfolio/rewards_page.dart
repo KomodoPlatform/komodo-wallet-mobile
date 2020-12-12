@@ -216,7 +216,7 @@ class _RewardsPageState extends State<RewardsPage> {
           ),
           child: Text(
             AppLocalizations.of(context).rewardsTableTitle,
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
         Table(

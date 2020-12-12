@@ -104,7 +104,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                                     const EdgeInsets.symmetric(horizontal: 16),
                                 child: Text(
                                   AppLocalizations.of(context).selectCoinInfo,
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                               const SizedBox(
@@ -200,7 +200,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       return Center(
           child: Text(
         'No coin found',
-        style: Theme.of(context).textTheme.body2,
+        style: Theme.of(context).textTheme.bodyText1,
       ));
     }
   }
@@ -230,7 +230,7 @@ class CancelButton extends StatelessWidget {
             '${appLoc.cancel[0].toUpperCase()}${appLoc.cancel.substring(1)}',
             style: Theme.of(context)
                 .textTheme
-                .body1
+                .bodyText2
                 .copyWith(color: Theme.of(context).accentColor),
           )),
         ),
@@ -307,7 +307,7 @@ class _BuildHeaderChainState extends State<BuildHeaderChain> {
             const SizedBox(width: 24),
             Text(
               getTitleText(),
-              style: Theme.of(context).textTheme.subtitle,
+              style: Theme.of(context).textTheme.subtitle2,
             )
           ],
         ),
@@ -511,8 +511,8 @@ class _SearchFieldFilterCoinState extends State<SearchFieldFilterCoin> {
                 decoration: InputDecoration(
                     counterText: '',
                     border: InputBorder.none,
-                    hintStyle: Theme.of(context).textTheme.body2,
-                    labelStyle: Theme.of(context).textTheme.body1,
+                    hintStyle: Theme.of(context).textTheme.bodyText1,
+                    labelStyle: Theme.of(context).textTheme.bodyText2,
                     hintText: AppLocalizations.of(context).searchFilterCoin,
                     labelText: null),
                 onChanged: (String query) async {

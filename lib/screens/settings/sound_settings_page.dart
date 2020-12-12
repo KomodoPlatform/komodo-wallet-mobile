@@ -40,7 +40,7 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
               child: ListTile(
                 title: Text(
                   AppLocalizations.of(context).soundOption,
-                  style: Theme.of(context).textTheme.body1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontWeight: FontWeight.w300,
                       color: Colors.white.withOpacity(0.7)),
                 ),
@@ -158,7 +158,7 @@ class SoundPicker extends StatelessWidget {
             child: ListTile(
               title: Text(
                 name,
-                style: Theme.of(context).textTheme.body1.copyWith(
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontWeight: FontWeight.w300,
                     color: Colors.white.withOpacity(0.7)),
               ),

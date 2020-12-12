@@ -114,7 +114,7 @@ class _CoinSelectState extends State<CoinSelect> {
                         widget.value != null ? widget.value.abbr : '-',
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle
+                            .subtitle2
                             .copyWith(fontSize: widget.compact ? 14 : null),
                         maxLines: 1,
                       ))),

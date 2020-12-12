@@ -33,7 +33,7 @@ class CustomTextFieldState extends State<CustomTextField> {
       textInputAction: TextInputAction.done,
       keyboardType: widget.textInputType,
       controller: widget.controller,
-      style: Theme.of(context).textTheme.body1,
+      style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
           errorText: widget.errorText,
           border: const OutlineInputBorder(),
@@ -42,8 +42,8 @@ class CustomTextFieldState extends State<CustomTextField> {
                   BorderSide(color: Theme.of(context).primaryColorLight)),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).accentColor)),
-          hintStyle: Theme.of(context).textTheme.body2,
-          labelStyle: Theme.of(context).textTheme.body1,
+          hintStyle: Theme.of(context).textTheme.bodyText1,
+          labelStyle: Theme.of(context).textTheme.bodyText2,
           hintText: widget.hintText,
           labelText: widget.labelText),
     );
