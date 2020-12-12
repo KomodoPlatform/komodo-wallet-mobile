@@ -71,7 +71,7 @@ class _FeedPageState extends State<FeedPage>
               title: Center(
                   child: Text(
                 AppLocalizations.of(context).feedTitle.toUpperCase(),
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.subtitle2,
               )),
               automaticallyImplyLeading: false,
             );

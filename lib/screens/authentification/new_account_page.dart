@@ -67,7 +67,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
         ),
         Text(
           AppLocalizations.of(context).seedPhraseTitle,
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
           textAlign: TextAlign.center,
         ),
         const SizedBox(
@@ -116,7 +116,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 key: const Key('seed-phrase'),
                 style: Theme.of(context)
                     .textTheme
-                    .body1
+                    .bodyText2
                     .copyWith(color: Colors.red),
                 textAlign: TextAlign.center,
               )),
@@ -180,7 +180,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                   AppLocalizations.of(context).getBackupPhrase,
                   style: Theme.of(context)
                       .textTheme
-                      .body1
+                      .bodyText2
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
@@ -188,7 +188,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
                 ),
                 Text(
                   AppLocalizations.of(context).recommendSeedMessage,
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 )
               ],
             ),

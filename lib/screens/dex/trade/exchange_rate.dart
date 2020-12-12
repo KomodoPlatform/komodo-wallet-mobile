@@ -42,13 +42,13 @@ class _ExchangeRateState extends State<ExchangeRate> {
         children: <Widget>[
           Text(
             AppLocalizations.of(context).bestAvailableRate,
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
           Text(
             '1 $buyAbbr = $exchangeRateBack $sellAbbr',
             style: Theme.of(context)
                 .textTheme
-                .body1
+                .bodyText2
                 .copyWith(fontWeight: FontWeight.bold),
           ),
           Text(
@@ -81,7 +81,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
                   ),
                   Text(
                     AppLocalizations.of(context).cexChangeRate,
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ],
               ),
@@ -89,7 +89,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
           ),
           Text(
             '1 $buyAbbr = $cExchangeRateBack $sellAbbr',
-            style: Theme.of(context).textTheme.body1.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontWeight: FontWeight.bold,
                   color: cexColor,
                 ),
