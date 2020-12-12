@@ -36,14 +36,14 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
       children: <Widget>[
         Text(
           'Current value:',
-          style: Theme.of(context).textTheme.body2,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(height: 4),
         Text(widget.currentValue),
         SizedBox(height: 12),
         Text(
           'New value:',
-          style: Theme.of(context).textTheme.body2,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(height: 4),
         Text(widget.newValue),
@@ -95,7 +95,7 @@ class _OverwriteDialogContentState extends State<OverwriteDialogContent> {
       children: <Widget>[
         Text(
           'Merged Value:',
-          style: Theme.of(context).textTheme.body2,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
         SizedBox(height: 4),
         TextField(
