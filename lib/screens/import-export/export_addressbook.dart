@@ -116,7 +116,7 @@ class _ExportAddressbookScreenState extends State<ExportAddressbookScreen> {
           if (contacts.isEmpty) return Center(child: Text('No contacts'));
 
           for (Contact c in contacts) {
-            selectedContacts[c.uid] ??= true;
+            selectedContacts.putIfAbsent(c.uid, () => true);
           }
           return ListView.builder(
             itemCount: contacts.length,
