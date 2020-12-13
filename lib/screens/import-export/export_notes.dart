@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/widgets/import_export_selection.dart';
+import 'package:komodo_dex/screens/import-export/import_export_selection.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:aes_crypt/aes_crypt.dart';
 
