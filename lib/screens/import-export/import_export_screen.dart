@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/import-export/export_notes.dart';
 import 'package:komodo_dex/screens/import-export/import_notes.dart';
+import 'package:komodo_dex/screens/import-export/export_addressbook.dart';
 
 class ImportExportScreen extends StatefulWidget {
   @override
@@ -33,6 +34,16 @@ class _ImportExportScreenState extends State<ImportExportScreen> {
                     MaterialPageRoute<dynamic>(
                         builder: (BuildContext context) =>
                             ExportNotesScreen()));
+              },
+            ),
+            RaisedButton(
+              child: const Text('Export Addressbook'),
+              onPressed: () {
+                Navigator.push<dynamic>(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
+                            ExportAddressbookScreen()));
               },
             ),
           ],
