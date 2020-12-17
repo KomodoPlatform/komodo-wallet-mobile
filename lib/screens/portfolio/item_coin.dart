@@ -156,7 +156,7 @@ class _ItemCoinState extends State<ItemCoin> {
                             coin.name.toUpperCase(),
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle
+                                .subtitle2
                                 .copyWith(fontSize: 14),
                           ),
                         ],
@@ -187,7 +187,8 @@ class _ItemCoinState extends State<ItemCoin> {
                                   return AutoSizeText(
                                     '$amount ${coin.abbr}',
                                     maxLines: 1,
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle2,
                                   );
                                 }),
                           ),
@@ -207,7 +208,7 @@ class _ItemCoinState extends State<ItemCoin> {
                                     widget.coinBalance.balanceUSD,
                                     hidden: hidden,
                                   ),
-                                  style: Theme.of(context).textTheme.body2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 );
                               }),
                           _buildClaimButton(),
@@ -272,7 +273,8 @@ class _ItemCoinState extends State<ItemCoin> {
               ),
             Text(
               AppLocalizations.of(context).rewardsButton.toUpperCase(),
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
             )
           ],
         ),
@@ -302,7 +304,7 @@ class _ItemCoinState extends State<ItemCoin> {
           },
           child: Text(
             AppLocalizations.of(context).faucetName,
-            style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+            style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
           ),
         ),
       );
@@ -342,7 +344,7 @@ class _ItemCoinState extends State<ItemCoin> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).tagERC20,
-                            style: Theme.of(context).textTheme.subtitle,
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                         ],
                       );
@@ -355,7 +357,7 @@ class _ItemCoinState extends State<ItemCoin> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).tagQRC20,
-                            style: Theme.of(context).textTheme.subtitle,
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                         ],
                       );

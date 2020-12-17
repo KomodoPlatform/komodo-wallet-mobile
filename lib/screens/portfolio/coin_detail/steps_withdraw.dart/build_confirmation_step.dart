@@ -137,7 +137,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               children: <Widget>[
                 Text(
                   AppLocalizations.of(context).youAreSending,
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
                 const SizedBox(
                   height: 16,
@@ -148,14 +148,14 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                   children: <Widget>[
                     Text(
                       amountToPay.toStringAsFixed(8),
-                      style: Theme.of(context).textTheme.subtitle,
+                      style: Theme.of(context).textTheme.subtitle2,
                     ),
                     const SizedBox(
                       width: 4,
                     ),
                     Text(
                       widget.coinBalance.coin.abbr,
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                   ],
                 ),
@@ -174,13 +174,13 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                         children: <Widget>[
                           Text(
                             '- ',
-                            style: Theme.of(context).textTheme.body2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                           Text(
                             !needGas
                                 ? fee.toStringAsFixed(8)
                                 : gasFee.toString(),
-                            style: Theme.of(context).textTheme.body2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                           const SizedBox(
                             width: 4,
@@ -189,7 +189,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                             needGas
                                 ? AppLocalizations.of(context).gasFee(gasCoin)
                                 : AppLocalizations.of(context).networkFee,
-                            style: Theme.of(context).textTheme.body2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ],
                       ),
@@ -201,7 +201,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                             AppLocalizations.of(context).notEnoughGas(gasCoin),
                             style: Theme.of(context)
                                 .textTheme
-                                .body2
+                                .bodyText1
                                 .copyWith(color: Theme.of(context).errorColor),
                           ),
                         ],
@@ -215,7 +215,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                             AppLocalizations.of(context).gasNotActive(gasCoin),
                             style: Theme.of(context)
                                 .textTheme
-                                .body2
+                                .bodyText1
                                 .copyWith(color: Theme.of(context).errorColor),
                           ),
                         ],
@@ -236,7 +236,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                   children: <Widget>[
                     Text(
                       amountUserReceive.toStringAsFixed(8),
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     const SizedBox(
                       width: 4,
@@ -245,7 +245,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                       padding: const EdgeInsets.only(bottom: 2),
                       child: Text(
                         widget.coinBalance.coin.abbr,
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
                   ],
@@ -255,7 +255,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 ),
                 Text(
                   AppLocalizations.of(context).toAddress,
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
                 const SizedBox(
                   height: 24,
@@ -263,7 +263,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                 Container(
                   child: AutoSizeText(
                     widget.addressToSend,
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText2,
                     maxLines: 1,
                   ),
                 ),

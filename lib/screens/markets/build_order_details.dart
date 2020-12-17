@@ -110,7 +110,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
             child: Text(AppLocalizations.of(context).orderDetailsPrice,
-                style: Theme.of(context).textTheme.body2),
+                style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
@@ -219,7 +219,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
             child: Text(AppLocalizations.of(context).orderDetailsSells,
-                style: Theme.of(context).textTheme.body2),
+                style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
@@ -238,7 +238,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 const SizedBox(width: 12),
                 Text(
                   formatPrice(widget.order.maxvolume.toString()),
-                  style: Theme.of(context).textTheme.subtitle.copyWith(
+                  style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
                 ),
@@ -254,7 +254,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
             child: Text(AppLocalizations.of(context).orderDetailsFor,
-                style: Theme.of(context).textTheme.body2),
+                style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
@@ -274,7 +274,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                 Text(
                   formatPrice(
                       '${widget.order.maxvolume.toDouble() * double.parse(widget.order.price)}'),
-                  style: Theme.of(context).textTheme.subtitle.copyWith(
+                  style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
                 ),
@@ -297,7 +297,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
             child: Text(AppLocalizations.of(context).orderDetailsReceive,
-                style: Theme.of(context).textTheme.body2),
+                style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
@@ -318,7 +318,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   formatPrice(widget.order
                       .getReceiveAmount(deci(widget.sellAmount))
                       .toDouble()),
-                  style: Theme.of(context).textTheme.subtitle.copyWith(
+                  style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
                 ),
@@ -334,7 +334,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
             child: Text(AppLocalizations.of(context).orderDetailsSpend,
-                style: Theme.of(context).textTheme.body2),
+                style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
@@ -356,7 +356,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                           .getReceiveAmount(deci(widget.sellAmount))
                           .toDouble() *
                       double.parse(widget.order.price)),
-                  style: Theme.of(context).textTheme.subtitle.copyWith(
+                  style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
                 ),
@@ -377,7 +377,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
             child: Text(AppLocalizations.of(context).orderDetailsAddress,
-                style: Theme.of(context).textTheme.body2),
+                style: Theme.of(context).textTheme.bodyText1),
           ),
           _contact == null ? _buildAddressButton() : _buildContactButton(),
         ],

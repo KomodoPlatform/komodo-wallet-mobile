@@ -80,7 +80,7 @@ class _ContactEditState extends State<ContactEdit> {
                           icon: Icon(
                             Icons.account_circle,
                             size: 16,
-                            color: Theme.of(context).textTheme.body2.color,
+                            color: Theme.of(context).textTheme.bodyText1.color,
                           ),
                           color: Theme.of(context).primaryColor,
                           value: editContact.name,

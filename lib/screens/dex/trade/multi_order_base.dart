@@ -78,7 +78,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                   children: <Widget>[
                     Text(
                       AppLocalizations.of(context).multiSellTitle,
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                     _buildResetButton(),
                   ],
@@ -170,7 +170,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
               Expanded(
                 child: Text(
                   baseCoin ?? AppLocalizations.of(context).multiBasePlaceholder,
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
               Icon(Icons.arrow_drop_down),
@@ -222,7 +222,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       const SizedBox(width: 6),
                       Text(
                         item.coin.abbr,
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                       Expanded(
                           child: Text(
@@ -251,7 +251,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
             width: 16,
           ),
           Text(AppLocalizations.of(context).noFunds,
-              style: Theme.of(context).textTheme.title),
+              style: Theme.of(context).textTheme.headline6),
         ],
       ),
       contentPadding: const EdgeInsets.all(20),
@@ -259,7 +259,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
         Text(AppLocalizations.of(context).noFundsDetected,
             style: Theme.of(context)
                 .textTheme
-                .body1
+                .bodyText2
                 .copyWith(color: Theme.of(context).hintColor)),
         const SizedBox(
           height: 24,

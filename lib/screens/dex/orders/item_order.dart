@@ -97,7 +97,7 @@ class _ItemOrderState extends State<ItemOrder> {
                     DateFormat('dd MMM yyyy HH:mm').format(
                         DateTime.fromMillisecondsSinceEpoch(
                             widget.order.createdAt * 1000)),
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ],
               ),
@@ -126,7 +126,7 @@ class _ItemOrderState extends State<ItemOrder> {
                             Expanded(
                               child: Text(
                                 snapshot.data,
-                                style: Theme.of(context).textTheme.body2,
+                                style: Theme.of(context).textTheme.bodyText1,
                                 maxLines: isNoteExpanded ? null : 1,
                                 overflow: isNoteExpanded
                                     ? null
@@ -169,7 +169,7 @@ class _ItemOrderState extends State<ItemOrder> {
                                           .toUpperCase(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .body2
+                                          .bodyText1
                                           .copyWith(
                                             color: Colors.white,
                                           ))

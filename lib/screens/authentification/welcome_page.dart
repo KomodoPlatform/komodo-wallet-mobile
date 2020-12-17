@@ -39,7 +39,8 @@ class _WelcomePageState extends State<WelcomePage> {
             child: Text(
               AppLocalizations.of(context).welcomeTitle,
               key: const Key('titleCreateWallet'),
-              style: Theme.of(context).textTheme.title.copyWith(fontSize: 32),
+              style:
+                  Theme.of(context).textTheme.headline6.copyWith(fontSize: 32),
             ),
           ),
           Row(
@@ -47,16 +48,22 @@ class _WelcomePageState extends State<WelcomePage> {
             children: <Widget>[
               Text(
                 AppLocalizations.of(context).to + ' ',
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 18),
               ),
               Text(
                 AppLocalizations.of(context).welcomeName + ' ',
-                style: Theme.of(context).textTheme.body1.copyWith(
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontSize: 18, color: Theme.of(context).accentColor),
               ),
               Text(
                 AppLocalizations.of(context).welcomeWallet,
-                style: Theme.of(context).textTheme.body1.copyWith(fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 18),
               ),
             ],
           ),
@@ -64,7 +71,7 @@ class _WelcomePageState extends State<WelcomePage> {
             padding: const EdgeInsets.all(24.0),
             child: Text(
               AppLocalizations.of(context).welcomeInfo,
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           Padding(
@@ -89,7 +96,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 },
                 autocorrect: false,
                 enableInteractiveSelection: true,
-                style: Theme.of(context).textTheme.body1,
+                style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     enabledBorder: OutlineInputBorder(
@@ -98,8 +105,8 @@ class _WelcomePageState extends State<WelcomePage> {
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Theme.of(context).accentColor)),
-                    hintStyle: Theme.of(context).textTheme.body2,
-                    labelStyle: Theme.of(context).textTheme.body1,
+                    hintStyle: Theme.of(context).textTheme.bodyText1,
+                    labelStyle: Theme.of(context).textTheme.bodyText2,
                     hintText: AppLocalizations.of(context).hintNameYourWallet,
                     labelText: null)),
           ),

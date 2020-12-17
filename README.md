@@ -19,14 +19,15 @@ cf. https://github.com/flutter/flutter/issues/39507#issuecomment-565849075
 
 ## Flutter version
 
-Currently using flutter 1.12.13+hotfix.7 in order to enjoy some recent UI fixes/updates, cf. https://github.com/ca333/komodoDEX/pull/656/commits/010c276b3aec9cb2231527ef18e9c2969c47f3ce
+Currently using flutter 1.22.4 in order to enjoy some recent UI fixes/updates, ref: https://github.com/ca333/komodoDEX/issues/913
 
-Upgrading from v1.9.1+hotfix.6  
+Upgrading from v1.12.13+hotfix.7
 
-    flutter version 1.12.13+hotfix.7
+    flutter channel stable
+    flutter version v1.22.4
+    flutter pub get
     flutter clean
     (cd ios && rm -rf Podfile.lock Podfile Pods)
-    flutter packages upgrade
 
 (If the "flutter version" doesn't have the required version in the list yet then one way to get it is to go to the flutter directory (cf. `which flutter`) and invoke `git pull` there).
 

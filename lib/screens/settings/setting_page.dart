@@ -169,7 +169,7 @@ class _SettingPageState extends State<SettingPage> {
             Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).soundSettingsTitle,
-          style: Theme.of(context).textTheme.body1.copyWith(
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
               color: Colors.white.withOpacity(0.7)),
         ),
@@ -182,7 +182,7 @@ class _SettingPageState extends State<SettingPage> {
       padding: const EdgeInsets.all(16.0),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.body2,
+        style: Theme.of(context).textTheme.bodyText1,
       ),
     );
   }
@@ -196,7 +196,7 @@ class _SettingPageState extends State<SettingPage> {
             Expanded(
               child: Text(
                 AppLocalizations.of(context).activateAccessPin,
-                style: Theme.of(context).textTheme.body1.copyWith(
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontWeight: FontWeight.w300,
                     color: Colors.white.withOpacity(0.7)),
               ),
@@ -251,7 +251,7 @@ class _SettingPageState extends State<SettingPage> {
                     Expanded(
                       child: Text(
                         AppLocalizations.of(context).activateAccessBiometric,
-                        style: Theme.of(context).textTheme.body1.copyWith(
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
                             fontWeight: FontWeight.w300,
                             color: Colors.white.withOpacity(0.7)),
                       ),
@@ -328,7 +328,7 @@ class _SettingPageState extends State<SettingPage> {
                       color: Colors.white.withOpacity(0.7)),
                   title: Text(
                     AppLocalizations.of(context).camoPinLink,
-                    style: Theme.of(context).textTheme.body1.copyWith(
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontWeight: FontWeight.w300,
                         color: Colors.white.withOpacity(0.7)),
                   ),
@@ -366,7 +366,7 @@ class _SettingPageState extends State<SettingPage> {
             Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).changePin,
-          style: Theme.of(context).textTheme.body1.copyWith(
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
               color: Colors.white.withOpacity(0.7)),
         ),
@@ -383,7 +383,7 @@ class _SettingPageState extends State<SettingPage> {
             Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).feedback,
-          style: Theme.of(context).textTheme.body1.copyWith(
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
               color: Colors.white.withOpacity(0.7)),
         ),
@@ -404,7 +404,7 @@ class _SettingPageState extends State<SettingPage> {
             Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).viewSeed,
-          style: Theme.of(context).textTheme.body1.copyWith(
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
               color: Colors.white.withOpacity(0.7)),
         ),
@@ -419,7 +419,7 @@ class _SettingPageState extends State<SettingPage> {
               Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
           title: Text(
             AppLocalizations.of(context).disclaimerAndTos,
-            style: Theme.of(context).textTheme.body1.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                 fontWeight: FontWeight.w300,
                 color: Colors.white.withOpacity(0.7)),
           ),
@@ -450,7 +450,7 @@ class _SettingPageState extends State<SettingPage> {
                 children: <Widget>[
                   Text(
                     AppLocalizations.of(context).checkForUpdates,
-                    style: Theme.of(context).textTheme.body1.copyWith(
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontWeight: FontWeight.w300,
                         color: Colors.white.withOpacity(0.7)),
                   ),
@@ -482,7 +482,7 @@ class _SettingPageState extends State<SettingPage> {
             Expanded(
               child: Text(
                 AppLocalizations.of(context).logoutOnExit,
-                style: Theme.of(context).textTheme.body1.copyWith(
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontWeight: FontWeight.w300,
                     color: Colors.white.withOpacity(0.7)),
               ),
@@ -521,7 +521,7 @@ class _SettingPageState extends State<SettingPage> {
           child: SvgPicture.asset('assets/svg/delete_setting.svg'),
         ),
         title: Text(AppLocalizations.of(context).deleteWallet,
-            style: Theme.of(context).textTheme.body1.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                 fontWeight: FontWeight.w300,
                 color: Colors.white.withOpacity(0.7))),
       ),
@@ -559,7 +559,7 @@ class _SettingPageState extends State<SettingPage> {
                                     .toUpperCase(),
                                 style: Theme.of(context)
                                     .textTheme
-                                    .title
+                                    .headline6
                                     .copyWith(
                                         color: Theme.of(context).errorColor),
                               ),
@@ -577,7 +577,7 @@ class _SettingPageState extends State<SettingPage> {
                                         .settingDialogSpan1,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .body1
+                                        .bodyText2
                                         .copyWith(
                                             color: Theme.of(context)
                                                 .primaryColor)),
@@ -585,7 +585,7 @@ class _SettingPageState extends State<SettingPage> {
                                     text: walletBloc.currentWallet.name,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .body1
+                                        .bodyText2
                                         .copyWith(
                                             color:
                                                 Theme.of(context).primaryColor,
@@ -595,7 +595,7 @@ class _SettingPageState extends State<SettingPage> {
                                         .settingDialogSpan2,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .body1
+                                        .bodyText2
                                         .copyWith(
                                             color: Theme.of(context)
                                                 .primaryColor)),
@@ -613,7 +613,7 @@ class _SettingPageState extends State<SettingPage> {
                                           .settingDialogSpan3,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .body1
+                                          .bodyText2
                                           .copyWith(
                                               color: Theme.of(context)
                                                   .primaryColor)),
@@ -622,7 +622,7 @@ class _SettingPageState extends State<SettingPage> {
                                           .settingDialogSpan4,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .body1
+                                          .bodyText2
                                           .copyWith(
                                               color: Theme.of(context)
                                                   .primaryColor,
@@ -632,7 +632,7 @@ class _SettingPageState extends State<SettingPage> {
                                           .settingDialogSpan5,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .body1
+                                          .bodyText2
                                           .copyWith(
                                               color: Theme.of(context)
                                                   .primaryColor)),

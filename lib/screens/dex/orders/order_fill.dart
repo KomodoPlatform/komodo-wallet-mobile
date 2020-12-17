@@ -36,7 +36,7 @@ class _OrderFillState extends State<OrderFill> {
         Text(
           AppLocalizations.of(context).orderFilled(cutTrailingZeros(
               (getFill(widget.order) * 100).toStringAsPrecision(3))),
-          style: Theme.of(context).textTheme.body2,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
     );

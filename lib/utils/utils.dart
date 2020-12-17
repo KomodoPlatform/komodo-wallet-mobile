@@ -164,7 +164,7 @@ void showMessage(BuildContext mContext, String error) {
     backgroundColor: Theme.of(mContext).primaryColor,
     content: Text(
       error,
-      style: Theme.of(mContext).textTheme.body1,
+      style: Theme.of(mContext).textTheme.bodyText2,
     ),
   ));
 }
@@ -175,7 +175,7 @@ void showErrorMessage(BuildContext mContext, String error) {
     backgroundColor: Theme.of(mContext).errorColor,
     content: Text(
       error,
-      style: Theme.of(mContext).textTheme.body1,
+      style: Theme.of(mContext).textTheme.bodyText2,
     ),
   ));
 }
@@ -255,14 +255,14 @@ Future<void> showConfirmationRemoveCoin(
           title: Text(AppLocalizations.of(context).deleteConfirm),
           content: RichText(
               text: TextSpan(
-                  style: Theme.of(context).textTheme.body1,
+                  style: Theme.of(context).textTheme.bodyText2,
                   children: <TextSpan>[
                 TextSpan(text: AppLocalizations.of(context).deleteSpan1),
                 TextSpan(
                     text: '${coin.name}',
                     style: Theme.of(context)
                         .textTheme
-                        .body1
+                        .bodyText2
                         .copyWith(fontWeight: FontWeight.bold)),
                 TextSpan(text: AppLocalizations.of(context).deleteSpan2),
               ])),
@@ -489,4 +489,17 @@ Widget truncateMiddle(String string, {TextStyle style}) {
       )
     ],
   );
+}
+
+bool isInfinite(dynamic value) {
+  if (value == null) return false;
+  if (value == 0.0 || value == '0.0' || value == '0') return false;
+
+  if (value is String) value = double.parse(value);
+  value = value.abs();
+
+  if (value > double.maxFinite || 1 / value > double.maxFinite) return true;
+  if (value < double.minPositive || 1 / value < double.minPositive) return true;
+
+  return false;
 }

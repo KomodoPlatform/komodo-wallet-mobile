@@ -59,7 +59,7 @@ class _ProgressStepState extends State<ProgressStep> {
                     widthFactor: getEstimatedShare(),
                     child: Container(
                       height: 2,
-                      color: Theme.of(context).textTheme.body2.color,
+                      color: Theme.of(context).textTheme.bodyText1.color,
                     ),
                   ),
                 ],

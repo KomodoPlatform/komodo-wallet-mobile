@@ -52,7 +52,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
           padding: const EdgeInsets.only(right: 6),
           child: Text(
             AppLocalizations.of(context).makerDetailsSell + ':',
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
         Container(
@@ -104,7 +104,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
           padding: const EdgeInsets.only(right: 6),
           child: Text(
             AppLocalizations.of(context).makerDetailsFor + ':',
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
         Container(
@@ -155,7 +155,7 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 6),
             child: Text(AppLocalizations.of(context).makerDetailsPrice + ':',
-                style: Theme.of(context).textTheme.body2),
+                style: Theme.of(context).textTheme.bodyText1),
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
@@ -251,12 +251,12 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
               children: <Widget>[
                 CexMarker(
                   context,
-                  color: Theme.of(context).textTheme.body2.color,
+                  color: Theme.of(context).textTheme.bodyText1.color,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   AppLocalizations.of(context).cex,
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),

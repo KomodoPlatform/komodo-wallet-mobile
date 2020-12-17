@@ -92,14 +92,14 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                           padding: const EdgeInsets.fromLTRB(16, 14, 0, 0),
                           child: Text(
                             AppLocalizations.of(context).multiTablePrice,
-                            style: Theme.of(context).textTheme.body2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                         Container(
                           padding: const EdgeInsets.fromLTRB(0, 14, 12, 0),
                           child: Text(
                             AppLocalizations.of(context).multiTableAmt,
-                            style: Theme.of(context).textTheme.body2,
+                            style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                         _buildToggleAll(),
@@ -157,14 +157,14 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       border: Border.all(
                         color: allSelected
                             ? Theme.of(context).accentColor
-                            : Theme.of(context).textTheme.body2.color,
+                            : Theme.of(context).textTheme.bodyText1.color,
                       )),
                   child: Icon(
                     Icons.done_all,
                     size: 11,
                     color: allSelected
                         ? Theme.of(context).accentColor
-                        : Theme.of(context).textTheme.body2.color,
+                        : Theme.of(context).textTheme.bodyText1.color,
                   ),
                 ),
               ),
@@ -181,7 +181,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
           Expanded(
             child: Text(
               AppLocalizations.of(context).multiReceiveTitle,
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           InkWell(
@@ -193,7 +193,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               child: Icon(
                 Icons.flash_auto,
                 size: 14,
-                color: Theme.of(context).textTheme.body2.color,
+                color: Theme.of(context).textTheme.bodyText1.color,
               ),
             ),
           ),

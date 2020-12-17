@@ -28,7 +28,7 @@ class DetailedSwapStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color _disabledColor = Theme.of(context).textTheme.body2.color;
+    final Color _disabledColor = Theme.of(context).textTheme.bodyText1.color;
     final Color _accentColor = Theme.of(context).accentColor;
 
     Widget _buildStepStatusIcon(SwapStepStatus status) {

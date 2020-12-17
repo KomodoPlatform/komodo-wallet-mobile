@@ -62,14 +62,14 @@ class _CheckPassphrasePageState extends State<CheckPassphrasePage> {
         children: <Widget>[
           Text(
             AppLocalizations.of(context).checkSeedPhraseTitle,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
           const SizedBox(
             height: 16,
           ),
           Text(
             AppLocalizations.of(context).checkSeedPhraseInfo,
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
           const SizedBox(
             height: 48,
@@ -141,8 +141,8 @@ class _SeedRandomState extends State<SeedRandom> {
         Text(
           AppLocalizations.of(context)
               .checkSeedPhraseSubtile((widget.data.index + 1).toString()),
-            key: const Key('which-word'),
-          style: Theme.of(context).textTheme.body1,
+          key: const Key('which-word'),
+          style: Theme.of(context).textTheme.bodyText2,
         ),
         const SizedBox(
           height: 8,

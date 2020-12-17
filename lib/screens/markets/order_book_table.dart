@@ -345,7 +345,7 @@ class _OrderBookTableState extends State<OrderBookTable> {
                                   maxLines: 1,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle
+                                      .subtitle2
                                       .copyWith(
                                         color: cexColor,
                                         fontSize: 14,

@@ -429,7 +429,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                   children: <Widget>[
                                     Text(
                                       AppLocalizations.of(context).selectCoin,
-                                      style: Theme.of(context).textTheme.body2,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
                                     ),
                                     Container(
                                       width: 130,
@@ -450,8 +451,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                             ? AppLocalizations.of(context).sell
                                             : AppLocalizations.of(context)
                                                 .receiveLower,
-                                        style:
-                                            Theme.of(context).textTheme.body2,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
                                       ),
                                       FadeTransition(
                                         opacity: animationInputSell,
@@ -477,8 +479,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                             TextInputFormatter>[
                                                           DecimalTextInputFormatter(
                                                               decimalRange: 8),
-                                                          WhitelistingTextInputFormatter(
-                                                              RegExp(
+                                                          FilteringTextInputFormatter
+                                                              .allow(RegExp(
                                                                   '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
                                                         ],
                                                         focusNode:
@@ -498,13 +500,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                                 decimal: true),
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .subtitle,
+                                                            .subtitle2,
                                                         textInputAction: TextInputAction
                                                             .done,
                                                         decoration: InputDecoration(
                                                             hintStyle: Theme.of(context)
                                                                 .textTheme
-                                                                .body2
+                                                                .bodyText1
                                                                 .copyWith(
                                                                     fontSize: 16,
                                                                     fontWeight: FontWeight.w400),
@@ -547,7 +549,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                           style: Theme.of(
                                                                   context)
                                                               .textTheme
-                                                              .body1
+                                                              .bodyText2
                                                               .copyWith(
                                                                   color: Theme.of(
                                                                           context)
@@ -592,8 +594,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                       ? Text(
                                           AppLocalizations.of(context).noOrder(
                                               swapBloc.receiveCoin.abbr),
-                                          style:
-                                              Theme.of(context).textTheme.body2,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1,
                                         )
                                       : const Text('')))
                           : Container()
@@ -707,7 +710,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   child: Center(
                       child: Text(
                 coin != null ? coin.abbr : '-',
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.subtitle2,
                 maxLines: 1,
               ))),
               Icon(Icons.arrow_drop_down),
@@ -789,7 +792,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           height: 16,
                         ),
                         Text(AppLocalizations.of(context).noFunds,
-                            style: Theme.of(context).textTheme.title),
+                            style: Theme.of(context).textTheme.headline6),
                         const SizedBox(
                           height: 16,
                         )
@@ -799,7 +802,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       Text(AppLocalizations.of(context).noFundsDetected,
                           style: Theme.of(context)
                               .textTheme
-                              .body1
+                              .bodyText2
                               .copyWith(color: Theme.of(context).hintColor)),
                       const SizedBox(
                         height: 24,
@@ -937,7 +940,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                 AppLocalizations.of(context).noOrderAvailable,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .body1
+                                    .bodyText2
                                     .copyWith(
                                         color: Theme.of(context).cursorColor),
                               ),
@@ -1096,7 +1099,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         backgroundColor: Theme.of(context).primaryColor,
         content: Text(
           'Please activate ${gasFee.coin} and top-up balance first',
-          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
         ),
       ));
       return false;
@@ -1115,7 +1118,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         content: Text(
           AppLocalizations.of(context).swapGasAmount(
               cutTrailingZeros(formatPrice(gasFee)), gasFee.coin),
-          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
         ),
       ));
       return false;
@@ -1249,7 +1252,7 @@ class _DialogLookingState extends State<DialogLooking> {
             ),
             Text(
               AppLocalizations.of(context).loadingOrderbook,
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText2,
             )
           ],
         ),
