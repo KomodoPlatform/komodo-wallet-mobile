@@ -1,16 +1,18 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/get_recent_swap.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/model/swap.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
-
-import 'get_recent_swap.dart';
-import 'recent_swaps.dart';
-import 'swap.dart';
 
 // TODO(AG): at "_goToNextScreen] swap started…" create a virtual
 // swap that would allow the UI to better track
@@ -139,6 +141,12 @@ SwapMonitor swapMonitor = SwapMonitor();
 /// Collects swaps metrics in order to provide swaps stats,
 /// such as estimated progress step speed, etc.
 class SwapMonitor {
+  SwapMonitor() {
+    _loadPrefs();
+  }
+
+  SharedPreferences _prefs;
+
   /// [ChangeNotifier] proxies linked to this singleton.
   final Set<SwapProvider> _providers = {};
 
@@ -175,8 +183,6 @@ class SwapMonitor {
 
   /// (Re)load recent swaps from MM.
   Future<void> update() async {
-    Log('swap_provider:188', 'update]');
-
     final RecentSwaps rswaps =
         await MM.getRecentSwaps(GetRecentSwap(limit: 50, fromUuid: null));
 
@@ -192,7 +198,7 @@ class SwapMonitor {
     swapHistoryBloc.inSwaps.add(swaps.values);
   }
 
-  /// Share swap information on dexp2p.
+  /// Store swap information
   void _saveSwapMetrics(MmSwap mswap) {
     if (mswap.events.isEmpty) return;
 
@@ -208,6 +214,44 @@ class SwapMonitor {
     final SwapMetrics metrics = SwapMetrics.from(timestamp, mswap);
     if (metrics.makerCoin == null) return; // No Start event.
     _swapMetrics[id] = metrics;
+    _savePrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    _prefs ??= await SharedPreferences.getInstance();
+
+    final String encodedMetrics = _prefs.getString('swapMetrics');
+    if (encodedMetrics == null) return;
+
+    Map<String, dynamic> decodedMetrics;
+    try {
+      decodedMetrics = jsonDecode(encodedMetrics);
+    } catch (e) {
+      return;
+    }
+
+    decodedMetrics.forEach((id, dynamic item) {
+      SwapMetrics fromJson;
+      try {
+        fromJson = SwapMetrics.fromJson(item);
+      } catch (e) {
+        return;
+      }
+      _swapMetrics[id] = fromJson;
+    });
+  }
+
+  void _savePrefs() {
+    if (_prefs == null) return;
+
+    String encodedMetrics;
+    try {
+      encodedMetrics = jsonEncode(_swapMetrics);
+    } catch (_) {
+      return;
+    }
+
+    _prefs.setString('swapMetrics', encodedMetrics);
   }
 }
 
@@ -226,7 +270,6 @@ class SwapMetrics {
       final String adamT = adam.event.type;
       final int delta = adam.timestamp - eva.timestamp;
       if (delta < 0) {
-        Log('swap_provider:318', 'Negative delta ($evaT→$adamT): $delta');
         continue;
       }
       stepSpeed['$evaT→$adamT'] = delta;
@@ -245,6 +288,26 @@ class SwapMetrics {
         maker = data.maker.isNotEmpty ? data.maker : null;
       }
     }
+  }
+
+  /// Load back from prefs.
+  SwapMetrics.fromJson(Map<String, dynamic> en) {
+    id = en['id'];
+    gui = en['gui'];
+    mmVersion = en['mm_version'];
+    mmDate = en['mm_date'];
+    stepSpeed = LinkedHashMap<String, int>.from(en['step_speed']);
+    makerCoin = en['maker_coin'];
+    takerCoin = en['taker_coin'];
+    makerPaymentConfirmations = en['maker_payment_confirmations'];
+    takerPaymentConfirmations = en['taker_payment_confirmations'];
+    final dynamic mrn = en['maker_payment_requires_nota'];
+    makerPaymentRequiresNota = mrn == 1 || mrn == 0 ? false : null;
+    final dynamic trn = en['taker_payment_requires_nota'];
+    takerPaymentRequiresNota = trn == 1 || trn == 0 ? false : null;
+    myPersistentPub = en['my_persistent_pub'];
+    taker = en['taker'];
+    maker = en['maker'];
   }
 
   static String swap2id(MmSwap mswap) =>
@@ -285,7 +348,10 @@ class SwapMetrics {
   /// https://gitlab.com/artemciy/mm-pubsub-db/-/blob/2342fa23/373-p2p-order-matching.md#L115
   String taker, maker;
 
-  Map<String, dynamic> get toJson => <String, dynamic>{
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json;
+    try {
+      json = <String, dynamic>{
         'id': id,
         'maker_coin': makerCoin,
         'taker_coin': takerCoin,
@@ -302,4 +368,8 @@ class SwapMetrics {
         'taker': taker,
         'maker': maker
       };
+    } catch (e) {}
+
+    return json;
+  }
 }
