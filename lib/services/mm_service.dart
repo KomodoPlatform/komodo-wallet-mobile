@@ -61,7 +61,6 @@ class MMService {
 
   /// We're using the netid of 9999 currently
   /// But it's possible in theory to connect the UI to MM running on a different netid
-  /// Might want to check if we're running under the standard netid before we gossip
   int netid;
 
   /// Effective memory used by the application, MiB
@@ -333,7 +332,7 @@ class MMService {
     try {
       s.write(chunk);
     } catch (ex) {
-      print(ex); // AG: We should *gossip* this exception in the future.
+      print(ex);
       log.sink = s = log.file.openWrite(mode: FileMode.append);
       s.write(chunk);
     }
@@ -341,7 +340,7 @@ class MMService {
 
   /// Load fresh lists of orders and swaps from MM.
   Future<void> updateOrdersAndSwaps() async {
-    await syncSwaps.update();
+    await swapMonitor.update();
     await ordersBloc.updateOrdersSwaps();
   }
 
