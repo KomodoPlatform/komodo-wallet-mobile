@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/screens/import-export/export_notes.dart';
+import 'package:komodo_dex/screens/import-export/import_addressbook.dart';
 import 'package:komodo_dex/screens/import-export/import_notes.dart';
 import 'package:komodo_dex/screens/import-export/export_addressbook.dart';
 
@@ -34,6 +35,16 @@ class _ImportExportScreenState extends State<ImportExportScreen> {
                     MaterialPageRoute<dynamic>(
                         builder: (BuildContext context) =>
                             ExportNotesScreen()));
+              },
+            ),
+            RaisedButton(
+              child: const Text('Import Addressbook'),
+              onPressed: () {
+                Navigator.push<dynamic>(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
+                            ImportAddressbookScreen()));
               },
             ),
             RaisedButton(
