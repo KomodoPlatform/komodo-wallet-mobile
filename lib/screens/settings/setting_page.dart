@@ -706,10 +706,10 @@ class _SettingPageState extends State<SettingPage> {
 
     final now = DateTime.now();
     final log = mmSe.currentLog(now: now);
-    if (syncSwaps.swaps.isEmpty) await syncSwaps.update();
+    if (swapMonitor.swaps.isEmpty) await swapMonitor.update();
     try {
       log.sink.write('\n\n--- my recent swaps ---\n\n');
-      for (Swap swap in syncSwaps.swaps) {
+      for (Swap swap in swapMonitor.swaps) {
         final started = swap.started;
         if (started == null) continue;
         final tim = DateTime.fromMillisecondsSinceEpoch(started.timestamp);

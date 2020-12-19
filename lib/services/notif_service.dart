@@ -151,8 +151,8 @@ class NotifService {
 
   void _subscribeSwapStatus() {
     jobService.install('checkSwaps', 10, (j) async {
-      _checkOrdersStatusChange(syncSwaps.swaps);
-      _saveOrders(syncSwaps.swaps);
+      _checkOrdersStatusChange(swapMonitor.swaps);
+      _saveOrders(swapMonitor.swaps);
     });
   }
 

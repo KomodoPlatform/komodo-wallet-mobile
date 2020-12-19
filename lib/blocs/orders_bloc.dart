@@ -94,7 +94,7 @@ class OrdersBloc implements BlocBase {
   Future<void> updateOrdersSwaps() async {
     await updateOrders();
 
-    final List<Swap> swaps = syncSwaps.swaps.toList();
+    final List<Swap> swaps = swapMonitor.swaps.toList();
     for (Swap swap in swaps) {
       if (swap.result.uuid.startsWith('e852'))
         Log('orders_bloc:100', 'swap status: ${swap.status}');
