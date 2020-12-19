@@ -76,7 +76,7 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget _buildHistoryNumber() {
     return StreamBuilder<Iterable<Swap>>(
         stream: swapHistoryBloc.outSwaps,
-        initialData: syncSwaps.swaps,
+        initialData: swapMonitor.swaps,
         builder:
             (BuildContext context, AsyncSnapshot<Iterable<Swap>> snapshot) {
           if (!snapshot.hasData) return Container();

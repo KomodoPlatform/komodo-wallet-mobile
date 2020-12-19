@@ -600,7 +600,14 @@ class CexPrices {
       if (coinAbbr != null) {
         _prices[coinAbbr] = {};
         pricesData.forEach((String currency, dynamic price) {
-          _prices[coinAbbr][currency] = price;
+          double priceDouble;
+          try {
+            // Handle margin cases (e.g. int price, like '22000')
+            priceDouble = double.parse(price.toString());
+          } catch(_) {
+            priceDouble = 0.00;
+          }
+          _prices[coinAbbr][currency] = priceDouble;
         });
       }
     });
