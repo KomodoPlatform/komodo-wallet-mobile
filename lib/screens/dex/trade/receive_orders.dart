@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
@@ -195,6 +197,10 @@ class _AsksOrderState extends State<AsksOrder> {
   final double headerHeight = 50;
   final double lineHeight = 50;
   bool popupSettingsVisible = false;
+  int listLength = 0;
+  int listLimit = 25;
+  int listLimitMin = 25;
+  int listLimitStep = 5;
   OrderBookProvider orderBookProvider;
   CexProvider cexProvider;
   AddressBookProvider addressBookProvider;
@@ -212,6 +218,10 @@ class _AsksOrderState extends State<AsksOrder> {
     List<Ask> bidsList = orderbook?.bids;
 
     bidsList = OrderBookProvider.sortByPrice(bidsList, quotePrice: true);
+    setState(() {
+      listLength = bidsList.length;
+    });
+    if (bidsList.length > listLimit) bidsList = bidsList.sublist(0, listLimit);
     bidsList?.asMap()?.forEach(
         (int index, Ask bid) => asksWidget.add(_tableRow(bid, index)));
 
@@ -354,6 +364,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                   ],
                                 ),
                               ),
+                        _buildLimitButton(),
                         CreateOrder(
                           onCreateNoOrder: widget.onCreateNoOrder,
                           coin: relCoin,
@@ -363,6 +374,57 @@ class _AsksOrderState extends State<AsksOrder> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildLimitButton() {
+    if (listLength < listLimit && listLimit == listLimitMin) return SizedBox();
+
+    return Container(
+      padding: EdgeInsets.all(12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            'Showing $listLimit of ${max(listLength, listLimit)} orders. ',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          if (listLimit > listLimitMin)
+            InkWell(
+                onTap: () {
+                  setState(() {
+                    listLimit -= listLimitStep;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.all(6),
+                  child: Text(
+                    'Less',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                )),
+          if (listLength > listLimit)
+            InkWell(
+                onTap: () {
+                  setState(() {
+                    listLimit += listLimitStep;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.all(6),
+                  child: Text(
+                    'More',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                )),
+        ],
       ),
     );
   }

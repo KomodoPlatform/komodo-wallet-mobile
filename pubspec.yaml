@@ -7,7 +7,7 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.3.2
+version: 0.3.3
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
@@ -166,7 +166,6 @@ dev_dependencies:
   # Our fork has a fixed compileSdkVersion - 28:
   # https://github.com/KomodoPlatform/flutter_sodium
   #flutter_sodium: ^0.0.11
-  # NB: We'll likely need libsodium for EdDSA gossip signatures
   # TODO: selfhost libsodium-jni (android implementation depends on AAR library from https://github.com/joshjdevl/libsodium-jni)
   flutter_sodium: # 0.0.11 - DONE: Secure code reviewed 3d6f8d8 (0.0.11) - TODO: read ^
     git:

@@ -68,7 +68,7 @@ class FillPainter extends CustomPainter {
 
     double fillProgress = 0;
     for (String swapId in order.startedSwaps) {
-      final Swap swap = syncSwaps.swap(swapId);
+      final Swap swap = swapMonitor.swap(swapId);
       if (swap == null) continue;
 
       fillPaint..color = swapHistoryBloc.getColorStatus(swap.status);
@@ -100,7 +100,7 @@ double getFill(Order order) {
 
   double fill = 0;
   for (String swapId in order.startedSwaps) {
-    final Swap swap = syncSwaps.swap(swapId);
+    final Swap swap = swapMonitor.swap(swapId);
     if (swap == null) continue;
     fill += double.parse(swap.result.myInfo.myAmount) /
         double.parse(order.baseAmount);

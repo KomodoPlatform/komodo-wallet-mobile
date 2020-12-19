@@ -113,44 +113,6 @@ int base62udec(String bv) {
   return uv;
 }
 
-/// Decode a base62 number
-BigInt base26bdec(String bv) {
-  bool negative = false;
-  if (bv.startsWith('-')) {
-    negative = true;
-    bv = bv.substring(1);
-  }
-  BigInt iv;
-  if (bv.length <= 10) {
-    // Length 10 fits 63 bits, cf. http://ct.cipig.net/base62/zzzzzzzzzz
-    iv = BigInt.from(base62udec(bv));
-  } else {
-    final i62 = BigInt.from(62);
-    iv = BigInt.from(0);
-    for (int ch in bv.codeUnits) {
-      final int v = ch >= 48 && ch <= 57
-          ? ch - 48
-          : ch >= 65 && ch <= 90
-              ? ch - 65 + 10
-              : ch >= 97 && ch <= 122
-                  ? ch - 97 + 36
-                  : throw Exception('!base62: $ch');
-      iv = iv * i62 + BigInt.from(v);
-    }
-  }
-  if (negative) iv = -iv;
-  return iv;
-}
-
-/// Decode a base62 rational number (numerator/denominator)
-Rational base62rdec(String bv) {
-  final List<String> pair = bv.split('/');
-  if (pair.length != 2) throw Exception('!rational: $bv');
-  final numerator = base26bdec(pair[0]);
-  final denominator = base26bdec(pair[1]);
-  return Rational(numerator, denominator);
-}
-
 bool isNumeric(String s) {
   if (s == null) {
     return false;

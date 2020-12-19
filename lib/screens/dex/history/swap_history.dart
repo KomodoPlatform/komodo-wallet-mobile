@@ -38,7 +38,7 @@ class _SwapHistoryState extends State<SwapHistory> {
   Widget build(BuildContext context) {
     return StreamBuilder<Iterable<Swap>>(
         stream: swapHistoryBloc.outSwaps,
-        initialData: syncSwaps.swaps,
+        initialData: swapMonitor.swaps,
         builder:
             (BuildContext context, AsyncSnapshot<Iterable<Swap>> snapshot) {
           final List<Swap> swaps = snapshot.data.toList();
@@ -89,7 +89,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         });
   }
 
-  Future<Iterable<Swap>> _onRefresh() async => syncSwaps.swaps;
+  Future<Iterable<Swap>> _onRefresh() async => swapMonitor.swaps;
 }
 
 class BuildItemSwap extends StatefulWidget {
