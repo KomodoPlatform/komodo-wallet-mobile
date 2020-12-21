@@ -228,7 +228,7 @@ class MultiOrderProvider extends ChangeNotifier {
     double totalFee = 0;
     totalFee += GetFee.trading(amt).amount;
 
-    final Fee txFee = await GetFee.tx(baseCoin);
+    final CoinAmt txFee = await GetFee.tx(baseCoin);
     if (txFee.coin == baseCoin) totalFee += txFee.amount;
 
     return totalFee;

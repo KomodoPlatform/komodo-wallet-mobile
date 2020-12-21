@@ -5,7 +5,9 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
+import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -17,25 +19,21 @@ import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:decimal/decimal.dart';
 
 class BuildConfirmationStep extends StatefulWidget {
-  const BuildConfirmationStep(
-      {Key key,
-      this.coinBalance,
-      this.amountToPay,
-      this.addressToSend,
-      this.onCancel,
-      this.onNoInternet,
-      this.onLoadingStep,
-      this.onStepChange,
-      this.onError,
-      this.onSuccessStep})
-      : super(key: key);
+  const BuildConfirmationStep({
+    Key key,
+    this.coinBalance,
+    this.amountToPay,
+    this.addressToSend,
+    this.onCancel,
+    this.onError,
+    this.onNoInternet,
+    this.onConfirmPressed,
+  }) : super(key: key);
 
   final Function onCancel;
   final Function onNoInternet;
-  final Function onLoadingStep;
-  final Function(int) onStepChange;
   final Function onError;
-  final Function(String) onSuccessStep;
+  final Function(WithdrawResponse) onConfirmPressed;
   final CoinBalance coinBalance;
   final String amountToPay;
   final String addressToSend;
@@ -45,25 +43,49 @@ class BuildConfirmationStep extends StatefulWidget {
 }
 
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
-  Future<double> getFee() async {
-    try {
-      final dynamic tradeFeeResponse = await MM.getTradeFee(
-          MMService().client, GetTradeFee(coin: widget.coinBalance.coin.abbr));
-      if (tradeFeeResponse is TradeFee) {
-        return double.parse(tradeFeeResponse.result.amount);
-      } else {
-        return 0;
+  dynamic withdrawResponse;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final Fee fee = Fee();
+      if (coinsDetailBloc.customFee != null) {
+        if (widget.coinBalance.coin.type == 'erc') {
+          fee.type = 'EthGas';
+          fee.gas = coinsDetailBloc.customFee.gas;
+          fee.gasPrice = coinsDetailBloc.customFee.gasPrice;
+        } else {
+          fee.type = 'UtxoFixed';
+          fee.amount = coinsDetailBloc.customFee.amount;
+        }
       }
-    } catch (e) {
-      Log.println('build_confirmation_step:57', e);
-      return 0;
-    }
+
+      ApiProvider()
+          .postWithdraw(
+              MMService().client,
+              GetWithdraw(
+                userpass: MMService().userpass,
+                fee: fee,
+                coin: widget.coinBalance.coin.abbr,
+                to: widget.addressToSend,
+                amount: widget.amountToPay,
+                max: double.parse(widget.coinBalance.balance.getBalance()) ==
+                    double.parse(widget.amountToPay),
+              ))
+          .then((dynamic res) {
+        withdrawResponse = res;
+      }).catchError((dynamic onError) {
+        widget.onError();
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Object>(
-        future: getFee(),
+        future: _getFee(),
         builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
           final String gasCoin = GetFee.gasCoin(widget.coinBalance.coin.abbr);
           final bool needGas = gasCoin != null;
@@ -308,8 +330,25 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   Future<void> _onPressedConfirmWithdraw(double sendAmount) async {
     if (mainBloc.isNetworkOffline) {
       widget.onNoInternet();
+    } else if (withdrawResponse is WithdrawResponse) {
+      widget.onConfirmPressed(withdrawResponse);
     } else {
-      widget.onLoadingStep();
+      widget.onError();
+    }
+  }
+
+  Future<double> _getFee() async {
+    try {
+      final dynamic tradeFeeResponse = await MM.getTradeFee(
+          MMService().client, GetTradeFee(coin: widget.coinBalance.coin.abbr));
+      if (tradeFeeResponse is TradeFee) {
+        return double.parse(tradeFeeResponse.result.amount);
+      } else {
+        return 0;
+      }
+    } catch (e) {
+      Log.println('build_confirmation_step:57', e);
+      return 0;
     }
   }
 }

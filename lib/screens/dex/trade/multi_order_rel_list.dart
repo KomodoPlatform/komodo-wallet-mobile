@@ -529,7 +529,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
     final String gasCoin = GetFee.gasCoin(item.coin.abbr);
     if (gasCoin == null) return Container();
 
-    return FutureBuilder<Fee>(
+    return FutureBuilder<CoinAmt>(
         future: GetFee.gas(item.coin.abbr),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const SizedBox();

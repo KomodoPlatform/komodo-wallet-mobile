@@ -264,7 +264,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       isLoadingMax = true;
     });
 
-    final Fee fee = await GetFee.totalSell(
+    final CoinAmt fee = await GetFee.totalSell(
       sellCoin: sellCoinBalance.coin.abbr,
       buyCoin: swapBloc.receiveCoin?.abbr,
       sellAmt: isMax
@@ -1086,7 +1086,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<bool> _checkGasFor(String coin, BuildContext mContext) async {
-    final Fee gasFee = await GetFee.gas(coin);
+    final CoinAmt gasFee = await GetFee.gas(coin);
     if (gasFee == null) return true;
 
     CoinBalance gasBalance;

@@ -34,13 +34,13 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     if (widget.baseCoin == null || widget.baseAmount == null)
       return Container();
 
-    return FutureBuilder<Fee>(
+    return FutureBuilder<CoinAmt>(
       future: GetFee.tx(widget.baseCoin),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox();
 
-        final Fee tradeFee = GetFee.trading(widget.baseAmount);
-        final Fee txFee = snapshot.data;
+        final CoinAmt tradeFee = GetFee.trading(widget.baseAmount);
+        final CoinAmt txFee = snapshot.data;
 
         if (txFee == null || tradeFee == null) return const SizedBox();
 
@@ -121,16 +121,16 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     );
   }
 
-  Widget _buildTxFeeRow(Fee txFee) {
+  Widget _buildTxFeeRow(CoinAmt txFee) {
     return Row(
       children: <Widget>[
         Text(AppLocalizations.of(context).txFeeTitle,
             style: Theme.of(context).textTheme.caption),
         Expanded(
-            child: FutureBuilder<Fee>(
+            child: FutureBuilder<CoinAmt>(
                 future: GetFee.gas(widget.relCoin),
                 builder: (context, snapshot) {
-                  final Fee gasFee = snapshot.data;
+                  final CoinAmt gasFee = snapshot.data;
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -144,7 +144,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     );
   }
 
-  Widget _buildTxFee(Fee txFee, Fee gasFee) {
+  Widget _buildTxFee(CoinAmt txFee, CoinAmt gasFee) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -158,7 +158,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     );
   }
 
-  Widget _buildGasFee(Fee gasFee) {
+  Widget _buildGasFee(CoinAmt gasFee) {
     if (gasFee == null || gasFee.amount == 0) return SizedBox();
     if (!widget.includeGasFee) return SizedBox();
     if (widget.relCoin == null) return SizedBox();
@@ -170,7 +170,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
     );
   }
 
-  Widget _buildTxFeeInFiat(Fee txFee, Fee gasFee) {
+  Widget _buildTxFeeInFiat(CoinAmt txFee, CoinAmt gasFee) {
     if (txFee == null) return SizedBox();
 
     final double txUsdPrice = cexProvider.getUsdPrice(txFee?.coin);

@@ -13,7 +13,6 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
-import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
@@ -699,7 +698,7 @@ class _CoinDetailState extends State<CoinDetail> {
           _waitForInit();
         });
       },
-      onConfirm: () async {
+      onWithdrawPressed: () async {
         setState(() {
           isExpanded = false;
           listSteps.add(BuildConfirmationStep(
@@ -719,15 +718,14 @@ class _CoinDetailState extends State<CoinDetail> {
                 content: Text(AppLocalizations.of(mainContext).noInternet),
               ));
             },
-            onStepChange: (int step) {
-              setState(() {
-                currentIndex = step;
-              });
+            onError: () {
+              catchError(mainContext);
             },
-            onLoadingStep: () {
+            onConfirmPressed: (WithdrawResponse response) {
               setState(() {
                 isSendIsActive = false;
               });
+
               listSteps.add(Container(
                   height: 100,
                   width: double.infinity,
@@ -736,96 +734,61 @@ class _CoinDetailState extends State<CoinDetail> {
                       strokeWidth: 2,
                     ),
                   )));
+
               setState(() {
                 currentIndex = 2;
               });
 
-              final Fee fee = Fee();
-              if (coinsDetailBloc.customFee != null) {
-                if (widget.coinBalance.coin.type == 'erc') {
-                  fee.type = 'EthGas';
-                  fee.gas = coinsDetailBloc.customFee.gas;
-                  fee.gasPrice = coinsDetailBloc.customFee.gasPrice;
-                } else {
-                  fee.type = 'UtxoFixed';
-                  fee.amount = coinsDetailBloc.customFee.amount;
-                }
-              }
               ApiProvider()
-                  .postWithdraw(
+                  .postRawTransaction(
                       MMService().client,
-                      GetWithdraw(
-                        userpass: MMService().userpass,
-                        fee: fee,
-                        coin: widget.coinBalance.coin.abbr,
-                        to: _addressController.text,
-                        amount: _amountController.text,
-                        max: double.parse(
-                                currentCoinBalance.balance.getBalance()) ==
-                            double.parse(_amountController.text),
-                      ))
-                  .then((dynamic data) {
-                if (data is WithdrawResponse) {
-                  ApiProvider()
-                      .postRawTransaction(
-                          MMService().client,
-                          GetSendRawTransaction(
-                              coin: widget.coinBalance.coin.abbr,
-                              txHex: data.txHex))
-                      .then((dynamic dataRawTx) {
-                    if (dataRawTx is SendRawTransactionResponse &&
-                        dataRawTx.txHash.isNotEmpty) {
-                      setState(() {
-                        coinsBloc.updateCoinBalances();
-                        Future<dynamic>.delayed(const Duration(seconds: 5), () {
-                          coinsBloc.updateCoinBalances();
-                        });
-                        listSteps.add(SuccessStep(
-                          txHash: dataRawTx.txHash,
-                        ));
-                        setState(() {
-                          currentIndex = 3;
-                        });
-                      });
-                    } else if (dataRawTx is ErrorString &&
-                        dataRawTx.error.contains('gas is too low')) {
-                      resetSend();
-                      final String gas = dataRawTx.error
-                          .substring(
-                              dataRawTx.error.indexOf(
-                                      r':', dataRawTx.error.indexOf(r'"')) +
-                                  1,
-                              dataRawTx.error
-                                  .indexOf(r',', dataRawTx.error.indexOf(r'"')))
-                          .trim();
-                      Scaffold.of(mainContext).showSnackBar(SnackBar(
-                        duration: const Duration(seconds: 2),
-                        backgroundColor: Theme.of(context).errorColor,
-                        content: Text(
-                          AppLocalizations.of(mainContext)
-                              .errorNotEnoughtGas(gas),
-                        ),
-                      ));
-                    } else {
-                      catchError(mainContext);
-                    }
-                  }).catchError((dynamic onError) {
-                    catchError(mainContext);
+                      GetSendRawTransaction(
+                          coin: widget.coinBalance.coin.abbr,
+                          txHex: response.txHex))
+                  .then((dynamic dataRawTx) {
+                if (dataRawTx is SendRawTransactionResponse &&
+                    dataRawTx.txHash.isNotEmpty) {
+                  setState(() {
+                    coinsBloc.updateCoinBalances();
+                    Future<dynamic>.delayed(const Duration(seconds: 5), () {
+                      coinsBloc.updateCoinBalances();
+                    });
+                    listSteps.add(SuccessStep(
+                      txHash: dataRawTx.txHash,
+                    ));
+                    setState(() {
+                      currentIndex = 3;
+                    });
                   });
+                } else if (dataRawTx is ErrorString &&
+                    dataRawTx.error.contains('gas is too low')) {
+                  resetSend();
+                  final String gas = dataRawTx.error
+                      .substring(
+                          dataRawTx.error.indexOf(
+                                  r':', dataRawTx.error.indexOf(r'"')) +
+                              1,
+                          dataRawTx.error
+                              .indexOf(r',', dataRawTx.error.indexOf(r'"')))
+                      .trim();
+                  Scaffold.of(mainContext).showSnackBar(SnackBar(
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: Theme.of(context).errorColor,
+                    content: Text(
+                      AppLocalizations.of(mainContext).errorNotEnoughtGas(gas),
+                    ),
+                  ));
                 } else {
                   catchError(mainContext);
                 }
               }).catchError((dynamic onError) {
                 catchError(mainContext);
               });
-            },
-            onError: () {
-              catchError(mainContext);
-            },
-            onSuccessStep: (String txHash) {
-              listSteps.add(SuccessStep(
-                txHash: txHash,
-              ));
+
+              if (response is WithdrawResponse) {
+              } else {
+                catchError(mainContext);
+              }
             },
           ));
         });

@@ -19,7 +19,7 @@ class AmountAddressStep extends StatefulWidget {
       this.amountController,
       this.addressController,
       this.autoFocus = false,
-      this.onConfirm,
+      this.onWithdrawPressed,
       this.onCancel,
       this.coin})
       : super(key: key);
@@ -27,7 +27,7 @@ class AmountAddressStep extends StatefulWidget {
   final Function onCancel;
   final Function onMaxValue;
   final FocusNode focusNode;
-  final Function onConfirm;
+  final Function onWithdrawPressed;
   final TextEditingController amountController;
   final TextEditingController addressController;
   final bool autoFocus;
@@ -111,7 +111,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                   widget.amountController.text.replaceAll(',', '.');
             });
             if (formKey.currentState.validate()) {
-              widget.onConfirm();
+              widget.onWithdrawPressed();
             }
           },
         );

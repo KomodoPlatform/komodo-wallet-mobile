@@ -6,42 +6,42 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 
 class GetFee {
-  static Future<Fee> tx(String coin) async {
-    final Fee fee = await _getTradeFeeFromMM(coin);
+  static Future<CoinAmt> tx(String coin) async {
+    final CoinAmt fee = await _getTradeFeeFromMM(coin);
     fee.amount = fee.amount * 2;
     return fee;
   }
 
-  static Future<Fee> gas(String coin) async {
+  static Future<CoinAmt> gas(String coin) async {
     if (gasCoin(coin) == null) return null;
     return await _getTradeFeeFromMM(coin);
   }
 
-  static Fee trading(double amt, [String coin]) {
+  static CoinAmt trading(double amt, [String coin]) {
     if (amt == null) return null;
 
-    return Fee(
+    return CoinAmt(
       amount: amt / 777,
       coin: coin,
     );
   }
 
-  static Future<Fee> totalSell({
+  static Future<CoinAmt> totalSell({
     String sellCoin,
     String buyCoin,
     double sellAmt,
   }) async {
     double totalAmt = 0;
 
-    final Fee txFee = await tx(sellCoin);
+    final CoinAmt txFee = await tx(sellCoin);
     if (txFee.coin == sellCoin) totalAmt += txFee.amount;
 
-    final Fee gasFee = await gas(buyCoin);
+    final CoinAmt gasFee = await gas(buyCoin);
     if (gasFee?.coin == sellCoin) totalAmt += gasFee.amount;
 
     totalAmt += trading(sellAmt).amount;
 
-    return Fee(
+    return CoinAmt(
       amount: totalAmt,
       coin: sellCoin,
     );
@@ -60,7 +60,7 @@ class GetFee {
     }
   }
 
-  static Future<Fee> _getTradeFeeFromMM(String coin) async {
+  static Future<CoinAmt> _getTradeFeeFromMM(String coin) async {
     if (coin == null) return null;
 
     try {
@@ -68,7 +68,7 @@ class GetFee {
           await MM.getTradeFee(MMService().client, GetTradeFee(coin: coin));
 
       if (tradeFeeResponse is TradeFee) {
-        return Fee(
+        return CoinAmt(
           amount: double.parse(tradeFeeResponse.result.amount),
           coin: tradeFeeResponse.result.coin,
         );
@@ -82,8 +82,8 @@ class GetFee {
   }
 }
 
-class Fee {
-  Fee({this.amount, this.coin});
+class CoinAmt {
+  CoinAmt({this.amount, this.coin});
 
   double amount;
   String coin;
