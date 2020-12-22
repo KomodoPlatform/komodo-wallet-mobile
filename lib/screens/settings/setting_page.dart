@@ -117,6 +117,8 @@ class _SettingPageState extends State<SettingPage> {
                 const SizedBox(
                   height: 1,
                 ),
+                _buildTitle('Old logs'),
+                _buildOldLogs(),
                 _buildTitle(AppLocalizations.of(context).legalTitle),
                 _buildDisclaimerToS(),
                 _buildTitle(version),
@@ -524,6 +526,46 @@ class _SettingPageState extends State<SettingPage> {
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                 fontWeight: FontWeight.w300,
                 color: Colors.white.withOpacity(0.7))),
+      ),
+    );
+  }
+
+  Widget _buildOldLogs() {
+    final now = DateTime.now();
+    final ymd = '${now.year}'
+        '-${Log.twoDigits(now.month)}'
+        '-${Log.twoDigits(now.day)}';
+    final dirList = applicationDocumentsDirectorySync.listSync();
+    final listLogs = dirList
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.log') && !f.path.endsWith('$ymd.log'))
+        .toList();
+    print(listLogs);
+    int totalSize = 0;
+    for (File log in listLogs) {
+      final fileSize = log.statSync().size;
+      totalSize += fileSize;
+    }
+    final sizeMb = totalSize / 1000000;
+    print(totalSize);
+    return CustomTile(
+      child: ListTile(
+        trailing: RaisedButton(
+            child: Text('Delete'),
+            onPressed: () {
+              for (File f in listLogs) {
+                f.deleteSync();
+              }
+            }),
+        title: Text(
+          'Space used: ' +
+              (sizeMb >= 1000
+                  ? '${(sizeMb / 1000).toStringAsFixed(2)} GB'
+                  : ' ${sizeMb.toStringAsFixed(2)} MB'),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
       ),
     );
   }
