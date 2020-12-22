@@ -50,15 +50,19 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final Fee fee = Fee();
+      Fee customFee;
       if (coinsDetailBloc.customFee != null) {
         if (widget.coinBalance.coin.type == 'erc') {
-          fee.type = 'EthGas';
-          fee.gas = coinsDetailBloc.customFee.gas;
-          fee.gasPrice = coinsDetailBloc.customFee.gasPrice;
+          customFee = Fee(
+            type: 'EthGas',
+            gas: coinsDetailBloc.customFee.gas,
+            gasPrice: coinsDetailBloc.customFee.gasPrice,
+          );
         } else {
-          fee.type = 'UtxoFixed';
-          fee.amount = coinsDetailBloc.customFee.amount;
+          customFee = Fee(
+            type: 'UtxoFixed',
+            amount: coinsDetailBloc.customFee.amount,
+          );
         }
       }
 
@@ -67,7 +71,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
               MMService().client,
               GetWithdraw(
                 userpass: MMService().userpass,
-                fee: fee,
+                fee: customFee,
                 coin: widget.coinBalance.coin.abbr,
                 to: widget.addressToSend,
                 amount: widget.amountToPay,
