@@ -57,6 +57,9 @@ class AppLocalizations {
           args: <Object>[amount, coinName], name: 'withdrawValue');
   String get withdrawConfirm =>
       Intl.message('Confirm Withdrawal', name: 'withdrawConfirm');
+  String get withdrawConfirmError =>
+      Intl.message('Something went wrong. Try again later.',
+          name: 'withdrawConfirmError');
   String get close => Intl.message('Close', name: 'close');
   String get confirmSeed =>
       Intl.message('Confirm Seed Phrase', name: 'confirmSeed');

@@ -108,7 +108,7 @@ class FeeDetails {
       gas: json['gas'] ?? 0,
       gasLimit: json['gas_limit'],
       gasPrice: json['gas_price'] ?? '',
-      totalFee: json['total_fee'] ?? '',
+      totalFee: json['total_fee'] ?? json['total_gas_fee'] ?? '',
     );
   }
 
