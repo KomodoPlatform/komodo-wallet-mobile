@@ -18,26 +18,28 @@ class Transaction {
     this.txHex,
   });
 
-  factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-        blockHeight: json['block_height'] ?? 0, //toDouble()
-        coin: json['coin'] ?? '',
-        confirmations: json['confirmations'] ?? 0,
-        feeDetails: json['fee_details'] == null
-            ? null
-            : FeeDetails.fromJson(json['fee_details']),
-        from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
-            <String>[],
-        internalId: json['internal_id'] ?? '',
-        myBalanceChange: json['my_balance_change'] ?? 0.0,
-        receivedByMe: json['received_by_me'] ?? 0.0,
-        spentByMe: json['spent_by_me'] ?? 0.0,
-        timestamp: json['timestamp'] ?? 0,
-        to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
-            <String>[],
-        totalAmount: json['total_amount'] ?? '',
-        txHash: json['tx_hash'] ?? '',
-        txHex: json['tx_hex'] ?? '',
-      );
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      blockHeight: json['block_height'] ?? 0, //toDouble()
+      coin: json['coin'] ?? '',
+      confirmations: json['confirmations'] ?? 0,
+      feeDetails: json['fee_details'] == null
+          ? null
+          : FeeDetails.fromJson(json['fee_details']),
+      from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
+          <String>[],
+      internalId: json['internal_id'] ?? '',
+      myBalanceChange: json['my_balance_change'] ?? 0.0,
+      receivedByMe: json['received_by_me'] ?? 0.0,
+      spentByMe: json['spent_by_me'] ?? 0.0,
+      timestamp: json['timestamp'] ?? 0,
+      to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
+          <String>[],
+      totalAmount: json['total_amount'] ?? '',
+      txHash: json['tx_hash'] ?? '',
+      txHex: json['tx_hex'] ?? '',
+    );
+  }
 
   int blockHeight;
   String coin;
@@ -85,8 +87,10 @@ class Transaction {
   }
 
   List<String> getToAddress() {
-    final List<String> toAddress = to;
-    toAddress.removeWhere((String toItem) => toItem == from[0]);
+    final List<String> toAddress = List.from(to);
+    if (toAddress.length > 1) {
+      toAddress.removeWhere((String toItem) => toItem == from[0]);
+    }
     return toAddress;
   }
 }
