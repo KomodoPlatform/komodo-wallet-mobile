@@ -245,11 +245,15 @@ class _TransactionDetailState extends State<TransactionDetail> {
 
     if (widget.transaction.feeDetails.amount == null ||
         widget.transaction.feeDetails.amount.isEmpty) {
-      // TODO(yurii): add support for qrc20 gas fee into FeeDetails()
       fee = widget.transaction.feeDetails?.totalFee.toString();
     } else {
       fee = widget.transaction.feeDetails?.amount.toString();
     }
+
+    try {
+      // QRC20/QTUM gas-refund (coinbase) txs, KMD claim rewards txs
+      if (double.parse(fee) < 0) return '0';
+    } catch (_) {}
 
     final String gasCoin = GetFee.gasCoin(widget.coinBalance.coin.abbr);
     if (gasCoin != null) {
