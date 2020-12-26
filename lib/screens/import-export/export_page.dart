@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/export_import_list_item.dart';
+import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/import-export/export_import_list.dart';
 
 class ExportPage extends StatefulWidget {
   @override
@@ -7,7 +10,19 @@ class ExportPage extends StatefulWidget {
 }
 
 class _ExportPageState extends State<ExportPage> {
-  bool isNotesExpanded = false;
+  Map<String, String> allNotes;
+  Map<String, String> selectedNotes;
+
+  @override
+  void initState() {
+    Db.getAllNotes().then((value) {
+      setState(() {
+        allNotes = value;
+        selectedNotes = Map.from(allNotes);
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +33,14 @@ class _ExportPageState extends State<ExportPage> {
           AppLocalizations.of(context).exportTitle,
         ),
       ),
-      body: ListView(
-        children: [
-          _buildHeader(),
-          ..._buildNotes(),
-          ..._buildContacts(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildHeader(),
+            _buildNotes(),
+            _buildContacts(),
+          ],
+        ),
       ),
     );
   }
@@ -39,41 +56,36 @@ class _ExportPageState extends State<ExportPage> {
     );
   }
 
-  List<Widget> _buildNotes() {
-    final List<Widget> list = [
-      Container(
-        color: Theme.of(context).primaryColor,
-        child: Row(
-          children: [
-            Checkbox(
-              value: _isAllNotesSelected(),
-              onChanged: (bool val) {},
-            ),
-            Expanded(
-                child: Text(AppLocalizations.of(context).exportNotesTitle)),
-            InkWell(
-              child: isNotesExpanded
-                  ? Icon(Icons.keyboard_arrow_up)
-                  : Icon(Icons.keyboard_arrow_down),
-              onTap: () {
-                setState(() {
-                  isNotesExpanded = !isNotesExpanded;
-                });
-              },
-            ),
-          ],
-        ),
-      ),
-    ];
-    return list;
+  Widget _buildNotes() {
+    if (allNotes == null) return SizedBox();
+
+    final List<ExportImportListItem> items = [];
+    allNotes.forEach((id, note) {
+      items.add(ExportImportListItem(
+          checked: selectedNotes.containsKey(id),
+          onChange: (bool val) {
+            setState(() {
+              val ? selectedNotes[id] = note : selectedNotes.remove(id);
+            });
+          },
+          child: Text(
+            note,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.caption,
+          )));
+    });
+
+    return ExportImportList(
+      items: items,
+      title: AppLocalizations.of(context).exportNotesTitle,
+    );
   }
 
-  bool _isAllNotesSelected() {
-    return false;
-  }
-
-  List<Widget> _buildContacts() {
-    final List<Widget> list = [];
-    return list;
+  Widget _buildContacts() {
+    return ExportImportList(
+      title: AppLocalizations.of(context).exportContactsTitle,
+      items: [],
+    );
   }
 }

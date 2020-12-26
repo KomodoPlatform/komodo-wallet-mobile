@@ -1189,6 +1189,10 @@ class AppLocalizations {
           name: 'exportDesc');
   String get exportNotesTitle =>
       Intl.message('Notes', name: 'exportNotesTitle');
+  String get exportContactsTitle =>
+      Intl.message('Contacts', name: 'exportContactsTitle');
+  String get nothingFound =>
+      Intl.message('Nothing found', name: 'nothingFound');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
