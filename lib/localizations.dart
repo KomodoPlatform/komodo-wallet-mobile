@@ -1178,6 +1178,17 @@ class AppLocalizations {
   String get noteTitle => Intl.message('Note', name: 'noteTitle');
   String get notePlaceholder =>
       Intl.message('Add a Note', name: 'notePlaceholder');
+
+  // --- Import/Export
+  String get importLink => Intl.message('Import', name: 'importLink');
+  String get exportLink => Intl.message('Export', name: 'exportLink');
+  String get importTitle => Intl.message('Import', name: 'importTitle');
+  String get exportTitle => Intl.message('Export', name: 'exportTitle');
+  String get exportDesc =>
+      Intl.message('Please select items to export into encrypted file.',
+          name: 'exportDesc');
+  String get exportNotesTitle =>
+      Intl.message('Notes', name: 'exportNotesTitle');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -4,12 +4,12 @@ import 'package:komodo_dex/screens/import-export/import_addressbook.dart';
 import 'package:komodo_dex/screens/import-export/import_notes.dart';
 import 'package:komodo_dex/screens/import-export/export_addressbook.dart';
 
-class ImportExportScreen extends StatefulWidget {
+class ImportPage extends StatefulWidget {
   @override
-  _ImportExportScreenState createState() => _ImportExportScreenState();
+  _ImportPageState createState() => _ImportPageState();
 }
 
-class _ImportExportScreenState extends State<ImportExportScreen> {
+class _ImportPageState extends State<ImportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
