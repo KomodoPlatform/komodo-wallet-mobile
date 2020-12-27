@@ -1193,6 +1193,10 @@ class AppLocalizations {
       Intl.message('Contacts', name: 'exportContactsTitle');
   String get nothingFound =>
       Intl.message('Nothing found', name: 'nothingFound');
+  String get exportButton => Intl.message('Export', name: 'exportButton');
+  String get emptyExportPass =>
+      Intl.message('Encryption password can\'t be empty',
+          name: 'emptyExportPass');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
