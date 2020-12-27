@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/screens/help-feedback/help_page.dart';
+import 'package:komodo_dex/screens/import-export/import_page.dart';
 import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
@@ -299,6 +300,27 @@ class _AppDrawerState extends State<AppDrawer> {
                                 size: 16,
                                 color: Colors.white.withAlpha(200),
                               )),
+                          Divider(
+                            indent: 20,
+                            endIndent: 20,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          _buildDrawerItem(
+                            leading: Icon(
+                              Icons.import_export,
+                              key: const Key('side-nav-import-export'),
+                              size: 16,
+                              color: Colors.white.withAlpha(200),
+                            ),
+                            onTap: () {
+                              Navigator.push<dynamic>(
+                                  context,
+                                  MaterialPageRoute<dynamic>(
+                                      builder: (BuildContext context) =>
+                                          ImportPage()));
+                            },
+                            title: Text('Import/Export'),
+                          ),
                           Divider(
                             indent: 20,
                             endIndent: 20,
