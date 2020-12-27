@@ -1197,6 +1197,8 @@ class AppLocalizations {
   String get emptyExportPass =>
       Intl.message('Encryption password can\'t be empty',
           name: 'emptyExportPass');
+  String get matchExportPass =>
+      Intl.message('Passwords must match', name: 'matchExportPass');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

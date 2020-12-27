@@ -20,54 +20,56 @@ class _ExportImportListState extends State<ExportImportList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          color: Theme.of(context).primaryColor,
-          child: Row(
-            children: [
-              Checkbox(
-                value: _isAllItemsSelected(),
-                onChanged: _haveItems()
-                    ? (bool val) {
-                        _setAllItems(val);
-                      }
-                    : (_) {
-                        setState(() {
-                          isExpanded = true;
-                        });
-                      },
-              ),
-              Expanded(
-                  child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+    return AbsorbPointer(
+      absorbing: !_haveItems(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Opacity(
+            opacity: _haveItems() ? 1 : 0.2,
+            child: Container(
+              color: _haveItems()
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).disabledColor,
+              child: Row(
                 children: [
-                  Text(widget.title),
-                  Text(
-                    ' (${_getCheckedQtt()}/${_haveItems() ? widget.items.length : '0'})',
-                    style: Theme.of(context).textTheme.caption,
+                  Checkbox(
+                    value: _areAllItemsChecked(),
+                    onChanged: (bool val) {
+                      _setAllItems(val);
+                    },
+                  ),
+                  Expanded(
+                      child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(widget.title),
+                      Text(
+                        ' (${_getCheckedQtt()}/${_haveItems() ? widget.items.length : '0'})',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
+                  )),
+                  InkWell(
+                    child: Container(
+                      padding: EdgeInsets.all(12),
+                      child: Icon(isExpanded
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        isExpanded = !isExpanded;
+                      });
+                    },
                   ),
                 ],
-              )),
-              InkWell(
-                child: Container(
-                  padding: EdgeInsets.all(12),
-                  child: Icon(isExpanded
-                      ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down),
-                ),
-                onTap: () {
-                  setState(() {
-                    isExpanded = !isExpanded;
-                  });
-                },
               ),
-            ],
+            ),
           ),
-        ),
-        if (isExpanded) _buildItems(),
-      ],
+          if (isExpanded) _buildItems(),
+        ],
+      ),
     );
   }
 
@@ -114,7 +116,7 @@ class _ExportImportListState extends State<ExportImportList> {
     }
   }
 
-  bool _isAllItemsSelected() {
+  bool _areAllItemsChecked() {
     if (!_haveItems()) return false;
     return _getCheckedQtt() == widget.items.length;
   }
