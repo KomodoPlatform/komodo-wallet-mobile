@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class Transaction {
   Transaction({
@@ -106,14 +107,23 @@ class FeeDetails {
   });
 
   factory FeeDetails.fromJson(Map<String, dynamic> json) {
-    return FeeDetails(
-      amount: json['amount'] ?? '',
+    final FeeDetails feeDetails = FeeDetails(
+      amount: json['amount'] ?? '', // UTXO
       coin: json['coin'] ?? '',
       gas: json['gas'] ?? 0,
       gasLimit: json['gas_limit'],
       gasPrice: json['gas_price'] ?? '',
-      totalFee: json['total_fee'] ?? json['total_gas_fee'] ?? '',
+      totalFee: json['total_fee'] ?? '', // ETH and ERC20 tokens
     );
+
+    try {
+      // QRC20 tokens
+      feeDetails.totalFee = cutTrailingZeros(formatPrice(
+          double.parse(json['miner_fee']) +
+              double.parse(json['total_gas_fee'])));
+    } catch (_) {}
+
+    return feeDetails;
   }
 
   String amount;
