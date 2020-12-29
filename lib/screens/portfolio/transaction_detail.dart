@@ -251,8 +251,9 @@ class _TransactionDetailState extends State<TransactionDetail> {
     }
 
     try {
-      // QRC20/QTUM gas-refund (coinbase) txs, KMD claim rewards txs
-      if (double.parse(fee) < 0) return '0';
+      // QTUM gas-refund (coinbase) txs
+      if (double.parse(fee) < 0 && widget.transaction.coin == 'QTUM')
+        return '0';
     } catch (_) {}
 
     final String gasCoin = GetFee.gasCoin(widget.coinBalance.coin.abbr);
