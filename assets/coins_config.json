@@ -436,7 +436,7 @@
 			"electrum3.cipig.net:10050"
 		],
 		"explorerUrl": [
-			"https://explorer.qtum.org/"
+			"https://qtum.info/"
 		]
  },
  {
@@ -455,7 +455,7 @@
 			"electrum3.cipig.net:10050"
   ],
   "explorerUrl": [
-   "https://qtum.info/"
+   "https://explorer.qtum.org/"
   ]
  },
 	{
