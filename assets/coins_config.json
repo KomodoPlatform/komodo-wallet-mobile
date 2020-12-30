@@ -447,7 +447,7 @@
   "proto": "tcp",
   "abbr": "QC",
   "coingeckoId": "qcash",
-  "swap_contract_address":"0xf2033ede578e17fa6231047265010445bca8cf1c",
+  "swap_contract_address":"0x2f754733acd6d753731c00fee32cb484551cc15d",
   "colorCoin": "0xFF52a5da",
   "serverList": [
 			"electrum1.cipig.net:10050",
