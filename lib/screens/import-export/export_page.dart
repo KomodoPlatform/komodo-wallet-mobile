@@ -165,7 +165,8 @@ class _ExportPageState extends State<ExportPage> {
     if (tempFile.existsSync()) await tempFile.delete();
     await crypt.encryptTextToFile(encoded, tmpFilePath);
 
-    await Share.shareFile(tempFile);
+    await Share.shareFile(tempFile,
+        mimeType: 'application/octet-stream', subject: 'atomicDEX backup');
     tempFile.delete();
   }
 
