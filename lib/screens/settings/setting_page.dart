@@ -531,6 +531,17 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildOldLogs() {
+    // TODO(MateusRodCosta): Consider switching to a provider
+
+    // The listing of all log files and calculation of space used by old logs
+    // is done everytime the widget tree is rebuilt
+    // Ideally, we should use a provider that provides a Stream with the space used
+    // and a method inside the provider to clear the old logs and update the space used info
+
+    // The way it is done currently is simple, but there's some chance of being slow if
+    // one has way too many old logs
+    // If such thing becomes a problem, the best is to go with the provider approach
+
     final now = DateTime.now();
     final ymd = '${now.year}'
         '-${Log.twoDigits(now.month)}'
@@ -554,6 +565,8 @@ class _SettingPageState extends State<SettingPage> {
               for (File f in listLogs) {
                 f.deleteSync();
               }
+              // Force rebuild of widget tree to update used space shown
+              setState(() {});
             }),
         title: Text(
           AppLocalizations.of(context).oldLogsUsed +
