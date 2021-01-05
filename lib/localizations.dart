@@ -1199,6 +1199,8 @@ class AppLocalizations {
           name: 'emptyExportPass');
   String get matchExportPass =>
       Intl.message('Passwords must match', name: 'matchExportPass');
+  String get noItemsToExport =>
+      Intl.message('No items selected', name: 'noItemsToExport');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

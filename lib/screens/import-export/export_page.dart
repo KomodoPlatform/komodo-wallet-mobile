@@ -116,7 +116,6 @@ class _ExportPageState extends State<ExportPage> {
                 if (_validate()) _export();
               },
               text: AppLocalizations.of(context).exportButton,
-              //isDarkMode: false,
             ),
           ),
           Expanded(child: SizedBox()),
@@ -126,6 +125,15 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   bool _validate() {
+    if (_selectedNotes.isEmpty) {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text(
+        AppLocalizations.of(context).noItemsToExport,
+        style: TextStyle(color: Theme.of(context).errorColor),
+      )));
+      return false;
+    }
+
     if (_ctrlPass1.text.isEmpty) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(
@@ -163,7 +171,8 @@ class _ExportPageState extends State<ExportPage> {
 
   Widget _buildPass() {
     return Container(
-      padding: EdgeInsets.fromLTRB(12, 24, 12, 0),
+      color: Theme.of(context).primaryColor,
+      padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
       child: Column(children: [
         TextField(
           controller: _ctrlPass1,

@@ -25,12 +25,10 @@ class _ExportImportListState extends State<ExportImportList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Opacity(
-            opacity: _haveItems() ? 1 : 0.2,
-            child: Container(
-              color: _haveItems()
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).disabledColor,
+          Container(
+            color: Theme.of(context).primaryColor,
+            child: Opacity(
+              opacity: _haveItems() ? 1 : 0.2,
               child: Row(
                 children: [
                   Checkbox(
@@ -77,6 +75,7 @@ class _ExportImportListState extends State<ExportImportList> {
     if (!_haveItems()) {
       return Container(
         padding: EdgeInsets.fromLTRB(24, 24, 12, 24),
+        color: Theme.of(context).primaryColor,
         child: Text(
           AppLocalizations.of(context).nothingFound,
           style: Theme.of(context).textTheme.caption,
@@ -104,6 +103,7 @@ class _ExportImportListState extends State<ExportImportList> {
 
     return Container(
       padding: EdgeInsets.fromLTRB(6, 12, 4, 12),
+      color: Theme.of(context).primaryColor,
       child: Column(
         children: list,
       ),
