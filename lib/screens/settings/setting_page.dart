@@ -118,7 +118,7 @@ class _SettingPageState extends State<SettingPage> {
                   height: 1,
                 ),
                 _buildTitle(AppLocalizations.of(context).oldLogsTitle),
-                _buildOldLogs(),
+                BuildOldLogs(),
                 _buildTitle(AppLocalizations.of(context).legalTitle),
                 _buildDisclaimerToS(),
                 _buildTitle(version),
@@ -530,58 +530,6 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  Widget _buildOldLogs() {
-    // TODO(MateusRodCosta): Consider switching to a provider
-
-    // The listing of all log files and calculation of space used by old logs
-    // is done everytime the widget tree is rebuilt
-    // Ideally, we should use a provider that provides a Stream with the space used
-    // and a method inside the provider to clear the old logs and update the space used info
-
-    // The way it is done currently is simple, but there's some chance of being slow if
-    // one has way too many old logs
-    // If such thing becomes a problem, the best is to go with the provider approach
-
-    final now = DateTime.now();
-    final ymd = '${now.year}'
-        '-${Log.twoDigits(now.month)}'
-        '-${Log.twoDigits(now.day)}';
-    final dirList = applicationDocumentsDirectorySync.listSync();
-    final listLogs = dirList
-        .whereType<File>()
-        .where((f) => f.path.endsWith('.log') && !f.path.endsWith('$ymd.log'))
-        .toList();
-    int totalSize = 0;
-    for (File log in listLogs) {
-      final fileSize = log.statSync().size;
-      totalSize += fileSize;
-    }
-    final sizeMb = totalSize / 1000000;
-    return CustomTile(
-      child: ListTile(
-        trailing: RaisedButton(
-            child: Text(AppLocalizations.of(context).oldLogsDelete),
-            onPressed: () {
-              for (File f in listLogs) {
-                f.deleteSync();
-              }
-              // Force rebuild of widget tree to update used space shown
-              setState(() {});
-            }),
-        title: Text(
-          AppLocalizations.of(context).oldLogsUsed +
-              ': ' +
-              (sizeMb >= 1000
-                  ? '${(sizeMb / 1000).toStringAsFixed(2)} GB'
-                  : ' ${sizeMb.toStringAsFixed(2)} MB'),
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
-        ),
-      ),
-    );
-  }
-
   void _showDialogDeleteWallet() {
     Navigator.push<dynamic>(
       context,
@@ -907,5 +855,78 @@ class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
         ))
       ],
     );
+  }
+}
+
+class BuildOldLogs extends StatefulWidget {
+  @override
+  _BuildOldLogsState createState() => _BuildOldLogsState();
+}
+
+class _BuildOldLogsState extends State<BuildOldLogs> {
+  List<dynamic> _listLogs = <dynamic>[];
+  double _sizeMb = 0;
+
+  @override
+  void initState() {
+    _update();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomTile(
+      child: ListTile(
+        trailing: RaisedButton(
+            child: Text(AppLocalizations.of(context).oldLogsDelete),
+            onPressed: () {
+              for (File f in _listLogs) {
+                f.deleteSync();
+              }
+              _update();
+            }),
+        title: Text(
+          AppLocalizations.of(context).oldLogsUsed +
+              ': ' +
+              (_sizeMb >= 1000
+                  ? '${(_sizeMb / 1000).toStringAsFixed(2)} GB'
+                  : ' ${_sizeMb.toStringAsFixed(2)} MB'),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
+      ),
+    );
+  }
+
+  void _update() {
+    _updateOldLogsList();
+    _updateLogsSize();
+  }
+
+  void _updateOldLogsList() {
+    final now = DateTime.now();
+    final ymd = '${now.year}'
+        '-${Log.twoDigits(now.month)}'
+        '-${Log.twoDigits(now.day)}';
+    final dirList = applicationDocumentsDirectorySync.listSync();
+    setState(() {
+      _listLogs = dirList
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.log') && !f.path.endsWith('$ymd.log'))
+          .toList();
+    });
+  }
+
+  void _updateLogsSize() {
+    int totalSize = 0;
+    for (File log in _listLogs) {
+      final fileSize = log.statSync().size;
+      totalSize += fileSize;
+    }
+    setState(() {
+      _sizeMb = totalSize / 1000000;
+    });
   }
 }
