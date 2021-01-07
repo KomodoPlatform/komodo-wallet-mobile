@@ -160,36 +160,6 @@ class MMService {
     userpass = sha256.convert(bytes).toString();
   }
 
-  Future<void> initCheckLogs() async {
-    final File fileLog = File('${filesPath}mm.log');
-
-    if (!fileLog.existsSync()) await fileLog.create();
-    int offset = fileLog.lengthSync();
-
-    jobService.install('tail MM log', 1, (j) async {
-      final Stream<String> stream = fileLog
-          .openRead(offset)
-          .transform(utf8.decoder)
-          .transform(const LineSplitter());
-      await for (String chunk in stream) {
-        if (chunk.contains('DEX stats API enabled at')) {
-          _running = true;
-          initCoinsAndLoad();
-          coinsBloc.startCheckBalance();
-        }
-        _onLog(chunk);
-      }
-      offset = fileLog.lengthSync();
-      if (offset > 1024 * 1024) {
-        // #653: Truncate the MM log buffer which is used presently on Android.
-        // `_onLog` copies chunks into the "log.txt"
-        // hence we can just truncate the "mm.log" without separately copying it.
-        final IOSink truncSink = fileLog.openWrite();
-        await truncSink.close();
-      }
-    });
-  }
-
   String get filesPath => applicationDocumentsDirectorySync == null
       ? null
       : applicationDocumentsDirectorySync.path + '/';
