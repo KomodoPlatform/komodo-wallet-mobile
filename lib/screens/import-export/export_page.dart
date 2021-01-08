@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:aes_crypt/aes_crypt.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/backup.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,15 +23,15 @@ class _ExportPageState extends State<ExportPage> {
   final TextEditingController _ctrlPass2 = TextEditingController();
   bool _isPassObscured = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  Map<String, String> _allNotes;
-  Map<String, String> _selectedNotes;
+  final Backup _all = Backup();
+  final Backup _selected = Backup();
 
   @override
   void initState() {
     Db.getAllNotes().then((value) {
       setState(() {
-        _allNotes = value;
-        _selectedNotes = Map.from(_allNotes);
+        _all.notes = value;
+        _selected.notes = Map.from(_all.notes);
       });
     });
     super.initState();
@@ -72,15 +73,15 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   Widget _buildNotes() {
-    if (_allNotes == null) return SizedBox();
+    if (_all.notes == null) return SizedBox();
 
     final List<ExportImportListItem> items = [];
-    _allNotes.forEach((id, note) {
+    _all.notes.forEach((id, note) {
       items.add(ExportImportListItem(
-          checked: _selectedNotes.containsKey(id),
+          checked: _selected.notes.containsKey(id),
           onChange: (bool val) {
             setState(() {
-              val ? _selectedNotes[id] = note : _selectedNotes.remove(id);
+              val ? _selected.notes[id] = note : _selected.notes.remove(id);
             });
           },
           child: Text(
@@ -125,7 +126,7 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   bool _validate() {
-    if (_selectedNotes.isEmpty) {
+    if (_selected.notes.isEmpty) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(
         AppLocalizations.of(context).noItemsToExport,
@@ -159,14 +160,14 @@ class _ExportPageState extends State<ExportPage> {
     final Directory tmpDir = await getApplicationDocumentsDirectory();
     final crypt = AesCrypt(_ctrlPass1.text);
 
-    final String encoded = jsonEncode(_selectedNotes);
+    final String encoded = jsonEncode(_selected);
     final tmpFilePath = '${tmpDir.path}/atomicDEX_backup';
     final File tempFile = File(tmpFilePath);
     if (tempFile.existsSync()) await tempFile.delete();
     await crypt.encryptTextToFile(encoded, tmpFilePath);
 
     await Share.shareFile(tempFile,
-        mimeType: 'application/octet-stream', subject: 'atomicDEX backup');
+        mimeType: 'application/octet-stream', subject: 'atomicDEX_backup');
     tempFile.delete();
   }
 
