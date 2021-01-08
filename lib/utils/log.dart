@@ -52,32 +52,30 @@ class Log {
 
   /// Loop through saved log files from latest to older, and delete
   /// all files above overall [limitMb] size, except the today's one
-  static void maintain() {
-    if (applicationDocumentsDirectorySync != null) {
-      const double limitMB = 1000;
+  static Future<void> maintain() async {
+    const double limitMB = 1000;
 
-      final List<File> logs = applicationDocumentsDirectorySync
-          .listSync()
-          .whereType<File>()
-          .where((f) => f.path.endsWith('.log'))
-          .toList();
+    final List<File> logs = (await applicationDocumentsDirectory)
+        .listSync()
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.log'))
+        .toList();
 
-      logs.sort((a, b) => b.path.compareTo(a.path));
+    logs.sort((a, b) => b.path.compareTo(a.path));
 
-      final DateTime now = DateTime.now();
-      final String todayStr = '${now.year}'
-          '-${twoDigits(now.month)}'
-          '-${twoDigits(now.day)}';
+    final DateTime now = DateTime.now();
+    final String todayStr = '${now.year}'
+        '-${twoDigits(now.month)}'
+        '-${twoDigits(now.day)}';
 
-      double totalMb = 0;
-      bool limitExceeded = false;
-      for (File logFile in logs) {
-        final double fileSizeMb = logFile.statSync().size / 1000000;
-        totalMb += fileSizeMb;
-        if (totalMb > limitMB) limitExceeded = true;
-        if (limitExceeded && !logFile.path.endsWith('$todayStr.log')) {
-          logFile.deleteSync();
-        }
+    double totalMb = 0;
+    bool limitExceeded = false;
+    for (File logFile in logs) {
+      final double fileSizeMb = logFile.statSync().size / 1000000;
+      totalMb += fileSizeMb;
+      if (totalMb > limitMB) limitExceeded = true;
+      if (limitExceeded && !logFile.path.endsWith('$todayStr.log')) {
+        logFile.deleteSync();
       }
     }
   }

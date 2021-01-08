@@ -49,7 +49,7 @@ class Startup {
     await camoBloc.init();
 
     // delete old logs
-    Log.maintain();
+    await Log.maintain();
 
     // We'd *like* to jump-start MM as part of the initial startup sequence
     // but this is unlikely to happen because the passphrase needs to be unlocked first.
