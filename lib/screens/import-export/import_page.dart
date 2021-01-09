@@ -5,6 +5,7 @@ import 'package:aes_crypt/aes_crypt.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
 import 'package:komodo_dex/model/export_import_list_item.dart';
 import 'package:komodo_dex/screens/import-export/export_import_list.dart';
@@ -14,6 +15,7 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
+import 'package:provider/provider.dart';
 
 class ImportPage extends StatefulWidget {
   @override
@@ -44,6 +46,7 @@ class _ImportPageState extends State<ImportPage> {
             } else ...{
               _buildImportHeader(),
               _buildNotes(),
+              _buildContacts(),
               _buildImportButton(),
             }
           ],
@@ -58,63 +61,72 @@ class _ImportPageState extends State<ImportPage> {
       child: PrimaryButton(
         onPressed: () async {
           await _importNotes();
+          await _importContacts();
         },
         text: AppLocalizations.of(context).importButton,
       ),
     );
   }
 
+  Future<void> _importContacts() async {
+    final AddressBookProvider provider =
+        Provider.of<AddressBookProvider>(context, listen: false);
+
+    _selected.contacts?.forEach((uid, contact) {
+      final Contact existing = provider.contactByUid(uid);
+      if (existing == null) {
+        provider.addContact(contact);
+      } else {
+        provider.updateContact(contact);
+      }
+    });
+  }
+
   Future<void> _importNotes() async {
-    try {
-      for (String id in _selected.notes.keys) {
-        final String note = _selected.notes[id];
+    for (String id in _selected.notes.keys) {
+      final String note = _selected.notes[id];
 
-        final String existingNote = await Db.getNote(id);
-        if (existingNote == null) {
-          await Db.saveNote(id, note);
-          continue;
-        }
-
-        String mergedValue = '';
-        final choice = await showDialog<NoteImportChoice>(
-          context: context,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text('Already exists'),
-              titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 12),
-              contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 12),
-              children: <Widget>[
-                OverwriteDialogContent(
-                    currentValue: existingNote,
-                    newValue: note,
-                    onSkip: () {
-                      Navigator.pop(context, NoteImportChoice.Skip);
-                    },
-                    onOverwrite: () {
-                      Navigator.pop(context, NoteImportChoice.Overwrite);
-                    },
-                    onMerge: (String merged) {
-                      mergedValue = merged;
-                      Navigator.pop(context, NoteImportChoice.Merge);
-                    })
-              ],
-            );
-          },
-        );
-        if (choice == NoteImportChoice.Overwrite) {
-          await Db.saveNote(id, note);
-        } else if (choice == NoteImportChoice.Merge) {
-          await Db.saveNote(id, mergedValue);
-        }
+      final String existingNote = await Db.getNote(id);
+      if (existingNote == null) {
+        await Db.saveNote(id, note);
+        continue;
       }
 
-      _scaffoldKey.currentState
-          .showSnackBar(const SnackBar(content: Text('Imported successfully')));
-    } catch (e) {
-      _scaffoldKey.currentState
-          .showSnackBar(SnackBar(content: Text('Error:  $e')));
-      return;
+      String mergedValue = '';
+      final choice = await showDialog<NoteImportChoice>(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Already exists'),
+            titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 12),
+            contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 12),
+            children: <Widget>[
+              OverwriteDialogContent(
+                  currentValue: existingNote,
+                  newValue: note,
+                  onSkip: () {
+                    Navigator.pop(context, NoteImportChoice.Skip);
+                  },
+                  onOverwrite: () {
+                    Navigator.pop(context, NoteImportChoice.Overwrite);
+                  },
+                  onMerge: (String merged) {
+                    mergedValue = merged;
+                    Navigator.pop(context, NoteImportChoice.Merge);
+                  })
+            ],
+          );
+        },
+      );
+      if (choice == NoteImportChoice.Overwrite) {
+        await Db.saveNote(id, note);
+      } else if (choice == NoteImportChoice.Merge) {
+        await Db.saveNote(id, mergedValue);
+      }
     }
+
+    _scaffoldKey.currentState
+        .showSnackBar(const SnackBar(content: Text('Imported successfully')));
   }
 
   Widget _buildNotes() {
@@ -138,6 +150,50 @@ class _ImportPageState extends State<ImportPage> {
     return ExportImportList(
       items: items,
       title: AppLocalizations.of(context).exportNotesTitle,
+    );
+  }
+
+  Widget _buildContacts() {
+    final List<ExportImportListItem> items = [];
+    _all.contacts.forEach((String id, dynamic contact) {
+      items.add(ExportImportListItem(
+          checked: _selected.contacts.containsKey(id),
+          onChange: (bool val) {
+            setState(() {
+              val
+                  ? _selected.contacts[id] = contact
+                  : _selected.contacts.remove(id);
+            });
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(contact.name),
+              SizedBox(height: 2),
+              Builder(builder: (context) {
+                final List<String> coins = contact.addresses.keys.toList();
+                final List<Widget> coinsRow = [];
+
+                for (int i = 0; i < coins.length; i++) {
+                  final String coin = coins[i];
+                  coinsRow.add(Text(
+                    coin + (i < coins.length - 1 ? ', ' : ''),
+                    style: TextStyle(
+                        fontSize: 10, color: Theme.of(context).disabledColor),
+                  ));
+                }
+
+                return Wrap(
+                  children: coinsRow,
+                );
+              }),
+            ],
+          )));
+    });
+
+    return ExportImportList(
+      items: items,
+      title: AppLocalizations.of(context).exportContactsTitle,
     );
   }
 

@@ -19,6 +19,13 @@ class AddressBookProvider extends ChangeNotifier {
     return _contacts;
   }
 
+  Contact contactByUid(String uid) {
+    return _contacts.firstWhere(
+      (Contact c) => c.uid == uid,
+      orElse: () => null,
+    );
+  }
+
   Contact contactByAddress(String address) {
     if (_contacts == null) return null;
 
@@ -33,10 +40,7 @@ class AddressBookProvider extends ChangeNotifier {
   }
 
   void updateContact(Contact contact) {
-    final Contact existing = _contacts.firstWhere(
-      (Contact c) => c.uid == contact.uid,
-      orElse: () => null,
-    );
+    final Contact existing = contactByUid(contact.uid);
 
     if (existing != null) {
       existing.name = contact.name;
@@ -56,6 +60,13 @@ class AddressBookProvider extends ChangeNotifier {
     notifyListeners();
 
     return contact;
+  }
+
+  void addContact(Contact contact) {
+    if (contactByUid(contact.uid) != null) return;
+    _contacts.add(contact);
+    _saveContacts();
+    notifyListeners();
   }
 
   void deleteContact(Contact contact) {

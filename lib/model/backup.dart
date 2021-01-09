@@ -7,10 +7,14 @@ class Backup {
   });
 
   factory Backup.fromJson(Map<String, dynamic> json) {
+    final Map<String, Contact> contacts = {};
+    json['contacts']?.forEach((String uid, dynamic contactJson) {
+      contacts[uid] = Contact.fromJson(contactJson);
+    });
+
     return Backup(
       notes: Map.from(json['notes'] ?? <String, String>{}),
-      contacts:
-          Map<String, dynamic>.from(json['contacts'] ?? <String, Contact>{}),
+      contacts: contacts,
     );
   }
 
