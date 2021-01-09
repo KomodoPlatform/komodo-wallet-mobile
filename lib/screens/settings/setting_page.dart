@@ -121,6 +121,8 @@ class _SettingPageState extends State<SettingPage> {
                 const SizedBox(
                   height: 1,
                 ),
+                _buildTitle(AppLocalizations.of(context).oldLogsTitle),
+                BuildOldLogs(),
                 _buildTitle(AppLocalizations.of(context).legalTitle),
                 _buildDisclaimerToS(),
                 _buildTitle(version),
@@ -899,5 +901,78 @@ class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
         ))
       ],
     );
+  }
+}
+
+class BuildOldLogs extends StatefulWidget {
+  @override
+  _BuildOldLogsState createState() => _BuildOldLogsState();
+}
+
+class _BuildOldLogsState extends State<BuildOldLogs> {
+  List<dynamic> _listLogs = <dynamic>[];
+  double _sizeMb = 0;
+
+  @override
+  void initState() {
+    _update();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomTile(
+      child: ListTile(
+        trailing: RaisedButton(
+            child: Text(AppLocalizations.of(context).oldLogsDelete),
+            onPressed: () {
+              for (File f in _listLogs) {
+                f.deleteSync();
+              }
+              _update();
+            }),
+        title: Text(
+          AppLocalizations.of(context).oldLogsUsed +
+              ': ' +
+              (_sizeMb >= 1000
+                  ? '${(_sizeMb / 1000).toStringAsFixed(2)} GB'
+                  : ' ${_sizeMb.toStringAsFixed(2)} MB'),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
+      ),
+    );
+  }
+
+  void _update() {
+    _updateOldLogsList();
+    _updateLogsSize();
+  }
+
+  void _updateOldLogsList() {
+    final now = DateTime.now();
+    final ymd = '${now.year}'
+        '-${Log.twoDigits(now.month)}'
+        '-${Log.twoDigits(now.day)}';
+    final dirList = applicationDocumentsDirectorySync.listSync();
+    setState(() {
+      _listLogs = dirList
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.log') && !f.path.endsWith('$ymd.log'))
+          .toList();
+    });
+  }
+
+  void _updateLogsSize() {
+    int totalSize = 0;
+    for (File log in _listLogs) {
+      final fileSize = log.statSync().size;
+      totalSize += fileSize;
+    }
+    setState(() {
+      _sizeMb = totalSize / 1000000;
+    });
   }
 }

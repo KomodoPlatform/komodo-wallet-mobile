@@ -1150,6 +1150,9 @@ class AppLocalizations {
   String get minutes => Intl.message('m', name: 'minutes');
   String get hours => Intl.message('h', name: 'hours');
   String get moreTab => Intl.message('More', name: 'moreTab');
+  String get oldLogsTitle => Intl.message('Old logs', name: 'oldLogsTitle');
+  String get oldLogsDelete => Intl.message('Delete', name: 'oldLogsDelete');
+  String get oldLogsUsed => Intl.message('Space used', name: 'oldLogsUsed');
 
   // --- Maker order details ---
 
