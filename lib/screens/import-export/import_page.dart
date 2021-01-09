@@ -24,6 +24,7 @@ class ImportPage extends StatefulWidget {
 
 class _ImportPageState extends State<ImportPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _loading = false;
   Backup _all;
   Backup _selected;
 
@@ -211,11 +212,17 @@ class _ImportPageState extends State<ImportPage> {
   Widget _buildLoadHeader() {
     return Container(
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
-      child: Text(AppLocalizations.of(context).importLoadDesc,
-          style: TextStyle(
-            height: 1.3,
-            color: Theme.of(context).disabledColor,
-          )),
+      child: _loading
+          ? Text(AppLocalizations.of(context).importLoading,
+              style: TextStyle(
+                height: 1.3,
+                color: Theme.of(context).disabledColor,
+              ))
+          : Text(AppLocalizations.of(context).importLoadDesc,
+              style: TextStyle(
+                height: 1.3,
+                color: Theme.of(context).disabledColor,
+              )),
     );
   }
 
@@ -223,34 +230,43 @@ class _ImportPageState extends State<ImportPage> {
     return Container(
       padding: EdgeInsets.fromLTRB(48, 24, 48, 24),
       child: PrimaryButton(
-        onPressed: () async {
-          String path;
-          final int lockCookie = lockService.enteringFilePicker();
-          try {
-            path = await FilePicker.getFilePath();
-          } catch (err) {
-            Log('import_page]', 'file picker exception: $err');
-          }
-          lockService.filePickerReturned(lockCookie);
+        onPressed: _loading
+            ? null
+            : () async {
+                setState(() => _loading = true);
 
-          if (path == null) return;
+                String path;
+                final int lockCookie = lockService.enteringFilePicker();
+                try {
+                  path = await FilePicker.getFilePath();
+                } catch (err) {
+                  Log('import_page]', 'file picker exception: $err');
+                }
+                lockService.filePickerReturned(lockCookie);
 
-          final File file = File(path);
-          if (!file.existsSync()) {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text(AppLocalizations.of(context).importFileNotFound),
-            ));
-            return;
-          }
+                if (path == null) {
+                  setState(() => _loading = false);
+                  return;
+                }
 
-          final Map<String, dynamic> decrypted = await _decrypt(file);
-          if (decrypted == null) return;
+                final File file = File(path);
+                if (!file.existsSync()) {
+                  _scaffoldKey.currentState.showSnackBar(SnackBar(
+                    content:
+                        Text(AppLocalizations.of(context).importFileNotFound),
+                  ));
+                  return;
+                }
 
-          setState(() {
-            _all = Backup.fromJson(decrypted);
-            _selected = Backup.fromJson(decrypted);
-          });
-        },
+                final Map<String, dynamic> decrypted = await _decrypt(file);
+                setState(() => _loading = false);
+                if (decrypted == null) return;
+
+                setState(() {
+                  _all = Backup.fromJson(decrypted);
+                  _selected = Backup.fromJson(decrypted);
+                });
+              },
         text: AppLocalizations.of(context).selectFileImport,
       ),
     );

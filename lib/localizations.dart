@@ -1193,6 +1193,7 @@ class AppLocalizations {
   String get importLoadDesc =>
       Intl.message('Please select encrypted file to import.',
           name: 'importLoadDesc');
+  String get importLoading => Intl.message('Opening...', name: 'importLoading');
   String get importDesc =>
       Intl.message('Items to be imported:', name: 'importDesc');
   String get exportNotesTitle =>
