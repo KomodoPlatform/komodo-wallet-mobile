@@ -14,6 +14,7 @@ import 'package:komodo_dex/screens/import-export/overwrite_dialog_content.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,8 @@ class ImportPage extends StatefulWidget {
 class _ImportPageState extends State<ImportPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _loading = false;
+  final _passController = TextEditingController();
+  bool _isPassObscured = true;
   Backup _all;
   Backup _selected;
 
@@ -273,18 +276,56 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   Future<Map<String, dynamic>> _decrypt(File file) async {
+    setState(() => _isPassObscured = true);
+    _passController.text = '';
+
     final pass = await showDialog<String>(
       context: context,
       barrierDismissible: false,
-      builder: (context) {
-        final passController = TextEditingController();
+      builder: (context) => StatefulBuilder(builder: (context, setState) {
         return SimpleDialog(
           title: Text(AppLocalizations.of(context).importPassword),
+          contentPadding: EdgeInsets.fromLTRB(24, 24, 24, 12),
           children: <Widget>[
             TextField(
-              controller: passController,
+              controller: _passController,
+              autofocus: true,
+              textInputAction: TextInputAction.done,
+              autocorrect: false,
+              enableInteractiveSelection: true,
+              toolbarOptions: ToolbarOptions(
+                paste: _passController.text.isEmpty,
+                copy: false,
+                cut: false,
+                selectAll: false,
+              ),
+              obscureText: _isPassObscured,
+              style: Theme.of(context).textTheme.bodyText2,
+              decoration: InputDecoration(
+                errorMaxLines: 6,
+                errorStyle: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontSize: 12, color: Theme.of(context).errorColor),
+                border: const OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).primaryColorLight)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).accentColor)),
+                hintStyle: Theme.of(context).textTheme.bodyText1,
+                labelStyle: Theme.of(context).textTheme.bodyText2,
+                hintText: AppLocalizations.of(context).hintPassword,
+                labelText: null,
+                suffixIcon: PasswordVisibilityControl(
+                  onVisibilityChange: (bool isPasswordObscured) {
+                    setState(() {
+                      _isPassObscured = isPasswordObscured;
+                    });
+                  },
+                ),
+              ),
             ),
-            const Divider(height: 1),
+            SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -292,15 +333,15 @@ class _ImportPageState extends State<ImportPage> {
                   onPressed: () => Navigator.pop(context),
                   child: Text(AppLocalizations.of(context).importPassCancel),
                 ),
-                FlatButton(
-                  onPressed: () => Navigator.pop(context, passController.text),
+                RaisedButton(
+                  onPressed: () => Navigator.pop(context, _passController.text),
                   child: Text(AppLocalizations.of(context).importPassOk),
                 ),
               ],
             ),
           ],
         );
-      },
+      }),
     );
 
     if (pass == null) return null;
@@ -320,7 +361,7 @@ class _ImportPageState extends State<ImportPage> {
       Log('import_page]', 'Failed to decrypt file: $e');
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(
-          e,
+          '$e',
           style: TextStyle(
             color: Theme.of(context).errorColor,
           ),
