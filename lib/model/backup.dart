@@ -1,3 +1,5 @@
+import 'package:komodo_dex/model/addressbook_provider.dart';
+
 class Backup {
   Backup({
     this.notes,
@@ -8,12 +10,12 @@ class Backup {
     return Backup(
       notes: Map.from(json['notes'] ?? <String, String>{}),
       contacts:
-          Map<String, dynamic>.from(json['contacts'] ?? <String, dynamic>{}),
+          Map<String, dynamic>.from(json['contacts'] ?? <String, Contact>{}),
     );
   }
 
   Map<String, String> notes;
-  Map<String, dynamic> contacts;
+  Map<String, Contact> contacts;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

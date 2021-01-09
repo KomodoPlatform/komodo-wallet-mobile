@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:aes_crypt/aes_crypt.dart';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:komodo_dex/model/export_import_list_item.dart';
 import 'package:komodo_dex/services/db/database.dart';
@@ -19,21 +21,19 @@ class ExportPage extends StatefulWidget {
 }
 
 class _ExportPageState extends State<ExportPage> {
+  bool _done = false;
   final TextEditingController _ctrlPass1 = TextEditingController();
   final TextEditingController _ctrlPass2 = TextEditingController();
   bool _isPassObscured = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final Backup _all = Backup();
-  final Backup _selected = Backup();
+  final Backup _all = Backup(contacts: {}, notes: {});
+  final Backup _selected = Backup(contacts: {}, notes: {});
 
   @override
   void initState() {
-    Db.getAllNotes().then((value) {
-      setState(() {
-        _all.notes = value;
-        _selected.notes = Map.from(_all.notes);
-      });
-    });
+    _loadNotes();
+    _loadContacts();
+
     super.initState();
   }
 
@@ -50,15 +50,66 @@ class _ExportPageState extends State<ExportPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(),
-            _buildNotes(),
-            _buildContacts(),
-            _buildPass(),
-            _buildButton(),
+            if (_done) ...{
+              _buildSuccess(),
+            } else ...{
+              _buildHeader(),
+              _buildNotes(),
+              _buildContacts(),
+              _buildPass(),
+              _buildButton(),
+            }
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _loadNotes() async {
+    final Map<String, String> notes = await Db.getAllNotes();
+
+    setState(() {
+      _all.notes = notes;
+      _selected.notes = Map.from(_all.notes);
+    });
+  }
+
+  Future<void> _loadContacts() async {
+    final List<Contact> contacts =
+        await Provider.of<AddressBookProvider>(context, listen: false).contacts;
+
+    for (Contact contact in contacts) {
+      setState(() {
+        _all.contacts[contact.uid] = contact;
+        _selected.contacts[contact.uid] = contact;
+      });
+    }
+  }
+
+  Widget _buildSuccess() {
+    return Container(
+        padding: EdgeInsets.fromLTRB(12, 48, 12, 48),
+        child: Center(
+          child: Column(
+            children: [
+              Text(
+                AppLocalizations.of(context).success,
+                style: TextStyle(
+                  color: Colors.green,
+                ),
+              ),
+              SizedBox(height: 48),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  AppLocalizations.of(context).back,
+                ),
+              )
+            ],
+          ),
+        ));
   }
 
   Widget _buildHeader() {
@@ -99,9 +150,50 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   Widget _buildContacts() {
+    if (_all.contacts == null) return SizedBox();
+
+    final List<ExportImportListItem> items = [];
+
+    _all.contacts.forEach((uid, contact) {
+      items.add(ExportImportListItem(
+        checked: _selected.contacts.containsKey(uid),
+        onChange: (val) {
+          setState(() {
+            val
+                ? _selected.contacts[uid] = contact
+                : _selected.contacts.remove(uid);
+          });
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(contact.name),
+            SizedBox(height: 2),
+            Builder(builder: (context) {
+              final List<String> coins = contact.addresses.keys.toList();
+              final List<Widget> coinsRow = [];
+
+              for (int i = 0; i < coins.length; i++) {
+                final String coin = coins[i];
+                coinsRow.add(Text(
+                  coin + (i < coins.length - 1 ? ', ' : ''),
+                  style: TextStyle(
+                      fontSize: 10, color: Theme.of(context).disabledColor),
+                ));
+              }
+
+              return Wrap(
+                children: coinsRow,
+              );
+            }),
+          ],
+        ),
+      ));
+    });
+
     return ExportImportList(
       title: AppLocalizations.of(context).exportContactsTitle,
-      items: [],
+      items: items,
     );
   }
 
@@ -126,7 +218,7 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   bool _validate() {
-    if (_selected.notes.isEmpty) {
+    if (_selected.notes.isEmpty && _selected.contacts.isEmpty) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(
         AppLocalizations.of(context).noItemsToExport,
@@ -169,6 +261,9 @@ class _ExportPageState extends State<ExportPage> {
     await Share.shareFile(tempFile,
         mimeType: 'application/octet-stream', subject: 'atomicDEX_backup');
     tempFile.delete();
+    setState(() {
+      _done = true;
+    });
   }
 
   Widget _buildPass() {
