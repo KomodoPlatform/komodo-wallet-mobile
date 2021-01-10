@@ -9,6 +9,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
 import 'package:komodo_dex/model/export_import_list_item.dart';
 import 'package:komodo_dex/screens/import-export/export_import_list.dart';
+import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/screens/import-export/import_notes.dart';
 import 'package:komodo_dex/screens/import-export/overwrite_dialog_content.dart';
 import 'package:komodo_dex/services/db/database.dart';
@@ -28,6 +29,7 @@ class _ImportPageState extends State<ImportPage> {
   bool _loading = false;
   final _passController = TextEditingController();
   bool _isPassObscured = true;
+  bool _done = false;
   Backup _all;
   Backup _selected;
 
@@ -44,7 +46,9 @@ class _ImportPageState extends State<ImportPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            if (_all == null) ...{
+            if (_done) ...{
+              _buildSuccess(),
+            } else if (_all == null) ...{
               _buildLoadHeader(),
               _buildFilePickerButton(),
             } else ...{
@@ -59,6 +63,17 @@ class _ImportPageState extends State<ImportPage> {
     );
   }
 
+  Widget _buildSuccess() {
+    return ExportImportSuccess(
+      title: AppLocalizations.of(context).importSuccessTitle,
+      items: {
+        AppLocalizations.of(context).exportNotesTitle: _selected.notes.length,
+        AppLocalizations.of(context).exportContactsTitle:
+            _selected.contacts.length,
+      },
+    );
+  }
+
   Widget _buildImportButton() {
     return Container(
       padding: EdgeInsets.fromLTRB(48, 24, 48, 24),
@@ -66,6 +81,7 @@ class _ImportPageState extends State<ImportPage> {
         onPressed: () async {
           await _importNotes();
           await _importContacts();
+          setState(() => _done = true);
         },
         text: AppLocalizations.of(context).importButton,
       ),
@@ -128,9 +144,6 @@ class _ImportPageState extends State<ImportPage> {
         await Db.saveNote(id, mergedValue);
       }
     }
-
-    _scaffoldKey.currentState
-        .showSnackBar(const SnackBar(content: Text('Imported successfully')));
   }
 
   Widget _buildNotes() {
@@ -254,10 +267,7 @@ class _ImportPageState extends State<ImportPage> {
 
                 final File file = File(path);
                 if (!file.existsSync()) {
-                  _scaffoldKey.currentState.showSnackBar(SnackBar(
-                    content:
-                        Text(AppLocalizations.of(context).importFileNotFound),
-                  ));
+                  _showError(AppLocalizations.of(context).importFileNotFound);
                   return;
                 }
 
@@ -347,8 +357,7 @@ class _ImportPageState extends State<ImportPage> {
     if (pass == null) return null;
 
     if (pass.isEmpty) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(AppLocalizations.of(context).emptyExportPass)));
+      _showError(AppLocalizations.of(context).emptyExportPass);
       return null;
     }
 
@@ -359,15 +368,16 @@ class _ImportPageState extends State<ImportPage> {
       return jsonDecode(decrypted);
     } catch (e) {
       Log('import_page]', 'Failed to decrypt file: $e');
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(
-          '$e',
-          style: TextStyle(
-            color: Theme.of(context).errorColor,
-          ),
-        ),
-      ));
+      _showError(e);
       return null;
     }
+  }
+
+  void _showError(String e) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(
+      '$e',
+      style: TextStyle(color: Theme.of(context).errorColor),
+    )));
   }
 }

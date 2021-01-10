@@ -5,6 +5,7 @@ import 'package:aes_crypt/aes_crypt.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
+import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:path_provider/path_provider.dart';
@@ -87,29 +88,14 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   Widget _buildSuccess() {
-    return Container(
-        padding: EdgeInsets.fromLTRB(12, 48, 12, 48),
-        child: Center(
-          child: Column(
-            children: [
-              Text(
-                AppLocalizations.of(context).success,
-                style: TextStyle(
-                  color: Colors.green,
-                ),
-              ),
-              SizedBox(height: 48),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  AppLocalizations.of(context).back,
-                ),
-              )
-            ],
-          ),
-        ));
+    return ExportImportSuccess(
+      title: AppLocalizations.of(context).exportSuccessTitle,
+      items: {
+        AppLocalizations.of(context).exportNotesTitle: _selected.notes.length,
+        AppLocalizations.of(context).exportContactsTitle:
+            _selected.contacts.length,
+      },
+    );
   }
 
   Widget _buildHeader() {
@@ -219,29 +205,17 @@ class _ExportPageState extends State<ExportPage> {
 
   bool _validate() {
     if (_selected.notes.isEmpty && _selected.contacts.isEmpty) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(
-        AppLocalizations.of(context).noItemsToExport,
-        style: TextStyle(color: Theme.of(context).errorColor),
-      )));
+      _showError(AppLocalizations.of(context).noItemsToExport);
       return false;
     }
 
     if (_ctrlPass1.text.isEmpty) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(
-        AppLocalizations.of(context).emptyExportPass,
-        style: TextStyle(color: Theme.of(context).errorColor),
-      )));
+      _showError(AppLocalizations.of(context).emptyExportPass);
       return false;
     }
 
     if (_ctrlPass1.text != _ctrlPass2.text) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(
-        AppLocalizations.of(context).matchExportPass,
-        style: TextStyle(color: Theme.of(context).errorColor),
-      )));
+      _showError(AppLocalizations.of(context).matchExportPass);
       return false;
     }
 
@@ -298,7 +272,7 @@ class _ExportPageState extends State<ExportPage> {
                 borderSide: BorderSide(color: Theme.of(context).accentColor)),
             hintStyle: Theme.of(context).textTheme.bodyText1,
             labelStyle: Theme.of(context).textTheme.bodyText2,
-            hintText: AppLocalizations.of(context).hintPassword,
+            hintText: AppLocalizations.of(context).hintCreatePassword,
             labelText: null,
             suffixIcon: PasswordVisibilityControl(
               onVisibilityChange: (bool isPasswordObscured) {
@@ -340,5 +314,13 @@ class _ExportPageState extends State<ExportPage> {
         ),
       ]),
     );
+  }
+
+  void _showError(String e) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(
+      '$e',
+      style: TextStyle(color: Theme.of(context).errorColor),
+    )));
   }
 }

@@ -274,6 +274,8 @@ class AppLocalizations {
       Intl.message('CREATE A WALLET', name: 'createAWallet');
   String get restoreWallet => Intl.message('RESTORE', name: 'restoreWallet');
   String get hintPassword => Intl.message('Password', name: 'hintPassword');
+  String get hintCreatePassword =>
+      Intl.message('Create Password', name: 'hintCreatePassword');
   String get hintConfirmPassword =>
       Intl.message('Confirm Password', name: 'hintConfirmPassword');
   String get hintCurrentPassword =>
@@ -1153,6 +1155,8 @@ class AppLocalizations {
   String get oldLogsTitle => Intl.message('Old logs', name: 'oldLogsTitle');
   String get oldLogsDelete => Intl.message('Delete', name: 'oldLogsDelete');
   String get oldLogsUsed => Intl.message('Space used', name: 'oldLogsUsed');
+  String get okButton => Intl.message('Ok', name: 'okButton');
+  String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
   // --- Maker order details ---
 
@@ -1221,6 +1225,12 @@ class AppLocalizations {
   String get importPassCancel =>
       Intl.message('Cancel', name: 'importPassCancel');
   String get importPassOk => Intl.message('Ok', name: 'importPassOk');
+  String get exportSuccessTitle =>
+      Intl.message('Items have been successfully exported:',
+          name: 'exportSuccessTitle');
+  String get importSuccessTitle =>
+      Intl.message('Items have been successfully imported:',
+          name: 'importSuccessTitle');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
