@@ -7,7 +7,6 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/screens/authentification/logout_confirmation.dart';
 import 'package:komodo_dex/screens/help-feedback/help_page.dart';
-import 'package:komodo_dex/screens/import-export/import_export_page.dart';
 import 'package:komodo_dex/screens/settings/currencies_dialog.dart';
 import 'package:komodo_dex/screens/settings/select_language_page.dart';
 import 'package:komodo_dex/screens/settings/setting_page.dart';
