@@ -79,13 +79,24 @@ class _ImportPageState extends State<ImportPage> {
       padding: EdgeInsets.fromLTRB(48, 24, 48, 24),
       child: PrimaryButton(
         onPressed: () async {
-          await _importNotes();
-          await _importContacts();
-          setState(() => _done = true);
+          if (_validate()) {
+            await _importNotes();
+            await _importContacts();
+            setState(() => _done = true);
+          }
         },
         text: AppLocalizations.of(context).importButton,
       ),
     );
+  }
+
+  bool _validate() {
+    if (_selected.notes.isEmpty && _selected.contacts.isEmpty) {
+      _showError(AppLocalizations.of(context).noItemsToImport);
+      return false;
+    }
+
+    return true;
   }
 
   Future<void> _importContacts() async {
@@ -368,7 +379,7 @@ class _ImportPageState extends State<ImportPage> {
       return jsonDecode(decrypted);
     } catch (e) {
       Log('import_page]', 'Failed to decrypt file: $e');
-      _showError(e);
+      _showError('$e');
       return null;
     }
   }

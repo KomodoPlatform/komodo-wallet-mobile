@@ -1217,6 +1217,8 @@ class AppLocalizations {
       Intl.message('Passwords must match', name: 'matchExportPass');
   String get noItemsToExport =>
       Intl.message('No items selected', name: 'noItemsToExport');
+  String get noItemsToImport =>
+      Intl.message('No items selected', name: 'noItemsToImport');
   String get selectFileImport =>
       Intl.message('Select file', name: 'selectFileImport');
   String get importFileNotFound =>
