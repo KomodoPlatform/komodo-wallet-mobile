@@ -307,27 +307,6 @@ class _AppDrawerState extends State<AppDrawer> {
                           ),
                           _buildDrawerItem(
                             leading: Icon(
-                              Icons.import_export,
-                              key: const Key('side-nav-import-export'),
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
-                            ),
-                            onTap: () {
-                              Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          ImportExportPage()));
-                            },
-                            title: Text('Import/Export'),
-                          ),
-                          Divider(
-                            indent: 20,
-                            endIndent: 20,
-                            color: Theme.of(context).hintColor,
-                          ),
-                          _buildDrawerItem(
-                            leading: Icon(
                               Icons.exit_to_app,
                               key: const Key('side-nav-logout'),
                               size: 16,

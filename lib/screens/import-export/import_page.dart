@@ -10,7 +10,6 @@ import 'package:komodo_dex/model/backup.dart';
 import 'package:komodo_dex/model/export_import_list_item.dart';
 import 'package:komodo_dex/screens/import-export/export_import_list.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
-import 'package:komodo_dex/screens/import-export/import_notes.dart';
 import 'package:komodo_dex/screens/import-export/overwrite_dialog_content.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/lock_service.dart';
@@ -392,3 +391,5 @@ class _ImportPageState extends State<ImportPage> {
     )));
   }
 }
+
+enum NoteImportChoice { Skip, Overwrite, Merge }
