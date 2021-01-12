@@ -198,7 +198,8 @@ class _ImportPageState extends State<ImportPage> {
               Text(contact.name),
               SizedBox(height: 2),
               Builder(builder: (context) {
-                final List<String> coins = contact.addresses.keys.toList();
+                final List<String> coins =
+                    contact.addresses?.keys?.toList() ?? [];
                 final List<Widget> coinsRow = [];
 
                 for (int i = 0; i < coins.length; i++) {
