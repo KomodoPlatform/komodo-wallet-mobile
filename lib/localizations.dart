@@ -1233,6 +1233,9 @@ class AppLocalizations {
   String get importSuccessTitle =>
       Intl.message('Items have been successfully imported:',
           name: 'importSuccessTitle');
+  String get importDecryptError =>
+      Intl.message('Invalid password or corrupted data',
+          name: 'importDecryptError');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

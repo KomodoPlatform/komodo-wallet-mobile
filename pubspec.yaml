@@ -55,9 +55,9 @@ dependencies:
       url: https://github.com/KomodoPlatform/provider
       ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
 
-  # https://pub.dev/packages/aes_crypt
+  # https://pub.dev/packages/encrypt
   # TODO: Secure code review required
-  aes_crypt: 0.1.1
+  encrypt: 4.0.3
 
 dev_dependencies:
   flutter_driver: # flutter.dev
@@ -138,10 +138,6 @@ dev_dependencies:
     git: 
       url: https://github.com/KomodoPlatform/flutter_slidable.git
       ref: 27bbe0dfa9866ae01e8001267e873221ef5fbd67
-  password: # 1.0.0 - DONE: Secure code reviewed dbf924d (1.0.0)
-    git:
-      url: git://github.com/KomodoPlatform/password-dart.git
-      ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
   package_info: 0.4.3 # flutter.dev
   flutter_launcher_icons: # 0.7.4 - DONE: Secure code reviewed diff 869b629 (0.7.2+1) c2584ef (0.7.4)
     git:

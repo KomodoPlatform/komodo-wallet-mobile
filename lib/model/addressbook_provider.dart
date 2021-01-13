@@ -10,6 +10,11 @@ class AddressBookProvider extends ChangeNotifier {
   }
 
   String clipboard;
+  bool _initialized = false;
+
+  Future<void> init() async {
+    if (!_initialized) await _init();
+  }
 
   Future<List<Contact>> get contacts async {
     while (_contacts == null) {
@@ -81,6 +86,7 @@ class AddressBookProvider extends ChangeNotifier {
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
     _loadContacts();
+    _initialized = true;
   }
 
   void _loadContacts() {

@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aes_crypt/aes_crypt.dart';
+import 'package:crypto/crypto.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
@@ -225,13 +226,20 @@ class _ExportPageState extends State<ExportPage> {
 
   Future<void> _export() async {
     final Directory tmpDir = await getApplicationDocumentsDirectory();
-    final crypt = AesCrypt(_ctrlPass1.text);
 
     final String encoded = jsonEncode(_selected);
     final tmpFilePath = '${tmpDir.path}/atomicDEX_backup';
     final File tempFile = File(tmpFilePath);
     if (tempFile.existsSync()) await tempFile.delete();
-    await crypt.encryptTextToFile(encoded, tmpFilePath);
+    final String length32Key =
+        md5.convert(utf8.encode(_ctrlPass1.text)).toString();
+    final key = encrypt.Key.fromUtf8(length32Key);
+    final iv = encrypt.IV.fromLength(16);
+
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+    final encrypted = encrypter.encrypt(encoded, iv: iv);
+
+    tempFile.writeAsString(encrypted.base64);
 
     await Share.shareFile(tempFile,
         mimeType: 'application/octet-stream', subject: 'atomicDEX_backup');

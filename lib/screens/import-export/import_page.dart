@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aes_crypt/aes_crypt.dart';
+import 'package:crypto/crypto.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -101,6 +102,7 @@ class _ImportPageState extends State<ImportPage> {
   Future<void> _importContacts() async {
     final AddressBookProvider provider =
         Provider.of<AddressBookProvider>(context, listen: false);
+    await provider.init();
 
     _selected.contacts?.forEach((uid, contact) {
       final Contact existing = provider.contactByUid(uid);
@@ -372,14 +374,21 @@ class _ImportPageState extends State<ImportPage> {
       return null;
     }
 
-    final AesCrypt crypt = AesCrypt(pass);
+    final String length32Key = md5.convert(utf8.encode(pass)).toString();
+    final key = encrypt.Key.fromUtf8(length32Key);
+    final iv = encrypt.IV.fromLength(16);
+
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+    final String str = await file.readAsString();
+
+    final encrypted = encrypt.Encrypted.fromBase64(str);
 
     try {
-      final String decrypted = await crypt.decryptTextFromFile(file.path);
+      final decrypted = encrypter.decrypt(encrypted, iv: iv);
       return jsonDecode(decrypted);
     } catch (e) {
       Log('import_page]', 'Failed to decrypt file: $e');
-      _showError('$e');
+      _showError(AppLocalizations.of(context).importDecryptError);
       return null;
     }
   }
