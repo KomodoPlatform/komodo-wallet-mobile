@@ -241,9 +241,8 @@ class _ExportPageState extends State<ExportPage> {
 
     tempFile.writeAsString(encrypted.base64);
 
-    await Share.shareFile(tempFile,
-        mimeType: 'application/octet-stream', subject: 'atomicDEX_backup');
-    tempFile.delete();
+    await Share.shareFiles([tempFile.path],
+        mimeTypes: ['application/octet-stream'], subject: 'atomicDEX_backup');
     setState(() {
       _done = true;
     });

@@ -651,12 +651,10 @@ packages:
   share:
     dependency: "direct dev"
     description:
-      path: "packages/share/"
-      ref: "1494b043d03799dd14e689552d1218918435f9f5"
-      resolved-ref: "1494b043d03799dd14e689552d1218918435f9f5"
-      url: "git://github.com/KomodoPlatform/plugins.git"
-    source: git
-    version: "0.6.2+1"
+      name: share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.5+4"
   shared_preferences:
     dependency: "direct dev"
     description:

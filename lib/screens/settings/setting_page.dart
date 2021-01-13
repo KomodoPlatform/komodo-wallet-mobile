@@ -800,8 +800,8 @@ class _SettingPageState extends State<SettingPage> {
     Log('setting_page:748', 'Compression produced $len bytes.');
 
     mainBloc.isUrlLaucherIsOpen = true;
-    await Share.shareFile(af,
-        mimeType: 'application/octet-stream',
+    await Share.shareFiles([af.path],
+        mimeTypes: ['application/octet-stream'],
         subject: 'atomicDEX logs at ${DateTime.now().toIso8601String()}');
   }
 

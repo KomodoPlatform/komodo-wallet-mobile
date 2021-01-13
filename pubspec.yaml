@@ -88,7 +88,6 @@ dev_dependencies:
     git:
       url: git://github.com/KomodoPlatform/pin_code_view.git
       ref: 5920e1b5e9d51fc145d28e83cfcaaf0a28cde0a3
-  # share: ^0.6.0+1
   crypto: 2.1.5 # dart.dev
   intl_translation: 0.17.10+1 # dart.dev
   bs58check: # 1.0.1 - DONE: Secure code reviewed 2889fa8 (1.0.1)
@@ -96,11 +95,7 @@ dev_dependencies:
       url: git://github.com/KomodoPlatform/bs58check-dart.git
       ref: 2889fa8791fd46afb30a9e7984c06b66a6241a44
   url_launcher: 5.4.1 # flutter.dev
-  share: # flutter.dev
-    git:
-      url: git://github.com/KomodoPlatform/plugins.git
-      path: packages/share/
-      ref: 1494b043d03799dd14e689552d1218918435f9f5
+  share: 0.6.5+4 # flutter.dev
   # https://pub.dev/packages/local_auth, canCheckBiometrics, getAvailableBiometrics
   local_auth: 0.6.3+3 # flutter.dev
   flutter_svg: # 0.18.1 - DONE: Secure code reviewed diff a05263d (0.13.1) 03ed93a (0.18.1) - DONE: sub dependencies reviewed: path_drawing(05be72d), xml(d161771), dart_path_parsing(59916eb)
