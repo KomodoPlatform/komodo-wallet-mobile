@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/blocs/orders_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
@@ -17,7 +19,7 @@ class BuildItemTaker extends StatefulWidget {
 }
 
 class _BuildItemTakerState extends State<BuildItemTaker> {
-  bool isNoteExpanded = false;
+  bool _isNoteExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -116,7 +118,7 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                       return InkWell(
                         onTap: () {
                           setState(() {
-                            isNoteExpanded = !isNoteExpanded;
+                            _isNoteExpanded = !_isNoteExpanded;
                           });
                         },
                         child: Container(
@@ -128,8 +130,8 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                                 child: Text(
                                   snapshot.data,
                                   style: Theme.of(context).textTheme.bodyText1,
-                                  maxLines: isNoteExpanded ? null : 1,
-                                  overflow: isNoteExpanded
+                                  maxLines: _isNoteExpanded ? null : 1,
+                                  overflow: _isNoteExpanded
                                       ? null
                                       : TextOverflow.ellipsis,
                                 ),
@@ -159,37 +161,43 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                     Expanded(
                       child: Container(),
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 12),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(24)),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text('stepStatus',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .caption
-                                    .copyWith(color: Colors.white)),
-                            const SizedBox(
-                              width: 4,
+                    widget.order.cancelable
+                        ? Container(
+                            height: 30,
+                            child: OutlineButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0)),
+                              borderSide: const BorderSide(color: Colors.white),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 6, horizontal: 12),
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(24)),
+                                  color: Colors.transparent,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                        AppLocalizations.of(context)
+                                            .cancel
+                                            .toUpperCase(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .copyWith(
+                                              color: Colors.white,
+                                            ))
+                                  ],
+                                ),
+                              ),
+                              onPressed: () {
+                                ordersBloc.cancelOrder(widget.order.uuid);
+                              },
                             ),
-                            Text('swapStatus',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(
-                                      color: Colors.white,
-                                    ))
-                          ],
-                        ),
-                      ),
-                    )
+                          )
+                        : Container()
                   ],
                 ),
               ],
