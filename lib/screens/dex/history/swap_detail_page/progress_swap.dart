@@ -1,13 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/screens/dex/orders/build_taker_countdown.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
@@ -174,67 +170,5 @@ class RadialPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
-  }
-}
-
-class BuildTakerCountdown extends StatefulWidget {
-  const BuildTakerCountdown(this.uuid);
-
-  final String uuid;
-
-  @override
-  _BuildTakerCountdownState createState() => _BuildTakerCountdownState();
-}
-
-class _BuildTakerCountdownState extends State<BuildTakerCountdown> {
-  Timer _timer;
-
-  @override
-  void initState() {
-    _timer = Timer.periodic(Duration(seconds: 1), (_) => setState(() {}));
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final Order takerOrder = ordersBloc.orderSwaps.firstWhere((dynamic order) {
-      return order is Order &&
-          order.uuid == widget.uuid &&
-          order.orderType == OrderType.TAKER;
-    }, orElse: () => null);
-
-    if (takerOrder == null) return SizedBox();
-
-    final int secondsLeft = 30 -
-        (DateTime.now().millisecondsSinceEpoch / 1000).floor() +
-        takerOrder.createdAt;
-
-    return Row(
-      children: [
-        Text(
-          ': ',
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-              fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.5)),
-        ),
-        secondsLeft > 0
-            ? Text(
-                '${secondsLeft}s',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.5)),
-              )
-            : SizedBox(
-                height: 13,
-                width: 13,
-                child: CircularProgressIndicator(strokeWidth: 1)),
-      ],
-    );
   }
 }

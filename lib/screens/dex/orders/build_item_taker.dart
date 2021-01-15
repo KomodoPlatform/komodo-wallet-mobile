@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
+import 'package:komodo_dex/screens/dex/orders/build_taker_countdown.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -159,7 +160,19 @@ class _BuildItemTakerState extends State<BuildItemTaker> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Expanded(
-                      child: Container(),
+                      child: Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context).orderMatching,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            BuildTakerCountdown(widget.order.uuid,
+                                style: Theme.of(context).textTheme.bodyText1),
+                          ],
+                        ),
+                      ),
                     ),
                     widget.order.cancelable
                         ? Container(
