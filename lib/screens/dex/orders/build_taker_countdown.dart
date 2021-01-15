@@ -56,7 +56,7 @@ class _BuildTakerCountdownState extends State<BuildTakerCountdown> {
         ),
         secondsLeft > 0
             ? Text(
-                '${secondsLeft}s',
+                '$secondsLeft',
                 style: _style,
               )
             : SizedBox(

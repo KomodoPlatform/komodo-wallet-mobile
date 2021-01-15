@@ -20,7 +20,8 @@ class SwapDetailPage extends StatefulWidget {
 }
 
 class _SwapDetailPageState extends State<SwapDetailPage> {
-  Swap swapData = Swap();
+  Swap _swapData = Swap();
+  bool _orderWasCreated = false;
 
   @override
   void initState() {
@@ -37,7 +38,8 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
         stream: ordersBloc.outOrderSwaps,
         builder: (BuildContext context,
             AsyncSnapshot<List<dynamic>> ordersSnapshot) {
-          _switchToMakerIfTransformed(ordersSnapshot);
+          _closeIfCancelled(ordersSnapshot);
+          _switchToMakerIfConverted(ordersSnapshot);
 
           return LockScreen(
             context: context,
@@ -62,18 +64,18 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
                       AsyncSnapshot<Iterable<Swap>> swapsSnapshot) {
                     if (swapsSnapshot.data != null &&
                         swapsSnapshot.data.isNotEmpty) {
-                      swapData = widget.swap;
+                      _swapData = widget.swap;
                       for (Swap swap in swapsSnapshot.data) {
                         if (swap.result.uuid == widget.swap.result.uuid) {
-                          swapData = swap;
+                          _swapData = swap;
                         }
                       }
-                      if (swapData.status == Status.SWAP_SUCCESSFUL &&
+                      if (_swapData.status == Status.SWAP_SUCCESSFUL &&
                           swapHistoryBloc.isAnimationStepFinalIsFinish) {
-                        return FinalTradeSuccess(swap: swapData);
+                        return FinalTradeSuccess(swap: _swapData);
                       } else {
                         return StepperTrade(
-                            swap: swapData,
+                            swap: _swapData,
                             onStepFinish: () {
                               setState(() {
                                 swapHistoryBloc.isAnimationStepFinalIsFinish =
@@ -97,8 +99,35 @@ class _SwapDetailPageState extends State<SwapDetailPage> {
         });
   }
 
-  void _switchToMakerIfTransformed(
-      AsyncSnapshot<List<dynamic>> ordersSnapshot) {
+  // If taker order wasn't matched in 30s, and order_type.tipe is FillOrKill
+  // swap will be auto-cancelled by MM.
+  // So, we want to close swap details page after that.
+  // In order to avoid mistaken closing at the very beginning of order-matching,
+  // first trying to find existing item,
+  // related to swap (taker order) and only if it was found,
+  // and then disappears (not converts in swap or maker) - closing the page.
+  void _closeIfCancelled(AsyncSnapshot<List<dynamic>> ordersSnapshot) {
+    if (!ordersSnapshot.hasData) return;
+
+    dynamic existingOrderOrSwap =
+        ordersBloc.orderSwaps.firstWhere((dynamic item) {
+      return item is Order && item.uuid == widget.swap.result.uuid;
+    }, orElse: () => null);
+
+    existingOrderOrSwap ??= swapMonitor.swap(widget.swap.result.uuid);
+
+    if (_orderWasCreated && existingOrderOrSwap == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pop(context);
+      });
+    } else if (!_orderWasCreated) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() => _orderWasCreated = true);
+      });
+    }
+  }
+
+  void _switchToMakerIfConverted(AsyncSnapshot<List<dynamic>> ordersSnapshot) {
     if (!ordersSnapshot.hasData) return;
 
     final Order makerOrder = ordersBloc.orderSwaps.firstWhere((dynamic order) {
