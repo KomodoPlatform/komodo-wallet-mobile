@@ -283,8 +283,10 @@ class _CoinDetailState extends State<CoinDetail> {
                 Transaction newTr;
                 if (transactions is Transactions) {
                   final Transactions tr = transactions;
-                  final t = tr.result.transactions[0];
-                  if (t != null) newTr = t;
+                  if (tr.result.transactions.length == 1) {
+                    final t = tr.result.transactions[0];
+                    if (t != null) newTr = t;
+                  }
                 }
 
                 if (_isWaiting) {
