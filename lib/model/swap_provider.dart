@@ -11,7 +11,6 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 // TODO(AG): at "_goToNextScreen] swap started…" create a virtual
@@ -368,7 +367,7 @@ class SwapMetrics {
         'taker': taker,
         'maker': maker
       };
-    } catch (e) {}
+    } catch (_) {}
 
     return json;
   }
