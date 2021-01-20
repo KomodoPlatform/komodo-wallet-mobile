@@ -246,7 +246,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
       tmpAmountSell = amountSell;
     });
-    swapBloc.setIsMaxActive(false);
   }
 
   void _checkMaxVolume() {
@@ -472,9 +471,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                     TextFormField(
                                                         key: Key(
                                                             'input-text-${market.toString().toLowerCase()}'),
-                                                        scrollPadding:
-                                                            const EdgeInsets.only(
-                                                                left: 35),
+                                                        scrollPadding: const EdgeInsets.only(
+                                                            left: 35),
                                                         inputFormatters: <
                                                             TextInputFormatter>[
                                                           DecimalTextInputFormatter(
@@ -483,13 +481,20 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                               .allow(RegExp(
                                                                   '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
                                                         ],
-                                                        focusNode:
-                                                            market == Market.SELL
-                                                                ? _focusSell
-                                                                : _focusReceive,
+                                                        focusNode: market == Market.SELL
+                                                            ? _focusSell
+                                                            : _focusReceive,
                                                         controller: market == Market.SELL
                                                             ? _controllerAmountSell
                                                             : _controllerAmountReceive,
+                                                        onChanged: market ==
+                                                                Market.SELL
+                                                            ? (_) {
+                                                                swapBloc
+                                                                    .setIsMaxActive(
+                                                                        false);
+                                                              }
+                                                            : null,
                                                         enabled: market == Market.RECEIVE
                                                             ? swapBloc
                                                                 .enabledReceiveField
