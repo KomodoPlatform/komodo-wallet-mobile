@@ -11,7 +11,6 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 // TODO(AG): at "_goToNextScreen] swap started…" create a virtual
@@ -184,7 +183,7 @@ class SwapMonitor {
   /// (Re)load recent swaps from MM.
   Future<void> update() async {
     final RecentSwaps rswaps =
-        await MM.getRecentSwaps(GetRecentSwap(limit: 50, fromUuid: null));
+        await MM.getRecentSwaps(GetRecentSwap(limit: 10000, fromUuid: null));
 
     final Map<String, Swap> swaps = {};
     for (MmSwap rswap in rswaps.result.swaps) {
@@ -195,7 +194,16 @@ class SwapMonitor {
 
     _swaps = swaps;
     _notifyListeners();
-    swapHistoryBloc.inSwaps.add(swaps.values);
+
+    final List<Swap> swapList = List.from(swaps.values);
+    swapList.sort((a, b) {
+      if (b.result.myInfo.startedAt != null) {
+        return b.result.myInfo.startedAt.compareTo(a.result.myInfo.startedAt);
+      }
+      return 0;
+    });
+
+    swapHistoryBloc.inSwaps.add(swapList);
   }
 
   /// Store swap information
@@ -368,7 +376,7 @@ class SwapMetrics {
         'taker': taker,
         'maker': maker
       };
-    } catch (e) {}
+    } catch (_) {}
 
     return json;
   }
