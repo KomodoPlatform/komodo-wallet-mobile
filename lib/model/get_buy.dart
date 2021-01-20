@@ -17,6 +17,7 @@ class GetBuySell {
     this.base,
     this.rel,
     this.volume,
+    this.max,
     this.price,
     this.baseNota,
     this.baseConfs,
@@ -30,6 +31,7 @@ class GetBuySell {
         base: json['base'] ?? '',
         rel: json['rel'] ?? '',
         volume: json['volume'] ?? '',
+        max: json['max'] ?? false,
         price: json['price'] ?? '',
         baseNota: json['base_nota'],
         baseConfs: json['base_confs'],
@@ -42,6 +44,7 @@ class GetBuySell {
   String base;
   String rel;
   String volume;
+  bool max;
   String price;
   bool baseNota;
   int baseConfs;
@@ -54,6 +57,7 @@ class GetBuySell {
         'base': base ?? '',
         'rel': rel ?? '',
         'volume': volume ?? '',
+        'max': max ?? 'false',
         'price': price ?? '',
         'base_nota': baseNota,
         'base_confs': baseConfs,
