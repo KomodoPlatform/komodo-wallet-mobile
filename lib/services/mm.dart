@@ -384,16 +384,18 @@ class ApiProvider {
     http.Client client,
     GetWithdraw body,
   ) async {
-    return await _assertUserpass(client, body).then<dynamic>(
-        (UserpassBody userBody) => userBody.client
-            .post(url, body: getWithdrawToJson(userBody.body))
-            .then((Response r) => _saveRes('postWithdraw', r))
-            .then<dynamic>((Response res) {
-              return withdrawResponseFromJson(res.body);
-            })
-            .catchError((dynamic _) => errorStringFromJson(res.body))
-            .catchError((dynamic e) => _catchErrorString(
-                'postWithdraw', e, 'Error on post withdraw')));
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(client, body);
+    final r = await client.post(url, body: json.encode(userBody.body));
+    _assert200(r);
+    _saveRes('postWithdraw', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return withdrawResponseFromJson(res.body);
   }
 
   Future<dynamic> getTradeFee(

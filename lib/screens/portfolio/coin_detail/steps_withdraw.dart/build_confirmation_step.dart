@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
@@ -38,7 +39,8 @@ class BuildConfirmationStep extends StatefulWidget {
 }
 
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
-  dynamic withdrawResponse;
+  bool _showDetailedError = false;
+  dynamic _withdrawResponse;
 
   @override
   void initState() {
@@ -74,19 +76,17 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
                     double.parse(widget.amountToPay),
               ))
           .then((dynamic res) {
-        setState(() {
-          withdrawResponse = res;
-        });
+        setState(() => _withdrawResponse = res);
       }).catchError((dynamic onError) {
-        widget.onError();
+        setState(() => _withdrawResponse = onError);
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (withdrawResponse is WithdrawResponse) {
-      final CoinAmt fee = _extractFee(withdrawResponse);
+    if (_withdrawResponse is WithdrawResponse) {
+      final CoinAmt fee = _extractFee(_withdrawResponse);
 
       if (fee == null) {
         return _buildErrorMessage();
@@ -276,7 +276,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
           ],
         ),
       );
-    } else if (withdrawResponse == null) {
+    } else if (_withdrawResponse == null) {
       return Center(
         child: Container(
           padding: EdgeInsets.all(48),
@@ -289,19 +289,41 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   }
 
   Widget _buildErrorMessage() {
+    final String detailedMessage =
+        _withdrawResponse is ErrorString ? _withdrawResponse.error : null;
+
     return Center(
       child: Container(
         padding: EdgeInsets.fromLTRB(12, 48, 12, 12),
         child: Column(
           children: [
             Text(
-              AppLocalizations.of(context).withdrawConfirmError,
+              detailedMessage != null && _showDetailedError
+                  ? detailedMessage
+                  : AppLocalizations.of(context).withdrawConfirmError,
               style: TextStyle(color: Theme.of(context).errorColor),
             ),
             SizedBox(height: 48),
-            SecondaryButton(
-              text: AppLocalizations.of(context).back.toUpperCase(),
-              onPressed: widget.onCancel,
+            Row(
+              children: [
+                Expanded(
+                  child: SecondaryButton(
+                    text: AppLocalizations.of(context).back.toUpperCase(),
+                    onPressed: widget.onCancel,
+                  ),
+                ),
+                if (detailedMessage != null && !_showDetailedError) ...{
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: SecondaryButton(
+                      text: AppLocalizations.of(context).details.toUpperCase(),
+                      onPressed: () {
+                        setState(() => _showDetailedError = true);
+                      },
+                    ),
+                  ),
+                }
+              ],
             ),
           ],
         ),
@@ -312,8 +334,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   Future<void> _onPressedConfirmWithdraw(double sendAmount) async {
     if (mainBloc.isNetworkOffline) {
       widget.onNoInternet();
-    } else if (withdrawResponse is WithdrawResponse) {
-      widget.onConfirmPressed(withdrawResponse);
+    } else if (_withdrawResponse is WithdrawResponse) {
+      widget.onConfirmPressed(_withdrawResponse);
     } else {
       widget.onError();
     }
