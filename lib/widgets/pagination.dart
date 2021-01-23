@@ -128,10 +128,15 @@ class _PaginationState extends State<Pagination> {
     final RenderBox rb = context.findRenderObject();
     if (!rb.hasSize) return;
 
+    double targetPosition = (i - 1) * (_buttonSize + _buttonMargin * 2) -
+        rb.size.width / 2 +
+        (_buttonSize + _buttonMargin * 2) / 2;
+    if (targetPosition < 0) targetPosition = 0;
+    if (targetPosition > _scrollCtrl.position.maxScrollExtent)
+      targetPosition = _scrollCtrl.position.maxScrollExtent;
+
     _scrollCtrl.animateTo(
-      (i - 1) * (_buttonSize + _buttonMargin * 2) -
-          (rb.size.width / 2) +
-          (_buttonSize + _buttonMargin * 2) / 2,
+      targetPosition,
       duration: Duration(milliseconds: 500),
       curve: Curves.easeIn,
     );
