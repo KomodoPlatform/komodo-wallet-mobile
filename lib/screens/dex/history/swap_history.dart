@@ -17,8 +17,9 @@ class SwapHistory extends StatefulWidget {
 }
 
 class _SwapHistoryState extends State<SwapHistory> {
+  final _scrollCtrl = ScrollController();
   int _currentPage = 1;
-  final int _perPage = 5;
+  final int _perPage = 25;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,9 @@ class _SwapHistoryState extends State<SwapHistory> {
                 .sublist(start, end);
 
             return SingleChildScrollView(
+              controller: _scrollCtrl,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildPagination(swaps),
                   ...swapsWidget,
@@ -80,6 +83,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         perPage: _perPage,
         onChanged: (int newPage) {
           setState(() => _currentPage = newPage);
+          _scrollCtrl.jumpTo(0);
         },
       ),
     );

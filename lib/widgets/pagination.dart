@@ -5,12 +5,16 @@ class Pagination extends StatefulWidget {
     this.total,
     this.perPage,
     this.currentPage,
+    this.buttonSize,
+    this.buttonMargin,
     this.onChanged,
   });
 
   final int total;
   final int perPage;
   final int currentPage;
+  final double buttonSize;
+  final double buttonMargin;
   final Function(int) onChanged;
 
   @override
@@ -20,11 +24,17 @@ class Pagination extends StatefulWidget {
 class _PaginationState extends State<Pagination> {
   int _perPage;
   int _currentPage;
+  double _buttonSize;
+  double _buttonMargin;
+  final ScrollController _scrollCtrl = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     _perPage = widget.perPage ?? 20;
     _currentPage = widget.currentPage ?? 1;
+    _buttonSize = widget.buttonSize ?? 40;
+    _buttonMargin = widget.buttonMargin ?? 2;
+
     if (widget.total == null || widget.total == 0) return SizedBox();
     if (widget.total <= _perPage) return SizedBox();
 
@@ -37,30 +47,36 @@ class _PaginationState extends State<Pagination> {
       buttons.add(button);
     }
 
-    final RenderBox rb = context.findRenderObject();
-
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text('${rb.size.width}'),
-          ...buttons,
-        ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      controller: _scrollCtrl,
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ...buttons,
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildButton(int i) {
+    final int first = (i - 1) * _perPage + 1;
+    int last = i * _perPage;
+    if (last > widget.total) last = widget.total;
+
     return InkWell(
       onTap: i == _currentPage
           ? null
           : () {
               widget.onChanged(i);
+              _scrollTo(i);
             },
       child: Container(
-        padding: EdgeInsets.all(2),
+        padding: EdgeInsets.all(_buttonMargin),
         child: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: 40),
+          constraints: BoxConstraints(minWidth: _buttonSize),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
@@ -70,21 +86,54 @@ class _PaginationState extends State<Pagination> {
                       : Theme.of(context).primaryColor),
               color: i == _currentPage ? null : Theme.of(context).primaryColor,
             ),
-            height: 40,
+            height: _buttonSize,
             alignment: Alignment(0, 0),
             padding: EdgeInsets.all(4),
-            child: Text(
-              '$i',
-              maxLines: 1,
-              style: TextStyle(
-                fontSize: 13,
-                color: i == _currentPage ? Theme.of(context).accentColor : null,
-                fontWeight: i == _currentPage ? FontWeight.bold : null,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '$i',
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: i == _currentPage
+                        ? Theme.of(context).accentColor
+                        : null,
+                    fontWeight: i == _currentPage ? FontWeight.bold : null,
+                  ),
+                ),
+                SizedBox(height: 2),
+                Row(children: [
+                  Text(
+                    '$first-$last',
+                    style: TextStyle(
+                      fontSize: 7,
+                      color: i == _currentPage
+                          ? Theme.of(context).accentColor
+                          : null,
+                      fontWeight: i == _currentPage ? FontWeight.bold : null,
+                    ),
+                  )
+                ]),
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void _scrollTo(int i) {
+    final RenderBox rb = context.findRenderObject();
+    if (!rb.hasSize) return;
+
+    _scrollCtrl.animateTo(
+      (i - 1) * (_buttonSize + _buttonMargin * 2) -
+          (rb.size.width / 2) +
+          (_buttonSize + _buttonMargin * 2) / 2,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeIn,
     );
   }
 }
