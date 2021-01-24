@@ -12,6 +12,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_priv_key.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
@@ -527,6 +528,32 @@ class _CoinDetailState extends State<CoinDetail> {
                 child: _buildButtonLight(StatusButton.SEND, mContext),
               )),
           ],
+        ),
+        Center(
+          child: RaisedButton(
+            child: Text('Show Private Key'),
+            onPressed: () async {
+              final r = await MM
+                  .getPrivKey(GetPrivKey(coin: widget.coinBalance.coin.abbr));
+
+              showDialog<dynamic>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Private Key'),
+                      content: Text(r.result.privKey),
+                      actions: [
+                        FlatButton(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  });
+            },
+          ),
         ),
         const SizedBox(
           height: 16,
