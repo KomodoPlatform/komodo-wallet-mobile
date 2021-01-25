@@ -62,6 +62,9 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
           ),
         ),
         ...orderbooks
+            .where((ob) =>
+                (ob.base != null && ob.base.isNotEmpty) &&
+                (ob.rel != null && ob.rel.isNotEmpty))
             .where((ob) => ob.rel
                 .toLowerCase()
                 .startsWith(searchTextController.text.toLowerCase()))
