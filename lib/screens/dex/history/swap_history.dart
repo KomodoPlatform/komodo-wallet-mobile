@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/swap_history_bloc.dart';
@@ -9,9 +7,9 @@ import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/widgets/pagination.dart';
 
 class SwapHistory extends StatefulWidget {
   @override
@@ -19,20 +17,9 @@ class SwapHistory extends StatefulWidget {
 }
 
 class _SwapHistoryState extends State<SwapHistory> {
-  String fromUUID;
-  final ScrollController _scrollController = ScrollController();
-  bool isLoadingNewSwaps = false;
-
-  @override
-  void initState() {
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        Log('swap_history:31', 'scrolling down');
-      }
-    });
-    super.initState();
-  }
+  final _scrollCtrl = ScrollController();
+  int _currentPage = 1;
+  final int _perPage = 25;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +35,7 @@ class _SwapHistoryState extends State<SwapHistory> {
               (swap.status != Status.SWAP_FAILED &&
                   swap.status != Status.SWAP_SUCCESSFUL &&
                   swap.status != Status.TIME_OUT));
+
           if (snapshot.data != null &&
               swaps.isEmpty &&
               snapshot.connectionState == ConnectionState.active) {
@@ -58,27 +46,24 @@ class _SwapHistoryState extends State<SwapHistory> {
               ),
             );
           } else if (snapshot.data != null && swaps.isNotEmpty) {
-            swaps.sort((Swap b, Swap a) {
-              if (b is Swap && a is Swap) {
-                if (a.result.myInfo.startedAt != null) {
-                  return a.result.myInfo.startedAt
-                      .compareTo(b.result.myInfo.startedAt);
-                }
-              }
-              return 0;
-            });
-
+            final int start = (_currentPage - 1) * _perPage;
+            int end = start + _perPage;
+            if (end > swaps.length) end = swaps.length;
             final List<Widget> swapsWidget = swaps
                 .map((Swap swap) => BuildItemSwap(context: context, swap: swap))
-                .toList();
+                .toList()
+                .sublist(start, end);
 
-            return RefreshIndicator(
-              backgroundColor: Theme.of(context).backgroundColor,
-              onRefresh: _onRefresh,
-              child: ListView(
-                padding: const EdgeInsets.all(8),
-                controller: _scrollController,
-                children: swapsWidget,
+            return SingleChildScrollView(
+              controller: _scrollCtrl,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildPagination(swaps),
+                  ...swapsWidget,
+                  _buildPagination(swaps),
+                  SizedBox(height: 10),
+                ],
               ),
             );
           } else {
@@ -89,7 +74,20 @@ class _SwapHistoryState extends State<SwapHistory> {
         });
   }
 
-  Future<Iterable<Swap>> _onRefresh() async => swapMonitor.swaps;
+  Widget _buildPagination(List<dynamic> swaps) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
+      child: Pagination(
+        currentPage: _currentPage,
+        total: swaps.length,
+        perPage: _perPage,
+        onChanged: (int newPage) {
+          setState(() => _currentPage = newPage);
+          _scrollCtrl.jumpTo(0);
+        },
+      ),
+    );
+  }
 }
 
 class BuildItemSwap extends StatefulWidget {
