@@ -59,16 +59,9 @@ class OrderBookProvider extends ChangeNotifier {
 
     final List<Ask> sorted = quotePrice
         ? list.map((Ask ask) {
-            final double price = 1 / double.parse(ask.price);
-            return Ask(
-              address: ask.address,
-              age: ask.age,
-              coin: ask.coin,
-              pubkey: ask.pubkey,
-              zcredits: ask.zcredits,
-              price: price.toString(),
-              maxvolume: ask.maxvolume,
-            );
+            final Ask quoteAsk = Ask.fromJson(ask.toJson());
+            quoteAsk.price = '${1 / double.parse(ask.price)}';
+            return quoteAsk;
           }).toList()
         : List.from(list);
 

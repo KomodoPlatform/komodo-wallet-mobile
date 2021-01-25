@@ -223,25 +223,30 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
-            child: Row(
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 7,
-                  backgroundImage: _isAsk
-                      ? AssetImage('assets/'
-                          '${_activePair.sell.abbr.toLowerCase()}.png')
-                      : AssetImage('assets/'
-                          '${_activePair.buy.abbr.toLowerCase()}.png'),
+            child: Column(
+              children: [
+                Row(
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 7,
+                      backgroundImage: _isAsk
+                          ? AssetImage('assets/'
+                              '${_activePair.sell.abbr.toLowerCase()}.png')
+                          : AssetImage('assets/'
+                              '${_activePair.buy.abbr.toLowerCase()}.png'),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
+                    const SizedBox(width: 12),
+                    Text(
+                      formatPrice(widget.order.maxvolume.toString()),
+                      style: Theme.of(context).textTheme.subtitle2.copyWith(
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 4),
-                Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
-                const SizedBox(width: 12),
-                Text(
-                  formatPrice(widget.order.maxvolume.toString()),
-                  style: Theme.of(context).textTheme.subtitle2.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
-                ),
+                _buildMinVolume(),
               ],
             ),
           ),
@@ -286,6 +291,42 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     ];
   }
 
+  bool _isEnoughVolume() {
+    if (widget.order.minvolume == null) return true;
+    if (widget.sellAmount == null) return true;
+
+    final double myVolume =
+        widget.order.getReceiveAmount(deci(widget.sellAmount)).toDouble();
+
+    return myVolume >= widget.order.minvolume;
+  }
+
+  Widget _buildMinVolume() {
+    if (widget.order.minvolume == null) return SizedBox();
+    if (widget.order.minvolume <= 0.00777) return SizedBox();
+
+    return Row(
+      children: <Widget>[
+        Text(
+          '${AppLocalizations.of(context).orderDetailsMin} ${widget.order.coin} ',
+          style: TextStyle(fontSize: 12),
+        ),
+        Text(
+          cutTrailingZeros(formatPrice(widget.order.minvolume)),
+          style: Theme.of(context).textTheme.subtitle2.copyWith(
+                fontWeight: FontWeight.normal,
+                fontSize: 12,
+                color: !_isEnoughVolume() ? Colors.orange : null,
+              ),
+        ),
+        if (!_isEnoughVolume()) ...{
+          SizedBox(width: 2),
+          Icon(Icons.warning, color: Colors.orange, size: 10)
+        },
+      ],
+    );
+  }
+
   List<TableRow> _buildSellDetails() {
     if (widget.sellAmount == null) return [];
 
@@ -301,27 +342,32 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
           ),
           Container(
             padding: const EdgeInsets.only(left: 6),
-            child: Row(
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 7,
-                  backgroundImage: _isAsk
-                      ? AssetImage('assets/'
-                          '${_activePair.sell.abbr.toLowerCase()}.png')
-                      : AssetImage('assets/'
-                          '${_activePair.buy.abbr.toLowerCase()}.png'),
+            child: Column(
+              children: [
+                Row(
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 7,
+                      backgroundImage: _isAsk
+                          ? AssetImage('assets/'
+                              '${_activePair.sell.abbr.toLowerCase()}.png')
+                          : AssetImage('assets/'
+                              '${_activePair.buy.abbr.toLowerCase()}.png'),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
+                    const SizedBox(width: 12),
+                    Text(
+                      formatPrice(widget.order
+                          .getReceiveAmount(deci(widget.sellAmount))
+                          .toDouble()),
+                      style: Theme.of(context).textTheme.subtitle2.copyWith(
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 4),
-                Text(_isAsk ? _activePair.sell.abbr : _activePair.buy.abbr),
-                const SizedBox(width: 12),
-                Text(
-                  formatPrice(widget.order
-                      .getReceiveAmount(deci(widget.sellAmount))
-                      .toDouble()),
-                  style: Theme.of(context).textTheme.subtitle2.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
-                ),
+                _buildMinVolume(),
               ],
             ),
           ),

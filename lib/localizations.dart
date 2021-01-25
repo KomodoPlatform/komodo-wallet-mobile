@@ -636,6 +636,7 @@ class AppLocalizations {
   String get orderDetailsSells =>
       Intl.message('Sells', name: 'orderDetailsSells');
   String get orderDetailsFor => Intl.message('for', name: 'orderDetailsFor');
+  String get orderDetailsMin => Intl.message('min.', name: 'orderDetailsMin');
   String get orderDetailsAddress =>
       Intl.message('Address', name: 'orderDetailsAddress');
   String orderDetailsExpedient(String delta) =>
