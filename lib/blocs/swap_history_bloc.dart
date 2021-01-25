@@ -171,7 +171,7 @@ class SwapHistoryBloc implements BlocBase {
         return '2/3';
         break;
       case Status.SWAP_SUCCESSFUL:
-        return '✓';
+        return String.fromCharCode(0x221A);
         break;
       case Status.TIME_OUT:
         return '';
