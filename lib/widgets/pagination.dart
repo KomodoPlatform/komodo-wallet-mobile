@@ -29,6 +29,14 @@ class _PaginationState extends State<Pagination> {
   final ScrollController _scrollCtrl = ScrollController();
 
   @override
+  void didUpdateWidget(covariant Pagination oldWidget) {
+    if (oldWidget.currentPage != widget.currentPage) {
+      _scrollTo(widget.currentPage);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     _perPage = widget.perPage ?? 20;
     _currentPage = widget.currentPage ?? 1;
@@ -67,12 +75,7 @@ class _PaginationState extends State<Pagination> {
     if (last > widget.total) last = widget.total;
 
     return InkWell(
-      onTap: i == _currentPage
-          ? null
-          : () {
-              widget.onChanged(i);
-              _scrollTo(i);
-            },
+      onTap: i == _currentPage ? null : () => widget.onChanged(i),
       child: Container(
         padding: EdgeInsets.all(_buttonMargin),
         child: ConstrainedBox(
