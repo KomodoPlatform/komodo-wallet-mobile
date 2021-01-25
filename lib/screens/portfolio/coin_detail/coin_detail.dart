@@ -100,13 +100,8 @@ class _CoinDetailState extends State<CoinDetail> {
     });
     coinsBloc
         .getLatestTransaction(currentCoinBalance.coin)
-        .then((dynamic transactions) {
-      if (transactions is Transactions) {
-        final Transactions tr = transactions;
-        if (tr.result.transactions.isEmpty) return;
-        final t = tr.result.transactions[0];
-        if (t != null) latestTransaction = t;
-      }
+        .then((Transaction t) {
+      if (t != null) latestTransaction = t;
     });
     _amountController.addListener(onChange);
     super.initState();

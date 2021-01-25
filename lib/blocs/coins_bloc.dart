@@ -555,7 +555,7 @@ class CoinsBloc implements BlocBase {
 
       if (transactions is Transactions) {
         transactions.camouflageIfNeeded();
-        if (transactions.result.transactions.length == 1) {
+        if (transactions.result.transactions.isNotEmpty) {
           return transactions.result.transactions[0];
         }
         return null;
