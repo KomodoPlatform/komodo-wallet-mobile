@@ -1319,6 +1319,19 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             .minValueBuy(swapBloc.receiveCoin.abbr, 0.00777.toString())),
       ));
       return false;
+    } else if (currentAsk != null && currentAsk.minvolume != null) {
+      if (_controllerAmountReceive.text != null &&
+          _controllerAmountReceive.text.isNotEmpty &&
+          double.parse(_controllerAmountReceive.text) < currentAsk.minvolume) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          duration: const Duration(seconds: 2),
+          content: Text(AppLocalizations.of(context).minValueBuy(
+              swapBloc.receiveCoin.abbr,
+              cutTrailingZeros(formatPrice(currentAsk.minvolume)))),
+        ));
+        return false;
+      }
+      return true;
     } else {
       return true;
     }

@@ -335,6 +335,11 @@ class AppLocalizations {
       Intl.message('Go to portfolio', name: 'goToPorfolio');
   String get noOrderAvailable =>
       Intl.message('Click to create an order', name: 'noOrderAvailable');
+  String get insufficientTitle =>
+      Intl.message('Insufficient volume', name: 'insufficientTitle');
+  String get insufficientText =>
+      Intl.message('Minumum volume required by this order is',
+          name: 'insufficientText');
   String get orderCreated =>
       Intl.message('Order created', name: 'orderCreated');
   String get orderCreatedInfo =>
