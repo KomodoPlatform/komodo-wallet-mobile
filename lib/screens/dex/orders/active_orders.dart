@@ -4,6 +4,7 @@ import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
 import 'package:komodo_dex/screens/dex/orders/item_order.dart';
+import 'package:komodo_dex/widgets/pagination.dart';
 
 class ActiveOrders extends StatefulWidget {
   @override
@@ -11,6 +12,10 @@ class ActiveOrders extends StatefulWidget {
 }
 
 class _ActiveOrdersState extends State<ActiveOrders> {
+  final _scrollCtrl = ScrollController();
+  int _currentPage = 1;
+  final int _perPage = 25;
+
   @override
   void initState() {
     ordersBloc.updateOrdersSwaps();
@@ -26,19 +31,34 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           if (snapshot.data != null && snapshot.data.isNotEmpty) {
             List<dynamic> orderSwaps = snapshot.data;
             orderSwaps = snapshot.data.reversed.toList();
-            return ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: orderSwaps.length,
-              itemBuilder: (BuildContext context, int index) {
-                if (orderSwaps[index] is Swap) {
-                  return BuildItemSwap(
-                      context: context, swap: orderSwaps[index]);
-                } else if (orderSwaps[index] is Order) {
-                  return ItemOrder(orderSwaps[index]);
-                } else {
-                  return Container();
-                }
-              },
+
+            final int start = (_currentPage - 1) * _perPage;
+            int end = start + _perPage;
+            if (end > orderSwaps.length) end = orderSwaps.length;
+            final List<Widget> orderSwapsWidget = orderSwaps
+                .map((dynamic item) {
+                  if (item is Swap) {
+                    return BuildItemSwap(context: context, swap: item);
+                  } else if (item is Order) {
+                    return ItemOrder(item);
+                  } else {
+                    return Container();
+                  }
+                })
+                .toList()
+                .sublist(start, end);
+
+            return SingleChildScrollView(
+              controller: _scrollCtrl,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildPagination(orderSwaps),
+                  ...orderSwapsWidget,
+                  _buildPagination(orderSwaps),
+                  SizedBox(height: 10),
+                ],
+              ),
             );
           } else {
             return Container(
@@ -47,5 +67,20 @@ class _ActiveOrdersState extends State<ActiveOrders> {
             );
           }
         });
+  }
+
+  Widget _buildPagination(List<dynamic> orderSwaps) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
+      child: Pagination(
+        currentPage: _currentPage,
+        total: orderSwaps.length,
+        perPage: _perPage,
+        onChanged: (int newPage) {
+          setState(() => _currentPage = newPage);
+          _scrollCtrl.jumpTo(0);
+        },
+      ),
+    );
   }
 }
