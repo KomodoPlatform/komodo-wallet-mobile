@@ -529,32 +529,6 @@ class _CoinDetailState extends State<CoinDetail> {
               )),
           ],
         ),
-        Center(
-          child: RaisedButton(
-            child: Text('Show Private Key'),
-            onPressed: () async {
-              final r = await MM
-                  .getPrivKey(GetPrivKey(coin: widget.coinBalance.coin.abbr));
-
-              showDialog<dynamic>(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('Private Key'),
-                      content: Text(r.result.privKey),
-                      actions: [
-                        FlatButton(
-                          child: Text('Ok'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  });
-            },
-          ),
-        ),
         const SizedBox(
           height: 16,
         )
