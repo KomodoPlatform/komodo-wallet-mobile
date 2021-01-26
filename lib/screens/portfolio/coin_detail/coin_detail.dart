@@ -100,13 +100,8 @@ class _CoinDetailState extends State<CoinDetail> {
     });
     coinsBloc
         .getLatestTransaction(currentCoinBalance.coin)
-        .then((dynamic transactions) {
-      if (transactions is Transactions) {
-        final Transactions tr = transactions;
-        if (tr.result.transactions.isEmpty) return;
-        final t = tr.result.transactions[0];
-        if (t != null) latestTransaction = t;
-      }
+        .then((Transaction t) {
+      if (t != null) latestTransaction = t;
     });
     _amountController.addListener(onChange);
     super.initState();
@@ -278,25 +273,19 @@ class _CoinDetailState extends State<CoinDetail> {
                 tx.result.syncStatus != null &&
                 tx.result.syncStatus.state != null) {
               timer ??= Timer.periodic(const Duration(seconds: 3), (_) async {
-                final dynamic transactions = await coinsBloc
+                final Transaction t = await coinsBloc
                     .getLatestTransaction(currentCoinBalance.coin);
-                Transaction newTr;
-                if (transactions is Transactions) {
-                  final Transactions tr = transactions;
-                  final t = tr.result.transactions[0];
-                  if (t != null) newTr = t;
-                }
 
                 if (_isWaiting) {
                   _refresh();
                 } else if (_scrollController.position.pixels == 0.0) {
                   _refresh();
                 } else if (latestTransaction == null ||
-                    latestTransaction.internalId != newTr.internalId) {
+                    latestTransaction.internalId != t.internalId) {
                   _shouldRefresh = true;
                 }
 
-                latestTransaction = newTr;
+                latestTransaction = t;
               });
 
               if (tx.result.syncStatus.state == syncState) {
