@@ -81,19 +81,7 @@
         "numasks": 1,
         "askdepth": 0,
         "base": "KMD",
-        "rel": "RICK",
-        "timestamp": 1549327944,
-        "netid": 9999
-      },
-      {
-        "bids": [],
-        "numbids": 0,
-        "biddepth": 0,
-        "asks": [],
-        "numasks": 1,
-        "askdepth": 0,
-        "base": "BTC",
-        "rel": "RICK",
+        "rel": "MORTY",
         "timestamp": 1549327944,
         "netid": 9999
       }
