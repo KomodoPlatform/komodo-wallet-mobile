@@ -292,18 +292,18 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
   }
 
   bool _isEnoughVolume() {
-    if (widget.order.minvolume == null) return true;
+    if (widget.order.minVolume == null) return true;
     if (widget.sellAmount == null) return true;
 
     final double myVolume =
         widget.order.getReceiveAmount(deci(widget.sellAmount)).toDouble();
 
-    return myVolume >= widget.order.minvolume;
+    return myVolume >= widget.order.minVolume;
   }
 
   Widget _buildMinVolume() {
-    if (widget.order.minvolume == null) return SizedBox();
-    if (widget.order.minvolume <= 0.00777) return SizedBox();
+    if (widget.order.minVolume == null) return SizedBox();
+    if (widget.order.minVolume <= 0.00777) return SizedBox();
 
     return Row(
       children: <Widget>[
@@ -312,7 +312,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
           style: TextStyle(fontSize: 12),
         ),
         Text(
-          cutTrailingZeros(formatPrice(widget.order.minvolume)),
+          cutTrailingZeros(formatPrice(widget.order.minVolume)),
           style: Theme.of(context).textTheme.subtitle2.copyWith(
                 fontWeight: FontWeight.normal,
                 fontSize: 12,

@@ -83,7 +83,7 @@ class Ask {
     this.address,
     this.price,
     this.maxvolume,
-    this.minvolume,
+    this.minVolume,
     this.pubkey,
     this.age,
     this.zcredits,
@@ -98,7 +98,7 @@ class Ask {
       address: json['address'] ?? '',
       price: json['price'] ?? 0.0,
       maxvolume: deci(json['maxvolume']),
-      minvolume: double.tryParse(json['min_volume']),
+      minVolume: double.tryParse(json['min_volume']),
       pubkey: json['pubkey'] ?? '',
       age: json['age'] ?? 0,
       zcredits: json['zcredits'] ?? 0,
@@ -109,7 +109,7 @@ class Ask {
   String address;
   String price;
   Decimal maxvolume;
-  double minvolume;
+  double minVolume;
   String pubkey;
   int age;
   int zcredits;
@@ -119,7 +119,7 @@ class Ask {
         'address': address ?? '',
         'price': price ?? 0.0,
         'maxvolume': maxvolume.toString(),
-        'min_volume': minvolume.toString(),
+        'min_volume': minVolume.toString(),
         'pubkey': pubkey ?? '',
         'age': age ?? 0,
         'zcredits': zcredits ?? 0,

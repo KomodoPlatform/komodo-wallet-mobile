@@ -212,6 +212,15 @@ class AppLocalizations {
       name: 'infoTrade2');
   String get swapDetailTitle =>
       Intl.message('CONFIRM EXCHANGE DETAILS', name: 'swapDetailTitle');
+  String get minVolumeTitle =>
+      Intl.message('Min volume required', name: 'minVolumeTitle');
+  String get minVolumeToggle =>
+      Intl.message('Use custom min volume', name: 'minVolumeToggle');
+  String get nonNumericInput =>
+      Intl.message('The value must be numeric', name: 'nonNumericInput');
+  String minVolumeInput(double minValue, String coin) =>
+      Intl.message('Must be greater than $minValue $coin',
+          name: 'minVolumeInput', args: <Object>[minValue, coin]);
   String get checkSeedPhrase =>
       Intl.message('Check seed phrase', name: 'checkSeedPhrase');
   String get checkSeedPhraseTitle =>

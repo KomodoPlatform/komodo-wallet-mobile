@@ -1293,16 +1293,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     if (_controllerAmountSell.text != null &&
         _controllerAmountSell.text.isNotEmpty &&
-        double.parse(_controllerAmountSell.text) < 3 &&
-        swapBloc.sellCoinBalance.coin.abbr == 'QTUM') {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoinBalance.coin.abbr, 3.toString())),
-      ));
-      return false;
-    } else if (_controllerAmountSell.text != null &&
-        _controllerAmountSell.text.isNotEmpty &&
         double.parse(_controllerAmountSell.text) < 0.00777) {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
@@ -1319,15 +1309,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             .minValueBuy(swapBloc.receiveCoin.abbr, 0.00777.toString())),
       ));
       return false;
-    } else if (currentAsk != null && currentAsk.minvolume != null) {
+    } else if (currentAsk != null && currentAsk.minVolume != null) {
       if (_controllerAmountReceive.text != null &&
           _controllerAmountReceive.text.isNotEmpty &&
-          double.parse(_controllerAmountReceive.text) < currentAsk.minvolume) {
+          double.parse(_controllerAmountReceive.text) < currentAsk.minVolume) {
         Scaffold.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 2),
           content: Text(AppLocalizations.of(context).minValueBuy(
               swapBloc.receiveCoin.abbr,
-              cutTrailingZeros(formatPrice(currentAsk.minvolume)))),
+              cutTrailingZeros(formatPrice(currentAsk.minVolume)))),
         ));
         return false;
       }

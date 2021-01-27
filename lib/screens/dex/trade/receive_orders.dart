@@ -602,7 +602,8 @@ class _AsksOrderState extends State<AsksOrder> {
     final double myVolume =
         ask.getReceiveAmount(deci(widget.sellAmount)).toDouble();
     final bool isEnoughVolume =
-        !(ask.minvolume != null && myVolume < ask.minvolume);
+        !(ask.minVolume != null && myVolume < ask.minVolume);
+
     if (isEnoughVolume) {
       Navigator.of(context).pop();
       widget.onCreateOrder(ask);
@@ -635,7 +636,7 @@ class _AsksOrderState extends State<AsksOrder> {
                   SizedBox(width: 4),
                   Text(ask.coin),
                   SizedBox(width: 4),
-                  Text(cutTrailingZeros(formatPrice(ask.minvolume)),
+                  Text(cutTrailingZeros(formatPrice(ask.minVolume)),
                       style: TextStyle(
                         color: Colors.orange,
                       )),
@@ -660,7 +661,7 @@ class _AsksOrderState extends State<AsksOrder> {
                   SizedBox(width: 2),
                   Text(
                       cutTrailingZeros(
-                          formatPrice(ask.minvolume * double.parse(ask.price))),
+                          formatPrice(ask.minVolume * double.parse(ask.price))),
                       style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).disabledColor,
@@ -668,7 +669,7 @@ class _AsksOrderState extends State<AsksOrder> {
                 ],
               ),
               SizedBox(height: 20),
-              FlatButton(
+              RaisedButton(
                 onPressed: () => dialogBloc.closeDialog(context),
                 child: Text(AppLocalizations.of(context).close),
               ),

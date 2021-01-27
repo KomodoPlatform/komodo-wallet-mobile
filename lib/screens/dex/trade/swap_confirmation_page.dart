@@ -17,6 +17,7 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
+import 'package:komodo_dex/screens/dex/trade/min_volume_control.dart';
 import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -50,12 +51,14 @@ class SwapConfirmation extends StatefulWidget {
 }
 
 class _SwapConfirmationState extends State<SwapConfirmation> {
-  bool isSwapMaking = false;
-  ProtectionSettings protectionSettings;
+  bool _isSwapMaking = false;
+  double _minVolume;
+  bool _isMinVolumeValid = true;
+  ProtectionSettings _protectionSettings;
 
   @override
   void initState() {
-    protectionSettings = ProtectionSettings(
+    _protectionSettings = ProtectionSettings(
       requiredConfirmations: widget.coinBase.requiredConfirmations,
       requiresNotarization: widget.coinBase.requiresNotarization ?? false,
     );
@@ -104,10 +107,19 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                   coin: widget.coinBase,
                   onChange: (ProtectionSettings settings) {
                     setState(() {
-                      protectionSettings = settings;
+                      _protectionSettings = settings;
                     });
                   },
                 ),
+                if (widget.swapStatus == SwapStatus.SELL)
+                  MinVolumeControl(
+                      coin: widget.coinBase.abbr,
+                      onChange: (double value, bool isValid) {
+                        setState(() {
+                          _minVolume = value;
+                          _isMinVolumeValid = isValid;
+                        });
+                      }),
                 const SizedBox(height: 8),
                 _buildButtons(),
                 _buildInfoSwap()
@@ -284,13 +296,15 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   Widget _buildButtons() {
+    final bool disabled = _isSwapMaking || !_isMinVolumeValid;
+
     return Builder(builder: (BuildContext context) {
       return Column(
         children: <Widget>[
           const SizedBox(
             height: 16,
           ),
-          isSwapMaking
+          _isSwapMaking
               ? const CircularProgressIndicator()
               : RaisedButton(
                   key: const Key('confirm-swap-button'),
@@ -300,7 +314,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                       borderRadius: BorderRadius.circular(30.0)),
                   child:
                       Text(AppLocalizations.of(context).confirm.toUpperCase()),
-                  onPressed: isSwapMaking ? null : () => _makeASwap(context),
+                  onPressed: disabled ? null : () => _makeASwap(context),
                 ),
           const SizedBox(
             height: 8,
@@ -324,7 +338,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   Future<void> _makeASwap(BuildContext mContext) async {
     Log('swap_confirmation_page:315', '_makeASwap] Starting a swap…');
     setState(() {
-      isSwapMaking = true;
+      _isSwapMaking = true;
     });
 
     final Coin coinBase = widget.coinBase;
@@ -371,8 +385,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             volume: (satoshiBuyAmount / satoshi).toString(),
             max: swapBloc.isMaxActive,
             price: (satoshiPrice / satoshi).toString(),
-            baseNota: protectionSettings.requiresNotarization,
-            baseConfs: protectionSettings.requiredConfirmations,
+            baseNota: _protectionSettings.requiresNotarization,
+            baseConfs: _protectionSettings.requiredConfirmations,
           ));
       if (re is BuyResponse) {
         _goToNextScreen(mContext, re, amountToSell, satoshiBuyAmount / satoshi);
@@ -389,9 +403,10 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 cancelPrevious: false,
                 max: swapBloc.isMaxActive,
                 volume: amountToSell,
+                minVolume: _minVolume,
                 price: Decimal.parse(widget.bestPrice).toString(),
-                relNota: protectionSettings.requiresNotarization,
-                relConfs: protectionSettings.requiredConfirmations,
+                relNota: _protectionSettings.requiresNotarization,
+                relConfs: _protectionSettings.requiredConfirmations,
               ))
           .then<dynamic>((dynamic onValue) => onValue is SetPriceResponse
               ? _goToNextScreen(
@@ -407,7 +422,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
 
   void _catchErrorSwap(BuildContext mContext, ErrorString error) {
     setState(() {
-      isSwapMaking = false;
+      _isSwapMaking = false;
     });
     String timeSecondeLeft = error.error;
     Log('swap_confirmation_page:396', timeSecondeLeft);
