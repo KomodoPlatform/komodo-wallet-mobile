@@ -17,6 +17,7 @@ class GetBuySell {
     this.base,
     this.rel,
     this.volume,
+    this.max,
     this.price,
     this.orderType,
     this.baseNota,
@@ -46,6 +47,7 @@ class GetBuySell {
       base: json['base'] ?? '',
       rel: json['rel'] ?? '',
       volume: json['volume'] ?? '',
+      max: json['max'] ?? false,
       price: json['price'] ?? '',
       orderType: orderType,
       baseNota: json['base_nota'],
@@ -60,6 +62,7 @@ class GetBuySell {
   String base;
   String rel;
   String volume;
+  bool max;
   String price;
   BuyOrderType orderType;
   bool baseNota;
@@ -73,6 +76,7 @@ class GetBuySell {
         'base': base ?? '',
         'rel': rel ?? '',
         'volume': volume ?? '',
+        'max': max ?? 'false',
         'price': price ?? '',
         'order_type': {
           'type': orderType == BuyOrderType.FillOrKill

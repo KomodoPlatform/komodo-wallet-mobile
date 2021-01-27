@@ -36,6 +36,8 @@ class _SecondaryButtonState extends State<SecondaryButton> {
       }
       child = Text(
         widget.text.toUpperCase(),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.button.copyWith(
             color: widget.isDarkMode ? Colors.white : widget.textColor),
       );

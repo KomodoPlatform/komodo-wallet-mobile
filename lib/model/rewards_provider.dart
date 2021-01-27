@@ -68,7 +68,7 @@ class RewardsProvider extends ChangeNotifier {
       Log('rewards_provider', '_updateTotal] $e');
     }
 
-    if (res is WithdrawResponse) {
+    if (res is WithdrawResponse && res.coin == 'KMD') {
       _total = double.parse(res.myBalanceChange);
     } else {
       _total = 0.0;
