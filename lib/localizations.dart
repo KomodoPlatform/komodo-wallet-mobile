@@ -57,6 +57,9 @@ class AppLocalizations {
           args: <Object>[amount, coinName], name: 'withdrawValue');
   String get withdrawConfirm =>
       Intl.message('Confirm Withdrawal', name: 'withdrawConfirm');
+  String get withdrawConfirmError =>
+      Intl.message('Something went wrong. Try again later.',
+          name: 'withdrawConfirmError');
   String get close => Intl.message('Close', name: 'close');
   String get confirmSeed =>
       Intl.message('Confirm Seed Phrase', name: 'confirmSeed');
@@ -131,6 +134,7 @@ class AppLocalizations {
   String get send => Intl.message('SEND', name: 'send');
   String get back => Intl.message('back', name: 'back');
   String get cancel => Intl.message('cancel', name: 'cancel');
+  String get details => Intl.message('details', name: 'details');
   String get commingsoon =>
       Intl.message('TX details coming soon!', name: 'commingsoon');
   String get history => Intl.message('history', name: 'history');
@@ -353,6 +357,11 @@ class AppLocalizations {
         name: 'minValueBuy',
         args: <Object>[coinName, number],
       );
+  String minValueSell(String coinName, String number) => Intl.message(
+        'The minimun amount to sell is $number $coinName',
+        name: 'minValueSell',
+        args: <Object>[coinName, number],
+      );
   String get encryptingWallet =>
       Intl.message('Encrypting wallet', name: 'encryptingWallet');
   String get decryptingWallet =>
@@ -473,11 +482,13 @@ class AppLocalizations {
   String get eulaParagraphe19 => Intl.message(
       'AtomicDEX mobile is a non-custodial, decentralized and blockchain based application and as such does Komodo Platform never store any user-data (accounts and authentication data). \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020\n\n',
       name: 'eulaParagraphe19');
-  String get ethFee => Intl.message('ETH fee', name: 'ethFee');
-  String get notEnoughEth =>
-      Intl.message('Not enough ETH for transaction!', name: 'notEnoughEth');
-  String get ethNotActive =>
-      Intl.message('Please activate ETH.', name: 'ethNotActive');
+  String gasFee(String coin) =>
+      Intl.message('$coin fee', name: 'gasFee', args: <Object>[coin]);
+  String notEnoughGas(String coin) =>
+      Intl.message('Not enough $coin for transaction!',
+          name: 'notEnoughGas', args: <Object>[coin]);
+  String gasNotActive(String coin) => Intl.message('Please activate $coin.',
+      name: 'gasNotActive', args: <Object>[coin]);
   String youWillReceiveClaim(String amount, String coin) => Intl.message(
         'You will receive $amount $coin',
         name: 'youWillReceiveClaim',
@@ -499,10 +510,10 @@ class AppLocalizations {
       Intl.message('Order selected', name: 'titleCurrentAsk');
   String get txFeeTitle => Intl.message('transaction fee:', name: 'txFeeTitle');
   String get tradingFee => Intl.message('trading fee:', name: 'tradingFee');
-  String swapErcAmount(String amount) => Intl.message(
-        'This swap requires $amount ETH for transaction fees',
-        name: 'swapErcAmount',
-        args: <Object>[amount],
+  String swapGasAmount(String amount, String coin) => Intl.message(
+        'This swap requires $amount $coin for transaction fees',
+        name: 'swapGasAmount',
+        args: <Object>[amount, coin],
       );
   String get remove => Intl.message('Disable', name: 'remove');
   String get searchFilterCoin =>
@@ -512,8 +523,10 @@ class AppLocalizations {
           name: 'searchFilterSubtitleSmartChain');
   String get searchFilterSubtitleERC =>
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
+  String get searchFilterSubtitleQRC =>
+      Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
-  String get gas => Intl.message('Gas', name: 'gas');
+  String get gasLimit => Intl.message('Gas limit', name: 'gasLimit');
   String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
   String get customFeeWarning =>
       Intl.message('Only use custom fees if you know what you are doing!',
@@ -521,6 +534,7 @@ class AppLocalizations {
   String get searchFilterSubtitleutxo =>
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
+  String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughtGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
@@ -779,6 +793,9 @@ class AppLocalizations {
   String get multiFiatCancel => Intl.message('Cancel', name: 'multiFiatCancel');
   String get multiFiatFill => Intl.message('Autofill', name: 'multiFiatFill');
   String get multiEthFee => Intl.message('fee', name: 'multiEthFee');
+  String multiLowerThanFee(String coin, String fee) =>
+      Intl.message('Not enough $coin to pay fees. MIN balance is $fee $coin',
+          args: <Object>[coin, fee], name: 'multiLowerThanFee');
   String multiConfirmTitle(int number) =>
       Intl.message('Create $number Order(s):',
           args: <Object>[number], name: 'multiConfirmTitle');
@@ -794,11 +811,11 @@ class AppLocalizations {
       Intl.message('Min sell amount is', name: 'multiMinSellAmt');
   String get multiInvalidAmt =>
       Intl.message('Invalid amount', name: 'multiInvalidAmt');
-  String get multiActivateEth =>
-      Intl.message('Activate ETH and top-up balance first',
-          name: 'multiActivateEth');
-  String get multiLowEth =>
-      Intl.message('ETH balance is too low', name: 'multiLowEth');
+  String multiActivateGas(String coin) =>
+      Intl.message('Activate $coin and top-up balance first',
+          name: 'multiActivateGas', args: <Object>[coin]);
+  String multiLowGas(String coin) => Intl.message('$coin balance is too low',
+      name: 'multiLowGas', args: <Object>[coin]);
   String get multiMinReceiveAmt =>
       Intl.message('Min receive amount is', name: 'multiMinReceiveAmt');
 

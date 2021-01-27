@@ -28,6 +28,7 @@ class CoinInit {
     this.versionGroupId,
     this.consensusBranchId,
     this.requiredConfirmations,
+    this.matureConfirmations,
     this.asset,
     this.segwit,
     this.addressFormat,
@@ -50,6 +51,7 @@ class CoinInit {
         overwintered: json['overwintered'],
         versionGroupId: json['version_group_id'],
         requiredConfirmations: json['required_confirmations'],
+        matureConfirmations: json['mature_confirmations'],
         consensusBranchId: json['consensus_branch_id'],
         asset: json['asset'],
         segwit: json['segwit'],
@@ -73,6 +75,7 @@ class CoinInit {
   String versionGroupId;
   String consensusBranchId;
   int requiredConfirmations;
+  int matureConfirmations;
   String asset;
   bool segwit;
   Map<String, dynamic> addressFormat;
@@ -95,6 +98,7 @@ class CoinInit {
         'version_group_id': versionGroupId,
         'consensus_branch_id': consensusBranchId,
         'required_confirmations': requiredConfirmations,
+        'mature_confirmations': matureConfirmations,
         'asset': asset,
         'segwit': segwit,
         'address_format': addressFormat,

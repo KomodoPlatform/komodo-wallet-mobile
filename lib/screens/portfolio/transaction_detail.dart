@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +66,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
               icon: Icon(Icons.open_in_browser),
               onPressed: () {
                 String urlPostTx = 'tx/';
-                if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
+                if (widget.coinBalance.coin.type == 'erc') {
                   urlPostTx = 'tx/0x';
                 }
                 launchURL(widget.coinBalance.coin.explorerUrl[0] +
@@ -249,8 +250,15 @@ class _TransactionDetailState extends State<TransactionDetail> {
       fee = widget.transaction.feeDetails?.amount.toString();
     }
 
-    if (widget.coinBalance.coin.swapContractAddress.isNotEmpty) {
-      return fee + ' ETH';
+    try {
+      // QTUM gas-refund (coinbase) txs
+      if (double.parse(fee) < 0 && widget.transaction.coin == 'QTUM')
+        return '0';
+    } catch (_) {}
+
+    final String gasCoin = GetFee.gasCoin(widget.coinBalance.coin.abbr);
+    if (gasCoin != null) {
+      return fee + ' $gasCoin';
     } else {
       return fee + ' ' + widget.transaction.coin;
     }
