@@ -13,11 +13,9 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class CexProvider extends ChangeNotifier {
-  bool isMock;
-
-  CexProvider(bool isMock) {
-    _updateTickersList(isMock);
-    _updateRates(isMock);
+  CexProvider() {
+    _updateTickersList();
+    _updateRates();
 
     cexPrices.linkProvider(this);
   }
@@ -84,7 +82,7 @@ class CexProvider extends ChangeNotifier {
   bool _updatingChart = false;
   List<String> _tickers;
 
-  void _updateRates(bool isMock) => cexPrices.updateRates();
+  void _updateRates() => cexPrices.updateRates();
 
   List<String> _getTickers() {
     if (_tickers != null) return _tickers;
@@ -93,7 +91,7 @@ class CexProvider extends ChangeNotifier {
     return _tickersFallBack;
   }
 
-  Future<void> _updateTickersList(bool isMock) async {
+  Future<void> _updateTickersList() async {
     http.Response _res;
     String _body;
     try {
