@@ -394,9 +394,11 @@ class _CoinDetailState extends State<CoinDetail> {
 
   Future<void> _refresh() async {
     await coinsBloc.updateTransactions(currentCoinBalance.coin, limit, null);
-    setState(() {
-      _shouldRefresh = false;
-    });
+    if (mounted) {
+      setState(() {
+        _shouldRefresh = false;
+      });
+    }
   }
 
   Widget _buildTransactions(
