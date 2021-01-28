@@ -70,7 +70,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
                 .toLowerCase()
                 .startsWith(searchTextController.text.toLowerCase()))
             .map((Orderbook orderbook) => OrderbookItem(
-                key: Key('orderbook-item-${orderbook.rel.toLowerCase()}'),
+                key: ValueKey('orderbook-item-${orderbook.rel.toLowerCase()}'),
                 orderbook: orderbook,
                 onCreateNoOrder: widget.onCreateNoOrder,
                 onCreateOrder: widget.onCreateOrder,
