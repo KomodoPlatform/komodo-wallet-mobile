@@ -307,22 +307,30 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
 
     return Row(
       children: <Widget>[
-        Text(
-          '${AppLocalizations.of(context).orderDetailsMin} ${widget.order.coin} ',
-          style: TextStyle(fontSize: 12),
-        ),
-        Text(
-          cutTrailingZeros(formatPrice(widget.order.minVolume)),
-          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                fontWeight: FontWeight.normal,
-                fontSize: 12,
-                color: !_isEnoughVolume() ? Colors.orange : null,
+        SizedBox(width: 16),
+        Container(
+          decoration: BoxDecoration(
+            color: _isEnoughVolume() ? null : Colors.orange.withAlpha(200),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
+          child: Row(
+            children: [
+              Text(
+                '${AppLocalizations.of(context).orderDetailsMin} '
+                '${widget.order.coin} '
+                '${cutTrailingZeros(formatPrice(widget.order.minVolume))}',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: _isEnoughVolume()
+                      ? null
+                      : Theme.of(context).primaryColorDark,
+                ),
               ),
+            ],
+          ),
         ),
-        if (!_isEnoughVolume()) ...{
-          SizedBox(width: 2),
-          Icon(Icons.warning, color: Colors.orange, size: 10)
-        },
       ],
     );
   }

@@ -634,20 +634,30 @@ class _AsksOrderState extends State<AsksOrder> {
               SizedBox(height: 10),
               Row(
                 children: [
-                  CircleAvatar(
-                    radius: 7,
-                    backgroundImage: AssetImage('assets/'
-                        '${ask.coin.toLowerCase()}.png'),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.orange.withAlpha(200),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 7,
+                          backgroundImage: AssetImage('assets/'
+                              '${ask.coin.toLowerCase()}.png'),
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                            '${ask.coin} ' +
+                                cutTrailingZeros(formatPrice(ask.minVolume)),
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorDark,
+                              fontWeight: FontWeight.w400,
+                            )),
+                      ],
+                    ),
                   ),
-                  SizedBox(width: 4),
-                  Text(ask.coin),
-                  SizedBox(width: 4),
-                  Text(cutTrailingZeros(formatPrice(ask.minVolume)),
-                      style: TextStyle(
-                        color: Colors.orange,
-                      )),
-                  SizedBox(width: 2),
-                  Icon(Icons.warning, size: 14, color: Colors.orange)
                 ],
               ),
               SizedBox(height: 2),
