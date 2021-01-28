@@ -54,6 +54,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   bool _isSwapMaking = false;
   double _minVolume;
   bool _isMinVolumeValid = true;
+  BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
   ProtectionSettings _protectionSettings;
 
   @override
@@ -120,12 +121,48 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                           _isMinVolumeValid = isValid;
                         });
                       }),
+                if (widget.swapStatus == SwapStatus.BUY) _buildBuyOrderType(),
                 const SizedBox(height: 8),
                 _buildButtons(),
                 _buildInfoSwap()
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBuyOrderType() {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _buyOrderType = _buyOrderType == BuyOrderType.FillOrKill
+              ? BuyOrderType.GoodTillCancelled
+              : BuyOrderType.FillOrKill;
+        });
+      },
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+        child: Column(
+          children: [
+            Row(
+              children: <Widget>[
+                Icon(
+                  _buyOrderType == BuyOrderType.GoodTillCancelled
+                      ? Icons.check_box
+                      : Icons.check_box_outline_blank,
+                  size: 18,
+                ),
+                const SizedBox(width: 3),
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(context).buyOrderType,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -385,6 +422,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             volume: (satoshiBuyAmount / satoshi).toString(),
             max: swapBloc.isMaxActive,
             price: (satoshiPrice / satoshi).toString(),
+            orderType: _buyOrderType,
             baseNota: _protectionSettings.requiresNotarization,
             baseConfs: _protectionSettings.requiredConfirmations,
           ));

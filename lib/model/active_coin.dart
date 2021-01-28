@@ -6,6 +6,7 @@ class ActiveCoin {
     lockedBySwaps = json['locked_by_swaps'] ?? '';
     result = json['result'] ?? '';
     requiredConfirmations = json['required_confirmations'];
+    matureConfirmations = json['mature_confirmations'];
     requiresNotarization = json['requires_notarization'];
   }
 
@@ -15,6 +16,7 @@ class ActiveCoin {
   String lockedBySwaps;
   String result;
   int requiredConfirmations;
+  int matureConfirmations;
   bool requiresNotarization;
 
   Map<String, dynamic> toJson() => <String, dynamic>{

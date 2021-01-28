@@ -1,40 +1,35 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/get_trade_fee.dart';
-import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/model/error_string.dart';
+import 'package:komodo_dex/model/get_withdraw.dart';
+import 'package:komodo_dex/model/withdraw_response.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
-import 'package:decimal/decimal.dart';
 
 class BuildConfirmationStep extends StatefulWidget {
-  const BuildConfirmationStep(
-      {Key key,
-      this.coinBalance,
-      this.amountToPay,
-      this.addressToSend,
-      this.onCancel,
-      this.onNoInternet,
-      this.onLoadingStep,
-      this.onStepChange,
-      this.onError,
-      this.onSuccessStep})
-      : super(key: key);
+  const BuildConfirmationStep({
+    Key key,
+    this.coinBalance,
+    this.amountToPay,
+    this.addressToSend,
+    this.onCancel,
+    this.onError,
+    this.onNoInternet,
+    this.onConfirmPressed,
+  }) : super(key: key);
 
   final Function onCancel;
   final Function onNoInternet;
-  final Function onLoadingStep;
-  final Function(int) onStepChange;
   final Function onError;
-  final Function(String) onSuccessStep;
+  final Function(WithdrawResponse) onConfirmPressed;
   final CoinBalance coinBalance;
   final String amountToPay;
   final String addressToSend;
@@ -44,272 +39,324 @@ class BuildConfirmationStep extends StatefulWidget {
 }
 
 class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
-  Future<double> getFee() async {
-    try {
-      final dynamic tradeFeeResponse = await MM.getTradeFee(
-          MMService().client, GetTradeFee(coin: widget.coinBalance.coin.abbr));
-      if (tradeFeeResponse is TradeFee) {
-        return double.parse(tradeFeeResponse.result.amount);
-      } else {
-        return 0;
+  bool _showDetailedError = false;
+  dynamic _withdrawResponse;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Fee customFee;
+      if (coinsDetailBloc.customFee != null) {
+        if (widget.coinBalance.coin.type == 'erc') {
+          customFee = Fee(
+            type: 'EthGas',
+            gas: coinsDetailBloc.customFee.gas,
+            gasPrice: coinsDetailBloc.customFee.gasPrice,
+          );
+        } else {
+          customFee = Fee(
+            type: 'UtxoFixed',
+            amount: coinsDetailBloc.customFee.amount,
+          );
+        }
       }
-    } catch (e) {
-      Log.println('build_confirmation_step:57', e);
-      return 0;
-    }
+
+      ApiProvider()
+          .postWithdraw(
+              MMService().client,
+              GetWithdraw(
+                userpass: MMService().userpass,
+                fee: customFee,
+                coin: widget.coinBalance.coin.abbr,
+                to: widget.addressToSend,
+                amount: widget.amountToPay,
+                max: double.parse(widget.coinBalance.balance.getBalance()) ==
+                    double.parse(widget.amountToPay),
+              ))
+          .then((dynamic res) {
+        setState(() => _withdrawResponse = res);
+      }).catchError((dynamic onError) {
+        setState(() => _withdrawResponse = onError);
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Object>(
-        future: getFee(),
-        builder: (BuildContext context, AsyncSnapshot<Object> snapshot) {
-          final bool isErcCoin =
-              widget.coinBalance.coin.swapContractAddress?.isNotEmpty;
-          bool notEnoughEth = false;
-          bool isEthActive = false;
+    if (_withdrawResponse is WithdrawResponse) {
+      final CoinAmt fee = _extractFee(_withdrawResponse);
 
-          Decimal fee = deci(0);
-          Decimal ethfee = deci(0);
-          if (snapshot.hasData && coinsDetailBloc.customFee == null) {
-            try {
-              fee = deci(snapshot.data);
-            } catch (e) {
-              Log.println('build_confirmation_step:78', e);
-            }
-          }
+      if (fee == null) {
+        return _buildErrorMessage();
+      }
 
-          if (coinsDetailBloc.customFee != null &&
-              widget.coinBalance.coin.type != 'erc') {
-            fee = deci(coinsDetailBloc.customFee.amount);
-          }
+      final bool needGas = fee.coin != widget.coinBalance.coin.abbr;
+      bool isGasActive = false;
+      bool notEnoughGas = false;
 
-          if (coinsDetailBloc.customFee != null &&
-              widget.coinBalance.coin.type == 'erc') {
-            fee = deci(coinsDetailBloc.customFee.gas) *
-                deci(coinsDetailBloc.customFee.gasPrice) /
-                deci(1000000000);
-          }
+      double amountToPay = double.parse(widget.amountToPay);
+      double amountUserReceive = amountToPay;
+      if (!needGas) amountToPay += fee.amount;
+      final double userBalance = widget.coinBalance.balance.balance.toDouble();
 
-          Decimal amountToPay = deci(widget.amountToPay);
-          if (!isErcCoin) amountToPay += fee;
-          Decimal amountUserReceive = deci(widget.amountToPay);
-          final Decimal userBalance = widget.coinBalance.balance.balance;
+      if (amountToPay > userBalance) {
+        amountToPay = userBalance;
+        if (!needGas) amountUserReceive -= fee.amount;
+      }
 
-          if (amountToPay > userBalance) amountUserReceive = userBalance;
+      bool isButtonActive;
+      if (needGas) {
+        final CoinBalance gasBalance = coinsBloc.getBalanceByAbbr(fee.coin);
+        isGasActive = gasBalance != null;
+        if (isGasActive && fee.amount > gasBalance.balance.balance.toDouble()) {
+          notEnoughGas = true;
+        }
 
-          if (userBalance == amountUserReceive) {
-            amountToPay = amountUserReceive;
-            if (!isErcCoin || widget.coinBalance.coin.abbr == 'ETH') {
-              amountUserReceive -= fee;
-            }
-          }
+        isButtonActive = isGasActive && (!notEnoughGas) && amountToPay > 0;
+      } else {
+        isButtonActive = amountToPay > 0;
+      }
 
-          CoinBalance ethCoin;
-          for (CoinBalance coinBalance in coinsBloc.coinBalance) {
-            if (coinBalance.coin.abbr == 'ETH') {
-              ethCoin = coinBalance;
-            }
-          }
-
-          isEthActive = !(ethCoin == null);
-          ethfee = fee;
-
-          if ((ethCoin != null && ethfee > ethCoin.balance.balance) ||
-              (ethCoin != null &&
-                  widget.coinBalance.coin.abbr == 'ETH' &&
-                  amountUserReceive > ethCoin.balance.balance)) {
-            notEnoughEth = true;
-          }
-
-          final bool isButtonActive =
-              (widget.coinBalance.coin.swapContractAddress.isEmpty &&
-                      amountToPay > deci(0)) ||
-                  (amountToPay > deci(0) && !notEnoughEth && isEthActive);
-
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              AppLocalizations.of(context).youAreSending,
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  AppLocalizations.of(context).youAreSending,
+                  amountToPay.toStringAsFixed(8),
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
                 const SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      amountToPay.toStringAsFixed(8),
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      widget.coinBalance.coin.abbr,
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ],
-                ),
-                snapshot.connectionState == ConnectionState.waiting
-                    ? Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                            padding: const EdgeInsets.all(3),
-                            height: 18,
-                            width: 18,
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 1.5,
-                            )))
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            '- ',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          Text(
-                            !isErcCoin
-                                ? fee.toStringAsFixed(8)
-                                : ethfee.toString(),
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            isErcCoin
-                                ? AppLocalizations.of(context).ethFee
-                                : AppLocalizations.of(context).networkFee,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ],
-                      ),
-                widget.coinBalance.coin.swapContractAddress.isNotEmpty &&
-                        notEnoughEth &&
-                        isEthActive
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            AppLocalizations.of(context).notEnoughEth,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(color: Theme.of(context).errorColor),
-                          ),
-                        ],
-                      )
-                    : Container(),
-                widget.coinBalance.coin.swapContractAddress.isNotEmpty &&
-                        !isEthActive
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            AppLocalizations.of(context).ethNotActive,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(color: Theme.of(context).errorColor),
-                          ),
-                        ],
-                      )
-                    : Container(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Container(
-                    height: 1,
-                    width: double.infinity,
-                    color:
-                        Theme.of(context).textSelectionColor.withOpacity(0.4),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      amountUserReceive.toStringAsFixed(8),
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 2),
-                      child: Text(
-                        widget.coinBalance.coin.abbr,
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 16,
+                  width: 4,
                 ),
                 Text(
-                  AppLocalizations.of(context).toAddress,
-                  style: Theme.of(context).textTheme.subtitle2,
+                  widget.coinBalance.coin.abbr,
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  '- ',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                Text(
+                  fee.amount.toStringAsFixed(8),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 const SizedBox(
-                  height: 24,
+                  width: 4,
                 ),
-                Container(
-                  child: AutoSizeText(
-                    widget.addressToSend,
-                    style: Theme.of(context).textTheme.bodyText2,
-                    maxLines: 1,
+                Text(
+                  needGas
+                      ? AppLocalizations.of(context).gasFee(fee.coin)
+                      : AppLocalizations.of(context).networkFee,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
+            ),
+            needGas && isGasActive && notEnoughGas
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context).notEnoughGas(fee.coin),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(color: Theme.of(context).errorColor),
+                      ),
+                    ],
+                  )
+                : Container(),
+            needGas && !isGasActive
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context).gasNotActive(fee.coin),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(color: Theme.of(context).errorColor),
+                      ),
+                    ],
+                  )
+                : Container(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Container(
+                height: 1,
+                width: double.infinity,
+                color: Theme.of(context).textSelectionColor.withOpacity(0.4),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  amountUserReceive.toStringAsFixed(8),
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                const SizedBox(
+                  width: 4,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 2),
+                  child: Text(
+                    widget.coinBalance.coin.abbr,
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text(
+              AppLocalizations.of(context).toAddress,
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Container(
+              child: AutoSizeText(
+                widget.addressToSend,
+                style: Theme.of(context).textTheme.bodyText2,
+                maxLines: 1,
+              ),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: SecondaryButton(
+                    text: AppLocalizations.of(context).cancel.toUpperCase(),
+                    onPressed: widget.onCancel,
                   ),
                 ),
                 const SizedBox(
-                  height: 24,
+                  width: 16,
                 ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: SecondaryButton(
-                        text: AppLocalizations.of(context).cancel.toUpperCase(),
-                        onPressed: widget.onCancel,
-                      ),
+                Expanded(
+                  child: Builder(builder: (BuildContext context) {
+                    return PrimaryButton(
+                      key: const Key('primary-button-confirm'),
+                      text: AppLocalizations.of(context).confirm.toUpperCase(),
+                      onPressed: isButtonActive
+                          ? () {
+                              _onPressedConfirmWithdraw(
+                                  amountUserReceive.toDouble());
+                            }
+                          : null,
+                    );
+                  }),
+                ),
+              ],
+            )
+          ],
+        ),
+      );
+    } else if (_withdrawResponse == null) {
+      return Center(
+        child: Container(
+          padding: EdgeInsets.all(48),
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return _buildErrorMessage();
+    }
+  }
+
+  Widget _buildErrorMessage() {
+    final String detailedMessage =
+        _withdrawResponse is ErrorString ? _withdrawResponse.error : null;
+
+    return Center(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(12, 48, 12, 12),
+        child: Column(
+          children: [
+            Text(
+              detailedMessage != null && _showDetailedError
+                  ? detailedMessage
+                  : AppLocalizations.of(context).withdrawConfirmError,
+              style: TextStyle(color: Theme.of(context).errorColor),
+            ),
+            SizedBox(height: 48),
+            Row(
+              children: [
+                Expanded(
+                  child: SecondaryButton(
+                    text: AppLocalizations.of(context).back.toUpperCase(),
+                    onPressed: widget.onCancel,
+                  ),
+                ),
+                if (detailedMessage != null && !_showDetailedError) ...{
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: SecondaryButton(
+                      text: AppLocalizations.of(context).details.toUpperCase(),
+                      onPressed: () {
+                        setState(() => _showDetailedError = true);
+                      },
                     ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: Builder(builder: (BuildContext context) {
-                        return PrimaryButton(
-                          key: const Key('primary-button-confirm'),
-                          text: AppLocalizations.of(context)
-                              .confirm
-                              .toUpperCase(),
-                          onPressed: isButtonActive && snapshot.hasData
-                              ? () {
-                                  _onPressedConfirmWithdraw(
-                                      amountUserReceive.toDouble());
-                                }
-                              : null,
-                        );
-                      }),
-                    ),
-                  ],
-                )
+                  ),
+                }
               ],
             ),
-          );
-        });
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _onPressedConfirmWithdraw(double sendAmount) async {
     if (mainBloc.isNetworkOffline) {
       widget.onNoInternet();
+    } else if (_withdrawResponse is WithdrawResponse) {
+      widget.onConfirmPressed(_withdrawResponse);
     } else {
-      widget.onLoadingStep();
+      widget.onError();
     }
+  }
+
+  CoinAmt _extractFee(WithdrawResponse res) {
+    String coin = res.feeDetails.coin ?? '';
+    if (coin.isEmpty) coin = widget.coinBalance.coin.abbr;
+
+    double amount;
+    try {
+      amount = double.parse(res.feeDetails.amount);
+    } catch (_) {
+      amount = double.parse(res.feeDetails.totalFee);
+    }
+
+    if (amount == null) return null;
+
+    return CoinAmt(
+      coin: coin,
+      amount: amount,
+    );
   }
 }

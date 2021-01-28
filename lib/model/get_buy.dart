@@ -19,25 +19,43 @@ class GetBuySell {
     this.volume,
     this.max,
     this.price,
+    this.orderType,
     this.baseNota,
     this.baseConfs,
     this.relNota,
     this.relConfs,
   });
 
-  factory GetBuySell.fromJson(Map<String, dynamic> json) => GetBuySell(
-        userpass: json['userpass'] ?? '',
-        method: json['method'] ?? '',
-        base: json['base'] ?? '',
-        rel: json['rel'] ?? '',
-        volume: json['volume'] ?? '',
-        max: json['max'] ?? false,
-        price: json['price'] ?? '',
-        baseNota: json['base_nota'],
-        baseConfs: json['base_confs'],
-        relNota: json['rel_nota'],
-        relConfs: json['rel_confs'],
-      );
+  factory GetBuySell.fromJson(Map<String, dynamic> json) {
+    final String typeStr =
+        json['order_type'] != null && json['order_type']['type'] != null
+            ? json['order_type']['type']
+            : null;
+
+    BuyOrderType orderType;
+    switch (typeStr) {
+      case 'FillOrKill':
+        orderType = BuyOrderType.FillOrKill;
+        break;
+      default:
+        orderType = BuyOrderType.GoodTillCancelled;
+    }
+
+    return GetBuySell(
+      userpass: json['userpass'] ?? '',
+      method: json['method'] ?? '',
+      base: json['base'] ?? '',
+      rel: json['rel'] ?? '',
+      volume: json['volume'] ?? '',
+      max: json['max'] ?? false,
+      price: json['price'] ?? '',
+      orderType: orderType,
+      baseNota: json['base_nota'],
+      baseConfs: json['base_confs'],
+      relNota: json['rel_nota'],
+      relConfs: json['rel_confs'],
+    );
+  }
 
   String userpass;
   String method;
@@ -46,6 +64,7 @@ class GetBuySell {
   String volume;
   bool max;
   String price;
+  BuyOrderType orderType;
   bool baseNota;
   int baseConfs;
   bool relNota;
@@ -59,9 +78,16 @@ class GetBuySell {
         'volume': volume ?? '',
         'max': max ?? 'false',
         'price': price ?? '',
+        'order_type': {
+          'type': orderType == BuyOrderType.FillOrKill
+              ? 'FillOrKill'
+              : 'GoodTillCancelled'
+        },
         'base_nota': baseNota,
         'base_confs': baseConfs,
         'rel_nota': relNota,
         'rel_confs': relConfs,
       };
 }
+
+enum BuyOrderType { GoodTillCancelled, FillOrKill }

@@ -8,16 +8,16 @@ import 'package:komodo_dex/screens/dex/orders/order_fill.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-class ItemOrder extends StatefulWidget {
-  const ItemOrder(this.order);
+class BuildItemMaker extends StatefulWidget {
+  const BuildItemMaker(this.order);
 
   final Order order;
 
   @override
-  _ItemOrderState createState() => _ItemOrderState();
+  _BuildItemMakerState createState() => _BuildItemMakerState();
 }
 
-class _ItemOrderState extends State<ItemOrder> {
+class _BuildItemMakerState extends State<BuildItemMaker> {
   bool isNoteExpanded = false;
 
   @override

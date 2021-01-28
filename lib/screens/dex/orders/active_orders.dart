@@ -3,7 +3,8 @@ import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_history.dart';
-import 'package:komodo_dex/screens/dex/orders/item_order.dart';
+import 'package:komodo_dex/screens/dex/orders/build_item_maker.dart';
+import 'package:komodo_dex/screens/dex/orders/build_item_taker.dart';
 import 'package:komodo_dex/widgets/pagination.dart';
 
 class ActiveOrders extends StatefulWidget {
@@ -40,7 +41,14 @@ class _ActiveOrdersState extends State<ActiveOrders> {
                   if (item is Swap) {
                     return BuildItemSwap(context: context, swap: item);
                   } else if (item is Order) {
-                    return ItemOrder(item);
+                    switch (item.orderType) {
+                      case OrderType.MAKER:
+                        return BuildItemMaker(item);
+                      case OrderType.TAKER:
+                        return BuildItemTaker(item);
+                      default:
+                        return SizedBox();
+                    }
                   } else {
                     return Container();
                   }

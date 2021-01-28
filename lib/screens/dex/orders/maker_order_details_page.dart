@@ -8,6 +8,7 @@ import 'package:komodo_dex/screens/dex/orders/maker_order_note.dart';
 import 'package:komodo_dex/screens/dex/orders/maker_order_swaps.dart';
 import 'package:komodo_dex/screens/dex/orders/order_fill.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/sound_volume_button.dart';
 
 class MakerOrderDetailsPage extends StatefulWidget {
   const MakerOrderDetailsPage(this.orderId);
@@ -25,6 +26,9 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).makerDetailsTitle),
+        actions: const <Widget>[
+          SoundVolumeButton(),
+        ],
       ),
       body: StreamBuilder<List<dynamic>>(
           initialData: ordersBloc.orderSwaps,

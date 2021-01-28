@@ -6,8 +6,10 @@ import 'dart:convert';
 
 import 'package:komodo_dex/model/transaction_data.dart';
 
-WithdrawResponse withdrawResponseFromJson(String str) =>
-    WithdrawResponse.fromJson(json.decode(str));
+WithdrawResponse withdrawResponseFromJson(String str) {
+  final Map<String, dynamic> json = jsonDecode(str);
+  return WithdrawResponse.fromJson(json);
+}
 
 String withdrawResponseToJson(WithdrawResponse data) =>
     json.encode(data.toJson());
@@ -27,22 +29,27 @@ class WithdrawResponse {
     this.txHex,
   });
 
-  factory WithdrawResponse.fromJson(Map<String, dynamic> json) =>
-      WithdrawResponse(
-        blockHeight: json['block_height'] ?? 0,
-        coin: json['coin'] ?? '',
-        feeDetails: FeeDetails.fromJson(json['fee_details']) ?? FeeDetails(),
-        from: List<String>.from(json['from'].map<dynamic>((dynamic x) => x)) ??
-            <String>[],
-        myBalanceChange: json['my_balance_change'] ?? '',
-        receivedByMe: json['received_by_me'] ?? '',
-        spentByMe: json['spent_by_me'] ?? '',
-        to: List<String>.from(json['to'].map<dynamic>((dynamic x) => x)) ??
-            <String>[],
-        totalAmount: json['total_amount'] ?? '',
-        txHash: json['tx_hash'] ?? '',
-        txHex: json['tx_hex'] ?? '',
-      );
+  factory WithdrawResponse.fromJson(Map<String, dynamic> json) {
+    return WithdrawResponse(
+      blockHeight: json['block_height'] ?? 0,
+      coin: json['coin'] ?? '',
+      feeDetails: json['fee_details'] == null
+          ? FeeDetails()
+          : FeeDetails.fromJson(json['fee_details']),
+      from: json['from'] == null
+          ? <String>[]
+          : List<String>.from(json['from'].map<dynamic>((dynamic x) => x)),
+      myBalanceChange: json['my_balance_change'] ?? '',
+      receivedByMe: json['received_by_me'] ?? '',
+      spentByMe: json['spent_by_me'] ?? '',
+      to: json['to'] == null
+          ? <String>[]
+          : List<String>.from(json['to'].map<dynamic>((dynamic x) => x)),
+      totalAmount: json['total_amount'] ?? '',
+      txHash: json['tx_hash'] ?? '',
+      txHex: json['tx_hex'] ?? '',
+    );
+  }
 
   int blockHeight;
   String coin;
