@@ -16,6 +16,7 @@ import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/services/get_erc_transactions.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -90,6 +91,14 @@ class CoinsBloc implements BlocBase {
   Sink<bool> get _inIsERCActive => _isERCActiveController.sink;
   Stream<bool> get outIsERCActive => _isERCActiveController.stream;
 
+  bool isQRCActive = false;
+
+  final StreamController<bool> _isQRCActiveController =
+      StreamController<bool>.broadcast();
+
+  Sink<bool> get _inIsQRCActive => _isQRCActiveController.sink;
+  Stream<bool> get outIsQRCActive => _isQRCActiveController.stream;
+
   bool isutxoActive = false;
 
   final StreamController<bool> _isutxoActiveController =
@@ -157,6 +166,11 @@ class CoinsBloc implements BlocBase {
   void setIsERCActive(bool isERCActive) {
     this.isERCActive = isERCActive;
     _inIsERCActive.add(this.isERCActive);
+  }
+
+  void setIsQRCActive(bool isQRCActive) {
+    this.isQRCActive = isQRCActive;
+    _inIsQRCActive.add(this.isQRCActive);
   }
 
   void setIsAllSmartChainActive(bool isAllSmartChainActive) {
@@ -539,7 +553,7 @@ class CoinsBloc implements BlocBase {
     return _sorted;
   }
 
-  Future<dynamic> getLatestTransaction(Coin coin) async {
+  Future<Transaction> getLatestTransaction(Coin coin) async {
     const int limit = 1;
     const String fromId = null;
     try {
@@ -554,11 +568,14 @@ class CoinsBloc implements BlocBase {
 
       if (transactions is Transactions) {
         transactions.camouflageIfNeeded();
-
-        return transactions;
+        if (transactions.result.transactions.isNotEmpty) {
+          return transactions.result.transactions[0];
+        }
+        return null;
       } else if (transactions is ErrorCode) {
-        return transactions;
+        return null;
       }
+      return null;
     } catch (e) {
       Log('coins_bloc:545', e);
       rethrow;

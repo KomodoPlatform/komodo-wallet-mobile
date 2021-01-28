@@ -52,6 +52,7 @@ class SwapConfirmation extends StatefulWidget {
 class _SwapConfirmationState extends State<SwapConfirmation> {
   bool isSwapMaking = false;
   ProtectionSettings protectionSettings;
+  BuyOrderType buyOrderType = BuyOrderType.FillOrKill;
 
   @override
   void initState() {
@@ -108,12 +109,48 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                     });
                   },
                 ),
+                if (widget.swapStatus == SwapStatus.BUY) _buildBuyOrderType(),
                 const SizedBox(height: 8),
                 _buildButtons(),
                 _buildInfoSwap()
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBuyOrderType() {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          buyOrderType = buyOrderType == BuyOrderType.FillOrKill
+              ? BuyOrderType.GoodTillCancelled
+              : BuyOrderType.FillOrKill;
+        });
+      },
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(30, 8, 30, 8),
+        child: Column(
+          children: [
+            Row(
+              children: <Widget>[
+                Icon(
+                  buyOrderType == BuyOrderType.GoodTillCancelled
+                      ? Icons.check_box
+                      : Icons.check_box_outline_blank,
+                  size: 18,
+                ),
+                const SizedBox(width: 3),
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(context).buyOrderType,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -371,6 +408,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             volume: (satoshiBuyAmount / satoshi).toString(),
             max: swapBloc.isMaxActive,
             price: (satoshiPrice / satoshi).toString(),
+            orderType: buyOrderType,
             baseNota: protectionSettings.requiresNotarization,
             baseConfs: protectionSettings.requiredConfirmations,
           ));

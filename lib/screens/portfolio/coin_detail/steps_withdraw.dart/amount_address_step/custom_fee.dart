@@ -6,11 +6,9 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 
 class CustomFee extends StatefulWidget {
-  const CustomFee({Key key, this.amount, this.isERCToken = false, this.coin})
-      : super(key: key);
+  const CustomFee({Key key, this.amount, this.coin}) : super(key: key);
 
   final String amount;
-  final bool isERCToken;
   final Coin coin;
 
   @override
@@ -59,7 +57,7 @@ class _CustomFeeState extends State<CustomFee> {
                       .bodyText2
                       .copyWith(color: Theme.of(context).errorColor),
                 ),
-                widget.isERCToken
+                widget.coin.type == 'erc'
                     ? CustomFeeFieldERC(
                         coin: widget.coin,
                         isCustomFeeActive: isCustomFeeActive,
@@ -121,7 +119,7 @@ class _CustomFeeFieldERCState extends State<CustomFeeFieldERC> {
                               BorderSide(color: Theme.of(context).accentColor)),
                       hintStyle: Theme.of(context).textTheme.bodyText2,
                       labelStyle: Theme.of(context).textTheme.bodyText2,
-                      labelText: AppLocalizations.of(context).gas + ' [Gwei]'),
+                      labelText: AppLocalizations.of(context).gasLimit),
                   validator: (String value) {
                     if (widget.isCustomFeeActive) {
                       value = value.replaceAll(',', '.');
