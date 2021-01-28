@@ -948,6 +948,8 @@ class AppLocalizations {
       'Warning, this atomic swap is not '
       'dPoW protected. ',
       name: 'protectionCtrlWarning');
+  String get buyOrderType =>
+      Intl.message('Convert to Maker if not matched', name: 'buyOrderType');
 
   String get cexChangeRate =>
       Intl.message('CEXchange rate', name: 'cexChangeRate');
