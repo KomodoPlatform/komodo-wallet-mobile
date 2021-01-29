@@ -52,8 +52,7 @@ class SwapConfirmation extends StatefulWidget {
 
 class _SwapConfirmationState extends State<SwapConfirmation> {
   bool _isSwapMaking = false;
-  double _minVolume;
-  bool _isMinVolumeValid = true;
+  String _minVolume;
   BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
   ProtectionSettings _protectionSettings;
 
@@ -115,11 +114,11 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 if (widget.swapStatus == SwapStatus.SELL)
                   MinVolumeControl(
                       coin: widget.coinBase.abbr,
-                      amountToSell: double.tryParse(widget.amountToSell),
-                      onChange: (double value, bool isValid) {
+                      defaultValue: 0.00777,
+                      validator: _validateMinVolume,
+                      onChange: (String value) {
                         setState(() {
                           _minVolume = value;
-                          _isMinVolumeValid = isValid;
                         });
                       }),
                 if (widget.swapStatus == SwapStatus.BUY) _buildBuyOrderType(),
@@ -132,6 +131,24 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         ),
       ),
     );
+  }
+
+  String _validateMinVolume(String value) {
+    if (value == null) return null;
+
+    final double minVolumeValue = double.tryParse(value);
+    final double amountToSell = double.tryParse(widget.amountToSell);
+
+    if (minVolumeValue == null) {
+      return AppLocalizations.of(context).nonNumericInput;
+    } else if (minVolumeValue < 0.00777) {
+      return AppLocalizations.of(context)
+          .minVolumeInput(0.00777, widget.coinBase.abbr);
+    } else if (amountToSell != null && minVolumeValue > amountToSell) {
+      return AppLocalizations.of(context).minVolumeIsTDH;
+    } else {
+      return null;
+    }
   }
 
   Widget _buildBuyOrderType() {
@@ -334,7 +351,8 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   Widget _buildButtons() {
-    final bool disabled = _isSwapMaking || !_isMinVolumeValid;
+    final bool disabled =
+        _isSwapMaking || _validateMinVolume(_minVolume) != null;
 
     return Builder(builder: (BuildContext context) {
       return Column(
@@ -442,7 +460,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 cancelPrevious: false,
                 max: swapBloc.isMaxActive,
                 volume: amountToSell,
-                minVolume: _minVolume,
+                minVolume: double.tryParse(_minVolume),
                 price: Decimal.parse(widget.bestPrice).toString(),
                 relNota: _protectionSettings.requiresNotarization,
                 relConfs: _protectionSettings.requiredConfirmations,

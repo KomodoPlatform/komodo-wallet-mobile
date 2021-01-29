@@ -5,15 +5,12 @@ import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 
 class MinVolumeControl extends StatefulWidget {
   const MinVolumeControl(
-      {@required this.coin,
-      @required this.amountToSell,
-      this.defaultValue,
-      this.onChange});
+      {@required this.coin, this.defaultValue, this.onChange, this.validator});
 
   final String coin;
   final double defaultValue;
-  final double amountToSell;
-  final Function(double, bool) onChange;
+  final Function(String) onChange;
+  final Function(String) validator;
 
   @override
   _MinVolumeControlState createState() => _MinVolumeControlState();
@@ -23,7 +20,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
   final TextEditingController _valueCtrl = TextEditingController();
   bool _isActive = false;
   double _defaultValue;
-  double _value;
+  String _value;
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +82,12 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
                         DecimalTextInputFormatter(decimalRange: 8),
                       ],
                       autovalidateMode: AutovalidateMode.always,
-                      validator: (String value) => _validate(value),
+                      validator: widget.validator,
                       onChanged: (String text) {
                         setState(() {
-                          _value = double.tryParse(text);
+                          _value = text;
                         });
-                        widget.onChange(_value, _validate(text) == null);
+                        widget.onChange(_value);
                       },
                     ),
                   ),
@@ -109,11 +106,11 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
         setState(() {
           _isActive = !_isActive;
           if (_isActive) {
-            _value ??= _defaultValue;
-            _valueCtrl.text = '$_value';
-            widget.onChange(_value, _validate(_valueCtrl.text) == null);
+            _value ??= _defaultValue.toString();
+            _valueCtrl.text = _value;
+            widget.onChange(_value);
           } else {
-            widget.onChange(null, true);
+            widget.onChange(null);
           }
         });
       },
@@ -135,21 +132,5 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
         ),
       ),
     );
-  }
-
-  String _validate(String value) {
-    final double minVolumeValue = double.tryParse(value);
-
-    if (minVolumeValue == null) {
-      return AppLocalizations.of(context).nonNumericInput;
-    } else if (minVolumeValue < _defaultValue) {
-      return AppLocalizations.of(context)
-          .minVolumeInput(_defaultValue, widget.coin);
-    } else if (widget.amountToSell != null &&
-        minVolumeValue > widget.amountToSell) {
-      return AppLocalizations.of(context).minVolumeIsTDH;
-    } else {
-      return null;
-    }
   }
 }
