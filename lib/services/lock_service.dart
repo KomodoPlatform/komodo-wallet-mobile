@@ -156,6 +156,7 @@ class LockService {
   void _lock(BuildContext context) {
     if (authBloc.showLock) return; // Already showing the lock.
     if (inQrScanner) return; // Don't lock while we're scanning QR.
+    if (_prefs.getBool('switch_pin') == false) return; // PIN turned off
 
     // Lock signals are coming *concurrently and in parallel* with the returns
     // and might arrive both before and *after* them.

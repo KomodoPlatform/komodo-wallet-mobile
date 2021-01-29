@@ -22,6 +22,8 @@ import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
+import 'package:komodo_dex/screens/import-export/export_page.dart';
+import 'package:komodo_dex/screens/import-export/import_page.dart';
 import 'package:komodo_dex/screens/settings/camo_pin_setup_page.dart';
 import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
@@ -114,6 +116,8 @@ class _SettingPageState extends State<SettingPage> {
                 walletBloc.currentWallet != null
                     ? _buildViewSeed()
                     : Container(),
+                _buildExport(),
+                _buildImport(),
                 const SizedBox(
                   height: 1,
                 ),
@@ -406,6 +410,48 @@ class _SettingPageState extends State<SettingPage> {
             Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).viewSeed,
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExport() {
+    return CustomTile(
+      onPressed: () {
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => ExportPage()));
+      },
+      child: ListTile(
+        trailing:
+            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        title: Text(
+          AppLocalizations.of(context).exportLink,
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImport() {
+    return CustomTile(
+      onPressed: () {
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => ImportPage()));
+      },
+      child: ListTile(
+        trailing:
+            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        title: Text(
+          AppLocalizations.of(context).importLink,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
               color: Colors.white.withOpacity(0.7)),
@@ -754,8 +800,8 @@ class _SettingPageState extends State<SettingPage> {
     Log('setting_page:748', 'Compression produced $len bytes.');
 
     mainBloc.isUrlLaucherIsOpen = true;
-    await Share.shareFile(af,
-        mimeType: 'application/octet-stream',
+    await Share.shareFiles([af.path],
+        mimeTypes: ['application/octet-stream'],
         subject: 'atomicDEX logs at ${DateTime.now().toIso8601String()}');
   }
 

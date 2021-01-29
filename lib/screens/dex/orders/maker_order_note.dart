@@ -75,7 +75,9 @@ class _MakerOrderNoteState extends State<MakerOrderNote> {
                 if (isEdit) {
                   noteTextController.text = noteTextController.text.trim();
                   noteText = noteTextController.text;
-                  Db.saveNote(noteId, noteText.isNotEmpty ? noteText : null);
+                  noteText.isNotEmpty
+                      ? Db.saveNote(noteId, noteText)
+                      : Db.deleteNote(noteId);
 
                   setState(() {
                     isExpanded = false;

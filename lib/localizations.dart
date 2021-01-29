@@ -287,6 +287,8 @@ class AppLocalizations {
       Intl.message('CREATE A WALLET', name: 'createAWallet');
   String get restoreWallet => Intl.message('RESTORE', name: 'restoreWallet');
   String get hintPassword => Intl.message('Password', name: 'hintPassword');
+  String get hintCreatePassword =>
+      Intl.message('Create Password', name: 'hintCreatePassword');
   String get hintConfirmPassword =>
       Intl.message('Confirm Password', name: 'hintConfirmPassword');
   String get hintCurrentPassword =>
@@ -1187,6 +1189,8 @@ class AppLocalizations {
   String get oldLogsTitle => Intl.message('Old logs', name: 'oldLogsTitle');
   String get oldLogsDelete => Intl.message('Delete', name: 'oldLogsDelete');
   String get oldLogsUsed => Intl.message('Space used', name: 'oldLogsUsed');
+  String get okButton => Intl.message('Ok', name: 'okButton');
+  String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
   // --- Maker order details ---
 
@@ -1215,6 +1219,57 @@ class AppLocalizations {
   String get noteTitle => Intl.message('Note', name: 'noteTitle');
   String get notePlaceholder =>
       Intl.message('Add a Note', name: 'notePlaceholder');
+
+  // --- Import/Export
+  String get importLink => Intl.message('Import', name: 'importLink');
+  String get exportLink => Intl.message('Export', name: 'exportLink');
+  String get importTitle => Intl.message('Import', name: 'importTitle');
+  String get exportTitle => Intl.message('Export', name: 'exportTitle');
+  String get exportDesc =>
+      Intl.message('Please select items to export into encrypted file.',
+          name: 'exportDesc');
+  String get importLoadDesc =>
+      Intl.message('Please select encrypted file to import.',
+          name: 'importLoadDesc');
+  String get importLoading => Intl.message('Opening...', name: 'importLoading');
+  String get importDesc =>
+      Intl.message('Items to be imported:', name: 'importDesc');
+  String get exportNotesTitle =>
+      Intl.message('Notes', name: 'exportNotesTitle');
+  String get exportContactsTitle =>
+      Intl.message('Contacts', name: 'exportContactsTitle');
+  String get nothingFound =>
+      Intl.message('Nothing found', name: 'nothingFound');
+  String get exportButton => Intl.message('Export', name: 'exportButton');
+  String get importButton => Intl.message('Import', name: 'importButton');
+  String get emptyExportPass =>
+      Intl.message('Encryption password can\'t be empty',
+          name: 'emptyExportPass');
+  String get emptyImportPass =>
+      Intl.message('Password can\'t be empty', name: 'emptyImportPass');
+  String get matchExportPass =>
+      Intl.message('Passwords must match', name: 'matchExportPass');
+  String get noItemsToExport =>
+      Intl.message('No items selected', name: 'noItemsToExport');
+  String get noItemsToImport =>
+      Intl.message('No items selected', name: 'noItemsToImport');
+  String get selectFileImport =>
+      Intl.message('Select file', name: 'selectFileImport');
+  String get importFileNotFound =>
+      Intl.message('File not found', name: 'importFileNotFound');
+  String get importPassword => Intl.message('Password', name: 'importPassword');
+  String get importPassCancel =>
+      Intl.message('Cancel', name: 'importPassCancel');
+  String get importPassOk => Intl.message('Ok', name: 'importPassOk');
+  String get exportSuccessTitle =>
+      Intl.message('Items have been successfully exported:',
+          name: 'exportSuccessTitle');
+  String get importSuccessTitle =>
+      Intl.message('Items have been successfully imported:',
+          name: 'importSuccessTitle');
+  String get importDecryptError =>
+      Intl.message('Invalid password or corrupted data',
+          name: 'importDecryptError');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

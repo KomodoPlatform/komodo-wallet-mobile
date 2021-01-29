@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.0"
+  asn1lib:
+    dependency: transitive
+    description:
+      name: asn1lib
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.5"
   async:
     dependency: transitive
     description:
@@ -190,6 +197,13 @@ packages:
       url: "git://github.com/KomodoPlatform/dart-decimal.git"
     source: git
     version: "0.3.5"
+  encrypt:
+    dependency: "direct main"
+    description:
+      name: encrypt
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -479,15 +493,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.3"
-  password:
-    dependency: "direct dev"
-    description:
-      path: "."
-      ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
-      resolved-ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
-      url: "git://github.com/KomodoPlatform/password-dart.git"
-    source: git
-    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -646,12 +651,10 @@ packages:
   share:
     dependency: "direct dev"
     description:
-      path: "packages/share/"
-      ref: "1494b043d03799dd14e689552d1218918435f9f5"
-      resolved-ref: "1494b043d03799dd14e689552d1218918435f9f5"
-      url: "git://github.com/KomodoPlatform/plugins.git"
-    source: git
-    version: "0.6.2+1"
+      name: share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.5+4"
   shared_preferences:
     dependency: "direct dev"
     description:
