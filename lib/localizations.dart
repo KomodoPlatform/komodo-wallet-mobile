@@ -222,6 +222,8 @@ class AppLocalizations {
       Intl.message('Use custom min volume', name: 'minVolumeToggle');
   String get nonNumericInput =>
       Intl.message('The value must be numeric', name: 'nonNumericInput');
+  String get minVolumeIsTDH =>
+      Intl.message('Must be lower than sell amount', name: 'minVolumeIsTDH');
   String minVolumeInput(double minValue, String coin) =>
       Intl.message('Must be greater than $minValue $coin',
           name: 'minVolumeInput', args: <Object>[minValue, coin]);

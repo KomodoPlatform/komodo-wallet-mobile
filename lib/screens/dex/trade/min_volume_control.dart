@@ -5,10 +5,14 @@ import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 
 class MinVolumeControl extends StatefulWidget {
   const MinVolumeControl(
-      {@required this.coin, this.defaultValue, this.onChange});
+      {@required this.coin,
+      @required this.amountToSell,
+      this.defaultValue,
+      this.onChange});
 
   final String coin;
   final double defaultValue;
+  final double amountToSell;
   final Function(double, bool) onChange;
 
   @override
@@ -134,13 +138,16 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
   }
 
   String _validate(String value) {
-    final double numeric = double.tryParse(value);
+    final double minVolumeValue = double.tryParse(value);
 
-    if (numeric == null) {
+    if (minVolumeValue == null) {
       return AppLocalizations.of(context).nonNumericInput;
-    } else if (numeric < _defaultValue) {
+    } else if (minVolumeValue < _defaultValue) {
       return AppLocalizations.of(context)
           .minVolumeInput(_defaultValue, widget.coin);
+    } else if (widget.amountToSell != null &&
+        minVolumeValue > widget.amountToSell) {
+      return AppLocalizations.of(context).minVolumeIsTDH;
     } else {
       return null;
     }
