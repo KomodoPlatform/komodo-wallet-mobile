@@ -9,11 +9,13 @@ class Order {
       this.relAmount,
       this.uuid,
       this.baseAmount,
+      this.minVolume,
       this.createdAt,
       this.cancelable});
 
   String base;
   String baseAmount;
+  double minVolume;
   String rel;
   OrderType orderType;
   String relAmount;

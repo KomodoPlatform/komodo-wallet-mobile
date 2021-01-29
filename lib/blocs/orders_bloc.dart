@@ -68,6 +68,7 @@ class OrdersBloc implements BlocBase {
           orders.add(Order(
               cancelable: entry.value.cancellable,
               baseAmount: entry.value.maxBaseVol,
+              minVolume: double.tryParse(entry.value.minBaseVol),
               base: entry.value.base,
               rel: entry.value.rel,
               orderType: OrderType.MAKER,

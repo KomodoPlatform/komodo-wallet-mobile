@@ -57,39 +57,74 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
         ),
         Container(
           padding: const EdgeInsets.only(left: 6),
-          child: Row(
-            children: <Widget>[
-              CircleAvatar(
-                radius: 12,
-                backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('assets/'
-                    '${widget.order.base.toLowerCase()}.png'),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                widget.order.base,
-                style: TextStyle(fontSize: 20),
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            children: [
+              Row(
                 children: <Widget>[
-                  Text(formatPrice(double.parse(widget.order.baseAmount)),
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  if (filled > 0)
-                    Text(
-                        formatPrice(
-                            double.parse(widget.order.baseAmount) - filled),
-                        style: TextStyle(
-                          fontSize: 10,
-                        )),
+                  CircleAvatar(
+                    radius: 12,
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: AssetImage('assets/'
+                        '${widget.order.base.toLowerCase()}.png'),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    widget.order.base,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(formatPrice(double.parse(widget.order.baseAmount)),
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      if (filled > 0)
+                        Text(
+                            formatPrice(
+                                double.parse(widget.order.baseAmount) - filled),
+                            style: TextStyle(
+                              fontSize: 10,
+                            )),
+                    ],
+                  ),
                 ],
               ),
+              _buildMinVolume(),
             ],
           ),
         )
       ])
     ];
+  }
+
+  Widget _buildMinVolume() {
+    if (widget.order.minVolume == null) return SizedBox();
+    if (widget.order.minVolume <= 0.00777) return SizedBox();
+
+    return Row(
+      children: <Widget>[
+        SizedBox(width: 26),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(3),
+          ),
+          padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
+          child: Row(
+            children: [
+              Text(
+                '${AppLocalizations.of(context).orderDetailsMin} '
+                '${widget.order.base} '
+                '${cutTrailingZeros(formatPrice(widget.order.minVolume))}',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   List<TableRow> _buildRel() {
