@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -623,9 +622,10 @@ class _AsksOrderState extends State<AsksOrder> {
         context: context,
         builder: (context) {
           return SimpleDialog(
-            title: AutoSizeText(
+            title: Text(
               AppLocalizations.of(context).insufficientTitle,
               maxLines: 1,
+              style: TextStyle(fontSize: 22),
             ),
             contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 20),
             titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 10),
