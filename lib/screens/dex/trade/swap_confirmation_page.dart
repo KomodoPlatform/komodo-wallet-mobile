@@ -113,7 +113,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 ),
                 if (widget.swapStatus == SwapStatus.SELL)
                   MinVolumeControl(
-                      coin: widget.coinBase.abbr,
+                      coin: widget.coinRel.abbr,
                       defaultValue: 0.00777,
                       validator: _validateMinVolume,
                       onChange: (String value) {
