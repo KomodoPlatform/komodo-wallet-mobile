@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 
 class MinVolumeControl extends StatefulWidget {
-  const MinVolumeControl(
-      {@required this.coin, this.defaultValue, this.onChange, this.validator});
+  const MinVolumeControl({@required this.coin, this.onChange, this.validator});
 
   final String coin;
-  final double defaultValue;
   final Function(String) onChange;
   final Function(String) validator;
 
@@ -19,13 +18,10 @@ class MinVolumeControl extends StatefulWidget {
 class _MinVolumeControlState extends State<MinVolumeControl> {
   final TextEditingController _valueCtrl = TextEditingController();
   bool _isActive = false;
-  double _defaultValue;
   String _value;
 
   @override
   Widget build(BuildContext context) {
-    _defaultValue ??= widget.defaultValue ?? 0.00777;
-
     return Column(
       children: [
         if (_isActive) _buildControl(),
@@ -106,7 +102,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
         setState(() {
           _isActive = !_isActive;
           if (_isActive) {
-            _value ??= _defaultValue.toString();
+            _value ??= '${swapBloc.minVolumeDefault(widget.coin)}';
             _valueCtrl.text = _value;
             widget.onChange(_value);
           } else {

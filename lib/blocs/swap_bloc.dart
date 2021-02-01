@@ -236,6 +236,17 @@ class SwapBloc implements BlocBase {
     isTimeOut = time;
     _inIsTimeOut.add(isTimeOut);
   }
+
+  double minVolumeDefault(String coin) {
+    // https://github.com/KomodoPlatform/AtomicDEX-mobile/pull/1013#issuecomment-770423015
+    // Default min volumes hardcoded for QTUM and rest of the coins for now.
+    // Should be handled on API-side in the future
+    if (coin == 'QTUM') {
+      return 1;
+    } else {
+      return 0.00777;
+    }
+  }
 }
 
 SwapBloc swapBloc = SwapBloc();

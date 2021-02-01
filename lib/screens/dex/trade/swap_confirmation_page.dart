@@ -114,7 +114,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 if (widget.swapStatus == SwapStatus.SELL)
                   MinVolumeControl(
                       coin: widget.coinRel.abbr,
-                      defaultValue: 0.00777,
                       validator: _validateMinVolume,
                       onChange: (String value) {
                         setState(() {
@@ -137,13 +136,15 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
     if (value == null) return null;
 
     final double minVolumeValue = double.tryParse(value);
+    final double minVolumeDefault =
+        swapBloc.minVolumeDefault(widget.coinRel.abbr);
     final double amountToSell = double.tryParse(widget.amountToSell);
 
     if (minVolumeValue == null) {
       return AppLocalizations.of(context).nonNumericInput;
-    } else if (minVolumeValue < 0.00777) {
+    } else if (minVolumeValue < minVolumeDefault) {
       return AppLocalizations.of(context)
-          .minVolumeInput(0.00777, widget.coinBase.abbr);
+          .minVolumeInput(minVolumeDefault, widget.coinRel.abbr);
     } else if (amountToSell != null && minVolumeValue > amountToSell) {
       return AppLocalizations.of(context).minVolumeIsTDH;
     } else {
