@@ -304,9 +304,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
             backgroundColor: Theme.of(context).errorColor,
-            content: sellCoinFee < deci(0.00777)
+            content: sellCoinFee <
+                    deci(swapBloc.minVolumeDefault(sellCoinBalance.coin.abbr))
                 ? Text(AppLocalizations.of(context).minValueSell(
-                    sellCoinBalance.coin.abbr, 0.00777.toString()))
+                    sellCoinBalance.coin.abbr,
+                    '${swapBloc.minVolumeDefault(sellCoinBalance.coin.abbr)}'))
                 : Text(AppLocalizations.of(context).minValueSell(
                     sellCoinBalance.coin.abbr, sellCoinFee.toStringAsFixed(8))),
           ));
@@ -1021,29 +1023,38 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   bool _checkValueMin() {
     _replaceAllCommas();
 
-    if (swapBloc.sellCoinBalance.coin.abbr == 'QTUM' &&
-        _amountSell() > 0 &&
-        _amountSell() < 3) {
+    final double minVolumeSell =
+        swapBloc.minVolumeDefault(sellCoinBalance.coin.abbr);
+    final double minVolumeReceive =
+        swapBloc.minVolumeDefault(swapBloc.receiveCoin.abbr);
+
+    if (_amountSell() > 0 && _amountSell() < minVolumeSell) {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoinBalance.coin.abbr, 3.toString())),
+            .minValue(swapBloc.sellCoinBalance.coin.abbr, '$minVolumeSell')),
       ));
       return false;
-    } else if (_amountSell() > 0 && _amountSell() < 0.00777) {
+    } else if (_amountReceive() > 0 && _amountReceive() < minVolumeReceive) {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoinBalance.coin.abbr, 0.00777.toString())),
+            .minValueBuy(swapBloc.receiveCoin.abbr, '$minVolumeReceive')),
       ));
       return false;
-    } else if (_amountReceive() > 0 && _amountReceive() < 0.00777) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Text(AppLocalizations.of(context)
-            .minValueBuy(swapBloc.receiveCoin.abbr, 0.00777.toString())),
-      ));
-      return false;
+    } else if (currentAsk != null && currentAsk.minVolume != null) {
+      if (_controllerAmountReceive.text != null &&
+          _controllerAmountReceive.text.isNotEmpty &&
+          double.parse(_controllerAmountReceive.text) < currentAsk.minVolume) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          duration: const Duration(seconds: 2),
+          content: Text(AppLocalizations.of(context).minValueBuy(
+              swapBloc.receiveCoin.abbr,
+              cutTrailingZeros(formatPrice(currentAsk.minVolume)))),
+        ));
+        return false;
+      }
+      return true;
     } else {
       return true;
     }

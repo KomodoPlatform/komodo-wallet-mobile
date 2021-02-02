@@ -216,6 +216,17 @@ class AppLocalizations {
       name: 'infoTrade2');
   String get swapDetailTitle =>
       Intl.message('CONFIRM EXCHANGE DETAILS', name: 'swapDetailTitle');
+  String get minVolumeTitle =>
+      Intl.message('Min volume required', name: 'minVolumeTitle');
+  String get minVolumeToggle =>
+      Intl.message('Use custom min volume', name: 'minVolumeToggle');
+  String get nonNumericInput =>
+      Intl.message('The value must be numeric', name: 'nonNumericInput');
+  String get minVolumeIsTDH =>
+      Intl.message('Must be lower than sell amount', name: 'minVolumeIsTDH');
+  String minVolumeInput(double minValue, String coin) =>
+      Intl.message('Must be greater than $minValue $coin',
+          name: 'minVolumeInput', args: <Object>[minValue, coin]);
   String get checkSeedPhrase =>
       Intl.message('Check seed phrase', name: 'checkSeedPhrase');
   String get checkSeedPhraseTitle =>
@@ -341,6 +352,11 @@ class AppLocalizations {
       Intl.message('Go to portfolio', name: 'goToPorfolio');
   String get noOrderAvailable =>
       Intl.message('Click to create an order', name: 'noOrderAvailable');
+  String get insufficientTitle =>
+      Intl.message('Insufficient volume', name: 'insufficientTitle');
+  String get insufficientText =>
+      Intl.message('Minumum volume required by this order is',
+          name: 'insufficientText');
   String get orderCreated =>
       Intl.message('Order created', name: 'orderCreated');
   String get orderCreatedInfo =>
@@ -652,6 +668,7 @@ class AppLocalizations {
   String get orderDetailsSells =>
       Intl.message('Sells', name: 'orderDetailsSells');
   String get orderDetailsFor => Intl.message('for', name: 'orderDetailsFor');
+  String get orderDetailsMin => Intl.message('min.', name: 'orderDetailsMin');
   String get orderDetailsAddress =>
       Intl.message('Address', name: 'orderDetailsAddress');
   String orderDetailsExpedient(String delta) =>

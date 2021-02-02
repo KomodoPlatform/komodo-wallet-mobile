@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -13,10 +15,8 @@ import 'package:komodo_dex/screens/dex/trade/receive_orders_chart.dart';
 import 'package:komodo_dex/screens/markets/build_order_details.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
-import 'package:provider/provider.dart';
 
 class ReceiveOrders extends StatefulWidget {
   const ReceiveOrders({
@@ -604,8 +604,94 @@ class _AsksOrderState extends State<AsksOrder> {
   }
 
   void _createOrder(Ask ask) {
-    Navigator.of(context).pop();
-    widget.onCreateOrder(ask);
+    final double myVolume =
+        ask.getReceiveAmount(deci(widget.sellAmount)).toDouble();
+    final bool isEnoughVolume =
+        !(ask.minVolume != null && myVolume < ask.minVolume);
+
+    if (isEnoughVolume) {
+      Navigator.of(context).pop();
+      widget.onCreateOrder(ask);
+    } else {
+      _openNotEnoughVolumeDialog(ask);
+    }
+  }
+
+  void _openNotEnoughVolumeDialog(Ask ask) {
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: Text(
+              AppLocalizations.of(context).insufficientTitle,
+              maxLines: 1,
+              style: TextStyle(fontSize: 22),
+            ),
+            contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+            titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+            children: [
+              Text('${AppLocalizations.of(context).insufficientText}:'),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.orange.withAlpha(200),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    padding: EdgeInsets.fromLTRB(3, 0, 3, 0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 7,
+                          backgroundImage: AssetImage('assets/'
+                              '${ask.coin.toLowerCase()}.png'),
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                            '${ask.coin} ' +
+                                cutTrailingZeros(formatPrice(ask.minVolume)),
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorDark,
+                              fontWeight: FontWeight.w400,
+                            )),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 2),
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 5,
+                    backgroundImage: AssetImage('assets/'
+                        '${widget.baseCoin.toLowerCase()}.png'),
+                  ),
+                  SizedBox(width: 3),
+                  Text(widget.baseCoin,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).disabledColor,
+                      )),
+                  SizedBox(width: 2),
+                  Text(
+                      cutTrailingZeros(
+                          formatPrice(ask.minVolume * double.parse(ask.price))),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).disabledColor,
+                      )),
+                ],
+              ),
+              SizedBox(height: 20),
+              RaisedButton(
+                onPressed: () => dialogBloc.closeDialog(context),
+                child: Text(AppLocalizations.of(context).close),
+              ),
+            ],
+          );
+        });
   }
 
   void _showDetails(Ask bid) {
