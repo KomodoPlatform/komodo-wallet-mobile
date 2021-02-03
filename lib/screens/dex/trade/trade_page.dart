@@ -749,8 +749,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             builder: (BuildContext context) {
               return DialogLooking(
                 onDone: () {
-                  Navigator.of(context).pop();
-                  pushNewScreenChoiseOrder();
+                  try {
+                    Navigator.of(context).pop();
+                    pushNewScreenChoiseOrder();
+                  } catch (e) {
+                    Log('trade_page:754', '_openDialogCoinWithBalance] $e');
+                  }
                 },
               );
             }).then((dynamic _) => dialogBloc.dialog = null);
