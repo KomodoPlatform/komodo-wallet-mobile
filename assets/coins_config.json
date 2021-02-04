@@ -663,16 +663,16 @@
     {
         "name": "Firo",
         "type": "utxo",
-        "address": "electrumx.zcoin.io",
+        "address": "electrumx01.firo.org",
         "port": 50001,
         "proto": "tcp",
         "abbr": "FIRO",
         "coingeckoId": "zcoin",
         "colorCoin": "0xFF24B852",
         "serverList": [
-            "electrumx02.zcoin.io:50001",
-            "electrumx03.zcoin.io:50001",
-            "electrumx01.zcoin.io:50001"
+            "electrumx02.firo.org:50001",
+            "electrumx03.firo.org:50001",
+            "electrumx01.firo.org:50001"
         ],
         "explorerUrl": [
             "https://explorer.zcoin.io/"
