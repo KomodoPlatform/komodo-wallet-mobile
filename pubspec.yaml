@@ -56,10 +56,10 @@ dependencies:
       ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
 
   # origin https://pub.dev/packages/encrypt
-  encrypt: # 4.0.3 - DONE: Secure code reviewed 54e407a
+  encrypt: # 4.0.3 - DONE: Secure code reviewed b17327a
     git:
-      url: git://github.com/KomodoPlatform/encrypt.git
-      ref: 54e407a4a31683837fa9f5ea317335e26987f90b
+      url: https://github.com/KomodoPlatform/encrypt
+      ref: b17327afb9f42663f3838fe0d34e92e3e0cb549c
 
 dev_dependencies:
   flutter_driver: # flutter.dev
