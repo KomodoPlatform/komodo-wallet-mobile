@@ -975,6 +975,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 buy: orderBookProvider.activePair?.buy,
               );
               swapBloc.updateBuyCoin(null);
+              _controllerAmountSell.clear();
 
               Navigator.pop(context);
             },
