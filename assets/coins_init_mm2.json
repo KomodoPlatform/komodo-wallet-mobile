@@ -1,4 +1,20 @@
 [{
+        "coin": "1INCH",
+        "name": "1inch",
+        "fname": "1inch",
+        "rpcport": 80,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 0.25,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0x111111111117dC0aa78b770fA6A738034120C302"
+            }
+        }
+    },
+    {
         "coin": "ARPA",
         "name": "arpa-chain",
         "fname": "ARPA Chain",
@@ -71,6 +87,7 @@
         "p2shtype": 5,
         "wiftype": 176,
         "txfee": 100000,
+        "dust": 54600,
         "mm2": 1,
         "required_confirmations": 2,
         "requires_notarization": true,
@@ -104,6 +121,7 @@
         "p2shtype": 5,
         "wiftype": 128,
         "txfee": 0,
+        "estimate_fee_blocks": 2,
         "segwit": true,
         "address_format": {
             "format": "cashaddress",
@@ -207,6 +225,25 @@
         }
     },
     {
+        "coin": "BTCZ",
+        "name": "bitcoinz",
+        "fname": "BitcoinZ",
+        "rpcport": 1979,
+        "taddr": 28,
+        "pubtype": 184,
+        "p2shtype": 189,
+        "wiftype": 128,
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 2.5,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
         "coin": "BTX",
         "name": "bitcore",
         "fname": "Bitcore",
@@ -215,6 +252,7 @@
         "p2shtype": 125,
         "wiftype": 128,
         "txfee": 50000,
+        "dust": 54600,
         "mm2": 1,
         "protocol": {
             "type": "UTXO"
@@ -265,6 +303,21 @@
         "required_confirmations": 2,
         "requires_notarization": true,
         "avg_blocktime": 0.166,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
+        "coin": "CLC",
+        "asset": "CLC",
+        "fname": "Collider Coin",
+        "rpcport": 31034,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "requires_notarization": false,
+        "avg_blocktime": 1,
         "protocol": {
             "type": "UTXO"
         }
@@ -450,6 +503,7 @@
         "wiftype": 158,
         "txfee": 0,
         "force_min_relay_fee": true,
+        "dust": 100000000,
         "mm2": 1,
         "required_confirmations": 2,
         "avg_blocktime": 1,
@@ -466,6 +520,7 @@
         "overwintered": 1,
         "mm2": 1,
         "required_confirmations": 5,
+        "requires_notarization": false,
         "avg_blocktime": 1,
         "protocol": {
             "type": "UTXO"
@@ -498,6 +553,7 @@
         "p2shtype": 5,
         "wiftype": 176,
         "txfee": 100000,
+        "dust": 54600,
         "mm2": 1,
         "required_confirmations": 2,
         "requires_notarization": true,
@@ -581,6 +637,22 @@
         }
     },
     {
+        "coin": "GETH",
+        "name": "guarded-ether",
+        "fname": "Guarded Ether",
+        "rpcport": 80,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 0.25,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0x9ad03c34aAb604A9e0Fde41dbF8E383E11c416c4"
+            }
+        }
+    },
+    {
         "coin": "GIN",
         "name": "gincoin",
         "fname": "GINcoin",
@@ -608,6 +680,23 @@
         "mm2": 1,
         "required_confirmations": 2,
         "avg_blocktime": 5,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
+        "coin": "GRS",
+        "name": "groestlcoin",
+        "fname": "Groestlcoin",
+        "rpcport": 1441,
+        "pubtype": 36,
+        "p2shtype": 5,
+        "wiftype": 128,
+        "txfee": 0,
+        "segwit": true,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 1,
         "protocol": {
             "type": "UTXO"
         }
@@ -704,6 +793,22 @@
         "avg_blocktime": 1,
         "protocol": {
             "type": "UTXO"
+        }
+    },
+    {
+        "coin": "KCS",
+        "name": "kucoin-token",
+        "fname": "KuCoin Token",
+        "rpcport": 80,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 0.25,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0xf34960d9d60be18cC1D5Afc1A6F012A723a28811"
+            }
         }
     },
     {
@@ -810,6 +915,7 @@
         "p2shtype": 50,
         "wiftype": 176,
         "txfee": 0,
+        "dust": 5460,
         "segwit": true,
         "mm2": 1,
         "required_confirmations": 2,
@@ -1083,9 +1189,9 @@
         }
     },
     {
-        "coin": "PBC",
+        "coin": "SFUSD",
         "name": "powerblockcoin",
-        "fname": "Powerblockcoin",
+        "fname": "SmartUSD",
         "rpcport": 47776,
         "pubtype": 60,
         "p2shtype": 85,
@@ -1192,6 +1298,28 @@
         }
     },
     {
+        "coin": "QI",
+        "name": "qtum",
+        "fname": "QiSwap",
+        "rpcport": 3889,
+        "pubtype": 58,
+        "p2shtype": 50,
+        "wiftype": 128,
+        "segwit": true,
+        "txfee": 0,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "mature_confirmations": 500,
+        "avg_blocktime": 2.133,
+        "protocol": {
+            "type": "QRC20",
+            "protocol_data": {
+                "platform": "QTUM",
+                "contract_address": "0x54fefdb5b31164f66ddb68becd7bdd864cacd65b"
+            }
+        }
+    },
+    {
         "coin": "QRC20",
         "pubtype": 120,
         "p2shtype": 50,
@@ -1219,6 +1347,7 @@
         "wiftype": 128,
         "segwit": true,
         "txfee": 0,
+        "dust": 72800,
         "mm2": 1,
         "required_confirmations": 3,
         "mature_confirmations": 500,
@@ -1370,6 +1499,21 @@
         }
     },
     {
+        "coin": "SOULJA",
+        "asset": "SOULJA",
+        "fname": "SouljaCoin",
+        "rpcport": 53604,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 1,
+        "requires_notarization": false,
+        "avg_blocktime": 1,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
         "coin": "SPACE",
         "asset": "SPACE",
         "fname": "Spacecoin",
@@ -1397,6 +1541,22 @@
         "avg_blocktime": 1,
         "protocol": {
             "type": "UTXO"
+        }
+    },
+    {
+        "coin": "SUSHI",
+        "name": "sushiswap",
+        "fname": "Sushi",
+        "rpcport": 80,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 0.25,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2"
+            }
         }
     },
     {
@@ -1563,6 +1723,21 @@
         "mm2": 1,
         "required_confirmations": 2,
         "requires_notarization": true,
+        "avg_blocktime": 1,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
+        "coin": "WSB",
+        "asset": "WSB",
+        "fname": "WallStreetBets",
+        "rpcport": 52043,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 1,
+        "requires_notarization": false,
         "avg_blocktime": 1,
         "protocol": {
             "type": "UTXO"
@@ -2715,24 +2890,6 @@
         "decimals": 18
     },
     {
-        "coin": "NOIA",
-        "gui_coin": "NOIA",
-        "name": "ethereum",
-        "fname": "noia token",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0xfc858154C0b2c4A3323046Fb505811F110EBdA57"
-            }
-        },
-        "decimals": 18
-    },
-    {
         "coin": "DX",
         "gui_coin": "DX",
         "name": "ethereum",
@@ -2931,24 +3088,6 @@
         "decimals": 18
     },
     {
-        "coin": "IOTX",
-        "gui_coin": "IOTX",
-        "name": "ethereum",
-        "fname": "iotex network",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0x6fB3e0A217407EFFf7Ca062D46c26E5d60a14d69"
-            }
-        },
-        "decimals": 18
-    },
-    {
         "coin": "PAXG",
         "gui_coin": "PAXG",
         "name": "ethereum",
@@ -3037,24 +3176,6 @@
             }
         },
         "decimals": 8
-    },
-    {
-        "coin": "XDCE",
-        "gui_coin": "XDCE",
-        "name": "ethereum",
-        "fname": "xinfin xdce",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0x41AB1b6fcbB2fA9DCEd81aCbdeC13Ea6315F2Bf2"
-            }
-        },
-        "decimals": 18
     },
     {
         "coin": "ELF",
@@ -3219,24 +3340,6 @@
         "decimals": 18
     },
     {
-        "coin": "HYN",
-        "gui_coin": "HYN",
-        "name": "ethereum",
-        "fname": "hyperion token",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0xE99A894a69d7c2e3C92E61B64C505A6a57d2bC07"
-            }
-        },
-        "decimals": 18
-    },
-    {
         "coin": "XOR",
         "gui_coin": "XOR",
         "name": "ethereum",
@@ -3304,24 +3407,6 @@
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0xb683D83a532e2Cb7DFa5275eED3698436371cc9f"
-            }
-        },
-        "decimals": 18
-    },
-    {
-        "coin": "FXC",
-        "gui_coin": "FXC",
-        "name": "ethereum",
-        "fname": "flexacoin",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0x4a57E687b9126435a9B19E4A802113e266AdeBde"
             }
         },
         "decimals": 18
@@ -3429,7 +3514,7 @@
             "type": "ERC20",
             "protocol_data": {
                 "platform": "ETH",
-                "contract_address": "0xD01DB73E047855Efb414e6202098C4Be4Cd2423B"
+                "contract_address": "0x8806926Ab68EB5a7b909DcAf6FdBe5d93271D6e2"
             }
         },
         "decimals": 18
