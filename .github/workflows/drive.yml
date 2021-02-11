@@ -37,13 +37,18 @@ jobs:
           xcrun simctl erase $UDID
           xcrun simctl boot $UDID
 
+      # https://github.com/actions/setup-java
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - uses: subosito/flutter-action@v1
+
+      # https://github.com/KomodoPlatform/flutter-action
+      - uses: KomodoPlatform/flutter-action@v1
         with:
           flutter-version: '1.22.4'
-        
+      
+      # in case of actual usage this step should be 
+      # downloading recent mm2libs from gitlab
       - name: download mm2lib from s3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -55,27 +60,8 @@ jobs:
       - name: "doctor"
         run: flutter doctor -v
         
-      #- name: "unit/widget tests with coverage output"
-      #  run: flutter test --coverage --coverage-path $GITHUB_WORKSPACE/coverage/.lcov
-        
-      #- name: "coverage report PR message"
-      #  uses: romeovs/lcov-reporter-action@v0.2.16
-      #  with:
-      #    github-token: ${{ secrets.PR_MSG_TOKEN }}
-      #    lcov-file: ./coverage/lcov.info
-        
       - name: "Prepare for Flutter Driver tests"
         run: echo "d" | flutter run -t test_driver/app.dart --vmservice-out-file=test_driver/link.txt --pid-file=test_driver/pid.txt
         
       - name: "Run Flutter Driver tests"
         run: flutter drive --target=test_driver/1-create-wallet.dart --use-existing-app="$(cat test_driver/link.txt)"
-      
-      
-      
-      
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-        
