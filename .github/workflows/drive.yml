@@ -32,7 +32,7 @@ jobs:
         run: xcrun simctl list 'devices' 'available' | egrep '${{ matrix.device }}'
       - name: "Start Simulator"
         run: |
-          xcrun simctl list 'devices' 'available' | egrep '${{ matrix.device }}' >> test_driver/devices.txt
+          xcrun simctl list 'devices' 'available' | egrep '${{ matrix.device }}' >> test_driver/utils/devices.txt
           export UDID=$(python3 test_driver/utils/extract_udid.py)
           xcrun simctl erase $UDID
           xcrun simctl boot $UDID
