@@ -1,6 +1,6 @@
 def main():
   udid = ''
-  with open('test_driver/devices.txt') as f:
+  with open('test_driver/utils/devices.txt') as f:
     udid = f.read().split()[-2]
   udid = udid.rstrip(')').lstrip('(')
   return udid
