@@ -32,10 +32,12 @@ packages:
   asn1lib:
     dependency: transitive
     description:
-      name: asn1lib
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.5"
+      path: "."
+      ref: "1f5e2f2d0d4543456880962ebf5adc5dcd30082d"
+      resolved-ref: "1f5e2f2d0d4543456880962ebf5adc5dcd30082d"
+      url: "git://github.com/KomodoPlatform/asn1lib.git"
+    source: git
+    version: "0.6.4"
   async:
     dependency: transitive
     description:
@@ -74,9 +76,9 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: dbd846b743eab3b21f3ef56abc958305be54761a
-      resolved-ref: dbd846b743eab3b21f3ef56abc958305be54761a
-      url: "git://github.com/KomodoPlatform/bip39-dart.git"
+      ref: "3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1"
+      resolved-ref: "3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1"
+      url: "git://github.com/ca333/bip39-dart.git"
     source: git
     version: "1.0.3"
   boolean_selector:
@@ -90,8 +92,8 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: "2889fa8791fd46afb30a9e7984c06b66a6241a44"
-      resolved-ref: "2889fa8791fd46afb30a9e7984c06b66a6241a44"
+      ref: e313f58289d5f4be711a6b430b7f3bb96712c6cc
+      resolved-ref: e313f58289d5f4be711a6b430b7f3bb96712c6cc
       url: "git://github.com/KomodoPlatform/bs58check-dart.git"
     source: git
     version: "1.0.1"
@@ -201,8 +203,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: b17327afb9f42663f3838fe0d34e92e3e0cb549c
-      resolved-ref: b17327afb9f42663f3838fe0d34e92e3e0cb549c
+      ref: "4.0.3"
+      resolved-ref: "8a7493d2cf6360a95595baf88a9877a713460f74"
       url: "https://github.com/KomodoPlatform/encrypt"
     source: git
     version: "4.0.3"
@@ -328,9 +330,11 @@ packages:
   hex:
     dependency: transitive
     description:
-      name: hex
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "6afb93fbe9024b174bf7075338e7ca0fe9c0411b"
+      resolved-ref: "6afb93fbe9024b174bf7075338e7ca0fe9c0411b"
+      url: "git://github.com/KomodoPlatform/dart-hex.git"
+    source: git
     version: "0.1.2"
   html:
     dependency: transitive
@@ -591,9 +595,11 @@ packages:
   pointycastle:
     dependency: transitive
     description:
-      name: pointycastle
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: d106a9218a9df81ef4e0ab239ce5db2fcd9a7435
+      resolved-ref: d106a9218a9df81ef4e0ab239ce5db2fcd9a7435
+      url: "git://github.com/KomodoPlatform/pc-dart.git"
+    source: git
     version: "1.0.2"
   pool:
     dependency: transitive

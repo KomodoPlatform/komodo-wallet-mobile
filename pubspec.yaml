@@ -59,7 +59,7 @@ dependencies:
   encrypt: # 4.0.3 - DONE: Secure code reviewed b17327a
     git:
       url: https://github.com/KomodoPlatform/encrypt
-      ref: b17327afb9f42663f3838fe0d34e92e3e0cb549c
+      ref: 4.0.3
 
 dev_dependencies:
   flutter_driver: # flutter.dev
@@ -84,8 +84,8 @@ dev_dependencies:
   shared_preferences: 0.5.12+2 # flutter.dev
   bip39: # 1.0.3 - DONE: Secure code reviewed dbd846b (1.0.3) - DONE: sub dependencies reviewed
     git: 
-      url: git://github.com/KomodoPlatform/bip39-dart.git
-      ref: dbd846b743eab3b21f3ef56abc958305be54761a
+      url: git://github.com/ca333/bip39-dart.git
+      ref: 3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1
   pin_code_view: # SECURE REVIEW REQUIRED: reviewed c0b6516
     git:
       url: git://github.com/KomodoPlatform/pin_code_view.git
@@ -95,7 +95,7 @@ dev_dependencies:
   bs58check: # 1.0.1 - DONE: Secure code reviewed 2889fa8 (1.0.1)
     git:
       url: git://github.com/KomodoPlatform/bs58check-dart.git
-      ref: 2889fa8791fd46afb30a9e7984c06b66a6241a44
+      ref: e313f58289d5f4be711a6b430b7f3bb96712c6cc
   url_launcher: 5.4.1 # flutter.dev
   share: 0.6.5+4 # flutter.dev
   # https://pub.dev/packages/local_auth, canCheckBiometrics, getAvailableBiometrics
