@@ -5,7 +5,7 @@ import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 
-class GetFee {
+class GetSwapFee {
   static Future<CoinAmt> tx(String coin) async {
     final CoinAmt fee = await _getTradeFeeFromMM(coin);
     fee.amount = fee.amount * 2;
@@ -13,7 +13,7 @@ class GetFee {
   }
 
   static Future<CoinAmt> gas(String coin) async {
-    if (gasCoin(coin) == null) return null;
+    if (coinsBloc.getCoinByAbbr(coin)?.payGasIn == null) return null;
     return await _getTradeFeeFromMM(coin);
   }
 
@@ -45,19 +45,6 @@ class GetFee {
       amount: totalAmt,
       coin: sellCoin,
     );
-  }
-
-  static String gasCoin(String coin) {
-    final String type = coinsBloc.getCoinByAbbr(coin)?.type;
-
-    switch (type) {
-      case 'erc':
-        return 'ETH';
-      case 'qrc':
-        return 'QTUM';
-      default:
-        return null;
-    }
   }
 
   static Future<CoinAmt> _getTradeFeeFromMM(String coin) async {

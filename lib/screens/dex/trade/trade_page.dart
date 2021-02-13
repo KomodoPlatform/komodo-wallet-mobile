@@ -18,7 +18,7 @@ import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
-import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/get_swap_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -256,7 +256,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       isLoadingMax = true;
     });
 
-    final CoinAmt fee = await GetFee.totalSell(
+    final CoinAmt fee = await GetSwapFee.totalSell(
       sellCoin: sellCoinBalance.coin.abbr,
       buyCoin: swapBloc.receiveCoin?.abbr,
       sellAmt:
@@ -1072,7 +1072,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<bool> _checkGasFor(String coin, BuildContext mContext) async {
-    final CoinAmt gasFee = await GetFee.gas(coin);
+    final CoinAmt gasFee = await GetSwapFee.gas(coin);
     if (gasFee == null) return true;
 
     CoinBalance gasBalance;
@@ -1093,7 +1093,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     double requiredGasAmt = gasFee.amount;
     if (gasFee.coin == swapBloc.sellCoinBalance.coin.abbr) {
-      requiredGasAmt += GetFee.trading(_amountSell()).amount;
+      requiredGasAmt += GetSwapFee.trading(_amountSell()).amount;
     }
 
     if (gasBalance.balance.balance < deci(requiredGasAmt)) {

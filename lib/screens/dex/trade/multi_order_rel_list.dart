@@ -8,7 +8,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/get_swap_fee.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
@@ -526,11 +526,11 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   Widget _buildFee(CoinBalance item) {
     if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr))
       return Container();
-    final String gasCoin = GetFee.gasCoin(item.coin.abbr);
+    final String gasCoin = item.coin?.payGasIn;
     if (gasCoin == null) return Container();
 
     return FutureBuilder<CoinAmt>(
-        future: GetFee.gas(item.coin.abbr),
+        future: GetSwapFee.gas(item.coin.abbr),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const SizedBox();
 

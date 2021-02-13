@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/get_swap_fee.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -35,11 +35,11 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
       return Container();
 
     return FutureBuilder<CoinAmt>(
-      future: GetFee.tx(widget.baseCoin),
+      future: GetSwapFee.tx(widget.baseCoin),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox();
 
-        final CoinAmt tradeFee = GetFee.trading(widget.baseAmount);
+        final CoinAmt tradeFee = GetSwapFee.trading(widget.baseAmount);
         final CoinAmt txFee = snapshot.data;
 
         if (txFee == null || tradeFee == null) return const SizedBox();
@@ -105,7 +105,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
 
   Widget _buildTradeFee() {
     return Text(
-      '${cutTrailingZeros(formatPrice(GetFee.trading(widget.baseAmount).amount))}'
+      '${cutTrailingZeros(formatPrice(GetSwapFee.trading(widget.baseAmount).amount))}'
       ' ${widget.baseCoin}',
       style: Theme.of(context).textTheme.caption,
     );
@@ -114,7 +114,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
   Widget _buildTradeFeeInFiat() {
     return Text(
       cexProvider.convert(
-        GetFee.trading(widget.baseAmount).amount,
+        GetSwapFee.trading(widget.baseAmount).amount,
         from: widget.baseCoin,
       ),
       style: Theme.of(context).textTheme.caption.copyWith(color: cexColor),
@@ -128,7 +128,7 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
             style: Theme.of(context).textTheme.caption),
         Expanded(
             child: FutureBuilder<CoinAmt>(
-                future: GetFee.gas(widget.relCoin),
+                future: GetSwapFee.gas(widget.relCoin),
                 builder: (context, snapshot) {
                   final CoinAmt gasFee = snapshot.data;
 
