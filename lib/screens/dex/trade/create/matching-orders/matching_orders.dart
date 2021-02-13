@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/screens/dex/trade/create/matching-orders/matching_orders_chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -11,15 +12,14 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/dex/trade/receive_orders_chart.dart';
 import 'package:komodo_dex/screens/markets/build_order_details.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 
-class ReceiveOrders extends StatefulWidget {
-  const ReceiveOrders({
+class MatchingOrders extends StatefulWidget {
+  const MatchingOrders({
     Key key,
     this.sellAmount,
     this.onCreateNoOrder,
@@ -33,10 +33,10 @@ class ReceiveOrders extends StatefulWidget {
   final List<Orderbook> orderbooks; // for integration tests
 
   @override
-  _ReceiveOrdersState createState() => _ReceiveOrdersState();
+  _MatchingOrdersState createState() => _MatchingOrdersState();
 }
 
-class _ReceiveOrdersState extends State<ReceiveOrders> {
+class _MatchingOrdersState extends State<MatchingOrders> {
   OrderBookProvider orderBookProvider;
   final searchTextController = TextEditingController();
 
@@ -286,7 +286,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                       top: 50,
                                       right: 6,
                                       bottom: 0,
-                                      child: ReceiveOrdersChart(
+                                      child: MatchingOrdersChart(
                                         ordersList: bidsList,
                                         sellAmount: widget.sellAmount,
                                         lineHeight: lineHeight,

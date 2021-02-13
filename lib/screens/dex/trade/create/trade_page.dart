@@ -18,9 +18,9 @@ import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/trade/build_swap_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart';
+import 'package:komodo_dex/screens/dex/trade/create/matching-orders/matching_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/get_swap_fee.dart';
-import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
@@ -724,7 +724,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return ReceiveOrders(
+          return MatchingOrders(
               sellAmount: _amountSell(),
               onCreateNoOrder: (String coin) => _noOrders(coin),
               onCreateOrder: (Ask ask) => _createOrder(ask));
