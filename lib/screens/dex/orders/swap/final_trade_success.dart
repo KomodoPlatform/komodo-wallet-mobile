@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page/detail_swap.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/detail_swap.dart';
 
 class FinalTradeSuccess extends StatefulWidget {
   const FinalTradeSuccess({@required this.swap});

@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/screens/dex/orders/maker_order_details_page.dart';
-import 'package:komodo_dex/screens/dex/orders/order_fill.dart';
+import 'package:komodo_dex/screens/dex/orders/maker/maker_order_details_page.dart';
+import 'package:komodo_dex/screens/dex/orders/maker/order_fill.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/dex/history/swap_history.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/build_item_swap.dart';
 import 'package:provider/provider.dart';
 
 class MakerOrderSwaps extends StatefulWidget {

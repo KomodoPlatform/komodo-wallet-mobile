@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
-import 'package:komodo_dex/screens/dex/orders/maker_order_amount_price.dart';
-import 'package:komodo_dex/screens/dex/orders/maker_order_note.dart';
-import 'package:komodo_dex/screens/dex/orders/maker_order_swaps.dart';
-import 'package:komodo_dex/screens/dex/orders/order_fill.dart';
+import 'package:komodo_dex/screens/dex/orders/maker/maker_order_amount_price.dart';
+import 'package:komodo_dex/screens/dex/orders/maker/maker_order_note.dart';
+import 'package:komodo_dex/screens/dex/orders/maker/maker_order_swaps.dart';
+import 'package:komodo_dex/screens/dex/orders/maker/order_fill.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/sound_volume_button.dart';
 

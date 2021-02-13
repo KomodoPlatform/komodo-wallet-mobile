@@ -5,9 +5,9 @@ import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page/final_trade_success.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page/stepper_trade.dart';
-import 'package:komodo_dex/screens/dex/orders/maker_order_details_page.dart';
+import 'package:komodo_dex/screens/dex/orders/maker/maker_order_details_page.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/final_trade_success.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/stepper_trade.dart';
 import 'package:komodo_dex/widgets/sound_volume_button.dart';
 
 class SwapDetailPage extends StatefulWidget {

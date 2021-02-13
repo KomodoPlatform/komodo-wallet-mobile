@@ -5,8 +5,8 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page/swap_detail_page.dart';
-import 'package:komodo_dex/screens/dex/orders/build_taker_countdown.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
+import 'package:komodo_dex/screens/dex/orders/taker/build_taker_countdown.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 

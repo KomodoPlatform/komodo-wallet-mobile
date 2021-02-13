@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page/progress_step.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/progress_step.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 import 'detailed_swap_steps.dart';

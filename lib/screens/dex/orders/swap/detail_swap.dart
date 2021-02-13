@@ -4,7 +4,7 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_steps.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/detailed_swap_steps.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
 

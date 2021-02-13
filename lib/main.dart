@@ -19,7 +19,7 @@ import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
 import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/dex/swap_page.dart';
+import 'package:komodo_dex/screens/dex/dex_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -206,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   final List<Widget> _children = <Widget>[
     CoinsPage(),
-    SwapPage(),
+    DexPage(),
     MarketsPage(),
     FeedPage(),
   ];

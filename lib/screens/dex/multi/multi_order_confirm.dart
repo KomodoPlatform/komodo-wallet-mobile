@@ -4,7 +4,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
+import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 

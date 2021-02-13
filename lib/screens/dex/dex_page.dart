@@ -3,16 +3,16 @@ import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
-import 'package:komodo_dex/screens/dex/trade/multi_order_page.dart';
+import 'package:komodo_dex/screens/dex/multi/multi_order_page.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
-class SwapPage extends StatefulWidget {
+class DexPage extends StatefulWidget {
   @override
-  _SwapPageState createState() => _SwapPageState();
+  _DexPageState createState() => _DexPageState();
 }
 
-class _SwapPageState extends State<SwapPage> with TickerProviderStateMixin {
+class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
   TabController tabController;
 
   @override
