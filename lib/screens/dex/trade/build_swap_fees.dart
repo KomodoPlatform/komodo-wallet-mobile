@@ -6,8 +6,8 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
-class BuildTradeFees extends StatefulWidget {
-  const BuildTradeFees({
+class BuildSwapFees extends StatefulWidget {
+  const BuildSwapFees({
     @required this.baseCoin,
     @required this.baseAmount,
     this.includeGasFee = false,
@@ -20,10 +20,10 @@ class BuildTradeFees extends StatefulWidget {
   final String relCoin;
 
   @override
-  _BuildTradeFeesState createState() => _BuildTradeFeesState();
+  _BuildSwapFeesState createState() => _BuildSwapFeesState();
 }
 
-class _BuildTradeFeesState extends State<BuildTradeFees> {
+class _BuildSwapFeesState extends State<BuildSwapFees> {
   CexProvider cexProvider;
   bool showDetailedFees = false;
 

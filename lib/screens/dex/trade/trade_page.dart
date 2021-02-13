@@ -16,7 +16,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
+import 'package:komodo_dex/screens/dex/trade/build_swap_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/get_swap_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
@@ -563,7 +563,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                             market == Market.SELL && _amountSell() > 0
                                 ? Container(
                                     padding: EdgeInsets.only(top: 12),
-                                    child: BuildTradeFees(
+                                    child: BuildSwapFees(
                                       baseCoin: sellCoinBalance.coin.abbr,
                                       baseAmount: _amountSell(),
                                       includeGasFee: true,
