@@ -18,7 +18,9 @@ import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/trade/build_swap_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart';
-import 'package:komodo_dex/screens/dex/trade/create/matching-orders/matching_orders.dart';
+import 'package:komodo_dex/screens/dex/trade/create/in_progress_popup.dart';
+import 'package:komodo_dex/screens/dex/trade/create/receive/matching_orderbooks.dart';
+import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/get_swap_fee.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -27,8 +29,6 @@ import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
-import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
@@ -724,7 +724,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return MatchingOrders(
+          return MatchingOrderbooks(
               sellAmount: _amountSell(),
               onCreateNoOrder: (String coin) => _noOrders(coin),
               onCreateOrder: (Ask ask) => _createOrder(ask));
@@ -747,7 +747,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
-              return DialogLooking(
+              return InProgressPopup(
                 onDone: () {
                   try {
                     Navigator.of(context).pop();
@@ -1135,46 +1135,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       context,
       MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => SwapConfirmation(
-                orderSuccess: () {
-                  dialogBloc.dialog = showDialog<dynamic>(
-                          builder: (BuildContext context) {
-                            return SimpleDialog(
-                              title: Text(
-                                  AppLocalizations.of(context).orderCreated),
-                              contentPadding: const EdgeInsets.all(24),
-                              children: <Widget>[
-                                Text(AppLocalizations.of(context)
-                                    .orderCreatedInfo),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                PrimaryButton(
-                                  text:
-                                      AppLocalizations.of(context).showMyOrders,
-                                  onPressed: () {
-                                    swapBloc.setIndexTabDex(1);
-                                    Navigator.of(context).pop();
-                                    showSoundsDialog(context);
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                SecondaryButton(
-                                  text: AppLocalizations.of(context).close,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    showSoundsDialog(context);
-                                  },
-                                )
-                              ],
-                            );
-                          },
-                          context: context)
-                      .then((dynamic _) {
-                    dialogBloc.dialog = null;
-                  });
-                },
+                orderSuccess: () => showOrderCreatedDialog(context),
                 order: currentAsk,
                 bestPrice: deci2s(swapBloc.orderCoin.bestPrice),
                 coinBase: swapBloc.orderCoin?.coinBase,
@@ -1209,50 +1170,4 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 enum Market {
   SELL,
   RECEIVE,
-}
-
-class DialogLooking extends StatefulWidget {
-  const DialogLooking({Key key, this.onDone}) : super(key: key);
-
-  final Function onDone;
-
-  @override
-  _DialogLookingState createState() => _DialogLookingState();
-}
-
-class _DialogLookingState extends State<DialogLooking> {
-  OrderBookProvider orderBookProvider;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    orderBookProvider = Provider.of<OrderBookProvider>(context);
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await orderBookProvider.subscribeCoin();
-      widget.onDone();
-    });
-
-    return Dialog(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const CircularProgressIndicator(),
-            const SizedBox(
-              width: 16,
-            ),
-            Text(
-              AppLocalizations.of(context).loadingOrderbook,
-              style: Theme.of(context).textTheme.bodyText2,
-            )
-          ],
-        ),
-      ),
-    );
-  }
 }

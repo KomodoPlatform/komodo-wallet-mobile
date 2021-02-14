@@ -1,186 +1,24 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/screens/dex/trade/create/matching-orders/matching_orders_chart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/screens/markets/build_order_details.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/markets/build_order_details.dart';
+import 'package:komodo_dex/screens/dex/trade/create/receive/matching_bids_chart.dart';
+import 'package:komodo_dex/screens/dex/trade/create/receive/matching_orderbooks.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 
-class MatchingOrders extends StatefulWidget {
-  const MatchingOrders({
-    Key key,
-    this.sellAmount,
-    this.onCreateNoOrder,
-    this.onCreateOrder,
-    this.orderbooks,
-  }) : super(key: key);
-
-  final double sellAmount;
-  final Function(String) onCreateNoOrder;
-  final Function(Ask) onCreateOrder;
-  final List<Orderbook> orderbooks; // for integration tests
-
-  @override
-  _MatchingOrdersState createState() => _MatchingOrdersState();
-}
-
-class _MatchingOrdersState extends State<MatchingOrders> {
-  OrderBookProvider orderBookProvider;
-  final searchTextController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    orderBookProvider = Provider.of<OrderBookProvider>(context);
-    final List<Orderbook> orderbooks =
-        widget.orderbooks ?? orderBookProvider.orderbooksForCoin();
-
-    return SimpleDialog(
-      title: Text(AppLocalizations.of(context).receiveLower),
-      key: const Key('receive-list-coins'),
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: TextField(
-            controller: searchTextController,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: 'Search for Ticker',
-              counterText: '',
-            ),
-            maxLength: 16,
-          ),
-        ),
-        ...orderbooks
-            .where((ob) =>
-                (ob.base != null && ob.base.isNotEmpty) &&
-                (ob.rel != null && ob.rel.isNotEmpty))
-            .where((ob) => ob.rel
-                .toLowerCase()
-                .startsWith(searchTextController.text.toLowerCase()))
-            .map((Orderbook orderbook) => OrderbookItem(
-                key: ValueKey('orderbook-item-${orderbook.rel.toLowerCase()}'),
-                orderbook: orderbook,
-                onCreateNoOrder: widget.onCreateNoOrder,
-                onCreateOrder: widget.onCreateOrder,
-                sellAmount: widget.sellAmount))
-            .toList(),
-      ],
-    );
-  }
-
-  @override
-  void dispose() {
-    searchTextController.dispose();
-    super.dispose();
-  }
-}
-
-class OrderbookItem extends StatelessWidget {
-  const OrderbookItem(
-      {Key key,
-      this.orderbook,
-      this.sellAmount,
-      this.onCreateNoOrder,
-      this.onCreateOrder})
-      : super(key: key);
-
-  final Orderbook orderbook;
-  final double sellAmount;
-  final Function(String) onCreateNoOrder;
-  final Function(Ask) onCreateOrder;
-
-  @override
-  Widget build(BuildContext context) {
-    final OrderBookProvider orderBookProvider =
-        Provider.of<OrderBookProvider>(context);
-    return InkWell(
-      onTap: () {
-        orderBookProvider.activePair = CoinsPair(
-          sell: orderBookProvider.activePair.sell,
-          buy: coinsBloc.getCoinByAbbr(orderbook.rel),
-        );
-
-        if (orderbook.bids.isEmpty) {
-          onCreateNoOrder(orderbook.rel);
-          Navigator.pop(context);
-        } else {
-          Navigator.pushReplacement<dynamic, dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => AsksOrder(
-                    baseCoin: orderbook.base,
-                    sellAmount: sellAmount,
-                    onCreateNoOrder: onCreateNoOrder,
-                    onCreateOrder: onCreateOrder)),
-          );
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              height: 20,
-              width: 20,
-              child: Image.asset(
-                'assets/${orderbook.rel.toLowerCase()}.png',
-              ),
-            ),
-            SizedBox(width: 4),
-            Text(orderbook.rel),
-            SizedBox(width: 4),
-            Expanded(
-              child: orderbook.bids != null && orderbook.bids.isNotEmpty
-                  ? RichText(
-                      textAlign: TextAlign.end,
-                      text: TextSpan(
-                          style: Theme.of(context).textTheme.bodyText2,
-                          children: <InlineSpan>[
-                            TextSpan(
-                                text: AppLocalizations.of(context).clickToSee,
-                                style: Theme.of(context).textTheme.bodyText2),
-                            TextSpan(
-                                text: orderbook.bids.length.toString() + ' ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: AppLocalizations.of(context).orders,
-                                style: Theme.of(context).textTheme.bodyText2)
-                          ]),
-                    )
-                  : Text(
-                      AppLocalizations.of(context).noOrderAvailable,
-                      textAlign: TextAlign.end,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .copyWith(color: Theme.of(context).accentColor),
-                    ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AsksOrder extends StatefulWidget {
-  const AsksOrder(
+class MatchingBidPage extends StatefulWidget {
+  const MatchingBidPage(
       {Key key,
       this.sellAmount,
       this.onCreateOrder,
@@ -193,10 +31,10 @@ class AsksOrder extends StatefulWidget {
   final String baseCoin;
 
   @override
-  _AsksOrderState createState() => _AsksOrderState();
+  _MatchingBidPageState createState() => _MatchingBidPageState();
 }
 
-class _AsksOrderState extends State<AsksOrder> {
+class _MatchingBidPageState extends State<MatchingBidPage> {
   final double headerHeight = 50;
   final double lineHeight = 50;
   bool popupSettingsVisible = false;
@@ -286,7 +124,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                       top: 50,
                                       right: 6,
                                       bottom: 0,
-                                      child: MatchingOrdersChart(
+                                      child: MatchingBidsChart(
                                         ordersList: bidsList,
                                         sellAmount: widget.sellAmount,
                                         lineHeight: lineHeight,
@@ -800,110 +638,5 @@ class _AsksOrderState extends State<AsksOrder> {
                 );
               });
         });
-  }
-}
-
-class AskItem extends StatelessWidget {
-  const AskItem({Key key, this.ask, this.sellAmount, this.onCreateOrder})
-      : super(key: key);
-  final Ask ask;
-  final double sellAmount;
-  final Function(Ask) onCreateOrder;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).pop();
-        onCreateOrder(ask);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Flexible(
-              child: Container(
-                color: Colors.red,
-                child: Text(
-                  deci2s(ask.getReceivePrice()) + ' ' + ask.coin.toUpperCase(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(fontSize: 12),
-                ),
-              ),
-            ),
-            Flexible(
-                child: Container(
-              color: Colors.red,
-              child: Text(
-                ask.maxvolume.toStringAsFixed(8) + ' ' + ask.coin.toUpperCase(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .copyWith(fontSize: 12),
-              ),
-            )),
-            Flexible(
-              child: Container(
-                color: Colors.red,
-                child: Text(
-                  deci2s(ask.getReceiveAmount(deci(sellAmount))) +
-                      ' ' +
-                      ask.coin.toUpperCase(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(fontWeight: FontWeight.bold, fontSize: 12),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CreateOrder extends StatelessWidget {
-  const CreateOrder({this.onCreateNoOrder, this.coin});
-  final Function(String) onCreateNoOrder;
-  final String coin;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: InkWell(
-        onTap: () {
-          onCreateNoOrder(coin);
-          Navigator.of(context).pop();
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.add_circle,
-                size: 30,
-                color: Theme.of(context).accentColor,
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Text(
-                AppLocalizations.of(context).noOrderAvailable,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .copyWith(color: Theme.of(context).accentColor),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

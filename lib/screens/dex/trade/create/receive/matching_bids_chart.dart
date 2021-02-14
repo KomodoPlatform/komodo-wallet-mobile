@@ -6,8 +6,8 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:provider/provider.dart';
 
-class MatchingOrdersChart extends StatefulWidget {
-  const MatchingOrdersChart({
+class MatchingBidsChart extends StatefulWidget {
+  const MatchingBidsChart({
     this.ordersList,
     this.sellAmount,
     this.lineHeight,
@@ -18,10 +18,10 @@ class MatchingOrdersChart extends StatefulWidget {
   final double lineHeight;
 
   @override
-  _MatchingOrdersChartState createState() => _MatchingOrdersChartState();
+  _MatchingBidsChartState createState() => _MatchingBidsChartState();
 }
 
-class _MatchingOrdersChartState extends State<MatchingOrdersChart> {
+class _MatchingBidsChartState extends State<MatchingBidsChart> {
   OrderBookProvider orderBookProvider;
   Coin sellCoin;
 
@@ -41,7 +41,7 @@ class _MatchingOrdersChartState extends State<MatchingOrdersChart> {
 class _ChartPainter extends CustomPainter {
   _ChartPainter(this.widget);
 
-  final MatchingOrdersChart widget;
+  final MatchingBidsChart widget;
 
   @override
   void paint(Canvas canvas, Size size) {
