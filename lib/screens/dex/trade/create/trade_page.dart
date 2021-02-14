@@ -18,7 +18,7 @@ import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/trade/build_swap_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart';
-import 'package:komodo_dex/screens/dex/trade/create/in_progress_popup.dart';
+import 'package:komodo_dex/screens/dex/trade/create/receive/in_progress_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/matching_orderbooks.dart';
 import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
