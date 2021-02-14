@@ -8,7 +8,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
-import 'package:komodo_dex/screens/dex/trade/get_swap_fee.dart';
+import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';

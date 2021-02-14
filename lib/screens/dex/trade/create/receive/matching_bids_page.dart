@@ -1,11 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/screens/dex/trade/create/receive/bid_details_dialog.dart';
-import 'package:komodo_dex/screens/dex/trade/create/receive/not_enough_volume_dialog.dart';
+import 'package:komodo_dex/screens/dex/trade/create/receive/matching_bids_table.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
@@ -34,36 +31,30 @@ class MatchingBidPage extends StatefulWidget {
 }
 
 class _MatchingBidPageState extends State<MatchingBidPage> {
-  final double headerHeight = 50;
-  final double lineHeight = 50;
-  bool popupSettingsVisible = false;
-  int listLength = 0;
-  int listLimit = 25;
-  int listLimitMin = 25;
-  int listLimitStep = 5;
-  OrderBookProvider orderBookProvider;
-  CexProvider cexProvider;
-  AddressBookProvider addressBookProvider;
+  static const double _headerHeight = 50;
+  static const double _lineHeight = 50;
+  static const int _listLimitMin = 25;
+  static const int _listLimitStep = 5;
+  int _listLength = 0;
+  int _listLimit = 25;
+  OrderBookProvider _orderBookProvider;
+  CexProvider _cexProvider;
 
   @override
   Widget build(BuildContext context) {
-    cexProvider ??= Provider.of<CexProvider>(context);
-    orderBookProvider ??= Provider.of<OrderBookProvider>(context);
-    addressBookProvider ??= Provider.of<AddressBookProvider>(context);
+    _cexProvider ??= Provider.of<CexProvider>(context);
+    _orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
-    final relCoin = orderBookProvider.activePair.buy.abbr;
-    final baseCoin = orderBookProvider.activePair.sell.abbr;
-    final List<TableRow> asksWidget = <TableRow>[];
-    final Orderbook orderbook = orderBookProvider?.getOrderBook();
+    final receiveCoin = _orderBookProvider.activePair.buy.abbr;
+    final Orderbook orderbook = _orderBookProvider?.getOrderBook();
     List<Ask> bidsList = orderbook?.bids;
 
     bidsList = OrderBookProvider.sortByPrice(bidsList, quotePrice: true);
     setState(() {
-      listLength = bidsList.length;
+      _listLength = bidsList.length;
     });
-    if (bidsList.length > listLimit) bidsList = bidsList.sublist(0, listLimit);
-    bidsList?.asMap()?.forEach(
-        (int index, Ask bid) => asksWidget.add(_tableRow(bid, index)));
+    if (bidsList.length > _listLimit)
+      bidsList = bidsList.sublist(0, _listLimit);
 
     return LockScreen(
       context: context,
@@ -83,7 +74,8 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
               Container(
                   height: 30,
                   width: 30,
-                  child: Image.asset('assets/${relCoin.toLowerCase()}.png')),
+                  child:
+                      Image.asset('assets/${receiveCoin.toLowerCase()}.png')),
             ],
           ),
         ),
@@ -96,7 +88,7 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
                     )
                   : ListView(
                       children: <Widget>[
-                        asksWidget.isEmpty
+                        bidsList.isEmpty
                             ? Container(
                                 alignment: const Alignment(0, 0),
                                 padding: const EdgeInsets.only(top: 30),
@@ -120,86 +112,20 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
                                   children: <Widget>[
                                     Positioned(
                                       left: 6,
-                                      top: headerHeight,
+                                      top: _headerHeight,
                                       right: 6,
                                       bottom: 0,
                                       child: MatchingBidsChart(
-                                        ordersList: bidsList,
+                                        bidsList: bidsList,
                                         sellAmount: widget.sellAmount,
-                                        lineHeight: lineHeight,
+                                        lineHeight: _lineHeight,
                                       ),
                                     ),
-                                    Table(
-                                      children: [
-                                        TableRow(children: [
-                                          Container(
-                                            height: headerHeight,
-                                            alignment: const Alignment(-1, 0),
-                                            padding: const EdgeInsets.only(
-                                              left: 12,
-                                              right: 6,
-                                            ),
-                                            child: Text(
-                                              '${AppLocalizations.of(context).price}'
-                                              ' ($relCoin)',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2
-                                                  .copyWith(fontSize: 14),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: headerHeight,
-                                            alignment: const Alignment(1, 0),
-                                            padding: const EdgeInsets.only(
-                                              left: 6,
-                                            ),
-                                            child: Text(
-                                              '${AppLocalizations.of(context).availableVolume}'
-                                              ' ($relCoin)',
-                                              textAlign: TextAlign.end,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2
-                                                  .copyWith(fontSize: 14),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: headerHeight,
-                                            alignment: const Alignment(1, 0),
-                                            padding: const EdgeInsets.only(
-                                              left: 6,
-                                            ),
-                                            child: Text(
-                                              '${AppLocalizations.of(context).availableVolume}'
-                                              ' ($baseCoin)',
-                                              textAlign: TextAlign.right,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2
-                                                  .copyWith(fontSize: 14),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: headerHeight,
-                                            alignment: const Alignment(1, 0),
-                                            padding: const EdgeInsets.only(
-                                              left: 6,
-                                              right: 12,
-                                            ),
-                                            child: Text(
-                                              '${AppLocalizations.of(context).receive.toLowerCase()}'
-                                              ' ($relCoin)',
-                                              textAlign: TextAlign.right,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2
-                                                  .copyWith(fontSize: 14),
-                                            ),
-                                          ),
-                                        ]),
-                                        ...asksWidget,
-                                      ],
+                                    MatchingBidsTable(
+                                      headerHeight: _headerHeight,
+                                      lineHeight: _lineHeight,
+                                      bidsList: bidsList,
+                                      onCreateOrder: widget.onCreateOrder,
                                     ),
                                   ],
                                 ),
@@ -207,7 +133,7 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
                         _buildLimitButton(),
                         CreateOrder(
                           onCreateNoOrder: widget.onCreateNoOrder,
-                          coin: relCoin,
+                          coin: receiveCoin,
                         )
                       ],
                     ),
@@ -219,7 +145,8 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
   }
 
   Widget _buildLimitButton() {
-    if (listLength < listLimit && listLimit == listLimitMin) return SizedBox();
+    if (_listLength < _listLimit && _listLimit == _listLimitMin)
+      return SizedBox();
 
     return Container(
       padding: EdgeInsets.all(12),
@@ -227,14 +154,14 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            'Showing $listLimit of ${max(listLength, listLimit)} orders. ',
+            'Showing $_listLimit of ${max(_listLength, _listLimit)} orders. ',
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          if (listLimit > listLimitMin)
+          if (_listLimit > _listLimitMin)
             InkWell(
                 onTap: () {
                   setState(() {
-                    listLimit -= listLimitStep;
+                    _listLimit -= _listLimitStep;
                   });
                 },
                 child: Container(
@@ -247,11 +174,11 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
                     ),
                   ),
                 )),
-          if (listLength > listLimit)
+          if (_listLength > _listLimit)
             InkWell(
                 onTap: () {
                   setState(() {
-                    listLimit += listLimitStep;
+                    _listLimit += _listLimitStep;
                   });
                 },
                 child: Container(
@@ -270,7 +197,7 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
   }
 
   Widget _buildCexRate() {
-    final double cexRate = cexProvider.getCexRate() ?? 0.0;
+    final double cexRate = _cexProvider.getCexRate() ?? 0.0;
 
     if (cexRate == 0.0) return Container();
 
@@ -288,180 +215,6 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
         ),
         const SizedBox(width: 4),
       ],
-    );
-  }
-
-  TableRow _tableRow(Ask bid, int index) {
-    return TableRow(
-      children: [
-        TableRowInkWell(
-          child: Container(
-            height: lineHeight,
-            alignment: const Alignment(-1, 0),
-            padding: const EdgeInsets.only(
-              left: 12,
-              right: 6,
-            ),
-            decoration: BoxDecoration(
-                color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
-                border: Border(
-                    top: BorderSide(
-                  width: 1,
-                  color: Theme.of(context).highlightColor,
-                ))),
-            key: Key('ask-item-$index'),
-            child: Row(
-              children: <Widget>[
-                Text(
-                  formatPrice(1 / double.parse(bid.price)),
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        fontSize: 13,
-                        color: Colors.greenAccent,
-                      ),
-                ),
-                if (addressBookProvider.contactByAddress(bid.address) != null)
-                  Flexible(
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 2),
-                      child: Icon(
-                        Icons.account_circle,
-                        size: 11,
-                        color: Colors.white.withAlpha(150),
-                      ),
-                    ),
-                  ),
-                if (bid.isMine())
-                  Flexible(
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 2),
-                      child: Icon(
-                        Icons.brightness_1,
-                        size: 11,
-                        color: Colors.green.withAlpha(150),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          onTap: () => _onBidTap(bid),
-          onLongPress: () => _onBidLongPress(bid),
-        ),
-        TableRowInkWell(
-          child: Container(
-            height: lineHeight,
-            alignment: const Alignment(1, 0),
-            padding: const EdgeInsets.only(
-              left: 6,
-            ),
-            decoration: BoxDecoration(
-                color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
-                border: Border(
-                    top: BorderSide(
-                  width: 1,
-                  color: Theme.of(context).highlightColor,
-                ))),
-            child: Text(
-              formatPrice(bid.maxvolume.toDouble()),
-              style:
-                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 13),
-            ),
-          ),
-          onTap: () => _onBidTap(bid),
-          onLongPress: () => _onBidLongPress(bid),
-        ),
-        TableRowInkWell(
-          child: Container(
-            height: lineHeight,
-            alignment: const Alignment(1, 0),
-            padding: const EdgeInsets.only(
-              left: 6,
-            ),
-            decoration: BoxDecoration(
-                color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
-                border: Border(
-                    top: BorderSide(
-                  width: 1,
-                  color: Theme.of(context).highlightColor,
-                ))),
-            child: Text(
-              formatPrice(bid.maxvolume.toDouble() * double.parse(bid.price)),
-              style:
-                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 13),
-            ),
-          ),
-          onTap: () => _onBidTap(bid),
-          onLongPress: () => _onBidLongPress(bid),
-        ),
-        TableRowInkWell(
-          child: Container(
-            height: lineHeight,
-            alignment: const Alignment(1, 0),
-            padding: const EdgeInsets.only(
-              left: 6,
-              right: 12,
-            ),
-            decoration: BoxDecoration(
-                color: index % 2 > 0 ? null : Colors.white.withAlpha(10),
-                border: Border(
-                    top: BorderSide(
-                  width: 1,
-                  color: Theme.of(context).highlightColor,
-                ))),
-            child: Text(
-              formatPrice(
-                  bid.getReceiveAmount(deci(widget.sellAmount)).toDouble()),
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  .copyWith(fontWeight: FontWeight.w500, fontSize: 14),
-            ),
-          ),
-          onTap: () => _onBidTap(bid),
-          onLongPress: () => _onBidLongPress(bid),
-        )
-      ],
-    );
-  }
-
-  Future<void> _onBidTap(Ask bid) async {
-    final bool showOrderDetailsByTap = (await SharedPreferences.getInstance())
-            .getBool('showOrderDetailsByTap') ??
-        true;
-
-    showOrderDetailsByTap ? _showDetails(bid) : _createOrder(bid);
-  }
-
-  Future<void> _onBidLongPress(Ask bid) async {
-    final bool showOrderDetailsByTap = (await SharedPreferences.getInstance())
-            .getBool('showOrderDetailsByTap') ??
-        true;
-
-    showOrderDetailsByTap ? _createOrder(bid) : _showDetails(bid);
-  }
-
-  void _createOrder(Ask ask) {
-    final double myVolume =
-        ask.getReceiveAmount(deci(widget.sellAmount)).toDouble();
-    final bool isEnoughVolume =
-        !(ask.minVolume != null && myVolume < ask.minVolume);
-
-    if (isEnoughVolume) {
-      Navigator.of(context).pop();
-      widget.onCreateOrder(ask);
-    } else {
-      openNotEnoughVolumeDialog(context, ask);
-    }
-  }
-
-  void _showDetails(Ask bid) {
-    setState(() {
-      popupSettingsVisible = false;
-    });
-    openBidDetailsDialog(
-      context: context,
-      bid: bid,
-      onSelect: () => _createOrder(bid),
     );
   }
 }

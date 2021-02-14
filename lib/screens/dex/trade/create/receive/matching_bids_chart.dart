@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 
 class MatchingBidsChart extends StatefulWidget {
   const MatchingBidsChart({
-    this.ordersList,
+    this.bidsList,
     this.sellAmount,
     this.lineHeight,
   });
 
-  final List<Ask> ordersList;
+  final List<Ask> bidsList;
   final double sellAmount;
   final double lineHeight;
 
@@ -53,8 +53,8 @@ class _ChartPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..color = Colors.green.withAlpha(70);
 
-    for (int i = 0; i < widget.ordersList.length; i++) {
-      final Ask bid = widget.ordersList[i];
+    for (int i = 0; i < widget.bidsList.length; i++) {
+      final Ask bid = widget.bidsList[i];
       double barWidth =
           bid.maxvolume.toDouble() * double.parse(bid.price) * baseVolumeRatio;
       if (barWidth < 1) barWidth = 1;
@@ -74,7 +74,7 @@ class _ChartPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 
   List<double> _volumes() {
-    return widget.ordersList
+    return widget.bidsList
         .map((ask) => ask.maxvolume.toDouble() * double.parse(ask.price))
         .toList();
   }

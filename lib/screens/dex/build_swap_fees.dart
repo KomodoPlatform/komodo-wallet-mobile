@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/screens/dex/trade/get_swap_fee.dart';
+import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
