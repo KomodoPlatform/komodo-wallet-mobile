@@ -90,36 +90,6 @@ class ViewSeed extends StatefulWidget {
 }
 
 class _ViewSeedState extends State<ViewSeed> {
-  List<Widget> seedWord = <Widget>[];
-
-  @override
-  void initState() {
-    int i = 1;
-    for (String word in widget.seed.split(' ')) {
-      seedWord.add(RichText(
-        text: TextSpan(
-            style: Theme.of(widget.context)
-                .textTheme
-                .bodyText2
-                .copyWith(fontSize: 22),
-            children: <InlineSpan>[
-              TextSpan(
-                  text: i.toString().padLeft(2, '0'),
-                  style: Theme.of(widget.context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(color: Theme.of(widget.context).accentColor)),
-              TextSpan(
-                  text: '. $word',
-                  style: Theme.of(widget.context).textTheme.bodyText2)
-            ]),
-      ));
-      i++;
-    }
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -128,15 +98,10 @@ class _ViewSeedState extends State<ViewSeed> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 50),
-            child: GridView.count(
-              shrinkWrap: true,
-              primary: false,
-              crossAxisCount: 2,
-              mainAxisSpacing: 4.0,
-              children: seedWord,
-              childAspectRatio: 4.0,
-              crossAxisSpacing: 4.0,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              widget.seed,
+              style: Theme.of(widget.context).textTheme.bodyText2,
             ),
           ),
           const SizedBox(
