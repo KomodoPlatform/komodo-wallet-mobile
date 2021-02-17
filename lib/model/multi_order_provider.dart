@@ -3,7 +3,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
-import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -12,7 +12,6 @@ import 'package:komodo_dex/utils/utils.dart';
 
 import 'error_string.dart';
 import 'get_setprice.dart';
-import 'get_trade_fee.dart';
 
 class MultiOrderProvider extends ChangeNotifier {
   final AppLocalizations _localizations = AppLocalizations();
@@ -91,39 +90,6 @@ class MultiOrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  double getTradeFee([double amt]) {
-    if (baseCoin == null) return null;
-    amt ??= baseAmt;
-    if (amt == null || amt == 0) return null;
-    return amt / 777;
-  }
-
-  Future<double> getTxFee() async {
-    if (baseCoin == null) return null;
-
-    try {
-      final dynamic tradeFeeResponse =
-          await MM.getTradeFee(MMService().client, GetTradeFee(coin: baseCoin));
-
-      if (tradeFeeResponse is TradeFee) {
-        // Magic 'x2' added to match fee, returned by
-        // TradePage.getTxFee (trade_page.dart:294)
-        return double.parse(tradeFeeResponse.result.amount) * 2;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      Log('multi_order_provider] failed to get tx fee', e);
-      rethrow;
-    }
-  }
-
-  Future<double> getERCfee(String coin) async {
-    final TradeFee tradeFeeResponseERC = await ApiProvider()
-        .getTradeFee(MMService().client, GetTradeFee(coin: coin));
-    return double.parse(tradeFeeResponseERC.result.amount);
-  }
-
   Future<bool> validate() async {
     bool isValid = true;
     _errors.clear();
@@ -161,16 +127,24 @@ class MultiOrderProvider extends ChangeNotifier {
         _errors[coin] = _localizations.multiInvalidAmt;
       }
 
-      // check for ETH balance
-      if (coinsBloc.getCoinByAbbr(coin).swapContractAddress.isNotEmpty) {
-        final CoinBalance ethBalance = coinsBloc.getBalanceByAbbr('ETH');
-        if (ethBalance == null) {
+      // check for gas balance
+      final String gasCoin = GetFee.gasCoin(coin);
+      if (gasCoin != null) {
+        final CoinBalance gasBalance = coinsBloc.getBalanceByAbbr(gasCoin);
+        if (gasBalance == null) {
           isValid = false;
-          _errors[coin] = _localizations.multiActivateEth;
-        } else if (ethBalance.balance.balance.toDouble() <
-            await getERCfee(coin)) {
-          isValid = false;
-          _errors[coin] = _localizations.multiLowEth;
+          _errors[coin] = _localizations.multiActivateGas(gasCoin);
+        } else {
+          double gasFee = (await GetFee.gas(coin)).amount;
+          if (baseCoin == gasCoin) {
+            gasFee = gasFee +
+                (await GetFee.tx(baseCoin)).amount +
+                GetFee.trading(baseAmt).amount;
+          }
+          if (gasBalance.balance.balance.toDouble() < gasFee) {
+            isValid = false;
+            _errors[coin] = _localizations.multiLowGas(gasCoin);
+          }
         }
       }
 
@@ -229,22 +203,34 @@ class MultiOrderProvider extends ChangeNotifier {
 
   Future<double> getMaxSellAmt() async {
     double maxAmt;
-    if (baseCoin == null) {
-      maxAmt = null;
-    } else {
-      final double balance =
-          coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-      maxAmt = balance - await _getBaseFee(balance);
-    }
+    if (baseCoin == null) return null;
 
-    if (maxAmt < 0) maxAmt = 0;
+    final double balance =
+        coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
+    final double baseFee = await _getBaseFee(balance);
+    maxAmt = balance - baseFee;
+
+    if (maxAmt < 0) {
+      maxAmt = null;
+      _errors[baseCoin] = _localizations.multiLowerThanFee(
+          baseCoin, cutTrailingZeros(formatPrice(baseFee)));
+      notifyListeners();
+    } else {
+      _errors.remove(baseCoin);
+      notifyListeners();
+    }
     return maxAmt;
   }
 
-  Future<double> _getBaseFee([double amt]) async {
-    final double tradeFee = getTradeFee(amt);
-    final double txFee = await getTxFee() ?? 0;
+  Future<double> _getBaseFee(double amt) async {
+    if (baseCoin == null || amt == null) return null;
 
-    return tradeFee + txFee;
+    double totalFee = 0;
+    totalFee += GetFee.trading(amt).amount;
+
+    final CoinAmt txFee = await GetFee.tx(baseCoin);
+    if (txFee.coin == baseCoin) totalFee += txFee.amount;
+
+    return totalFee;
   }
 }

@@ -19,6 +19,7 @@ class GetSetPrice {
     this.max,
     this.cancelPrevious,
     this.volume,
+    this.minVolume,
     this.baseNota,
     this.baseConfs,
     this.relNota,
@@ -34,6 +35,7 @@ class GetSetPrice {
         max: json['max'],
         cancelPrevious: json['cancel_previous'],
         volume: json['volume'],
+        minVolume: double.tryParse(json['min_volume']),
         baseNota: json['base_nota'],
         baseConfs: json['base_confs'],
         relNota: json['rel_nota'],
@@ -48,6 +50,7 @@ class GetSetPrice {
   bool max;
   bool cancelPrevious;
   String volume;
+  double minVolume;
   bool baseNota;
   int baseConfs;
   bool relNota;
@@ -62,6 +65,7 @@ class GetSetPrice {
         'max': max,
         'cancel_previous': cancelPrevious,
         'volume': volume,
+        if (minVolume != null) 'min_volume': minVolume,
         'base_nota': baseNota,
         'base_confs': baseConfs,
         'rel_nota': relNota,

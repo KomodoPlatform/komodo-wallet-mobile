@@ -183,7 +183,7 @@ class SwapMonitor {
   /// (Re)load recent swaps from MM.
   Future<void> update() async {
     final RecentSwaps rswaps =
-        await MM.getRecentSwaps(GetRecentSwap(limit: 50, fromUuid: null));
+        await MM.getRecentSwaps(GetRecentSwap(limit: 10000, fromUuid: null));
 
     final Map<String, Swap> swaps = {};
     for (MmSwap rswap in rswaps.result.swaps) {
@@ -194,7 +194,16 @@ class SwapMonitor {
 
     _swaps = swaps;
     _notifyListeners();
-    swapHistoryBloc.inSwaps.add(swaps.values);
+
+    final List<Swap> swapList = List.from(swaps.values);
+    swapList.sort((a, b) {
+      if (b.result.myInfo.startedAt != null) {
+        return b.result.myInfo.startedAt.compareTo(a.result.myInfo.startedAt);
+      }
+      return 0;
+    });
+
+    swapHistoryBloc.inSwaps.add(swapList);
   }
 
   /// Store swap information

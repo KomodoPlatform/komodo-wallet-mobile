@@ -76,11 +76,12 @@ class Coin {
     serverList = List<String>.from(config['serverList']);
     explorerUrl = List<String>.from(config['explorerUrl']);
     requiredConfirmations = init['required_confirmations'];
+    matureConfirmations = init['mature_confirmations'];
     requiresNotarization = init['requires_notarization'];
     addressFormat = init['address_format'];
   }
 
-  String type; // 'other', 'erc' or 'smartChain'
+  String type; // 'other', 'erc', 'qrc' or 'smartChain'
   String name;
   String address;
   int port;
@@ -99,6 +100,7 @@ class Coin {
 
   /// NB: If the initial value is `null` then it might be updated from MM during the coin activation.
   int requiredConfirmations;
+  int matureConfirmations;
   bool requiresNotarization;
   Map<String, dynamic> addressFormat;
 
@@ -122,6 +124,7 @@ class Coin {
             List<dynamic>.from(explorerUrl.map<String>((dynamic x) => x)) ??
                 <String>[],
         'required_confirmations': requiredConfirmations,
+        'mature_confirmations': matureConfirmations,
         'requires_notarization': requiresNotarization,
         'address_format': addressFormat,
       };

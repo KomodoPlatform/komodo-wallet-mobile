@@ -19,8 +19,7 @@ class AmountAddressStep extends StatefulWidget {
       this.amountController,
       this.addressController,
       this.autoFocus = false,
-      this.isERCToken = false,
-      this.onConfirm,
+      this.onWithdrawPressed,
       this.onCancel,
       this.coin})
       : super(key: key);
@@ -28,11 +27,10 @@ class AmountAddressStep extends StatefulWidget {
   final Function onCancel;
   final Function onMaxValue;
   final FocusNode focusNode;
-  final Function onConfirm;
+  final Function onWithdrawPressed;
   final TextEditingController amountController;
   final TextEditingController addressController;
   final bool autoFocus;
-  final bool isERCToken;
   final Coin coin;
 
   @override
@@ -62,16 +60,16 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
             ),
             AddressField(
               addressFormat: widget.coin.addressFormat,
-              isERCToken: widget.isERCToken,
               controller: widget.addressController,
               onScan: scan,
               coin: widget.coin,
             ),
-            CustomFee(
-              coin: widget.coin,
-              amount: widget.amountController.text,
-              isERCToken: widget.isERCToken,
-            ),
+            // Temporary disable custom fee for qrc20 tokens
+            if (!(widget.coin.type == 'qrc'))
+              CustomFee(
+                coin: widget.coin,
+                amount: widget.amountController.text,
+              ),
             Row(
               children: <Widget>[
                 Expanded(
@@ -113,7 +111,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
                   widget.amountController.text.replaceAll(',', '.');
             });
             if (formKey.currentState.validate()) {
-              widget.onConfirm();
+              widget.onWithdrawPressed();
             }
           },
         );

@@ -7,7 +7,7 @@ description: Multicoin Wallet with DEX gateway
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.3.3
+version: 0.4.0
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
@@ -55,6 +55,12 @@ dependencies:
       url: https://github.com/KomodoPlatform/provider
       ref: 0c1394af0ae2422dba43f5d36f0e45ea75f849a3
 
+  # origin https://pub.dev/packages/encrypt
+  encrypt: # 4.0.3 - DONE: Secure code reviewed b17327a
+    git:
+      url: https://github.com/KomodoPlatform/encrypt
+      ref: 4.0.3
+
 dev_dependencies:
   flutter_driver: # flutter.dev
     sdk: flutter
@@ -78,25 +84,20 @@ dev_dependencies:
   shared_preferences: 0.5.12+2 # flutter.dev
   bip39: # 1.0.3 - DONE: Secure code reviewed dbd846b (1.0.3) - DONE: sub dependencies reviewed
     git: 
-      url: git://github.com/KomodoPlatform/bip39-dart.git
-      ref: dbd846b743eab3b21f3ef56abc958305be54761a
+      url: git://github.com/ca333/bip39-dart.git
+      ref: 3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1
   pin_code_view: # SECURE REVIEW REQUIRED: reviewed c0b6516
     git:
       url: git://github.com/KomodoPlatform/pin_code_view.git
       ref: 5920e1b5e9d51fc145d28e83cfcaaf0a28cde0a3
-  # share: ^0.6.0+1
   crypto: 2.1.5 # dart.dev
   intl_translation: 0.17.10+1 # dart.dev
   bs58check: # 1.0.1 - DONE: Secure code reviewed 2889fa8 (1.0.1)
     git:
       url: git://github.com/KomodoPlatform/bs58check-dart.git
-      ref: 2889fa8791fd46afb30a9e7984c06b66a6241a44
+      ref: e313f58289d5f4be711a6b430b7f3bb96712c6cc
   url_launcher: 5.4.1 # flutter.dev
-  share: # flutter.dev
-    git:
-      url: git://github.com/KomodoPlatform/plugins.git
-      path: packages/share/
-      ref: 1494b043d03799dd14e689552d1218918435f9f5
+  share: 0.6.5+4 # flutter.dev
   # https://pub.dev/packages/local_auth, canCheckBiometrics, getAvailableBiometrics
   local_auth: 0.6.3+3 # flutter.dev
   flutter_svg: # 0.18.1 - DONE: Secure code reviewed diff a05263d (0.13.1) 03ed93a (0.18.1) - DONE: sub dependencies reviewed: path_drawing(05be72d), xml(d161771), dart_path_parsing(59916eb)
@@ -134,10 +135,6 @@ dev_dependencies:
     git: 
       url: https://github.com/KomodoPlatform/flutter_slidable.git
       ref: 27bbe0dfa9866ae01e8001267e873221ef5fbd67
-  password: # 1.0.0 - DONE: Secure code reviewed dbf924d (1.0.0)
-    git:
-      url: git://github.com/KomodoPlatform/password-dart.git
-      ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
   package_info: 0.4.3 # flutter.dev
   flutter_launcher_icons: # 0.7.4 - DONE: Secure code reviewed diff 869b629 (0.7.2+1) c2584ef (0.7.4)
     git:

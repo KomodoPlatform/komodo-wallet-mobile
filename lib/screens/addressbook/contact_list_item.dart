@@ -66,7 +66,7 @@ class _ContactListItemState extends State<ContactListItem> {
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: Column(
               children: <Widget>[
-                _buildAddressessList(),
+                _buildAddressesList(),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: SizedBox(
@@ -98,13 +98,14 @@ class _ContactListItemState extends State<ContactListItem> {
     );
   }
 
-  Widget _buildAddressessList() {
+  Widget _buildAddressesList() {
     final List<Widget> addresses = [];
 
     widget.contact.addresses?.forEach((String abbr, String value) {
       if (widget.coin != null) {
         String coinAbbr = widget.coin.abbr;
         if (widget.coin.type == 'erc') coinAbbr = 'ETH';
+        if (widget.coin.type == 'qrc') coinAbbr = 'QTUM';
         if (widget.coin.type == 'smartChain') coinAbbr = 'KMD';
 
         if (coinAbbr != abbr) return;

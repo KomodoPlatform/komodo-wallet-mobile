@@ -130,14 +130,16 @@ class ApiProvider {
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
-              .post(url, body: getOrderbookToJson(userBody.body))
-              .then(
-                  (Response r) => _saveRes('getOrderbook_api_providers:110', r))
-              .then<dynamic>((Response res) => orderbookFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'getOrderbook_api_providers:111',
-                  e,
-                  'Error on get orderbook')));
+                  .post(url, body: getOrderbookToJson(userBody.body))
+                  .then((Response r) =>
+                      _saveRes('getOrderbook_api_providers:110', r))
+                  .then<dynamic>((Response res) {
+                _assert200(res);
+                return orderbookFromJson(res.body);
+              }).catchError((dynamic e) => _catchErrorString(
+                      'getOrderbook_api_providers:111',
+                      e,
+                      'Error on get orderbook')));
 
   void _assert200(Response r) {
     if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
@@ -247,6 +249,7 @@ class ApiProvider {
               swapContractAddress: coin.swapContractAddress,
               urls: coin.serverList)
           .toJson());
+
     // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
     final electrum = <String, dynamic>{
       'method': 'electrum',
@@ -256,8 +259,12 @@ class ApiProvider {
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
+      if (coin.matureConfirmations != null)
+        'mature_confirmations': coin.matureConfirmations,
       'requires_notarization': coin.requiresNotarization ?? false,
       'address_format': coin.addressFormat,
+      if (coin.swapContractAddress.isNotEmpty)
+        'swap_contract_address': coin.swapContractAddress
     };
     final js = json.encode(electrum);
     Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
@@ -378,16 +385,20 @@ class ApiProvider {
   Future<dynamic> postWithdraw(
     http.Client client,
     GetWithdraw body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getWithdrawToJson(userBody.body))
-              .then((Response r) => _saveRes('postWithdraw', r))
-              .then<dynamic>(
-                  (Response res) => withdrawResponseFromJson(res.body))
-              .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'postWithdraw', e, 'Error on post withdraw')));
+  ) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(client, body);
+    final r = await client.post(url, body: json.encode(userBody.body));
+    _assert200(r);
+    _saveRes('postWithdraw', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return withdrawResponseFromJson(res.body);
+  }
 
   Future<dynamic> getTradeFee(
     http.Client client,

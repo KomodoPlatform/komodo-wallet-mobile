@@ -57,6 +57,9 @@ class AppLocalizations {
           args: <Object>[amount, coinName], name: 'withdrawValue');
   String get withdrawConfirm =>
       Intl.message('Confirm Withdrawal', name: 'withdrawConfirm');
+  String get withdrawConfirmError =>
+      Intl.message('Something went wrong. Try again later.',
+          name: 'withdrawConfirmError');
   String get close => Intl.message('Close', name: 'close');
   String get confirmSeed =>
       Intl.message('Confirm Seed Phrase', name: 'confirmSeed');
@@ -131,6 +134,7 @@ class AppLocalizations {
   String get send => Intl.message('SEND', name: 'send');
   String get back => Intl.message('back', name: 'back');
   String get cancel => Intl.message('cancel', name: 'cancel');
+  String get details => Intl.message('details', name: 'details');
   String get commingsoon =>
       Intl.message('TX details coming soon!', name: 'commingsoon');
   String get history => Intl.message('history', name: 'history');
@@ -212,6 +216,17 @@ class AppLocalizations {
       name: 'infoTrade2');
   String get swapDetailTitle =>
       Intl.message('CONFIRM EXCHANGE DETAILS', name: 'swapDetailTitle');
+  String get minVolumeTitle =>
+      Intl.message('Min volume required', name: 'minVolumeTitle');
+  String get minVolumeToggle =>
+      Intl.message('Use custom min volume', name: 'minVolumeToggle');
+  String get nonNumericInput =>
+      Intl.message('The value must be numeric', name: 'nonNumericInput');
+  String get minVolumeIsTDH =>
+      Intl.message('Must be lower than sell amount', name: 'minVolumeIsTDH');
+  String minVolumeInput(double minValue, String coin) =>
+      Intl.message('Must be greater than $minValue $coin',
+          name: 'minVolumeInput', args: <Object>[minValue, coin]);
   String get checkSeedPhrase =>
       Intl.message('Check seed phrase', name: 'checkSeedPhrase');
   String get checkSeedPhraseTitle =>
@@ -274,6 +289,8 @@ class AppLocalizations {
       Intl.message('CREATE A WALLET', name: 'createAWallet');
   String get restoreWallet => Intl.message('RESTORE', name: 'restoreWallet');
   String get hintPassword => Intl.message('Password', name: 'hintPassword');
+  String get hintCreatePassword =>
+      Intl.message('Create Password', name: 'hintCreatePassword');
   String get hintConfirmPassword =>
       Intl.message('Confirm Password', name: 'hintConfirmPassword');
   String get hintCurrentPassword =>
@@ -335,6 +352,11 @@ class AppLocalizations {
       Intl.message('Go to portfolio', name: 'goToPorfolio');
   String get noOrderAvailable =>
       Intl.message('Click to create an order', name: 'noOrderAvailable');
+  String get insufficientTitle =>
+      Intl.message('Insufficient volume', name: 'insufficientTitle');
+  String get insufficientText =>
+      Intl.message('Minumum volume required by this order is',
+          name: 'insufficientText');
   String get orderCreated =>
       Intl.message('Order created', name: 'orderCreated');
   String get orderCreatedInfo =>
@@ -351,6 +373,11 @@ class AppLocalizations {
   String minValueBuy(String coinName, String number) => Intl.message(
         'The minimun amount to buy is $number $coinName',
         name: 'minValueBuy',
+        args: <Object>[coinName, number],
+      );
+  String minValueSell(String coinName, String number) => Intl.message(
+        'The minimun amount to sell is $number $coinName',
+        name: 'minValueSell',
         args: <Object>[coinName, number],
       );
   String get encryptingWallet =>
@@ -473,11 +500,13 @@ class AppLocalizations {
   String get eulaParagraphe19 => Intl.message(
       'AtomicDEX mobile is a non-custodial, decentralized and blockchain based application and as such does Komodo Platform never store any user-data (accounts and authentication data). \nWe also collect and process non-personal, anonymized data for statistical purposes and analysis and to help us provide a better service.\n\nThis document was last updated on January 31st, 2020\n\n',
       name: 'eulaParagraphe19');
-  String get ethFee => Intl.message('ETH fee', name: 'ethFee');
-  String get notEnoughEth =>
-      Intl.message('Not enough ETH for transaction!', name: 'notEnoughEth');
-  String get ethNotActive =>
-      Intl.message('Please activate ETH.', name: 'ethNotActive');
+  String gasFee(String coin) =>
+      Intl.message('$coin fee', name: 'gasFee', args: <Object>[coin]);
+  String notEnoughGas(String coin) =>
+      Intl.message('Not enough $coin for transaction!',
+          name: 'notEnoughGas', args: <Object>[coin]);
+  String gasNotActive(String coin) => Intl.message('Please activate $coin.',
+      name: 'gasNotActive', args: <Object>[coin]);
   String youWillReceiveClaim(String amount, String coin) => Intl.message(
         'You will receive $amount $coin',
         name: 'youWillReceiveClaim',
@@ -499,10 +528,10 @@ class AppLocalizations {
       Intl.message('Order selected', name: 'titleCurrentAsk');
   String get txFeeTitle => Intl.message('transaction fee:', name: 'txFeeTitle');
   String get tradingFee => Intl.message('trading fee:', name: 'tradingFee');
-  String swapErcAmount(String amount) => Intl.message(
-        'This swap requires $amount ETH for transaction fees',
-        name: 'swapErcAmount',
-        args: <Object>[amount],
+  String swapGasAmount(String amount, String coin) => Intl.message(
+        'This swap requires $amount $coin for transaction fees',
+        name: 'swapGasAmount',
+        args: <Object>[amount, coin],
       );
   String get remove => Intl.message('Disable', name: 'remove');
   String get searchFilterCoin =>
@@ -512,8 +541,10 @@ class AppLocalizations {
           name: 'searchFilterSubtitleSmartChain');
   String get searchFilterSubtitleERC =>
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
+  String get searchFilterSubtitleQRC =>
+      Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
-  String get gas => Intl.message('Gas', name: 'gas');
+  String get gasLimit => Intl.message('Gas limit', name: 'gasLimit');
   String get gasPrice => Intl.message('Gas price', name: 'gasPrice');
   String get customFeeWarning =>
       Intl.message('Only use custom fees if you know what you are doing!',
@@ -521,6 +552,7 @@ class AppLocalizations {
   String get searchFilterSubtitleutxo =>
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
+  String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughtGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
@@ -636,6 +668,7 @@ class AppLocalizations {
   String get orderDetailsSells =>
       Intl.message('Sells', name: 'orderDetailsSells');
   String get orderDetailsFor => Intl.message('for', name: 'orderDetailsFor');
+  String get orderDetailsMin => Intl.message('min.', name: 'orderDetailsMin');
   String get orderDetailsAddress =>
       Intl.message('Address', name: 'orderDetailsAddress');
   String orderDetailsExpedient(String delta) =>
@@ -779,6 +812,9 @@ class AppLocalizations {
   String get multiFiatCancel => Intl.message('Cancel', name: 'multiFiatCancel');
   String get multiFiatFill => Intl.message('Autofill', name: 'multiFiatFill');
   String get multiEthFee => Intl.message('fee', name: 'multiEthFee');
+  String multiLowerThanFee(String coin, String fee) =>
+      Intl.message('Not enough $coin to pay fees. MIN balance is $fee $coin',
+          args: <Object>[coin, fee], name: 'multiLowerThanFee');
   String multiConfirmTitle(int number) =>
       Intl.message('Create $number Order(s):',
           args: <Object>[number], name: 'multiConfirmTitle');
@@ -794,11 +830,11 @@ class AppLocalizations {
       Intl.message('Min sell amount is', name: 'multiMinSellAmt');
   String get multiInvalidAmt =>
       Intl.message('Invalid amount', name: 'multiInvalidAmt');
-  String get multiActivateEth =>
-      Intl.message('Activate ETH and top-up balance first',
-          name: 'multiActivateEth');
-  String get multiLowEth =>
-      Intl.message('ETH balance is too low', name: 'multiLowEth');
+  String multiActivateGas(String coin) =>
+      Intl.message('Activate $coin and top-up balance first',
+          name: 'multiActivateGas', args: <Object>[coin]);
+  String multiLowGas(String coin) => Intl.message('$coin balance is too low',
+      name: 'multiLowGas', args: <Object>[coin]);
   String get multiMinReceiveAmt =>
       Intl.message('Min receive amount is', name: 'multiMinReceiveAmt');
 
@@ -931,6 +967,8 @@ class AppLocalizations {
       'Warning, this atomic swap is not '
       'dPoW protected. ',
       name: 'protectionCtrlWarning');
+  String get buyOrderType =>
+      Intl.message('Convert to Maker if not matched', name: 'buyOrderType');
 
   String get cexChangeRate =>
       Intl.message('CEXchange rate', name: 'cexChangeRate');
@@ -1153,6 +1191,8 @@ class AppLocalizations {
   String get oldLogsTitle => Intl.message('Old logs', name: 'oldLogsTitle');
   String get oldLogsDelete => Intl.message('Delete', name: 'oldLogsDelete');
   String get oldLogsUsed => Intl.message('Space used', name: 'oldLogsUsed');
+  String get okButton => Intl.message('Ok', name: 'okButton');
+  String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
   // --- Maker order details ---
 
@@ -1181,6 +1221,57 @@ class AppLocalizations {
   String get noteTitle => Intl.message('Note', name: 'noteTitle');
   String get notePlaceholder =>
       Intl.message('Add a Note', name: 'notePlaceholder');
+
+  // --- Import/Export
+  String get importLink => Intl.message('Import', name: 'importLink');
+  String get exportLink => Intl.message('Export', name: 'exportLink');
+  String get importTitle => Intl.message('Import', name: 'importTitle');
+  String get exportTitle => Intl.message('Export', name: 'exportTitle');
+  String get exportDesc =>
+      Intl.message('Please select items to export into encrypted file.',
+          name: 'exportDesc');
+  String get importLoadDesc =>
+      Intl.message('Please select encrypted file to import.',
+          name: 'importLoadDesc');
+  String get importLoading => Intl.message('Opening...', name: 'importLoading');
+  String get importDesc =>
+      Intl.message('Items to be imported:', name: 'importDesc');
+  String get exportNotesTitle =>
+      Intl.message('Notes', name: 'exportNotesTitle');
+  String get exportContactsTitle =>
+      Intl.message('Contacts', name: 'exportContactsTitle');
+  String get nothingFound =>
+      Intl.message('Nothing found', name: 'nothingFound');
+  String get exportButton => Intl.message('Export', name: 'exportButton');
+  String get importButton => Intl.message('Import', name: 'importButton');
+  String get emptyExportPass =>
+      Intl.message('Encryption password can\'t be empty',
+          name: 'emptyExportPass');
+  String get emptyImportPass =>
+      Intl.message('Password can\'t be empty', name: 'emptyImportPass');
+  String get matchExportPass =>
+      Intl.message('Passwords must match', name: 'matchExportPass');
+  String get noItemsToExport =>
+      Intl.message('No items selected', name: 'noItemsToExport');
+  String get noItemsToImport =>
+      Intl.message('No items selected', name: 'noItemsToImport');
+  String get selectFileImport =>
+      Intl.message('Select file', name: 'selectFileImport');
+  String get importFileNotFound =>
+      Intl.message('File not found', name: 'importFileNotFound');
+  String get importPassword => Intl.message('Password', name: 'importPassword');
+  String get importPassCancel =>
+      Intl.message('Cancel', name: 'importPassCancel');
+  String get importPassOk => Intl.message('Ok', name: 'importPassOk');
+  String get exportSuccessTitle =>
+      Intl.message('Items have been successfully exported:',
+          name: 'exportSuccessTitle');
+  String get importSuccessTitle =>
+      Intl.message('Items have been successfully imported:',
+          name: 'importSuccessTitle');
+  String get importDecryptError =>
+      Intl.message('Invalid password or corrupted data',
+          name: 'importDecryptError');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
