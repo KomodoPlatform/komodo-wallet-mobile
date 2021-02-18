@@ -21,6 +21,7 @@ import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart
 import 'package:komodo_dex/screens/dex/trade/create/receive/in_progress_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/matching_orderbooks.dart';
 import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
+import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
@@ -59,7 +60,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   String amountToBuy;
   bool _noOrderFound = false;
   bool isMaxActive = false;
-  Ask currentAsk;
+  Ask _matchingBid;
   bool isLoadingMax = false;
   bool showDetailedFees = false;
   CexProvider cexProvider;
@@ -203,7 +204,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         setState(() {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
-                .setReceiveAmount(swapBloc.receiveCoin, amountSell, currentAsk)
+                .setReceiveAmount(
+                    swapBloc.receiveCoin, amountSell, _matchingBid)
                 .then((_) {
               _checkMaxVolume();
             });
@@ -214,9 +216,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             Decimal price = amountSell / deci(_amountReceive());
             Decimal maxVolume = amountSell;
 
-            if (currentAsk != null) {
-              price = deci(currentAsk.price);
-              maxVolume = currentAsk.maxvolume;
+            if (_matchingBid != null) {
+              price = deci(_matchingBid.price);
+              maxVolume = _matchingBid.maxvolume;
             }
 
             swapBloc.updateBuyCoin(OrderCoin(
@@ -824,7 +826,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _noOrders(String coin) async {
     setState(() {
-      currentAsk = null;
+      _matchingBid = null;
     });
     swapBloc.updateBuyCoin(null);
     _replaceAllCommas();
@@ -839,9 +841,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     });
   }
 
-  Future<void> _createOrder(Ask ask) async {
+  Future<void> _createOrder(Ask bid) async {
     setState(() {
-      currentAsk = ask;
+      _matchingBid = bid;
     });
     _replaceAllCommas();
     _controllerAmountReceive.clear();
@@ -849,10 +851,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       swapBloc.enabledReceiveField = false;
       _noOrderFound = false;
     });
-    swapBloc.updateReceiveCoin(Coin(abbr: ask.coin));
+    swapBloc.updateReceiveCoin(Coin(abbr: bid.coin));
     _controllerAmountReceive.text = '';
     _controllerAmountReceive.text =
-        deci2s(ask.getReceiveAmount(deci(_amountSell())));
+        deci2s(bid.getReceiveAmount(deci(_amountSell())));
 
     swapBloc.updateBuyCoin(OrderCoin(
         coinBase: swapBloc.receiveCoin,
@@ -860,10 +862,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         bestPrice: deci(_amountSell()) / deci(_amountReceive()),
         maxVolume: deci(_amountSell())));
 
-    final Decimal askPrice = Decimal.parse(ask.price.toString());
+    final Decimal askPrice = Decimal.parse(bid.price.toString());
     final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
     final Decimal amountReceive = Decimal.parse(_controllerAmountReceive.text);
-    final Decimal maxVolume = Decimal.parse(ask.maxvolume.toString());
+    final Decimal maxVolume = Decimal.parse(bid.maxvolume.toString());
 
     if (amountReceive < (amountSell / askPrice) &&
         amountSell > maxVolume * askPrice) {
@@ -1024,135 +1026,46 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     return listDialog;
   }
 
-  bool _checkValueMin() {
-    _replaceAllCommas();
-
-    final double minVolumeSell =
-        swapBloc.minVolumeDefault(sellCoinBalance.coin.abbr);
-    final double minVolumeReceive =
-        swapBloc.minVolumeDefault(swapBloc.receiveCoin.abbr);
-
-    if (_amountSell() > 0 && _amountSell() < minVolumeSell) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoinBalance.coin.abbr, '$minVolumeSell')),
-      ));
-      return false;
-    } else if (_amountReceive() > 0 && _amountReceive() < minVolumeReceive) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Text(AppLocalizations.of(context)
-            .minValueBuy(swapBloc.receiveCoin.abbr, '$minVolumeReceive')),
-      ));
-      return false;
-    } else if (currentAsk != null && currentAsk.minVolume != null) {
-      if (_controllerAmountReceive.text != null &&
-          _controllerAmountReceive.text.isNotEmpty &&
-          double.parse(_controllerAmountReceive.text) < currentAsk.minVolume) {
-        Scaffold.of(context).showSnackBar(SnackBar(
-          duration: const Duration(seconds: 2),
-          content: Text(AppLocalizations.of(context).minValueBuy(
-              swapBloc.receiveCoin.abbr,
-              cutTrailingZeros(formatPrice(currentAsk.minVolume)))),
-        ));
-        return false;
-      }
-      return true;
-    } else {
-      return true;
-    }
-  }
-
-  Future<bool> _checkEnoughGas(BuildContext mContext) async {
-    if (!(await _checkGasFor(swapBloc.receiveCoin.abbr, mContext)))
-      return false;
-
-    return await _checkGasFor(sellCoinBalance.coin.abbr, mContext);
-  }
-
-  Future<bool> _checkGasFor(String coin, BuildContext mContext) async {
-    final CoinAmt gasFee = await GetSwapFee.gas(coin);
-    if (gasFee == null) return true;
-
-    CoinBalance gasBalance;
-    try {
-      gasBalance = coinsBloc.coinBalance
-          .singleWhere((CoinBalance coin) => coin.coin.abbr == gasFee.coin);
-    } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        backgroundColor: Theme.of(context).primaryColor,
-        content: Text(
-          'Please activate ${gasFee.coin} and top-up balance first',
-          style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
-        ),
-      ));
-      return false;
-    }
-
-    double requiredGasAmt = gasFee.amount;
-    if (gasFee.coin == swapBloc.sellCoinBalance.coin.abbr) {
-      requiredGasAmt += GetSwapFee.trading(_amountSell()).amount;
-    }
-
-    if (gasBalance.balance.balance < deci(requiredGasAmt)) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        backgroundColor: Theme.of(context).primaryColor,
-        content: Text(
-          AppLocalizations.of(context).swapGasAmount(
-              cutTrailingZeros(formatPrice(gasFee)), gasFee.coin),
-          style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
-        ),
-      ));
-      return false;
-    }
-
-    return true;
-  }
-
   Future<void> _confirmSwap(BuildContext mContext) async {
     _replaceAllCommas();
 
-    if (!(await _checkEnoughGas(context))) return;
+    final validator = TradeFormValidator(
+      matchingBid: _matchingBid,
+      amountSell: _amountSell(),
+      amountReceive: _amountReceive(),
+    );
+    final errorMessage = await validator.errorMessage;
 
-    if (mainBloc.isNetworkOffline) {
-      Scaffold.of(mContext).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        backgroundColor: Theme.of(context).errorColor,
-        content: Text(AppLocalizations.of(context).noInternet),
-      ));
-      return;
-    }
-
-    if (!_checkValueMin()) return;
-
-    setState(() {
-      _noOrderFound = false;
-    });
-    Navigator.push<dynamic>(
-      context,
-      MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => SwapConfirmation(
-                orderSuccess: () => showOrderCreatedDialog(context),
-                order: currentAsk,
-                bestPrice: deci2s(swapBloc.orderCoin.bestPrice),
-                coinBase: swapBloc.orderCoin?.coinBase,
-                coinRel: swapBloc.orderCoin?.coinRel,
-                swapStatus: swapBloc.enabledReceiveField
-                    ? SwapStatus.SELL
-                    : SwapStatus.BUY,
-                amountToSell: '${_amountSell()}',
-                amountToBuy: '${_amountReceive()}',
-              )),
-    ).then((dynamic _) {
-      setState(() {
-        currentAsk = null;
+    if (errorMessage == null) {
+      Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => SwapConfirmation(
+                  orderSuccess: () => showOrderCreatedDialog(context),
+                  order: _matchingBid,
+                  bestPrice: deci2s(swapBloc.orderCoin.bestPrice),
+                  coinBase: swapBloc.orderCoin?.coinBase,
+                  coinRel: swapBloc.orderCoin?.coinRel,
+                  swapStatus: swapBloc.enabledReceiveField
+                      ? SwapStatus.SELL
+                      : SwapStatus.BUY,
+                  amountToSell: '${_amountSell()}',
+                  amountToBuy: '${_amountReceive()}',
+                )),
+      ).then((dynamic _) {
+        setState(() {
+          _matchingBid = null;
+          _noOrderFound = false;
+        });
+        _controllerAmountReceive.clear();
+        _controllerAmountSell.clear();
       });
-      _controllerAmountReceive.clear();
-      _controllerAmountSell.clear();
-    });
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Text(errorMessage),
+      ));
+    }
   }
 
   double _amountSell() {

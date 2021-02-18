@@ -533,6 +533,11 @@ class AppLocalizations {
         name: 'swapGasAmount',
         args: <Object>[amount, coin],
       );
+  String swapGasActivate(String coin) => Intl.message(
+        'Please activate $coin and top-up balance first',
+        name: 'swapGasActivate',
+        args: <Object>[coin],
+      );
   String get remove => Intl.message('Disable', name: 'remove');
   String get searchFilterCoin =>
       Intl.message('Search a coin', name: 'searchFilterCoin');
