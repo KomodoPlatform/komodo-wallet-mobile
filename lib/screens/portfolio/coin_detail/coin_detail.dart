@@ -12,7 +12,6 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_priv_key.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/send_raw_transaction_response.dart';
