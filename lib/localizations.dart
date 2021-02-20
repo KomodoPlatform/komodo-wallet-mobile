@@ -316,7 +316,9 @@ class AppLocalizations {
           name: 'settingDialogSpan5');
   String get backupTitle => Intl.message('Backup', name: 'backupTitle');
   String get version => Intl.message('version', name: 'version');
-  String get viewSeed => Intl.message('View Seed', name: 'viewSeed');
+  String get viewSeedAndKeys =>
+      Intl.message('Seed & Private Keys', name: 'viewSeedAndKeys');
+  String get seedPhrase => Intl.message('Seed Phrase', name: 'seedPhrase');
   String get enterpassword =>
       Intl.message('Please enter your password to continue.',
           name: 'enterpassword');
