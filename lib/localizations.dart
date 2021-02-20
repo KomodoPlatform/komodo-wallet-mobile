@@ -319,6 +319,7 @@ class AppLocalizations {
   String get viewSeedAndKeys =>
       Intl.message('Seed & Private Keys', name: 'viewSeedAndKeys');
   String get seedPhrase => Intl.message('Seed Phrase', name: 'seedPhrase');
+  String get privateKeys => Intl.message('Private Keys', name: 'privateKeys');
   String get enterpassword =>
       Intl.message('Please enter your password to continue.',
           name: 'enterpassword');

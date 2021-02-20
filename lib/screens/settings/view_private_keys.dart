@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_priv_key.dart';
 import 'package:komodo_dex/model/priv_key.dart';
@@ -22,13 +23,27 @@ class _ViewPrivateKeysState extends State<ViewPrivateKeys> {
         if (!snapshot.hasData) return Container();
         final data = snapshot.data;
         data.sort((a, b) => a.coin.abbr.compareTo(b.coin.abbr));
-
+        final zebra = <String, bool>{};
+        bool zebraVal = false;
+        for (CoinBalance cb in data) {
+          zebra.putIfAbsent(cb.coin.abbr, () => zebraVal);
+          zebraVal = !zebraVal;
+        }
         return Padding(
-          padding:
-              const EdgeInsets.only(top: 50, bottom: 32, right: 16, left: 16),
+          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
           child: Column(
             children: [
-              Text('Private Keys'),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                child: Row(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context).privateKeys,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 8.0,
               ),
@@ -44,6 +59,7 @@ class _ViewPrivateKeysState extends State<ViewPrivateKeys> {
                     return CoinPrivKey(
                       coin: pk.result.coin,
                       privKey: pk.result.privKey,
+                      zebra: zebra[coin] ?? false,
                     );
                   },
                 );
@@ -57,42 +73,53 @@ class _ViewPrivateKeysState extends State<ViewPrivateKeys> {
 }
 
 class CoinPrivKey extends StatelessWidget {
-  const CoinPrivKey({Key key, this.coin, this.privKey}) : super(key: key);
+  const CoinPrivKey({Key key, this.coin, this.privKey, this.zebra})
+      : super(key: key);
 
   final String coin;
   final String privKey;
+  final bool zebra;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        child: Row(
+    return Container(
+      color: zebra
+          ? Theme.of(context).cardColor.withAlpha(128)
+          : Theme.of(context).cardColor,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+        child: Column(
           children: [
-            Image.asset(
-              'assets/${coin.toLowerCase()}.png',
-              width: 18,
-              height: 18,
+            Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/${coin.toLowerCase()}.png',
+                        width: 32,
+                        height: 32,
+                      ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      Text(coin),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(Icons.copy),
+                  onPressed: () {
+                    copyToClipBoard(context, privKey);
+                  },
+                ),
+              ],
             ),
-            SizedBox(
-              width: 4.0,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+              child: truncateMiddle(privKey),
             ),
-            Text(coin),
-            SizedBox(
-              width: 8.0,
-            ),
-            Expanded(
-              child: Text(privKey),
-            ),
-            SizedBox(
-              width: 8.0,
-            ),
-            IconButton(
-              icon: Icon(Icons.copy),
-              onPressed: () {
-                copyToClipBoard(context, privKey);
-              },
-            )
           ],
         ),
       ),
