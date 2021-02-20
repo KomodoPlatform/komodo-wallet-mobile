@@ -250,6 +250,7 @@ class _ViewPrivateKeysState extends State<ViewPrivateKeys> {
           (BuildContext context, AsyncSnapshot<List<CoinBalance>> snapshot) {
         if (!snapshot.hasData) return Container();
         final data = snapshot.data;
+        data.sort((a, b) => a.coin.abbr.compareTo(b.coin.abbr));
 
         return Padding(
           padding:
