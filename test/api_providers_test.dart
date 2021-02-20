@@ -15,7 +15,6 @@ import 'package:komodo_dex/model/get_balance.dart';
 import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/get_cancel_order.dart';
 import 'package:komodo_dex/model/get_disable_coin.dart';
-import 'package:komodo_dex/model/get_orderbook.dart';
 import 'package:komodo_dex/model/get_recent_swap.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_send_raw_transaction.dart';
@@ -23,8 +22,6 @@ import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/model/get_swap.dart';
 import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
-import 'package:komodo_dex/model/get_withdraw.dart';
-import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/orders.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
@@ -34,7 +31,6 @@ import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/trade_fee.dart';
 import 'package:komodo_dex/model/transactions.dart';
-import 'package:komodo_dex/model/withdraw_response.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:mockito/mockito.dart';
@@ -370,12 +366,12 @@ void main() {
           'http://eth3.cipig.net:8555'
         ]);
 
-    final Coin coinToActive =
-        Coin(type: 'smartChain', abbr: 'RICK', serverList: <String>[
-      'http://eth1.cipig.net:8555',
-      'http://eth2.cipig.net:8555',
-      'http://eth3.cipig.net:8555'
-    ]);
+    // final Coin coinToActive =
+    //     Coin(type: 'smartChain', abbr: 'RICK', serverList: <String>[
+    //   'http://eth1.cipig.net:8555',
+    //   'http://eth2.cipig.net:8555',
+    //   'http://eth3.cipig.net:8555'
+    // ]);
 
     test('returns an ActiveCoin, ERC', () async {
       const mock = 'active_coin/active_coin.json';
