@@ -72,7 +72,7 @@ class _ViewPrivateKeysState extends State<ViewPrivateKeys> {
   }
 }
 
-class CoinPrivKey extends StatelessWidget {
+class CoinPrivKey extends StatefulWidget {
   const CoinPrivKey({Key key, this.coin, this.privKey, this.zebra})
       : super(key: key);
 
@@ -81,46 +81,80 @@ class CoinPrivKey extends StatelessWidget {
   final bool zebra;
 
   @override
+  _CoinPrivKeyState createState() => _CoinPrivKeyState();
+}
+
+class _CoinPrivKeyState extends State<CoinPrivKey> {
+  bool isExpanded = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: zebra
-          ? Theme.of(context).cardColor.withAlpha(128)
+    return Material(
+      color: widget.zebra
+          ? Theme.of(context).backgroundColor
           : Theme.of(context).cardColor,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
-        child: Column(
-          children: [
-            Row(
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            isExpanded = !isExpanded;
+          });
+        },
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+            child: Column(
               children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        'assets/${coin.toLowerCase()}.png',
-                        width: 32,
-                        height: 32,
-                      ),
-                      SizedBox(
-                        width: 8.0,
-                      ),
-                      Text(coin),
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/${widget.coin.toLowerCase()}.png',
+                          width: 32,
+                          height: 32,
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        Text(widget.coin),
+                      ],
+                    ),
+                    Expanded(child: SizedBox()),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: Icon(Icons.copy),
+                      onPressed: () {
+                        copyToClipBoard(context, widget.privKey);
+                      },
+                    ),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: Icon(Icons.qr_code),
+                      onPressed: () {},
+                    ),
+                  ],
                 ),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: Icon(Icons.copy),
-                  onPressed: () {
-                    copyToClipBoard(context, privKey);
-                  },
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                  child: isExpanded
+                      ? Text(
+                          widget.privKey,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              .copyWith(fontFamily: 'monospace'),
+                        )
+                      : truncateMiddle(
+                          widget.privKey,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              .copyWith(fontFamily: 'monospace'),
+                        ),
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
-              child: truncateMiddle(privKey),
-            ),
-          ],
+          ),
         ),
       ),
     );
