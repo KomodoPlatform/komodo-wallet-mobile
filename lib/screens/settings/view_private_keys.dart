@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_priv_key.dart';
 import 'package:komodo_dex/model/priv_key.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ViewPrivateKeys extends StatefulWidget {
   @override
@@ -130,7 +132,59 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                     IconButton(
                       padding: EdgeInsets.zero,
                       icon: Icon(Icons.qr_code),
-                      onPressed: () {},
+                      onPressed: () {
+                        dialogBloc.dialog = showDialog<dynamic>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              contentPadding: const EdgeInsets.all(16),
+                              titlePadding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  side: const BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(6.0)),
+                              content: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                child: Column(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: QrImage(
+                                        foregroundColor: Colors.black,
+                                        backgroundColor: Colors.white,
+                                        data: widget.privKey,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        FlatButton(
+                                          child: Text(
+                                            AppLocalizations.of(context)
+                                                .close
+                                                .toUpperCase(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .button
+                                                .copyWith(
+                                                    color: Theme.of(context)
+                                                        .accentColor),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ).then((dynamic data) {
+                          dialogBloc.dialog = null;
+                        });
+                      },
                     ),
                   ],
                 ),
