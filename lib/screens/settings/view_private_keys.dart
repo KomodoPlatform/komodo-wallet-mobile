@@ -148,6 +148,26 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 child: Column(
                                   children: <Widget>[
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                          'assets/${widget.coin.toLowerCase()}.png',
+                                          width: 16,
+                                          height: 16,
+                                        ),
+                                        SizedBox(
+                                          width: 4.0,
+                                        ),
+                                        Text(widget.coin),
+                                        SizedBox(
+                                          width: 6.0,
+                                        ),
+                                        Text(AppLocalizations.of(context)
+                                                .privateKey +
+                                            ':')
+                                      ],
+                                    ),
+                                    SizedBox(height: 16),
                                     Expanded(
                                       child: QrImage(
                                         foregroundColor: Colors.black,
