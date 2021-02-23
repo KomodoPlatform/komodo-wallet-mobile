@@ -11,14 +11,14 @@ class MatchingOrderbookItem extends StatelessWidget {
       {Key key,
       this.orderbook,
       this.sellAmount,
-      this.onCreateNoOrder,
-      this.onCreateOrder})
+      this.onCreatePressed,
+      this.onBidSelected})
       : super(key: key);
 
   final Orderbook orderbook;
   final double sellAmount;
-  final Function(String) onCreateNoOrder;
-  final Function(Ask) onCreateOrder;
+  final Function(String) onCreatePressed;
+  final Function(Ask) onBidSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class MatchingOrderbookItem extends StatelessWidget {
         );
 
         if (orderbook.bids.isEmpty) {
-          onCreateNoOrder(orderbook.rel);
+          onCreatePressed(orderbook.rel);
           Navigator.pop(context);
         } else {
           Navigator.pushReplacement<dynamic, dynamic>(
@@ -41,8 +41,8 @@ class MatchingOrderbookItem extends StatelessWidget {
                 builder: (BuildContext context) => MatchingBidPage(
                     baseCoin: orderbook.base,
                     sellAmount: sellAmount,
-                    onCreateNoOrder: onCreateNoOrder,
-                    onCreateOrder: onCreateOrder)),
+                    onCreateNoOrder: onCreatePressed,
+                    onCreateOrder: onBidSelected)),
           );
         }
       },

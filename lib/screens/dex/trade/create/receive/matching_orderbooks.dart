@@ -9,14 +9,14 @@ class MatchingOrderbooks extends StatefulWidget {
   const MatchingOrderbooks({
     Key key,
     this.sellAmount,
-    this.onCreateNoOrder,
-    this.onCreateOrder,
+    this.onCreatePressed,
+    this.onBidSelected,
     this.orderbooks,
   }) : super(key: key);
 
   final double sellAmount;
-  final Function(String) onCreateNoOrder;
-  final Function(Ask) onCreateOrder;
+  final Function(String) onCreatePressed;
+  final Function(Ask) onBidSelected;
   final List<Orderbook> orderbooks; // for integration tests
 
   @override
@@ -59,8 +59,8 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
             .map((Orderbook orderbook) => MatchingOrderbookItem(
                 key: ValueKey('orderbook-item-${orderbook.rel.toLowerCase()}'),
                 orderbook: orderbook,
-                onCreateNoOrder: widget.onCreateNoOrder,
-                onCreateOrder: widget.onCreateOrder,
+                onCreatePressed: widget.onCreatePressed,
+                onBidSelected: widget.onBidSelected,
                 sellAmount: widget.sellAmount))
             .toList(),
       ],

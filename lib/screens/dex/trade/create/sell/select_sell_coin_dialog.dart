@@ -3,12 +3,9 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:provider/provider.dart';
 
 void openSelectSellCoinDialog({
   BuildContext context,
@@ -79,26 +76,12 @@ List<SimpleDialogOption> _coinItemsList({
   BuildContext context,
   Function(CoinBalance) onSelected,
 }) {
-  final orderBookProvider =
-      Provider.of<OrderBookProvider>(context, listen: false);
   final List<SimpleDialogOption> listDialog = <SimpleDialogOption>[];
   for (CoinBalance coin in coinsBloc.coinBalance) {
     if (double.parse(coin.balance.getBalance()) > 0) {
       final SimpleDialogOption dialogItem = SimpleDialogOption(
         key: Key('item-dialog-${coin.coin.abbr.toLowerCase()}-sell'),
         onPressed: () {
-          swapBloc.updateBuyCoin(null);
-          swapBloc.updateReceiveCoin(null);
-          swapBloc.setTimeout(true);
-          swapBloc.setEnabledSellField(true);
-          swapBloc.updateSellCoin(coin);
-          swapBloc.updateBuyCoin(null);
-
-          orderBookProvider.activePair = CoinsPair(
-            sell: coin.coin,
-            buy: null,
-          );
-
           onSelected(coin);
 
           Navigator.pop(context);

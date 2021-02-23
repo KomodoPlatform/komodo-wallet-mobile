@@ -4,7 +4,6 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -15,10 +14,9 @@ import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/build_swap_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart';
-import 'package:komodo_dex/screens/dex/trade/create/receive/in_progress_popup.dart';
-import 'package:komodo_dex/screens/dex/trade/create/receive/matching_orderbooks.dart';
 import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
-import 'package:komodo_dex/screens/dex/trade/create/select_sell_coin_dialog.dart';
+import 'package:komodo_dex/screens/dex/trade/create/receive/select_receive_coin_dialog.dart';
+import 'package:komodo_dex/screens/dex/trade/create/sell/select_sell_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
@@ -638,7 +636,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               }
             });
           } else {
-            _openDialogCoinWithBalance(market);
+            _openSelectCoinDialog(market);
           }
         },
         child: market == Market.RECEIVE
@@ -719,20 +717,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
-  void pushNewScreenChoiseOrder() {
-    _replaceAllCommas();
-    dialogBloc.dialog = showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return MatchingOrderbooks(
-              sellAmount: _amountSell(),
-              onCreateNoOrder: (String coin) => _noOrders(coin),
-              onCreateOrder: (Ask ask) => _createOrder(ask));
-        }).then((_) {
-      dialogBloc.dialog = null;
-    });
-  }
-
   void _replaceAllCommas() {
     _controllerAmountSell.text =
         _controllerAmountSell.text.replaceAll(',', '.');
@@ -740,29 +724,29 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         _controllerAmountReceive.text.replaceAll(',', '.');
   }
 
-  Future<void> _openDialogCoinWithBalance(Market market) async {
+  Future<void> _openSelectCoinDialog(Market market) async {
     if (market == Market.RECEIVE) {
       if (!isLoadingMax && _amountSell() > 0) {
-        Log.println('trade_page:850', isLoadingMax);
-        dialogBloc.dialog = showDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return InProgressPopup(
-                onDone: () {
-                  try {
-                    Navigator.of(context).pop();
-                    pushNewScreenChoiseOrder();
-                  } catch (e) {
-                    Log('trade_page:754', '_openDialogCoinWithBalance] $e');
-                  }
-                },
-              );
-            }).then((dynamic _) => dialogBloc.dialog = null);
+        openSelectReceiveCoinDialog(
+          context: context,
+          amountSell: _amountSell(),
+          onSelect: (Ask bid) => _performTakerOrder(bid),
+          onCreate: (String coin) => _performMakerOrder(coin),
+        );
       }
     } else {
       openSelectSellCoinDialog(
         context: context,
         onDone: (coin) {
+          swapBloc.updateBuyCoin(null);
+          swapBloc.updateReceiveCoin(null);
+          swapBloc.setTimeout(true);
+          swapBloc.setEnabledSellField(true);
+          swapBloc.updateSellCoin(coin);
+          swapBloc.updateBuyCoin(null);
+
+          orderBookProvider.activePair = CoinsPair(sell: coin.coin, buy: null);
+
           _controllerAmountReceive.clear();
           _controllerAmountSell.clear();
           setState(() {
@@ -773,35 +757,31 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     }
   }
 
-  Future<void> _noOrders(String coin) async {
+  Future<void> _performMakerOrder(String coin) async {
+    _replaceAllCommas();
+
     setState(() {
       _matchingBid = null;
-    });
-    swapBloc.updateBuyCoin(null);
-    _replaceAllCommas();
-    swapBloc.updateReceiveCoin(Coin(abbr: coin));
-    setState(() {
       _noOrderFound = true;
-      _controllerAmountReceive.text = '';
-      if (swapBloc.receiveCoin != null) {
-        swapBloc.enabledReceiveField = true;
-        FocusScope.of(context).requestFocus(_focusReceive);
-      }
     });
+
+    swapBloc.updateBuyCoin(null);
+    swapBloc.updateReceiveCoin(Coin(abbr: coin));
+    swapBloc.enabledReceiveField = true;
+
+    _controllerAmountReceive.clear();
   }
 
-  Future<void> _createOrder(Ask bid) async {
+  Future<void> _performTakerOrder(Ask bid) async {
+    _replaceAllCommas();
+
     setState(() {
       _matchingBid = bid;
-    });
-    _replaceAllCommas();
-    _controllerAmountReceive.clear();
-    setState(() {
-      swapBloc.enabledReceiveField = false;
       _noOrderFound = false;
     });
+
+    swapBloc.enabledReceiveField = false;
     swapBloc.updateReceiveCoin(Coin(abbr: bid.coin));
-    _controllerAmountReceive.text = '';
     _controllerAmountReceive.text =
         deci2s(bid.getReceiveAmount(deci(_amountSell())));
 
