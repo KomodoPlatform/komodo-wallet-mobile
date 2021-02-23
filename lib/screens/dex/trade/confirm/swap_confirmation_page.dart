@@ -461,7 +461,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 cancelPrevious: false,
                 max: swapBloc.isMaxActive,
                 volume: amountToSell,
-                minVolume: double.tryParse(_minVolume),
+                minVolume: double.tryParse(_minVolume ?? ''),
                 price: Decimal.parse(widget.bestPrice).toString(),
                 relNota: _protectionSettings.requiresNotarization,
                 relConfs: _protectionSettings.requiredConfirmations,

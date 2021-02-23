@@ -54,7 +54,7 @@ class GetWithdraw {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method ?? '',
-        'amount': amount ?? '',
+        if (amount != null) 'amount': amount,
         'to': to ?? '',
         'max': max ?? false,
         'coin': coin ?? '',

@@ -42,7 +42,8 @@ class NewsArticle {
 
       _lead ??= [];
       _symbolsFromStart += span.text.length;
-      if (_symbolsFromStart < preferredLeadLength) {
+      if (_symbolsFromStart < preferredLeadLength ||
+          span.text.startsWith('https://')) {
         _lead.add(span);
       } else {
         String _leadSubstring;
