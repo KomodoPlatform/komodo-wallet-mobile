@@ -48,10 +48,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Decimal tmpAmountSell = deci(0);
   final FocusNode _focusSell = FocusNode();
   final FocusNode _focusReceive = FocusNode();
-  Animation<double> animationInputSell;
-  AnimationController controllerAnimationInputSell;
-  Animation<double> animationCoinSell;
-  AnimationController controllerAnimationCoinSell;
+
   String amountToBuy;
   bool _noOrderFound = false;
   bool isMaxActive = false;
@@ -88,34 +85,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     _controllerAmountReceive.clear();
     _controllerAmountSell.addListener(onChangeSell);
     _controllerAmountReceive.addListener(onChangeReceive);
-
-    _initAnimationCoin();
-    _initAnimationSell();
-  }
-
-  void _initAnimationCoin() {
-    controllerAnimationCoinSell = AnimationController(
-        duration: const Duration(milliseconds: 0), vsync: this);
-    animationCoinSell = CurvedAnimation(
-        parent: controllerAnimationCoinSell, curve: Curves.easeIn);
-    controllerAnimationCoinSell.forward();
-    controllerAnimationCoinSell.duration = const Duration(milliseconds: 500);
-  }
-
-  void _initAnimationSell() {
-    controllerAnimationInputSell = AnimationController(
-        duration: const Duration(milliseconds: 0), vsync: this);
-    animationInputSell = CurvedAnimation(
-        parent: controllerAnimationInputSell, curve: Curves.easeIn);
-    controllerAnimationInputSell.forward();
-    controllerAnimationInputSell.duration = const Duration(milliseconds: 500);
   }
 
   @override
   void dispose() {
     _controllerAmountSell.dispose();
-    controllerAnimationInputSell.dispose();
-    controllerAnimationCoinSell.dispose();
+    _controllerAmountReceive.dispose();
     super.dispose();
   }
 
@@ -337,13 +312,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
-  void _animCoin(Market market) {
-    if (!swapBloc.enabledSellField && market == Market.SELL) {
-      controllerAnimationCoinSell.reset();
-      controllerAnimationCoinSell.forward();
-    }
-  }
-
   Widget _buildCard(Market market) {
     double paddingRight = 24;
 
@@ -408,106 +376,97 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                             .textTheme
                                             .bodyText1,
                                       ),
-                                      FadeTransition(
-                                        opacity: animationInputSell,
-                                        child: GestureDetector(
-                                          behavior: HitTestBehavior.translucent,
-                                          onTap: () => _animCoin(market),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: <Widget>[
-                                                    TextFormField(
-                                                        key: Key(
-                                                            'input-text-${market.toString().toLowerCase()}'),
-                                                        scrollPadding: const EdgeInsets.only(
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: <Widget>[
+                                                TextFormField(
+                                                    key: Key(
+                                                        'input-text-${market.toString().toLowerCase()}'),
+                                                    scrollPadding:
+                                                        const EdgeInsets.only(
                                                             left: 35),
-                                                        inputFormatters: <
-                                                            TextInputFormatter>[
-                                                          DecimalTextInputFormatter(
-                                                              decimalRange: 8),
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
-                                                        ],
-                                                        focusNode: market == Market.SELL
-                                                            ? _focusSell
-                                                            : _focusReceive,
-                                                        controller: market == Market.SELL
-                                                            ? _controllerAmountSell
-                                                            : _controllerAmountReceive,
-                                                        onChanged: market ==
-                                                                Market.SELL
+                                                    inputFormatters: <
+                                                        TextInputFormatter>[
+                                                      DecimalTextInputFormatter(
+                                                          decimalRange: 8),
+                                                      FilteringTextInputFormatter
+                                                          .allow(RegExp(
+                                                              '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
+                                                    ],
+                                                    focusNode: market == Market.SELL
+                                                        ? _focusSell
+                                                        : _focusReceive,
+                                                    controller: market == Market.SELL
+                                                        ? _controllerAmountSell
+                                                        : _controllerAmountReceive,
+                                                    onChanged:
+                                                        market == Market.SELL
                                                             ? (_) {
                                                                 swapBloc
                                                                     .setIsMaxActive(
                                                                         false);
                                                               }
                                                             : null,
-                                                        enabled: market == Market.RECEIVE
-                                                            ? swapBloc
-                                                                .enabledReceiveField
-                                                            : swapBloc
-                                                                .enabledSellField,
-                                                        keyboardType:
-                                                            const TextInputType.numberWithOptions(
-                                                                decimal: true),
-                                                        style: Theme.of(context)
+                                                    enabled: market == Market.RECEIVE
+                                                        ? swapBloc
+                                                            .enabledReceiveField
+                                                        : swapBloc
+                                                            .enabledSellField,
+                                                    keyboardType:
+                                                        const TextInputType.numberWithOptions(
+                                                            decimal: true),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .subtitle2,
+                                                    textInputAction:
+                                                        TextInputAction.done,
+                                                    decoration: InputDecoration(
+                                                        hintStyle: Theme.of(context)
                                                             .textTheme
-                                                            .subtitle2,
-                                                        textInputAction: TextInputAction
-                                                            .done,
-                                                        decoration: InputDecoration(
-                                                            hintStyle: Theme.of(context)
-                                                                .textTheme
-                                                                .bodyText1
-                                                                .copyWith(
-                                                                    fontSize: 16,
-                                                                    fontWeight: FontWeight.w400),
-                                                            hintText: market == Market.SELL ? AppLocalizations.of(context).amountToSell : '')),
-                                                    const SizedBox(height: 2),
-                                                    BuildFiatAmount(market),
-                                                  ],
-                                                ),
-                                              ),
-                                              market == Market.SELL &&
-                                                      enabledSellFieldStream
-                                                          .data
-                                                  ? Container(
-                                                      child: FlatButton(
-                                                        onPressed: () async {
-                                                          swapBloc
-                                                              .setIsMaxActive(
-                                                                  true);
-                                                          setState(() {
-                                                            isLoadingMax = true;
-                                                          });
-                                                          await setMaxValue();
-                                                        },
-                                                        child: Text(
-                                                          AppLocalizations.of(
-                                                                  context)
-                                                              .max,
-                                                          style: Theme.of(
-                                                                  context)
-                                                              .textTheme
-                                                              .bodyText2
-                                                              .copyWith(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .accentColor),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Container()
-                                            ],
+                                                            .bodyText1
+                                                            .copyWith(
+                                                                fontSize: 16,
+                                                                fontWeight: FontWeight.w400),
+                                                        hintText: market == Market.SELL ? AppLocalizations.of(context).amountToSell : '')),
+                                                const SizedBox(height: 2),
+                                                BuildFiatAmount(market),
+                                              ],
+                                            ),
                                           ),
-                                        ),
+                                          market == Market.SELL &&
+                                                  enabledSellFieldStream.data
+                                              ? Container(
+                                                  child: FlatButton(
+                                                    onPressed: () async {
+                                                      swapBloc
+                                                          .setIsMaxActive(true);
+                                                      setState(() {
+                                                        isLoadingMax = true;
+                                                      });
+                                                      await setMaxValue();
+                                                    },
+                                                    child: Text(
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .max,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2
+                                                          .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .accentColor),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()
+                                        ],
                                       )
                                     ],
                                   ),
@@ -580,53 +539,40 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         borderRadius: BorderRadius.circular(4),
         onTap: () async {
           _replaceAllCommas();
-          if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
-            setState(() {
-              if (swapBloc.enabledSellField) {
-                FocusScope.of(context).requestFocus(_focusSell);
-                controllerAnimationInputSell.reset();
-                controllerAnimationInputSell.forward();
-              } else {
-                controllerAnimationCoinSell.reset();
-                controllerAnimationCoinSell.forward();
-              }
-            });
+
+          if (swapBloc.enabledSellField &&
+              _amountSell() == 0 &&
+              market == Market.RECEIVE) {
+            FocusScope.of(context).requestFocus(_focusSell);
           } else {
             _openSelectCoinDialog(market);
           }
         },
         child: market == Market.RECEIVE
-            ? Container(
-                child: StreamBuilder<Coin>(
-                  initialData: swapBloc.receiveCoin,
-                  stream: swapBloc.outReceiveCoin,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<Coin> snapshot) {
-                    return _buildSelectorCoin(snapshot.data);
-                  },
-                ),
+            ? StreamBuilder<Coin>(
+                initialData: swapBloc.receiveCoin,
+                stream: swapBloc.outReceiveCoin,
+                builder: (BuildContext context, AsyncSnapshot<Coin> snapshot) {
+                  return _buildSelectorCoin(snapshot.data);
+                },
               )
-            : FadeTransition(
-                opacity: animationCoinSell,
-                child: StreamBuilder<dynamic>(
-                    initialData: swapBloc.sellCoinBalance,
-                    stream: swapBloc.outSellCoin,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot) {
-                      if (snapshot.data != null &&
-                          snapshot.data is CoinBalance) {
-                        final CoinBalance coinBalance = snapshot.data;
-                        sellCoinBalance = coinBalance;
-                        return _buildSelectorCoin(coinBalance.coin);
-                      } else if (snapshot.data != null &&
-                          snapshot.data is OrderCoin) {
-                        final OrderCoin orderCoin = snapshot.data;
-                        return _buildSelectorCoin(orderCoin.coinBase);
-                      } else {
-                        return _buildSelectorCoin(null);
-                      }
-                    }),
-              ),
+            : StreamBuilder<dynamic>(
+                initialData: swapBloc.sellCoinBalance,
+                stream: swapBloc.outSellCoin,
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.data != null && snapshot.data is CoinBalance) {
+                    final CoinBalance coinBalance = snapshot.data;
+                    sellCoinBalance = coinBalance;
+                    return _buildSelectorCoin(coinBalance.coin);
+                  } else if (snapshot.data != null &&
+                      snapshot.data is OrderCoin) {
+                    final OrderCoin orderCoin = snapshot.data;
+                    return _buildSelectorCoin(orderCoin.coinBase);
+                  } else {
+                    return _buildSelectorCoin(null);
+                  }
+                }),
       ),
     );
   }
