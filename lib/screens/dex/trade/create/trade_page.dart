@@ -4,10 +4,7 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -21,6 +18,7 @@ import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart
 import 'package:komodo_dex/screens/dex/trade/create/receive/in_progress_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/matching_orderbooks.dart';
 import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
+import 'package:komodo_dex/screens/dex/trade/create/select_sell_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
@@ -762,65 +760,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             }).then((dynamic _) => dialogBloc.dialog = null);
       }
     } else {
-      final List<SimpleDialogOption> listDialogCoins =
-          _createListDialog(context, market, null);
-
-      dialogBloc.dialog = showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return listDialogCoins.isNotEmpty
-                ? SimpleDialog(
-                    title: Text(AppLocalizations.of(context).sell),
-                    children: listDialogCoins,
-                  )
-                : SimpleDialog(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    title: Column(
-                      children: <Widget>[
-                        Icon(
-                          Icons.info_outline,
-                          size: 48,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Text(AppLocalizations.of(context).noFunds,
-                            style: Theme.of(context).textTheme.headline6),
-                        const SizedBox(
-                          height: 16,
-                        )
-                      ],
-                    ),
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context).noFundsDetected,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2
-                              .copyWith(color: Theme.of(context).hintColor)),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: PrimaryButton(
-                              text: AppLocalizations.of(context).goToPorfolio,
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                mainBloc.setCurrentIndexTab(0);
-                              },
-                              backgroundColor: Theme.of(context).accentColor,
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                    ],
-                  );
-          }).then((dynamic _) => dialogBloc.dialog = null);
+      openSelectSellCoinDialog(
+        context: context,
+        onDone: (coin) {
+          _controllerAmountReceive.clear();
+          _controllerAmountSell.clear();
+          setState(() {
+            sellCoinBalance = coin;
+          });
+        },
+      );
     }
   }
 
@@ -871,156 +820,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         amountSell > maxVolume * askPrice) {
       _controllerAmountSell.text = (maxVolume * askPrice).toStringAsFixed(8);
     }
-  }
-
-  List<SimpleDialogOption> _createListDialog(
-      BuildContext context, Market market, List<OrderCoin> orderbooks) {
-    final List<SimpleDialogOption> listDialog = <SimpleDialogOption>[];
-    _replaceAllCommas();
-
-    if (orderbooks != null && market == Market.RECEIVE) {
-      for (OrderCoin orderbook in orderbooks) {
-        SimpleDialogOption dialogItem;
-        if (orderbook.coinBase.abbr != swapBloc.sellCoinBalance.coin.abbr) {
-          final bool isOrderAvailable =
-              orderbook.coinBase.abbr != swapBloc.sellCoinBalance.coin.abbr &&
-                  orderbook.getBuyAmount(deci(_amountSell())) > deci(0);
-          Log.println(
-              'trade_page:992',
-              '----getBuyAmount----' +
-                  deci2s(orderbook.getBuyAmount(deci(_amountSell()))));
-          Log.println('trade_page:997',
-              'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
-          dialogItem = SimpleDialogOption(
-            key: Key(
-                'item-dialog-${orderbook.coinBase.abbr}-${market.toString().toLowerCase()}'),
-            onPressed: () async {
-              _controllerAmountReceive.clear();
-              setState(() {
-                swapBloc.enabledReceiveField = false;
-                _noOrderFound = false;
-              });
-              swapBloc.updateReceiveCoin(orderbook.coinBase);
-              _controllerAmountReceive.text = '';
-
-              Navigator.pop(context);
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                    height: 30,
-                    width: 30,
-                    child: Image.asset(
-                      'assets/${orderbook.coinBase.abbr.toLowerCase()}.png',
-                    )),
-                Flexible(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Flexible(
-                        child: isOrderAvailable
-                            ? Text(deci2s(
-                                orderbook.getBuyAmount(deci(_amountSell()))))
-                            : Text(
-                                AppLocalizations.of(context).noOrderAvailable,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    .copyWith(
-                                        color: Theme.of(context).cursorColor),
-                              ),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      isOrderAvailable
-                          ? Text(
-                              orderbook.coinBase.abbr,
-                              style: Theme.of(context).textTheme.caption,
-                            )
-                          : Container()
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        }
-        if (dialogItem != null) {
-          listDialog.add(dialogItem);
-        }
-      }
-    } else if (market == Market.SELL) {
-      for (CoinBalance coin in coinsBloc.coinBalance) {
-        if (double.parse(coin.balance.getBalance()) > 0) {
-          final SimpleDialogOption dialogItem = SimpleDialogOption(
-            key: Key(
-                'item-dialog-${coin.coin.abbr.toLowerCase()}-${market.toString().toLowerCase()}'),
-            onPressed: () {
-              swapBloc.updateBuyCoin(null);
-              swapBloc.updateReceiveCoin(null);
-              swapBloc.setTimeout(true);
-              _controllerAmountReceive.clear();
-              _controllerAmountSell.clear();
-              setState(() {
-                sellCoinBalance = coin;
-                swapBloc.setEnabledSellField(true);
-              });
-              swapBloc.updateSellCoin(coin);
-              orderBookProvider.activePair = CoinsPair(
-                sell: coin.coin,
-                buy: orderBookProvider.activePair?.buy,
-              );
-              swapBloc.updateBuyCoin(null);
-
-              Navigator.pop(context);
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                    height: 30,
-                    width: 30,
-                    child: Image.asset(
-                      'assets/${coin.coin.abbr.toLowerCase()}.png',
-                    )),
-                Expanded(
-                  child: Container(),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    StreamBuilder<bool>(
-                        initialData: settingsBloc.showBalance,
-                        stream: settingsBloc.outShowBalance,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<bool> snapshot) {
-                          String amount = coin.balance.getBalance();
-                          if (snapshot.hasData && snapshot.data == false) {
-                            amount = '**.**';
-                          }
-                          return Text(amount);
-                        }),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      coin.coin.abbr,
-                      style: Theme.of(context).textTheme.caption,
-                    )
-                  ],
-                )
-              ],
-            ),
-          );
-          listDialog.add(dialogItem);
-        }
-      }
-    }
-
-    return listDialog;
   }
 
   Future<void> _confirmSwap(BuildContext mContext) async {
