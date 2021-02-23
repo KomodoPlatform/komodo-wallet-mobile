@@ -106,7 +106,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         const SizedBox(
           height: 8,
         ),
-        _buildButton(),
+        _buildTradeButton(),
         StreamBuilder<Object>(
             initialData: false,
             stream: swapBloc.outIsTimeOut,
@@ -285,7 +285,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildButton() {
+  Widget _buildTradeButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 70),
       child: StreamBuilder<CoinBalance>(
@@ -313,220 +313,201 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Widget _buildCard(Market market) {
-    double paddingRight = 24;
-
-    return StreamBuilder<bool>(
-        initialData: swapBloc.enabledSellField,
-        stream: swapBloc.outEnabledSellField,
-        builder:
-            (BuildContext context, AsyncSnapshot<bool> enabledSellFieldStream) {
-          if (market == Market.SELL && enabledSellFieldStream.data) {
-            paddingRight = 4;
-          } else {
-            paddingRight = 24;
-          }
-
-          return Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                child: Card(
-                  elevation: 8,
-                  margin: const EdgeInsets.all(8),
-                  child: Stack(
+    return Stack(
+      overflow: Overflow.visible,
+      children: <Widget>[
+        Container(
+          width: double.infinity,
+          child: Card(
+            elevation: 8,
+            margin: const EdgeInsets.all(8),
+            child: Stack(
+              children: <Widget>[
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: 24, right: 24, top: 32, bottom: 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 24, right: paddingRight, top: 32, bottom: 32),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of(context).selectCoin,
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                              Container(
+                                width: 130,
+                                child: _buildCoinSelect(market),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Expanded(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Column(
+                                Text(
+                                  market == Market.SELL
+                                      ? AppLocalizations.of(context).sell
+                                      : AppLocalizations.of(context)
+                                          .receiveLower,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(
-                                      AppLocalizations.of(context).selectCoin,
-                                      style:
-                                          Theme.of(context).textTheme.bodyText1,
-                                    ),
-                                    Container(
-                                      width: 130,
-                                      child: _buildCoinSelect(market),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        market == Market.SELL
-                                            ? AppLocalizations.of(context).sell
-                                            : AppLocalizations.of(context)
-                                                .receiveLower,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,
-                                      ),
-                                      Row(
+                                    Expanded(
+                                      child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.end,
                                         children: <Widget>[
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: <Widget>[
-                                                TextFormField(
-                                                    key: Key(
-                                                        'input-text-${market.toString().toLowerCase()}'),
-                                                    scrollPadding:
-                                                        const EdgeInsets.only(
-                                                            left: 35),
-                                                    inputFormatters: <
-                                                        TextInputFormatter>[
-                                                      DecimalTextInputFormatter(
-                                                          decimalRange: 8),
-                                                      FilteringTextInputFormatter
-                                                          .allow(RegExp(
-                                                              '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
-                                                    ],
-                                                    focusNode: market == Market.SELL
-                                                        ? _focusSell
-                                                        : _focusReceive,
-                                                    controller: market == Market.SELL
-                                                        ? _controllerAmountSell
-                                                        : _controllerAmountReceive,
-                                                    onChanged:
-                                                        market == Market.SELL
-                                                            ? (_) {
-                                                                swapBloc
-                                                                    .setIsMaxActive(
-                                                                        false);
-                                                              }
-                                                            : null,
-                                                    enabled: market == Market.RECEIVE
-                                                        ? swapBloc
-                                                            .enabledReceiveField
-                                                        : swapBloc
-                                                            .enabledSellField,
-                                                    keyboardType:
-                                                        const TextInputType.numberWithOptions(
-                                                            decimal: true),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .subtitle2,
-                                                    textInputAction:
-                                                        TextInputAction.done,
-                                                    decoration: InputDecoration(
-                                                        hintStyle: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1
-                                                            .copyWith(
-                                                                fontSize: 16,
-                                                                fontWeight: FontWeight.w400),
-                                                        hintText: market == Market.SELL ? AppLocalizations.of(context).amountToSell : '')),
-                                                const SizedBox(height: 2),
-                                                BuildFiatAmount(market),
+                                          TextFormField(
+                                              key: Key(
+                                                  'input-text-${market.toString().toLowerCase()}'),
+                                              scrollPadding: const EdgeInsets.only(
+                                                  left: 35),
+                                              inputFormatters: <
+                                                  TextInputFormatter>[
+                                                DecimalTextInputFormatter(
+                                                    decimalRange: 8),
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(
+                                                        '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
                                               ],
-                                            ),
-                                          ),
-                                          market == Market.SELL &&
-                                                  enabledSellFieldStream.data
-                                              ? Container(
-                                                  child: FlatButton(
-                                                    onPressed: () async {
-                                                      swapBloc
-                                                          .setIsMaxActive(true);
-                                                      setState(() {
-                                                        isLoadingMax = true;
-                                                      });
-                                                      await setMaxValue();
-                                                    },
-                                                    child: Text(
-                                                      AppLocalizations.of(
-                                                              context)
-                                                          .max,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText2
-                                                          .copyWith(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .accentColor),
-                                                    ),
-                                                  ),
-                                                )
-                                              : Container()
+                                              focusNode: market == Market.SELL
+                                                  ? _focusSell
+                                                  : _focusReceive,
+                                              controller: market == Market.SELL
+                                                  ? _controllerAmountSell
+                                                  : _controllerAmountReceive,
+                                              onChanged: market == Market.SELL
+                                                  ? (_) {
+                                                      swapBloc.setIsMaxActive(
+                                                          false);
+                                                    }
+                                                  : null,
+                                              enabled: market == Market.RECEIVE
+                                                  ? swapBloc.enabledReceiveField
+                                                  : swapBloc.enabledSellField,
+                                              keyboardType:
+                                                  const TextInputType.numberWithOptions(
+                                                      decimal: true),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              decoration: InputDecoration(
+                                                  hintStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .copyWith(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                  hintText: market == Market.SELL
+                                                      ? AppLocalizations.of(context)
+                                                          .amountToSell
+                                                      : '')),
+                                          const SizedBox(height: 2),
+                                          BuildFiatAmount(market),
                                         ],
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                      ),
+                                    ),
+                                    _buildMaxButton(market),
+                                  ],
+                                )
                               ],
                             ),
-                            market == Market.SELL && _amountSell() > 0
-                                ? Container(
-                                    padding: EdgeInsets.only(top: 12),
-                                    child: BuildSwapFees(
-                                      baseCoin: sellCoinBalance.coin.abbr,
-                                      baseAmount: _amountSell(),
-                                      includeGasFee: true,
-                                      relCoin: swapBloc.receiveCoin?.abbr,
-                                    ),
-                                  )
-                                : Container()
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      _noOrderFound && market == Market.RECEIVE
-                          ? Positioned(
-                              bottom: 10,
-                              left: 22,
-                              child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                  child: swapBloc.receiveCoin != null
-                                      ? Text(
-                                          AppLocalizations.of(context).noOrder(
-                                              swapBloc.receiveCoin.abbr),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1,
-                                        )
-                                      : const Text('')))
+                      market == Market.SELL && _amountSell() > 0
+                          ? Container(
+                              padding: EdgeInsets.only(top: 12),
+                              child: BuildSwapFees(
+                                baseCoin: sellCoinBalance.coin.abbr,
+                                baseAmount: _amountSell(),
+                                includeGasFee: true,
+                                relCoin: swapBloc.receiveCoin?.abbr,
+                              ),
+                            )
                           : Container()
                     ],
                   ),
                 ),
-              ),
-              if (market == Market.RECEIVE)
-                Positioned(
-                  top: -25,
-                  left: MediaQuery.of(context).size.width / 2 - 60,
-                  child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(32)),
-                        color: Theme.of(context).backgroundColor,
-                      ),
-                      child: SvgPicture.asset(
-                        'assets/svg/icon_swap.svg',
-                        height: 40,
-                      )),
-                )
-            ],
-          );
-        });
+                _noOrderFound && market == Market.RECEIVE
+                    ? Positioned(
+                        bottom: 10,
+                        left: 22,
+                        child: Container(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: swapBloc.receiveCoin != null
+                                ? Text(
+                                    AppLocalizations.of(context)
+                                        .noOrder(swapBloc.receiveCoin.abbr),
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  )
+                                : const Text('')))
+                    : Container()
+              ],
+            ),
+          ),
+        ),
+        if (market == Market.RECEIVE)
+          Positioned(
+            top: -25,
+            left: MediaQuery.of(context).size.width / 2 - 60,
+            child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(32)),
+                  color: Theme.of(context).backgroundColor,
+                ),
+                child: SvgPicture.asset(
+                  'assets/svg/icon_swap.svg',
+                  height: 40,
+                )),
+          )
+      ],
+    );
+  }
+
+  Widget _buildMaxButton(Market market) {
+    return StreamBuilder<bool>(
+      initialData: swapBloc.enabledSellField,
+      stream: swapBloc.outEnabledSellField,
+      builder: (BuildContext context, AsyncSnapshot<bool> anapshot) {
+        return market == Market.SELL && anapshot.data
+            ? InkWell(
+                onTap: () async {
+                  swapBloc.setIsMaxActive(true);
+                  setState(() {
+                    isLoadingMax = true;
+                  });
+                  await setMaxValue();
+                },
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(12, 14, 0, 12),
+                  child: Text(
+                    AppLocalizations.of(context).max,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(color: Theme.of(context).accentColor),
+                  ),
+                ),
+              )
+            : Container();
+      },
+    );
   }
 
   Widget _buildCoinSelect(Market market) {
