@@ -14,6 +14,7 @@ import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/build_swap_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart';
+import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
 import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/select_receive_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/sell/select_sell_coin_dialog.dart';
@@ -24,9 +25,7 @@ import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class TradePage extends StatefulWidget {
@@ -268,25 +267,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     return deci(fee.amount);
   }
 
-  Widget buildCexPrice(double price, [double size = 12]) {
-    if (price == null || price == 0) return Container();
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        CexMarker(
-          context,
-          size: Size.fromHeight(size),
-        ),
-        const SizedBox(width: 2),
-        Text(
-          cexProvider.convert(price),
-          style: TextStyle(fontSize: size, color: cexColor),
-        ),
-      ],
-    );
-  }
-
   Future<void> setMaxValue() async {
     try {
       setState(() async {
@@ -376,18 +356,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             paddingRight = 4;
           } else {
             paddingRight = 24;
-          }
-
-          Widget _buildCEXamount(double amount, Coin coin) {
-            if (amount == null || coin == null || amount == 0)
-              return Container();
-
-            final double price = cexProvider.getUsdPrice(coin.abbr);
-            if (price == null || price == 0) return Container();
-
-            final double usd = amount * price;
-
-            return buildCexPrice(usd);
           }
 
           return Stack(
@@ -503,19 +471,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                                     fontWeight: FontWeight.w400),
                                                             hintText: market == Market.SELL ? AppLocalizations.of(context).amountToSell : '')),
                                                     const SizedBox(height: 2),
-                                                    _buildCEXamount(
-                                                        market == Market.SELL
-                                                            ? swapBloc
-                                                                .currentAmountSell
-                                                            : swapBloc
-                                                                .currentAmountBuy,
-                                                        market == Market.SELL
-                                                            ? swapBloc
-                                                                .sellCoinBalance
-                                                                ?.coin
-                                                            : swapBloc
-                                                                .buyCoinBalance
-                                                                ?.coin)
+                                                    BuildFiatAmount(market),
                                                   ],
                                                 ),
                                               ),
