@@ -9,14 +9,7 @@ import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class ViewPrivateKeys extends StatefulWidget {
-  @override
-  _ViewPrivateKeysState createState() => _ViewPrivateKeysState();
-}
-
-class _ViewPrivateKeysState extends State<ViewPrivateKeys> {
-  final privKeyCache = <String, String>{};
-
+class ViewPrivateKeys extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<CoinBalance>>(
@@ -32,14 +25,6 @@ class _ViewPrivateKeysState extends State<ViewPrivateKeys> {
         for (CoinBalance cb in data) {
           zebra.putIfAbsent(cb.coin.abbr, () => zebraVal);
           zebraVal = !zebraVal;
-          if (!privKeyCache.containsKey(cb.coin.abbr)) {
-            MM.getPrivKey(GetPrivKey(coin: cb.coin.abbr)).then((privKey) {
-              setState(() {
-                privKeyCache.putIfAbsent(
-                    privKey.result.coin, () => privKey.result.privKey);
-              });
-            });
-          }
         }
         return Padding(
           padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
@@ -64,7 +49,6 @@ class _ViewPrivateKeysState extends State<ViewPrivateKeys> {
                   final coin = cb.coin.abbr;
                   return CoinPrivKey(
                     coin: coin,
-                    privKey: privKeyCache[coin],
                     zebra: zebra[coin] ?? false,
                   );
                 },
@@ -78,11 +62,9 @@ class _ViewPrivateKeysState extends State<ViewPrivateKeys> {
 }
 
 class CoinPrivKey extends StatefulWidget {
-  const CoinPrivKey({Key key, this.coin, this.privKey, this.zebra})
-      : super(key: key);
+  const CoinPrivKey({Key key, this.coin, this.zebra}) : super(key: key);
 
   final String coin;
-  final String privKey;
   final bool zebra;
 
   @override
@@ -90,25 +72,36 @@ class CoinPrivKey extends StatefulWidget {
 }
 
 class _CoinPrivKeyState extends State<CoinPrivKey> {
-  bool isExpanded = false;
+  BuildContext mContext;
 
   @override
   Widget build(BuildContext context) {
+    setState(() => mContext = context);
+
     return Material(
-      color: widget.zebra
-          ? Theme.of(context).backgroundColor
-          : Theme.of(context).cardColor,
-      child: InkWell(
-        onTap: widget.privKey == null
-            ? null
-            : () {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
+        color: widget.zebra
+            ? Theme.of(context).backgroundColor
+            : Theme.of(context).cardColor,
+        child: InkWell(
+          onTap: () {
+            dialogBloc.dialog = showDialog<dynamic>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  titlePadding: const EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(6.0)),
+                  content: _buildDialogContent(),
+                );
               },
-        child: Container(
+            ).then((dynamic data) {
+              dialogBloc.dialog = null;
+            });
+          },
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+            padding: const EdgeInsets.fromLTRB(16, 14, 8, 14),
             child: Column(
               children: [
                 Row(
@@ -127,128 +120,91 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
                       ],
                     ),
                     Expanded(child: SizedBox()),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: Icon(Icons.copy),
-                      onPressed: widget.privKey == null
-                          ? null
-                          : () {
-                              copyToClipBoard(context, widget.privKey);
-                            },
-                    ),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: Icon(Icons.qr_code),
-                      onPressed: widget.privKey == null
-                          ? null
-                          : () {
-                              dialogBloc.dialog = showDialog<dynamic>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    contentPadding: const EdgeInsets.all(16),
-                                    titlePadding: const EdgeInsets.all(0),
-                                    shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                            color: Colors.white),
-                                        borderRadius:
-                                            BorderRadius.circular(6.0)),
-                                    content: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.4,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.9,
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                'assets/${widget.coin.toLowerCase()}.png',
-                                                width: 16,
-                                                height: 16,
-                                              ),
-                                              SizedBox(
-                                                width: 4.0,
-                                              ),
-                                              Text(widget.coin),
-                                              SizedBox(
-                                                width: 6.0,
-                                              ),
-                                              Text(AppLocalizations.of(context)
-                                                      .privateKey +
-                                                  ':')
-                                            ],
-                                          ),
-                                          SizedBox(height: 16),
-                                          Expanded(
-                                            child: QrImage(
-                                              foregroundColor: Colors.black,
-                                              backgroundColor: Colors.white,
-                                              data: widget.privKey,
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              FlatButton(
-                                                child: Text(
-                                                  AppLocalizations.of(context)
-                                                      .close
-                                                      .toUpperCase(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .button
-                                                      .copyWith(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .accentColor),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ).then((dynamic data) {
-                                dialogBloc.dialog = null;
-                              });
-                            },
-                    ),
+                    Icon(Icons.more_vert),
                   ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
-                  child: widget.privKey == null
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : isExpanded
-                          ? Text(
-                              widget.privKey,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(fontFamily: 'monospace'),
-                            )
-                          : truncateMiddle(
-                              widget.privKey,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(fontFamily: 'monospace'),
-                            ),
                 ),
               ],
             ),
           ),
-        ),
-      ),
+        ));
+  }
+
+  Widget _buildDialogContent() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.5,
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: FutureBuilder<PrivKey>(
+          future: MM.getPrivKey(GetPrivKey(coin: widget.coin)),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData)
+              return Center(child: CircularProgressIndicator());
+
+            final String privKey = snapshot.data.result.privKey;
+
+            return Column(
+              children: <Widget>[
+                SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/${widget.coin.toLowerCase()}.png',
+                      width: 16,
+                      height: 16,
+                    ),
+                    SizedBox(
+                      width: 4.0,
+                    ),
+                    Text(widget.coin),
+                    SizedBox(
+                      width: 6.0,
+                    ),
+                    Text(AppLocalizations.of(context).privateKey + ':')
+                  ],
+                ),
+                SizedBox(height: 16),
+                Expanded(
+                  child: QrImage(
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
+                    data: privKey,
+                  ),
+                ),
+                SizedBox(height: 20),
+                InkWell(
+                  onTap: () {
+                    copyToClipBoard(mContext, privKey);
+                    Future.delayed(Duration(seconds: 2), () {
+                      Scaffold.of(mContext).hideCurrentSnackBar();
+                    });
+                  },
+                  child: Text(privKey,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .copyWith(fontFamily: 'monospace')),
+                ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text(
+                        AppLocalizations.of(context).close.toUpperCase(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .button
+                            .copyWith(color: Theme.of(context).accentColor),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            );
+          }),
     );
   }
 }
