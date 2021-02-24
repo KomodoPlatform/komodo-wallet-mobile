@@ -409,7 +409,7 @@ class _SettingPageState extends State<SettingPage> {
         trailing:
             Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
         title: Text(
-          AppLocalizations.of(context).viewSeed,
+          AppLocalizations.of(context).viewSeedAndKeys,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
               color: Colors.white.withOpacity(0.7)),

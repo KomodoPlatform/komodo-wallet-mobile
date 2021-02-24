@@ -5,9 +5,11 @@ import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/get_convert_address.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
+import 'package:komodo_dex/model/get_priv_key.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_rewards_info.dart';
 import 'package:komodo_dex/model/get_validate_address.dart';
+import 'package:komodo_dex/model/priv_key.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -599,5 +601,28 @@ class ApiProvider {
     if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
     return jbody['result']['address'];
+  }
+
+  Future<PrivKey> getPrivKey(GetPrivKey gpk, {http.Client client}) async {
+    client ??= mmSe.client;
+    try {
+      final userBody = await _assertUserpass(client, gpk);
+      final r = await userBody.client
+          .post(url, body: getPrivKeyToJson(userBody.body));
+      _assert200(r);
+      _saveRes('getPrivKey', r);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = json.decode(r.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      final PrivKey privKey = PrivKey.fromJson(jbody);
+
+      return privKey;
+    } catch (e) {
+      throw _catchErrorString(
+          'getPrivKey', e, 'Error getting ${gpk.coin} private key');
+    }
   }
 }

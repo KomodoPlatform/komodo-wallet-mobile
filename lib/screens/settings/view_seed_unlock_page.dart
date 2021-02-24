@@ -4,11 +4,11 @@ import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
+import 'package:komodo_dex/screens/settings/view_private_keys.dart';
+import 'package:komodo_dex/screens/settings/view_seed.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
-import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
-import 'package:komodo_dex/widgets/secondary_button.dart';
 
 class ViewSeedUnlockPage extends StatefulWidget {
   @override
@@ -28,7 +28,8 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).backgroundColor,
           elevation: 0,
-          title: Text(AppLocalizations.of(context).viewSeed.toUpperCase()),
+          title:
+              Text(AppLocalizations.of(context).viewSeedAndKeys.toUpperCase()),
           centerTitle: true,
           actions: <Widget>[
             InkWell(
@@ -42,9 +43,14 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
         ),
         body: Builder(builder: (BuildContext context) {
           return passwordSuccess
-              ? ViewSeed(
-                  seed: seed,
-                  context: context,
+              ? ListView(
+                  children: [
+                    ViewSeed(
+                      seed: seed,
+                      context: context,
+                    ),
+                    ViewPrivateKeys(),
+                  ],
                 )
               : UnlockPassword(
                   currentWallet: walletBloc.currentWallet,
@@ -65,84 +71,6 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                 );
         }),
       ),
-    );
-  }
-}
-
-class ViewSeed extends StatefulWidget {
-  const ViewSeed({this.seed, this.context});
-
-  final String seed;
-  final BuildContext context;
-
-  @override
-  _ViewSeedState createState() => _ViewSeedState();
-}
-
-class _ViewSeedState extends State<ViewSeed> {
-  List<Widget> seedWord = <Widget>[];
-
-  @override
-  void initState() {
-    int i = 1;
-    for (String word in widget.seed.split(' ')) {
-      seedWord.add(RichText(
-        text: TextSpan(
-            style: Theme.of(widget.context)
-                .textTheme
-                .bodyText2
-                .copyWith(fontSize: 22),
-            children: <InlineSpan>[
-              TextSpan(
-                  text: i.toString().padLeft(2, '0'),
-                  style: Theme.of(widget.context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(color: Theme.of(widget.context).accentColor)),
-              TextSpan(
-                  text: '. $word',
-                  style: Theme.of(widget.context).textTheme.bodyText2)
-            ]),
-      ));
-      i++;
-    }
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: false,
-      padding: const EdgeInsets.only(top: 50, bottom: 32, right: 16, left: 16),
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 50),
-          child: GridView.count(
-            shrinkWrap: true,
-            primary: false,
-            crossAxisCount: 2,
-            mainAxisSpacing: 4.0,
-            children: seedWord,
-            childAspectRatio: 4.0,
-            crossAxisSpacing: 4.0,
-          ),
-        ),
-        const SizedBox(
-          height: 24,
-        ),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: SecondaryButton(
-              text: AppLocalizations.of(context).clipboardCopy,
-              onPressed: () {
-                copyToClipBoard(context, widget.seed);
-              },
-            ),
-          ),
-        )
-      ],
     );
   }
 }
