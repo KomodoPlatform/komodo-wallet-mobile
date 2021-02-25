@@ -190,6 +190,7 @@ class _AddressFieldState extends State<AddressField> {
       setState(() {
         mm2Validated = true;
         convertMessage = null;
+        autovalidate = true;
       });
       return;
     }
@@ -197,6 +198,7 @@ class _AddressFieldState extends State<AddressField> {
     // if not valid
     setState(() {
       mm2Validated = false;
+      autovalidate = false;
     });
     if (_isBchLegacyFormat(error)) {
       setState(() {
