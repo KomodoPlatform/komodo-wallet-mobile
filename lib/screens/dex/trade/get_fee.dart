@@ -20,8 +20,15 @@ class GetFee {
   static CoinAmt trading(double amt, [String coin]) {
     if (amt == null) return null;
 
+    double amount = amt / 777;
+    // DEX-fee (aka trading fee) for DOGE can't be less than 1DOGE (dust: 100000000).
+    // MM2 returns correct value in response of 'trade_preimage' call,
+    // but until 'trade_preimage' support implemented on GUI side,
+    // we'll use this temp patch. Ref: #1039
+    if (coin == 'DOGE' && amount < 1) amount = 1;
+
     return CoinAmt(
-      amount: amt / 777,
+      amount: amount,
       coin: coin,
     );
   }

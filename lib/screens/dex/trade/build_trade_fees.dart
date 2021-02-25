@@ -39,7 +39,8 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox();
 
-        final CoinAmt tradeFee = GetFee.trading(widget.baseAmount);
+        final CoinAmt tradeFee =
+            GetFee.trading(widget.baseAmount, widget.baseCoin);
         final CoinAmt txFee = snapshot.data;
 
         if (txFee == null || tradeFee == null) return const SizedBox();
@@ -104,19 +105,18 @@ class _BuildTradeFeesState extends State<BuildTradeFees> {
   }
 
   Widget _buildTradeFee() {
+    final CoinAmt fee = GetFee.trading(widget.baseAmount, widget.baseCoin);
     return Text(
-      '${cutTrailingZeros(formatPrice(GetFee.trading(widget.baseAmount).amount))}'
-      ' ${widget.baseCoin}',
+      '${cutTrailingZeros(formatPrice(fee.amount))}'
+      ' ${fee.coin}',
       style: Theme.of(context).textTheme.caption,
     );
   }
 
   Widget _buildTradeFeeInFiat() {
+    final CoinAmt fee = GetFee.trading(widget.baseAmount, widget.baseCoin);
     return Text(
-      cexProvider.convert(
-        GetFee.trading(widget.baseAmount).amount,
-        from: widget.baseCoin,
-      ),
+      cexProvider.convert(fee.amount, from: fee.coin),
       style: Theme.of(context).textTheme.caption.copyWith(color: cexColor),
     );
   }
