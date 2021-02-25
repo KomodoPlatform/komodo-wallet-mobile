@@ -42,18 +42,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       TextEditingControllerWorkaroud();
   final TextEditingController _controllerAmountReceive =
       TextEditingController();
-  Coin currentCoinToBuy;
-  String tmpText = '';
+
   Decimal tmpAmountSell = deci(0);
   final FocusNode _focusSell = FocusNode();
   final FocusNode _focusReceive = FocusNode();
 
-  String amountToBuy;
   bool _noOrderFound = false;
-  bool isMaxActive = false;
   Ask _matchingBid;
   bool isLoadingMax = false;
-  bool showDetailedFees = false;
   CexProvider cexProvider;
   OrderBookProvider orderBookProvider;
 
