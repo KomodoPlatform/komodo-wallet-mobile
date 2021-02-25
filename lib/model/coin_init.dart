@@ -31,6 +31,8 @@ class CoinInit {
     this.matureConfirmations,
     this.asset,
     this.segwit,
+    this.dust,
+    this.forceMinRelayFee,
     this.addressFormat,
     this.protocol,
   });
@@ -56,6 +58,8 @@ class CoinInit {
         asset: json['asset'],
         segwit: json['segwit'],
         addressFormat: json['address_format'],
+        dust: json['dust'],
+        forceMinRelayFee: json['force_min_relay_fee'],
         protocol: json['protocol'],
       );
 
@@ -78,6 +82,8 @@ class CoinInit {
   int matureConfirmations;
   String asset;
   bool segwit;
+  int dust;
+  bool forceMinRelayFee;
   Map<String, dynamic> addressFormat;
   Map<String, dynamic> protocol;
 
@@ -101,6 +107,8 @@ class CoinInit {
         'mature_confirmations': matureConfirmations,
         'asset': asset,
         'segwit': segwit,
+        if (dust != null) 'dust': dust,
+        if (forceMinRelayFee != null) 'force_min_relay_fee': forceMinRelayFee,
         'address_format': addressFormat,
         'protocol': protocol,
       };
