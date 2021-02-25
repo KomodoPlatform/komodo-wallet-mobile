@@ -44,8 +44,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       TextEditingController();
 
   Decimal tmpAmountSell = deci(0);
-  final FocusNode _focusSell = FocusNode();
-  final FocusNode _focusReceive = FocusNode();
 
   bool _noOrderFound = false;
   Ask _matchingBid;
@@ -57,15 +55,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    swapBloc.outFocusTextField.listen((bool onData) {
-      if (widget.mContext != null) {
-        try {
-          FocusScope.of(widget.mContext).requestFocus(_focusSell);
-        } catch (e) {
-          Log.println('trade_page:72', 'deactivated widget: ' + e.toString());
-        }
-      }
-    });
     _noOrderFound = false;
     initListenerAmountReceive();
     swapBloc.enabledReceiveField = false;
@@ -263,7 +252,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 : Text(AppLocalizations.of(context).minValueSell(
                     sellCoinBalance.coin.abbr, sellCoinFee.toStringAsFixed(8))),
           ));
-          _focusSell.unfocus();
         } else {
           Log.println('trade_page:398', '-----------_controllerAmountSell');
           _controllerAmountSell.setTextAndPosition(deci2s(maxValue));
@@ -368,8 +356,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                           TextFormField(
                                               key: Key(
                                                   'input-text-${market.toString().toLowerCase()}'),
-                                              scrollPadding: const EdgeInsets.only(
-                                                  left: 35),
+                                              scrollPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 35),
                                               inputFormatters: <
                                                   TextInputFormatter>[
                                                 DecimalTextInputFormatter(
@@ -378,9 +367,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                     .allow(RegExp(
                                                         '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
                                               ],
-                                              focusNode: market == Market.SELL
-                                                  ? _focusSell
-                                                  : _focusReceive,
                                               controller: market == Market.SELL
                                                   ? _controllerAmountSell
                                                   : _controllerAmountReceive,
@@ -517,15 +503,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         key: Key('coin-select-${market.toString().toLowerCase()}'),
         borderRadius: BorderRadius.circular(4),
         onTap: () async {
-          _replaceAllCommas();
-
-          if (swapBloc.enabledSellField &&
-              _amountSell() == 0 &&
-              market == Market.RECEIVE) {
-            FocusScope.of(context).requestFocus(_focusSell);
-          } else {
-            _openSelectCoinDialog(market);
-          }
+          _openSelectCoinDialog(market);
         },
         child: market == Market.RECEIVE
             ? StreamBuilder<Coin>(
@@ -605,8 +583,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<void> _openSelectCoinDialog(Market market) async {
+    _replaceAllCommas();
+
     if (market == Market.RECEIVE) {
-      if (!isLoadingMax && _amountSell() > 0) {
+      if (_amountSell() == 0) {
+        _showSnackbar(AppLocalizations.of(context).enterSellAmount);
+        return;
+      }
+
+      if (!isLoadingMax) {
         openSelectReceiveCoinDialog(
           context: context,
           amountSell: _amountSell(),
@@ -713,10 +698,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         _controllerAmountSell.clear();
       });
     } else {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Text(errorMessage),
-      ));
+      _showSnackbar(errorMessage);
     }
   }
 
@@ -729,6 +711,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     return double.tryParse(
             _controllerAmountReceive.text.replaceAll(',', '.')) ??
         0;
+  }
+
+  void _showSnackbar(String text) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 2),
+      content: Text(text),
+    ));
   }
 }
 

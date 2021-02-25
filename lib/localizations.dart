@@ -384,6 +384,8 @@ class AppLocalizations {
         name: 'minValueSell',
         args: <Object>[coinName, number],
       );
+  String get enterSellAmount =>
+      Intl.message('You must enter Sell Amount first', name: 'enterSellAmount');
   String get encryptingWallet =>
       Intl.message('Encrypting wallet', name: 'encryptingWallet');
   String get decryptingWallet =>
