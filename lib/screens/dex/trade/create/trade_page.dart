@@ -42,7 +42,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       TextEditingControllerWorkaroud();
   final TextEditingController _controllerAmountReceive =
       TextEditingController();
-  CoinBalance sellCoinBalance;
   Coin currentCoinToBuy;
   String tmpText = '';
   Decimal tmpAmountSell = deci(0);
@@ -199,8 +198,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           }
           _getSellCoinFees(false).then((Decimal sellCoinFees) async {
             Log.println('trade_page:249', 'sellCoinFees $sellCoinFees');
-            if (sellCoinBalance != null &&
-                amountSell + sellCoinFees > sellCoinBalance.balance.balance) {
+            if (swapBloc.sellCoinBalance != null &&
+                amountSell + sellCoinFees >
+                    swapBloc.sellCoinBalance.balance.balance) {
               if (!swapBloc.isMaxActive) {
                 await setMaxValue();
               }
@@ -228,6 +228,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       isLoadingMax = true;
     });
 
+    final CoinBalance sellCoinBalance = swapBloc.sellCoinBalance;
     final CoinAmt fee = await GetSwapFee.totalSell(
       sellCoin: sellCoinBalance.coin.abbr,
       buyCoin: swapBloc.receiveCoin?.abbr,
@@ -246,6 +247,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     try {
       setState(() async {
         final Decimal sellCoinFee = await _getSellCoinFees(true);
+        final CoinBalance sellCoinBalance = swapBloc.sellCoinBalance;
         final Decimal maxValue = sellCoinBalance.balance.balance - sellCoinFee;
         Log.println('trade_page:380', 'setting max: $maxValue');
 
@@ -432,7 +434,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           ? Container(
                               padding: EdgeInsets.only(top: 12),
                               child: BuildSwapFees(
-                                baseCoin: sellCoinBalance.coin.abbr,
+                                baseCoin: swapBloc.sellCoinBalance.coin.abbr,
                                 baseAmount: _amountSell(),
                                 includeGasFee: true,
                                 relCoin: swapBloc.receiveCoin?.abbr,
@@ -544,7 +546,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.data != null && snapshot.data is CoinBalance) {
                     final CoinBalance coinBalance = snapshot.data;
-                    sellCoinBalance = coinBalance;
                     return _buildSelectorCoin(coinBalance.coin);
                   } else if (snapshot.data != null &&
                       snapshot.data is OrderCoin) {
@@ -621,20 +622,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       openSelectSellCoinDialog(
         context: context,
         onDone: (coin) {
+          swapBloc.updateSellCoin(coin);
           swapBloc.updateBuyCoin(null);
           swapBloc.updateReceiveCoin(null);
           swapBloc.setTimeout(true);
           swapBloc.setEnabledSellField(true);
-          swapBloc.updateSellCoin(coin);
-          swapBloc.updateBuyCoin(null);
 
           orderBookProvider.activePair = CoinsPair(sell: coin.coin, buy: null);
 
           _controllerAmountReceive.clear();
           _controllerAmountSell.clear();
-          setState(() {
-            sellCoinBalance = coin;
-          });
         },
       );
     }
