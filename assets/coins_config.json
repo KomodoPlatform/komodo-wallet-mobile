@@ -476,24 +476,6 @@
         ]
     },
     {
-        "name": "RedFOX",
-        "type": "smartChain",
-        "address": "electrum1.cipig.net",
-        "port": 10034,
-        "proto": "tcp",
-        "abbr": "RFOX",
-        "coingeckoId": "redfox-labs",
-        "colorCoin": "0xFFcc0000",
-        "serverList": [
-            "electrum3.cipig.net:10034",
-            "electrum2.cipig.net:10034",
-            "electrum1.cipig.net:10034"
-        ],
-        "explorerUrl": [
-            "https://rfox.explorer.dexstats.info/"
-        ]
-    },
-    {
         "name": "Rick",
         "type": "smartChain",
         "address": "electrum3.cipig.net",
@@ -733,14 +715,14 @@
         ]
     },
     {
-        "name": "Powerblockcoin",
+        "name": "SmartUSD",
         "type": "utxo",
         "address": "electrum1.cipig.net",
         "port": 10070,
         "proto": "tcp",
-        "abbr": "PBC",
+        "abbr": "SFUSD",
         "coingeckoId": "test-token",
-        "colorCoin": "0xFF34548C",
+        "colorCoin": "0xfff73c70",
         "serverList": [
             "electrum1.cipig.net:10070",
             "electrum2.cipig.net:10070",
