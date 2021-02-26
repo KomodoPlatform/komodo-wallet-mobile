@@ -40,7 +40,8 @@ class Balance {
       };
 
   String getBalance() => deci2s(balance);
-  String getUnspendableBalance() => deci2s(unspendableBalance);
+  String getUnspendableBalance() =>
+      unspendableBalance == null ? null : deci2s(unspendableBalance);
   String getRealBalance() => deci2s(balance - lockedBySwaps);
 
   void camouflageIfNeeded() {
