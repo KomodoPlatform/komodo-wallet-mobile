@@ -657,7 +657,7 @@
             "electrumx01.firo.org:50001"
         ],
         "explorerUrl": [
-            "https://explorer.zcoin.io/"
+            "https://explorer.firo.org/"
         ]
     },
     {
@@ -675,7 +675,7 @@
             "electrum3.cipig.net:10065"
         ],
         "explorerUrl": [
-            "https://zero.cryptonode.cloud/insight/"
+            "https://insight.zerocurrency.io/insight/"
         ]
     },
     {
