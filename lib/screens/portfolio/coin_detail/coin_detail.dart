@@ -453,11 +453,14 @@ class _CoinDetailState extends State<CoinDetail> {
                           (BuildContext context, AsyncSnapshot<bool> snapshot) {
                         String coinBalance =
                             currentCoinBalance.balance.getBalance();
+                        String unspendableBalance =
+                            currentCoinBalance.balance.getUnspendableBalance();
                         final String coinBalanceUsd =
                             currentCoinBalance.getBalanceUSD();
                         bool hidden = false;
                         if (snapshot.hasData && snapshot.data == false) {
                           coinBalance = '**.**';
+                          unspendableBalance = '**.**';
                           hidden = true;
                         }
                         return Column(
@@ -465,10 +468,20 @@ class _CoinDetailState extends State<CoinDetail> {
                             Text(
                               coinBalance +
                                   ' ' +
-                                  currentCoinBalance.balance.coin.toString(),
+                                  currentCoinBalance.balance.coin,
                               style: Theme.of(context).textTheme.headline6,
                               textAlign: TextAlign.center,
                             ),
+                            if (unspendableBalance != '0')
+                              Container(
+                                padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                child: Text(
+                                  '(+$unspendableBalance'
+                                  ' ${currentCoinBalance.balance.coin}'
+                                  ' ${AppLocalizations.of(context).unspendable})',
+                                  style: Theme.of(context).textTheme.caption,
+                                ),
+                              ),
                             Text(cexProvider.convert(
                               double.parse(coinBalanceUsd),
                               hidden: hidden,

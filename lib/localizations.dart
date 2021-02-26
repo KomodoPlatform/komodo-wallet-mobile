@@ -135,6 +135,7 @@ class AppLocalizations {
   String get back => Intl.message('back', name: 'back');
   String get cancel => Intl.message('cancel', name: 'cancel');
   String get details => Intl.message('details', name: 'details');
+  String get unspendable => Intl.message('unspendable', name: 'unspendable');
   String get commingsoon =>
       Intl.message('TX details coming soon!', name: 'commingsoon');
   String get history => Intl.message('history', name: 'history');
