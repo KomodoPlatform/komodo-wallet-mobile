@@ -29,6 +29,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.0"
+  asn1lib:
+    dependency: transitive
+    description:
+      path: "."
+      ref: "1f5e2f2d0d4543456880962ebf5adc5dcd30082d"
+      resolved-ref: "1f5e2f2d0d4543456880962ebf5adc5dcd30082d"
+      url: "git://github.com/KomodoPlatform/asn1lib.git"
+    source: git
+    version: "0.6.4"
   async:
     dependency: transitive
     description:
@@ -67,9 +76,9 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: dbd846b743eab3b21f3ef56abc958305be54761a
-      resolved-ref: dbd846b743eab3b21f3ef56abc958305be54761a
-      url: "git://github.com/KomodoPlatform/bip39-dart.git"
+      ref: "3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1"
+      resolved-ref: "3bee3eedb28ba5ae1af82873c8e5b6f32038b8a1"
+      url: "git://github.com/ca333/bip39-dart.git"
     source: git
     version: "1.0.3"
   boolean_selector:
@@ -83,8 +92,8 @@ packages:
     dependency: "direct dev"
     description:
       path: "."
-      ref: "2889fa8791fd46afb30a9e7984c06b66a6241a44"
-      resolved-ref: "2889fa8791fd46afb30a9e7984c06b66a6241a44"
+      ref: e313f58289d5f4be711a6b430b7f3bb96712c6cc
+      resolved-ref: e313f58289d5f4be711a6b430b7f3bb96712c6cc
       url: "git://github.com/KomodoPlatform/bs58check-dart.git"
     source: git
     version: "1.0.1"
@@ -190,6 +199,15 @@ packages:
       url: "git://github.com/KomodoPlatform/dart-decimal.git"
     source: git
     version: "0.3.5"
+  encrypt:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "4.0.3"
+      resolved-ref: "8a7493d2cf6360a95595baf88a9877a713460f74"
+      url: "https://github.com/KomodoPlatform/encrypt"
+    source: git
+    version: "4.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -312,9 +330,11 @@ packages:
   hex:
     dependency: transitive
     description:
-      name: hex
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "6afb93fbe9024b174bf7075338e7ca0fe9c0411b"
+      resolved-ref: "6afb93fbe9024b174bf7075338e7ca0fe9c0411b"
+      url: "git://github.com/KomodoPlatform/dart-hex.git"
+    source: git
     version: "0.1.2"
   html:
     dependency: transitive
@@ -464,7 +484,7 @@ packages:
       name: node_preamble
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.12"
+    version: "1.4.13"
   package_config:
     dependency: transitive
     description:
@@ -479,15 +499,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.3"
-  password:
-    dependency: "direct dev"
-    description:
-      path: "."
-      ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
-      resolved-ref: dbf924dab19d6123bc0f64f5c582b3f26a71d7b9
-      url: "git://github.com/KomodoPlatform/password-dart.git"
-    source: git
-    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -529,7 +540,7 @@ packages:
       name: path_provider_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.4+6"
+    version: "0.0.4+8"
   path_provider_platform_interface:
     dependency: transitive
     description:
@@ -584,9 +595,11 @@ packages:
   pointycastle:
     dependency: transitive
     description:
-      name: pointycastle
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: d106a9218a9df81ef4e0ab239ce5db2fcd9a7435
+      resolved-ref: d106a9218a9df81ef4e0ab239ce5db2fcd9a7435
+      url: "git://github.com/KomodoPlatform/pc-dart.git"
+    source: git
     version: "1.0.2"
   pool:
     dependency: transitive
@@ -646,12 +659,10 @@ packages:
   share:
     dependency: "direct dev"
     description:
-      path: "packages/share/"
-      ref: "1494b043d03799dd14e689552d1218918435f9f5"
-      resolved-ref: "1494b043d03799dd14e689552d1218918435f9f5"
-      url: "git://github.com/KomodoPlatform/plugins.git"
-    source: git
-    version: "0.6.2+1"
+      name: share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.5+4"
   shared_preferences:
     dependency: "direct dev"
     description:
@@ -693,7 +704,7 @@ packages:
       name: shared_preferences_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+3"
+    version: "0.0.2+3"
   shelf:
     dependency: transitive
     description:
@@ -707,21 +718,21 @@ packages:
       name: shelf_packages_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   shelf_static:
     dependency: transitive
     description:
       name: shelf_static
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.8"
+    version: "0.2.9+2"
   shelf_web_socket:
     dependency: transitive
     description:
       name: shelf_web_socket
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.3"
+    version: "0.2.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -763,7 +774,7 @@ packages:
       name: sqflite_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2+1"
+    version: "1.0.3+1"
   stack_trace:
     dependency: transitive
     description:
@@ -870,7 +881,7 @@ packages:
       name: url_launcher_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5+1"
+    version: "0.1.5+3"
   uuid:
     dependency: "direct dev"
     description:
@@ -928,14 +939,14 @@ packages:
       name: webkit_inspection_protocol
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.4"
+    version: "0.7.5"
   win32:
     dependency: transitive
     description:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.4"
+    version: "1.7.4+1"
   xdg_directories:
     dependency: transitive
     description:

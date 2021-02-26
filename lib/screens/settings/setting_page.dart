@@ -22,6 +22,8 @@ import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
+import 'package:komodo_dex/screens/import-export/export_page.dart';
+import 'package:komodo_dex/screens/import-export/import_page.dart';
 import 'package:komodo_dex/screens/settings/camo_pin_setup_page.dart';
 import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
@@ -114,9 +116,13 @@ class _SettingPageState extends State<SettingPage> {
                 walletBloc.currentWallet != null
                     ? _buildViewSeed()
                     : Container(),
+                _buildExport(),
+                _buildImport(),
                 const SizedBox(
                   height: 1,
                 ),
+                _buildTitle(AppLocalizations.of(context).oldLogsTitle),
+                BuildOldLogs(),
                 _buildTitle(AppLocalizations.of(context).legalTitle),
                 _buildDisclaimerToS(),
                 _buildTitle(version),
@@ -403,7 +409,49 @@ class _SettingPageState extends State<SettingPage> {
         trailing:
             Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
         title: Text(
-          AppLocalizations.of(context).viewSeed,
+          AppLocalizations.of(context).viewSeedAndKeys,
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExport() {
+    return CustomTile(
+      onPressed: () {
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => ExportPage()));
+      },
+      child: ListTile(
+        trailing:
+            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        title: Text(
+          AppLocalizations.of(context).exportLink,
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImport() {
+    return CustomTile(
+      onPressed: () {
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => ImportPage()));
+      },
+      child: ListTile(
+        trailing:
+            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        title: Text(
+          AppLocalizations.of(context).importLink,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
               color: Colors.white.withOpacity(0.7)),
@@ -706,10 +754,10 @@ class _SettingPageState extends State<SettingPage> {
 
     final now = DateTime.now();
     final log = mmSe.currentLog(now: now);
-    if (syncSwaps.swaps.isEmpty) await syncSwaps.update();
+    if (swapMonitor.swaps.isEmpty) await swapMonitor.update();
     try {
       log.sink.write('\n\n--- my recent swaps ---\n\n');
-      for (Swap swap in syncSwaps.swaps) {
+      for (Swap swap in swapMonitor.swaps) {
         final started = swap.started;
         if (started == null) continue;
         final tim = DateTime.fromMillisecondsSinceEpoch(started.timestamp);
@@ -752,8 +800,8 @@ class _SettingPageState extends State<SettingPage> {
     Log('setting_page:748', 'Compression produced $len bytes.');
 
     mainBloc.isUrlLaucherIsOpen = true;
-    await Share.shareFile(af,
-        mimeType: 'application/octet-stream',
+    await Share.shareFiles([af.path],
+        mimeTypes: ['application/octet-stream'],
         subject: 'atomicDEX logs at ${DateTime.now().toIso8601String()}');
   }
 
@@ -853,5 +901,78 @@ class _ShowLoadingDeleteState extends State<ShowLoadingDelete> {
         ))
       ],
     );
+  }
+}
+
+class BuildOldLogs extends StatefulWidget {
+  @override
+  _BuildOldLogsState createState() => _BuildOldLogsState();
+}
+
+class _BuildOldLogsState extends State<BuildOldLogs> {
+  List<dynamic> _listLogs = <dynamic>[];
+  double _sizeMb = 0;
+
+  @override
+  void initState() {
+    _update();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomTile(
+      child: ListTile(
+        trailing: RaisedButton(
+            child: Text(AppLocalizations.of(context).oldLogsDelete),
+            onPressed: () {
+              for (File f in _listLogs) {
+                f.deleteSync();
+              }
+              _update();
+            }),
+        title: Text(
+          AppLocalizations.of(context).oldLogsUsed +
+              ': ' +
+              (_sizeMb >= 1000
+                  ? '${(_sizeMb / 1000).toStringAsFixed(2)} GB'
+                  : ' ${_sizeMb.toStringAsFixed(2)} MB'),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color: Colors.white.withOpacity(0.7)),
+        ),
+      ),
+    );
+  }
+
+  void _update() {
+    _updateOldLogsList();
+    _updateLogsSize();
+  }
+
+  void _updateOldLogsList() {
+    final now = DateTime.now();
+    final ymd = '${now.year}'
+        '-${Log.twoDigits(now.month)}'
+        '-${Log.twoDigits(now.day)}';
+    final dirList = applicationDocumentsDirectorySync.listSync();
+    setState(() {
+      _listLogs = dirList
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.log') && !f.path.endsWith('$ymd.log'))
+          .toList();
+    });
+  }
+
+  void _updateLogsSize() {
+    int totalSize = 0;
+    for (File log in _listLogs) {
+      final fileSize = log.statSync().size;
+      totalSize += fileSize;
+    }
+    setState(() {
+      _sizeMb = totalSize / 1000000;
+    });
   }
 }

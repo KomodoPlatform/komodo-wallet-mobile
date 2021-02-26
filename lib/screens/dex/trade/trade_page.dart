@@ -13,17 +13,14 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/error_string.dart';
-import 'package:komodo_dex/model/get_trade_fee.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/order_coin.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/trade_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
+import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders.dart';
 import 'package:komodo_dex/screens/dex/trade/swap_confirmation_page.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
@@ -49,7 +46,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       TextEditingControllerWorkaroud();
   final TextEditingController _controllerAmountReceive =
       TextEditingController();
-  CoinBalance currentCoinBalance;
+  CoinBalance sellCoinBalance;
   Coin currentCoinToBuy;
   String tmpText = '';
   Decimal tmpAmountSell = deci(0);
@@ -169,28 +166,24 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void onChangeReceive() {
-    if (_controllerAmountReceive.text.isNotEmpty) {
-      swapBloc.setCurrentAmountBuy(
-          double.parse(_controllerAmountReceive.text.replaceAll(',', '.')));
+    if (_amountReceive() > 0) {
+      swapBloc.setCurrentAmountBuy(_amountReceive());
     } else {
       swapBloc.setCurrentAmountBuy(null);
     }
-    if (_noOrderFound &&
-        _controllerAmountReceive.text.isNotEmpty &&
-        _controllerAmountSell.text.isNotEmpty) {
-      final Decimal bestPrice = deci(_controllerAmountReceive.text) /
-          deci(_controllerAmountSell.text);
+    if (_noOrderFound && _amountSell() > 0 && _amountReceive() > 0) {
+      final Decimal bestPrice = deci(_amountReceive()) / deci(_amountSell());
       swapBloc.updateBuyCoin(OrderCoin(
           coinBase: swapBloc.receiveCoin,
           coinRel: swapBloc.sellCoinBalance?.coin,
           bestPrice: bestPrice,
-          maxVolume: deci(_controllerAmountSell.text)));
+          maxVolume: deci(_amountSell())));
     }
     setState(() {});
   }
 
   void onChangeSell() {
-    final amountSell = deci(_controllerAmountSell.text);
+    final amountSell = deci(_amountSell());
 
     if (_controllerAmountSell.text.isNotEmpty) {
       swapBloc.setCurrentAmountSell(amountSell.toDouble());
@@ -198,16 +191,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       swapBloc.setCurrentAmountSell(null);
     }
     setState(() {
-      if (_noOrderFound &&
-          _controllerAmountReceive.text.isNotEmpty &&
-          _controllerAmountSell.text.isNotEmpty) {
-        final Decimal bestPrice = deci(_controllerAmountReceive.text) /
-            deci(_controllerAmountSell.text);
+      if (_noOrderFound && _amountSell() > 0 && _amountReceive() > 0) {
+        final Decimal bestPrice = deci(_amountReceive()) / deci(_amountSell());
         swapBloc.updateBuyCoin(OrderCoin(
             coinBase: swapBloc.receiveCoin,
             coinRel: swapBloc.sellCoinBalance?.coin,
             bestPrice: bestPrice,
-            maxVolume: deci(_controllerAmountSell.text)));
+            maxVolume: deci(_amountSell())));
       }
       if (amountSell != tmpAmountSell && amountSell != deci(0)) {
         setState(() {
@@ -218,10 +208,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               _checkMaxVolume();
             });
           }
-          if (_controllerAmountReceive.text.isNotEmpty &&
-              _controllerAmountSell.text.isNotEmpty &&
+          if (_amountSell() > 0 &&
+              _amountReceive() > 0 &&
               swapBloc.receiveCoin != null) {
-            Decimal price = amountSell / deci(_controllerAmountReceive.text);
+            Decimal price = amountSell / deci(_amountReceive());
             Decimal maxVolume = amountSell;
 
             if (currentAsk != null) {
@@ -235,10 +225,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 bestPrice: price,
                 maxVolume: maxVolume));
           }
-          getFee(false).then((Decimal tradeFee) async {
-            Log.println('trade_page:249', 'tradeFee $tradeFee');
-            if (currentCoinBalance != null &&
-                amountSell + tradeFee > currentCoinBalance.balance.balance) {
+          _getSellCoinFees(false).then((Decimal sellCoinFees) async {
+            Log.println('trade_page:249', 'sellCoinFees $sellCoinFees');
+            if (sellCoinBalance != null &&
+                amountSell + sellCoinFees > sellCoinBalance.balance.balance) {
               if (!swapBloc.isMaxActive) {
                 await setMaxValue();
               }
@@ -249,11 +239,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
       tmpAmountSell = amountSell;
     });
-    swapBloc.setIsMaxActive(false);
   }
 
   void _checkMaxVolume() {
-    if (deci(_controllerAmountSell.text) <=
+    if (deci(_amountSell()) <=
         swapBloc.orderCoin.maxVolume * swapBloc.orderCoin.bestPrice) return;
 
     setState(() {
@@ -262,56 +251,23 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     });
   }
 
-  Future<Decimal> getFee(bool isMax) async {
+  Future<Decimal> _getSellCoinFees(bool isMax) async {
     setState(() {
       isLoadingMax = true;
     });
-    try {
-      final Decimal fee = await getTxFee() + await getTradeFee(isMax);
-      setState(() {
-        isLoadingMax = false;
-      });
-      return fee;
-    } catch (e) {
-      Log.println('trade_page:286', e);
-      return deci(0);
-    }
-  }
 
-  Future<Decimal> getTradeFee(bool isMax) async {
-    Decimal amount = deci(_controllerAmountSell.text);
-    if (isMax) amount = currentCoinBalance.balance.balance;
-    return deci(1) / deci(777) * amount;
-  }
+    final CoinAmt fee = await GetFee.totalSell(
+      sellCoin: sellCoinBalance.coin.abbr,
+      buyCoin: swapBloc.receiveCoin?.abbr,
+      sellAmt:
+          isMax ? sellCoinBalance.balance.balance.toDouble() : _amountSell(),
+    );
 
-  Future<Decimal> getTxFee() async {
-    try {
-      final dynamic tradeFeeResponse = await MM.getTradeFee(
-          MMService().client, GetTradeFee(coin: currentCoinBalance.coin.abbr));
+    setState(() {
+      isLoadingMax = false;
+    });
 
-      if (tradeFeeResponse is TradeFee) {
-        final double tradeFee = double.parse(tradeFeeResponse.result.amount);
-
-        Decimal txFee = Decimal.parse('2') * Decimal.parse(tradeFee.toString());
-        if (swapBloc.receiveCoin != null) {
-          if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
-            txFee += await getERCfee(swapBloc.receiveCoin);
-          }
-        }
-        return txFee;
-      } else {
-        if (tradeFeeResponse is ErrorString) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 2),
-            content: Text(tradeFeeResponse.error),
-          ));
-        }
-        return Decimal.parse('0');
-      }
-    } catch (e) {
-      Log.println('trade_page:322', e);
-      rethrow;
-    }
+    return deci(fee.amount);
   }
 
   Widget buildCexPrice(double price, [double size = 12]) {
@@ -333,97 +289,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
-  Future<Widget> getTxFeeErc() async {
-    try {
-      final TradeFee tradeFeeResponse = await MM.getTradeFee(
-          MMService().client, GetTradeFee(coin: currentCoinBalance.coin.abbr));
-      final double tradeFee = double.parse(tradeFeeResponse.result.amount);
-
-      final Decimal txFee = Decimal.parse(tradeFee.toString());
-
-      Decimal txErcFee;
-      if (swapBloc.receiveCoin != null) {
-        if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
-          txErcFee = await getERCfee(swapBloc.receiveCoin);
-        }
-      }
-
-      if (txErcFee != null &&
-          swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty) {
-        final double relPrice =
-            cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
-        final double ethPrice = cexProvider.getUsdPrice('ETH');
-
-        final double totalUsdFee = relPrice == 0 || ethPrice == 0
-            ? null
-            : 2 * txFee.toDouble() * relPrice +
-                (txErcFee.toDouble() * ethPrice);
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Text(
-                (Decimal.parse('2') * txFee).toStringAsFixed(5) +
-                    ' ' +
-                    swapBloc.sellCoinBalance.coin.abbr +
-                    ' + ' +
-                    txErcFee.toStringAsFixed(5) +
-                    ' ETH',
-                style: Theme.of(context).textTheme.bodyText1),
-            if (showDetailedFees)
-              Column(
-                children: <Widget>[
-                  buildCexPrice(totalUsdFee),
-                  const SizedBox(height: 4),
-                ],
-              ),
-          ],
-        );
-      } else {
-        Decimal factor = Decimal.parse('2');
-        if (swapBloc.receiveCoin != null &&
-            swapBloc.sellCoinBalance.coin.swapContractAddress.isNotEmpty &&
-            swapBloc.receiveCoin.swapContractAddress.isNotEmpty) {
-          factor = Decimal.parse('3');
-        }
-        final String abbr =
-            swapBloc.sellCoinBalance.coin.swapContractAddress.isEmpty
-                ? swapBloc.sellCoinBalance.coin.abbr
-                : 'ETH';
-        final double usdFee =
-            (factor * txFee).toDouble() * cexProvider.getUsdPrice(abbr);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Text((factor * txFee).toStringAsFixed(8) + ' ' + abbr,
-                style: Theme.of(context).textTheme.bodyText1),
-            if (showDetailedFees)
-              Column(
-                children: <Widget>[
-                  buildCexPrice(usdFee),
-                  const SizedBox(height: 4),
-                ],
-              ),
-          ],
-        );
-      }
-    } catch (e) {
-      Log.println('trade_page:364', e);
-      rethrow;
-    }
-  }
-
-  Future<Decimal> getERCfee(Coin coin) async {
-    final TradeFee tradeFeeResponseERC = await ApiProvider()
-        .getTradeFee(MMService().client, GetTradeFee(coin: coin.abbr));
-    return Decimal.parse(tradeFeeResponseERC.result.amount);
-  }
-
   Future<void> setMaxValue() async {
     try {
       setState(() async {
-        final Decimal tradeFee = await getFee(true);
-        final Decimal maxValue = currentCoinBalance.balance.balance - tradeFee;
+        final Decimal sellCoinFee = await _getSellCoinFees(true);
+        final Decimal maxValue = sellCoinBalance.balance.balance - sellCoinFee;
         Log.println('trade_page:380', 'setting max: $maxValue');
 
         if (maxValue < deci(0)) {
@@ -434,11 +304,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
             backgroundColor: Theme.of(context).errorColor,
-            content: tradeFee < deci(0.00777)
-                ? Text(AppLocalizations.of(context).minValueBuy(
-                    currentCoinBalance.coin.abbr, 0.00777.toString()))
-                : Text(AppLocalizations.of(context).minValueBuy(
-                    currentCoinBalance.coin.abbr, tradeFee.toStringAsFixed(8))),
+            content: sellCoinFee <
+                    deci(swapBloc.minVolumeDefault(sellCoinBalance.coin.abbr))
+                ? Text(AppLocalizations.of(context).minValueSell(
+                    sellCoinBalance.coin.abbr,
+                    '${swapBloc.minVolumeDefault(sellCoinBalance.coin.abbr)}'))
+                : Text(AppLocalizations.of(context).minValueSell(
+                    sellCoinBalance.coin.abbr, sellCoinFee.toStringAsFixed(8))),
           ));
           _focusSell.unfocus();
         } else {
@@ -474,14 +346,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     (BuildContext context, AsyncSnapshot<Coin> receiveCoin) {
                   return PrimaryButton(
                     key: const Key('trade-button'),
-                    onPressed: _controllerAmountSell.text.isNotEmpty &&
-                            _controllerAmountReceive.text.isNotEmpty &&
-                            double.parse(_controllerAmountSell.text
-                                    .replaceAll(',', '.')) >
-                                0 &&
-                            double.parse(_controllerAmountReceive.text
-                                    .replaceAll(',', '.')) >
-                                0 &&
+                    onPressed: _amountSell() > 0 &&
+                            _amountReceive() > 0 &&
                             sellCoin.data != null &&
                             receiveCoin.data != null
                         ? () => _confirmSwap(context)
@@ -593,9 +459,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                     TextFormField(
                                                         key: Key(
                                                             'input-text-${market.toString().toLowerCase()}'),
-                                                        scrollPadding:
-                                                            const EdgeInsets.only(
-                                                                left: 35),
+                                                        scrollPadding: const EdgeInsets.only(
+                                                            left: 35),
                                                         inputFormatters: <
                                                             TextInputFormatter>[
                                                           DecimalTextInputFormatter(
@@ -604,13 +469,20 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                               .allow(RegExp(
                                                                   '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
                                                         ],
-                                                        focusNode:
-                                                            market == Market.SELL
-                                                                ? _focusSell
-                                                                : _focusReceive,
+                                                        focusNode: market == Market.SELL
+                                                            ? _focusSell
+                                                            : _focusReceive,
                                                         controller: market == Market.SELL
                                                             ? _controllerAmountSell
                                                             : _controllerAmountReceive,
+                                                        onChanged: market ==
+                                                                Market.SELL
+                                                            ? (_) {
+                                                                swapBloc
+                                                                    .setIsMaxActive(
+                                                                        false);
+                                                              }
+                                                            : null,
                                                         enabled: market == Market.RECEIVE
                                                             ? swapBloc
                                                                 .enabledReceiveField
@@ -688,136 +560,14 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                 ),
                               ],
                             ),
-                            market == Market.SELL &&
-                                    _controllerAmountSell.text.isNotEmpty
-                                ? GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showDetailedFees = !showDetailedFees;
-                                      });
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 16, left: 0),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Text(
-                                                        AppLocalizations.of(
-                                                                context)
-                                                            .txFeeTitle,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1),
-                                                    FutureBuilder<Widget>(
-                                                      future: getTxFeeErc(),
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<Widget>
-                                                              snapshot) {
-                                                        if (snapshot.hasData)
-                                                          return snapshot.data;
-
-                                                        return const SizedBox(
-                                                            width: 10,
-                                                            height: 10,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              strokeWidth: 1,
-                                                            ));
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Text(
-                                                        AppLocalizations.of(
-                                                                context)
-                                                            .tradingFee,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1),
-                                                    FutureBuilder<Decimal>(
-                                                      future: getTradeFee(
-                                                          isMaxActive),
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<Decimal>
-                                                              snapshot) {
-                                                        if (!snapshot.hasData) {
-                                                          return const SizedBox(
-                                                              width: 10,
-                                                              height: 10,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                strokeWidth: 1,
-                                                              ));
-                                                        }
-
-                                                        final String abbr =
-                                                            swapBloc
-                                                                .sellCoinBalance
-                                                                .coin
-                                                                .abbr;
-
-                                                        return Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: <Widget>[
-                                                            Text(
-                                                                snapshot.data
-                                                                        .toString() +
-                                                                    ' ' +
-                                                                    abbr,
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyText1),
-                                                            if (showDetailedFees)
-                                                              buildCexPrice(snapshot
-                                                                      .data
-                                                                      .toDouble() *
-                                                                  cexProvider
-                                                                      .getUsdPrice(
-                                                                          abbr)),
-                                                          ],
-                                                        );
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Icon(
-                                            showDetailedFees
-                                                ? Icons.unfold_less
-                                                : Icons.unfold_more,
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .color,
-                                          ),
-                                        ],
-                                      ),
+                            market == Market.SELL && _amountSell() > 0
+                                ? Container(
+                                    padding: EdgeInsets.only(top: 12),
+                                    child: BuildTradeFees(
+                                      baseCoin: sellCoinBalance.coin.abbr,
+                                      baseAmount: _amountSell(),
+                                      includeGasFee: true,
+                                      relCoin: swapBloc.receiveCoin?.abbr,
                                     ),
                                   )
                                 : Container()
@@ -875,8 +625,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         key: Key('coin-select-${market.toString().toLowerCase()}'),
         borderRadius: BorderRadius.circular(4),
         onTap: () async {
-          _controllerAmountSell.text =
-              _controllerAmountSell.text.replaceAll(',', '.');
+          _replaceAllCommas();
           if (_controllerAmountSell.text.isEmpty && market == Market.RECEIVE) {
             setState(() {
               if (swapBloc.enabledSellField) {
@@ -913,7 +662,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       if (snapshot.data != null &&
                           snapshot.data is CoinBalance) {
                         final CoinBalance coinBalance = snapshot.data;
-                        currentCoinBalance = coinBalance;
+                        sellCoinBalance = coinBalance;
                         return _buildSelectorCoin(coinBalance.coin);
                       } else if (snapshot.data != null &&
                           snapshot.data is OrderCoin) {
@@ -971,12 +720,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void pushNewScreenChoiseOrder() {
-    replaceAllCommas();
+    _replaceAllCommas();
     dialogBloc.dialog = showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return ReceiveOrders(
-              sellAmount: double.parse(_controllerAmountSell.text),
+              sellAmount: _amountSell(),
               onCreateNoOrder: (String coin) => _noOrders(coin),
               onCreateOrder: (Ask ask) => _createOrder(ask));
         }).then((_) {
@@ -984,7 +733,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     });
   }
 
-  void replaceAllCommas() {
+  void _replaceAllCommas() {
     _controllerAmountSell.text =
         _controllerAmountSell.text.replaceAll(',', '.');
     _controllerAmountReceive.text =
@@ -993,18 +742,19 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _openDialogCoinWithBalance(Market market) async {
     if (market == Market.RECEIVE) {
-      if (_controllerAmountSell.text.isNotEmpty &&
-          isNumeric(_controllerAmountSell.text) &&
-          !isLoadingMax &&
-          double.parse(_controllerAmountSell.text) > 0) {
+      if (!isLoadingMax && _amountSell() > 0) {
         Log.println('trade_page:850', isLoadingMax);
         dialogBloc.dialog = showDialog<void>(
             context: context,
             builder: (BuildContext context) {
               return DialogLooking(
                 onDone: () {
-                  Navigator.of(context).pop();
-                  pushNewScreenChoiseOrder();
+                  try {
+                    Navigator.of(context).pop();
+                    pushNewScreenChoiseOrder();
+                  } catch (e) {
+                    Log('trade_page:754', '_openDialogCoinWithBalance] $e');
+                  }
                 },
               );
             }).then((dynamic _) => dialogBloc.dialog = null);
@@ -1077,7 +827,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       currentAsk = null;
     });
     swapBloc.updateBuyCoin(null);
-    replaceAllCommas();
+    _replaceAllCommas();
     swapBloc.updateReceiveCoin(Coin(abbr: coin));
     setState(() {
       _noOrderFound = true;
@@ -1093,7 +843,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     setState(() {
       currentAsk = ask;
     });
-    replaceAllCommas();
+    _replaceAllCommas();
     _controllerAmountReceive.clear();
     setState(() {
       swapBloc.enabledReceiveField = false;
@@ -1102,14 +852,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     swapBloc.updateReceiveCoin(Coin(abbr: ask.coin));
     _controllerAmountReceive.text = '';
     _controllerAmountReceive.text =
-        deci2s(ask.getReceiveAmount(deci(_controllerAmountSell.text)));
+        deci2s(ask.getReceiveAmount(deci(_amountSell())));
 
     swapBloc.updateBuyCoin(OrderCoin(
         coinBase: swapBloc.receiveCoin,
         coinRel: swapBloc.sellCoinBalance?.coin,
-        bestPrice: deci(_controllerAmountSell.text) /
-            deci(_controllerAmountReceive.text),
-        maxVolume: deci(_controllerAmountSell.text)));
+        bestPrice: deci(_amountSell()) / deci(_amountReceive()),
+        maxVolume: deci(_amountSell())));
 
     final Decimal askPrice = Decimal.parse(ask.price.toString());
     final Decimal amountSell = Decimal.parse(_controllerAmountSell.text);
@@ -1125,10 +874,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   List<SimpleDialogOption> _createListDialog(
       BuildContext context, Market market, List<OrderCoin> orderbooks) {
     final List<SimpleDialogOption> listDialog = <SimpleDialogOption>[];
-    _controllerAmountSell.text =
-        _controllerAmountSell.text.replaceAll(',', '.');
-    _controllerAmountReceive.text =
-        _controllerAmountReceive.text.replaceAll(',', '.');
+    _replaceAllCommas();
 
     if (orderbooks != null && market == Market.RECEIVE) {
       for (OrderCoin orderbook in orderbooks) {
@@ -1136,13 +882,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         if (orderbook.coinBase.abbr != swapBloc.sellCoinBalance.coin.abbr) {
           final bool isOrderAvailable =
               orderbook.coinBase.abbr != swapBloc.sellCoinBalance.coin.abbr &&
-                  orderbook.getBuyAmount(deci(_controllerAmountSell.text)) >
-                      deci(0);
+                  orderbook.getBuyAmount(deci(_amountSell())) > deci(0);
           Log.println(
               'trade_page:992',
               '----getBuyAmount----' +
-                  deci2s(orderbook
-                      .getBuyAmount(deci(_controllerAmountSell.text))));
+                  deci2s(orderbook.getBuyAmount(deci(_amountSell()))));
           Log.println('trade_page:997',
               'item-dialog-${orderbook.coinBase.abbr.toLowerCase()}-${market.toString().toLowerCase()}');
           dialogItem = SimpleDialogOption(
@@ -1175,8 +919,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                     children: <Widget>[
                       Flexible(
                         child: isOrderAvailable
-                            ? Text(deci2s(orderbook.getBuyAmount(
-                                deci(_controllerAmountSell.text))))
+                            ? Text(deci2s(
+                                orderbook.getBuyAmount(deci(_amountSell()))))
                             : Text(
                                 AppLocalizations.of(context).noOrderAvailable,
                                 style: Theme.of(context)
@@ -1217,12 +961,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               swapBloc.updateReceiveCoin(null);
               swapBloc.setTimeout(true);
               _controllerAmountReceive.clear();
+              _controllerAmountSell.clear();
               setState(() {
-                currentCoinBalance = coin;
-                final String tmp = _controllerAmountSell.text;
-                _controllerAmountSell.text = '';
-                _controllerAmountSell.text = tmp;
-                _controllerAmountReceive.text = '';
+                sellCoinBalance = coin;
                 swapBloc.setEnabledSellField(true);
               });
               swapBloc.updateSellCoin(coin);
@@ -1281,167 +1022,184 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   bool _checkValueMin() {
-    _controllerAmountSell.text =
-        _controllerAmountSell.text.replaceAll(',', '.');
-    _controllerAmountReceive.text =
-        _controllerAmountReceive.text.replaceAll(',', '.');
+    _replaceAllCommas();
 
-    if (_controllerAmountSell.text != null &&
-        _controllerAmountSell.text.isNotEmpty &&
-        double.parse(_controllerAmountSell.text) < 3 &&
-        swapBloc.sellCoinBalance.coin.abbr == 'QTUM') {
+    final double minVolumeSell =
+        swapBloc.minVolumeDefault(sellCoinBalance.coin.abbr);
+    final double minVolumeReceive =
+        swapBloc.minVolumeDefault(swapBloc.receiveCoin.abbr);
+
+    if (_amountSell() > 0 && _amountSell() < minVolumeSell) {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoinBalance.coin.abbr, 3.toString())),
+            .minValue(swapBloc.sellCoinBalance.coin.abbr, '$minVolumeSell')),
       ));
       return false;
-    } else if (_controllerAmountSell.text != null &&
-        _controllerAmountSell.text.isNotEmpty &&
-        double.parse(_controllerAmountSell.text) < 0.00777) {
+    } else if (_amountReceive() > 0 && _amountReceive() < minVolumeReceive) {
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(AppLocalizations.of(context)
-            .minValue(swapBloc.sellCoinBalance.coin.abbr, 0.00777.toString())),
+            .minValueBuy(swapBloc.receiveCoin.abbr, '$minVolumeReceive')),
       ));
       return false;
-    } else if (_controllerAmountReceive.text != null &&
-        _controllerAmountReceive.text.isNotEmpty &&
-        double.parse(_controllerAmountReceive.text) < 0.00777) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Text(AppLocalizations.of(context)
-            .minValueBuy(swapBloc.receiveCoin.abbr, 0.00777.toString())),
-      ));
-      return false;
+    } else if (currentAsk != null && currentAsk.minVolume != null) {
+      if (_controllerAmountReceive.text != null &&
+          _controllerAmountReceive.text.isNotEmpty &&
+          double.parse(_controllerAmountReceive.text) < currentAsk.minVolume) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          duration: const Duration(seconds: 2),
+          content: Text(AppLocalizations.of(context).minValueBuy(
+              swapBloc.receiveCoin.abbr,
+              cutTrailingZeros(formatPrice(currentAsk.minVolume)))),
+        ));
+        return false;
+      }
+      return true;
     } else {
       return true;
     }
   }
 
-  Future<void> _confirmSwap(BuildContext mContext) async {
-    replaceAllCommas();
+  Future<bool> _checkEnoughGas(BuildContext mContext) async {
+    if (!(await _checkGasFor(swapBloc.receiveCoin.abbr, mContext)))
+      return false;
 
-    if (swapBloc.receiveCoin.swapContractAddress.isNotEmpty ||
-        swapBloc.sellCoinBalance.coin.swapContractAddress.isNotEmpty) {
-      CoinBalance ethBalance;
-      try {
-        ethBalance = coinsBloc.coinBalance
-            .singleWhere((CoinBalance coin) => coin.coin.abbr == 'ETH');
-      } catch (e) {
-        Scaffold.of(mContext).showSnackBar(SnackBar(
-          duration: const Duration(seconds: 2),
-          backgroundColor: Theme.of(context).primaryColor,
-          content: Text(
-            'Please activate ETH and top-up balance first',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
-          ),
-        ));
-        return;
-      }
-      if (ethBalance != null) {
-        final Decimal feeERC = await getERCfee(
-                swapBloc.receiveCoin.swapContractAddress.isNotEmpty
-                    ? swapBloc.receiveCoin
-                    : swapBloc.sellCoinBalance.coin) *
-            ((swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                    swapBloc
-                        .sellCoinBalance.coin.swapContractAddress.isNotEmpty)
-                ? Decimal.parse('3')
-                : (swapBloc.receiveCoin.swapContractAddress.isNotEmpty &&
-                        swapBloc
-                            .sellCoinBalance.coin.swapContractAddress.isEmpty
-                    ? Decimal.parse('1')
-                    : Decimal.parse('2')));
+    return await _checkGasFor(sellCoinBalance.coin.abbr, mContext);
+  }
 
-        if (ethBalance.balance.balance < feeERC) {
-          Scaffold.of(mContext).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 2),
-            backgroundColor: Theme.of(context).primaryColor,
-            content: Text(
-              AppLocalizations.of(context).swapErcAmount(feeERC.toString()),
-              style:
-                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
-            ),
-          ));
-          return;
-        }
-      }
+  Future<bool> _checkGasFor(String coin, BuildContext mContext) async {
+    final CoinAmt gasFee = await GetFee.gas(coin);
+    if (gasFee == null) return true;
+
+    CoinBalance gasBalance;
+    try {
+      gasBalance = coinsBloc.coinBalance
+          .singleWhere((CoinBalance coin) => coin.coin.abbr == gasFee.coin);
+    } catch (e) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 2),
+        backgroundColor: Theme.of(context).primaryColor,
+        content: Text(
+          'Please activate ${gasFee.coin} and top-up balance first',
+          style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
+        ),
+      ));
+      return false;
     }
+
+    double requiredGasAmt = gasFee.amount;
+    if (gasFee.coin == swapBloc.sellCoinBalance.coin.abbr) {
+      requiredGasAmt += GetFee.trading(_amountSell()).amount;
+    }
+
+    if (gasBalance.balance.balance < deci(requiredGasAmt)) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 2),
+        backgroundColor: Theme.of(context).primaryColor,
+        content: Text(
+          AppLocalizations.of(context).swapGasAmount(
+              cutTrailingZeros(formatPrice(gasFee)), gasFee.coin),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
+        ),
+      ));
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> _confirmSwap(BuildContext mContext) async {
+    _replaceAllCommas();
+
+    if (!(await _checkEnoughGas(context))) return;
+
     if (mainBloc.isNetworkOffline) {
       Scaffold.of(mContext).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         backgroundColor: Theme.of(context).errorColor,
         content: Text(AppLocalizations.of(context).noInternet),
       ));
+      return;
     }
-    if (_checkValueMin() && !mainBloc.isNetworkOffline) {
+
+    if (!_checkValueMin()) return;
+
+    setState(() {
+      _noOrderFound = false;
+    });
+    Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => SwapConfirmation(
+                orderSuccess: () {
+                  dialogBloc.dialog = showDialog<dynamic>(
+                          builder: (BuildContext context) {
+                            return SimpleDialog(
+                              title: Text(
+                                  AppLocalizations.of(context).orderCreated),
+                              contentPadding: const EdgeInsets.all(24),
+                              children: <Widget>[
+                                Text(AppLocalizations.of(context)
+                                    .orderCreatedInfo),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                PrimaryButton(
+                                  text:
+                                      AppLocalizations.of(context).showMyOrders,
+                                  onPressed: () {
+                                    swapBloc.setIndexTabDex(1);
+                                    Navigator.of(context).pop();
+                                    showSoundsDialog(context);
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                SecondaryButton(
+                                  text: AppLocalizations.of(context).close,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    showSoundsDialog(context);
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                          context: context)
+                      .then((dynamic _) {
+                    dialogBloc.dialog = null;
+                  });
+                },
+                order: currentAsk,
+                bestPrice: deci2s(swapBloc.orderCoin.bestPrice),
+                coinBase: swapBloc.orderCoin?.coinBase,
+                coinRel: swapBloc.orderCoin?.coinRel,
+                swapStatus: swapBloc.enabledReceiveField
+                    ? SwapStatus.SELL
+                    : SwapStatus.BUY,
+                amountToSell: '${_amountSell()}',
+                amountToBuy: '${_amountReceive()}',
+              )),
+    ).then((dynamic _) {
       setState(() {
-        _noOrderFound = false;
+        currentAsk = null;
       });
-      Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => SwapConfirmation(
-                  orderSuccess: () {
-                    dialogBloc.dialog = showDialog<dynamic>(
-                            builder: (BuildContext context) {
-                              return SimpleDialog(
-                                title: Text(
-                                    AppLocalizations.of(context).orderCreated),
-                                contentPadding: const EdgeInsets.all(24),
-                                children: <Widget>[
-                                  Text(AppLocalizations.of(context)
-                                      .orderCreatedInfo),
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                  PrimaryButton(
-                                    text: AppLocalizations.of(context)
-                                        .showMyOrders,
-                                    onPressed: () {
-                                      swapBloc.setIndexTabDex(1);
-                                      Navigator.of(context).pop();
-                                      showSoundsDialog(context);
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  SecondaryButton(
-                                    text: AppLocalizations.of(context).close,
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      showSoundsDialog(context);
-                                    },
-                                  )
-                                ],
-                              );
-                            },
-                            context: context)
-                        .then((dynamic _) {
-                      dialogBloc.dialog = null;
-                    });
-                  },
-                  order: currentAsk,
-                  bestPrice: deci2s(swapBloc.orderCoin.bestPrice),
-                  coinBase: swapBloc.orderCoin?.coinBase,
-                  coinRel: swapBloc.orderCoin?.coinRel,
-                  swapStatus: swapBloc.enabledReceiveField
-                      ? SwapStatus.SELL
-                      : SwapStatus.BUY,
-                  amountToSell: _controllerAmountSell.text.replaceAll(',', '.'),
-                  amountToBuy:
-                      _controllerAmountReceive.text.replaceAll(',', '.'),
-                )),
-      ).then((dynamic _) {
-        setState(() {
-          currentAsk = null;
-        });
-        _controllerAmountReceive.clear();
-        _controllerAmountSell.clear();
-      });
-    }
+      _controllerAmountReceive.clear();
+      _controllerAmountSell.clear();
+    });
+  }
+
+  double _amountSell() {
+    return double.tryParse(_controllerAmountSell.text.replaceAll(',', '.')) ??
+        0;
+  }
+
+  double _amountReceive() {
+    return double.tryParse(
+            _controllerAmountReceive.text.replaceAll(',', '.')) ??
+        0;
   }
 }
 

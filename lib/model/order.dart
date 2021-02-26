@@ -9,11 +9,13 @@ class Order {
       this.relAmount,
       this.uuid,
       this.baseAmount,
+      this.minVolume,
       this.createdAt,
       this.cancelable});
 
   String base;
   String baseAmount;
+  double minVolume;
   String rel;
   OrderType orderType;
   String relAmount;
@@ -24,9 +26,8 @@ class Order {
 
   int compareToOrder(Order other) {
     int order = other.createdAt.compareTo(createdAt);
-    if (order == 0) {
-      order = (createdAt ~/ 1000).compareTo(other.createdAt);
-    }
+    if (order == 0) order = base.compareTo(other.base);
+    if (order == 0) order = rel.compareTo(other.rel);
     return order;
   }
 

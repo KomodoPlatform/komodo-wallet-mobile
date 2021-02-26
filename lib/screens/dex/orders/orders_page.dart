@@ -37,8 +37,8 @@ class _OrdersPageState extends State<OrdersPage> {
                       AppLocalizations.of(context).ordersActive + ' ',
                       style: TextStyle(
                           color: currentTab == OrdersTab.active
-                              ? null
-                              : Theme.of(context).accentColor),
+                              ? Theme.of(context).accentColor
+                              : null),
                     ),
                     _buildActiveOrdersNumber(),
                   ],
@@ -56,8 +56,8 @@ class _OrdersPageState extends State<OrdersPage> {
                     AppLocalizations.of(context).ordersHistory + ' ',
                     style: TextStyle(
                         color: currentTab == OrdersTab.history
-                            ? null
-                            : Theme.of(context).accentColor),
+                            ? Theme.of(context).accentColor
+                            : null),
                   ),
                   _buildHistoryNumber(),
                 ],
@@ -76,7 +76,7 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget _buildHistoryNumber() {
     return StreamBuilder<Iterable<Swap>>(
         stream: swapHistoryBloc.outSwaps,
-        initialData: syncSwaps.swaps,
+        initialData: swapMonitor.swaps,
         builder:
             (BuildContext context, AsyncSnapshot<Iterable<Swap>> snapshot) {
           if (!snapshot.hasData) return Container();
@@ -94,8 +94,8 @@ class _OrdersPageState extends State<OrdersPage> {
               fontSize: 13,
               fontWeight: FontWeight.w400,
               color: currentTab == OrdersTab.history
-                  ? null
-                  : Theme.of(context).accentColor,
+                  ? Theme.of(context).accentColor
+                  : null,
             ),
           );
         });
@@ -118,8 +118,8 @@ class _OrdersPageState extends State<OrdersPage> {
             fontSize: 13,
             fontWeight: FontWeight.w400,
             color: currentTab == OrdersTab.active
-                ? null
-                : Theme.of(context).accentColor,
+                ? Theme.of(context).accentColor
+                : null,
           ),
         );
       },

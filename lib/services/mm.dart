@@ -5,9 +5,11 @@ import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/get_convert_address.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
+import 'package:komodo_dex/model/get_priv_key.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_rewards_info.dart';
 import 'package:komodo_dex/model/get_validate_address.dart';
+import 'package:komodo_dex/model/priv_key.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/services/music_service.dart';
@@ -128,14 +130,16 @@ class ApiProvider {
   ) async =>
       await _assertUserpass(client, body).then<dynamic>(
           (UserpassBody userBody) => userBody.client
-              .post(url, body: getOrderbookToJson(userBody.body))
-              .then(
-                  (Response r) => _saveRes('getOrderbook_api_providers:110', r))
-              .then<dynamic>((Response res) => orderbookFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'getOrderbook_api_providers:111',
-                  e,
-                  'Error on get orderbook')));
+                  .post(url, body: getOrderbookToJson(userBody.body))
+                  .then((Response r) =>
+                      _saveRes('getOrderbook_api_providers:110', r))
+                  .then<dynamic>((Response res) {
+                _assert200(res);
+                return orderbookFromJson(res.body);
+              }).catchError((dynamic e) => _catchErrorString(
+                      'getOrderbook_api_providers:111',
+                      e,
+                      'Error on get orderbook')));
 
   void _assert200(Response r) {
     if (r.body.isEmpty) throw ErrorString('HTTP ${r.statusCode} empty');
@@ -245,6 +249,7 @@ class ApiProvider {
               swapContractAddress: coin.swapContractAddress,
               urls: coin.serverList)
           .toJson());
+
     // https://developers.atomicdex.io/basic-docs/atomicdex/atomicdex-api.html#electrum
     final electrum = <String, dynamic>{
       'method': 'electrum',
@@ -254,8 +259,12 @@ class ApiProvider {
       'mm2': coin.mm2,
       'tx_history': true,
       'required_confirmations': coin.requiredConfirmations,
+      if (coin.matureConfirmations != null)
+        'mature_confirmations': coin.matureConfirmations,
       'requires_notarization': coin.requiresNotarization ?? false,
       'address_format': coin.addressFormat,
+      if (coin.swapContractAddress.isNotEmpty)
+        'swap_contract_address': coin.swapContractAddress
     };
     final js = json.encode(electrum);
     Log('mm:251', js.replaceAll(RegExp(r'"\w{64}"'), '"-"'));
@@ -376,16 +385,20 @@ class ApiProvider {
   Future<dynamic> postWithdraw(
     http.Client client,
     GetWithdraw body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: getWithdrawToJson(userBody.body))
-              .then((Response r) => _saveRes('postWithdraw', r))
-              .then<dynamic>(
-                  (Response res) => withdrawResponseFromJson(res.body))
-              .catchError((dynamic _) => errorStringFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'postWithdraw', e, 'Error on post withdraw')));
+  ) async {
+    client ??= mmSe.client;
+    final userBody = await _assertUserpass(client, body);
+    final r = await client.post(url, body: json.encode(userBody.body));
+    _assert200(r);
+    _saveRes('postWithdraw', r);
+
+    // Parse JSON once, then check if the JSON is an error.
+    final dynamic jbody = json.decode(r.body);
+    final error = ErrorString.fromJson(jbody);
+    if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+    return withdrawResponseFromJson(res.body);
+  }
 
   Future<dynamic> getTradeFee(
     http.Client client,
@@ -588,5 +601,28 @@ class ApiProvider {
     if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
     return jbody['result']['address'];
+  }
+
+  Future<PrivKey> getPrivKey(GetPrivKey gpk, {http.Client client}) async {
+    client ??= mmSe.client;
+    try {
+      final userBody = await _assertUserpass(client, gpk);
+      final r = await userBody.client
+          .post(url, body: getPrivKeyToJson(userBody.body));
+      _assert200(r);
+      _saveRes('getPrivKey', r);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = json.decode(r.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      final PrivKey privKey = PrivKey.fromJson(jbody);
+
+      return privKey;
+    } catch (e) {
+      throw _catchErrorString(
+          'getPrivKey', e, 'Error getting ${gpk.coin} private key');
+    }
   }
 }

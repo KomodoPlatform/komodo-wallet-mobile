@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 import 'get_orderbook.dart';
 
@@ -59,16 +61,9 @@ class OrderBookProvider extends ChangeNotifier {
 
     final List<Ask> sorted = quotePrice
         ? list.map((Ask ask) {
-            final double price = 1 / double.parse(ask.price);
-            return Ask(
-              address: ask.address,
-              age: ask.age,
-              coin: ask.coin,
-              pubkey: ask.pubkey,
-              zcredits: ask.zcredits,
-              price: price.toString(),
-              maxvolume: ask.maxvolume,
-            );
+            final Ask quoteAsk = Ask.fromJson(ask.toJson());
+            quoteAsk.price = '${1 / double.parse(ask.price)}';
+            return quoteAsk;
           }).toList()
         : List.from(list);
 
@@ -180,14 +175,19 @@ class SyncOrderbook {
     final Map<String, Orderbook> orderBooks = {};
     for (String pair in _tickers) {
       final List<String> abbr = pair.split('-');
-      final Orderbook orderbook = await MM.getOrderbook(
+      final dynamic orderbook = await MM.getOrderbook(
           MMService().client,
           GetOrderbook(
             base: abbr[0],
             rel: abbr[1],
           ));
 
-      orderBooks[pair] = orderbook;
+      if (orderbook is Orderbook) {
+        orderBooks[pair] = orderbook;
+      } else if (orderbook is ErrorString) {
+        Log('order_book_provider] _updateOrderBooks',
+            '$pair: ${orderbook.error}');
+      }
     }
 
     _orderBooks = orderBooks;

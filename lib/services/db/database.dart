@@ -266,6 +266,12 @@ class Db {
         where: 'abbr = ?', whereArgs: <dynamic>[ticker]);
   }
 
+  static Future<void> deleteNote(String id) async {
+    final Database db = await Db.db;
+
+    return await db.delete('Notes', where: 'id = ?', whereArgs: <String>[id]);
+  }
+
   static Future<int> saveNote(String id, String note) async {
     final Database db = await Db.db;
 
@@ -303,6 +309,25 @@ class Db {
     } else {
       return notes[0];
     }
+  }
+
+  static Future<Map<String, String>> getAllNotes() async {
+    final Database db = await Db.db;
+
+    final List<Map<String, dynamic>> maps = await db.query('Notes');
+    Log('database:312', maps.length);
+
+    final Map<String, String> r = {for (var m in maps) m['id']: m['note']};
+
+    return r;
+  }
+
+  static Future<void> addAllNotes(Map<String, String> allNotes) async {
+    //final Database db = await Db.db;
+
+    allNotes.forEach((k, v) async {
+      await saveNote(k, v);
+    });
   }
 
   static Future<void> saveWalletSnapshot(String jsonStr) async {

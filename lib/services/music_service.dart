@@ -82,7 +82,7 @@ class MusicService {
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
   static MusicMode pickMode(List<Order> orders, MusicMode prevMode) {
-    for (final Swap swap in syncSwaps.swaps) {
+    for (final Swap swap in swapMonitor.swaps) {
       final String uuid = swap.result.uuid;
       final String shortId = uuid.substring(0, 4);
       final bool active = swap.status != Status.SWAP_FAILED &&
@@ -135,7 +135,9 @@ class MusicService {
               ? 'swap_in_progress_sample.mp3'
               : mode == MusicMode.FAILED
                   ? 'none.mp3'
-                  : mode == MusicMode.APPLAUSE ? 'none.mp3' : null;
+                  : mode == MusicMode.APPLAUSE
+                      ? 'none.mp3'
+                      : null;
 
   Future<void> setSoundPath(MusicMode mode, String path) async {
     final String name = _customName(mode);
@@ -227,7 +229,9 @@ class MusicService {
                     ? (rng.nextBool() ? 'none.mp3' : 'none.mp3')
                     : newMode == MusicMode.APPLAUSE
                         ? 'none.mp3'
-                        : newMode == MusicMode.SILENT ? 'none.mp3' : null;
+                        : newMode == MusicMode.SILENT
+                            ? 'none.mp3'
+                            : null;
 
     final String path = customFile != null
         ? (Platform.isAndroid ? customFile.path : customName)

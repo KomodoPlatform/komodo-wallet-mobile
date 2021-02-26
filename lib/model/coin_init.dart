@@ -28,8 +28,11 @@ class CoinInit {
     this.versionGroupId,
     this.consensusBranchId,
     this.requiredConfirmations,
+    this.matureConfirmations,
     this.asset,
     this.segwit,
+    this.dust,
+    this.forceMinRelayFee,
     this.addressFormat,
     this.protocol,
   });
@@ -50,10 +53,13 @@ class CoinInit {
         overwintered: json['overwintered'],
         versionGroupId: json['version_group_id'],
         requiredConfirmations: json['required_confirmations'],
+        matureConfirmations: json['mature_confirmations'],
         consensusBranchId: json['consensus_branch_id'],
         asset: json['asset'],
         segwit: json['segwit'],
         addressFormat: json['address_format'],
+        dust: json['dust'],
+        forceMinRelayFee: json['force_min_relay_fee'],
         protocol: json['protocol'],
       );
 
@@ -73,8 +79,11 @@ class CoinInit {
   String versionGroupId;
   String consensusBranchId;
   int requiredConfirmations;
+  int matureConfirmations;
   String asset;
   bool segwit;
+  int dust;
+  bool forceMinRelayFee;
   Map<String, dynamic> addressFormat;
   Map<String, dynamic> protocol;
 
@@ -95,8 +104,11 @@ class CoinInit {
         'version_group_id': versionGroupId,
         'consensus_branch_id': consensusBranchId,
         'required_confirmations': requiredConfirmations,
+        'mature_confirmations': matureConfirmations,
         'asset': asset,
         'segwit': segwit,
+        if (dust != null) 'dust': dust,
+        if (forceMinRelayFee != null) 'force_min_relay_fee': forceMinRelayFee,
         'address_format': addressFormat,
         'protocol': protocol,
       };

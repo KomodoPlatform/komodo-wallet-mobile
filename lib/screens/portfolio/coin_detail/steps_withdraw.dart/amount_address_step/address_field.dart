@@ -12,14 +12,12 @@ class AddressField extends StatefulWidget {
     Key key,
     this.onScan,
     this.controller,
-    this.isERCToken = false,
     this.addressFormat,
     this.coin,
   }) : super(key: key);
 
   final Function onScan;
   final TextEditingController controller;
-  final bool isERCToken;
   final Map<String, dynamic> addressFormat;
   final Coin coin;
 
@@ -192,6 +190,7 @@ class _AddressFieldState extends State<AddressField> {
       setState(() {
         mm2Validated = true;
         convertMessage = null;
+        autovalidate = true;
       });
       return;
     }
@@ -199,6 +198,7 @@ class _AddressFieldState extends State<AddressField> {
     // if not valid
     setState(() {
       mm2Validated = false;
+      autovalidate = false;
     });
     if (_isBchLegacyFormat(error)) {
       setState(() {
@@ -225,7 +225,7 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   bool _isErcNonMixedCase(String error) {
-    if (widget.coin.swapContractAddress.isEmpty) return false;
+    if (widget.coin.type != 'erc') return false;
     if (!error.contains('Invalid address checksum')) return false;
 
     return true;

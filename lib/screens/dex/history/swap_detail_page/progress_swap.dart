@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
+import 'package:komodo_dex/screens/dex/orders/build_taker_countdown.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
@@ -63,7 +64,8 @@ class _ProgressSwapState extends State<ProgressSwap>
   @override
   Widget build(BuildContext context) {
     final SwapProvider _swapProvider = Provider.of<SwapProvider>(context);
-    swap = _swapProvider.swap(widget.uuid) ?? Swap();
+    swap =
+        _swapProvider.swap(widget.uuid) ?? Swap(status: Status.ORDER_MATCHING);
 
     if (swap.step != prevSwap.step) {
       prevSwap = swap;
@@ -113,11 +115,17 @@ class _ProgressSwapState extends State<ProgressSwap>
               ),
             ),
           ),
-          Text(
-            swapHistoryBloc.getSwapStatusString(context, swap.status),
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                fontWeight: FontWeight.w300,
-                color: Colors.white.withOpacity(0.5)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                swapHistoryBloc.getSwapStatusString(context, swap.status),
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white.withOpacity(0.5)),
+              ),
+              BuildTakerCountdown(widget.uuid),
+            ],
           )
         ],
       ),

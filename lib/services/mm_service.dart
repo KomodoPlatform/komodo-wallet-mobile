@@ -61,7 +61,6 @@ class MMService {
 
   /// We're using the netid of 9999 currently
   /// But it's possible in theory to connect the UI to MM running on a different netid
-  /// Might want to check if we're running under the standard netid before we gossip
   int netid;
 
   /// Effective memory used by the application, MiB
@@ -159,36 +158,6 @@ class MMService {
   void initUsername(String passphrase) {
     final List<int> bytes = utf8.encode(passphrase); // data being hashed
     userpass = sha256.convert(bytes).toString();
-  }
-
-  Future<void> initCheckLogs() async {
-    final File fileLog = File('${filesPath}mm.log');
-
-    if (!fileLog.existsSync()) await fileLog.create();
-    int offset = fileLog.lengthSync();
-
-    jobService.install('tail MM log', 1, (j) async {
-      final Stream<String> stream = fileLog
-          .openRead(offset)
-          .transform(utf8.decoder)
-          .transform(const LineSplitter());
-      await for (String chunk in stream) {
-        if (chunk.contains('DEX stats API enabled at')) {
-          _running = true;
-          initCoinsAndLoad();
-          coinsBloc.startCheckBalance();
-        }
-        _onLog(chunk);
-      }
-      offset = fileLog.lengthSync();
-      if (offset > 1024 * 1024) {
-        // #653: Truncate the MM log buffer which is used presently on Android.
-        // `_onLog` copies chunks into the "log.txt"
-        // hence we can just truncate the "mm.log" without separately copying it.
-        final IOSink truncSink = fileLog.openWrite();
-        await truncSink.close();
-      }
-    });
   }
 
   String get filesPath => applicationDocumentsDirectorySync == null
@@ -333,7 +302,7 @@ class MMService {
     try {
       s.write(chunk);
     } catch (ex) {
-      print(ex); // AG: We should *gossip* this exception in the future.
+      print(ex);
       log.sink = s = log.file.openWrite(mode: FileMode.append);
       s.write(chunk);
     }
@@ -341,7 +310,7 @@ class MMService {
 
   /// Load fresh lists of orders and swaps from MM.
   Future<void> updateOrdersAndSwaps() async {
-    await syncSwaps.update();
+    await swapMonitor.update();
     await ordersBloc.updateOrdersSwaps();
   }
 
