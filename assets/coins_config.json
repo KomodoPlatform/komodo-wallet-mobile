@@ -541,9 +541,7 @@
         "colorCoin": "0xFF447224",
         "serverList": [
             "1.eu.thc.electrum.dexstats.info:10020",
-            "2.eu.thc.electrum.dexstats.info:10020",
-            "165.22.52.123:10022",
-            "157.230.45.184:10022"
+            "2.eu.thc.electrum.dexstats.info:10020"
         ],
         "explorerUrl": [
             "https://thc.explorer.dexstats.info/"
