@@ -41,10 +41,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   final _ctrlAmountSell = TextEditingControllerWorkaroud();
   final _ctrlAmountReceive = TextEditingController();
 
-  CexProvider cexProvider;
-  OrderBookProvider orderBookProvider;
+  CexProvider _cexProvider;
+  OrderBookProvider _orderBookProvider;
 
-  Decimal tmpAmountSell = deci(0);
+  Decimal _tmpAmountSell = deci(0);
   Ask _matchingBid;
   bool _isLoadingMax = false;
 
@@ -53,8 +53,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     super.initState();
 
     initListenerAmountReceive();
-    swapBloc.enabledReceiveField = false;
 
+    swapBloc.enabledReceiveField = false;
     swapBloc.updateSellCoin(null);
     swapBloc.updateBuyCoin(null);
     swapBloc.updateReceiveCoin(null);
@@ -76,8 +76,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    cexProvider ??= Provider.of<CexProvider>(context);
-    orderBookProvider ??= Provider.of<OrderBookProvider>(context);
+    _cexProvider ??= Provider.of<CexProvider>(context);
+    _orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -148,7 +148,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             maxVolume: deci(_amountSell())));
       }
 
-      if (amountSell != tmpAmountSell && amountSell != deci(0)) {
+      if (amountSell != _tmpAmountSell && amountSell != deci(0)) {
         setState(() {
           if (swapBloc.receiveCoin != null && !swapBloc.enabledReceiveField) {
             swapBloc
@@ -188,7 +188,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         });
       }
 
-      tmpAmountSell = amountSell;
+      _tmpAmountSell = amountSell;
     });
   }
 
@@ -602,7 +602,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           swapBloc.setTimeout(true);
           swapBloc.setEnabledSellField(true);
 
-          orderBookProvider.activePair = CoinsPair(sell: coin.coin, buy: null);
+          _orderBookProvider.activePair = CoinsPair(sell: coin.coin, buy: null);
 
           _ctrlAmountReceive.clear();
           _ctrlAmountSell.clear();

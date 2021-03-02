@@ -20,11 +20,6 @@ class SwapBloc implements BlocBase {
   CoinBalance buyCoinBalance;
   bool enabledReceiveField;
 
-  final StreamController<OrderCoin> _orderCoinController =
-      StreamController<OrderCoin>.broadcast();
-  Sink<OrderCoin> get _inOrderCoin => _orderCoinController.sink;
-  Stream<OrderCoin> get outOrderCoin => _orderCoinController.stream;
-
   final StreamController<double> _buyCoinUsdController =
       StreamController<double>.broadcast();
   Sink<double> get _inBuyCoinUsd => _buyCoinUsdController.sink;
@@ -100,7 +95,6 @@ class SwapBloc implements BlocBase {
 
   @override
   void dispose() {
-    _orderCoinController.close();
     _sellCoinController.close();
     _focusTextFieldController.close();
     _receiveCoinController.close();
@@ -141,7 +135,6 @@ class SwapBloc implements BlocBase {
 
   void updateBuyCoin(OrderCoin orderCoin) {
     this.orderCoin = orderCoin;
-    _inOrderCoin.add(this.orderCoin);
 
     try {
       buyCoinBalance = coinsBloc.coinBalance.firstWhere(
@@ -215,7 +208,6 @@ class SwapBloc implements BlocBase {
         maxVolume: maxVolume,
         bestPrice: bestPrice,
       );
-      _inOrderCoin.add(orderCoin);
 
       amountReceive = orderCoin.getBuyAmount(amountSell).toDouble();
 
