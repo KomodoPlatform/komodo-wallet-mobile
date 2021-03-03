@@ -24,7 +24,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
     cexProvider ??= Provider.of<CexProvider>(context);
     orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
-    final String buyAbbr = swapBloc.buyCoinBalance?.coin?.abbr;
+    final String buyAbbr = swapBloc.receiveCoinBalance?.coin?.abbr;
     final String sellAbbr = swapBloc.sellCoinBalance?.coin?.abbr;
 
     if (buyAbbr == null || sellAbbr == null) return Container();

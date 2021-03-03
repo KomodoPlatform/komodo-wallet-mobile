@@ -38,17 +38,18 @@ class TradeFormValidator {
     final double minVolumeSell =
         swapBloc.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
     final double minVolumeReceive =
-        swapBloc.minVolumeDefault(swapBloc.receiveCoin.abbr);
+        swapBloc.minVolumeDefault(swapBloc.receiveCoinBalance.coin.abbr);
 
     if (amountSell > 0 && amountSell < minVolumeSell) {
       return appLocalizations.minValue(
           swapBloc.sellCoinBalance.coin.abbr, '$minVolumeSell');
     } else if (amountReceive > 0 && amountReceive < minVolumeReceive) {
       return appLocalizations.minValueBuy(
-          swapBloc.receiveCoin.abbr, '$minVolumeReceive');
+          swapBloc.receiveCoinBalance.coin.abbr, '$minVolumeReceive');
     } else if (matchingBid != null && matchingBid.minVolume != null) {
       if (amountReceive < matchingBid.minVolume) {
-        return appLocalizations.minValueBuy(swapBloc.receiveCoin.abbr,
+        return appLocalizations.minValueBuy(
+            swapBloc.receiveCoinBalance.coin.abbr,
             cutTrailingZeros(formatPrice(matchingBid.minVolume)));
       }
       return null;
@@ -59,7 +60,7 @@ class TradeFormValidator {
 
   Future<String> _validateGas() async {
     return await _validateGasFor(swapBloc.sellCoinBalance.coin.abbr) ??
-        await _validateGasFor(swapBloc.receiveCoin.abbr);
+        await _validateGasFor(swapBloc.receiveCoinBalance.coin.abbr);
   }
 
   Future<String> _validateGasFor(String coin) async {

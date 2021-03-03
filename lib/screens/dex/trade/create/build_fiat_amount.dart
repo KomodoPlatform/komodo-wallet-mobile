@@ -16,12 +16,11 @@ class BuildFiatAmount extends StatelessWidget {
   Widget build(BuildContext context) {
     final cexProvider = Provider.of<CexProvider>(context);
 
-    final double amount = market == Market.SELL
-        ? swapBloc.currentAmountSell
-        : swapBloc.currentAmountBuy;
+    final double amount =
+        market == Market.SELL ? swapBloc.amountSell : swapBloc.amountReceive;
     final Coin coin = market == Market.SELL
         ? swapBloc.sellCoinBalance?.coin
-        : swapBloc.buyCoinBalance?.coin;
+        : swapBloc.receiveCoinBalance?.coin;
 
     if (amount == null || coin == null || amount == 0) return Container();
 

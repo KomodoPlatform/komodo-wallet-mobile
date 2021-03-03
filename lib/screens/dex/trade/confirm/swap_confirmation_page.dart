@@ -68,7 +68,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   @override
   void dispose() {
     swapBloc.updateSellCoin(null);
-    swapBloc.updateBuyCoin(null);
     swapBloc.updateReceiveCoin(null);
     swapBloc.setEnabledSellField(false);
     super.dispose();
@@ -189,7 +188,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
 
   void _resetSwapPage() {
     swapBloc.updateSellCoin(null);
-    swapBloc.updateBuyCoin(null);
     swapBloc.updateReceiveCoin(null);
     swapBloc.enabledReceiveField = false;
   }
@@ -383,7 +381,6 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
             child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
             onPressed: () {
               swapBloc.updateSellCoin(null);
-              swapBloc.updateBuyCoin(null);
               Navigator.of(context).pop();
             },
           ),

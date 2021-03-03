@@ -31,7 +31,7 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
   AddressBookProvider _addressBookProvider;
   OrderBookProvider _orderBookProvider;
 
-  final double _sellAmount = swapBloc.currentAmountSell;
+  final double _sellAmount = swapBloc.amountSell;
 
   @override
   Widget build(BuildContext context) {

@@ -89,7 +89,7 @@ void openBidDetailsDialog({
                         ),
                       BuildOrderDetails(
                         bid,
-                        sellAmount: swapBloc.currentAmountSell,
+                        sellAmount: swapBloc.amountSell,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
