@@ -23,6 +23,25 @@ class _DetailSwapState extends State<DetailSwap> {
   bool isNoteExpanded = false;
   final noteTextController = TextEditingController();
 
+  Widget _buildMakerTakerBadge(bool isMaker) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        border: Border.all(
+          color: Colors.white,
+          style: BorderStyle.solid,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Text(isMaker ? 'Maker' : 'Taker',
+            style: Theme.of(context).textTheme.subtitle2),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -52,11 +71,18 @@ class _DetailSwapState extends State<DetailSwap> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 32, left: 24, right: 24),
-          child: Text(
-            '${AppLocalizations.of(context).tradeDetail}:',
-            style: Theme.of(context).textTheme.subtitle2.copyWith(
-                color: Theme.of(context).accentColor,
-                fontWeight: FontWeight.bold),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '${AppLocalizations.of(context).tradeDetail}:',
+                  style: Theme.of(context).textTheme.subtitle2.copyWith(
+                      color: Theme.of(context).accentColor,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              _buildMakerTakerBadge(widget.swap.result.type == 'Maker'),
+            ],
           ),
         ),
         Padding(
