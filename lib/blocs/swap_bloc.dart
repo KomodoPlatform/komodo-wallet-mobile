@@ -4,6 +4,8 @@ import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class SwapBloc implements BlocBase {
@@ -13,6 +15,7 @@ class SwapBloc implements BlocBase {
   bool enabledReceiveField = false;
   double amountSell;
   double amountReceive;
+  Ask matchingBid;
   bool isMaxActive = false;
 
   // Using to guide user directly to active orders list
@@ -55,6 +58,11 @@ class SwapBloc implements BlocBase {
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsMaxActive => _isMaxActiveController.sink;
   Stream<bool> get outIsMaxActive => _isMaxActiveController.stream;
+
+  final StreamController<Ask> _matchingBidController =
+      StreamController<Ask>.broadcast();
+  Sink<Ask> get _inMatchingBid => _matchingBidController.sink;
+  Stream<Ask> get outMatchingBid => _matchingBidController.stream;
 
   @override
   void dispose() {
@@ -110,6 +118,11 @@ class SwapBloc implements BlocBase {
     _inSellCoinBalance.add(sellCoinBalance);
   }
 
+  void updateMatchingBid(Ask bid) {
+    matchingBid = bid;
+    _inMatchingBid.add(matchingBid);
+  }
+
   double getExchangeRate() {
     if (amountSell == null) return null;
     if (amountReceive == null || amountReceive == 0) return null;
@@ -126,6 +139,22 @@ class SwapBloc implements BlocBase {
     } else {
       return 0.00777;
     }
+  }
+
+  Future<Decimal> getMaxSellAmount() async {
+    final Decimal sellCoinFee = await getSellCoinFees(true);
+    final CoinBalance sellCoinBalance = swapBloc.sellCoinBalance;
+    return sellCoinBalance.balance.balance - sellCoinFee;
+  }
+
+  Future<Decimal> getSellCoinFees(bool max) async {
+    final CoinAmt fee = await GetSwapFee.totalSell(
+      sellCoin: sellCoinBalance.coin.abbr,
+      buyCoin: receiveCoinBalance?.coin?.abbr,
+      sellAmt: max ? sellCoinBalance.balance.balance.toDouble() : amountSell,
+    );
+
+    return deci(fee.amount);
   }
 }
 

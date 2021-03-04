@@ -18,6 +18,7 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/min_volume_control.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
+import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -522,7 +523,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
       showSoundsDialog(context);
     } else if (widget.swapStatus == SwapStatus.SELL) {
       Navigator.of(context).pop();
-      widget.orderSuccess();
+      showOrderCreatedDialog(context);
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class ReceiveAmountField extends StatefulWidget {
   @override
@@ -46,7 +47,7 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   void _onDataChange(double value) {
     if (!mounted) return;
 
-    _ctrl.text = value.toString();
+    _ctrl.text = value == null ? '' : cutTrailingZeros(formatPrice(value));
   }
 
   void _onFieldChange() {

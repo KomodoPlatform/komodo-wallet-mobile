@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:decimal/decimal.dart';
+
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
+import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 class SellAmountField extends StatefulWidget {
   @override
@@ -10,7 +15,7 @@ class SellAmountField extends StatefulWidget {
 }
 
 class _SellAmountFieldState extends State<SellAmountField> {
-  final _ctrl = TextEditingController();
+  final _ctrl = TextEditingControllerWorkaroud();
   String _prevValue;
 
   @override
@@ -49,21 +54,54 @@ class _SellAmountFieldState extends State<SellAmountField> {
   void _onDataChange(double value) {
     if (!mounted) return;
 
-    _ctrl.text = value == null ? '' : value.toString();
+    final String newValue = cutTrailingZeros(formatPrice(value));
+    if (newValue == _prevValue) return;
+
+    _ctrl.setTextAndPosition(newValue ?? '');
   }
 
-  void _onFieldChange() {
-    String value = _ctrl.text;
+  Future<void> _onFieldChange() async {
+    final String value = _ctrl.text;
     if (value == _prevValue) return;
 
-    // TODO(yurii): mutating value (all logic and check goes here)
-    // - check if not greater than max balance
-    // - check if not greater than matching bid max receive volume
-    value = value;
+    double newValueNum = double.tryParse(value ?? '');
+    // If empty or non-numerical
+    if (newValueNum == null) {
+      swapBloc.setAmountSell(null);
+      swapBloc.setAmountReceive(null);
+      swapBloc.setIsMaxActive(false);
+      setState(() => _prevValue = null);
 
-    if (value == _prevValue) return;
+      return;
+    }
 
-    setState(() => _prevValue = value);
-    _ctrl.text = value;
+    // If greater than max available balance
+    final Decimal maxAmount = await swapBloc.getMaxSellAmount();
+    if (newValueNum > maxAmount.toDouble()) {
+      newValueNum = maxAmount.toDouble();
+      swapBloc.setAmountSell(maxAmount.toDouble());
+      swapBloc.setIsMaxActive(true);
+    }
+
+    final Ask matchingBid = swapBloc.matchingBid;
+    if (matchingBid != null) {
+      final Decimal amountSell = Decimal.parse(newValueNum.toString());
+      final Decimal bidPrice = Decimal.parse(matchingBid.price);
+      final Decimal bidVolume = Decimal.parse(matchingBid.maxvolume.toString());
+
+      // If greater than matching bid max receive volume
+      if (amountSell > bidVolume * bidPrice) {
+        newValueNum = (bidVolume * bidPrice).toDouble();
+        swapBloc.setIsMaxActive(false);
+      }
+
+      swapBloc.setAmountReceive(newValueNum / double.parse(matchingBid.price));
+    }
+
+    final String newValue = cutTrailingZeros(formatPrice(newValueNum));
+
+    setState(() => _prevValue = newValue);
+    swapBloc.setAmountSell(newValueNum);
+    _ctrl.setTextAndPosition(newValue);
   }
 }
