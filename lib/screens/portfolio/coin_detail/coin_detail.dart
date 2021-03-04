@@ -472,7 +472,7 @@ class _CoinDetailState extends State<CoinDetail> {
                               style: Theme.of(context).textTheme.headline6,
                               textAlign: TextAlign.center,
                             ),
-                            if (unspendableBalance != '0')
+                            if (double.tryParse(unspendableBalance ?? '0') > 0)
                               Container(
                                 padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
                                 child: Text(
