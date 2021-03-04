@@ -49,12 +49,12 @@ class _SellAmountFieldState extends State<SellAmountField> {
   void _onDataChange(double value) {
     if (!mounted) return;
 
-    _ctrl.text = value.toString();
+    _ctrl.text = value == null ? '' : value.toString();
   }
 
   void _onFieldChange() {
     String value = _ctrl.text;
-    if (_prevValue == value) return;
+    if (value == _prevValue) return;
 
     // TODO(yurii): mutating value (all logic and check goes here)
     // - check if not greater than max balance

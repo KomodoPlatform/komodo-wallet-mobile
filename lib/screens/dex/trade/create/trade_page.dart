@@ -91,10 +91,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void onChangeReceive() {}
 
   Future<Decimal> _getSellCoinFees(bool isMax) async {
-    setState(() {
-      _isLoadingMax = true;
-    });
-
     final CoinBalance sellCoinBalance = swapBloc.sellCoinBalance;
     final CoinAmt fee = await GetSwapFee.totalSell(
       sellCoin: sellCoinBalance.coin.abbr,
@@ -102,10 +98,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       sellAmt:
           isMax ? sellCoinBalance.balance.balance.toDouble() : _amountSell(),
     );
-
-    setState(() {
-      _isLoadingMax = false;
-    });
 
     return deci(fee.amount);
   }
@@ -119,9 +111,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         Log.println('trade_page:380', 'setting max: $maxValue');
 
         if (maxValue < deci(0)) {
-          setState(() {
-            _isLoadingMax = false;
-          });
           _ctrlAmountSell.text = '';
           Scaffold.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 2),
@@ -136,7 +125,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           ));
         } else {
           Log.println('trade_page:398', '-----------_controllerAmountSell');
-          _ctrlAmountSell.setTextAndPosition(deci2s(maxValue));
+          swapBloc.setAmountSell(maxValue.toDouble());
         }
       });
     } catch (e) {
@@ -312,11 +301,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         return market == Market.SELL && enabledSnapshot.data
             ? InkWell(
                 onTap: () async {
-                  swapBloc.setIsMaxActive(true);
-                  setState(() {
-                    _isLoadingMax = true;
-                  });
+                  setState(() => _isLoadingMax = true);
                   await setMaxValue();
+                  setState(() => _isLoadingMax = false);
+                  swapBloc.setIsMaxActive(true);
                 },
                 child: StreamBuilder<bool>(
                     initialData: swapBloc.isMaxActive,
@@ -438,6 +426,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         onDone: (coin) {
           swapBloc.updateSellCoin(coin);
           swapBloc.updateReceiveCoin(null);
+          swapBloc.setAmountSell(null);
+          swapBloc.setIsMaxActive(false);
           swapBloc.setEnabledSellField(true);
 
           _orderBookProvider.activePair = CoinsPair(sell: coin.coin, buy: null);
