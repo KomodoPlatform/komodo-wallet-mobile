@@ -28,7 +28,7 @@ class _DetailSwapState extends State<DetailSwap> {
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         border: Border.all(
-          color: Colors.white,
+          color: Colors.grey,
           style: BorderStyle.solid,
           width: 2,
         ),
@@ -36,8 +36,12 @@ class _DetailSwapState extends State<DetailSwap> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8),
-        child: Text(isMaker ? 'Maker' : 'Taker',
-            style: Theme.of(context).textTheme.subtitle2),
+        child: Text(
+          isMaker
+              ? AppLocalizations.of(context).makerOrder
+              : AppLocalizations.of(context).takerOrder,
+          style: Theme.of(context).textTheme.caption,
+        ),
       ),
     );
   }
