@@ -54,6 +54,8 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
   }
 
   void _onStateChange(dynamic _) {
+    if (!mounted) return;
+
     final bool isEnabled = swapBloc.sellCoinBalance != null &&
         swapBloc.receiveCoinBalance != null &&
         swapBloc.amountSell != null &&

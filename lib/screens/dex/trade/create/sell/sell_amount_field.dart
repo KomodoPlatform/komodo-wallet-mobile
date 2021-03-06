@@ -54,54 +54,48 @@ class _SellAmountFieldState extends State<SellAmountField> {
   void _onDataChange(double value) {
     if (!mounted) return;
 
-    final String newValue = cutTrailingZeros(formatPrice(value));
+    final String newValue = cutTrailingZeros(formatPrice(value, 8));
     if (newValue == _prevValue) return;
+    setState(() => _prevValue = newValue);
 
     _ctrl.setTextAndPosition(newValue ?? '');
   }
 
   Future<void> _onFieldChange() async {
-    final String value = _ctrl.text;
-    if (value == _prevValue) return;
-
-    double newValueNum = double.tryParse(value ?? '');
+    double valueNum = double.tryParse(_ctrl.text ?? '');
     // If empty or non-numerical
-    if (newValueNum == null) {
+    if (valueNum == null) {
       swapBloc.setAmountSell(null);
       swapBloc.setAmountReceive(null);
       swapBloc.setIsMaxActive(false);
-      setState(() => _prevValue = null);
 
       return;
     }
 
     // If greater than max available balance
     final Decimal maxAmount = await swapBloc.getMaxSellAmount();
-    if (newValueNum > maxAmount.toDouble()) {
-      newValueNum = maxAmount.toDouble();
-      swapBloc.setAmountSell(maxAmount.toDouble());
+    if (valueNum > maxAmount.toDouble()) {
+      valueNum = maxAmount.toDouble();
       swapBloc.setIsMaxActive(true);
     }
 
     final Ask matchingBid = swapBloc.matchingBid;
     if (matchingBid != null) {
-      final Decimal amountSell = Decimal.parse(newValueNum.toString());
+      final Decimal amountSell = Decimal.parse(valueNum.toString());
       final Decimal bidPrice = Decimal.parse(matchingBid.price);
       final Decimal bidVolume = Decimal.parse(matchingBid.maxvolume.toString());
 
       // If greater than matching bid max receive volume
       if (amountSell > bidVolume * bidPrice) {
-        newValueNum = (bidVolume * bidPrice).toDouble();
+        valueNum = (bidVolume * bidPrice).toDouble();
         swapBloc.setIsMaxActive(false);
       }
 
-      swapBloc.setAmountReceive(newValueNum / double.parse(matchingBid.price));
+      swapBloc.setAmountReceive(valueNum / double.parse(matchingBid.price));
     }
 
-    final String newValue = cutTrailingZeros(formatPrice(newValueNum));
-
-    setState(() => _prevValue = newValue);
-    swapBloc.setAmountSell(newValueNum);
-    _ctrl.setTextAndPosition(newValue);
+    if (valueNum != swapBloc.amountSell) {
+      swapBloc.setAmountSell(valueNum); // fires `_onDataChange()`
+    }
   }
 }
