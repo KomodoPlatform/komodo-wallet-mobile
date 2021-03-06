@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
+import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class ReceiveAmountField extends StatefulWidget {
@@ -10,7 +11,7 @@ class ReceiveAmountField extends StatefulWidget {
 }
 
 class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
-  final _ctrl = TextEditingController();
+  final _ctrl = TextEditingControllerWorkaroud();
   String _prevValue;
 
   @override
@@ -47,20 +48,18 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   void _onDataChange(double value) {
     if (!mounted) return;
 
-    _ctrl.text = value == null ? '' : cutTrailingZeros(formatPrice(value));
+    final String newValue = cutTrailingZeros(formatPrice(value));
+    if (newValue == _prevValue) return;
+    setState(() => _prevValue = newValue);
+
+    _ctrl.setTextAndPosition(newValue ?? '');
   }
 
   void _onFieldChange() {
-    String value = _ctrl.text;
-    if (_prevValue == value) return;
+    final double valueNum = double.tryParse(_ctrl.text ?? '');
 
-    // TODO(yurii): mutating value (all logic and check goes here)
-    // - check if not greater than matching bid max receive volume
-    value = value;
-
-    if (value == _prevValue) return;
-
-    setState(() => _prevValue = value);
-    _ctrl.text = value;
+    if (valueNum != swapBloc.amountReceive) {
+      swapBloc.setAmountReceive(valueNum); // fires `_onDataChange()`
+    }
   }
 }

@@ -54,7 +54,7 @@ class _SellAmountFieldState extends State<SellAmountField> {
   void _onDataChange(double value) {
     if (!mounted) return;
 
-    final String newValue = cutTrailingZeros(formatPrice(value, 8));
+    final String newValue = cutTrailingZeros(formatPrice(value));
     if (newValue == _prevValue) return;
     setState(() => _prevValue = newValue);
 
@@ -81,13 +81,12 @@ class _SellAmountFieldState extends State<SellAmountField> {
 
     final Ask matchingBid = swapBloc.matchingBid;
     if (matchingBid != null) {
-      final Decimal amountSell = Decimal.parse(valueNum.toString());
-      final Decimal bidPrice = Decimal.parse(matchingBid.price);
-      final Decimal bidVolume = Decimal.parse(matchingBid.maxvolume.toString());
+      final double bidPrice = double.parse(matchingBid.price);
+      final double bidVolume = matchingBid.maxvolume.toDouble();
 
       // If greater than matching bid max receive volume
-      if (amountSell > bidVolume * bidPrice) {
-        valueNum = (bidVolume * bidPrice).toDouble();
+      if (valueNum > bidVolume * bidPrice) {
+        valueNum = bidVolume * bidPrice;
         swapBloc.setIsMaxActive(false);
       }
 
