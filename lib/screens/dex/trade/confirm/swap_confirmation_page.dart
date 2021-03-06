@@ -1,78 +1,30 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/buy_response.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_buy.dart';
-import 'package:komodo_dex/model/get_setprice.dart';
-import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
-import 'package:komodo_dex/model/setprice_response.dart';
-import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
+import 'package:komodo_dex/screens/dex/trade/confirm/make_swap.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/min_volume_control.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
-import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 
-enum SwapStatus { BUY, SELL }
-
-class SwapConfirmation extends StatefulWidget {
-  const SwapConfirmation(
-      {@required this.bestPrice,
-      @required this.coinBase,
-      @required this.coinRel,
-      @required this.amountToSell,
-      @required this.amountToBuy,
-      @required this.swapStatus,
-      this.orderSuccess,
-      this.order});
-
-  final SwapStatus swapStatus;
-  final String amountToSell;
-  final String amountToBuy;
-  final Function orderSuccess;
-  final String bestPrice;
-  final Coin coinBase;
-  final Coin coinRel;
-  final Ask order;
-
+class SwapConfirmationPage extends StatefulWidget {
   @override
-  _SwapConfirmationState createState() => _SwapConfirmationState();
+  _SwapConfirmationPageState createState() => _SwapConfirmationPageState();
 }
 
-class _SwapConfirmationState extends State<SwapConfirmation> {
-  bool _isSwapMaking = false;
+class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
+  bool _inProgress = false;
   String _minVolume;
   BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
-  ProtectionSettings _protectionSettings;
-
-  @override
-  void initState() {
-    _protectionSettings = ProtectionSettings(
-      requiredConfirmations: widget.coinBase.requiredConfirmations,
-      requiresNotarization: widget.coinBase.requiresNotarization ?? false,
-    );
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    swapBloc.updateSellCoin(null);
-    swapBloc.updateReceiveCoin(null);
-    swapBloc.setEnabledSellField(false);
-    super.dispose();
-  }
+  ProtectionSettings _protectionSettings = ProtectionSettings(
+    requiredConfirmations:
+        swapBloc.receiveCoinBalance.coin.requiredConfirmations,
+    requiresNotarization:
+        swapBloc.receiveCoinBalance.coin.requiresNotarization ?? false,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -104,23 +56,23 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 ExchangeRate(),
                 const SizedBox(height: 8),
                 ProtectionControl(
-                  coin: widget.coinBase,
+                  coin: swapBloc.receiveCoinBalance.coin,
                   onChange: (ProtectionSettings settings) {
                     setState(() {
                       _protectionSettings = settings;
                     });
                   },
                 ),
-                if (widget.swapStatus == SwapStatus.SELL)
+                if (swapBloc.matchingBid == null)
                   MinVolumeControl(
-                      coin: widget.coinRel.abbr,
+                      coin: swapBloc.sellCoinBalance.coin.abbr,
                       validator: _validateMinVolume,
                       onChange: (String value) {
                         setState(() {
                           _minVolume = value;
                         });
                       }),
-                if (widget.swapStatus == SwapStatus.BUY) _buildBuyOrderType(),
+                if (swapBloc.matchingBid != null) _buildBuyOrderType(),
                 const SizedBox(height: 8),
                 _buildButtons(),
                 _buildInfoSwap()
@@ -137,14 +89,14 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
 
     final double minVolumeValue = double.tryParse(value);
     final double minVolumeDefault =
-        swapBloc.minVolumeDefault(widget.coinRel.abbr);
-    final double amountToSell = double.tryParse(widget.amountToSell);
+        swapBloc.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
+    final double amountToSell = swapBloc.amountSell;
 
     if (minVolumeValue == null) {
       return AppLocalizations.of(context).nonNumericInput;
     } else if (minVolumeValue < minVolumeDefault) {
       return AppLocalizations.of(context)
-          .minVolumeInput(minVolumeDefault, widget.coinRel.abbr);
+          .minVolumeInput(minVolumeDefault, swapBloc.sellCoinBalance.coin.abbr);
     } else if (amountToSell != null && minVolumeValue > amountToSell) {
       return AppLocalizations.of(context).minVolumeIsTDH;
     } else {
@@ -214,7 +166,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    '${widget.amountToSell} ${widget?.coinRel?.abbr}',
+                    '${swapBloc.amountSell} ${swapBloc.sellCoinBalance.coin.abbr}',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6,
                   ),
@@ -253,7 +205,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '${widget.amountToBuy} ${widget.coinBase.abbr}',
+                          '${swapBloc.amountReceive} ${swapBloc.receiveCoinBalance.coin.abbr}',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline6,
                         ),
@@ -351,8 +303,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
   }
 
   Widget _buildButtons() {
-    final bool disabled =
-        _isSwapMaking || _validateMinVolume(_minVolume) != null;
+    final bool disabled = _inProgress || _validateMinVolume(_minVolume) != null;
 
     return Builder(builder: (BuildContext context) {
       return Column(
@@ -360,7 +311,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
           const SizedBox(
             height: 16,
           ),
-          _isSwapMaking
+          _inProgress
               ? const CircularProgressIndicator()
               : RaisedButton(
                   key: const Key('confirm-swap-button'),
@@ -370,7 +321,18 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                       borderRadius: BorderRadius.circular(30.0)),
                   child:
                       Text(AppLocalizations.of(context).confirm.toUpperCase()),
-                  onPressed: disabled ? null : () => _makeASwap(context),
+                  onPressed: disabled
+                      ? null
+                      : () async {
+                          setState(() => _inProgress = true);
+                          await makeASwap(
+                            context,
+                            buyOrderType: _buyOrderType,
+                            protectionSettings: _protectionSettings,
+                            minVolume: _minVolume,
+                          );
+                          setState(() => _inProgress = false);
+                        },
                 ),
           const SizedBox(
             height: 8,
@@ -388,142 +350,5 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         ],
       );
     });
-  }
-
-  Future<void> _makeASwap(BuildContext mContext) async {
-    Log('swap_confirmation_page:315', '_makeASwap] Starting a swap…');
-    setState(() {
-      _isSwapMaking = true;
-    });
-
-    final Coin coinBase = widget.coinBase;
-    final Coin coinRel = widget.coinRel;
-    String price = '0';
-
-    if (widget.order != null) {
-      price = widget.order.price;
-    }
-
-    final String amountToSell = widget.amountToSell.replaceAll(',', '.');
-    final Decimal satoshi = Decimal.parse('100000000');
-    final Decimal satoshiSellAmount =
-        Decimal.parse(widget.amountToSell.replaceAll(',', '.')) * satoshi;
-    Decimal satoshiBuyAmount = price != '0'
-        ? Decimal.parse((Decimal.parse(amountToSell) / Decimal.parse(price))
-                .toStringAsFixed(8)) *
-            satoshi
-        : Decimal.parse(Decimal.parse(widget.amountToBuy).toStringAsFixed(8)) *
-            satoshi;
-    final Decimal satoshiPrice = price != '0'
-        ? Decimal.parse(Decimal.parse(price).toStringAsFixed(8)) * satoshi
-        : Decimal.parse(Decimal.parse(widget.bestPrice).toStringAsFixed(8)) *
-            satoshi;
-
-    //if the desired sellamount != calculated sellamount this loop fixes the precision errors caused by the above division
-    //this is considered a dirty quickfix until a final decision is made ref. num handling - likely should follow @ArtemGr's
-    //advice ref. utilizing rational datatype IF we need divisions. We do assume sellamount slightly > calculated_sell_amount isnt an issue
-    //since swap is going to match - the other way around its problematic
-    //this code needs a full refactor
-    while (price != '0' &&
-        Decimal.parse((satoshiBuyAmount * satoshiPrice / satoshi)
-                .toStringAsFixed(0)) <
-            satoshiSellAmount) {
-      satoshiBuyAmount += Decimal.parse('1');
-    }
-
-    if (widget.swapStatus == SwapStatus.BUY) {
-      final dynamic re = await MM.postBuy(
-          mmSe.client,
-          GetBuySell(
-            base: coinBase.abbr,
-            rel: coinRel.abbr,
-            volume: (satoshiBuyAmount / satoshi).toString(),
-            max: swapBloc.isMaxActive,
-            price: (satoshiPrice / satoshi).toString(),
-            orderType: _buyOrderType,
-            baseNota: _protectionSettings.requiresNotarization,
-            baseConfs: _protectionSettings.requiredConfirmations,
-          ));
-      if (re is BuyResponse) {
-        _goToNextScreen(mContext, re, amountToSell, satoshiBuyAmount / satoshi);
-      } else {
-        _catchErrorSwap(mContext, re);
-      }
-    } else if (widget.swapStatus == SwapStatus.SELL) {
-      MM
-          .postSetPrice(
-              mmSe.client,
-              GetSetPrice(
-                base: coinRel.abbr,
-                rel: coinBase.abbr,
-                cancelPrevious: false,
-                max: swapBloc.isMaxActive,
-                volume: amountToSell,
-                minVolume: double.tryParse(_minVolume ?? ''),
-                price: Decimal.parse(widget.bestPrice).toString(),
-                relNota: _protectionSettings.requiresNotarization,
-                relConfs: _protectionSettings.requiredConfirmations,
-              ))
-          .then<dynamic>((dynamic onValue) => onValue is SetPriceResponse
-              ? _goToNextScreen(
-                  mContext,
-                  onValue,
-                  amountToSell,
-                  Decimal.parse(
-                      Decimal.parse(widget.amountToBuy).toStringAsFixed(8)))
-              : throw onValue.error)
-          .catchError((dynamic onError) => _catchErrorSwap(mContext, onError));
-    }
-  }
-
-  void _catchErrorSwap(BuildContext mContext, ErrorString error) {
-    setState(() {
-      _isSwapMaking = false;
-    });
-    String timeSecondeLeft = error.error;
-    Log('swap_confirmation_page:396', timeSecondeLeft);
-    timeSecondeLeft = timeSecondeLeft.substring(
-        timeSecondeLeft.lastIndexOf(' '), timeSecondeLeft.length);
-    Log('swap_confirmation_page:399', timeSecondeLeft);
-    String errorDisplay =
-        error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
-    if (error.error.contains('is too low, required')) {
-      errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
-    }
-    Scaffold.of(mContext).showSnackBar(SnackBar(
-      duration: const Duration(seconds: 4),
-      backgroundColor: Theme.of(context).errorColor,
-      content: Text(errorDisplay),
-    ));
-  }
-
-  void _goToNextScreen(BuildContext mContext, dynamic onValue,
-      String amountToSell, Decimal amountToBuy) {
-    Log('swap_confirmation_page:414', '_goToNextScreen] swap started…');
-    ordersBloc.updateOrdersSwaps();
-
-    if (widget.swapStatus == SwapStatus.BUY) {
-      Navigator.pushReplacement<dynamic, dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => SwapDetailPage(
-                  swap: Swap(
-                      status: Status.ORDER_MATCHING,
-                      result: MmSwap(
-                        uuid: onValue.result.uuid,
-                        myInfo: SwapMyInfo(
-                            myAmount: amountToSell.toString(),
-                            otherAmount: amountToBuy.toString(),
-                            myCoin: onValue.result.rel,
-                            otherCoin: onValue.result.base,
-                            startedAt: DateTime.now().millisecondsSinceEpoch),
-                      )),
-                )),
-      );
-      showSoundsDialog(context);
-    } else if (widget.swapStatus == SwapStatus.SELL) {
-      Navigator.of(context).pop();
-      showOrderCreatedDialog(context);
-    }
   }
 }

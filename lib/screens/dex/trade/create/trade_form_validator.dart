@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
@@ -10,16 +8,11 @@ import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class TradeFormValidator {
-  TradeFormValidator({
-    @required this.matchingBid,
-    @required this.amountSell,
-    @required this.amountReceive,
-  });
-
-  final Ask matchingBid;
-  final double amountSell;
-  final double amountReceive;
-
+  final CoinBalance sellBalance = swapBloc.sellCoinBalance;
+  final CoinBalance receiveBalance = swapBloc.receiveCoinBalance;
+  final double amountSell = swapBloc.amountSell;
+  final double amountReceive = swapBloc.amountReceive;
+  final Ask matchingBid = swapBloc.matchingBid;
   final AppLocalizations appLocalizations = AppLocalizations();
 
   Future<String> get errorMessage async {

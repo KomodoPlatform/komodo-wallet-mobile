@@ -11,19 +11,15 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/build_swap_fees.dart';
-import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
-import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
+import 'package:komodo_dex/screens/dex/trade/create/build_trade_button.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/receive_amount_field.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/select_receive_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/sell/select_sell_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/sell/sell_amount_field.dart';
-import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
 class TradePage extends StatefulWidget {
@@ -36,9 +32,6 @@ class TradePage extends StatefulWidget {
 }
 
 class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
-  final _ctrlAmountSell = TextEditingControllerWorkaroud();
-  final _ctrlAmountReceive = TextEditingController();
-
   CexProvider _cexProvider;
   OrderBookProvider _orderBookProvider;
 
@@ -49,13 +42,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     super.initState();
 
     _resetForm();
-  }
-
-  @override
-  void dispose() {
-    _ctrlAmountSell.dispose();
-    _ctrlAmountReceive.dispose();
-    super.dispose();
   }
 
   @override
@@ -70,7 +56,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         const SizedBox(
           height: 8,
         ),
-        _buildTradeButton(),
+        BuildTradeButton(),
         ExchangeRate(),
       ],
     );
@@ -110,33 +96,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         _buildCard(Market.SELL),
         _buildCard(Market.RECEIVE),
       ],
-    );
-  }
-
-  Widget _buildTradeButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 70),
-      child: StreamBuilder<CoinBalance>(
-          initialData: swapBloc.sellCoinBalance,
-          stream: swapBloc.outSellCoinBalance,
-          builder: (BuildContext context,
-              AsyncSnapshot<CoinBalance> sellCoinBalance) {
-            return StreamBuilder<CoinBalance>(
-                initialData: swapBloc.receiveCoinBalance,
-                stream: swapBloc.outReceiveCoinBalance,
-                builder: (context, receiveCoinBalance) {
-                  return PrimaryButton(
-                    key: const Key('trade-button'),
-                    onPressed: _amountSell() > 0 &&
-                            _amountReceive() > 0 &&
-                            sellCoinBalance.data != null &&
-                            receiveCoinBalance.data != null
-                        ? () => _confirmSwap(context)
-                        : null,
-                    text: AppLocalizations.of(context).trade,
-                  );
-                });
-          }),
     );
   }
 
@@ -211,12 +170,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-                      market == Market.SELL && _amountSell() > 0
+                      market == Market.SELL && swapBloc.amountSell != null
                           ? Container(
                               padding: EdgeInsets.only(top: 12),
                               child: BuildSwapFees(
-                                baseCoin: swapBloc.sellCoinBalance.coin.abbr,
-                                baseAmount: _amountSell(),
+                                baseCoin: swapBloc.sellCoinBalance?.coin?.abbr,
+                                baseAmount: swapBloc.amountSell,
                                 includeGasFee: true,
                                 relCoin:
                                     swapBloc.receiveCoinBalance?.coin?.abbr,
@@ -379,7 +338,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       if (!_isLoadingMax) {
         openSelectReceiveCoinDialog(
           context: context,
-          amountSell: _amountSell(),
+          amountSell: swapBloc.amountSell,
           onSelect: (Ask bid) => _performTakerOrder(bid),
           onCreate: (String coin) => _performMakerOrder(coin),
         );
@@ -402,8 +361,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
     swapBloc.updateReceiveCoin(coin);
     swapBloc.enabledReceiveField = true;
-
-    _ctrlAmountReceive.clear();
   }
 
   Future<void> _performTakerOrder(Ask bid) async {
@@ -422,49 +379,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       swapBloc.setAmountSell((bidVolume * bidPrice).toDouble());
       swapBloc.setIsMaxActive(false);
     }
-  }
-
-  Future<void> _confirmSwap(BuildContext mContext) async {
-    final validator = TradeFormValidator(
-      matchingBid: swapBloc.matchingBid,
-      amountSell: _amountSell(),
-      amountReceive: _amountReceive(),
-    );
-    final errorMessage = await validator.errorMessage;
-
-    if (errorMessage == null) {
-      Navigator.push<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => SwapConfirmation(
-                  orderSuccess: () => showOrderCreatedDialog(context),
-                  order: swapBloc.matchingBid,
-                  bestPrice: '1',
-                  coinBase: swapBloc.sellCoinBalance.coin,
-                  coinRel: Coin(abbr: 'MORTY'),
-                  swapStatus: swapBloc.enabledReceiveField
-                      ? SwapStatus.SELL
-                      : SwapStatus.BUY,
-                  amountToSell: '${_amountSell()}',
-                  amountToBuy: '${_amountReceive()}',
-                )),
-      ).then((dynamic _) {
-        swapBloc.updateMatchingBid(null);
-
-        _ctrlAmountReceive.clear();
-        _ctrlAmountSell.clear();
-      });
-    } else {
-      _showSnackbar(errorMessage);
-    }
-  }
-
-  double _amountSell() {
-    return double.tryParse(_ctrlAmountSell.text.replaceAll(',', '.')) ?? 0;
-  }
-
-  double _amountReceive() {
-    return double.tryParse(_ctrlAmountReceive.text.replaceAll(',', '.')) ?? 0;
   }
 
   void _resetForm() {
