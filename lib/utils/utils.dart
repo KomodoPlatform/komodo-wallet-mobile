@@ -86,6 +86,18 @@ Decimal deci(dynamic dv) {
   throw Exception('Neither string nor double: $dv');
 }
 
+Rational fract2rat(Map<String, dynamic> fract) {
+  try {
+    final rat = Rational.fromInt(
+      int.parse(fract['numer']),
+      int.parse(fract['denom']),
+    );
+    return rat;
+  } catch (_) {
+    return null;
+  }
+}
+
 /// Precise but readable representation (no trailing zeroes).
 String deci2s(Decimal dv, [int fractions = 8]) {
   if (dv.isInteger) return dv.toStringAsFixed(0); // Fast path.

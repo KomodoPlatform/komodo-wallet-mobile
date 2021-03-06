@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:decimal/decimal.dart';
-
+import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/orderbook.dart';
@@ -16,7 +16,6 @@ class SellAmountField extends StatefulWidget {
 
 class _SellAmountFieldState extends State<SellAmountField> {
   final _ctrl = TextEditingControllerWorkaroud();
-  String _prevValue;
 
   @override
   void initState() {
@@ -53,18 +52,19 @@ class _SellAmountFieldState extends State<SellAmountField> {
 
   void _onDataChange(double value) {
     if (!mounted) return;
+    if (value == null) {
+      _ctrl.text = '';
+      return;
+    }
+    if (value == double.tryParse(_ctrl.text)) return;
 
-    final String newValue = cutTrailingZeros(formatPrice(value));
-    if (newValue == _prevValue) return;
-    setState(() => _prevValue = newValue);
-
-    _ctrl.setTextAndPosition(newValue ?? '');
+    _ctrl.setTextAndPosition(cutTrailingZeros(value.toStringAsFixed(8)) ?? '');
   }
 
   Future<void> _onFieldChange() async {
-    double valueNum = double.tryParse(_ctrl.text ?? '');
+    double valueDouble = double.tryParse(_ctrl.text ?? '');
     // If empty or non-numerical
-    if (valueNum == null) {
+    if (valueDouble == null) {
       swapBloc.setAmountSell(null);
       swapBloc.setAmountReceive(null);
       swapBloc.setIsMaxActive(false);
@@ -74,27 +74,28 @@ class _SellAmountFieldState extends State<SellAmountField> {
 
     // If greater than max available balance
     final Decimal maxAmount = await swapBloc.getMaxSellAmount();
-    if (valueNum > maxAmount.toDouble()) {
-      valueNum = maxAmount.toDouble();
+    if (valueDouble > maxAmount.toDouble()) {
+      valueDouble = maxAmount.toDouble();
       swapBloc.setIsMaxActive(true);
     }
 
     final Ask matchingBid = swapBloc.matchingBid;
     if (matchingBid != null) {
-      final double bidPrice = double.parse(matchingBid.price);
-      final double bidVolume = matchingBid.maxvolume.toDouble();
+      final Rational valueRat = Rational.parse(valueDouble.toString());
+      final Rational bidPrice = fract2rat(matchingBid.priceFract) ??
+          Rational.parse(matchingBid.price);
+      final Rational bidVolume = fract2rat(matchingBid.maxvolumeFract) ??
+          Rational.parse(matchingBid.maxvolume.toString());
 
       // If greater than matching bid max receive volume
-      if (valueNum > bidVolume * bidPrice) {
-        valueNum = bidVolume * bidPrice;
+      if (valueRat > (bidVolume / bidPrice)) {
+        valueDouble = (bidVolume / bidPrice).toDouble();
         swapBloc.setIsMaxActive(false);
       }
 
-      swapBloc.setAmountReceive(valueNum / double.parse(matchingBid.price));
+      swapBloc.setAmountReceive(valueDouble / double.parse(matchingBid.price));
     }
 
-    if (valueNum != swapBloc.amountSell) {
-      swapBloc.setAmountSell(valueNum); // fires `_onDataChange()`
-    }
+    swapBloc.setAmountSell(valueDouble);
   }
 }

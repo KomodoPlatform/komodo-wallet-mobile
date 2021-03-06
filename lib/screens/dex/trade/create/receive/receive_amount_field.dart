@@ -12,7 +12,6 @@ class ReceiveAmountField extends StatefulWidget {
 
 class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   final _ctrl = TextEditingControllerWorkaroud();
-  String _prevValue;
 
   @override
   void initState() {
@@ -47,19 +46,18 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
 
   void _onDataChange(double value) {
     if (!mounted) return;
+    if (value == null) {
+      _ctrl.text = '';
+      return;
+    }
+    if (value == double.tryParse(_ctrl.text)) return;
 
-    final String newValue = cutTrailingZeros(formatPrice(value));
-    if (newValue == _prevValue) return;
-    setState(() => _prevValue = newValue);
-
-    _ctrl.setTextAndPosition(newValue ?? '');
+    _ctrl.setTextAndPosition(cutTrailingZeros(value.toStringAsFixed(8)) ?? '');
   }
 
   void _onFieldChange() {
     final double valueNum = double.tryParse(_ctrl.text ?? '');
 
-    if (valueNum != swapBloc.amountReceive) {
-      swapBloc.setAmountReceive(valueNum); // fires `_onDataChange()`
-    }
+    swapBloc.setAmountReceive(valueNum); // fires `_onDataChange()`
   }
 }
