@@ -70,14 +70,14 @@ class TradeForm {
     Log('trade_form', 'Starting a swap…');
 
     if (swapBloc.matchingBid != null) {
-      await _takerSwap(
+      await _takerOrder(
         protectionSettings: protectionSettings,
         buyOrderType: buyOrderType,
         onSuccess: onSuccess,
         onError: onError,
       );
     } else {
-      await _makerSwap(
+      await _makerOrder(
           protectionSettings: protectionSettings,
           minVolume: minVolume,
           onSuccess: onSuccess,
@@ -85,23 +85,26 @@ class TradeForm {
     }
   }
 
-  Future<void> _takerSwap({
+  Future<void> _takerOrder({
     BuyOrderType buyOrderType,
     ProtectionSettings protectionSettings,
     Function(dynamic) onSuccess,
     Function(dynamic) onError,
   }) async {
+    // price = bid.price_rat
+    // volume <= bid.maxvolume
+
     final dynamic re = await MM.postBuy(
         mmSe.client,
         GetBuySell(
           base: swapBloc.receiveCoinBalance.coin.abbr,
           rel: swapBloc.sellCoinBalance.coin.abbr,
-          volume: swapBloc.amountReceive.toString(),
-          max: swapBloc.isMaxActive,
-          price: swapBloc.matchingBid.price,
           orderType: buyOrderType,
           baseNota: protectionSettings.requiresNotarization,
           baseConfs: protectionSettings.requiredConfirmations,
+          volume: swapBloc.amountReceive.toString(),
+          max: swapBloc.isMaxActive,
+          price: swapBloc.matchingBid.price,
         ));
     if (re is BuyResponse) {
       onSuccess(re);
@@ -110,7 +113,7 @@ class TradeForm {
     }
   }
 
-  Future<void> _makerSwap({
+  Future<void> _makerOrder({
     ProtectionSettings protectionSettings,
     String minVolume,
     Function(dynamic) onSuccess,
