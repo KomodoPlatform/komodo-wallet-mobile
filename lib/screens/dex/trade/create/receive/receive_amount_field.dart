@@ -23,6 +23,12 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   }
 
   @override
+  void dispose() {
+    _ctrl?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
         key: Key('input-text-buy'),

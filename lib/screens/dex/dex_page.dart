@@ -22,9 +22,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
     ordersBloc.updateOrdersSwaps();
 
     swapBloc.outIndexTab.listen((int onData) {
-      setState(() {
-        tabController.index = onData;
-      });
+      if (mounted) setState(() => tabController.index = onData);
     });
   }
 

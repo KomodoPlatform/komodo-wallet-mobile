@@ -70,42 +70,71 @@ class TradeForm {
     Log('trade_form', 'Starting a swap…');
 
     if (swapBloc.matchingBid != null) {
-      final dynamic re = await MM.postBuy(
-          mmSe.client,
-          GetBuySell(
-            base: swapBloc.receiveCoinBalance.coin.abbr,
-            rel: swapBloc.sellCoinBalance.coin.abbr,
-            volume: swapBloc.amountReceive.toString(),
-            max: swapBloc.isMaxActive,
-            price: swapBloc.matchingBid.price,
-            orderType: buyOrderType,
-            baseNota: protectionSettings.requiresNotarization,
-            baseConfs: protectionSettings.requiredConfirmations,
-          ));
-      if (re is BuyResponse) {
-        onSuccess(re);
-      } else {
-        onError(re);
-      }
+      await _takerSwap(
+        protectionSettings: protectionSettings,
+        buyOrderType: buyOrderType,
+        onSuccess: onSuccess,
+        onError: onError,
+      );
     } else {
-      MM
-          .postSetPrice(
-              mmSe.client,
-              GetSetPrice(
-                base: swapBloc.sellCoinBalance.coin.abbr,
-                rel: swapBloc.receiveCoinBalance.coin.abbr,
-                cancelPrevious: false,
-                max: swapBloc.isMaxActive,
-                volume: swapBloc.amountSell.toString(),
-                minVolume: double.tryParse(minVolume ?? ''),
-                price:
-                    (swapBloc.amountReceive / swapBloc.amountSell).toString(),
-                relNota: protectionSettings.requiresNotarization,
-                relConfs: protectionSettings.requiredConfirmations,
-              ))
-          .then<dynamic>((dynamic re) =>
-              re is SetPriceResponse ? onSuccess(re) : throw re.error)
-          .catchError((dynamic onError) => onError(onError));
+      await _makerSwap(
+          protectionSettings: protectionSettings,
+          minVolume: minVolume,
+          onSuccess: onSuccess,
+          onError: onError);
+    }
+  }
+
+  Future<void> _takerSwap({
+    BuyOrderType buyOrderType,
+    ProtectionSettings protectionSettings,
+    Function(dynamic) onSuccess,
+    Function(dynamic) onError,
+  }) async {
+    final dynamic re = await MM.postBuy(
+        mmSe.client,
+        GetBuySell(
+          base: swapBloc.receiveCoinBalance.coin.abbr,
+          rel: swapBloc.sellCoinBalance.coin.abbr,
+          volume: swapBloc.amountReceive.toString(),
+          max: swapBloc.isMaxActive,
+          price: swapBloc.matchingBid.price,
+          orderType: buyOrderType,
+          baseNota: protectionSettings.requiresNotarization,
+          baseConfs: protectionSettings.requiredConfirmations,
+        ));
+    if (re is BuyResponse) {
+      onSuccess(re);
+    } else {
+      onError(re);
+    }
+  }
+
+  Future<void> _makerSwap({
+    ProtectionSettings protectionSettings,
+    String minVolume,
+    Function(dynamic) onSuccess,
+    Function(dynamic) onError,
+  }) async {
+    final dynamic re = await MM.postSetPrice(
+        mmSe.client,
+        GetSetPrice(
+          base: swapBloc.sellCoinBalance.coin.abbr,
+          rel: swapBloc.receiveCoinBalance.coin.abbr,
+          cancelPrevious: false,
+          max: swapBloc.isMaxActive,
+          minVolume: double.tryParse(minVolume ?? ''),
+          relNota: protectionSettings.requiresNotarization,
+          relConfs: protectionSettings.requiredConfirmations,
+          volume:
+              swapBloc.isMaxActive ? '0.00' : swapBloc.amountSell.toString(),
+          price: (swapBloc.amountReceive / swapBloc.amountSell).toString(),
+        ));
+
+    if (re is SetPriceResponse) {
+      onSuccess(re);
+    } else {
+      onError(re);
     }
   }
 
