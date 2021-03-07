@@ -48,14 +48,18 @@ static volatile atomic_int_fast32_t dex_generation = 0;
 static NSString* dex_assets_audio;
 
 /// Scheduled between files in order to hold to the `isPlayingProcessAssertion`.
+static AVAudioFile* ballast_file;
 void audio_ballast() {
-    NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "none.mp3"];  // “Standing by”
+    if (ballast_file == nil) {
+        NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "none.mp3"];
 
-    NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
-    NSError* err;
-    AVAudioFile* file = [[AVAudioFile alloc] initForReading: url error: &err];
-    if (err) {os_log (OS_LOG_DEFAULT, "audio_ballast] !file: %{public}@", err); return;}
-    [dex_player scheduleSegment: file startingFrame: 60000 frameCount: 30000 atTime: nil completionHandler: nil];}
+        NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
+        NSError* err;
+        ballast_file = [[AVAudioFile alloc] initForReading: url error: &err];
+        if (err) {os_log (OS_LOG_DEFAULT, "audio_ballast] !file: %{public}@", err); return;}
+    }
+    
+    [dex_player scheduleSegment: ballast_file startingFrame: 60000 frameCount: 30000 atTime: nil completionHandler: nil];}
 
 /// Invoked by completion handlers in order to maintain the background audio loop.
 void audio_reschedule (int generation) {
