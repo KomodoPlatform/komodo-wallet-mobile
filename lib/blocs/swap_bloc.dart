@@ -4,8 +4,6 @@ import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
-import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class SwapBloc implements BlocBase {
@@ -121,40 +119,6 @@ class SwapBloc implements BlocBase {
   void updateMatchingBid(Ask bid) {
     matchingBid = bid;
     _inMatchingBid.add(matchingBid);
-  }
-
-  double getExchangeRate() {
-    if (amountSell == null) return null;
-    if (amountReceive == null || amountReceive == 0) return null;
-
-    return amountReceive / amountSell;
-  }
-
-  double minVolumeDefault(String coin) {
-    // https://github.com/KomodoPlatform/AtomicDEX-mobile/pull/1013#issuecomment-770423015
-    // Default min volumes hardcoded for QTUM and rest of the coins for now.
-    // Should be handled on API-side in the future
-    if (coin == 'QTUM') {
-      return 1;
-    } else {
-      return 0.00777;
-    }
-  }
-
-  Future<Decimal> getMaxSellAmount() async {
-    final Decimal sellCoinFee = await getSellCoinFees(true);
-    final CoinBalance sellCoinBalance = swapBloc.sellCoinBalance;
-    return sellCoinBalance.balance.balance - sellCoinFee;
-  }
-
-  Future<Decimal> getSellCoinFees(bool max) async {
-    final CoinAmt fee = await GetSwapFee.totalSell(
-      sellCoin: sellCoinBalance.coin.abbr,
-      buyCoin: receiveCoinBalance?.coin?.abbr,
-      sellAmt: max ? sellCoinBalance.balance.balance.toDouble() : amountSell,
-    );
-
-    return deci(fee.amount);
   }
 }
 

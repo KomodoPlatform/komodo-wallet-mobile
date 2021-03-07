@@ -18,6 +18,7 @@ import 'package:komodo_dex/screens/dex/trade/create/receive/select_receive_coin_
 import 'package:komodo_dex/screens/dex/trade/create/sell/select_sell_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/sell/sell_amount_field.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _resetForm();
+    tradeForm.reset();
   }
 
   @override
@@ -65,7 +66,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void onChangeReceive() {}
 
   Future<void> _setMaxSellAmount() async {
-    final Decimal maxValue = await swapBloc.getMaxSellAmount();
+    final Decimal maxValue = await tradeForm.getMaxSellAmount();
 
     if (maxValue > deci(0)) {
       swapBloc.setAmountSell(maxValue.toDouble());
@@ -77,7 +78,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       final Decimal minVolumeToPayFees =
           swapBloc.sellCoinBalance.balance.balance + balanceShortage;
       final Decimal minVolumeDefault =
-          deci(swapBloc.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr));
+          deci(tradeForm.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr));
 
       final String warningText = minVolumeToPayFees < minVolumeDefault
           ? AppLocalizations.of(context).minValueSell(
@@ -347,7 +348,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       openSelectSellCoinDialog(
         context: context,
         onDone: (coin) {
-          _resetForm();
+          tradeForm.reset();
           swapBloc.updateSellCoin(coin);
           swapBloc.setEnabledSellField(true);
           _orderBookProvider.activePair = CoinsPair(sell: coin.coin, buy: null);
@@ -379,18 +380,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       swapBloc.setAmountSell((bidVolume * bidPrice).toDouble());
       swapBloc.setIsMaxActive(false);
     }
-  }
-
-  void _resetForm() {
-    swapBloc.updateSellCoin(null);
-    swapBloc.updateReceiveCoin(null);
-    swapBloc.updateMatchingBid(null);
-    swapBloc.setAmountSell(null);
-    swapBloc.setAmountReceive(null);
-    swapBloc.setIsMaxActive(false);
-    swapBloc.setEnabledSellField(false);
-    swapBloc.enabledReceiveField = false;
-    _orderBookProvider?.activePair = CoinsPair(sell: null, buy: null);
   }
 
   void _showSnackbar(String text) {

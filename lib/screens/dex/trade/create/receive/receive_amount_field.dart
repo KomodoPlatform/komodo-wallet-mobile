@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -17,7 +18,7 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   void initState() {
     super.initState();
 
-    _ctrl.addListener(_onFieldChange);
+    _ctrl.addListener(() => tradeForm.onReceiveAmountFieldChange(_ctrl.text));
     swapBloc.outAmountReceive.listen(_onDataChange);
   }
 
@@ -46,18 +47,9 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
 
   void _onDataChange(double value) {
     if (!mounted) return;
-    if (value == null) {
-      _ctrl.text = '';
-      return;
-    }
     if (value == double.tryParse(_ctrl.text)) return;
 
-    _ctrl.setTextAndPosition(cutTrailingZeros(value.toStringAsFixed(8)) ?? '');
-  }
-
-  void _onFieldChange() {
-    final double valueNum = double.tryParse(_ctrl.text ?? '');
-
-    swapBloc.setAmountReceive(valueNum); // fires `_onDataChange()`
+    _ctrl.setTextAndPosition(
+        value == null ? '' : cutTrailingZeros(value.toStringAsFixed(8)) ?? '');
   }
 }

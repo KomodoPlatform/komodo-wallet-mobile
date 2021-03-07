@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:decimal/decimal.dart';
-import 'package:rational/rational.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/text_editing_controller_workaroud.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -21,7 +19,7 @@ class _SellAmountFieldState extends State<SellAmountField> {
   void initState() {
     super.initState();
 
-    _ctrl.addListener(_onFieldChange);
+    _ctrl.addListener(() => tradeForm.onSellAmountFieldChange(_ctrl.text));
     swapBloc.outAmountSell.listen(_onDataChange);
   }
 
@@ -52,50 +50,9 @@ class _SellAmountFieldState extends State<SellAmountField> {
 
   void _onDataChange(double value) {
     if (!mounted) return;
-    if (value == null) {
-      _ctrl.text = '';
-      return;
-    }
     if (value == double.tryParse(_ctrl.text)) return;
 
-    _ctrl.setTextAndPosition(cutTrailingZeros(value.toStringAsFixed(8)) ?? '');
-  }
-
-  Future<void> _onFieldChange() async {
-    double valueDouble = double.tryParse(_ctrl.text ?? '');
-    // If empty or non-numerical
-    if (valueDouble == null) {
-      swapBloc.setAmountSell(null);
-      swapBloc.setAmountReceive(null);
-      swapBloc.setIsMaxActive(false);
-
-      return;
-    }
-
-    // If greater than max available balance
-    final Decimal maxAmount = await swapBloc.getMaxSellAmount();
-    if (valueDouble > maxAmount.toDouble()) {
-      valueDouble = maxAmount.toDouble();
-      swapBloc.setIsMaxActive(true);
-    }
-
-    final Ask matchingBid = swapBloc.matchingBid;
-    if (matchingBid != null) {
-      final Rational valueRat = Rational.parse(valueDouble.toString());
-      final Rational bidPrice = fract2rat(matchingBid.priceFract) ??
-          Rational.parse(matchingBid.price);
-      final Rational bidVolume = fract2rat(matchingBid.maxvolumeFract) ??
-          Rational.parse(matchingBid.maxvolume.toString());
-
-      // If greater than matching bid max receive volume
-      if (valueRat > (bidVolume / bidPrice)) {
-        valueDouble = (bidVolume / bidPrice).toDouble();
-        swapBloc.setIsMaxActive(false);
-      }
-
-      swapBloc.setAmountReceive(valueDouble / double.parse(matchingBid.price));
-    }
-
-    swapBloc.setAmountSell(valueDouble);
+    _ctrl.setTextAndPosition(
+        value == null ? '' : cutTrailingZeros(value.toStringAsFixed(8)) ?? '');
   }
 }

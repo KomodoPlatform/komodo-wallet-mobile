@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_buy.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
-import 'package:komodo_dex/screens/dex/trade/confirm/make_swap.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/min_volume_control.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
+import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
+import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 
 class SwapConfirmationPage extends StatefulWidget {
   @override
@@ -89,7 +98,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
 
     final double minVolumeValue = double.tryParse(value);
     final double minVolumeDefault =
-        swapBloc.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
+        tradeForm.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
     final double amountToSell = swapBloc.amountSell;
 
     if (minVolumeValue == null) {
@@ -325,12 +334,17 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       ? null
                       : () async {
                           setState(() => _inProgress = true);
-                          await makeASwap(
-                            context,
+
+                          await tradeForm.makeSwap(
                             buyOrderType: _buyOrderType,
                             protectionSettings: _protectionSettings,
                             minVolume: _minVolume,
+                            onSuccess: (dynamic re) =>
+                                _goToNextScreen(context, re),
+                            onError: (dynamic err) =>
+                                _catchErrorSwap(context, err),
                           );
+
                           setState(() => _inProgress = false);
                         },
                 ),
@@ -350,5 +364,54 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         ],
       );
     });
+  }
+
+  void _catchErrorSwap(BuildContext context, ErrorString error) {
+    String timeSecondeLeft = error.error;
+    Log('swap_confirmation_page', timeSecondeLeft);
+    timeSecondeLeft = timeSecondeLeft.substring(
+        timeSecondeLeft.lastIndexOf(' '), timeSecondeLeft.length);
+    Log('swap_confirmation_page', timeSecondeLeft);
+    String errorDisplay =
+        error.error.substring(error.error.lastIndexOf(r']') + 1).trim();
+    if (error.error.contains('is too low, required')) {
+      errorDisplay = AppLocalizations.of(context).notEnoughtBalanceForFee;
+    }
+    Scaffold.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 4),
+      backgroundColor: Theme.of(context).errorColor,
+      content: Text(errorDisplay),
+    ));
+  }
+
+  void _goToNextScreen(BuildContext context, dynamic response) {
+    Log('swap_confirmation_page', '_goToNextScreen] swap started…');
+    ordersBloc.updateOrdersSwaps();
+
+    if (swapBloc.matchingBid != null) {
+      Navigator.pushReplacement<dynamic, dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => SwapDetailPage(
+                  swap: Swap(
+                      status: Status.ORDER_MATCHING,
+                      result: MmSwap(
+                        uuid: response.result.uuid,
+                        myInfo: SwapMyInfo(
+                            myAmount: cutTrailingZeros(
+                                formatPrice(swapBloc.amountSell)),
+                            otherAmount: cutTrailingZeros(
+                                formatPrice(swapBloc.amountReceive)),
+                            myCoin: response.result.rel,
+                            otherCoin: response.result.base,
+                            startedAt: DateTime.now().millisecondsSinceEpoch),
+                      )),
+                )),
+      );
+      showSoundsDialog(context);
+    } else {
+      Navigator.of(context).pop();
+      showOrderCreatedDialog(context);
+    }
   }
 }

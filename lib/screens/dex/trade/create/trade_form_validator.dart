@@ -5,6 +5,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class TradeFormValidator {
@@ -29,9 +30,9 @@ class TradeFormValidator {
 
   String _validateMinValues() {
     final double minVolumeSell =
-        swapBloc.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
+        tradeForm.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
     final double minVolumeReceive =
-        swapBloc.minVolumeDefault(swapBloc.receiveCoinBalance.coin.abbr);
+        tradeForm.minVolumeDefault(swapBloc.receiveCoinBalance.coin.abbr);
 
     if (amountSell > 0 && amountSell < minVolumeSell) {
       return appLocalizations.minValue(

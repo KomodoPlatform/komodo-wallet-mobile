@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 
 class MinVolumeControl extends StatefulWidget {
@@ -102,7 +102,7 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
         setState(() {
           _isActive = !_isActive;
           if (_isActive) {
-            _value ??= '${swapBloc.minVolumeDefault(widget.coin)}';
+            _value ??= '${tradeForm.minVolumeDefault(widget.coin)}';
             _valueCtrl.text = _value;
             widget.onChange(_value);
           } else {
