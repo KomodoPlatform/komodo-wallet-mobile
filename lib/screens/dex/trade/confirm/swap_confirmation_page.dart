@@ -39,58 +39,51 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   Widget build(BuildContext context) {
     return LockScreen(
       context: context,
-      child: WillPopScope(
-        onWillPop: () {
-          _resetSwapPage();
-          Navigator.pop(context);
-          return;
-        },
-        child: Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
-          appBar: AppBar(
-            leading: InkWell(
-              onTap: () {
-                _resetSwapPage();
-                Navigator.pop(context);
-              },
-              child: Icon(Icons.arrow_back),
-            ),
-            title: Text(AppLocalizations.of(context).swapDetailTitle),
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                const SizedBox(height: 24),
-                _buildCoinSwapDetail(),
-                ExchangeRate(),
-                const SizedBox(height: 8),
-                ProtectionControl(
-                  coin: swapBloc.receiveCoinBalance.coin,
-                  onChange: (ProtectionSettings settings) {
-                    setState(() {
-                      _protectionSettings = settings;
-                    });
-                  },
-                ),
-                if (swapBloc.matchingBid == null)
-                  MinVolumeControl(
-                      coin: swapBloc.sellCoinBalance.coin.abbr,
-                      validator: _validateMinVolume,
-                      onChange: (String value) {
-                        setState(() {
-                          _minVolume = value;
-                        });
-                      }),
-                if (swapBloc.matchingBid != null) _buildBuyOrderType(),
-                const SizedBox(height: 8),
-                _buildButtons(),
-                _buildInfoSwap()
-              ],
-            ),
-          ),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context).swapDetailTitle),
         ),
+        body: !_hasData()
+            ? SizedBox()
+            : SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 24),
+                    _buildCoinSwapDetail(),
+                    ExchangeRate(),
+                    const SizedBox(height: 8),
+                    ProtectionControl(
+                      coin: swapBloc.receiveCoinBalance?.coin,
+                      onChange: (ProtectionSettings settings) {
+                        setState(() {
+                          _protectionSettings = settings;
+                        });
+                      },
+                    ),
+                    if (swapBloc.matchingBid == null)
+                      MinVolumeControl(
+                          coin: swapBloc.sellCoinBalance?.coin?.abbr,
+                          validator: _validateMinVolume,
+                          onChange: (String value) {
+                            setState(() {
+                              _minVolume = value;
+                            });
+                          }),
+                    if (swapBloc.matchingBid != null) _buildBuyOrderType(),
+                    const SizedBox(height: 8),
+                    _buildButtons(),
+                    _buildInfoSwap()
+                  ],
+                ),
+              ),
       ),
     );
+  }
+
+  bool _hasData() {
+    return swapBloc.sellCoinBalance != null &&
+        swapBloc.receiveCoinBalance != null;
   }
 
   String _validateMinVolume(String value) {
@@ -148,10 +141,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     );
   }
 
-  void _resetSwapPage() {
-    tradeForm.reset();
-  }
-
   Widget _buildCoinSwapDetail() {
     return Column(
       children: <Widget>[
@@ -173,7 +162,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    '${swapBloc.amountSell} ${swapBloc.sellCoinBalance.coin.abbr}',
+                    '${swapBloc.amountSell ?? ''} ${swapBloc.sellCoinBalance?.coin?.abbr ?? ''}',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6,
                   ),
@@ -383,33 +372,35 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   void _goToNextScreen(BuildContext context, dynamic response) {
-    Log('swap_confirmation_page', '_goToNextScreen] swap started…');
     ordersBloc.updateOrdersSwaps();
 
     if (swapBloc.matchingBid != null) {
+      final swapEgg = Swap(
+          status: Status.ORDER_MATCHING,
+          result: MmSwap(
+            uuid: response.result.uuid,
+            myInfo: SwapMyInfo(
+                myAmount: cutTrailingZeros(formatPrice(swapBloc.amountSell)),
+                otherAmount:
+                    cutTrailingZeros(formatPrice(swapBloc.amountReceive)),
+                myCoin: response.result.rel,
+                otherCoin: response.result.base,
+                startedAt: DateTime.now().millisecondsSinceEpoch),
+          ));
+
       Navigator.pushReplacement<dynamic, dynamic>(
         context,
         MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => SwapDetailPage(
-                  swap: Swap(
-                      status: Status.ORDER_MATCHING,
-                      result: MmSwap(
-                        uuid: response.result.uuid,
-                        myInfo: SwapMyInfo(
-                            myAmount: cutTrailingZeros(
-                                formatPrice(swapBloc.amountSell)),
-                            otherAmount: cutTrailingZeros(
-                                formatPrice(swapBloc.amountReceive)),
-                            myCoin: response.result.rel,
-                            otherCoin: response.result.base,
-                            startedAt: DateTime.now().millisecondsSinceEpoch),
-                      )),
-                )),
+          builder: (BuildContext context) => SwapDetailPage(swap: swapEgg),
+        ),
       );
+
       showSoundsDialog(context);
     } else {
       Navigator.of(context).pop();
       showOrderCreatedDialog(context);
     }
+
+    tradeForm.reset();
   }
 }

@@ -12,6 +12,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/dex/build_swap_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
+import 'package:komodo_dex/screens/dex/trade/create/build_reset_button.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_trade_button.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/receive_amount_field.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/select_receive_coin_dialog.dart';
@@ -35,15 +36,7 @@ class TradePage extends StatefulWidget {
 class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   CexProvider _cexProvider;
   OrderBookProvider _orderBookProvider;
-
   bool _isLoadingMax = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => tradeForm.reset());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +51,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           height: 8,
         ),
         BuildTradeButton(),
+        BuildResetButton(),
         ExchangeRate(),
       ],
     );
