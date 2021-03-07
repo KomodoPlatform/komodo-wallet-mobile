@@ -14,12 +14,13 @@ class SellAmountField extends StatefulWidget {
 
 class _SellAmountFieldState extends State<SellAmountField> {
   final _ctrl = TextEditingControllerWorkaroud();
+  String _prev;
 
   @override
   void initState() {
     super.initState();
 
-    _ctrl.addListener(() => tradeForm.onSellAmountFieldChange(_ctrl.text));
+    _ctrl.addListener(_onFieldChange);
     swapBloc.outAmountSell.listen(_onDataChange);
   }
 
@@ -52,6 +53,15 @@ class _SellAmountFieldState extends State<SellAmountField> {
           hintText: AppLocalizations.of(context).amountToSell),
       onChanged: (_) => swapBloc.setIsMaxActive(false),
     );
+  }
+
+  void _onFieldChange() {
+    // Ignore listener events with the same _ctrl.text value
+    final String text = _ctrl.text;
+    if (text == _prev) return;
+    _prev = text;
+
+    tradeForm.onSellAmountFieldChange(text);
   }
 
   void _onDataChange(double value) {

@@ -13,12 +13,13 @@ class ReceiveAmountField extends StatefulWidget {
 
 class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
   final _ctrl = TextEditingControllerWorkaroud();
+  String _prev;
 
   @override
   void initState() {
     super.initState();
 
-    _ctrl.addListener(() => tradeForm.onReceiveAmountFieldChange(_ctrl.text));
+    _ctrl.addListener(_onFieldChange);
     swapBloc.outAmountReceive.listen(_onDataChange);
   }
 
@@ -49,6 +50,15 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
               .bodyText1
               .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
         ));
+  }
+
+  void _onFieldChange() {
+    // Ignore listener events with the same _ctrl.text value
+    final String text = _ctrl.text;
+    if (text == _prev) return;
+    _prev = text;
+
+    tradeForm.onReceiveAmountFieldChange(text);
   }
 
   void _onDataChange(double value) {

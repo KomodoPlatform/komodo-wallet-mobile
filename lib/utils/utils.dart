@@ -428,9 +428,11 @@ String cutTrailingZeros(String str) {
 
   String loop(String input) {
     if (input.length == 1) return input;
-    if (!input.contains('.')) return input;
+    if (!(input.contains('.') || input.contains(','))) return input;
 
-    if (input[input.length - 1] == '0' || input[input.length - 1] == '.') {
+    if (input[input.length - 1] == '0' ||
+        input[input.length - 1] == '.' ||
+        input[input.length - 1] == ',') {
       input = input.substring(0, input.length - 1);
       return loop(input);
     } else {
