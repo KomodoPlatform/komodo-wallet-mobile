@@ -42,7 +42,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    tradeForm.reset();
+    WidgetsBinding.instance.addPostFrameCallback((_) => tradeForm.reset());
   }
 
   @override

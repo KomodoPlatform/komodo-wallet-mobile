@@ -149,9 +149,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   void _resetSwapPage() {
-    swapBloc.updateSellCoin(null);
-    swapBloc.updateReceiveCoin(null);
-    swapBloc.enabledReceiveField = false;
+    tradeForm.reset();
   }
 
   Widget _buildCoinSwapDetail() {
