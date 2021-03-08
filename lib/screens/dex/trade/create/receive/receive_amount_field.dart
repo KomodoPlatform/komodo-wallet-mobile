@@ -21,6 +21,9 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
 
     _ctrl.addListener(_onFieldChange);
     swapBloc.outAmountReceive.listen(_onDataChange);
+
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _onDataChange(swapBloc.amountReceive));
   }
 
   @override

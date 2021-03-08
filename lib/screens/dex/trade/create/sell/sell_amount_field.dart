@@ -22,6 +22,9 @@ class _SellAmountFieldState extends State<SellAmountField> {
 
     _ctrl.addListener(_onFieldChange);
     swapBloc.outAmountSell.listen(_onDataChange);
+
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _onDataChange(swapBloc.amountSell));
   }
 
   @override
