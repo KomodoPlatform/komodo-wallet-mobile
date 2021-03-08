@@ -17,7 +17,9 @@ class TradeFormValidator {
   final AppLocalizations appLocalizations = AppLocalizations();
 
   Future<String> get errorMessage async {
-    return _validateNetwork() ?? _validateMinValues() ?? await _validateGas();
+    final String message =
+        _validateNetwork() ?? _validateMinValues() ?? await _validateGas();
+    return message;
   }
 
   String _validateNetwork() {
@@ -75,8 +77,9 @@ class TradeFormValidator {
     }
 
     if (gasBalance.balance.balance < deci(requiredGasAmt)) {
-      return appLocalizations.swapGasAmount(
-          cutTrailingZeros(formatPrice(gasFee)), gasFee.coin);
+      final String message = appLocalizations.swapGasAmount(
+          cutTrailingZeros(formatPrice(gasFee.amount)), gasFee.coin);
+      return message;
     }
 
     return null;
