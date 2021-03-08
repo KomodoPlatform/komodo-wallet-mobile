@@ -46,15 +46,16 @@ class GetSetPrice {
   String method;
   String base;
   String rel;
-  String price;
   bool max;
   bool cancelPrevious;
-  String volume;
   double minVolume;
   bool baseNota;
   int baseConfs;
   bool relNota;
   int relConfs;
+  dynamic price; // numerical String or {'numer': '1', 'denom': '3'}
+  dynamic
+      volume; // https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#note-about-rational-number-type
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass,

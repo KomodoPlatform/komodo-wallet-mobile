@@ -119,6 +119,10 @@ class TradeForm {
     Function(dynamic) onSuccess,
     Function(dynamic) onError,
   }) async {
+    final amountSell = Rational.parse(swapBloc.amountSell.toString());
+    final amountReceive = Rational.parse(swapBloc.amountReceive.toString());
+    final Rational price = amountReceive / amountSell;
+
     final dynamic re = await MM.postSetPrice(
         mmSe.client,
         GetSetPrice(
@@ -129,9 +133,16 @@ class TradeForm {
           minVolume: double.tryParse(minVolume ?? ''),
           relNota: protectionSettings.requiresNotarization,
           relConfs: protectionSettings.requiredConfirmations,
-          volume:
-              swapBloc.isMaxActive ? '0.00' : swapBloc.amountSell.toString(),
-          price: (swapBloc.amountReceive / swapBloc.amountSell).toString(),
+          volume: swapBloc.isMaxActive
+              ? '0.00'
+              : {
+                  'numer': amountSell.numerator.toString(),
+                  'denom': amountSell.denominator.toString(),
+                },
+          price: {
+            'numer': price.numerator.toString(),
+            'denom': price.denominator.toString(),
+          },
         ));
 
     if (re is SetPriceResponse) {
