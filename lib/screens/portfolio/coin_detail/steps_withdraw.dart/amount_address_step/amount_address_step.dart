@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
@@ -8,8 +9,10 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amo
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
 import 'package:komodo_dex/services/lock_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'dart:io' show Platform;
 
 class AmountAddressStep extends StatefulWidget {
   const AmountAddressStep(
@@ -122,10 +125,46 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   Future<void> scan() async {
     final int lockCookie = lockService.enteringQrScanner();
     try {
-      final String barcode = await BarcodeScanner.scan();
-      setState(() {
-        widget.addressController.text = barcode;
-      });
+      MethodChannel channel = MMService.nativeC;
+      bool result;
+      if (Platform.isAndroid) {
+        result = await MMService.nativeC.invokeMethod<bool>('is_camera_denied');
+      } else {
+        result = true;
+      }
+
+      bool shouldScan = true;
+      if (result) {
+        shouldScan = await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Permission Denied'),
+              content: Text('Camera permission was denied. Try anyway?'),
+              actions: [
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                FlatButton(
+                  child: Text('Continue'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                )
+              ],
+            );
+          },
+        );
+      }
+      if (shouldScan) {
+        final String barcode = await BarcodeScanner.scan();
+        setState(() {
+          widget.addressController.text = barcode;
+        });
+      }
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
