@@ -23,29 +23,6 @@ class _DetailSwapState extends State<DetailSwap> {
   bool isNoteExpanded = false;
   final noteTextController = TextEditingController();
 
-  Widget _buildMakerTakerBadge(bool isMaker) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        border: Border.all(
-          color: Colors.grey,
-          style: BorderStyle.solid,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Text(
-          isMaker
-              ? AppLocalizations.of(context).makerOrder
-              : AppLocalizations.of(context).takerOrder,
-          style: Theme.of(context).textTheme.caption,
-        ),
-      ),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -118,6 +95,29 @@ class _DetailSwapState extends State<DetailSwap> {
           height: 32,
         ),
       ],
+    );
+  }
+
+  Widget _buildMakerTakerBadge(bool isMaker) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        border: Border.all(
+          color: Theme.of(context).textTheme.caption.color.withAlpha(100),
+          style: BorderStyle.solid,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+        child: Text(
+          isMaker
+              ? AppLocalizations.of(context).makerOrder
+              : AppLocalizations.of(context).takerOrder,
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ),
     );
   }
 
