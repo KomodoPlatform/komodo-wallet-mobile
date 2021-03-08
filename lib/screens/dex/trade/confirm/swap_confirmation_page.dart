@@ -142,6 +142,11 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildCoinSwapDetail() {
+    final String amountSell =
+        cutTrailingZeros(formatPrice(swapBloc.amountSell));
+    final String amountReceive =
+        cutTrailingZeros(formatPrice(swapBloc.amountReceive));
+
     return Column(
       children: <Widget>[
         Padding(
@@ -162,7 +167,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    '${swapBloc.amountSell ?? ''} ${swapBloc.sellCoinBalance?.coin?.abbr ?? ''}',
+                    '$amountSell ${swapBloc.sellCoinBalance.coin.abbr}',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6,
                   ),
@@ -201,7 +206,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '${swapBloc.amountReceive} ${swapBloc.receiveCoinBalance.coin.abbr}',
+                          '$amountReceive ${swapBloc.receiveCoinBalance.coin.abbr}',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline6,
                         ),
