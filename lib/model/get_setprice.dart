@@ -54,8 +54,7 @@ class GetSetPrice {
   bool relNota;
   int relConfs;
   dynamic price; // numerical String or {'numer': '1', 'denom': '3'}
-  dynamic
-      volume; // https://developers.komodoplatform.com/basic-docs/atomicdex/atomicdex-api.html#note-about-rational-number-type
+  dynamic volume; // https://bit.ly/2O2DxWh
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userpass': userpass,

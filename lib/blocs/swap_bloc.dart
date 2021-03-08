@@ -14,7 +14,8 @@ class SwapBloc implements BlocBase {
   double amountSell;
   double amountReceive;
   Ask matchingBid;
-  bool isMaxActive = false;
+  bool shouldBuyOut = false;
+  bool isSellMaxActive = false;
 
   // Using to guide user directly to active orders list
   int indexTab = 0;
@@ -74,8 +75,8 @@ class SwapBloc implements BlocBase {
   }
 
   void setIsMaxActive(bool isMaxActive) {
-    this.isMaxActive = isMaxActive;
-    _inIsMaxActive.add(this.isMaxActive);
+    isSellMaxActive = isMaxActive;
+    _inIsMaxActive.add(isSellMaxActive);
   }
 
   void setEnabledSellField(bool enabledSellField) {

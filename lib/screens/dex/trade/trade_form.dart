@@ -43,10 +43,14 @@ class TradeForm {
           Rational.parse(matchingBid.maxvolume.toString());
 
       // If greater than matching bid max receive volume
-      if (valueRat > (bidVolume / bidPrice)) {
-        valueDouble = (bidVolume / bidPrice).toDouble();
+      // TODO(yurii): refactor after
+      // https://github.com/KomodoPlatform/atomicDEX-API/issues/838 implemented
+      if (valueRat >= (bidVolume * bidPrice)) {
+        valueDouble = (bidVolume * bidPrice).toDouble();
         swapBloc.setIsMaxActive(false);
-        // TODO: use matchingBid maxvolume row value, consider to add flag to swapBloc
+        swapBloc.shouldBuyOut = true;
+      } else {
+        swapBloc.shouldBuyOut = false;
       }
 
       swapBloc.setAmountReceive(valueDouble / double.parse(matchingBid.price));
@@ -91,21 +95,36 @@ class TradeForm {
     Function(dynamic) onSuccess,
     Function(dynamic) onError,
   }) async {
-    // price = bid.price_rat
-    // volume <= bid.maxvolume
+    final Rational price = fract2rat(swapBloc.matchingBid.priceFract) ??
+        Rational.parse(swapBloc.matchingBid.price);
+
+    Rational volume;
+    if (swapBloc.shouldBuyOut) {
+      volume = fract2rat(swapBloc.matchingBid.maxvolumeFract) ??
+          Rational.parse(swapBloc.matchingBid.maxvolume.toString());
+    } else {
+      volume = Rational.parse(swapBloc.amountReceive.toString());
+    }
 
     final dynamic re = await MM.postBuy(
-        mmSe.client,
-        GetBuySell(
-          base: swapBloc.receiveCoinBalance.coin.abbr,
-          rel: swapBloc.sellCoinBalance.coin.abbr,
-          orderType: buyOrderType,
-          baseNota: protectionSettings.requiresNotarization,
-          baseConfs: protectionSettings.requiredConfirmations,
-          volume: swapBloc.amountReceive.toString(),
-          max: swapBloc.isMaxActive,
-          price: swapBloc.matchingBid.price,
-        ));
+      mmSe.client,
+      GetBuySell(
+        base: swapBloc.receiveCoinBalance.coin.abbr,
+        rel: swapBloc.sellCoinBalance.coin.abbr,
+        orderType: buyOrderType,
+        baseNota: protectionSettings.requiresNotarization,
+        baseConfs: protectionSettings.requiredConfirmations,
+        volume: {
+          'numer': volume.numerator.toString(),
+          'denom': volume.denominator.toString(),
+        },
+        price: {
+          'numer': price.numerator.toString(),
+          'denom': price.denominator.toString(),
+        },
+      ),
+    );
+
     if (re is BuyResponse) {
       onSuccess(re);
     } else {
@@ -129,11 +148,11 @@ class TradeForm {
           base: swapBloc.sellCoinBalance.coin.abbr,
           rel: swapBloc.receiveCoinBalance.coin.abbr,
           cancelPrevious: false,
-          max: swapBloc.isMaxActive,
+          max: swapBloc.isSellMaxActive,
           minVolume: double.tryParse(minVolume ?? ''),
           relNota: protectionSettings.requiresNotarization,
           relConfs: protectionSettings.requiredConfirmations,
-          volume: swapBloc.isMaxActive
+          volume: swapBloc.isSellMaxActive
               ? '0.00'
               : {
                   'numer': amountSell.numerator.toString(),
@@ -200,6 +219,7 @@ class TradeForm {
     swapBloc.setIsMaxActive(false);
     swapBloc.setEnabledSellField(false);
     swapBloc.enabledReceiveField = false;
+    swapBloc.shouldBuyOut = false;
     syncOrderbook.activePair = CoinsPair(sell: null, buy: null);
   }
 }

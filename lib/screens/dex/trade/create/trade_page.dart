@@ -231,7 +231,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   setState(() => _isLoadingMax = false);
                 },
                 child: StreamBuilder<bool>(
-                    initialData: swapBloc.isMaxActive,
+                    initialData: swapBloc.isSellMaxActive,
                     stream: swapBloc.outIsMaxActive,
                     builder: (context, maxSnapshot) {
                       return Container(

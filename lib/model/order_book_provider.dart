@@ -63,6 +63,12 @@ class OrderBookProvider extends ChangeNotifier {
         ? list.map((Ask ask) {
             final Ask quoteAsk = Ask.fromJson(ask.toJson());
             quoteAsk.price = '${1 / double.parse(ask.price)}';
+            quoteAsk.priceFract = ask.priceFract == null
+                ? null
+                : <String, dynamic>{
+                    'numer': ask.priceFract['denom'],
+                    'denom': ask.priceFract['numer'],
+                  };
             return quoteAsk;
           }).toList()
         : List.from(list);
