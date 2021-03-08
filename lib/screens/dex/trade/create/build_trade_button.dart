@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/swap_confirmation_page.dart';
 import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
 class BuildTradeButton extends StatefulWidget {
@@ -37,15 +38,21 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
   }
 
   Future<void> _validateAndConfirm(BuildContext mContext) async {
+    Log('build_trade_button', 'validating trading form...');
+
     final validator = TradeFormValidator();
     final errorMessage = await validator.errorMessage;
 
     if (errorMessage == null) {
+      Log('build_trade_button', 'form is valid');
+
       Navigator.push<dynamic>(
           context,
           MaterialPageRoute<dynamic>(
               builder: (BuildContext context) => SwapConfirmationPage()));
     } else {
+      Log('build_trade_button', 'form is invalid: $errorMessage');
+
       Scaffold.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 2),
         content: Text(errorMessage),

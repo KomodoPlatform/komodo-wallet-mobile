@@ -343,6 +343,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         context: context,
         onDone: (coin) {
           tradeForm.reset();
+          Log('trade_page', 'sell coin selected: ${coin.coin.abbr}');
+
           swapBloc.updateSellCoin(coin);
           swapBloc.setEnabledSellField(true);
           _orderBookProvider.activePair = CoinsPair(sell: coin.coin, buy: null);
@@ -352,6 +354,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<void> _performMakerOrder(String coin) async {
+    Log('trade_page', 'receive coin selected: $coin...');
+    Log('trade_page', 'performing maker order');
+
     swapBloc.updateMatchingBid(null);
 
     swapBloc.updateReceiveCoin(coin);
@@ -359,6 +364,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<void> _performTakerOrder(Ask bid) async {
+    Log('trade_page', 'receive coin selected: ${bid.coin}...');
+    Log('trade_page', 'performing taker order');
+
     swapBloc.updateMatchingBid(bid);
 
     swapBloc.enabledReceiveField = false;

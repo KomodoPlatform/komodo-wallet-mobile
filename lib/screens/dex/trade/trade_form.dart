@@ -179,6 +179,8 @@ class TradeForm {
   }
 
   void reset() {
+    Log('trade_form', 'form reseted');
+
     swapBloc.updateSellCoin(null);
     swapBloc.updateReceiveCoin(null);
     swapBloc.updateMatchingBid(null);
