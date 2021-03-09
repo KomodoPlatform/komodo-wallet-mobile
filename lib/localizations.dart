@@ -1010,6 +1010,9 @@ class AppLocalizations {
   String get noMatchingOrders =>
       Intl.message('No matching orders found', name: 'noMatchingOrders');
 
+  String get makerOrder => Intl.message('Maker Order', name: 'makerOrder');
+  String get takerOrder => Intl.message('Taker Order', name: 'takerOrder');
+
   // --- Help & FAQ ---
 
   String get helpLink => Intl.message('Help', name: 'helpLink');
