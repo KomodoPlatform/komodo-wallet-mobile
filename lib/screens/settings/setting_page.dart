@@ -216,23 +216,24 @@ class _SettingPageState extends State<SettingPage> {
                         key: const Key('settings-activate-pin'),
                         onChanged: (bool dataSwitch) {
                           Log('setting_page:262', 'dataSwitch $dataSwitch');
-                          setState(() {
                             if (snapshot.data) {
                               Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          LockScreen(
-                                            context: context,
-                                            pinStatus: PinStatus.DISABLED_PIN,
-                                          )));
+                                context,
+                                MaterialPageRoute<dynamic>(
+                                    builder: (BuildContext context) =>
+                                        LockScreen(
+                                          context: context,
+                                          pinStatus: PinStatus.DISABLED_PIN,
+                                        ))).then((dynamic _)  
+                                            => setState(() {})
+                                        );
                             } else {
                               SharedPreferences.getInstance()
                                   .then((SharedPreferences data) {
                                 data.setBool('switch_pin', dataSwitch);
                               });
+                              setState(() {});
                             }
-                          });
                         })
                     : Container();
               },
