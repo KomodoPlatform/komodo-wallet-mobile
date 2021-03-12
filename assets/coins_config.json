@@ -278,13 +278,30 @@
     {
         "name": "Ethereum (Ropsten)",
         "type": "erc",
-        "address": "http://eth2.cipig.net",
+        "address": "http://eth-ropsten.cipig.net",
         "port": 8555,
         "proto": "tcp",
         "abbr": "ETHR",
         "coingeckoId": "test-coin",
         "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
         "colorCoin": "0xFF828384",
+        "serverList": [
+            "http://eth-ropsten.cipig.net:8645"
+        ],
+        "explorerUrl": [
+            "https://ropsten.etherscan.io/"
+        ]
+    },
+    {
+        "name": "JST (Ropsten)",
+        "type": "erc",
+        "address": "http://eth-ropsten.cipig.net",
+        "port": 8555,
+        "proto": "tcp",
+        "abbr": "JST",
+        "coingeckoId": "test-coin",
+        "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
+        "colorCoin": "0xFFF8B34F",
         "serverList": [
             "http://eth-ropsten.cipig.net:8645"
         ],
