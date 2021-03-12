@@ -19,8 +19,7 @@ class ConfigMm2 {
       this.passphrase,
       this.rpcPassword,
       this.coins,
-      this.dbdir,
-      this.seednodes});
+      this.dbdir});
 
   factory ConfigMm2.fromJson(Map<String, dynamic> json) => ConfigMm2(
       gui: json['gui'],
@@ -32,9 +31,7 @@ class ConfigMm2 {
       coins: List<CoinInit>.from(json['coins']
               .map<dynamic>((dynamic x) => CoinInit.fromJson(x))) ??
           <CoinInit>[],
-      dbdir: json['dbdir'],
-      seednodes: List<String>.from(json['seednodes'].map((dynamic x) => x)) ??
-          <String>[]);
+      dbdir: json['dbdir']);
 
   String gui;
   int netid;
@@ -44,7 +41,6 @@ class ConfigMm2 {
   String rpcPassword;
   List<CoinInit> coins;
   String dbdir;
-  List<String> seednodes;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'gui': gui,
@@ -57,8 +53,5 @@ class ConfigMm2 {
             List<dynamic>.from(coins.map<dynamic>((dynamic x) => x.toJson())) ??
                 <CoinInit>[],
         'dbdir': dbdir,
-        'seednodes': seednodes == null
-            ? null
-            : List<dynamic>.from(seednodes.map<dynamic>((String x) => x))
       };
 }
