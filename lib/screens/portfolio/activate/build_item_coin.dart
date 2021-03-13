@@ -18,8 +18,8 @@ class _BuildItemCoinState extends State<BuildItemCoin> {
         initialData: coinsBloc.coinBeforeActivation,
         stream: coinsBloc.outCoinBeforeActivation,
         builder: (context, snapshot) {
-          final CoinToActivate coinToActivate = snapshot.data.firstWhere(
-              (CoinToActivate item) => item.coin.abbr == widget.coin.abbr);
+          final CoinToActivate coinToActivate = snapshot.data
+              .firstWhere((item) => item.coin.abbr == widget.coin.abbr);
 
           return InkWell(
             onTap: () {
