@@ -73,40 +73,6 @@ class CoinsBloc implements BlocBase {
   Stream<bool> get outCloseViewSelectCoin =>
       _closeViewSelectCoinController.stream;
 
-  bool isAllSmartChainActive = false;
-
-  final StreamController<bool> _isAllSmartChainActiveController =
-      StreamController<bool>.broadcast();
-
-  Sink<bool> get _inIsAllSmartChainActive =>
-      _isAllSmartChainActiveController.sink;
-  Stream<bool> get outIsAllSmartChainActive =>
-      _isAllSmartChainActiveController.stream;
-
-  bool isERCActive = false;
-
-  final StreamController<bool> _isERCActiveController =
-      StreamController<bool>.broadcast();
-
-  Sink<bool> get _inIsERCActive => _isERCActiveController.sink;
-  Stream<bool> get outIsERCActive => _isERCActiveController.stream;
-
-  bool isQRCActive = false;
-
-  final StreamController<bool> _isQRCActiveController =
-      StreamController<bool>.broadcast();
-
-  Sink<bool> get _inIsQRCActive => _isQRCActiveController.sink;
-  Stream<bool> get outIsQRCActive => _isQRCActiveController.stream;
-
-  bool isutxoActive = false;
-
-  final StreamController<bool> _isutxoActiveController =
-      StreamController<bool>.broadcast();
-
-  Sink<bool> get _inIsutxoActive => _isutxoActiveController.sink;
-  Stream<bool> get outIsutxoActive => _isutxoActiveController.stream;
-
   List<CoinToActivate> coinBeforeActivation = <CoinToActivate>[];
 
   // Streams to handle the list coin to activate
@@ -126,9 +92,7 @@ class CoinsBloc implements BlocBase {
     _transactionsController.close();
     _currentActiveCoinController.close();
     _closeViewSelectCoinController.close();
-    _isAllSmartChainActiveController.close();
     _coinBeforeActivationController.close();
-    _isutxoActiveController.close();
   }
 
   Coin getCoinByAbbr(String abbr) {
@@ -154,28 +118,22 @@ class CoinsBloc implements BlocBase {
   void setCoinBeforeActivation(Coin coin, bool isActive) {
     coinBeforeActivation
         .removeWhere((CoinToActivate item) => item.coin.abbr == coin.abbr);
+
     coinBeforeActivation.add(CoinToActivate(coin: coin, isActive: isActive));
     _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
-  void setIsutxoActive(bool isutxoActive) {
-    this.isutxoActive = isutxoActive;
-    _inIsutxoActive.add(this.isutxoActive);
-  }
-
-  void setIsERCActive(bool isERCActive) {
-    this.isERCActive = isERCActive;
-    _inIsERCActive.add(this.isERCActive);
-  }
-
-  void setIsQRCActive(bool isQRCActive) {
-    this.isQRCActive = isQRCActive;
-    _inIsQRCActive.add(this.isQRCActive);
-  }
-
-  void setIsAllSmartChainActive(bool isAllSmartChainActive) {
-    this.isAllSmartChainActive = isAllSmartChainActive;
-    _inIsAllSmartChainActive.add(this.isAllSmartChainActive);
+  void setCoinsBeforeActivationByType(String type, bool isActive) {
+    final List<CoinToActivate> list = [];
+    for (CoinToActivate item in coinBeforeActivation) {
+      if (item.coin.type == type) {
+        list.add(CoinToActivate(coin: item.coin, isActive: isActive));
+      } else {
+        list.add(item);
+      }
+    }
+    coinBeforeActivation = list;
+    _inCoinBeforeActivation.add(coinBeforeActivation);
   }
 
   void setCloseViewSelectCoin(bool closeViewSelectCoin) {

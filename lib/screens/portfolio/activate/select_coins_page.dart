@@ -21,39 +21,29 @@ class SelectCoinsPage extends StatefulWidget {
 }
 
 class _SelectCoinsPageState extends State<SelectCoinsPage> {
-  bool isActive = false;
-  StreamSubscription<bool> sub;
-  List<Coin> currentCoins = <Coin>[];
-  bool isSearchActive = false;
+  bool _isDone = false;
+  StreamSubscription<bool> _listenerClosePage;
+  List<Coin> _currentCoins = <Coin>[];
 
   @override
   void initState() {
     coinsBloc.setCloseViewSelectCoin(false);
-    sub = coinsBloc.outCloseViewSelectCoin.listen((dynamic onData) {
+    _listenerClosePage =
+        coinsBloc.outCloseViewSelectCoin.listen((dynamic onData) {
       if (onData != null && onData == true && mounted) {
         Navigator.of(context).pop();
       }
     });
     coinsBloc.initCoinBeforeActivation().then((_) {
-      initCoinList();
+      _initCoinList();
     });
     super.initState();
   }
 
   @override
   void dispose() {
-    sub.cancel();
+    _listenerClosePage.cancel();
     super.dispose();
-  }
-
-  void initCoinList() {
-    setState(() {
-      for (CoinToActivate coinToActivate in coinsBloc.coinBeforeActivation) {
-        currentCoins
-            .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
-        currentCoins.add(coinToActivate.coin);
-      }
-    });
   }
 
   @override
@@ -63,28 +53,29 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
           titleSpacing: 6.0,
           backgroundColor: Theme.of(context).backgroundColor,
           elevation: 0,
-          title: SearchFieldFilterCoin(clear: () {
-            initCoinList();
-          }, onFilterCoins: (List<Coin> coinsFiltered) {
-            setState(() {
-              currentCoins = coinsFiltered;
-            });
-          }),
-          leading: isSearchActive
-              ? null
-              : Builder(
-                  builder: (BuildContext context) {
-                    return IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        color: Theme.of(context).accentColor,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    );
-                  },
+          title: SearchFieldFilterCoin(
+            clear: () {
+              _initCoinList();
+            },
+            onFilterCoins: (List<Coin> coinsFiltered) {
+              setState(() {
+                _currentCoins = coinsFiltered;
+              });
+            },
+          ),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: Theme.of(context).accentColor,
                 ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              );
+            },
+          ),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: StreamBuilder<CoinToActivate>(
@@ -95,7 +86,7 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
               if (snapshot.data != null) {
                 return LoadingCoin();
               } else {
-                return isActive
+                return _isDone
                     ? LoadingCoin()
                     : Stack(
                         alignment: AlignmentDirectional.bottomCenter,
@@ -114,98 +105,122 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                               const SizedBox(
                                 height: 8,
                               ),
-                              _buildListCoin(),
+                              ..._coinListItems(),
                             ],
                           ),
-                          Container(
-                            color: Theme.of(context).primaryColor,
-                            child: SafeArea(
-                              child: Container(
-                                height: 60,
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    child: StreamBuilder<List<CoinToActivate>>(
-                                        initialData:
-                                            coinsBloc.coinBeforeActivation,
-                                        stream:
-                                            coinsBloc.outCoinBeforeActivation,
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<List<CoinToActivate>>
-                                                snapshot) {
-                                          bool isButtonActive = false;
-                                          if (snapshot.hasData) {
-                                            for (CoinToActivate coinToActivate
-                                                in snapshot.data) {
-                                              if (coinToActivate.isActive) {
-                                                isButtonActive = true;
-                                              }
-                                            }
-                                          }
-                                          return PrimaryButton(
-                                            key: const Key(
-                                                'done-activate-coins'),
-                                            text: AppLocalizations.of(context)
-                                                .done,
-                                            isLoading: isActive,
-                                            onPressed: isButtonActive
-                                                ? _pressDoneButton
-                                                : null,
-                                          );
-                                        }),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
+                          _buildDoneButton(),
                         ],
                       );
               }
             }));
   }
 
-  void _pressDoneButton() {
+  void _initCoinList() {
     setState(() {
-      isActive = true;
+      for (CoinToActivate coinToActivate in coinsBloc.coinBeforeActivation) {
+        _currentCoins
+            .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
+        _currentCoins.add(coinToActivate.coin);
+      }
     });
-    coinsBloc.activateCoinsSelected();
   }
 
-  Widget _buildListCoin() {
-    final List<Widget> coinsToActivate = <Widget>[];
+  List<Widget> _coinListItems() {
+    final List<Widget> list = <Widget>[];
 
-    if (currentCoins.isNotEmpty) {
-      currentCoins.sort((Coin a, Coin b) => b.type.compareTo(a.type));
+    if (_currentCoins.isNotEmpty) {
+      _currentCoins.sort((Coin a, Coin b) => b.type.compareTo(a.type));
 
-      String tmpType = currentCoins.first.type;
-      if (tmpType != null && tmpType.isNotEmpty && currentCoins.length > 1) {
-        coinsToActivate.add(BuildTypeHeader(
+      String tmpType = _currentCoins.first.type;
+      if (tmpType != null && tmpType.isNotEmpty && _currentCoins.length > 1) {
+        list.add(BuildTypeHeader(
           type: tmpType,
         ));
       }
-      for (Coin coin in currentCoins) {
+
+      // Loop through all inactive coins, except test coins (testCoin == true)
+      for (Coin coin in _currentCoins) {
+        if (coin.testCoin) continue;
+
         if (coin.type != tmpType) {
-          coinsToActivate.add(BuildTypeHeader(
+          list.add(BuildTypeHeader(
             type: coin.type,
           ));
         }
         tmpType = coin.type;
 
-        coinsToActivate.add(BuildItemCoin(
+        list.add(BuildItemCoin(
           key: Key('coin-activate-${coin.abbr}'),
           coin: coin,
         ));
       }
-      return Column(
-        children: coinsToActivate,
-      );
+
+      // Add test coins in a separate group
+      final Iterable<Coin> testCoins =
+          _currentCoins.where((Coin c) => c.testCoin);
+      if (testCoins.isNotEmpty) {
+        list.add(BuildTypeHeader(
+          type: null,
+        ));
+
+        for (Coin testCoin in testCoins) {
+          list.add(BuildItemCoin(
+            key: Key('coin-activate-${testCoin.abbr}'),
+            coin: testCoin,
+          ));
+        }
+      }
+
+      return list;
     } else {
-      return Center(
-          child: Text(
-        'No coin found',
-        style: Theme.of(context).textTheme.bodyText1,
-      ));
+      return [
+        Center(
+            child: Text(
+          'No coin found',
+          style: Theme.of(context).textTheme.bodyText1,
+        ))
+      ];
     }
+  }
+
+  Widget _buildDoneButton() {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      child: SafeArea(
+        child: Container(
+          height: 60,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: StreamBuilder<List<CoinToActivate>>(
+                  initialData: coinsBloc.coinBeforeActivation,
+                  stream: coinsBloc.outCoinBeforeActivation,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<CoinToActivate>> snapshot) {
+                    bool isButtonActive = false;
+                    if (snapshot.hasData) {
+                      for (CoinToActivate coinToActivate in snapshot.data) {
+                        if (coinToActivate.isActive) {
+                          isButtonActive = true;
+                        }
+                      }
+                    }
+                    return PrimaryButton(
+                      key: const Key('done-activate-coins'),
+                      text: AppLocalizations.of(context).done,
+                      isLoading: _isDone,
+                      onPressed: isButtonActive ? _pressDoneButton : null,
+                    );
+                  }),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _pressDoneButton() {
+    setState(() => _isDone = true);
+    coinsBloc.activateCoinsSelected();
   }
 }

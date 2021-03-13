@@ -5,6 +5,7 @@ import 'package:komodo_dex/localizations.dart';
 class BuildTypeHeader extends StatefulWidget {
   const BuildTypeHeader({Key key, this.type}) : super(key: key);
 
+  // `null` for test coins subcategory
   final String type;
 
   @override
@@ -29,60 +30,47 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
         return AppLocalizations.of(context).searchFilterSubtitleSmartChain;
         break;
       default:
-        return '';
+        return AppLocalizations.of(context).searchFilterSubtitleTestCoins;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isActive = !isActive;
-        });
-        switch (widget.type) {
-          case 'erc':
-            isActive
-                ? coinsBloc.setIsERCActive(true)
-                : coinsBloc.setIsERCActive(false);
-            break;
-          case 'qrc':
-            isActive
-                ? coinsBloc.setIsQRCActive(true)
-                : coinsBloc.setIsQRCActive(false);
-            break;
-          case 'utxo':
-            isActive
-                ? coinsBloc.setIsutxoActive(true)
-                : coinsBloc.setIsutxoActive(false);
-            break;
-          case 'smartChain':
-            isActive
-                ? coinsBloc.setIsAllSmartChainActive(true)
-                : coinsBloc.setIsAllSmartChainActive(false);
-            break;
-          default:
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-        child: Row(
-          children: <Widget>[
-            Container(
-              height: 15,
-              width: 15,
-              color: isActive
-                  ? Theme.of(context).accentColor
-                  : Theme.of(context).primaryColor,
+    return StreamBuilder<List<CoinToActivate>>(
+        initialData: coinsBloc.coinBeforeActivation,
+        stream: coinsBloc.outCoinBeforeActivation,
+        builder: (context, snapshot) {
+          bool isActive = true;
+          for (CoinToActivate item in snapshot.data) {
+            if (item.coin.type == widget.type && !item.isActive)
+              isActive = false;
+          }
+
+          return InkWell(
+            onTap: () {
+              setState(() => isActive = !isActive);
+              coinsBloc.setCoinsBeforeActivationByType(widget.type, isActive);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    height: 15,
+                    width: 15,
+                    color: isActive
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).primaryColor,
+                  ),
+                  const SizedBox(width: 24),
+                  Text(
+                    getTitleText(),
+                    style: Theme.of(context).textTheme.subtitle2,
+                  )
+                ],
+              ),
             ),
-            const SizedBox(width: 24),
-            Text(
-              getTitleText(),
-              style: Theme.of(context).textTheme.subtitle2,
-            )
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }

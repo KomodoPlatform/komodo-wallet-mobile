@@ -544,6 +544,9 @@ class AppLocalizations {
   String get searchFilterSubtitleSmartChain =>
       Intl.message('Select all SmartChains',
           name: 'searchFilterSubtitleSmartChain');
+  String get searchFilterSubtitleTestCoins =>
+      Intl.message('Select all Test Assets',
+          name: 'searchFilterSubtitleTestCoins');
   String get searchFilterSubtitleERC =>
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
   String get searchFilterSubtitleQRC =>
