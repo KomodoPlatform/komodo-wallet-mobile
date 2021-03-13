@@ -71,6 +71,7 @@ class Coin {
     mm2 = init['mm2'] ?? 0;
     abbr = init['coin'] ?? config['abbr'] ?? '';
     coingeckoId = config['coingeckoId'] ?? '';
+    testCoin = config['testCoin'] ?? false;
     swapContractAddress = config['swap_contract_address'] ?? '';
     colorCoin = config['colorCoin'] ?? '';
     serverList = List<String>.from(config['serverList']);
@@ -93,6 +94,7 @@ class Coin {
   /// Aka "coin", "ticker".
   String abbr;
   String coingeckoId;
+  bool testCoin;
   String colorCoin;
   List<String> serverList;
   List<String> explorerUrl;
@@ -115,6 +117,7 @@ class Coin {
         'mm2': mm2 ?? 0,
         'abbr': abbr ?? '',
         'coingeckoId': coingeckoId ?? '',
+        'testCoin': testCoin ?? false,
         'swap_contract_address': swapContractAddress ?? '',
         'colorCoin': colorCoin ?? '',
         'serverList':

@@ -283,6 +283,7 @@
         "proto": "tcp",
         "abbr": "ETHR",
         "coingeckoId": "test-coin",
+        "testCoin": true,
         "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
         "colorCoin": "0xFF828384",
         "serverList": [
@@ -300,6 +301,7 @@
         "proto": "tcp",
         "abbr": "JST",
         "coingeckoId": "test-coin",
+        "testCoin": true,
         "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
         "colorCoin": "0xFFF8B34F",
         "serverList": [
@@ -407,6 +409,7 @@
         "proto": "tcp",
         "abbr": "MORTY",
         "coingeckoId": "test-token",
+        "testCoin": true,
         "colorCoin": "0xFFf8f277",
         "serverList": [
             "electrum3.cipig.net:10018",
@@ -517,6 +520,7 @@
         "proto": "tcp",
         "abbr": "RICK",
         "coingeckoId": "test-token",
+        "testCoin": true,
         "colorCoin": "0xFFabdce4",
         "serverList": [
             "electrum1.cipig.net:10017",
@@ -718,6 +722,7 @@
         "proto": "tcp",
         "abbr": "tBTC",
         "coingeckoId": "test-token",
+        "testCoin": true,
         "colorCoin": "0xFFf7931a",
         "serverList": [
             "electrum1.cipig.net:10068",
