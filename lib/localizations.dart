@@ -547,6 +547,9 @@ class AppLocalizations {
         name: 'swapGasActivate',
         args: <Object>[coin],
       );
+  String get tradePreimageError =>
+      Intl.message('Failed to calculate trade fees',
+          name: 'tradePreimageError');
   String get remove => Intl.message('Disable', name: 'remove');
   String get searchFilterCoin =>
       Intl.message('Search a coin', name: 'searchFilterCoin');

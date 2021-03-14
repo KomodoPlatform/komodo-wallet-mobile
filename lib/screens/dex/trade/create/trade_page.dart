@@ -37,6 +37,24 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   CexProvider _cexProvider;
   OrderBookProvider _orderBookProvider;
   bool _isLoadingMax = false;
+  final _listeners = <StreamSubscription<dynamic>>[];
+
+  @override
+  void initState() {
+    _listeners.add(swapBloc.outAmountSell.listen(_onStateChange));
+    _listeners.add(swapBloc.outAmountReceive.listen(_onStateChange));
+    _listeners.add(swapBloc.outSellCoinBalance.listen(_onStateChange));
+    _listeners.add(swapBloc.outReceiveCoinBalance.listen(_onStateChange));
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _listeners.map((listener) => listener.cancel());
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -389,6 +407,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       duration: const Duration(seconds: 2),
       content: Text(text),
     ));
+  }
+
+  void _onStateChange(dynamic _) {
+    _updateFees();
+  }
+
+  Future<void> _updateFees() async {
+    final String error = await tradeForm.updateTradePreimage();
+    if (error != null) _showSnackbar(error);
   }
 }
 

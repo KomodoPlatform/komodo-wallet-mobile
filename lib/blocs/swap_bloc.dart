@@ -4,6 +4,7 @@ import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class SwapBloc implements BlocBase {
@@ -16,6 +17,7 @@ class SwapBloc implements BlocBase {
   Ask matchingBid;
   bool shouldBuyOut = false;
   bool isSellMaxActive = false;
+  TradePreimage _tradePreimage;
 
   // Using to guide user directly to active orders list
   int indexTab = 0;
@@ -62,6 +64,11 @@ class SwapBloc implements BlocBase {
       StreamController<Ask>.broadcast();
   Sink<Ask> get _inMatchingBid => _matchingBidController.sink;
   Stream<Ask> get outMatchingBid => _matchingBidController.stream;
+
+  final StreamController<TradePreimage> _tradePreimageController =
+      StreamController<TradePreimage>.broadcast();
+  Sink<TradePreimage> get _inTradePreimage => _tradePreimageController.sink;
+  Stream<TradePreimage> get outTradePreimage => _tradePreimageController.stream;
 
   @override
   void dispose() {
@@ -120,6 +127,12 @@ class SwapBloc implements BlocBase {
   void updateMatchingBid(Ask bid) {
     matchingBid = bid;
     _inMatchingBid.add(matchingBid);
+  }
+
+  TradePreimage get tradePreimage => _tradePreimage;
+  set tradePreimage(TradePreimage value) {
+    _tradePreimage = value;
+    _inTradePreimage.add(_tradePreimage);
   }
 }
 

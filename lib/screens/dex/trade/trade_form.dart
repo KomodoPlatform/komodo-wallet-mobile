@@ -1,5 +1,8 @@
 import 'package:decimal/decimal.dart';
+import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
+import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/buy_response.dart';
 import 'package:komodo_dex/model/get_buy.dart';
@@ -16,6 +19,8 @@ import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class TradeForm {
+  final AppLocalizations localizations = AppLocalizations();
+
   Future<void> onSellAmountFieldChange(String text) async {
     double valueDouble = double.tryParse(text ?? '');
     // If empty or non-numerical
@@ -206,6 +211,42 @@ class TradeForm {
     );
 
     return deci(fee.amount);
+  }
+
+  // Updates swapBloc.tradePreimage and returns error String or null
+  Future<String> updateTradePreimage() async {
+    if (swapBloc.sellCoinBalance == null ||
+        swapBloc.receiveCoinBalance == null ||
+        swapBloc.amountSell == null ||
+        swapBloc.amountReceive == null) {
+      swapBloc.tradePreimage = null;
+      return null;
+    }
+
+    final getTradePreimageRequest = swapBloc.matchingBid == null
+        ? GetTradePreimage(
+            base: swapBloc.sellCoinBalance.coin.abbr,
+            rel: swapBloc.receiveCoinBalance.coin.abbr,
+            max: swapBloc.isSellMaxActive ?? false,
+            swapMethod: 'setprice',
+            volume: swapBloc.amountSell.toString())
+        : GetTradePreimage(
+            base: swapBloc.receiveCoinBalance.coin.abbr,
+            rel: swapBloc.sellCoinBalance.coin.abbr,
+            swapMethod: 'buy',
+            volume: swapBloc.amountReceive.toString());
+
+    TradePreimage tradePreimage;
+    try {
+      tradePreimage = await MM.getTradePreimage(getTradePreimageRequest);
+    } catch (e) {
+      swapBloc.tradePreimage = null;
+      Log('trade_form', 'updateTradePreimage] $e');
+      return localizations.tradePreimageError;
+    }
+
+    swapBloc.tradePreimage = tradePreimage;
+    return null;
   }
 
   void reset() {
