@@ -14,16 +14,19 @@ class GetTradePreimage {
     this.max,
   });
 
-  factory GetTradePreimage.fromJson(Map<String, dynamic> json) =>
-      GetTradePreimage(
-        userpass: json['userpass'] ?? '',
-        method: json['method'] ?? '',
-        base: json['base'] ?? '',
-        rel: json['rel'] ?? '',
-        swapMethod: json['swap_method'] ?? '',
-        volume: json['volume'] ?? '',
-        max: json['max'] ?? false,
-      );
+  factory GetTradePreimage.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+
+    return GetTradePreimage(
+      userpass: json['userpass'] ?? '',
+      method: json['method'] ?? '',
+      base: json['base'] ?? '',
+      rel: json['rel'] ?? '',
+      swapMethod: json['swap_method'] ?? '',
+      volume: json['volume'] ?? '',
+      max: json['max'] ?? false,
+    );
+  }
 
   String userpass;
   String method;

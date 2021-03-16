@@ -242,7 +242,7 @@ class TradeForm {
     } catch (e) {
       swapBloc.tradePreimage = null;
       Log('trade_form', 'updateTradePreimage] $e');
-      return localizations.tradePreimageError;
+      return localizations.tradePreimageError + ': ' + e.toString();
     }
 
     swapBloc.tradePreimage = tradePreimage;

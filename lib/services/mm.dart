@@ -646,10 +646,12 @@ class ApiProvider {
       final error = ErrorString.fromJson(jbody);
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
-      return TradePreimage.fromJson(jbody);
+      final preimage = TradePreimage.fromJson(jbody);
+      preimage.request = request;
+      return preimage;
     } catch (e) {
       throw _catchErrorString(
-          'getTradePreimage', e, 'Error getting trade_preimage');
+          'getTradePreimage', e, 'Error getting trade_preimage: $e');
     }
   }
 }

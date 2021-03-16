@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/build_swap_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_reset_button.dart';
@@ -37,6 +38,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   CexProvider _cexProvider;
   OrderBookProvider _orderBookProvider;
   bool _isLoadingMax = false;
+  String _feesErrorMessage;
   final _listeners = <StreamSubscription<dynamic>>[];
 
   @override
@@ -183,18 +185,27 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-                      market == Market.SELL && swapBloc.amountSell != null
-                          ? Container(
-                              padding: EdgeInsets.only(top: 12),
-                              child: BuildSwapFees(
-                                baseCoin: swapBloc.sellCoinBalance?.coin?.abbr,
-                                baseAmount: swapBloc.amountSell,
-                                includeGasFee: true,
-                                relCoin:
-                                    swapBloc.receiveCoinBalance?.coin?.abbr,
-                              ),
-                            )
-                          : Container()
+                      if (market == Market.SELL) ...{
+                        _feesErrorMessage == null
+                            ? StreamBuilder<TradePreimage>(
+                                initialData: swapBloc.tradePreimage,
+                                stream: swapBloc.outTradePreimage,
+                                builder: (context, snapshot) {
+                                  return Container(
+                                    padding: EdgeInsets.only(top: 12),
+                                    child: BuildSwapFees(
+                                      preimage: snapshot.data,
+                                    ),
+                                  );
+                                })
+                            : Container(
+                                padding: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                                child: Text(
+                                  _feesErrorMessage,
+                                  style: Theme.of(context).textTheme.caption,
+                                ),
+                              )
+                      }
                     ],
                   ),
                 ),
@@ -378,6 +389,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     swapBloc.updateMatchingBid(null);
 
     swapBloc.updateReceiveCoin(coin);
+    swapBloc.setAmountReceive(null);
     swapBloc.enabledReceiveField = true;
   }
 
@@ -403,6 +415,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _showSnackbar(String text) {
+    if (context == null) return;
+
     Scaffold.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 2),
       content: Text(text),
@@ -415,7 +429,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   Future<void> _updateFees() async {
     final String error = await tradeForm.updateTradePreimage();
-    if (error != null) _showSnackbar(error);
+    if (error == null) {
+      setState(() => _feesErrorMessage = null);
+    } else {
+      setState(() => _feesErrorMessage = error);
+    }
   }
 }
 

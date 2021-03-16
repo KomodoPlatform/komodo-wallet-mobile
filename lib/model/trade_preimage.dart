@@ -1,3 +1,5 @@
+import 'package:komodo_dex/model/get_trade_preimage.dart';
+
 class TradePreimage {
   TradePreimage({
     this.baseCoinFee,
@@ -7,6 +9,7 @@ class TradePreimage {
     this.takerFee,
     this.takerFeeFract,
     this.feeToSendTakerFee,
+    this.request,
   });
 
   factory TradePreimage.fromJson(Map<String, dynamic> json) {
@@ -14,14 +17,14 @@ class TradePreimage {
     if (result == null) throw 'Failed to parse trade_preimage result';
 
     return TradePreimage(
-      baseCoinFee: CoinFee.fromJson(result['base_coin_fee']),
-      relCoinFee: CoinFee.fromJson(result['rel_coin_fee']),
-      volume: result['volume'],
-      volumeFract: result['volume_fraction'],
-      takerFee: result['taker_fee'],
-      takerFeeFract: result['taker_fee_fraction'],
-      feeToSendTakerFee: CoinFee.fromJson(result['fee_to_send_taker_fee']),
-    );
+        baseCoinFee: CoinFee.fromJson(result['base_coin_fee']),
+        relCoinFee: CoinFee.fromJson(result['rel_coin_fee']),
+        volume: result['volume'],
+        volumeFract: result['volume_fraction'],
+        takerFee: result['taker_fee'],
+        takerFeeFract: result['taker_fee_fraction'],
+        feeToSendTakerFee: CoinFee.fromJson(result['fee_to_send_taker_fee']),
+        request: GetTradePreimage.fromJson(result['request']));
   }
 
   CoinFee baseCoinFee;
@@ -31,6 +34,7 @@ class TradePreimage {
   String takerFee;
   Map<String, dynamic> takerFeeFract; // {'numer': '1', 'denom': '3'}
   CoinFee feeToSendTakerFee;
+  GetTradePreimage request;
 
   Map<String, dynamic> toJson() {
     final result = <String, dynamic>{
@@ -41,6 +45,7 @@ class TradePreimage {
       'taker_fee': takerFee,
       if (takerFeeFract != null) 'taker_fee_fraction': takerFeeFract,
       'fee_to_send_taker_fee': feeToSendTakerFee,
+      if (request != null) 'request': request.toJson(),
     };
 
     return <String, dynamic>{

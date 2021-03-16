@@ -7,7 +7,6 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
-import 'package:komodo_dex/screens/dex/build_swap_fees.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -93,11 +92,11 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                 ],
               ),
               const SizedBox(height: 12),
-              BuildSwapFees(
-                baseCoin: multiOrderProvider.baseCoin,
-                baseAmount: multiOrderProvider.baseAmt,
-                includeGasFee: false,
-              ),
+              // BuildSwapFees(
+              //   baseCoin: multiOrderProvider.baseCoin,
+              //   baseAmount: multiOrderProvider.baseAmt,
+              //   includeGasFee: false,
+              // ),
               _buildErrors(),
             ],
           ),

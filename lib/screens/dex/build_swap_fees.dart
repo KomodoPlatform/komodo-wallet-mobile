@@ -1,93 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
+import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class BuildSwapFees extends StatefulWidget {
-  const BuildSwapFees({
-    @required this.baseCoin,
-    @required this.baseAmount,
-    this.includeGasFee = false,
-    this.relCoin,
-  });
+  const BuildSwapFees({this.preimage});
 
-  final String baseCoin;
-  final double baseAmount;
-  final bool includeGasFee;
-  final String relCoin;
+  final TradePreimage preimage;
 
   @override
   _BuildSwapFeesState createState() => _BuildSwapFeesState();
 }
 
 class _BuildSwapFeesState extends State<BuildSwapFees> {
-  CexProvider cexProvider;
-  bool showDetailedFees = false;
+  bool _isTaker;
+  CexProvider _cexProvider;
+  bool _showDetailedFees = false;
+  bool _haveCexPrices;
 
   @override
   Widget build(BuildContext context) {
-    cexProvider ??= Provider.of<CexProvider>(context);
+    if (widget.preimage == null) return SizedBox();
 
-    if (widget.baseCoin == null || widget.baseAmount == null)
-      return Container();
+    _isTaker = widget.preimage.request.swapMethod == 'buy';
+    _cexProvider ??= Provider.of<CexProvider>(context);
+    _haveCexPrices = _haveAllCexPrices();
+    if (!_haveCexPrices) setState(() => _showDetailedFees = false);
 
-    return FutureBuilder<CoinAmt>(
-      future: GetSwapFee.tx(widget.baseCoin),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox();
-
-        final CoinAmt tradeFee =
-            GetSwapFee.trading(widget.baseAmount, widget.baseCoin);
-        final CoinAmt txFee = snapshot.data;
-
-        if (txFee == null || tradeFee == null) return const SizedBox();
-
-        final bool hasCexPrice =
-            (cexProvider.getUsdPrice(widget.baseCoin) ?? 0) > 0;
-
-        return GestureDetector(
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _buildTxFeeRow(txFee),
-                      if (showDetailedFees) const SizedBox(height: 4),
-                      _buildTradeFeeRow(),
-                    ],
-                  ),
-                ),
-                if (hasCexPrice)
-                  Container(
-                    padding: const EdgeInsets.only(left: 4),
-                    child: Icon(
-                      showDetailedFees ? Icons.unfold_less : Icons.unfold_more,
-                      color: Theme.of(context).textTheme.caption.color,
-                      size: 18,
-                    ),
-                  ),
-              ],
+    return GestureDetector(
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildTxFeeRow(),
+                  if (_showDetailedFees) const SizedBox(height: 4),
+                  _buildTakerFeeRow(),
+                ],
+              ),
             ),
-          ),
-          onTap: hasCexPrice
-              ? () {
-                  setState(() {
-                    showDetailedFees = !showDetailedFees;
-                  });
-                }
-              : null,
-        );
-      },
+            if (_haveCexPrices)
+              Container(
+                padding: const EdgeInsets.only(left: 4),
+                child: Icon(
+                  _showDetailedFees ? Icons.unfold_less : Icons.unfold_more,
+                  color: Theme.of(context).textTheme.caption.color,
+                  size: 18,
+                ),
+              ),
+          ],
+        ),
+      ),
+      onTap: _haveCexPrices
+          ? () => setState(() => _showDetailedFees = !_showDetailedFees)
+          : null,
     );
   }
 
-  Widget _buildTradeFeeRow() {
+  Widget _buildTakerFeeRow() {
+    if (!_isTaker) return SizedBox();
+
     return Row(
       children: <Widget>[
         Text(AppLocalizations.of(context).tradingFee,
@@ -96,94 +74,149 @@ class _BuildSwapFeesState extends State<BuildSwapFees> {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            _buildTradeFee(),
-            if (showDetailedFees) _buildTradeFeeInFiat(),
+            _buildTakerFee(),
+            if (_showDetailedFees) _buildTakerFeeInFiat(),
           ],
         )),
       ],
     );
   }
 
-  Widget _buildTradeFee() {
-    final CoinAmt fee = GetSwapFee.trading(widget.baseAmount, widget.baseCoin);
-    return Text(
-      '${cutTrailingZeros(formatPrice(fee.amount))}'
-      ' ${fee.coin}',
-      style: Theme.of(context).textTheme.caption,
-    );
+  Widget _buildTakerFee() {
+    final CoinFee feeToSendFee = widget.preimage.feeToSendTakerFee;
+    final double feeAmount =
+        double.tryParse(widget.preimage.takerFee ?? '0') ?? 0;
+    final double feeToSendFeeAmount =
+        double.tryParse(feeToSendFee.amount ?? '0') ?? 0;
+
+    if (feeToSendFee?.coin == widget.preimage.request.rel) {
+      final double amount = feeAmount + feeToSendFeeAmount;
+      return Text(
+        '${cutTrailingZeros(formatPrice(amount, 4))}'
+        ' ${widget.preimage.request.rel}',
+        style: Theme.of(context).textTheme.caption,
+      );
+    } else {
+      return Row(
+        children: [
+          Text(
+            '${cutTrailingZeros(formatPrice(feeAmount, 4))}'
+            ' ${widget.preimage.request.rel}',
+            style: Theme.of(context).textTheme.caption,
+          ),
+          Text(
+            ' + ${cutTrailingZeros(formatPrice(feeToSendFeeAmount, 4))}'
+            ' ${feeToSendFee.coin}',
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ],
+      );
+    }
   }
 
-  Widget _buildTradeFeeInFiat() {
-    final CoinAmt fee = GetSwapFee.trading(widget.baseAmount, widget.baseCoin);
+  Widget _buildTakerFeeInFiat() {
+    final double takerFeeUsd =
+        (double.tryParse(widget.preimage.takerFee ?? '0') ?? 0) *
+            _cexProvider.getUsdPrice(widget.preimage.request.rel);
+
+    final double feeToSendFeeUsd =
+        (double.tryParse(widget.preimage.feeToSendTakerFee.amount) ?? 0) *
+            _cexProvider.getUsdPrice(widget.preimage.feeToSendTakerFee.coin);
+
     return Text(
-      cexProvider.convert(fee.amount, from: fee.coin),
+      _cexProvider.convert(takerFeeUsd + feeToSendFeeUsd),
       style: Theme.of(context).textTheme.caption.copyWith(color: cexColor),
     );
   }
 
-  Widget _buildTxFeeRow(CoinAmt txFee) {
+  Widget _buildTxFeeRow() {
     return Row(
       children: <Widget>[
         Text(AppLocalizations.of(context).txFeeTitle,
             style: Theme.of(context).textTheme.caption),
         Expanded(
-            child: FutureBuilder<CoinAmt>(
-                future: GetSwapFee.gas(widget.relCoin),
-                builder: (context, snapshot) {
-                  final CoinAmt gasFee = snapshot.data;
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      _buildTxFee(txFee, gasFee),
-                      if (showDetailedFees) _buildTxFeeInFiat(txFee, gasFee),
-                    ],
-                  );
-                })),
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            _buildTxFee(),
+            if (_showDetailedFees) _buildTxFeeInFiat(),
+          ],
+        )),
       ],
     );
   }
 
-  Widget _buildTxFee(CoinAmt txFee, CoinAmt gasFee) {
+  Widget _buildTxFee() {
+    final CoinFee sellCoinFee =
+        _isTaker ? widget.preimage.relCoinFee : widget.preimage.baseCoinFee;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-          '${cutTrailingZeros(formatPrice(txFee.amount))}'
-          ' ${txFee.coin}',
+          '${cutTrailingZeros(formatPrice(sellCoinFee.amount, 4))}'
+          ' ${sellCoinFee.coin}',
           style: Theme.of(context).textTheme.caption,
         ),
-        _buildGasFee(gasFee),
+        _buildReceiveCoinFee(),
       ],
     );
   }
 
-  Widget _buildGasFee(CoinAmt gasFee) {
-    if (gasFee == null || gasFee.amount == 0) return SizedBox();
-    if (!widget.includeGasFee) return SizedBox();
-    if (widget.relCoin == null) return SizedBox();
+  Widget _buildReceiveCoinFee() {
+    final CoinFee receiveCoinFee =
+        _isTaker ? widget.preimage.baseCoinFee : widget.preimage.relCoinFee;
+    if (double.tryParse(receiveCoinFee.amount) <= 0) return SizedBox();
 
     return Text(
-      ' + ${cutTrailingZeros(formatPrice(gasFee.amount))}'
-      ' ${gasFee.coin}',
+      ' + ${cutTrailingZeros(formatPrice(receiveCoinFee.amount, 4))}'
+      ' ${receiveCoinFee.coin}',
       style: Theme.of(context).textTheme.caption,
     );
   }
 
-  Widget _buildTxFeeInFiat(CoinAmt txFee, CoinAmt gasFee) {
-    if (txFee == null) return SizedBox();
+  Widget _buildTxFeeInFiat() {
+    final double baseFeeUsd =
+        (double.tryParse(widget.preimage.baseCoinFee?.amount ?? '0') ?? 0) *
+            _cexProvider.getUsdPrice(widget.preimage.baseCoinFee.coin);
 
-    final double txUsdPrice = cexProvider.getUsdPrice(txFee?.coin);
-    final double gasUsdPrice = cexProvider.getUsdPrice(gasFee?.coin) ?? 0.0;
-
-    double totalTxFeeUsd = txFee.amount * txUsdPrice;
-    if (widget.includeGasFee && gasUsdPrice != 0) {
-      totalTxFeeUsd += gasFee.amount * gasUsdPrice;
-    }
+    final double relFeeUsd =
+        (double.tryParse(widget.preimage.relCoinFee?.amount ?? '0') ?? 0) *
+            _cexProvider.getUsdPrice(widget.preimage.relCoinFee.coin);
 
     return Text(
-      cexProvider.convert(totalTxFeeUsd),
+      _cexProvider.convert(baseFeeUsd + relFeeUsd),
       style: Theme.of(context).textTheme.caption.copyWith(color: cexColor),
     );
+  }
+
+  bool _haveAllCexPrices() {
+    final double relCoinFeeAmount =
+        double.tryParse(widget.preimage.relCoinFee?.amount ?? '0') ?? 0;
+    final double relCoinFeeUsdPrice =
+        _cexProvider.getUsdPrice(widget.preimage.relCoinFee.coin);
+    if (relCoinFeeAmount > 0 && relCoinFeeUsdPrice == 0) return false;
+
+    final double baseCoinFeeAmount =
+        double.tryParse(widget.preimage.baseCoinFee.amount ?? '0') ?? 0;
+    final double baseCoinFeeUsdPrice =
+        _cexProvider.getUsdPrice(widget.preimage.baseCoinFee.coin);
+    if (baseCoinFeeAmount > 0 && baseCoinFeeUsdPrice == 0) return false;
+
+    if (_isTaker) {
+      final double takerFeeAmount =
+          double.tryParse(widget.preimage.takerFee ?? '0') ?? 0;
+      final double takerFeeCoinUsdPrice =
+          _cexProvider.getUsdPrice(widget.preimage.request.rel);
+      if (takerFeeAmount > 0 && takerFeeCoinUsdPrice == 0) return false;
+
+      final double feeToSendFeeAmount =
+          double.tryParse(widget.preimage.feeToSendTakerFee.amount ?? '0') ?? 0;
+      final double feeToSendFeeCoinUsdPrice =
+          _cexProvider.getUsdPrice(widget.preimage.feeToSendTakerFee.coin);
+      if (feeToSendFeeAmount > 0 && feeToSendFeeCoinUsdPrice == 0) return false;
+    }
+
+    return true;
   }
 }
