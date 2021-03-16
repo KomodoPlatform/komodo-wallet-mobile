@@ -217,6 +217,12 @@ class _SettingPageState extends State<SettingPage> {
                         onChanged: (bool dataSwitch) {
                           Log('setting_page:262', 'dataSwitch $dataSwitch');
                             if (snapshot.data) {
+                              SharedPreferences.getInstance()
+                              .then((SharedPreferences data) {
+                                data.setBool(
+                                  'switch_pin_biometric', false
+                                );
+                              });
                               Navigator.push<dynamic>(
                                 context,
                                 MaterialPageRoute<dynamic>(
@@ -271,31 +277,33 @@ class _SettingPageState extends State<SettingPage> {
                             ? Switch(
                                 value: snapshot.data,
                                 onChanged: (bool dataSwitch) {
-                                  setState(() {
                                     if (snapshot.data) {
                                       authenticateBiometrics(context,
                                               PinStatus.DISABLED_PIN_BIOMETRIC)
                                           .then((bool onValue) {
                                         if (onValue) {
-                                          setState(() {
-                                            SharedPreferences.getInstance()
-                                                .then((SharedPreferences data) {
-                                              data.setBool(
-                                                  'switch_pin_biometric',
-                                                  false);
-                                            });
+                                          SharedPreferences.getInstance()
+                                          .then((SharedPreferences data) {
+                                            data.setBool(
+                                              'switch_pin_biometric', false
+                                            );
+                                            setState(() {});
                                           });
                                         }
                                       });
                                     } else {
                                       SharedPreferences.getInstance()
-                                          .then((SharedPreferences data) {
+                                      .then((SharedPreferences data) {
                                         data.setBool(
-                                            'switch_pin_biometric', dataSwitch);
+                                          'switch_pin_biometric', dataSwitch
+                                        );
+                                        if (dataSwitch) {
+                                          data.setBool('switch_pin', true);
+                                        }
                                       });
+                                      setState(() {});
                                     }
-                                  });
-                                })
+                              })
                             : Container();
                       },
                     )
