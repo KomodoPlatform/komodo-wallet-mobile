@@ -1099,7 +1099,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         backgroundColor: Theme.of(context).primaryColor,
         content: Text(
           AppLocalizations.of(context).swapGasAmount(
-              cutTrailingZeros(formatPrice(gasFee)), gasFee.coin),
+              cutTrailingZeros(formatPrice(gasFee.amount)), gasFee.coin),
           style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
         ),
       ));
