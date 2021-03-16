@@ -200,47 +200,85 @@ class _SettingPageState extends State<SettingPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              child: Text(
-                AppLocalizations.of(context).activateAccessPin,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
-              ),
-            ),
+              child: 
+                Text(
+                  AppLocalizations
+                    .of(context)
+                      .activateAccessPin,
+                  style: 
+                    Theme
+                      .of(context)
+                        .textTheme
+                          .bodyText2
+                            .copyWith(
+                              fontWeight: 
+                                FontWeight
+                                  .w300,
+                              color:
+                                Colors
+                                  .white
+                                    .withOpacity(0.7)
+            ),  ),          ),
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin',
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return snapshot.hasData
-                    ? Switch(
-                        value: snapshot.data,
-                        key: const Key('settings-activate-pin'),
-                        onChanged: (bool dataSwitch) {
-                          Log('setting_page:262', 'dataSwitch $dataSwitch');
-                            if (snapshot.data) {
-                              SharedPreferences.getInstance()
-                              .then((SharedPreferences data) {
-                                data.setBool(
-                                  'switch_pin_biometric', false
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<dynamic> snapshot
+              ) { 
+                return 
+                  snapshot
+                    .hasData
+                  ? Switch(
+                      value: 
+                        snapshot
+                          .data,
+                      key: const Key('settings-activate-pin'),
+                      onChanged: (
+                        bool switchValue
+                      ) {
+                        Log('setting_page:262', 'dataSwitch $switchValue');
+                        if (snapshot.data) {
+                          SharedPreferences
+                            .getInstance()
+                              .then((
+                          SharedPreferences data
+                          ) {
+                            data
+                              .setBool(
+                                'switch_pin_biometric',
+                                false
+                              );
+                          });
+                          Navigator
+                          .push<dynamic>(
+                            context,
+                            MaterialPageRoute
+                              <dynamic>(
+                                builder: (
+                                  BuildContext context
+                                ) => LockScreen(
+                                  context: context,
+                                  pinStatus: PinStatus.DISABLED_PIN,
+                                )
+                              )
+                          ).then((
+                            dynamic _
+                          ) => setState(() {}));
+                        } else {
+                          SharedPreferences
+                            .getInstance()
+                              .then((
+                          SharedPreferences data
+                          ) { data
+                                .setBool(
+                                  'switch_pin',
+                                  switchValue
                                 );
-                              });
-                              Navigator.push<dynamic>(
-                                context,
-                                MaterialPageRoute<dynamic>(
-                                    builder: (BuildContext context) =>
-                                        LockScreen(
-                                          context: context,
-                                          pinStatus: PinStatus.DISABLED_PIN,
-                                        ))).then((dynamic _)  
-                                            => setState(() {})
-                                        );
-                            } else {
-                              SharedPreferences.getInstance()
-                                  .then((SharedPreferences data) {
-                                data.setBool('switch_pin', dataSwitch);
-                              });
-                              setState(() {});
-                            }
-                        })
+                            } );
+                          setState(() {});
+                        }
+                      }
+                    )
                     : Container();
               },
             )
