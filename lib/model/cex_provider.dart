@@ -405,10 +405,11 @@ class CexPrices {
     http.Response _res;
     String _body;
     try {
-      _res = await http.get('https://api.openrates.io/latest?base=USD').timeout(
+      _res =
+          await http.get('https://rates.komodo.live/api/v1/usd_rates').timeout(
         const Duration(seconds: 60),
         onTimeout: () {
-          throw 'Fetching rates prices timed out';
+          throw 'Fetching rates timed out';
         },
       );
       _body = _res.body;
@@ -604,7 +605,7 @@ class CexPrices {
           try {
             // Handle margin cases (e.g. int price, like '22000')
             priceDouble = double.parse(price.toString());
-          } catch(_) {
+          } catch (_) {
             priceDouble = 0.00;
           }
           _prices[coinAbbr][currency] = priceDouble;
