@@ -564,9 +564,7 @@ class CexPrices {
     String _body;
     try {
       _res = await http
-          .get('https://api.coingecko.com/api/v3/simple/price?ids=' +
-              ids.join(',') +
-              '&vs_currencies=usd')
+          .get('https://rates.komodo.live/api/v1/gecko_rates/' + ids.join(','))
           .timeout(
         const Duration(seconds: 60),
         onTimeout: () {
