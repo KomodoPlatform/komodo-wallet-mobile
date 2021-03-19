@@ -235,13 +235,13 @@ class _SettingPageState extends State<SettingPage> {
                             // We want to deactivate biometrics here
                             // together with a regular pin protection,
                             // so that user would not leave himself
-                            // only with  biometrics one - thinking that
+                            // only with biometrics one - thinking that
                             // he is "protected", truth be told
                             // without any fallback to regular pin
                             // protection, this biometrics widget is
                             // not very reliable (read very not)
                             // and it does not take too much time to
-                            // break it, and get access to funds.
+                            // break it, and get access to users funds.
                             SharedPreferences.getInstance().then((
                               SharedPreferences data,
                             ) {
