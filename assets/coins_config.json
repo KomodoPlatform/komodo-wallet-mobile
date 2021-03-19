@@ -1,16 +1,14 @@
 [{
         "name": "Komodo",
         "type": "smartChain",
-        "address": "electrum1.cipig.net",
-        "port": 10001,
-        "proto": "tcp",
+        "proto": "SSL",
         "abbr": "KMD",
         "coingeckoId": "komodo",
         "colorCoin": "0xFF326464",
         "serverList": [
-            "electrum1.cipig.net:10001",
-            "electrum2.cipig.net:10001",
-            "electrum3.cipig.net:10001"
+            "electrum1.cipig.net:20001",
+            "electrum2.cipig.net:20001",
+            "electrum3.cipig.net:20001"
         ],
         "explorerUrl": [
             "https://kmdexplorer.io/",
@@ -21,9 +19,7 @@
     {
         "name": "Bitcoin",
         "type": "utxo",
-        "address": "e-x.not.fyi",
-        "port": 50001,
-        "proto": "tcp",
+        "proto": "TCP",
         "abbr": "BTC",
         "coingeckoId": "bitcoin",
         "colorCoin": "0xFFf7931a",
@@ -368,16 +364,14 @@
     {
         "name": "Morty",
         "type": "smartChain",
-        "address": "electrum1.cipig.net",
-        "port": 10018,
-        "proto": "tcp",
+        "proto": "SSL",
         "abbr": "MORTY",
         "coingeckoId": "test-token",
         "colorCoin": "0xFFf8f277",
         "serverList": [
-            "electrum3.cipig.net:10018",
-            "electrum2.cipig.net:10018",
-            "electrum1.cipig.net:10018"
+            "electrum3.cipig.net:20018",
+            "electrum2.cipig.net:20018",
+            "electrum1.cipig.net:20018"
         ],
         "explorerUrl": [
             "https://morty.kmd.dev/"
@@ -479,15 +473,15 @@
         "name": "Rick",
         "type": "smartChain",
         "address": "electrum3.cipig.net",
-        "port": 10017,
-        "proto": "tcp",
+        "port": 20017,
+        "proto": "SSL",
         "abbr": "RICK",
         "coingeckoId": "test-token",
         "colorCoin": "0xFFabdce4",
         "serverList": [
-            "electrum1.cipig.net:10017",
-            "electrum2.cipig.net:10017",
-            "electrum3.cipig.net:10017"
+            "electrum1.cipig.net:20017",
+            "electrum2.cipig.net:20017",
+            "electrum3.cipig.net:20017"
         ],
         "explorerUrl": [
             "https://rick.kmd.dev/"
