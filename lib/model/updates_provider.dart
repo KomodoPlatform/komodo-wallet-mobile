@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/notif_service.dart';
@@ -30,7 +31,7 @@ class UpdatesProvider extends ChangeNotifier {
     currentVersion = packageInfo.version;
 
     jobService.install('checkUpdates', 300, (_) async {
-      if (notifService.isInBackground) _check();
+      if (mainBloc.isInBackground) _check();
     });
 
     notifyListeners();
