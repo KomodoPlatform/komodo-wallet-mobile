@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_tx_history.dart';
@@ -20,7 +21,6 @@ NotifService notifService = NotifService();
 class NotifService {
   bool initialized = false;
   MethodChannel chanell = MMService.nativeC;
-  bool isInBackground = false;
 
   AppLocalizations _localizations;
   final Map<String, Swap> _swaps = {};
@@ -42,7 +42,7 @@ class NotifService {
   }
 
   Future<void> show(NotifObj notif) async {
-    if (!isInBackground) return;
+    if (!mainBloc.isInBackground) return;
 
     int nativeId;
     if (_notifIds.contains(notif.uid)) {
