@@ -30,6 +30,12 @@ class MainBloc implements BlocBase {
   Sink<Locale> get _inCurrentLocale => _currentLocaleController.sink;
   Stream<Locale> get outcurrentLocale => _currentLocaleController.stream;
 
+  bool _isInBackground = false;
+  final StreamController<bool> _isInBackgroundController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inIsInBackground => _isInBackgroundController.sink;
+  Stream<bool> get outIsInBackground => _isInBackgroundController.stream;
+
   @override
   void dispose() {
     _currentIndexTabController.close();
@@ -48,8 +54,7 @@ class MainBloc implements BlocBase {
   }
 
   void setNewLanguage(Locale locale) {
-    Log.println(
-        'main_bloc:51', 'Set Language to: ' + locale.toString());
+    Log.println('main_bloc:51', 'Set Language to: ' + locale.toString());
     currentLocale = locale;
     _inCurrentLocale.add(currentLocale);
   }
@@ -67,4 +72,12 @@ class MainBloc implements BlocBase {
         Locale('tr'),
         Locale('hu')
       ];
+
+  bool get isInBackground => _isInBackground;
+  set isInBackground(bool val) {
+    if (val == _isInBackground) return;
+
+    _isInBackground = val;
+    _inIsInBackground.add(_isInBackground);
+  }
 }
