@@ -425,7 +425,10 @@ class CexPrices {
     }
 
     if (json == null || json['rates'] == null) {
-      if (_fiatCurrencies.isEmpty) _selectedFiat = 'usd';
+      if (_fiatCurrencies.isEmpty) {
+        _fiatCurrencies['USD'] = 1.0;
+        selectedFiat = 'USD';
+      }
       return;
     }
 
