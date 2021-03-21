@@ -558,14 +558,27 @@ class CexPrices {
       ids.add(coin.coingeckoId);
     }
 
-    if (_fetchingPrices) return;
+    final String mainUrl =
+        'https://rates.komodo.live/api/v1/gecko_rates/' + ids.join(',');
+    final String fallbackUrl =
+        'https://api.coingecko.com/api/v3/simple/price?ids=' +
+            ids.join(',') +
+            '&vs_currencies=usd';
+
+    bool fetched = await _fetchPrices(mainUrl);
+    if (!fetched) fetched = await _fetchPrices(fallbackUrl);
+    if (!fetched) return;
+
+    _notifyListeners();
+  }
+
+  Future<bool> _fetchPrices(String url) async {
+    if (_fetchingPrices) return false;
     _fetchingPrices = true;
     http.Response _res;
     String _body;
     try {
-      _res = await http
-          .get('https://rates.komodo.live/api/v1/gecko_rates/' + ids.join(','))
-          .timeout(
+      _res = await http.get(url).timeout(
         const Duration(seconds: 60),
         onTimeout: () {
           Log('cex_provider', 'Fetching usd prices timed out');
@@ -587,7 +600,14 @@ class CexPrices {
       Log('cex_provider', 'Failed to parse prices json: $e');
     }
 
-    if (json == null) return;
+    if (json == null) return false;
+    if (json['error'] != null) {
+      Log('cex_provider', 'Prices endpoint error: ${json['error']}');
+      return false;
+    }
+
+    // All available coins, inculding not active.
+    final List<Coin> allCoins = (await coins).values.toList();
 
     json.forEach((String coingeckoId, dynamic pricesData) {
       String coinAbbr;
@@ -611,7 +631,7 @@ class CexPrices {
       }
     });
 
-    _notifyListeners();
+    return true;
   }
 
   void linkProvider(CexProvider provider) {
