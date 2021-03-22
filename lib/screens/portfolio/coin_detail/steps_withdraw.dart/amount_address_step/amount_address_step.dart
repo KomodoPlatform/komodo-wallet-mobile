@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +12,6 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
-import 'dart:io' show Platform;
 
 class AmountAddressStep extends StatefulWidget {
   const AmountAddressStep(
@@ -123,50 +122,28 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   }
 
   Future<void> scan() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool haveCameraAccess =
+        !(await MMService.nativeC.invokeMethod<bool>('is_camera_denied'));
+    final bool wasDeniedByUser = prefs.getBool('camera_denied_by_user') == true;
+    if (!haveCameraAccess) {
+      if (wasDeniedByUser) {
+        _showCameraPermissionDialog();
+        return;
+      }
+    } else {
+      prefs.setBool('camera_denied_by_user', false);
+    }
+
     final int lockCookie = lockService.enteringQrScanner();
     try {
-      MethodChannel channel = MMService.nativeC;
-      bool result;
-      if (Platform.isAndroid) {
-        result = await MMService.nativeC.invokeMethod<bool>('is_camera_denied');
-      } else {
-        result = true;
-      }
-
-      bool shouldScan = true;
-      if (result) {
-        shouldScan = await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Permission Denied'),
-              content: Text('Camera permission was denied. Try anyway?'),
-              actions: [
-                FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                ),
-                FlatButton(
-                  child: Text('Continue'),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                )
-              ],
-            );
-          },
-        );
-      }
-      if (shouldScan) {
-        final String barcode = await BarcodeScanner.scan();
-        setState(() {
-          widget.addressController.text = barcode;
-        });
-      }
+      final String barcode = await BarcodeScanner.scan();
+      setState(() {
+        widget.addressController.text = barcode;
+      });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
+        prefs.setBool('camera_denied_by_user', true);
         setState(() {
           barcode = 'The user did not grant the camera permission!';
         });
@@ -180,5 +157,25 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       setState(() => barcode = 'Unknown error: $e');
     }
     lockService.qrScannerReturned(lockCookie);
+  }
+
+  void _showCameraPermissionDialog() {
+    showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Permission Denied'),
+          content: Text('Camera permission was denied. Try anyway?'),
+          actions: [
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

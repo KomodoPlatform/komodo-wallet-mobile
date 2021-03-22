@@ -97,6 +97,12 @@ import AVFoundation
         UNUserNotificationCenter.current().add(request)
         
         result(nil);
+      } else if call.method == "is_camera_denied" {
+        var authorized = false
+        if AVCaptureDevice.authorizationStatus(for: AVMediaType.video) ==  AVAuthorizationStatus.authorized {
+            authorized = true;
+        }
+        result(!authorized)
       } else if call.method == "start" {
                 guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
                 
