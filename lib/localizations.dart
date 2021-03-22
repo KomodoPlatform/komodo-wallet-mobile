@@ -250,6 +250,7 @@ class AppLocalizations {
       Intl.message('CONTINUE', name: 'checkSeedPhraseButton1');
   String get checkSeedPhraseButton2 =>
       Intl.message('GO BACK AND CHECK AGAIN', name: 'checkSeedPhraseButton2');
+  String get takerFeeID => Intl.message('Taker Fee ID', name: 'takerFeeID');
   String get takerpaymentsID =>
       Intl.message('Taker Payment ID', name: 'takerpaymentsID');
   String get makerpaymentID =>

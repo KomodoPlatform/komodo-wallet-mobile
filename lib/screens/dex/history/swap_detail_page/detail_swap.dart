@@ -205,6 +205,10 @@ class _DetailSwapState extends State<DetailSwap> {
       children: <Widget>[
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
+            child: _buildInfo(AppLocalizations.of(context).takerFeeID,
+                _getTakerFeeID(widget.swap))),
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: _buildInfo(AppLocalizations.of(context).takerpaymentsID,
                 _getTakerpaymentID(widget.swap))),
         Padding(
@@ -213,6 +217,20 @@ class _DetailSwapState extends State<DetailSwap> {
                 _getMakerpaymentID(widget.swap))),
       ],
     );
+  }
+
+  String _getTakerFeeID(Swap swap) {
+    String takerFeeID = '';
+    for (SwapEL event in swap.result.events) {
+      if (event.event.type == 'TakerFeeSent') {
+        // taker-swap
+        takerFeeID = event.event.data.txHash;
+      } else if (event.event.type == 'TakerFeeValidated') {
+        // maker-swap
+        takerFeeID = event.event.data.txHash;
+      }
+    }
+    return takerFeeID;
   }
 
   String _getTakerpaymentID(Swap swap) {
@@ -243,6 +261,17 @@ class _DetailSwapState extends State<DetailSwap> {
     return makepaymentID;
   }
 
+  /*
+  String _getMakerpaymentSpentID(Swap swap) {
+    String makerPaymentSpentID = '';
+    for (SwapEL event in swap.result.events) {
+      if (event.event.type == 'MakerPaymentSpent') {
+        makerPaymentSpentID = event.event.data.txHash;
+      }
+    }
+    return makerPaymentSpentID;
+  }
+  */
   Widget _buildInfo(String title, String id) {
     return InkWell(
       onTap: () {
