@@ -81,7 +81,9 @@ class _DetailSwapState extends State<DetailSwap> {
         Padding(
             padding: const EdgeInsets.only(top: 24),
             child: _buildInfo(
-                AppLocalizations.of(context).swapID, widget.swap.result.uuid)),
+              AppLocalizations.of(context).swapID,
+              widget.swap.result.uuid,
+            )),
         widget.swap.status == Status.SWAP_SUCCESSFUL &&
                 swapHistoryBloc.isAnimationStepFinalIsFinish
             ? _buildInfosDetail()
@@ -205,8 +207,10 @@ class _DetailSwapState extends State<DetailSwap> {
       children: <Widget>[
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            child: _buildInfo(AppLocalizations.of(context).takerFeeID,
-                _getTakerFeeID(widget.swap))),
+            child: _buildInfo(
+              AppLocalizations.of(context).takerFeeID,
+              _getTakerFeeID(widget.swap),
+            )),
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: _buildInfo(AppLocalizations.of(context).takerpaymentsID,
@@ -269,16 +273,6 @@ class _DetailSwapState extends State<DetailSwap> {
     return makepaymentID;
   }
 
-  String _getMakerPaymentSpentID(Swap swap) {
-    String makerPaymentSpentID = '';
-    for (SwapEL event in swap.result.events) {
-      if (event.event.type == 'MakerPaymentSpent') {
-        makerPaymentSpentID = event.event.data.txHash;
-      }
-    }
-    return makerPaymentSpentID;
-  }
-
   String _getTakerPaymentSpentID(Swap swap) {
     String takerPaymentSpentID = '';
     for (SwapEL event in swap.result.events) {
@@ -295,33 +289,76 @@ class _DetailSwapState extends State<DetailSwap> {
     return takerPaymentSpentID;
   }
 
-  Widget _buildInfo(String title, String id) {
-    return InkWell(
-      onTap: () {
-        copyToClipBoard(context, id);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Text(
-                '$title:',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
+  String _getMakerPaymentSpentID(Swap swap) {
+    String makerPaymentSpentID = '';
+    for (SwapEL event in swap.result.events) {
+      if (event.event.type == 'MakerPaymentSpent') {
+        makerPaymentSpentID = event.event.data.txHash;
+      }
+    }
+    return makerPaymentSpentID;
+  }
+
+  Widget _buildViewInExplorerButton() {
+    return Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            border: Border.all(
+              color: Theme.of(context).textTheme.caption.color.withAlpha(40),
+              style: BorderStyle.solid,
+              width: 1,
             ),
-            Text(
+            borderRadius: BorderRadius.circular(8)),
+        child: InkWell(
+            onTap: () {},
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
+              child: Row(children: [
+                Padding(
+                    padding: EdgeInsets.only(right: 2),
+                    child: Text(
+                      AppLocalizations.of(context).viewInExplorerButton,
+                      style: Theme.of(context).textTheme.caption,
+                    )),
+                Icon(Icons.open_in_browser),
+              ]),
+            )));
+  }
+
+  Widget _buildInfo(String title, String id) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              children: [
+                Text(
+                  '$title:',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                _buildViewInExplorerButton(),
+              ],
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              copyToClipBoard(context, id);
+            },
+            child: Text(
               id,
               style: Theme.of(context)
                   .textTheme
                   .bodyText2
                   .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -366,7 +403,8 @@ class _DetailSwapState extends State<DetailSwap> {
               _buildTextAmount(widget.swap.result.myInfo.otherCoin,
                   widget.swap.result.myInfo.otherAmount),
               Text(
-                '${AppLocalizations.of(context).receive[0].toUpperCase()}${AppLocalizations.of(context).receive.substring(1)}',
+                '${AppLocalizations.of(context).receive[0].toUpperCase()}'
+                '${AppLocalizations.of(context).receive.substring(1)}',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
