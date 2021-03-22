@@ -164,16 +164,24 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Permission Denied'),
-          content: Text('Camera permission was denied. Try anyway?'),
-          actions: [
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+          contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+          title: Text(AppLocalizations.of(context).withdrawCameraAccessTitle),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                AppLocalizations.of(context).withdrawCameraAccessText,
+                style: TextStyle(fontSize: 13),
+              ),
+              SizedBox(height: 12),
+              RaisedButton(
+                child: Text(AppLocalizations.of(context).okButton),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
         );
       },
     );
