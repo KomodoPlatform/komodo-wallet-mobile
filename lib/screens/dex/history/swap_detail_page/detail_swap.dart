@@ -219,6 +219,10 @@ class _DetailSwapState extends State<DetailSwap> {
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: _buildInfo(AppLocalizations.of(context).takerPaymentSpentID,
                 _getTakerPaymentSpentID(widget.swap))),
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: _buildInfo(AppLocalizations.of(context).makerPaymentSpentID,
+                _getMakerPaymentSpentID(widget.swap))),
       ],
     );
   }
@@ -263,6 +267,16 @@ class _DetailSwapState extends State<DetailSwap> {
       }
     }
     return makepaymentID;
+  }
+
+  String _getMakerPaymentSpentID(Swap swap) {
+    String makerPaymentSpentID = '';
+    for (SwapEL event in swap.result.events) {
+      if (event.event.type == 'MakerPaymentSpent') {
+        makerPaymentSpentID = event.event.data.txHash;
+      }
+    }
+    return makerPaymentSpentID;
   }
 
   String _getTakerPaymentSpentID(Swap swap) {

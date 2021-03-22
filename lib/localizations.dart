@@ -257,6 +257,8 @@ class AppLocalizations {
       Intl.message('Maker Payment ID', name: 'makerpaymentID');
   String get takerPaymentSpentID =>
       Intl.message('Taker Payment Spent ID', name: 'takerPaymentSpentID');
+  String get makerPaymentSpentID =>
+      Intl.message('Maker Payment Spent ID', name: 'makerPaymentSpentID');
   String get activateAccessBiometric =>
       Intl.message('Activate Biometric protection',
           name: 'activateAccessBiometric');
