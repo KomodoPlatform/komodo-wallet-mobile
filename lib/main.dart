@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/drawer/drawer.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -166,30 +167,44 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    return MaterialApp(
-                        title: 'atomicDEX',
-                        localizationsDelegates: <
-                            LocalizationsDelegate<dynamic>>[
-                          const AppLocalizationsDelegate(),
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate,
-                          GlobalCupertinoLocalizations.delegate
-                        ],
-                        locale: currentLocale.hasData
-                            ? currentLocale.data
-                            : prefLocale.hasData
-                                ? Locale(prefLocale.data)
-                                : null,
-                        supportedLocales: mainBloc.supportedLocales,
-                        theme: getTheme(),
-                        initialRoute: '/',
-                        routes: <String, Widget Function(BuildContext)>{
-                          // When we navigate to the '/' route, build the FirstScreen Widget
-                          '/': (BuildContext context) => LockScreen(
-                                context: context,
-                                child: MyHomePage(),
-                              ),
-                        });
+                    return StreamBuilder<bool>(
+                      stream: settingsBloc.outSwitchTheme,
+                      builder: (BuildContext cont,
+                          AsyncSnapshot<dynamic> switchTheme) {
+                        return MaterialApp(
+                            title: 'atomicDEX',
+                            localizationsDelegates: <
+                                LocalizationsDelegate<dynamic>>[
+                              const AppLocalizationsDelegate(),
+                              GlobalMaterialLocalizations.delegate,
+                              GlobalWidgetsLocalizations.delegate,
+                              GlobalCupertinoLocalizations.delegate
+                            ],
+                            locale: currentLocale.hasData
+                                ? currentLocale.data
+                                : prefLocale.hasData
+                                    ? Locale(prefLocale.data)
+                                    : null,
+                            supportedLocales: mainBloc.supportedLocales,
+                            theme: switchTheme.hasData
+                                ? switchTheme.data == true
+                                    ? getTheme2()
+                                    : getTheme()
+                                : settingsBloc.switchTheme == true
+                                    ? getTheme2()
+                                    : getTheme(),
+                            //darkTheme: getTheme2(),
+                            //themeMode: ThemeMode.system,
+                            initialRoute: '/',
+                            routes: <String, Widget Function(BuildContext)>{
+                              // When we navigate to the '/' route, build the FirstScreen Widget
+                              '/': (BuildContext context) => LockScreen(
+                                    context: context,
+                                    child: MyHomePage(),
+                                  ),
+                            });
+                      },
+                    );
                   });
             }));
   }

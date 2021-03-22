@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
-
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SettingsBloc settingsBloc = SettingsBloc();
@@ -14,11 +14,19 @@ class SettingsBloc implements BlocBase {
   }
 
   SharedPreferences _prefs;
-
+  ThemeMode _themeMode = ThemeMode.system;
   Future<void> _loadPrefs() async {
     _prefs = await SharedPreferences.getInstance();
 
     showBalance = _prefs.getBool('showBalance') ?? showBalance;
+    switchTheme = _prefs.getBool('switchTheme') ?? switchTheme;
+    if (switchTheme == true) {
+      _themeMode = ThemeMode.light;
+    } else {
+      _themeMode = ThemeMode.dark;
+    }
+    Get.changeThemeMode(_themeMode);
+
     showSoundsExplanationDialog =
         _prefs.getBool('showSoundsExplanationDialog') ??
             showSoundsExplanationDialog;
@@ -30,6 +38,7 @@ class SettingsBloc implements BlocBase {
 
   bool isDeleteLoading = true;
   bool showBalance = true;
+  bool switchTheme = false;
   bool showSoundsExplanationDialog = true;
 
   final StreamController<bool> _isDeleteLoadingController =
@@ -46,6 +55,11 @@ class SettingsBloc implements BlocBase {
       StreamController<bool>.broadcast();
   Sink<bool> get _inShowSoundsDialog => _showSoundsDialogCtrl.sink;
   Stream<bool> get outShowSoundsDialog => _showSoundsDialogCtrl.stream;
+
+  final StreamController<bool> _switchThemeController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inSwitchTheme => _switchThemeController.sink;
+  Stream<bool> get outSwitchTheme => _switchThemeController.stream;
 
   @override
   void dispose() {
@@ -103,5 +117,17 @@ class SettingsBloc implements BlocBase {
     showSoundsExplanationDialog = val;
     _inShowSoundsDialog.add(val);
     _prefs.setBool('showSoundsExplanationDialog', val);
+  }
+
+  void setSwitchTheme(bool val) {
+    switchTheme = val;
+    _inSwitchTheme.add(val);
+    _prefs.setBool('switchTheme', val);
+    if (switchTheme == true) {
+      _themeMode = ThemeMode.light;
+    } else {
+      _themeMode = ThemeMode.dark;
+    }
+    Get.changeThemeMode(_themeMode);
   }
 }

@@ -299,6 +299,31 @@ class _AppDrawerState extends State<AppDrawer> {
                                 size: 16,
                                 color: Colors.white.withAlpha(200),
                               )),
+                          _buildDrawerItem(
+                            title:
+                                Text(AppLocalizations.of(context).switchTheme),
+                            leading: Icon(
+                              Icons.brush,
+                              size: 16,
+                              color: Colors.white.withAlpha(200),
+                            ),
+                            trailing: StreamBuilder<bool>(
+                              initialData: settingsBloc.switchTheme,
+                              stream: settingsBloc.outSwitchTheme,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                return snapshot.hasData
+                                    ? Switch(
+                                        value: !snapshot.data,
+                                        key: const Key('settings-switch-theme'),
+                                        onChanged: (bool dataSwitch) {
+                                          settingsBloc
+                                              .setSwitchTheme(!dataSwitch);
+                                        })
+                                    : Container();
+                              },
+                            ),
+                          ),
                           Divider(
                             indent: 20,
                             endIndent: 20,
