@@ -135,10 +135,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
-        notifService.isInBackground = true;
+        mainBloc.isInBackground = true;
         break;
       default:
-        notifService.isInBackground = false;
+        mainBloc.isInBackground = false;
     }
   }
 

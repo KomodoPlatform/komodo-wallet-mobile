@@ -449,18 +449,17 @@ class _CoinDetailState extends State<CoinDetail> {
                   return StreamBuilder<bool>(
                       initialData: settingsBloc.showBalance,
                       stream: settingsBloc.outShowBalance,
-                      builder:
-                          (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                      builder: (BuildContext context,
+                          AsyncSnapshot<bool> showBalance) {
                         String coinBalance =
                             currentCoinBalance.balance.getBalance();
-                        String unspendableBalance =
+                        final String unspendableBalance =
                             currentCoinBalance.balance.getUnspendableBalance();
                         final String coinBalanceUsd =
                             currentCoinBalance.getBalanceUSD();
                         bool hidden = false;
-                        if (snapshot.hasData && snapshot.data == false) {
+                        if (showBalance.hasData && showBalance.data == false) {
                           coinBalance = '**.**';
-                          unspendableBalance = '**.**';
                           hidden = true;
                         }
                         return Column(
@@ -476,7 +475,7 @@ class _CoinDetailState extends State<CoinDetail> {
                               Container(
                                 padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
                                 child: Text(
-                                  '(+$unspendableBalance'
+                                  '(+${hidden ? '**.**' : unspendableBalance}'
                                   ' ${currentCoinBalance.balance.coin}'
                                   ' ${AppLocalizations.of(context).unspendable})',
                                   style: Theme.of(context).textTheme.caption,
