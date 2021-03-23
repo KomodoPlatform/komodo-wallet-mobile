@@ -84,10 +84,7 @@ class _DetailSwapState extends State<DetailSwap> {
               AppLocalizations.of(context).swapID,
               widget.swap.result.uuid,
             )),
-        widget.swap.status == Status.SWAP_SUCCESSFUL &&
-                swapHistoryBloc.isAnimationStepFinalIsFinish
-            ? _buildAdditionalInfoDetails()
-            : Container(),
+        _buildAdditionalInfoDetails(),
         _buildNote(AppLocalizations.of(context).noteTitle),
         const SizedBox(
           height: 32,
@@ -240,8 +237,9 @@ class _DetailSwapState extends State<DetailSwap> {
             _getMakerPaymentSpentID(widget.swap),
           ),
         ),
-        widget.swap.status == Status.SWAP_FAILED
-            ? Padding(
+        widget.swap.result.status == Status.SWAP_SUCCESSFUL
+            ? Container()
+            : Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: _buildInfo(
                   widget.swap.result.type == 'Maker'
@@ -250,7 +248,6 @@ class _DetailSwapState extends State<DetailSwap> {
                   _getRefundTxID(widget.swap),
                 ),
               )
-            : Container()
       ],
     );
   }
@@ -384,7 +381,7 @@ class _DetailSwapState extends State<DetailSwap> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.only(bottom: 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -393,7 +390,7 @@ class _DetailSwapState extends State<DetailSwap> {
                         '$title:',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
-                      title == 'Swap ID'
+                      title == 'Swap ID' || id == ''
                           ? Container()
                           : _buildViewInExplorerButton()
                     ],
