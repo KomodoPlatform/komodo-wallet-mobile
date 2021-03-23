@@ -65,12 +65,12 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     SwapStepStatus _getStatus(int index) {
       if (index == swap.step) return SwapStepStatus.inProgress;
       if (index < swap.step) {
-        for (SwapEL ev in swap.result.events) {
-          if (swap.result.errorEvents.contains(ev.event.type))
-            return SwapStepStatus.failed;
+        if (swap.result.events[index].event.type ==
+            swap.result.successEvents[index]) {
+          return SwapStepStatus.success;
+        } else {
+          return SwapStepStatus.failed;
         }
-      } else {
-        return SwapStepStatus.success;
       }
       return SwapStepStatus.pending;
     }
@@ -165,7 +165,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       }
 
       if (failedOnStep != null) {
-        for (int e = failedOnStep; e < swap.result.events.length; e++) {
+        for (int e = failedOnStep; e < swap.result.events.length - 1; e++) {
           final String errorEventType = swap.result.events[e].event.type;
           final SwapStepStatus status =
               errorEventType.toLowerCase().contains('failed')
