@@ -79,12 +79,16 @@ class _DetailSwapState extends State<DetailSwap> {
         ),
         _buildAmountSwap(),
         Padding(
-            padding: const EdgeInsets.only(top: 24),
-            child: _buildInfo(
-              AppLocalizations.of(context).swapID,
-              widget.swap.result.uuid,
-            )),
-        _buildAdditionalInfoDetails(),
+          padding: const EdgeInsets.only(top: 24),
+          child: _buildInfo(
+            AppLocalizations.of(context).swapID,
+            widget.swap.result.uuid,
+          ),
+        ),
+        if (widget.swap.result.status == Status.SWAP_SUCCESSFUL ||
+            widget.swap.result.status == Status.SWAP_FAILED &&
+                swapHistoryBloc.isAnimationStepFinalIsFinish)
+          _buildAdditionalInfoDetails(),
         _buildNote(AppLocalizations.of(context).noteTitle),
         const SizedBox(
           height: 32,
@@ -334,17 +338,24 @@ class _DetailSwapState extends State<DetailSwap> {
   Widget _buildViewInExplorerButton() {
     return Container(
       decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          border: Border.all(
-            color: Theme.of(context).textTheme.caption.color.withAlpha(40),
+        shape: BoxShape.rectangle,
+        border: BorderDirectional(
+          start: BorderSide(
+            color: Theme.of(context).accentColor.withAlpha(160),
             style: BorderStyle.solid,
-            width: 1,
+            width: 2,
           ),
-          borderRadius: BorderRadius.circular(8)),
+          bottom: BorderSide(
+            color: Theme.of(context).accentColor.withAlpha(120),
+            style: BorderStyle.solid,
+            width: 2,
+          ),
+        ),
+      ),
       child: InkWell(
         onTap: () {},
         child: Padding(
-          padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
+          padding: EdgeInsets.fromLTRB(6, 2, 4, 1),
           child: Row(
             children: [
               Padding(
@@ -354,7 +365,10 @@ class _DetailSwapState extends State<DetailSwap> {
                   style: Theme.of(context).textTheme.caption,
                 ),
               ),
-              Icon(Icons.open_in_browser),
+              Icon(
+                Icons.open_in_browser,
+                color: Theme.of(context).accentColor,
+              ),
             ],
           ),
         ),
@@ -450,8 +464,10 @@ class _DetailSwapState extends State<DetailSwap> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              _buildTextAmount(widget.swap.result.myInfo.otherCoin,
-                  widget.swap.result.myInfo.otherAmount),
+              _buildTextAmount(
+                widget.swap.result.myInfo.otherCoin,
+                widget.swap.result.myInfo.otherAmount,
+              ),
               Text(
                 '${AppLocalizations.of(context).receive[0].toUpperCase()}'
                 '${AppLocalizations.of(context).receive.substring(1)}',
