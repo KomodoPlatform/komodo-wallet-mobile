@@ -261,9 +261,14 @@ class AppLocalizations {
       Intl.message('Taker Payment Spent ID', name: 'takerPaymentSpentID');
   String get makerPaymentSpentID =>
       Intl.message('Maker Payment Spent ID', name: 'makerPaymentSpentID');
-  String get activateAccessBiometric =>
-      Intl.message('Activate Biometric protection',
-          name: 'activateAccessBiometric');
+  String get makerPaymentRefundTx =>
+      Intl.message('Maker Payment Refund ID', name: 'makerPaymentRefundTx');
+  String get takerPaymentRefundTx =>
+      Intl.message('Taker Payment Refund ID', name: 'takerPaymentRefundTx');
+  String get activateAccessBiometric => Intl.message(
+        'Activate Biometric protection',
+        name: 'activateAccessBiometric',
+      );
   String get allowCustomSeed =>
       Intl.message('Allow custom seed', name: 'allowCustomSeed');
   String get hintEnterPassword =>
