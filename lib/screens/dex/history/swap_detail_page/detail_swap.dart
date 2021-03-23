@@ -342,7 +342,9 @@ class _DetailSwapState extends State<DetailSwap> {
                   '$title:',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                _buildViewInExplorerButton(),
+                (title == 'Swap ID')
+                    ? Container()
+                    : _buildViewInExplorerButton()
               ],
             ),
           ),
