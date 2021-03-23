@@ -213,14 +213,14 @@ class _DetailSwapState extends State<DetailSwap> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buildInfo(
             AppLocalizations.of(context).takerpaymentsID,
-            _getTakerpaymentID(widget.swap),
+            _getTakerPaymentID(widget.swap),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buildInfo(
             AppLocalizations.of(context).makerpaymentID,
-            _getMakerpaymentID(widget.swap),
+            _getMakerPaymentID(widget.swap),
           ),
         ),
         Padding(
@@ -266,7 +266,7 @@ class _DetailSwapState extends State<DetailSwap> {
     return takerFeeID;
   }
 
-  String _getTakerpaymentID(Swap swap) {
+  String _getTakerPaymentID(Swap swap) {
     String takerpaymentID = '';
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'TakerPaymentSent') {
@@ -280,7 +280,7 @@ class _DetailSwapState extends State<DetailSwap> {
     return takerpaymentID;
   }
 
-  String _getMakerpaymentID(Swap swap) {
+  String _getMakerPaymentID(Swap swap) {
     String makepaymentID = '';
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'MakerPaymentReceived') {
@@ -372,7 +372,7 @@ class _DetailSwapState extends State<DetailSwap> {
     // !Remove! in case atomicDEX-API/issues/875
     // gets implemented.
     return (widget.swap.result.type == 'Maker' &&
-            title == 'Maker Payment Spent ID')
+            title == 'Maker Payment Spent TxID')
         ? Container()
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -390,7 +390,7 @@ class _DetailSwapState extends State<DetailSwap> {
                         '$title:',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
-                      title == 'Swap ID' || id == ''
+                      title == 'Swap UUID' || id == ''
                           ? Container()
                           : _buildViewInExplorerButton()
                     ],

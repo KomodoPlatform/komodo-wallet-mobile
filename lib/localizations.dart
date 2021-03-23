@@ -188,7 +188,7 @@ class AppLocalizations {
   String get tradeDetail => Intl.message('TRADE DETAILS', name: 'tradeDetail');
   String get requestedTrade =>
       Intl.message('Requested Trade', name: 'requestedTrade');
-  String get swapID => Intl.message('Swap ID', name: 'swapID');
+  String get swapID => Intl.message('Swap UUID', name: 'swapUUID');
   String get mediaBrowse => Intl.message('BROWSE', name: 'mediaBrowse');
   String get mediaSaved => Intl.message('SAVED', name: 'mediaSaved');
   String get articleFrom => Intl.message('AtomicDEX NEWS', name: 'articleFrom');
@@ -252,19 +252,19 @@ class AppLocalizations {
       Intl.message('GO BACK AND CHECK AGAIN', name: 'checkSeedPhraseButton2');
   String get viewInExplorerButton =>
       Intl.message('View in Explorer', name: 'viewInExplorerButton');
-  String get takerFeeID => Intl.message('Taker Fee ID', name: 'takerFeeID');
+  String get takerFeeID => Intl.message('Taker Fee TxID', name: 'takerFeeTx');
   String get takerpaymentsID =>
-      Intl.message('Taker Payment ID', name: 'takerpaymentsID');
+      Intl.message('Taker Payment TxID', name: 'takerPaymentsTx');
   String get makerpaymentID =>
-      Intl.message('Maker Payment ID', name: 'makerpaymentID');
+      Intl.message('Maker Payment TxID', name: 'makerPaymentTx');
   String get takerPaymentSpentID =>
-      Intl.message('Taker Payment Spent ID', name: 'takerPaymentSpentID');
+      Intl.message('Taker Payment Spent TxID', name: 'takerPaymentSpentTx');
   String get makerPaymentSpentID =>
-      Intl.message('Maker Payment Spent ID', name: 'makerPaymentSpentID');
+      Intl.message('Maker Payment Spent TxID', name: 'makerPaymentSpentTx');
   String get makerPaymentRefundTx =>
-      Intl.message('Maker Payment Refund ID', name: 'makerPaymentRefundTx');
+      Intl.message('Maker Payment Refund TxID', name: 'makerPaymentRefundTx');
   String get takerPaymentRefundTx =>
-      Intl.message('Taker Payment Refund ID', name: 'takerPaymentRefundTx');
+      Intl.message('Taker Payment Refund TxID', name: 'takerPaymentRefundTx');
   String get activateAccessBiometric => Intl.message(
         'Activate Biometric protection',
         name: 'activateAccessBiometric',
