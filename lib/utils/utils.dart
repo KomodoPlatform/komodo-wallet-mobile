@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -176,6 +177,15 @@ Future<bool> get canCheckBiometrics async {
 /// We use `_activeAuthenticateWithBiometrics` in order to ignore such double-invocations.
 Future<bool> authenticateBiometrics(
     BuildContext context, PinStatus pinStatus) async {
+  if (mainBloc.isInBackground) {
+    StreamSubscription listener;
+    listener = mainBloc.outIsInBackground.listen((bool isInBackground) {
+      listener.cancel();
+      if (!isInBackground) authenticateBiometrics(context, pinStatus);
+    });
+    return false;
+  }
+
   Log.println('utils:291', 'authenticateBiometrics');
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('switch_pin_biometric')) {

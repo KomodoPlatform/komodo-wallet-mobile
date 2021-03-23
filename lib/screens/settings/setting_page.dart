@@ -201,38 +201,78 @@ class _SettingPageState extends State<SettingPage> {
           children: <Widget>[
             Expanded(
               child: Text(
-                AppLocalizations.of(context).activateAccessPin,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
+                AppLocalizations.of(
+                  context,
+                ).activateAccessPin,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyText2.copyWith(
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white.withOpacity(0.7),
+                    ),
               ),
             ),
             SharedPreferencesBuilder<dynamic>(
               pref: 'switch_pin',
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<dynamic> snapshot,
+              ) {
                 return snapshot.hasData
                     ? Switch(
                         value: snapshot.data,
-                        key: const Key('settings-activate-pin'),
-                        onChanged: (bool dataSwitch) {
-                          Log('setting_page:262', 'dataSwitch $dataSwitch');
-                          setState(() {
-                            if (snapshot.data) {
-                              Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          LockScreen(
-                                            context: context,
-                                            pinStatus: PinStatus.DISABLED_PIN,
-                                          )));
-                            } else {
-                              SharedPreferences.getInstance()
-                                  .then((SharedPreferences data) {
-                                data.setBool('switch_pin', dataSwitch);
-                              });
-                            }
-                          });
+                        key: const Key(
+                          'settings-activate-pin',
+                        ),
+                        onChanged: (
+                          bool switchValue,
+                        ) {
+                          Log(
+                            'setting_page:262',
+                            'switchValue $switchValue',
+                          );
+                          if (snapshot.data) {
+                            // We want to deactivate biometrics here
+                            // together with a regular pin protection,
+                            // so that user would not leave himself
+                            // only with biometrics one - thinking that
+                            // he is "protected", truth be told
+                            // without any fallback to regular pin
+                            // protection, this biometrics widget is
+                            // not very reliable (read very not)
+                            // and it does not take too much time to
+                            // break it, and get access to users funds.
+                            SharedPreferences.getInstance().then((
+                              SharedPreferences data,
+                            ) {
+                              data.setBool(
+                                'switch_pin_biometric',
+                                false,
+                              );
+                            });
+                            Navigator.push<dynamic>(
+                              context,
+                              MaterialPageRoute<dynamic>(
+                                builder: (
+                                  BuildContext context,
+                                ) =>
+                                    LockScreen(
+                                  context: context,
+                                  pinStatus: PinStatus.DISABLED_PIN,
+                                ),
+                              ),
+                            ).then((dynamic _) => setState(() {}));
+                          } else {
+                            SharedPreferences.getInstance().then((
+                              SharedPreferences data,
+                            ) {
+                              data.setBool(
+                                'switch_pin',
+                                switchValue,
+                              );
+                            });
+                            setState(() {});
+                          }
                         })
                     : Container();
               },
@@ -247,7 +287,10 @@ class _SettingPageState extends State<SettingPage> {
     return FutureBuilder<bool>(
         initialData: false,
         future: canCheckBiometrics,
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<bool> snapshot,
+        ) {
           if (snapshot.hasData && snapshot.data) {
             return CustomTile(
               child: ListTile(
@@ -256,44 +299,70 @@ class _SettingPageState extends State<SettingPage> {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        AppLocalizations.of(context).activateAccessBiometric,
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white.withOpacity(0.7)),
+                        AppLocalizations.of(
+                          context,
+                        ).activateAccessBiometric,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyText2.copyWith(
+                              fontWeight: FontWeight.w300,
+                              color: Colors.white.withOpacity(0.7),
+                            ),
                       ),
                     ),
                     SharedPreferencesBuilder<dynamic>(
                       pref: 'switch_pin_biometric',
-                      builder: (BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot) {
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot,
+                      ) {
                         return snapshot.hasData
                             ? Switch(
                                 value: snapshot.data,
-                                onChanged: (bool dataSwitch) {
-                                  setState(() {
-                                    if (snapshot.data) {
-                                      authenticateBiometrics(context,
-                                              PinStatus.DISABLED_PIN_BIOMETRIC)
-                                          .then((bool onValue) {
-                                        if (onValue) {
-                                          setState(() {
-                                            SharedPreferences.getInstance()
-                                                .then((SharedPreferences data) {
-                                              data.setBool(
-                                                  'switch_pin_biometric',
-                                                  false);
-                                            });
-                                          });
-                                        }
-                                      });
-                                    } else {
-                                      SharedPreferences.getInstance()
-                                          .then((SharedPreferences data) {
+                                onChanged: (
+                                  bool switchValue,
+                                ) {
+                                  if (snapshot.data) {
+                                    authenticateBiometrics(
+                                      context,
+                                      PinStatus.DISABLED_PIN_BIOMETRIC,
+                                    ).then((
+                                      bool passedBioCheck,
+                                    ) {
+                                      if (passedBioCheck) {
+                                        SharedPreferences.getInstance().then((
+                                          SharedPreferences data,
+                                        ) {
+                                          data.setBool(
+                                            'switch_pin_biometric',
+                                            false,
+                                          );
+                                          setState(() {});
+                                        });
+                                      }
+                                    });
+                                  } else {
+                                    SharedPreferences.getInstance().then((
+                                      SharedPreferences data,
+                                    ) {
+                                      data.setBool(
+                                        'switch_pin_biometric',
+                                        switchValue,
+                                      );
+                                      if (switchValue) {
+                                        // Same situation here as above
+                                        // on line 244 but from a
+                                        // different angle. Just trying
+                                        // to protect users from unreliable
+                                        // !biometrics only! state.
                                         data.setBool(
-                                            'switch_pin_biometric', dataSwitch);
-                                      });
-                                    }
-                                  });
+                                          'switch_pin',
+                                          true,
+                                        );
+                                      }
+                                    });
+                                    setState(() {});
+                                  }
                                 })
                             : Container();
                       },
