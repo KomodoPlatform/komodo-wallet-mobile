@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_step.dart';
@@ -64,12 +65,12 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     SwapStepStatus _getStatus(int index) {
       if (index == swap.step) return SwapStepStatus.inProgress;
       if (index < swap.step) {
-        if (swap.result.events[index].event.type ==
-            swap.result.successEvents[index]) {
-          return SwapStepStatus.success;
-        } else {
-          return SwapStepStatus.failed;
+        for (SwapEL ev in swap.result.events) {
+          if (swap.result.errorEvents.contains(ev.event.type))
+            return SwapStepStatus.failed;
         }
+      } else {
+        return SwapStepStatus.success;
       }
       return SwapStepStatus.pending;
     }
