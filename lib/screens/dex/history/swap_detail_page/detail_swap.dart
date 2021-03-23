@@ -226,15 +226,15 @@ class _DetailSwapState extends State<DetailSwap> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buildInfo(
-            AppLocalizations.of(context).takerPaymentSpentID,
-            _getTakerPaymentSpentID(widget.swap),
+            AppLocalizations.of(context).makerPaymentSpentID,
+            _getMakerPaymentSpentID(widget.swap),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buildInfo(
-            AppLocalizations.of(context).makerPaymentSpentID,
-            _getMakerPaymentSpentID(widget.swap),
+            AppLocalizations.of(context).takerPaymentSpentID,
+            _getTakerPaymentSpentID(widget.swap),
           ),
         ),
         widget.swap.result.status == Status.SWAP_SUCCESSFUL
