@@ -301,8 +301,7 @@ class _DetailSwapState extends State<DetailSwap> {
           _buildIcon(widget.swap.result.myInfo.myCoin),
           Icon(
             Icons.sync,
-            size: 20,
-            color: Colors.white,
+            size: 20
           ),
           _buildIcon(widget.swap.result.myInfo.otherCoin),
           Expanded(

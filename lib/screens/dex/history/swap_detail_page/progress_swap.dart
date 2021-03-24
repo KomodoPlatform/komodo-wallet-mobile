@@ -121,8 +121,7 @@ class _ProgressSwapState extends State<ProgressSwap>
               Text(
                 swapHistoryBloc.getSwapStatusString(context, swap.status),
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.5)),
+                    fontWeight: FontWeight.w300),
               ),
               BuildTakerCountdown(widget.uuid),
             ],

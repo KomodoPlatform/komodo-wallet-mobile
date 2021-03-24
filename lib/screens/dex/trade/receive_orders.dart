@@ -267,7 +267,7 @@ class _AsksOrderState extends State<AsksOrder> {
                                   AppLocalizations.of(context).noMatchingOrders,
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Theme.of(context).disabledColor,
+                                    //color: Theme.of(context).disabledColor,
                                   ),
                                 ),
                               )
