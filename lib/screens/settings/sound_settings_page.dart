@@ -42,7 +42,7 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
                   AppLocalizations.of(context).soundOption,
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontWeight: FontWeight.w300,
-                      color: Colors.white.withOpacity(0.7)),
+                      color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
                 ),
                 trailing:
                     const SoundVolumeButton(key: Key('settings-sound-button')),
@@ -160,7 +160,7 @@ class SoundPicker extends StatelessWidget {
                 name,
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
+                    color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
               ),
               trailing: FilePickerButton(musicMode, description),
             )));
