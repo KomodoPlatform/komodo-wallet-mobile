@@ -60,6 +60,13 @@ class AppLocalizations {
   String get withdrawConfirmError =>
       Intl.message('Something went wrong. Try again later.',
           name: 'withdrawConfirmError');
+  String get withdrawCameraAccessTitle =>
+      Intl.message('Access Denied', name: 'withdrawCameraAccessTitle');
+  String get withdrawCameraAccessText => Intl.message(
+      'You have previously denied AtomicDEX access to the camera.'
+      '\nPlease manually change camera permission in your phone'
+      ' settings to proceed with the QR code scan.',
+      name: 'withdrawCameraAccessText');
   String get close => Intl.message('Close', name: 'close');
   String get confirmSeed =>
       Intl.message('Confirm Seed Phrase', name: 'confirmSeed');
