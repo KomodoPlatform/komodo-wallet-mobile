@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -8,6 +9,7 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amo
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/amount_field.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/steps_withdraw.dart/amount_address_step/custom_fee.dart';
 import 'package:komodo_dex/services/lock_service.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 
@@ -120,6 +122,19 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   }
 
   Future<void> scan() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool haveCameraAccess =
+        !(await MMService.nativeC.invokeMethod<bool>('is_camera_denied'));
+    final bool wasDeniedByUser = prefs.getBool('camera_denied_by_user') == true;
+    if (!haveCameraAccess) {
+      if (wasDeniedByUser) {
+        _showCameraPermissionDialog();
+        return;
+      }
+    } else {
+      prefs.setBool('camera_denied_by_user', false);
+    }
+
     final int lockCookie = lockService.enteringQrScanner();
     try {
       final String barcode = await BarcodeScanner.scan();
@@ -128,6 +143,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
+        prefs.setBool('camera_denied_by_user', true);
         setState(() {
           barcode = 'The user did not grant the camera permission!';
         });
@@ -141,5 +157,33 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       setState(() => barcode = 'Unknown error: $e');
     }
     lockService.qrScannerReturned(lockCookie);
+  }
+
+  void _showCameraPermissionDialog() {
+    showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+          title: Text(AppLocalizations.of(context).withdrawCameraAccessTitle),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                AppLocalizations.of(context).withdrawCameraAccessText,
+                style: TextStyle(fontSize: 13),
+              ),
+              SizedBox(height: 12),
+              RaisedButton(
+                child: Text(AppLocalizations.of(context).okButton),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

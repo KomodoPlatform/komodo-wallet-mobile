@@ -238,7 +238,7 @@ class ApiProvider {
   String enableCoinImpl(Coin coin) {
     final List<Server> servers = coin.serverList
         .map((String url) =>
-            Server(url: url, protocol: coin.proto.toUpperCase(), disableCertVerification: false))
+            Server(url: url, protocol: coin.proto==null?  'TCP' : coin.proto.toUpperCase(), disableCertVerification: false))
         .toList();
 
     if (coin.type == 'erc')
