@@ -328,9 +328,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   data: Theme.of(context).copyWith(
                       canvasColor: Theme.of(context).primaryColor,
                       primaryColor: Theme.of(context).accentColor,
-                      textTheme: Theme.of(context).textTheme.copyWith(
-                          caption:
-                              TextStyle(color: Colors.white.withOpacity(0.5)))),
+                      textTheme: Theme.of(context).textTheme),
                   child: Container(
                     color: Theme.of(context).primaryColor,
                     child: SafeArea(

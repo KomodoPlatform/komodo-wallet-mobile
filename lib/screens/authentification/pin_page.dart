@@ -204,6 +204,8 @@ class _PinPageState extends State<PinPage> {
               ),
               obscurePin: true,
               error: _error,
+              keyTextStyle: TextStyle(color: Theme.of(context).textTheme.headline6.color, fontSize: Theme.of(context).textTheme
+              .headline6.fontSize),
               errorDelaySeconds:
                   widget.pinStatus == PinStatus.NORMAL_PIN ? 5 : null,
               codeLength: 6,

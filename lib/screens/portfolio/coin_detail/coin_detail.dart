@@ -554,6 +554,8 @@ class _CoinDetailState extends State<CoinDetail> {
           children: <Widget>[
             SecondaryButton(
               text: text,
+              textColor: Theme.of(context).textTheme.button.color,
+              borderColor: Theme.of(context).accentColor,
               onPressed: () {
                 rewardsProvider.update();
                 Navigator.push<dynamic>(
@@ -576,6 +578,9 @@ class _CoinDetailState extends State<CoinDetail> {
 
     return SecondaryButton(
       text: text,
+      isDarkMode: !settingsBloc.switchTheme,
+      textColor: Theme.of(context).accentColor,
+      borderColor: Theme.of(context).accentColor,
       onPressed: () {
         switch (statusButton) {
           case StatusButton.RECEIVE:

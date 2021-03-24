@@ -49,8 +49,8 @@ class _AppDrawerState extends State<AppDrawer> {
                     begin: Alignment.centerRight,
                     stops: <double>[0.01, 1],
                     colors: <Color>[
-                      Color.fromRGBO(98, 90, 229, 0.4),
-                      Color.fromRGBO(45, 184, 240, 0.6),
+                      Color.fromRGBO(98, 90, 229, 1),
+                      Color.fromRGBO(45, 184, 240, 1),
                     ],
                   )),
                   child: SafeArea(
@@ -133,8 +133,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               },
                               leading: Icon(
                                 Icons.audiotrack,
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
+                                size: 16
                               ),
                               trailing: InkWell(
                                 child: Container(
@@ -191,8 +190,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               leading: Icon(
                                 Icons.language,
                                 key: const Key('side-nav-language'),
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
+                                size: 16
                               )),
                           _buildDrawerItem(
                               title: Row(
@@ -209,8 +207,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                   ? Icon(
                                       Icons.account_balance_wallet,
                                       key: const Key('side-nav-currency'),
-                                      size: 16,
-                                      color: Colors.white.withAlpha(200),
+                                      size: 16
                                     )
                                   : Text(' ${cexProvider.selectedFiatSymbol}')),
                           _buildDrawerItem(
@@ -218,8 +215,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                 Text(AppLocalizations.of(context).hideBalance),
                             leading: Icon(
                               Icons.money_off,
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
+                              size: 16
                             ),
                             trailing: StreamBuilder<bool>(
                               initialData: settingsBloc.showBalance,
@@ -257,8 +253,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               leading: Icon(
                                 Icons.import_contacts,
                                 key: const Key('side-nav-addressbook'),
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
+                                size: 16
                               )),
                           Divider(
                             indent: 20,
@@ -279,8 +274,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               leading: Icon(
                                 Icons.settings,
                                 key: const Key('side-nav-settings'),
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
+                                size: 16
                               )),
                           _buildDrawerItem(
                               title:
@@ -296,16 +290,14 @@ class _AppDrawerState extends State<AppDrawer> {
                               leading: Icon(
                                 Icons.help,
                                 key: const Key('side-nav-help-feedback'),
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
+                                size: 16
                               )),
                           _buildDrawerItem(
                             title:
                                 Text(AppLocalizations.of(context).switchTheme),
                             leading: Icon(
                               Icons.brush,
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
+                              size: 16
                             ),
                             trailing: StreamBuilder<bool>(
                               initialData: settingsBloc.switchTheme,
@@ -333,8 +325,7 @@ class _AppDrawerState extends State<AppDrawer> {
                             leading: Icon(
                               Icons.exit_to_app,
                               key: const Key('side-nav-logout'),
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
+                              size: 16
                             ),
                             onTap: () {
                               Navigator.pop(context);

@@ -72,12 +72,10 @@ class _TransactionListItemState extends State<TransactionListItem> {
                               double.parse(widget.transaction.myBalanceChange) >
                                       0
                                   ? Icon(
-                                      Icons.arrow_downward,
-                                      color: Colors.white,
+                                      Icons.arrow_downward
                                     )
                                   : Icon(
-                                      Icons.arrow_upward,
-                                      color: Colors.white,
+                                      Icons.arrow_upward
                                     )),
                     ),
                     Expanded(

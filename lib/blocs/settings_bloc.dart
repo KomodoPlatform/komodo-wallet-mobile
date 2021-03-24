@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SettingsBloc settingsBloc = SettingsBloc();
@@ -25,7 +24,6 @@ class SettingsBloc implements BlocBase {
     } else {
       _themeMode = ThemeMode.dark;
     }
-    Get.changeThemeMode(_themeMode);
 
     showSoundsExplanationDialog =
         _prefs.getBool('showSoundsExplanationDialog') ??
@@ -128,6 +126,5 @@ class SettingsBloc implements BlocBase {
     } else {
       _themeMode = ThemeMode.dark;
     }
-    Get.changeThemeMode(_themeMode);
   }
 }
