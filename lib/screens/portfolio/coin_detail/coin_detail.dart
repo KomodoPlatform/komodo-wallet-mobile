@@ -184,6 +184,7 @@ class _CoinDetailState extends State<CoinDetail> {
           actions: <Widget>[
             IconButton(
               key: const Key('coin-deactivate'),
+
               icon: isDeleteLoading
                   ? Container(
                       height: 20,
@@ -193,6 +194,7 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                     )
                   : Icon(Icons.delete),
+              color: ThemeData.estimateBrightnessForColor(Color(int.parse(currentCoinBalance.coin.colorCoin))) == Brightness.dark? Colors.white : Colors.black,
               onPressed: () async {
                 setState(() {
                   isDeleteLoading = true;
@@ -210,6 +212,7 @@ class _CoinDetailState extends State<CoinDetail> {
             ),
             IconButton(
               icon: Icon(Icons.share),
+              color: ThemeData.estimateBrightnessForColor(Color(int.parse(currentCoinBalance.coin.colorCoin))) == Brightness.dark? Colors.white : Colors.black,
               onPressed: () async {
                 mainBloc.isUrlLaucherIsOpen = true;
                 await Share.share(AppLocalizations.of(context).shareAddress(
@@ -218,6 +221,9 @@ class _CoinDetailState extends State<CoinDetail> {
               },
             )
           ],
+          leading: BackButton(
+            color: ThemeData.estimateBrightnessForColor(Color(int.parse(currentCoinBalance.coin.colorCoin))) == Brightness.dark? Colors.white : Colors.black,
+          ),
           title: Row(
             children: <Widget>[
               PhotoHero(
@@ -228,10 +234,13 @@ class _CoinDetailState extends State<CoinDetail> {
               const SizedBox(
                 width: 8,
               ),
-              Text(currentCoinBalance.coin.name.toUpperCase()),
+              Text(currentCoinBalance.coin.name.toUpperCase(),
+                style: TextStyle(color: ThemeData.estimateBrightnessForColor(Color(int.parse(currentCoinBalance.coin.colorCoin))) == Brightness.dark? Colors.white : Colors.black,),
+              ),
             ],
           ),
           centerTitle: false,
+
           backgroundColor: Color(int.parse(currentCoinBalance.coin.colorCoin)),
         ),
         body: Builder(builder: (BuildContext context) {
