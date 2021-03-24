@@ -168,7 +168,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       }
 
       if (failedOnStep != null) {
-        for (int e = failedOnStep; e < swap.result.events.length - 1; e++) {
+        for (int e = failedOnStep; e < swap.result.events.length; e++) {
           final String errorEventType = swap.result.events[e].event.type;
           final SwapStepStatus status =
               errorEventType.toLowerCase().contains('failed')
