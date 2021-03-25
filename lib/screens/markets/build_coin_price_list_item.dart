@@ -4,6 +4,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
@@ -127,7 +128,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                                   .textTheme
                                                   .subtitle2
                                                   .copyWith(
-                                                      color: cexColor,
+                                                  color: settingsBloc.switchTheme? cexColorLight : cexColor,
                                                       fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.normal),
@@ -207,7 +208,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                     const SizedBox(width: 4),
                     Text(
                       '(based on ${widget.coinBalance.coin.abbr}/$mediateBase)',
-                      style: const TextStyle(fontSize: 12, color: cexColor),
+                      style:  TextStyle(fontSize: 12, color: settingsBloc.switchTheme? cexColorLight : cexColor ),
                     )
                   ];
                 }

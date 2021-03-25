@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/authentification/new_account_page.dart';
 import 'package:komodo_dex/screens/settings/restore_seed_page.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -34,7 +35,7 @@ class _WelcomePageState extends State<WelcomePage> {
           const SizedBox(
             height: 16,
           ),
-          SvgPicture.asset('assets/svg/welcome_wallet.svg'),
+          SvgPicture.asset(settingsBloc.getValueIfSwitch('assets/svg_light/welcome_wallet.svg','assets/svg/welcome_wallet.svg')),
           Center(
             child: Text(
               AppLocalizations.of(context).welcomeTitle,

@@ -70,6 +70,13 @@ class SettingsBloc implements BlocBase {
     isDeleteLoading = isLoading;
     _inIsDeleteLoading.add(isDeleteLoading);
   }
+  String getValueIfSwitch(String val1, String val2) {
+    if(switchTheme) {
+      return val1;
+    }else {
+      return val2;
+    }
+  }
 
   String getNameLanguage(BuildContext context, String languageCode) {
     switch (languageCode) {

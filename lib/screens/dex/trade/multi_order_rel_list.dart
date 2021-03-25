@@ -11,6 +11,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
@@ -222,6 +223,11 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
                       maxLines: 1,
+                      decoration: InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).accentColor),
+                        ),
+                      ) ,
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(16),
                         DecimalTextInputFormatter(decimalRange: 8),
@@ -447,8 +453,11 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               textAlign: TextAlign.right,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(
+              decoration:  InputDecoration(
                 isDense: true,
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: settingsBloc.switchTheme? getTheme2().accentColor : getTheme().accentColor ),
+                ),
                 contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
               ),
               maxLines: 1,

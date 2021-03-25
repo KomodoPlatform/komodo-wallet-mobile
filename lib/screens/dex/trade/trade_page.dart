@@ -497,6 +497,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                         textInputAction: TextInputAction
                                                             .done,
                                                         decoration: InputDecoration(
+                                                            focusedBorder: UnderlineInputBorder(
+                                                              borderSide: BorderSide(color: Theme.of(context).accentColor),
+                                                            ),
                                                             hintStyle: Theme.of(context)
                                                                 .textTheme
                                                                 .bodyText1

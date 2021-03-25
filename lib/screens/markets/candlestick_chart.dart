@@ -3,10 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart' hide TextStyle;
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class CandleChart extends StatefulWidget {
-  const CandleChart({
+  CandleChart({
     this.data,
     this.duration,
     this.candleWidth = 8,
@@ -323,7 +324,7 @@ class _ChartPainter extends CustomPainter {
         canvas: canvas,
         point: Offset(4, dy),
         text: formattedPrice,
-        color: widget.textColor,
+        color: settingsBloc.switchTheme? Colors.black : Colors.white,// widget.textColor,
         align: TextAlign.start,
         width: labelWidth,
       );
@@ -371,7 +372,7 @@ class _ChartPainter extends CustomPainter {
     }
     _drawText(
       canvas: canvas,
-      color: widget.textColor,
+      color:  settingsBloc.switchTheme? Colors.black : Colors.white,//widget.textColor,
       point: Offset(
         rightMarkerPosition - labelWidth - 4,
         size.height - 7,
@@ -382,7 +383,7 @@ class _ChartPainter extends CustomPainter {
     );
     _drawText(
       canvas: canvas,
-      color: widget.textColor,
+      color:  settingsBloc.switchTheme? Colors.black : Colors.white,//widget.textColor,
       point: Offset(
         4,
         size.height - 7,
@@ -397,7 +398,7 @@ class _ChartPainter extends CustomPainter {
       canvas.drawLine(Offset(dx, size.height - marginBottom),
           Offset(dx, size.height - marginBottom + 5), paint);
     }
-    paint.color = widget.textColor;
+    paint.color =  settingsBloc.switchTheme? Colors.black : Colors.white;//widget.textColor;
     canvas.drawLine(Offset(0, size.height - marginBottom),
         Offset(0, size.height - marginBottom + 5), paint);
     canvas.drawLine(Offset(rightMarkerPosition, size.height - marginBottom),
@@ -459,7 +460,7 @@ class _ChartPainter extends CustomPainter {
           canvas: canvas,
           align: TextAlign.right,
           color: Colors.black,
-          backgroundColor: Colors.white,
+          backgroundColor:  settingsBloc.switchTheme? Colors.black : Colors.white,//Colors.white,
           text: ' ${formatPrice(selectedPoint['price'], 8)} ',
           point: Offset(size.width - labelWidth - 2, dy - 2),
           width: labelWidth,
@@ -475,7 +476,7 @@ class _ChartPainter extends CustomPainter {
           canvas: canvas,
           align: TextAlign.center,
           color: Colors.black,
-          backgroundColor: Colors.white,
+          backgroundColor:  settingsBloc.switchTheme? Colors.black : Colors.white,//Colors.white,
           text: ' ${_formatTime(selectedCandle.closeTime * 1000)} ',
           point: Offset(dx - 50, size.height - 7),
           width: labelWidth,

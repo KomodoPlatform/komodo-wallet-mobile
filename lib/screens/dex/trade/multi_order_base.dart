@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/build_trade_fees.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -310,6 +311,9 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
                           isDense: true,
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Theme.of(context).accentColor ),
+                          ),
                           contentPadding:
                               const EdgeInsets.fromLTRB(0, 4, 0, 10),
                           hintText: AppLocalizations.of(context)
@@ -342,7 +346,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                         style: Theme.of(context)
                             .textTheme
                             .caption
-                            .copyWith(color: cexColor),
+                            .copyWith(color: settingsBloc.switchTheme? cexColorLight : cexColor),
                       ),
                     ),
                 ],
