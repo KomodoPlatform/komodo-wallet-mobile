@@ -37,9 +37,10 @@ class GetErcTransactions {
 
     final String address = coinBalance.balance.address;
 
-    final String url = coin.abbr == 'ETH'
-        ? '$ethUrl/$address'
-        : '$ercUrl/${coin.abbr}/$address';
+    final String url = (coin.abbr.startsWith('ETH') // 'ETH' or 'ETHR'
+            ? '$ethUrl/$address'
+            : '$ercUrl/${coin.abbr}/$address') +
+        (coin.testCoin ? '&testnet=true' : '');
 
     String body;
     try {
