@@ -150,7 +150,11 @@ class _DetailSwapState extends State<DetailSwap> {
                   ),
                   isNoteEdit
                       ? TextField(
-                          decoration: const InputDecoration(isDense: true),
+                          decoration:  InputDecoration(isDense: true,
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Theme.of(context).accentColor),
+                            ),
+                          ),
                           controller: noteTextController,
                           maxLength: 200,
                           maxLines: 7,

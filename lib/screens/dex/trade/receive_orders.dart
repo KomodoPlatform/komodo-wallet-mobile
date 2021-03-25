@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -55,9 +56,12 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
           child: TextField(
             controller: searchTextController,
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: Icon(Icons.search, color: Theme.of(context).textTheme.bodyText2.color,),
               hintText: 'Search for Ticker',
               counterText: '',
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).accentColor),
+              ),
             ),
             maxLength: 16,
           ),
@@ -479,7 +483,7 @@ class _AsksOrderState extends State<AsksOrder> {
                   formatPrice(1 / double.parse(bid.price)),
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 13,
-                        color: Colors.greenAccent,
+                        color: settingsBloc.switchTheme? Colors.green : Colors.greenAccent,
                       ),
                 ),
                 if (addressBookProvider.contactByAddress(bid.address) != null)
