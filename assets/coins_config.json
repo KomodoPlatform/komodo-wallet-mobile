@@ -295,7 +295,7 @@
         "address": "http://eth-ropsten.cipig.net",
         "port": 8555,
         "proto": "tcp",
-        "abbr": "JST",
+        "abbr": "JSTR",
         "coingeckoId": "test-coin",
         "testCoin": true,
         "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
