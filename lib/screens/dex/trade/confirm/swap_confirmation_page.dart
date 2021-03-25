@@ -349,7 +349,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 borderRadius: BorderRadius.circular(30.0)),
             child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
             onPressed: () {
-              swapBloc.updateSellCoin(null);
               Navigator.of(context).pop();
             },
           ),
