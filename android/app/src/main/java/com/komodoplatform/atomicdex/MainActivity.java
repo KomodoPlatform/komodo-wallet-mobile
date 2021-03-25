@@ -1,10 +1,12 @@
 package com.komodoplatform.atomicdex;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.app.PendingIntent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,6 +15,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import io.flutter.embedding.android.FlutterFragmentActivity;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -85,6 +88,7 @@ public class MainActivity extends FlutterFragmentActivity {
   }
 
   private void nativeC() {
+    final Activity activity = this;
     BinaryMessenger bm = getFlutterEngine().getDartExecutor().getBinaryMessenger();
     // https://flutter.dev/docs/development/platform-integration/platform-channels?tab=android-channel-kotlin-tab#step-3-add-an-android-platform-specific-implementation
     new MethodChannel(bm, "com.komodoplatform.atomicdex/nativeC")
@@ -113,6 +117,9 @@ public class MainActivity extends FlutterFragmentActivity {
             } else if (call.method.equals("status")) {
               int status = (int)nativeMm2MainStatus();
               result.success(status);
+            } else if (call.method.equals("is_camera_denied")) {
+              boolean ret = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED;
+              result.success(ret);
             } else {
               result.notImplemented();
             }
