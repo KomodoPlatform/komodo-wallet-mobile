@@ -64,6 +64,9 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     SwapStepStatus _getStatus(int index) {
       if (index == swap.step) return SwapStepStatus.inProgress;
       if (index < swap.step) {
+        if (index + 1 > swap.result.successEvents.length) {
+          return SwapStepStatus.failed;
+        }
         if (swap.result.events[index].event.type ==
             swap.result.successEvents[index]) {
           return SwapStepStatus.success;
