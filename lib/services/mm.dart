@@ -237,8 +237,10 @@ class ApiProvider {
 
   String enableCoinImpl(Coin coin) {
     final List<Server> servers = coin.serverList
-        .map((String url) =>
-            Server(url: url, protocol: coin.proto==null?  'TCP' : coin.proto.toUpperCase(), disableCertVerification: false))
+        .map((String url) => Server(
+            url: url,
+            protocol: coin.proto == null ? 'TCP' : coin.proto.toUpperCase(),
+            disableCertVerification: false))
         .toList();
 
     if (coin.type == 'erc')
@@ -412,17 +414,22 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'getTradeFee', e, 'Error on get tradeFee')));
 
-  Future<dynamic> getVersionMM2(
-    http.Client client,
-    BaseService body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: baseServiceToJson(userBody.body))
-              .then((Response r) => _saveRes('getVersionMM2', r))
-              .then<dynamic>((Response res) => resultSuccessFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'getVersionMM2', e, 'Error on get version MM2')));
+  Future<dynamic> getVersionMM2(BaseService body, {http.Client client}) async {
+    client ??= mmSe.client;
+
+    try {
+      final userBody = await _assertUserpass(client, body);
+      final r = await userBody.client
+          .post(url, body: baseServiceToJson(userBody.body));
+      _assert200(r);
+      _saveRes('getVersionMM2', r);
+
+      final rs = resultSuccessFromJson(r.body);
+      return rs;
+    } catch (e) {
+      _catchErrorString('getVersionMM2', e, 'Error on get version MM2');
+    }
+  }
 
   /// Reduce log noise
   int _lastMetricsLog = 0;

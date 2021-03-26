@@ -292,11 +292,12 @@ class MMService {
   }
 
   Future<void> initializeMmVersion() async {
-    final dynamic versionmm2 =
-        await MM.getVersionMM2(mmSe.client, BaseService(method: 'version'));
+    final dynamic versionmm2 = await MM
+        .getVersionMM2(BaseService(method: 'version'), client: mmSe.client);
     if (versionmm2 is ResultSuccess && versionmm2 != null) {
       mmVersion = versionmm2.result;
     }
+    // TODO(MateusRodCosta): Make datetime available
     mmDate = 'Unavailable';
   }
 
