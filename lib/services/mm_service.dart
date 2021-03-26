@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show File, Platform, Process;
 
+import 'package:komodo_dex/model/result.dart';
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
@@ -153,6 +154,8 @@ class MMService {
       if (!mmSe.running) return;
       await updateOrdersAndSwaps();
     });
+
+    await initializeMmVersion();
   }
 
   void initUsername(String passphrase) {
@@ -288,6 +291,15 @@ class MMService {
     }
   }
 
+  Future<void> initializeMmVersion() async {
+    final dynamic versionmm2 =
+        await MM.getVersionMM2(mmSe.client, BaseService(method: 'version'));
+    if (versionmm2 is ResultSuccess && versionmm2 != null) {
+      mmVersion = versionmm2.result;
+    }
+    mmDate = 'Unavailable';
+  }
+
   void log2file(String chunk, {DateTime now}) {
     if (chunk == null) return;
     if (!chunk.endsWith('\n')) chunk += '\n';
@@ -324,13 +336,6 @@ class MMService {
     if (pkm != null) {
       netid = int.parse(pkm[1]);
       pubkey = pkm[2];
-    }
-
-    final mvr = RegExp(r'lp_init] version: (\w+) DT (\d{4}-\d{2}-\d{2})T\d{2}');
-    final mvm = mvr.firstMatch(chunk);
-    if (mvm != null) {
-      mmVersion = mvm[1];
-      mmDate = mvm[2];
     }
   }
 

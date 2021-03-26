@@ -149,16 +149,8 @@ class _SettingPageState extends State<SettingPage> {
     String version =
         AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
-    try {
-      final dynamic versionmm2 =
-          await MM.getVersionMM2(mmSe.client, BaseService(method: 'version'));
-      if (versionmm2 is ResultSuccess && versionmm2 != null) {
-        version += ' - ${versionmm2.result}';
-      }
-    } catch (e) {
-      Log('setting_page:150', e);
-      rethrow;
-    }
+    version += ' - ${mmSe.mmVersion}';
+
     return version;
   }
 
