@@ -3,7 +3,8 @@
 //     final swap = swapFromJson(jsonString);
 
 import 'dart:convert';
-
+import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 
@@ -22,7 +23,10 @@ Swap swapFromJson(String str) {
 }
 
 class Swap {
-  Swap({this.result, this.status});
+  Swap({
+    this.result,
+    this.status,
+  });
 
   factory Swap.fromJson(Map<String, dynamic> json) => Swap(
         result: MmSwap.fromJson(json['result']) ?? MmSwap(),
@@ -96,6 +100,8 @@ class Swap {
   SwapEL get started =>
       result?.events?.firstWhere((SwapEL ev) => ev.event.type == 'Started');
 
-  String get makerCoin => started?.event?.data?.makerCoin;
-  String get takerCoin => started?.event?.data?.takerCoin;
+  String get makerAbbr => started?.event?.data?.makerCoin;
+  String get takerAbbr => started?.event?.data?.takerCoin;
+  Coin get makerCoin => coinsBloc.getCoinByAbbr(makerAbbr);
+  Coin get takerCoin => coinsBloc.getCoinByAbbr(takerAbbr);
 }
