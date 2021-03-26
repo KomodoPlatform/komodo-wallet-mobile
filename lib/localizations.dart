@@ -195,7 +195,7 @@ class AppLocalizations {
   String get tradeDetail => Intl.message('TRADE DETAILS', name: 'tradeDetail');
   String get requestedTrade =>
       Intl.message('Requested Trade', name: 'requestedTrade');
-  String get swapID => Intl.message('Swap UUID', name: 'swapUUID');
+  String get swapUUID => Intl.message('Swap UUID', name: 'swapUUID');
   String get mediaBrowse => Intl.message('BROWSE', name: 'mediaBrowse');
   String get mediaSaved => Intl.message('SAVED', name: 'mediaSaved');
   String get articleFrom => Intl.message('AtomicDEX NEWS', name: 'articleFrom');
@@ -258,20 +258,20 @@ class AppLocalizations {
   String get checkSeedPhraseButton2 =>
       Intl.message('GO BACK AND CHECK AGAIN', name: 'checkSeedPhraseButton2');
   String get viewInExplorerButton =>
-      Intl.message('View in Explorer', name: 'viewInExplorerButton');
-  String get takerFeeID => Intl.message('Taker Fee TxID', name: 'takerFeeTx');
-  String get takerpaymentsID =>
-      Intl.message('Taker Payment TxID', name: 'takerPaymentsTx');
-  String get makerpaymentID =>
-      Intl.message('Maker Payment TxID', name: 'makerPaymentTx');
-  String get takerPaymentSpentID =>
-      Intl.message('Taker Payment Spent TxID', name: 'takerPaymentSpentTx');
-  String get makerPaymentSpentID =>
-      Intl.message('Maker Payment Spent TxID', name: 'makerPaymentSpentTx');
+      Intl.message('Explorer', name: 'viewInExplorerButton');
+  String get takerFeeTx => Intl.message('Taker Fee Tx', name: 'takerFeeTx');
+  String get takerPaymentTx =>
+      Intl.message('Taker Payment Tx', name: 'takerPaymentTx');
+  String get makerPaymentTx =>
+      Intl.message('Maker Payment Tx', name: 'makerPaymentTx');
+  String get takerPaymentSpentTx =>
+      Intl.message('Taker Payment Spent Tx', name: 'takerPaymentSpentTx');
+  String get makerPaymentSpentTx =>
+      Intl.message('Maker Payment Spent Tx', name: 'makerPaymentSpentTx');
   String get makerPaymentRefundTx =>
-      Intl.message('Maker Payment Refund TxID', name: 'makerPaymentRefundTx');
+      Intl.message('Maker Payment Refund Tx', name: 'makerPaymentRefundTx');
   String get takerPaymentRefundTx =>
-      Intl.message('Taker Payment Refund TxID', name: 'takerPaymentRefundTx');
+      Intl.message('Taker Payment Refund Tx', name: 'takerPaymentRefundTx');
   String get activateAccessBiometric => Intl.message(
         'Activate Biometric protection',
         name: 'activateAccessBiometric',

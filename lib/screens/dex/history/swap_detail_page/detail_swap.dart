@@ -56,7 +56,7 @@ class _DetailSwapState extends State<DetailSwap> {
             children: [
               Expanded(
                 child: Text(
-                  '${AppLocalizations.of(context).tradeDetail}:',
+                  AppLocalizations.of(context).tradeDetail + ':',
                   style: Theme.of(context).textTheme.subtitle2.copyWith(
                       color: Theme.of(context).accentColor,
                       fontWeight: FontWeight.bold),
@@ -70,7 +70,7 @@ class _DetailSwapState extends State<DetailSwap> {
           padding:
               const EdgeInsets.only(top: 16, left: 24, right: 24, bottom: 4),
           child: Text(
-            '${AppLocalizations.of(context).requestedTrade}:',
+            AppLocalizations.of(context).requestedTrade + ':',
             style: Theme.of(context)
                 .textTheme
                 .bodyText1
@@ -81,14 +81,14 @@ class _DetailSwapState extends State<DetailSwap> {
         Padding(
           padding: const EdgeInsets.only(top: 24),
           child: _buildInfo(
-            AppLocalizations.of(context).swapID,
+            AppLocalizations.of(context).swapUUID,
             widget.swap.result.uuid,
           ),
         ),
-        if (widget.swap.result.status == Status.SWAP_SUCCESSFUL ||
-            widget.swap.result.status == Status.SWAP_FAILED &&
-                swapHistoryBloc.isAnimationStepFinalIsFinish)
-          _buildAdditionalInfoDetails(),
+        widget.swap.status == Status.SWAP_SUCCESSFUL ||
+                swapHistoryBloc.isAnimationStepFinalIsFinish
+            ? _buildAdditionalInfoDetails()
+            : Container(),
         _buildNote(AppLocalizations.of(context).noteTitle),
         const SizedBox(
           height: 32,
@@ -139,15 +139,15 @@ class _DetailSwapState extends State<DetailSwap> {
                     }
                   },
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
+                    padding: const EdgeInsets.only(bottom: 6),
                     child: Text(
-                      '$title:',
+                      title + ':',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
@@ -209,96 +209,96 @@ class _DetailSwapState extends State<DetailSwap> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buildInfo(
-            AppLocalizations.of(context).takerFeeID,
-            _getTakerFeeID(widget.swap),
+            AppLocalizations.of(context).takerFeeTx,
+            _getTakerFeeTx(widget.swap),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buildInfo(
-            AppLocalizations.of(context).takerpaymentsID,
-            _getTakerPaymentID(widget.swap),
+            AppLocalizations.of(context).takerPaymentTx,
+            _getTakerPaymentTx(widget.swap),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buildInfo(
-            AppLocalizations.of(context).makerpaymentID,
-            _getMakerPaymentID(widget.swap),
+            AppLocalizations.of(context).makerPaymentTx,
+            _getMakerPaymentTx(widget.swap),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buildInfo(
-            AppLocalizations.of(context).makerPaymentSpentID,
-            _getMakerPaymentSpentID(widget.swap),
+            AppLocalizations.of(context).takerPaymentSpentTx,
+            _getTakerPaymentSpentTx(widget.swap),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buildInfo(
-            AppLocalizations.of(context).takerPaymentSpentID,
-            _getTakerPaymentSpentID(widget.swap),
+            AppLocalizations.of(context).makerPaymentSpentTx,
+            _getMakerPaymentSpentTx(widget.swap),
           ),
         ),
-        widget.swap.result.status == Status.SWAP_SUCCESSFUL
-            ? Container()
-            : Padding(
+        widget.swap.result.status == Status.SWAP_FAILED
+            ? Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: _buildInfo(
                   widget.swap.result.type == 'Maker'
                       ? AppLocalizations.of(context).makerPaymentRefundTx
                       : AppLocalizations.of(context).takerPaymentRefundTx,
-                  _getRefundTxID(widget.swap),
+                  _getRefundTx(widget?.swap),
                 ),
               )
+            : Container()
       ],
     );
   }
 
-  String _getTakerFeeID(Swap swap) {
-    String takerFeeID = '';
+  String _getTakerFeeTx(Swap swap) {
+    String takerFeeTx = '';
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'TakerFeeSent') {
         // taker-swap
-        takerFeeID = event.event.data.txHash;
+        takerFeeTx = event.event.data.txHash;
       } else if (event.event.type == 'TakerFeeValidated') {
         // maker-swap
-        takerFeeID = event.event.data.txHash;
+        takerFeeTx = event.event.data.txHash;
       }
     }
-    return takerFeeID;
+    return takerFeeTx;
   }
 
-  String _getTakerPaymentID(Swap swap) {
-    String takerpaymentID = '';
+  String _getTakerPaymentTx(Swap swap) {
+    String takerPaymentTx = '';
     for (SwapEL event in swap.result.events) {
-      if (event.event.type == 'TakerPaymentSent') {
+      if (event?.event?.type == 'TakerPaymentSent') {
         // taker-swap
-        takerpaymentID = event.event.data.txHash;
+        takerPaymentTx = event.event.data.txHash;
       } else if (event.event.type == 'TakerPaymentReceived') {
         // maker-swap
-        takerpaymentID = event.event.data.txHash;
+        takerPaymentTx = event.event.data.txHash;
       }
     }
-    return takerpaymentID;
+    return takerPaymentTx;
   }
 
-  String _getMakerPaymentID(Swap swap) {
-    String makepaymentID = '';
+  String _getMakerPaymentTx(Swap swap) {
+    String makerPaymentTx = '';
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'MakerPaymentReceived') {
         // taker-swap
-        makepaymentID = event.event.data.txHash;
+        makerPaymentTx = event.event.data.txHash;
       } else if (event.event.type == 'MakerPaymentSent') {
         // maker-swap
-        makepaymentID = event.event.data.txHash;
+        makerPaymentTx = event.event.data.txHash;
       }
     }
-    return makepaymentID;
+    return makerPaymentTx;
   }
 
-  String _getTakerPaymentSpentID(Swap swap) {
+  String _getTakerPaymentSpentTx(Swap swap) {
     String takerPaymentSpentID = '';
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'TakerPaymentSpent') {
@@ -314,82 +314,81 @@ class _DetailSwapState extends State<DetailSwap> {
     return takerPaymentSpentID;
   }
 
-  String _getMakerPaymentSpentID(Swap swap) {
-    String makerPaymentSpentID = '';
+  String _getMakerPaymentSpentTx(Swap swap) {
+    String makerPaymentSpentTx = '';
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'MakerPaymentSpent') {
-        makerPaymentSpentID = event.event.data.txHash;
+        makerPaymentSpentTx = event.event.data.txHash;
       }
     }
-    return makerPaymentSpentID;
+    return makerPaymentSpentTx;
   }
 
-  String _getRefundTxID(Swap swap) {
-    String refundTxID = '';
+  String _getRefundTx(Swap swap) {
+    String refundTx = '';
     for (SwapEL event in swap.result.events) {
       if (event.event.type == 'MakerPaymentRefunded' ||
           event.event.type == 'TakerPaymentRefunded') {
-        refundTxID = event.event.data.txHash;
+        refundTx = event.event.data.txHash;
       }
     }
-    return refundTxID;
+    return refundTx;
   }
 
-  Widget _buildViewInExplorerButton() {
+  Widget _buildViewInExplorer(String id, String title) {
     return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        border: BorderDirectional(
-          start: BorderSide(
-            color: Theme.of(context).accentColor.withAlpha(160),
-            style: BorderStyle.solid,
-            width: 2,
-          ),
-          bottom: BorderSide(
-            color: Theme.of(context).accentColor.withAlpha(120),
-            style: BorderStyle.solid,
-            width: 2,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          border: Border.all(
+            color: Color.fromARGB(0, 0, 0, 0),
+            width: 0,
           ),
         ),
-      ),
-      child: InkWell(
-        onTap: () {},
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(6, 2, 4, 1),
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 2),
-                child: Text(
-                  AppLocalizations.of(context).viewInExplorerButton,
-                  style: Theme.of(context).textTheme.caption,
+        child: InkWell(
+          onTap: () {
+            launchURL(
+              title.contains('Maker')
+                  ? widget.swap.makerCoin.explorerUrl.elementAt(0) + 'tx/' + id
+                  : widget.swap.takerCoin.explorerUrl.elementAt(0) + 'tx/' + id,
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 2, 4),
+                  child: Text(
+                    AppLocalizations.of(context).viewInExplorerButton,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.open_in_browser,
-                color: Theme.of(context).accentColor,
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.only(bottom: 4),
+                  child: Icon(
+                    Icons.open_in_browser,
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Widget _buildInfo(
     String title,
     String id,
   ) {
-    // removing the makerPaymentSpentTxID from
-    // display in case of a Maker swap since this
-    // field is not available in maker-swap.json
-    // !Remove! in case atomicDEX-API/issues/875
-    // gets implemented.
     return (widget.swap.result.type == 'Maker' &&
-            title == 'Maker Payment Spent TxID')
+                title == 'Maker Payment Spent Tx') ||
+            id == ''
         ? Container()
         : Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 8,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -401,25 +400,31 @@ class _DetailSwapState extends State<DetailSwap> {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     children: [
                       Text(
-                        '$title:',
+                        title + ':',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
-                      title == 'Swap UUID' || id == ''
+                      title == 'Swap UUID'
                           ? Container()
-                          : _buildViewInExplorerButton()
+                          : _buildViewInExplorer(
+                              id,
+                              title,
+                            )
                     ],
                   ),
                 ),
                 InkWell(
                   onTap: () {
-                    copyToClipBoard(context, id);
+                    copyToClipBoard(
+                      context,
+                      id,
+                    );
                   },
                   child: Text(
                     id,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                   ),
                 )
               ],
@@ -469,8 +474,7 @@ class _DetailSwapState extends State<DetailSwap> {
                 widget.swap.result.myInfo.otherAmount,
               ),
               Text(
-                '${AppLocalizations.of(context).receive[0].toUpperCase()}'
-                '${AppLocalizations.of(context).receive.substring(1)}',
+                AppLocalizations.of(context).receive.toUpperCase(),
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
@@ -496,7 +500,9 @@ class _DetailSwapState extends State<DetailSwap> {
     }
 
     return Text(
-      '${(double.parse(amount) % 1) == 0 ? double.parse(amount) : double.parse(amount).toStringAsFixed(4)} $coin',
+      (double.parse(amount) % 1) == 0
+          ? double.parse(amount).toString() + ' ' + coin
+          : double.parse(amount).toStringAsFixed(4) + ' ' + coin,
       style: Theme.of(context)
           .textTheme
           .bodyText2
