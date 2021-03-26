@@ -83,3 +83,5 @@ ThemeData getTheme2() => ThemeData(
 );
 
 const Color cexColor = Color.fromARGB(200, 253, 247, 227);
+
+const Color cexColorLight = Color.fromRGBO(24, 35, 49, 0.6);

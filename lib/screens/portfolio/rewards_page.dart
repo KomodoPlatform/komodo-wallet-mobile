@@ -135,7 +135,7 @@ class _RewardsPageState extends State<RewardsPage> {
                     },
               text: AppLocalizations.of(context).rewardsReceive,
               backgroundColor: const Color.fromARGB(255, 1, 102, 129),
-              isDarkMode: false,
+              //isDarkMode: false,
             ),
           )),
         ],

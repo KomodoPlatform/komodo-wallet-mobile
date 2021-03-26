@@ -6,6 +6,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -91,14 +92,14 @@ class _ExchangeRateState extends State<ExchangeRate> {
             '1 $buyAbbr = $cExchangeRateBack $sellAbbr',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: cexColor,
+                  color: settingsBloc.switchTheme? cexColorLight : cexColor,
                 ),
           ),
           Text(
             '1 $sellAbbr = $cExchangeRate $buyAbbr',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
-              color: cexColor,
+              color: settingsBloc.switchTheme? cexColorLight : cexColor,
             ),
           ),
           const SizedBox(height: 20),
