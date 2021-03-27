@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show File, Platform, Process;
 
-import 'package:komodo_dex/model/result.dart';
+import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
@@ -155,7 +155,12 @@ class MMService {
       await updateOrdersAndSwaps();
     });
 
-    await initializeMmVersion();
+    jobService.install('updateMm2VersionInfo', 3.14, (j) async {
+      if (!mmSe.running) return;
+      if (mmVersion == null && mmDate == null) {
+        await initializeMmVersion();
+      }
+    });
   }
 
   void initUsername(String passphrase) {
@@ -292,13 +297,13 @@ class MMService {
   }
 
   Future<void> initializeMmVersion() async {
-    final dynamic versionmm2 = await MM
-        .getVersionMM2(BaseService(method: 'version'), client: mmSe.client);
-    if (versionmm2 is ResultSuccess && versionmm2 != null) {
+    final VersionMm2 versionmm2 =
+        await MM.getVersionMM2(BaseService(method: 'version'));
+    if (versionmm2 is VersionMm2 && versionmm2 != null) {
       mmVersion = versionmm2.result;
+      mmDate = versionmm2.datetime;
+      Log('mm_service:305]', 'mm2 version info updated');
     }
-    // TODO(MateusRodCosta): Make datetime available
-    mmDate = 'Unavailable';
   }
 
   void log2file(String chunk, {DateTime now}) {

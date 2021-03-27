@@ -12,6 +12,7 @@ import 'package:komodo_dex/model/get_validate_address.dart';
 import 'package:komodo_dex/model/priv_key.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
+import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:komodo_dex/services/music_service.dart';
 
 import '../model/active_coin.dart';
@@ -414,7 +415,8 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'getTradeFee', e, 'Error on get tradeFee')));
 
-  Future<dynamic> getVersionMM2(BaseService body, {http.Client client}) async {
+  Future<VersionMm2> getVersionMM2(BaseService body,
+      {http.Client client}) async {
     client ??= mmSe.client;
 
     try {
@@ -424,10 +426,12 @@ class ApiProvider {
       _assert200(r);
       _saveRes('getVersionMM2', r);
 
-      final rs = resultSuccessFromJson(r.body);
-      return rs;
+      final dynamic jbody = json.decode(r.body);
+
+      final v = VersionMm2.fromJson(jbody);
+      return v;
     } catch (e) {
-      _catchErrorString('getVersionMM2', e, 'Error on get version MM2');
+      throw _catchErrorString('getVersionMM2', e, 'Error on get version MM2');
     }
   }
 
