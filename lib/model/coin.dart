@@ -80,6 +80,9 @@ class Coin {
     matureConfirmations = init['mature_confirmations'];
     requiresNotarization = init['requires_notarization'];
     addressFormat = init['address_format'];
+    if (init['protocol'] != null) {
+      protocol = Protocol.fromJson(init['protocol']);
+    }
   }
 
   String type; // 'other', 'erc', 'qrc' or 'smartChain'
@@ -106,6 +109,8 @@ class Coin {
   bool requiresNotarization;
   Map<String, dynamic> addressFormat;
 
+  Protocol protocol;
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type ?? '',
         'name': name ?? '',
@@ -130,6 +135,7 @@ class Coin {
         'mature_confirmations': matureConfirmations,
         'requires_notarization': requiresNotarization,
         'address_format': addressFormat,
+        if (protocol != null) 'protocol': protocol.toJson(),
       };
 
   String getTxFeeSatoshi() {
@@ -138,5 +144,51 @@ class Coin {
       txFeeRes = txfee;
     }
     return (txFeeRes / 100000000).toString();
+  }
+}
+
+class Protocol {
+  Protocol({
+    this.type,
+    this.protocolData,
+  });
+
+  Protocol.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    if (json['protocol_data'] != null) {
+      protocolData = ProtocolData.fromJson(json['protocol_data']);
+    }
+  }
+
+  String type;
+  ProtocolData protocolData;
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'type': type,
+      if (protocolData != null) 'protocol_data': protocolData.toJson(),
+    };
+  }
+}
+
+class ProtocolData {
+  ProtocolData({
+    this.platform,
+    this.contractAddress,
+  });
+
+  ProtocolData.fromJson(Map<String, dynamic> json) {
+    platform = json['platform'];
+    contractAddress = json['contract_address'];
+  }
+
+  String platform;
+  String contractAddress;
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      if (platform != null) 'platform': platform,
+      if (contractAddress != null) 'contract_address': contractAddress,
+    };
   }
 }

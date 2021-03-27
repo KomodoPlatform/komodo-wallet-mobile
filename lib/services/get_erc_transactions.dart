@@ -22,7 +22,7 @@ GetErcTransactions getErcTransactions = GetErcTransactions();
 
 class GetErcTransactions {
   final String ethUrl = 'https://komodo.live:3334/api/v1/eth_tx_history';
-  final String ercUrl = 'https://komodo.live:3334/api/v1/erc_tx_history';
+  final String ercUrl = 'https://komodo.live:3334/api/v2/erc_tx_history';
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
     if (coin.type != 'erc') return;
@@ -40,7 +40,7 @@ class GetErcTransactions {
 
     final String url = (coin.abbr.startsWith('ETH') // 'ETH' or 'ETHR'
             ? '$ethUrl/$address'
-            : '$ercUrl/${coin.abbr}/$address') +
+            : '$ercUrl/${coin.protocol.protocolData.contractAddress}/$address') +
         (coin.testCoin ? '&testnet=true' : '');
 
     String body;
