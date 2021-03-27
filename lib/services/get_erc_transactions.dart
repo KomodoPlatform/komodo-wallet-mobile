@@ -5,6 +5,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/utils/log.dart';
 
@@ -71,6 +72,31 @@ class GetErcTransactions {
     transactions.result.transactions
         .sort((a, b) => b.timestamp.compareTo(a.timestamp));
     transactions.result?.syncStatus?.state ??= 'Finished';
+
+    _fixTestCoinsNaming(transactions, coin);
+    return transactions;
+  }
+
+  // https://github.com/KomodoPlatform/AtomicDEX-mobile/pull/1078#issuecomment-808705710
+  Transactions _fixTestCoinsNaming(
+      Transactions transactions, Coin originalCoin) {
+    if (!originalCoin.testCoin) return transactions;
+
+    for (Transaction tx in transactions.result.transactions) {
+      String feeCoin;
+      switch (originalCoin.abbr) {
+        case 'ETHR':
+          feeCoin = 'ETHR';
+          break;
+        case 'JSTR':
+          feeCoin = 'ETHR';
+          break;
+        default:
+      }
+
+      tx.coin = originalCoin.abbr;
+      tx.feeDetails.coin = feeCoin;
+    }
 
     return transactions;
   }
