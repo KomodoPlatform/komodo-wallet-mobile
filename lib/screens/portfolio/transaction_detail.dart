@@ -252,6 +252,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
         return '0';
     } catch (_) {}
 
+    fee = cutTrailingZeros(formatPrice(fee, 8));
     final String gasCoin = GetFee.gasCoin(widget.coinBalance.coin.abbr);
     if (gasCoin != null) {
       return fee + ' $gasCoin';
