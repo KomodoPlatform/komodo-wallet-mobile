@@ -64,13 +64,13 @@ class _AppDrawerState extends State<AppDrawer> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: SvgPicture.asset(
-                                'assets/svg/mark_and_text_vertical_white.svg', color: settingsBloc.switchTheme? Colors.white : Colors.black87.withOpacity(.7),),
+                                'assets/svg/mark_and_text_vertical_white.svg', color: settingsBloc.switchTheme? Colors.white : Colors.white,),
                           ),
                         ),
                         Flexible(
                           flex: 1,
                           child: Divider(
-                            color: settingsBloc.switchTheme? Colors.white : Colors.black87.withOpacity(.7),
+                            color: settingsBloc.switchTheme? Colors.white : Colors.white,
                             indent: drawerWidth * 0.1,
                             endIndent: drawerWidth * 0.1,
                           ),
@@ -86,7 +86,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 SvgPicture.asset(
-                                 settingsBloc.switchTheme?  'assets/svg_light/wallet.svg' :  'assets/svg/wallet.svg',
+                                 settingsBloc.switchTheme?  'assets/svg/wallet.svg' :  'assets/svg/wallet.svg',
                                   height: 18,
                                 ),
                                 const SizedBox(width: 4),
@@ -97,7 +97,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                       if (!snapshot.hasData) return Container();
                                       return Text(
                                         snapshot.data.name,
-                                        style: const TextStyle(fontSize: 18),
+                                        style: const TextStyle(fontSize: 18, color: Colors.white),
                                         overflow: TextOverflow.ellipsis,
                                       );
                                     })

@@ -20,7 +20,8 @@ import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:komodo_dex/blocs/settings_bloc.dart';
+ 
 /// Protective layer: MyApp | LockScreen | MyHomePage.
 /// Also handles the application startup.
 class LockScreen extends StatefulWidget {
@@ -119,7 +120,7 @@ class _LockScreenState extends State<LockScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Image.asset('assets/logo_kmd.png'),
+              Image.asset(settingsBloc.switchTheme? 'assets/logo_kmd_light.png' : 'assets/logo_kmd.png'),
               const SizedBox(height: 12),
               Text(message,
                   style: TextStyle(

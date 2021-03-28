@@ -71,7 +71,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   color: Theme.of(context).primaryColor,
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
-                    child: SvgPicture.asset( settingsBloc.getValueIfSwitch('assets/svg_light/lock.svg','assets/svg_light/lock.svg'),
+                    child: SvgPicture.asset( settingsBloc.getValueIfSwitch('assets/svg_light/lock.svg','assets/svg/lock.svg'),
                         semanticsLabel: 'Lock'),
                   ),
                 ),
@@ -143,6 +143,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                       hintText: AppLocalizations.of(context).hintEnterPassword,
                       labelText: null,
                       suffixIcon: PasswordVisibilityControl(
+                        isFocused: false,
                         onVisibilityChange: (bool isPasswordObscured) {
                           setState(() {
                             isObscured = isPasswordObscured;

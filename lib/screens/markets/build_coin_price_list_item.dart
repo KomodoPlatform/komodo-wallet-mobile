@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 
+import 'package:komodo_dex/blocs/settings_bloc.dart';
+
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -137,8 +139,9 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                         ),
                                       Container(
                                         child: _hasNonzeroPrice && _hasChartData
-                                            ? const CandlesIcon(
+                                            ?  CandlesIcon(
                                                 size: 14,
+                                                color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8),
                                               )
                                             : null,
                                       ),

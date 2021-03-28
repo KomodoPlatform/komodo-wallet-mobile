@@ -640,7 +640,7 @@ class _SettingPageState extends State<SettingPage> {
         title: Text(AppLocalizations.of(context).deleteWallet,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                 fontWeight: FontWeight.w300,
-                color: Colors.white.withOpacity(0.8))),
+                color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.8))),
       ),
     );
   }
@@ -696,8 +696,7 @@ class _SettingPageState extends State<SettingPage> {
                                         .textTheme
                                         .bodyText2
                                         .copyWith(
-                                            color: Theme.of(context)
-                                                .primaryColor)),
+                                            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.8))),
                                 TextSpan(
                                     text: walletBloc.currentWallet.name,
                                     style: Theme.of(context)
@@ -705,7 +704,7 @@ class _SettingPageState extends State<SettingPage> {
                                         .bodyText2
                                         .copyWith(
                                             color:
-                                                Theme.of(context).primaryColor,
+                                            Theme.of(context).textTheme.bodyText2.color.withOpacity(0.8),
                                             fontWeight: FontWeight.bold)),
                                 TextSpan(
                                     text: AppLocalizations.of(context)
@@ -714,8 +713,7 @@ class _SettingPageState extends State<SettingPage> {
                                         .textTheme
                                         .bodyText2
                                         .copyWith(
-                                            color: Theme.of(context)
-                                                .primaryColor)),
+                                            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.8))),
                               ]),
                             ),
                             const SizedBox(
@@ -732,8 +730,7 @@ class _SettingPageState extends State<SettingPage> {
                                           .textTheme
                                           .bodyText2
                                           .copyWith(
-                                              color: Theme.of(context)
-                                                  .primaryColor)),
+                                              color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.8))),
                                   TextSpan(
                                       text: AppLocalizations.of(context)
                                           .settingDialogSpan4,
@@ -741,8 +738,7 @@ class _SettingPageState extends State<SettingPage> {
                                           .textTheme
                                           .bodyText2
                                           .copyWith(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
+                                              color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.8),
                                               fontWeight: FontWeight.bold)),
                                   TextSpan(
                                       text: AppLocalizations.of(context)
@@ -751,8 +747,7 @@ class _SettingPageState extends State<SettingPage> {
                                           .textTheme
                                           .bodyText2
                                           .copyWith(
-                                              color: Theme.of(context)
-                                                  .primaryColor)),
+                                              color:Theme.of(context).textTheme.bodyText2.color.withOpacity(0.8))),
                                 ]),
                               ),
                             ),

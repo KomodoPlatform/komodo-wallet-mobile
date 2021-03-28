@@ -79,7 +79,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                         MediaQuery.of(context).padding.top),
                                 width: _widthScreen * 0.5,
                                 child: Center(
-                                  heightFactor: _heightFactor,
+                                    heightFactor: _heightFactor,
                                   child: StreamBuilder<List<CoinBalance>>(
                                       initialData: coinsBloc.coinBalance,
                                       stream: coinsBloc.outCoins,
@@ -121,7 +121,7 @@ class _CoinsPageState extends State<CoinsPage> {
                                                     minFontSize: 12,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline6,
+                                                        .headline6.copyWith(color: _heightFactor<1.3 ? Colors.black.withOpacity(0.8) : Colors.white.withOpacity(0.8)),
                                                     maxLines: 1,
                                                   ));
                                             },
@@ -303,7 +303,7 @@ class LoadAssetState extends State<LoadAsset> {
           ));
           listRet.add(Text(
             AppLocalizations.of(context).numberAssets(assetNumber.toString()),
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.caption.copyWith(color: Colors.white.withOpacity(0.8))
           ));
           listRet.add(Icon(
             Icons.chevron_right,
