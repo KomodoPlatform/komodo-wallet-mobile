@@ -53,16 +53,12 @@ class MMService {
   // The date corresponding to the MM commit hash, YYYY-MM-DD
   String mmDate;
 
-  /// Our p2p ID, 64 bytes version
-  /// (There is also a 66 bytes version, 64 bytes version is a tail of it)
-  String pubkey = '';
-
   /// Our name and version
   String gui;
 
-  /// We're using the netid of 9999 currently
+  /// We're using the netid of 7777 currently
   /// But it's possible in theory to connect the UI to MM running on a different netid
-  int netid;
+  int netid = 7777;
 
   /// Effective memory used by the application, MiB
   /// As of now it is specific to iOS
@@ -244,7 +240,7 @@ class MMService {
     }
     final String startParam = configMm2ToJson(ConfigMm2(
         gui: gui,
-        netid: 7777,
+        netid: netid,
         client: 1,
         userhome: filesPath,
         passphrase: passphrase,
@@ -303,6 +299,8 @@ class MMService {
       mmVersion = versionmm2.result;
       mmDate = versionmm2.datetime;
       Log('mm_service:305]', 'mm2 version info updated');
+
+      jobService.suspend('updateMm2VersionInfo');
     }
   }
 
@@ -331,18 +329,9 @@ class MMService {
     await ordersBloc.updateOrdersSwaps();
   }
 
-  /// Process a line of MM log,
-  /// triggering an update of the swap and order lists whenever such changes are detected in the log.
+  /// Process a line of MM log.
   void _onLog(String chunk) {
-    Log('mm_service:356', chunk);
-
-    final pkr =
-        RegExp(r'initialize] netid (\d+) public key (\w+) preferred port');
-    final pkm = pkr.firstMatch(chunk);
-    if (pkm != null) {
-      netid = int.parse(pkm[1]);
-      pubkey = pkm[2];
-    }
+    Log('mm_service:338', chunk);
   }
 
   void _onNativeLog(Object event) {

@@ -827,7 +827,7 @@ class _SettingPageState extends State<SettingPage> {
       // TBD: Replace these with a pretty-printed metrics JSON
       log.sink.write('atomicDEX mobile ${packageInfo.version} $os\n');
       log.sink.write('mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
-      log.sink.write('netid ${mmSe.netid} pubkey ${mmSe.pubkey}\n');
+      log.sink.write('netid ${mmSe.netid}\n');
       await log.sink.flush();
     } catch (ex) {
       Log('setting_page:723', ex);
