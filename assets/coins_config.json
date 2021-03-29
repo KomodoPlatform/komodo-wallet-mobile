@@ -254,6 +254,42 @@
         ]
     },
     {
+        "name": "Ethereum (Ropsten)",
+        "type": "erc",
+        "address": "http://eth-ropsten.cipig.net",
+        "port": 8555,
+        "proto": "tcp",
+        "abbr": "ETHR",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
+        "colorCoin": "0xFF828384",
+        "serverList": [
+            "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
+        ],
+        "explorerUrl": [
+            "https://ropsten.etherscan.io/"
+        ]
+    },
+    {
+        "name": "JST (Ropsten)",
+        "type": "erc",
+        "address": "http://eth-ropsten.cipig.net",
+        "port": 8555,
+        "proto": "tcp",
+        "abbr": "JSTR",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
+        "colorCoin": "0xFFF8B34F",
+        "serverList": [
+            "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
+        ],
+        "explorerUrl": [
+            "https://ropsten.etherscan.io/"
+        ]
+    },
+    {
         "name": "Feathercoin",
         "type": "utxo",
         "address": "electrum1.cipig.net",
@@ -349,6 +385,7 @@
         "proto": "SSL",
         "abbr": "MORTY",
         "coingeckoId": "test-token",
+        "testCoin": true,
         "colorCoin": "0xFFf8f277",
         "serverList": [
             "electrum3.cipig.net:20018",
@@ -459,6 +496,7 @@
         "proto": "SSL",
         "abbr": "RICK",
         "coingeckoId": "test-token",
+        "testCoin": true,
         "colorCoin": "0xFFabdce4",
         "serverList": [
             "electrum1.cipig.net:20017",
@@ -642,6 +680,7 @@
         "proto": "tcp",
         "abbr": "tBTC",
         "coingeckoId": "test-token",
+        "testCoin": true,
         "colorCoin": "0xFFf7931a",
         "serverList": [
             "electrum1.cipig.net:10068",
