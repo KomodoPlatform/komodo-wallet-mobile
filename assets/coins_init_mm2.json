@@ -67,6 +67,55 @@
         }
     },
     {
+        "coin": "AAVE-BEP20",
+        "name": "aave_bep20",
+        "fname": "Aave",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xfb6115445Bff7b52FeB98650C87f44907E58f802"
+            }
+        }
+    },
+    {
+        "coin": "AAVE-ERC20",
+        "name": "aave_erc20",
+        "fname": "Aave",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9"
+            }
+        }
+    },
+    {
+        "coin": "ADA-BEP20",
+        "name": "ada_bep20",
+        "fname": "Cardano",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47"
+            }
+        }
+    },
+    {
         "coin": "ARPA",
         "name": "arpa-chain",
         "fname": "ARPA Chain",
@@ -79,6 +128,22 @@
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0xBA50933C268F567BDC86E1aC131BE072C6B0b71a"
+            }
+        }
+    },
+    {
+        "coin": "ATOM-BEP20",
+        "name": "atom_bep20",
+        "fname": "Cosmos",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x0Eb3a705fc54725037CC9e008bDede697f62F335"
             }
         }
     },
@@ -149,8 +214,8 @@
         }
     },
     {
-        "coin": "BAT",
-        "name": "basic-attention-token",
+        "coin": "BAT-ERC20",
+        "name": "bat_erc20",
         "fname": "Basic Attention Token",
         "rpcport": 80,
         "mm2": 1,
@@ -161,6 +226,22 @@
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF"
+            }
+        }
+    },
+    {
+        "coin": "BAT-BEP20",
+        "name": "bat_bep20",
+        "fname": "Basic Attention Token",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x101d82428437127bF1608F699CD651e6Abf9766E"
             }
         }
     },
@@ -382,6 +463,22 @@
         }
     },
     {
+        "coin": "CAKE",
+        "name": "cake",
+        "fname": "PancakeSwap",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
+            }
+        }
+    },
+    {
         "coin": "CCL",
         "asset": "CCL",
         "fname": "CoinCollect",
@@ -441,6 +538,39 @@
         "mm2": 1,
         "protocol": {
             "type": "UTXO"
+        }
+    },
+    {
+        "coin": "COMP-BEP20",
+        "name": "comp_bep20",
+        "fname": "Compound",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x52CE071Bd9b1C4B00A0b92D298c512478CaD67e8"
+            }
+        }
+    },
+    {
+        "coin": "COMP-ERC20",
+        "name": "comp_erc20",
+        "fname": "Compound",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0xc00e94Cb662C3520282E6f5717214004A7f26888"
+            }
         }
     },
     {
@@ -651,6 +781,22 @@
         }
     },
     {
+        "coin": "DOT-BEP20",
+        "name": "dot_bep20",
+        "fname": "Polkadot",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402"
+            }
+        }
+    },
+    {
         "coin": "DP",
         "asset": "DP",
         "fname": "DigitalPrice",
@@ -714,6 +860,22 @@
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c"
+            }
+        }
+    },
+    {
+        "coin": "EOS-BEP20",
+        "name": "eos_bep20",
+        "fname": "EOS",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x56b6fB708fC5732DEC1Afc8D8556423A2EDcCbD6"
             }
         }
     },
@@ -1012,6 +1174,22 @@
         }
     },
     {
+        "coin": "KMD-BEP20",
+        "name": "kmd_bep20",
+        "fname": "Komodo",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x2003f7ba57Ea956B05B85C60B4B2Ceea9b111256"
+            }
+        }
+    },
+    {
         "coin": "KOIN",
         "asset": "KOIN",
         "fname": "Koinon",
@@ -1055,8 +1233,8 @@
         }
     },
     {
-        "coin": "LINK",
-        "name": "chainlink",
+        "coin": "LINK-ERC20",
+        "name": "link_erc20",
         "fname": "Chainlink",
         "required_confirmations": 3,
         "avg_blocktime": 0.25,
@@ -1067,6 +1245,22 @@
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0x514910771AF9Ca656af840dff83E8264EcF986CA"
+            }
+        }
+    },
+    {
+        "coin": "LINK-BEP20",
+        "name": "link_bep20",
+        "fname": "Chainlink",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD"
             }
         }
     },
@@ -1459,7 +1653,7 @@
         "overwintered": 1,
         "mm2": 1,
         "required_confirmations": 2,
-        "requires_notarization": true,
+        "requires_notarization": false,
         "protocol": {
             "type": "UTXO"
         }
@@ -1515,6 +1709,7 @@
         "wiftype": 128,
         "segwit": true,
         "txfee": 0,
+        "dust": 72800,
         "mm2": 1,
         "required_confirmations": 3,
         "mature_confirmations": 500,
@@ -1537,6 +1732,7 @@
         "wiftype": 128,
         "segwit": true,
         "txfee": 0,
+        "dust": 72800,
         "mm2": 1,
         "required_confirmations": 3,
         "mature_confirmations": 500,
@@ -1559,6 +1755,7 @@
         "wiftype": 128,
         "segwit": true,
         "txfee": 0,
+        "dust": 72800,
         "mm2": 1,
         "required_confirmations": 3,
         "mature_confirmations": 500,
@@ -1735,6 +1932,39 @@
         }
     },
     {
+        "coin": "SNX-BEP20",
+        "name": "snx_bep20",
+        "fname": "Synthetix",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x9Ac983826058b8a9C7Aa1C9171441191232E8404"
+            }
+        }
+    },
+    {
+        "coin": "SNX-ERC20",
+        "name": "snx_erc20",
+        "fname": "Synthetix",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F"
+            }
+        }
+    },
+    {
         "coin": "SOLVE",
         "name": "care-solve",
         "fname": "Solve Token",
@@ -1858,8 +2088,8 @@
         }
     },
     {
-        "coin": "TUSD",
-        "name": "tusd",
+        "coin": "TUSD-ERC20",
+        "name": "tusd_erc20",
         "fname": "TrueUSD",
         "rpcport": 80,
         "mm2": 1,
@@ -2095,6 +2325,22 @@
         }
     },
     {
+        "coin": "XTZ-BEP20",
+        "name": "xtz_bep20",
+        "fname": "Tezos",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x16939ef78684453bfDFb47825F8a5F714f12623a"
+            }
+        }
+    },
+    {
         "coin": "YCE",
         "name": "myce",
         "fname": "MYCE",
@@ -2191,6 +2437,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2215,6 +2462,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2239,6 +2487,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2263,6 +2512,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2287,6 +2537,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2311,6 +2562,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2335,6 +2587,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2359,6 +2612,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2383,6 +2637,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2407,6 +2662,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2431,6 +2687,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2455,6 +2712,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2479,6 +2737,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2503,6 +2762,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2527,6 +2787,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2551,6 +2812,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2575,6 +2837,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2599,6 +2862,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2623,6 +2887,7 @@
         "mature_confirmations": 500,
         "avg_blocktime": 2.133,
         "txfee": 0,
+        "dust": 72800,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -2761,24 +3026,6 @@
         "decimals": 4
     },
     {
-        "coin": "AAVE",
-        "gui_coin": "AAVE",
-        "name": "ethereum",
-        "fname": "aave token",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9"
-            }
-        },
-        "decimals": 18
-    },
-    {
         "coin": "YFI",
         "gui_coin": "YFI",
         "name": "ethereum",
@@ -2830,24 +3077,6 @@
         }
     },
     {
-        "coin": "SNX",
-        "gui_coin": "SNX",
-        "name": "ethereum",
-        "fname": "synthetix network token",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F"
-            }
-        },
-        "decimals": 18
-    },
-    {
         "coin": "UMA",
         "gui_coin": "UMA",
         "name": "ethereum",
@@ -2861,24 +3090,6 @@
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828"
-            }
-        },
-        "decimals": 18
-    },
-    {
-        "coin": "COMP",
-        "gui_coin": "COMP",
-        "name": "ethereum",
-        "fname": "compound",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0xc00e94Cb662C3520282E6f5717214004A7f26888"
             }
         },
         "decimals": 18
