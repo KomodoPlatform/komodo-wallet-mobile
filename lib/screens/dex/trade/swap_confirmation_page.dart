@@ -22,6 +22,7 @@ import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 
 enum SwapStatus { BUY, SELL }
@@ -283,7 +284,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 4),
                         color: Theme.of(context).backgroundColor,
-                        child: SvgPicture.asset('assets/svg/icon_swap.svg')),
+                        child: SvgPicture.asset(settingsBloc.switchTheme?  'assets/svg_light/icon_swap.svg' :  'assets/svg/icon_swap.svg')),
                   ))
             ],
           ),

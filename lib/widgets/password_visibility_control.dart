@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 /// #644: We want the password to be obscured most of the time
 /// in order to workaround the problem of some devices ignoring `TYPE_TEXT_FLAG_NO_SUGGESTIONS`,
 /// https://github.com/flutter/engine/blob/d1c71e5206bd9546f4ff64b7336c4e74e3f4ccfd/shell/platform/android/io/flutter/plugin/editing/TextInputPlugin.java#L93-L99
 class PasswordVisibilityControl extends StatefulWidget {
-  const PasswordVisibilityControl({this.onVisibilityChange});
+  const PasswordVisibilityControl({this.onVisibilityChange, this.isFocused});
   final void Function(bool) onVisibilityChange;
+  final bool isFocused;
 
   @override
   _PasswordVisibilityControlState createState() => _PasswordVisibilityControlState();
@@ -17,7 +19,12 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
   Timer _timer;
   bool _isObscured = true;
   Offset _tapStartPosition;
-
+  bool isFocus;
+  @override
+  void initState() {
+    super.initState();
+    isFocus = widget.isFocused;
+  }
   void _setObscureTo(bool isObscured) {
     if (_timer != null) _timer.cancel();
     setState(() {
@@ -75,7 +82,9 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
         width: 60,
         child: Container(
           child: Icon(
+
             _isObscured ? Icons.visibility_off : Icons.visibility,
+            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)
           ),
         ),
       ),

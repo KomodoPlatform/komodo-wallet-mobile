@@ -313,12 +313,12 @@ class _ChartPainter extends CustomPainter {
     final int visibleDivisions =
         (size.height / (priceDivision * priceScaleFactor)).floor() + 1;
     for (int i = 0; i < visibleDivisions; i++) {
-      paint.color = widget.gridColor;
+      paint.color = settingsBloc.switchTheme? Colors.black.withOpacity(.2) : Colors.white.withOpacity(.4);//widget.gridColor;
       final double price = originPrice + i * priceDivision;
       final double dy = _price2dy(price);
       canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
       final String formattedPrice = formatPrice(price, 8);
-      paint.color = widget.textColor;
+      paint.color =  settingsBloc.switchTheme? Colors.black : Colors.white;
       if (i < 1) continue;
       _drawText(
         canvas: canvas,
@@ -392,7 +392,7 @@ class _ChartPainter extends CustomPainter {
       align: TextAlign.start,
       width: labelWidth,
     );
-    paint.color = widget.gridColor;
+    paint.color =  settingsBloc.switchTheme? Colors.black.withOpacity(.4) : Colors.white.withOpacity(.4);
     for (CandleData candleData in visibleCandlesData) {
       final double dx = _time2dx(candleData.closeTime);
       canvas.drawLine(Offset(dx, size.height - marginBottom),

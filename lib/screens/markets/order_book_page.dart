@@ -6,6 +6,8 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:komodo_dex/screens/markets/candlestick_chart.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:komodo_dex/screens/markets/order_book_chart.dart';
@@ -166,12 +168,12 @@ class _OrderBookPageState extends State<OrderBookPage> {
               children: <Widget>[
                 CandlesIcon(
                     size: 14,
-                    color: _showChart ? null : Theme.of(context).accentColor),
+                    color: _showChart ? settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8) : Theme.of(context).accentColor),
                 const SizedBox(width: 2),
                 Text(
                   AppLocalizations.of(context).marketsChart,
                   style: _showChart
-                      ? null
+                      ?  TextStyle(color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8))
                       : TextStyle(
                           color: Theme.of(context).accentColor,
                         ),
@@ -187,7 +189,7 @@ class _OrderBookPageState extends State<OrderBookPage> {
             child: Text(
               AppLocalizations.of(context).marketsDepth,
               style: !_showChart
-                  ? null
+                  ? TextStyle(color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8))
                   : TextStyle(
                       color: Theme.of(context).accentColor,
                     ),

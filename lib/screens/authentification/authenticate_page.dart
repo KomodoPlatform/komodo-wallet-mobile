@@ -63,9 +63,9 @@ class BoxButton extends StatelessWidget {
         borderRadius: borderRadius,
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.white.withOpacity(0.3)),
+              border: Border.all(color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.3)),
               borderRadius: borderRadius,
-              color: Colors.white.withOpacity(0.1)),
+              color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.1)),
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),

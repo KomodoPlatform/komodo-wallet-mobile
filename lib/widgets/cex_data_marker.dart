@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/widgets/html_parser.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class CexMarker extends StatelessWidget {
   const CexMarker(
@@ -12,7 +13,7 @@ class CexMarker extends StatelessWidget {
   });
 
   final Size size;
-  final Color color;
+  final color;
   final BuildContext context;
 
   @override
@@ -24,7 +25,7 @@ class CexMarker extends StatelessWidget {
         child: Icon(
           Icons.info_outline,
           size: size.height,
-          color: color,
+          color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8),
         ),
       ),
     );
@@ -40,7 +41,7 @@ void showCexDialog(BuildContext context) {
           Icon(
             Icons.info_outline,
             size: 22,
-            color: cexColor,
+            color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8),
           ),
           const SizedBox(
             width: 8,

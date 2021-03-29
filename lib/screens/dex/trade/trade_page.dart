@@ -603,24 +603,16 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   top: -25,
                   left: MediaQuery.of(context).size.width / 2 - 60,
                   child: Container(
-                      padding: const EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(32)),
                         color: Theme.of(context).backgroundColor,
                       ),
-                      child: Container(
-                        padding: EdgeInsets.only(left: 40,right: 40, top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Theme.of(context).textTheme.headline6.color.withOpacity(0.2)),
-                          borderRadius: const BorderRadius.all(Radius.circular(32)),
-                        ),
-                        child: Icon(
-                          Icons.swap_vert,
-
-
-                        )
-                      )),
+                      child: SvgPicture.asset(
+                        settingsBloc.switchTheme?  'assets/svg_light/icon_swap.svg' :  'assets/svg/icon_swap.svg',
+                        height: 40,
+                      ),),
                 )
             ],
           );
