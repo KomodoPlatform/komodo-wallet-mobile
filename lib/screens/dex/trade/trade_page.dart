@@ -969,7 +969,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               swapBloc.updateSellCoin(coin);
               orderBookProvider.activePair = CoinsPair(
                 sell: coin.coin,
-                buy: orderBookProvider.activePair?.buy,
+                buy: orderBookProvider.activePair?.buy != coin.coin
+                    ? orderBookProvider.activePair?.buy
+                    : null,
               );
               swapBloc.updateBuyCoin(null);
 
@@ -1099,7 +1101,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         backgroundColor: Theme.of(context).primaryColor,
         content: Text(
           AppLocalizations.of(context).swapGasAmount(
-              cutTrailingZeros(formatPrice(gasFee)), gasFee.coin),
+              cutTrailingZeros(formatPrice(gasFee.amount)), gasFee.coin),
           style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 12),
         ),
       ));

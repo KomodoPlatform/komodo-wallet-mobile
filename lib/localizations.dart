@@ -41,6 +41,13 @@ class AppLocalizations {
   String get exampleHintSeed =>
       Intl.message('Example: build case level ...', name: 'exampleHintSeed');
   String get confirm => Intl.message('confirm', name: 'confirm');
+  String get buyTestCoinWarning =>
+      Intl.message('Warning, you willing to buy test coins WITHOUT real value!',
+          name: 'buyTestCoinWarning');
+  String get sellTestCoinWarning => Intl.message(
+        'Warning, you willing to sell test coins WITHOUT real value!',
+        name: 'sellTestCoinWarning',
+      );
   String get buy => Intl.message('Buy', name: 'buy');
   String get sell => Intl.message('Sell', name: 'sell');
   String shareAddress(String coinName, String address) =>
@@ -60,6 +67,13 @@ class AppLocalizations {
   String get withdrawConfirmError =>
       Intl.message('Something went wrong. Try again later.',
           name: 'withdrawConfirmError');
+  String get withdrawCameraAccessTitle =>
+      Intl.message('Access Denied', name: 'withdrawCameraAccessTitle');
+  String get withdrawCameraAccessText => Intl.message(
+      'You have previously denied AtomicDEX access to the camera.'
+      '\nPlease manually change camera permission in your phone'
+      ' settings to proceed with the QR code scan.',
+      name: 'withdrawCameraAccessText');
   String get close => Intl.message('Close', name: 'close');
   String get confirmSeed =>
       Intl.message('Confirm Seed Phrase', name: 'confirmSeed');
@@ -544,6 +558,9 @@ class AppLocalizations {
   String get searchFilterSubtitleSmartChain =>
       Intl.message('Select all SmartChains',
           name: 'searchFilterSubtitleSmartChain');
+  String get searchFilterSubtitleTestCoins =>
+      Intl.message('Select all Test Assets',
+          name: 'searchFilterSubtitleTestCoins');
   String get searchFilterSubtitleERC =>
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
   String get searchFilterSubtitleQRC =>
@@ -1000,6 +1017,9 @@ class AppLocalizations {
       Intl.message('Select', name: 'orderDetailsSelect');
   String get noMatchingOrders =>
       Intl.message('No matching orders found', name: 'noMatchingOrders');
+
+  String get makerOrder => Intl.message('Maker Order', name: 'makerOrder');
+  String get takerOrder => Intl.message('Taker Order', name: 'takerOrder');
 
   // --- Help & FAQ ---
 

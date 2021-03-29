@@ -52,11 +52,18 @@ class _DetailSwapState extends State<DetailSwap> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 32, left: 24, right: 24),
-          child: Text(
-            '${AppLocalizations.of(context).tradeDetail}:',
-            style: Theme.of(context).textTheme.subtitle2.copyWith(
-                color: Theme.of(context).accentColor,
-                fontWeight: FontWeight.bold),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '${AppLocalizations.of(context).tradeDetail}:',
+                  style: Theme.of(context).textTheme.subtitle2.copyWith(
+                      color: Theme.of(context).accentColor,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              _buildMakerTakerBadge(widget.swap.result.type == 'Maker'),
+            ],
           ),
         ),
         Padding(
@@ -88,6 +95,29 @@ class _DetailSwapState extends State<DetailSwap> {
           height: 32,
         ),
       ],
+    );
+  }
+
+  Widget _buildMakerTakerBadge(bool isMaker) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        border: Border.all(
+          color: Theme.of(context).textTheme.caption.color.withAlpha(100),
+          style: BorderStyle.solid,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+        child: Text(
+          isMaker
+              ? AppLocalizations.of(context).makerOrder
+              : AppLocalizations.of(context).takerOrder,
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ),
     );
   }
 

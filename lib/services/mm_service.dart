@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show File, Platform, Process;
 
+import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
@@ -52,16 +53,12 @@ class MMService {
   // The date corresponding to the MM commit hash, YYYY-MM-DD
   String mmDate;
 
-  /// Our p2p ID, 64 bytes version
-  /// (There is also a 66 bytes version, 64 bytes version is a tail of it)
-  String pubkey = '';
-
   /// Our name and version
   String gui;
 
-  /// We're using the netid of 9999 currently
+  /// We're using the netid of 7777 currently
   /// But it's possible in theory to connect the UI to MM running on a different netid
-  int netid;
+  int netid = 7777;
 
   /// Effective memory used by the application, MiB
   /// As of now it is specific to iOS
@@ -153,6 +150,13 @@ class MMService {
       if (!mmSe.running) return;
       await updateOrdersAndSwaps();
     });
+
+    jobService.install('updateMm2VersionInfo', 3.14, (j) async {
+      if (!mmSe.running) return;
+      if (mmVersion == null && mmDate == null) {
+        await initializeMmVersion();
+      }
+    });
   }
 
   void initUsername(String passphrase) {
@@ -236,8 +240,7 @@ class MMService {
     }
     final String startParam = configMm2ToJson(ConfigMm2(
         gui: gui,
-        netid: 7777,
-        seednodes: ['195.201.91.96', '195.201.91.53', '168.119.174.126'],
+        netid: netid,
         client: 1,
         userhome: filesPath,
         passphrase: passphrase,
@@ -289,6 +292,18 @@ class MMService {
     }
   }
 
+  Future<void> initializeMmVersion() async {
+    final VersionMm2 versionmm2 =
+        await MM.getVersionMM2(BaseService(method: 'version'));
+    if (versionmm2 is VersionMm2 && versionmm2 != null) {
+      mmVersion = versionmm2.result;
+      mmDate = versionmm2.datetime;
+      Log('mm_service:305]', 'mm2 version info updated');
+
+      jobService.suspend('updateMm2VersionInfo');
+    }
+  }
+
   void log2file(String chunk, {DateTime now}) {
     if (chunk == null) return;
     if (!chunk.endsWith('\n')) chunk += '\n';
@@ -314,25 +329,9 @@ class MMService {
     await ordersBloc.updateOrdersSwaps();
   }
 
-  /// Process a line of MM log,
-  /// triggering an update of the swap and order lists whenever such changes are detected in the log.
+  /// Process a line of MM log.
   void _onLog(String chunk) {
-    Log('mm_service:356', chunk);
-
-    final pkr =
-        RegExp(r'initialize] netid (\d+) public key (\w+) preferred port');
-    final pkm = pkr.firstMatch(chunk);
-    if (pkm != null) {
-      netid = int.parse(pkm[1]);
-      pubkey = pkm[2];
-    }
-
-    final mvr = RegExp(r'lp_init] version: (\w+) DT (\d{4}-\d{2}-\d{2})T\d{2}');
-    final mvm = mvr.firstMatch(chunk);
-    if (mvm != null) {
-      mmVersion = mvm[1];
-      mmDate = mvm[2];
-    }
+    Log('mm_service:338', chunk);
   }
 
   void _onNativeLog(Object event) {
