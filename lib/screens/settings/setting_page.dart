@@ -15,8 +15,6 @@ import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/wallet_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/base_service.dart';
-import 'package:komodo_dex/model/result.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/authentification/disclaimer_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
@@ -28,7 +26,6 @@ import 'package:komodo_dex/screens/settings/camo_pin_setup_page.dart';
 import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
 import 'package:komodo_dex/screens/settings/view_seed_unlock_page.dart';
-import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -149,16 +146,8 @@ class _SettingPageState extends State<SettingPage> {
     String version =
         AppLocalizations.of(context).version + ' : ' + packageInfo.version;
 
-    try {
-      final dynamic versionmm2 =
-          await MM.getVersionMM2(mmSe.client, BaseService(method: 'version'));
-      if (versionmm2 is ResultSuccess && versionmm2 != null) {
-        version += ' - ${versionmm2.result}';
-      }
-    } catch (e) {
-      Log('setting_page:150', e);
-      rethrow;
-    }
+    version += ' - ${mmSe.mmVersion}';
+
     return version;
   }
 
@@ -833,7 +822,7 @@ class _SettingPageState extends State<SettingPage> {
       // TBD: Replace these with a pretty-printed metrics JSON
       log.sink.write('atomicDEX mobile ${packageInfo.version} $os\n');
       log.sink.write('mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
-      log.sink.write('netid ${mmSe.netid} pubkey ${mmSe.pubkey}\n');
+      log.sink.write('netid ${mmSe.netid}\n');
       await log.sink.flush();
     } catch (ex) {
       Log('setting_page:723', ex);
