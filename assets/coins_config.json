@@ -181,24 +181,6 @@
         ]
     },
     {
-        "name": "DEX",
-        "type": "smartChain",
-        "address": "electrum3.cipig.net",
-        "port": 10006,
-        "proto": "tcp",
-        "abbr": "DEX",
-        "coingeckoId": "test-token",
-        "colorCoin": "0xFF27B6B4",
-        "serverList": [
-            "electrum1.cipig.net:10006",
-            "electrum2.cipig.net:10006",
-            "electrum3.cipig.net:10006"
-        ],
-        "explorerUrl": [
-            "https://dex.kmdexplorer.io/"
-        ]
-    },
-    {
         "name": "Digibyte",
         "type": "utxo",
         "address": "electrum1.cipig.net",
@@ -504,24 +486,6 @@
         ],
         "explorerUrl": [
             "https://etherscan.io/"
-        ]
-    },
-    {
-        "name": "SUPERNET",
-        "type": "smartChain",
-        "address": "electrum3.cipig.net",
-        "port": 10005,
-        "proto": "tcp",
-        "abbr": "SUPERNET",
-        "coingeckoId": "test-token",
-        "colorCoin": "0xFF27B6B4",
-        "serverList": [
-            "electrum1.cipig.net:10005",
-            "electrum2.cipig.net:10005",
-            "electrum3.cipig.net:10005"
-        ],
-        "explorerUrl": [
-            "https://supernet.kmdexplorer.io/"
         ]
     },
     {
