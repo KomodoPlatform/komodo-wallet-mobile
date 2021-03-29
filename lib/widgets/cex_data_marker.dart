@@ -13,7 +13,7 @@ class CexMarker extends StatelessWidget {
   });
 
   final Size size;
-  final color;
+  final Color color;
   final BuildContext context;
 
   @override
