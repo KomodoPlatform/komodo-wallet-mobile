@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
-import 'package:komodo_dex/widgets/confirmation_dialog.dart';
 
 class BuildResetButton extends StatefulWidget {
   @override
@@ -26,18 +25,8 @@ class _BuildResetButtonState extends State<BuildResetButton> {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      onPressed: _enabled ? _showWarning : null,
+      onPressed: _enabled ? tradeForm.reset : null,
       child: Text(AppLocalizations.of(context).reset),
-    );
-  }
-
-  void _showWarning() {
-    showConfirmationDialog(
-      context: context,
-      icon: Icons.cancel,
-      title: AppLocalizations.of(context).resetTitle,
-      confirmButtonText: AppLocalizations.of(context).reset,
-      onConfirm: tradeForm.reset,
     );
   }
 

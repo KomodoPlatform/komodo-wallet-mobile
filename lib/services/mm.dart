@@ -14,6 +14,7 @@ import 'package:komodo_dex/model/priv_key.dart';
 import 'package:komodo_dex/model/recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
+import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:komodo_dex/services/music_service.dart';
 
 import '../model/active_coin.dart';
@@ -239,8 +240,10 @@ class ApiProvider {
 
   String enableCoinImpl(Coin coin) {
     final List<Server> servers = coin.serverList
-        .map((String url) =>
-            Server(url: url, protocol: coin.proto.toUpperCase(), disableCertVerification: false))
+        .map((String url) => Server(
+            url: url,
+            protocol: coin.proto == null ? 'TCP' : coin.proto.toUpperCase(),
+            disableCertVerification: false))
         .toList();
 
     if (coin.type == 'erc')
@@ -414,17 +417,25 @@ class ApiProvider {
               .catchError((dynamic e) => _catchErrorString(
                   'getTradeFee', e, 'Error on get tradeFee')));
 
-  Future<dynamic> getVersionMM2(
-    http.Client client,
-    BaseService body,
-  ) async =>
-      await _assertUserpass(client, body).then<dynamic>(
-          (UserpassBody userBody) => userBody.client
-              .post(url, body: baseServiceToJson(userBody.body))
-              .then((Response r) => _saveRes('getVersionMM2', r))
-              .then<dynamic>((Response res) => resultSuccessFromJson(res.body))
-              .catchError((dynamic e) => _catchErrorString(
-                  'getVersionMM2', e, 'Error on get version MM2')));
+  Future<VersionMm2> getVersionMM2(BaseService body,
+      {http.Client client}) async {
+    client ??= mmSe.client;
+
+    try {
+      final userBody = await _assertUserpass(client, body);
+      final r = await userBody.client
+          .post(url, body: baseServiceToJson(userBody.body));
+      _assert200(r);
+      _saveRes('getVersionMM2', r);
+
+      final dynamic jbody = json.decode(r.body);
+
+      final v = VersionMm2.fromJson(jbody);
+      return v;
+    } catch (e) {
+      throw _catchErrorString('getVersionMM2', e, 'Error on get version MM2');
+    }
+  }
 
   /// Reduce log noise
   int _lastMetricsLog = 0;

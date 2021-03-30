@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_buy.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
@@ -51,6 +52,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                   children: <Widget>[
                     const SizedBox(height: 24),
                     _buildCoinSwapDetail(),
+                    _buildTestCoinWarning(),
                     ExchangeRate(),
                     const SizedBox(height: 8),
                     ProtectionControl(
@@ -244,6 +246,42 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     );
   }
 
+  Widget _buildTestCoinWarning() {
+    final Coin coinSell = swapBloc.sellCoinBalance.coin;
+    final Coin coinBuy = swapBloc.receiveCoinBalance.coin;
+
+    String warningMessage;
+    if (coinSell.testCoin && !coinBuy.testCoin) {
+      warningMessage = AppLocalizations.of(context).sellTestCoinWarning;
+    }
+    if (coinBuy.testCoin && !coinSell.testCoin) {
+      warningMessage = AppLocalizations.of(context).buyTestCoinWarning;
+    }
+
+    if (warningMessage == null) {
+      return SizedBox();
+    } else {
+      return Container(
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.yellow[100].withAlpha(200),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          padding: EdgeInsets.all(8),
+          child: Text(
+            warningMessage,
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: Theme.of(context).primaryColor),
+          ),
+        ),
+      );
+    }
+  }
+
   Widget _buildInfoSwap() {
     return Column(
       children: <Widget>[
@@ -349,7 +387,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                 borderRadius: BorderRadius.circular(30.0)),
             child: Text(AppLocalizations.of(context).cancel.toUpperCase()),
             onPressed: () {
-              swapBloc.updateSellCoin(null);
               Navigator.of(context).pop();
             },
           ),
