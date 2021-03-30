@@ -13,17 +13,12 @@ class SettingsBloc implements BlocBase {
   }
 
   SharedPreferences _prefs;
-  ThemeMode _themeMode = ThemeMode.system;
+
   Future<void> _loadPrefs() async {
     _prefs = await SharedPreferences.getInstance();
 
     showBalance = _prefs.getBool('showBalance') ?? showBalance;
     switchTheme = _prefs.getBool('switchTheme') ?? switchTheme;
-    if (switchTheme == true) {
-      _themeMode = ThemeMode.light;
-    } else {
-      _themeMode = ThemeMode.dark;
-    }
 
     showSoundsExplanationDialog =
         _prefs.getBool('showSoundsExplanationDialog') ??
@@ -70,10 +65,11 @@ class SettingsBloc implements BlocBase {
     isDeleteLoading = isLoading;
     _inIsDeleteLoading.add(isDeleteLoading);
   }
+
   String getValueIfSwitch(String val1, String val2) {
-    if(switchTheme) {
+    if (switchTheme) {
       return val1;
-    }else {
+    } else {
       return val2;
     }
   }
@@ -128,10 +124,5 @@ class SettingsBloc implements BlocBase {
     switchTheme = val;
     _inSwitchTheme.add(val);
     _prefs.setBool('switchTheme', val);
-    if (switchTheme == true) {
-      _themeMode = ThemeMode.light;
-    } else {
-      _themeMode = ThemeMode.dark;
-    }
   }
 }

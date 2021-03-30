@@ -150,7 +150,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       SystemUiOverlay.top,
     ]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: getTheme().backgroundColor,
+      systemNavigationBarColor: getThemeDark().backgroundColor,
       systemNavigationBarIconBrightness: Brightness.light,
     ));
 
@@ -188,11 +188,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                             supportedLocales: mainBloc.supportedLocales,
                             theme: switchTheme.hasData
                                 ? switchTheme.data == true
-                                    ? getTheme2()
-                                    : getTheme()
+                                    ? getThemeLight()
+                                    : getThemeDark()
                                 : settingsBloc.switchTheme == true
-                                    ? getTheme2()
-                                    : getTheme(),
+                                    ? getThemeLight()
+                                    : getThemeDark(),
                             //darkTheme: getTheme2(),
                             //themeMode: ThemeMode.system,
                             initialRoute: '/',

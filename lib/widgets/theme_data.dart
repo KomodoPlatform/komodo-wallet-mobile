@@ -11,7 +11,7 @@ SnackBarThemeData _snackBarTheme() => SnackBarThemeData(
 Color get primaryColor => const Color.fromRGBO(42, 54, 71, 1);
 Color get primaryColorLight => const Color.fromRGBO(255, 255, 255, 1);
 
-ThemeData getTheme() => ThemeData(
+ThemeData getThemeDark() => ThemeData(
       snackBarTheme: _snackBarTheme(),
       brightness: Brightness.dark,
       primaryColor: primaryColor,
@@ -46,7 +46,7 @@ ThemeData getTheme() => ThemeData(
               color: Colors.white.withOpacity(0.8),
               fontWeight: FontWeight.w400)),
     );
-ThemeData getTheme2() => ThemeData(
+ThemeData getThemeLight() => ThemeData(
       snackBarTheme: _snackBarTheme(),
       brightness: Brightness.light,
       primaryColor: primaryColorLight,
@@ -54,7 +54,7 @@ ThemeData getTheme2() => ThemeData(
       primaryColorDark: const Color.fromRGBO(183, 187, 191, 1),
       accentColor: const Color.fromRGBO(60, 201, 191, 1),
       textSelectionColor:
-      const Color.fromRGBO(57, 161, 238, 1).withOpacity(0.3),
+          const Color.fromRGBO(57, 161, 238, 1).withOpacity(0.3),
       toggleableActiveColor: const Color.fromRGBO(57, 161, 238, 1),
       cursorColor: const Color.fromRGBO(57, 161, 238, 1),
       dialogBackgroundColor: primaryColorLight,
@@ -62,25 +62,35 @@ ThemeData getTheme2() => ThemeData(
       hintColor: const Color.fromRGBO(183, 187, 191, 1),
       errorColor: const Color.fromRGBO(220, 3, 51, 1),
       disabledColor: const Color.fromRGBO(201, 201, 201, 1),
-      buttonColor: const Color.fromRGBO(60, 201, 191, 1),//const Color.fromRGBO(39, 68, 108, 1),
+      buttonColor: const Color.fromRGBO(
+          60, 201, 191, 1), //const Color.fromRGBO(39, 68, 108, 1),
       textSelectionHandleColor: const Color.fromRGBO(57, 161, 238, 1),
       cardColor: primaryColorLight,
       textTheme: TextTheme(
           headline5: TextStyle(
-              fontSize: 40, fontWeight: FontWeight.w700, color: const Color.fromRGBO(24, 35, 49, 1)),
+              fontSize: 40,
+              fontWeight: FontWeight.w700,
+              color: const Color.fromRGBO(24, 35, 49, 1)),
           headline6: TextStyle(
-              fontSize: 26.0, color:const Color.fromRGBO(24, 35, 49, 1), fontWeight: FontWeight.w700),
-          subtitle2: const TextStyle(fontSize: 18.0, color: Color.fromRGBO(24, 35, 49, 1)),
+              fontSize: 26.0,
+              color: const Color.fromRGBO(24, 35, 49, 1),
+              fontWeight: FontWeight.w700),
+          subtitle2: const TextStyle(
+              fontSize: 18.0, color: Color.fromRGBO(24, 35, 49, 1)),
           bodyText2: TextStyle(
-              fontSize: 16.0, color: const Color.fromRGBO(24, 35, 49, 1), fontWeight: FontWeight.w300),
-          button: const TextStyle(fontSize: 16.0, color:  Color.fromRGBO(24, 35, 49, 1)),
-          bodyText1:
-          TextStyle(fontSize: 14.0, color: const Color.fromRGBO(24, 35, 49, 1).withOpacity(0.5)),
+              fontSize: 16.0,
+              color: const Color.fromRGBO(24, 35, 49, 1),
+              fontWeight: FontWeight.w300),
+          button: const TextStyle(
+              fontSize: 16.0, color: Color.fromRGBO(24, 35, 49, 1)),
+          bodyText1: TextStyle(
+              fontSize: 14.0,
+              color: const Color.fromRGBO(24, 35, 49, 1).withOpacity(0.5)),
           caption: TextStyle(
               fontSize: 12.0,
               color: const Color.fromRGBO(24, 35, 49, 1).withOpacity(0.8),
               fontWeight: FontWeight.w400)),
-);
+    );
 
 const Color cexColor = Color.fromARGB(200, 253, 247, 227);
 

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 /// #644: We want the password to be obscured most of the time
 /// in order to workaround the problem of some devices ignoring `TYPE_TEXT_FLAG_NO_SUGGESTIONS`,
@@ -12,7 +11,8 @@ class PasswordVisibilityControl extends StatefulWidget {
   final bool isFocused;
 
   @override
-  _PasswordVisibilityControlState createState() => _PasswordVisibilityControlState();
+  _PasswordVisibilityControlState createState() =>
+      _PasswordVisibilityControlState();
 }
 
 class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
@@ -25,6 +25,7 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
     super.initState();
     isFocus = widget.isFocused;
   }
+
   void _setObscureTo(bool isObscured) {
     if (_timer != null) _timer.cancel();
     setState(() {
@@ -34,10 +35,8 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
   }
 
   bool _wasLongPressMoved(Offset position) {
-    final double distance = sqrt(
-        pow(_tapStartPosition.dx - position.dx, 2)
-        + pow(_tapStartPosition.dy - position.dy, 2)
-    );
+    final double distance = sqrt(pow(_tapStartPosition.dx - position.dx, 2) +
+        pow(_tapStartPosition.dy - position.dy, 2));
     return distance > 20;
   }
 
@@ -81,11 +80,9 @@ class _PasswordVisibilityControlState extends State<PasswordVisibilityControl> {
       child: SizedBox(
         width: 60,
         child: Container(
-          child: Icon(
-
-            _isObscured ? Icons.visibility_off : Icons.visibility,
-            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)
-          ),
+          child: Icon(_isObscured ? Icons.visibility_off : Icons.visibility,
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         ),
       ),
     );

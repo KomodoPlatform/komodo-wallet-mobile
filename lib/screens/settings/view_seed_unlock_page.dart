@@ -55,7 +55,9 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                 )
               : UnlockPassword(
                   currentWallet: walletBloc.currentWallet,
-                  icon: SvgPicture.asset(settingsBloc.switchTheme?  'assets/svg_light/seed_logo.svg' :  'assets/svg/seed_logo.svg'),
+                  icon: SvgPicture.asset(settingsBloc.switchTheme
+                      ? 'assets/svg_light/seed_logo.svg'
+                      : 'assets/svg/seed_logo.svg'),
                   onSuccess: (String data) {
                     setState(() {
                       seed = data;
@@ -91,7 +93,6 @@ class UnlockPassword extends StatefulWidget {
 
 class _UnlockPasswordState extends State<UnlockPassword> {
   TextEditingController controller = TextEditingController();
-  FocusNode _focus = new FocusNode();
 
   bool isContinueEnabled = false;
   bool isObscured = true;
@@ -100,10 +101,6 @@ class _UnlockPasswordState extends State<UnlockPassword> {
   @override
   void initState() {
     super.initState();
-    _focus.addListener(_onFocusChange);
-  }
-  void _onFocusChange(){
-    isFocus =  _focus.hasFocus;
   }
 
   @override
@@ -122,7 +119,6 @@ class _UnlockPasswordState extends State<UnlockPassword> {
         TextField(
           maxLength: 40,
           controller: controller,
-          focusNode: _focus,
           textInputAction: TextInputAction.done,
           onSubmitted: (String data) {
             _checkPassword(data);
@@ -160,9 +156,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
               onVisibilityChange: (bool isPasswordObscured) {
                 setState(() {
                   isObscured = isPasswordObscured;
-
                 });
-
               },
             ),
           ),

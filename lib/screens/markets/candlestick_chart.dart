@@ -7,7 +7,7 @@ import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class CandleChart extends StatefulWidget {
-  CandleChart({
+  const CandleChart({
     this.data,
     this.duration,
     this.candleWidth = 8,
@@ -313,18 +313,22 @@ class _ChartPainter extends CustomPainter {
     final int visibleDivisions =
         (size.height / (priceDivision * priceScaleFactor)).floor() + 1;
     for (int i = 0; i < visibleDivisions; i++) {
-      paint.color = settingsBloc.switchTheme? Colors.black.withOpacity(.2) : Colors.white.withOpacity(.4);//widget.gridColor;
+      paint.color = settingsBloc.switchTheme
+          ? Colors.black.withOpacity(.2)
+          : Colors.white.withOpacity(.4); //widget.gridColor;
       final double price = originPrice + i * priceDivision;
       final double dy = _price2dy(price);
       canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
       final String formattedPrice = formatPrice(price, 8);
-      paint.color =  settingsBloc.switchTheme? Colors.black : Colors.white;
+      paint.color = settingsBloc.switchTheme ? Colors.black : Colors.white;
       if (i < 1) continue;
       _drawText(
         canvas: canvas,
         point: Offset(4, dy),
         text: formattedPrice,
-        color: settingsBloc.switchTheme? Colors.black : Colors.white,// widget.textColor,
+        color: settingsBloc.switchTheme
+            ? Colors.black
+            : Colors.white, // widget.textColor,
         align: TextAlign.start,
         width: labelWidth,
       );
@@ -372,7 +376,9 @@ class _ChartPainter extends CustomPainter {
     }
     _drawText(
       canvas: canvas,
-      color:  settingsBloc.switchTheme? Colors.black : Colors.white,//widget.textColor,
+      color: settingsBloc.switchTheme
+          ? Colors.black
+          : Colors.white, //widget.textColor,
       point: Offset(
         rightMarkerPosition - labelWidth - 4,
         size.height - 7,
@@ -383,7 +389,9 @@ class _ChartPainter extends CustomPainter {
     );
     _drawText(
       canvas: canvas,
-      color:  settingsBloc.switchTheme? Colors.black : Colors.white,//widget.textColor,
+      color: settingsBloc.switchTheme
+          ? Colors.black
+          : Colors.white, //widget.textColor,
       point: Offset(
         4,
         size.height - 7,
@@ -392,13 +400,17 @@ class _ChartPainter extends CustomPainter {
       align: TextAlign.start,
       width: labelWidth,
     );
-    paint.color =  settingsBloc.switchTheme? Colors.black.withOpacity(.4) : Colors.white.withOpacity(.4);
+    paint.color = settingsBloc.switchTheme
+        ? Colors.black.withOpacity(.4)
+        : Colors.white.withOpacity(.4);
     for (CandleData candleData in visibleCandlesData) {
       final double dx = _time2dx(candleData.closeTime);
       canvas.drawLine(Offset(dx, size.height - marginBottom),
           Offset(dx, size.height - marginBottom + 5), paint);
     }
-    paint.color =  settingsBloc.switchTheme? Colors.black : Colors.white;//widget.textColor;
+    paint.color = settingsBloc.switchTheme
+        ? Colors.black
+        : Colors.white; //widget.textColor;
     canvas.drawLine(Offset(0, size.height - marginBottom),
         Offset(0, size.height - marginBottom + 5), paint);
     canvas.drawLine(Offset(rightMarkerPosition, size.height - marginBottom),
@@ -460,7 +472,9 @@ class _ChartPainter extends CustomPainter {
           canvas: canvas,
           align: TextAlign.right,
           color: Colors.black,
-          backgroundColor:  settingsBloc.switchTheme? Colors.black : Colors.white,//Colors.white,
+          backgroundColor: settingsBloc.switchTheme
+              ? Colors.black
+              : Colors.white, //Colors.white,
           text: ' ${formatPrice(selectedPoint['price'], 8)} ',
           point: Offset(size.width - labelWidth - 2, dy - 2),
           width: labelWidth,
@@ -476,7 +490,9 @@ class _ChartPainter extends CustomPainter {
           canvas: canvas,
           align: TextAlign.center,
           color: Colors.black,
-          backgroundColor:  settingsBloc.switchTheme? Colors.black : Colors.white,//Colors.white,
+          backgroundColor: settingsBloc.switchTheme
+              ? Colors.black
+              : Colors.white, //Colors.white,
           text: ' ${_formatTime(selectedCandle.closeTime * 1000)} ',
           point: Offset(dx - 50, size.height - 7),
           width: labelWidth,

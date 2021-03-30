@@ -225,9 +225,10 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                       maxLines: 1,
                       decoration: InputDecoration(
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Theme.of(context).accentColor),
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor),
                         ),
-                      ) ,
+                      ),
                       inputFormatters: <TextInputFormatter>[
                         LengthLimitingTextInputFormatter(16),
                         DecimalTextInputFormatter(decimalRange: 8),
@@ -453,10 +454,13 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               textAlign: TextAlign.right,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 isDense: true,
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: settingsBloc.switchTheme? getTheme2().accentColor : getTheme().accentColor ),
+                  borderSide: BorderSide(
+                      color: settingsBloc.switchTheme
+                          ? getThemeLight().accentColor
+                          : getThemeDark().accentColor),
                 ),
                 contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
               ),
@@ -480,8 +484,10 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
             Text(
               convertedAmt,
               textAlign: TextAlign.right,
-              style:  TextStyle(
-                color: settingsBloc.switchTheme? cexColorLight.withAlpha(150) : cexColor.withAlpha(150),
+              style: TextStyle(
+                color: settingsBloc.switchTheme
+                    ? cexColorLight.withAlpha(150)
+                    : cexColor.withAlpha(150),
                 fontSize: 10,
                 height: 1.2,
               ),
@@ -596,11 +602,13 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
       children: delta.abs() < 0.01
           ? <Widget>[
               const SizedBox(width: 3),
-               Text(
+              Text(
                 '≈0.00%',
                 style: TextStyle(
                   fontSize: 10,
-                  color: settingsBloc.switchTheme? cexColorLight.withAlpha(150) : cexColor.withAlpha(150),
+                  color: settingsBloc.switchTheme
+                      ? cexColorLight.withAlpha(150)
+                      : cexColor.withAlpha(150),
                 ),
               ),
             ]

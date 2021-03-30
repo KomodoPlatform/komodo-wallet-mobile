@@ -7,7 +7,6 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/db/database.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
@@ -72,7 +71,9 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   color: Theme.of(context).primaryColor,
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
-                    child: SvgPicture.asset( settingsBloc.getValueIfSwitch('assets/svg_light/lock.svg','assets/svg/lock.svg'),
+                    child: SvgPicture.asset(
+                        settingsBloc.getValueIfSwitch(
+                            'assets/svg_light/lock.svg', 'assets/svg/lock.svg'),
                         semanticsLabel: 'Lock'),
                   ),
                 ),
@@ -164,8 +165,7 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                           Container(
                               height: 52,
                               child: const Center(
-                                child: CircularProgressIndicator(
-                                ),
+                                child: CircularProgressIndicator(),
                               )),
                           isLoading
                               ? const SizedBox(
