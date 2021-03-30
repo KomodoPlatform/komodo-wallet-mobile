@@ -41,6 +41,13 @@ class AppLocalizations {
   String get exampleHintSeed =>
       Intl.message('Example: build case level ...', name: 'exampleHintSeed');
   String get confirm => Intl.message('confirm', name: 'confirm');
+  String get buyTestCoinWarning =>
+      Intl.message('Warning, you willing to buy test coins WITHOUT real value!',
+          name: 'buyTestCoinWarning');
+  String get sellTestCoinWarning => Intl.message(
+        'Warning, you willing to sell test coins WITHOUT real value!',
+        name: 'sellTestCoinWarning',
+      );
   String get buy => Intl.message('Buy', name: 'buy');
   String get sell => Intl.message('Sell', name: 'sell');
   String shareAddress(String coinName, String address) =>
@@ -551,6 +558,9 @@ class AppLocalizations {
   String get searchFilterSubtitleSmartChain =>
       Intl.message('Select all SmartChains',
           name: 'searchFilterSubtitleSmartChain');
+  String get searchFilterSubtitleTestCoins =>
+      Intl.message('Select all Test Assets',
+          name: 'searchFilterSubtitleTestCoins');
   String get searchFilterSubtitleERC =>
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
   String get searchFilterSubtitleQRC =>

@@ -70,12 +70,12 @@
         ]
     },
     {
-        "name": "BAT",
+        "name": "BAT-ERC20",
         "type": "erc",
         "address": "http://eth1.cipig.net",
         "port": 8555,
         "proto": "tcp",
-        "abbr": "BAT",
+        "abbr": "BAT-ERC20",
         "coingeckoId": "basic-attention-token",
         "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFFff5000",
@@ -89,12 +89,12 @@
         ]
     },
     {
-        "name": "BUSD",
+        "name": "BUSD-ERC20",
         "type": "erc",
         "address": "http://eth1.cipig.net",
         "port": 8555,
         "proto": "tcp",
-        "abbr": "BUSD",
+        "abbr": "BUSD-ERC20",
         "coingeckoId": "binance-usd",
         "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFFF0BA01",
@@ -144,12 +144,12 @@
         ]
     },
     {
-        "name": "DAI",
+        "name": "DAI-ERC20",
         "type": "erc",
         "address": "http://eth1.cipig.net",
         "port": 8555,
         "proto": "tcp",
-        "abbr": "DAI",
+        "abbr": "DAI-ERC20",
         "coingeckoId": "dai",
         "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFFF8B34F",
@@ -178,24 +178,6 @@
         ],
         "explorerUrl": [
             "https://explorer.dash.org/"
-        ]
-    },
-    {
-        "name": "DEX",
-        "type": "smartChain",
-        "address": "electrum3.cipig.net",
-        "port": 10006,
-        "proto": "tcp",
-        "abbr": "DEX",
-        "coingeckoId": "test-token",
-        "colorCoin": "0xFF27B6B4",
-        "serverList": [
-            "electrum1.cipig.net:10006",
-            "electrum2.cipig.net:10006",
-            "electrum3.cipig.net:10006"
-        ],
-        "explorerUrl": [
-            "https://dex.kmdexplorer.io/"
         ]
     },
     {
@@ -269,6 +251,42 @@
         ],
         "explorerUrl": [
             "https://etherscan.io/"
+        ]
+    },
+    {
+        "name": "Ethereum (Ropsten)",
+        "type": "erc",
+        "address": "http://eth-ropsten.cipig.net",
+        "port": 8555,
+        "proto": "tcp",
+        "abbr": "ETHR",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
+        "colorCoin": "0xFF828384",
+        "serverList": [
+            "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
+        ],
+        "explorerUrl": [
+            "https://ropsten.etherscan.io/"
+        ]
+    },
+    {
+        "name": "JST (Ropsten)",
+        "type": "erc",
+        "address": "http://eth-ropsten.cipig.net",
+        "port": 8555,
+        "proto": "tcp",
+        "abbr": "JSTR",
+        "coingeckoId": "test-coin",
+        "testCoin": true,
+        "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
+        "colorCoin": "0xFFF8B34F",
+        "serverList": [
+            "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
+        ],
+        "explorerUrl": [
+            "https://ropsten.etherscan.io/"
         ]
     },
     {
@@ -367,6 +385,7 @@
         "proto": "SSL",
         "abbr": "MORTY",
         "coingeckoId": "test-token",
+        "testCoin": true,
         "colorCoin": "0xFFf8f277",
         "serverList": [
             "electrum3.cipig.net:20018",
@@ -401,7 +420,7 @@
         "address": "http://eth1.cipig.net",
         "port": 8555,
         "proto": "tcp",
-        "abbr": "PAX",
+        "abbr": "PAX-ERC20",
         "coingeckoId": "paxos-standard",
         "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFF005120",
@@ -477,6 +496,7 @@
         "proto": "SSL",
         "abbr": "RICK",
         "coingeckoId": "test-token",
+        "testCoin": true,
         "colorCoin": "0xFFabdce4",
         "serverList": [
             "electrum1.cipig.net:20017",
@@ -507,24 +527,6 @@
         ]
     },
     {
-        "name": "SUPERNET",
-        "type": "smartChain",
-        "address": "electrum3.cipig.net",
-        "port": 10005,
-        "proto": "tcp",
-        "abbr": "SUPERNET",
-        "coingeckoId": "test-token",
-        "colorCoin": "0xFF27B6B4",
-        "serverList": [
-            "electrum1.cipig.net:10005",
-            "electrum2.cipig.net:10005",
-            "electrum3.cipig.net:10005"
-        ],
-        "explorerUrl": [
-            "https://supernet.kmdexplorer.io/"
-        ]
-    },
-    {
         "name": "HempCoin",
         "type": "smartChain",
         "address": "165.22.52.123",
@@ -547,7 +549,7 @@
         "address": "http://eth1.cipig.net",
         "port": 8555,
         "proto": "tcp",
-        "abbr": "TUSD",
+        "abbr": "TUSD-ERC20",
         "coingeckoId": "true-usd",
         "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFF1B1C5B",
@@ -561,12 +563,12 @@
         ]
     },
     {
-        "name": "USDC",
+        "name": "USDC-ERC20",
         "type": "erc",
         "address": "http://eth1.cipig.net",
         "port": 8555,
         "proto": "tcp",
-        "abbr": "USDC",
+        "abbr": "USDC-ERC20",
         "coingeckoId": "usd-coin",
         "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFF2775c9",
@@ -678,6 +680,7 @@
         "proto": "tcp",
         "abbr": "tBTC",
         "coingeckoId": "test-token",
+        "testCoin": true,
         "colorCoin": "0xFFf7931a",
         "serverList": [
             "electrum1.cipig.net:10068",
