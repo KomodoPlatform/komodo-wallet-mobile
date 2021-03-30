@@ -7,6 +7,8 @@ import 'package:komodo_dex/screens/dex/orders/maker_order_details_page.dart';
 import 'package:komodo_dex/screens/dex/orders/order_fill.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
+
 
 class BuildItemMaker extends StatefulWidget {
   const BuildItemMaker(this.order);
@@ -151,7 +153,7 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                           child: OutlineButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0)),
-                            borderSide: const BorderSide(color: Colors.white),
+                            borderSide:  BorderSide(color: settingsBloc.switchTheme?  Colors.black.withOpacity(0.8) : Colors.white.withOpacity(0.8)),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 12),
@@ -171,7 +173,6 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                                           .textTheme
                                           .bodyText1
                                           .copyWith(
-                                            color: Colors.white,
                                           ))
                                 ],
                               ),

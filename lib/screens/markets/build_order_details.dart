@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -200,7 +201,7 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             alignment: Alignment.centerLeft,
             child: Text(
               message,
-              style: const TextStyle(color: cexColor),
+              style:  TextStyle(color: settingsBloc.switchTheme? cexColorLight.withAlpha(150) : cexColor.withAlpha(150)),
             ),
           ),
         ],

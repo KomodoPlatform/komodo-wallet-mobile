@@ -226,7 +226,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                               .camoPinCreate,
                                           style: TextStyle(
                                             color:
-                                                Theme.of(context).disabledColor,
+                                            Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
                                             fontSize: 14,
                                           ),
                                         ),
@@ -270,7 +270,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
                                               .camoPinChange,
                                           style: TextStyle(
                                             color:
-                                                Theme.of(context).disabledColor,
+                                            Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
                                             fontSize: 14,
                                           ),
                                         ),
@@ -320,7 +320,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
       child: Text(AppLocalizations.of(context).camoPinDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).disabledColor,
+            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.6),
           )),
     );
   }

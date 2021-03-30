@@ -33,7 +33,7 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
               child: Text(AppLocalizations.of(context).soundsExplanation,
                   style: TextStyle(
                     height: 1.3,
-                    color: Theme.of(context).disabledColor,
+                    color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
                   )),
             ),
             CustomTile(
@@ -42,7 +42,7 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
                   AppLocalizations.of(context).soundOption,
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontWeight: FontWeight.w300,
-                      color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
+                      color: Theme.of(context).textTheme.bodyText2.color),
                 ),
                 trailing:
                     const SoundVolumeButton(key: Key('settings-sound-button')),

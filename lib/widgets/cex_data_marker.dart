@@ -54,6 +54,7 @@ void showCexDialog(BuildContext context) {
         HtmlParser(
           AppLocalizations.of(context).cexDataDesc,
           linkStyle: TextStyle(color: Colors.blue),
+          textStyle: TextStyle(color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8),),
         ),
       ],
     ),

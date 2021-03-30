@@ -64,13 +64,13 @@ class _AppDrawerState extends State<AppDrawer> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: SvgPicture.asset(
-                                'assets/svg/mark_and_text_vertical_white.svg', color: settingsBloc.switchTheme? Colors.white : Colors.white,),
+                                'assets/svg/mark_and_text_vertical_white.svg', color: Colors.white,),
                           ),
                         ),
                         Flexible(
                           flex: 1,
                           child: Divider(
-                            color: settingsBloc.switchTheme? Colors.white : Colors.white,
+                            color: Colors.white,
                             indent: drawerWidth * 0.1,
                             endIndent: drawerWidth * 0.1,
                           ),
@@ -86,7 +86,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 SvgPicture.asset(
-                                 settingsBloc.switchTheme?  'assets/svg/wallet.svg' :  'assets/svg/wallet.svg',
+                                 'assets/svg/wallet.svg',
                                   height: 18,
                                 ),
                                 const SizedBox(width: 4),

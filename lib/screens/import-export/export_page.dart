@@ -105,7 +105,7 @@ class _ExportPageState extends State<ExportPage> {
       child: Text(AppLocalizations.of(context).exportDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).disabledColor,
+            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
           )),
     );
   }
@@ -166,7 +166,7 @@ class _ExportPageState extends State<ExportPage> {
                 coinsRow.add(Text(
                   coin + (i < coins.length - 1 ? ', ' : ''),
                   style: TextStyle(
-                      fontSize: 10, color: Theme.of(context).disabledColor),
+                      fontSize: 10, color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.5)),
                 ));
               }
 

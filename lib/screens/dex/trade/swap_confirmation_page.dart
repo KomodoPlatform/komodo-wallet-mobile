@@ -211,7 +211,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 top: 20,
               ),
               width: double.infinity,
-              color: Colors.white.withOpacity(0.15),
+              color: settingsBloc.switchTheme?  Colors.black.withOpacity(0.05) : Colors.white.withOpacity(0.15),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -250,7 +250,7 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                       top: 26,
                     ),
                     width: double.infinity,
-                    color: Colors.white.withOpacity(0.15),
+                    color: settingsBloc.switchTheme?  Colors.black.withOpacity(0.05) : Colors.white.withOpacity(0.15),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

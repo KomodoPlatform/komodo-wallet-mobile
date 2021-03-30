@@ -283,7 +283,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         const SizedBox(width: 2),
         Text(
           cexProvider.convert(price),
-          style: TextStyle(fontSize: size, color: cexColor),
+          style: TextStyle(fontSize: size, color: settingsBloc.switchTheme? cexColorLight.withAlpha(150) : cexColor.withAlpha(150)),
         ),
       ],
     );

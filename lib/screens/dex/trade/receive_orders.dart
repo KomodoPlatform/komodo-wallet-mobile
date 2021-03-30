@@ -15,6 +15,7 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/trade/receive_orders_chart.dart';
 import 'package:komodo_dex/screens/markets/build_order_details.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
@@ -450,8 +451,8 @@ class _AsksOrderState extends State<AsksOrder> {
         const SizedBox(width: 2),
         Text(
           formatPrice(cexRate),
-          style: const TextStyle(
-              fontSize: 14, color: cexColor, fontWeight: FontWeight.w400),
+          style:  TextStyle(
+              fontSize: 14, color: settingsBloc.switchTheme? cexColorLight.withAlpha(150) : cexColor.withAlpha(150), fontWeight: FontWeight.w400),
         ),
         const SizedBox(width: 4),
       ],
