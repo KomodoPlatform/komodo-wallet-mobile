@@ -251,12 +251,12 @@ class _TransactionDetailState extends State<TransactionDetail> {
         return '0';
     } catch (_) {}
 
-    final String gasCoin = widget.coinBalance.coin?.payGasIn;
-    if (gasCoin != null) {
-      return fee + ' $gasCoin';
-    } else {
-      return fee + ' ' + widget.transaction.coin;
-    }
+    fee = cutTrailingZeros(formatPrice(fee, 8));
+
+    String feeCoin = widget.transaction.feeDetails.coin;
+    if (feeCoin.isEmpty) feeCoin = widget.transaction.coin;
+
+    return '$fee $feeCoin';
   }
 }
 

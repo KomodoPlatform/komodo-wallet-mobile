@@ -103,7 +103,7 @@ class SyncOrderbook {
   /// [ChangeNotifier] proxies linked to this singleton.
   final Set<OrderBookProvider> _providers = {};
 
-  Map<String, Orderbook> _orderBooks; // {'BTC-KMD': Orderbook(),}
+  Map<String, Orderbook> _orderBooks; // {'BTC/KMD': Orderbook(),}
   CoinsPair _activePair;
 
   /// Maps short order IDs to latest liveliness markers.
@@ -169,7 +169,7 @@ class SyncOrderbook {
 
     final List<Orderbook> list = [];
     _orderBooks.forEach((ticker, orderbook) {
-      if (ticker.split('-')[0] == coin.abbr) {
+      if (ticker.split('/')[0] == coin.abbr) {
         list.add(orderbook);
       }
     });
@@ -180,7 +180,7 @@ class SyncOrderbook {
   Future<void> _updateOrderBooks() async {
     final Map<String, Orderbook> orderBooks = {};
     for (String pair in _tickers) {
-      final List<String> abbr = pair.split('-');
+      final List<String> abbr = pair.split('/');
       final dynamic orderbook = await MM.getOrderbook(
           MMService().client,
           GetOrderbook(
@@ -201,7 +201,7 @@ class SyncOrderbook {
   }
 
   String _tickerStr(CoinsPair pair) {
-    return '${pair.sell.abbr}-${pair.buy.abbr}';
+    return '${pair.sell.abbr}/${pair.buy.abbr}';
   }
 
   /// Link a [ChangeNotifier] proxy to this singleton.

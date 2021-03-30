@@ -71,6 +71,7 @@ class Coin {
     mm2 = init['mm2'] ?? 0;
     abbr = init['coin'] ?? config['abbr'] ?? '';
     coingeckoId = config['coingeckoId'] ?? '';
+    testCoin = config['testCoin'] ?? false;
     swapContractAddress = config['swap_contract_address'] ?? '';
     colorCoin = config['colorCoin'] ?? '';
     serverList = List<String>.from(config['serverList']);
@@ -79,6 +80,9 @@ class Coin {
     matureConfirmations = init['mature_confirmations'];
     requiresNotarization = init['requires_notarization'];
     addressFormat = init['address_format'];
+    if (init['protocol'] != null) {
+      protocol = Protocol.fromJson(init['protocol']);
+    }
   }
 
   String type; // 'other', 'erc', 'qrc' or 'smartChain'
@@ -93,6 +97,7 @@ class Coin {
   /// Aka "coin", "ticker".
   String abbr;
   String coingeckoId;
+  bool testCoin;
   String colorCoin;
   List<String> serverList;
   List<String> explorerUrl;
@@ -103,6 +108,8 @@ class Coin {
   int matureConfirmations;
   bool requiresNotarization;
   Map<String, dynamic> addressFormat;
+
+  Protocol protocol;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type ?? '',
@@ -115,6 +122,7 @@ class Coin {
         'mm2': mm2 ?? 0,
         'abbr': abbr ?? '',
         'coingeckoId': coingeckoId ?? '',
+        'testCoin': testCoin ?? false,
         'swap_contract_address': swapContractAddress ?? '',
         'colorCoin': colorCoin ?? '',
         'serverList':
@@ -127,6 +135,7 @@ class Coin {
         'mature_confirmations': matureConfirmations,
         'requires_notarization': requiresNotarization,
         'address_format': addressFormat,
+        if (protocol != null) 'protocol': protocol.toJson(),
       };
 
   String getTxFeeSatoshi() {
@@ -146,5 +155,51 @@ class Coin {
       default:
         return null;
     }
+  }
+}
+
+class Protocol {
+  Protocol({
+    this.type,
+    this.protocolData,
+  });
+
+  Protocol.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    if (json['protocol_data'] != null) {
+      protocolData = ProtocolData.fromJson(json['protocol_data']);
+    }
+  }
+
+  String type;
+  ProtocolData protocolData;
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'type': type,
+      if (protocolData != null) 'protocol_data': protocolData.toJson(),
+    };
+  }
+}
+
+class ProtocolData {
+  ProtocolData({
+    this.platform,
+    this.contractAddress,
+  });
+
+  ProtocolData.fromJson(Map<String, dynamic> json) {
+    platform = json['platform'];
+    contractAddress = json['contract_address'];
+  }
+
+  String platform;
+  String contractAddress;
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      if (platform != null) 'platform': platform,
+      if (contractAddress != null) 'contract_address': contractAddress,
+    };
   }
 }
