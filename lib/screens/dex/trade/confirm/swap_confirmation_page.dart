@@ -83,42 +83,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     );
   }
 
-  Widget _buildTestCoinWarning() {
-    final Coin coinSell = swapBloc.sellCoinBalance.coin;
-    final Coin coinBuy = swapBloc.receiveCoinBalance.coin;
-
-    String warningMessage;
-    if (coinSell.testCoin && !coinBuy.testCoin) {
-      warningMessage = AppLocalizations.of(context).sellTestCoinWarning;
-    }
-    if (coinBuy.testCoin && !coinSell.testCoin) {
-      warningMessage = AppLocalizations.of(context).buyTestCoinWarning;
-    }
-
-    if (warningMessage == null) {
-      return SizedBox();
-    } else {
-      return Container(
-        width: double.infinity,
-        padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.yellow[100].withAlpha(200),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          padding: EdgeInsets.all(8),
-          child: Text(
-            warningMessage,
-            style: Theme.of(context)
-                .textTheme
-                .caption
-                .copyWith(color: Theme.of(context).primaryColor),
-          ),
-        ),
-      );
-    }
-  }
-
   bool _hasData() {
     return swapBloc.sellCoinBalance != null &&
         swapBloc.receiveCoinBalance != null;
@@ -280,6 +244,42 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         ),
       ],
     );
+  }
+
+  Widget _buildTestCoinWarning() {
+    final Coin coinSell = swapBloc.sellCoinBalance.coin;
+    final Coin coinBuy = swapBloc.receiveCoinBalance.coin;
+
+    String warningMessage;
+    if (coinSell.testCoin && !coinBuy.testCoin) {
+      warningMessage = AppLocalizations.of(context).sellTestCoinWarning;
+    }
+    if (coinBuy.testCoin && !coinSell.testCoin) {
+      warningMessage = AppLocalizations.of(context).buyTestCoinWarning;
+    }
+
+    if (warningMessage == null) {
+      return SizedBox();
+    } else {
+      return Container(
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.yellow[100].withAlpha(200),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          padding: EdgeInsets.all(8),
+          child: Text(
+            warningMessage,
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: Theme.of(context).primaryColor),
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildInfoSwap() {
