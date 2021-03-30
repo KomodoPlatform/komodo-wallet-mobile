@@ -229,12 +229,14 @@ class TradeForm {
             rel: swapBloc.receiveCoinBalance.coin.abbr,
             max: swapBloc.isSellMaxActive ?? false,
             swapMethod: 'setprice',
-            volume: swapBloc.amountSell.toString())
+            volume: swapBloc.amountSell.toString(),
+            price: (swapBloc.amountReceive / swapBloc.amountSell).toString())
         : GetTradePreimage(
             base: swapBloc.receiveCoinBalance.coin.abbr,
             rel: swapBloc.sellCoinBalance.coin.abbr,
             swapMethod: 'buy',
-            volume: swapBloc.amountReceive.toString());
+            volume: swapBloc.amountReceive.toString(),
+            price: (swapBloc.amountSell / swapBloc.amountReceive).toString());
 
     TradePreimage tradePreimage;
     try {

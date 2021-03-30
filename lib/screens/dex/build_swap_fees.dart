@@ -85,7 +85,7 @@ class _BuildSwapFeesState extends State<BuildSwapFees> {
   Widget _buildTakerFee() {
     final CoinFee feeToSendFee = widget.preimage.feeToSendTakerFee;
     final double feeAmount =
-        double.tryParse(widget.preimage.takerFee ?? '0') ?? 0;
+        double.tryParse(widget.preimage.takerFee.amount ?? '0') ?? 0;
     final double feeToSendFeeAmount =
         double.tryParse(feeToSendFee.amount ?? '0') ?? 0;
 
@@ -116,8 +116,8 @@ class _BuildSwapFeesState extends State<BuildSwapFees> {
 
   Widget _buildTakerFeeInFiat() {
     final double takerFeeUsd =
-        (double.tryParse(widget.preimage.takerFee ?? '0') ?? 0) *
-            _cexProvider.getUsdPrice(widget.preimage.request.rel);
+        (double.tryParse(widget.preimage.takerFee.amount ?? '0') ?? 0) *
+            _cexProvider.getUsdPrice(widget.preimage.takerFee.coin);
 
     final double feeToSendFeeUsd =
         (double.tryParse(widget.preimage.feeToSendTakerFee.amount) ?? 0) *
@@ -205,9 +205,9 @@ class _BuildSwapFeesState extends State<BuildSwapFees> {
 
     if (_isTaker) {
       final double takerFeeAmount =
-          double.tryParse(widget.preimage.takerFee ?? '0') ?? 0;
+          double.tryParse(widget.preimage.takerFee.amount ?? '0') ?? 0;
       final double takerFeeCoinUsdPrice =
-          _cexProvider.getUsdPrice(widget.preimage.request.rel);
+          _cexProvider.getUsdPrice(widget.preimage.takerFee.coin);
       if (takerFeeAmount > 0 && takerFeeCoinUsdPrice == 0) return false;
 
       final double feeToSendFeeAmount =

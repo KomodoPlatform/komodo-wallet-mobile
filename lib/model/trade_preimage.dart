@@ -21,7 +21,7 @@ class TradePreimage {
         relCoinFee: CoinFee.fromJson(result['rel_coin_fee']),
         volume: result['volume'],
         volumeFract: result['volume_fraction'],
-        takerFee: result['taker_fee'],
+        takerFee: CoinFee.fromJson(result['taker_fee']),
         takerFeeFract: result['taker_fee_fraction'],
         feeToSendTakerFee: CoinFee.fromJson(result['fee_to_send_taker_fee']),
         request: GetTradePreimage.fromJson(result['request']));
@@ -31,7 +31,7 @@ class TradePreimage {
   CoinFee relCoinFee;
   String volume;
   Map<String, dynamic> volumeFract; // {'numer': '1', 'denom': '3'}
-  String takerFee;
+  CoinFee takerFee;
   Map<String, dynamic> takerFeeFract; // {'numer': '1', 'denom': '3'}
   CoinFee feeToSendTakerFee;
   GetTradePreimage request;
@@ -40,9 +40,9 @@ class TradePreimage {
     final result = <String, dynamic>{
       'base_coin_fee': baseCoinFee.toJson(),
       'rel_coin_fee': relCoinFee.toJson(),
+      'taker_fee': takerFee.toJson(),
       'volume': volume,
       if (volumeFract != null) 'volume_fraction': volumeFract,
-      'taker_fee': takerFee,
       if (takerFeeFract != null) 'taker_fee_fraction': takerFeeFract,
       'fee_to_send_taker_fee': feeToSendTakerFee,
       if (request != null) 'request': request.toJson(),
