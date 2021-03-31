@@ -101,7 +101,7 @@ class _LockScreenState extends State<LockScreen> {
     } on PlatformException catch (e) {
       Log('lock_screen connectivity: ]', '$e');
     }
-    return _updateConnectionStatus ?? ConnectivityResult.none;
+    return _updateConnectionStatus;
   }
 
   @override
