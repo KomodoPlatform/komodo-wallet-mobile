@@ -48,13 +48,15 @@ class UpdatesProvider extends ChangeNotifier {
     Map<String, dynamic> json;
 
     try {
-      response = await http.post(
-        url,
-        body: jsonEncode({
-          'currentVersion': currentVersion,
-          'platform': Platform.isAndroid ? 'android' : 'ios',
-        }),
-      );
+      response = await http
+          .post(
+            url,
+            body: jsonEncode({
+              'currentVersion': currentVersion,
+              'platform': Platform.isAndroid ? 'android' : 'ios',
+            }),
+          )
+          .timeout(const Duration(seconds: 5));
 
       json = jsonDecode(response.body);
     } catch (e) {
