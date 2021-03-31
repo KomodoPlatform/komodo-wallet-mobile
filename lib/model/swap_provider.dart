@@ -293,7 +293,6 @@ class SwapMetrics {
         makerPaymentRequiresNota = data.makerPaymentRequiresNota;
         takerPaymentRequiresNota = data.takerPaymentRequiresNota;
         myPersistentPub = data.myPersistentPub;
-        assert(myPersistentPub.endsWith(mmSe.pubkey));
         taker = data.taker.isNotEmpty ? data.taker : null;
         maker = data.maker.isNotEmpty ? data.maker : null;
       }
