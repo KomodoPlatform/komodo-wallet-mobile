@@ -50,13 +50,23 @@ class UpdatesProvider extends ChangeNotifier {
     try {
       response = await http
           .post(
-            url,
-            body: jsonEncode({
-              'currentVersion': currentVersion,
-              'platform': Platform.isAndroid ? 'android' : 'ios',
-            }),
-          )
-          .timeout(const Duration(seconds: 5));
+        url,
+        body: jsonEncode({
+          'currentVersion': currentVersion,
+          'platform': Platform.isAndroid ? 'android' : 'ios',
+        }),
+      )
+          .timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          Log('updates_provider:47', '_check] Timeout');
+
+          isFetching = false;
+          status = UpdateStatus.upToDate;
+          notifyListeners();
+          return;
+        },
+      );
 
       json = jsonDecode(response.body);
     } catch (e) {
