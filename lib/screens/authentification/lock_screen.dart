@@ -75,7 +75,6 @@ class _LockScreenState extends State<LockScreen> {
     }
   }
 
-  String _connectionStatus = 'Unknown';
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
@@ -84,15 +83,12 @@ class _LockScreenState extends State<LockScreen> {
     switch (result) {
       case ConnectivityResult.wifi:
       case ConnectivityResult.mobile:
-        setState(() => _connectionStatus = result.toString());
         mainBloc.setIsNetworkOffline(false);
         break;
       case ConnectivityResult.none:
-        setState(() => _connectionStatus = result.toString());
         mainBloc.setIsNetworkOffline(true);
         break;
       default:
-        setState(() => _connectionStatus = 'Failed to get connectivity.');
         mainBloc.setIsNetworkOffline(true);
         break;
     }
@@ -103,7 +99,7 @@ class _LockScreenState extends State<LockScreen> {
       _connectivitySubscription =
           _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     } on PlatformException catch (e) {
-      print(e.toString());
+      Log('lock_screen connectivity: ]', '$e');
     }
     return _updateConnectionStatus ?? ConnectivityResult.none;
   }
