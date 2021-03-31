@@ -118,7 +118,8 @@ class _LockScreenState extends State<LockScreen> {
 
     initConnectivity();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (updatesProvider.status == null) await updatesProvider.check();
+      if (updatesProvider.status == null && !mainBloc.isNetworkOffline)
+        await updatesProvider.check();
       setState(() {
         shouldUpdate = updatesProvider.status == UpdateStatus.recommended ||
             updatesProvider.status == UpdateStatus.required;
@@ -173,9 +174,7 @@ class _LockScreenState extends State<LockScreen> {
           RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
       final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
       return _buildSplash(_logTail);
-    } else if (mainBloc.isNetworkOffline || _connectionStatus == 'none') {
-      return _buildSplash(AppLocalizations.of(context).noInternet);
-    } else if (updatesProvider.status == null) {
+    } else if (updatesProvider.status == null && !mainBloc.isNetworkOffline) {
       return _buildSplash(AppLocalizations.of(context).checkingUpdates);
     }
 
