@@ -5,6 +5,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_code.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/transaction_data.dart';
 import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/utils/log.dart';
 
@@ -21,7 +22,7 @@ GetErcTransactions getErcTransactions = GetErcTransactions();
 
 class GetErcTransactions {
   final String ethUrl = 'https://komodo.live:3334/api/v1/eth_tx_history';
-  final String ercUrl = 'https://komodo.live:3334/api/v1/erc_tx_history';
+  final String ercUrl = 'https://komodo.live:3334/api/v2/erc_tx_history';
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
     if (coin.type != 'erc') return;
@@ -37,9 +38,10 @@ class GetErcTransactions {
 
     final String address = coinBalance.balance.address;
 
-    final String url = coin.abbr == 'ETH'
-        ? '$ethUrl/$address'
-        : '$ercUrl/${coin.abbr}/$address';
+    final String url = (coin.abbr.startsWith('ETH') // 'ETH' or 'ETHR'
+            ? '$ethUrl/$address'
+            : '$ercUrl/${coin.protocol.protocolData.contractAddress}/$address') +
+        (coin.testCoin ? '&testnet=true' : '');
 
     String body;
     try {
@@ -70,6 +72,31 @@ class GetErcTransactions {
     transactions.result.transactions
         .sort((a, b) => b.timestamp.compareTo(a.timestamp));
     transactions.result?.syncStatus?.state ??= 'Finished';
+
+    _fixTestCoinsNaming(transactions, coin);
+    return transactions;
+  }
+
+  // https://github.com/KomodoPlatform/AtomicDEX-mobile/pull/1078#issuecomment-808705710
+  Transactions _fixTestCoinsNaming(
+      Transactions transactions, Coin originalCoin) {
+    if (!originalCoin.testCoin) return transactions;
+
+    for (Transaction tx in transactions.result.transactions) {
+      String feeCoin;
+      switch (originalCoin.abbr) {
+        case 'ETHR':
+          feeCoin = 'ETHR';
+          break;
+        case 'JSTR':
+          feeCoin = 'ETHR';
+          break;
+        default:
+      }
+
+      tx.coin = originalCoin.abbr;
+      tx.feeDetails.coin = feeCoin;
+    }
 
     return transactions;
   }
