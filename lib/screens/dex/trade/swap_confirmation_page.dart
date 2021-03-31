@@ -212,7 +212,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 top: 20,
               ),
               width: double.infinity,
-              color: settingsBloc.switchTheme?  Colors.black.withOpacity(0.05) : Colors.white.withOpacity(0.15),
+              color: settingsBloc.isLightTheme
+                  ? Colors.black.withOpacity(0.05)
+                  : Colors.white.withOpacity(0.15),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -251,7 +253,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                       top: 26,
                     ),
                     width: double.infinity,
-                    color: settingsBloc.switchTheme?  Colors.black.withOpacity(0.05) : Colors.white.withOpacity(0.15),
+                    color: settingsBloc.isLightTheme
+                        ? Colors.black.withOpacity(0.05)
+                        : Colors.white.withOpacity(0.15),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -285,7 +289,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 4),
                         color: Theme.of(context).backgroundColor,
-                        child: SvgPicture.asset(settingsBloc.switchTheme?  'assets/svg_light/icon_swap.svg' :  'assets/svg/icon_swap.svg')),
+                        child: SvgPicture.asset(settingsBloc.isLightTheme
+                            ? 'assets/svg_light/icon_swap.svg'
+                            : 'assets/svg/icon_swap.svg')),
                   ))
             ],
           ),

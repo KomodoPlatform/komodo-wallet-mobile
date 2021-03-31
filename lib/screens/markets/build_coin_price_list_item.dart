@@ -130,7 +130,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                                   .subtitle2
                                                   .copyWith(
                                                       color: settingsBloc
-                                                              .switchTheme
+                                                              .isLightTheme
                                                           ? cexColorLight
                                                           : cexColor,
                                                       fontSize: 14,
@@ -143,7 +143,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                         child: _hasNonzeroPrice && _hasChartData
                                             ? CandlesIcon(
                                                 size: 14,
-                                                color: settingsBloc.switchTheme
+                                                color: settingsBloc.isLightTheme
                                                     ? cexColorLight
                                                     : cexColor.withOpacity(0.8),
                                               )
@@ -217,7 +217,7 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                       '(based on ${widget.coinBalance.coin.abbr}/$mediateBase)',
                       style: TextStyle(
                           fontSize: 12,
-                          color: settingsBloc.switchTheme
+                          color: settingsBloc.isLightTheme
                               ? cexColorLight
                               : cexColor),
                     )

@@ -92,14 +92,14 @@ class _ExchangeRateState extends State<ExchangeRate> {
             '1 $buyAbbr = $cExchangeRateBack $sellAbbr',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: settingsBloc.switchTheme? cexColorLight : cexColor,
+                  color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
                 ),
           ),
           Text(
             '1 $sellAbbr = $cExchangeRate $buyAbbr',
             style: TextStyle(
               fontSize: 13,
-              color: settingsBloc.switchTheme? cexColorLight : cexColor,
+              color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
             ),
           ),
           const SizedBox(height: 20),

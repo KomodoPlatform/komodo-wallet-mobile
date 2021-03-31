@@ -64,7 +64,9 @@ class _AppDrawerState extends State<AppDrawer> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: SvgPicture.asset(
-                                'assets/svg/mark_and_text_vertical_white.svg', color: Colors.white,),
+                              'assets/svg/mark_and_text_vertical_white.svg',
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         Flexible(
@@ -86,7 +88,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 SvgPicture.asset(
-                                 'assets/svg/wallet.svg',
+                                  'assets/svg/wallet.svg',
                                   height: 18,
                                 ),
                                 const SizedBox(width: 4),
@@ -97,7 +99,8 @@ class _AppDrawerState extends State<AppDrawer> {
                                       if (!snapshot.hasData) return Container();
                                       return Text(
                                         snapshot.data.name,
-                                        style: const TextStyle(fontSize: 18, color: Colors.white),
+                                        style: const TextStyle(
+                                            fontSize: 18, color: Colors.white),
                                         overflow: TextOverflow.ellipsis,
                                       );
                                     })
@@ -131,10 +134,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             SoundSettingsPage()));
                               },
-                              leading: Icon(
-                                Icons.audiotrack,
-                                size: 16
-                              ),
+                              leading: Icon(Icons.audiotrack, size: 16),
                               trailing: InkWell(
                                 child: Container(
                                   padding: EdgeInsets.all(4),
@@ -187,11 +187,9 @@ class _AppDrawerState extends State<AppDrawer> {
                                                       context),
                                             )));
                               },
-                              leading: Icon(
-                                Icons.language,
-                                key: const Key('side-nav-language'),
-                                size: 16
-                              )),
+                              leading: Icon(Icons.language,
+                                  key: const Key('side-nav-language'),
+                                  size: 16)),
                           _buildDrawerItem(
                               title: Row(
                                 children: <Widget>[
@@ -204,19 +202,14 @@ class _AppDrawerState extends State<AppDrawer> {
                                 showCurrenciesDialog(context);
                               },
                               leading: cexProvider.selectedFiatSymbol.length > 1
-                                  ? Icon(
-                                      Icons.account_balance_wallet,
+                                  ? Icon(Icons.account_balance_wallet,
                                       key: const Key('side-nav-currency'),
-                                      size: 16
-                                    )
+                                      size: 16)
                                   : Text(' ${cexProvider.selectedFiatSymbol}')),
                           _buildDrawerItem(
                             title:
                                 Text(AppLocalizations.of(context).hideBalance),
-                            leading: Icon(
-                              Icons.money_off,
-                              size: 16
-                            ),
+                            leading: Icon(Icons.money_off, size: 16),
                             trailing: StreamBuilder<bool>(
                               initialData: settingsBloc.showBalance,
                               stream: settingsBloc.outShowBalance,
@@ -250,11 +243,9 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             const AddressBookPage()));
                               },
-                              leading: Icon(
-                                Icons.import_contacts,
-                                key: const Key('side-nav-addressbook'),
-                                size: 16
-                              )),
+                              leading: Icon(Icons.import_contacts,
+                                  key: const Key('side-nav-addressbook'),
+                                  size: 16)),
                           Divider(
                             indent: 20,
                             endIndent: 20,
@@ -271,11 +262,9 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             SettingPage()));
                               },
-                              leading: Icon(
-                                Icons.settings,
-                                key: const Key('side-nav-settings'),
-                                size: 16
-                              )),
+                              leading: Icon(Icons.settings,
+                                  key: const Key('side-nav-settings'),
+                                  size: 16)),
                           _buildDrawerItem(
                               title:
                                   Text(AppLocalizations.of(context).helpLink),
@@ -287,21 +276,16 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             HelpPage()));
                               },
-                              leading: Icon(
-                                Icons.help,
-                                key: const Key('side-nav-help-feedback'),
-                                size: 16
-                              )),
+                              leading: Icon(Icons.help,
+                                  key: const Key('side-nav-help-feedback'),
+                                  size: 16)),
                           _buildDrawerItem(
                             title:
                                 Text(AppLocalizations.of(context).switchTheme),
-                            leading: Icon(
-                              Icons.brush,
-                              size: 16
-                            ),
+                            leading: Icon(Icons.brush, size: 16),
                             trailing: StreamBuilder<bool>(
-                              initialData: settingsBloc.switchTheme,
-                              stream: settingsBloc.outSwitchTheme,
+                              initialData: settingsBloc.isLightTheme,
+                              stream: settingsBloc.outLightTheme,
                               builder: (BuildContext context,
                                   AsyncSnapshot<bool> snapshot) {
                                 return snapshot.hasData
@@ -322,11 +306,8 @@ class _AppDrawerState extends State<AppDrawer> {
                             color: Theme.of(context).hintColor,
                           ),
                           _buildDrawerItem(
-                            leading: Icon(
-                              Icons.exit_to_app,
-                              key: const Key('side-nav-logout'),
-                              size: 16
-                            ),
+                            leading: Icon(Icons.exit_to_app,
+                                key: const Key('side-nav-logout'), size: 16),
                             onTap: () {
                               Navigator.pop(context);
                               showLogoutConfirmation(context);

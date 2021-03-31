@@ -55,7 +55,7 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                 )
               : UnlockPassword(
                   currentWallet: walletBloc.currentWallet,
-                  icon: SvgPicture.asset(settingsBloc.switchTheme
+                  icon: SvgPicture.asset(settingsBloc.isLightTheme
                       ? 'assets/svg_light/seed_logo.svg'
                       : 'assets/svg/seed_logo.svg'),
                   onSuccess: (String data) {

@@ -100,7 +100,9 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                 onPressed: () => _scan(),
                                 child: Icon(
                                   Icons.add_a_photo,
-                                  color: settingsBloc.switchTheme? Colors.black45 : Colors.white,
+                                  color: settingsBloc.isLightTheme
+                                      ? Colors.black45
+                                      : Colors.white,
                                 ),
                               ),
                             ),

@@ -285,7 +285,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           cexProvider.convert(price),
           style: TextStyle(
               fontSize: size,
-              color: settingsBloc.switchTheme
+              color: settingsBloc.isLightTheme
                   ? cexColorLight.withAlpha(150)
                   : cexColor.withAlpha(150)),
         ),
@@ -616,7 +616,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       color: Theme.of(context).backgroundColor,
                     ),
                     child: SvgPicture.asset(
-                      settingsBloc.switchTheme
+                      settingsBloc.isLightTheme
                           ? 'assets/svg_light/icon_swap.svg'
                           : 'assets/svg/icon_swap.svg',
                       height: 40,

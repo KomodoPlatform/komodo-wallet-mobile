@@ -168,9 +168,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
                     return StreamBuilder<bool>(
-                      stream: settingsBloc.outSwitchTheme,
+                      stream: settingsBloc.outLightTheme,
+                      initialData: settingsBloc.isLightTheme,
                       builder: (BuildContext cont,
-                          AsyncSnapshot<dynamic> switchTheme) {
+                          AsyncSnapshot<dynamic> isLightTheme) {
                         return MaterialApp(
                             title: 'atomicDEX',
                             localizationsDelegates: <
@@ -186,15 +187,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                                     ? Locale(prefLocale.data)
                                     : null,
                             supportedLocales: mainBloc.supportedLocales,
-                            theme: switchTheme.hasData
-                                ? switchTheme.data == true
-                                    ? getThemeLight()
-                                    : getThemeDark()
-                                : settingsBloc.switchTheme == true
-                                    ? getThemeLight()
-                                    : getThemeDark(),
-                            //darkTheme: getTheme2(),
-                            //themeMode: ThemeMode.system,
+                            theme: isLightTheme.data
+                                ? getThemeLight()
+                                : getThemeDark(),
                             initialRoute: '/',
                             routes: <String, Widget Function(BuildContext)>{
                               // When we navigate to the '/' route, build the FirstScreen Widget

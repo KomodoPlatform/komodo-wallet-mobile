@@ -7,7 +7,6 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 
-
 class UpdatesPage extends StatefulWidget {
   const UpdatesPage({this.refresh = false, this.onSkip});
 
@@ -56,7 +55,9 @@ class _UpdatesPageState extends State<UpdatesPage> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(settingsBloc.switchTheme? 'assets/logo_kmd_light.png' : 'assets/logo_kmd.png'),
+                      Image.asset(settingsBloc.isLightTheme
+                          ? 'assets/logo_kmd_light.png'
+                          : 'assets/logo_kmd.png'),
                       const SizedBox(height: 12),
                       Text(AppLocalizations.of(context).updatesCurrentVersion(
                           updatesProvider.currentVersion)),

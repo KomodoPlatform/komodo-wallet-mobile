@@ -25,7 +25,9 @@ class CexMarker extends StatelessWidget {
         child: Icon(
           Icons.info_outline,
           size: size.height,
-          color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8),
+          color: settingsBloc.isLightTheme
+              ? cexColorLight
+              : cexColor.withOpacity(0.8),
         ),
       ),
     );
@@ -41,7 +43,9 @@ void showCexDialog(BuildContext context) {
           Icon(
             Icons.info_outline,
             size: 22,
-            color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8),
+            color: settingsBloc.isLightTheme
+                ? cexColorLight
+                : cexColor.withOpacity(0.8),
           ),
           const SizedBox(
             width: 8,
@@ -54,7 +58,11 @@ void showCexDialog(BuildContext context) {
         HtmlParser(
           AppLocalizations.of(context).cexDataDesc,
           linkStyle: TextStyle(color: Colors.blue),
-          textStyle: TextStyle(color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8),),
+          textStyle: TextStyle(
+            color: settingsBloc.isLightTheme
+                ? cexColorLight
+                : cexColor.withOpacity(0.8),
+          ),
         ),
       ],
     ),

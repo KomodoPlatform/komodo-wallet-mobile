@@ -144,7 +144,11 @@ class _OrderBookTableState extends State<OrderBookTable> {
                       child: Icon(
                         Icons.account_circle,
                         size: 11,
-                        color: Theme.of(context).textTheme.bodyText2.color.withAlpha(150),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withAlpha(150),
                       ),
                     ),
                   if (bid.isMine())
@@ -169,7 +173,12 @@ class _OrderBookTableState extends State<OrderBookTable> {
                 formatPrice(_bidVolume.toString()),
                 maxLines: 1,
                 style: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText2.color.withAlpha(150), fontSize: 14),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .color
+                        .withAlpha(150),
+                    fontSize: 14),
               ),
             ),
           ),
@@ -183,7 +192,12 @@ class _OrderBookTableState extends State<OrderBookTable> {
                 formatPrice(_bidTotal.toString()),
                 maxLines: 1,
                 style: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText2.color.withAlpha(150), fontSize: 14),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .color
+                        .withAlpha(150),
+                    fontSize: 14),
               ),
             ),
           ),
@@ -242,7 +256,11 @@ class _OrderBookTableState extends State<OrderBookTable> {
                       child: Icon(
                         Icons.account_circle,
                         size: 11,
-                        color: Theme.of(context).textTheme.bodyText2.color.withAlpha(150),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withAlpha(150),
                       ),
                     ),
                   if (ask.isMine())
@@ -267,7 +285,12 @@ class _OrderBookTableState extends State<OrderBookTable> {
                 formatPrice(ask.maxvolume.toString()),
                 maxLines: 1,
                 style: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText2.color.withAlpha(150), fontSize: 14),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .color
+                        .withAlpha(150),
+                    fontSize: 14),
               ),
             ),
           ),
@@ -281,7 +304,12 @@ class _OrderBookTableState extends State<OrderBookTable> {
                 formatPrice(_askTotal.toString()),
                 maxLines: 1,
                 style: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText2.color.withAlpha(150), fontSize: 14),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .color
+                        .withAlpha(150),
+                    fontSize: 14),
               ),
             ),
           ),
@@ -330,7 +358,9 @@ class _OrderBookTableState extends State<OrderBookTable> {
                         children: <Widget>[
                           Container(
                             decoration: BoxDecoration(
-                              color: settingsBloc.switchTheme? cexColorLight.withAlpha(50) : cexColor.withAlpha(50) ,
+                              color: settingsBloc.isLightTheme
+                                  ? cexColorLight.withAlpha(50)
+                                  : cexColor.withAlpha(50),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(4)),
                             ),
@@ -359,7 +389,9 @@ class _OrderBookTableState extends State<OrderBookTable> {
                                 ),
                                 CexMarker(
                                   context,
-                                  color: settingsBloc.switchTheme? cexColorLight : cexColor,
+                                  color: settingsBloc.isLightTheme
+                                      ? cexColorLight
+                                      : cexColor,
                                   size: const Size.fromHeight(12),
                                 ),
                               ],
@@ -370,8 +402,11 @@ class _OrderBookTableState extends State<OrderBookTable> {
                           ),
                           Text(
                             '≈ ${cexProvider.convert(cexRate, from: orderBookProvider.activePair.buy.abbr)}',
-                            style:
-                                 TextStyle(color: settingsBloc.switchTheme? cexColorLight : cexColor, fontSize: 14),
+                            style: TextStyle(
+                                color: settingsBloc.isLightTheme
+                                    ? cexColorLight
+                                    : cexColor,
+                                fontSize: 14),
                           ),
                         ],
                       ),

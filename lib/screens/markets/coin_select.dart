@@ -427,7 +427,9 @@ class _CoinSelectState extends State<CoinSelect> {
             width: 1,
             height: 10,
             color: orderbook.asks.isNotEmpty && orderbook.bids.isNotEmpty
-                ?settingsBloc.switchTheme? cexColorLight.withAlpha(100) : cexColor.withAlpha(100)
+                ? settingsBloc.isLightTheme
+                    ? cexColorLight.withAlpha(100)
+                    : cexColor.withAlpha(100)
                 : Theme.of(context).highlightColor,
           ),
           const SizedBox(width: 2),
@@ -460,7 +462,9 @@ class _CoinSelectState extends State<CoinSelect> {
         children: <Widget>[
           CandlesIcon(
             size: 14,
-            color:  settingsBloc.switchTheme? cexColorLight.withAlpha(50) : cexColor.withAlpha(50),
+            color: settingsBloc.isLightTheme
+                ? cexColorLight.withAlpha(50)
+                : cexColor.withAlpha(50),
           ),
         ],
       );

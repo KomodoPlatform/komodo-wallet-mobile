@@ -35,7 +35,9 @@ class _WelcomePageState extends State<WelcomePage> {
           const SizedBox(
             height: 16,
           ),
-          SvgPicture.asset(settingsBloc.getValueIfSwitch('assets/svg_light/welcome_wallet.svg','assets/svg/welcome_wallet.svg')),
+          SvgPicture.asset(settingsBloc.isLightTheme
+              ? 'assets/svg_light/welcome_wallet.svg'
+              : 'assets/svg/welcome_wallet.svg'),
           Center(
             child: Text(
               AppLocalizations.of(context).welcomeTitle,

@@ -458,7 +458,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                 isDense: true,
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                      color: settingsBloc.switchTheme
+                      color: settingsBloc.isLightTheme
                           ? getThemeLight().accentColor
                           : getThemeDark().accentColor),
                 ),
@@ -485,7 +485,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               convertedAmt,
               textAlign: TextAlign.right,
               style: TextStyle(
-                color: settingsBloc.switchTheme
+                color: settingsBloc.isLightTheme
                     ? cexColorLight.withAlpha(150)
                     : cexColor.withAlpha(150),
                 fontSize: 10,
@@ -606,7 +606,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                 '≈0.00%',
                 style: TextStyle(
                   fontSize: 10,
-                  color: settingsBloc.switchTheme
+                  color: settingsBloc.isLightTheme
                       ? cexColorLight.withAlpha(150)
                       : cexColor.withAlpha(150),
                 ),

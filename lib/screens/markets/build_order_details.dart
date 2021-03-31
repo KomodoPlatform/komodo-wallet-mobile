@@ -201,7 +201,10 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             alignment: Alignment.centerLeft,
             child: Text(
               message,
-              style:  TextStyle(color: settingsBloc.switchTheme? cexColorLight.withAlpha(150) : cexColor.withAlpha(150)),
+              style: TextStyle(
+                  color: settingsBloc.isLightTheme
+                      ? cexColorLight.withAlpha(150)
+                      : cexColor.withAlpha(150)),
             ),
           ),
         ],

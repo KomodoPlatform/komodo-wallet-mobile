@@ -18,7 +18,7 @@ class SettingsBloc implements BlocBase {
     _prefs = await SharedPreferences.getInstance();
 
     showBalance = _prefs.getBool('showBalance') ?? showBalance;
-    switchTheme = _prefs.getBool('switchTheme') ?? switchTheme;
+    isLightTheme = _prefs.getBool('isLightTheme') ?? isLightTheme;
 
     showSoundsExplanationDialog =
         _prefs.getBool('showSoundsExplanationDialog') ??
@@ -31,7 +31,7 @@ class SettingsBloc implements BlocBase {
 
   bool isDeleteLoading = true;
   bool showBalance = true;
-  bool switchTheme = false;
+  bool isLightTheme = false;
   bool showSoundsExplanationDialog = true;
 
   final StreamController<bool> _isDeleteLoadingController =
@@ -49,10 +49,10 @@ class SettingsBloc implements BlocBase {
   Sink<bool> get _inShowSoundsDialog => _showSoundsDialogCtrl.sink;
   Stream<bool> get outShowSoundsDialog => _showSoundsDialogCtrl.stream;
 
-  final StreamController<bool> _switchThemeController =
+  final StreamController<bool> _isLightThemeController =
       StreamController<bool>.broadcast();
-  Sink<bool> get _inSwitchTheme => _switchThemeController.sink;
-  Stream<bool> get outSwitchTheme => _switchThemeController.stream;
+  Sink<bool> get _inLightTheme => _isLightThemeController.sink;
+  Stream<bool> get outLightTheme => _isLightThemeController.stream;
 
   @override
   void dispose() {
@@ -64,14 +64,6 @@ class SettingsBloc implements BlocBase {
   void setDeleteLoading(bool isLoading) {
     isDeleteLoading = isLoading;
     _inIsDeleteLoading.add(isDeleteLoading);
-  }
-
-  String getValueIfSwitch(String val1, String val2) {
-    if (switchTheme) {
-      return val1;
-    } else {
-      return val2;
-    }
   }
 
   String getNameLanguage(BuildContext context, String languageCode) {
@@ -121,8 +113,8 @@ class SettingsBloc implements BlocBase {
   }
 
   void setSwitchTheme(bool val) {
-    switchTheme = val;
-    _inSwitchTheme.add(val);
+    isLightTheme = val;
+    _inLightTheme.add(val);
     _prefs.setBool('switchTheme', val);
   }
 }

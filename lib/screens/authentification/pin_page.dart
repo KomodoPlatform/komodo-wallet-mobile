@@ -205,9 +205,11 @@ class _PinPageState extends State<PinPage> {
               ),
               obscurePin: true,
               error: _error,
-              errorDelayProgressColor:settingsBloc.switchTheme? Colors.black : Colors.white,
-              keyTextStyle: TextStyle(color: Theme.of(context).textTheme.headline6.color, fontSize: Theme.of(context).textTheme
-              .headline6.fontSize),
+              errorDelayProgressColor:
+                  settingsBloc.isLightTheme ? Colors.black : Colors.white,
+              keyTextStyle: TextStyle(
+                  color: Theme.of(context).textTheme.headline6.color,
+                  fontSize: Theme.of(context).textTheme.headline6.fontSize),
               errorDelaySeconds:
                   widget.pinStatus == PinStatus.NORMAL_PIN ? 5 : null,
               codeLength: 6,
@@ -295,7 +297,7 @@ class _PinPageState extends State<PinPage> {
         children: <Widget>[
           Theme(
             data: Theme.of(context).copyWith(accentColor: Colors.red),
-            child:  CircularProgressIndicator(),
+            child: CircularProgressIndicator(),
           ),
           const SizedBox(
             height: 8,

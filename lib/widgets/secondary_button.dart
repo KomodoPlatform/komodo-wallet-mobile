@@ -40,7 +40,7 @@ class _SecondaryButtonState extends State<SecondaryButton> {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.button.copyWith(
-            color: settingsBloc.switchTheme ? widget.textColor : Colors.white),
+            color: settingsBloc.isLightTheme ? widget.textColor : Colors.white),
       );
     } else {
       child = widget.child;
@@ -51,9 +51,10 @@ class _SecondaryButtonState extends State<SecondaryButton> {
       child: OutlineButton(
         key: isSend ? const Key('secondary-button-send') : null,
         borderSide: BorderSide(
-            color: settingsBloc.switchTheme ?  widget.borderColor : Colors.white),
+            color:
+                settingsBloc.isLightTheme ? widget.borderColor : Colors.white),
         highlightedBorderColor:
-            settingsBloc.switchTheme ? Colors.black : Colors.white,
+            settingsBloc.isLightTheme ? Colors.black : Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),

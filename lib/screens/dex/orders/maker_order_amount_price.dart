@@ -273,7 +273,9 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
       default:
         {
           message = AppLocalizations.of(context).orderDetailsIdentical;
-          color = settingsBloc.switchTheme? cexColorLight.withAlpha(150) : cexColor.withAlpha(150);
+          color = settingsBloc.isLightTheme
+              ? cexColorLight.withAlpha(150)
+              : cexColor.withAlpha(150);
         }
     }
 

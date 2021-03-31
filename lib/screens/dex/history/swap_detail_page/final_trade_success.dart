@@ -50,7 +50,10 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
             ),
             Container(
               height: 200,
-              child: SvgPicture.asset(settingsBloc.switchTheme?  'assets/svg_light/trade_success.svg' :  'assets/svg/trade_success.svg',
+              child: SvgPicture.asset(
+                  settingsBloc.isLightTheme
+                      ? 'assets/svg_light/trade_success.svg'
+                      : 'assets/svg/trade_success.svg',
                   semanticsLabel: 'Trade Success'),
             ),
             const SizedBox(

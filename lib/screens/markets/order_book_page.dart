@@ -168,12 +168,19 @@ class _OrderBookPageState extends State<OrderBookPage> {
               children: <Widget>[
                 CandlesIcon(
                     size: 14,
-                    color: _showChart ? settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8) : Theme.of(context).accentColor),
+                    color: _showChart
+                        ? settingsBloc.isLightTheme
+                            ? cexColorLight
+                            : cexColor.withOpacity(0.8)
+                        : Theme.of(context).accentColor),
                 const SizedBox(width: 2),
                 Text(
                   AppLocalizations.of(context).marketsChart,
                   style: _showChart
-                      ?  TextStyle(color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8))
+                      ? TextStyle(
+                          color: settingsBloc.isLightTheme
+                              ? cexColorLight
+                              : cexColor.withOpacity(0.8))
                       : TextStyle(
                           color: Theme.of(context).accentColor,
                         ),
@@ -189,7 +196,10 @@ class _OrderBookPageState extends State<OrderBookPage> {
             child: Text(
               AppLocalizations.of(context).marketsDepth,
               style: !_showChart
-                  ? TextStyle(color: settingsBloc.switchTheme? cexColorLight : cexColor.withOpacity(0.8))
+                  ? TextStyle(
+                      color: settingsBloc.isLightTheme
+                          ? cexColorLight
+                          : cexColor.withOpacity(0.8))
                   : TextStyle(
                       color: Theme.of(context).accentColor,
                     ),

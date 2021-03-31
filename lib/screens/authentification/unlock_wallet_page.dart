@@ -72,8 +72,9 @@ class _UnlockWalletPageState extends State<UnlockWalletPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: SvgPicture.asset(
-                        settingsBloc.getValueIfSwitch(
-                            'assets/svg_light/lock.svg', 'assets/svg/lock.svg'),
+                        settingsBloc.isLightTheme
+                            ? 'assets/svg_light/lock.svg'
+                            : 'assets/svg/lock.svg',
                         semanticsLabel: 'Lock'),
                   ),
                 ),

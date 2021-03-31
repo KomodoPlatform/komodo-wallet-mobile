@@ -455,7 +455,7 @@ class _AsksOrderState extends State<AsksOrder> {
           formatPrice(cexRate),
           style: TextStyle(
               fontSize: 14,
-              color: settingsBloc.switchTheme
+              color: settingsBloc.isLightTheme
                   ? cexColorLight.withAlpha(150)
                   : cexColor.withAlpha(150),
               fontWeight: FontWeight.w400),
@@ -490,7 +490,7 @@ class _AsksOrderState extends State<AsksOrder> {
                   formatPrice(1 / double.parse(bid.price)),
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 13,
-                        color: settingsBloc.switchTheme
+                        color: settingsBloc.isLightTheme
                             ? Colors.green
                             : Colors.greenAccent,
                       ),
