@@ -34,6 +34,7 @@ class _BuildTakerCountdownState extends State<BuildTakerCountdown> {
   Widget build(BuildContext context) {
     _style ??= widget.style ??
         Theme.of(context).textTheme.bodyText2.copyWith(
+            fontWeight: FontWeight.w300,
             color:
                 Theme.of(context).textTheme.bodyText2.color.withOpacity(0.5));
 

@@ -171,10 +171,8 @@ class _BuildItemMakerState extends State<BuildItemMaker> {
                                       AppLocalizations.of(context)
                                           .cancel
                                           .toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .copyWith())
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1)
                                 ],
                               ),
                             ),

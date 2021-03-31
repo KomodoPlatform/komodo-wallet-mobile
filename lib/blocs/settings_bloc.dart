@@ -115,6 +115,6 @@ class SettingsBloc implements BlocBase {
   void setSwitchTheme(bool val) {
     isLightTheme = val;
     _inLightTheme.add(val);
-    _prefs.setBool('switchTheme', val);
+    _prefs.setBool('isLightTheme', val);
   }
 }

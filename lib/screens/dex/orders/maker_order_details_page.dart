@@ -200,7 +200,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                     AppLocalizations.of(context)
                         .makerDetailsCancel
                         .toUpperCase(),
-                    style: Theme.of(context).textTheme.bodyText1.copyWith())
+                    style: Theme.of(context).textTheme.bodyText1)
               ],
             ),
           ),

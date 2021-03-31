@@ -7,13 +7,12 @@ import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class CandleChart extends StatefulWidget {
-  const CandleChart({
+  CandleChart({
     this.data,
     this.duration,
     this.candleWidth = 8,
     this.strokeWidth = 1,
     this.textColor = const Color.fromARGB(200, 255, 255, 255),
-    this.gridColor = const Color.fromARGB(50, 255, 255, 255),
     this.upColor = Colors.green,
     this.downColor = Colors.red,
     this.filled = true,
@@ -25,11 +24,13 @@ class CandleChart extends StatefulWidget {
   final double candleWidth;
   final double strokeWidth;
   final Color textColor;
-  final Color gridColor;
   final Color upColor;
   final Color downColor;
   final bool filled;
   final bool quoted;
+  Color gridColor = settingsBloc.isLightTheme
+      ? Colors.black.withOpacity(.2)
+      : Colors.white.withOpacity(.4);
 
   @override
   CandleChartState createState() => CandleChartState();
@@ -313,9 +314,7 @@ class _ChartPainter extends CustomPainter {
     final int visibleDivisions =
         (size.height / (priceDivision * priceScaleFactor)).floor() + 1;
     for (int i = 0; i < visibleDivisions; i++) {
-      paint.color = settingsBloc.isLightTheme
-          ? Colors.black.withOpacity(.2)
-          : Colors.white.withOpacity(.4); //widget.gridColor;
+      paint.color = widget.gridColor;
       final double price = originPrice + i * priceDivision;
       final double dy = _price2dy(price);
       canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
@@ -400,9 +399,7 @@ class _ChartPainter extends CustomPainter {
       align: TextAlign.start,
       width: labelWidth,
     );
-    paint.color = settingsBloc.isLightTheme
-        ? Colors.black.withOpacity(.4)
-        : Colors.white.withOpacity(.4);
+    paint.color = widget.gridColor;
     for (CandleData candleData in visibleCandlesData) {
       final double dx = _time2dx(candleData.closeTime);
       canvas.drawLine(Offset(dx, size.height - marginBottom),
@@ -472,9 +469,8 @@ class _ChartPainter extends CustomPainter {
           canvas: canvas,
           align: TextAlign.right,
           color: Colors.black,
-          backgroundColor: settingsBloc.isLightTheme
-              ? Colors.black
-              : Colors.white, //Colors.white,
+          backgroundColor:
+              settingsBloc.isLightTheme ? Colors.black : Colors.white,
           text: ' ${formatPrice(selectedPoint['price'], 8)} ',
           point: Offset(size.width - labelWidth - 2, dy - 2),
           width: labelWidth,
@@ -490,9 +486,8 @@ class _ChartPainter extends CustomPainter {
           canvas: canvas,
           align: TextAlign.center,
           color: Colors.black,
-          backgroundColor: settingsBloc.isLightTheme
-              ? Colors.black
-              : Colors.white, //Colors.white,
+          backgroundColor:
+              settingsBloc.isLightTheme ? Colors.black : Colors.white,
           text: ' ${_formatTime(selectedCandle.closeTime * 1000)} ',
           point: Offset(dx - 50, size.height - 7),
           width: labelWidth,
