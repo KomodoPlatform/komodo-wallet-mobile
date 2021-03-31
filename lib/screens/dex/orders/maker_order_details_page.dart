@@ -187,7 +187,6 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
         child: OutlineButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             decoration: BoxDecoration(
@@ -201,9 +200,7 @@ class _MakerOrderDetailsPageState extends State<MakerOrderDetailsPage> {
                     AppLocalizations.of(context)
                         .makerDetailsCancel
                         .toUpperCase(),
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(
-
-                        ))
+                    style: Theme.of(context).textTheme.bodyText1.copyWith())
               ],
             ),
           ),

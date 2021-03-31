@@ -9,13 +9,15 @@ String walletToJson(List<Wallet> data) => json
     .encode(List<dynamic>.from(data.map<dynamic>((dynamic x) => x.toJson())));
 
 class Wallet {
-  Wallet(
-      {@required this.name,
-      @required this.id,});
+  Wallet({
+    @required this.name,
+    @required this.id,
+  });
 
   factory Wallet.fromJson(Map<String, dynamic> json) => Wallet(
-      id: json['id'] ?? '',
-      name: json['name'] ?? '',);
+        id: json['id'] ?? '',
+        name: json['name'] ?? '',
+      );
 
   String name;
   String id;

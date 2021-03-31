@@ -348,8 +348,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "seeOrders": m5,
         "seedPhraseTitle":
             MessageLookupByLibrary.simpleMessage("Votre nouvelle passphrase"),
-        "selectCoin": MessageLookupByLibrary.simpleMessage(
-            "Cryptomonnaie"),
+        "selectCoin": MessageLookupByLibrary.simpleMessage("Cryptomonnaie"),
         "selectCoinInfo": MessageLookupByLibrary.simpleMessage(
             "Sélectionnez les crypto-monnaie que vous souhaitez ajouter à votre portefeuille."),
         "selectCoinTitle":

@@ -71,7 +71,11 @@ class _AddressFieldState extends State<AddressField> {
                     onPressed: widget.onScan,
                     child: Icon(
                       Icons.add_a_photo,
-                      color: Theme.of(context).textTheme.headline6.color.withOpacity(0.45),
+                      color: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          .color
+                          .withOpacity(0.45),
                     ),
                   ),
                 ),

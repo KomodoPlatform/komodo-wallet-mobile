@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/detail_swap.dart';
@@ -23,7 +22,8 @@ class _StepperTradeState extends State<StepperTrade> {
 
     return ListView(
       children: <Widget>[
-        ProgressSwap(uuid: widget.swap.result.uuid, onFinished: widget.onStepFinish),
+        ProgressSwap(
+            uuid: widget.swap.result.uuid, onFinished: widget.onStepFinish),
         widget.swap != null
             ? DetailSwap(
                 swap: widget.swap,

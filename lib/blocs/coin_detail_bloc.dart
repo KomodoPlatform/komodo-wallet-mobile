@@ -1,11 +1,9 @@
-
 import 'dart:async';
 
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class CoinDetailBloc implements BlocBase {
-
   Fee customFee;
 
   final StreamController<Fee> _customFeeController =
@@ -42,7 +40,7 @@ class CoinDetailBloc implements BlocBase {
     customFee = null;
     _inCustomFee.add(null);
   }
-  
+
   void setAmountToSend(String amount) {
     amountToSend = amount;
     _inAmountToSend.add(amountToSend);

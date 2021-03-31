@@ -71,9 +71,11 @@ class _MinVolumeControlState extends State<MinVolumeControl> {
                       controller: _valueCtrl,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(isDense: true,
+                      decoration: InputDecoration(
+                        isDense: true,
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Theme.of(context).accentColor),
+                          borderSide:
+                              BorderSide(color: Theme.of(context).accentColor),
                         ),
                       ),
                       maxLines: 1,

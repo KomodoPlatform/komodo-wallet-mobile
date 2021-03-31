@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 
-
 class CandlesIcon extends StatelessWidget {
   const CandlesIcon({
     this.size = 12,
@@ -16,7 +15,7 @@ class CandlesIcon extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-        child: CustomPaint(painter: _IconPainter( color?? cexColor)),
+      child: CustomPaint(painter: _IconPainter(color ?? cexColor)),
     );
   }
 }

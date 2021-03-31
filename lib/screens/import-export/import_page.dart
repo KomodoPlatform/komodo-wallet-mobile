@@ -209,7 +209,12 @@ class _ImportPageState extends State<ImportPage> {
                   coinsRow.add(Text(
                     coin + (i < coins.length - 1 ? ', ' : ''),
                     style: TextStyle(
-                        fontSize: 10, color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
+                        fontSize: 10,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withOpacity(0.7)),
                   ));
                 }
 
@@ -245,12 +250,20 @@ class _ImportPageState extends State<ImportPage> {
           ? Text(AppLocalizations.of(context).importLoading,
               style: TextStyle(
                 height: 1.3,
-                color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .color
+                    .withOpacity(0.7),
               ))
           : Text(AppLocalizations.of(context).importLoadDesc,
               style: TextStyle(
                 height: 1.3,
-                color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .color
+                    .withOpacity(0.7),
               )),
     );
   }

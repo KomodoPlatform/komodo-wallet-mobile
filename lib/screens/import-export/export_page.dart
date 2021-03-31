@@ -166,7 +166,12 @@ class _ExportPageState extends State<ExportPage> {
                 coinsRow.add(Text(
                   coin + (i < coins.length - 1 ? ', ' : ''),
                   style: TextStyle(
-                      fontSize: 10, color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.5)),
+                      fontSize: 10,
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .color
+                          .withOpacity(0.5)),
                 ));
               }
 

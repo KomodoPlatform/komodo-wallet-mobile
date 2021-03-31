@@ -27,13 +27,13 @@ class Article {
   });
 
   factory Article.fromJson(Map<String, dynamic> json) => Article(
-        media: List<String>.from(json['media'].map((dynamic x) => x)) ?? <String>[],
+        media: List<String>.from(json['media'].map((dynamic x) => x)) ??
+            <String>[],
         id: json['_id'] ?? '',
         title: json['title'] ?? '',
         header: json['header'] ?? '',
         body: json['body'] ?? '',
-        isSavedArticle:
-            json['isSavedArticle'] ?? false,
+        isSavedArticle: json['isSavedArticle'] ?? false,
         keywords: json['keywords'] ?? '',
         creationDate: DateTime.parse(json['creation_date']) ?? DateTime.now(),
         v: json['__v'] ?? 0,
@@ -52,16 +52,15 @@ class Article {
   int v;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'media':
-            List<String>.from(media.map<String>((dynamic x) => x)) ?? <String>[],
+        'media': List<String>.from(media.map<String>((dynamic x) => x)) ??
+            <String>[],
         '_id': id ?? '',
         'title': title ?? '',
         'header': header ?? '',
         'body': body ?? '',
         'keywords': keywords ?? '',
         'isSavedArticle': isSavedArticle ?? false,
-        'creation_date':
-            creationDate.toIso8601String() ?? DateTime.now(),
+        'creation_date': creationDate.toIso8601String() ?? DateTime.now(),
         '__v': v ?? 1,
         'author': author ?? '',
       };
