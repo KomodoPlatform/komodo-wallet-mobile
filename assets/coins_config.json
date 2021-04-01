@@ -678,7 +678,7 @@
         "address": "electrum1.cipig.net",
         "port": 10068,
         "proto": "tcp",
-        "abbr": "tBTC",
+        "abbr": "tBTC-TEST",
         "coingeckoId": "test-token",
         "testCoin": true,
         "colorCoin": "0xFFf7931a",
