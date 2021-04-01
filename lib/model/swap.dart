@@ -91,10 +91,49 @@ class Swap {
     return 0;
   }
 
-  /// Total number of detailed successful steps in the swaps.
+  /// Total number of detailed successful steps in the swap.
   int get steps => result?.successEvents?.length ?? statusSteps;
 
-  /// Current detailed swap step.
+  List<String> get stepsWithTransaction => [
+        'TakerFeeSent',
+        'TakerFeeValidated',
+        'MakerPaymentSent',
+        'MakerPaymentReceived',
+        'TakerPaymentSent',
+        'TakerPaymentReceived',
+        'TakerPaymentSpent',
+        'MakerPaymentSpent',
+        'MakerPaymentRefunded',
+        'TakerPaymentRefunded',
+      ];
+
+  /// If user acts as a Taker during current
+  /// swap then returns [true], [false] otherwise.
+  bool get isTaker {
+    if (result.type == 'Taker') return true;
+    return false;
+  }
+
+  /// If user acts as a Maker during current
+  /// swap then returns [true], [false] otherwise.
+  bool get isMaker {
+    if (result.type == 'Maker') return true;
+    return false;
+  }
+
+  /// Returns a maker explorer url if
+  /// it exists, otherwise an empty string.
+  String get makerExplorerUrl {
+    return makerCoin.explorerUrl[0] ?? '';
+  }
+
+  /// Returns a taker explorer url if
+  /// it exists, otherwise an empty string.
+  String get takerExplorerUrl {
+    return takerCoin.explorerUrl[0] ?? '';
+  }
+
+  /// Index of current swap step.
   int get step => result?.events?.length ?? 0;
 
   SwapEL get started =>
