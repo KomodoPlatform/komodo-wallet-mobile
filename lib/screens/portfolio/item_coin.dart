@@ -107,7 +107,28 @@ class _ItemCoinState extends State<ItemCoin> {
               color: Theme.of(context).errorColor,
               icon: Icons.delete,
               onTap: () async {
-                await showConfirmationRemoveCoin(context, coin);
+                final abbr = widget.coinBalance.coin.abbr;
+                if (abbr == 'BTC' || abbr == 'KMD') {
+                  showDialog<dynamic>(
+                    context: context,
+                    builder: (contex) => AlertDialog(
+                      title: Text("Can't disable"),
+                      content: Text(
+                        'At least two coins must stay enabled at all times, so de-activating KMD or BTC is forbidden',
+                      ),
+                      actions: [
+                        FlatButton(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  await showConfirmationRemoveCoin(context, coin);
+                }
               },
             )
           ],
