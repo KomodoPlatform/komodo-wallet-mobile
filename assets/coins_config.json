@@ -697,7 +697,7 @@
         "address": "electrum1.cipig.net",
         "port": 10069,
         "proto": "tcp",
-        "abbr": "GLEEC",
+        "abbr": "GLEEC-OLD",
         "coingeckoId": "gleec-coin",
         "colorCoin": "0xFFA13FFF",
         "serverList": [
