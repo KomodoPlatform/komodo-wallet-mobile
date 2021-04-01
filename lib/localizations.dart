@@ -1149,12 +1149,12 @@ class AppLocalizations {
 
   // --- Swaps ---
 
-  String get swapActual => Intl.message('act', name: 'swapActual');
-  String get swapEstimated => Intl.message('est', name: 'swapEstimated');
+  String get swapCurrent => Intl.message('Current', name: 'swapActual');
+  String get swapEstimated => Intl.message('Estimate', name: 'swapEstimated');
   String get swapStarted => Intl.message('Started', name: 'swapStarted');
   String get swapTotal => Intl.message('Total', name: 'swapTotal');
-  String get swappProgress =>
-      Intl.message('Progress details', name: 'swappProgress');
+  String get swapProgress =>
+      Intl.message('Progress details', name: 'swapProgress');
 
   // -- Notifications --
 
