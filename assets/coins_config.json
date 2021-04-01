@@ -731,7 +731,7 @@
         "name": "VOTE2021",
         "type": "smartChain",
         "proto": "SSL",
-        "abbr": "VOTE21",
+        "abbr": "VOTE2021",
         "coingeckoId": "test-token",
         "colorCoin": "0xFF326464",
         "serverList": [
