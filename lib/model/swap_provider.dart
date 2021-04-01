@@ -102,7 +102,8 @@ class SwapProvider extends ChangeNotifier {
   }
 
   /// Based on the available metrics information
-  /// tries to estimate the speed of transition [from] one [to] another steps of a given [uuid] swap.
+  /// tries to estimate the speed of transition [from]
+  /// one step [to] another of a given [uuid] swap.
   /// Returns `null` if no estimate is currently available.
   StepSpeed stepSpeed(String uuid, String from, String to) {
     final Swap swap = this.swap(uuid);
