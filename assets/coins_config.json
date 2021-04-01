@@ -678,7 +678,7 @@
         "address": "electrum1.cipig.net",
         "port": 10068,
         "proto": "tcp",
-        "abbr": "tBTC-TEST",
+        "abbr": "tBTC",
         "coingeckoId": "test-token",
         "testCoin": true,
         "colorCoin": "0xFFf7931a",
@@ -697,7 +697,7 @@
         "address": "electrum1.cipig.net",
         "port": 10069,
         "proto": "tcp",
-        "abbr": "GLEEC-OLD",
+        "abbr": "GLEEC",
         "coingeckoId": "gleec-coin",
         "colorCoin": "0xFFA13FFF",
         "serverList": [
