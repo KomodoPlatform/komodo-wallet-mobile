@@ -1283,6 +1283,7 @@ class _CoinScrollTextState extends State<CoinScrollText> {
   int _spacesBefore = 0;
   int _spacesAfter = 0;
   bool _isScrollStart = true;
+  bool _isScrollBefore = false;
   String text = '-';
 
   String coinScroll(String abbr, {int maxChar}) {
@@ -1290,11 +1291,18 @@ class _CoinScrollTextState extends State<CoinScrollText> {
     if (abbr.length <= maxChar) return abbr;
     if (_isScrollStart) {
       _scrollAbbrStart = 0;
+      _scrollAbbrEnd = maxChar;
+      _scrollAbbrLength = abbr.length;
+      _spacesBefore = 0;
+      _spacesAfter = 0;
+      _isScrollStart = false;
+    } else if (_isScrollBefore) {
+      _scrollAbbrStart = 0;
       _scrollAbbrEnd = 1;
       _scrollAbbrLength = abbr.length;
       _spacesBefore = maxChar - 1;
       _spacesAfter = 0;
-      _isScrollStart = false;
+      _isScrollBefore = false;
     } else {
       if (_spacesBefore > 0) {
         _spacesBefore -= 1;
@@ -1310,7 +1318,7 @@ class _CoinScrollTextState extends State<CoinScrollText> {
         _spacesAfter += 1;
       }
       if (_spacesAfter >= maxChar - 1) {
-        _isScrollStart = true;
+        _isScrollBefore = true;
       }
     }
 
@@ -1323,7 +1331,7 @@ class _CoinScrollTextState extends State<CoinScrollText> {
 
   @override
   Widget build(BuildContext context) {
-    _scrollTimer ??= Timer.periodic(Duration(milliseconds: 500), (t) {
+    _scrollTimer ??= Timer.periodic(Duration(milliseconds: 300), (t) {
       if (mounted) {
         final r = coinScroll(widget.abbr);
         setState(() {
