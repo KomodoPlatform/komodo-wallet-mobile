@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/camo_bloc.dart';
-import 'package:komodo_dex/blocs/swap_history_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_steps.dart';
 import 'package:komodo_dex/services/db/database.dart';
@@ -78,20 +76,16 @@ class _DetailSwapState extends State<DetailSwap> {
           ),
         ),
         _buildAmountSwap(),
+        _buildNote(AppLocalizations.of(context).noteTitle),
         Padding(
-          padding: const EdgeInsets.only(top: 24),
+          padding: const EdgeInsets.only(top: 16),
           child: _buildInfo(
             AppLocalizations.of(context).swapUUID,
             widget.swap.result.uuid,
           ),
         ),
-        widget.swap.status == Status.SWAP_SUCCESSFUL ||
-                swapHistoryBloc.isAnimationStepFinalIsFinish
-            ? _buildAdditionalInfoDetails()
-            : Container(),
-        _buildNote(AppLocalizations.of(context).noteTitle),
         const SizedBox(
-          height: 32,
+          height: 8,
         ),
         DetailedSwapSteps(uuid: widget.swap.result.uuid),
         const SizedBox(
@@ -139,7 +133,7 @@ class _DetailSwapState extends State<DetailSwap> {
                     }
                   },
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
+              padding: const EdgeInsets.fromLTRB(24, 20, 0, 8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +158,7 @@ class _DetailSwapState extends State<DetailSwap> {
                               ? AppLocalizations.of(context).notePlaceholder
                               : noteText,
                           style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                              fontWeight: FontWeight.bold, fontSize: 16),
                           maxLines: isNoteExpanded ? null : 1,
                           overflow:
                               isNoteExpanded ? null : TextOverflow.ellipsis,
@@ -174,262 +168,82 @@ class _DetailSwapState extends State<DetailSwap> {
             ),
           ),
         ),
-        IconButton(
-          icon: Icon(isNoteEdit ? Icons.check : Icons.edit),
-          onPressed: () {
-            setState(
-              () {
-                if (isNoteEdit) {
-                  noteTextController.text = noteTextController.text.trim();
-                  noteText = noteTextController.text;
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 24, 16, 0),
+          child: IconButton(
+            icon: Icon(isNoteEdit ? Icons.check : Icons.edit),
+            onPressed: () {
+              setState(
+                () {
+                  if (isNoteEdit) {
+                    noteTextController.text = noteTextController.text.trim();
+                    noteText = noteTextController.text;
 
-                  noteText.isNotEmpty
-                      ? Db.saveNote(widget.swap.result.uuid, noteText)
-                      : Db.deleteNote(widget.swap.result.uuid);
+                    noteText.isNotEmpty
+                        ? Db.saveNote(widget.swap.result.uuid, noteText)
+                        : Db.deleteNote(widget.swap.result.uuid);
+
+                    setState(() {
+                      isNoteExpanded = false;
+                    });
+                  }
 
                   setState(() {
-                    isNoteExpanded = false;
+                    isNoteEdit = !isNoteEdit;
                   });
-                }
-
-                setState(() {
-                  isNoteEdit = !isNoteEdit;
-                });
-              },
-            );
-          },
-        ),
+                },
+              );
+            },
+          ),
+        )
       ],
     );
-  }
-
-  Widget _buildAdditionalInfoDetails() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _buildInfo(
-            AppLocalizations.of(context).takerFeeTx,
-            _getTakerFeeTx(widget.swap),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _buildInfo(
-            AppLocalizations.of(context).takerPaymentTx,
-            _getTakerPaymentTx(widget.swap),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _buildInfo(
-            AppLocalizations.of(context).makerPaymentTx,
-            _getMakerPaymentTx(widget.swap),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _buildInfo(
-            AppLocalizations.of(context).takerPaymentSpentTx,
-            _getTakerPaymentSpentTx(widget.swap),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _buildInfo(
-            AppLocalizations.of(context).makerPaymentSpentTx,
-            _getMakerPaymentSpentTx(widget.swap),
-          ),
-        ),
-        widget.swap.result.status == Status.SWAP_FAILED
-            ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: _buildInfo(
-                  widget.swap.result.type == 'Maker'
-                      ? AppLocalizations.of(context).makerPaymentRefundTx
-                      : AppLocalizations.of(context).takerPaymentRefundTx,
-                  _getRefundTx(widget?.swap),
-                ),
-              )
-            : Container()
-      ],
-    );
-  }
-
-  String _getTakerFeeTx(Swap swap) {
-    String takerFeeTx = '';
-    for (SwapEL event in swap.result.events) {
-      if (event.event.type == 'TakerFeeSent') {
-        // taker-swap
-        takerFeeTx = event.event.data.txHash;
-      } else if (event.event.type == 'TakerFeeValidated') {
-        // maker-swap
-        takerFeeTx = event.event.data.txHash;
-      }
-    }
-    return takerFeeTx;
-  }
-
-  String _getTakerPaymentTx(Swap swap) {
-    String takerPaymentTx = '';
-    for (SwapEL event in swap.result.events) {
-      if (event?.event?.type == 'TakerPaymentSent') {
-        // taker-swap
-        takerPaymentTx = event.event.data.txHash;
-      } else if (event.event.type == 'TakerPaymentReceived') {
-        // maker-swap
-        takerPaymentTx = event.event.data.txHash;
-      }
-    }
-    return takerPaymentTx;
-  }
-
-  String _getMakerPaymentTx(Swap swap) {
-    String makerPaymentTx = '';
-    for (SwapEL event in swap.result.events) {
-      if (event.event.type == 'MakerPaymentReceived') {
-        // taker-swap
-        makerPaymentTx = event.event.data.txHash;
-      } else if (event.event.type == 'MakerPaymentSent') {
-        // maker-swap
-        makerPaymentTx = event.event.data.txHash;
-      }
-    }
-    return makerPaymentTx;
-  }
-
-  String _getTakerPaymentSpentTx(Swap swap) {
-    String takerPaymentSpentID = '';
-    for (SwapEL event in swap.result.events) {
-      if (event.event.type == 'TakerPaymentSpent') {
-        if (widget.swap.result.type == 'Taker') {
-          // taker-swap
-          takerPaymentSpentID = event.event.data.transaction.txHash;
-        } else {
-          // maker-swap
-          takerPaymentSpentID = event.event.data.txHash;
-        }
-      }
-    }
-    return takerPaymentSpentID;
-  }
-
-  String _getMakerPaymentSpentTx(Swap swap) {
-    String makerPaymentSpentTx = '';
-    for (SwapEL event in swap.result.events) {
-      if (event.event.type == 'MakerPaymentSpent') {
-        makerPaymentSpentTx = event.event.data.txHash;
-      }
-    }
-    return makerPaymentSpentTx;
-  }
-
-  String _getRefundTx(Swap swap) {
-    String refundTx = '';
-    for (SwapEL event in swap.result.events) {
-      if (event.event.type == 'MakerPaymentRefunded' ||
-          event.event.type == 'TakerPaymentRefunded') {
-        refundTx = event.event.data.txHash;
-      }
-    }
-    return refundTx;
-  }
-
-  Widget _buildViewInExplorer(String id, String title) {
-    return Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          border: Border.all(
-            color: Color.fromARGB(0, 0, 0, 0),
-            width: 0,
-          ),
-        ),
-        child: InkWell(
-          onTap: () {
-            launchURL(
-              title.contains('Maker')
-                  ? widget.swap.makerCoin.explorerUrl.elementAt(0) + 'tx/' + id
-                  : widget.swap.takerCoin.explorerUrl.elementAt(0) + 'tx/' + id,
-            );
-          },
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 2, 4),
-                  child: Text(
-                    AppLocalizations.of(context).viewInExplorerButton,
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 4),
-                  child: Icon(
-                    Icons.open_in_browser,
-                    color: Theme.of(context).accentColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ));
   }
 
   Widget _buildInfo(
     String title,
     String id,
   ) {
-    return (widget.swap.result.type == 'Maker' &&
-                title == 'Maker Payment Spent Tx') ||
-            id == ''
-        ? Container()
-        : Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 8,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 2),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    children: [
-                      Text(
-                        title + ':',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      title == 'Swap UUID'
-                          ? Container()
-                          : _buildViewInExplorer(
-                              id,
-                              title,
-                            )
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    copyToClipBoard(
-                      context,
-                      id,
-                    );
-                  },
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 24,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              children: [
+                Expanded(
                   child: Text(
-                    id,
-                    style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                    title + ':',
+                    style: Theme.of(context).textTheme.bodyText1,
+                    textAlign: TextAlign.center,
                   ),
                 )
               ],
             ),
-          );
+          ),
+          InkWell(
+            onTap: () {
+              copyToClipBoard(
+                context,
+                id,
+              );
+            },
+            child: Text(
+              id,
+              style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Widget _buildAmountSwap() {
