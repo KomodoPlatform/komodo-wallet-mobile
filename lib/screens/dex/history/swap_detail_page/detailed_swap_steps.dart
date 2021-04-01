@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/detailed_swap_step.dart';
@@ -64,7 +65,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     SwapStepStatus _getStatus(int index) {
       if (index == swap.step) return SwapStepStatus.inProgress;
       if (index < swap.step) {
-        if (index + 1 > swap.result.successEvents.length) {
+        if (index > swap.result.successEvents.length) {
           return SwapStepStatus.failed;
         }
         if (swap.result.events[index].event.type ==
@@ -129,17 +130,117 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       }
     }
 
-    Widget _buildFirstStep() {
-      return DetailedSwapStep(
-        title: AppLocalizations.of(context).swapStarted,
-        status: _getStatus(0),
-        estimatedSpeed: _getEstimatedSpeed(0),
-        estimatedDeviation: _getEstimatedDeviation(0),
-        actualSpeed: _getActualSpeed(0),
-        index: 0,
-        actualTotalSpeed: actualTotalSpeed,
-        estimatedTotalSpeed: estimatedTotalSpeed,
-      );
+    String _getTakerFeeTx(Swap swap) {
+      String takerFeeTx = '';
+      for (SwapEL event in swap.result.events) {
+        if (event.event.type == 'TakerFeeSent') {
+          // taker-swap
+          takerFeeTx = event.event.data.txHash;
+        } else if (event.event.type == 'TakerFeeValidated') {
+          // maker-swap
+          takerFeeTx = event.event.data.txHash;
+        }
+      }
+      return takerFeeTx;
+    }
+
+    String _getMakerPaymentTx(Swap swap) {
+      String makerPaymentTx = '';
+      for (SwapEL event in swap.result.events) {
+        if (event.event.type == 'MakerPaymentReceived') {
+          // taker-swap
+          makerPaymentTx = event.event.data.txHash;
+        } else if (event.event.type == 'MakerPaymentSent') {
+          // maker-swap
+          makerPaymentTx = event.event.data.txHash;
+        }
+      }
+      return makerPaymentTx;
+    }
+
+    String _getTakerPaymentTx(Swap swap) {
+      String takerPaymentTx = '';
+      for (SwapEL event in swap.result.events) {
+        if (event?.event?.type == 'TakerPaymentSent') {
+          // taker-swap
+          takerPaymentTx = event.event.data.txHash;
+        } else if (event.event.type == 'TakerPaymentReceived') {
+          // maker-swap
+          takerPaymentTx = event.event.data.txHash;
+        }
+      }
+      return takerPaymentTx;
+    }
+
+    String _getTakerPaymentSpentTx(Swap swap) {
+      String takerPaymentSpentID = '';
+      for (SwapEL event in swap.result.events) {
+        if (event.event.type == 'TakerPaymentSpent') {
+          if (swap.result.type == 'Taker') {
+            // taker-swap
+            takerPaymentSpentID = event.event.data.transaction.txHash;
+          } else {
+            // maker-swap
+            takerPaymentSpentID = event.event.data.txHash;
+          }
+        }
+      }
+      return takerPaymentSpentID;
+    }
+
+    String _getMakerPaymentSpentTx(Swap swap) {
+      String makerPaymentSpentTx = '';
+      for (SwapEL event in swap.result.events) {
+        if (event.event.type == 'MakerPaymentSpent') {
+          makerPaymentSpentTx = event.event.data.txHash;
+        }
+      }
+      return makerPaymentSpentTx;
+    }
+
+    String _getRefundTx(Swap swap) {
+      String refundTx = '';
+      for (SwapEL event in swap.result.events) {
+        if (event.event.type == 'MakerPaymentRefunded' ||
+            event.event.type == 'TakerPaymentRefunded') {
+          refundTx = event.event.data.txHash;
+        }
+      }
+      return refundTx;
+    }
+
+    String _getTxHash(Swap swap, int i) {
+      String txHash;
+      (swap.isTaker)
+          ? swap.result.successEvents[i] == 'TakerFeeSent'
+              ? txHash = _getTakerFeeTx(swap)
+              : swap.result.successEvents[i] == 'MakerPaymentReceived'
+                  ? txHash = _getMakerPaymentTx(swap)
+                  : swap.result.successEvents[i] == 'TakerPaymentSent'
+                      ? txHash = _getTakerPaymentTx(swap)
+                      : swap.result.successEvents[i] == 'TakerPaymentSpent'
+                          ? txHash = _getTakerPaymentSpentTx(swap)
+                          : swap.result.successEvents[i] == 'MakerPaymentSpent'
+                              ? txHash = _getMakerPaymentSpentTx(swap)
+                              : swap.result.successEvents[i] ==
+                                      'TakerPaymentRefunded'
+                                  ? txHash = _getRefundTx(swap)
+                                  // ignore: unnecessary_statements
+                                  : ''
+          : swap.result.successEvents[i] == 'TakerFeeValidated'
+              ? txHash = _getTakerFeeTx(swap)
+              : swap.result.successEvents[i] == 'MakerPaymentSent'
+                  ? txHash = _getMakerPaymentTx(swap)
+                  : swap.result.successEvents[i] == 'TakerPaymentReceived'
+                      ? txHash = _getTakerPaymentTx(swap)
+                      : swap.result.successEvents[i] == 'TakerPaymentSpent'
+                          ? txHash = _getTakerPaymentSpentTx(swap)
+                          : swap.result.successEvents[i] ==
+                                  'MakerPaymentRefunded'
+                              ? txHash = _getRefundTx(swap)
+                              // ignore: unnecessary_statements
+                              : '';
+      return txHash;
     }
 
     List<Widget> _buildFollowingSteps() {
@@ -148,19 +249,42 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       final List<Widget> list = [];
 
       int failedOnStep;
-      for (int i = 1; i < swap.result.successEvents.length; i++) {
-        final SwapStepStatus status = _getStatus(i);
+      for (int i = 0; i <= swap.step; i++) {
         if (failedOnStep != null) break;
-        list.add(DetailedSwapStep(
-          title: swap.result.successEvents[i],
-          status: status,
-          estimatedSpeed: _getEstimatedSpeed(i),
-          estimatedDeviation: _getEstimatedDeviation(i),
-          actualSpeed: _getActualSpeed(i),
-          index: i,
-          actualTotalSpeed: actualTotalSpeed,
-          estimatedTotalSpeed: estimatedTotalSpeed,
-        ));
+        if (i == swap.steps) break;
+
+        final SwapStepStatus status = _getStatus(i);
+
+        swap.stepsWithTransaction.contains(swap.result.successEvents[i])
+            ? list.add(DetailedSwapStep(
+                title: swap.result.successEvents[i],
+                txHash: _getTxHash(swap, i),
+                explorerUrl: swap.result.successEvents[i].contains('Taker')
+                    ? swap.takerExplorerUrl
+                    : swap.makerExplorerUrl,
+                isStepWithTransaction: swap.stepsWithTransaction
+                        .contains(swap.result.successEvents[i])
+                    ? true
+                    : false,
+                status: status,
+                estimatedSpeed: _getEstimatedSpeed(i),
+                estimatedDeviation: _getEstimatedDeviation(i),
+                actualSpeed: _getActualSpeed(i),
+                index: i,
+                actualTotalSpeed: actualTotalSpeed,
+                estimatedTotalSpeed: estimatedTotalSpeed,
+              ))
+            : list.add(DetailedSwapStep(
+                title: swap.result.successEvents[i],
+                status: status,
+                estimatedSpeed: _getEstimatedSpeed(i),
+                estimatedDeviation: _getEstimatedDeviation(i),
+                actualSpeed: _getActualSpeed(i),
+                index: i,
+                actualTotalSpeed: actualTotalSpeed,
+                estimatedTotalSpeed: estimatedTotalSpeed,
+              ));
+        if (i == swap.steps) break;
         if (status == SwapStepStatus.failed) {
           failedOnStep = i;
         }
@@ -181,7 +305,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
             index: e,
           ));
         }
-      }
+      } else {}
 
       return list;
     }
@@ -279,7 +403,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                         ),
                   Row(
                     children: <Widget>[
-                      Text(AppLocalizations.of(context).swapActual + ': ',
+                      Text(AppLocalizations.of(context).swapCurrent + ': ',
                           style: TextStyle(
                             fontSize: 13,
                             color: Theme.of(context).accentColor,
@@ -324,20 +448,20 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            AppLocalizations.of(context).swappProgress + ':',
+            AppLocalizations.of(context).swapProgress + ':',
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 8),
           _buildTotal(),
-          const SizedBox(height: 13),
+          const SizedBox(height: 12),
           // We assume that all kind of swaps has first step, with type of 'Started',
           // so we can show this step before actual swap data received.
-          _buildFirstStep(),
+          //_buildFirstStep(),
           ..._buildFollowingSteps(),
           const SizedBox(height: 12),
           Container(
