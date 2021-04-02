@@ -243,10 +243,18 @@ class _OrderBookPageState extends State<OrderBookPage> {
               });
             });
 
-            return CandleChart(
-              data: snapshot.data.data[_chartDuration],
-              duration: int.parse(_chartDuration),
-            );
+            return StreamBuilder<Object>(
+                initialData: settingsBloc.isLightTheme,
+                stream: settingsBloc.outLightTheme,
+                builder: (context, light) {
+                  return CandleChart(
+                      data: snapshot.data.data[_chartDuration],
+                      duration: int.parse(_chartDuration),
+                      textColor: light.data ? Colors.black : Colors.white,
+                      gridColor: light.data
+                          ? Colors.black.withOpacity(.2)
+                          : Colors.white.withOpacity(.4));
+                });
           },
         ),
       ),
