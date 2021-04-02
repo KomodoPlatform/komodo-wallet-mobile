@@ -320,7 +320,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.yellow[100].withAlpha(200),
+            color: settingsBloc.isLightTheme
+                ? Colors.yellow[700].withAlpha(200)
+                : Colors.yellow[100].withAlpha(200),
             borderRadius: BorderRadius.circular(6),
           ),
           padding: EdgeInsets.all(8),

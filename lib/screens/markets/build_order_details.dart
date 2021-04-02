@@ -329,7 +329,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   fontWeight: FontWeight.w400,
                   color: _isEnoughVolume()
                       ? null
-                      : Theme.of(context).primaryColorDark,
+                      : settingsBloc.isLightTheme
+                          ? Colors.white
+                          : Theme.of(context).primaryColorDark,
                 ),
               ),
             ],
