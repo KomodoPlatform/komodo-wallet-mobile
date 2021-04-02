@@ -290,11 +290,13 @@ class _AppDrawerState extends State<AppDrawer> {
                                   AsyncSnapshot<bool> snapshot) {
                                 return snapshot.hasData
                                     ? Switch(
-                                        value: !snapshot.data,
+                                        value: snapshot.data,
                                         key: const Key('settings-switch-theme'),
                                         onChanged: (bool dataSwitch) {
                                           settingsBloc
-                                              .setSwitchTheme(!dataSwitch);
+                                              .setSwitchTheme(dataSwitch);
+                                          print(dataSwitch);
+                                          print(!dataSwitch);
                                         })
                                     : Container();
                               },
