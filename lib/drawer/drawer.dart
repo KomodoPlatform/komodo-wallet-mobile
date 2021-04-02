@@ -295,8 +295,6 @@ class _AppDrawerState extends State<AppDrawer> {
                                         onChanged: (bool dataSwitch) {
                                           settingsBloc
                                               .setSwitchTheme(dataSwitch);
-                                          print(dataSwitch);
-                                          print(!dataSwitch);
                                         })
                                     : Container();
                               },
