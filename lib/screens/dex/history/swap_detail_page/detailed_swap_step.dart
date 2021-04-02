@@ -127,14 +127,12 @@ class DetailedSwapStep extends StatelessWidget {
                     Scaffold.of(context).hideCurrentSnackBar();
                   });
                 },
-                child: Text(
+                child: truncateMiddle(
                   txHash ?? '',
                   style: Theme.of(context).textTheme.bodyText1.copyWith(
                         fontFamily: 'monospace',
                         fontSize: 12,
                       ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
                 ),
               ),
             ),
@@ -250,14 +248,7 @@ class DetailedSwapStep extends StatelessWidget {
             ),
           ],
         ),
-        //const SizedBox(height: 2),
-        //if (title == 'TakerFeeSent' || title == 'TakerFeeValidated' ||
-        //    title == 'MakerPaymentReceived' || title == 'MakerPaymentSent ||
-        //    title == '')
-        isStepWithTransaction == true && txHash != ''
-            ? _buildTxDetails()
-            : Container(),
-
+        txHash != '' ? _buildTxDetails() : Container(),
         const SizedBox(height: 16),
       ],
     );
