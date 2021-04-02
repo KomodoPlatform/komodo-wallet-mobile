@@ -654,12 +654,12 @@
         ]
     },
     {
-        "name": "tBitcoin",
+        "name": "tBitcoin-TEST",
         "type": "utxo",
         "address": "electrum1.cipig.net",
         "port": 10068,
         "proto": "tcp",
-        "abbr": "tBTC",
+        "abbr": "tBTC-TEST",
         "coingeckoId": "test-token",
         "testCoin": true,
         "colorCoin": "0xFFf7931a",
@@ -673,12 +673,12 @@
         ]
     },
     {
-        "name": "GleecBTC",
+        "name": "GleecBTC-OLD",
         "type": "utxo",
         "address": "electrum1.cipig.net",
         "port": 10069,
         "proto": "tcp",
-        "abbr": "GLEEC",
+        "abbr": "GLEEC-OLD",
         "coingeckoId": "gleec-coin",
         "colorCoin": "0xFFA13FFF",
         "serverList": [
@@ -706,6 +706,22 @@
         ],
         "explorerUrl": [
             "https://explorer.pbc.kmd.sh/"
+        ]
+    },
+    {
+        "name": "VOTE2021",
+        "type": "smartChain",
+        "proto": "SSL",
+        "abbr": "VOTE2021",
+        "coingeckoId": "test-token",
+        "colorCoin": "0xFF326464",
+        "serverList": [
+            "electrum1.cipig.net:20002",
+            "electrum2.cipig.net:20002",
+            "electrum3.cipig.net:20002"
+        ],
+        "explorerUrl": [
+            "https://vote.kmdexplorer.io/"
         ]
     }
 ]
