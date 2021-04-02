@@ -266,11 +266,21 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                     Container(
                         height: chartHeight,
                         child: snapshot.hasData
-                            ? CandleChart(
-                                data: candles,
-                                duration: int.parse(chartDuration),
-                                quoted: quotedChart,
-                              )
+                            ? StreamBuilder<Object>(
+                                initialData: settingsBloc.isLightTheme,
+                                stream: settingsBloc.outLightTheme,
+                                builder: (context, light) {
+                                  return CandleChart(
+                                      data: candles,
+                                      duration: int.parse(chartDuration),
+                                      quoted: quotedChart,
+                                      textColor: light.data
+                                          ? Colors.black
+                                          : Colors.white,
+                                      gridColor: light.data
+                                          ? Colors.black.withOpacity(.2)
+                                          : Colors.white.withOpacity(.4));
+                                })
                             : snapshot.hasError
                                 ? Center(
                                     child: Text(AppLocalizations.of(context)

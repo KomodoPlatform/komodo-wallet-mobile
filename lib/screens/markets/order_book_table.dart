@@ -379,7 +379,6 @@ class _OrderBookTableState extends State<OrderBookTable> {
                                       .textTheme
                                       .subtitle2
                                       .copyWith(
-                                        //color: settingsBloc.switchTheme? cexColorLight : cexColor ,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w100,
                                       ),
