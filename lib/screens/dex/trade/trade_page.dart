@@ -1322,7 +1322,8 @@ class _CoinScrollTextState extends State<CoinScrollText> {
       }
     }
 
-    const spaceCharacter = ' ';
+    // Unicode character U+2004
+    const spaceCharacter = ' ';
     final r = (spaceCharacter * _spacesBefore) +
         abbr.substring(_scrollAbbrStart, _scrollAbbrEnd) +
         (spaceCharacter * _spacesAfter);
