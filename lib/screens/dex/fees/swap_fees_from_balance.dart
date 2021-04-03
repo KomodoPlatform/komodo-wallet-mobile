@@ -6,16 +6,16 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
-class SwapFeesSend extends StatefulWidget {
-  const SwapFeesSend({this.preimage});
+class SwapFeesFromBalance extends StatefulWidget {
+  const SwapFeesFromBalance({this.preimage});
 
   final TradePreimage preimage;
 
   @override
-  _SwapFeesSendState createState() => _SwapFeesSendState();
+  _SwapFeesFromBalanceState createState() => _SwapFeesFromBalanceState();
 }
 
-class _SwapFeesSendState extends State<SwapFeesSend> {
+class _SwapFeesFromBalanceState extends State<SwapFeesFromBalance> {
   bool _isTaker;
   CexProvider _cexProvider;
   bool _showFiatAmounts = false;

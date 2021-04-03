@@ -11,7 +11,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/screens/dex/fees/swap_fees_send.dart';
+import 'package:komodo_dex/screens/dex/fees/swap_fees_from_balance.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_reset_button.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_trade_button.dart';
@@ -193,7 +193,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                 builder: (context, snapshot) {
                                   return Container(
                                     padding: EdgeInsets.only(top: 12),
-                                    child: SwapFeesSend(
+                                    child: SwapFeesFromBalance(
                                       preimage: snapshot.data,
                                     ),
                                   );
