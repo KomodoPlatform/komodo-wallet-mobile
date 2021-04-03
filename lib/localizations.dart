@@ -549,13 +549,19 @@ class AppLocalizations {
           name: 'configureWallet');
   String get titleCurrentAsk =>
       Intl.message('Order selected', name: 'titleCurrentAsk');
-  String get txFeeTitle => Intl.message('transaction fee:', name: 'txFeeTitle');
-  String get tradingFee => Intl.message('trading fee:', name: 'tradingFee');
-  String swapGasAmount(String amount, String coin) => Intl.message(
-        'This swap requires $amount $coin for transaction fees',
+  String get txFeeTitle =>
+      Intl.message('+ transaction fee:', name: 'txFeeTitle');
+  String get tradingFee => Intl.message('+ trading fee:', name: 'tradingFee');
+  String swapGasAmount(String coin) => Intl.message(
+        '$coin balance not sufficient to pay transaction fees',
         name: 'swapGasAmount',
         args: <Object>[amount, coin],
       );
+  String get invalidSwap =>
+      Intl.message('Unable to proceed swap', name: 'invalidSwap');
+  String get invalidSwapDetailsLink =>
+      Intl.message('Details', name: 'invalidSwapDetailsLink');
+
   String swapGasActivate(String coin) => Intl.message(
         'Please activate $coin and top-up balance first',
         name: 'swapGasActivate',

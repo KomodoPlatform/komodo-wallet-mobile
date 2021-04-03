@@ -4,7 +4,6 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -60,26 +59,19 @@ class TradeFormValidator {
   }
 
   Future<String> _validateGasFor(String coin) async {
-    final CoinAmt gasFee = await GetSwapFee.gas(coin);
-    if (gasFee == null) return null;
+    final String gasCoin = coinsBloc.getCoinByAbbr(coin)?.payGasIn;
+    if (gasCoin == null) return null;
 
-    CoinBalance gasBalance;
-    try {
-      gasBalance = coinsBloc.coinBalance
-          .singleWhere((CoinBalance coin) => coin.coin.abbr == gasFee.coin);
-    } catch (e) {
-      return appLocalizations.swapGasActivate(gasFee.coin);
+    if (!coinsBloc.isCoinActive(gasCoin)) {
+      return appLocalizations.swapGasActivate(gasCoin);
     }
 
-    double requiredGasAmt = gasFee.amount;
-    if (gasFee.coin == swapBloc.sellCoinBalance.coin.abbr) {
-      requiredGasAmt += GetSwapFee.trading(amountSell).amount;
-    }
-
-    if (gasBalance.balance.balance < deci(requiredGasAmt)) {
-      final String message = appLocalizations.swapGasAmount(
-          cutTrailingZeros(formatPrice(gasFee.amount)), gasFee.coin);
-      return message;
+    if (swapBloc.tradePreimage == null) {
+      // If gas coin is active, but api wasn't able to
+      // generate tradePreimage, we assume
+      // that gas coin ballance is insufficient.
+      // TBD: refactor when 'trade_preimage' will return detailed error
+      return appLocalizations.swapGasAmount(gasCoin);
     }
 
     return null;

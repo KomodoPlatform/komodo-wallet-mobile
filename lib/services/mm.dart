@@ -661,8 +661,7 @@ class ApiProvider {
       preimage.request = request;
       return preimage;
     } catch (e) {
-      throw _catchErrorString(
-          'getTradePreimage', e, 'Error getting trade_preimage: $e');
+      throw _catchErrorString('getTradePreimage', e, 'mm trade_preimage] $e');
     }
   }
 }

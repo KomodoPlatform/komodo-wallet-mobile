@@ -147,14 +147,7 @@ class Coin {
   }
 
   String get payGasIn {
-    switch (type) {
-      case 'erc':
-        return 'ETH';
-      case 'qrc':
-        return 'QTUM';
-      default:
-        return null;
-    }
+    return protocol?.protocolData?.platform;
   }
 }
 

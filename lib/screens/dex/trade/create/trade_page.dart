@@ -15,6 +15,7 @@ import 'package:komodo_dex/screens/dex/fees/swap_fees_from_balance.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_reset_button.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_trade_button.dart';
+import 'package:komodo_dex/screens/dex/trade/create/invalid_swap_message.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/receive_amount_field.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/select_receive_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/sell/select_sell_coin_dialog.dart';
@@ -198,13 +199,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                     ),
                                   );
                                 })
-                            : Container(
-                                padding: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                                child: Text(
-                                  _feesErrorMessage,
-                                  style: Theme.of(context).textTheme.caption,
-                                ),
-                              )
+                            : InvalidSwapMessage(_feesErrorMessage)
                       }
                     ],
                   ),
