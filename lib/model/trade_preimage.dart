@@ -59,6 +59,7 @@ class CoinFee {
     this.coin,
     this.amount,
     this.amountFract,
+    this.paidFromTradingVol,
   });
 
   factory CoinFee.fromJson(Map<String, dynamic> json) {
@@ -68,18 +69,21 @@ class CoinFee {
       coin: json['coin'] ?? '',
       amount: json['amount'] ?? '',
       amountFract: json['amount_fraction'],
+      paidFromTradingVol: json['paid_from_trading_vol'] ?? false,
     );
   }
 
   String coin;
   String amount;
   Map<String, dynamic> amountFract; // {'numer': '1', 'denom': '3'}
+  bool paidFromTradingVol;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'coin': coin ?? '',
       'amount': amount ?? '',
       if (amountFract != null) 'amount_fraction': amountFract,
+      'paid_from_trading_vol': paidFromTradingVol,
     };
   }
 }

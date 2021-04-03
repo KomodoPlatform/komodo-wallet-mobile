@@ -18,7 +18,7 @@ class SwapFeesSend extends StatefulWidget {
 class _SwapFeesSendState extends State<SwapFeesSend> {
   bool _isTaker;
   CexProvider _cexProvider;
-  bool _showDetailedFees = false;
+  bool _showFiatAmounts = false;
   bool _haveCexPrices;
 
   @override
@@ -28,7 +28,7 @@ class _SwapFeesSendState extends State<SwapFeesSend> {
     _isTaker = widget.preimage.request.swapMethod == 'buy';
     _cexProvider ??= Provider.of<CexProvider>(context);
     _haveCexPrices = _haveAllCexPrices();
-    if (!_haveCexPrices) setState(() => _showDetailedFees = false);
+    if (!_haveCexPrices) setState(() => _showFiatAmounts = false);
 
     return GestureDetector(
       child: Container(
@@ -40,7 +40,7 @@ class _SwapFeesSendState extends State<SwapFeesSend> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   _buildTxFeeRow(),
-                  if (_showDetailedFees) const SizedBox(height: 4),
+                  if (_showFiatAmounts) const SizedBox(height: 4),
                   _buildTakerFeeRow(),
                 ],
               ),
@@ -49,7 +49,7 @@ class _SwapFeesSendState extends State<SwapFeesSend> {
               Container(
                 padding: const EdgeInsets.only(left: 4),
                 child: Icon(
-                  _showDetailedFees ? Icons.unfold_less : Icons.unfold_more,
+                  _showFiatAmounts ? Icons.unfold_less : Icons.unfold_more,
                   color: Theme.of(context).textTheme.caption.color,
                   size: 18,
                 ),
@@ -58,7 +58,7 @@ class _SwapFeesSendState extends State<SwapFeesSend> {
         ),
       ),
       onTap: _haveCexPrices
-          ? () => setState(() => _showDetailedFees = !_showDetailedFees)
+          ? () => setState(() => _showFiatAmounts = !_showFiatAmounts)
           : null,
     );
   }
@@ -75,7 +75,7 @@ class _SwapFeesSendState extends State<SwapFeesSend> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             _buildTakerFee(),
-            if (_showDetailedFees) _buildTakerFeeInFiat(),
+            if (_showFiatAmounts) _buildTakerFeeInFiat(),
           ],
         )),
       ],
@@ -139,7 +139,7 @@ class _SwapFeesSendState extends State<SwapFeesSend> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             _buildTxFee(),
-            if (_showDetailedFees) _buildTxFeeInFiat(),
+            if (_showFiatAmounts) _buildTxFeeInFiat(),
           ],
         )),
       ],
@@ -147,32 +147,42 @@ class _SwapFeesSendState extends State<SwapFeesSend> {
   }
 
   Widget _buildTxFee() {
-    final CoinFee sellCoinFee =
-        _isTaker ? widget.preimage.relCoinFee : widget.preimage.baseCoinFee;
+    final List<String> txFees = [
+      if (_sellCoinTxFee() != null) _sellCoinTxFee(),
+      if (_receiveCoinTxFee() != null) _receiveCoinTxFee(),
+    ];
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-          '${cutTrailingZeros(formatPrice(sellCoinFee.amount, 4))}'
-          ' ${sellCoinFee.coin}',
+          txFees.join(' + '),
           style: Theme.of(context).textTheme.caption,
         ),
-        _buildReceiveCoinFee(),
       ],
     );
   }
 
-  Widget _buildReceiveCoinFee() {
+  String _sellCoinTxFee() {
+    final CoinFee sellCoinFee =
+        _isTaker ? widget.preimage.relCoinFee : widget.preimage.baseCoinFee;
+
+    if (sellCoinFee.paidFromTradingVol) return null;
+    if ((double.tryParse(sellCoinFee.amount ?? '0') ?? 0) <= 0) return null;
+
+    return '${cutTrailingZeros(formatPrice(sellCoinFee.amount, 4))}'
+        ' ${sellCoinFee.coin}';
+  }
+
+  String _receiveCoinTxFee() {
     final CoinFee receiveCoinFee =
         _isTaker ? widget.preimage.baseCoinFee : widget.preimage.relCoinFee;
-    if (double.tryParse(receiveCoinFee.amount) <= 0) return SizedBox();
 
-    return Text(
-      ' + ${cutTrailingZeros(formatPrice(receiveCoinFee.amount, 4))}'
-      ' ${receiveCoinFee.coin}',
-      style: Theme.of(context).textTheme.caption,
-    );
+    if (receiveCoinFee.paidFromTradingVol) return null;
+    if ((double.tryParse(receiveCoinFee.amount ?? '0') ?? 0) <= 0) return null;
+
+    return '${cutTrailingZeros(formatPrice(receiveCoinFee.amount, 4))}'
+        ' ${receiveCoinFee.coin}';
   }
 
   Widget _buildTxFeeInFiat() {
