@@ -8,7 +8,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
-import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
+// import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
@@ -515,7 +515,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               Container(
                   padding: const EdgeInsets.only(left: 2),
                   child: _buildPrice(item)),
-              _buildFee(item),
+              // _buildFee(item),
             ],
           ),
         ),
@@ -523,29 +523,29 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
     );
   }
 
-  Widget _buildFee(CoinBalance item) {
-    if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr))
-      return Container();
-    final String gasCoin = item.coin?.payGasIn;
-    if (gasCoin == null) return Container();
+  // Widget _buildFee(CoinBalance item) {
+  //   if (!multiOrderProvider.isRelCoinSelected(item.coin.abbr))
+  //     return Container();
+  //   final String gasCoin = item.coin?.payGasIn;
+  //   if (gasCoin == null) return Container();
 
-    return FutureBuilder<CoinAmt>(
-        future: GetSwapFee.gas(item.coin.abbr),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return const SizedBox();
+  //   return FutureBuilder<CoinAmt>(
+  //       future: GetSwapFee.gas(item.coin.abbr),
+  //       builder: (context, snapshot) {
+  //         if (!snapshot.hasData) return const SizedBox();
 
-          return Container(
-            padding: const EdgeInsets.only(left: 2),
-            child: Text(
-              '+' +
-                  AppLocalizations.of(context).multiEthFee +
-                  ': ${cutTrailingZeros(formatPrice(snapshot.data.amount))}'
-                      ' $gasCoin',
-              style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),
-            ),
-          );
-        });
-  }
+  //         return Container(
+  //           padding: const EdgeInsets.only(left: 2),
+  //           child: Text(
+  //             '+' +
+  //                 AppLocalizations.of(context).multiEthFee +
+  //                 ': ${cutTrailingZeros(formatPrice(snapshot.data.amount))}'
+  //                     ' $gasCoin',
+  //             style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),
+  //           ),
+  //         );
+  //       });
+  // }
 
   Widget _buildPrice(CoinBalance item) {
     final double sellAmt = multiOrderProvider.baseAmt;
