@@ -4,6 +4,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -72,6 +73,19 @@ class TradeFormValidator {
       // that gas coin ballance is insufficient.
       // TBD: refactor when 'trade_preimage' will return detailed error
       return appLocalizations.swapGasAmount(gasCoin);
+    } else {
+      final CoinFee totalGasFee = swapBloc.tradePreimage.totalFees
+          .firstWhere((item) => item.coin == gasCoin, orElse: () => null);
+      if (totalGasFee != null) {
+        final double totalGasAmount =
+            double.tryParse(totalGasFee.amount ?? '0') ?? 0;
+        final double gasBalance =
+            coinsBloc.getBalanceByAbbr(gasCoin).balance.balance.toDouble();
+        if (totalGasAmount > gasBalance) {
+          return appLocalizations.swapGasAmount(
+              gasCoin, cutTrailingZeros(formatPrice(totalGasAmount, 4)));
+        }
+      }
     }
 
     return null;

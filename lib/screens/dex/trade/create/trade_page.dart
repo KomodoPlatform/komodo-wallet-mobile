@@ -12,6 +12,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/fees/swap_fees_from_balance.dart';
+import 'package:komodo_dex/screens/dex/fees/swap_fees_from_trade.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_reset_button.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_trade_button.dart';
@@ -54,7 +55,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _listeners.map((listener) => listener.cancel());
+    _listeners.map((listener) => listener?.cancel());
 
     super.dispose();
   }
@@ -64,21 +65,42 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     _cexProvider ??= Provider.of<CexProvider>(context);
     _orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+    return Column(
       children: <Widget>[
-        _buildExchange(),
-        const SizedBox(
-          height: 8,
+        _buildProgressBar(),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 16),
+                _buildExchange(),
+                const SizedBox(
+                  height: 8,
+                ),
+                BuildTradeButton(),
+                BuildResetButton(),
+                ExchangeRate(),
+                SizedBox(height: 16),
+              ],
+            ),
+          ),
         ),
-        BuildTradeButton(),
-        BuildResetButton(),
-        ExchangeRate(),
       ],
     );
   }
 
-  void onChangeReceive() {}
+  Widget _buildProgressBar() {
+    return StreamBuilder<bool>(
+      initialData: swapBloc.processing,
+      stream: swapBloc.outProcessing,
+      builder: (context, snapshot) {
+        return SizedBox(
+          height: 1,
+          child: snapshot.data ? LinearProgressIndicator() : SizedBox(),
+        );
+      },
+    );
+  }
 
   Future<void> _setMaxSellAmount() async {
     final Decimal maxValue = await tradeForm.getMaxSellAmount();
@@ -186,39 +208,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-                      if (market == Market.SELL) ...{
-                        _feesErrorMessage == null
-                            ? StreamBuilder<TradePreimage>(
-                                initialData: swapBloc.tradePreimage,
-                                stream: swapBloc.outTradePreimage,
-                                builder: (context, snapshot) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: 12),
-                                    child: SwapFeesFromBalance(
-                                      preimage: snapshot.data,
-                                    ),
-                                  );
-                                })
-                            : InvalidSwapMessage(_feesErrorMessage)
-                      }
+                      _buildFees(market),
                     ],
                   ),
                 ),
-                swapBloc.matchingBid == null && market == Market.RECEIVE
-                    ? Positioned(
-                        bottom: 10,
-                        left: 22,
-                        child: Container(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            child: swapBloc.receiveCoinBalance != null
-                                ? Text(
-                                    AppLocalizations.of(context).noOrder(
-                                        swapBloc.receiveCoinBalance.coin.abbr),
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                  )
-                                : const Text('')))
-                    : Container()
               ],
             ),
           ),
@@ -240,6 +233,39 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           )
       ],
     );
+  }
+
+  Widget _buildFees(Market market) {
+    switch (market) {
+      case Market.SELL:
+        return _feesErrorMessage == null
+            ? StreamBuilder<TradePreimage>(
+                initialData: swapBloc.tradePreimage,
+                stream: swapBloc.outTradePreimage,
+                builder: (context, snapshot) {
+                  return Container(
+                    padding: EdgeInsets.only(top: 12),
+                    child: SwapFeesFromBalance(
+                      preimage: snapshot.data,
+                    ),
+                  );
+                })
+            : InvalidSwapMessage(_feesErrorMessage);
+      case Market.RECEIVE:
+        return StreamBuilder<TradePreimage>(
+            initialData: swapBloc.tradePreimage,
+            stream: swapBloc.outTradePreimage,
+            builder: (context, snapshot) {
+              return Container(
+                padding: EdgeInsets.only(top: 12),
+                child: SwapFeesFromTrade(
+                  preimage: snapshot.data,
+                ),
+              );
+            });
+      default:
+        return SizedBox();
+    }
   }
 
   Widget _buildMaxButton(Market market) {
@@ -419,11 +445,15 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   void _onStateChange(dynamic _) {
+    if (!mounted) return;
     _updateFees();
   }
 
   Future<void> _updateFees() async {
+    swapBloc.processing = true;
     final String error = await tradeForm.updateTradePreimage();
+    swapBloc.processing = false;
+
     if (error == null) {
       setState(() => _feesErrorMessage = null);
     } else {

@@ -549,11 +549,11 @@ class AppLocalizations {
           name: 'configureWallet');
   String get titleCurrentAsk =>
       Intl.message('Order selected', name: 'titleCurrentAsk');
-  String get txFeeTitle =>
-      Intl.message('+ transaction fee:', name: 'txFeeTitle');
-  String get tradingFee => Intl.message('+ trading fee:', name: 'tradingFee');
-  String swapGasAmount(String coin) => Intl.message(
-        '$coin balance not sufficient to pay transaction fees',
+  String get txFeeTitle => Intl.message('transaction fee:', name: 'txFeeTitle');
+  String get tradingFee => Intl.message('trading fee:', name: 'tradingFee');
+  String swapGasAmount(String coin, [String amount]) => Intl.message(
+        '$coin balance not sufficient to pay transaction fees.' +
+            (amount != null ? ' $coin $amount required.' : ''),
         name: 'swapGasAmount',
         args: <Object>[amount, coin],
       );

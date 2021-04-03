@@ -7,7 +7,7 @@ class TradePreimage {
     this.volume,
     this.volumeFract,
     this.takerFee,
-    this.takerFeeFract,
+    this.totalFees,
     this.feeToSendTakerFee,
     this.request,
   });
@@ -22,8 +22,11 @@ class TradePreimage {
         volume: result['volume'],
         volumeFract: result['volume_fraction'],
         takerFee: CoinFee.fromJson(result['taker_fee']),
-        takerFeeFract: result['taker_fee_fraction'],
         feeToSendTakerFee: CoinFee.fromJson(result['fee_to_send_taker_fee']),
+        totalFees: result['total_fees']
+                ?.map<CoinFee>((dynamic item) => CoinFee.fromJson(item))
+                ?.toList() ??
+            [],
         request: GetTradePreimage.fromJson(result['request']));
   }
 
@@ -32,8 +35,8 @@ class TradePreimage {
   String volume;
   Map<String, dynamic> volumeFract; // {'numer': '1', 'denom': '3'}
   CoinFee takerFee;
-  Map<String, dynamic> takerFeeFract; // {'numer': '1', 'denom': '3'}
   CoinFee feeToSendTakerFee;
+  List<CoinFee> totalFees;
   GetTradePreimage request;
 
   Map<String, dynamic> toJson() {
@@ -43,8 +46,8 @@ class TradePreimage {
       'taker_fee': takerFee.toJson(),
       'volume': volume,
       if (volumeFract != null) 'volume_fraction': volumeFract,
-      if (takerFeeFract != null) 'taker_fee_fraction': takerFeeFract,
       'fee_to_send_taker_fee': feeToSendTakerFee,
+      'total_fees': totalFees.map((item) => item.toJson()).toList(),
       if (request != null) 'request': request.toJson(),
     };
 

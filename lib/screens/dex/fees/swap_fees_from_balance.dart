@@ -30,32 +30,29 @@ class _SwapFeesFromBalanceState extends State<SwapFeesFromBalance> {
     _haveCexPrices = _haveAllCexPrices();
     if (!_haveCexPrices) setState(() => _showFiatAmounts = false);
 
-    return GestureDetector(
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildTxFeeRow(),
-                  if (_showFiatAmounts) const SizedBox(height: 4),
-                  _buildTakerFeeRow(),
-                ],
+    return InkWell(
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildTxFeeRow(),
+                if (_showFiatAmounts) const SizedBox(height: 4),
+                _buildTakerFeeRow(),
+              ],
+            ),
+          ),
+          if (_haveCexPrices)
+            Container(
+              padding: const EdgeInsets.only(left: 4),
+              child: Icon(
+                _showFiatAmounts ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                color: Theme.of(context).textTheme.caption.color,
+                size: 18,
               ),
             ),
-            if (_haveCexPrices)
-              Container(
-                padding: const EdgeInsets.only(left: 4),
-                child: Icon(
-                  _showFiatAmounts ? Icons.unfold_less : Icons.unfold_more,
-                  color: Theme.of(context).textTheme.caption.color,
-                  size: 18,
-                ),
-              ),
-          ],
-        ),
+        ],
       ),
       onTap: _haveCexPrices
           ? () => setState(() => _showFiatAmounts = !_showFiatAmounts)
@@ -201,17 +198,22 @@ class _SwapFeesFromBalanceState extends State<SwapFeesFromBalance> {
   }
 
   bool _haveAllCexPrices() {
+    final CoinFee relCoinFee = widget.preimage.relCoinFee;
     final double relCoinFeeAmount =
-        double.tryParse(widget.preimage.relCoinFee?.amount ?? '0') ?? 0;
-    final double relCoinFeeUsdPrice =
-        _cexProvider.getUsdPrice(widget.preimage.relCoinFee.coin);
-    if (relCoinFeeAmount > 0 && relCoinFeeUsdPrice == 0) return false;
+        double.tryParse(relCoinFee.amount ?? '0') ?? 0;
+    final double relCoinFeeUsdPrice = _cexProvider.getUsdPrice(relCoinFee.coin);
+    if ((!relCoinFee.paidFromTradingVol) &&
+        relCoinFeeAmount > 0 &&
+        relCoinFeeUsdPrice == 0) return false;
 
+    final CoinFee baseCoinFee = widget.preimage.baseCoinFee;
     final double baseCoinFeeAmount =
-        double.tryParse(widget.preimage.baseCoinFee.amount ?? '0') ?? 0;
+        double.tryParse(baseCoinFee.amount ?? '0') ?? 0;
     final double baseCoinFeeUsdPrice =
-        _cexProvider.getUsdPrice(widget.preimage.baseCoinFee.coin);
-    if (baseCoinFeeAmount > 0 && baseCoinFeeUsdPrice == 0) return false;
+        _cexProvider.getUsdPrice(baseCoinFee.coin);
+    if ((!baseCoinFee.paidFromTradingVol) &&
+        baseCoinFeeAmount > 0 &&
+        baseCoinFeeUsdPrice == 0) return false;
 
     if (_isTaker) {
       final double takerFeeAmount =

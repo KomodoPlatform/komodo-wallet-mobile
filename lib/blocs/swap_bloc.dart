@@ -18,6 +18,7 @@ class SwapBloc implements BlocBase {
   bool shouldBuyOut = false;
   bool isSellMaxActive = false;
   TradePreimage _tradePreimage;
+  bool _processing = false;
 
   // Using to guide user directly to active orders list
   int indexTab = 0;
@@ -70,6 +71,11 @@ class SwapBloc implements BlocBase {
   Sink<TradePreimage> get _inTradePreimage => _tradePreimageController.sink;
   Stream<TradePreimage> get outTradePreimage => _tradePreimageController.stream;
 
+  final StreamController<bool> _processingController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inProcessing => _processingController.sink;
+  Stream<bool> get outProcessing => _processingController.stream;
+
   @override
   void dispose() {
     _sellCoinBalanceController.close();
@@ -79,6 +85,7 @@ class SwapBloc implements BlocBase {
     _amountSellController.close();
     _enabledSellFieldController.close();
     _isMaxActiveController.close();
+    _processingController.close();
   }
 
   void setIsMaxActive(bool isMaxActive) {
@@ -133,6 +140,12 @@ class SwapBloc implements BlocBase {
   set tradePreimage(TradePreimage value) {
     _tradePreimage = value;
     _inTradePreimage.add(_tradePreimage);
+  }
+
+  bool get processing => _processing;
+  set processing(bool value) {
+    _processing = value;
+    _inProcessing.add(_processing);
   }
 }
 
