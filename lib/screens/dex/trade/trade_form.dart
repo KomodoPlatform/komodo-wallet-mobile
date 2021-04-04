@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:komodo_dex/model/get_max_taker_volume.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
@@ -17,8 +19,18 @@ import 'package:komodo_dex/utils/utils.dart';
 
 class TradeForm {
   final int precision = 8;
+  Timer _typingTimer;
+  String _latestSellFieldValue;
 
   Future<void> onSellAmountFieldChange(String text) async {
+    _typingTimer?.cancel();
+    _latestSellFieldValue = text;
+    _typingTimer = Timer(Duration(milliseconds: 200), () {
+      _handleSellAmountChange(text);
+    });
+  }
+
+  Future<void> _handleSellAmountChange(String text) async {
     double valueDouble = double.tryParse(text ?? '');
     // If empty or non-numerical
     if (valueDouble == null) {
@@ -29,15 +41,14 @@ class TradeForm {
       return;
     }
 
-    if (valueDouble != swapBloc.amountSell) {
-      // If greater than max available balance
-      final double maxAmount = await getMaxSellAmount();
-      if (valueDouble >= maxAmount) {
-        valueDouble = maxAmount;
-        swapBloc.setIsMaxActive(true);
-      } else {
-        swapBloc.setIsMaxActive(false);
-      }
+    // If greater than max available balance
+    final double maxAmount = await getMaxSellAmount();
+    if (text != _latestSellFieldValue) return;
+    if (valueDouble >= maxAmount) {
+      valueDouble = maxAmount;
+      swapBloc.setIsMaxActive(true);
+    } else {
+      swapBloc.setIsMaxActive(false);
     }
 
     final Ask matchingBid = swapBloc.matchingBid;
@@ -232,7 +243,9 @@ class TradeForm {
     if (swapBloc.sellCoinBalance == null ||
         swapBloc.receiveCoinBalance == null ||
         swapBloc.amountSell == null ||
-        swapBloc.amountReceive == null) {
+        swapBloc.amountSell == 0.0 ||
+        swapBloc.amountReceive == null ||
+        swapBloc.amountReceive == 0.0) {
       swapBloc.tradePreimage = null;
       return null;
     }
