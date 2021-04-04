@@ -99,11 +99,15 @@ class SwapBloc implements BlocBase {
   }
 
   void setAmountSell(double amount) {
+    if (amount == amountSell) return;
+
     amountSell = amount;
     _inAmountSell.add(amountSell);
   }
 
   void setAmountReceive(double amount) {
+    if (amount == amountReceive) return;
+
     amountReceive = amount;
     _inAmountReceive.add(amountReceive);
   }

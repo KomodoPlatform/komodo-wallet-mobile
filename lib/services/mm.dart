@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/get_convert_address.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
+import 'package:komodo_dex/model/get_max_taker_volume.dart';
 import 'package:komodo_dex/model/get_priv_key.dart';
 import 'package:komodo_dex/model/get_recover_funds_of_swap.dart';
 import 'package:komodo_dex/model/get_rewards_info.dart';
@@ -16,6 +18,7 @@ import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:komodo_dex/services/music_service.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 import '../model/active_coin.dart';
 import '../model/balance.dart';
@@ -660,6 +663,38 @@ class ApiProvider {
       final preimage = TradePreimage.fromJson(jbody);
       preimage.request = request;
       return preimage;
+    } catch (e) {
+      throw _catchErrorString('getTradePreimage', e, 'mm trade_preimage] $e');
+    }
+  }
+
+  Future<Rational> getMaxTakerVolume(
+    GetMaxTakerVolume request, {
+    http.Client client,
+  }) async {
+    client ??= mmSe.client;
+
+    try {
+      final userBody = await _assertUserpass(client, request);
+      final response = await userBody.client
+          .post(url, body: getMaxTakerVolumeToJson(userBody.body));
+      _assert200(response);
+      _saveRes('getMaxTakerVolume', response);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = jsonDecode(response.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      Rational max;
+      try {
+        max = fract2rat(jbody['result']);
+      } catch (e) {
+        Log('mm', 'getMaxTakerVolume] $e');
+        return null;
+      }
+
+      return max;
     } catch (e) {
       throw _catchErrorString('getTradePreimage', e, 'mm trade_preimage] $e');
     }

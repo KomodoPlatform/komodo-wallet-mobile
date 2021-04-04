@@ -39,16 +39,15 @@ class TradePage extends StatefulWidget {
 class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   CexProvider _cexProvider;
   OrderBookProvider _orderBookProvider;
-  bool _isLoadingMax = false;
   String _feesErrorMessage;
   final _listeners = <StreamSubscription<dynamic>>[];
 
   @override
   void initState() {
-    _listeners.add(swapBloc.outAmountSell.listen(_onStateChange));
-    _listeners.add(swapBloc.outAmountReceive.listen(_onStateChange));
-    _listeners.add(swapBloc.outSellCoinBalance.listen(_onStateChange));
-    _listeners.add(swapBloc.outReceiveCoinBalance.listen(_onStateChange));
+    _listeners.add(swapBloc.outAmountSell.listen(_onFormStateChange));
+    _listeners.add(swapBloc.outAmountReceive.listen(_onFormStateChange));
+    _listeners.add(swapBloc.outSellCoinBalance.listen(_onFormStateChange));
+    _listeners.add(swapBloc.outReceiveCoinBalance.listen(_onFormStateChange));
 
     super.initState();
   }
@@ -100,32 +99,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         );
       },
     );
-  }
-
-  Future<void> _setMaxSellAmount() async {
-    final Decimal maxValue = await tradeForm.getMaxSellAmount();
-
-    if (maxValue > deci(0)) {
-      swapBloc.setAmountSell(maxValue.toDouble());
-      swapBloc.setIsMaxActive(true);
-    } else {
-      swapBloc.setAmountSell(null);
-
-      final Decimal balanceShortage = -maxValue;
-      final Decimal minVolumeToPayFees =
-          swapBloc.sellCoinBalance.balance.balance + balanceShortage;
-      final Decimal minVolumeDefault =
-          deci(tradeForm.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr));
-
-      final String warningText = minVolumeToPayFees < minVolumeDefault
-          ? AppLocalizations.of(context).minValueSell(
-              swapBloc.sellCoinBalance.coin.abbr, '$minVolumeDefault')
-          : AppLocalizations.of(context).minValueSell(
-              swapBloc.sellCoinBalance.coin.abbr,
-              minVolumeToPayFees.toStringAsFixed(8));
-
-      _showSnackbar(warningText);
-    }
   }
 
   Widget _buildExchange() {
@@ -275,11 +248,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
       builder: (context, enabledSnapshot) {
         return market == Market.SELL && enabledSnapshot.data
             ? InkWell(
-                onTap: () async {
-                  setState(() => _isLoadingMax = true);
-                  await _setMaxSellAmount();
-                  setState(() => _isLoadingMax = false);
-                },
+                onTap: tradeForm.setMaxSellAmount,
                 child: StreamBuilder<bool>(
                     initialData: swapBloc.isSellMaxActive,
                     stream: swapBloc.outIsMaxActive,
@@ -380,7 +349,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         return;
       }
 
-      if (!_isLoadingMax) {
+      if (!swapBloc.processing) {
         openSelectReceiveCoinDialog(
           context: context,
           amountSell: swapBloc.amountSell,
@@ -444,21 +413,27 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     ));
   }
 
-  void _onStateChange(dynamic _) {
+  Future<void> _onFormStateChange(dynamic _) async {
     if (!mounted) return;
-    _updateFees();
+
+    await _updateFees();
+    // Max sell amount depends on preimage, so it should be updated
+    // after preimage update
+    await _updateSellAmountIfNeeded();
   }
 
   Future<void> _updateFees() async {
-    swapBloc.processing = true;
     final String error = await tradeForm.updateTradePreimage();
-    swapBloc.processing = false;
 
     if (error == null) {
       setState(() => _feesErrorMessage = null);
     } else {
       setState(() => _feesErrorMessage = error);
     }
+  }
+
+  Future<void> _updateSellAmountIfNeeded() async {
+    if (swapBloc.isSellMaxActive) await tradeForm.setMaxSellAmount();
   }
 }
 

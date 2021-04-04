@@ -1,5 +1,4 @@
-import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/get_max_taker_volume.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
@@ -12,31 +11,33 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/model/get_setprice.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
-import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class TradeForm {
-  final AppLocalizations localizations = AppLocalizations();
+  final int precision = 8;
 
   Future<void> onSellAmountFieldChange(String text) async {
     double valueDouble = double.tryParse(text ?? '');
     // If empty or non-numerical
     if (valueDouble == null) {
       swapBloc.setAmountSell(null);
-      swapBloc.setAmountReceive(null);
       swapBloc.setIsMaxActive(false);
+      if (swapBloc.matchingBid != null) swapBloc.setAmountReceive(null);
 
       return;
     }
 
-    // If greater than max available balance
-    final Decimal maxAmount = await getMaxSellAmount();
-    if (valueDouble > maxAmount.toDouble()) {
-      valueDouble = maxAmount.toDouble();
-      swapBloc.setIsMaxActive(true);
+    if (valueDouble != swapBloc.amountSell) {
+      // If greater than max available balance
+      final double maxAmount = await getMaxSellAmount();
+      if (valueDouble >= maxAmount) {
+        valueDouble = maxAmount;
+        swapBloc.setIsMaxActive(true);
+      } else {
+        swapBloc.setIsMaxActive(false);
+      }
     }
 
     final Ask matchingBid = swapBloc.matchingBid;
@@ -58,7 +59,9 @@ class TradeForm {
         swapBloc.shouldBuyOut = false;
       }
 
-      swapBloc.setAmountReceive(valueDouble / double.parse(matchingBid.price));
+      final double amountReceive =
+          valueDouble / double.parse(matchingBid.price);
+      swapBloc.setAmountReceive(amountReceive);
     }
 
     swapBloc.setAmountSell(valueDouble);
@@ -195,22 +198,33 @@ class TradeForm {
     }
   }
 
-  Future<Decimal> getMaxSellAmount() async {
-    final Decimal sellCoinFee = await _getSellCoinFees(true);
-    final CoinBalance sellCoinBalance = swapBloc.sellCoinBalance;
-    return sellCoinBalance.balance.balance - sellCoinFee;
+  Future<void> setMaxSellAmount() async {
+    swapBloc.setIsMaxActive(true);
+
+    swapBloc.processing = true;
+    await updateTradePreimage();
+    final double max = await getMaxSellAmount();
+    swapBloc.processing = false;
+
+    if (max != swapBloc.amountSell) swapBloc.setAmountSell(max);
   }
 
-  Future<Decimal> _getSellCoinFees(bool max) async {
-    final CoinAmt fee = await GetSwapFee.totalSell(
-      sellCoin: swapBloc.sellCoinBalance.coin.abbr,
-      buyCoin: swapBloc.receiveCoinBalance?.coin?.abbr,
-      sellAmt: max
-          ? swapBloc.sellCoinBalance.balance.balance.toDouble()
-          : swapBloc.amountSell,
-    );
+  Future<double> getMaxSellAmount() async {
+    if (swapBloc.sellCoinBalance == null) return null;
 
-    return deci(fee.amount);
+    final double fromPreimage =
+        double.tryParse(swapBloc.tradePreimage?.volume ?? '');
+    if (fromPreimage != null)
+      return double.parse(fromPreimage.toStringAsFixed(precision));
+
+    final Rational fromMaxTakerVolume = await MM.getMaxTakerVolume(
+        GetMaxTakerVolume(coin: swapBloc.sellCoinBalance.coin.abbr));
+    if (fromMaxTakerVolume != null)
+      return double.parse(fromMaxTakerVolume.toStringAsFixed(precision));
+
+    return double.tryParse(
+        swapBloc.sellCoinBalance.balance.balance.toStringAsFixed(precision) ??
+            '0');
   }
 
   // Updates swapBloc.tradePreimage and returns error String or null
@@ -239,14 +253,18 @@ class TradeForm {
             price: (swapBloc.amountSell / swapBloc.amountReceive).toString());
 
     TradePreimage tradePreimage;
+
+    swapBloc.processing = true;
     try {
       tradePreimage = await MM.getTradePreimage(getTradePreimageRequest);
     } catch (e) {
+      swapBloc.processing = false;
       swapBloc.tradePreimage = null;
       Log('trade_form', 'updateTradePreimage] $e');
       return e.toString();
     }
 
+    swapBloc.processing = false;
     swapBloc.tradePreimage = tradePreimage;
     return null;
   }
@@ -263,6 +281,8 @@ class TradeForm {
     swapBloc.setEnabledSellField(false);
     swapBloc.enabledReceiveField = false;
     swapBloc.shouldBuyOut = false;
+    swapBloc.tradePreimage = null;
+    swapBloc.processing = false;
     syncOrderbook.activePair = CoinsPair(sell: null, buy: null);
   }
 }
