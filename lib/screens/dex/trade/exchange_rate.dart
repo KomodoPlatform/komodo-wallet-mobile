@@ -5,6 +5,7 @@ import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
@@ -25,12 +26,12 @@ class _ExchangeRateState extends State<ExchangeRate> {
     cexProvider ??= Provider.of<CexProvider>(context);
     orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
-    final String buyAbbr = swapBloc.buyCoinBalance?.coin?.abbr;
+    final String buyAbbr = swapBloc.receiveCoinBalance?.coin?.abbr;
     final String sellAbbr = swapBloc.sellCoinBalance?.coin?.abbr;
 
     if (buyAbbr == null || sellAbbr == null) return Container();
 
-    final double rate = swapBloc.getExchangeRate();
+    final double rate = tradeForm.getExchangeRate();
     final double cexRate = cexProvider.getCexRate();
 
     Widget _buildExchangeRate() {

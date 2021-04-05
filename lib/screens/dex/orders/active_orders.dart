@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
-import 'package:komodo_dex/screens/dex/history/swap_history.dart';
-import 'package:komodo_dex/screens/dex/orders/build_item_maker.dart';
-import 'package:komodo_dex/screens/dex/orders/build_item_taker.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/build_item_swap.dart';
+import 'package:komodo_dex/screens/dex/orders/maker/build_item_maker.dart';
+import 'package:komodo_dex/screens/dex/orders/taker/build_item_taker.dart';
 import 'package:komodo_dex/widgets/pagination.dart';
 
 class ActiveOrders extends StatefulWidget {
