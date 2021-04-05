@@ -47,8 +47,8 @@ class Result {
         maxBaseVol: json['max_base_vol'] ?? '',
         minBaseVol: json['min_base_vol'] ?? '',
         createdAt: json['created_at'] ?? 0,
-        matches: Map<String, Match>.from(json['matches'])
-                .map<String, Match>((dynamic k, dynamic v) =>
+        matches: Map<String, Match>.from(json['matches']).map<String, Match>(
+                (dynamic k, dynamic v) =>
                     MapEntry<String, Match>(k, Match.fromJson(v))) ??
             <String, Match>{},
         price: json['price'] ?? '',

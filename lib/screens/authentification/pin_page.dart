@@ -11,6 +11,7 @@ import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -204,6 +205,11 @@ class _PinPageState extends State<PinPage> {
               ),
               obscurePin: true,
               error: _error,
+              errorDelayProgressColor:
+                  settingsBloc.isLightTheme ? Colors.black : Colors.white,
+              keyTextStyle: TextStyle(
+                  color: Theme.of(context).textTheme.headline6.color,
+                  fontSize: Theme.of(context).textTheme.headline6.fontSize),
               errorDelaySeconds:
                   widget.pinStatus == PinStatus.NORMAL_PIN ? 5 : null,
               codeLength: 6,
@@ -289,7 +295,10 @@ class _PinPageState extends State<PinPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const CircularProgressIndicator(),
+          Theme(
+            data: Theme.of(context).copyWith(accentColor: Colors.red),
+            child: CircularProgressIndicator(),
+          ),
           const SizedBox(
             height: 8,
           ),

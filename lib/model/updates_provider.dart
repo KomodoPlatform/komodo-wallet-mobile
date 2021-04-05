@@ -48,12 +48,24 @@ class UpdatesProvider extends ChangeNotifier {
     Map<String, dynamic> json;
 
     try {
-      response = await http.post(
+      response = await http
+          .post(
         url,
         body: jsonEncode({
           'currentVersion': currentVersion,
           'platform': Platform.isAndroid ? 'android' : 'ios',
         }),
+      )
+          .timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          Log('updates_provider:47', '_check] Timeout');
+
+          isFetching = false;
+          status = UpdateStatus.upToDate;
+          notifyListeners();
+          return;
+        },
       );
 
       json = jsonDecode(response.body);
@@ -62,6 +74,7 @@ class UpdatesProvider extends ChangeNotifier {
 
       isFetching = false;
       status = UpdateStatus.upToDate;
+      mainBloc.setIsNetworkOffline(true);
       notifyListeners();
       return;
     }

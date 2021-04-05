@@ -122,7 +122,21 @@ class _CoinsPageState extends State<CoinsPage> {
                                                     minFontSize: 12,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline6,
+                                                        .headline6
+                                                        .copyWith(
+                                                            color: _heightFactor <
+                                                                    1.3
+                                                                ? settingsBloc
+                                                                        .isLightTheme
+                                                                    ? Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            0.8)
+                                                                    : Colors
+                                                                        .white
+                                                                : Colors.white
+                                                                    .withOpacity(
+                                                                        0.8)),
                                                     maxLines: 1,
                                                   ));
                                             },
@@ -303,9 +317,11 @@ class LoadAssetState extends State<LoadAsset> {
             color: Colors.white.withOpacity(0.8),
           ));
           listRet.add(Text(
-            AppLocalizations.of(context).numberAssets(assetNumber.toString()),
-            style: Theme.of(context).textTheme.caption,
-          ));
+              AppLocalizations.of(context).numberAssets(assetNumber.toString()),
+              style: Theme.of(context)
+                  .textTheme
+                  .caption
+                  .copyWith(color: Colors.white.withOpacity(0.8))));
           listRet.add(Icon(
             Icons.chevron_right,
             color: Colors.white.withOpacity(0.8),
