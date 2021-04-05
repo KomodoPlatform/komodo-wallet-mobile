@@ -1285,9 +1285,14 @@ class _CoinScrollTextState extends State<CoinScrollText> {
   bool _isScrollStart = true;
   bool _isScrollBefore = false;
   String text = '-';
+  String currentCoin = '';
 
   String coinScroll(String abbr, {int maxChar}) {
     maxChar ??= 5;
+    if (currentCoin != abbr) {
+      currentCoin = abbr;
+      _isScrollStart = true;
+    }
     if (abbr.length <= maxChar) return abbr;
     if (_isScrollStart) {
       _scrollAbbrStart = 0;
@@ -1322,11 +1327,18 @@ class _CoinScrollTextState extends State<CoinScrollText> {
       }
     }
 
-    const spaceCharacter = ' ';
+    // Unicode character U+2004
+    const spaceCharacter = ' ';
     final r = (spaceCharacter * _spacesBefore) +
         abbr.substring(_scrollAbbrStart, _scrollAbbrEnd) +
         (spaceCharacter * _spacesAfter);
     return r;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    currentCoin = widget.abbr;
   }
 
   @override
