@@ -18,10 +18,7 @@ class _CoinScrollTextState extends State<CoinScrollText> {
   int _scrollAbbrStart = 0;
   int _scrollAbbrEnd = 0;
   int _scrollAbbrLength = 0;
-  int _spacesBefore = 0;
-  int _spacesAfter = 0;
   bool _isScrollStart = true;
-  bool _isScrollBefore = false;
   String text = '-';
   String currentCoin = '';
 
@@ -36,40 +33,16 @@ class _CoinScrollTextState extends State<CoinScrollText> {
       _scrollAbbrStart = 0;
       _scrollAbbrEnd = maxChar;
       _scrollAbbrLength = abbr.length;
-      _spacesBefore = 0;
-      _spacesAfter = 0;
       _isScrollStart = false;
-    } else if (_isScrollBefore) {
-      _scrollAbbrStart = 0;
-      _scrollAbbrEnd = 1;
-      _scrollAbbrLength = abbr.length;
-      _spacesBefore = maxChar - 1;
-      _spacesAfter = 0;
-      _isScrollBefore = false;
     } else {
-      if (_spacesBefore > 0) {
-        _spacesBefore -= 1;
-      }
-      if (_scrollAbbrEnd < _scrollAbbrLength) {
-        _scrollAbbrEnd += 1;
-      }
-      if (_scrollAbbrEnd > maxChar) {
-        _scrollAbbrStart += 1;
-      }
-      if ((_scrollAbbrEnd - _scrollAbbrStart + _spacesAfter + _spacesBefore) <
-          maxChar) {
-        _spacesAfter += 1;
-      }
-      if (_spacesAfter >= maxChar - 1) {
-        _isScrollBefore = true;
+      _scrollAbbrStart += 1;
+      _scrollAbbrEnd += 1;
+      if (_scrollAbbrEnd >= _scrollAbbrLength) {
+        _isScrollStart = true;
       }
     }
 
-    // Unicode character U+2004
-    const spaceCharacter = ' ';
-    final r = (spaceCharacter * _spacesBefore) +
-        abbr.substring(_scrollAbbrStart, _scrollAbbrEnd) +
-        (spaceCharacter * _spacesAfter);
+    final r = abbr.substring(_scrollAbbrStart, _scrollAbbrEnd);
     return r;
   }
 
