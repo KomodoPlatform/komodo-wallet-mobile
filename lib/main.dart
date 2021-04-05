@@ -171,7 +171,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       stream: settingsBloc.outLightTheme,
                       initialData: settingsBloc.isLightTheme,
                       builder: (BuildContext cont,
-                          AsyncSnapshot<dynamic> isLightTheme) {
+                          AsyncSnapshot<dynamic> currentTheme) {
                         return MaterialApp(
                             title: 'atomicDEX',
                             localizationsDelegates: <
@@ -187,7 +187,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                                     ? Locale(prefLocale.data)
                                     : null,
                             supportedLocales: mainBloc.supportedLocales,
-                            theme: isLightTheme.data
+                            theme: settingsBloc.isLightTheme
                                 ? getThemeLight()
                                 : getThemeDark(),
                             initialRoute: '/',
