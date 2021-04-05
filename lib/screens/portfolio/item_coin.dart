@@ -106,14 +106,15 @@ class _ItemCoinState extends State<ItemCoin> {
               color: Theme.of(context).errorColor,
               icon: Icons.delete,
               onTap: () async {
-                final abbr = widget.coinBalance.coin.abbr;
-                if (abbr == 'BTC' || abbr == 'KMD') {
+                if (widget.coinBalance.coin.isDefault) {
+                  final abbr = widget.coinBalance.coin.abbr;
                   showDialog<dynamic>(
                     context: context,
                     builder: (contex) => AlertDialog(
-                      title: Text("Can't disable"),
+                      title: Text("Can't disable default coin"),
                       content: Text(
-                        'At least two coins must stay enabled at all times, so de-activating KMD or BTC is forbidden',
+                        '$abbr is a default coin, default coins must remain enabled at all times.\n'
+                        'Therefore, you can´t disable $abbr.',
                       ),
                       actions: [
                         FlatButton(
