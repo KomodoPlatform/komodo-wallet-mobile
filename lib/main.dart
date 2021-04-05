@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/drawer/drawer.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
@@ -149,7 +150,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       SystemUiOverlay.top,
     ]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: getTheme().backgroundColor,
+      systemNavigationBarColor: getThemeDark().backgroundColor,
       systemNavigationBarIconBrightness: Brightness.light,
     ));
 
@@ -166,30 +167,39 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                   pref: 'current_languages',
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> prefLocale) {
-                    return MaterialApp(
-                        title: 'atomicDEX',
-                        localizationsDelegates: <
-                            LocalizationsDelegate<dynamic>>[
-                          const AppLocalizationsDelegate(),
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate,
-                          GlobalCupertinoLocalizations.delegate
-                        ],
-                        locale: currentLocale.hasData
-                            ? currentLocale.data
-                            : prefLocale.hasData
-                                ? Locale(prefLocale.data)
-                                : null,
-                        supportedLocales: mainBloc.supportedLocales,
-                        theme: getTheme(),
-                        initialRoute: '/',
-                        routes: <String, Widget Function(BuildContext)>{
-                          // When we navigate to the '/' route, build the FirstScreen Widget
-                          '/': (BuildContext context) => LockScreen(
-                                context: context,
-                                child: MyHomePage(),
-                              ),
-                        });
+                    return StreamBuilder<bool>(
+                      stream: settingsBloc.outLightTheme,
+                      initialData: settingsBloc.isLightTheme,
+                      builder: (BuildContext cont,
+                          AsyncSnapshot<dynamic> currentTheme) {
+                        return MaterialApp(
+                            title: 'atomicDEX',
+                            localizationsDelegates: <
+                                LocalizationsDelegate<dynamic>>[
+                              const AppLocalizationsDelegate(),
+                              GlobalMaterialLocalizations.delegate,
+                              GlobalWidgetsLocalizations.delegate,
+                              GlobalCupertinoLocalizations.delegate
+                            ],
+                            locale: currentLocale.hasData
+                                ? currentLocale.data
+                                : prefLocale.hasData
+                                    ? Locale(prefLocale.data)
+                                    : null,
+                            supportedLocales: mainBloc.supportedLocales,
+                            theme: settingsBloc.isLightTheme
+                                ? getThemeLight()
+                                : getThemeDark(),
+                            initialRoute: '/',
+                            routes: <String, Widget Function(BuildContext)>{
+                              // When we navigate to the '/' route, build the FirstScreen Widget
+                              '/': (BuildContext context) => LockScreen(
+                                    context: context,
+                                    child: MyHomePage(),
+                                  ),
+                            });
+                      },
+                    );
                   });
             }));
   }
@@ -313,9 +323,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   data: Theme.of(context).copyWith(
                       canvasColor: Theme.of(context).primaryColor,
                       primaryColor: Theme.of(context).accentColor,
-                      textTheme: Theme.of(context).textTheme.copyWith(
-                          caption:
-                              TextStyle(color: Colors.white.withOpacity(0.5)))),
+                      textTheme: Theme.of(context).textTheme),
                   child: Container(
                     color: Theme.of(context).primaryColor,
                     child: SafeArea(

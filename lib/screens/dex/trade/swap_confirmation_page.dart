@@ -22,6 +22,7 @@ import 'package:komodo_dex/screens/dex/trade/protection_control.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 
 enum SwapStatus { BUY, SELL }
@@ -211,7 +212,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                 top: 20,
               ),
               width: double.infinity,
-              color: Colors.white.withOpacity(0.15),
+              color: settingsBloc.isLightTheme
+                  ? Colors.black.withOpacity(0.05)
+                  : Colors.white.withOpacity(0.15),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -250,7 +253,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                       top: 26,
                     ),
                     width: double.infinity,
-                    color: Colors.white.withOpacity(0.15),
+                    color: settingsBloc.isLightTheme
+                        ? Colors.black.withOpacity(0.05)
+                        : Colors.white.withOpacity(0.15),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -284,7 +289,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 4),
                         color: Theme.of(context).backgroundColor,
-                        child: SvgPicture.asset('assets/svg/icon_swap.svg')),
+                        child: SvgPicture.asset(settingsBloc.isLightTheme
+                            ? 'assets/svg_light/icon_swap.svg'
+                            : 'assets/svg/icon_swap.svg')),
                   ))
             ],
           ),
@@ -313,7 +320,9 @@ class _SwapConfirmationState extends State<SwapConfirmation> {
         padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.yellow[100].withAlpha(200),
+            color: settingsBloc.isLightTheme
+                ? Colors.yellow[700].withAlpha(200)
+                : Colors.yellow[100].withAlpha(200),
             borderRadius: BorderRadius.circular(6),
           ),
           padding: EdgeInsets.all(8),

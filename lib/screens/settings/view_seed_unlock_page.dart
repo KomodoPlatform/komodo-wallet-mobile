@@ -7,6 +7,7 @@ import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/settings/view_private_keys.dart';
 import 'package:komodo_dex/screens/settings/view_seed.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 
@@ -54,7 +55,9 @@ class _ViewSeedUnlockPageState extends State<ViewSeedUnlockPage> {
                 )
               : UnlockPassword(
                   currentWallet: walletBloc.currentWallet,
-                  icon: SvgPicture.asset('assets/svg/seed_logo.svg'),
+                  icon: SvgPicture.asset(settingsBloc.isLightTheme
+                      ? 'assets/svg_light/seed_logo.svg'
+                      : 'assets/svg/seed_logo.svg'),
                   onSuccess: (String data) {
                     setState(() {
                       seed = data;
@@ -90,9 +93,15 @@ class UnlockPassword extends StatefulWidget {
 
 class _UnlockPasswordState extends State<UnlockPassword> {
   TextEditingController controller = TextEditingController();
+
   bool isContinueEnabled = false;
   bool isObscured = true;
+  bool isFocus = false;
   bool isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +152,7 @@ class _UnlockPasswordState extends State<UnlockPassword> {
             hintText: AppLocalizations.of(context).hintCurrentPassword,
             labelText: null,
             suffixIcon: PasswordVisibilityControl(
+              isFocused: isFocus,
               onVisibilityChange: (bool isPasswordObscured) {
                 setState(() {
                   isObscured = isPasswordObscured;

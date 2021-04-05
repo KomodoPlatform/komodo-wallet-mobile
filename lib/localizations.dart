@@ -1179,6 +1179,7 @@ class AppLocalizations {
   String get language => Intl.message('Language', name: 'language');
   String get currency => Intl.message('Currency', name: 'currency');
   String get hideBalance => Intl.message('Hide balances', name: 'hideBalance');
+  String get switchTheme => Intl.message('Switch Theme', name: 'switchTheme');
 
   // --- CEX Marker ---
 

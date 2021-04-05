@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
@@ -55,9 +56,15 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
           child: TextField(
             controller: searchTextController,
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Theme.of(context).textTheme.bodyText2.color,
+              ),
               hintText: 'Search for Ticker',
               counterText: '',
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).accentColor),
+              ),
             ),
             maxLength: 16,
           ),
@@ -267,7 +274,6 @@ class _AsksOrderState extends State<AsksOrder> {
                                   AppLocalizations.of(context).noMatchingOrders,
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Theme.of(context).disabledColor,
                                   ),
                                 ),
                               )
@@ -446,8 +452,12 @@ class _AsksOrderState extends State<AsksOrder> {
         const SizedBox(width: 2),
         Text(
           formatPrice(cexRate),
-          style: const TextStyle(
-              fontSize: 14, color: cexColor, fontWeight: FontWeight.w400),
+          style: TextStyle(
+              fontSize: 14,
+              color: settingsBloc.isLightTheme
+                  ? cexColorLight.withAlpha(150)
+                  : cexColor.withAlpha(150),
+              fontWeight: FontWeight.w400),
         ),
         const SizedBox(width: 4),
       ],
@@ -479,7 +489,9 @@ class _AsksOrderState extends State<AsksOrder> {
                   formatPrice(1 / double.parse(bid.price)),
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 13,
-                        color: Colors.greenAccent,
+                        color: settingsBloc.isLightTheme
+                            ? Colors.green
+                            : Colors.greenAccent,
                       ),
                 ),
                 if (addressBookProvider.contactByAddress(bid.address) != null)

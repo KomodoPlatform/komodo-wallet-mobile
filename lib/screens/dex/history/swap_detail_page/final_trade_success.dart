@@ -3,6 +3,7 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/screens/dex/history/swap_detail_page/detail_swap.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class FinalTradeSuccess extends StatefulWidget {
   const FinalTradeSuccess({@required this.swap});
@@ -49,7 +50,10 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
             ),
             Container(
               height: 200,
-              child: SvgPicture.asset('assets/svg/trade_success.svg',
+              child: SvgPicture.asset(
+                  settingsBloc.isLightTheme
+                      ? 'assets/svg_light/trade_success.svg'
+                      : 'assets/svg/trade_success.svg',
                   semanticsLabel: 'Trade Success'),
             ),
             const SizedBox(

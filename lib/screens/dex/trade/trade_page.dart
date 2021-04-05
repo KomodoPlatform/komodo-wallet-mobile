@@ -283,7 +283,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         const SizedBox(width: 2),
         Text(
           cexProvider.convert(price),
-          style: TextStyle(fontSize: size, color: cexColor),
+          style: TextStyle(
+              fontSize: size,
+              color: settingsBloc.isLightTheme
+                  ? cexColorLight.withAlpha(150)
+                  : cexColor.withAlpha(150)),
         ),
       ],
     );
@@ -459,8 +463,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                     TextFormField(
                                                         key: Key(
                                                             'input-text-${market.toString().toLowerCase()}'),
-                                                        scrollPadding: const EdgeInsets.only(
-                                                            left: 35),
+                                                        scrollPadding:
+                                                            const EdgeInsets.only(
+                                                                left: 35),
                                                         inputFormatters: <
                                                             TextInputFormatter>[
                                                           DecimalTextInputFormatter(
@@ -469,10 +474,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                               .allow(RegExp(
                                                                   '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
                                                         ],
-                                                        focusNode: market == Market.SELL
-                                                            ? _focusSell
-                                                            : _focusReceive,
-                                                        controller: market == Market.SELL
+                                                        focusNode:
+                                                            market == Market.SELL
+                                                                ? _focusSell
+                                                                : _focusReceive,
+                                                        controller: market ==
+                                                                Market.SELL
                                                             ? _controllerAmountSell
                                                             : _controllerAmountReceive,
                                                         onChanged: market ==
@@ -483,26 +490,29 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                                                                         false);
                                                               }
                                                             : null,
-                                                        enabled: market == Market.RECEIVE
+                                                        enabled: market ==
+                                                                Market.RECEIVE
                                                             ? swapBloc
                                                                 .enabledReceiveField
                                                             : swapBloc
                                                                 .enabledSellField,
                                                         keyboardType:
-                                                            const TextInputType.numberWithOptions(
+                                                            const TextInputType
+                                                                    .numberWithOptions(
                                                                 decimal: true),
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .subtitle2,
-                                                        textInputAction: TextInputAction
-                                                            .done,
+                                                        textInputAction:
+                                                            TextInputAction.done,
                                                         decoration: InputDecoration(
-                                                            hintStyle: Theme.of(context)
-                                                                .textTheme
-                                                                .bodyText1
-                                                                .copyWith(
-                                                                    fontSize: 16,
-                                                                    fontWeight: FontWeight.w400),
+                                                            focusedBorder: UnderlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .accentColor),
+                                                            ),
+                                                            hintStyle: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 16, fontWeight: FontWeight.w400),
                                                             hintText: market == Market.SELL ? AppLocalizations.of(context).amountToSell : '')),
                                                     const SizedBox(height: 2),
                                                     _buildCEXamount(
@@ -600,16 +610,18 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                   top: -25,
                   left: MediaQuery.of(context).size.width / 2 - 60,
                   child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(32)),
-                        color: Theme.of(context).backgroundColor,
-                      ),
-                      child: SvgPicture.asset(
-                        'assets/svg/icon_swap.svg',
-                        height: 40,
-                      )),
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(32)),
+                      color: Theme.of(context).backgroundColor,
+                    ),
+                    child: SvgPicture.asset(
+                      settingsBloc.isLightTheme
+                          ? 'assets/svg_light/icon_swap.svg'
+                          : 'assets/svg/icon_swap.svg',
+                      height: 40,
+                    ),
+                  ),
                 )
             ],
           );
