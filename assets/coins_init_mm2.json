@@ -51,13 +51,30 @@
         }
     },
     {
-        "coin": "1INCH",
-        "name": "1inch",
+        "coin": "1INCH-BEP20",
+        "name": "1inch_bep20",
         "fname": "1inch",
         "rpcport": 80,
         "mm2": 1,
+        "avg_blocktime": 0.05,
         "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x111111111117dC0aa78b770fA6A738034120C302"
+            }
+        }
+    },
+    {
+        "coin": "1INCH-ERC20",
+        "name": "1inch_erc20",
+        "fname": "1inch",
+        "rpcport": 80,
+        "mm2": 1,
         "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
         "protocol": {
             "type": "ERC20",
             "protocol_data": {
@@ -148,6 +165,22 @@
         }
     },
     {
+        "coin": "AVAX-BEP20",
+        "name": "avax_bep20",
+        "fname": "Avalanche",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041"
+            }
+        }
+    },
+    {
         "coin": "AWC",
         "name": "atomic-wallet-coin",
         "fname": "Atomic Wallet Coin",
@@ -211,6 +244,55 @@
         "avg_blocktime": 0.5,
         "protocol": {
             "type": "UTXO"
+        }
+    },
+    {
+        "coin": "BAL-BEP20",
+        "name": "bal_bep20",
+        "fname": "Balancer",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xd4ed60d8368a92b5F1ca33aF61eF2A94714B2d46"
+            }
+        }
+    },
+    {
+        "coin": "BAL-ERC20",
+        "name": "bal_erc20",
+        "fname": "Balancer",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0xba100000625a3754423978a60c9317c58a424e3D"
+            }
+        }
+    },
+    {
+        "coin": "JRT-ERC20",
+        "name": "jrt_erc20",
+        "fname": "Jarvis Network",
+        "rpcport": 80,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 0.25,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0x8A9C67fee641579dEbA04928c4BC45F66e26343A"
+            }
         }
     },
     {
@@ -330,6 +412,39 @@
         "avg_blocktime": 1.1,
         "protocol": {
             "type": "UTXO"
+        }
+    },
+    {
+        "coin": "BNT-BEP20",
+        "name": "bnt_bep20",
+        "fname": "Bancor",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xA069008A669e2Af00a86673D9D584cfb524A42Cc"
+            }
+        }
+    },
+    {
+        "coin": "BNT-ERC20",
+        "name": "bnt_erc20",
+        "fname": "Bancor",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C"
+            }
         }
     },
     {
@@ -747,13 +862,30 @@
         }
     },
     {
-        "coin": "DODO",
-        "name": "dodo",
+        "coin": "DODO-BEP20",
+        "name": "dodo_bep20",
         "fname": "DODO",
         "rpcport": 80,
         "mm2": 1,
+        "avg_blocktime": 0.05,
         "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x67ee3Cb086F8a16f34beE3ca72FAD36F7Db929e2"
+            }
+        }
+    },
+    {
+        "coin": "DODO-ERC20",
+        "name": "dodo_erc20",
+        "fname": "DODO",
+        "rpcport": 80,
+        "mm2": 1,
         "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
         "protocol": {
             "type": "ERC20",
             "protocol_data": {
@@ -830,6 +962,40 @@
         }
     },
     {
+        "coin": "EFL",
+        "name": "egulden",
+        "fname": "e-Gulden",
+        "confpath": "USERHOME/.egulden/coin.conf",
+        "rpcport": 21015,
+        "pubtype": 48,
+        "p2shtype": 5,
+        "wiftype": 176,
+        "txfee": 100000,
+        "dust": 54600,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 2,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
+        "coin": "EGLD-BEP20",
+        "name": "egld_bep20",
+        "fname": "Elrond",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xbF7c81FFF98BbE61B40Ed186e4AfD6DDd01337fe"
+            }
+        }
+    },
+    {
         "coin": "EMC2",
         "name": "einsteinium",
         "fname": "Einsteinium",
@@ -880,6 +1046,22 @@
         }
     },
     {
+        "coin": "ETC-BEP20",
+        "name": "etc_bep20",
+        "fname": "Ethereum Classic",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x3d6545b08693daE087E957cb1180ee38B9e3c25E"
+            }
+        }
+    },
+    {
         "coin": "ETH",
         "name": "ethereum",
         "fname": "Ethereum",
@@ -917,6 +1099,22 @@
         "avg_blocktime": 0.25,
         "protocol": {
             "type": "ETH"
+        }
+    },
+    {
+        "coin": "FIL-BEP20",
+        "name": "fil_bep20",
+        "fname": "Filecoin",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x0D8Ce2A99Bb6e3B7Db580eD848240e4a0F9aE153"
+            }
         }
     },
     {
@@ -998,6 +1196,21 @@
     },
     {
         "coin": "GLEEC",
+        "asset": "GLEEC",
+        "fname": "Gleec",
+        "rpcport": 23226,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 2,
+        "requires_notarization": true,
+        "avg_blocktime": 1,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
+        "coin": "GLEEC-OLD",
         "name": "gleecbtc",
         "fname": "Gleec",
         "rpcport": 8332,
@@ -1093,6 +1306,38 @@
         "avg_blocktime": 1,
         "protocol": {
             "type": "UTXO"
+        }
+    },
+    {
+        "coin": "IOTA-BEP20",
+        "name": "iota_bep20",
+        "fname": "IOTA",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xd944f1D1e9d5f9Bb90b62f9D45e447D989580782"
+            }
+        }
+    },
+    {
+        "coin": "IOTX-BEP20",
+        "name": "iotx_bep20",
+        "fname": "IoTeX",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x9678E42ceBEb63F23197D726B29b1CB20d0064E5"
+            }
         }
     },
     {
@@ -1331,6 +1576,39 @@
         }
     },
     {
+        "coin": "MATIC-BEP20",
+        "name": "matic_bep20",
+        "fname": "Polygon",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xCC42724C6683B7E57334c4E856f4c9965ED682bD"
+            }
+        }
+    },
+    {
+        "coin": "MATIC-ERC20",
+        "name": "matic_erc20",
+        "fname": "Polygon",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0"
+            }
+        }
+    },
+    {
         "coin": "MCL",
         "asset": "MCL",
         "fname": "MarmaraCreditLoops",
@@ -1376,13 +1654,30 @@
         }
     },
     {
-        "coin": "MKR",
-        "name": "maker",
+        "coin": "MKR-BEP20",
+        "name": "mkr_bep20",
         "fname": "Maker",
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
         "rpcport": 80,
         "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x5f0Da599BB2ccCfcf6Fdfd7D81743B6020864350"
+            }
+        }
+    },
+    {
+        "coin": "MKR-ERC20",
+        "name": "mkr_erc20",
+        "fname": "Maker",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
         "protocol": {
             "type": "ERC20",
             "protocol_data": {
@@ -1473,6 +1768,22 @@
         }
     },
     {
+        "coin": "NEAR-BEP20",
+        "name": "near_bep20",
+        "fname": "NEAR Protocol",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x1Fa4a73a3F0133f0025378af00236f3aBDEE5D63"
+            }
+        }
+    },
+    {
         "coin": "NIX",
         "name": "nix",
         "fname": "NIX",
@@ -1516,6 +1827,22 @@
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0xA15C7Ebe1f07CaF6bFF097D8a589fb8AC49Ae5B3"
+            }
+        }
+    },
+    {
+        "coin": "ONT-BEP20",
+        "name": "ont_bep20",
+        "fname": "Ontology",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xFd7B3A77848f1C2D67E05E54d78d174a0C850335"
             }
         }
     },
@@ -1776,8 +2103,9 @@
         "segwit": true,
         "txfee": 400000,
         "mm2": 1,
-        "mature_confirmations": 500,
+        "mature_confirmations": 2000,
         "required_confirmations": 1,
+        "avg_blocktime": 0.53,
         "protocol": {
             "type": "QRC20",
             "protocol_data": {
@@ -1817,8 +2145,8 @@
         "txfee": 400000,
         "mm2": 1,
         "required_confirmations": 1,
-        "mature_confirmations": 500,
-        "avg_blocktime": 2.133,
+        "mature_confirmations": 2000,
+        "avg_blocktime": 0.53,
         "protocol": {
             "type": "QTUM"
         }
@@ -1899,22 +2227,6 @@
         "avg_blocktime": 1,
         "protocol": {
             "type": "UTXO"
-        }
-    },
-    {
-        "coin": "SAI",
-        "name": "single-collateral-dai",
-        "fname": "Single Collateral DAI",
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "rpcport": 80,
-        "mm2": 1,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359"
-            }
         }
     },
     {
@@ -2026,18 +2338,68 @@
         }
     },
     {
-        "coin": "SUSHI",
-        "name": "sushiswap",
+        "coin": "SUSHI-BEP20",
+        "name": "sushi_bep20",
         "fname": "Sushi",
         "rpcport": 80,
         "mm2": 1,
+        "avg_blocktime": 0.05,
         "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x947950BcC74888a40Ffa2593C5798F11Fc9124C4"
+            }
+        }
+    },
+    {
+        "coin": "SUSHI-ERC20",
+        "name": "sushi_erc20",
+        "fname": "Sushi",
+        "rpcport": 80,
+        "mm2": 1,
         "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
         "protocol": {
             "type": "ERC20",
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2"
+            }
+        }
+    },
+    {
+        "coin": "SXP-BEP20",
+        "name": "sxp_bep20",
+        "fname": "Swipe",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x47BEAd2563dCBf3bF2c9407fEa4dC236fAbA485A"
+            }
+        }
+    },
+    {
+        "coin": "SXP-ERC20",
+        "name": "sxp_erc20",
+        "fname": "Swipe",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0x8CE9137d39326AD0cD6491fb5CC0CbA0e089b6A9"
             }
         }
     },
@@ -2050,13 +2412,34 @@
         "p2shtype": 5,
         "wiftype": 128,
         "txfee": 10000,
+        "segwit": true,
+        "required_confirmations": 5,
+        "avg_blocktime": 1,
         "mm2": 1,
         "protocol": {
             "type": "UTXO"
         }
     },
     {
-        "coin": "tBTC",
+        "coin": "SCA",
+        "name": "scalaris",
+        "fname": "Scalaris",
+        "rpcport": 42510,
+        "txversion": 1,
+        "pubtype": 63,
+        "p2shtype": 23,
+        "wiftype": 154,
+        "txfee": 200000,
+        "segwit": false,
+        "required_confirmations": 3,
+        "avg_blocktime": 1,
+        "mm2": 1,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
+        "coin": "tBTC-TEST",
         "name": "tbitcoin",
         "fname": "tBitcoin",
         "rpcport": 18332,
@@ -2183,9 +2566,9 @@
         }
     },
     {
-        "coin": "VOTE2020",
-        "asset": "VOTE2020",
-        "rpcport": 44249,
+        "coin": "VOTE2021",
+        "asset": "VOTE2021",
+        "rpcport": 55638,
         "mm2": 1,
         "txfee": 10000,
         "txversion": 4,
@@ -2341,6 +2724,22 @@
         }
     },
     {
+        "coin": "XVS",
+        "name": "xvs_bep20",
+        "fname": "Venus",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63"
+            }
+        }
+    },
+    {
         "coin": "YCE",
         "name": "myce",
         "fname": "MYCE",
@@ -2353,6 +2752,72 @@
         "mm2": 1,
         "protocol": {
             "type": "UTXO"
+        }
+    },
+    {
+        "coin": "YFI-BEP20",
+        "name": "yfi_bep20",
+        "fname": "yearn.finance",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x88f1A5ae2A3BF98AEAF342D26B30a79438c9142e"
+            }
+        }
+    },
+    {
+        "coin": "YFI-ERC20",
+        "name": "yfi_erc20",
+        "fname": "yearn.finance",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e"
+            }
+        }
+    },
+    {
+        "coin": "YFII-BEP20",
+        "name": "yfii_bep20",
+        "fname": "DFI.Money",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x7F70642d88cf1C4a3a7abb072B53B929b653edA5"
+            }
+        }
+    },
+    {
+        "coin": "YFII-ERC20",
+        "name": "yfii_erc20",
+        "fname": "DFI.Money",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",
+                "contract_address": "0xa1d0E215a23d7030842FC67cE582a6aFa3CCaB83"
+            }
         }
     },
     {
@@ -2395,6 +2860,22 @@
         "avg_blocktime": 2,
         "protocol": {
             "type": "UTXO"
+        }
+    },
+    {
+        "coin": "ZIL-BEP20",
+        "name": "zil_bep20",
+        "fname": "Zilliqa",
+        "rpcport": 80,
+        "mm2": 1,
+        "avg_blocktime": 0.05,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xb86AbCb37C3A4B64f74f59301AFF131a1BEcC787"
+            }
         }
     },
     {
@@ -3026,24 +3507,6 @@
         "decimals": 4
     },
     {
-        "coin": "YFI",
-        "gui_coin": "YFI",
-        "name": "ethereum",
-        "fname": "yearn.finance",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e"
-            }
-        },
-        "decimals": 18
-    },
-    {
         "coin": "UNI-ERC20",
         "name": "uni_erc20",
         "fname": "Uniswap",
@@ -3292,22 +3755,37 @@
         "decimals": 6
     },
     {
-        "coin": "BAND",
-        "gui_coin": "BAND",
-        "name": "ethereum",
-        "fname": "bandtoken",
+        "coin": "BAND-BEP20",
+        "name": "band_bep20",
+        "fname": "Band Protocol",
         "rpcport": 80,
         "mm2": 1,
+        "avg_blocktime": 0.05,
         "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xAD6cAEb32CD2c308980a548bD0Bc5AA4306c6c18"
+            }
+        }
+    },
+    {
+        "coin": "BAND-ERC20",
+        "name": "band_erc20",
+        "fname": "Band Protocol",
+        "rpcport": 80,
+        "mm2": 1,
         "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
         "protocol": {
             "type": "ERC20",
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55"
             }
-        },
-        "decimals": 18
+        }
     },
     {
         "coin": "SNT",
@@ -3323,24 +3801,6 @@
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0x744d70FDBE2Ba4CF95131626614a1763DF805B9E"
-            }
-        },
-        "decimals": 18
-    },
-    {
-        "coin": "BNT",
-        "gui_coin": "BNT",
-        "name": "ethereum",
-        "fname": "bancor",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C"
             }
         },
         "decimals": 18
@@ -3400,24 +3860,6 @@
         "decimals": 8
     },
     {
-        "coin": "BAL",
-        "gui_coin": "BAL",
-        "name": "ethereum",
-        "fname": "balancer",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0xba100000625a3754423978a60c9317c58a424e3D"
-            }
-        },
-        "decimals": 18
-    },
-    {
         "coin": "CVT",
         "gui_coin": "CVT",
         "name": "ethereum",
@@ -3470,24 +3912,6 @@
             }
         },
         "decimals": 9
-    },
-    {
-        "coin": "MATIC",
-        "gui_coin": "MATIC",
-        "name": "ethereum",
-        "fname": "matic token",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0"
-            }
-        },
-        "decimals": 18
     },
     {
         "coin": "STORJ",
@@ -3562,24 +3986,6 @@
         "decimals": 18
     },
     {
-        "coin": "SXP",
-        "gui_coin": "SXP",
-        "name": "ethereum",
-        "fname": "swipe",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0x8CE9137d39326AD0cD6491fb5CC0CbA0e089b6A9"
-            }
-        },
-        "decimals": 18
-    },
-    {
         "coin": "UBT",
         "gui_coin": "UBT",
         "name": "ethereum",
@@ -3611,24 +4017,6 @@
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0x3506424F91fD33084466F402d5D97f05F8e3b4AF"
-            }
-        },
-        "decimals": 18
-    },
-    {
-        "coin": "YFII",
-        "gui_coin": "YFII",
-        "name": "ethereum",
-        "fname": "yfii.finance",
-        "rpcport": 80,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 0.25,
-        "protocol": {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",
-                "contract_address": "0xa1d0E215a23d7030842FC67cE582a6aFa3CCaB83"
             }
         },
         "decimals": 18
@@ -3706,22 +4094,37 @@
         "decimals": 8
     },
     {
-        "coin": "ELF",
-        "gui_coin": "ELF",
-        "name": "ethereum",
-        "fname": "elf",
+        "coin": "ELF-BEP20",
+        "name": "elf_bep20",
+        "fname": "aelf",
         "rpcport": 80,
         "mm2": 1,
+        "avg_blocktime": 0.05,
         "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xa3f020a5C92e15be13CAF0Ee5C95cF79585EeCC9"
+            }
+        }
+    },
+    {
+        "coin": "ELF-ERC20",
+        "name": "elf_erc20",
+        "fname": "aelf",
+        "rpcport": 80,
+        "mm2": 1,
         "avg_blocktime": 0.25,
+        "required_confirmations": 3,
+        "decimals": 18,
         "protocol": {
             "type": "ERC20",
             "protocol_data": {
                 "platform": "ETH",
                 "contract_address": "0xbf2179859fc6D5BEE9Bf9158632Dc51678a4100e"
             }
-        },
-        "decimals": 18
+        }
     },
     {
         "coin": "TMTG",

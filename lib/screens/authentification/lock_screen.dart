@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
@@ -18,6 +19,7 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -73,22 +75,52 @@ class _LockScreenState extends State<LockScreen> {
     }
   }
 
+  final Connectivity _connectivity = Connectivity();
+  StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    Log('lock_screen connectivity: ]', result.toString());
+    switch (result) {
+      case ConnectivityResult.wifi:
+      case ConnectivityResult.mobile:
+        mainBloc.setIsNetworkOffline(false);
+        break;
+      case ConnectivityResult.none:
+        mainBloc.setIsNetworkOffline(true);
+        break;
+      default:
+        mainBloc.setIsNetworkOffline(true);
+        break;
+    }
+  }
+
+  Future<void> initConnectivity() async {
+    try {
+      _connectivitySubscription =
+          _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    } on PlatformException catch (e) {
+      Log('lock_screen connectivity: ]', '$e');
+    }
+    return _updateConnectionStatus;
+  }
+
   @override
   void initState() {
+    super.initState();
     final ScreenArguments args =
         ModalRoute.of(widget.context).settings.arguments;
     password = args?.password;
     _initScreen();
 
+    initConnectivity();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (updatesProvider.status == null) await updatesProvider.check();
+      if (updatesProvider.status == null && !mainBloc.isNetworkOffline)
+        await updatesProvider.check();
       setState(() {
         shouldUpdate = updatesProvider.status == UpdateStatus.recommended ||
             updatesProvider.status == UpdateStatus.required;
       });
     });
-
-    super.initState();
 
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[
       DeviceOrientation.portraitUp,
@@ -104,6 +136,7 @@ class _LockScreenState extends State<LockScreen> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    _connectivitySubscription.cancel();
     super.dispose();
   }
 
@@ -137,7 +170,7 @@ class _LockScreenState extends State<LockScreen> {
           RegExp(r'([^\n\r]*)$').firstMatch(startup.log);
       final String _logTail = _tailMatch == null ? '' : _tailMatch[0];
       return _buildSplash(_logTail);
-    } else if (updatesProvider.status == null) {
+    } else if (updatesProvider.status == null && !mainBloc.isNetworkOffline) {
       return _buildSplash(AppLocalizations.of(context).checkingUpdates);
     }
 

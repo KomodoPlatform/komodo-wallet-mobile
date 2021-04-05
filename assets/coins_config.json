@@ -508,25 +508,6 @@
         ]
     },
     {
-        "name": "SAI",
-        "type": "erc",
-        "address": "http://eth1.cipig.net",
-        "port": 8555,
-        "proto": "tcp",
-        "abbr": "SAI",
-        "coingeckoId": "dai",
-        "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
-        "colorCoin": "0xFFF8B34F",
-        "serverList": [
-            "http://eth1.cipig.net:8555",
-            "http://eth2.cipig.net:8555",
-            "http://eth3.cipig.net:8555"
-        ],
-        "explorerUrl": [
-            "https://etherscan.io/"
-        ]
-    },
-    {
         "name": "HempCoin",
         "type": "smartChain",
         "address": "165.22.52.123",
@@ -673,12 +654,12 @@
         ]
     },
     {
-        "name": "tBitcoin",
+        "name": "tBitcoin-TEST",
         "type": "utxo",
         "address": "electrum1.cipig.net",
         "port": 10068,
         "proto": "tcp",
-        "abbr": "tBTC",
+        "abbr": "tBTC-TEST",
         "coingeckoId": "test-token",
         "testCoin": true,
         "colorCoin": "0xFFf7931a",
@@ -692,12 +673,12 @@
         ]
     },
     {
-        "name": "GleecBTC",
+        "name": "GleecBTC-OLD",
         "type": "utxo",
         "address": "electrum1.cipig.net",
         "port": 10069,
         "proto": "tcp",
-        "abbr": "GLEEC",
+        "abbr": "GLEEC-OLD",
         "coingeckoId": "gleec-coin",
         "colorCoin": "0xFFA13FFF",
         "serverList": [
@@ -725,6 +706,22 @@
         ],
         "explorerUrl": [
             "https://explorer.pbc.kmd.sh/"
+        ]
+    },
+    {
+        "name": "VOTE2021",
+        "type": "smartChain",
+        "proto": "SSL",
+        "abbr": "VOTE2021",
+        "coingeckoId": "test-token",
+        "colorCoin": "0xFF326464",
+        "serverList": [
+            "electrum1.cipig.net:20002",
+            "electrum2.cipig.net:20002",
+            "electrum3.cipig.net:20002"
+        ],
+        "explorerUrl": [
+            "https://vote.kmdexplorer.io/"
         ]
     }
 ]
