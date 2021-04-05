@@ -150,7 +150,13 @@ class _DetailSwapState extends State<DetailSwap> {
                   ),
                   isNoteEdit
                       ? TextField(
-                          decoration: const InputDecoration(isDense: true),
+                          decoration: InputDecoration(
+                            isDense: true,
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).accentColor),
+                            ),
+                          ),
                           controller: noteTextController,
                           maxLength: 200,
                           maxLines: 7,
@@ -299,11 +305,7 @@ class _DetailSwapState extends State<DetailSwap> {
             child: Container(),
           ),
           _buildIcon(widget.swap.result.myInfo.myCoin),
-          Icon(
-            Icons.sync,
-            size: 20,
-            color: Colors.white,
-          ),
+          Icon(Icons.sync, size: 20),
           _buildIcon(widget.swap.result.myInfo.otherCoin),
           Expanded(
             child: Container(),

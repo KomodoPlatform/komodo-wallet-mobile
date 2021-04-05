@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/bid_details_dialog.dart';
@@ -137,7 +138,9 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
                   formatPrice(1 / double.parse(bid.price)),
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 13,
-                        color: Colors.greenAccent,
+                        color: settingsBloc.isLightTheme
+                            ? Colors.green
+                            : Colors.greenAccent,
                       ),
                 ),
                 if (_addressBookProvider.contactByAddress(bid.address) != null)

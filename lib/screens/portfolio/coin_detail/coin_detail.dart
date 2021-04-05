@@ -193,6 +193,11 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                     )
                   : Icon(Icons.delete),
+              color: ThemeData.estimateBrightnessForColor(Color(
+                          int.parse(currentCoinBalance.coin.colorCoin))) ==
+                      Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
               onPressed: () async {
                 setState(() {
                   isDeleteLoading = true;
@@ -210,6 +215,11 @@ class _CoinDetailState extends State<CoinDetail> {
             ),
             IconButton(
               icon: Icon(Icons.share),
+              color: ThemeData.estimateBrightnessForColor(Color(
+                          int.parse(currentCoinBalance.coin.colorCoin))) ==
+                      Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
               onPressed: () async {
                 mainBloc.isUrlLaucherIsOpen = true;
                 await Share.share(AppLocalizations.of(context).shareAddress(
@@ -218,6 +228,13 @@ class _CoinDetailState extends State<CoinDetail> {
               },
             )
           ],
+          leading: BackButton(
+            color: ThemeData.estimateBrightnessForColor(
+                        Color(int.parse(currentCoinBalance.coin.colorCoin))) ==
+                    Brightness.dark
+                ? Colors.white
+                : Colors.black,
+          ),
           title: Row(
             children: <Widget>[
               PhotoHero(
@@ -228,7 +245,16 @@ class _CoinDetailState extends State<CoinDetail> {
               const SizedBox(
                 width: 8,
               ),
-              Text(currentCoinBalance.coin.name.toUpperCase()),
+              Text(
+                currentCoinBalance.coin.name.toUpperCase(),
+                style: TextStyle(
+                  color: ThemeData.estimateBrightnessForColor(Color(
+                              int.parse(currentCoinBalance.coin.colorCoin))) ==
+                          Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+              ),
             ],
           ),
           centerTitle: false,
@@ -554,6 +580,8 @@ class _CoinDetailState extends State<CoinDetail> {
           children: <Widget>[
             SecondaryButton(
               text: text,
+              textColor: Theme.of(context).textTheme.button.color,
+              borderColor: Theme.of(context).accentColor,
               onPressed: () {
                 rewardsProvider.update();
                 Navigator.push<dynamic>(
@@ -576,6 +604,9 @@ class _CoinDetailState extends State<CoinDetail> {
 
     return SecondaryButton(
       text: text,
+      isDarkMode: !settingsBloc.isLightTheme,
+      textColor: Theme.of(context).accentColor,
+      borderColor: Theme.of(context).accentColor,
       onPressed: () {
         switch (statusButton) {
           case StatusButton.RECEIVE:

@@ -78,7 +78,7 @@ class _SettingPageState extends State<SettingPage> {
             key: const Key('settings-title'),
           ),
           centerTitle: true,
-          elevation: 0,
+          elevation: settingsBloc.isLightTheme ? 3 : 0,
         ),
         body: Theme(
           data: Theme.of(context).copyWith(
@@ -160,13 +160,15 @@ class _SettingPageState extends State<SettingPage> {
                 builder: (BuildContext context) => SoundSettingsPage()));
       },
       child: ListTile(
-        trailing:
-            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        trailing: Icon(Icons.chevron_right,
+            color:
+                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).soundSettingsTitle,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         ),
       ),
     );
@@ -197,7 +199,11 @@ class _SettingPageState extends State<SettingPage> {
                   context,
                 ).textTheme.bodyText2.copyWith(
                       fontWeight: FontWeight.w300,
-                      color: Colors.white.withOpacity(0.7),
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .color
+                          .withOpacity(0.7),
                     ),
               ),
             ),
@@ -295,7 +301,11 @@ class _SettingPageState extends State<SettingPage> {
                           context,
                         ).textTheme.bodyText2.copyWith(
                               fontWeight: FontWeight.w300,
-                              color: Colors.white.withOpacity(0.7),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  .color
+                                  .withOpacity(0.7),
                             ),
                       ),
                     ),
@@ -389,12 +399,20 @@ class _SettingPageState extends State<SettingPage> {
                 },
                 child: ListTile(
                   trailing: Icon(Icons.chevron_right,
-                      color: Colors.white.withOpacity(0.7)),
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .color
+                          .withOpacity(0.7)),
                   title: Text(
                     AppLocalizations.of(context).camoPinLink,
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontWeight: FontWeight.w300,
-                        color: Colors.white.withOpacity(0.7)),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withOpacity(0.7)),
                   ),
                 ),
               ),
@@ -426,13 +444,15 @@ class _SettingPageState extends State<SettingPage> {
                     },
                   ))),
       child: ListTile(
-        trailing:
-            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        trailing: Icon(Icons.chevron_right,
+            color:
+                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).changePin,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         ),
       ),
     );
@@ -443,13 +463,15 @@ class _SettingPageState extends State<SettingPage> {
       onPressed: () => _shareFileDialog(),
       child: ListTile(
         key: const Key('setting-title-feedback'),
-        trailing:
-            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        trailing: Icon(Icons.chevron_right,
+            color:
+                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).feedback,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         ),
       ),
     );
@@ -464,13 +486,15 @@ class _SettingPageState extends State<SettingPage> {
                 builder: (BuildContext context) => ViewSeedUnlockPage()));
       },
       child: ListTile(
-        trailing:
-            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        trailing: Icon(Icons.chevron_right,
+            color:
+                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).viewSeedAndKeys,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         ),
       ),
     );
@@ -485,13 +509,15 @@ class _SettingPageState extends State<SettingPage> {
                 builder: (BuildContext context) => ExportPage()));
       },
       child: ListTile(
-        trailing:
-            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        trailing: Icon(Icons.chevron_right,
+            color:
+                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).exportLink,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         ),
       ),
     );
@@ -506,13 +532,15 @@ class _SettingPageState extends State<SettingPage> {
                 builder: (BuildContext context) => ImportPage()));
       },
       child: ListTile(
-        trailing:
-            Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+        trailing: Icon(Icons.chevron_right,
+            color:
+                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).importLink,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         ),
       ),
     );
@@ -521,13 +549,18 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildDisclaimerToS() {
     return CustomTile(
         child: ListTile(
-          trailing:
-              Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+          trailing: Icon(Icons.chevron_right,
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
           title: Text(
             AppLocalizations.of(context).disclaimerAndTos,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                 fontWeight: FontWeight.w300,
-                color: Colors.white.withOpacity(0.7)),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .color
+                    .withOpacity(0.7)),
           ),
         ),
         onPressed: () {
@@ -547,8 +580,9 @@ class _SettingPageState extends State<SettingPage> {
 
     return CustomTile(
         child: ListTile(
-          trailing:
-              Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.7)),
+          trailing: Icon(Icons.chevron_right,
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
           title: Row(
             children: <Widget>[
               Stack(
@@ -558,7 +592,11 @@ class _SettingPageState extends State<SettingPage> {
                     AppLocalizations.of(context).checkForUpdates,
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontWeight: FontWeight.w300,
-                        color: Colors.white.withOpacity(0.7)),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withOpacity(0.7)),
                   ),
                   if (updatesProvider.status != UpdateStatus.upToDate)
                     buildRedDot(context, right: -12),
@@ -590,7 +628,11 @@ class _SettingPageState extends State<SettingPage> {
                 AppLocalizations.of(context).logoutOnExit,
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.7)),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .color
+                        .withOpacity(0.7)),
               ),
             ),
             SharedPreferencesBuilder<dynamic>(
@@ -629,7 +671,11 @@ class _SettingPageState extends State<SettingPage> {
         title: Text(AppLocalizations.of(context).deleteWallet,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                 fontWeight: FontWeight.w300,
-                color: Colors.white.withOpacity(0.7))),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .color
+                    .withOpacity(0.8))),
       ),
     );
   }
@@ -686,15 +732,21 @@ class _SettingPageState extends State<SettingPage> {
                                         .bodyText2
                                         .copyWith(
                                             color: Theme.of(context)
-                                                .primaryColor)),
+                                                .textTheme
+                                                .bodyText2
+                                                .color
+                                                .withOpacity(0.8))),
                                 TextSpan(
                                     text: walletBloc.currentWallet.name,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText2
                                         .copyWith(
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2
+                                                .color
+                                                .withOpacity(0.8),
                                             fontWeight: FontWeight.bold)),
                                 TextSpan(
                                     text: AppLocalizations.of(context)
@@ -704,7 +756,10 @@ class _SettingPageState extends State<SettingPage> {
                                         .bodyText2
                                         .copyWith(
                                             color: Theme.of(context)
-                                                .primaryColor)),
+                                                .textTheme
+                                                .bodyText2
+                                                .color
+                                                .withOpacity(0.8))),
                               ]),
                             ),
                             const SizedBox(
@@ -722,7 +777,10 @@ class _SettingPageState extends State<SettingPage> {
                                           .bodyText2
                                           .copyWith(
                                               color: Theme.of(context)
-                                                  .primaryColor)),
+                                                  .textTheme
+                                                  .bodyText2
+                                                  .color
+                                                  .withOpacity(0.8))),
                                   TextSpan(
                                       text: AppLocalizations.of(context)
                                           .settingDialogSpan4,
@@ -731,7 +789,10 @@ class _SettingPageState extends State<SettingPage> {
                                           .bodyText2
                                           .copyWith(
                                               color: Theme.of(context)
-                                                  .primaryColor,
+                                                  .textTheme
+                                                  .bodyText2
+                                                  .color
+                                                  .withOpacity(0.8),
                                               fontWeight: FontWeight.bold)),
                                   TextSpan(
                                       text: AppLocalizations.of(context)
@@ -741,7 +802,10 @@ class _SettingPageState extends State<SettingPage> {
                                           .bodyText2
                                           .copyWith(
                                               color: Theme.of(context)
-                                                  .primaryColor)),
+                                                  .textTheme
+                                                  .bodyText2
+                                                  .color
+                                                  .withOpacity(0.8))),
                                 ]),
                               ),
                             ),
@@ -998,7 +1062,8 @@ class _BuildOldLogsState extends State<BuildOldLogs> {
                   : ' ${_sizeMb.toStringAsFixed(2)} MB'),
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.7)),
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         ),
       ),
     );

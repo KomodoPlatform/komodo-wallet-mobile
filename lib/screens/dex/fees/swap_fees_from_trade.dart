@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
@@ -115,7 +116,11 @@ class _SwapFeesFromTradeState extends State<SwapFeesFromTrade> {
 
     return Text(
       _cexProvider.convert(feeAmountUsd),
-      style: Theme.of(context).textTheme.caption.copyWith(color: cexColor),
+      style: Theme.of(context).textTheme.caption.copyWith(
+            color: settingsBloc.isLightTheme
+                ? cexColorLight.withAlpha(150)
+                : cexColor.withAlpha(150),
+          ),
     );
   }
 

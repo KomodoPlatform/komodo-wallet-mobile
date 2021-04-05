@@ -42,9 +42,15 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
           child: TextField(
             controller: searchTextController,
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Theme.of(context).textTheme.bodyText2.color,
+              ),
               hintText: 'Search for Ticker',
               counterText: '',
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).accentColor),
+              ),
             ),
             maxLength: 16,
           ),

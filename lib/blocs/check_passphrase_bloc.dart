@@ -5,7 +5,6 @@ import 'package:komodo_dex/widgets/bloc_provider.dart';
 CheckPassphrasePage checkPassphrasePage = CheckPassphrasePage();
 
 class CheckPassphrasePage extends BlocBase {
-
   String word = '';
 
   final StreamController<String> _wordController =
@@ -14,19 +13,18 @@ class CheckPassphrasePage extends BlocBase {
   Stream<String> get outWordLogin => _wordController.stream;
 
   bool isWordGood = false;
-  
+
   final StreamController<bool> _isWordGoodController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsWordGoodLogin => _isWordGoodController.sink;
   Stream<bool> get outIsWordGoodLogin => _isWordGoodController.stream;
 
   bool isResetText = false;
-  
+
   final StreamController<bool> _isResetTextController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsResetTextLogin => _isResetTextController.sink;
   Stream<bool> get outIsResetTextLogin => _isResetTextController.stream;
-
 
   @override
   void dispose() {
@@ -35,7 +33,7 @@ class CheckPassphrasePage extends BlocBase {
     _isResetTextController.close();
   }
 
-  void setWord(String word){
+  void setWord(String word) {
     this.word = word;
     _inWordLogin.add(this.word);
   }
