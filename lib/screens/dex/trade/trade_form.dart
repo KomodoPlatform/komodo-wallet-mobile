@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:komodo_dex/model/get_max_taker_volume.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
@@ -30,7 +29,7 @@ class TradeForm {
     });
   }
 
-  Future<void> _handleSellAmountChange(String text) async {
+  void _handleSellAmountChange(String text) {
     double valueDouble = double.tryParse(text ?? '');
     // If empty or non-numerical
     if (valueDouble == null) {
@@ -42,7 +41,7 @@ class TradeForm {
     }
 
     // If greater than max available balance
-    final double maxAmount = await getMaxSellAmount();
+    final double maxAmount = getMaxSellAmount();
     if (text != _latestSellFieldValue) return;
     if (valueDouble >= maxAmount) {
       valueDouble = maxAmount;
@@ -214,13 +213,13 @@ class TradeForm {
 
     swapBloc.processing = true;
     await updateTradePreimage();
-    final double max = await getMaxSellAmount();
+    final double max = getMaxSellAmount();
     swapBloc.processing = false;
 
     if (max != swapBloc.amountSell) swapBloc.setAmountSell(max);
   }
 
-  Future<double> getMaxSellAmount() async {
+  double getMaxSellAmount() {
     if (swapBloc.sellCoinBalance == null) return null;
 
     final double fromPreimage =
@@ -228,10 +227,9 @@ class TradeForm {
     if (fromPreimage != null)
       return double.parse(fromPreimage.toStringAsFixed(precision));
 
-    final Rational fromMaxTakerVolume = await MM.getMaxTakerVolume(
-        GetMaxTakerVolume(coin: swapBloc.sellCoinBalance.coin.abbr));
-    if (fromMaxTakerVolume != null)
-      return double.parse(fromMaxTakerVolume.toStringAsFixed(precision));
+    if (swapBloc.maxTakerVolume != null) {
+      return swapBloc.maxTakerVolume;
+    }
 
     return double.tryParse(
         swapBloc.sellCoinBalance.balance.balance.toStringAsFixed(precision) ??
@@ -296,6 +294,7 @@ class TradeForm {
     swapBloc.shouldBuyOut = false;
     swapBloc.tradePreimage = null;
     swapBloc.processing = false;
+    swapBloc.maxTakerVolume = null;
     syncOrderbook.activePair = CoinsPair(sell: null, buy: null);
   }
 }
