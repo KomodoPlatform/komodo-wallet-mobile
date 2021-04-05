@@ -49,14 +49,14 @@ class _SellAmountFieldState extends State<SellAmountField> {
       style: Theme.of(context).textTheme.subtitle2,
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).accentColor),
-        ),
-        hintStyle: Theme.of(context)
-            .textTheme
-            .bodyText1
-            .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
-      ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).accentColor),
+          ),
+          hintStyle: Theme.of(context)
+              .textTheme
+              .bodyText1
+              .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
+          hintText: AppLocalizations.of(context).amountToSell),
       onChanged: (_) => swapBloc.setIsMaxActive(false),
     );
   }
