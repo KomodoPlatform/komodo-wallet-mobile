@@ -3,6 +3,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/widgets/html_parser.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class CexMarker extends StatelessWidget {
   const CexMarker(
@@ -24,7 +25,9 @@ class CexMarker extends StatelessWidget {
         child: Icon(
           Icons.info_outline,
           size: size.height,
-          color: color,
+          color: settingsBloc.isLightTheme
+              ? cexColorLight
+              : cexColor.withOpacity(0.8),
         ),
       ),
     );
@@ -40,7 +43,9 @@ void showCexDialog(BuildContext context) {
           Icon(
             Icons.info_outline,
             size: 22,
-            color: cexColor,
+            color: settingsBloc.isLightTheme
+                ? cexColorLight
+                : cexColor.withOpacity(0.8),
           ),
           const SizedBox(
             width: 8,
@@ -53,6 +58,11 @@ void showCexDialog(BuildContext context) {
         HtmlParser(
           AppLocalizations.of(context).cexDataDesc,
           linkStyle: TextStyle(color: Colors.blue),
+          textStyle: TextStyle(
+            color: settingsBloc.isLightTheme
+                ? cexColorLight
+                : cexColor.withOpacity(0.8),
+          ),
         ),
       ],
     ),

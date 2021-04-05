@@ -87,6 +87,18 @@ Decimal deci(dynamic dv) {
   throw Exception('Neither string nor double: $dv');
 }
 
+Rational fract2rat(Map<String, dynamic> fract) {
+  try {
+    final rat = Rational.fromInt(
+      int.parse(fract['numer']),
+      int.parse(fract['denom']),
+    );
+    return rat;
+  } catch (_) {
+    return null;
+  }
+}
+
 /// Precise but readable representation (no trailing zeroes).
 String deci2s(Decimal dv, [int fractions = 8]) {
   if (dv.isInteger) return dv.toStringAsFixed(0); // Fast path.
@@ -426,9 +438,11 @@ String cutTrailingZeros(String str) {
 
   String loop(String input) {
     if (input.length == 1) return input;
-    if (!input.contains('.')) return input;
+    if (!(input.contains('.') || input.contains(','))) return input;
 
-    if (input[input.length - 1] == '0' || input[input.length - 1] == '.') {
+    if (input[input.length - 1] == '0' ||
+        input[input.length - 1] == '.' ||
+        input[input.length - 1] == ',') {
       input = input.substring(0, input.length - 1);
       return loop(input);
     } else {

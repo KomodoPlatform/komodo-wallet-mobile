@@ -5,8 +5,8 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/screens/dex/history/swap_history.dart';
 import 'package:komodo_dex/screens/dex/orders/active_orders.dart';
+import 'package:komodo_dex/screens/dex/orders/swap_history.dart';
 
 class OrdersPage extends StatefulWidget {
   @override

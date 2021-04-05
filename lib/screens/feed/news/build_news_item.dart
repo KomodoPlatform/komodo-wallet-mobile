@@ -140,7 +140,6 @@ class _BuildNewsItemState extends State<BuildNewsItem>
     if (widget.newsItem.content == null || widget.newsItem.content.isEmpty) {
       return Container();
     }
-
     final NewsArticle _article = NewsArticle(widget.newsItem.content);
     _recognizers = _article.recognizers;
 
@@ -149,7 +148,8 @@ class _BuildNewsItemState extends State<BuildNewsItem>
       children: <Widget>[
         RichText(
           text: TextSpan(
-            style: const TextStyle(fontSize: 16),
+            style: TextStyle(
+                fontSize: 16, color: Theme.of(context).textTheme.caption.color),
             children: _article.lead,
           ),
         ),

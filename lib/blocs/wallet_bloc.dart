@@ -41,12 +41,14 @@ class WalletBloc implements BlocBase {
     return this.wallets;
   }
 
-  Future<String> loginWithPassword(BuildContext context, String password, Wallet wallet) async{
+  Future<String> loginWithPassword(
+      BuildContext context, String password, Wallet wallet) async {
     final EncryptionTool entryptionTool = EncryptionTool();
-    final String seedPhrase = await entryptionTool.readData(KeyEncryption.SEED, wallet, password);
+    final String seedPhrase =
+        await entryptionTool.readData(KeyEncryption.SEED, wallet, password);
 
     if (seedPhrase != null) {
-        await Db.saveCurrentWallet(wallet);
+      await Db.saveCurrentWallet(wallet);
       return seedPhrase;
     } else {
       throw AppLocalizations.of(context).wrongPassword;
@@ -65,8 +67,7 @@ class WalletBloc implements BlocBase {
 
   Future<void> deleteCurrentWallet() async {
     await Db.deleteWallet(currentWallet);
-                                          authBloc.logout();
-
+    authBloc.logout();
   }
 
   Future<void> deleteSeedPhrase(String password, Wallet wallet) async {
