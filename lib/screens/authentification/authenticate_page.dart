@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/authentification/welcome_page.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticatePage extends StatefulWidget {
@@ -62,9 +63,15 @@ class BoxButton extends StatelessWidget {
         borderRadius: borderRadius,
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.white.withOpacity(0.3)),
+              border: Border.all(
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      .color
+                      .withOpacity(0.3)),
               borderRadius: borderRadius,
-              color: Colors.white.withOpacity(0.1)),
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.1)),
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
@@ -117,8 +124,9 @@ class _BuildScreenAuthMultiWalletsState
                 child: Container(
                     height: 200,
                     width: 200,
-                    child:
-                        Image.asset('assets/mark_and_text_vertical_light.png')),
+                    child: Image.asset(settingsBloc.isLightTheme
+                        ? 'assets/mark_and_text_vertical_dark.png'
+                        : 'assets/mark_and_text_vertical_light.png')),
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -186,7 +194,9 @@ class _BuildScreenAuthMultiWalletsState
                             .copyWith(color: Theme.of(context).backgroundColor),
                       ),
                     ),
-                    backgroundColor: Colors.white.withOpacity(0.6),
+                    backgroundColor: settingsBloc.isLightTheme
+                        ? Colors.black.withOpacity(0.3)
+                        : Colors.white.withOpacity(0.6),
                   ),
                 ),
                 const SizedBox(
@@ -212,11 +222,16 @@ class _BuildScreenAuthMultiWalletsState
                           bottomLeft: Radius.elliptical(10, 50),
                           topLeft: Radius.elliptical(10, 50),
                         ),
-                        color: Colors.white.withOpacity(0.6)))
+                        color: settingsBloc.isLightTheme
+                            ? Colors.black.withOpacity(0.3)
+                            : Colors.white.withOpacity(0.6)))
               ],
             ),
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.white.withOpacity(0.3)),
+                border: Border.all(
+                    color: settingsBloc.isLightTheme
+                        ? Colors.black.withOpacity(0.3)
+                        : Colors.white.withOpacity(0.6)),
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                 color: Colors.transparent)),
       ),
@@ -248,8 +263,9 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                   Container(
                       height: 240,
                       width: 240,
-                      child: Image.asset(
-                          'assets/mark_and_text_vertical_light.png')),
+                      child: Image.asset(settingsBloc.isLightTheme
+                          ? 'assets/mark_and_text_vertical_dark.png'
+                          : 'assets/mark_and_text_vertical_light.png')),
                 ],
               ),
               const SizedBox(
@@ -293,7 +309,9 @@ class _CreateWalletButtonState extends State<CreateWalletButton> {
     return BoxButton(
       key: const Key('createWalletButton'),
       text: AppLocalizations.of(context).createAWallet,
-      assetPath: 'assets/svg/create_wallet.svg',
+      assetPath: settingsBloc.isLightTheme
+          ? 'assets/svg_light/create_wallet.svg'
+          : 'assets/svg/create_wallet.svg',
       onPressed: () {
         Navigator.push<dynamic>(
           context,
@@ -316,7 +334,9 @@ class _RestoreButtonState extends State<RestoreButton> {
     return BoxButton(
       key: const Key('restoreWallet'),
       text: AppLocalizations.of(context).restoreWallet,
-      assetPath: 'assets/svg/lock_off.svg',
+      assetPath: settingsBloc.isLightTheme
+          ? 'assets/svg_light/lock_off.svg'
+          : 'assets/svg/lock_off.svg',
       onPressed: () {
         Navigator.push<dynamic>(
           context,

@@ -5,6 +5,7 @@ import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class BuildSwapFees extends StatefulWidget {
   const BuildSwapFees({
@@ -117,7 +118,11 @@ class _BuildSwapFeesState extends State<BuildSwapFees> {
     final CoinAmt fee = GetSwapFee.trading(widget.baseAmount, widget.baseCoin);
     return Text(
       cexProvider.convert(fee.amount, from: fee.coin),
-      style: Theme.of(context).textTheme.caption.copyWith(color: cexColor),
+      style: Theme.of(context).textTheme.caption.copyWith(
+            color: settingsBloc.isLightTheme
+                ? cexColorLight.withAlpha(150)
+                : cexColor.withAlpha(150),
+          ),
     );
   }
 
@@ -183,7 +188,11 @@ class _BuildSwapFeesState extends State<BuildSwapFees> {
 
     return Text(
       cexProvider.convert(totalTxFeeUsd),
-      style: Theme.of(context).textTheme.caption.copyWith(color: cexColor),
+      style: Theme.of(context).textTheme.caption.copyWith(
+            color: settingsBloc.isLightTheme
+                ? cexColorLight.withAlpha(150)
+                : cexColor.withAlpha(150),
+          ),
     );
   }
 }

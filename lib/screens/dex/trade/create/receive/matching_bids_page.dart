@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/matching_bids_table.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -96,7 +97,6 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
                                   AppLocalizations.of(context).noMatchingOrders,
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Theme.of(context).disabledColor,
                                   ),
                                 ),
                               )
@@ -210,8 +210,12 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
         const SizedBox(width: 2),
         Text(
           formatPrice(cexRate),
-          style: const TextStyle(
-              fontSize: 14, color: cexColor, fontWeight: FontWeight.w400),
+          style: TextStyle(
+              fontSize: 14,
+              color: settingsBloc.isLightTheme
+                  ? cexColorLight.withAlpha(150)
+                  : cexColor.withAlpha(150),
+              fontWeight: FontWeight.w400),
         ),
         const SizedBox(width: 4),
       ],

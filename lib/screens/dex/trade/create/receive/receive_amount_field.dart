@@ -48,6 +48,9 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
         style: Theme.of(context).textTheme.subtitle2,
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).accentColor),
+          ),
           hintStyle: Theme.of(context)
               .textTheme
               .bodyText1
