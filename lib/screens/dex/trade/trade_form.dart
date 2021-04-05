@@ -19,11 +19,9 @@ import 'package:komodo_dex/utils/utils.dart';
 class TradeForm {
   final int precision = 8;
   Timer _typingTimer;
-  String _latestSellFieldValue;
 
   Future<void> onSellAmountFieldChange(String text) async {
     _typingTimer?.cancel();
-    _latestSellFieldValue = text;
     _typingTimer = Timer(Duration(milliseconds: 200), () {
       _handleSellAmountChange(text);
     });
@@ -42,7 +40,6 @@ class TradeForm {
 
     // If greater than max available balance
     final double maxAmount = getMaxSellAmount();
-    if (text != _latestSellFieldValue) return;
     if (valueDouble >= maxAmount) {
       valueDouble = maxAmount;
       swapBloc.setIsMaxActive(true);
