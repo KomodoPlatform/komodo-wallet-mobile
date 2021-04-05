@@ -196,6 +196,8 @@ class AppLocalizations {
   String get txHash => Intl.message('Transaction ID', name: 'txHash');
   String get noSwaps => Intl.message('No history.', name: 'noSwaps');
   String get trade => Intl.message('TRADE', name: 'trade');
+  String get reset => Intl.message('CLEAR', name: 'reset');
+  String get resetTitle => Intl.message('Reset form', name: 'resetTitle');
   String get tradeCompleted =>
       Intl.message('SWAP COMPLETED!', name: 'tradeCompleted');
   String get step => Intl.message('Step', name: 'step');
@@ -411,6 +413,8 @@ class AppLocalizations {
         name: 'minValueSell',
         args: <Object>[coinName, number],
       );
+  String get enterSellAmount =>
+      Intl.message('You must enter Sell Amount first', name: 'enterSellAmount');
   String get encryptingWallet =>
       Intl.message('Encrypting wallet', name: 'encryptingWallet');
   String get decryptingWallet =>
@@ -563,6 +567,11 @@ class AppLocalizations {
         'This swap requires $amount $coin for transaction fees',
         name: 'swapGasAmount',
         args: <Object>[amount, coin],
+      );
+  String swapGasActivate(String coin) => Intl.message(
+        'Please activate $coin and top-up balance first',
+        name: 'swapGasActivate',
+        args: <Object>[coin],
       );
   String get remove => Intl.message('Disable', name: 'remove');
   String get searchFilterCoin =>
@@ -1191,6 +1200,7 @@ class AppLocalizations {
   String get language => Intl.message('Language', name: 'language');
   String get currency => Intl.message('Currency', name: 'currency');
   String get hideBalance => Intl.message('Hide balances', name: 'hideBalance');
+  String get switchTheme => Intl.message('Switch Theme', name: 'switchTheme');
 
   // --- CEX Marker ---
 

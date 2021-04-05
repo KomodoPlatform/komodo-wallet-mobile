@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/widgets/round_button.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class ContactEditField extends StatefulWidget {
   const ContactEditField({
@@ -99,7 +100,9 @@ class _ContactEditFieldState extends State<ContactEditField> {
                                 onPressed: () => _scan(),
                                 child: Icon(
                                   Icons.add_a_photo,
-                                  color: Colors.white,
+                                  color: settingsBloc.isLightTheme
+                                      ? Colors.black45
+                                      : Colors.white,
                                 ),
                               ),
                             ),

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 SettingsBloc settingsBloc = SettingsBloc();
@@ -19,6 +18,8 @@ class SettingsBloc implements BlocBase {
     _prefs = await SharedPreferences.getInstance();
 
     showBalance = _prefs.getBool('showBalance') ?? showBalance;
+    isLightTheme = _prefs.getBool('isLightTheme') ?? isLightTheme;
+
     showSoundsExplanationDialog =
         _prefs.getBool('showSoundsExplanationDialog') ??
             showSoundsExplanationDialog;
@@ -30,6 +31,7 @@ class SettingsBloc implements BlocBase {
 
   bool isDeleteLoading = true;
   bool showBalance = true;
+  bool isLightTheme = false;
   bool showSoundsExplanationDialog = true;
 
   final StreamController<bool> _isDeleteLoadingController =
@@ -46,6 +48,11 @@ class SettingsBloc implements BlocBase {
       StreamController<bool>.broadcast();
   Sink<bool> get _inShowSoundsDialog => _showSoundsDialogCtrl.sink;
   Stream<bool> get outShowSoundsDialog => _showSoundsDialogCtrl.stream;
+
+  final StreamController<bool> _isLightThemeController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inLightTheme => _isLightThemeController.sink;
+  Stream<bool> get outLightTheme => _isLightThemeController.stream;
 
   @override
   void dispose() {
@@ -103,5 +110,11 @@ class SettingsBloc implements BlocBase {
     showSoundsExplanationDialog = val;
     _inShowSoundsDialog.add(val);
     _prefs.setBool('showSoundsExplanationDialog', val);
+  }
+
+  void setLightTheme(bool val) {
+    isLightTheme = val;
+    _inLightTheme.add(val);
+    _prefs.setBool('isLightTheme', val);
   }
 }

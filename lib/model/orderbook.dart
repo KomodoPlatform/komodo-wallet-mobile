@@ -82,7 +82,9 @@ class Ask {
     this.coin,
     this.address,
     this.price,
+    this.priceFract,
     this.maxvolume,
+    this.maxvolumeFract,
     this.minVolume,
     this.pubkey,
     this.age,
@@ -97,7 +99,9 @@ class Ask {
       coin: json['coin'] ?? '',
       address: json['address'] ?? '',
       price: json['price'] ?? 0.0,
+      priceFract: json['price_fraction'],
       maxvolume: deci(json['maxvolume']),
+      maxvolumeFract: json['max_volume_fraction'],
       minVolume: double.tryParse(json['min_volume']),
       pubkey: json['pubkey'] ?? '',
       age: json['age'] ?? 0,
@@ -108,6 +112,8 @@ class Ask {
   String coin;
   String address;
   String price;
+  Map<String, dynamic> priceFract;
+  Map<String, dynamic> maxvolumeFract;
   Decimal maxvolume;
   double minVolume;
   String pubkey;
@@ -118,7 +124,9 @@ class Ask {
         'coin': coin ?? '',
         'address': address ?? '',
         'price': price ?? 0.0,
+        'price_fraction': priceFract,
         'maxvolume': maxvolume.toString(),
+        'max_volume_fraction': maxvolumeFract,
         'min_volume': minVolume.toString(),
         'pubkey': pubkey ?? '',
         'age': age ?? 0,

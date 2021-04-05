@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-GetRecoverFundsOfSwap getRecoverFundsOfSwapFromJson(String str) => GetRecoverFundsOfSwap.fromJson(json.decode(str));
+GetRecoverFundsOfSwap getRecoverFundsOfSwapFromJson(String str) =>
+    GetRecoverFundsOfSwap.fromJson(json.decode(str));
 
-String getRecoverFundsOfSwapToJson(GetRecoverFundsOfSwap data) => json.encode(data.toJson());
+String getRecoverFundsOfSwapToJson(GetRecoverFundsOfSwap data) =>
+    json.encode(data.toJson());
 
 class GetRecoverFundsOfSwap {
   GetRecoverFundsOfSwap({
@@ -11,7 +13,8 @@ class GetRecoverFundsOfSwap {
     this.userpass,
   });
 
-  factory GetRecoverFundsOfSwap.fromJson(Map<String, dynamic> json) => GetRecoverFundsOfSwap(
+  factory GetRecoverFundsOfSwap.fromJson(Map<String, dynamic> json) =>
+      GetRecoverFundsOfSwap(
         method: json['method'] ?? '',
         params: Params.fromJson(json['params']) ?? Params(),
         userpass: json['userpass'] ?? '',

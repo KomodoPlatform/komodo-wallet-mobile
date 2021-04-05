@@ -49,8 +49,8 @@ class _AppDrawerState extends State<AppDrawer> {
                     begin: Alignment.centerRight,
                     stops: <double>[0.01, 1],
                     colors: <Color>[
-                      Color.fromRGBO(98, 90, 229, 0.4),
-                      Color.fromRGBO(45, 184, 240, 0.6),
+                      Color.fromRGBO(98, 90, 229, 1),
+                      Color.fromRGBO(45, 184, 240, 1),
                     ],
                   )),
                   child: SafeArea(
@@ -63,8 +63,10 @@ class _AppDrawerState extends State<AppDrawer> {
                           flex: 5,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
-                            child: Image.asset(
-                                'assets/mark_and_text_vertical_white.png'),
+                            child: SvgPicture.asset(
+                              'assets/svg/mark_and_text_vertical_white.svg',
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         Flexible(
@@ -97,7 +99,8 @@ class _AppDrawerState extends State<AppDrawer> {
                                       if (!snapshot.hasData) return Container();
                                       return Text(
                                         snapshot.data.name,
-                                        style: const TextStyle(fontSize: 18),
+                                        style: const TextStyle(
+                                            fontSize: 18, color: Colors.white),
                                         overflow: TextOverflow.ellipsis,
                                       );
                                     })
@@ -131,11 +134,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             SoundSettingsPage()));
                               },
-                              leading: Icon(
-                                Icons.audiotrack,
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
-                              ),
+                              leading: Icon(Icons.audiotrack, size: 16),
                               trailing: InkWell(
                                 child: Container(
                                   padding: EdgeInsets.all(4),
@@ -188,12 +187,9 @@ class _AppDrawerState extends State<AppDrawer> {
                                                       context),
                                             )));
                               },
-                              leading: Icon(
-                                Icons.language,
-                                key: const Key('side-nav-language'),
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
-                              )),
+                              leading: Icon(Icons.language,
+                                  key: const Key('side-nav-language'),
+                                  size: 16)),
                           _buildDrawerItem(
                               title: Row(
                                 children: <Widget>[
@@ -206,21 +202,14 @@ class _AppDrawerState extends State<AppDrawer> {
                                 showCurrenciesDialog(context);
                               },
                               leading: cexProvider.selectedFiatSymbol.length > 1
-                                  ? Icon(
-                                      Icons.account_balance_wallet,
+                                  ? Icon(Icons.account_balance_wallet,
                                       key: const Key('side-nav-currency'),
-                                      size: 16,
-                                      color: Colors.white.withAlpha(200),
-                                    )
+                                      size: 16)
                                   : Text(' ${cexProvider.selectedFiatSymbol}')),
                           _buildDrawerItem(
                             title:
                                 Text(AppLocalizations.of(context).hideBalance),
-                            leading: Icon(
-                              Icons.money_off,
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
-                            ),
+                            leading: Icon(Icons.money_off, size: 16),
                             trailing: StreamBuilder<bool>(
                               initialData: settingsBloc.showBalance,
                               stream: settingsBloc.outShowBalance,
@@ -254,12 +243,9 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             const AddressBookPage()));
                               },
-                              leading: Icon(
-                                Icons.import_contacts,
-                                key: const Key('side-nav-addressbook'),
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
-                              )),
+                              leading: Icon(Icons.import_contacts,
+                                  key: const Key('side-nav-addressbook'),
+                                  size: 16)),
                           Divider(
                             indent: 20,
                             endIndent: 20,
@@ -276,12 +262,9 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             SettingPage()));
                               },
-                              leading: Icon(
-                                Icons.settings,
-                                key: const Key('side-nav-settings'),
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
-                              )),
+                              leading: Icon(Icons.settings,
+                                  key: const Key('side-nav-settings'),
+                                  size: 16)),
                           _buildDrawerItem(
                               title:
                                   Text(AppLocalizations.of(context).helpLink),
@@ -293,24 +276,38 @@ class _AppDrawerState extends State<AppDrawer> {
                                         builder: (BuildContext context) =>
                                             HelpPage()));
                               },
-                              leading: Icon(
-                                Icons.help,
-                                key: const Key('side-nav-help-feedback'),
-                                size: 16,
-                                color: Colors.white.withAlpha(200),
-                              )),
+                              leading: Icon(Icons.help,
+                                  key: const Key('side-nav-help-feedback'),
+                                  size: 16)),
+                          _buildDrawerItem(
+                            title:
+                                Text(AppLocalizations.of(context).switchTheme),
+                            leading: Icon(Icons.brush, size: 16),
+                            trailing: StreamBuilder<bool>(
+                              initialData: settingsBloc.isLightTheme,
+                              stream: settingsBloc.outLightTheme,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<bool> snapshot) {
+                                return snapshot.hasData
+                                    ? Switch(
+                                        value: snapshot.data,
+                                        key: const Key('settings-switch-theme'),
+                                        onChanged: (bool dataSwitch) {
+                                          settingsBloc
+                                              .setLightTheme(dataSwitch);
+                                        })
+                                    : Container();
+                              },
+                            ),
+                          ),
                           Divider(
                             indent: 20,
                             endIndent: 20,
                             color: Theme.of(context).hintColor,
                           ),
                           _buildDrawerItem(
-                            leading: Icon(
-                              Icons.exit_to_app,
-                              key: const Key('side-nav-logout'),
-                              size: 16,
-                              color: Colors.white.withAlpha(200),
-                            ),
+                            leading: Icon(Icons.exit_to_app,
+                                key: const Key('side-nav-logout'), size: 16),
                             onTap: () {
                               Navigator.pop(context);
                               showLogoutConfirmation(context);

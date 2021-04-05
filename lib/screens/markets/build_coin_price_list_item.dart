@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 
+import 'package:komodo_dex/blocs/settings_bloc.dart';
+
 import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -127,7 +129,10 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                                   .textTheme
                                                   .subtitle2
                                                   .copyWith(
-                                                      color: cexColor,
+                                                      color: settingsBloc
+                                                              .isLightTheme
+                                                          ? cexColorLight
+                                                          : cexColor,
                                                       fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.normal),
@@ -136,8 +141,11 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                                         ),
                                       Container(
                                         child: _hasNonzeroPrice && _hasChartData
-                                            ? const CandlesIcon(
+                                            ? CandlesIcon(
                                                 size: 14,
+                                                color: settingsBloc.isLightTheme
+                                                    ? cexColorLight
+                                                    : cexColor.withOpacity(0.8),
                                               )
                                             : null,
                                       ),
@@ -207,7 +215,11 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                     const SizedBox(width: 4),
                     Text(
                       '(based on ${widget.coinBalance.coin.abbr}/$mediateBase)',
-                      style: const TextStyle(fontSize: 12, color: cexColor),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: settingsBloc.isLightTheme
+                              ? cexColorLight
+                              : cexColor),
                     )
                   ];
                 }
@@ -254,11 +266,21 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
                     Container(
                         height: chartHeight,
                         child: snapshot.hasData
-                            ? CandleChart(
-                                data: candles,
-                                duration: int.parse(chartDuration),
-                                quoted: quotedChart,
-                              )
+                            ? StreamBuilder<Object>(
+                                initialData: settingsBloc.isLightTheme,
+                                stream: settingsBloc.outLightTheme,
+                                builder: (context, light) {
+                                  return CandleChart(
+                                      data: candles,
+                                      duration: int.parse(chartDuration),
+                                      quoted: quotedChart,
+                                      textColor: light.data
+                                          ? Colors.black
+                                          : Colors.white,
+                                      gridColor: light.data
+                                          ? Colors.black.withOpacity(.2)
+                                          : Colors.white.withOpacity(.4));
+                                })
                             : snapshot.hasError
                                 ? Center(
                                     child: Text(AppLocalizations.of(context)
