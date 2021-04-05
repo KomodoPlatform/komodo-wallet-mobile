@@ -112,7 +112,7 @@ class SettingsBloc implements BlocBase {
     _prefs.setBool('showSoundsExplanationDialog', val);
   }
 
-  void setSwitchTheme(bool val) {
+  void setLightTheme(bool val) {
     isLightTheme = val;
     _inLightTheme.add(val);
     _prefs.setBool('isLightTheme', val);

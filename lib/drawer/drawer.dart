@@ -294,7 +294,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                         key: const Key('settings-switch-theme'),
                                         onChanged: (bool dataSwitch) {
                                           settingsBloc
-                                              .setSwitchTheme(dataSwitch);
+                                              .setLightTheme(dataSwitch);
                                         })
                                     : Container();
                               },
