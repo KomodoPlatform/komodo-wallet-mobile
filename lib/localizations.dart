@@ -268,19 +268,6 @@ class AppLocalizations {
       Intl.message('GO BACK AND CHECK AGAIN', name: 'checkSeedPhraseButton2');
   String get viewInExplorerButton =>
       Intl.message('Explorer', name: 'viewInExplorerButton');
-  String get takerFeeTx => Intl.message('Taker Fee Tx', name: 'takerFeeTx');
-  String get takerPaymentTx =>
-      Intl.message('Taker Payment Tx', name: 'takerPaymentTx');
-  String get makerPaymentTx =>
-      Intl.message('Maker Payment Tx', name: 'makerPaymentTx');
-  String get takerPaymentSpentTx =>
-      Intl.message('Taker Payment Spent Tx', name: 'takerPaymentSpentTx');
-  String get makerPaymentSpentTx =>
-      Intl.message('Maker Payment Spent Tx', name: 'makerPaymentSpentTx');
-  String get makerPaymentRefundTx =>
-      Intl.message('Maker Payment Refund Tx', name: 'makerPaymentRefundTx');
-  String get takerPaymentRefundTx =>
-      Intl.message('Taker Payment Refund Tx', name: 'takerPaymentRefundTx');
   String get activateAccessBiometric => Intl.message(
         'Activate Biometric protection',
         name: 'activateAccessBiometric',
