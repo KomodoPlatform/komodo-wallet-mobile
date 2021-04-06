@@ -9,7 +9,6 @@ class DetailedSwapStep extends StatelessWidget {
   const DetailedSwapStep({
     this.title,
     this.txHash,
-    this.isStepWithTransaction,
     this.explorerUrl,
     this.status,
     this.estimatedSpeed,
@@ -22,7 +21,6 @@ class DetailedSwapStep extends StatelessWidget {
 
   final String title;
   final String txHash;
-  final bool isStepWithTransaction;
   final String explorerUrl;
   final SwapStepStatus status;
   final Duration estimatedSpeed;

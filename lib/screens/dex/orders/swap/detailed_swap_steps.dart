@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/detailed_swap_step.dart';
@@ -172,9 +171,6 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
           explorerUrl: swap.result.successEvents[i].contains('Taker')
               ? swap.takerExplorerUrl
               : swap.makerExplorerUrl,
-          isStepWithTransaction: swap.stepsWithTransaction.contains(
-            swap.result.successEvents[i],
-          ),
           status: status,
           estimatedSpeed: _getEstimatedSpeed(i),
           estimatedDeviation: _getEstimatedDeviation(i),
@@ -351,7 +347,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             AppLocalizations.of(context).swapProgress + ':',
