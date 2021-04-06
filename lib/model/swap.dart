@@ -94,19 +94,6 @@ class Swap {
   /// Total number of detailed successful steps in the swap.
   int get steps => result?.successEvents?.length ?? statusSteps;
 
-  List<String> get stepsWithTransaction => [
-        'TakerFeeSent',
-        'TakerFeeValidated',
-        'MakerPaymentSent',
-        'MakerPaymentReceived',
-        'TakerPaymentSent',
-        'TakerPaymentReceived',
-        'TakerPaymentSpent',
-        'MakerPaymentSpent',
-        'MakerPaymentRefunded',
-        'TakerPaymentRefunded',
-      ];
-
   /// If user acts as a Taker during current
   /// swap then returns [true], [false] otherwise.
   bool get isTaker {
