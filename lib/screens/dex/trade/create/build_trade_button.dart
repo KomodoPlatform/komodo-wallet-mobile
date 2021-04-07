@@ -28,6 +28,7 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
       swapBloc.outSellCoinBalance.listen(_onStateChange),
       swapBloc.outReceiveCoinBalance.listen(_onStateChange),
       swapBloc.outTradePreimage.listen(_onStateChange),
+      swapBloc.outProcessing.listen(_onStateChange),
     ];
   }
 
@@ -78,7 +79,8 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
   void _onStateChange(dynamic _) {
     if (!mounted) return;
 
-    final bool isEnabled = swapBloc.tradePreimage != null &&
+    final bool isEnabled = swapBloc.processing == false &&
+        swapBloc.tradePreimage != null &&
         swapBloc.sellCoinBalance != null &&
         swapBloc.receiveCoinBalance != null &&
         swapBloc.amountSell != null &&
