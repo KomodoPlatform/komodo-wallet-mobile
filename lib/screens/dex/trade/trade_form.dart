@@ -219,18 +219,34 @@ class TradeForm {
   double getMaxSellAmount() {
     if (swapBloc.sellCoinBalance == null) return null;
 
-    final double fromPreimage =
-        double.tryParse(swapBloc.tradePreimage?.volume ?? '');
-    if (fromPreimage != null)
-      return double.parse(fromPreimage.toStringAsFixed(precision));
-
-    if (swapBloc.maxTakerVolume != null) {
-      return swapBloc.maxTakerVolume;
-    }
+    final double fromPreimage = _getMaxFromPreimage();
+    if (fromPreimage != null) return fromPreimage;
 
     return double.tryParse(
         swapBloc.sellCoinBalance.balance.balance.toStringAsFixed(precision) ??
             '0');
+  }
+
+  double _getMaxFromPreimage() {
+    final TradePreimage preimage = swapBloc.tradePreimage;
+    if (preimage == null) return null;
+
+    // If tradePreimage contains volume use it for max volume
+    final String volume = preimage.volume;
+    if (volume != null) {
+      final double volumeDouble = double.tryParse(volume);
+      return double.parse(volumeDouble.toStringAsFixed(precision));
+    }
+
+    // If tradePreimage doesn't contain volume - trying to calculate it
+    final CoinFee totalSellCoinFee = preimage.totalFees.firstWhere(
+      (fee) => fee.coin == swapBloc.sellCoinBalance.coin.abbr,
+      orElse: () => null,
+    );
+    final double calculatedVolume =
+        swapBloc.sellCoinBalance.balance.balance.toDouble() -
+            (double.tryParse(totalSellCoinFee.amount ?? '0') ?? 0.0);
+    return double.parse(calculatedVolume.toStringAsFixed(precision));
   }
 
   // Updates swapBloc.tradePreimage and returns error String or null
@@ -291,7 +307,6 @@ class TradeForm {
     swapBloc.shouldBuyOut = false;
     swapBloc.tradePreimage = null;
     swapBloc.processing = false;
-    swapBloc.maxTakerVolume = null;
     syncOrderbook.activePair = CoinsPair(sell: null, buy: null);
   }
 }

@@ -1,10 +1,6 @@
 import 'dart:async';
 
 import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/model/get_max_taker_volume.dart';
-import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
-import 'package:komodo_dex/services/mm.dart';
-import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/orderbook.dart';
@@ -23,7 +19,6 @@ class SwapBloc implements BlocBase {
   bool isSellMaxActive = false;
   TradePreimage _tradePreimage;
   bool _processing = false;
-  double maxTakerVolume;
 
   // Using to guide user directly to active orders list
   int indexTab = 0;
@@ -134,25 +129,6 @@ class SwapBloc implements BlocBase {
   void updateSellCoin(CoinBalance coinBalance) {
     sellCoinBalance = coinBalance;
     _inSellCoinBalance.add(sellCoinBalance);
-
-    _updateMaxTakerVolume(coinBalance?.coin?.abbr);
-  }
-
-  Future<void> _updateMaxTakerVolume(String coin) async {
-    if (coin == null) {
-      maxTakerVolume = null;
-      return;
-    }
-
-    final Rational volume =
-        await MM.getMaxTakerVolume(GetMaxTakerVolume(coin: coin));
-
-    if (volume != null) {
-      maxTakerVolume =
-          double.parse(volume.toStringAsFixed(tradeForm.precision));
-    } else {
-      maxTakerVolume = null;
-    }
   }
 
   void updateMatchingBid(Ask bid) {
