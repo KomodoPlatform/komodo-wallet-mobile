@@ -27,7 +27,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
   @override
   void initState() {
     if (widget.preimage != null) {
-      final bool isTaker = widget.preimage.request.method == 'buy';
+      final bool isTaker = widget.preimage.request.swapMethod == 'buy';
       final TradePreimage preimage = widget.preimage;
       setState(() {
         _sellCoin = isTaker ? preimage.request.rel : preimage.request.base;
@@ -35,6 +35,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
         _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
         _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
         _receiveTxFee = isTaker ? preimage.baseCoinFee : preimage.relCoinFee;
+        print(isTaker);
         if (isTaker) {
           _dexFee = preimage.takerFee;
           _feeToSendDexFee = preimage.feeToSendTakerFee;
@@ -143,51 +144,152 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
   }
 
   Widget _buildDetails() {
-    final TradePreimage preimage = swapBloc.tradePreimage;
-    final bool isTaker = preimage.request.swapMethod == 'buy';
-    final CoinFee sellCoinTxFee =
-        isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
-    final CoinFee receiveCoinTxFee =
-        isTaker ? preimage.baseCoinFee : preimage.relCoinFee;
-    final CoinFee dexFee = isTaker ? preimage.takerFee : null;
-    final CoinFee feeToPayDex = isTaker ? preimage.feeToSendTakerFee : null;
-    final String sellCoin =
-        isTaker ? preimage.request.rel : preimage.request.base;
-    final String receiveCoin =
-        isTaker ? preimage.request.base : preimage.request.rel;
+    return Column(
+      children: [
+        _buildPaidFromBalance(),
+        SizedBox(height: 4),
+        _buildPaidFromTrade(),
+      ],
+    );
+  }
+
+  Widget _buildPaidFromBalance() {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+            color: Theme.of(context).highlightColor.withAlpha(25),
+            child: Text(
+              'Paid from balance:',
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ),
+          SizedBox(height: 4),
+          if (_sellTxFee != null && !_sellTxFee.paidFromTradingVol)
+            Container(
+              padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+              child: Text(
+                '• ${cutTrailingZeros(formatPrice(_sellTxFee.amount))} '
+                '${_sellTxFee.coin} '
+                '(${_cexProvider.convert(double.tryParse(_sellTxFee.amount), from: _sellTxFee.coin)}): '
+                'send $_sellCoin tx fee',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
+          if (_receiveTxFee != null && !_receiveTxFee.paidFromTradingVol)
+            Container(
+              padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+              child: Text(
+                '• ${cutTrailingZeros(formatPrice(_receiveTxFee.amount))} '
+                '${_receiveTxFee.coin} '
+                '(${_cexProvider.convert(double.tryParse(_receiveTxFee.amount), from: _receiveTxFee.coin)}): '
+                'receive $_receiveCoin tx fee',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
+          if (_dexFee != null && !_dexFee.paidFromTradingVol)
+            Container(
+              padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+              child: Text(
+                '• ${cutTrailingZeros(formatPrice(_dexFee.amount))} '
+                '${_dexFee.coin} '
+                '(${_cexProvider.convert(double.tryParse(_dexFee.amount), from: _dexFee.coin)}): '
+                'trading fee',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
+          if (_feeToSendDexFee != null && !_feeToSendDexFee.paidFromTradingVol)
+            Container(
+              padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+              child: Text(
+                '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee.amount))} '
+                '${_feeToSendDexFee.coin} '
+                '(${_cexProvider.convert(double.tryParse(_feeToSendDexFee.amount), from: _feeToSendDexFee.coin)}): '
+                'send trading fee tx fee',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaidFromTrade() {
+    final List<Widget> items = [];
+
+    if (_sellTxFee != null && _sellTxFee.paidFromTradingVol)
+      items.add(Container(
+        padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+        child: Text(
+          '• ${cutTrailingZeros(formatPrice(_sellTxFee.amount))} '
+          '${_sellTxFee.coin} '
+          '(${_cexProvider.convert(double.tryParse(_sellTxFee.amount), from: _sellTxFee.coin)}): '
+          'send $_sellCoin tx fee',
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ));
+
+    if (_receiveTxFee != null && _receiveTxFee.paidFromTradingVol)
+      items.add(Container(
+        padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+        child: Text(
+          '• ${cutTrailingZeros(formatPrice(_receiveTxFee.amount))} '
+          '${_receiveTxFee.coin} '
+          '(${_cexProvider.convert(double.tryParse(_receiveTxFee.amount), from: _receiveTxFee.coin)}): '
+          'receive $_receiveCoin tx fee',
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ));
+
+    if (_dexFee != null && _dexFee.paidFromTradingVol)
+      items.add(Container(
+        padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+        child: Text(
+          '• ${cutTrailingZeros(formatPrice(_dexFee.amount))} '
+          '${_dexFee.coin} '
+          '(${_cexProvider.convert(double.tryParse(_dexFee.amount), from: _dexFee.coin)}): '
+          'trading fee',
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ));
+
+    if (_feeToSendDexFee != null && _feeToSendDexFee.paidFromTradingVol)
+      items.add(Container(
+        padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+        child: Text(
+          '• ${cutTrailingZeros(formatPrice(_feeToSendDexFee.amount))} '
+          '${_feeToSendDexFee.coin} '
+          '(${_cexProvider.convert(double.tryParse(_feeToSendDexFee.amount), from: _feeToSendDexFee.coin)}): '
+          'send trading fee tx fee',
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ));
+
+    if (items.isEmpty)
+      items.add(Container(
+        padding: EdgeInsets.fromLTRB(8, 2, 4, 2),
+        child: Text(
+          '• None',
+          style: Theme.of(context).textTheme.caption,
+        ),
+      ));
 
     return Container(
-      width: double.infinity,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (sellCoinTxFee != null && !sellCoinTxFee.paidFromTradingVol)
-            Text(
-              '+ ${cutTrailingZeros(formatPrice(sellCoinTxFee.amount))} '
-              '${sellCoinTxFee.coin} '
-              '(send $sellCoin tx fee)',
-              style: TextStyle(fontSize: 12),
+          Container(
+            padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+            color: Theme.of(context).highlightColor.withAlpha(25),
+            child: Text(
+              'Paid from received volume:',
+              style: Theme.of(context).textTheme.caption,
             ),
-          if (receiveCoinTxFee != null && !receiveCoinTxFee.paidFromTradingVol)
-            Text(
-              '+ ${cutTrailingZeros(formatPrice(receiveCoinTxFee.amount))} '
-              '${receiveCoinTxFee.coin} '
-              '(receive $receiveCoin tx fee)',
-              style: TextStyle(fontSize: 12),
-            ),
-          if (dexFee != null && !dexFee.paidFromTradingVol)
-            Text(
-              '+ ${cutTrailingZeros(formatPrice(dexFee.amount))} '
-              '${dexFee.coin} '
-              '(DEX-fee)',
-              style: TextStyle(fontSize: 12),
-            ),
-          if (feeToPayDex != null && !feeToPayDex.paidFromTradingVol)
-            Text(
-              '+ ${cutTrailingZeros(formatPrice(feeToPayDex.amount))} '
-              '${feeToPayDex.coin} '
-              '(send DEX-fee tx fee)',
-              style: TextStyle(fontSize: 12),
-            ),
+          ),
+          SizedBox(height: 4),
+          ...items,
         ],
       ),
     );
