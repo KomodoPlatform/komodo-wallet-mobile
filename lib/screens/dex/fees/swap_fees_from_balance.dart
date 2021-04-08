@@ -96,6 +96,7 @@ class _SwapFeesFromBalanceState extends State<SwapFeesFromBalance> {
       );
     } else {
       return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
             '${cutTrailingZeros(formatPrice(feeAmount, 4))}'

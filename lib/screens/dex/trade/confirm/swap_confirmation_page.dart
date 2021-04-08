@@ -11,6 +11,7 @@ import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
+import 'package:komodo_dex/screens/dex/trade/confirm/build_detailed_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/min_volume_control.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
 import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
@@ -54,6 +55,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     const SizedBox(height: 24),
                     _buildCoinSwapDetail(),
                     _buildTestCoinWarning(),
+                    BuildDetailedFees(swapBloc.tradePreimage),
                     ExchangeRate(),
                     const SizedBox(height: 8),
                     ProtectionControl(
@@ -171,16 +173,16 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Text(AppLocalizations.of(context).sell,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: Theme.of(context).accentColor,
+                            fontWeight: FontWeight.w100,
+                          )),
                   Text(
                     '$amountSell ${swapBloc.sellCoinBalance.coin.abbr}',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  Text(AppLocalizations.of(context).sell,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: Theme.of(context).accentColor,
-                            fontWeight: FontWeight.w100,
-                          ))
                 ],
               ),
             ),
