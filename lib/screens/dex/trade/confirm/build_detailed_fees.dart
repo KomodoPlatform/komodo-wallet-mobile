@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -54,7 +53,6 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
         : Container(
             padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
             child: Container(
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
               decoration: BoxDecoration(
                   border: Border(
                 bottom: BorderSide(
@@ -78,9 +76,8 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
     return InkWell(
       onTap: () => setState(() => _showDetails = !_showDetails),
       child: Container(
-        padding: EdgeInsets.fromLTRB(0, 4, 0, 6),
+        padding: EdgeInsets.fromLTRB(6, 4, 0, 6),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Total fees: ',
@@ -149,6 +146,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
         _buildPaidFromBalance(),
         SizedBox(height: 4),
         _buildPaidFromTrade(),
+        SizedBox(height: 4),
       ],
     );
   }

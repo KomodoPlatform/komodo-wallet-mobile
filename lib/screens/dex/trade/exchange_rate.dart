@@ -18,149 +18,162 @@ class ExchangeRate extends StatefulWidget {
 }
 
 class _ExchangeRateState extends State<ExchangeRate> {
-  CexProvider cexProvider;
-  OrderBookProvider orderBookProvider;
+  CexProvider _cexProvider;
+  OrderBookProvider _orderBookProvider;
+  String _buyAbbr;
+  String _sellAbbr;
+  double _rate;
+  double _cexRate;
+  bool _showDetails = false;
 
   @override
   Widget build(BuildContext context) {
-    cexProvider ??= Provider.of<CexProvider>(context);
-    orderBookProvider ??= Provider.of<OrderBookProvider>(context);
+    _cexProvider ??= Provider.of<CexProvider>(context);
+    _orderBookProvider ??= Provider.of<OrderBookProvider>(context);
 
-    final String buyAbbr = swapBloc.receiveCoinBalance?.coin?.abbr;
-    final String sellAbbr = swapBloc.sellCoinBalance?.coin?.abbr;
+    _buyAbbr = swapBloc.receiveCoinBalance?.coin?.abbr;
+    _sellAbbr = swapBloc.sellCoinBalance?.coin?.abbr;
 
-    if (buyAbbr == null || sellAbbr == null) return Container();
+    if (_buyAbbr == null || _sellAbbr == null) return SizedBox();
 
-    final double rate = tradeForm.getExchangeRate();
-    final double cexRate = cexProvider.getCexRate();
+    _rate = tradeForm.getExchangeRate();
+    _cexRate = _cexProvider.getCexRate();
 
-    Widget _buildExchangeRate() {
-      if (rate == null) return Container();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        _buildIndicator(),
+        if (_showDetails) _buildExchangeRate(),
+      ],
+    );
+  }
 
-      final String exchangeRate = formatPrice(rate);
-      final String exchangeRateBack = formatPrice(1 / rate);
+  Widget _buildExchangeRate() {
+    if (_rate == null) return Container();
 
-      return Column(
+    final String exchangeRate = formatPrice(_rate);
+    final String exchangeRateBack = formatPrice(1 / _rate);
+
+    return Container(
+      padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Text(
-            AppLocalizations.of(context).bestAvailableRate,
-            style: Theme.of(context).textTheme.bodyText1,
+            '1 $_sellAbbr = $exchangeRate $_buyAbbr',
           ),
           Text(
-            '1 $buyAbbr = $exchangeRateBack $sellAbbr',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          Text(
-            '1 $sellAbbr = $exchangeRate $buyAbbr',
-            style: const TextStyle(fontSize: 13),
+            '1 $_buyAbbr = $exchangeRateBack $_sellAbbr',
+            style: TextStyle(fontSize: 11),
           ),
           const SizedBox(
             height: 12,
           ),
         ],
-      );
+      ),
+    );
+  }
+
+  Widget _buildCExchangeRate() {
+    if (_cexRate == null || _cexRate == 0.0) return Container();
+
+    final String cExchangeRate = formatPrice(_cexRate);
+    final String cExchangeRateBack = formatPrice(1 / _cexRate);
+
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                CexMarker(context),
+                const SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  AppLocalizations.of(context).cexChangeRate,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
+            ),
+          ],
+        ),
+        Text(
+          '1 $_buyAbbr = $cExchangeRateBack $_sellAbbr',
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                fontWeight: FontWeight.bold,
+                color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
+              ),
+        ),
+        Text(
+          '1 $_sellAbbr = $cExchangeRate $_buyAbbr',
+          style: TextStyle(
+            fontSize: 13,
+            color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
+          ),
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildIndicator() {
+    if (_rate == null || _cexRate == null || _cexRate == 0.0) return SizedBox();
+
+    const double indicatorH = 4;
+    final double indicatorW = MediaQuery.of(context).size.width * 2 / 3;
+    const double neutralRange = 5;
+    final num sign = (_cexRate - _rate).sign;
+    final double percent = ((_cexRate - _rate) * 100 / _rate).abs();
+    int indicatorRange = (neutralRange * 2).round();
+    if (percent > indicatorRange) {
+      // log_n(x) = log_e(x) / log_e(n)
+      final power = (math.log(percent) / math.log(10)).ceil();
+      // Round up to the closest power of 10
+      indicatorRange = math.pow(10, power);
+    }
+    final percentString = formatPrice(percent.toString(), 2);
+    String message;
+    Color color;
+
+    switch (sign) {
+      case -1:
+        {
+          if (percent > neutralRange) {
+            color = Colors.greenAccent;
+          }
+          message =
+              AppLocalizations.of(context).exchangeExpedient(percentString);
+          break;
+        }
+      case 1:
+        {
+          if (percent > neutralRange) {
+            color = Colors.orange;
+          }
+          message =
+              AppLocalizations.of(context).exchangeExpensive(percentString);
+          break;
+        }
+      default:
+        {
+          message = AppLocalizations.of(context).echangeIdentical;
+        }
     }
 
-    Widget _buildCExchangeRate() {
-      if (cexRate == null || cexRate == 0.0) return Container();
-
-      final String cExchangeRate = formatPrice(cexRate);
-      final String cExchangeRateBack = formatPrice(1 / cexRate);
-
-      return Column(
+    return Container(
+      padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  CexMarker(context),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    AppLocalizations.of(context).cexChangeRate,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ],
-              ),
-            ],
-          ),
           Text(
-            '1 $buyAbbr = $cExchangeRateBack $sellAbbr',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
+            message,
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  color: color,
                 ),
           ),
-          Text(
-            '1 $sellAbbr = $cExchangeRate $buyAbbr',
-            style: TextStyle(
-              fontSize: 13,
-              color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
-            ),
-          ),
-          const SizedBox(height: 20),
-        ],
-      );
-    }
-
-    Widget _buildIndicator() {
-      if (rate == null || cexRate == null || cexRate == 0.0) return Container();
-
-      const double indicatorH = 4;
-      final double indicatorW = MediaQuery.of(context).size.width * 2 / 3;
-      const double neutralRange = 5;
-      final num sign = (cexRate - rate).sign;
-      final double percent = ((cexRate - rate) * 100 / rate).abs();
-      int indicatorRange = (neutralRange * 2).round();
-      if (percent > indicatorRange) {
-        // log_n(x) = log_e(x) / log_e(n)
-        final power = (math.log(percent) / math.log(10)).ceil();
-        // Round up to the closest power of 10
-        indicatorRange = math.pow(10, power);
-      }
-      final percentString = formatPrice(percent.toString(), 2);
-      String message;
-      Color color;
-
-      switch (sign) {
-        case -1:
-          {
-            if (percent > neutralRange) {
-              color = Colors.greenAccent;
-            }
-            message =
-                AppLocalizations.of(context).exchangeExpedient(percentString);
-            break;
-          }
-        case 1:
-          {
-            if (percent > neutralRange) {
-              color = Colors.orange;
-            }
-            message =
-                AppLocalizations.of(context).exchangeExpensive(percentString);
-            break;
-          }
-        default:
-          {
-            message = AppLocalizations.of(context).echangeIdentical;
-          }
-      }
-
-      return Container(
-        child: Column(
-          children: <Widget>[
-            Text(
-              message,
-              style: TextStyle(
-                color: color,
-              ),
-            ),
+          if (_showDetails) ...{
             const SizedBox(height: 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -229,22 +242,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-          ],
-        ),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Column(
-        children: <Widget>[
-          _buildExchangeRate(),
-          _buildIndicator(),
-          InkWell(
-            onTap: () => showCexDialog(context),
-            child: _buildCExchangeRate(),
-          ),
+          }
         ],
       ),
     );

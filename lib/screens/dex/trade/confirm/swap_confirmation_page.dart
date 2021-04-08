@@ -55,9 +55,22 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     const SizedBox(height: 24),
                     _buildCoinSwapDetail(),
                     _buildTestCoinWarning(),
+                    const SizedBox(height: 24),
                     BuildDetailedFees(swapBloc.tradePreimage),
-                    ExchangeRate(),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 24),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+                      child: Container(
+                          padding: EdgeInsets.only(bottom: 6),
+                          decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                              color: Theme.of(context).highlightColor,
+                            )),
+                          ),
+                          child: ExchangeRate()),
+                    ),
+                    const SizedBox(height: 24),
                     ProtectionControl(
                       coin: swapBloc.receiveCoinBalance?.coin,
                       onChange: (ProtectionSettings settings) {
