@@ -61,7 +61,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     Container(
                       padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
                       child: Container(
-                          padding: EdgeInsets.only(bottom: 6),
                           decoration: BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(

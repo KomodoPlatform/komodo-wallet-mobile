@@ -74,13 +74,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               children: [
                 SizedBox(height: 16),
                 _buildExchange(),
-                const SizedBox(
-                  height: 8,
-                ),
+                SizedBox(height: 8),
+                ExchangeRate(alignCenter: true),
+                SizedBox(height: 24),
                 BuildTradeButton(),
                 BuildResetButton(),
-                ExchangeRate(),
-                SizedBox(height: 16),
+                SizedBox(height: 50),
               ],
             ),
           ),

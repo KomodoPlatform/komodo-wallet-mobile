@@ -1012,14 +1012,14 @@ class AppLocalizations {
 
   String get cexChangeRate =>
       Intl.message('CEXchange rate', name: 'cexChangeRate');
-  String exchangeExpedient(String delta) =>
-      Intl.message('Expedient: -$delta% compared to CEX',
-          args: <Object>[delta], name: 'exchangeExpedient');
-  String exchangeExpensive(String delta) =>
-      Intl.message('Expensive: +$delta% compared to CEX',
-          args: <Object>[delta], name: 'exchangeExpensive');
-  String get echangeIdentical =>
-      Intl.message('Identical to CEX', name: 'echangeIdentical');
+  String get exchangeExpedient =>
+      Intl.message('Expedient', name: 'exchangeExpedient');
+  String get exchangeExpensive =>
+      Intl.message('Expensive', name: 'exchangeExpensive');
+  String get exchangeIdentical =>
+      Intl.message('Identical to CEX', name: 'exchangeIdentical');
+  String get comparedToCex =>
+      Intl.message('compared to CEX', name: 'comparedToCex');
 
   String get ordersActive => Intl.message('Active', name: 'ordersActive');
   String get ordersHistory => Intl.message('History', name: 'ordersHistory');
