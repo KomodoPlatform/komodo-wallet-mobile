@@ -133,7 +133,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
       if (coin == 'USD') {
         totalFees += _cexProvider.convert(amount);
       } else {
-        totalFees += '${cutTrailingZeros(formatPrice(amount))}$nbsp$coin';
+        totalFees += '${cutTrailingZeros(formatPrice(amount, 4))}$nbsp$coin';
       }
     });
 

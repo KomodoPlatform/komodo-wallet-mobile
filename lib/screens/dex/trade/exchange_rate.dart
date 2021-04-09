@@ -6,9 +6,6 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class ExchangeRate extends StatefulWidget {
@@ -25,6 +22,7 @@ class ExchangeRate extends StatefulWidget {
 class _ExchangeRateState extends State<ExchangeRate> {
   final double _sliderH = 4;
   final double _neutralRange = 5; // % - show lower values in neutral color
+  bool _showDetails = false;
   bool _canShowEvaluation = false;
   double _sliderW;
   num _sign;
@@ -36,7 +34,6 @@ class _ExchangeRateState extends State<ExchangeRate> {
   double _cexRate;
 
   CexProvider _cexProvider;
-  bool _showDetails = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +42,9 @@ class _ExchangeRateState extends State<ExchangeRate> {
     if (_buyAbbr == null || _sellAbbr == null) return SizedBox();
 
     return Column(
+      crossAxisAlignment: widget.alignCenter
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       children: <Widget>[
         _buildHeader(),
         if (_showDetails) _buildDetails(),
@@ -91,7 +91,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
               ? MainAxisAlignment.center
               : MainAxisAlignment.start,
           children: [
-            _canShowEvaluation ? _buildEvaluationMessage() : _buildRate(),
+            _canShowEvaluation ? _buildEvaluationHeader() : _buildRateHeader(),
             Icon(
               _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down,
               size: 16,
@@ -107,82 +107,66 @@ class _ExchangeRateState extends State<ExchangeRate> {
     if (_canShowEvaluation) {
       return _buildEvaluation();
     } else {
-      return _buildExchangeRate();
+      return Padding(
+        padding: EdgeInsets.fromLTRB(6, 0, 6, 6),
+        child: _buildBackRate(),
+      );
     }
   }
 
-  Widget _buildRate() {
+  Widget _buildRateHeader() {
     if (_rate == null) return SizedBox();
 
     final String exchangeRate = formatPrice(_rate);
-    return Text(
-      '1 $_sellAbbr = $exchangeRate $_buyAbbr',
+    return Row(
+      children: [
+        Text(
+          '1 $_sellAbbr = ',
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        Text(
+          '$exchangeRate ',
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1
+              .copyWith(color: Theme.of(context).textTheme.bodyText2.color),
+        ),
+        Text(
+          '$_buyAbbr',
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ],
     );
   }
 
   Widget _buildExchangeRate() {
     if (_rate == null) return Container();
 
-    final String exchangeRateBack = formatPrice(1 / _rate);
-
-    return Column(
-      crossAxisAlignment: widget.alignCenter
-          ? CrossAxisAlignment.center
-          : CrossAxisAlignment.start,
-      children: <Widget>[
-        _buildRate(),
-        Text(
-          '1 $_buyAbbr = $exchangeRateBack $_sellAbbr',
-          style: TextStyle(fontSize: 11),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-      ],
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: widget.alignCenter
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            '1 $_sellAbbr = ${cutTrailingZeros(formatPrice(_rate))} $_buyAbbr',
+          ),
+          _buildBackRate(),
+          const SizedBox(
+            height: 6,
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildCExchangeRate() {
-    if (_cexRate == null || _cexRate == 0.0) return Container();
+  Widget _buildBackRate() {
+    final String exchangeRateBack = formatPrice(1 / _rate);
 
-    final String cExchangeRate = formatPrice(_cexRate);
-    final String cExchangeRateBack = formatPrice(1 / _cexRate);
-
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                CexMarker(context),
-                const SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  AppLocalizations.of(context).cexChangeRate,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ],
-            ),
-          ],
-        ),
-        Text(
-          '1 $_buyAbbr = $cExchangeRateBack $_sellAbbr',
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                fontWeight: FontWeight.bold,
-                color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
-              ),
-        ),
-        Text(
-          '1 $_sellAbbr = $cExchangeRate $_buyAbbr',
-          style: TextStyle(
-            fontSize: 13,
-            color: settingsBloc.isLightTheme ? cexColorLight : cexColor,
-          ),
-        ),
-        const SizedBox(height: 20),
-      ],
+    return Text(
+      '1 $_buyAbbr = $exchangeRateBack $_sellAbbr',
+      style: TextStyle(fontSize: 13),
     );
   }
 
@@ -209,7 +193,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
     );
   }
 
-  Widget _buildEvaluationMessage() {
+  Widget _buildEvaluationHeader() {
     final String percentString = formatPrice(_percent.toString(), 2);
     Widget message;
     Color color;
