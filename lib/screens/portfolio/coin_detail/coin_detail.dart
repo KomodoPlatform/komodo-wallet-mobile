@@ -199,18 +199,23 @@ class _CoinDetailState extends State<CoinDetail> {
                   ? Colors.white
                   : Colors.black,
               onPressed: () async {
-                setState(() {
-                  isDeleteLoading = true;
-                });
-                showConfirmationRemoveCoin(context, widget.coinBalance.coin)
-                    .then((_) {
+                if (widget.coinBalance.coin.isDefault) {
+                  await showCantRemoveDefaultCoin(
+                      context, widget.coinBalance.coin);
+                } else {
                   setState(() {
-                    isDeleteLoading = false;
+                    isDeleteLoading = true;
                   });
-                  if (mounted) {
-                    Navigator.of(context).pop();
-                  }
-                });
+                  showConfirmationRemoveCoin(context, widget.coinBalance.coin)
+                      .then((_) {
+                    setState(() {
+                      isDeleteLoading = false;
+                    });
+                    if (mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                }
               },
             ),
             IconButton(

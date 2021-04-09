@@ -106,26 +106,8 @@ class _ItemCoinState extends State<ItemCoin> {
               color: Theme.of(context).errorColor,
               icon: Icons.delete,
               onTap: () async {
-                if (widget.coinBalance.coin.isDefault) {
-                  final abbr = widget.coinBalance.coin.abbr;
-                  showDialog<dynamic>(
-                    context: context,
-                    builder: (contex) => AlertDialog(
-                      title: Text("Can't disable default coin"),
-                      content: Text(
-                        '$abbr is a default coin, default coins must remain enabled at all times.\n'
-                        'Therefore, you can´t disable $abbr.',
-                      ),
-                      actions: [
-                        FlatButton(
-                          child: Text('Ok'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    ),
-                  );
+                if (coin.isDefault) {
+                  await showCantRemoveDefaultCoin(context, coin);
                 } else {
                   await showConfirmationRemoveCoin(context, coin);
                 }
