@@ -12,8 +12,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
-import 'package:komodo_dex/screens/dex/fees/swap_fees_from_balance.dart';
-import 'package:komodo_dex/screens/dex/fees/swap_fees_from_trade.dart';
+import 'package:komodo_dex/screens/dex/trade/confirm/build_detailed_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_reset_button.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_trade_button.dart';
@@ -72,8 +71,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 16),
                 _buildExchange(),
+                SizedBox(height: 8),
+                _buildFees(),
                 SizedBox(height: 8),
                 ExchangeRate(alignCenter: true),
                 SizedBox(height: 24),
@@ -118,12 +118,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
           width: double.infinity,
           child: Card(
             elevation: 8,
-            margin: const EdgeInsets.all(8),
+            margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
             child: Stack(
               children: <Widget>[
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 24, right: 24, top: 32, bottom: 32),
+                      EdgeInsets.only(left: 24, right: 24, top: 28, bottom: 28),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -181,7 +181,6 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-                      _buildFees(market),
                     ],
                   ),
                 ),
@@ -191,7 +190,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
         ),
         if (market == Market.RECEIVE)
           Positioned(
-            top: -25,
+            top: -21,
             left: MediaQuery.of(context).size.width / 2 - 60,
             child: Container(
                 padding: const EdgeInsets.all(4),
@@ -210,37 +209,21 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildFees(Market market) {
-    switch (market) {
-      case Market.SELL:
-        return _feesErrorMessage == null
-            ? StreamBuilder<TradePreimage>(
-                initialData: swapBloc.tradePreimage,
-                stream: swapBloc.outTradePreimage,
-                builder: (context, snapshot) {
-                  return Container(
-                    padding: EdgeInsets.only(top: 12),
-                    child: SwapFeesFromBalance(
-                      preimage: snapshot.data,
-                    ),
-                  );
-                })
-            : InvalidSwapMessage(_feesErrorMessage);
-      case Market.RECEIVE:
-        return StreamBuilder<TradePreimage>(
+  Widget _buildFees() {
+    return _feesErrorMessage == null
+        ? StreamBuilder<TradePreimage>(
             initialData: swapBloc.tradePreimage,
             stream: swapBloc.outTradePreimage,
             builder: (context, snapshot) {
               return Container(
                 padding: EdgeInsets.only(top: 12),
-                child: SwapFeesFromTrade(
+                child: BuildDetailedFees(
                   preimage: snapshot.data,
+                  alignCenter: true,
                 ),
               );
-            });
-      default:
-        return SizedBox();
-    }
+            })
+        : InvalidSwapMessage(_feesErrorMessage);
   }
 
   Widget _buildMaxButton(Market market) {

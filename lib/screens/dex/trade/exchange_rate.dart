@@ -39,7 +39,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
   Widget build(BuildContext context) {
     _init();
 
-    if (_buyAbbr == null || _sellAbbr == null) return SizedBox();
+    if (_rate == null) return SizedBox();
 
     return Column(
       crossAxisAlignment: widget.alignCenter
@@ -66,7 +66,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
     _canShowEvaluation = _rate != null && _cexRate != null && _cexRate != 0.0;
     if (!_canShowEvaluation) return;
 
-    _sliderW = _sliderW = MediaQuery.of(context).size.width * 2 / 3;
+    _sliderW = MediaQuery.of(context).size.width / 5 * 3;
 
     _sign = (_cexRate - _rate).sign;
     _percent = ((_cexRate - _rate) * 100 / _rate).abs();

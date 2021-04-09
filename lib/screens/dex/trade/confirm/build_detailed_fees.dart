@@ -5,9 +5,13 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class BuildDetailedFees extends StatefulWidget {
-  const BuildDetailedFees(this.preimage);
+  const BuildDetailedFees({
+    this.preimage,
+    this.alignCenter = false,
+  });
 
   final TradePreimage preimage;
+  final bool alignCenter;
 
   @override
   _BuildDetailedFeesState createState() => _BuildDetailedFeesState();
@@ -24,29 +28,8 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
   CoinFee _feeToSendDexFee;
 
   @override
-  void initState() {
-    if (widget.preimage != null) {
-      final bool isTaker = widget.preimage.request.swapMethod == 'buy';
-      final TradePreimage preimage = widget.preimage;
-      setState(() {
-        _sellCoin = isTaker ? preimage.request.rel : preimage.request.base;
-        _receiveCoin = isTaker ? preimage.request.base : preimage.request.rel;
-        _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
-        _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
-        _receiveTxFee = isTaker ? preimage.baseCoinFee : preimage.relCoinFee;
-        print(isTaker);
-        if (isTaker) {
-          _dexFee = preimage.takerFee;
-          _feeToSendDexFee = preimage.feeToSendTakerFee;
-        }
-      });
-    }
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    _cexProvider ??= Provider.of<CexProvider>(context);
+    _init();
 
     return widget.preimage == null
         ? SizedBox()
@@ -70,6 +53,27 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
           );
   }
 
+  void _init() {
+    _cexProvider ??= Provider.of<CexProvider>(context);
+
+    if (widget.preimage != null) {
+      final bool isTaker = widget.preimage.request.swapMethod == 'buy';
+      final TradePreimage preimage = widget.preimage;
+      setState(() {
+        _sellCoin = isTaker ? preimage.request.rel : preimage.request.base;
+        _receiveCoin = isTaker ? preimage.request.base : preimage.request.rel;
+        _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
+        _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
+        _receiveTxFee = isTaker ? preimage.baseCoinFee : preimage.relCoinFee;
+        print(isTaker);
+        if (isTaker) {
+          _dexFee = preimage.takerFee;
+          _feeToSendDexFee = preimage.feeToSendTakerFee;
+        }
+      });
+    }
+  }
+
   Widget _buildHeader() {
     final String total = _getTotalFee();
 
@@ -78,6 +82,9 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
       child: Container(
         padding: EdgeInsets.fromLTRB(6, 4, 0, 6),
         child: Row(
+          mainAxisAlignment: widget.alignCenter
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
           children: [
             Text(
               'Total fees: ',
