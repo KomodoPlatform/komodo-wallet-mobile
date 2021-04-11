@@ -147,6 +147,10 @@ class Coin {
   }
 
   String get payGasIn {
+    // todo (yurii): find reliable way to determine gas coin
+    if (abbr == 'ETH') return 'ETH';
+    if (abbr == 'ETHR') return 'ETHR';
+
     return protocol?.protocolData?.platform;
   }
 }
