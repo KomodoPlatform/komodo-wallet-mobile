@@ -65,6 +65,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               return Column(
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         padding: const EdgeInsets.fromLTRB(16, 14, 0, 0),
@@ -73,11 +74,14 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(0, 14, 12, 0),
-                        child: Text(
-                          AppLocalizations.of(context).multiTableAmt,
-                          style: Theme.of(context).textTheme.bodyText1,
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(0, 14, 12, 0),
+                          child: Text(
+                            AppLocalizations.of(context).multiTableAmt,
+                            style: Theme.of(context).textTheme.bodyText1,
+                            textAlign: TextAlign.right,
+                          ),
                         ),
                       ),
                       _buildToggleAll(),

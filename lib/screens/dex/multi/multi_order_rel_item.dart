@@ -42,19 +42,23 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
     _multiOrderProvider ??= Provider.of<MultiOrderProvider>(context);
     _cexProvider ??= Provider.of<CexProvider>(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            _buildTitle(),
-            Expanded(child: _buildAmount()),
-            _buildSwitch(),
-          ],
-        ),
-        _buildFees(),
-        _buildError(),
-      ],
+    return Container(
+      color: widget.color,
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              _buildTitle(),
+              Expanded(child: _buildAmount()),
+              _buildSwitch(),
+            ],
+          ),
+          _buildFees(),
+          _buildError(),
+        ],
+      ),
     );
   }
 
@@ -102,8 +106,13 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
         ? SizedBox()
         : Container(
             width: double.infinity,
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: BuildDetailedFees(preimage: preimage),
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: BuildDetailedFees(
+              preimage: preimage,
+              style: Theme.of(context).textTheme.caption.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1.color,
+                  ),
+            ),
           );
   }
 
@@ -115,7 +124,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 50),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(16, 6, 12, 6),
+          padding: const EdgeInsets.fromLTRB(16, 6, 12, 0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -140,8 +149,7 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                 ],
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 2),
-                  child: _buildPrice()),
+                  padding: EdgeInsets.only(left: 2), child: _buildPrice()),
               // _buildFee(item),
             ],
           ),

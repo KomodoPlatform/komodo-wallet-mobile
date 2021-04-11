@@ -8,16 +8,19 @@ class BuildDetailedFees extends StatefulWidget {
   const BuildDetailedFees({
     this.preimage,
     this.alignCenter = false,
+    this.style,
   });
 
   final TradePreimage preimage;
   final bool alignCenter;
+  final TextStyle style;
 
   @override
   _BuildDetailedFeesState createState() => _BuildDetailedFeesState();
 }
 
 class _BuildDetailedFeesState extends State<BuildDetailedFees> {
+  TextStyle _style;
   CexProvider _cexProvider;
   bool _showDetails = false;
   String _sellCoin;
@@ -34,27 +37,19 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
     return widget.preimage == null
         ? SizedBox()
         : Container(
-            padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).highlightColor,
-                ),
-              )),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildHeader(),
-                  if (_showDetails) _buildDetails(),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildHeader(),
+                if (_showDetails) _buildDetails(),
+              ],
             ),
           );
   }
 
   void _init() {
     _cexProvider ??= Provider.of<CexProvider>(context);
+    _style = widget.style ?? Theme.of(context).textTheme.bodyText1;
 
     if (widget.preimage != null) {
       final bool isTaker = widget.preimage.request.swapMethod == 'buy';
@@ -79,7 +74,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
     return InkWell(
       onTap: () => setState(() => _showDetails = !_showDetails),
       child: Container(
-        padding: EdgeInsets.fromLTRB(6, 4, 0, 6),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
         child: Row(
           mainAxisAlignment: widget.alignCenter
               ? MainAxisAlignment.center
@@ -87,12 +82,12 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
           children: [
             Text(
               'Total fees: ',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: _style,
             ),
             Flexible(
               child: Text(
                 total,
-                style: Theme.of(context).textTheme.bodyText1.copyWith(
+                style: _style.copyWith(
                     color: Theme.of(context)
                         .textTheme
                         .bodyText2
@@ -103,7 +98,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
             Icon(
               _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down,
               size: 16,
-              color: Theme.of(context).textTheme.bodyText1.color,
+              color: _style.color,
             ),
           ],
         ),

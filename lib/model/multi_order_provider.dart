@@ -113,9 +113,18 @@ class MultiOrderProvider extends ChangeNotifier {
     _updatePreimage(coin);
   }
 
+  bool processing() {
+    bool processing = false;
+    _relCoins.forEach((abbr, coin) {
+      if (coin?.processing == true) processing = true;
+    });
+    return processing;
+  }
+
   Future<bool> validate() async {
     bool isValid = true;
     _relCoins.forEach((abbr, coin) => coin.error = null);
+    _baseCoinError = null;
 
     // check if sell amount is empty
     if (baseAmt == null) {

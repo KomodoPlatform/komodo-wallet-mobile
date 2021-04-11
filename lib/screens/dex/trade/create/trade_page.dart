@@ -216,7 +216,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
             stream: swapBloc.outTradePreimage,
             builder: (context, snapshot) {
               return Container(
-                padding: EdgeInsets.only(top: 12),
+                padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
                 child: BuildDetailedFees(
                   preimage: snapshot.data,
                   alignCenter: true,
