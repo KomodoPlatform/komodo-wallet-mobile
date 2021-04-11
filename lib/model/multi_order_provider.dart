@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
+import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
 import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
 import 'package:komodo_dex/services/mm.dart';
@@ -58,6 +60,8 @@ class MultiOrderProvider extends ChangeNotifier {
   set baseAmt(double value) {
     _sellAmt = value;
     notifyListeners();
+
+    _updateAllPreimages();
   }
 
   Map<String, MultiOrderRelCoin> get relCoins => _relCoins;
@@ -91,16 +95,22 @@ class MultiOrderProvider extends ChangeNotifier {
     return _relCoins[coin] == null ? null : _relCoins[coin].amount;
   }
 
+  TradePreimage getPreimage(String coin) => _relCoins[coin]?.preimage;
+
   String getError(String coin) {
     if (coin == _baseCoin) return _baseCoinError;
 
     return _relCoins[coin]?.error;
   }
 
-  void setRelCoinAmt(String coin, double amt) {
+  Future<void> setRelCoinAmt(String coin, double amt) async {
+    if (amt == _relCoins[coin]?.amount) return;
+
     _relCoins[coin] ??= MultiOrderRelCoin();
     _relCoins[coin].amount = amt;
     notifyListeners();
+
+    _updatePreimage(coin);
   }
 
   Future<bool> validate() async {
@@ -219,6 +229,44 @@ class MultiOrderProvider extends ChangeNotifier {
 
     return coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
   }
+
+  void _updateAllPreimages() {
+    _relCoins.forEach((abbr, coin) => _updatePreimage(abbr));
+  }
+
+  Future<void> _updatePreimage(String coin) async {
+    if (_baseCoin == null) return;
+    if (_sellAmt == null || _sellAmt == 0.0) return;
+    if (coin == null || _relCoins[coin] == null) return;
+    if (_relCoins[coin].amount == null || _relCoins[coin].amount == 0.0) return;
+
+    _relCoins[coin].processing = true;
+    notifyListeners();
+
+    TradePreimage preimage;
+    try {
+      preimage = await MM.getTradePreimage(GetTradePreimage(
+        base: _baseCoin,
+        rel: coin,
+        max: _isMax,
+        swapMethod: 'setprice',
+        volume: _sellAmt.toString(),
+        price: (_relCoins[coin].amount / _sellAmt).toString(),
+      ));
+    } catch (e) {
+      _relCoins[coin].processing = false;
+      _relCoins[coin].preimage = null;
+      Log('multi_order_provider', '_updatePreimage] $e');
+      _relCoins[coin].error = e.toString();
+      notifyListeners();
+      return;
+    }
+
+    _relCoins[coin].processing = false;
+    _relCoins[coin].preimage = preimage;
+    _relCoins[coin].error = null;
+    notifyListeners();
+  }
 }
 
 class MultiOrderRelCoin {
@@ -226,9 +274,13 @@ class MultiOrderRelCoin {
     this.amount,
     this.protectionSettings,
     this.error,
+    this.preimage,
+    this.processing,
   });
 
   double amount;
   ProtectionSettings protectionSettings;
   String error;
+  TradePreimage preimage;
+  bool processing;
 }

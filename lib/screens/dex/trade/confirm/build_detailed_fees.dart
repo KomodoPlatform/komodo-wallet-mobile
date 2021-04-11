@@ -65,7 +65,6 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
         _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
         _sellTxFee = isTaker ? preimage.relCoinFee : preimage.baseCoinFee;
         _receiveTxFee = isTaker ? preimage.baseCoinFee : preimage.relCoinFee;
-        print(isTaker);
         if (isTaker) {
           _dexFee = preimage.takerFee;
           _feeToSendDexFee = preimage.feeToSendTakerFee;

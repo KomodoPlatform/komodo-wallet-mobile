@@ -355,9 +355,9 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                   onTap: multiOrderProvider.baseCoin == null
                       ? null
                       : () async {
+                          multiOrderProvider.isMax = true;
                           multiOrderProvider.baseAmt =
                               multiOrderProvider.getMaxSellAmt();
-                          multiOrderProvider.isMax = true;
                           amountCtrl.text = cutTrailingZeros(
                                   formatPrice(multiOrderProvider.baseAmt)) ??
                               '';
