@@ -23,6 +23,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
   TextStyle _style;
   CexProvider _cexProvider;
   bool _showDetails = false;
+  bool _isLarge = false;
   String _sellCoin;
   String _receiveCoin;
   CoinFee _sellTxFee;
@@ -88,11 +89,13 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
               child: Text(
                 total,
                 style: _style.copyWith(
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .color
-                        .withAlpha(220)),
+                    color: _isLarge
+                        ? Colors.orange
+                        : Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withAlpha(220)),
               ),
             ),
             Icon(
@@ -137,6 +140,8 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
         totalFees += '${cutTrailingZeros(formatPrice(amount, 4))}$nbsp$coin';
       }
     });
+
+    if (normalizedTotals['USD'] > 10) setState(() => _isLarge = true);
 
     return totalFees;
   }
