@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_buy.dart';
@@ -21,6 +22,7 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
+import 'package:provider/provider.dart';
 
 class SwapConfirmationPage extends StatefulWidget {
   @override
@@ -28,6 +30,7 @@ class SwapConfirmationPage extends StatefulWidget {
 }
 
 class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
+  CexProvider _cexProvider;
   bool _inProgress = false;
   String _minVolume;
   BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
@@ -40,6 +43,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
 
   @override
   Widget build(BuildContext context) {
+    _cexProvider ??= Provider.of<CexProvider>(context);
+
     return LockScreen(
       context: context,
       child: Scaffold(
@@ -56,32 +61,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     _buildCoinSwapDetail(),
                     _buildTestCoinWarning(),
                     const SizedBox(height: 24),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
-                        decoration: BoxDecoration(
-                            border: Border(
-                          bottom: BorderSide(
-                            color: Theme.of(context).highlightColor,
-                          ),
-                        )),
-                        child:
-                            BuildDetailedFees(preimage: swapBloc.tradePreimage),
-                      ),
-                    ),
+                    _buildFees(),
                     const SizedBox(height: 24),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
-                      child: Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                              color: Theme.of(context).highlightColor,
-                            )),
-                          ),
-                          child: ExchangeRate()),
-                    ),
+                    _buildExchangeRate(),
                     const SizedBox(height: 24),
                     ProtectionControl(
                       coin: swapBloc.receiveCoinBalance?.coin,
@@ -114,6 +96,36 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   bool _hasData() {
     return swapBloc.sellCoinBalance != null &&
         swapBloc.receiveCoinBalance != null;
+  }
+
+  Widget _buildExchangeRate() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+      child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+              color: Theme.of(context).highlightColor,
+            )),
+          ),
+          child: ExchangeRate()),
+    );
+  }
+
+  Widget _buildFees() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
+        decoration: BoxDecoration(
+            border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).highlightColor,
+          ),
+        )),
+        child: BuildDetailedFees(preimage: swapBloc.tradePreimage),
+      ),
+    );
   }
 
   String _validateMinVolume(String value) {
@@ -208,6 +220,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6,
                   ),
+                  _buildSellFiat(),
                 ],
               ),
             ),
@@ -239,6 +252,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        _buildReceiveFiat(),
                         Text(
                           '$amountReceive ${swapBloc.receiveCoinBalance.coin.abbr}',
                           textAlign: TextAlign.center,
@@ -316,6 +330,32 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         ),
       );
     }
+  }
+
+  Widget _buildSellFiat() {
+    final double sellAmtUsd = swapBloc.amountSell *
+        _cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
+    if (sellAmtUsd == 0) return SizedBox();
+
+    return Container(
+      child: Text(
+        _cexProvider.convert(sellAmtUsd),
+        style: Theme.of(context).textTheme.caption,
+      ),
+    );
+  }
+
+  Widget _buildReceiveFiat() {
+    final double receiveeAmtUsd = swapBloc.amountReceive *
+        _cexProvider.getUsdPrice(swapBloc.receiveCoinBalance.coin.abbr);
+    if (receiveeAmtUsd == 0) return SizedBox();
+
+    return Container(
+      child: Text(
+        _cexProvider.convert(receiveeAmtUsd),
+        style: Theme.of(context).textTheme.caption,
+      ),
+    );
   }
 
   Widget _buildInfoSwap() {
