@@ -400,7 +400,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   void _calculateAmts([double sourceUsdAmt]) {
     if (sourceUsdAmt == null)
       for (String abbr in multiOrderProvider.relCoins.keys) {
-        final double relAmt = multiOrderProvider.relCoins[abbr];
+        final double relAmt = multiOrderProvider.relCoins[abbr]?.amount;
         if (relAmt == null || relAmt == 0) continue;
 
         final double sourceUsdPrice = cexProvider.getUsdPrice(abbr);
@@ -415,8 +415,8 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
 
     if (sourceUsdAmt == null || sourceUsdAmt == 0) return;
 
-    multiOrderProvider.relCoins.forEach((abbr, amt) {
-      if (amt != null) return;
+    multiOrderProvider.relCoins.forEach((abbr, MultiOrderRelCoin coin) {
+      if (coin != null) return;
 
       final double targetUsdPrice = cexProvider.getUsdPrice(abbr);
       if (targetUsdPrice == null || targetUsdPrice == 0) return;
@@ -633,11 +633,11 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
   }
 
   void _updateAmtFields() {
-    multiOrderProvider.relCoins.forEach((abbr, amount) {
-      if (amount == null || amount == 0) {
+    multiOrderProvider.relCoins.forEach((abbr, coin) {
+      if (coin?.amount == null || coin?.amount == 0) {
         amtCtrls[abbr]?.text = '';
       } else {
-        amtCtrls[abbr]?.text = cutTrailingZeros(formatPrice(amount));
+        amtCtrls[abbr]?.text = cutTrailingZeros(formatPrice(coin.amount));
       }
     });
   }

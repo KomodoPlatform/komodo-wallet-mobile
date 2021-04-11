@@ -93,11 +93,6 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                 ],
               ),
               const SizedBox(height: 12),
-              // BuildSwapFees(
-              //   baseCoin: multiOrderProvider.baseCoin,
-              //   baseAmount: multiOrderProvider.baseAmt,
-              //   includeGasFee: false,
-              // ),
               _buildErrors(),
             ],
           ),
@@ -328,6 +323,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
 
                         multiOrderProvider.baseAmt =
                             value.isEmpty ? null : amnt;
+                        multiOrderProvider.isMax = false;
                       },
                       enabled: multiOrderProvider.baseCoin != null,
                       maxLines: 1,
@@ -360,7 +356,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       ? null
                       : () async {
                           multiOrderProvider.baseAmt =
-                              await multiOrderProvider.getMaxSellAmt();
+                              multiOrderProvider.getMaxSellAmt();
+                          multiOrderProvider.isMax = true;
                           amountCtrl.text = cutTrailingZeros(
                                   formatPrice(multiOrderProvider.baseAmt)) ??
                               '';
@@ -371,7 +368,9 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       'MAX',
                       style: TextStyle(
                         fontSize: 13,
-                        color: Theme.of(context).accentColor,
+                        color: multiOrderProvider.isMax
+                            ? Theme.of(context).accentColor
+                            : null,
                       ),
                     ),
                   ),

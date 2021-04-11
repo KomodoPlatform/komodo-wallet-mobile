@@ -16,31 +16,41 @@ import 'get_setprice.dart';
 class MultiOrderProvider extends ChangeNotifier {
   final AppLocalizations _localizations = AppLocalizations();
   String _baseCoin;
+  String _baseCoinError;
   double _sellAmt;
+  bool _isMax = false;
   bool _validated = false;
 
-  final Map<String, double> _relCoins = {};
-  final Map<String, ProtectionSettings> _protectionSettings = {};
-  final Map<String, String> _errors = {};
+  final Map<String, MultiOrderRelCoin> _relCoins = {};
 
   String get baseCoin => _baseCoin;
   set baseCoin(String coin) {
+    reset();
     _baseCoin = coin;
-    _sellAmt = null;
-    _relCoins.clear();
-    _errors.clear();
 
     notifyListeners();
   }
 
   void reset() {
-    baseCoin = null;
-    validated = false;
+    _baseCoin = null;
+    _baseCoinError = null;
+    _sellAmt = null;
+    _isMax = false;
+    _validated = false;
+    _relCoins.clear();
+
+    notifyListeners();
   }
 
   bool get validated => _validated;
   set validated(bool val) {
     _validated = val;
+    notifyListeners();
+  }
+
+  bool get isMax => _isMax;
+  set isMax(bool value) {
+    _isMax = value;
     notifyListeners();
   }
 
@@ -50,7 +60,7 @@ class MultiOrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, double> get relCoins => _relCoins;
+  Map<String, MultiOrderRelCoin> get relCoins => _relCoins;
 
   bool isRelCoinSelected(String coin) {
     return _relCoins.containsKey(coin);
@@ -62,50 +72,53 @@ class MultiOrderProvider extends ChangeNotifier {
       if (!isRelCoinSelected(coin)) _relCoins[coin] = null;
     } else {
       _relCoins.remove(coin);
-      _errors.remove(coin);
     }
 
     notifyListeners();
   }
 
   ProtectionSettings getProtectionSettings(String coin) {
-    return _protectionSettings[coin];
+    return relCoins[coin]?.protectionSettings;
   }
 
   void setProtectionSettings(String coin, ProtectionSettings settings) {
-    _protectionSettings[coin] = settings;
+    _relCoins[coin] ??= MultiOrderRelCoin();
+    _relCoins[coin].protectionSettings = settings;
     notifyListeners();
   }
 
   double getRelCoinAmt(String coin) {
-    return _relCoins[coin];
+    return _relCoins[coin] == null ? null : _relCoins[coin].amount;
   }
 
   String getError(String coin) {
-    return _errors[coin];
+    if (coin == _baseCoin) return _baseCoinError;
+
+    return _relCoins[coin]?.error;
   }
 
   void setRelCoinAmt(String coin, double amt) {
-    _relCoins[coin] = amt;
+    _relCoins[coin] ??= MultiOrderRelCoin();
+    _relCoins[coin].amount = amt;
     notifyListeners();
   }
 
   Future<bool> validate() async {
     bool isValid = true;
-    _errors.clear();
+    _relCoins.forEach((abbr, coin) => coin.error = null);
 
     // check if sell amount is empty
     if (baseAmt == null) {
       isValid = false;
-      _errors[baseCoin] = _localizations.multiInvalidSellAmt;
+      _baseCoinError = _localizations.multiInvalidSellAmt;
     }
 
     // check if sell amount is lower than available balance
     if (baseAmt != null) {
-      final double max = await getMaxSellAmt();
+      final double max = getMaxSellAmt();
       if (baseAmt > max) {
         isValid = false;
-        _errors[baseCoin] = _localizations.multiMaxSellAmt +
+        _baseCoinError = _localizations.multiMaxSellAmt +
             ' ${cutTrailingZeros(formatPrice(max, 8))} $baseCoin';
       }
     }
@@ -114,17 +127,17 @@ class MultiOrderProvider extends ChangeNotifier {
     final double minSellAmt = baseCoin == 'QTUM' ? 3 : 0.00777;
     if (baseAmt != null && baseAmt < minSellAmt) {
       isValid = false;
-      _errors[baseCoin] =
+      _baseCoinError =
           _localizations.multiMinSellAmt + ' $minSellAmt $baseCoin';
     }
 
     for (String coin in _relCoins.keys) {
-      final double relAmt = _relCoins[coin];
+      final double relAmt = _relCoins[coin].amount;
 
       // check for empty amount field
       if (relAmt == null || relAmt == 0) {
         isValid = false;
-        _errors[coin] = _localizations.multiInvalidAmt;
+        _relCoins[coin].error = _localizations.multiInvalidAmt;
       }
 
       // check for gas balance
@@ -133,7 +146,7 @@ class MultiOrderProvider extends ChangeNotifier {
         final CoinBalance gasBalance = coinsBloc.getBalanceByAbbr(gasCoin);
         if (gasBalance == null) {
           isValid = false;
-          _errors[coin] = _localizations.multiActivateGas(gasCoin);
+          _relCoins[coin].error = _localizations.multiActivateGas(gasCoin);
         } else {
           double gasFee = (await GetSwapFee.gas(coin)).amount;
           if (baseCoin == gasCoin) {
@@ -143,7 +156,7 @@ class MultiOrderProvider extends ChangeNotifier {
           }
           if (gasBalance.balance.balance.toDouble() < gasFee) {
             isValid = false;
-            _errors[coin] = _localizations.multiLowGas(gasCoin);
+            relCoins[coin].error = _localizations.multiLowGas(gasCoin);
           }
         }
       }
@@ -152,7 +165,7 @@ class MultiOrderProvider extends ChangeNotifier {
       final double minReceiveAmt = baseCoin == 'QTUM' ? 3 : 0.00777;
       if (relAmt != null && relAmt < minReceiveAmt) {
         isValid = false;
-        _errors[coin] =
+        relCoins[coin].error =
             _localizations.multiMinReceiveAmt + ' $minReceiveAmt $coin';
       }
     }
@@ -168,69 +181,54 @@ class MultiOrderProvider extends ChangeNotifier {
     final List<String> relCoins = List.from(_relCoins.keys);
 
     for (String coin in relCoins) {
-      final double amount = _relCoins[coin];
+      final double amount = _relCoins[coin].amount;
 
       final GetSetPrice getSetPrice = GetSetPrice(
         base: baseCoin,
         rel: coin,
         cancelPrevious: false,
-        max: false,
+        max: _isMax,
         volume: baseAmt.toString(),
         price: deci2s(deci(amount / baseAmt)),
       );
 
-      if (_protectionSettings[coin] != null) {
-        getSetPrice.relNota = _protectionSettings[coin].requiresNotarization;
-        getSetPrice.relConfs = _protectionSettings[coin].requiredConfirmations;
+      if (_relCoins[coin]?.protectionSettings != null) {
+        getSetPrice.relNota =
+            _relCoins[coin].protectionSettings.requiresNotarization;
+        getSetPrice.relConfs =
+            _relCoins[coin].protectionSettings.requiredConfirmations;
       }
 
       final dynamic response = await MM.postSetPrice(mmSe.client, getSetPrice);
       if (response is SetPriceResponse) {
         _relCoins.remove(coin);
-        _errors.remove(coin);
-        _protectionSettings.remove(coin);
       } else if (response is ErrorString) {
         Log(
             'multi_order_provider]',
             'Failed to post setprice:'
                 ' ${response.error}');
-        _errors[coin] = response.error;
+        _relCoins[coin].error = response.error;
       }
     }
 
     notifyListeners();
   }
 
-  Future<double> getMaxSellAmt() async {
-    double maxAmt;
+  double getMaxSellAmt() {
     if (baseCoin == null) return null;
 
-    final double balance =
-        coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
-    final double baseFee = await _getBaseFee(balance);
-    maxAmt = balance - baseFee;
-
-    if (maxAmt < 0) {
-      maxAmt = null;
-      _errors[baseCoin] = _localizations.multiLowerThanFee(
-          baseCoin, cutTrailingZeros(formatPrice(baseFee)));
-      notifyListeners();
-    } else {
-      _errors.remove(baseCoin);
-      notifyListeners();
-    }
-    return maxAmt;
+    return coinsBloc.getBalanceByAbbr(baseCoin).balance.balance.toDouble();
   }
+}
 
-  Future<double> _getBaseFee(double amt) async {
-    if (baseCoin == null || amt == null) return null;
+class MultiOrderRelCoin {
+  MultiOrderRelCoin({
+    this.amount,
+    this.protectionSettings,
+    this.error,
+  });
 
-    double totalFee = 0;
-    totalFee += GetSwapFee.trading(amt).amount;
-
-    final CoinAmt txFee = await GetSwapFee.tx(baseCoin);
-    if (txFee.coin == baseCoin) totalFee += txFee.amount;
-
-    return totalFee;
-  }
+  double amount;
+  ProtectionSettings protectionSettings;
+  String error;
 }
