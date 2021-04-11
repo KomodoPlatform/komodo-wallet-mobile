@@ -110,6 +110,8 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
   }
 
   String _getTotalFee() {
+    setState(() => _isLarge = false);
+
     final String nbsp = String.fromCharCode(0x00A0);
     final Map<String, double> normalizedTotals = {
       'USD': 0,
@@ -141,7 +143,7 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
       }
     });
 
-    if (normalizedTotals['USD'] > 10) setState(() => _isLarge = true);
+    setState(() => _isLarge = normalizedTotals['USD'] > 10);
 
     return totalFees;
   }
