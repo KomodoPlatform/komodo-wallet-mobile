@@ -162,10 +162,24 @@ class SwapBloc implements BlocBase {
     _inTradePreimage.add(_tradePreimage);
   }
 
+  Timer _processingTimer;
   bool get processing => _processing;
   set processing(bool value) {
-    _processing = value;
-    _inProcessing.add(_processing);
+    _processingTimer?.cancel();
+
+    // In some cases proper form proccessing requires multiple async calls
+    // in sequence. To prevent UI 'flickering' between those calls we
+    // use small delay before turn OFF 'processing' flag.
+    // Turning 'processing' ON should be performed without delays though.
+    if (value) {
+      _processing = value;
+      _inProcessing.add(true);
+    } else {
+      _processingTimer = Timer(Duration(milliseconds: 500), () {
+        _processing = value;
+        _inProcessing.add(false);
+      });
+    }
   }
 }
 
