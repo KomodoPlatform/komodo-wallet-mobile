@@ -55,11 +55,13 @@ class TradeFormValidator {
   }
 
   Future<String> _validateGas() async {
-    return await _validateGasFor(swapBloc.sellCoinBalance.coin.abbr) ??
-        await _validateGasFor(swapBloc.receiveCoinBalance.coin.abbr);
+    return await validateGasFor(
+            swapBloc.sellCoinBalance.coin.abbr, swapBloc.tradePreimage) ??
+        await validateGasFor(
+            swapBloc.receiveCoinBalance.coin.abbr, swapBloc.tradePreimage);
   }
 
-  Future<String> _validateGasFor(String coin) async {
+  Future<String> validateGasFor(String coin, TradePreimage preimage) async {
     final String gasCoin = coinsBloc.getCoinByAbbr(coin)?.payGasIn;
     if (gasCoin == null) return null;
 
@@ -67,14 +69,14 @@ class TradeFormValidator {
       return appLocalizations.swapGasActivate(gasCoin);
     }
 
-    if (swapBloc.tradePreimage == null) {
+    if (preimage == null) {
       // If gas coin is active, but api wasn't able to
       // generate tradePreimage, we assume
       // that gas coin ballance is insufficient.
       // TBD: refactor when 'trade_preimage' will return detailed error
       return appLocalizations.swapGasAmount(gasCoin);
     } else {
-      final CoinFee totalGasFee = swapBloc.tradePreimage.totalFees
+      final CoinFee totalGasFee = preimage.totalFees
           .firstWhere((item) => item.coin == gasCoin, orElse: () => null);
       if (totalGasFee != null) {
         final double totalGasAmount =

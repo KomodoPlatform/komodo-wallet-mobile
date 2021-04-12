@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
-import 'package:komodo_dex/screens/dex/get_swap_fee.dart';
+import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -143,14 +143,18 @@ class MultiOrderProvider extends ChangeNotifier {
     }
 
     // check min sell amount
-    final double minSellAmt = baseCoin == 'QTUM' ? 3 : 0.00777;
+    final double minSellAmt = tradeForm.minVolumeDefault(_baseCoin);
     if (baseAmt != null && baseAmt < minSellAmt) {
       isValid = false;
       _baseCoinError =
           _localizations.multiMinSellAmt + ' $minSellAmt $baseCoin';
     }
 
+    final validator = TradeFormValidator();
     for (String coin in _relCoins.keys) {
+      _relCoins[coin].processing = true;
+      notifyListeners();
+
       final double relAmt = _relCoins[coin].amount;
 
       // check for empty amount field
@@ -159,25 +163,19 @@ class MultiOrderProvider extends ChangeNotifier {
         _relCoins[coin].error = _localizations.multiInvalidAmt;
       }
 
-      // check for gas balance
-      final String gasCoin = coinsBloc.getCoinByAbbr(coin)?.payGasIn;
-      if (gasCoin != null) {
-        final CoinBalance gasBalance = coinsBloc.getBalanceByAbbr(gasCoin);
-        if (gasBalance == null) {
-          isValid = false;
-          _relCoins[coin].error = _localizations.multiActivateGas(gasCoin);
-        } else {
-          double gasFee = (await GetSwapFee.gas(coin)).amount;
-          if (baseCoin == gasCoin) {
-            gasFee = gasFee +
-                (await GetSwapFee.tx(baseCoin)).amount +
-                GetSwapFee.trading(baseAmt).amount;
-          }
-          if (gasBalance.balance.balance.toDouble() < gasFee) {
-            isValid = false;
-            relCoins[coin].error = _localizations.multiLowGas(gasCoin);
-          }
-        }
+      // check for base coin gas balance for every order
+      final String baseCoinGasError =
+          await validator.validateGasFor(_baseCoin, _relCoins[coin].preimage);
+      if (baseCoinGasError != null) {
+        isValid = false;
+        _baseCoinError = baseCoinGasError;
+      }
+      // check for every rel coin gas balance
+      final String relCoinGasError =
+          await validator.validateGasFor(coin, _relCoins[coin].preimage);
+      if (relCoinGasError != null) {
+        isValid = false;
+        _relCoins[coin].error = relCoinGasError;
       }
 
       // check min receive amount
@@ -187,6 +185,9 @@ class MultiOrderProvider extends ChangeNotifier {
         relCoins[coin].error =
             _localizations.multiMinReceiveAmt + ' $minReceiveAmt $coin';
       }
+
+      _relCoins[coin].processing = false;
+      notifyListeners();
     }
 
     notifyListeners();
