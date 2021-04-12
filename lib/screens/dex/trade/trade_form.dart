@@ -119,6 +119,8 @@ class TradeForm {
     if (swapBloc.shouldBuyOut) {
       volume = fract2rat(swapBloc.matchingBid.maxvolumeFract) ??
           Rational.parse(swapBloc.matchingBid.maxvolume.toString());
+    } else if (swapBloc.isSellMaxActive && swapBloc.maxTakerVolume != null) {
+      volume = swapBloc.maxTakerVolume / price;
     } else {
       volume = Rational.parse(swapBloc.amountReceive.toString());
     }
