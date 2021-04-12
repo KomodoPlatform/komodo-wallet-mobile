@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -143,7 +144,11 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
       }
     });
 
-    setState(() => _isLarge = normalizedTotals['USD'] > 10);
+    final double sellAmtUsd = swapBloc.amountSell *
+        cexPrices.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
+    if (sellAmtUsd > 0) {
+      setState(() => _isLarge = normalizedTotals['USD'] > sellAmtUsd * 0.1);
+    }
 
     return totalFees;
   }
