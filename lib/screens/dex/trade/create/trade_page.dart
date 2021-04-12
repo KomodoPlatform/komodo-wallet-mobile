@@ -311,6 +311,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                         abbr: coin.abbr,
                         style: Theme.of(context).textTheme.subtitle2,
                         maxLines: 1,
+                        maxChar: 5,
                       )
                     : Text(
                         '-',
