@@ -83,6 +83,7 @@ class Coin {
     if (init['protocol'] != null) {
       protocol = Protocol.fromJson(init['protocol']);
     }
+    dust = init['dust'];
   }
 
   String type; // 'other', 'erc', 'qrc' or 'smartChain'
@@ -110,6 +111,7 @@ class Coin {
   Map<String, dynamic> addressFormat;
 
   Protocol protocol;
+  int dust;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type ?? '',
@@ -136,6 +138,7 @@ class Coin {
         'requires_notarization': requiresNotarization,
         'address_format': addressFormat,
         if (protocol != null) 'protocol': protocol.toJson(),
+        if (dust != null) 'dust': dust,
       };
 
   String getTxFeeSatoshi() {

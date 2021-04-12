@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
@@ -194,11 +196,14 @@ class TradeForm {
     return swapBloc.amountReceive / swapBloc.amountSell;
   }
 
-  double minVolumeDefault(String coin) {
+  double minVolumeDefault(String abbr) {
     // https://github.com/KomodoPlatform/AtomicDEX-mobile/pull/1013#issuecomment-770423015
     // Default min volumes hardcoded for QTUM and rest of the coins for now.
     // Should be handled on API-side in the future
-    if (coin == 'QTUM') {
+    final Coin coin = coinsBloc.getCoinByAbbr(abbr);
+    if (coin.dust != null) {
+      return 10 * coin.dust / 100000000;
+    } else if (abbr == 'QTUM') {
       return 1;
     } else {
       return 0.00777;
