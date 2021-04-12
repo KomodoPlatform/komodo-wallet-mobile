@@ -58,7 +58,11 @@ class _ExchangeRateState extends State<ExchangeRate> {
     _buyAbbr = swapBloc.receiveCoinBalance?.coin?.abbr;
     _sellAbbr = swapBloc.sellCoinBalance?.coin?.abbr;
 
-    if (_buyAbbr == null || _sellAbbr == null) return;
+    if (_buyAbbr == null || _sellAbbr == null) {
+      _rate = null;
+      _cexRate = null;
+      return;
+    }
 
     _rate = tradeForm.getExchangeRate();
     _cexRate = _cexProvider.getCexRate();
