@@ -227,6 +227,11 @@ class TradeForm {
     final double fromPreimage = _getMaxFromPreimage();
     if (fromPreimage != null) return fromPreimage;
 
+    if (swapBloc.maxTakerVolume != null) {
+      return double.parse(
+          swapBloc.maxTakerVolume.toDouble().toStringAsFixed(precision));
+    }
+
     return double.tryParse(
         swapBloc.sellCoinBalance.balance.balance.toStringAsFixed(precision) ??
             '0');
@@ -312,6 +317,7 @@ class TradeForm {
     swapBloc.shouldBuyOut = false;
     swapBloc.tradePreimage = null;
     swapBloc.processing = false;
+    swapBloc.maxTakerVolume = null;
     syncOrderbook.activePair = CoinsPair(sell: null, buy: null);
   }
 }
