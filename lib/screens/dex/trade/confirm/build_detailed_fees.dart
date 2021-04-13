@@ -144,13 +144,25 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
       }
     });
 
-    final double sellAmtUsd = swapBloc.amountSell *
-        cexPrices.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
-    if (sellAmtUsd > 0) {
-      setState(() => _isLarge = normalizedTotals['USD'] > sellAmtUsd * 0.1);
-    }
+    _checkIfLarge(normalizedTotals['USD']);
 
     return totalFees;
+  }
+
+  void _checkIfLarge(double amtUsd) {
+    final bool isTaker = widget.preimage.request.swapMethod == 'buy';
+    final String sellCoin =
+        isTaker ? widget.preimage.request.rel : widget.preimage.request.base;
+
+    final double amountSell = isTaker
+        ? double.parse(widget.preimage.request.volume) *
+            double.parse(widget.preimage.request.price)
+        : double.parse(widget.preimage.request.volume);
+
+    final double sellAmtUsd = amountSell * cexPrices.getUsdPrice(sellCoin);
+    if (sellAmtUsd > 0) {
+      setState(() => _isLarge = amtUsd > sellAmtUsd * 0.1);
+    }
   }
 
   Widget _buildDetails() {
