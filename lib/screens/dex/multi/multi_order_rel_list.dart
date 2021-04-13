@@ -294,7 +294,8 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
               if (val) {
                 _updateAmtFields();
                 _calculateAmts();
-                if (multiOrderProvider.relCoins[item.coin.abbr] == null) {
+                if (multiOrderProvider.relCoins[item.coin.abbr].amount ==
+                    null) {
                   WidgetsBinding.instance.addPostFrameCallback((_) =>
                       FocusScope.of(context)
                           .requestFocus(amtFocusNodes[item.coin.abbr]));
@@ -343,7 +344,7 @@ class _MultiOrderRelListState extends State<MultiOrderRelList> {
     if (sourceUsdAmt == null || sourceUsdAmt == 0) return;
 
     multiOrderProvider.relCoins.forEach((abbr, MultiOrderRelCoin coin) {
-      if (coin != null) return;
+      if (coin.amount != null) return;
 
       final double targetUsdPrice = cexProvider.getUsdPrice(abbr);
       if (targetUsdPrice == null || targetUsdPrice == 0) return;
