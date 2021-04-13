@@ -171,9 +171,9 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
         sell: coinsBloc.getCoinByAbbr(_multiOrderProvider.baseCoin)));
     double delta;
     if (cexPrice != null && cexPrice != 0) {
-      delta = (cexPrice - price) * 100 / cexPrice;
-      if (delta > 100) delta = 100;
-      if (delta < -100) delta = -100;
+      delta = (price - cexPrice) * 100 / cexPrice;
+      if (delta > 99.99) delta = 99.99;
+      if (delta < -99.99) delta = -99.99;
     }
 
     return Wrap(
@@ -215,14 +215,14 @@ class _MultiOrderRelItemState extends State<MultiOrderRelItem> {
                 delta > 0 ? '+' : '',
                 style: TextStyle(
                   fontSize: 10,
-                  color: delta > 0 ? Colors.orange : Colors.green,
+                  color: delta > 0 ? Colors.green : Colors.orange,
                 ),
               ),
               Text(
                 '${formatPrice(delta, 2)}%',
                 style: TextStyle(
                   fontSize: 10,
-                  color: delta > 0 ? Colors.orange : Colors.green,
+                  color: delta > 0 ? Colors.green : Colors.orange,
                 ),
               ),
             ],

@@ -16,6 +16,7 @@ import 'package:komodo_dex/screens/dex/trade/confirm/build_detailed_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/min_volume_control.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
 import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
+import 'package:komodo_dex/screens/dex/trade/evaluation.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -57,14 +58,16 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
             : SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     _buildCoinSwapDetail(),
                     _buildTestCoinWarning(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     _buildFees(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     _buildExchangeRate(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
+                    _buildEvaluation(),
+                    SizedBox(height: 24),
                     ProtectionControl(
                       coin: swapBloc.receiveCoinBalance?.coin,
                       onChange: (ProtectionSettings settings) {
@@ -96,6 +99,20 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   bool _hasData() {
     return swapBloc.sellCoinBalance != null &&
         swapBloc.receiveCoinBalance != null;
+  }
+
+  Widget _buildEvaluation() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+      child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+              color: Theme.of(context).highlightColor,
+            )),
+          ),
+          child: Evaluation()),
+    );
   }
 
   Widget _buildExchangeRate() {

@@ -21,6 +21,7 @@ import 'package:komodo_dex/screens/dex/trade/create/receive/receive_amount_field
 import 'package:komodo_dex/screens/dex/trade/create/receive/select_receive_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/sell/select_sell_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/sell/sell_amount_field.dart';
+import 'package:komodo_dex/screens/dex/trade/evaluation.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/log.dart';
@@ -76,7 +77,9 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                 _buildFees(),
                 SizedBox(height: 8),
                 ExchangeRate(alignCenter: true),
-                SizedBox(height: 24),
+                SizedBox(height: 8),
+                Evaluation(alignCenter: true),
+                SizedBox(height: 20),
                 BuildTradeButton(),
                 BuildResetButton(),
                 SizedBox(height: 50),

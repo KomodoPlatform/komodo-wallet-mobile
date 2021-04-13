@@ -125,6 +125,10 @@ class _InvalidSwapMessageState extends State<InvalidSwapMessage> {
                   InkWell(
                     onTap: () {
                       copyToClipBoard(_mainContext, widget.apiErrorMessage);
+                      Future<dynamic>.delayed(Duration(seconds: 2))
+                          .then<dynamic>((dynamic _) {
+                        Scaffold.of(_mainContext).hideCurrentSnackBar();
+                      });
                     },
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
