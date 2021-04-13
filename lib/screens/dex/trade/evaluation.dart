@@ -77,7 +77,7 @@ class _EvaluationState extends State<Evaluation> {
     _sliderW = MediaQuery.of(context).size.width / 5 * 3;
 
     _sign = (_rate - _cexRate).sign;
-    _percent = ((_rate - _cexRate) * 100 / _rate).abs();
+    _percent = ((_rate - _cexRate) * 100 / _cexRate).abs();
     if (_percent > 99.99) _percent = 99.99;
     if (_percent < -99.99) _percent = -99.99;
     _indicatorRange = (_neutralRange * 2).round();
