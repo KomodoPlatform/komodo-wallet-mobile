@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/utils/utils.dart';
