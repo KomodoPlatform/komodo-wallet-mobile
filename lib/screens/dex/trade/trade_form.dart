@@ -41,7 +41,7 @@ class TradeForm {
     }
 
     // If greater than max available balance
-    final double maxAmount = getMaxSellAmount();
+    final double maxAmount = _getMaxSellAmount();
     if (valueDouble >= maxAmount) {
       valueDouble = maxAmount;
       swapBloc.setIsMaxActive(true);
@@ -217,19 +217,19 @@ class TradeForm {
 
     swapBloc.processing = true;
     await updateTradePreimage();
-    final double max = getMaxSellAmount();
+    final double max = _getMaxSellAmount();
     swapBloc.processing = false;
 
     if (max != swapBloc.amountSell) swapBloc.setAmountSell(max);
   }
 
-  double getMaxSellAmount() {
+  double _getMaxSellAmount() {
     if (swapBloc.sellCoinBalance == null) return null;
 
     final double fromPreimage = _getMaxFromPreimage();
     if (fromPreimage != null) return fromPreimage;
 
-    if (swapBloc.maxTakerVolume != null) {
+    if (swapBloc.matchingBid != null && swapBloc.maxTakerVolume != null) {
       return double.parse(
           swapBloc.maxTakerVolume.toDouble().toStringAsFixed(precision));
     }
