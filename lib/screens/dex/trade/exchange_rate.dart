@@ -28,7 +28,24 @@ class _ExchangeRateState extends State<ExchangeRate> {
   Widget build(BuildContext context) {
     _init();
 
-    if (_rate == null) return SizedBox();
+    if (_rate == null) {
+      return Container(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
+        child: Opacity(
+            opacity: 0.2,
+            child: Row(
+              mainAxisAlignment: widget.alignCenter
+                  ? MainAxisAlignment.center
+                  : MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Exchange rate:',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
+            )),
+      );
+    }
 
     return Column(
       crossAxisAlignment: widget.alignCenter

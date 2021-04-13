@@ -36,7 +36,23 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
     _init();
 
     return widget.preimage == null
-        ? SizedBox()
+        ? Container(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
+            child: Opacity(
+                opacity: 0.2,
+                child: Row(
+                  mainAxisAlignment: widget.alignCenter
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Total fees:',
+                      style:
+                          widget.style ?? Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                )),
+          )
         : Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -55,7 +55,7 @@ class _SellAmountFieldState extends State<SellAmountField> {
           hintStyle: Theme.of(context)
               .textTheme
               .bodyText1
-              .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
+              .copyWith(fontWeight: FontWeight.w200),
           hintText: AppLocalizations.of(context).amountToSell),
     );
   }

@@ -43,7 +43,13 @@ class _EvaluationState extends State<Evaluation> {
   Widget build(BuildContext context) {
     _init();
 
-    if (_rate == null || _cexRate == null || _cexRate == 0.0) return SizedBox();
+    if (_rate == null || _cexRate == null || _cexRate == 0.0) {
+      return Container(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
+        child:
+            Text(String.fromCharCode(0x00A0), style: TextStyle(fontSize: 16)),
+      );
+    }
 
     return Column(
       crossAxisAlignment: widget.alignCenter
