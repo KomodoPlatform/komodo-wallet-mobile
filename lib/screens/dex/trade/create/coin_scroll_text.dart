@@ -47,6 +47,8 @@ class _CoinScrollTextState extends State<CoinScrollText> {
               text: text,
               style: widget.style,
               blankSpace: 20.0,
+              pauseAfterRound: Duration(seconds: 5),
+              startAfter: Duration(seconds: 2),
             )
           : Text(
               text,
