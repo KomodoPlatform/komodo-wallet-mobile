@@ -84,7 +84,9 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
         swapBloc.sellCoinBalance != null &&
         swapBloc.receiveCoinBalance != null &&
         swapBloc.amountSell != null &&
-        swapBloc.amountReceive != null;
+        swapBloc.amountReceive != null &&
+        swapBloc.amountSell > 0 &&
+        swapBloc.amountReceive > 0;
 
     setState(() => _enabled = isEnabled);
   }
