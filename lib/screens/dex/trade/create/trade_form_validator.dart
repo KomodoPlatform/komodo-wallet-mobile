@@ -1,3 +1,4 @@
+import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
@@ -17,8 +18,10 @@ class TradeFormValidator {
   final AppLocalizations appLocalizations = AppLocalizations();
 
   Future<String> get errorMessage async {
-    final String message =
-        _validateNetwork() ?? _validateMinValues() ?? await _validateGas();
+    final String message = _validateNetwork() ??
+        _validateMaxTakerVolume() ??
+        _validateMinValues() ??
+        await _validateGas();
     return message;
   }
 
@@ -28,6 +31,16 @@ class TradeFormValidator {
     } else {
       return null;
     }
+  }
+
+  String _validateMaxTakerVolume() {
+    if (swapBloc.matchingBid != null &&
+        swapBloc.maxTakerVolume == Rational.parse('0')) {
+      return '${swapBloc.sellCoinBalance.coin.abbr} balance not suffisient'
+          ' to pay trading fee';
+    }
+
+    return null;
   }
 
   String _validateMinValues() {

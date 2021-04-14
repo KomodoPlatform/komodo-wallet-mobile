@@ -212,14 +212,9 @@ class TradeForm {
     }
   }
 
-  Future<void> setMaxSellAmount() async {
+  void setMaxSellAmount() {
     swapBloc.setIsMaxActive(true);
-
-    swapBloc.processing = true;
-    await updateTradePreimage();
     final double max = _getMaxSellAmount();
-    swapBloc.processing = false;
-
     if (max != swapBloc.amountSell) swapBloc.setAmountSell(max);
   }
 
@@ -266,9 +261,7 @@ class TradeForm {
     if (swapBloc.sellCoinBalance == null ||
         swapBloc.receiveCoinBalance == null ||
         swapBloc.amountSell == null ||
-        swapBloc.amountSell == 0.0 ||
-        swapBloc.amountReceive == null ||
-        swapBloc.amountReceive == 0.0) {
+        swapBloc.amountReceive == null) {
       swapBloc.tradePreimage = null;
       return null;
     }

@@ -80,6 +80,9 @@ class _BuildDetailedFeesState extends State<BuildDetailedFees> {
         if (isTaker) {
           _dexFee = preimage.takerFee;
           _feeToSendDexFee = preimage.feeToSendTakerFee;
+        } else {
+          _dexFee = null;
+          _feeToSendDexFee = null;
         }
       });
     }

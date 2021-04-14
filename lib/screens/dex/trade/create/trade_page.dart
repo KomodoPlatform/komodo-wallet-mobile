@@ -42,13 +42,12 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   OrderBookProvider _orderBookProvider;
   String _feesErrorMessage;
   final _listeners = <StreamSubscription<dynamic>>[];
+  Timer _updateTimer;
 
   @override
   void initState() {
     _listeners.add(swapBloc.outAmountSell.listen(_onFormStateChange));
     _listeners.add(swapBloc.outAmountReceive.listen(_onFormStateChange));
-    _listeners.add(swapBloc.outSellCoinBalance.listen(_onFormStateChange));
-    _listeners.add(swapBloc.outReceiveCoinBalance.listen(_onFormStateChange));
 
     super.initState();
   }
@@ -56,6 +55,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   @override
   void dispose() {
     _listeners.map((listener) => listener?.cancel());
+    _updateTimer?.cancel();
 
     super.dispose();
   }
@@ -365,6 +365,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'performing maker order');
 
     swapBloc.updateMatchingBid(null);
+    if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 
     swapBloc.updateReceiveCoin(coin);
     swapBloc.setAmountReceive(null);
@@ -376,6 +377,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'performing taker order');
 
     swapBloc.updateMatchingBid(bid);
+    if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 
     swapBloc.enabledReceiveField = false;
     swapBloc.updateReceiveCoin(bid.coin);
@@ -402,26 +404,27 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   }
 
   Future<void> _onFormStateChange(dynamic _) async {
-    if (!mounted) return;
-
-    await _updateFees();
-    // Max sell amount depends on preimage, so it should be updated
-    // after preimage update
-    await _updateSellAmountIfNeeded();
+    _updateTimer?.cancel();
+    _updateTimer = Timer(Duration(milliseconds: 500), () async {
+      await _updateFees();
+      // Max sell amount depends on preimage, so it should be updated
+      // after preimage update
+      await _updateSellAmountIfMax();
+    });
   }
 
   Future<void> _updateFees() async {
+    if (!mounted) return;
+    setState(() => _feesErrorMessage = null);
     final String error = await tradeForm.updateTradePreimage();
 
-    if (error == null) {
-      setState(() => _feesErrorMessage = null);
-    } else {
+    if (error != null) {
       setState(() => _feesErrorMessage = error);
     }
   }
 
-  Future<void> _updateSellAmountIfNeeded() async {
-    if (swapBloc.isSellMaxActive) await tradeForm.setMaxSellAmount();
+  Future<void> _updateSellAmountIfMax() async {
+    if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
   }
 }
 

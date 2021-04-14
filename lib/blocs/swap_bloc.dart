@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/model/get_max_taker_volume.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
@@ -103,20 +104,27 @@ class SwapBloc implements BlocBase {
   }
 
   void setAmountSell(double amount) {
-    amountSell = amount;
+    final double rounded = amount == null
+        ? null
+        : double.parse(amount.toStringAsFixed(tradeForm.precision));
+    amountSell = rounded;
     _inAmountSell.add(amountSell);
   }
 
   void setAmountReceive(double amount) {
-    amountReceive = amount;
+    final double rounded = amount == null
+        ? null
+        : double.parse(amount.toStringAsFixed(tradeForm.precision));
+    amountReceive = rounded;
     _inAmountReceive.add(amountReceive);
   }
 
   void calcAndSetAmountReceive(Decimal amountSell, Ask matchingBid) {
     if (matchingBid == null) return;
 
-    amountReceive = amountSell.toDouble() * double.parse(matchingBid.price);
-    _inAmountReceive.add(amountReceive);
+    final amountReceive =
+        amountSell.toDouble() * double.parse(matchingBid.price);
+    setAmountReceive(amountReceive);
   }
 
   void setIndexTabDex(int index) {
