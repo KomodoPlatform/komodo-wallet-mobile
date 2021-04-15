@@ -143,7 +143,7 @@ class MultiOrderProvider extends ChangeNotifier {
     }
 
     // check min sell amount
-    final double minSellAmt = tradeForm.minVolumeDefault(_baseCoin);
+    final double minSellAmt = await tradeForm.minVolumeDefault(_baseCoin);
     if (baseAmt != null && baseAmt < minSellAmt) {
       isValid = false;
       _baseCoinError =
@@ -151,42 +151,42 @@ class MultiOrderProvider extends ChangeNotifier {
     }
 
     final validator = TradeFormValidator();
-    for (String coin in _relCoins.keys) {
-      _relCoins[coin].processing = true;
+    for (String relCoin in _relCoins.keys) {
+      _relCoins[relCoin].processing = true;
       notifyListeners();
 
-      final double relAmt = _relCoins[coin].amount;
+      final double relAmt = _relCoins[relCoin].amount;
 
       // check for empty amount field
       if (relAmt == null || relAmt == 0) {
         isValid = false;
-        _relCoins[coin].error = _localizations.multiInvalidAmt;
+        _relCoins[relCoin].error = _localizations.multiInvalidAmt;
       }
 
       // check for base coin gas balance for every order
-      final String baseCoinGasError =
-          await validator.validateGasFor(_baseCoin, _relCoins[coin].preimage);
+      final String baseCoinGasError = await validator.validateGasFor(
+          _baseCoin, _relCoins[relCoin].preimage);
       if (baseCoinGasError != null) {
         isValid = false;
         _baseCoinError = baseCoinGasError;
       }
       // check for every rel coin gas balance
       final String relCoinGasError =
-          await validator.validateGasFor(coin, _relCoins[coin].preimage);
+          await validator.validateGasFor(relCoin, _relCoins[relCoin].preimage);
       if (relCoinGasError != null) {
         isValid = false;
-        _relCoins[coin].error = relCoinGasError;
+        _relCoins[relCoin].error = relCoinGasError;
       }
 
       // check min receive amount
-      final double minReceiveAmt = baseCoin == 'QTUM' ? 3 : 0.00777;
+      final double minReceiveAmt = await tradeForm.minVolumeDefault(relCoin);
       if (relAmt != null && relAmt < minReceiveAmt) {
         isValid = false;
-        relCoins[coin].error =
-            _localizations.multiMinReceiveAmt + ' $minReceiveAmt $coin';
+        relCoins[relCoin].error =
+            _localizations.multiMinReceiveAmt + ' $minReceiveAmt $relCoin';
       }
 
-      _relCoins[coin].processing = false;
+      _relCoins[relCoin].processing = false;
       notifyListeners();
     }
 

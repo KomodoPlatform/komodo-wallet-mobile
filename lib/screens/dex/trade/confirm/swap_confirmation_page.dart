@@ -34,6 +34,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   CexProvider _cexProvider;
   bool _inProgress = false;
   String _minVolume;
+  bool _isMinVolumeValid = true;
   BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
   ProtectionSettings _protectionSettings = ProtectionSettings(
     requiredConfirmations:
@@ -78,11 +79,13 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     ),
                     if (swapBloc.matchingBid == null)
                       MinVolumeControl(
-                          coin: swapBloc.sellCoinBalance?.coin?.abbr,
-                          validator: _validateMinVolume,
-                          onChange: (String value) {
+                          base: swapBloc.sellCoinBalance.coin.abbr,
+                          rel: swapBloc.receiveCoinBalance.coin.abbr,
+                          price: swapBloc.amountReceive / swapBloc.amountSell,
+                          onChange: (String value, bool isValid) {
                             setState(() {
                               _minVolume = value;
+                              _isMinVolumeValid = isValid;
                             });
                           }),
                     if (swapBloc.matchingBid != null) _buildBuyOrderType(),
@@ -143,26 +146,6 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         child: BuildDetailedFees(preimage: swapBloc.tradePreimage),
       ),
     );
-  }
-
-  String _validateMinVolume(String value) {
-    if (value == null) return null;
-
-    final double minVolumeValue = double.tryParse(value);
-    final double minVolumeDefault =
-        tradeForm.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
-    final double amountToSell = swapBloc.amountSell;
-
-    if (minVolumeValue == null) {
-      return AppLocalizations.of(context).nonNumericInput;
-    } else if (minVolumeValue < minVolumeDefault) {
-      return AppLocalizations.of(context)
-          .minVolumeInput(minVolumeDefault, swapBloc.sellCoinBalance.coin.abbr);
-    } else if (amountToSell != null && minVolumeValue > amountToSell) {
-      return AppLocalizations.of(context).minVolumeIsTDH;
-    } else {
-      return null;
-    }
   }
 
   Widget _buildBuyOrderType() {
@@ -435,9 +418,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildButtons() {
-    final bool disabled = _inProgress || _validateMinVolume(_minVolume) != null;
+    final bool disabled = _inProgress || !_isMinVolumeValid;
 
-    return Builder(builder: (BuildContext context) {
+    return Builder(builder: (context) {
       return Column(
         children: <Widget>[
           const SizedBox(

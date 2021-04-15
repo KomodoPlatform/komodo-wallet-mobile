@@ -20,7 +20,7 @@ class TradeFormValidator {
   Future<String> get errorMessage async {
     final String message = _validateNetwork() ??
         _validateMaxTakerVolume() ??
-        _validateMinValues() ??
+        await _validateMinValues() ??
         await _validateGas();
     return message;
   }
@@ -43,11 +43,11 @@ class TradeFormValidator {
     return null;
   }
 
-  String _validateMinValues() {
+  Future<String> _validateMinValues() async {
     final double minVolumeSell =
-        tradeForm.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
+        await tradeForm.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
     final double minVolumeReceive =
-        tradeForm.minVolumeDefault(swapBloc.receiveCoinBalance.coin.abbr);
+        await tradeForm.minVolumeDefault(swapBloc.receiveCoinBalance.coin.abbr);
 
     if (amountSell > 0 && amountSell < minVolumeSell) {
       return appLocalizations.minValue(

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/get_min_trading_volume.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/get_convert_address.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
@@ -686,17 +687,34 @@ class ApiProvider {
       final error = ErrorString.fromJson(jbody);
       if (error.error.isNotEmpty) throw removeLineFromMM2(error);
 
-      Rational max;
-      try {
-        max = fract2rat(jbody['result']);
-      } catch (e) {
-        Log('mm', 'getMaxTakerVolume] $e');
-        return null;
-      }
-
-      return max;
+      return fract2rat(jbody['result']);
     } catch (e) {
-      throw _catchErrorString('getTradePreimage', e, 'mm trade_preimage] $e');
+      throw _catchErrorString('getMaxTakerVolume', e, 'max_taker_vol] $e');
+    }
+  }
+
+  Future<double> getMinTradingVolume(
+    GetMinTradingVolume request, {
+    http.Client client,
+  }) async {
+    client ??= mmSe.client;
+
+    try {
+      final userBody = await _assertUserpass(client, request);
+      final response = await userBody.client
+          .post(url, body: getMinTradingVolumeToJson(userBody.body));
+      _assert200(response);
+      _saveRes('getMinTradingVolume', response);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = jsonDecode(response.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      return double.tryParse(jbody['result']['min_trading_vol'] ?? '');
+    } catch (e) {
+      throw _catchErrorString(
+          'getMinTradingVolume', e, 'mm min_trading_volume] $e');
     }
   }
 }
