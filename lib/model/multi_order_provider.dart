@@ -5,7 +5,6 @@ import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
-import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -150,7 +149,6 @@ class MultiOrderProvider extends ChangeNotifier {
           _localizations.multiMinSellAmt + ' $minSellAmt $baseCoin';
     }
 
-    final validator = TradeFormValidator();
     for (String relCoin in _relCoins.keys) {
       _relCoins[relCoin].processing = true;
       notifyListeners();
@@ -164,15 +162,15 @@ class MultiOrderProvider extends ChangeNotifier {
       }
 
       // check for base coin gas balance for every order
-      final String baseCoinGasError = await validator.validateGasFor(
-          _baseCoin, _relCoins[relCoin].preimage);
+      final String baseCoinGasError =
+          await _validateGas(_baseCoin, _relCoins[relCoin].preimage);
       if (baseCoinGasError != null) {
         isValid = false;
         _baseCoinError = baseCoinGasError;
       }
       // check for every rel coin gas balance
       final String relCoinGasError =
-          await validator.validateGasFor(relCoin, _relCoins[relCoin].preimage);
+          await _validateGas(relCoin, _relCoins[relCoin].preimage);
       if (relCoinGasError != null) {
         isValid = false;
         _relCoins[relCoin].error = relCoinGasError;
@@ -193,6 +191,38 @@ class MultiOrderProvider extends ChangeNotifier {
     notifyListeners();
 
     return isValid;
+  }
+
+  Future<String> _validateGas(String coin, TradePreimage preimage) async {
+    final String gasCoin = coinsBloc.getCoinByAbbr(coin)?.payGasIn;
+    if (gasCoin == null) return null;
+
+    if (!coinsBloc.isCoinActive(gasCoin)) {
+      return _localizations.swapGasActivate(gasCoin);
+    }
+
+    if (preimage == null) {
+      // If gas coin is active, but api wasn't able to
+      // generate tradePreimage, we assume
+      // that gas coin ballance is insufficient.
+      // TBD: refactor when 'trade_preimage' will return detailed error
+      return _localizations.swapGasAmount(gasCoin);
+    } else {
+      final CoinFee totalGasFee = preimage.totalFees
+          .firstWhere((item) => item.coin == gasCoin, orElse: () => null);
+      if (totalGasFee != null) {
+        final double totalGasAmount =
+            double.tryParse(totalGasFee.amount ?? '0') ?? 0;
+        final double gasBalance =
+            coinsBloc.getBalanceByAbbr(gasCoin).balance.balance.toDouble();
+        if (totalGasAmount > gasBalance) {
+          return _localizations.swapGasAmount(
+              gasCoin, cutTrailingZeros(formatPrice(totalGasAmount, 4)));
+        }
+      }
+    }
+
+    return null;
   }
 
   Future<void> create() async {

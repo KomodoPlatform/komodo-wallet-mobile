@@ -268,8 +268,8 @@ class TradeForm {
   Future<String> updateTradePreimage() async {
     if (swapBloc.sellCoinBalance == null ||
         swapBloc.receiveCoinBalance == null ||
-        swapBloc.amountSell == null ||
-        swapBloc.amountReceive == null) {
+        (swapBloc.amountSell ?? 0) == 0 ||
+        (swapBloc.amountReceive ?? 0) == 0) {
       swapBloc.tradePreimage = null;
       return null;
     }
@@ -321,6 +321,9 @@ class TradeForm {
     swapBloc.tradePreimage = null;
     swapBloc.processing = false;
     swapBloc.maxTakerVolume = null;
+    swapBloc.autovalidate = false;
+    swapBloc.preimageError = null;
+    swapBloc.validatorError = null;
     syncOrderbook.activePair = CoinsPair(sell: null, buy: null);
   }
 }

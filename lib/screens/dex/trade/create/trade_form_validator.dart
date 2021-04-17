@@ -49,14 +49,14 @@ class TradeFormValidator {
     final double minVolumeReceive =
         await tradeForm.minVolumeDefault(swapBloc.receiveCoinBalance.coin.abbr);
 
-    if (amountSell > 0 && amountSell < minVolumeSell) {
+    if (amountSell != null && amountSell < minVolumeSell) {
       return appLocalizations.minValue(
           swapBloc.sellCoinBalance.coin.abbr, '$minVolumeSell');
-    } else if (amountReceive > 0 && amountReceive < minVolumeReceive) {
+    } else if (amountReceive != null && amountReceive < minVolumeReceive) {
       return appLocalizations.minValueBuy(
           swapBloc.receiveCoinBalance.coin.abbr, '$minVolumeReceive');
     } else if (matchingBid != null && matchingBid.minVolume != null) {
-      if (amountReceive < matchingBid.minVolume) {
+      if (amountReceive != null && amountReceive < matchingBid.minVolume) {
         return appLocalizations.minValueBuy(
             swapBloc.receiveCoinBalance.coin.abbr,
             cutTrailingZeros(formatPrice(matchingBid.minVolume)));
@@ -68,13 +68,11 @@ class TradeFormValidator {
   }
 
   Future<String> _validateGas() async {
-    return await validateGasFor(
-            swapBloc.sellCoinBalance.coin.abbr, swapBloc.tradePreimage) ??
-        await validateGasFor(
-            swapBloc.receiveCoinBalance.coin.abbr, swapBloc.tradePreimage);
+    return await _validateGasFor(swapBloc.sellCoinBalance.coin.abbr) ??
+        await _validateGasFor(swapBloc.receiveCoinBalance.coin.abbr);
   }
 
-  Future<String> validateGasFor(String coin, TradePreimage preimage) async {
+  Future<String> _validateGasFor(String coin) async {
     final String gasCoin = coinsBloc.getCoinByAbbr(coin)?.payGasIn;
     if (gasCoin == null) return null;
 
@@ -82,14 +80,18 @@ class TradeFormValidator {
       return appLocalizations.swapGasActivate(gasCoin);
     }
 
-    if (preimage == null) {
-      // If gas coin is active, but api wasn't able to
-      // generate tradePreimage, we assume
-      // that gas coin ballance is insufficient.
-      // TBD: refactor when 'trade_preimage' will return detailed error
-      return appLocalizations.swapGasAmount(gasCoin);
+    if (swapBloc.tradePreimage == null) {
+      if (swapBloc.preimageError != null) {
+        // If gas coin is active, but api wasn't able to
+        // generate tradePreimage, we assume
+        // that gas coin ballance is insufficient.
+        // TBD: refactor when 'trade_preimage' will return detailed error
+        return appLocalizations.swapGasAmount(gasCoin);
+      } else {
+        return null;
+      }
     } else {
-      final CoinFee totalGasFee = preimage.totalFees
+      final CoinFee totalGasFee = swapBloc.tradePreimage.totalFees
           .firstWhere((item) => item.coin == gasCoin, orElse: () => null);
       if (totalGasFee != null) {
         final double totalGasAmount =

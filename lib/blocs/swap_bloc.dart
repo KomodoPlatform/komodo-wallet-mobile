@@ -24,6 +24,9 @@ class SwapBloc implements BlocBase {
   TradePreimage _tradePreimage;
   bool _processing = false;
   Rational maxTakerVolume;
+  String _preimageError;
+  String _validatorError;
+  bool autovalidate = false;
 
   // Using to guide user directly to active orders list
   int indexTab = 0;
@@ -81,6 +84,16 @@ class SwapBloc implements BlocBase {
   Sink<bool> get _inProcessing => _processingController.sink;
   Stream<bool> get outProcessing => _processingController.stream;
 
+  final StreamController<String> _preimageErrorController =
+      StreamController<String>.broadcast();
+  Sink<String> get _inPreimageError => _preimageErrorController.sink;
+  Stream<String> get outPreimageError => _preimageErrorController.stream;
+
+  final StreamController<String> _validatorErrorController =
+      StreamController<String>.broadcast();
+  Sink<String> get _inValidatorError => _validatorErrorController.sink;
+  Stream<String> get outValidatorError => _validatorErrorController.stream;
+
   @override
   void dispose() {
     _sellCoinBalanceController.close();
@@ -91,6 +104,8 @@ class SwapBloc implements BlocBase {
     _enabledSellFieldController.close();
     _isMaxActiveController.close();
     _processingController.close();
+    _inPreimageError.close();
+    _inValidatorError.close();
   }
 
   void setIsMaxActive(bool isMaxActive) {
@@ -188,6 +203,18 @@ class SwapBloc implements BlocBase {
         _inProcessing.add(false);
       });
     }
+  }
+
+  String get preimageError => _preimageError;
+  set preimageError(String value) {
+    _preimageError = value;
+    _inPreimageError.add(_preimageError);
+  }
+
+  String get validatorError => _validatorError;
+  set validatorError(String value) {
+    _validatorError = value;
+    _inValidatorError.add(_validatorError);
   }
 }
 

@@ -64,7 +64,10 @@ class _ExchangeRateState extends State<ExchangeRate> {
     _buyAbbr = swapBloc.receiveCoinBalance?.coin?.abbr;
     _sellAbbr = swapBloc.sellCoinBalance?.coin?.abbr;
 
-    if (_buyAbbr == null || _sellAbbr == null) {
+    if (_buyAbbr == null ||
+        _sellAbbr == null ||
+        (swapBloc.amountSell ?? 0) == 0 ||
+        (swapBloc.amountReceive ?? 0) == 0) {
       _rate = null;
       return;
     }

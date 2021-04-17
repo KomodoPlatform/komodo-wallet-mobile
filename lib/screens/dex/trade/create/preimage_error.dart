@@ -3,16 +3,16 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-class InvalidSwapMessage extends StatefulWidget {
-  const InvalidSwapMessage(this.apiErrorMessage);
+class PreimageError extends StatefulWidget {
+  const PreimageError(this.apiErrorMessage);
 
   final String apiErrorMessage;
 
   @override
-  _InvalidSwapMessageState createState() => _InvalidSwapMessageState();
+  _PreimageErrorState createState() => _PreimageErrorState();
 }
 
-class _InvalidSwapMessageState extends State<InvalidSwapMessage> {
+class _PreimageErrorState extends State<PreimageError> {
   BuildContext _mainContext;
   String _validatorError;
 
@@ -23,7 +23,6 @@ class _InvalidSwapMessageState extends State<InvalidSwapMessage> {
     return InkWell(
       child: Container(
         width: MediaQuery.of(context).size.width * 4 / 5,
-        padding: EdgeInsets.fromLTRB(24, 14, 24, 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -41,7 +40,7 @@ class _InvalidSwapMessageState extends State<InvalidSwapMessage> {
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1
-                            .copyWith(color: Colors.orange),
+                            .copyWith(color: Theme.of(context).errorColor),
                         children: [
                           WidgetSpan(
                               child: Padding(
@@ -49,7 +48,7 @@ class _InvalidSwapMessageState extends State<InvalidSwapMessage> {
                             child: Icon(
                               Icons.open_in_new_rounded,
                               size: 12,
-                              color: Colors.orange,
+                              color: Theme.of(context).errorColor,
                             ),
                           ))
                         ]),
@@ -162,7 +161,7 @@ class _InvalidSwapMessageState extends State<InvalidSwapMessage> {
         style: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.bold,
-          color: Colors.orange,
+          color: Theme.of(context).errorColor,
         ),
       ),
     ]);
