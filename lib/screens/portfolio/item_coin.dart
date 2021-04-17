@@ -106,7 +106,11 @@ class _ItemCoinState extends State<ItemCoin> {
               color: Theme.of(context).errorColor,
               icon: Icons.delete,
               onTap: () async {
-                await showConfirmationRemoveCoin(context, coin);
+                if (coin.isDefault) {
+                  await showCantRemoveDefaultCoin(context, coin);
+                } else {
+                  await showConfirmationRemoveCoin(context, coin);
+                }
               },
             )
           ],
