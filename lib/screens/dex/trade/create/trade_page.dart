@@ -438,9 +438,10 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     _updateTimer?.cancel();
     _updateTimer = Timer(Duration(milliseconds: 500), () async {
       _updateAutovalidate();
-      if (swapBloc.autovalidate) _validate();
 
       await _updateFees();
+      if (swapBloc.autovalidate) _validate();
+
       await _updateSellAmountIfMax();
     });
   }
