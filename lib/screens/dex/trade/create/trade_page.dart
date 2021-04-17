@@ -16,11 +16,12 @@ import 'package:komodo_dex/screens/dex/trade/confirm/build_detailed_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_reset_button.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_trade_button.dart';
-import 'package:komodo_dex/screens/dex/trade/create/invalid_swap_message.dart';
+import 'package:komodo_dex/screens/dex/trade/create/preimage_error.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/receive_amount_field.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/select_receive_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/sell/select_sell_coin_dialog.dart';
 import 'package:komodo_dex/screens/dex/trade/create/sell/sell_amount_field.dart';
+import 'package:komodo_dex/screens/dex/trade/create/trade_form_validator.dart';
 import 'package:komodo_dex/screens/dex/trade/evaluation.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
@@ -40,7 +41,6 @@ class TradePage extends StatefulWidget {
 class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   CexProvider _cexProvider;
   OrderBookProvider _orderBookProvider;
-  String _feesErrorMessage;
   final _listeners = <StreamSubscription<dynamic>>[];
   Timer _updateTimer;
 
@@ -48,6 +48,8 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   void initState() {
     _listeners.add(swapBloc.outAmountSell.listen(_onFormStateChange));
     _listeners.add(swapBloc.outAmountReceive.listen(_onFormStateChange));
+
+    _onFormStateChange(null);
 
     super.initState();
   }
@@ -74,7 +76,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
               children: [
                 _buildExchange(),
                 SizedBox(height: 8),
-                _buildFees(),
+                _buildFeesOrError(),
                 SizedBox(height: 8),
                 ExchangeRate(alignCenter: true),
                 SizedBox(height: 8),
@@ -212,21 +214,48 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildFees() {
-    return _feesErrorMessage == null
-        ? StreamBuilder<TradePreimage>(
-            initialData: swapBloc.tradePreimage,
-            stream: swapBloc.outTradePreimage,
-            builder: (context, snapshot) {
-              return Container(
-                padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
-                child: BuildDetailedFees(
-                  preimage: snapshot.data,
-                  alignCenter: true,
-                ),
-              );
-            })
-        : InvalidSwapMessage(_feesErrorMessage);
+  Widget _buildFeesOrError() {
+    return StreamBuilder<String>(
+        initialData: swapBloc.preimageError,
+        stream: swapBloc.outPreimageError,
+        builder: (context, preimageError) {
+          if (preimageError.data != null) {
+            return Container(
+                padding: EdgeInsets.fromLTRB(24, 12, 24, 10),
+                child: PreimageError(preimageError.data));
+          } else {
+            return StreamBuilder<String>(
+                initialData: swapBloc.validatorError,
+                stream: swapBloc.outValidatorError,
+                builder: (context, validatorError) {
+                  if (validatorError.data != null) {
+                    return Container(
+                        padding: EdgeInsets.fromLTRB(24, 12, 24, 10),
+                        child: Text(
+                          validatorError.data,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              .copyWith(color: Theme.of(context).errorColor),
+                        ));
+                  } else {
+                    return StreamBuilder<TradePreimage>(
+                        initialData: swapBloc.tradePreimage,
+                        stream: swapBloc.outTradePreimage,
+                        builder: (context, snapshot) {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
+                            child: BuildDetailedFees(
+                              preimage: snapshot.data,
+                              alignCenter: true,
+                            ),
+                          );
+                        });
+                  }
+                });
+          }
+        });
   }
 
   Widget _buildMaxButton(Market market) {
@@ -364,6 +393,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'receive coin selected: $coin...');
     Log('trade_page', 'performing maker order');
 
+    FocusScope.of(context).requestFocus(FocusNode());
     swapBloc.updateMatchingBid(null);
     if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 
@@ -376,6 +406,7 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
     Log('trade_page', 'receive coin selected: ${bid.coin}...');
     Log('trade_page', 'performing taker order');
 
+    FocusScope.of(context).requestFocus(FocusNode());
     swapBloc.updateMatchingBid(bid);
     if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
 
@@ -406,25 +437,45 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
   Future<void> _onFormStateChange(dynamic _) async {
     _updateTimer?.cancel();
     _updateTimer = Timer(Duration(milliseconds: 500), () async {
+      _updateAutovalidate();
+      if (swapBloc.autovalidate) _validate();
+
       await _updateFees();
-      // Max sell amount depends on preimage, so it should be updated
-      // after preimage update
       await _updateSellAmountIfMax();
     });
   }
 
   Future<void> _updateFees() async {
     if (!mounted) return;
-    setState(() => _feesErrorMessage = null);
+    swapBloc.preimageError = null;
     final String error = await tradeForm.updateTradePreimage();
 
     if (error != null) {
-      setState(() => _feesErrorMessage = error);
+      swapBloc.preimageError = error;
     }
   }
 
   Future<void> _updateSellAmountIfMax() async {
     if (swapBloc.isSellMaxActive) tradeForm.setMaxSellAmount();
+  }
+
+  void _updateAutovalidate() {
+    // We don't want to interrupt user while she is filling the
+    // form for the first time, so autovalidation is turned off by default,
+    // and we turn it on only on some conditions: if all fields are
+    // filled and non-zero, or if creating taker-swap
+    final bool startAutovalidation = swapBloc.matchingBid != null ||
+        swapBloc.sellCoinBalance != null &&
+            (swapBloc.amountSell ?? 0) > 0 &&
+            swapBloc.receiveCoinBalance != null &&
+            (swapBloc.amountReceive ?? 0) > 0;
+
+    if (startAutovalidation) swapBloc.autovalidate = true;
+  }
+
+  Future<void> _validate() async {
+    final TradeFormValidator validator = TradeFormValidator();
+    swapBloc.validatorError = await validator.errorMessage;
   }
 }
 

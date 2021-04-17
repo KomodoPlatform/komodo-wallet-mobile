@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:math';
 
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/model/get_min_trading_volume.dart';
 import 'package:komodo_dex/model/get_trade_preimage.dart';
 import 'package:komodo_dex/model/setprice_response.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
@@ -198,18 +198,26 @@ class TradeForm {
     return swapBloc.amountReceive / swapBloc.amountSell;
   }
 
-  double minVolumeDefault(String abbr) {
-    // https://github.com/KomodoPlatform/AtomicDEX-mobile/pull/1013#issuecomment-770423015
-    // Default min volumes hardcoded for QTUM and rest of the coins for now.
-    // Should be handled on API-side in the future
-    final Coin coin = coinsBloc.getCoinByAbbr(abbr);
-    if (coin.dust != null) {
-      return 10 * coin.dust / 100000000;
-    } else if (abbr == 'QTUM') {
-      return 1;
-    } else {
-      return 0.00777;
+  Future<double> minVolumeDefault(String base,
+      {String rel, double price}) async {
+    double min;
+    try {
+      min = await MM.getMinTradingVolume(GetMinTradingVolume(coin: base));
+    } catch (_) {}
+
+    assert(rel == null || price != null);
+    if (rel != null && price != null) {
+      double minRel;
+      try {
+        minRel = await MM.getMinTradingVolume(GetMinTradingVolume(coin: rel));
+      } catch (_) {}
+      if (minRel != null) {
+        final double minRelQuote = minRel / price;
+        min = max(min, minRelQuote);
+      }
     }
+
+    return min;
   }
 
   void setMaxSellAmount() {
@@ -252,7 +260,7 @@ class TradeForm {
     );
     final double calculatedVolume =
         swapBloc.sellCoinBalance.balance.balance.toDouble() -
-            (double.tryParse(totalSellCoinFee.amount ?? '0') ?? 0.0);
+            (double.tryParse(totalSellCoinFee?.amount ?? '0') ?? 0.0);
     return double.parse(calculatedVolume.toStringAsFixed(precision));
   }
 
@@ -260,8 +268,8 @@ class TradeForm {
   Future<String> updateTradePreimage() async {
     if (swapBloc.sellCoinBalance == null ||
         swapBloc.receiveCoinBalance == null ||
-        swapBloc.amountSell == null ||
-        swapBloc.amountReceive == null) {
+        (swapBloc.amountSell ?? 0) == 0 ||
+        (swapBloc.amountReceive ?? 0) == 0) {
       swapBloc.tradePreimage = null;
       return null;
     }
@@ -313,6 +321,9 @@ class TradeForm {
     swapBloc.tradePreimage = null;
     swapBloc.processing = false;
     swapBloc.maxTakerVolume = null;
+    swapBloc.autovalidate = false;
+    swapBloc.preimageError = null;
+    swapBloc.validatorError = null;
     syncOrderbook.activePair = CoinsPair(sell: null, buy: null);
   }
 }

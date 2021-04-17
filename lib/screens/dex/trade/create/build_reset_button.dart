@@ -20,6 +20,8 @@ class _BuildResetButtonState extends State<BuildResetButton> {
     swapBloc.outAmountReceive.listen(_onStateChange);
     swapBloc.outSellCoinBalance.listen(_onStateChange);
     swapBloc.outReceiveCoinBalance.listen(_onStateChange);
+
+    _onStateChange(null);
   }
 
   @override

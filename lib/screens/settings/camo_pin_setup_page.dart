@@ -398,6 +398,7 @@ class _CamoPinSetupPageState extends State<CamoPinSetupPage> {
         context: context,
         title: AppLocalizations.of(context).matchingCamoTitle,
         message: _matchingPinErrorMessage,
+        iconColor: Theme.of(context).errorColor,
         confirmButtonText: AppLocalizations.of(context).matchingCamoChange,
         onConfirm: () {
           _startPinSetup();
