@@ -260,7 +260,7 @@ class TradeForm {
     );
     final double calculatedVolume =
         swapBloc.sellCoinBalance.balance.balance.toDouble() -
-            (double.tryParse(totalSellCoinFee.amount ?? '0') ?? 0.0);
+            (double.tryParse(totalSellCoinFee?.amount ?? '0') ?? 0.0);
     return double.parse(calculatedVolume.toStringAsFixed(precision));
   }
 
