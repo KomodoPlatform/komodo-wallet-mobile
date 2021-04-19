@@ -108,6 +108,16 @@ class Swap {
     return false;
   }
 
+  bool get doWeNeed0xPrefixForMaker {
+    if (makerCoin.swapContractAddress.startsWith('0x')) return true;
+    return false;
+  }
+
+  bool get doWeNeed0xPrefixForTaker {
+    if (takerCoin.swapContractAddress.startsWith('0x')) return true;
+    return false;
+  }
+
   /// Returns a maker explorer url if
   /// it exists, otherwise an empty string.
   String get makerExplorerUrl {
@@ -123,11 +133,19 @@ class Swap {
   /// Index of current swap step.
   int get step => result?.events?.length ?? 0;
 
+  /// 'Started' event data
   SwapEL get started =>
       result?.events?.firstWhere((SwapEL ev) => ev.event.type == 'Started');
 
+  /// Maker ticker abbriviation
   String get makerAbbr => started?.event?.data?.makerCoin;
+
+  /// Taker ticker abbriviation
   String get takerAbbr => started?.event?.data?.takerCoin;
+
+  /// Maker coin instance
   Coin get makerCoin => coinsBloc.getCoinByAbbr(makerAbbr);
+
+  /// Taker coin instance
   Coin get takerCoin => coinsBloc.getCoinByAbbr(takerAbbr);
 }
