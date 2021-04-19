@@ -246,7 +246,7 @@ class DetailedSwapStep extends StatelessWidget {
             ),
           ],
         ),
-        txHash != '' ? _buildTxDetails() : Container(),
+        txHash != '0x' && txHash != '' ? _buildTxDetails() : Container(),
         const SizedBox(height: 16),
       ],
     );

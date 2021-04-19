@@ -167,10 +167,15 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         if (failedOnStep != null) break;
         list.add(DetailedSwapStep(
           title: swap.result.successEvents[i],
-          txHash: _getTxHash(swap, i),
-          explorerUrl: swap.result.successEvents[i].contains('Taker')
-              ? swap.takerExplorerUrl
-              : swap.makerExplorerUrl,
+          txHash: swap.isTaker
+              ? swap.doWeNeed0xPrefixForTaker
+                  ? '0x' + _getTxHash(swap, i)
+                  : _getTxHash(swap, i)
+              : swap.doWeNeed0xPrefixForMaker
+                  ? '0x' + _getTxHash(swap, i)
+                  : _getTxHash(swap, i),
+          explorerUrl:
+              swap.isTaker ? swap.takerExplorerUrl : swap.makerExplorerUrl,
           status: status,
           estimatedSpeed: _getEstimatedSpeed(i),
           estimatedDeviation: _getEstimatedDeviation(i),
