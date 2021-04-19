@@ -117,6 +117,22 @@
         }
     },
     {
+        "coin": "ABY",
+        "name": "applebyte",
+        "fname": "ArtByte",
+        "rpcport": 8607,
+        "pubtype": 23,
+        "p2shtype": 5,
+        "wiftype": 151,
+        "txfee": 100000,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 2,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
         "coin": "ADA-BEP20",
         "name": "ada_bep20",
         "fname": "Cardano",
@@ -162,6 +178,23 @@
                 "platform": "BNB",
                 "contract_address": "0x0Eb3a705fc54725037CC9e008bDede697f62F335"
             }
+        }
+    },
+    {
+        "coin": "AUR",
+        "name": "auroracoin",
+        "fname": "Auroracoin",
+        "rpcport": 12341,
+        "pubtype": 23,
+        "p2shtype": 5,
+        "wiftype": 176,
+        "txfee": 0,
+        "segwit": true,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 1,
+        "protocol": {
+            "type": "UTXO"
         }
     },
     {
@@ -463,6 +496,23 @@
         }
     },
     {
+        "coin": "BSTY",
+        "name": "globalboost",
+        "fname": "GlobalBoost-Y",
+        "rpcport": 8225,
+        "pubtype": 77,
+        "p2shtype": 139,
+        "wiftype": 208,
+        "txfee": 0,
+        "segwit": true,
+        "mm2": 1,
+        "required_confirmations": 1,
+        "avg_blocktime": 10,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
         "coin": "BTC",
         "name": "bitcoin",
         "fname": "Bitcoin",
@@ -604,6 +654,24 @@
         "required_confirmations": 2,
         "requires_notarization": true,
         "avg_blocktime": 1,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
+        "coin": "CDN",
+        "name": "canadaecoin",
+        "fname": "Canada eCoin",
+        "rpcport": 34330,
+        "pubtype": 28,
+        "p2shtype": 5,
+        "wiftype": 156,
+        "txfee": 100000,
+        "dust": 54600,
+        "segwit": true,
+        "mm2": 1,
+        "required_confirmations": 2,
+        "avg_blocktime": 5,
         "protocol": {
             "type": "UTXO"
         }
@@ -862,6 +930,22 @@
         }
     },
     {
+        "coin": "DGC",
+        "name": "digitalcoin",
+        "fname": "Digitalcoin",
+        "rpcport": 7998,
+        "pubtype": 30,
+        "p2shtype": 5,
+        "wiftype": 128,
+        "txfee": 10000,
+        "mm2": 1,
+        "required_confirmations": 7,
+        "avg_blocktime": 0.6,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
         "coin": "DODO-BEP20",
         "name": "dodo_bep20",
         "fname": "DODO",
@@ -952,6 +1036,7 @@
         "p2shtype": 40,
         "wiftype": 161,
         "txfee": 0,
+        "dust": 5460,
         "txversion": 7,
         "mm2": 1,
         "confpath": "USERHOME/.electra/Electra.conf",
@@ -2221,6 +2306,7 @@
         "pubtype": 60,
         "p2shtype": 122,
         "wiftype": 128,
+        "segwit": true,
         "txfee": 0,
         "mm2": 1,
         "required_confirmations": 3,
@@ -2412,6 +2498,7 @@
         "p2shtype": 5,
         "wiftype": 128,
         "txfee": 10000,
+        "dust": 1820,
         "segwit": true,
         "required_confirmations": 5,
         "avg_blocktime": 1,
@@ -2471,6 +2558,23 @@
         }
     },
     {
+        "coin": "TRC",
+        "name": "terracoin",
+        "fname": "Terracoin",
+        "confpath": "USERHOME/.terracoincore/terracoin.conf",
+        "rpcport": 13332,
+        "pubtype": 0,
+        "p2shtype": 5,
+        "wiftype": 128,
+        "txfee": 10000,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 2,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
         "coin": "TUSD-ERC20",
         "name": "tusd_erc20",
         "fname": "TrueUSD",
@@ -2484,6 +2588,22 @@
                 "platform": "ETH",
                 "contract_address": "0x0000000000085d4780B73119b644AE5ecd22b376"
             }
+        }
+    },
+    {
+        "coin": "UIS",
+        "name": "unitus",
+        "fname": "Unitus",
+        "rpcport": 50604,
+        "pubtype": 68,
+        "p2shtype": 10,
+        "wiftype": 132,
+        "txfee": 1000000,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 1,
+        "protocol": {
+            "type": "UTXO"
         }
     },
     {
@@ -2532,6 +2652,25 @@
                 "platform": "BNB",
                 "contract_address": "0x55d398326f99059fF775485246999027B3197955"
             }
+        }
+    },
+    {
+        "coin": "VAL",
+        "name": "validity",
+        "fname": "Validity",
+        "confpath": "USERHOME/.Validity/validity.conf",
+        "isPoS": 1,
+        "rpcport": 27914,
+        "pubtype": 76,
+        "p2shtype": 58,
+        "wiftype": 121,
+        "txfee": 100000,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 1,
+        "mature_confirmations": 60,
+        "protocol": {
+            "type": "UTXO"
         }
     },
     {
@@ -2858,6 +2997,22 @@
         "mm2": 1,
         "required_confirmations": 5,
         "avg_blocktime": 2,
+        "protocol": {
+            "type": "UTXO"
+        }
+    },
+    {
+        "coin": "ZET",
+        "name": "zetacoin",
+        "fname": "Zetacoin",
+        "rpcport": 8332,
+        "pubtype": 80,
+        "p2shtype": 9,
+        "wiftype": 224,
+        "txfee": 10000,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 0.5,
         "protocol": {
             "type": "UTXO"
         }
