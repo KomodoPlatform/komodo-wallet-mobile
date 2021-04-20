@@ -241,9 +241,17 @@ class Db {
     _activeFromDb = true;
     if (_active.isNotEmpty) return _active;
 
-    // Use the first two coins by default.
     final known = await coins;
-    _active.addAll(known.keys.take(2));
+
+    // Search for coins with 'isDefault' flag
+    Iterable<String> defaultCoins = known.values
+        .where((Coin coin) => coin.isDefault == true)
+        .map<String>((Coin coin) => coin.abbr);
+
+    // If no 'isDefault' coins provided, use the first two coins by default
+    if (defaultCoins.isEmpty) defaultCoins = known.keys.take(2);
+
+    _active.addAll(defaultCoins);
 
     return _active;
   }

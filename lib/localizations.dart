@@ -608,6 +608,13 @@ class AppLocalizations {
   String get deleteSpan2 => Intl.message(
       ' from your portfolio? All unmatched orders will be canceled.',
       name: 'deleteSpan2');
+  String get cantDeleteDefaultCoinTitle =>
+      Intl.message("Can't disable ", name: 'cantDeleteDefaultCoinTitle');
+  String get cantDeleteDefaultCoinSpan =>
+      Intl.message(" is a default coin. Default coins can't be disabled.",
+          name: 'cantDeleteDefaultCoinSpan');
+  String get cantDeleteDefaultCoinOk =>
+      Intl.message('Ok', name: 'cantDeleteDefaultCoinOk');
   String get share => Intl.message('SHARE', name: 'share');
   String get warningShareLogs => Intl.message(
       'Warning - in special cases this log data contains sensitive information that can be used to spend coins from failed swaps!',

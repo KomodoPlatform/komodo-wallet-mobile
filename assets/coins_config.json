@@ -5,6 +5,7 @@
         "abbr": "KMD",
         "coingeckoId": "komodo",
         "colorCoin": "0xFF326464",
+        "isDefault": true,
         "serverList": [
             "electrum1.cipig.net:20001",
             "electrum2.cipig.net:20001",
@@ -23,6 +24,7 @@
         "abbr": "BTC",
         "coingeckoId": "bitcoin",
         "colorCoin": "0xFFf7931a",
+        "isDefault": true,
         "serverList": [
             "electrum1.cipig.net:10000",
             "electrum2.cipig.net:10000",

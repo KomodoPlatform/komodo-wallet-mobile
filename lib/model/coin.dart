@@ -74,6 +74,7 @@ class Coin {
     testCoin = config['testCoin'] ?? false;
     swapContractAddress = config['swap_contract_address'] ?? '';
     colorCoin = config['colorCoin'] ?? '';
+    isDefault = config['isDefault'] ?? false;
     serverList = List<String>.from(config['serverList']);
     explorerUrl = List<String>.from(config['explorerUrl']);
     requiredConfirmations = init['required_confirmations'];
@@ -109,6 +110,9 @@ class Coin {
   int matureConfirmations;
   bool requiresNotarization;
   Map<String, dynamic> addressFormat;
+
+  // Whether to block disabling this coin
+  bool isDefault;
 
   Protocol protocol;
   int dust;
