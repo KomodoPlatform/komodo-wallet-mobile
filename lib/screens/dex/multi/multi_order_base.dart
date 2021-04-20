@@ -7,7 +7,6 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/multi_order_provider.dart';
-import 'package:komodo_dex/screens/dex/build_swap_fees.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
@@ -94,11 +93,6 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                 ],
               ),
               const SizedBox(height: 12),
-              BuildSwapFees(
-                baseCoin: multiOrderProvider.baseCoin,
-                baseAmount: multiOrderProvider.baseAmt,
-                includeGasFee: false,
-              ),
               _buildErrors(),
             ],
           ),
@@ -329,6 +323,7 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
 
                         multiOrderProvider.baseAmt =
                             value.isEmpty ? null : amnt;
+                        multiOrderProvider.isMax = false;
                       },
                       enabled: multiOrderProvider.baseCoin != null,
                       maxLines: 1,
@@ -360,8 +355,9 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                   onTap: multiOrderProvider.baseCoin == null
                       ? null
                       : () async {
+                          multiOrderProvider.isMax = true;
                           multiOrderProvider.baseAmt =
-                              await multiOrderProvider.getMaxSellAmt();
+                              multiOrderProvider.getMaxSellAmt();
                           amountCtrl.text = cutTrailingZeros(
                                   formatPrice(multiOrderProvider.baseAmt)) ??
                               '';
@@ -372,7 +368,9 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
                       'MAX',
                       style: TextStyle(
                         fontSize: 13,
-                        color: Theme.of(context).accentColor,
+                        color: multiOrderProvider.isMax
+                            ? Theme.of(context).accentColor
+                            : null,
                       ),
                     ),
                   ),

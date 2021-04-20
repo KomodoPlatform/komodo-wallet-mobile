@@ -445,12 +445,12 @@ class CexPrices {
       return 1 / _getFiatRate(abbr);
     }
 
-    double price;
+    double price = 0.0;
     try {
       price = _prices[abbr]['usd'];
     } catch (_) {}
 
-    return price ?? (_fetchingPrices ? null : 0.0);
+    return price;
   }
 
   double getCexRate([CoinsPair pair]) {

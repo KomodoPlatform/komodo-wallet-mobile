@@ -164,18 +164,20 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     if (cexPrice == 0 || widget.sellAmount == null) return [];
 
     final double orderPrice = 1 / double.parse(widget.order.price);
-    final double delta = (cexPrice - orderPrice) * 100 / orderPrice;
+    double delta = (orderPrice - cexPrice) * 100 / cexPrice;
+    if (delta < -99.99) delta = -99.99;
+    if (delta > 99.99) delta = 99.99;
     final num sign = delta.sign;
 
     String message;
     switch (sign) {
-      case -1:
+      case 1:
         {
           message = AppLocalizations.of(context)
               .orderDetailsExpedient(formatPrice(delta, 2));
           break;
         }
-      case 1:
+      case -1:
         {
           message = AppLocalizations.of(context)
               .orderDetailsExpensive(formatPrice(delta, 2));

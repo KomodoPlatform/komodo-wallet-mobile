@@ -392,12 +392,12 @@ class AppLocalizations {
   String get titleCreatePassword =>
       Intl.message('CREATE A PASSWORD', name: 'titleCreatePassword');
   String minValueBuy(String coinName, String number) => Intl.message(
-        'The minimun amount to buy is $number $coinName',
+        'The minimun amount to buy is $number${String.fromCharCode(0x00A0)}$coinName',
         name: 'minValueBuy',
         args: <Object>[coinName, number],
       );
   String minValueSell(String coinName, String number) => Intl.message(
-        'The minimun amount to sell is $number $coinName',
+        'The minimun amount to sell is $number${String.fromCharCode(0x00A0)}$coinName',
         name: 'minValueSell',
         args: <Object>[coinName, number],
       );
@@ -551,16 +551,25 @@ class AppLocalizations {
       Intl.message('Order selected', name: 'titleCurrentAsk');
   String get txFeeTitle => Intl.message('transaction fee:', name: 'txFeeTitle');
   String get tradingFee => Intl.message('trading fee:', name: 'tradingFee');
-  String swapGasAmount(String amount, String coin) => Intl.message(
-        'This swap requires $amount $coin for transaction fees',
+  String swapGasAmount(String coin, [String amount]) => Intl.message(
+        '$coin balance not sufficient to pay transaction fees.' +
+            (amount != null ? ' $coin $amount required.' : ''),
         name: 'swapGasAmount',
         args: <Object>[amount, coin],
       );
+  String get invalidSwap =>
+      Intl.message('Unable to proceed swap', name: 'invalidSwap');
+  String get invalidSwapDetailsLink =>
+      Intl.message('Details', name: 'invalidSwapDetailsLink');
+
   String swapGasActivate(String coin) => Intl.message(
         'Please activate $coin and top-up balance first',
         name: 'swapGasActivate',
         args: <Object>[coin],
       );
+  String get tradePreimageError =>
+      Intl.message('Failed to calculate trade fees',
+          name: 'tradePreimageError');
   String get remove => Intl.message('Disable', name: 'remove');
   String get searchFilterCoin =>
       Intl.message('Search a coin', name: 'searchFilterCoin');
@@ -710,10 +719,10 @@ class AppLocalizations {
   String get orderDetailsAddress =>
       Intl.message('Address', name: 'orderDetailsAddress');
   String orderDetailsExpedient(String delta) =>
-      Intl.message('Expedient: CEX $delta%',
+      Intl.message('Expedient: CEX +$delta%',
           args: <Object>[delta], name: 'orderDetailsExpedient');
   String orderDetailsExpensive(String delta) =>
-      Intl.message('Expensive: CEX +$delta%',
+      Intl.message('Expensive: CEX $delta%',
           args: <Object>[delta], name: 'orderDetailsExpensive');
   String get orderDetailsIdentical =>
       Intl.message('Identical to CEX', name: 'orderDetailsIdentical');
@@ -1010,14 +1019,14 @@ class AppLocalizations {
 
   String get cexChangeRate =>
       Intl.message('CEXchange rate', name: 'cexChangeRate');
-  String exchangeExpedient(String delta) =>
-      Intl.message('Expedient: -$delta% compared to CEX',
-          args: <Object>[delta], name: 'exchangeExpedient');
-  String exchangeExpensive(String delta) =>
-      Intl.message('Expensive: +$delta% compared to CEX',
-          args: <Object>[delta], name: 'exchangeExpensive');
-  String get echangeIdentical =>
-      Intl.message('Identical to CEX', name: 'echangeIdentical');
+  String get exchangeExpedient =>
+      Intl.message('Expedient', name: 'exchangeExpedient');
+  String get exchangeExpensive =>
+      Intl.message('Expensive', name: 'exchangeExpensive');
+  String get exchangeIdentical =>
+      Intl.message('Identical to CEX', name: 'exchangeIdentical');
+  String get comparedToCex =>
+      Intl.message('compared to CEX', name: 'comparedToCex');
 
   String get ordersActive => Intl.message('Active', name: 'ordersActive');
   String get ordersHistory => Intl.message('History', name: 'ordersHistory');

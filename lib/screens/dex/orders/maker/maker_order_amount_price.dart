@@ -249,21 +249,23 @@ class _MakerOrderAmtAndPriceState extends State<MakerOrderAmtAndPrice> {
 
     final double price = double.parse(widget.order.relAmount) /
         double.parse(widget.order.baseAmount);
-    final double delta = (cexPrice - price) * 100 / price;
+    double delta = (price - cexPrice) * 100 / cexPrice;
+    if (delta < -99.99) delta = -99.99;
+    if (delta > 99.99) delta = 99.99;
     final num sign = delta.sign;
 
     String message;
     Color color;
 
     switch (sign) {
-      case -1:
+      case 1:
         {
           message = AppLocalizations.of(context)
               .orderDetailsExpedient(formatPrice(delta, 2));
           color = Colors.green;
           break;
         }
-      case 1:
+      case -1:
         {
           message = AppLocalizations.of(context)
               .orderDetailsExpensive(formatPrice(delta, 2));

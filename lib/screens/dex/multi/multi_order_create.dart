@@ -17,20 +17,37 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
   Widget build(BuildContext context) {
     multiOrderProvider ??= Provider.of<MultiOrderProvider>(context);
 
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        child: Column(
-          children: <Widget>[
-            MultiOrderBase(),
-            const SizedBox(height: 6),
-            MultiOrderRelList(),
-            const SizedBox(height: 10),
-            _buildButton(),
-            const SizedBox(height: 100),
-          ],
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        _buildProgressBar(),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              child: Column(
+                children: <Widget>[
+                  MultiOrderBase(),
+                  const SizedBox(height: 6),
+                  MultiOrderRelList(),
+                  const SizedBox(height: 10),
+                  _buildButton(),
+                  const SizedBox(height: 100),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
+    );
+  }
+
+  Widget _buildProgressBar() {
+    return SizedBox(
+      height: 1,
+      child: multiOrderProvider.processing()
+          ? LinearProgressIndicator()
+          : SizedBox(),
     );
   }
 
@@ -38,6 +55,7 @@ class _MultiOrderCreateState extends State<MultiOrderCreate> {
     bool allowCreate = true;
     if (multiOrderProvider.baseCoin == null) allowCreate = false;
     if (multiOrderProvider.relCoins.isEmpty) allowCreate = false;
+    if (multiOrderProvider.processing()) allowCreate = false;
 
     final int qtt = multiOrderProvider.relCoins.length;
 

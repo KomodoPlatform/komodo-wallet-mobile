@@ -38,9 +38,9 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
         key: Key('input-text-buy'),
         scrollPadding: const EdgeInsets.only(left: 35),
         inputFormatters: <TextInputFormatter>[
-          DecimalTextInputFormatter(decimalRange: 8),
-          FilteringTextInputFormatter.allow(
-              RegExp('^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,8})?\$'))
+          DecimalTextInputFormatter(decimalRange: tradeForm.precision),
+          FilteringTextInputFormatter.allow(RegExp(
+              '^\$|^(0|([1-9][0-9]{0,6}))([.,]{1}[0-9]{0,${tradeForm.precision}})?\$'))
         ],
         controller: _ctrl,
         enabled: swapBloc.enabledReceiveField,
@@ -71,7 +71,8 @@ class _ReceiveAmountFieldState extends State<ReceiveAmountField> {
     if (!mounted) return;
     if (value == double.tryParse(_ctrl.text)) return;
 
-    _ctrl.setTextAndPosition(
-        value == null ? '' : cutTrailingZeros(value.toStringAsFixed(8)) ?? '');
+    _ctrl.setTextAndPosition(value == null
+        ? ''
+        : cutTrailingZeros(value.toStringAsFixed(tradeForm.precision)) ?? '');
   }
 }

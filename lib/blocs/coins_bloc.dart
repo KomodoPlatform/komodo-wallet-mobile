@@ -105,6 +105,14 @@ class CoinsBloc implements BlocBase {
         orElse: () => null);
   }
 
+  bool isCoinActive(String coin) {
+    final CoinBalance balance = coinBalance.firstWhere(
+        (CoinBalance bal) => bal.coin.abbr == coin,
+        orElse: () => null);
+
+    return balance != null;
+  }
+
   Future<void> initCoinBeforeActivation() async {
     final List<CoinToActivate> coinBeforeActivation = <CoinToActivate>[];
 
