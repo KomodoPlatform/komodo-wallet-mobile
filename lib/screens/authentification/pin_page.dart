@@ -13,7 +13,6 @@ import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:pin_code_view/pin_code_view.dart';
-import 'package:pin_code_view/custom_keyboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PinPage extends StatefulWidget {
@@ -207,8 +206,6 @@ class _PinPageState extends State<PinPage> {
               obscurePin: true,
               error: _error,
               errorDelayProgressColor:
-                  settingsBloc.isLightTheme ? Colors.black : Colors.white,
-              backSpaceIconColor:
                   settingsBloc.isLightTheme ? Colors.black : Colors.white,
               keyTextStyle: TextStyle(
                   color: Theme.of(context).textTheme.headline6.color,
