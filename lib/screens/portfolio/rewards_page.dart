@@ -430,6 +430,9 @@ class _RewardsPageState extends State<RewardsPage> {
       if (minutes.length < 2) minutes = '0$minutes';
       return AppLocalizations.of(context).rewardsTimeHours(hh, minutes);
     }
-    return AppLocalizations.of(context).rewardsTimeMin(mm);
+    if (mm > 0) {
+      return AppLocalizations.of(context).rewardsTimeMin(mm);
+    }
+    return '-';
   }
 }
