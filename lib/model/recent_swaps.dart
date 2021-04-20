@@ -129,7 +129,7 @@ class MmSwap {
 
   String gui, mmVersion;
 
-  Map<String, dynamic> get toJson => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'error_events':
             List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ??
                 <String>[],

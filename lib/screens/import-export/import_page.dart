@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:intl/intl.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:file_picker/file_picker.dart';
@@ -9,12 +10,16 @@ import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
 import 'package:komodo_dex/model/export_import_list_item.dart';
+import 'package:komodo_dex/model/get_import_swaps.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/screens/import-export/export_import_list.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/screens/import-export/overwrite_dialog_content.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/lock_service.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
@@ -55,6 +60,7 @@ class _ImportPageState extends State<ImportPage> {
               _buildImportHeader(),
               _buildNotes(),
               _buildContacts(),
+              _buildSwaps(),
               _buildImportButton(),
             }
           ],
@@ -82,6 +88,7 @@ class _ImportPageState extends State<ImportPage> {
           if (_validate()) {
             await _importNotes();
             await _importContacts();
+            await _importSwaps();
             setState(() => _done = true);
           }
         },
@@ -91,12 +98,28 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   bool _validate() {
-    if (_selected.notes.isEmpty && _selected.contacts.isEmpty) {
+    if (_selected.notes.isEmpty &&
+        _selected.contacts.isEmpty &&
+        _selected.swaps.isEmpty) {
       _showError(AppLocalizations.of(context).noItemsToImport);
       return false;
     }
 
     return true;
+  }
+
+  Future<void> _importSwaps() async {
+    final List<MmSwap> listSwaps = [];
+
+    _selected.swaps?.forEach((uuid, swap) {
+      listSwaps.add(swap);
+    });
+
+    final r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
+
+    if (r.result.skipped.isNotEmpty) {
+      _showError('Some items have been skipped');
+    }
   }
 
   Future<void> _importContacts() async {
@@ -229,6 +252,102 @@ class _ImportPageState extends State<ImportPage> {
     return ExportImportList(
       items: items,
       title: AppLocalizations.of(context).exportContactsTitle,
+    );
+  }
+
+  Widget _buildSwaps() {
+    final List<ExportImportListItem> items = [];
+    _all.swaps.forEach((String id, dynamic swap) {
+      items.add(
+        ExportImportListItem(
+          checked: _selected.swaps.containsKey(id),
+          onChange: (bool val) {
+            setState(() {
+              val ? _selected.swaps[id] = swap : _selected.swaps.remove(id);
+            });
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                swap.uuid,
+              ),
+              SizedBox(height: 2),
+              Row(
+                children: <Widget>[
+                  Text(
+                    DateFormat('dd MMM yyyy HH:mm').format(
+                        DateTime.fromMillisecondsSinceEpoch(
+                            swap.myInfo.startedAt * 1000)),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          fontSize: 14,
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .color
+                              .withOpacity(0.5),
+                        ),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Text(
+                    swap.type == 'Maker' ? 'Maker Order' : 'Taker order',
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          fontSize: 14,
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .color
+                              .withOpacity(0.5),
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 2),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(formatPrice(swap.myInfo.myAmount, 8)),
+                        SizedBox(width: 5),
+                        Image.asset(
+                          'assets/${swap.myInfo.myCoin.toLowerCase()}.png',
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(flex: 1, child: Icon(Icons.swap_horiz)),
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(formatPrice(swap.myInfo.otherAmount, 8)),
+                        SizedBox(width: 5),
+                        Image.asset(
+                          'assets/${swap.myInfo.otherCoin.toLowerCase()}.png',
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4,
+              )
+            ],
+          ),
+        ),
+      );
+    });
+
+    return ExportImportList(
+      items: items,
+      title: 'Swaps',
     );
   }
 
