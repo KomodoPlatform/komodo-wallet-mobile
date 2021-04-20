@@ -4,6 +4,10 @@ Komodo Platform's hybrid mutlicoin DEX-wallet.
 
 ## Getting Started
 
+Build requires up-to-date version of coins file from https://github.com/KomodoPlatform/coins
+
+Commit hash and sah256sum of coins file is specified in `coins_ci.json`.
+You may download one manually or use `fetch_coins.sh` script. 
 
 ## For iOS build:
 
