@@ -282,7 +282,8 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fething erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
-    if (widget.coinBalance.coin.type == 'erc') {
+    if (widget.coinBalance.coin.type == 'erc' ||
+        widget.coinBalance.coin.type == 'bep') {
       return Container();
     }
 

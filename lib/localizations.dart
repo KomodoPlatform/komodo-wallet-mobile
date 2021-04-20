@@ -592,6 +592,7 @@ class AppLocalizations {
   String get searchFilterSubtitleutxo =>
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
+  String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughtGas(String gas) =>
