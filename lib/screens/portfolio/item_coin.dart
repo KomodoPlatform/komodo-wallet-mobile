@@ -347,7 +347,10 @@ class _ItemCoinState extends State<ItemCoin> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).tagERC20,
-                            style: Theme.of(context).textTheme.subtitle2,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                .copyWith(color: Colors.white),
                           ),
                         ],
                       );
@@ -360,7 +363,10 @@ class _ItemCoinState extends State<ItemCoin> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).tagQRC20,
-                            style: Theme.of(context).textTheme.subtitle2,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                .copyWith(color: Colors.white),
                           ),
                         ],
                       );
