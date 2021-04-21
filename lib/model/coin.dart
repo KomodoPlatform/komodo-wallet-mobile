@@ -157,6 +157,8 @@ class Coin {
     // todo (yurii): find reliable way to determine gas coin
     if (abbr == 'ETH') return 'ETH';
     if (abbr == 'ETHR') return 'ETHR';
+    if (abbr == 'BNB') return 'BNB';
+    if (abbr == 'BNBT') return 'BNBT';
 
     return protocol?.protocolData?.platform;
   }
