@@ -710,11 +710,26 @@
             "https://explorer.pbc.kmd.sh/"
         ]
     },
-
     {
+        "abbr": "BNB",
+        "name": "Binance Coin",
+        "type": "bep",
+        "coingeckoId": "binancecoin",
+        "colorCoin": "0xf0b90b64",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "serverList": [
+            "https://bsc-dataseed.binance.org",
+            "https://bsc-dataseed1.defibit.io",
+            "https://bsc-dataseed1.ninicoin.io"
+        ],
+        "explorerUrl": [
+            "https://bscscan.com/"
+        ]
+    },
+    {
+        "abbr": "KMD-BEP20",
         "name": "Komodo",
         "type": "bep",
-        "abbr": "KMD-BEP20",
         "coingeckoId": "komodo",
         "colorCoin": "0xFF326464",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
