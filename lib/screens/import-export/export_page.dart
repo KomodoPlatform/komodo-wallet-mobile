@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -95,8 +96,11 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   Future<void> _loadSwaps() async {
-    final List<MmSwap> swaps = Provider.of<SwapProvider>(context, listen: false)
-        .swaps
+    final listSwaps = Provider.of<SwapProvider>(context, listen: false).swaps;
+    final List<MmSwap> swaps = listSwaps
+        .where((s) =>
+            s.status == Status.SWAP_SUCCESSFUL ||
+            s.status == Status.SWAP_FAILED)
         .map((s) => s.result)
         .toList();
 
