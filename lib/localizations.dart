@@ -41,11 +41,11 @@ class AppLocalizations {
   String get exampleHintSeed =>
       Intl.message('Example: build case level ...', name: 'exampleHintSeed');
   String get confirm => Intl.message('confirm', name: 'confirm');
-  String get buyTestCoinWarning =>
-      Intl.message('Warning, you're willing to buy test coins WITHOUT real value!',
-          name: 'buyTestCoinWarning');
+  String get buyTestCoinWarning => Intl.message(
+      'Warning, you\'re willing to buy test coins WITHOUT real value!',
+      name: 'buyTestCoinWarning');
   String get sellTestCoinWarning => Intl.message(
-        'Warning, you're willing to sell test coins WITHOUT real value!',
+        'Warning, you\'re willing to sell test coins WITHOUT real value!',
         name: 'sellTestCoinWarning',
       );
   String get buy => Intl.message('Buy', name: 'buy');
