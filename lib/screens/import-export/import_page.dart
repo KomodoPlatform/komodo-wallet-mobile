@@ -257,6 +257,9 @@ class _ImportPageState extends State<ImportPage> {
 
   Widget _buildSwaps() {
     final List<ExportImportListItem> items = [];
+
+    bool zebra = false;
+
     _all.swaps.forEach((String id, dynamic swap) {
       items.add(
         ExportImportListItem(
@@ -266,11 +269,16 @@ class _ImportPageState extends State<ImportPage> {
               val ? _selected.swaps[id] = swap : _selected.swaps.remove(id);
             });
           },
+          zebra: zebra,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              truncateMiddle(
                 swap.uuid,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 14),
               ),
               SizedBox(height: 2),
               Row(
@@ -310,7 +318,10 @@ class _ImportPageState extends State<ImportPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(formatPrice(swap.myInfo.myAmount, 8)),
+                        Text(
+                          cutTrailingZeros(
+                              formatPrice(swap.myInfo.myAmount, 4)),
+                        ),
                         SizedBox(width: 5),
                         Image.asset(
                           'assets/${swap.myInfo.myCoin.toLowerCase()}.png',
@@ -325,7 +336,10 @@ class _ImportPageState extends State<ImportPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(formatPrice(swap.myInfo.otherAmount, 8)),
+                        Text(
+                          cutTrailingZeros(
+                              formatPrice(swap.myInfo.otherAmount, 4)),
+                        ),
                         SizedBox(width: 5),
                         Image.asset(
                           'assets/${swap.myInfo.otherCoin.toLowerCase()}.png',
@@ -343,6 +357,7 @@ class _ImportPageState extends State<ImportPage> {
           ),
         ),
       );
+      zebra = !zebra;
     });
 
     return ExportImportList(

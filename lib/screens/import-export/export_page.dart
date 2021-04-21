@@ -215,6 +215,8 @@ class _ExportPageState extends State<ExportPage> {
 
     final List<ExportImportListItem> items = [];
 
+    bool zebra = false;
+
     _all.swaps.forEach((uuid, swap) {
       items.add(ExportImportListItem(
         checked: _selected.swaps.containsKey(uuid),
@@ -223,11 +225,14 @@ class _ExportPageState extends State<ExportPage> {
             val ? _selected.swaps[uuid] = swap : _selected.swaps.remove(uuid);
           });
         },
+        zebra: zebra,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            truncateMiddle(
               swap.uuid,
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 14),
             ),
             SizedBox(height: 2),
             Row(
@@ -267,7 +272,9 @@ class _ExportPageState extends State<ExportPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(formatPrice(swap.myInfo.myAmount, 8)),
+                      Text(
+                        cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)),
+                      ),
                       SizedBox(width: 5),
                       Image.asset(
                         'assets/${swap.myInfo.myCoin.toLowerCase()}.png',
@@ -282,7 +289,10 @@ class _ExportPageState extends State<ExportPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(formatPrice(swap.myInfo.otherAmount, 8)),
+                      Text(
+                        cutTrailingZeros(
+                            formatPrice(swap.myInfo.otherAmount, 4)),
+                      ),
                       SizedBox(width: 5),
                       Image.asset(
                         'assets/${swap.myInfo.otherCoin.toLowerCase()}.png',
@@ -293,12 +303,10 @@ class _ExportPageState extends State<ExportPage> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 4,
-            )
           ],
         ),
       ));
+      zebra = !zebra;
     });
     return ExportImportList(
       title: 'Swaps',
