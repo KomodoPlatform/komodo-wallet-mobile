@@ -183,6 +183,8 @@ class _ImportPageState extends State<ImportPage> {
 
   Widget _buildNotes() {
     final List<ExportImportListItem> items = [];
+
+    bool zebra = false;
     _all.notes.forEach((String id, dynamic note) {
       items.add(ExportImportListItem(
           checked: _selected.notes.containsKey(id),
@@ -191,12 +193,15 @@ class _ImportPageState extends State<ImportPage> {
               val ? _selected.notes[id] = note : _selected.notes.remove(id);
             });
           },
+          zebra: zebra,
           child: Text(
             note,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.caption,
           )));
+
+      zebra = !zebra;
     });
 
     return ExportImportList(
@@ -207,6 +212,9 @@ class _ImportPageState extends State<ImportPage> {
 
   Widget _buildContacts() {
     final List<ExportImportListItem> items = [];
+
+    bool zebra = false;
+
     _all.contacts.forEach((String id, dynamic contact) {
       items.add(ExportImportListItem(
           checked: _selected.contacts.containsKey(id),
@@ -217,6 +225,7 @@ class _ImportPageState extends State<ImportPage> {
                   : _selected.contacts.remove(id);
             });
           },
+          zebra: zebra,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -247,6 +256,8 @@ class _ImportPageState extends State<ImportPage> {
               }),
             ],
           )));
+
+      zebra = !zebra;
     });
 
     return ExportImportList(

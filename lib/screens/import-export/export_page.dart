@@ -137,6 +137,7 @@ class _ExportPageState extends State<ExportPage> {
   Widget _buildNotes() {
     if (_all.notes == null) return SizedBox();
 
+    bool zebra = false;
     final List<ExportImportListItem> items = [];
     _all.notes.forEach((id, note) {
       items.add(ExportImportListItem(
@@ -146,12 +147,15 @@ class _ExportPageState extends State<ExportPage> {
               val ? _selected.notes[id] = note : _selected.notes.remove(id);
             });
           },
+          zebra: zebra,
           child: Text(
             note,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.caption,
           )));
+
+      zebra = !zebra;
     });
 
     return ExportImportList(
@@ -162,6 +166,8 @@ class _ExportPageState extends State<ExportPage> {
 
   Widget _buildContacts() {
     if (_all.contacts == null) return SizedBox();
+
+    bool zebra = false;
 
     final List<ExportImportListItem> items = [];
 
@@ -175,6 +181,7 @@ class _ExportPageState extends State<ExportPage> {
                 : _selected.contacts.remove(uid);
           });
         },
+        zebra: zebra,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -206,6 +213,8 @@ class _ExportPageState extends State<ExportPage> {
           ],
         ),
       ));
+
+      zebra = !zebra;
     });
 
     return ExportImportList(
