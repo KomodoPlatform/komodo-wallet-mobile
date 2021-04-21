@@ -715,7 +715,7 @@
         "name": "Binance Coin",
         "type": "bep",
         "coingeckoId": "binancecoin",
-        "colorCoin": "0xf0b90b64",
+        "colorCoin": "0xFFF0B90B",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "serverList": [
             "https://bsc-dataseed.binance.org",
@@ -728,7 +728,7 @@
     },
     {
         "abbr": "KMD-BEP20",
-        "name": "Komodo",
+        "name": "Komodo BEP20",
         "type": "bep",
         "coingeckoId": "komodo",
         "colorCoin": "0xFF326464",

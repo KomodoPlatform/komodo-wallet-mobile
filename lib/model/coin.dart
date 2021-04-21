@@ -87,7 +87,7 @@ class Coin {
     dust = init['dust'];
   }
 
-  String type; // 'other', 'erc', 'qrc' or 'smartChain'
+  String type; // 'other', 'erc', 'bep', 'qrc' or 'smartChain'
   String name;
   String address;
   int port;

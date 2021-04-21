@@ -157,6 +157,7 @@ class _ItemCoinState extends State<ItemCoin> {
                           const SizedBox(height: 8),
                           Text(
                             coin.name.toUpperCase(),
+                            textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
                                 .subtitle2
