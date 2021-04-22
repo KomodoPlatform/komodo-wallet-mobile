@@ -22,6 +22,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _loading = false;
   bool _done = false;
+  bool _success = false;
   MmSwap _swap;
 
   @override
@@ -38,7 +39,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
         child: Column(
           children: [
             if (_done) ...{
-              _buildSuccess(),
+              _buildResultImport(),
             } else if (_swap == null) ...{
               _buildLoadHeader(),
               _buildFilePickerButton(),
@@ -53,7 +54,12 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
     );
   }
 
-  Widget _buildSuccess() {
+  Widget _buildResultImport() {
+    if (!_success) {
+      return Container(
+          padding: EdgeInsets.fromLTRB(48, 24, 48, 24),
+          child: Center(child: Text("Couldn't import swap")));
+    }
     return ExportImportSuccess(
       title: AppLocalizations.of(context).importSuccessTitle,
       items: const {
@@ -68,8 +74,11 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       child: PrimaryButton(
         onPressed: () async {
           if (_validate()) {
-            await _importSwaps();
-            setState(() => _done = true);
+            final r = await _importSwaps();
+            setState(() {
+              _done = true;
+              _success = r;
+            });
           }
         },
         text: AppLocalizations.of(context).importButton,
@@ -86,7 +95,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
     return true;
   }
 
-  Future<void> _importSwaps() async {
+  Future<bool> _importSwaps() async {
     final List<MmSwap> listSwaps = [];
 
     listSwaps.add(_swap);
@@ -95,7 +104,10 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
 
     if (r.result.skipped.isNotEmpty) {
       _showError("Couldn't import: " + r.result.skipped[_swap.uuid]);
+      return false;
     }
+
+    return true;
   }
 
   Widget _buildSwap() {
