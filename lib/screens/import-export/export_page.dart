@@ -137,7 +137,6 @@ class _ExportPageState extends State<ExportPage> {
   Widget _buildNotes() {
     if (_all.notes == null) return SizedBox();
 
-    bool zebra = false;
     final List<ExportImportListItem> items = [];
     _all.notes.forEach((id, note) {
       items.add(ExportImportListItem(
@@ -147,15 +146,12 @@ class _ExportPageState extends State<ExportPage> {
               val ? _selected.notes[id] = note : _selected.notes.remove(id);
             });
           },
-          zebra: zebra,
           child: Text(
             note,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.caption,
           )));
-
-      zebra = !zebra;
     });
 
     return ExportImportList(
@@ -166,8 +162,6 @@ class _ExportPageState extends State<ExportPage> {
 
   Widget _buildContacts() {
     if (_all.contacts == null) return SizedBox();
-
-    bool zebra = false;
 
     final List<ExportImportListItem> items = [];
 
@@ -181,7 +175,6 @@ class _ExportPageState extends State<ExportPage> {
                 : _selected.contacts.remove(uid);
           });
         },
-        zebra: zebra,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -213,8 +206,6 @@ class _ExportPageState extends State<ExportPage> {
           ],
         ),
       ));
-
-      zebra = !zebra;
     });
 
     return ExportImportList(
@@ -228,8 +219,6 @@ class _ExportPageState extends State<ExportPage> {
 
     final List<ExportImportListItem> items = [];
 
-    bool zebra = false;
-
     _all.swaps.forEach((uuid, swap) {
       items.add(ExportImportListItem(
         checked: _selected.swaps.containsKey(uuid),
@@ -238,7 +227,6 @@ class _ExportPageState extends State<ExportPage> {
             val ? _selected.swaps[uuid] = swap : _selected.swaps.remove(uuid);
           });
         },
-        zebra: zebra,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -280,46 +268,34 @@ class _ExportPageState extends State<ExportPage> {
             SizedBox(height: 2),
             Row(
               children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)),
-                      ),
-                      SizedBox(width: 5),
-                      Image.asset(
-                        'assets/${swap.myInfo.myCoin.toLowerCase()}.png',
-                        height: 20,
-                      ),
-                    ],
-                  ),
+                Text(
+                  cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)) +
+                      ' ' +
+                      swap.myInfo.myCoin,
                 ),
-                Expanded(flex: 1, child: Icon(Icons.swap_horiz)),
-                Expanded(
-                  flex: 2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        cutTrailingZeros(
-                            formatPrice(swap.myInfo.otherAmount, 4)),
-                      ),
-                      SizedBox(width: 5),
-                      Image.asset(
-                        'assets/${swap.myInfo.otherCoin.toLowerCase()}.png',
-                        height: 20,
-                      ),
-                    ],
-                  ),
+                SizedBox(width: 4),
+                Image.asset(
+                  'assets/${swap.myInfo.myCoin.toLowerCase()}.png',
+                  height: 20,
+                ),
+                SizedBox(width: 8),
+                Icon(Icons.swap_horiz),
+                SizedBox(width: 8),
+                Text(
+                  cutTrailingZeros(formatPrice(swap.myInfo.otherAmount, 4)) +
+                      ' ' +
+                      swap.myInfo.otherCoin,
+                ),
+                SizedBox(width: 4),
+                Image.asset(
+                  'assets/${swap.myInfo.otherCoin.toLowerCase()}.png',
+                  height: 20,
                 ),
               ],
             ),
           ],
         ),
       ));
-      zebra = !zebra;
     });
     return ExportImportList(
       title: 'Swaps',

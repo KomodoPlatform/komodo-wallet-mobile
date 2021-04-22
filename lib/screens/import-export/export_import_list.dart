@@ -86,14 +86,11 @@ class _ExportImportListState extends State<ExportImportList> {
     final List<Widget> list = [];
     for (ExportImportListItem item in widget.items) {
       list.add(
-        Container(
+        Padding(
           padding: EdgeInsets.only(
-            top: 2,
-            bottom: 2,
+            top: 4,
+            bottom: 4,
           ),
-          color: item.zebra
-              ? Theme.of(context).backgroundColor
-              : Theme.of(context).primaryColor,
           child: Row(
             children: [
               Checkbox(
@@ -110,6 +107,9 @@ class _ExportImportListState extends State<ExportImportList> {
           ),
         ),
       );
+      list.add(Divider(
+        color: Colors.grey,
+      ));
     }
 
     return Container(

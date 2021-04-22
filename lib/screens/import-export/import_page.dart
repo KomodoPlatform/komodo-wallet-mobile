@@ -184,7 +184,6 @@ class _ImportPageState extends State<ImportPage> {
   Widget _buildNotes() {
     final List<ExportImportListItem> items = [];
 
-    bool zebra = false;
     _all.notes.forEach((String id, dynamic note) {
       items.add(ExportImportListItem(
           checked: _selected.notes.containsKey(id),
@@ -193,15 +192,12 @@ class _ImportPageState extends State<ImportPage> {
               val ? _selected.notes[id] = note : _selected.notes.remove(id);
             });
           },
-          zebra: zebra,
           child: Text(
             note,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.caption,
           )));
-
-      zebra = !zebra;
     });
 
     return ExportImportList(
@@ -213,8 +209,6 @@ class _ImportPageState extends State<ImportPage> {
   Widget _buildContacts() {
     final List<ExportImportListItem> items = [];
 
-    bool zebra = false;
-
     _all.contacts.forEach((String id, dynamic contact) {
       items.add(ExportImportListItem(
           checked: _selected.contacts.containsKey(id),
@@ -225,7 +219,6 @@ class _ImportPageState extends State<ImportPage> {
                   : _selected.contacts.remove(id);
             });
           },
-          zebra: zebra,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -256,8 +249,6 @@ class _ImportPageState extends State<ImportPage> {
               }),
             ],
           )));
-
-      zebra = !zebra;
     });
 
     return ExportImportList(
@@ -269,8 +260,6 @@ class _ImportPageState extends State<ImportPage> {
   Widget _buildSwaps() {
     final List<ExportImportListItem> items = [];
 
-    bool zebra = false;
-
     _all.swaps.forEach((String id, dynamic swap) {
       items.add(
         ExportImportListItem(
@@ -280,7 +269,6 @@ class _ImportPageState extends State<ImportPage> {
               val ? _selected.swaps[id] = swap : _selected.swaps.remove(id);
             });
           },
-          zebra: zebra,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -324,51 +312,35 @@ class _ImportPageState extends State<ImportPage> {
               SizedBox(height: 2),
               Row(
                 children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          cutTrailingZeros(
-                              formatPrice(swap.myInfo.myAmount, 4)),
-                        ),
-                        SizedBox(width: 5),
-                        Image.asset(
-                          'assets/${swap.myInfo.myCoin.toLowerCase()}.png',
-                          height: 20,
-                        ),
-                      ],
-                    ),
+                  Text(
+                    cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)) +
+                        ' ' +
+                        swap.myInfo.myCoin,
                   ),
-                  Expanded(flex: 1, child: Icon(Icons.swap_horiz)),
-                  Expanded(
-                    flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          cutTrailingZeros(
-                              formatPrice(swap.myInfo.otherAmount, 4)),
-                        ),
-                        SizedBox(width: 5),
-                        Image.asset(
-                          'assets/${swap.myInfo.otherCoin.toLowerCase()}.png',
-                          height: 20,
-                        ),
-                      ],
-                    ),
+                  SizedBox(width: 4),
+                  Image.asset(
+                    'assets/${swap.myInfo.myCoin.toLowerCase()}.png',
+                    height: 20,
+                  ),
+                  SizedBox(width: 8),
+                  Icon(Icons.swap_horiz),
+                  SizedBox(width: 8),
+                  Text(
+                    cutTrailingZeros(formatPrice(swap.myInfo.otherAmount, 4)) +
+                        ' ' +
+                        swap.myInfo.otherCoin,
+                  ),
+                  SizedBox(width: 4),
+                  Image.asset(
+                    'assets/${swap.myInfo.otherCoin.toLowerCase()}.png',
+                    height: 20,
                   ),
                 ],
               ),
-              SizedBox(
-                height: 4,
-              )
             ],
           ),
         ),
       );
-      zebra = !zebra;
     });
 
     return ExportImportList(
