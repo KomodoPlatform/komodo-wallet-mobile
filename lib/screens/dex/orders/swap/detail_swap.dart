@@ -215,21 +215,13 @@ class _DetailSwapState extends State<DetailSwap> {
         horizontal: 24,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title + ':',
-                    style: Theme.of(context).textTheme.bodyText1,
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              ],
+            child: Text(
+              title + ':',
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           InkWell(
@@ -239,12 +231,21 @@ class _DetailSwapState extends State<DetailSwap> {
                 id,
               );
             },
-            child: Text(
-              id,
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                    child: Text(
+                      id,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                    ),
                   ),
+                ),
+              ],
             ),
           )
         ],
