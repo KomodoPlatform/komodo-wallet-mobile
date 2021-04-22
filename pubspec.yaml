@@ -88,7 +88,7 @@ dev_dependencies:
   pin_code_view: # SECURE REVIEW REQUIRED: reviewed c0b6516
     git:
       url: git://github.com/KomodoPlatform/pin_code_view.git
-      ref: 5920e1b5e9d51fc145d28e83cfcaaf0a28cde0a3
+      ref: d471b040206870b002cf0154772c1bca4c5dfe46
   crypto: 2.1.5 # dart.dev
   intl_translation: 0.17.10+1 # dart.dev
   bs58check: # 1.0.1 - DONE: Secure code reviewed 2889fa8 (1.0.1)
