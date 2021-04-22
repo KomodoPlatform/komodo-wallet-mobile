@@ -22,6 +22,7 @@ import 'package:komodo_dex/screens/authentification/pin_page.dart';
 import 'package:komodo_dex/screens/authentification/unlock_wallet_page.dart';
 import 'package:komodo_dex/screens/import-export/export_page.dart';
 import 'package:komodo_dex/screens/import-export/import_page.dart';
+import 'package:komodo_dex/screens/import-export/import_swap_page.dart';
 import 'package:komodo_dex/screens/settings/camo_pin_setup_page.dart';
 import 'package:komodo_dex/screens/settings/sound_settings_page.dart';
 import 'package:komodo_dex/screens/settings/updates_page.dart';
@@ -115,6 +116,7 @@ class _SettingPageState extends State<SettingPage> {
                     : Container(),
                 _buildExport(),
                 _buildImport(),
+                _buildImportSwap(),
                 const SizedBox(
                   height: 1,
                 ),
@@ -537,6 +539,29 @@ class _SettingPageState extends State<SettingPage> {
                 Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         title: Text(
           AppLocalizations.of(context).importLink,
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+              fontWeight: FontWeight.w300,
+              color:
+                  Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImportSwap() {
+    return CustomTile(
+      onPressed: () {
+        Navigator.push<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => ImportSwapPage()));
+      },
+      child: ListTile(
+        trailing: Icon(Icons.chevron_right,
+            color:
+                Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
+        title: Text(
+          'Import Single Swap',
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
               color:
