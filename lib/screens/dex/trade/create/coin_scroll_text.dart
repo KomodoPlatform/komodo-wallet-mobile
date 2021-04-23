@@ -17,13 +17,18 @@ class CoinScrollText extends StatefulWidget {
 
 class _CoinScrollTextState extends State<CoinScrollText> {
   Timer _abbrTimer;
+  Timer _scrollTimer;
   String currentAbbr = '-';
 
   final _scrollController = ScrollController();
   int speedFactor = 20;
 
-  bool startScroll = true;
+  bool _shouldScroll = false;
   bool scrollReverse = false;
+  bool isScrollRunning = false;
+
+  final _textKey = GlobalKey();
+  final _containerKey = GlobalKey();
 
   @override
   void initState() {
@@ -38,49 +43,54 @@ class _CoinScrollTextState extends State<CoinScrollText> {
       if (currentAbbr != widget.abbr) {
         setState(() {
           currentAbbr = widget.abbr;
-          if (currentAbbr.length > widget.maxChar) {
-            startScroll = true;
-          }
+          _shouldScroll = false;
+
+          _scrollTimer?.cancel();
+
+          _scrollTimer ??=
+              Timer.periodic(Duration(milliseconds: 500), (t) async {
+            if (!_shouldScroll) {
+              final textWidth = _textKey.currentContext.size.width;
+              final containerWidth = _containerKey.currentContext.size.width;
+
+              _shouldScroll = textWidth > containerWidth;
+            }
+            if (!isScrollRunning) _scroll();
+          });
         });
-        if (currentAbbr.length > widget.maxChar) {
-          _scroll();
-        }
       }
     });
   }
 
-  void _scroll({int delay = 1}) {
+  Future<void> _scroll({int delay = 1}) async {
     if (!mounted) return;
-    if (!startScroll) return;
 
-    startScroll = false;
+    while (_shouldScroll) {
+      isScrollRunning = true;
+      final textWidth = _textKey.currentContext.size.width;
+      await _scrollController.animateTo(scrollReverse ? 0.0 : textWidth,
+          duration: Duration(seconds: scrollReverse ? 1 : 2),
+          curve: Curves.linear);
 
-    final maxExtent = _scrollController.position.extentInside;
-    final durationDouble = maxExtent / speedFactor;
+      await Future.delayed(Duration(seconds: delay), () {});
 
-    _scrollController
-        .animateTo(scrollReverse ? 0.0 : maxExtent,
-            duration: Duration(seconds: durationDouble.toInt()),
-            curve: Curves.linear)
-        .then((_) {
-      Future.delayed(Duration(seconds: delay), () {
-        scrollReverse = !scrollReverse;
-        startScroll = true;
-      });
-    });
+      scrollReverse = !scrollReverse;
+    }
+    isScrollRunning = false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+        key: _containerKey,
         height: 20,
         alignment: AlignmentDirectional.center,
         child: SingleChildScrollView(
-          reverse: scrollReverse,
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
           child: Text(
             currentAbbr,
+            key: _textKey,
             style: widget.style,
             maxLines: widget.maxLines,
           ),
