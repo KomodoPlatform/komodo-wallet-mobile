@@ -175,7 +175,9 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                   ? '0x' + _getTxHash(swap, i)
                   : _getTxHash(swap, i),
           explorerUrl:
-              swap.isTaker ? swap.takerExplorerUrl : swap.makerExplorerUrl,
+              swap.result.successEvents[i].toLowerCase().contains('taker')
+                  ? swap.takerExplorerUrl
+                  : swap.makerExplorerUrl,
           status: status,
           estimatedSpeed: _getEstimatedSpeed(i),
           estimatedDeviation: _getEstimatedDeviation(i),
