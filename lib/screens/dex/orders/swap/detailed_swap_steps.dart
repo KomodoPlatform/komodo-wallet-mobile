@@ -167,7 +167,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         if (failedOnStep != null) break;
         list.add(DetailedSwapStep(
           title: swap.result.successEvents[i],
-          txHash: swap.isTaker
+          txHash: swap.result.successEvents[i].toLowerCase().contains('taker')
               ? swap.doWeNeed0xPrefixForTaker
                   ? '0x' + _getTxHash(swap, i)
                   : _getTxHash(swap, i)
