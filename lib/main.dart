@@ -345,10 +345,31 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                             height: double.infinity,
                                             width: double.infinity,
                                             color: Colors.redAccent,
-                                            child: Center(
-                                                child: Text(
-                                                    AppLocalizations.of(context)
-                                                        .noInternet))),
+                                            padding: EdgeInsets.only(left: 16),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  AppLocalizations.of(context)
+                                                      .noInternet,
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                Expanded(
+                                                  child: SizedBox(),
+                                                ),
+                                                FlatButton(
+                                                  child: Text(
+                                                    'Refresh',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    _checkNetworkStatus();
+                                                  },
+                                                )
+                                              ],
+                                            )),
                                       ),
                                     ),
                                   BottomNavigationBar(
