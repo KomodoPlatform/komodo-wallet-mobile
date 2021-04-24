@@ -154,7 +154,6 @@ class _ContactEditState extends State<ContactEdit> {
           confirmButtonText: AppLocalizations.of(context).contactDiscardBtn,
           context: context,
           icon: Icons.arrow_back,
-          iconColor: Colors.white,
           title: AppLocalizations.of(context).contactExit,
           message: AppLocalizations.of(context).contactExitWarning,
           onConfirm: () {
@@ -432,6 +431,7 @@ class _ContactEditState extends State<ContactEdit> {
       context: context,
       title: AppLocalizations.of(context).contactDelete,
       icon: Icons.delete,
+      iconColor: Theme.of(context).errorColor,
       message:
           AppLocalizations.of(context).contactDeleteWarning(editContact.name),
       confirmButtonText: AppLocalizations.of(context).contactDeleteBtn,

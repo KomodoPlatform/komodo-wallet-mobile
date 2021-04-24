@@ -10,6 +10,7 @@ void showLogoutConfirmation(BuildContext context) {
     message: AppLocalizations.of(context).logoutWarning,
     confirmButtonText: AppLocalizations.of(context).logout,
     icon: Icons.exit_to_app,
+    iconColor: Theme.of(context).errorColor,
     key: const Key('settings-logout-yes'),
     onConfirm: () async {
       await authBloc.logout();

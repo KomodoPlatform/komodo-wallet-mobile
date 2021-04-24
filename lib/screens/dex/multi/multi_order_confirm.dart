@@ -21,7 +21,7 @@ class _MultiOrderConfirmState extends State<MultiOrderConfirm> {
   @override
   Widget build(BuildContext context) {
     multiOrderProvider ??= Provider.of<MultiOrderProvider>(context);
-    final Map<String, double> rel = multiOrderProvider.relCoins;
+    final Map<String, MultiOrderRelCoin> rel = multiOrderProvider.relCoins;
 
     return Column(
       children: <Widget>[

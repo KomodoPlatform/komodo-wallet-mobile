@@ -23,13 +23,13 @@ class BuildFiatAmount extends StatelessWidget {
         ? swapBloc.sellCoinBalance?.coin
         : swapBloc.receiveCoinBalance?.coin;
 
-    if (amount == null || coin == null || amount == 0) return Container();
+    if (amount == null || coin == null || amount == 0) return _spacer();
 
     final double price = cexProvider.getUsdPrice(coin.abbr);
-    if (price == null || price == 0) return Container();
+    if (price == null || price == 0) return _spacer();
 
     final double amountUsd = amount * price;
-    if (amountUsd == null || amountUsd == 0) return Container();
+    if (amountUsd == null || amountUsd == 0) return _spacer();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -48,6 +48,12 @@ class BuildFiatAmount extends StatelessWidget {
                   : cexColor.withAlpha(150)),
         ),
       ],
+    );
+  }
+
+  Widget _spacer() {
+    return Container(
+      child: Text(String.fromCharCode(0x00A0), style: TextStyle(fontSize: 12)),
     );
   }
 }

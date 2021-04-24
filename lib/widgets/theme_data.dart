@@ -25,7 +25,7 @@ ThemeData getThemeDark() => ThemeData(
       dialogBackgroundColor: primaryColor,
       fontFamily: 'Ubuntu',
       hintColor: Colors.white,
-      errorColor: const Color.fromRGBO(220, 3, 51, 1),
+      errorColor: const Color.fromRGBO(202, 78, 61, 1),
       disabledColor: const Color.fromRGBO(201, 201, 201, 1),
       buttonColor: const Color.fromRGBO(39, 68, 108, 1),
       textSelectionHandleColor: const Color.fromRGBO(57, 161, 238, 1),
@@ -60,7 +60,7 @@ ThemeData getThemeLight() => ThemeData(
       dialogBackgroundColor: primaryColorLight,
       fontFamily: 'Ubuntu',
       hintColor: const Color.fromRGBO(183, 187, 191, 1),
-      errorColor: const Color.fromRGBO(220, 3, 51, 1),
+      errorColor: const Color.fromRGBO(202, 78, 61, 1),
       disabledColor: const Color.fromRGBO(201, 201, 201, 1),
       buttonColor: const Color.fromRGBO(
           60, 201, 191, 1), //const Color.fromRGBO(39, 68, 108, 1),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -12,6 +14,7 @@ class BuildTradeButton extends StatefulWidget {
 }
 
 class _BuildTradeButtonState extends State<BuildTradeButton> {
+  List<StreamSubscription> _listeners;
   bool _enabled = false;
 
   @override
@@ -19,10 +22,25 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
     super.initState();
 
     // Using listeners to avoid multiple nested StreamBuilder's
-    swapBloc.outAmountSell.listen(_onStateChange);
-    swapBloc.outAmountReceive.listen(_onStateChange);
-    swapBloc.outSellCoinBalance.listen(_onStateChange);
-    swapBloc.outReceiveCoinBalance.listen(_onStateChange);
+    _listeners = [
+      swapBloc.outAmountSell.listen(_onStateChange),
+      swapBloc.outAmountReceive.listen(_onStateChange),
+      swapBloc.outSellCoinBalance.listen(_onStateChange),
+      swapBloc.outReceiveCoinBalance.listen(_onStateChange),
+      swapBloc.outTradePreimage.listen(_onStateChange),
+      swapBloc.outProcessing.listen(_onStateChange),
+      swapBloc.outValidatorError.listen(_onStateChange),
+      swapBloc.outPreimageError.listen(_onStateChange),
+    ];
+  }
+
+  @override
+  void dispose() {
+    _listeners.map((listener) {
+      listener?.cancel();
+    });
+
+    super.dispose();
   }
 
   @override
@@ -63,10 +81,16 @@ class _BuildTradeButtonState extends State<BuildTradeButton> {
   void _onStateChange(dynamic _) {
     if (!mounted) return;
 
-    final bool isEnabled = swapBloc.sellCoinBalance != null &&
+    final bool isEnabled = swapBloc.validatorError == null &&
+        swapBloc.preimageError == null &&
+        swapBloc.processing == false &&
+        swapBloc.tradePreimage != null &&
+        swapBloc.sellCoinBalance != null &&
         swapBloc.receiveCoinBalance != null &&
         swapBloc.amountSell != null &&
-        swapBloc.amountReceive != null;
+        swapBloc.amountReceive != null &&
+        swapBloc.amountSell > 0 &&
+        swapBloc.amountReceive > 0;
 
     setState(() => _enabled = isEnabled);
   }

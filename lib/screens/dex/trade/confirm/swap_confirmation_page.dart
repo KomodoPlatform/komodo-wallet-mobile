@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_buy.dart';
@@ -11,15 +12,18 @@ import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/swap_detail_page.dart';
+import 'package:komodo_dex/screens/dex/trade/confirm/build_detailed_fees.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/min_volume_control.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/protection_control.dart';
 import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
+import 'package:komodo_dex/screens/dex/trade/evaluation.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
+import 'package:provider/provider.dart';
 
 class SwapConfirmationPage extends StatefulWidget {
   @override
@@ -27,8 +31,10 @@ class SwapConfirmationPage extends StatefulWidget {
 }
 
 class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
+  CexProvider _cexProvider;
   bool _inProgress = false;
   String _minVolume;
+  bool _isMinVolumeValid = true;
   BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
   ProtectionSettings _protectionSettings = ProtectionSettings(
     requiredConfirmations:
@@ -39,6 +45,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
 
   @override
   Widget build(BuildContext context) {
+    _cexProvider ??= Provider.of<CexProvider>(context);
+
     return LockScreen(
       context: context,
       child: Scaffold(
@@ -51,11 +59,16 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
             : SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     _buildCoinSwapDetail(),
                     _buildTestCoinWarning(),
-                    ExchangeRate(),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 24),
+                    _buildFees(),
+                    SizedBox(height: 24),
+                    _buildExchangeRate(),
+                    SizedBox(height: 24),
+                    _buildEvaluation(),
+                    SizedBox(height: 24),
                     ProtectionControl(
                       coin: swapBloc.receiveCoinBalance?.coin,
                       onChange: (ProtectionSettings settings) {
@@ -66,11 +79,13 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     ),
                     if (swapBloc.matchingBid == null)
                       MinVolumeControl(
-                          coin: swapBloc.sellCoinBalance?.coin?.abbr,
-                          validator: _validateMinVolume,
-                          onChange: (String value) {
+                          base: swapBloc.sellCoinBalance.coin.abbr,
+                          rel: swapBloc.receiveCoinBalance.coin.abbr,
+                          price: swapBloc.amountReceive / swapBloc.amountSell,
+                          onChange: (String value, bool isValid) {
                             setState(() {
                               _minVolume = value;
+                              _isMinVolumeValid = isValid;
                             });
                           }),
                     if (swapBloc.matchingBid != null) _buildBuyOrderType(),
@@ -89,24 +104,48 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         swapBloc.receiveCoinBalance != null;
   }
 
-  String _validateMinVolume(String value) {
-    if (value == null) return null;
+  Widget _buildEvaluation() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+      child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+              color: Theme.of(context).highlightColor,
+            )),
+          ),
+          child: Evaluation()),
+    );
+  }
 
-    final double minVolumeValue = double.tryParse(value);
-    final double minVolumeDefault =
-        tradeForm.minVolumeDefault(swapBloc.sellCoinBalance.coin.abbr);
-    final double amountToSell = swapBloc.amountSell;
+  Widget _buildExchangeRate() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+      child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+              color: Theme.of(context).highlightColor,
+            )),
+          ),
+          child: ExchangeRate()),
+    );
+  }
 
-    if (minVolumeValue == null) {
-      return AppLocalizations.of(context).nonNumericInput;
-    } else if (minVolumeValue < minVolumeDefault) {
-      return AppLocalizations.of(context)
-          .minVolumeInput(minVolumeDefault, swapBloc.sellCoinBalance.coin.abbr);
-    } else if (amountToSell != null && minVolumeValue > amountToSell) {
-      return AppLocalizations.of(context).minVolumeIsTDH;
-    } else {
-      return null;
-    }
+  Widget _buildFees() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
+        decoration: BoxDecoration(
+            border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).highlightColor,
+          ),
+        )),
+        child: BuildDetailedFees(preimage: swapBloc.tradePreimage),
+      ),
+    );
   }
 
   Widget _buildBuyOrderType() {
@@ -171,16 +210,17 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Text(AppLocalizations.of(context).sell,
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: Theme.of(context).accentColor,
+                            fontWeight: FontWeight.w100,
+                          )),
                   Text(
                     '$amountSell ${swapBloc.sellCoinBalance.coin.abbr}',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  Text(AppLocalizations.of(context).sell,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                            color: Theme.of(context).accentColor,
-                            fontWeight: FontWeight.w100,
-                          ))
+                  _buildSellFiat(),
                 ],
               ),
             ),
@@ -212,6 +252,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        _buildReceiveFiat(),
                         Text(
                           '$amountReceive ${swapBloc.receiveCoinBalance.coin.abbr}',
                           textAlign: TextAlign.center,
@@ -291,6 +332,32 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     }
   }
 
+  Widget _buildSellFiat() {
+    final double sellAmtUsd = swapBloc.amountSell *
+        _cexProvider.getUsdPrice(swapBloc.sellCoinBalance.coin.abbr);
+    if (sellAmtUsd == 0) return SizedBox();
+
+    return Container(
+      child: Text(
+        _cexProvider.convert(sellAmtUsd),
+        style: Theme.of(context).textTheme.caption,
+      ),
+    );
+  }
+
+  Widget _buildReceiveFiat() {
+    final double receiveeAmtUsd = swapBloc.amountReceive *
+        _cexProvider.getUsdPrice(swapBloc.receiveCoinBalance.coin.abbr);
+    if (receiveeAmtUsd == 0) return SizedBox();
+
+    return Container(
+      child: Text(
+        _cexProvider.convert(receiveeAmtUsd),
+        style: Theme.of(context).textTheme.caption,
+      ),
+    );
+  }
+
   Widget _buildInfoSwap() {
     return Column(
       children: <Widget>[
@@ -351,9 +418,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildButtons() {
-    final bool disabled = _inProgress || _validateMinVolume(_minVolume) != null;
+    final bool disabled = _inProgress || !_isMinVolumeValid;
 
-    return Builder(builder: (BuildContext context) {
+    return Builder(builder: (context) {
       return Column(
         children: <Widget>[
           const SizedBox(

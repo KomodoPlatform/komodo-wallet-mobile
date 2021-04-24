@@ -230,6 +230,48 @@ Future<bool> authenticateBiometrics(
   }
 }
 
+Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
+  return dialogBloc.dialog = showDialog<void>(
+      context: mContext,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context).cantDeleteDefaultCoinTitle +
+              coin.abbr),
+          content: RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodyText2,
+              children: <TextSpan>[
+                TextSpan(
+                    text: '${coin.name}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(fontWeight: FontWeight.bold)),
+                TextSpan(
+                    text:
+                        AppLocalizations.of(context).cantDeleteDefaultCoinSpan),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                AppLocalizations.of(context)
+                    .cantDeleteDefaultCoinOk
+                    .toUpperCase(),
+                style: Theme.of(context).textTheme.button,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }).then((_) {
+    dialogBloc.dialog = null;
+  });
+}
+
 Future<void> showConfirmationRemoveCoin(
     BuildContext mContext, Coin coin) async {
   return dialogBloc.dialog = showDialog<void>(

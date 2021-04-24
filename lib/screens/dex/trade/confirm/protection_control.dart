@@ -53,9 +53,10 @@ class _ProtectionControlState extends State<ProtectionControl> {
     });
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Text(
             'Incoming  ${widget.coin.abbr} txs protection settings:',
             textAlign: TextAlign.center,
