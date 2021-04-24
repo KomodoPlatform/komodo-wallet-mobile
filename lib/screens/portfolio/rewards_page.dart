@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
@@ -222,8 +223,8 @@ class _RewardsPageState extends State<RewardsPage> {
           border: TableBorder.all(color: Colors.white.withAlpha(15)),
           columnWidths: const {
             0: IntrinsicColumnWidth(),
-            2: IntrinsicColumnWidth(),
             3: IntrinsicColumnWidth(),
+            4: IntrinsicColumnWidth(),
           },
           children: [
             TableRow(
@@ -250,6 +251,17 @@ class _RewardsPageState extends State<RewardsPage> {
                       left: 8, right: 8, top: 8, bottom: 8),
                   child: Text(
                     AppLocalizations.of(context).rewardsTableRewards,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 8, top: 8, bottom: 8),
+                  child: Text(
+                    'Fiat',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -329,6 +341,38 @@ class _RewardsPageState extends State<RewardsPage> {
                     ),
                   ),
                 ),
+          item.reward == null
+              ? Container(
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 8, top: 12, bottom: 12),
+                  child: const Text(
+                    '-',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                )
+              : Builder(builder: (context) {
+                  final cexProvider =
+                      Provider.of<CexProvider>(context, listen: false);
+                  final double price = cexProvider.getUsdPrice('KMD');
+
+                  final amountUsd = item.reward * price;
+                  return Container(
+                    color: const Color.fromARGB(60, 1, 102, 129),
+                    padding: const EdgeInsets.only(
+                        left: 8, right: 8, top: 12, bottom: 12),
+                    child: Text(
+                      cexProvider.convert(amountUsd),
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  );
+                }),
           Container(
             alignment: const Alignment(0, 0),
             padding:
