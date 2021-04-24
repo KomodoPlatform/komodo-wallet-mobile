@@ -174,6 +174,20 @@ class _RewardsPageState extends State<RewardsPage> {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
+                        Builder(builder: (context) {
+                          final cexProvider =
+                              Provider.of<CexProvider>(context, listen: false);
+                          final double price = cexProvider.getUsdPrice('KMD');
+
+                          final amountUsd = total * price;
+                          return Text(
+                            cexProvider.convert(amountUsd),
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          );
+                        }),
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 2,
                           height: 1,
