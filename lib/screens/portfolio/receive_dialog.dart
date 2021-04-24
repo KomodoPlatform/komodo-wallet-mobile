@@ -34,23 +34,41 @@ void showReceiveDialog(BuildContext mContext, String address, Coin coin) {
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  copyToClipBoard(mContext, address);
-                },
-                child: Container(
-                  child: Center(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-                    child: AutoSizeText(
-                      address,
-                      textKey: const Key('coin-details-address'),
-                      style: Theme.of(context).textTheme.bodyText2,
-                      maxLines: 2,
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        copyToClipBoard(mContext, address);
+                      },
+                      child: Container(
+                        child: Center(
+                            child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 16),
+                          child: AutoSizeText(
+                            address,
+                            textKey: const Key('coin-details-address'),
+                            style: Theme.of(context).textTheme.bodyText2,
+                            maxLines: 2,
+                          ),
+                        )),
+                      ),
                     ),
-                  )),
-                ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      copyToClipBoard(mContext, address);
+                    },
+                    child: Container(
+                      child: Center(
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 16),
+                              child: Icon(Icons.copy))),
+                    ),
+                  ),
+                ],
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
