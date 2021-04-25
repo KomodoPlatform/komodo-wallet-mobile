@@ -7,7 +7,17 @@ Komodo Platform's hybrid mutlicoin DEX-wallet.
 Build requires up-to-date version of coins file from https://github.com/KomodoPlatform/coins
 
 Commit hash and sah256sum of coins file is specified in `coins_ci.json`.
-You may download one manually or use `fetch_coins.sh` script. 
+You may download one manually or use `fetch_coins.sh` script on linux and macOS,
+ `fetch_coins.ps1` powershell script on Windows.
+
+`fetch_coins` script depends on sha256sum and jq utils:
+
+Ubuntu: `sudo apt-get update && sudo apt-get install -y coreutils jq`
+
+MacOS: `brew install coreutils jq`, [Brew software](https://brew.sh/)
+
+Windows: `choco install jq`, [Choco sowftware](https://chocolatey.org/)
+
 
 ## For iOS build:
 
