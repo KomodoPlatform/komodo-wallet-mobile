@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/dex/orders/active_orders.dart';
+import 'package:komodo_dex/screens/dex/orders/filters.dart';
 import 'package:komodo_dex/screens/dex/orders/swap_history.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -20,10 +21,14 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            SizedBox(width: 8),
+            Filters(),
+            Expanded(child: SizedBox()),
             FlatButton(
                 onPressed: () {
                   setState(() {
