@@ -1,19 +1,13 @@
 $config_init_mm2 = "assets\coins_init_mm2.json"
 
 # back compatibility
-if ( ( Test-Path -Path $config_init_mm2 -PathType Leaf )  -and -not ( Test-Path -Path "coins_ci.json" -PathType Leaf ) ) {
+if ( ( Test-Path -Path $config_init_mm2 -PathType Leaf ) -and -not ( Test-Path -Path "coins_ci.json" -PathType Leaf ) ) {
     exit
     }
 
 # get coins file
-$comm = $( jq.exe -r .commit .\coins_ci.json)
-$sha_expected = $( jq.exe -r .sha256 .\coins_ci.json)
-curl.exe -l "https://raw.githubusercontent.com/KomodoPlatform/coins/${comm}/coins" --output $config_init_mm2
-
-# validate coins file
-if ( -not $( ( Get-FileHash $config_init_mm2 ).Hash -eq $sha_expected ) ) {
-    throw "Unexpected coins file shasum"
-    }
+$coins_repo_commit = $( jq.exe -r '.coins_repo_commit' .\coins_ci.json)
+curl.exe -l "https://raw.githubusercontent.com/KomodoPlatform/coins/${coins_repo_commit}/coins" --output $config_init_mm2
 
 # clean checks from previous run
 rm .\app_assets

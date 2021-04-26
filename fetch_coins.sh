@@ -8,16 +8,12 @@ if [[ -f "assets/coins_init_mm2.json" && ! -f "coins_ci.json" ]]; then
 fi
 
 # get coins file
-comm="$(cat coins_ci.json | jq -r .commit)"
-sha_expected="$(cat coins_ci.json | jq -r .sha256)"
-curl -l "https://raw.githubusercontent.com/KomodoPlatform/coins/${comm}/coins" --output "assets/coins_init_mm2.json"
-
-# validate coins file
-echo "${sha_expected} assets/coins_init_mm2.json" | sha256sum --check --strict
+coins_repo_commit="$( jq -r '.coins_repo_commit' coins_ci.json )"
+curl -l "https://raw.githubusercontent.com/KomodoPlatform/coins/${coins_repo_commit}/coins" --output "assets/coins_init_mm2.json"
 
 # get assets lists
-cat assets/coins_config.json | jq -r '.[].abbr' > app_assets
-cat assets/coins_init_mm2.json | jq -r '.[].coin' > coins_assets
+jq -r '.[].abbr' assets/coins_config.json > app_assets
+jq -r '.[].coin' assets/coins_init_mm2.json > coins_assets
 
 # check if all assets from coins_config are present in coins_init_mm2
 set +x
