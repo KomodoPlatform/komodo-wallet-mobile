@@ -35,7 +35,21 @@ class AmountField extends StatefulWidget {
 class _AmountFieldState extends State<AmountField> {
   double amountUsd = 0.0;
 
-  void _calculateFiat(String amount) {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_calculateFiat);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_calculateFiat);
+    super.dispose();
+  }
+
+  void _calculateFiat() {
+    final amount = widget.controller.text;
+
     final cexProvider = Provider.of<CexProvider>(context, listen: false);
     final double price = cexProvider.getUsdPrice(widget.coinAbbr);
 
@@ -75,10 +89,7 @@ class _AmountFieldState extends State<AmountField> {
                           .bodyText2
                           .copyWith(color: Theme.of(context).accentColor),
                     ),
-                    onPressed: () {
-                      widget.onMaxValue();
-                      _calculateFiat(widget.controller.text);
-                    },
+                    onPressed: widget.onMaxValue,
                   ),
                 ),
               ),
@@ -118,8 +129,6 @@ class _AmountFieldState extends State<AmountField> {
                         textAlign: TextAlign.end,
                         onChanged: (String amount) {
                           coinsDetailBloc.setAmountToSend(amount);
-
-                          _calculateFiat(amount);
                         },
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
