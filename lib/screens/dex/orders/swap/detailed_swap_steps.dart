@@ -129,6 +129,19 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
       }
     }
 
+    String _getTxHash(Swap swap, int i) {
+      if (i > swap.result.events.length - 1) return '';
+      if (swap.result.successEvents[i] != 'TakerPaymentSpent') {
+        return swap.result.events[i].event.data?.txHash ?? '';
+      } else {
+        if (swap.isTaker) {
+          return swap.result.events[i].event.data?.transaction?.txHash ?? '';
+        } else {
+          return swap.result.events[i].event.data?.txHash ?? '';
+        }
+      }
+    }
+
     Widget _buildFirstStep() {
       return DetailedSwapStep(
         title: AppLocalizations.of(context).swapStarted,
@@ -136,6 +149,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         estimatedSpeed: _getEstimatedSpeed(0),
         estimatedDeviation: _getEstimatedDeviation(0),
         actualSpeed: _getActualSpeed(0),
+        txHash: '',
         index: 0,
         actualTotalSpeed: actualTotalSpeed,
         estimatedTotalSpeed: estimatedTotalSpeed,
@@ -153,6 +167,17 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         if (failedOnStep != null) break;
         list.add(DetailedSwapStep(
           title: swap.result.successEvents[i],
+          txHash: swap.result.successEvents[i].toLowerCase().contains('taker')
+              ? swap.doWeNeed0xPrefixForTaker
+                  ? '0x' + _getTxHash(swap, i)
+                  : _getTxHash(swap, i)
+              : swap.doWeNeed0xPrefixForMaker
+                  ? '0x' + _getTxHash(swap, i)
+                  : _getTxHash(swap, i),
+          explorerUrl:
+              swap.result.successEvents[i].toLowerCase().contains('taker')
+                  ? swap.takerExplorerUrl
+                  : swap.makerExplorerUrl,
           status: status,
           estimatedSpeed: _getEstimatedSpeed(i),
           estimatedDeviation: _getEstimatedDeviation(i),
@@ -173,9 +198,12 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
               errorEventType.toLowerCase().contains('failed')
                   ? SwapStepStatus.failed
                   : SwapStepStatus.handled;
-
           list.add(DetailedSwapStep(
             title: errorEventType,
+            txHash: _getTxHash(swap, e),
+            explorerUrl: errorEventType.contains('Taker')
+                ? swap.takerExplorerUrl
+                : swap.makerExplorerUrl,
             status: status,
             actualSpeed: e == failedOnStep ? null : _getActualSpeed(e),
             index: e,
@@ -279,7 +307,7 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
                         ),
                   Row(
                     children: <Widget>[
-                      Text(AppLocalizations.of(context).swapActual + ': ',
+                      Text(AppLocalizations.of(context).swapCurrent + ': ',
                           style: TextStyle(
                             fontSize: 13,
                             color: Theme.of(context).accentColor,
@@ -324,19 +352,20 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            AppLocalizations.of(context).swappProgress + ':',
+            AppLocalizations.of(context).swapProgress + ':',
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 8),
           _buildTotal(),
-          const SizedBox(height: 13),
-          // We assume that all kind of swaps has first step, with type of 'Started',
-          // so we can show this step before actual swap data received.
+          const SizedBox(height: 12),
+          // We assume that all kind of swaps has first step,
+          // with type of 'Started', so we can show this
+          // step before actual swap data received.
           _buildFirstStep(),
           ..._buildFollowingSteps(),
           const SizedBox(height: 12),
