@@ -34,13 +34,13 @@ void showReceiveDialog(BuildContext mContext, String address, Coin coin) {
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        copyToClipBoard(mContext, address);
-                      },
+              InkWell(
+                onTap: () {
+                  copyToClipBoard(mContext, address);
+                },
+                child: Row(
+                  children: [
+                    Expanded(
                       child: Container(
                         child: Center(
                             child: Padding(
@@ -55,20 +55,17 @@ void showReceiveDialog(BuildContext mContext, String address, Coin coin) {
                         )),
                       ),
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      copyToClipBoard(mContext, address);
-                    },
-                    child: Container(
+                    SizedBox(width: 8),
+                    Container(
                       child: Center(
-                          child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 16),
-                              child: Icon(Icons.copy))),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Icon(Icons.copy),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
