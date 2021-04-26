@@ -76,7 +76,8 @@ class SwapProvider extends ChangeNotifier {
   void _transitions(StringBuffer text, Swap swap, SwapEEL ev) {
     final Map<String, int> knownTransitions = {};
     final String pref = ev.type + '→';
-    final String makerCoin = swap?.makerCoin, takerCoin = swap?.takerCoin;
+    final String makerCoin = swap?.makerCoin?.abbr,
+        takerCoin = swap?.takerCoin?.abbr;
     final ens = swapMonitor._swapMetrics.values;
     for (SwapMetrics metrics in ens) {
       // Filter by coin pair and direction.
@@ -101,11 +102,13 @@ class SwapProvider extends ChangeNotifier {
   }
 
   /// Based on the available metrics information
-  /// tries to estimate the speed of transition [from] one [to] another steps of a given [uuid] swap.
+  /// tries to estimate the speed of transition [from]
+  /// one step [to] another of a given [uuid] swap.
   /// Returns `null` if no estimate is currently available.
   StepSpeed stepSpeed(String uuid, String from, String to) {
     final Swap swap = this.swap(uuid);
-    final String makerCoin = swap?.makerCoin, takerCoin = swap?.takerCoin;
+    final String makerCoin = swap?.makerCoin?.abbr,
+        takerCoin = swap?.takerCoin?.abbr;
 
     final String transition = '$from→$to';
     final List<double> values = [];
