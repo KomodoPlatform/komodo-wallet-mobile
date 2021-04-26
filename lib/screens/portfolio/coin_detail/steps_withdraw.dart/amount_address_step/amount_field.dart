@@ -8,6 +8,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
@@ -161,7 +162,10 @@ class _AmountFieldState extends State<AmountField> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
             children: [
+              CexMarker(context, size: Size.fromHeight(12)),
+              SizedBox(width: 2),
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
