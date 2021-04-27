@@ -6,7 +6,8 @@ import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/dex/orders/active_orders.dart';
-import 'package:komodo_dex/screens/dex/orders/filters.dart';
+import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
+import 'package:komodo_dex/screens/dex/orders/filters/filters_button.dart';
 import 'package:komodo_dex/screens/dex/orders/swap_history.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -15,7 +16,9 @@ class OrdersPage extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-  OrdersTab currentTab = OrdersTab.active;
+  OrdersTab _currentTab = OrdersTab.active;
+  bool _showFilters = false;
+  final _activeFilters = ActiveFilters();
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +30,16 @@ class _OrdersPageState extends State<OrdersPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(width: 8),
-            Filters(),
+            FiltersButton(
+              activeFilters: _activeFilters,
+              onPressed: () => setState(() => _showFilters = !_showFilters),
+              isActive: _showFilters,
+            ),
             Expanded(child: SizedBox()),
             FlatButton(
                 onPressed: () {
                   setState(() {
-                    currentTab = OrdersTab.active;
+                    _currentTab = OrdersTab.active;
                   });
                 },
                 child: Row(
@@ -41,7 +48,7 @@ class _OrdersPageState extends State<OrdersPage> {
                     Text(
                       AppLocalizations.of(context).ordersActive + ' ',
                       style: TextStyle(
-                          color: currentTab == OrdersTab.active
+                          color: _currentTab == OrdersTab.active
                               ? Theme.of(context).accentColor
                               : null),
                     ),
@@ -51,7 +58,7 @@ class _OrdersPageState extends State<OrdersPage> {
             FlatButton(
               onPressed: () {
                 setState(() {
-                  currentTab = OrdersTab.history;
+                  _currentTab = OrdersTab.history;
                 });
               },
               child: Row(
@@ -60,7 +67,7 @@ class _OrdersPageState extends State<OrdersPage> {
                   Text(
                     AppLocalizations.of(context).ordersHistory + ' ',
                     style: TextStyle(
-                        color: currentTab == OrdersTab.history
+                        color: _currentTab == OrdersTab.history
                             ? Theme.of(context).accentColor
                             : null),
                   ),
@@ -70,8 +77,20 @@ class _OrdersPageState extends State<OrdersPage> {
             ),
           ],
         ),
+        if (_showFilters)
+          Padding(
+            padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border(
+                      top:
+                          BorderSide(color: Theme.of(context).highlightColor))),
+              padding: EdgeInsets.fromLTRB(12, 12, 12, 16),
+              child: Filters(),
+            ),
+          ),
         Flexible(
-            child: currentTab == OrdersTab.active
+            child: _currentTab == OrdersTab.active
                 ? ActiveOrders()
                 : SwapHistory()),
       ],
@@ -98,7 +117,7 @@ class _OrdersPageState extends State<OrdersPage> {
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w400,
-              color: currentTab == OrdersTab.history
+              color: _currentTab == OrdersTab.history
                   ? Theme.of(context).accentColor
                   : null,
             ),
@@ -122,7 +141,7 @@ class _OrdersPageState extends State<OrdersPage> {
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w400,
-            color: currentTab == OrdersTab.active
+            color: _currentTab == OrdersTab.active
                 ? Theme.of(context).accentColor
                 : null,
           ),

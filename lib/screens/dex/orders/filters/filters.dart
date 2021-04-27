@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/dialog_bloc.dart';
 
 class Filters extends StatefulWidget {
   @override
@@ -7,52 +6,15 @@ class Filters extends StatefulWidget {
 }
 
 class _FiltersState extends State<Filters> {
-  ActiveFilters _filters = ActiveFilters();
+  final ActiveFilters _filters = ActiveFilters();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: _buildButton(),
-    );
-  }
-
-  Widget _buildButton() {
-    return InkWell(
-      onTap: _showDialog,
-      child: Container(
-        padding: EdgeInsets.all(8),
-        child: Row(
-          children: [
-            Icon(
-              Icons.filter_alt_outlined,
-              size: 14,
-            ),
-            SizedBox(width: 2),
-            Text('Filters'),
-          ],
-        ),
+      child: Column(
+        children: [_buildSellCoinFilter()],
       ),
     );
-  }
-
-  void _showDialog() {
-    dialogBloc.dialog = showDialog(
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(builder: (context, setState) {
-            return SimpleDialog(
-              titlePadding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-              contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 20),
-              title: Text(
-                'Filters',
-                style: Theme.of(context).textTheme.subtitle2,
-              ),
-              children: [
-                _buildSellCoinFilter(),
-              ],
-            );
-          });
-        });
   }
 
   Widget _buildSellCoinFilter() {
@@ -103,7 +65,7 @@ class _FiltersState extends State<Filters> {
           children: [
             CircleAvatar(
               radius: 7,
-              backgroundColor: color,
+              backgroundColor: color.withAlpha(50),
               backgroundImage: current != null
                   ? AssetImage('assets/${current.toLowerCase()}.png')
                   : null,
