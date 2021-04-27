@@ -77,21 +77,9 @@ class _OrdersPageState extends State<OrdersPage> {
             ),
           ],
         ),
-        if (_showFilters)
-          Padding(
-            padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border(
-                      top:
-                          BorderSide(color: Theme.of(context).highlightColor))),
-              padding: EdgeInsets.fromLTRB(12, 12, 12, 16),
-              child: Filters(),
-            ),
-          ),
         Flexible(
             child: _currentTab == OrdersTab.active
-                ? ActiveOrders()
+                ? ActiveOrders(showFilters: _showFilters)
                 : SwapHistory()),
       ],
     );

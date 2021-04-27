@@ -1,56 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/model/order.dart';
+import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
 
 class Filters extends StatefulWidget {
+  const Filters({this.items, this.activeFilters, this.onChange});
+
+  final List<dynamic> items;
+  final Function(ActiveFilters) onChange;
+  final ActiveFilters activeFilters;
+
   @override
   _FiltersState createState() => _FiltersState();
 }
 
 class _FiltersState extends State<Filters> {
-  final ActiveFilters _filters = ActiveFilters();
+  ActiveFilters _filters;
 
   @override
   Widget build(BuildContext context) {
+    _filters ??= widget.activeFilters ?? ActiveFilters();
+
     return Container(
       child: Column(
-        children: [_buildSellCoinFilter()],
+        children: [
+          _buildCoinFilter(Market.SELL),
+          SizedBox(height: 12),
+          _buildCoinFilter(Market.RECEIVE),
+        ],
       ),
     );
   }
 
-  Widget _buildSellCoinFilter() {
+  Widget _buildCoinFilter(Market market) {
+    final String current =
+        market == Market.SELL ? _filters.sellCoin : _filters.receiveCoin;
+
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
         Expanded(
           child: Text(
-            'Sell coin:',
+            market == Market.SELL ? 'Sell coin:' : 'Receive coin:',
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
-        _buildCoinSelect(current: _filters.sellCoin),
-        Container(
-          padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
-          child: InkWell(
+        _buildCoinSelect(market),
+        InkWell(
+          child: Container(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
             child: Opacity(
-              opacity: _filters.sellCoin == null ? 0.5 : 1,
+              opacity: current == null ? 0.5 : 1,
               child: Icon(
                 Icons.clear,
                 size: 16,
               ),
             ),
-            onTap: _filters.sellCoin == null ? null : () {},
           ),
+          onTap: current == null
+              ? null
+              : () {
+                  setState(() {
+                    market == Market.SELL
+                        ? _filters.sellCoin = null
+                        : _filters.receiveCoin = null;
+                  });
+                  widget.onChange(_filters);
+                },
         )
       ],
     );
   }
 
-  Widget _buildCoinSelect({String current}) {
+  Widget _buildCoinSelect(Market market) {
+    final String current =
+        market == Market.SELL ? _filters.sellCoin : _filters.receiveCoin;
     final Color color =
         current == null ? Theme.of(context).textTheme.bodyText1.color : null;
 
     return InkWell(
-      onTap: () {},
+      onTap: () => _openCoinsDialog(market),
       child: Container(
         width: 100,
         padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
@@ -65,7 +95,7 @@ class _FiltersState extends State<Filters> {
           children: [
             CircleAvatar(
               radius: 7,
-              backgroundColor: color.withAlpha(50),
+              backgroundColor: color?.withAlpha(50),
               backgroundImage: current != null
                   ? AssetImage('assets/${current.toLowerCase()}.png')
                   : null,
@@ -87,6 +117,77 @@ class _FiltersState extends State<Filters> {
         ),
       ),
     );
+  }
+
+  void _openCoinsDialog(Market market) {
+    final List<String> coins = _getCoins(market);
+    final List<Widget> items = coins.map((String coin) {
+      return InkWell(
+        onTap: () {
+          setState(() {
+            market == Market.SELL
+                ? _filters.sellCoin = coin
+                : _filters.receiveCoin = coin;
+          });
+          widget.onChange(_filters);
+          dialogBloc.closeDialog(context);
+        },
+        child: Container(
+          padding: EdgeInsets.all(12),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 7,
+                backgroundImage: AssetImage('assets/${coin.toLowerCase()}.png'),
+              ),
+              SizedBox(width: 4),
+              Text(coin),
+            ],
+          ),
+        ),
+      );
+    }).toList();
+
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+            children: items,
+          );
+        });
+  }
+
+  List<String> _getCoins(Market market) {
+    final List<String> list = [];
+
+    for (dynamic item in widget.items) {
+      if (item is Order) {
+        String coin;
+        switch (market) {
+          case Market.SELL:
+            coin = item.orderType == OrderType.MAKER ? item.base : item.rel;
+            break;
+          case Market.RECEIVE:
+            coin = item.orderType == OrderType.MAKER ? item.rel : item.base;
+            break;
+        }
+        list.add(coin);
+      } else if (item is Swap) {
+        String coin;
+        switch (market) {
+          case Market.SELL:
+            coin = item.isMaker ? item.makerAbbr : item.takerAbbr;
+            break;
+          case Market.RECEIVE:
+            coin = item.isMaker ? item.takerAbbr : item.makerAbbr;
+            break;
+        }
+        list.add(coin);
+      }
+    }
+
+    return list;
   }
 }
 
