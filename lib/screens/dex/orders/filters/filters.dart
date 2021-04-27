@@ -137,7 +137,7 @@ class _FiltersState extends State<Filters> {
           child: Row(
             children: [
               CircleAvatar(
-                radius: 7,
+                radius: 8,
                 backgroundImage: AssetImage('assets/${coin.toLowerCase()}.png'),
               ),
               SizedBox(width: 4),
@@ -147,6 +147,32 @@ class _FiltersState extends State<Filters> {
         ),
       );
     }).toList();
+
+    items.insert(
+        0,
+        InkWell(
+          onTap: () {
+            setState(() {
+              market == Market.SELL
+                  ? _filters.sellCoin = null
+                  : _filters.receiveCoin = null;
+            });
+            widget.onChange(_filters);
+            dialogBloc.closeDialog(context);
+          },
+          child: Container(
+            padding: EdgeInsets.all(12),
+            child: Row(
+              children: [
+                CircleAvatar(
+                    radius: 8,
+                    backgroundColor: Theme.of(context).highlightColor),
+                SizedBox(width: 4),
+                Text('All'),
+              ],
+            ),
+          ),
+        ));
 
     dialogBloc.dialog = showDialog(
         context: context,
@@ -172,7 +198,7 @@ class _FiltersState extends State<Filters> {
             coin = item.orderType == OrderType.MAKER ? item.rel : item.base;
             break;
         }
-        list.add(coin);
+        if (!list.contains(coin)) list.add(coin);
       } else if (item is Swap) {
         String coin;
         switch (market) {
@@ -183,7 +209,7 @@ class _FiltersState extends State<Filters> {
             coin = item.isMaker ? item.takerAbbr : item.makerAbbr;
             break;
         }
-        list.add(coin);
+        if (!list.contains(coin)) list.add(coin);
       }
     }
 

@@ -18,7 +18,7 @@ class OrdersPage extends StatefulWidget {
 class _OrdersPageState extends State<OrdersPage> {
   OrdersTab _currentTab = OrdersTab.active;
   bool _showFilters = false;
-  final _activeFilters = ActiveFilters();
+  ActiveFilters _activeFilters = ActiveFilters();
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +79,24 @@ class _OrdersPageState extends State<OrdersPage> {
         ),
         Flexible(
             child: _currentTab == OrdersTab.active
-                ? ActiveOrders(showFilters: _showFilters)
-                : SwapHistory()),
+                ? ActiveOrders(
+                    showFilters: _showFilters,
+                    activeFilters: _activeFilters,
+                    onFiltersChange: (filters) {
+                      setState(() {
+                        _activeFilters = filters;
+                      });
+                    },
+                  )
+                : SwapHistory(
+                    showFilters: _showFilters,
+                    activeFilters: _activeFilters,
+                    onFiltersChange: (filters) {
+                      setState(() {
+                        _activeFilters = filters;
+                      });
+                    },
+                  )),
       ],
     );
   }

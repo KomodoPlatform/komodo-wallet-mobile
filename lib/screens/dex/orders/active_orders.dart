@@ -9,9 +9,15 @@ import 'package:komodo_dex/screens/dex/orders/taker/build_item_taker.dart';
 import 'package:komodo_dex/widgets/pagination.dart';
 
 class ActiveOrders extends StatefulWidget {
-  const ActiveOrders({this.showFilters});
+  const ActiveOrders({
+    this.showFilters,
+    this.activeFilters,
+    this.onFiltersChange,
+  });
 
   final bool showFilters;
+  final Function(ActiveFilters) onFiltersChange;
+  final ActiveFilters activeFilters;
 
   @override
   _ActiveOrdersState createState() => _ActiveOrdersState();
@@ -21,7 +27,6 @@ class _ActiveOrdersState extends State<ActiveOrders> {
   final _scrollCtrl = ScrollController();
   int _currentPage = 1;
   final int _perPage = 25;
-  ActiveFilters _activeFilters;
 
   @override
   void initState() {
@@ -39,11 +44,12 @@ class _ActiveOrdersState extends State<ActiveOrders> {
 
           List<dynamic> orderSwaps = snapshot.data;
           orderSwaps = snapshot.data.reversed.toList();
+          final List<dynamic> orderSwapsFiltered = _filter(orderSwaps);
 
           final int start = (_currentPage - 1) * _perPage;
           int end = start + _perPage;
-          if (end > orderSwaps.length) end = orderSwaps.length;
-          final List<Widget> orderSwapsWidget = orderSwaps
+          if (end > orderSwapsFiltered.length) end = orderSwapsFiltered.length;
+          final List<Widget> orderSwapsWidget = orderSwapsFiltered
               .map((dynamic item) {
                 if (item is Swap) {
                   return BuildItemSwap(context: context, swap: item);
@@ -69,12 +75,12 @@ class _ActiveOrdersState extends State<ActiveOrders> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (widget.showFilters) _buildFilters(orderSwaps),
-                if (orderSwaps.isNotEmpty) ...{
-                  _buildPagination(orderSwaps),
+                if (orderSwapsFiltered.isNotEmpty) ...{
+                  _buildPagination(orderSwapsFiltered),
                   ...orderSwapsWidget,
-                  _buildPagination(orderSwaps),
+                  _buildPagination(orderSwapsFiltered),
                 },
-                if (orderSwaps.isEmpty) ...{
+                if (orderSwapsFiltered.isEmpty) ...{
                   Container(
                     height: MediaQuery.of(context).size.height / 2,
                     child: const Center(
@@ -98,15 +104,44 @@ class _ActiveOrdersState extends State<ActiveOrders> {
         padding: EdgeInsets.fromLTRB(12, 12, 4, 16),
         child: Filters(
           items: orderSwaps,
-          activeFilters: _activeFilters,
+          activeFilters: widget.activeFilters,
           onChange: (ActiveFilters filters) {
-            setState(() {
-              _activeFilters = filters;
-            });
+            widget.onFiltersChange(filters);
           },
         ),
       ),
     );
+  }
+
+  List<dynamic> _filter(List<dynamic> unfiltered) {
+    final List<dynamic> filtered = <dynamic>[];
+    final String sellCoinFilter = widget.activeFilters?.sellCoin;
+    final String receiveCoinFilter = widget.activeFilters?.receiveCoin;
+
+    for (dynamic item in unfiltered) {
+      String sellCoin;
+      String receiveCoin;
+      bool isMatched = true;
+
+      if (item is Order) {
+        sellCoin = item.orderType == OrderType.MAKER ? item.base : item.rel;
+        receiveCoin = item.orderType == OrderType.MAKER ? item.rel : item.base;
+      } else if (item is Swap) {
+        sellCoin = item.isMaker ? item.makerAbbr : item.takerAbbr;
+        receiveCoin = item.isMaker ? item.takerAbbr : item.makerAbbr;
+      }
+
+      if (sellCoinFilter != null && (sellCoinFilter != sellCoin)) {
+        isMatched = false;
+      }
+      if (receiveCoinFilter != null && (receiveCoinFilter != receiveCoin)) {
+        isMatched = false;
+      }
+
+      if (isMatched) filtered.add(item);
+    }
+
+    return filtered;
   }
 
   Widget _buildPagination(List<dynamic> orderSwaps) {
