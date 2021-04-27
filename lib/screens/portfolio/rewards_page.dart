@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class RewardsPage extends StatefulWidget {
@@ -180,12 +183,28 @@ class _RewardsPageState extends State<RewardsPage> {
                           final double price = cexProvider.getUsdPrice('KMD');
 
                           final amountUsd = total * price;
-                          return Text(
-                            cexProvider.convert(amountUsd),
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
-                            ),
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CexMarker(
+                                context,
+                                size: const Size.fromHeight(12),
+                                color: settingsBloc.isLightTheme
+                                    ? cexColorLight
+                                    : cexColor,
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
+                                cexProvider.convert(amountUsd),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2
+                                    .copyWith(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w100,
+                                    ),
+                              ),
+                            ],
                           );
                         }),
                         SizedBox(
@@ -377,13 +396,22 @@ class _RewardsPageState extends State<RewardsPage> {
                     color: const Color.fromARGB(60, 1, 102, 129),
                     padding: const EdgeInsets.only(
                         left: 8, right: 8, top: 12, bottom: 12),
-                    child: Text(
-                      cexProvider.convert(amountUsd),
-                      maxLines: 1,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    child: Row(
+                      children: [
+                        CexMarker(
+                          context,
+                          size: const Size.fromHeight(12),
+                        ),
+                        const SizedBox(width: 2),
+                        Text(
+                          cexProvider.convert(amountUsd),
+                          maxLines: 1,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 }),
