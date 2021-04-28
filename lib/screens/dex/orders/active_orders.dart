@@ -104,9 +104,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           activeFilters: widget.activeFilters,
           onChange: (ActiveFilters filters) {
             setState(() => _currentPage = 1);
-            final List<dynamic> filtered = _filter(orderSwaps);
-            filters.matches =
-                filtered.length == orderSwaps.length ? null : filtered.length;
+            filters.matches = _filter(orderSwaps).length;
             widget.onFiltersChange(filters);
           },
         ),
@@ -118,18 +116,22 @@ class _ActiveOrdersState extends State<ActiveOrders> {
     final List<dynamic> filtered = <dynamic>[];
     final String sellCoinFilter = widget.activeFilters?.sellCoin;
     final String receiveCoinFilter = widget.activeFilters?.receiveCoin;
+    final OrderType typeFilter = widget.activeFilters?.type;
 
     for (dynamic item in unfiltered) {
       String sellCoin;
       String receiveCoin;
+      OrderType type;
       bool isMatched = true;
 
       if (item is Order) {
         sellCoin = item.orderType == OrderType.MAKER ? item.base : item.rel;
         receiveCoin = item.orderType == OrderType.MAKER ? item.rel : item.base;
+        type = item.orderType;
       } else if (item is Swap) {
         sellCoin = item.isMaker ? item.makerAbbr : item.takerAbbr;
         receiveCoin = item.isMaker ? item.takerAbbr : item.makerAbbr;
+        type = item.isMaker ? OrderType.MAKER : OrderType.TAKER;
       }
 
       if (sellCoinFilter != null && (sellCoinFilter != sellCoin)) {
@@ -138,6 +140,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
       if (receiveCoinFilter != null && (receiveCoinFilter != receiveCoin)) {
         isMatched = false;
       }
+      if (typeFilter != null && (typeFilter != type)) isMatched = false;
 
       if (isMatched) filtered.add(item);
     }

@@ -112,14 +112,29 @@ class _FiltersState extends State<Filters> {
             contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
             children: [
               InkWell(
+                onTap: () {
+                  setState(() => _filters.type = null);
+                  widget.onChange(_filters);
+                  dialogBloc.closeDialog(context);
+                },
                 child:
                     Container(padding: EdgeInsets.all(12), child: Text('All')),
               ),
               InkWell(
+                onTap: () {
+                  setState(() => _filters.type = OrderType.MAKER);
+                  widget.onChange(_filters);
+                  dialogBloc.closeDialog(context);
+                },
                 child: Container(
                     padding: EdgeInsets.all(12), child: Text('Maker')),
               ),
               InkWell(
+                onTap: () {
+                  setState(() => _filters.type = OrderType.TAKER);
+                  widget.onChange(_filters);
+                  dialogBloc.closeDialog(context);
+                },
                 child: Container(
                     padding: EdgeInsets.all(12), child: Text('Taker')),
               ),
@@ -324,4 +339,8 @@ class ActiveFilters {
   String sellCoin;
   String receiveCoin;
   OrderType type;
+
+  bool get anyActive {
+    return sellCoin != null || receiveCoin != null || type != null;
+  }
 }

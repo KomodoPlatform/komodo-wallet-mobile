@@ -14,7 +14,7 @@ class FiltersButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = activeFilters.matches != null
+    final Color color = activeFilters.anyActive
         ? Theme.of(context).accentColor
         : Theme.of(context).textTheme.bodyText1.color;
 
@@ -40,7 +40,7 @@ class FiltersButton extends StatelessWidget {
                     color: color,
                   ),
             ),
-            if (activeFilters.matches != null)
+            if (activeFilters.anyActive)
               Text(
                 ' (${activeFilters.matches})',
                 style: Theme.of(context).textTheme.bodyText1.copyWith(
