@@ -28,9 +28,104 @@ class _FiltersState extends State<Filters> {
           _buildCoinFilter(Market.SELL),
           SizedBox(height: 12),
           _buildCoinFilter(Market.RECEIVE),
+          SizedBox(height: 12),
+          _buildTypeFilter(),
         ],
       ),
     );
+  }
+
+  Widget _buildTypeFilter() {
+    final OrderType current = widget.activeFilters.type;
+    final Color color =
+        current == null ? Theme.of(context).textTheme.bodyText1.color : null;
+
+    return Row(children: [
+      Expanded(
+        child: Text(
+          'Type:',
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ),
+      InkWell(
+        onTap: () => _openTypeDialog(),
+        child: Container(
+          width: 100,
+          padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
+          decoration: BoxDecoration(
+              border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).accentColor.withAlpha(150),
+              width: 1,
+            ),
+          )),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  current == null
+                      ? 'All'
+                      : current == OrderType.MAKER
+                          ? 'Maker'
+                          : 'Taker',
+                  style: TextStyle(color: color),
+                ),
+              ),
+              SizedBox(width: 4),
+              Icon(
+                Icons.arrow_drop_down,
+                size: 16,
+                color: color,
+              )
+            ],
+          ),
+        ),
+      ),
+      InkWell(
+        child: Container(
+          padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+          child: Opacity(
+            opacity: current == null ? 0.5 : 1,
+            child: Icon(
+              Icons.clear,
+              size: 16,
+            ),
+          ),
+        ),
+        onTap: current == null
+            ? null
+            : () {
+                setState(() {
+                  _filters.type = null;
+                });
+                widget.onChange(_filters);
+              },
+      )
+    ]);
+  }
+
+  void _openTypeDialog() {
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+            children: [
+              InkWell(
+                child:
+                    Container(padding: EdgeInsets.all(12), child: Text('All')),
+              ),
+              InkWell(
+                child: Container(
+                    padding: EdgeInsets.all(12), child: Text('Maker')),
+              ),
+              InkWell(
+                child: Container(
+                    padding: EdgeInsets.all(12), child: Text('Taker')),
+              ),
+            ],
+          );
+        });
   }
 
   Widget _buildCoinFilter(Market market) {
@@ -222,9 +317,11 @@ class ActiveFilters {
     this.matches,
     this.sellCoin,
     this.receiveCoin,
+    this.type,
   });
 
   int matches;
   String sellCoin;
   String receiveCoin;
+  OrderType type;
 }
