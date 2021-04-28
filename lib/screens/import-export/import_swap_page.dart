@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
+import 'package:komodo_dex/model/import_swaps.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/services/lock_service.dart';
@@ -100,14 +102,23 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
 
     listSwaps.add(_swap);
 
-    final r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
+    final dynamic r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
 
-    if (r.result.skipped.isNotEmpty) {
-      _showError("Couldn't import: " + r.result.skipped[_swap.uuid]);
+    if (r is ErrorString) {
+      _showError("Couldn't import: " + r.error);
       return false;
     }
 
-    return true;
+    if (r is ImportSwaps) {
+      if (r.result.skipped.isNotEmpty) {
+        _showError("Couldn't import: " + r.result.skipped[_swap.uuid]);
+        return false;
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   Widget _buildSwap() {
@@ -122,7 +133,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
           ),
           SizedBox(height: 2),
           Text(
-            _swap.type == 'Maker' ? 'Maker Order' : 'Taker order',
+            'Type: ' + _swap.type,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontSize: 14,
                   color: Theme.of(context)
@@ -267,7 +278,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       return jsonDecode(str);
     } catch (e) {
       Log('import_swap_page]', 'Failed to get swap data: $e');
-      _showError(AppLocalizations.of(context).importDecryptError);
+      _showError('Error decoding json file');
       return null;
     }
   }
