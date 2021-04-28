@@ -9,8 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/export_import_list_item.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
+import 'package:komodo_dex/model/import_swaps.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/screens/import-export/export_import_list.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
@@ -115,10 +117,17 @@ class _ImportPageState extends State<ImportPage> {
       listSwaps.add(swap);
     });
 
-    final r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
+    final dynamic r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
 
-    if (r.result.skipped.isNotEmpty) {
-      _showError('Some items have been skipped');
+    if (r is ErrorString) {
+      _showError("Couldn't import: " + r.error);
+      return false;
+    }
+
+    if (r is ImportSwaps) {
+      if (r.result.skipped.isNotEmpty) {
+        _showError('Some items have been skipped');
+      }
     }
   }
 
@@ -297,7 +306,7 @@ class _ImportPageState extends State<ImportPage> {
                   ),
                   Expanded(child: SizedBox()),
                   Text(
-                    swap.type == 'Maker' ? 'Maker Order' : 'Taker order',
+                    swap.type + ' Order',
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           fontSize: 14,
                           color: Theme.of(context)
@@ -504,16 +513,16 @@ class _ImportPageState extends State<ImportPage> {
       return null;
     }
 
-    final String length32Key = md5.convert(utf8.encode(pass)).toString();
-    final key = encrypt.Key.fromUtf8(length32Key);
-    final iv = encrypt.IV.fromLength(16);
-
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-    final String str = await file.readAsString();
-
-    final encrypted = encrypt.Encrypted.fromBase64(str);
-
     try {
+      final String length32Key = md5.convert(utf8.encode(pass)).toString();
+      final key = encrypt.Key.fromUtf8(length32Key);
+      final iv = encrypt.IV.fromLength(16);
+
+      final encrypter = encrypt.Encrypter(encrypt.AES(key));
+      final String str = await file.readAsString();
+
+      final encrypted = encrypt.Encrypted.fromBase64(str);
+
       final decrypted = encrypter.decrypt(encrypted, iv: iv);
       return jsonDecode(decrypted);
     } catch (e) {
