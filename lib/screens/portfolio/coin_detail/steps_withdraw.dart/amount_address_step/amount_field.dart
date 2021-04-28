@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
-import 'package:komodo_dex/widgets/cex_data_marker.dart';
-import 'package:komodo_dex/widgets/theme_data.dart';
-import 'package:provider/provider.dart';
+import 'package:komodo_dex/widgets/cex_fiat_preview.dart';
 
 class AmountField extends StatefulWidget {
   const AmountField(
@@ -33,38 +29,28 @@ class AmountField extends StatefulWidget {
 }
 
 class _AmountFieldState extends State<AmountField> {
-  double amountUsd = 0.0;
+  String amountPreview = '';
 
   @override
   void initState() {
     super.initState();
-    widget.controller.addListener(_calculateFiat);
+    widget.controller.addListener(_amountPreviewListener);
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(_calculateFiat);
+    widget.controller.removeListener(_amountPreviewListener);
     super.dispose();
   }
 
-  void _calculateFiat() {
-    final amount = widget.controller.text;
-
-    final cexProvider = Provider.of<CexProvider>(context, listen: false);
-    final double price = cexProvider.getUsdPrice(widget.coinAbbr);
-
-    final amountParsed = double.tryParse(amount) ?? 0.0;
-
-    final r = amountParsed * price;
-
+  void _amountPreviewListener() {
     setState(() {
-      amountUsd = r;
+      amountPreview = widget.controller.text;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final cexProvider = Provider.of<CexProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -169,25 +155,10 @@ class _AmountFieldState extends State<AmountField> {
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            children: [
-              CexMarker(context, size: Size.fromHeight(12)),
-              SizedBox(width: 2),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  cexProvider.convert(amountUsd),
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: settingsBloc.isLightTheme
-                          ? cexColorLight.withAlpha(150)
-                          : cexColor.withAlpha(150)),
-                ),
-              ),
-            ],
-          )
+          CexFiatPreview(
+            amount: amountPreview,
+            coinAbbr: widget.coinAbbr,
+          ),
         ],
       ),
     );
