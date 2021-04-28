@@ -39,6 +39,7 @@ class _ImportPageState extends State<ImportPage> {
   bool _done = false;
   Backup _all;
   Backup _selected;
+  int _numSwapsImported = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +79,7 @@ class _ImportPageState extends State<ImportPage> {
         AppLocalizations.of(context).exportNotesTitle: _selected.notes.length,
         AppLocalizations.of(context).exportContactsTitle:
             _selected.contacts.length,
+        'Swaps': _numSwapsImported,
       },
     );
   }
@@ -90,8 +92,11 @@ class _ImportPageState extends State<ImportPage> {
           if (_validate()) {
             await _importNotes();
             await _importContacts();
-            await _importSwaps();
-            setState(() => _done = true);
+            final numSwaps = await _importSwaps();
+            setState(() {
+              _numSwapsImported = numSwaps;
+              _done = true;
+            });
           }
         },
         text: AppLocalizations.of(context).importButton,
@@ -110,7 +115,7 @@ class _ImportPageState extends State<ImportPage> {
     return true;
   }
 
-  Future<void> _importSwaps() async {
+  Future<int> _importSwaps() async {
     final List<MmSwap> listSwaps = [];
 
     _selected.swaps?.forEach((uuid, swap) {
@@ -121,14 +126,17 @@ class _ImportPageState extends State<ImportPage> {
 
     if (r is ErrorString) {
       _showError("Couldn't import: " + r.error);
-      return false;
+      return 0;
     }
 
     if (r is ImportSwaps) {
       if (r.result.skipped.isNotEmpty) {
         _showError('Some items have been skipped');
       }
+      return r.result.imported.length;
     }
+
+    return 0;
   }
 
   Future<void> _importContacts() async {

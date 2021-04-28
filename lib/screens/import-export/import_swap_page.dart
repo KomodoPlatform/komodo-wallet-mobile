@@ -133,7 +133,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
           ),
           SizedBox(height: 2),
           Text(
-            'Type: ' + _swap.type,
+            _swap.type + ' Order',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontSize: 14,
                   color: Theme.of(context)
