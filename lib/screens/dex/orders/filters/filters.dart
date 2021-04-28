@@ -219,10 +219,12 @@ class _FiltersState extends State<Filters> {
 
 class ActiveFilters {
   ActiveFilters({
+    this.matches,
     this.sellCoin,
     this.receiveCoin,
   });
 
+  int matches;
   String sellCoin;
   String receiveCoin;
 }

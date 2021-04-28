@@ -14,18 +14,24 @@ class FiltersButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).textTheme.bodyText1.color;
+    final Color color = activeFilters.matches != null
+        ? Theme.of(context).accentColor
+        : Theme.of(context).textTheme.bodyText1.color;
 
     return InkWell(
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Icon(
-              Icons.filter_alt_outlined,
-              size: 14,
-              color: color,
+            Padding(
+              padding: EdgeInsets.only(bottom: 1.0),
+              child: Icon(
+                Icons.filter_alt_outlined,
+                size: 14,
+                color: color,
+              ),
             ),
             SizedBox(width: 2),
             Text(
@@ -34,6 +40,15 @@ class FiltersButton extends StatelessWidget {
                     color: color,
                   ),
             ),
+            if (activeFilters.matches != null)
+              Text(
+                ' (${activeFilters.matches})',
+                style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      color: color,
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                    ),
+              ),
             Icon(isActive ? Icons.arrow_drop_up : Icons.arrow_drop_down,
                 size: 14, color: color),
           ],

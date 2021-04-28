@@ -104,6 +104,9 @@ class _ActiveOrdersState extends State<ActiveOrders> {
           activeFilters: widget.activeFilters,
           onChange: (ActiveFilters filters) {
             setState(() => _currentPage = 1);
+            final List<dynamic> filtered = _filter(orderSwaps);
+            filters.matches =
+                filtered.length == orderSwaps.length ? null : filtered.length;
             widget.onFiltersChange(filters);
           },
         ),
