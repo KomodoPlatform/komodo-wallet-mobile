@@ -20,7 +20,7 @@ class _FiltersState extends State<Filters> {
 
   @override
   Widget build(BuildContext context) {
-    _filters ??= widget.activeFilters ?? ActiveFilters();
+    _filters ??= widget.activeFilters;
 
     return Container(
       child: Column(

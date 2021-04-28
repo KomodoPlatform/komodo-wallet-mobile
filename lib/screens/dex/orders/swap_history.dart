@@ -44,42 +44,42 @@ class _SwapHistoryState extends State<SwapHistory> {
 
           final List<Swap> swapsFiltered = _filter(swaps);
 
-          if (snapshot.data != null &&
-              swapsFiltered.isEmpty &&
-              snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.connectionState != ConnectionState.active) {
             return Center(
-              child: Text(
-                AppLocalizations.of(context).noSwaps,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
+              child: CircularProgressIndicator(),
             );
-          } else if (snapshot.data != null && swapsFiltered.isNotEmpty) {
-            final int start = (_currentPage - 1) * _perPage;
-            int end = start + _perPage;
-            if (end > swapsFiltered.length) end = swapsFiltered.length;
-            final List<Widget> swapsWidget = swapsFiltered
-                .map((Swap swap) => BuildItemSwap(context: context, swap: swap))
-                .toList()
-                .sublist(start, end);
+          }
 
-            return SingleChildScrollView(
-              controller: _scrollCtrl,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (widget.showFilters) _buildFilters(swaps),
+          final int start = (_currentPage - 1) * _perPage;
+          int end = start + _perPage;
+          if (end > swapsFiltered.length) end = swapsFiltered.length;
+          final List<Widget> swapsWidget = swapsFiltered
+              .map((Swap swap) => BuildItemSwap(context: context, swap: swap))
+              .toList()
+              .sublist(start, end);
+
+          return SingleChildScrollView(
+            controller: _scrollCtrl,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (widget.showFilters) _buildFilters(swaps),
+                if (swapsFiltered.isEmpty) ...{
+                  Container(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: Center(
+                        child: Text(AppLocalizations.of(context).noSwaps)),
+                  )
+                },
+                if (swapsFiltered.isNotEmpty) ...{
                   _buildPagination(swapsFiltered),
                   ...swapsWidget,
                   _buildPagination(swapsFiltered),
                   SizedBox(height: 10),
-                ],
-              ),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+                },
+              ],
+            ),
+          );
         });
   }
 
@@ -87,9 +87,6 @@ class _SwapHistoryState extends State<SwapHistory> {
     return Padding(
       padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
       child: Container(
-        decoration: BoxDecoration(
-            border: Border(
-                top: BorderSide(color: Theme.of(context).highlightColor))),
         padding: EdgeInsets.fromLTRB(12, 12, 4, 16),
         child: Filters(
           items: swaps,

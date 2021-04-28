@@ -17,8 +17,14 @@ class OrdersPage extends StatefulWidget {
 
 class _OrdersPageState extends State<OrdersPage> {
   OrdersTab _currentTab = OrdersTab.active;
-  bool _showFilters = false;
-  ActiveFilters _activeFilters = ActiveFilters();
+  final Map<String, bool> _showFilters = {
+    'active': false,
+    'history': false,
+  };
+  final Map<String, ActiveFilters> _activeFilters = {
+    'active': ActiveFilters(),
+    'history': ActiveFilters(),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +36,19 @@ class _OrdersPageState extends State<OrdersPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(width: 8),
-            FiltersButton(
-              activeFilters: _activeFilters,
-              onPressed: () => setState(() => _showFilters = !_showFilters),
-              isActive: _showFilters,
-            ),
+            _currentTab == OrdersTab.active
+                ? FiltersButton(
+                    activeFilters: _activeFilters['active'],
+                    onPressed: () => setState(
+                        () => _showFilters['active'] = !_showFilters['active']),
+                    isActive: _showFilters['active'],
+                  )
+                : FiltersButton(
+                    activeFilters: _activeFilters['history'],
+                    onPressed: () => setState(() =>
+                        _showFilters['history'] = !_showFilters['history']),
+                    isActive: _showFilters['history'],
+                  ),
             Expanded(child: SizedBox()),
             FlatButton(
                 onPressed: () {
@@ -80,20 +94,20 @@ class _OrdersPageState extends State<OrdersPage> {
         Flexible(
             child: _currentTab == OrdersTab.active
                 ? ActiveOrders(
-                    showFilters: _showFilters,
-                    activeFilters: _activeFilters,
+                    showFilters: _showFilters['active'],
+                    activeFilters: _activeFilters['active'],
                     onFiltersChange: (filters) {
                       setState(() {
-                        _activeFilters = filters;
+                        _activeFilters['active'] = filters;
                       });
                     },
                   )
                 : SwapHistory(
-                    showFilters: _showFilters,
-                    activeFilters: _activeFilters,
+                    showFilters: _showFilters['history'],
+                    activeFilters: _activeFilters['history'],
                     onFiltersChange: (filters) {
                       setState(() {
-                        _activeFilters = filters;
+                        _activeFilters['history'] = filters;
                       });
                     },
                   )),

@@ -98,9 +98,6 @@ class _ActiveOrdersState extends State<ActiveOrders> {
     return Padding(
       padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
       child: Container(
-        decoration: BoxDecoration(
-            border: Border(
-                top: BorderSide(color: Theme.of(context).highlightColor))),
         padding: EdgeInsets.fromLTRB(12, 12, 4, 16),
         child: Filters(
           items: orderSwaps,
