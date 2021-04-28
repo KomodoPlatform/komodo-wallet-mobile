@@ -91,10 +91,10 @@ class _SwapHistoryState extends State<SwapHistory> {
         padding: EdgeInsets.fromLTRB(12, 12, 4, 16),
         child: Filters(
           items: swaps,
+          filter: _filter,
           activeFilters: widget.activeFilters,
           onChange: (ActiveFilters filters) {
             setState(() => _currentPage = 1);
-            filters.matches = _filter(swaps).length;
             widget.onFiltersChange(filters);
           },
         ),

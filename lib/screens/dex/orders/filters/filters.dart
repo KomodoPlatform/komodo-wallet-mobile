@@ -5,10 +5,16 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
 
 class Filters extends StatefulWidget {
-  const Filters({this.items, this.activeFilters, this.onChange});
+  const Filters({
+    this.items,
+    this.activeFilters,
+    this.onChange,
+    this.filter,
+  });
 
   final List<dynamic> items;
   final Function(ActiveFilters) onChange;
+  final Function filter;
   final ActiveFilters activeFilters;
 
   @override
@@ -98,6 +104,7 @@ class _FiltersState extends State<Filters> {
                 setState(() {
                   _filters.type = null;
                 });
+                _filters.matches = widget.filter(widget.items).length;
                 widget.onChange(_filters);
               },
       )
@@ -105,6 +112,13 @@ class _FiltersState extends State<Filters> {
   }
 
   void _openTypeDialog() {
+    final OrderType current = _filters.type;
+    _filters.type = OrderType.MAKER;
+    final int makerPredictor = widget.filter(widget.items).length;
+    _filters.type = OrderType.TAKER;
+    final int takerPredictor = widget.filter(widget.items).length;
+    _filters.type = current;
+
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (context) {
@@ -114,6 +128,7 @@ class _FiltersState extends State<Filters> {
               InkWell(
                 onTap: () {
                   setState(() => _filters.type = null);
+                  _filters.matches = widget.filter(widget.items).length;
                   widget.onChange(_filters);
                   dialogBloc.closeDialog(context);
                 },
@@ -123,20 +138,40 @@ class _FiltersState extends State<Filters> {
               InkWell(
                 onTap: () {
                   setState(() => _filters.type = OrderType.MAKER);
+                  _filters.matches = widget.filter(widget.items).length;
                   widget.onChange(_filters);
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
-                    padding: EdgeInsets.all(12), child: Text('Maker')),
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Text('Maker'),
+                        Text(
+                          ' ($makerPredictor)',
+                          style: Theme.of(context).textTheme.caption,
+                        )
+                      ],
+                    )),
               ),
               InkWell(
                 onTap: () {
                   setState(() => _filters.type = OrderType.TAKER);
+                  _filters.matches = widget.filter(widget.items).length;
                   widget.onChange(_filters);
                   dialogBloc.closeDialog(context);
                 },
                 child: Container(
-                    padding: EdgeInsets.all(12), child: Text('Taker')),
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Text('Taker'),
+                        Text(
+                          ' ($takerPredictor)',
+                          style: Theme.of(context).textTheme.caption,
+                        )
+                      ],
+                    )),
               ),
             ],
           );
@@ -176,6 +211,7 @@ class _FiltersState extends State<Filters> {
                         ? _filters.sellCoin = null
                         : _filters.receiveCoin = null;
                   });
+                  _filters.matches = widget.filter(widget.items).length;
                   widget.onChange(_filters);
                 },
         )
@@ -231,7 +267,18 @@ class _FiltersState extends State<Filters> {
 
   void _openCoinsDialog(Market market) {
     final List<String> coins = _getCoins(market);
+
     final List<Widget> items = coins.map((String coin) {
+      final String current =
+          market == Market.SELL ? _filters.sellCoin : _filters.receiveCoin;
+      market == Market.SELL
+          ? _filters.sellCoin = coin
+          : _filters.receiveCoin = coin;
+      final int predictor = widget.filter(widget.items).length;
+      market == Market.SELL
+          ? _filters.sellCoin = current
+          : _filters.receiveCoin = current;
+
       return InkWell(
         onTap: () {
           setState(() {
@@ -239,6 +286,7 @@ class _FiltersState extends State<Filters> {
                 ? _filters.sellCoin = coin
                 : _filters.receiveCoin = coin;
           });
+          _filters.matches = widget.filter(widget.items).length;
           widget.onChange(_filters);
           dialogBloc.closeDialog(context);
         },
@@ -252,6 +300,11 @@ class _FiltersState extends State<Filters> {
               ),
               SizedBox(width: 4),
               Text(coin),
+              SizedBox(width: 4),
+              Text(
+                ' ($predictor)',
+                style: Theme.of(context).textTheme.caption,
+              ),
             ],
           ),
         ),
@@ -267,6 +320,7 @@ class _FiltersState extends State<Filters> {
                   ? _filters.sellCoin = null
                   : _filters.receiveCoin = null;
             });
+            _filters.matches = widget.filter(widget.items).length;
             widget.onChange(_filters);
             dialogBloc.closeDialog(context);
           },
@@ -340,7 +394,5 @@ class ActiveFilters {
   String receiveCoin;
   OrderType type;
 
-  bool get anyActive {
-    return sellCoin != null || receiveCoin != null || type != null;
-  }
+  bool get anyActive => sellCoin != null || receiveCoin != null || type != null;
 }

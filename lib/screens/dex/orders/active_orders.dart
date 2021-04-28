@@ -101,10 +101,10 @@ class _ActiveOrdersState extends State<ActiveOrders> {
         padding: EdgeInsets.fromLTRB(12, 12, 4, 16),
         child: Filters(
           items: orderSwaps,
+          filter: _filter,
           activeFilters: widget.activeFilters,
           onChange: (ActiveFilters filters) {
             setState(() => _currentPage = 1);
-            filters.matches = _filter(orderSwaps).length;
             widget.onFiltersChange(filters);
           },
         ),
