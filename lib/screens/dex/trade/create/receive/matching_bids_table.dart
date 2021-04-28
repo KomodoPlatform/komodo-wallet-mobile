@@ -49,10 +49,10 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
 
     return Table(
       columnWidths: const {
-        0: IntrinsicColumnWidth(),
+        0: IntrinsicColumnWidth(flex: 1),
         1: IntrinsicColumnWidth(),
         2: IntrinsicColumnWidth(),
-        3: IntrinsicColumnWidth(),
+        3: IntrinsicColumnWidth(flex: 1),
       },
       children: [
         TableRow(children: [
