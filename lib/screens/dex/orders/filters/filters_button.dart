@@ -16,31 +16,27 @@ class FiltersButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = Theme.of(context).textTheme.bodyText1.color;
 
-    return Padding(
-      padding: EdgeInsets.only(top: 22),
-      child: InkWell(
-        onTap: onPressed,
-        child: Container(
-          padding: EdgeInsets.fromLTRB(0, 8, 8, 2),
-          child: Row(
-            children: [
-              Icon(
-                Icons.filter_alt_outlined,
-                size: 14,
-                color: color,
-              ),
-              SizedBox(width: 2),
-              Text(
-                'Filter',
-                style: Theme.of(context).textTheme.bodyText1.copyWith(
-                      fontWeight: FontWeight.normal,
-                      color: color,
-                    ),
-              ),
-              Icon(isActive ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                  size: 14, color: color),
-            ],
-          ),
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
+        child: Row(
+          children: [
+            Icon(
+              Icons.filter_alt_outlined,
+              size: 14,
+              color: color,
+            ),
+            SizedBox(width: 2),
+            Text(
+              'Filter',
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    color: color,
+                  ),
+            ),
+            Icon(isActive ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                size: 14, color: color),
+          ],
         ),
       ),
     );

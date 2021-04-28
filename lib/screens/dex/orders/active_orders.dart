@@ -96,13 +96,14 @@ class _ActiveOrdersState extends State<ActiveOrders> {
 
   Widget _buildFilters(List<dynamic> orderSwaps) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+      padding: EdgeInsets.fromLTRB(12, 0, 8, 0),
       child: Container(
         padding: EdgeInsets.fromLTRB(12, 12, 4, 16),
         child: Filters(
           items: orderSwaps,
           activeFilters: widget.activeFilters,
           onChange: (ActiveFilters filters) {
+            setState(() => _currentPage = 1);
             widget.onFiltersChange(filters);
           },
         ),
