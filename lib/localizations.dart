@@ -412,6 +412,10 @@ class AppLocalizations {
           name: 'notEnoughtBalanceForFee');
   String get noInternet =>
       Intl.message('No Internet Connection', name: 'noInternet');
+  String get internetRestored =>
+      Intl.message('Internet Connection Restored', name: 'internetRestored');
+  String get internetRefreshButton =>
+      Intl.message('Refresh', name: 'internetRefreshButton');
   String get legalTitle => Intl.message('Legal', name: 'legalTitle');
   String get disclaimerAndTos =>
       Intl.message('Disclaimer & ToS', name: 'disclaimerAndTos');

@@ -377,7 +377,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Text(
-                              'Internet Connection Restored',
+                              AppLocalizations.of(context).internetRestored,
                               style: TextStyle(
                                 color: Colors.white,
                               ),
@@ -416,7 +416,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                           NetworkStatus.Checking)
                                         SizedBox(width: 8),
                                       Text(
-                                        'Refresh',
+                                        AppLocalizations.of(context)
+                                            .internetRefreshButton,
                                         style: TextStyle(
                                           color: Colors.white,
                                         ),
