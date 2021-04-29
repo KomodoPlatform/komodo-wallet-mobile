@@ -79,7 +79,7 @@ class _ImportPageState extends State<ImportPage> {
         AppLocalizations.of(context).exportNotesTitle: _selected.notes.length,
         AppLocalizations.of(context).exportContactsTitle:
             _selected.contacts.length,
-        'Swaps': _numSwapsImported,
+        AppLocalizations.of(context).exportSwapsTitle: _numSwapsImported,
       },
     );
   }
@@ -125,13 +125,13 @@ class _ImportPageState extends State<ImportPage> {
     final dynamic r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
 
     if (r is ErrorString) {
-      _showError("Couldn't import: " + r.error);
+      _showError(AppLocalizations.of(context).couldntImportError + r.error);
       return 0;
     }
 
     if (r is ImportSwaps) {
       if (r.result.skipped.isNotEmpty) {
-        _showError('Some items have been skipped');
+        _showError(AppLocalizations.of(context).importSomeItemsSkippedWarning);
       }
       return r.result.imported.length;
     }
@@ -314,7 +314,12 @@ class _ImportPageState extends State<ImportPage> {
                   ),
                   Expanded(child: SizedBox()),
                   Text(
-                    swap.type + ' Order',
+                    (swap.type == 'Maker' || swap.type == 'Taker')
+                        ? swap.type == 'Maker'
+                            ? AppLocalizations.of(context).makerOrder
+                            : AppLocalizations.of(context).takerOrder
+                        : swap.type +
+                            AppLocalizations.of(context).orderTypePartial,
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           fontSize: 14,
                           color: Theme.of(context)
@@ -362,7 +367,7 @@ class _ImportPageState extends State<ImportPage> {
 
     return ExportImportList(
       items: items,
-      title: 'Swaps',
+      title: AppLocalizations.of(context).exportSwapsTitle,
     );
   }
 

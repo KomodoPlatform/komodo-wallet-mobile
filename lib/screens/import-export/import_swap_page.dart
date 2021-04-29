@@ -34,7 +34,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(
-          'Import Single Swap',
+          AppLocalizations.of(context).importSingleSwapTitle,
         ),
       ),
       body: SingleChildScrollView(
@@ -59,13 +59,16 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
   Widget _buildResultImport() {
     if (!_success) {
       return Container(
-          padding: EdgeInsets.fromLTRB(48, 24, 48, 24),
-          child: Center(child: Text("Couldn't import swap")));
+        padding: EdgeInsets.fromLTRB(48, 24, 48, 24),
+        child: Center(
+          child: Text(AppLocalizations.of(context).importSwapFailed),
+        ),
+      );
     }
     return ExportImportSuccess(
       title: AppLocalizations.of(context).importSuccessTitle,
-      items: const {
-        'Swaps:': 1,
+      items: {
+        AppLocalizations.of(context).exportSwapsTitle: 1,
       },
     );
   }
@@ -105,13 +108,14 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
     final dynamic r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
 
     if (r is ErrorString) {
-      _showError("Couldn't import: " + r.error);
+      _showError(AppLocalizations.of(context).couldntImportError + r.error);
       return false;
     }
 
     if (r is ImportSwaps) {
       if (r.result.skipped.isNotEmpty) {
-        _showError("Couldn't import: " + r.result.skipped[_swap.uuid]);
+        _showError(AppLocalizations.of(context).couldntImportError +
+            r.result.skipped[_swap.uuid]);
         return false;
       }
 
@@ -133,7 +137,11 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
           ),
           SizedBox(height: 2),
           Text(
-            _swap.type + ' Order',
+            (_swap.type == 'Maker' || _swap.type == 'Taker')
+                ? _swap.type == 'Maker'
+                    ? AppLocalizations.of(context).makerOrder
+                    : AppLocalizations.of(context).takerOrder
+                : _swap.type + AppLocalizations.of(context).orderTypePartial,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontSize: 14,
                   color: Theme.of(context)
@@ -157,7 +165,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
               myAmount =
                   _swap.type == 'Maker' ? _swap.makerAmount : _swap.takerAmount;
 
-              // Same as previous, just swaaped around
+              // Same as previous, just swapped around
               otherCoin =
                   _swap.type == 'Maker' ? _swap.takerCoin : _swap.makerCoin;
               otherAmount =
@@ -218,7 +226,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                     .color
                     .withOpacity(0.7),
               ))
-          : Text(AppLocalizations.of(context).importLoadDesc,
+          : Text(AppLocalizations.of(context).importLoadSwapDesc,
               style: TextStyle(
                 height: 1.3,
                 color: Theme.of(context)
@@ -278,7 +286,7 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
       return jsonDecode(str);
     } catch (e) {
       Log('import_swap_page]', 'Failed to get swap data: $e');
-      _showError('Error decoding json file');
+      _showError(AppLocalizations.of(context).importSwapJsonDecodingError);
       return null;
     }
   }
