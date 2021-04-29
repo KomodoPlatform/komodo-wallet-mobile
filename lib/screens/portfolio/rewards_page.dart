@@ -294,7 +294,7 @@ class _RewardsPageState extends State<RewardsPage> {
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 8),
                   child: Text(
-                    'Fiat',
+                    AppLocalizations.of(context).rewardsTableFiat,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
