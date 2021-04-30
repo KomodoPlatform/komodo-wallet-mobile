@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
@@ -35,10 +36,107 @@ class _FiltersState extends State<Filters> {
           SizedBox(height: 12),
           _buildCoinFilter(Market.RECEIVE),
           SizedBox(height: 12),
+          _buildDateFilter(DateFilterType.START),
+          SizedBox(height: 12),
+          _buildDateFilter(DateFilterType.END),
+          SizedBox(height: 12),
           _buildTypeFilter(),
         ],
       ),
     );
+  }
+
+  Widget _buildDateFilter(DateFilterType dateType) {
+    final DateTime current =
+        dateType == DateFilterType.START ? _filters.start : _filters.end;
+    final Color color =
+        current == null ? Theme.of(context).textTheme.bodyText1.color : null;
+
+    return Row(children: [
+      Expanded(
+        child: Text(
+          '${dateType == DateFilterType.START ? 'From' : 'To'} date:',
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ),
+      InkWell(
+        onTap: () => _openDateDialog(dateType),
+        child: Container(
+          width: 100,
+          padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
+          decoration: BoxDecoration(
+              border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).accentColor.withAlpha(150),
+              width: 1,
+            ),
+          )),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  current == null ? '-' : DateFormat.yMd().format(current),
+                  style: TextStyle(color: color),
+                ),
+              ),
+              SizedBox(width: 4),
+              Icon(
+                Icons.arrow_drop_down,
+                size: 16,
+                color: color,
+              )
+            ],
+          ),
+        ),
+      ),
+      InkWell(
+        child: Container(
+          padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+          child: Opacity(
+            opacity: current == null ? 0.5 : 1,
+            child: Icon(
+              Icons.clear,
+              size: 16,
+            ),
+          ),
+        ),
+        onTap: current == null
+            ? null
+            : () {
+                setState(() {
+                  dateType == DateFilterType.START
+                      ? _filters.start = null
+                      : _filters.end = null;
+                });
+                _filters.matches = widget.filter(widget.items).length;
+                widget.onChange(_filters);
+              },
+      )
+    ]);
+  }
+
+  Future<void> _openDateDialog(DateFilterType dateType) async {
+    final bool typeIsStart = dateType == DateFilterType.START;
+
+    final DateTime first = DateTime.parse('20100101');
+    final DateTime today = DateTime.now();
+    final date = await showDatePicker(
+        context: context,
+        firstDate: typeIsStart ? first : (_filters.start ?? first),
+        lastDate: typeIsStart ? (_filters.end ?? today) : today,
+        initialDate: (typeIsStart ? _filters.start : _filters.end) ??
+            (_filters.end ?? today));
+
+    if (date is DateTime) {
+      setState(() {
+        dateType == DateFilterType.START
+            ? _filters.start = date
+            : _filters.end =
+                date.add(Duration(days: 1) - Duration(milliseconds: 1));
+      });
+      _filters.matches = widget.filter(widget.items).length;
+      widget.onChange(_filters);
+    }
   }
 
   Widget _buildTypeFilter() {
@@ -386,13 +484,24 @@ class ActiveFilters {
     this.matches,
     this.sellCoin,
     this.receiveCoin,
+    this.start,
+    this.end,
     this.type,
   });
 
   int matches;
   String sellCoin;
   String receiveCoin;
+  DateTime start;
+  DateTime end;
   OrderType type;
 
-  bool get anyActive => sellCoin != null || receiveCoin != null || type != null;
+  bool get anyActive =>
+      sellCoin != null ||
+      receiveCoin != null ||
+      type != null ||
+      start != null ||
+      end != null;
 }
+
+enum DateFilterType { START, END }

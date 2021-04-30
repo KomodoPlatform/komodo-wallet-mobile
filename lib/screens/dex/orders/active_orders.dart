@@ -98,7 +98,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
     return Padding(
       padding: EdgeInsets.fromLTRB(12, 0, 8, 0),
       child: Container(
-        padding: EdgeInsets.fromLTRB(12, 12, 4, 16),
+        padding: EdgeInsets.fromLTRB(12, 12, 4, 24),
         child: Filters(
           items: orderSwaps,
           filter: _filter,
@@ -117,21 +117,27 @@ class _ActiveOrdersState extends State<ActiveOrders> {
     final String sellCoinFilter = widget.activeFilters?.sellCoin;
     final String receiveCoinFilter = widget.activeFilters?.receiveCoin;
     final OrderType typeFilter = widget.activeFilters?.type;
+    final DateTime startFilter = widget.activeFilters?.start;
+    final DateTime endFilter = widget.activeFilters?.end;
 
     for (dynamic item in unfiltered) {
       String sellCoin;
       String receiveCoin;
       OrderType type;
+      DateTime date;
       bool isMatched = true;
 
       if (item is Order) {
         sellCoin = item.orderType == OrderType.MAKER ? item.base : item.rel;
         receiveCoin = item.orderType == OrderType.MAKER ? item.rel : item.base;
         type = item.orderType;
+        date = DateTime.fromMillisecondsSinceEpoch(item.createdAt * 1000);
       } else if (item is Swap) {
         sellCoin = item.isMaker ? item.makerAbbr : item.takerAbbr;
         receiveCoin = item.isMaker ? item.takerAbbr : item.makerAbbr;
         type = item.isMaker ? OrderType.MAKER : OrderType.TAKER;
+        date = DateTime.fromMillisecondsSinceEpoch(
+            item.started?.timestamp ?? DateTime.now().millisecondsSinceEpoch);
       }
 
       if (sellCoinFilter != null && (sellCoinFilter != sellCoin)) {
@@ -141,6 +147,14 @@ class _ActiveOrdersState extends State<ActiveOrders> {
         isMatched = false;
       }
       if (typeFilter != null && (typeFilter != type)) isMatched = false;
+      if (startFilter != null &&
+          startFilter.millisecondsSinceEpoch > date.millisecondsSinceEpoch) {
+        isMatched = false;
+      }
+      if (endFilter != null &&
+          endFilter.millisecondsSinceEpoch < date.millisecondsSinceEpoch) {
+        isMatched = false;
+      }
 
       if (isMatched) filtered.add(item);
     }

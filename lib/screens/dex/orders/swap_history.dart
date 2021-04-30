@@ -88,7 +88,7 @@ class _SwapHistoryState extends State<SwapHistory> {
     return Padding(
       padding: EdgeInsets.fromLTRB(12, 0, 8, 0),
       child: Container(
-        padding: EdgeInsets.fromLTRB(12, 12, 4, 16),
+        padding: EdgeInsets.fromLTRB(12, 12, 4, 24),
         child: Filters(
           items: swaps,
           filter: _filter,
@@ -107,6 +107,8 @@ class _SwapHistoryState extends State<SwapHistory> {
     final String sellCoinFilter = widget.activeFilters?.sellCoin;
     final String receiveCoinFilter = widget.activeFilters?.receiveCoin;
     final OrderType typeFilter = widget.activeFilters?.type;
+    final DateTime startFilter = widget.activeFilters?.start;
+    final DateTime endFilter = widget.activeFilters?.end;
 
     for (Swap item in unfiltered) {
       bool isMatched = true;
@@ -114,6 +116,8 @@ class _SwapHistoryState extends State<SwapHistory> {
       final String sellCoin = item.isMaker ? item.makerAbbr : item.takerAbbr;
       final String receiveCoin = item.isMaker ? item.takerAbbr : item.makerAbbr;
       final OrderType type = item.isMaker ? OrderType.MAKER : OrderType.TAKER;
+      final DateTime date = DateTime.fromMillisecondsSinceEpoch(
+          item.started?.timestamp ?? DateTime.now().millisecondsSinceEpoch);
 
       if (sellCoinFilter != null && (sellCoinFilter != sellCoin)) {
         isMatched = false;
@@ -122,6 +126,14 @@ class _SwapHistoryState extends State<SwapHistory> {
         isMatched = false;
       }
       if (typeFilter != null && (typeFilter != type)) isMatched = false;
+      if (startFilter != null &&
+          startFilter.millisecondsSinceEpoch > date.millisecondsSinceEpoch) {
+        isMatched = false;
+      }
+      if (endFilter != null &&
+          endFilter.millisecondsSinceEpoch < date.millisecondsSinceEpoch) {
+        isMatched = false;
+      }
 
       if (isMatched) filtered.add(item);
     }
