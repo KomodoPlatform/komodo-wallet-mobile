@@ -21,6 +21,13 @@ class MainBloc implements BlocBase {
   Sink<bool> get _inIsNetworkOffline => _isNetworkOffline.sink;
   Stream<bool> get outIsNetworkOffline => _isNetworkOffline.stream;
 
+  NetworkStatus networkStatus = NetworkStatus.Online;
+
+  final StreamController<NetworkStatus> _networkStatus =
+      StreamController<NetworkStatus>.broadcast();
+  Sink<NetworkStatus> get _inNetworkStatus => _networkStatus.sink;
+  Stream<NetworkStatus> get outNetworkStatus => _networkStatus.stream;
+
   bool isUrlLaucherIsOpen = false;
 
   Locale currentLocale;
@@ -41,6 +48,11 @@ class MainBloc implements BlocBase {
     _currentIndexTabController.close();
     _isNetworkOffline.close();
     _currentLocaleController.close();
+  }
+
+  void setNetworkStatus(NetworkStatus status) {
+    networkStatus = status;
+    _inNetworkStatus.add(status);
   }
 
   void setIsNetworkOffline(bool isNetworkAvailable) {
@@ -81,3 +93,5 @@ class MainBloc implements BlocBase {
     _inIsInBackground.add(_isInBackground);
   }
 }
+
+enum NetworkStatus { Offline, Checking, Restored, Online }
