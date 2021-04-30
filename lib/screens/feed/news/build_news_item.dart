@@ -59,7 +59,7 @@ class _BuildNewsItemState extends State<BuildNewsItem>
           children: <Widget>[
             _buildHeader(),
             Divider(
-              color: Colors.white,
+              color: Theme.of(context).hintColor,
               height: 40,
             ),
             _buildContent(),
@@ -149,7 +149,9 @@ class _BuildNewsItemState extends State<BuildNewsItem>
         RichText(
           text: TextSpan(
             style: TextStyle(
-                fontSize: 16, color: Theme.of(context).textTheme.caption.color),
+              fontSize: 16,
+              color: Theme.of(context).textTheme.caption.color,
+            ),
             children: _article.lead,
           ),
         ),
@@ -173,7 +175,10 @@ class _BuildNewsItemState extends State<BuildNewsItem>
             sizeFactor: expandAnimation,
             child: RichText(
               text: TextSpan(
-                style: const TextStyle(fontSize: 16),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).textTheme.caption.color,
+                ),
                 children: _article.body,
               ),
             ),

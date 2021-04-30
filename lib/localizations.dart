@@ -411,6 +411,10 @@ class AppLocalizations {
           name: 'notEnoughtBalanceForFee');
   String get noInternet =>
       Intl.message('No Internet Connection', name: 'noInternet');
+  String get internetRestored =>
+      Intl.message('Internet Connection Restored', name: 'internetRestored');
+  String get internetRefreshButton =>
+      Intl.message('Refresh', name: 'internetRefreshButton');
   String get legalTitle => Intl.message('Legal', name: 'legalTitle');
   String get disclaimerAndTos =>
       Intl.message('Disclaimer & ToS', name: 'disclaimerAndTos');
@@ -580,6 +584,8 @@ class AppLocalizations {
           name: 'searchFilterSubtitleTestCoins');
   String get searchFilterSubtitleERC =>
       Intl.message('Select all ERC tokens', name: 'searchFilterSubtitleERC');
+  String get searchFilterSubtitleBEP =>
+      Intl.message('Select all BEP tokens', name: 'searchFilterSubtitleBEP');
   String get searchFilterSubtitleQRC =>
       Intl.message('Select all QRC tokens', name: 'searchFilterSubtitleQRC');
   String get customFee => Intl.message('Custom fee', name: 'customFee');
@@ -591,6 +597,7 @@ class AppLocalizations {
   String get searchFilterSubtitleutxo =>
       Intl.message('Select all UTXO coins', name: 'searchFilterSubtitleutxo');
   String get tagERC20 => Intl.message('ERC20', name: 'tagERC20');
+  String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
   String errorNotEnoughtGas(String gas) =>
@@ -792,6 +799,7 @@ class AppLocalizations {
       Intl.message('UTXO amt,\nKMD', name: 'rewardsTableUXTO');
   String get rewardsTableRewards =>
       Intl.message('Rewards,\nKMD', name: 'rewardsTableRewards');
+  String get rewardsTableFiat => Intl.message('Fiat', name: 'rewardsTableFiat');
   String get rewardsTableTime =>
       Intl.message('Time left', name: 'rewardsTableTime');
   String get rewardsTableStatus =>

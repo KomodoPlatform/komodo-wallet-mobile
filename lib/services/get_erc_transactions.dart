@@ -10,7 +10,8 @@ import 'package:komodo_dex/model/transactions.dart';
 import 'package:komodo_dex/utils/log.dart';
 
 // At the moment (8/24/2020) tx history is disabled on parity nodes,
-// so we switching ETH/ERC20 tx history to the https://komodo.live:3334 endpoint
+// so we switching ETH/ERC20, BNB/BEP20 tx history to
+// the https://komodo.live:3334 endpoint
 //
 // API calls:
 // '/api/v1/eth_tx_history/{address}' - ETH transaction history for address
@@ -23,9 +24,11 @@ GetErcTransactions getErcTransactions = GetErcTransactions();
 class GetErcTransactions {
   final String ethUrl = 'https://komodo.live:3334/api/v1/eth_tx_history';
   final String ercUrl = 'https://komodo.live:3334/api/v2/erc_tx_history';
+  final String bnbUrl = 'https://komodo.live:3334/api/v1/bnb_tx_history';
+  final String bepUrl = 'https://komodo.live:3334/api/v2/bep_tx_history';
 
   Future<dynamic> getTransactions({Coin coin, String fromId}) async {
-    if (coin.type != 'erc') return;
+    if (coin.type != 'erc' && coin.type != 'bep') return;
 
     // Endpoint returns all tx at ones, and `fromId` only has value
     // if some txs was already fetched, so no need to fetch same txs again
@@ -38,15 +41,27 @@ class GetErcTransactions {
 
     final String address = coinBalance.balance.address;
 
-    final String url = (coin.abbr.startsWith('ETH') // 'ETH' or 'ETHR'
-            ? '$ethUrl/$address'
-            : '$ercUrl/${coin.protocol.protocolData.contractAddress}/$address') +
-        (coin.testCoin ? '&testnet=true' : '');
+    String url;
+    switch (coin.type) {
+      case 'erc':
+        url = (coin.protocol?.type == 'ETH' // 'ETH', 'ETHR'
+                ? '$ethUrl/$address'
+                : '$ercUrl/${coin.protocol.protocolData.contractAddress}/$address') +
+            (coin.testCoin ? '&testnet=true' : '');
+        break;
+      case 'bep':
+        url = (coin.protocol?.type == 'ETH' // 'BNB', 'BNBT'
+                ? '$bnbUrl/$address'
+                : '$bepUrl/${coin.protocol.protocolData.contractAddress}/$address') +
+            (coin.testCoin ? '&testnet=true' : '');
+        break;
+      default:
+        return;
+    }
 
     String body;
     try {
-      Response response;
-      response = await http.get(url);
+      final Response response = await http.get(url);
       body = response.body;
     } catch (e) {
       Log('get_erc_transactions', 'getTransactions/fetch] $e');
