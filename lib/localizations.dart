@@ -792,6 +792,7 @@ class AppLocalizations {
       Intl.message('UTXO amt,\nKMD', name: 'rewardsTableUXTO');
   String get rewardsTableRewards =>
       Intl.message('Rewards,\nKMD', name: 'rewardsTableRewards');
+  String get rewardsTableFiat => Intl.message('Fiat', name: 'rewardsTableFiat');
   String get rewardsTableTime =>
       Intl.message('Time left', name: 'rewardsTableTime');
   String get rewardsTableStatus =>
