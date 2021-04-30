@@ -38,18 +38,33 @@ void showReceiveDialog(BuildContext mContext, String address, Coin coin) {
                 onTap: () {
                   copyToClipBoard(mContext, address);
                 },
-                child: Container(
-                  child: Center(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-                    child: AutoSizeText(
-                      address,
-                      textKey: const Key('coin-details-address'),
-                      style: Theme.of(context).textTheme.bodyText2,
-                      maxLines: 2,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        child: Center(
+                            child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 16),
+                          child: AutoSizeText(
+                            address,
+                            textKey: const Key('coin-details-address'),
+                            style: Theme.of(context).textTheme.bodyText2,
+                            maxLines: 2,
+                          ),
+                        )),
+                      ),
                     ),
-                  )),
+                    SizedBox(width: 8),
+                    Container(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Icon(Icons.copy),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Row(
