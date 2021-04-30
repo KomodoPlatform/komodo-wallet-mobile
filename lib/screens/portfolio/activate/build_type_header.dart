@@ -53,6 +53,9 @@ class _BuildTypeHeaderState extends State<BuildTypeHeader> {
       case 'erc':
         return AppLocalizations.of(context).searchFilterSubtitleERC;
         break;
+      case 'bep':
+        return AppLocalizations.of(context).searchFilterSubtitleBEP;
+        break;
       case 'qrc':
         return AppLocalizations.of(context).searchFilterSubtitleQRC;
         break;

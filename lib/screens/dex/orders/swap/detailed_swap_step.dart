@@ -8,6 +8,8 @@ import 'detailed_swap_steps.dart';
 class DetailedSwapStep extends StatelessWidget {
   const DetailedSwapStep({
     this.title,
+    this.txHash,
+    this.explorerUrl,
     this.status,
     this.estimatedSpeed,
     this.estimatedDeviation,
@@ -18,6 +20,8 @@ class DetailedSwapStep extends StatelessWidget {
   });
 
   final String title;
+  final String txHash;
+  final String explorerUrl;
   final SwapStepStatus status;
   final Duration estimatedSpeed;
   final Duration estimatedDeviation;
@@ -64,6 +68,78 @@ class DetailedSwapStep extends StatelessWidget {
       );
     }
 
+    Widget _buildViewInExplorer() {
+      return Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          border: Border.all(
+            color: Color.fromARGB(0, 0, 0, 0),
+            width: 0,
+          ),
+        ),
+        child: InkWell(
+          onTap: () {
+            launchURL(
+              explorerUrl + 'tx/' + txHash,
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(6, 2, 4, 2),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 2, 0),
+                  child: Text(
+                    AppLocalizations.of(context).viewInExplorerButton,
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        .copyWith(fontSize: 11),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 0),
+                  child: Icon(
+                    Icons.open_in_browser,
+                    color: Theme.of(context).accentColor,
+                    size: 22,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget _buildTxDetails() {
+      return Padding(
+        padding: EdgeInsets.fromLTRB(30, 4, 0, 0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  copyToClipBoard(context, txHash ?? '');
+                  Future.delayed(Duration(seconds: 2), () {
+                    Scaffold.of(context).hideCurrentSnackBar();
+                  });
+                },
+                child: truncateMiddle(
+                  txHash ?? '',
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        fontFamily: 'monospace',
+                        fontSize: 12,
+                      ),
+                ),
+              ),
+            ),
+            _buildViewInExplorer(),
+          ],
+        ),
+      );
+    }
+
     return Column(
       children: <Widget>[
         Row(
@@ -96,7 +172,7 @@ class DetailedSwapStep extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
-                      Text(AppLocalizations.of(context).swapActual + ': ',
+                      Text(AppLocalizations.of(context).swapCurrent + ': ',
                           style: TextStyle(
                             fontSize: 13,
                             color: status == SwapStepStatus.pending
@@ -170,7 +246,8 @@ class DetailedSwapStep extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        txHash != '0x' && txHash != '' ? _buildTxDetails() : Container(),
+        const SizedBox(height: 16),
       ],
     );
   }

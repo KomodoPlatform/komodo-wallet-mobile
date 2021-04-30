@@ -13,6 +13,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/screens/dex/trade/confirm/build_detailed_fees.dart';
+import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_fiat_amount.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_reset_button.dart';
 import 'package:komodo_dex/screens/dex/trade/create/build_trade_button.dart';
@@ -337,12 +338,13 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       radius: 12,
                     ),
               Expanded(
-                  child: Center(
-                      child: Text(
-                coin != null ? coin.abbr : '-',
-                style: Theme.of(context).textTheme.subtitle2,
-                maxLines: 1,
-              ))),
+                child: Center(
+                  child: AutoScrollText(
+                    text: coin?.abbr ?? '-',
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                ),
+              ),
               Icon(Icons.arrow_drop_down),
             ],
           ),
