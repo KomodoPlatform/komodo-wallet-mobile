@@ -9,8 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/export_import_list_item.dart';
 import 'package:komodo_dex/model/get_import_swaps.dart';
+import 'package:komodo_dex/model/import_swaps.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/screens/import-export/export_import_list.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
@@ -37,6 +39,7 @@ class _ImportPageState extends State<ImportPage> {
   bool _done = false;
   Backup _all;
   Backup _selected;
+  int _numSwapsImported = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +79,7 @@ class _ImportPageState extends State<ImportPage> {
         AppLocalizations.of(context).exportNotesTitle: _selected.notes.length,
         AppLocalizations.of(context).exportContactsTitle:
             _selected.contacts.length,
+        AppLocalizations.of(context).exportSwapsTitle: _numSwapsImported,
       },
     );
   }
@@ -88,8 +92,11 @@ class _ImportPageState extends State<ImportPage> {
           if (_validate()) {
             await _importNotes();
             await _importContacts();
-            await _importSwaps();
-            setState(() => _done = true);
+            final numSwaps = await _importSwaps();
+            setState(() {
+              _numSwapsImported = numSwaps;
+              _done = true;
+            });
           }
         },
         text: AppLocalizations.of(context).importButton,
@@ -108,18 +115,28 @@ class _ImportPageState extends State<ImportPage> {
     return true;
   }
 
-  Future<void> _importSwaps() async {
+  Future<int> _importSwaps() async {
     final List<MmSwap> listSwaps = [];
 
     _selected.swaps?.forEach((uuid, swap) {
       listSwaps.add(swap);
     });
 
-    final r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
+    final dynamic r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
 
-    if (r.result.skipped.isNotEmpty) {
-      _showError('Some items have been skipped');
+    if (r is ErrorString) {
+      _showError(AppLocalizations.of(context).couldntImportError + r.error);
+      return 0;
     }
+
+    if (r is ImportSwaps) {
+      if (r.result.skipped.isNotEmpty) {
+        _showError(AppLocalizations.of(context).importSomeItemsSkippedWarning);
+      }
+      return r.result.imported.length;
+    }
+
+    return 0;
   }
 
   Future<void> _importContacts() async {
@@ -297,7 +314,12 @@ class _ImportPageState extends State<ImportPage> {
                   ),
                   Expanded(child: SizedBox()),
                   Text(
-                    swap.type == 'Maker' ? 'Maker Order' : 'Taker order',
+                    (swap.type == 'Maker' || swap.type == 'Taker')
+                        ? swap.type == 'Maker'
+                            ? AppLocalizations.of(context).makerOrder
+                            : AppLocalizations.of(context).takerOrder
+                        : swap.type +
+                            AppLocalizations.of(context).orderTypePartial,
                     style: Theme.of(context).textTheme.bodyText2.copyWith(
                           fontSize: 14,
                           color: Theme.of(context)
@@ -345,7 +367,7 @@ class _ImportPageState extends State<ImportPage> {
 
     return ExportImportList(
       items: items,
-      title: 'Swaps',
+      title: AppLocalizations.of(context).exportSwapsTitle,
     );
   }
 
@@ -504,16 +526,16 @@ class _ImportPageState extends State<ImportPage> {
       return null;
     }
 
-    final String length32Key = md5.convert(utf8.encode(pass)).toString();
-    final key = encrypt.Key.fromUtf8(length32Key);
-    final iv = encrypt.IV.fromLength(16);
-
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-    final String str = await file.readAsString();
-
-    final encrypted = encrypt.Encrypted.fromBase64(str);
-
     try {
+      final String length32Key = md5.convert(utf8.encode(pass)).toString();
+      final key = encrypt.Key.fromUtf8(length32Key);
+      final iv = encrypt.IV.fromLength(16);
+
+      final encrypter = encrypt.Encrypter(encrypt.AES(key));
+      final String str = await file.readAsString();
+
+      final encrypted = encrypt.Encrypted.fromBase64(str);
+
       final decrypted = encrypter.decrypt(encrypted, iv: iv);
       return jsonDecode(decrypted);
     } catch (e) {

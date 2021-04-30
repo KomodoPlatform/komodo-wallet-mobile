@@ -561,7 +561,7 @@ class _SettingPageState extends State<SettingPage> {
             color:
                 Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7)),
         title: Text(
-          'Import Single Swap',
+          AppLocalizations.of(context).importSingleSwapLink,
           style: Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: FontWeight.w300,
               color:

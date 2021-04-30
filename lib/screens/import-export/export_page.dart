@@ -253,7 +253,12 @@ class _ExportPageState extends State<ExportPage> {
                 ),
                 Expanded(child: SizedBox()),
                 Text(
-                  swap.type == 'Maker' ? 'Maker Order' : 'Taker order',
+                  (swap.type == 'Maker' || swap.type == 'Taker')
+                      ? swap.type == 'Maker'
+                          ? AppLocalizations.of(context).makerOrder
+                          : AppLocalizations.of(context).takerOrder
+                      : swap.type +
+                          AppLocalizations.of(context).orderTypePartial,
                   style: Theme.of(context).textTheme.bodyText2.copyWith(
                         fontSize: 14,
                         color: Theme.of(context)
@@ -298,7 +303,7 @@ class _ExportPageState extends State<ExportPage> {
       ));
     });
     return ExportImportList(
-      title: 'Swaps',
+      title: AppLocalizations.of(context).exportSwapsTitle,
       items: items,
     );
   }

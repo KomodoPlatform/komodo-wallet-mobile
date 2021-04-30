@@ -720,7 +720,7 @@ class ApiProvider {
     }
   }
 
-  Future<ImportSwaps> getImportSwaps(
+  Future<dynamic> getImportSwaps(
     GetImportSwaps request, {
     http.Client client,
   }) async {
@@ -742,7 +742,7 @@ class ApiProvider {
 
       return importSwaps;
     } catch (e) {
-      throw _catchErrorString('getImportSwaps', e, 'mm import_swaps] $e');
+      return _catchErrorString('getImportSwaps', e, 'mm import_swaps] $e');
     }
   }
 }
