@@ -182,7 +182,7 @@ class SyncOrderbook {
     for (String pair in _tickers) {
       final List<String> abbr = pair.split('/');
       final dynamic orderbook = await MM.getOrderbook(
-          MMService().client,
+          mmSe.client,
           GetOrderbook(
             base: abbr[0],
             rel: abbr[1],

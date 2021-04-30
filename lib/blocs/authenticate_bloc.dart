@@ -138,7 +138,7 @@ class AuthenticateBloc extends BlocBase {
     _inIsLogin.add(false);
 
     coinsBloc.stopCheckBalance();
-    await MMService().stopmm2();
+    await mmSe.stopmm2();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await EncryptionTool().delete('passphrase');
     await prefs.setBool('isPinIsSet', false);
@@ -151,7 +151,7 @@ class AuthenticateBloc extends BlocBase {
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');
     coinsBloc.resetCoinBalance();
-    MMService().balances = <Balance>[];
+    mmSe.balances = <Balance>[];
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);
     await Db.deleteCurrentWallet();

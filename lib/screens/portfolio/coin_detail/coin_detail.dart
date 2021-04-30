@@ -781,7 +781,7 @@ class _CoinDetailState extends State<CoinDetail> {
 
               ApiProvider()
                   .postRawTransaction(
-                      MMService().client,
+                      mmSe.client,
                       GetSendRawTransaction(
                           coin: widget.coinBalance.coin.abbr,
                           txHex: response.txHex))

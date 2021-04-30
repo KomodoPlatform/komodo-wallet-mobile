@@ -27,7 +27,7 @@ class SwapHistoryBloc implements BlocBase {
   }
 
   Future<dynamic> recoverFund(Swap swap) async => await MM.recoverFundsOfSwap(
-      MMService().client,
+      mmSe.client,
       GetRecoverFundsOfSwap(params: Params(uuid: swap.result.uuid)));
 
   /// Deprecated: should be using `errorEvents` and `successEvents` (`MmSwap::status`)
