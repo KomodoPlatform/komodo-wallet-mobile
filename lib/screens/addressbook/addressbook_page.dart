@@ -165,6 +165,7 @@ class _AddressBookState extends State<AddressBookPage> {
 
     if (coin.type == 'smartChain') title = 'KMD & SmartChains';
     if (coin.type == 'erc') title = 'ETH & ERC tokens';
+    if (coin.type == 'bep') title = 'BNB & BEP tokens';
     if (coin.type == 'qrc' || coin.abbr == 'QTUM') title = 'QTUM & QRC tokens';
 
     return Padding(

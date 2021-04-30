@@ -157,6 +157,7 @@ class _ItemCoinState extends State<ItemCoin> {
                           const SizedBox(height: 8),
                           Text(
                             coin.name.toUpperCase(),
+                            textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
                                 .subtitle2
@@ -319,9 +320,11 @@ class _ItemCoinState extends State<ItemCoin> {
   Widget _buildNetworkLabel() {
     final bool needLabel = (widget.coinBalance.coin.type == 'erc' ||
             widget.coinBalance.coin.type == 'qrc' ||
+            widget.coinBalance.coin.type == 'bep' ||
             widget.coinBalance.coin.type == 'smartChain') &&
         widget.coinBalance.coin.abbr != 'KMD' &&
         widget.coinBalance.coin.abbr != 'ETH' &&
+        widget.coinBalance.coin.abbr != 'BNB' &&
         widget.coinBalance.coin.abbr != 'QTUM';
 
     if (!needLabel) return Container();
@@ -332,6 +335,7 @@ class _ItemCoinState extends State<ItemCoin> {
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         child: Container(
             color: widget.coinBalance.coin.type == 'erc' ||
+                    widget.coinBalance.coin.type == 'bep' ||
                     widget.coinBalance.coin.type == 'qrc'
                 ? const Color.fromRGBO(20, 117, 186, 1)
                 : Theme.of(context).backgroundColor,
@@ -351,6 +355,19 @@ class _ItemCoinState extends State<ItemCoin> {
                                 .textTheme
                                 .subtitle2
                                 .copyWith(color: Colors.white),
+                          ),
+                        ],
+                      );
+                    }
+                  case 'bep':
+                    {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            AppLocalizations.of(context).tagBEP20,
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                         ],
                       );
