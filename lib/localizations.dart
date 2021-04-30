@@ -204,7 +204,7 @@ class AppLocalizations {
   String get tradeDetail => Intl.message('TRADE DETAILS', name: 'tradeDetail');
   String get requestedTrade =>
       Intl.message('Requested Trade', name: 'requestedTrade');
-  String get swapID => Intl.message('Swap ID', name: 'swapID');
+  String get swapUUID => Intl.message('Swap UUID', name: 'swapUUID');
   String get mediaBrowse => Intl.message('BROWSE', name: 'mediaBrowse');
   String get mediaSaved => Intl.message('SAVED', name: 'mediaSaved');
   String get articleFrom => Intl.message('AtomicDEX NEWS', name: 'articleFrom');
@@ -266,13 +266,12 @@ class AppLocalizations {
       Intl.message('CONTINUE', name: 'checkSeedPhraseButton1');
   String get checkSeedPhraseButton2 =>
       Intl.message('GO BACK AND CHECK AGAIN', name: 'checkSeedPhraseButton2');
-  String get takerpaymentsID =>
-      Intl.message('Taker Payment ID', name: 'takerpaymentsID');
-  String get makerpaymentID =>
-      Intl.message('Maker Payment ID', name: 'makerpaymentID');
-  String get activateAccessBiometric =>
-      Intl.message('Activate Biometric protection',
-          name: 'activateAccessBiometric');
+  String get viewInExplorerButton =>
+      Intl.message('Explorer', name: 'viewInExplorerButton');
+  String get activateAccessBiometric => Intl.message(
+        'Activate Biometric protection',
+        name: 'activateAccessBiometric',
+      );
   String get allowCustomSeed =>
       Intl.message('Allow custom seed', name: 'allowCustomSeed');
   String get hintEnterPassword =>
@@ -796,6 +795,7 @@ class AppLocalizations {
       Intl.message('UTXO amt,\nKMD', name: 'rewardsTableUXTO');
   String get rewardsTableRewards =>
       Intl.message('Rewards,\nKMD', name: 'rewardsTableRewards');
+  String get rewardsTableFiat => Intl.message('Fiat', name: 'rewardsTableFiat');
   String get rewardsTableTime =>
       Intl.message('Time left', name: 'rewardsTableTime');
   String get rewardsTableStatus =>
@@ -1165,12 +1165,12 @@ class AppLocalizations {
 
   // --- Swaps ---
 
-  String get swapActual => Intl.message('act', name: 'swapActual');
-  String get swapEstimated => Intl.message('est', name: 'swapEstimated');
+  String get swapCurrent => Intl.message('Current', name: 'swapActual');
+  String get swapEstimated => Intl.message('Estimate', name: 'swapEstimated');
   String get swapStarted => Intl.message('Started', name: 'swapStarted');
   String get swapTotal => Intl.message('Total', name: 'swapTotal');
-  String get swappProgress =>
-      Intl.message('Progress details', name: 'swappProgress');
+  String get swapProgress =>
+      Intl.message('Progress details', name: 'swapProgress');
 
   // -- Notifications --
 
