@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
@@ -69,7 +70,7 @@ class _FiltersState extends State<Filters> {
           padding: EdgeInsets.all(8),
           child: Row(
             children: [
-              Text('Clear all'.toUpperCase(),
+              Text(AppLocalizations.of(context).filtersClearAll.toUpperCase(),
                   style: TextStyle(color: color, fontWeight: FontWeight.w400)),
               SizedBox(width: 8),
               Icon(
@@ -98,7 +99,7 @@ class _FiltersState extends State<Filters> {
     return Row(children: [
       Expanded(
         child: Text(
-          'Status:',
+          AppLocalizations.of(context).filtersStatus + ':',
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
@@ -119,10 +120,10 @@ class _FiltersState extends State<Filters> {
               Expanded(
                 child: AutoScrollText(
                   text: current == null
-                      ? 'All'
+                      ? AppLocalizations.of(context).filtersAll
                       : current == Status.SWAP_SUCCESSFUL
-                          ? 'Successful'
-                          : 'Failed',
+                          ? AppLocalizations.of(context).filtersSuccessful
+                          : AppLocalizations.of(context).filtersFailed,
                   style: TextStyle(color: color),
                 ),
               ),
@@ -181,8 +182,9 @@ class _FiltersState extends State<Filters> {
                   widget.onChange(_filters);
                   dialogBloc.closeDialog(context);
                 },
-                child:
-                    Container(padding: EdgeInsets.all(12), child: Text('All')),
+                child: Container(
+                    padding: EdgeInsets.all(12),
+                    child: Text(AppLocalizations.of(context).filtersAll)),
               ),
               InkWell(
                 onTap: () {
@@ -195,7 +197,7 @@ class _FiltersState extends State<Filters> {
                     padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Text('Successful'),
+                        Text(AppLocalizations.of(context).filtersSuccessful),
                         Text(
                           ' ($successfulPredictor)',
                           style: Theme.of(context).textTheme.caption,
@@ -214,7 +216,7 @@ class _FiltersState extends State<Filters> {
                     padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Text('Failed'),
+                        Text(AppLocalizations.of(context).filtersFailed),
                         Text(
                           ' ($failedPredictor)',
                           style: Theme.of(context).textTheme.caption,
@@ -236,7 +238,9 @@ class _FiltersState extends State<Filters> {
     return Row(children: [
       Expanded(
         child: Text(
-          '${dateType == DateFilterType.START ? 'From' : 'To'} date:',
+          dateType == DateFilterType.START
+              ? '${AppLocalizations.of(context).filtersFrom}:'
+              : '${AppLocalizations.of(context).filtersTo}:',
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
@@ -308,7 +312,9 @@ class _FiltersState extends State<Filters> {
         lastDate: typeIsStart ? (_filters.end ?? today) : today,
         initialDate: (typeIsStart ? _filters.start : _filters.end) ??
             (_filters.end ?? today),
-        helpText: (typeIsStart ? 'Select \'From\' date' : 'Select \'To\' date')
+        helpText: (typeIsStart
+                ? AppLocalizations.of(context).filtersFrom
+                : AppLocalizations.of(context).filtersTo)
             .toUpperCase());
 
     if (date is DateTime) {
@@ -331,7 +337,7 @@ class _FiltersState extends State<Filters> {
     return Row(children: [
       Expanded(
         child: Text(
-          'Taker/Maker:',
+          AppLocalizations.of(context).filtersType + ':',
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
@@ -352,10 +358,10 @@ class _FiltersState extends State<Filters> {
               Expanded(
                 child: AutoScrollText(
                   text: current == null
-                      ? 'All'
+                      ? AppLocalizations.of(context).filtersAll
                       : current == OrderType.MAKER
-                          ? 'Maker'
-                          : 'Taker',
+                          ? AppLocalizations.of(context).filtersMaker
+                          : AppLocalizations.of(context).filtersTaker,
                   style: TextStyle(color: color),
                 ),
               ),
@@ -428,7 +434,7 @@ class _FiltersState extends State<Filters> {
                     padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Text('Maker'),
+                        Text(AppLocalizations.of(context).filtersMaker),
                         Text(
                           ' ($makerPredictor)',
                           style: Theme.of(context).textTheme.caption,
@@ -447,7 +453,7 @@ class _FiltersState extends State<Filters> {
                     padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        Text('Taker'),
+                        Text(AppLocalizations.of(context).filtersTaker),
                         Text(
                           ' ($takerPredictor)',
                           style: Theme.of(context).textTheme.caption,
@@ -469,7 +475,9 @@ class _FiltersState extends State<Filters> {
       children: [
         Expanded(
           child: Text(
-            market == Market.SELL ? 'Sell coin:' : 'Receive coin:',
+            market == Market.SELL
+                ? AppLocalizations.of(context).filtersSell + ':'
+                : AppLocalizations.of(context).filtersReceive + ':',
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
@@ -531,7 +539,7 @@ class _FiltersState extends State<Filters> {
             SizedBox(width: 4),
             Expanded(
               child: AutoScrollText(
-                text: current ?? 'All',
+                text: current ?? AppLocalizations.of(context).filtersAll,
                 style: TextStyle(color: color),
               ),
             ),
@@ -614,7 +622,7 @@ class _FiltersState extends State<Filters> {
                     radius: 8,
                     backgroundColor: Theme.of(context).highlightColor),
                 SizedBox(width: 4),
-                Text('All'),
+                Text(AppLocalizations.of(context).filtersAll),
               ],
             ),
           ),

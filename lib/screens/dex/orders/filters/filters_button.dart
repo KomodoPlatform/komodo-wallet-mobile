@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
 
 class FiltersButton extends StatelessWidget {
@@ -37,7 +38,7 @@ class FiltersButton extends StatelessWidget {
             ),
             SizedBox(width: 2),
             Text(
-              text ?? 'Filter',
+              text ?? AppLocalizations.of(context).filtersButton,
               style: Theme.of(context).textTheme.bodyText1.copyWith(
                     color: color,
                   ),
