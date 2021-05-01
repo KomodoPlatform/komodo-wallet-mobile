@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
 import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
 
 class Filters extends StatefulWidget {
@@ -116,8 +117,8 @@ class _FiltersState extends State<Filters> {
           child: Row(
             children: [
               Expanded(
-                child: Text(
-                  current == null
+                child: AutoScrollText(
+                  text: current == null
                       ? 'All'
                       : current == Status.SWAP_SUCCESSFUL
                           ? 'Successful'
@@ -254,8 +255,9 @@ class _FiltersState extends State<Filters> {
           child: Row(
             children: [
               Expanded(
-                child: Text(
-                  current == null ? '-' : DateFormat.yMd().format(current),
+                child: AutoScrollText(
+                  text:
+                      current == null ? '-' : DateFormat.yMd().format(current),
                   style: TextStyle(color: color),
                 ),
               ),
@@ -348,8 +350,8 @@ class _FiltersState extends State<Filters> {
           child: Row(
             children: [
               Expanded(
-                child: Text(
-                  current == null
+                child: AutoScrollText(
+                  text: current == null
                       ? 'All'
                       : current == OrderType.MAKER
                           ? 'Maker'
@@ -528,8 +530,8 @@ class _FiltersState extends State<Filters> {
             ),
             SizedBox(width: 4),
             Expanded(
-              child: Text(
-                current ?? 'All',
+              child: AutoScrollText(
+                text: current ?? 'All',
                 style: TextStyle(color: color),
               ),
             ),

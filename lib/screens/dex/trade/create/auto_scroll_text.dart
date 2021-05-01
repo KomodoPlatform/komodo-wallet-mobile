@@ -34,10 +34,16 @@ class _AutoScrollTextState extends State<AutoScrollText> {
   }
 
   @override
+  void didUpdateWidget(covariant AutoScrollText oldWidget) {
+    if (widget.text != oldWidget.text) {
+      _scrollController?.jumpTo(0);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      height: 20,
-      alignment: AlignmentDirectional.center,
       child: SingleChildScrollView(
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
