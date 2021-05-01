@@ -60,27 +60,24 @@ class _SwapHistoryState extends State<SwapHistory> {
               .toList()
               .sublist(start, end);
 
-          return SingleChildScrollView(
+          return ListView(
             controller: widget.scrollCtrl,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (widget.showFilters) _buildFilters(swaps),
-                if (swapsFiltered.isEmpty) ...{
-                  Container(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: Center(
-                        child: Text(AppLocalizations.of(context).noSwaps)),
-                  )
-                },
-                if (swapsFiltered.isNotEmpty) ...{
-                  _buildPagination(swapsFiltered),
-                  ...swapsWidget,
-                  _buildPagination(swapsFiltered),
-                  SizedBox(height: 10),
-                },
-              ],
-            ),
+            children: [
+              if (widget.showFilters) _buildFilters(swaps),
+              if (swapsFiltered.isEmpty) ...{
+                Container(
+                  height: MediaQuery.of(context).size.height / 4,
+                  child:
+                      Center(child: Text(AppLocalizations.of(context).noSwaps)),
+                )
+              },
+              if (swapsFiltered.isNotEmpty) ...{
+                _buildPagination(swapsFiltered),
+                ...swapsWidget,
+                _buildPagination(swapsFiltered),
+                SizedBox(height: 10),
+              },
+            ],
           );
         });
   }

@@ -43,6 +43,7 @@ class _OrdersPageState extends State<OrdersPage> {
             _buildFiltersButton(),
             Expanded(child: SizedBox()),
             FlatButton(
+                padding: EdgeInsets.all(4),
                 onPressed: () {
                   setState(() {
                     _currentTab = OrdersTab.active;
@@ -62,6 +63,7 @@ class _OrdersPageState extends State<OrdersPage> {
                   ],
                 )),
             FlatButton(
+              padding: EdgeInsets.all(4),
               onPressed: () {
                 setState(() {
                   _currentTab = OrdersTab.history;
@@ -81,6 +83,7 @@ class _OrdersPageState extends State<OrdersPage> {
                 ],
               ),
             ),
+            SizedBox(width: 8),
           ],
         ),
         Flexible(
@@ -112,12 +115,17 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget _buildFiltersButton() {
     return FiltersButton(
       activeFilters: _activeFilters[_currentTab],
-      onPressed: () {
+      onPressed: () async {
         if (_scrollCtrl[_currentTab].offset > 0) {
-          _scrollCtrl[_currentTab].jumpTo(0);
           if (!_showFilters[_currentTab]) {
             setState(() => _showFilters[_currentTab] = true);
           }
+          await Future<dynamic>.delayed(Duration(milliseconds: 100));
+          _scrollCtrl[_currentTab].animateTo(
+            _scrollCtrl[_currentTab].position.minScrollExtent,
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeIn,
+          );
         } else {
           setState(
               () => _showFilters[_currentTab] = !_showFilters[_currentTab]);

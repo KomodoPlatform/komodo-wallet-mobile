@@ -70,27 +70,23 @@ class _ActiveOrdersState extends State<ActiveOrders> {
               .toList()
               .sublist(start, end);
 
-          return SingleChildScrollView(
+          return ListView(
             controller: widget.scrollCtrl,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (widget.showFilters) _buildFilters(orderSwaps),
-                if (orderSwapsFiltered.isNotEmpty) ...{
-                  _buildPagination(orderSwapsFiltered),
-                  ...orderSwapsWidget,
-                  _buildPagination(orderSwapsFiltered),
-                },
-                if (orderSwapsFiltered.isEmpty) ...{
-                  Container(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: const Center(
-                        child: Text('No orders, please go to trade.')),
-                  )
-                },
-                SizedBox(height: 10),
-              ],
-            ),
+            children: [
+              if (widget.showFilters) _buildFilters(orderSwaps),
+              if (orderSwapsFiltered.isNotEmpty) ...{
+                _buildPagination(orderSwapsFiltered),
+                ...orderSwapsWidget,
+                _buildPagination(orderSwapsFiltered),
+              },
+              if (orderSwapsFiltered.isEmpty) ...{
+                Container(
+                  height: MediaQuery.of(context).size.height / 4,
+                  child: Center(child: Text('No orders, please go to trade.')),
+                )
+              },
+              SizedBox(height: 10),
+            ],
           );
         });
   }

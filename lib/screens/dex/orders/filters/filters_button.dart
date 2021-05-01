@@ -3,11 +3,13 @@ import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
 
 class FiltersButton extends StatelessWidget {
   const FiltersButton({
+    this.text,
     this.onPressed,
     this.activeFilters,
     this.isActive,
   });
 
+  final String text;
   final Function onPressed;
   final ActiveFilters activeFilters;
   final bool isActive;
@@ -35,7 +37,7 @@ class FiltersButton extends StatelessWidget {
             ),
             SizedBox(width: 2),
             Text(
-              'Filter',
+              text ?? 'Filter',
               style: Theme.of(context).textTheme.bodyText1.copyWith(
                     color: color,
                   ),
