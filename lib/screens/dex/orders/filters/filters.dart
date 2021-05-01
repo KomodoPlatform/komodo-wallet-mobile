@@ -11,12 +11,14 @@ class Filters extends StatefulWidget {
     this.activeFilters,
     this.onChange,
     this.filter,
+    this.showStatus = false,
   });
 
   final List<dynamic> items;
   final Function(ActiveFilters) onChange;
   final Function filter;
   final ActiveFilters activeFilters;
+  final bool showStatus;
 
   @override
   _FiltersState createState() => _FiltersState();
@@ -41,9 +43,150 @@ class _FiltersState extends State<Filters> {
           _buildDateFilter(DateFilterType.END),
           SizedBox(height: 12),
           _buildTypeFilter(),
+          if (widget.showStatus) ...{
+            SizedBox(height: 12),
+            _buildStatusFilter(),
+          }
         ],
       ),
     );
+  }
+
+  Widget _buildStatusFilter() {
+    final Status current = _filters.status;
+    final Color color =
+        current == null ? Theme.of(context).textTheme.bodyText1.color : null;
+
+    return Row(children: [
+      Expanded(
+        child: Text(
+          'Status:',
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ),
+      InkWell(
+        onTap: () => _openStatusDialog(),
+        child: Container(
+          width: 100,
+          padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
+          decoration: BoxDecoration(
+              border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).accentColor.withAlpha(150),
+              width: 1,
+            ),
+          )),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  current == null
+                      ? 'All'
+                      : current == Status.SWAP_SUCCESSFUL
+                          ? 'Successful'
+                          : 'Failed',
+                  style: TextStyle(color: color),
+                ),
+              ),
+              SizedBox(width: 4),
+              Icon(
+                Icons.arrow_drop_down,
+                size: 16,
+                color: color,
+              )
+            ],
+          ),
+        ),
+      ),
+      InkWell(
+        child: Container(
+          padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+          child: Opacity(
+            opacity: current == null ? 0.5 : 1,
+            child: Icon(
+              Icons.clear,
+              size: 16,
+            ),
+          ),
+        ),
+        onTap: current == null
+            ? null
+            : () {
+                setState(() {
+                  _filters.status = null;
+                });
+                _filters.matches = widget.filter(widget.items).length;
+                widget.onChange(_filters);
+              },
+      )
+    ]);
+  }
+
+  void _openStatusDialog() {
+    final Status temp = _filters.status;
+    _filters.status = Status.SWAP_SUCCESSFUL;
+    final int successfulPredictor = widget.filter(widget.items).length;
+    _filters.status = Status.SWAP_FAILED;
+    final int failedPredictor = widget.filter(widget.items).length;
+    _filters.status = temp;
+
+    dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+            children: [
+              InkWell(
+                onTap: () {
+                  setState(() => _filters.status = null);
+                  _filters.matches = widget.filter(widget.items).length;
+                  widget.onChange(_filters);
+                  dialogBloc.closeDialog(context);
+                },
+                child:
+                    Container(padding: EdgeInsets.all(12), child: Text('All')),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() => _filters.status = Status.SWAP_SUCCESSFUL);
+                  _filters.matches = widget.filter(widget.items).length;
+                  widget.onChange(_filters);
+                  dialogBloc.closeDialog(context);
+                },
+                child: Container(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Text('Successful'),
+                        Text(
+                          ' ($successfulPredictor)',
+                          style: Theme.of(context).textTheme.caption,
+                        )
+                      ],
+                    )),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() => _filters.status = Status.SWAP_FAILED);
+                  _filters.matches = widget.filter(widget.items).length;
+                  widget.onChange(_filters);
+                  dialogBloc.closeDialog(context);
+                },
+                child: Container(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Text('Failed'),
+                        Text(
+                          ' ($failedPredictor)',
+                          style: Theme.of(context).textTheme.caption,
+                        )
+                      ],
+                    )),
+              ),
+            ],
+          );
+        });
   }
 
   Widget _buildDateFilter(DateFilterType dateType) {
@@ -125,7 +268,9 @@ class _FiltersState extends State<Filters> {
         firstDate: typeIsStart ? first : (_filters.start ?? first),
         lastDate: typeIsStart ? (_filters.end ?? today) : today,
         initialDate: (typeIsStart ? _filters.start : _filters.end) ??
-            (_filters.end ?? today));
+            (_filters.end ?? today),
+        helpText: (typeIsStart ? 'Select \'From\' date' : 'Select \'To\' date')
+            .toUpperCase());
 
     if (date is DateTime) {
       setState(() {
@@ -147,7 +292,7 @@ class _FiltersState extends State<Filters> {
     return Row(children: [
       Expanded(
         child: Text(
-          'Type:',
+          'Taker/Maker:',
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
@@ -210,12 +355,12 @@ class _FiltersState extends State<Filters> {
   }
 
   void _openTypeDialog() {
-    final OrderType current = _filters.type;
+    final OrderType temp = _filters.type;
     _filters.type = OrderType.MAKER;
     final int makerPredictor = widget.filter(widget.items).length;
     _filters.type = OrderType.TAKER;
     final int takerPredictor = widget.filter(widget.items).length;
-    _filters.type = current;
+    _filters.type = temp;
 
     dialogBloc.dialog = showDialog(
         context: context,
@@ -367,15 +512,15 @@ class _FiltersState extends State<Filters> {
     final List<String> coins = _getCoins(market);
 
     final List<Widget> items = coins.map((String coin) {
-      final String current =
+      final String temp =
           market == Market.SELL ? _filters.sellCoin : _filters.receiveCoin;
       market == Market.SELL
           ? _filters.sellCoin = coin
           : _filters.receiveCoin = coin;
       final int predictor = widget.filter(widget.items).length;
       market == Market.SELL
-          ? _filters.sellCoin = current
-          : _filters.receiveCoin = current;
+          ? _filters.sellCoin = temp
+          : _filters.receiveCoin = temp;
 
       return InkWell(
         onTap: () {
@@ -487,6 +632,7 @@ class ActiveFilters {
     this.start,
     this.end,
     this.type,
+    this.status,
   });
 
   int matches;
@@ -495,13 +641,15 @@ class ActiveFilters {
   DateTime start;
   DateTime end;
   OrderType type;
+  Status status;
 
   bool get anyActive =>
       sellCoin != null ||
       receiveCoin != null ||
       type != null ||
       start != null ||
-      end != null;
+      end != null ||
+      status != null;
 }
 
 enum DateFilterType { START, END }

@@ -92,6 +92,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         child: Filters(
           items: swaps,
           filter: _filter,
+          showStatus: true,
           activeFilters: widget.activeFilters,
           onChange: (ActiveFilters filters) {
             setState(() => _currentPage = 1);
@@ -109,6 +110,7 @@ class _SwapHistoryState extends State<SwapHistory> {
     final OrderType typeFilter = widget.activeFilters?.type;
     final DateTime startFilter = widget.activeFilters?.start;
     final DateTime endFilter = widget.activeFilters?.end;
+    final Status statusFilter = widget.activeFilters?.status;
 
     for (Swap item in unfiltered) {
       bool isMatched = true;
@@ -118,6 +120,7 @@ class _SwapHistoryState extends State<SwapHistory> {
       final OrderType type = item.isMaker ? OrderType.MAKER : OrderType.TAKER;
       final DateTime date = DateTime.fromMillisecondsSinceEpoch(
           item.started?.timestamp ?? DateTime.now().millisecondsSinceEpoch);
+      final Status status = item.status;
 
       if (sellCoinFilter != null && (sellCoinFilter != sellCoin)) {
         isMatched = false;
@@ -134,6 +137,7 @@ class _SwapHistoryState extends State<SwapHistory> {
           endFilter.millisecondsSinceEpoch < date.millisecondsSinceEpoch) {
         isMatched = false;
       }
+      if (statusFilter != null && statusFilter != status) isMatched = false;
 
       if (isMatched) filtered.add(item);
     }
