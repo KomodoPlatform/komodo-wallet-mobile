@@ -88,7 +88,7 @@ class _SwapHistoryState extends State<SwapHistory> {
     return Padding(
       padding: EdgeInsets.fromLTRB(12, 0, 8, 0),
       child: Container(
-        padding: EdgeInsets.fromLTRB(12, 12, 4, 24),
+        padding: EdgeInsets.fromLTRB(12, 12, 4, 12),
         child: Filters(
           items: swaps,
           filter: _filter,

@@ -46,10 +46,47 @@ class _FiltersState extends State<Filters> {
           if (widget.showStatus) ...{
             SizedBox(height: 12),
             _buildStatusFilter(),
-          }
+          },
+          SizedBox(height: 20),
+          _buildClearButton(),
         ],
       ),
     );
+  }
+
+  Widget _buildClearButton() {
+    final Color color = !_filters.anyActive
+        ? Theme.of(context).textTheme.bodyText1.color
+        : Theme.of(context).textTheme.bodyText2.color;
+
+    return Row(children: [
+      Expanded(
+        child: SizedBox(),
+      ),
+      InkWell(
+        child: Container(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Text('Clear all'.toUpperCase(),
+                  style: TextStyle(color: color, fontWeight: FontWeight.w400)),
+              SizedBox(width: 8),
+              Icon(
+                Icons.clear,
+                size: 16,
+                color: color,
+              )
+            ],
+          ),
+        ),
+        onTap: () {
+          setState(() {
+            _filters = ActiveFilters();
+          });
+          widget.onChange(_filters);
+        },
+      ),
+    ]);
   }
 
   Widget _buildStatusFilter() {

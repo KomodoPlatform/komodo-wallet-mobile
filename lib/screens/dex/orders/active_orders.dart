@@ -98,7 +98,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
     return Padding(
       padding: EdgeInsets.fromLTRB(12, 0, 8, 0),
       child: Container(
-        padding: EdgeInsets.fromLTRB(12, 12, 4, 24),
+        padding: EdgeInsets.fromLTRB(12, 12, 4, 12),
         child: Filters(
           items: orderSwaps,
           filter: _filter,
