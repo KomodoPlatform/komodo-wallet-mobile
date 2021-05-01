@@ -10,11 +10,13 @@ import 'package:komodo_dex/widgets/pagination.dart';
 
 class ActiveOrders extends StatefulWidget {
   const ActiveOrders({
+    this.scrollCtrl,
     this.showFilters,
     this.activeFilters,
     this.onFiltersChange,
   });
 
+  final ScrollController scrollCtrl;
   final bool showFilters;
   final Function(ActiveFilters) onFiltersChange;
   final ActiveFilters activeFilters;
@@ -24,7 +26,6 @@ class ActiveOrders extends StatefulWidget {
 }
 
 class _ActiveOrdersState extends State<ActiveOrders> {
-  final _scrollCtrl = ScrollController();
   int _currentPage = 1;
   final int _perPage = 25;
 
@@ -70,7 +71,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
               .sublist(start, end);
 
           return SingleChildScrollView(
-            controller: _scrollCtrl,
+            controller: widget.scrollCtrl,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -171,7 +172,7 @@ class _ActiveOrdersState extends State<ActiveOrders> {
         perPage: _perPage,
         onChanged: (int newPage) {
           setState(() => _currentPage = newPage);
-          _scrollCtrl.jumpTo(0);
+          widget.scrollCtrl.jumpTo(0);
         },
       ),
     );

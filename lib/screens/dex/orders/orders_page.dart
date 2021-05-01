@@ -17,13 +17,17 @@ class OrdersPage extends StatefulWidget {
 
 class _OrdersPageState extends State<OrdersPage> {
   OrdersTab _currentTab = OrdersTab.active;
-  final Map<String, bool> _showFilters = {
-    'active': false,
-    'history': false,
+  final Map<OrdersTab, bool> _showFilters = {
+    OrdersTab.active: false,
+    OrdersTab.history: false,
   };
-  final Map<String, ActiveFilters> _activeFilters = {
-    'active': ActiveFilters(),
-    'history': ActiveFilters(),
+  final Map<OrdersTab, ActiveFilters> _activeFilters = {
+    OrdersTab.active: ActiveFilters(),
+    OrdersTab.history: ActiveFilters(),
+  };
+  final Map<OrdersTab, ScrollController> _scrollCtrl = {
+    OrdersTab.active: ScrollController(),
+    OrdersTab.history: ScrollController(),
   };
 
   @override
@@ -36,19 +40,7 @@ class _OrdersPageState extends State<OrdersPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(width: 8),
-            _currentTab == OrdersTab.active
-                ? FiltersButton(
-                    activeFilters: _activeFilters['active'],
-                    onPressed: () => setState(
-                        () => _showFilters['active'] = !_showFilters['active']),
-                    isActive: _showFilters['active'],
-                  )
-                : FiltersButton(
-                    activeFilters: _activeFilters['history'],
-                    onPressed: () => setState(() =>
-                        _showFilters['history'] = !_showFilters['history']),
-                    isActive: _showFilters['history'],
-                  ),
+            _buildFiltersButton(),
             Expanded(child: SizedBox()),
             FlatButton(
                 onPressed: () {
@@ -94,24 +86,44 @@ class _OrdersPageState extends State<OrdersPage> {
         Flexible(
             child: _currentTab == OrdersTab.active
                 ? ActiveOrders(
-                    showFilters: _showFilters['active'],
-                    activeFilters: _activeFilters['active'],
+                    scrollCtrl: _scrollCtrl[OrdersTab.active],
+                    showFilters: _showFilters[OrdersTab.active],
+                    activeFilters: _activeFilters[OrdersTab.active],
                     onFiltersChange: (filters) {
                       setState(() {
-                        _activeFilters['active'] = filters;
+                        _activeFilters[OrdersTab.active] = filters;
                       });
                     },
                   )
                 : SwapHistory(
-                    showFilters: _showFilters['history'],
-                    activeFilters: _activeFilters['history'],
+                    scrollCtrl: _scrollCtrl[OrdersTab.history],
+                    showFilters: _showFilters[OrdersTab.history],
+                    activeFilters: _activeFilters[OrdersTab.history],
                     onFiltersChange: (filters) {
                       setState(() {
-                        _activeFilters['history'] = filters;
+                        _activeFilters[OrdersTab.history] = filters;
                       });
                     },
                   )),
       ],
+    );
+  }
+
+  Widget _buildFiltersButton() {
+    return FiltersButton(
+      activeFilters: _activeFilters[_currentTab],
+      onPressed: () {
+        if (_scrollCtrl[_currentTab].offset > 0) {
+          _scrollCtrl[_currentTab].jumpTo(0);
+          if (!_showFilters[_currentTab]) {
+            setState(() => _showFilters[_currentTab] = true);
+          }
+        } else {
+          setState(
+              () => _showFilters[_currentTab] = !_showFilters[_currentTab]);
+        }
+      },
+      isActive: _showFilters[_currentTab],
     );
   }
 

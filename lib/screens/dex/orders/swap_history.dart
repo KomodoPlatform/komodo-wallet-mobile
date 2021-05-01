@@ -10,11 +10,13 @@ import 'package:komodo_dex/widgets/pagination.dart';
 
 class SwapHistory extends StatefulWidget {
   const SwapHistory({
+    this.scrollCtrl,
     this.showFilters,
     this.activeFilters,
     this.onFiltersChange,
   });
 
+  final ScrollController scrollCtrl;
   final bool showFilters;
   final Function(ActiveFilters) onFiltersChange;
   final ActiveFilters activeFilters;
@@ -24,7 +26,6 @@ class SwapHistory extends StatefulWidget {
 }
 
 class _SwapHistoryState extends State<SwapHistory> {
-  final _scrollCtrl = ScrollController();
   int _currentPage = 1;
   final int _perPage = 25;
 
@@ -60,7 +61,7 @@ class _SwapHistoryState extends State<SwapHistory> {
               .sublist(start, end);
 
           return SingleChildScrollView(
-            controller: _scrollCtrl,
+            controller: widget.scrollCtrl,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -154,7 +155,7 @@ class _SwapHistoryState extends State<SwapHistory> {
         perPage: _perPage,
         onChanged: (int newPage) {
           setState(() => _currentPage = newPage);
-          _scrollCtrl.jumpTo(0);
+          widget.scrollCtrl.jumpTo(0);
         },
       ),
     );
