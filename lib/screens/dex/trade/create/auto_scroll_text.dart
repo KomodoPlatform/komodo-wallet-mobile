@@ -42,6 +42,12 @@ class _AutoScrollTextState extends State<AutoScrollText> {
   }
 
   @override
+  void dispose() {
+    _scrollController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: SingleChildScrollView(
@@ -57,13 +63,17 @@ class _AutoScrollTextState extends State<AutoScrollText> {
 
   Future<void> _animate() async {
     await Future<dynamic>.delayed(widget.delayBefore);
+
     while (true) {
-      await _scrollController.animateTo(
+      if (!mounted) return;
+      await _scrollController?.animateTo(
           _scrollController.position.maxScrollExtent,
           duration: widget.duration,
           curve: Curves.linear);
       await Future<dynamic>.delayed(Duration(milliseconds: 500));
-      await _scrollController.animateTo(
+
+      if (!mounted) return;
+      await _scrollController?.animateTo(
           _scrollController.position.minScrollExtent,
           duration: widget.duration,
           curve: Curves.linear);
