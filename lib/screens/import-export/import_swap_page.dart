@@ -269,7 +269,10 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
 
                 final Map<String, dynamic> data = await _getSwapData(file);
                 setState(() => _loading = false);
-                if (data == null) return;
+                if (data == null || data.isEmpty) {
+                  _showError(AppLocalizations.of(context).importEmptySwapData);
+                  return;
+                }
 
                 setState(() {
                   _swap = MmSwap.fromJson(data);
