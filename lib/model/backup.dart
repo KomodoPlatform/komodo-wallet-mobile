@@ -1,5 +1,6 @@
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/utils/log.dart';
 
 class Backup {
   Backup({
@@ -15,7 +16,11 @@ class Backup {
       contacts[uid] = Contact.fromJson(contactJson);
     });
     json['swaps']?.forEach((String uuid, dynamic swapJson) {
-      swaps[uuid] = MmSwap.fromJson(swapJson);
+      try {
+        swaps[uuid] = MmSwap.fromJson(swapJson);
+      } catch (e) {
+        Log('backup.dart:22]', e.toString());
+      }
     });
 
     return Backup(
