@@ -6,6 +6,8 @@ import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/dex/orders/active_orders.dart';
+import 'package:komodo_dex/screens/dex/orders/filters/filters.dart';
+import 'package:komodo_dex/screens/dex/orders/filters/filters_button.dart';
 import 'package:komodo_dex/screens/dex/orders/swap_history.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -14,20 +16,37 @@ class OrdersPage extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-  OrdersTab currentTab = OrdersTab.active;
+  OrdersTab _currentTab = OrdersTab.active;
+  final Map<OrdersTab, bool> _showFilters = {
+    OrdersTab.active: false,
+    OrdersTab.history: false,
+  };
+  final Map<OrdersTab, ActiveFilters> _activeFilters = {
+    OrdersTab.active: ActiveFilters(),
+    OrdersTab.history: ActiveFilters(),
+  };
+  final Map<OrdersTab, ScrollController> _scrollCtrl = {
+    OrdersTab.active: ScrollController(),
+    OrdersTab.history: ScrollController(),
+  };
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            SizedBox(width: 8),
+            _buildFiltersButton(),
+            Expanded(child: SizedBox()),
             FlatButton(
+                padding: EdgeInsets.all(4),
                 onPressed: () {
                   setState(() {
-                    currentTab = OrdersTab.active;
+                    _currentTab = OrdersTab.active;
                   });
                 },
                 child: Row(
@@ -36,7 +55,7 @@ class _OrdersPageState extends State<OrdersPage> {
                     Text(
                       AppLocalizations.of(context).ordersActive + ' ',
                       style: TextStyle(
-                          color: currentTab == OrdersTab.active
+                          color: _currentTab == OrdersTab.active
                               ? Theme.of(context).accentColor
                               : null),
                     ),
@@ -44,9 +63,10 @@ class _OrdersPageState extends State<OrdersPage> {
                   ],
                 )),
             FlatButton(
+              padding: EdgeInsets.all(4),
               onPressed: () {
                 setState(() {
-                  currentTab = OrdersTab.history;
+                  _currentTab = OrdersTab.history;
                 });
               },
               child: Row(
@@ -55,7 +75,7 @@ class _OrdersPageState extends State<OrdersPage> {
                   Text(
                     AppLocalizations.of(context).ordersHistory + ' ',
                     style: TextStyle(
-                        color: currentTab == OrdersTab.history
+                        color: _currentTab == OrdersTab.history
                             ? Theme.of(context).accentColor
                             : null),
                   ),
@@ -63,13 +83,55 @@ class _OrdersPageState extends State<OrdersPage> {
                 ],
               ),
             ),
+            SizedBox(width: 8),
           ],
         ),
         Flexible(
-            child: currentTab == OrdersTab.active
-                ? ActiveOrders()
-                : SwapHistory()),
+            child: _currentTab == OrdersTab.active
+                ? ActiveOrders(
+                    scrollCtrl: _scrollCtrl[OrdersTab.active],
+                    showFilters: _showFilters[OrdersTab.active],
+                    activeFilters: _activeFilters[OrdersTab.active],
+                    onFiltersChange: (filters) {
+                      setState(() {
+                        _activeFilters[OrdersTab.active] = filters;
+                      });
+                    },
+                  )
+                : SwapHistory(
+                    scrollCtrl: _scrollCtrl[OrdersTab.history],
+                    showFilters: _showFilters[OrdersTab.history],
+                    activeFilters: _activeFilters[OrdersTab.history],
+                    onFiltersChange: (filters) {
+                      setState(() {
+                        _activeFilters[OrdersTab.history] = filters;
+                      });
+                    },
+                  )),
       ],
+    );
+  }
+
+  Widget _buildFiltersButton() {
+    return FiltersButton(
+      activeFilters: _activeFilters[_currentTab],
+      onPressed: () async {
+        if (_scrollCtrl[_currentTab].offset > 0) {
+          if (!_showFilters[_currentTab]) {
+            setState(() => _showFilters[_currentTab] = true);
+          }
+          await Future<dynamic>.delayed(Duration(milliseconds: 100));
+          _scrollCtrl[_currentTab].animateTo(
+            _scrollCtrl[_currentTab].position.minScrollExtent,
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeIn,
+          );
+        } else {
+          setState(
+              () => _showFilters[_currentTab] = !_showFilters[_currentTab]);
+        }
+      },
+      isActive: _showFilters[_currentTab],
     );
   }
 
@@ -93,7 +155,7 @@ class _OrdersPageState extends State<OrdersPage> {
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w400,
-              color: currentTab == OrdersTab.history
+              color: _currentTab == OrdersTab.history
                   ? Theme.of(context).accentColor
                   : null,
             ),
@@ -117,7 +179,7 @@ class _OrdersPageState extends State<OrdersPage> {
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w400,
-            color: currentTab == OrdersTab.active
+            color: _currentTab == OrdersTab.active
                 ? Theme.of(context).accentColor
                 : null,
           ),

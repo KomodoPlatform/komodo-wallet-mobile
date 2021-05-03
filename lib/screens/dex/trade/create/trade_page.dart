@@ -337,12 +337,11 @@ class _TradePageState extends State<TradePage> with TickerProviderStateMixin {
                       backgroundColor: Theme.of(context).accentColor,
                       radius: 12,
                     ),
+              SizedBox(width: 4),
               Expanded(
-                child: Center(
-                  child: AutoScrollText(
-                    text: coin?.abbr ?? '-',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
+                child: AutoScrollText(
+                  text: coin?.abbr ?? '-',
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
               Icon(Icons.arrow_drop_down),
