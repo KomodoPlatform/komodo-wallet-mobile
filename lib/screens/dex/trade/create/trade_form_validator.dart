@@ -26,7 +26,7 @@ class TradeFormValidator {
   }
 
   String _validateNetwork() {
-    if (mainBloc.isNetworkOffline) {
+    if (mainBloc.networkStatus != NetworkStatus.Online) {
       return appLocalizations.noInternet;
     } else {
       return null;

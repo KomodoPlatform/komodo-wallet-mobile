@@ -74,7 +74,7 @@ class UpdatesProvider extends ChangeNotifier {
 
       isFetching = false;
       status = UpdateStatus.upToDate;
-      mainBloc.setIsNetworkOffline(true);
+      mainBloc.setNetworkStatus(NetworkStatus.Offline);
       notifyListeners();
       return;
     }

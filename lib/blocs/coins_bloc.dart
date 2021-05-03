@@ -429,7 +429,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> updateCoinBalances() async {
-    if (!mmSe.running || mainBloc.isNetworkOffline) return;
+    if (!mmSe.running || mainBloc.networkStatus != NetworkStatus.Online) return;
 
     final List<Coin> coins = await coinsBloc.electrumCoins();
     if (coins.isEmpty) {
