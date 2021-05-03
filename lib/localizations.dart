@@ -1344,8 +1344,9 @@ class AppLocalizations {
           name: 'importSomeItemsSkippedWarning');
   String get importSwapFailed =>
       Intl.message('Failed to import swap', name: 'importSwapFailed');
-  String get importInvalidSwapData =>
-      Intl.message('Invalid swap data: ', name: 'importInvalidSwapData');
+  String get importInvalidSwapData => Intl.message(
+      'Invalid swap data. Please provide a valid swap status JSON file.',
+      name: 'importInvalidSwapData');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
