@@ -122,6 +122,8 @@ class _SettingPageState extends State<SettingPage> {
                 BuildOldLogs(),
                 _buildTitle(AppLocalizations.of(context).legalTitle),
                 _buildDisclaimerToS(),
+                _buildTitle('Developer'),
+                _buildEnableTestCoins(),
                 _buildTitle(version),
                 _buildUpdate(),
                 const SizedBox(
@@ -676,6 +678,44 @@ class _SettingPageState extends State<SettingPage> {
                     .bodyText2
                     .color
                     .withOpacity(0.8))),
+      ),
+    );
+  }
+
+  Widget _buildEnableTestCoins() {
+    return CustomTile(
+      child: ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                'Enable Test Coins',
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontWeight: FontWeight.w300,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .color
+                        .withOpacity(0.7)),
+              ),
+            ),
+            StreamBuilder(
+              initialData: settingsBloc.enableTestCoins,
+              stream: settingsBloc.outEnableTestCoins,
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                return snapshot.hasData
+                    ? Switch(
+                        value: snapshot.data,
+                        onChanged: (bool dataSwitch) {
+                          settingsBloc.setEnableTestCoins(dataSwitch);
+                        },
+                      )
+                    : Container();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
