@@ -1339,6 +1339,7 @@ class AppLocalizations {
   String get importDecryptError =>
       Intl.message('Invalid password or corrupted data',
           name: 'importDecryptError');
+
   String get importSwapJsonDecodingError =>
       Intl.message('Error decoding json file',
           name: 'importSwapJsonDecodingError');
@@ -1354,6 +1355,24 @@ class AppLocalizations {
   String get importInvalidSwapData => Intl.message(
       'Invalid swap data. Please provide a valid swap status JSON file.',
       name: 'importInvalidSwapData');
+
+  // --- Filters
+  String get filtersButton => Intl.message('Filter', name: 'filtersButton');
+  String get filtersStatus => Intl.message('Status', name: 'filtersStatus');
+  String get filtersAll => Intl.message('All', name: 'filtersAll');
+  String get filtersSuccessful =>
+      Intl.message('Successful', name: 'filtersSuccessful');
+  String get filtersFailed => Intl.message('Failed', name: 'filtersFailed');
+  String get filtersFrom => Intl.message('From date', name: 'filtersFrom');
+  String get filtersTo => Intl.message('To date', name: 'filtersTo');
+  String get filtersType => Intl.message('Taker/Maker', name: 'filtersType');
+  String get filtersMaker => Intl.message('Maker', name: 'filtersMaker');
+  String get filtersTaker => Intl.message('Taker', name: 'filtersTaker');
+  String get filtersSell => Intl.message('Sell coin', name: 'filtersSell');
+  String get filtersReceive =>
+      Intl.message('Receive coin', name: ' filtersReceive');
+  String get filtersClearAll =>
+      Intl.message('Clear all filters', name: 'filtersClearAll');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

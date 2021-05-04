@@ -387,6 +387,7 @@ class CoinsBloc implements BlocBase {
     for (final String ticker in deactivate) {
       Log('coins_bloc:371', '$ticker is unknown, removing from active coins');
       await Db.coinInactive(ticker);
+      await removeCoinBalance(Coin(abbr: ticker));
     }
     return ret;
   }
