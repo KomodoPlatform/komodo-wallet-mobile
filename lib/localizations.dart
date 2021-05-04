@@ -1252,6 +1252,11 @@ class AppLocalizations {
   String get okButton => Intl.message('Ok', name: 'okButton');
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
+  String get developerTitle =>
+      Intl.message('Developer', name: 'developerTitle');
+  String get enableTestCoins =>
+      Intl.message('Enable Test Coins', name: 'enableTestCoins');
+
   // --- Maker order details ---
 
   String get makerDetailsTitle =>

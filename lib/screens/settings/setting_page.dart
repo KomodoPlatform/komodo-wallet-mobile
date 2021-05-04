@@ -122,7 +122,7 @@ class _SettingPageState extends State<SettingPage> {
                 BuildOldLogs(),
                 _buildTitle(AppLocalizations.of(context).legalTitle),
                 _buildDisclaimerToS(),
-                _buildTitle('Developer'),
+                _buildTitle(AppLocalizations.of(context).developerTitle),
                 _buildEnableTestCoins(),
                 _buildTitle(version),
                 _buildUpdate(),
@@ -690,7 +690,7 @@ class _SettingPageState extends State<SettingPage> {
           children: <Widget>[
             Expanded(
               child: Text(
-                'Enable Test Coins',
+                AppLocalizations.of(context).enableTestCoins,
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                     fontWeight: FontWeight.w300,
                     color: Theme.of(context)
