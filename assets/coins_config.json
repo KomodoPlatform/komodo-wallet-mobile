@@ -718,9 +718,9 @@
         "colorCoin": "0xFFF0B90B",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -734,9 +734,9 @@
         "colorCoin": "0xFF326464",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -747,9 +747,9 @@
         "name": "Aave",
         "coingeckoId": "aave",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -763,9 +763,9 @@
         "name": "Cardano",
         "coingeckoId": "cardano",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -779,9 +779,9 @@
         "name": "1inch",
         "coingeckoId": "1inch",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -795,9 +795,9 @@
         "name": "Cosmos",
         "coingeckoId": "cosmos",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -811,9 +811,9 @@
         "name": "Avalanche",
         "coingeckoId": "avalanche-2",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -827,9 +827,9 @@
         "name": "Balancer",
         "coingeckoId": "balancer",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -843,9 +843,9 @@
         "name": "Band Protocol",
         "coingeckoId": "band-protocol",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -859,9 +859,9 @@
         "name": "Bancor",
         "coingeckoId": "bancor",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -875,9 +875,9 @@
         "name": "Bitcoin BEP20",
         "coingeckoId": "bitcoin",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -891,9 +891,9 @@
         "name": "BUSD BEP20",
         "coingeckoId": "binance-usd",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -908,9 +908,9 @@
         "name": "PancakeSwap",
         "coingeckoId": "pancakeswap-token",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -924,9 +924,9 @@
         "name": "Compound",
         "coingeckoId": "compound-governance-token",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -940,9 +940,9 @@
         "name": "DAI",
         "coingeckoId": "dai",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -956,9 +956,9 @@
         "name": "DODO",
         "coingeckoId": "dodo",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -972,9 +972,9 @@
         "name": "Polkadot",
         "coingeckoId": "polkadot",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -989,9 +989,9 @@
         "name": "Elrond",
         "coingeckoId": "elrond-erd-2",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1006,9 +1006,9 @@
         "name": "aelf",
         "coingeckoId": "aelf",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1022,9 +1022,9 @@
         "name": "EOS",
         "coingeckoId": "eos",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1038,9 +1038,9 @@
         "name": "Ethereum Classic",
         "coingeckoId": "ethereum-classic",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1054,9 +1054,9 @@
         "name": "Filecoin",
         "coingeckoId": "filecoin",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1070,9 +1070,9 @@
         "name": "IOTA",
         "coingeckoId": "iota",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1086,9 +1086,9 @@
         "name": "IoTeX",
         "coingeckoId": "iotex",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1102,9 +1102,9 @@
         "name": "Polygon",
         "coingeckoId": "matic-network",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1118,9 +1118,9 @@
         "name": "NEAR Protocol",
         "coingeckoId": "near",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1134,9 +1134,9 @@
         "name": "Ontology",
         "coingeckoId": "ontology",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1150,9 +1150,9 @@
         "name": "Paxos Standard",
         "coingeckoId": "paxos-standard",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1166,9 +1166,9 @@
         "name": "PAX Gold",
         "coingeckoId": "pax-gold",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1182,9 +1182,9 @@
         "name": "Ethereum BEP20",
         "coingeckoId": "ethereum",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1198,9 +1198,9 @@
         "name": "USDC BEP20",
         "coingeckoId": "usd-coin",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1214,9 +1214,9 @@
         "name": "Tether",
         "coingeckoId": "tether",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1230,9 +1230,9 @@
         "name": "BAT-BEP20",
         "coingeckoId": "basic-attention-token",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1246,9 +1246,9 @@
         "name": "Chainlink",
         "coingeckoId": "chainlink",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1262,9 +1262,9 @@
         "name": "Swipe",
         "coingeckoId": "swipe",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1278,9 +1278,9 @@
         "name": "Sushi",
         "coingeckoId": "sushi",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1294,9 +1294,9 @@
         "name": "Maker",
         "coingeckoId": "maker",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1310,9 +1310,9 @@
         "name": "Synthetix",
         "coingeckoId": "havven",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1326,9 +1326,9 @@
         "name": "XRP",
         "coingeckoId": "ripple",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1342,9 +1342,9 @@
         "name": "Tezos",
         "coingeckoId": "tezos",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1358,9 +1358,9 @@
         "name": "Venus",
         "coingeckoId": "venus",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1374,9 +1374,9 @@
         "name": "yearn finance",
         "coingeckoId": "yearn-finance",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1390,9 +1390,9 @@
         "name": "DFI.Money",
         "coingeckoId": "yfii-finance",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1406,9 +1406,9 @@
         "name": "Zilliqa",
         "coingeckoId": "zilliqa",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
@@ -1422,9 +1422,9 @@
         "name": "Uniswap",
         "coingeckoId": "uniswap",
         "serverList": [
-            "https://bsc-dataseed.binance.org",
-            "https://bsc-dataseed1.defibit.io",
-            "https://bsc-dataseed1.ninicoin.io"
+            "http://bsc1.cipig.net:8655",
+            "http://bsc2.cipig.net:8655",
+            "http://bsc3.cipig.net:8655"
         ],
         "explorerUrl": [
             "https://bscscan.com/"
