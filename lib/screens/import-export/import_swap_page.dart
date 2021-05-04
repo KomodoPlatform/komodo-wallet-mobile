@@ -277,8 +277,8 @@ class _ImportSwapPageState extends State<ImportSwapPage> {
                   });
                 } catch (e) {
                   _showError(
-                      AppLocalizations.of(context).importInvalidSwapData +
-                          e.toString());
+                      AppLocalizations.of(context).importInvalidSwapData);
+                  Log('import_swap_page:281]', e.toString());
                 }
               },
         text: AppLocalizations.of(context).selectFileImport,
