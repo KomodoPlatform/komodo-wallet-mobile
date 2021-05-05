@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
+import 'package:komodo_dex/model/get_import_swaps.dart';
 import 'package:komodo_dex/model/get_min_trading_volume.dart';
+import 'package:komodo_dex/model/import_swaps.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/get_convert_address.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
@@ -715,6 +717,32 @@ class ApiProvider {
     } catch (e) {
       throw _catchErrorString(
           'getMinTradingVolume', e, 'mm min_trading_volume] $e');
+    }
+  }
+
+  Future<dynamic> getImportSwaps(
+    GetImportSwaps request, {
+    http.Client client,
+  }) async {
+    client ??= mmSe.client;
+
+    try {
+      final userBody = await _assertUserpass(client, request);
+      final response = await userBody.client
+          .post(url, body: getImportSwapsToJson(userBody.body));
+      _assert200(response);
+      _saveRes('getImportSwaps', response);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = jsonDecode(response.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      final importSwaps = ImportSwaps.fromJson(jbody);
+
+      return importSwaps;
+    } catch (e) {
+      return _catchErrorString('getImportSwaps', e, 'mm import_swaps] $e');
     }
   }
 }

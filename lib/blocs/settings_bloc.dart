@@ -27,12 +27,15 @@ class SettingsBloc implements BlocBase {
     if (_prefs.getBool('showOrderDetailsByTap') == null) {
       _prefs.setBool('showOrderDetailsByTap', true);
     }
+
+    enableTestCoins = _prefs.getBool('switch_test_coins') ?? enableTestCoins;
   }
 
   bool isDeleteLoading = true;
   bool showBalance = true;
   bool isLightTheme = false;
   bool showSoundsExplanationDialog = true;
+  bool enableTestCoins = false;
 
   final StreamController<bool> _isDeleteLoadingController =
       StreamController<bool>.broadcast();
@@ -54,11 +57,17 @@ class SettingsBloc implements BlocBase {
   Sink<bool> get _inLightTheme => _isLightThemeController.sink;
   Stream<bool> get outLightTheme => _isLightThemeController.stream;
 
+  final StreamController<bool> _enableTestCoinsController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inEnableTestCoins => _enableTestCoinsController.sink;
+  Stream<bool> get outEnableTestCoins => _enableTestCoinsController.stream;
+
   @override
   void dispose() {
     _isDeleteLoadingController.close();
     _showBalanceController?.close();
     _showSoundsDialogCtrl?.close();
+    _enableTestCoinsController?.close();
   }
 
   void setDeleteLoading(bool isLoading) {
@@ -116,5 +125,11 @@ class SettingsBloc implements BlocBase {
     isLightTheme = val;
     _inLightTheme.add(val);
     _prefs.setBool('isLightTheme', val);
+  }
+
+  void setEnableTestCoins(bool val) {
+    enableTestCoins = val;
+    _inEnableTestCoins.add(val);
+    _prefs.setBool('switch_test_coins', val);
   }
 }

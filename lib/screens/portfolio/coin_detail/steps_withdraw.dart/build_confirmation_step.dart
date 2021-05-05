@@ -332,7 +332,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   }
 
   Future<void> _onPressedConfirmWithdraw(double sendAmount) async {
-    if (mainBloc.isNetworkOffline) {
+    if (mainBloc.networkStatus != NetworkStatus.Online) {
       widget.onNoInternet();
     } else if (_withdrawResponse is WithdrawResponse) {
       widget.onConfirmPressed(_withdrawResponse);

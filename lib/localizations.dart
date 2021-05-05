@@ -1252,6 +1252,11 @@ class AppLocalizations {
   String get okButton => Intl.message('Ok', name: 'okButton');
   String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
 
+  String get developerTitle =>
+      Intl.message('Developer', name: 'developerTitle');
+  String get enableTestCoins =>
+      Intl.message('Enable Test Coins', name: 'enableTestCoins');
+
   // --- Maker order details ---
 
   String get makerDetailsTitle =>
@@ -1282,8 +1287,12 @@ class AppLocalizations {
 
   // --- Import/Export
   String get importLink => Intl.message('Import', name: 'importLink');
+  String get importSingleSwapLink =>
+      Intl.message('Import Single Swap', name: 'importSingleSwapLink');
   String get exportLink => Intl.message('Export', name: 'exportLink');
   String get importTitle => Intl.message('Import', name: 'importTitle');
+  String get importSingleSwapTitle =>
+      Intl.message('Import Swap', name: 'importSingleSwapTitle');
   String get exportTitle => Intl.message('Export', name: 'exportTitle');
   String get exportDesc =>
       Intl.message('Please select items to export into encrypted file.',
@@ -1291,6 +1300,9 @@ class AppLocalizations {
   String get importLoadDesc =>
       Intl.message('Please select encrypted file to import.',
           name: 'importLoadDesc');
+  String get importLoadSwapDesc =>
+      Intl.message('Please select plain text swap file to import.',
+          name: 'importLoadSwapDesc');
   String get importLoading => Intl.message('Opening...', name: 'importLoading');
   String get importDesc =>
       Intl.message('Items to be imported:', name: 'importDesc');
@@ -1298,6 +1310,8 @@ class AppLocalizations {
       Intl.message('Notes', name: 'exportNotesTitle');
   String get exportContactsTitle =>
       Intl.message('Contacts', name: 'exportContactsTitle');
+  String get exportSwapsTitle =>
+      Intl.message('Swaps', name: 'exportSwapsTitle');
   String get nothingFound =>
       Intl.message('Nothing found', name: 'nothingFound');
   String get exportButton => Intl.message('Export', name: 'exportButton');
@@ -1330,6 +1344,22 @@ class AppLocalizations {
   String get importDecryptError =>
       Intl.message('Invalid password or corrupted data',
           name: 'importDecryptError');
+
+  String get importSwapJsonDecodingError =>
+      Intl.message('Error decoding json file',
+          name: 'importSwapJsonDecodingError');
+  String get orderTypePartial =>
+      Intl.message(' Order', name: 'orderTypePartial');
+  String get couldntImportError =>
+      Intl.message("Couldn't import: ", name: 'couldntImportError');
+  String get importSomeItemsSkippedWarning =>
+      Intl.message('Some items have been skipped',
+          name: 'importSomeItemsSkippedWarning');
+  String get importSwapFailed =>
+      Intl.message('Failed to import swap', name: 'importSwapFailed');
+  String get importInvalidSwapData => Intl.message(
+      'Invalid swap data. Please provide a valid swap status JSON file.',
+      name: 'importInvalidSwapData');
 
   // --- Filters
   String get filtersButton => Intl.message('Filter', name: 'filtersButton');
