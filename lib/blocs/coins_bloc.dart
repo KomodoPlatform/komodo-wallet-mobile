@@ -52,6 +52,8 @@ class CoinsBloc implements BlocBase {
   Sink<dynamic> get _inTransactions => _transactionsController.sink;
   Stream<dynamic> get outTransactions => _transactionsController.stream;
 
+  // currentActiveCoin == null, when all coins
+  // queued for activation are activated
   CoinToActivate currentActiveCoin = CoinToActivate();
 
   // Streams to handle the list coin

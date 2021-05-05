@@ -13,10 +13,6 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class RewardsProvider extends ChangeNotifier {
-  RewardsProvider() {
-    update();
-  }
-
   final AppLocalizations _localizations = AppLocalizations();
   List<RewardsItem> _rewards;
   double _total = 0.0;

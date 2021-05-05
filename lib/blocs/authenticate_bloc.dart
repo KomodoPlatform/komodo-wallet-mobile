@@ -9,6 +9,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -83,6 +84,8 @@ class AuthenticateBloc extends BlocBase {
     await coinsBloc.loadWalletSnapshot();
 
     await mmSe.init(passphrase);
+
+    await notifService.init();
 
     isLogin = true;
     _inIsLogin.add(true);
