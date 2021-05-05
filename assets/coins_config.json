@@ -1432,21 +1432,5 @@
         "type": "bep",
         "colorCoin": "0xffff309e",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
-    },
-    {
-        "name": "VOTE2021",
-        "type": "smartChain",
-        "proto": "SSL",
-        "abbr": "VOTE2021",
-        "coingeckoId": "test-token",
-        "colorCoin": "0xFF326464",
-        "serverList": [
-            "electrum1.cipig.net:20002",
-            "electrum2.cipig.net:20002",
-            "electrum3.cipig.net:20002"
-        ],
-        "explorerUrl": [
-            "https://vote.kmdexplorer.io/"
-        ]
     }
 ]
