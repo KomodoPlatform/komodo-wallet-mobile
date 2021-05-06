@@ -1464,5 +1464,23 @@
         "explorerUrl": [
             "https://testnet.bscscan.com/"
         ]
+    },
+    {
+        "name": "QRC20",
+        "type": "qrc",
+        "proto": "tcp",
+        "abbr": "QRC20",
+        "coingeckoId": "test-token",
+        "testCoin": true,
+        "swap_contract_address": "0xba8b71f3544b93e2f681f996da519a98ace0107a",
+        "colorCoin": "0xFF009dcd",
+        "serverList": [
+            "electrum1.cipig.net:10071",
+            "electrum2.cipig.net:10071",
+            "electrum3.cipig.net:10071"
+        ],
+        "explorerUrl": [
+            "https://testnet.qtum.info/"
+        ]
     }
 ]
