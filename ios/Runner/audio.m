@@ -49,7 +49,7 @@ static NSString* dex_assets_audio;
 
 /// Scheduled between files in order to hold to the `isPlayingProcessAssertion`.
 static AVAudioFile* ballast_file;
-void audio_ballast() {
+void audio_ballast(void) {
     if (ballast_file == nil) {
         NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "none.mp3"];
         
@@ -59,7 +59,7 @@ void audio_ballast() {
         if (err) {os_log (OS_LOG_DEFAULT, "audio_ballast] !file: %{public}@", err); return;}
     }
     
-    [dex_player scheduleSegment: ballast_file startingFrame: 60000 frameCount: 30000 atTime: nil completionHandler: nil];}
+    [dex_player scheduleFile:ballast_file atTime:nil completionHandler:nil];}
 
 /// Invoked by completion handlers in order to maintain the background audio loop.
 void audio_reschedule (int generation) {
@@ -93,13 +93,6 @@ void audio_init (const char* assets_ticking) {
     
     const char* documents = documentDirectory();
     if (documents == NULL) {os_log (OS_LOG_DEFAULT, "audio_init] !documents"); return;}
-    
-    NSString* documents_ns = [[NSString alloc] initWithUTF8String: documents];
-    NSArray* documents_a = [[NSFileManager defaultManager] contentsOfDirectoryAtPath: documents_ns error: NULL];
-    [documents_a enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString* filename = (NSString*) obj;
-        //os_log (OS_LOG_DEFAULT, "audio_init] Documents file: %{public}s", filename.UTF8String);
-    }];
     
     if (!assets_ticking) {os_log (OS_LOG_DEFAULT, "audio_init] !assets_ticking"); return;}
     // TODO: change with actual sound-scheme samples
