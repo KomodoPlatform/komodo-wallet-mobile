@@ -144,8 +144,18 @@ class Swap {
   String get takerAbbr => started?.event?.data?.takerCoin;
 
   /// Maker coin instance
-  Coin get makerCoin => coinsBloc.getCoinByAbbr(makerAbbr);
+  Coin get makerCoin {
+    final c = coinsBloc.getCoinByAbbr(makerAbbr);
+    if (c != null) return c;
+    final kc = coinsBloc.getKnownCoinByAbbr(makerAbbr);
+    return kc;
+  }
 
   /// Taker coin instance
-  Coin get takerCoin => coinsBloc.getCoinByAbbr(takerAbbr);
+  Coin get takerCoin {
+    final c = coinsBloc.getCoinByAbbr(takerAbbr);
+    if (c != null) return c;
+    final kc = coinsBloc.getKnownCoinByAbbr(takerAbbr);
+    return kc;
+  }
 }
