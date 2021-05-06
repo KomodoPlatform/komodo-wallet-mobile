@@ -134,7 +134,7 @@ class DetailedSwapStep extends StatelessWidget {
                 ),
               ),
             ),
-            _buildViewInExplorer(),
+            if (explorerUrl != '') _buildViewInExplorer(),
           ],
         ),
       );

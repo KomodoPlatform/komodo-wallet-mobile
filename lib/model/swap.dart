@@ -121,13 +121,15 @@ class Swap {
   /// Returns a maker explorer url if
   /// it exists, otherwise an empty string.
   String get makerExplorerUrl {
-    return makerCoin.explorerUrl[0] ?? '';
+    if (makerCoin != null) return makerCoin.explorerUrl[0];
+    return '';
   }
 
   /// Returns a taker explorer url if
   /// it exists, otherwise an empty string.
   String get takerExplorerUrl {
-    return takerCoin.explorerUrl[0] ?? '';
+    if (takerCoin != null) return takerCoin.explorerUrl[0];
+    return '';
   }
 
   /// Index of current swap step.
