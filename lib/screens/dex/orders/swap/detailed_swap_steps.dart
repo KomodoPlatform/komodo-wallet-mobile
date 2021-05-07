@@ -168,12 +168,16 @@ class _DetailedSwapStepsState extends State<DetailedSwapSteps> {
         list.add(DetailedSwapStep(
           title: swap.result.successEvents[i],
           txHash: swap.result.successEvents[i].toLowerCase().contains('taker')
-              ? swap.doWeNeed0xPrefixForTaker
-                  ? '0x' + _getTxHash(swap, i)
-                  : _getTxHash(swap, i)
-              : swap.doWeNeed0xPrefixForMaker
-                  ? '0x' + _getTxHash(swap, i)
-                  : _getTxHash(swap, i),
+              ? swap.takerCoin == null
+                  ? null
+                  : swap.doWeNeed0xPrefixForTaker
+                      ? '0x' + _getTxHash(swap, i)
+                      : _getTxHash(swap, i)
+              : swap.makerCoin == null
+                  ? null
+                  : swap.doWeNeed0xPrefixForMaker
+                      ? '0x' + _getTxHash(swap, i)
+                      : _getTxHash(swap, i),
           explorerUrl:
               swap.result.successEvents[i].toLowerCase().contains('taker')
                   ? swap.takerExplorerUrl
