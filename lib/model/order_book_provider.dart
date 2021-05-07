@@ -14,7 +14,6 @@ import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
-
 import 'get_orderbook.dart';
 
 class OrderBookProvider extends ChangeNotifier {
@@ -34,6 +33,9 @@ class OrderBookProvider extends ChangeNotifier {
 
   Orderbook getOrderBook([CoinsPair coinsPair]) =>
       syncOrderbook.getOrderBook(coinsPair);
+
+  OrderbookDepth getDepth([CoinsPair coinsPair]) =>
+      syncOrderbook.getDepth(coinsPair);
 
   List<Orderbook> orderbooksForCoin([Coin coin]) =>
       syncOrderbook.orderbooksForCoin(coin);
@@ -112,8 +114,8 @@ class SyncOrderbook {
   /// [ChangeNotifier] proxies linked to this singleton.
   final Set<OrderBookProvider> _providers = {};
 
-  Map<String, Orderbook> _orderBooks; // {'BTC/KMD': Orderbook(),}
-  Map<String, OrderbookDepth> _orderbooksDepth;
+  Map<String, Orderbook> _orderBooks = {}; // {'BTC/KMD': Orderbook(),}
+  Map<String, OrderbookDepth> _orderbooksDepth = {};
   CoinsPair _activePair;
 
   /// Maps short order IDs to latest liveliness markers.
@@ -151,6 +153,16 @@ class SyncOrderbook {
     return _orderBooks[_tickerStr(coinsPair)];
   }
 
+  OrderbookDepth getDepth([CoinsPair coinsPair]) {
+    coinsPair ??= activePair;
+    if (coinsPair.buy == null || coinsPair.sell == null) return null;
+
+    if (!_depthTickers.contains(_tickerStr(coinsPair))) {
+      _depthTickers.add(_tickerStr(coinsPair));
+    }
+    return _orderbooksDepth[_tickerStr(coinsPair)];
+  }
+
   Future<void> subscribeDepth([Coin coin, CoinType type]) async {
     coin ??= activePair.sell;
     type ??= CoinType.base;
@@ -166,7 +178,7 @@ class SyncOrderbook {
         buy: type == CoinType.rel ? coin : coinBalance.coin,
       ));
 
-      if (!_tickers.contains(ticker)) {
+      if (!_depthTickers.contains(ticker)) {
         _depthTickers.add(ticker);
         wasChanged = true;
       }

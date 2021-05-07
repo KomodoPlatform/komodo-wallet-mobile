@@ -91,7 +91,6 @@ class _OrderBookPageState extends State<OrderBookPage> {
                   autoOpen: _orderBookProvider.activePair?.sell == null &&
                       _orderBookProvider.activePair?.buy != null,
                   compact: MediaQuery.of(context).size.width < 360,
-                  hideInactiveCoins: false,
                   onChange: (Coin value) {
                     setState(() {
                       _showChart = false;
@@ -124,7 +123,6 @@ class _OrderBookPageState extends State<OrderBookPage> {
                 autoOpen: _orderBookProvider.activePair?.buy == null &&
                     _orderBookProvider.activePair?.sell != null,
                 compact: MediaQuery.of(context).size.width < 360,
-                hideInactiveCoins: false,
                 onChange: (Coin value) {
                   setState(() {
                     _showChart = false;
