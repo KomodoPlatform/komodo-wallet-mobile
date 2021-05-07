@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show File, Platform, Process;
 
+import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
-    show EventChannel, MethodChannel, rootBundle;
+    show EventChannel, MethodChannel, rootBundle, SystemChannels;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -145,6 +147,7 @@ class MMService {
   Future<void> init(String passphrase) async {
     await mmSe.runBin();
     metrics();
+    tradeForm.reset();
 
     jobService.install('updateOrdersAndSwaps', 3.14, (j) async {
       if (!mmSe.running) return;
@@ -347,6 +350,13 @@ class MMService {
       return coinInitFromJson(
           await rootBundle.loadString('assets/coins_init_mm2.json'));
     } catch (e) {
+      if (kDebugMode) {
+        Log('mm_service', 'readJsonCoinInit] $e');
+        printError('$e');
+        printError('Try to run `\$sh fetch_coins.sh`.'
+            ' See README.md for details.');
+        SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
+      }
       return <CoinInit>[];
     }
   }

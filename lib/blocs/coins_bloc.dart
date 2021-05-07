@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -33,6 +34,10 @@ class CoinsBloc implements BlocBase {
       _saveWalletSnapshot();
     });
   }
+
+  LinkedHashMap<String, Coin> _knownCoins;
+
+  LinkedHashMap<String, Coin> get knownCoins => _knownCoins;
 
   List<CoinBalance> coinBalance = <CoinBalance>[];
 
@@ -99,10 +104,22 @@ class CoinsBloc implements BlocBase {
     return getBalanceByAbbr(abbr)?.coin;
   }
 
+  Coin getKnownCoinByAbbr(String abbr) {
+    return knownCoins.containsKey(abbr) ? knownCoins[abbr] : null;
+  }
+
   CoinBalance getBalanceByAbbr(String abbr) {
     return coinBalance.firstWhere(
         (CoinBalance balance) => balance.coin.abbr == abbr,
         orElse: () => null);
+  }
+
+  bool isCoinActive(String coin) {
+    final CoinBalance balance = coinBalance.firstWhere(
+        (CoinBalance bal) => bal.coin.abbr == coin,
+        orElse: () => null);
+
+    return balance != null;
   }
 
   Future<void> initCoinBeforeActivation() async {
@@ -219,7 +236,7 @@ class CoinsBloc implements BlocBase {
   Future<void> updateTransactions(Coin coin, int limit, String fromId) async {
     try {
       dynamic transactions;
-      if (coin.type == 'erc') {
+      if (coin.type == 'erc' || coin.type == 'bep') {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {
@@ -379,7 +396,11 @@ class CoinsBloc implements BlocBase {
     for (final String ticker in deactivate) {
       Log('coins_bloc:371', '$ticker is unknown, removing from active coins');
       await Db.coinInactive(ticker);
+      await removeCoinBalance(Coin(abbr: ticker));
     }
+
+    _knownCoins = known;
+
     return ret;
   }
 
@@ -420,7 +441,7 @@ class CoinsBloc implements BlocBase {
   }
 
   Future<void> updateCoinBalances() async {
-    if (!mmSe.running || mainBloc.isNetworkOffline) return;
+    if (!mmSe.running || mainBloc.networkStatus != NetworkStatus.Online) return;
 
     final List<Coin> coins = await coinsBloc.electrumCoins();
     if (coins.isEmpty) {
@@ -525,7 +546,7 @@ class CoinsBloc implements BlocBase {
     const String fromId = null;
     try {
       dynamic transactions;
-      if (coin.type == 'erc') {
+      if (coin.type == 'erc' || coin.type == 'bep') {
         transactions = await getErcTransactions.getTransactions(
             coin: coin, fromId: fromId);
       } else {

@@ -89,6 +89,11 @@ class MmSwap {
     _recoverable = json['recoverable'];
     gui = json['gui'];
     mmVersion = json['mm_version'];
+    makerCoin = json['maker_coin'];
+    makerAmount = json['maker_amount'];
+    takerCoin = json['taker_coin'];
+    takerAmount = json['taker_amount'];
+    myOrderUuid = json['my_order_uuid'];
   }
 
   /// if at least 1 of the events happens, the swap is considered a failure
@@ -129,7 +134,15 @@ class MmSwap {
 
   String gui, mmVersion;
 
-  Map<String, dynamic> get toJson => <String, dynamic>{
+  String makerCoin;
+  String makerAmount;
+
+  String takerCoin;
+  String takerAmount;
+
+  String myOrderUuid;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'error_events':
             List<dynamic>.from(errorEvents.map<dynamic>((dynamic x) => x)) ??
                 <String>[],
@@ -142,7 +155,12 @@ class MmSwap {
         'uuid': uuid ?? '',
         'recoverable': _recoverable,
         'gui': gui,
-        'mm_version': mmVersion
+        'mm_version': mmVersion,
+        'maker_coin': makerCoin,
+        'maker_amount': makerAmount,
+        'taker_coin': takerCoin,
+        'taker_amount': takerAmount,
+        'my_order_uuid': myOrderUuid,
       };
 
   Status get status {

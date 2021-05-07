@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:intl/intl.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:file_picker/file_picker.dart';
@@ -8,13 +9,19 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
+import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/export_import_list_item.dart';
+import 'package:komodo_dex/model/get_import_swaps.dart';
+import 'package:komodo_dex/model/import_swaps.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
 import 'package:komodo_dex/screens/import-export/export_import_list.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
 import 'package:komodo_dex/screens/import-export/overwrite_dialog_content.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/lock_service.dart';
+import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +39,7 @@ class _ImportPageState extends State<ImportPage> {
   bool _done = false;
   Backup _all;
   Backup _selected;
+  int _numSwapsImported = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +63,7 @@ class _ImportPageState extends State<ImportPage> {
               _buildImportHeader(),
               _buildNotes(),
               _buildContacts(),
+              _buildSwaps(),
               _buildImportButton(),
             }
           ],
@@ -70,6 +79,7 @@ class _ImportPageState extends State<ImportPage> {
         AppLocalizations.of(context).exportNotesTitle: _selected.notes.length,
         AppLocalizations.of(context).exportContactsTitle:
             _selected.contacts.length,
+        AppLocalizations.of(context).exportSwapsTitle: _numSwapsImported,
       },
     );
   }
@@ -82,7 +92,11 @@ class _ImportPageState extends State<ImportPage> {
           if (_validate()) {
             await _importNotes();
             await _importContacts();
-            setState(() => _done = true);
+            final numSwaps = await _importSwaps();
+            setState(() {
+              _numSwapsImported = numSwaps;
+              _done = true;
+            });
           }
         },
         text: AppLocalizations.of(context).importButton,
@@ -91,12 +105,38 @@ class _ImportPageState extends State<ImportPage> {
   }
 
   bool _validate() {
-    if (_selected.notes.isEmpty && _selected.contacts.isEmpty) {
+    if (_selected.notes.isEmpty &&
+        _selected.contacts.isEmpty &&
+        _selected.swaps.isEmpty) {
       _showError(AppLocalizations.of(context).noItemsToImport);
       return false;
     }
 
     return true;
+  }
+
+  Future<int> _importSwaps() async {
+    final List<MmSwap> listSwaps = [];
+
+    _selected.swaps?.forEach((uuid, swap) {
+      listSwaps.add(swap);
+    });
+
+    final dynamic r = await MM.getImportSwaps(GetImportSwaps(swaps: listSwaps));
+
+    if (r is ErrorString) {
+      _showError(AppLocalizations.of(context).couldntImportError + r.error);
+      return 0;
+    }
+
+    if (r is ImportSwaps) {
+      if (r.result.skipped.isNotEmpty) {
+        _showError(AppLocalizations.of(context).importSomeItemsSkippedWarning);
+      }
+      return r.result.imported.length;
+    }
+
+    return 0;
   }
 
   Future<void> _importContacts() async {
@@ -160,6 +200,7 @@ class _ImportPageState extends State<ImportPage> {
 
   Widget _buildNotes() {
     final List<ExportImportListItem> items = [];
+
     _all.notes.forEach((String id, dynamic note) {
       items.add(ExportImportListItem(
           checked: _selected.notes.containsKey(id),
@@ -184,6 +225,7 @@ class _ImportPageState extends State<ImportPage> {
 
   Widget _buildContacts() {
     final List<ExportImportListItem> items = [];
+
     _all.contacts.forEach((String id, dynamic contact) {
       items.add(ExportImportListItem(
           checked: _selected.contacts.containsKey(id),
@@ -209,7 +251,12 @@ class _ImportPageState extends State<ImportPage> {
                   coinsRow.add(Text(
                     coin + (i < coins.length - 1 ? ', ' : ''),
                     style: TextStyle(
-                        fontSize: 10, color: Theme.of(context).disabledColor),
+                        fontSize: 10,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withOpacity(0.7)),
                   ));
                 }
 
@@ -227,13 +274,110 @@ class _ImportPageState extends State<ImportPage> {
     );
   }
 
+  Widget _buildSwaps() {
+    final List<ExportImportListItem> items = [];
+
+    _all.swaps.forEach((String id, dynamic swap) {
+      items.add(
+        ExportImportListItem(
+          checked: _selected.swaps.containsKey(id),
+          onChange: (bool val) {
+            setState(() {
+              val ? _selected.swaps[id] = swap : _selected.swaps.remove(id);
+            });
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              truncateMiddle(
+                swap.uuid,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 14),
+              ),
+              SizedBox(height: 2),
+              Row(
+                children: <Widget>[
+                  Text(
+                    DateFormat('dd MMM yyyy HH:mm').format(
+                        DateTime.fromMillisecondsSinceEpoch(
+                            swap.myInfo.startedAt * 1000)),
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          fontSize: 14,
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .color
+                              .withOpacity(0.5),
+                        ),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Text(
+                    (swap.type == 'Maker' || swap.type == 'Taker')
+                        ? swap.type == 'Maker'
+                            ? AppLocalizations.of(context).makerOrder
+                            : AppLocalizations.of(context).takerOrder
+                        : swap.type +
+                            AppLocalizations.of(context).orderTypePartial,
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          fontSize: 14,
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .color
+                              .withOpacity(0.5),
+                        ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 2),
+              Row(
+                children: <Widget>[
+                  Text(
+                    cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)) +
+                        ' ' +
+                        swap.myInfo.myCoin,
+                  ),
+                  SizedBox(width: 4),
+                  Image.asset(
+                    'assets/${swap.myInfo.myCoin.toLowerCase()}.png',
+                    height: 20,
+                  ),
+                  SizedBox(width: 8),
+                  Icon(Icons.swap_horiz),
+                  SizedBox(width: 8),
+                  Text(
+                    cutTrailingZeros(formatPrice(swap.myInfo.otherAmount, 4)) +
+                        ' ' +
+                        swap.myInfo.otherCoin,
+                  ),
+                  SizedBox(width: 4),
+                  Image.asset(
+                    'assets/${swap.myInfo.otherCoin.toLowerCase()}.png',
+                    height: 20,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+
+    return ExportImportList(
+      items: items,
+      title: AppLocalizations.of(context).exportSwapsTitle,
+    );
+  }
+
   Widget _buildImportHeader() {
     return Container(
       padding: EdgeInsets.fromLTRB(12, 24, 12, 24),
       child: Text(AppLocalizations.of(context).importDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).disabledColor,
+            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
           )),
     );
   }
@@ -245,12 +389,20 @@ class _ImportPageState extends State<ImportPage> {
           ? Text(AppLocalizations.of(context).importLoading,
               style: TextStyle(
                 height: 1.3,
-                color: Theme.of(context).disabledColor,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .color
+                    .withOpacity(0.7),
               ))
           : Text(AppLocalizations.of(context).importLoadDesc,
               style: TextStyle(
                 height: 1.3,
-                color: Theme.of(context).disabledColor,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .color
+                    .withOpacity(0.7),
               )),
     );
   }
@@ -374,16 +526,16 @@ class _ImportPageState extends State<ImportPage> {
       return null;
     }
 
-    final String length32Key = md5.convert(utf8.encode(pass)).toString();
-    final key = encrypt.Key.fromUtf8(length32Key);
-    final iv = encrypt.IV.fromLength(16);
-
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-    final String str = await file.readAsString();
-
-    final encrypted = encrypt.Encrypted.fromBase64(str);
-
     try {
+      final String length32Key = md5.convert(utf8.encode(pass)).toString();
+      final key = encrypt.Key.fromUtf8(length32Key);
+      final iv = encrypt.IV.fromLength(16);
+
+      final encrypter = encrypt.Encrypter(encrypt.AES(key));
+      final String str = await file.readAsString();
+
+      final encrypted = encrypt.Encrypted.fromBase64(str);
+
       final decrypted = encrypter.decrypt(encrypted, iv: iv);
       return jsonDecode(decrypted);
     } catch (e) {

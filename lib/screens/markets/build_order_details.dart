@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
 import 'package:komodo_dex/screens/addressbook/addressbook_page.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -163,18 +164,20 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
     if (cexPrice == 0 || widget.sellAmount == null) return [];
 
     final double orderPrice = 1 / double.parse(widget.order.price);
-    final double delta = (cexPrice - orderPrice) * 100 / orderPrice;
+    double delta = (orderPrice - cexPrice) * 100 / cexPrice;
+    if (delta < -99.99) delta = -99.99;
+    if (delta > 99.99) delta = 99.99;
     final num sign = delta.sign;
 
     String message;
     switch (sign) {
-      case -1:
+      case 1:
         {
           message = AppLocalizations.of(context)
               .orderDetailsExpedient(formatPrice(delta, 2));
           break;
         }
-      case 1:
+      case -1:
         {
           message = AppLocalizations.of(context)
               .orderDetailsExpensive(formatPrice(delta, 2));
@@ -200,7 +203,10 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
             alignment: Alignment.centerLeft,
             child: Text(
               message,
-              style: const TextStyle(color: cexColor),
+              style: TextStyle(
+                  color: settingsBloc.isLightTheme
+                      ? cexColorLight.withAlpha(150)
+                      : cexColor.withAlpha(150)),
             ),
           ),
         ],
@@ -325,7 +331,9 @@ class _BuildOrderDetailsState extends State<BuildOrderDetails> {
                   fontWeight: FontWeight.w400,
                   color: _isEnoughVolume()
                       ? null
-                      : Theme.of(context).primaryColorDark,
+                      : settingsBloc.isLightTheme
+                          ? Colors.white
+                          : Theme.of(context).primaryColorDark,
                 ),
               ),
             ],

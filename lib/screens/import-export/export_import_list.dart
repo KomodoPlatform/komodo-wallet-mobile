@@ -85,19 +85,30 @@ class _ExportImportListState extends State<ExportImportList> {
 
     final List<Widget> list = [];
     for (ExportImportListItem item in widget.items) {
-      list.add(Row(
-        children: [
-          Checkbox(
-              value: item.checked,
-              onChanged: (bool val) {
-                item.onChange(val);
-              }),
-          Expanded(
-              child: Container(
-            padding: EdgeInsets.only(right: 12),
-            child: item.child,
-          )),
-        ],
+      list.add(
+        Padding(
+          padding: EdgeInsets.only(
+            top: 4,
+            bottom: 4,
+          ),
+          child: Row(
+            children: [
+              Checkbox(
+                  value: item.checked,
+                  onChanged: (bool val) {
+                    item.onChange(val);
+                  }),
+              Expanded(
+                  child: Container(
+                padding: EdgeInsets.only(right: 12),
+                child: item.child,
+              )),
+            ],
+          ),
+        ),
+      );
+      list.add(Divider(
+        color: Colors.grey,
       ));
     }
 

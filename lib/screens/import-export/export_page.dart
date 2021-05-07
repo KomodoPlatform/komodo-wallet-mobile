@@ -1,12 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:intl/intl.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/backup.dart';
+import 'package:komodo_dex/model/recent_swaps.dart';
+import 'package:komodo_dex/model/swap.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/screens/import-export/export_import_success.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/password_visibility_control.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,13 +33,14 @@ class _ExportPageState extends State<ExportPage> {
   final TextEditingController _ctrlPass2 = TextEditingController();
   bool _isPassObscured = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final Backup _all = Backup(contacts: {}, notes: {});
-  final Backup _selected = Backup(contacts: {}, notes: {});
+  final Backup _all = Backup(contacts: {}, notes: {}, swaps: {});
+  final Backup _selected = Backup(contacts: {}, notes: {}, swaps: {});
 
   @override
   void initState() {
     _loadNotes();
     _loadContacts();
+    _loadSwaps();
 
     super.initState();
   }
@@ -58,6 +64,7 @@ class _ExportPageState extends State<ExportPage> {
               _buildHeader(),
               _buildNotes(),
               _buildContacts(),
+              _buildSwaps(),
               _buildPass(),
               _buildButton(),
             }
@@ -88,6 +95,23 @@ class _ExportPageState extends State<ExportPage> {
     }
   }
 
+  Future<void> _loadSwaps() async {
+    final listSwaps = Provider.of<SwapProvider>(context, listen: false).swaps;
+    final List<MmSwap> swaps = listSwaps
+        .where((s) =>
+            s.status == Status.SWAP_SUCCESSFUL ||
+            s.status == Status.SWAP_FAILED)
+        .map((s) => s.result)
+        .toList();
+
+    for (MmSwap swap in swaps) {
+      setState(() {
+        _all.swaps[swap.uuid] = swap;
+        _selected.swaps[swap.uuid] = swap;
+      });
+    }
+  }
+
   Widget _buildSuccess() {
     return ExportImportSuccess(
       title: AppLocalizations.of(context).exportSuccessTitle,
@@ -105,7 +129,7 @@ class _ExportPageState extends State<ExportPage> {
       child: Text(AppLocalizations.of(context).exportDesc,
           style: TextStyle(
             height: 1.3,
-            color: Theme.of(context).disabledColor,
+            color: Theme.of(context).textTheme.bodyText2.color.withOpacity(0.7),
           )),
     );
   }
@@ -166,7 +190,12 @@ class _ExportPageState extends State<ExportPage> {
                 coinsRow.add(Text(
                   coin + (i < coins.length - 1 ? ', ' : ''),
                   style: TextStyle(
-                      fontSize: 10, color: Theme.of(context).disabledColor),
+                      fontSize: 10,
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .color
+                          .withOpacity(0.5)),
                 ));
               }
 
@@ -181,6 +210,100 @@ class _ExportPageState extends State<ExportPage> {
 
     return ExportImportList(
       title: AppLocalizations.of(context).exportContactsTitle,
+      items: items,
+    );
+  }
+
+  Widget _buildSwaps() {
+    if (_all.swaps == null) return SizedBox();
+
+    final List<ExportImportListItem> items = [];
+
+    _all.swaps.forEach((uuid, swap) {
+      items.add(ExportImportListItem(
+        checked: _selected.swaps.containsKey(uuid),
+        onChange: (val) {
+          setState(() {
+            val ? _selected.swaps[uuid] = swap : _selected.swaps.remove(uuid);
+          });
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            truncateMiddle(
+              swap.uuid,
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 14),
+            ),
+            SizedBox(height: 2),
+            Row(
+              children: <Widget>[
+                Text(
+                  DateFormat('dd MMM yyyy HH:mm').format(
+                      DateTime.fromMillisecondsSinceEpoch(
+                          swap.myInfo.startedAt * 1000)),
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        fontSize: 14,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withOpacity(0.5),
+                      ),
+                ),
+                Expanded(child: SizedBox()),
+                Text(
+                  (swap.type == 'Maker' || swap.type == 'Taker')
+                      ? swap.type == 'Maker'
+                          ? AppLocalizations.of(context).makerOrder
+                          : AppLocalizations.of(context).takerOrder
+                      : swap.type +
+                          AppLocalizations.of(context).orderTypePartial,
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        fontSize: 14,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .color
+                            .withOpacity(0.5),
+                      ),
+                ),
+              ],
+            ),
+            SizedBox(height: 2),
+            Row(
+              children: <Widget>[
+                Text(
+                  cutTrailingZeros(formatPrice(swap.myInfo.myAmount, 4)) +
+                      ' ' +
+                      swap.myInfo.myCoin,
+                ),
+                SizedBox(width: 4),
+                Image.asset(
+                  'assets/${swap.myInfo.myCoin.toLowerCase()}.png',
+                  height: 20,
+                ),
+                SizedBox(width: 8),
+                Icon(Icons.swap_horiz),
+                SizedBox(width: 8),
+                Text(
+                  cutTrailingZeros(formatPrice(swap.myInfo.otherAmount, 4)) +
+                      ' ' +
+                      swap.myInfo.otherCoin,
+                ),
+                SizedBox(width: 4),
+                Image.asset(
+                  'assets/${swap.myInfo.otherCoin.toLowerCase()}.png',
+                  height: 20,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ));
+    });
+    return ExportImportList(
+      title: AppLocalizations.of(context).exportSwapsTitle,
       items: items,
     );
   }
@@ -206,7 +329,9 @@ class _ExportPageState extends State<ExportPage> {
   }
 
   bool _validate() {
-    if (_selected.notes.isEmpty && _selected.contacts.isEmpty) {
+    if (_selected.notes.isEmpty &&
+        _selected.contacts.isEmpty &&
+        _selected.swaps.isEmpty) {
       _showError(AppLocalizations.of(context).noItemsToExport);
       return false;
     }

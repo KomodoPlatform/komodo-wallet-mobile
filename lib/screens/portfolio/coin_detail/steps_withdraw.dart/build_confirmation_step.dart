@@ -8,7 +8,6 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/error_string.dart';
 import 'package:komodo_dex/model/get_withdraw.dart';
 import 'package:komodo_dex/model/withdraw_response.dart';
-import 'package:komodo_dex/screens/dex/trade/get_fee.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
@@ -49,7 +48,8 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Fee customFee;
       if (coinsDetailBloc.customFee != null) {
-        if (widget.coinBalance.coin.type == 'erc') {
+        if (widget.coinBalance.coin.type == 'erc' ||
+            widget.coinBalance.coin.type == 'bep') {
           customFee = Fee(
             type: 'EthGas',
             gas: coinsDetailBloc.customFee.gas,
@@ -332,7 +332,7 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
   }
 
   Future<void> _onPressedConfirmWithdraw(double sendAmount) async {
-    if (mainBloc.isNetworkOffline) {
+    if (mainBloc.networkStatus != NetworkStatus.Online) {
       widget.onNoInternet();
     } else if (_withdrawResponse is WithdrawResponse) {
       widget.onConfirmPressed(_withdrawResponse);
@@ -359,4 +359,11 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
       amount: amount,
     );
   }
+}
+
+class CoinAmt {
+  CoinAmt({this.amount, this.coin});
+
+  double amount;
+  String coin;
 }

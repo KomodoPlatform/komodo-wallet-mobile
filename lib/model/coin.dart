@@ -74,6 +74,7 @@ class Coin {
     testCoin = config['testCoin'] ?? false;
     swapContractAddress = config['swap_contract_address'] ?? '';
     colorCoin = config['colorCoin'] ?? '';
+    isDefault = config['isDefault'] ?? false;
     serverList = List<String>.from(config['serverList']);
     explorerUrl = List<String>.from(config['explorerUrl']);
     requiredConfirmations = init['required_confirmations'];
@@ -83,9 +84,10 @@ class Coin {
     if (init['protocol'] != null) {
       protocol = Protocol.fromJson(init['protocol']);
     }
+    dust = init['dust'];
   }
 
-  String type; // 'other', 'erc', 'qrc' or 'smartChain'
+  String type; // 'other', 'erc', 'bep', 'qrc' or 'smartChain'
   String name;
   String address;
   int port;
@@ -109,7 +111,11 @@ class Coin {
   bool requiresNotarization;
   Map<String, dynamic> addressFormat;
 
+  // Whether to block disabling this coin
+  bool isDefault;
+
   Protocol protocol;
+  int dust;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'type': type ?? '',
@@ -136,6 +142,7 @@ class Coin {
         'requires_notarization': requiresNotarization,
         'address_format': addressFormat,
         if (protocol != null) 'protocol': protocol.toJson(),
+        if (dust != null) 'dust': dust,
       };
 
   String getTxFeeSatoshi() {
@@ -144,6 +151,16 @@ class Coin {
       txFeeRes = txfee;
     }
     return (txFeeRes / 100000000).toString();
+  }
+
+  String get payGasIn {
+    // todo (yurii): find reliable way to determine gas coin
+    if (abbr == 'ETH') return 'ETH';
+    if (abbr == 'ETHR') return 'ETHR';
+    if (abbr == 'BNB') return 'BNB';
+    if (abbr == 'BNBT') return 'BNBT';
+
+    return protocol?.protocolData?.platform;
   }
 }
 

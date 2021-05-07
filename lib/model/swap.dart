@@ -3,7 +3,8 @@
 //     final swap = swapFromJson(jsonString);
 
 import 'dart:convert';
-
+import 'package:komodo_dex/model/coin.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/recent_swaps.dart';
 
@@ -22,7 +23,10 @@ Swap swapFromJson(String str) {
 }
 
 class Swap {
-  Swap({this.result, this.status});
+  Swap({
+    this.result,
+    this.status,
+  });
 
   factory Swap.fromJson(Map<String, dynamic> json) => Swap(
         result: MmSwap.fromJson(json['result']) ?? MmSwap(),
@@ -87,15 +91,73 @@ class Swap {
     return 0;
   }
 
-  /// Total number of detailed successful steps in the swaps.
+  /// Total number of detailed successful steps in the swap.
   int get steps => result?.successEvents?.length ?? statusSteps;
 
-  /// Current detailed swap step.
+  /// If user acts as a Taker during current
+  /// swap then returns [true], [false] otherwise.
+  bool get isTaker {
+    if (result.type == 'Taker') return true;
+    return false;
+  }
+
+  /// If user acts as a Maker during current
+  /// swap then returns [true], [false] otherwise.
+  bool get isMaker {
+    if (result.type == 'Maker') return true;
+    return false;
+  }
+
+  bool get doWeNeed0xPrefixForMaker {
+    if (makerCoin.swapContractAddress.startsWith('0x')) return true;
+    return false;
+  }
+
+  bool get doWeNeed0xPrefixForTaker {
+    if (takerCoin.swapContractAddress.startsWith('0x')) return true;
+    return false;
+  }
+
+  /// Returns a maker explorer url if
+  /// it exists, otherwise an empty string.
+  String get makerExplorerUrl {
+    if (makerCoin != null) return makerCoin.explorerUrl[0];
+    return '';
+  }
+
+  /// Returns a taker explorer url if
+  /// it exists, otherwise an empty string.
+  String get takerExplorerUrl {
+    if (takerCoin != null) return takerCoin.explorerUrl[0];
+    return '';
+  }
+
+  /// Index of current swap step.
   int get step => result?.events?.length ?? 0;
 
+  /// 'Started' event data
   SwapEL get started =>
       result?.events?.firstWhere((SwapEL ev) => ev.event.type == 'Started');
 
-  String get makerCoin => started?.event?.data?.makerCoin;
-  String get takerCoin => started?.event?.data?.takerCoin;
+  /// Maker ticker abbriviation
+  String get makerAbbr => started?.event?.data?.makerCoin;
+
+  /// Taker ticker abbriviation
+  String get takerAbbr => started?.event?.data?.takerCoin;
+
+  /// Maker coin instance
+  Coin get makerCoin {
+    final c = coinsBloc.getCoinByAbbr(makerAbbr);
+    if (c != null) return c;
+    final kc = coinsBloc.getKnownCoinByAbbr(makerAbbr);
+    return kc;
+  }
+
+  /// Taker coin instance
+  Coin get takerCoin {
+    final c = coinsBloc.getCoinByAbbr(takerAbbr);
+    if (c != null) return c;
+    final kc = coinsBloc.getKnownCoinByAbbr(takerAbbr);
+    return kc;
+  }
 }

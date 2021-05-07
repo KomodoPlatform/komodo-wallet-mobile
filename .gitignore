@@ -17,6 +17,11 @@
 .history
 .svn/
 
+# coins file extras
+/assets/coins_init_mm2.json
+/app_assets
+/coins_assets
+
 # IntelliJ related
 *.iml
 *.ipr

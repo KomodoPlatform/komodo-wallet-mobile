@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 
 class SecondaryButton extends StatefulWidget {
   const SecondaryButton({
@@ -39,7 +40,7 @@ class _SecondaryButtonState extends State<SecondaryButton> {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.button.copyWith(
-            color: widget.isDarkMode ? Colors.white : widget.textColor),
+            color: settingsBloc.isLightTheme ? widget.textColor : Colors.white),
       );
     } else {
       child = widget.child;
@@ -50,9 +51,10 @@ class _SecondaryButtonState extends State<SecondaryButton> {
       child: OutlineButton(
         key: isSend ? const Key('secondary-button-send') : null,
         borderSide: BorderSide(
-            color: widget.isDarkMode ? Colors.white : widget.borderColor),
+            color:
+                settingsBloc.isLightTheme ? widget.borderColor : Colors.white),
         highlightedBorderColor:
-            widget.isDarkMode ? Colors.white : widget.borderColor,
+            settingsBloc.isLightTheme ? Colors.black : Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),

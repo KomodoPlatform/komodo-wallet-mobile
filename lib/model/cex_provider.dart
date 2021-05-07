@@ -445,12 +445,12 @@ class CexPrices {
       return 1 / _getFiatRate(abbr);
     }
 
-    double price;
+    double price = 0.0;
     try {
       price = _prices[abbr]['usd'];
     } catch (_) {}
 
-    return price ?? (_fetchingPrices ? null : 0.0);
+    return price;
   }
 
   double getCexRate([CoinsPair pair]) {
@@ -613,13 +613,15 @@ class CexPrices {
     final List<Coin> allCoins = (await coins).values.toList();
 
     json.forEach((String coingeckoId, dynamic pricesData) {
-      String coinAbbr;
-      try {
-        coinAbbr =
-            allCoins.firstWhere((coin) => coin.coingeckoId == coingeckoId).abbr;
-      } catch (_) {}
+      // Some coins are presented in multiple networks,
+      // like BAT-ERC20 and BAT-BEP20, but have same
+      // coingeckoId and same usd price
+      final List<Coin> coins =
+          (allCoins.where((coin) => coin.coingeckoId == coingeckoId) ?? [])
+              .toList();
 
-      if (coinAbbr != null) {
+      for (Coin coin in coins) {
+        final String coinAbbr = coin.abbr;
         _prices[coinAbbr] = {};
         pricesData.forEach((String currency, dynamic price) {
           double priceDouble;

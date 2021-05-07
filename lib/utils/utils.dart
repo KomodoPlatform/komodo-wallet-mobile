@@ -87,6 +87,18 @@ Decimal deci(dynamic dv) {
   throw Exception('Neither string nor double: $dv');
 }
 
+Rational fract2rat(Map<String, dynamic> fract) {
+  try {
+    final rat = Rational.fromInt(
+      int.parse(fract['numer']),
+      int.parse(fract['denom']),
+    );
+    return rat;
+  } catch (_) {
+    return null;
+  }
+}
+
 /// Precise but readable representation (no trailing zeroes).
 String deci2s(Decimal dv, [int fractions = 8]) {
   if (dv.isInteger) return dv.toStringAsFixed(0); // Fast path.
@@ -216,6 +228,48 @@ Future<bool> authenticateBiometrics(
   } else {
     return false;
   }
+}
+
+Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
+  return dialogBloc.dialog = showDialog<void>(
+      context: mContext,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context).cantDeleteDefaultCoinTitle +
+              coin.abbr),
+          content: RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodyText2,
+              children: <TextSpan>[
+                TextSpan(
+                    text: '${coin.name}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(fontWeight: FontWeight.bold)),
+                TextSpan(
+                    text:
+                        AppLocalizations.of(context).cantDeleteDefaultCoinSpan),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                AppLocalizations.of(context)
+                    .cantDeleteDefaultCoinOk
+                    .toUpperCase(),
+                style: Theme.of(context).textTheme.button,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }).then((_) {
+    dialogBloc.dialog = null;
+  });
 }
 
 Future<void> showConfirmationRemoveCoin(
@@ -426,9 +480,11 @@ String cutTrailingZeros(String str) {
 
   String loop(String input) {
     if (input.length == 1) return input;
-    if (!input.contains('.')) return input;
+    if (!(input.contains('.') || input.contains(','))) return input;
 
-    if (input[input.length - 1] == '0' || input[input.length - 1] == '.') {
+    if (input[input.length - 1] == '0' ||
+        input[input.length - 1] == '.' ||
+        input[input.length - 1] == ',') {
       input = input.substring(0, input.length - 1);
       return loop(input);
     } else {
@@ -474,4 +530,12 @@ bool isInfinite(dynamic value) {
   if (value < double.minPositive || 1 / value < double.minPositive) return true;
 
   return false;
+}
+
+void printWarning(String text) {
+  print('\x1B[33m$text\x1B[0m');
+}
+
+void printError(String text) {
+  print('\x1B[31m$text\x1B[0m');
 }

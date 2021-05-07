@@ -71,7 +71,11 @@ class _AddressFieldState extends State<AddressField> {
                     onPressed: widget.onScan,
                     child: Icon(
                       Icons.add_a_photo,
-                      color: Colors.white,
+                      color: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          .color
+                          .withOpacity(0.45),
                     ),
                   ),
                 ),
@@ -225,7 +229,7 @@ class _AddressFieldState extends State<AddressField> {
   }
 
   bool _isErcNonMixedCase(String error) {
-    if (widget.coin.type != 'erc') return false;
+    if (widget.coin.type != 'erc' && widget.coin.type != 'bep') return false;
     if (!error.contains('Invalid address checksum')) return false;
 
     return true;

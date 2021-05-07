@@ -193,23 +193,38 @@ class _CoinDetailState extends State<CoinDetail> {
                       ),
                     )
                   : Icon(Icons.delete),
+              color: ThemeData.estimateBrightnessForColor(Color(
+                          int.parse(currentCoinBalance.coin.colorCoin))) ==
+                      Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
               onPressed: () async {
-                setState(() {
-                  isDeleteLoading = true;
-                });
-                showConfirmationRemoveCoin(context, widget.coinBalance.coin)
-                    .then((_) {
+                if (widget.coinBalance.coin.isDefault) {
+                  await showCantRemoveDefaultCoin(
+                      context, widget.coinBalance.coin);
+                } else {
                   setState(() {
-                    isDeleteLoading = false;
+                    isDeleteLoading = true;
                   });
-                  if (mounted) {
-                    Navigator.of(context).pop();
-                  }
-                });
+                  showConfirmationRemoveCoin(context, widget.coinBalance.coin)
+                      .then((_) {
+                    setState(() {
+                      isDeleteLoading = false;
+                    });
+                    if (mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                }
               },
             ),
             IconButton(
               icon: Icon(Icons.share),
+              color: ThemeData.estimateBrightnessForColor(Color(
+                          int.parse(currentCoinBalance.coin.colorCoin))) ==
+                      Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
               onPressed: () async {
                 mainBloc.isUrlLaucherIsOpen = true;
                 await Share.share(AppLocalizations.of(context).shareAddress(
@@ -218,6 +233,13 @@ class _CoinDetailState extends State<CoinDetail> {
               },
             )
           ],
+          leading: BackButton(
+            color: ThemeData.estimateBrightnessForColor(
+                        Color(int.parse(currentCoinBalance.coin.colorCoin))) ==
+                    Brightness.dark
+                ? Colors.white
+                : Colors.black,
+          ),
           title: Row(
             children: <Widget>[
               PhotoHero(
@@ -228,7 +250,16 @@ class _CoinDetailState extends State<CoinDetail> {
               const SizedBox(
                 width: 8,
               ),
-              Text(currentCoinBalance.coin.name.toUpperCase()),
+              Text(
+                currentCoinBalance.coin.name.toUpperCase(),
+                style: TextStyle(
+                  color: ThemeData.estimateBrightnessForColor(Color(
+                              int.parse(currentCoinBalance.coin.colorCoin))) ==
+                          Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+              ),
             ],
           ),
           centerTitle: false,
@@ -256,7 +287,8 @@ class _CoinDetailState extends State<CoinDetail> {
     // Since we currently fething erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
-    if (widget.coinBalance.coin.type == 'erc') {
+    if (widget.coinBalance.coin.type == 'erc' ||
+        widget.coinBalance.coin.type == 'bep') {
       return Container();
     }
 
@@ -554,6 +586,8 @@ class _CoinDetailState extends State<CoinDetail> {
           children: <Widget>[
             SecondaryButton(
               text: text,
+              textColor: Theme.of(context).textTheme.button.color,
+              borderColor: Theme.of(context).accentColor,
               onPressed: () {
                 rewardsProvider.update();
                 Navigator.push<dynamic>(
@@ -576,6 +610,9 @@ class _CoinDetailState extends State<CoinDetail> {
 
     return SecondaryButton(
       text: text,
+      isDarkMode: !settingsBloc.isLightTheme,
+      textColor: Theme.of(context).accentColor,
+      borderColor: Theme.of(context).accentColor,
       onPressed: () {
         switch (statusButton) {
           case StatusButton.RECEIVE:

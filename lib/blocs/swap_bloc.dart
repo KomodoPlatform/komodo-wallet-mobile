@@ -1,122 +1,116 @@
 import 'dart:async';
 
 import 'package:decimal/decimal.dart';
-import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/model/cex_provider.dart';
-import 'package:komodo_dex/model/coin.dart';
-import 'package:komodo_dex/model/coin_balance.dart';
-import 'package:komodo_dex/model/get_orderbook.dart';
-import 'package:komodo_dex/model/order_coin.dart';
-import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/get_max_taker_volume.dart';
+import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
 import 'package:komodo_dex/services/mm.dart';
-import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/utils/log.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import 'package:rational/rational.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
+import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/trade_preimage.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 
 class SwapBloc implements BlocBase {
-  OrderCoin orderCoin;
   CoinBalance sellCoinBalance;
-  CoinBalance buyCoinBalance;
-  bool enabledReceiveField;
-
-  final StreamController<OrderCoin> _orderCoinController =
-      StreamController<OrderCoin>.broadcast();
-  Sink<OrderCoin> get _inOrderCoin => _orderCoinController.sink;
-  Stream<OrderCoin> get outOrderCoin => _orderCoinController.stream;
-
-  final StreamController<double> _buyCoinUsdController =
-      StreamController<double>.broadcast();
-  Sink<double> get _inBuyCoinUsd => _buyCoinUsdController.sink;
-  Stream<double> get outBuyCoinUsd => _buyCoinUsdController.stream;
-
-  Coin receiveCoin;
-  final StreamController<Coin> _receiveCoinController =
-      StreamController<Coin>.broadcast();
-  Sink<Coin> get _inReceiveCoin => _receiveCoinController.sink;
-  Stream<Coin> get outReceiveCoin => _receiveCoinController.stream;
-
-  final StreamController<CoinBalance> _sellCoinController =
-      StreamController<CoinBalance>.broadcast();
-  Sink<CoinBalance> get _inSellCoin => _sellCoinController.sink;
-  Stream<CoinBalance> get outSellCoin => _sellCoinController.stream;
-
-  bool focusTextField = false;
-
-  final StreamController<bool> _focusTextFieldController =
-      StreamController<bool>.broadcast();
-  Sink<bool> get _inFocusTextField => _focusTextFieldController.sink;
-  Stream<bool> get outFocusTextField => _focusTextFieldController.stream;
-
+  CoinBalance receiveCoinBalance;
+  bool enabledSellField = false;
+  bool enabledReceiveField = false;
+  double amountSell;
   double amountReceive;
+  Ask matchingBid;
+  bool shouldBuyOut = false;
+  bool isSellMaxActive = false;
+  TradePreimage _tradePreimage;
+  bool _processing = false;
+  Rational maxTakerVolume;
+  String _preimageError;
+  String _validatorError;
+  bool autovalidate = false;
+
+  // Using to guide user directly to active orders list
+  int indexTab = 0;
+
+  final StreamController<CoinBalance> _receiveCoinBalanceController =
+      StreamController<CoinBalance>.broadcast();
+  Sink<CoinBalance> get _inReceiveCoinBalance =>
+      _receiveCoinBalanceController.sink;
+  Stream<CoinBalance> get outReceiveCoinBalance =>
+      _receiveCoinBalanceController.stream;
+
+  final StreamController<CoinBalance> _sellCoinBalanceController =
+      StreamController<CoinBalance>.broadcast();
+  Sink<CoinBalance> get _inSellCoinBalance => _sellCoinBalanceController.sink;
+  Stream<CoinBalance> get outSellCoinBalance =>
+      _sellCoinBalanceController.stream;
+
+  final StreamController<double> _amountSellController =
+      StreamController<double>.broadcast();
+  Sink<double> get _inAmountSell => _amountSellController.sink;
+  Stream<double> get outAmountSell => _amountSellController.stream;
 
   final StreamController<double> _amountReceiveController =
       StreamController<double>.broadcast();
-  Sink<double> get _inAmountReceiveCoin => _amountReceiveController.sink;
+  Sink<double> get _inAmountReceive => _amountReceiveController.sink;
   Stream<double> get outAmountReceive => _amountReceiveController.stream;
 
-  bool isTimeOut = false;
-
-  final StreamController<bool> _isTimeOutController =
-      StreamController<bool>.broadcast();
-  Sink<bool> get _inIsTimeOut => _isTimeOutController.sink;
-  Stream<bool> get outIsTimeOut => _isTimeOutController.stream;
-
-  int indexTab = 0;
   final StreamController<int> _indexTabController =
       StreamController<int>.broadcast();
   Sink<int> get _inIndexTab => _indexTabController.sink;
   Stream<int> get outIndexTab => _indexTabController.stream;
-
-  double currentAmountSell;
-
-  final StreamController<double> _currentAmountSellController =
-      StreamController<double>.broadcast();
-  Sink<double> get _inCurrentAmountSellCoin =>
-      _currentAmountSellController.sink;
-  Stream<double> get outCurrentAmountSell =>
-      _currentAmountSellController.stream;
-
-  double currentAmountBuy;
-
-  final StreamController<double> _currentAmountBuyController =
-      StreamController<double>.broadcast();
-  Sink<double> get _inCurrentAmountBuyCoin => _currentAmountBuyController.sink;
-  Stream<double> get outCurrentAmountBuy => _currentAmountBuyController.stream;
-
-  bool enabledSellField = false;
 
   final StreamController<bool> _enabledSellFieldController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inEnabledSellField => _enabledSellFieldController.sink;
   Stream<bool> get outEnabledSellField => _enabledSellFieldController.stream;
 
-  bool isMaxActive = false;
-
   final StreamController<bool> _isMaxActiveController =
       StreamController<bool>.broadcast();
   Sink<bool> get _inIsMaxActive => _isMaxActiveController.sink;
   Stream<bool> get outIsMaxActive => _isMaxActiveController.stream;
 
+  final StreamController<Ask> _matchingBidController =
+      StreamController<Ask>.broadcast();
+  Sink<Ask> get _inMatchingBid => _matchingBidController.sink;
+  Stream<Ask> get outMatchingBid => _matchingBidController.stream;
+
+  final StreamController<TradePreimage> _tradePreimageController =
+      StreamController<TradePreimage>.broadcast();
+  Sink<TradePreimage> get _inTradePreimage => _tradePreimageController.sink;
+  Stream<TradePreimage> get outTradePreimage => _tradePreimageController.stream;
+
+  final StreamController<bool> _processingController =
+      StreamController<bool>.broadcast();
+  Sink<bool> get _inProcessing => _processingController.sink;
+  Stream<bool> get outProcessing => _processingController.stream;
+
+  final StreamController<String> _preimageErrorController =
+      StreamController<String>.broadcast();
+  Sink<String> get _inPreimageError => _preimageErrorController.sink;
+  Stream<String> get outPreimageError => _preimageErrorController.stream;
+
+  final StreamController<String> _validatorErrorController =
+      StreamController<String>.broadcast();
+  Sink<String> get _inValidatorError => _validatorErrorController.sink;
+  Stream<String> get outValidatorError => _validatorErrorController.stream;
+
   @override
   void dispose() {
-    _orderCoinController.close();
-    _sellCoinController.close();
-    _focusTextFieldController.close();
-    _receiveCoinController.close();
+    _sellCoinBalanceController.close();
+    _receiveCoinBalanceController.close();
     _amountReceiveController.close();
     _indexTabController.close();
-    _isTimeOutController.close();
-    _currentAmountSellController.close();
-    _currentAmountBuyController.close();
+    _amountSellController.close();
     _enabledSellFieldController.close();
     _isMaxActiveController.close();
-    _buyCoinUsdController.close();
+    _processingController.close();
+    _inPreimageError.close();
+    _inValidatorError.close();
   }
 
   void setIsMaxActive(bool isMaxActive) {
-    this.isMaxActive = isMaxActive;
-    _inIsMaxActive.add(this.isMaxActive);
+    isSellMaxActive = isMaxActive;
+    _inIsMaxActive.add(isSellMaxActive);
   }
 
   void setEnabledSellField(bool enabledSellField) {
@@ -124,14 +118,28 @@ class SwapBloc implements BlocBase {
     _inEnabledSellField.add(this.enabledSellField);
   }
 
-  void setCurrentAmountSell(double amount) {
-    currentAmountSell = amount;
-    _inCurrentAmountSellCoin.add(currentAmountSell);
+  void setAmountSell(double amount) {
+    final double rounded = amount == null
+        ? null
+        : double.parse(amount.toStringAsFixed(tradeForm.precision));
+    amountSell = rounded;
+    _inAmountSell.add(amountSell);
   }
 
-  void setCurrentAmountBuy(double amount) {
-    currentAmountBuy = amount;
-    _inCurrentAmountBuyCoin.add(currentAmountBuy);
+  void setAmountReceive(double amount) {
+    final double rounded = amount == null
+        ? null
+        : double.parse(amount.toStringAsFixed(tradeForm.precision));
+    amountReceive = rounded;
+    _inAmountReceive.add(amountReceive);
+  }
+
+  void calcAndSetAmountReceive(Decimal amountSell, Ask matchingBid) {
+    if (matchingBid == null) return;
+
+    final amountReceive =
+        amountSell.toDouble() * double.parse(matchingBid.price);
+    setAmountReceive(amountReceive);
   }
 
   void setIndexTabDex(int index) {
@@ -139,113 +147,74 @@ class SwapBloc implements BlocBase {
     _inIndexTab.add(indexTab);
   }
 
-  void updateBuyCoin(OrderCoin orderCoin) {
-    this.orderCoin = orderCoin;
-    _inOrderCoin.add(this.orderCoin);
-
-    try {
-      buyCoinBalance = coinsBloc.coinBalance.firstWhere(
-          (balance) => balance.coin.abbr == orderCoin.coinBase.abbr);
-    } catch (_) {
-      buyCoinBalance = null;
-    }
-  }
-
-  void updateReceiveCoin(Coin receiveCoin) {
-    Coin coin = receiveCoin;
-    if (receiveCoin != null &&
-        receiveCoin.abbr != null &&
-        receiveCoin.abbr.isNotEmpty) {
-      for (CoinBalance coinBalance in coinsBloc.coinBalance) {
-        if (coinBalance.coin.abbr == receiveCoin.abbr) {
-          coin = coinBalance.coin;
-        }
-      }
-    }
-    this.receiveCoin = coin;
-    _inReceiveCoin.add(this.receiveCoin);
+  void updateReceiveCoin(String coin) {
+    final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
+    receiveCoinBalance = coinBalance;
+    _inReceiveCoinBalance.add(coinBalance);
   }
 
   void updateSellCoin(CoinBalance coinBalance) {
     sellCoinBalance = coinBalance;
-    _inSellCoin.add(sellCoinBalance);
+    _inSellCoinBalance.add(sellCoinBalance);
+
+    _updateMaxTakerVolume();
   }
 
-  double getExchangeRate() {
-    if (currentAmountSell == null) return null;
-    if (currentAmountBuy == null || currentAmountBuy == 0) return null;
+  Future<void> _updateMaxTakerVolume() async {
+    if (sellCoinBalance == null) {
+      maxTakerVolume = null;
+      return;
+    }
 
-    return currentAmountBuy / currentAmountSell;
-  }
-
-  void setFocusTextField(bool focus) {
-    focusTextField = focus;
-    _inFocusTextField.add(focusTextField);
-  }
-
-  Future<double> setReceiveAmount(
-      Coin coin, Decimal amountSell, Ask currentAsk) async {
     try {
-      final Orderbook orderbook = await MM.getOrderbook(MMService().client,
-          GetOrderbook(base: coin.abbr, rel: sellCoinBalance.coin.abbr));
-      Decimal bestPrice = deci(0);
-      Decimal maxVolume = deci(0);
-      int i = 0;
-
-      if (currentAsk == null) {
-        for (Ask ask in orderbook.asks) {
-          if (ask.address != swapBloc.sellCoinBalance.balance.address &&
-              (i == 0 ||
-                  (deci(ask.price) <= bestPrice &&
-                      ask.maxvolume > maxVolume))) {
-            maxVolume = ask.maxvolume;
-            bestPrice = deci(ask.price);
-          }
-          i++;
-        }
-      } else {
-        bestPrice = deci(currentAsk.price);
-        maxVolume = currentAsk.maxvolume;
-      }
-
-      orderCoin = OrderCoin(
-        coinRel: sellCoinBalance.coin,
-        coinBase: coin,
-        orderbook: orderbook,
-        maxVolume: maxVolume,
-        bestPrice: bestPrice,
-      );
-      _inOrderCoin.add(orderCoin);
-
-      amountReceive = orderCoin.getBuyAmount(amountSell).toDouble();
-
-      _inAmountReceiveCoin.add(amountReceive);
-
-      final buyCoinUsd =
-          cexPrices.getUsdPrice(swapBloc.orderCoin.coinBase.abbr);
-      _inBuyCoinUsd.add(buyCoinUsd);
-
-      return amountReceive;
-    } catch (e) {
-      Log.println('swap_bloc:257', e);
-      return 0;
+      maxTakerVolume = await MM.getMaxTakerVolume(
+          GetMaxTakerVolume(coin: sellCoinBalance.coin.abbr));
+    } catch (_) {
+      maxTakerVolume = null;
     }
   }
 
-  void setTimeout(bool time) {
-    isTimeOut = time;
-    _inIsTimeOut.add(isTimeOut);
+  void updateMatchingBid(Ask bid) {
+    matchingBid = bid;
+    _inMatchingBid.add(matchingBid);
   }
 
-  double minVolumeDefault(String coin) {
-    // https://github.com/KomodoPlatform/AtomicDEX-mobile/pull/1013#issuecomment-770423015
-    // Default min volumes hardcoded for QTUM and rest of the coins for now.
-    // Should be handled on API-side in the future
-    if (coin == 'QTUM') {
-      return 1;
+  TradePreimage get tradePreimage => _tradePreimage;
+  set tradePreimage(TradePreimage value) {
+    _tradePreimage = value;
+    _inTradePreimage.add(_tradePreimage);
+  }
+
+  Timer _processingTimer;
+  bool get processing => _processing;
+  set processing(bool value) {
+    _processingTimer?.cancel();
+
+    // In some cases proper form proccessing requires multiple async calls
+    // in sequence. To prevent UI 'flickering' between those calls we
+    // use small delay before turn OFF 'processing' flag.
+    // Turning 'processing' ON should be performed without delays though.
+    if (value) {
+      _processing = value;
+      _inProcessing.add(true);
     } else {
-      return 0.00777;
+      _processingTimer = Timer(Duration(milliseconds: 500), () {
+        _processing = value;
+        _inProcessing.add(false);
+      });
     }
+  }
+
+  String get preimageError => _preimageError;
+  set preimageError(String value) {
+    _preimageError = value;
+    _inPreimageError.add(_preimageError);
+  }
+
+  String get validatorError => _validatorError;
+  set validatorError(String value) {
+    _validatorError = value;
+    _inValidatorError.add(_validatorError);
   }
 }
 

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
+import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
+import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
 
 class RewardsPage extends StatefulWidget {
@@ -135,7 +139,6 @@ class _RewardsPageState extends State<RewardsPage> {
                     },
               text: AppLocalizations.of(context).rewardsReceive,
               backgroundColor: const Color.fromARGB(255, 1, 102, 129),
-              isDarkMode: false,
             ),
           )),
         ],
@@ -174,6 +177,36 @@ class _RewardsPageState extends State<RewardsPage> {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
+                        Builder(builder: (context) {
+                          final cexProvider =
+                              Provider.of<CexProvider>(context, listen: false);
+                          final double price = cexProvider.getUsdPrice('KMD');
+
+                          final amountUsd = total * price;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CexMarker(
+                                context,
+                                size: const Size.fromHeight(12),
+                                color: settingsBloc.isLightTheme
+                                    ? cexColorLight
+                                    : cexColor,
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
+                                cexProvider.convert(amountUsd),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2
+                                    .copyWith(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w100,
+                                    ),
+                              ),
+                            ],
+                          );
+                        }),
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 2,
                           height: 1,
@@ -223,8 +256,8 @@ class _RewardsPageState extends State<RewardsPage> {
           border: TableBorder.all(color: Colors.white.withAlpha(15)),
           columnWidths: const {
             0: IntrinsicColumnWidth(),
-            2: IntrinsicColumnWidth(),
             3: IntrinsicColumnWidth(),
+            4: IntrinsicColumnWidth(),
           },
           children: [
             TableRow(
@@ -251,6 +284,17 @@ class _RewardsPageState extends State<RewardsPage> {
                       left: 8, right: 8, top: 8, bottom: 8),
                   child: Text(
                     AppLocalizations.of(context).rewardsTableRewards,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 8, top: 8, bottom: 8),
+                  child: Text(
+                    AppLocalizations.of(context).rewardsTableFiat,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -330,6 +374,47 @@ class _RewardsPageState extends State<RewardsPage> {
                     ),
                   ),
                 ),
+          item.reward == null
+              ? Container(
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 8, top: 12, bottom: 12),
+                  child: const Text(
+                    '-',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                )
+              : Builder(builder: (context) {
+                  final cexProvider =
+                      Provider.of<CexProvider>(context, listen: false);
+                  final double price = cexProvider.getUsdPrice('KMD');
+
+                  final amountUsd = item.reward * price;
+                  return Container(
+                    color: const Color.fromARGB(60, 1, 102, 129),
+                    padding: const EdgeInsets.only(
+                        left: 8, right: 8, top: 12, bottom: 12),
+                    child: Row(
+                      children: [
+                        CexMarker(
+                          context,
+                          size: const Size.fromHeight(12),
+                        ),
+                        const SizedBox(width: 2),
+                        Text(
+                          cexProvider.convert(amountUsd),
+                          maxLines: 1,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
           Container(
             alignment: const Alignment(0, 0),
             padding:
@@ -431,6 +516,9 @@ class _RewardsPageState extends State<RewardsPage> {
       if (minutes.length < 2) minutes = '0$minutes';
       return AppLocalizations.of(context).rewardsTimeHours(hh, minutes);
     }
-    return AppLocalizations.of(context).rewardsTimeMin(mm);
+    if (mm > 0) {
+      return AppLocalizations.of(context).rewardsTimeMin(mm);
+    }
+    return '-';
   }
 }
