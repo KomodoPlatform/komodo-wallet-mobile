@@ -38,6 +38,9 @@ class OrderBookProvider extends ChangeNotifier {
   List<Orderbook> orderbooksForCoin([Coin coin]) =>
       syncOrderbook.orderbooksForCoin(coin);
 
+  List<OrderbookDepth> orderbooksDepthForCoin([Coin coin]) =>
+      syncOrderbook.orderbooksDepthForCoin(coin);
+
   Future<void> subscribeCoin([Coin coin, CoinType type]) =>
       syncOrderbook.subscribeCoin(coin, type);
 
@@ -206,6 +209,20 @@ class SyncOrderbook {
       }
     });
 
+    return list;
+  }
+
+  List<OrderbookDepth> orderbooksDepthForCoin([Coin coin]) {
+    coin ??= activePair.sell;
+
+    final List<OrderbookDepth> list = [];
+    _orderbooksDepth.forEach((ticker, orderbookDepth) {
+      if (ticker.split('/')[0] == coin.abbr) {
+        list.add(orderbookDepth);
+      }
+    });
+
+    list.sort((a, b) => a.pair.rel.compareTo(b.pair.rel));
     return list;
   }
 
