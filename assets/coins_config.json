@@ -1482,5 +1482,20 @@
         "explorerUrl": [
             "https://testnet.qtum.info/"
         ]
+    },
+    {
+        "abbr": "ADEXBSCT",
+        "name": "ADEXBSCT",
+        "type": "bep",
+        "coingeckoId": "test-token",
+        "testCoin": true,
+        "colorCoin": "0xFF4a7382",
+        "swap_contract_address": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
+        "serverList": [
+            "https://data-seed-prebsc-1-s2.binance.org:8545"
+        ],
+        "explorerUrl": [
+            "https://testnet.bscscan.com/"
+        ]
     }
 ]
