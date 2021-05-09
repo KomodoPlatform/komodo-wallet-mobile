@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -487,12 +488,38 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                       AppLocalizations.of(context).noInternet),
                                 ));
                               } else {
-                                Navigator.push<dynamic>(
-                                  context,
-                                  MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          const SelectCoinsPage()),
-                                );
+                                final numCoinsEnabled =
+                                    coinsBloc.coinBalance.length;
+                                if (numCoinsEnabled >= 12) {
+                                  dialogBloc.closeDialog(context);
+                                  dialogBloc.dialog = showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Too many coins enabled'),
+                                        content: Text(
+                                            'You currently have $numCoinsEnabled coins enabled.\n'
+                                            'The max number of coins allowed is 12.\n'
+                                            "Therefore you can't enable new coins"),
+                                        actions: [
+                                          FlatButton(
+                                            child: Text('OK'),
+                                            onPressed: () {
+                                              dialogBloc.closeDialog(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  Navigator.push<dynamic>(
+                                    context,
+                                    MaterialPageRoute<dynamic>(
+                                        builder: (BuildContext context) =>
+                                            const SelectCoinsPage()),
+                                  );
+                                }
                               }
                             },
                           )),
