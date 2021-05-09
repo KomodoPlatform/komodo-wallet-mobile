@@ -37,17 +37,21 @@ class OrderBookProvider extends ChangeNotifier {
   OrderbookDepth getDepth([CoinsPair coinsPair]) =>
       syncOrderbook.getDepth(coinsPair);
 
+  // deprecated in favor of depthsForCoin
+  // https://github.com/KomodoPlatform/AtomicDEX-mobile/issues/1146
   List<Orderbook> orderbooksForCoin([Coin coin]) =>
       syncOrderbook.orderbooksForCoin(coin);
 
-  List<OrderbookDepth> orderbooksDepthForCoin([Coin coin]) =>
+  List<OrderbookDepth> depthsForCoin([Coin coin]) =>
       syncOrderbook.orderbooksDepthForCoin(coin);
 
+  // deprecated in favor of subscribeDepth
+  // https://github.com/KomodoPlatform/AtomicDEX-mobile/issues/1146
   Future<void> subscribeCoin([Coin coin, CoinType type]) =>
       syncOrderbook.subscribeCoin(coin, type);
 
-  Future<void> subscribeDepth([Coin coin, CoinType type]) =>
-      syncOrderbook.subscribeDepth(coin, type);
+  Future<void> subscribeDepth([Coin coin, CoinType type]) async =>
+      await syncOrderbook.subscribeDepth(coin, type);
 
   CoinsPair get activePair => syncOrderbook.activePair;
   set activePair(CoinsPair coinsPair) => syncOrderbook.activePair = coinsPair;

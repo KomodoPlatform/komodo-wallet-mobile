@@ -32,7 +32,7 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
   Widget build(BuildContext context) {
     orderBookProvider = Provider.of<OrderBookProvider>(context);
     final List<OrderbookDepth> orderbooksDepth =
-        widget.orderbooksDepth ?? orderBookProvider.orderbooksDepthForCoin();
+        widget.orderbooksDepth ?? orderBookProvider.depthsForCoin();
 
     return StatefulBuilder(builder: (context, setState) {
       return SimpleDialog(
