@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/coin.dart';
@@ -224,7 +225,34 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   void _pressDoneButton() {
-    setState(() => _isDone = true);
-    coinsBloc.activateCoinsSelected();
+    final numCoinsEnabled = coinsBloc.coinBalance.length;
+    final numCoinsTryingEnable =
+        coinsBloc.coinBeforeActivation.where((c) => c.isActive).toList().length;
+    if (numCoinsEnabled + numCoinsTryingEnable > 12) {
+      dialogBloc.closeDialog(context);
+      dialogBloc.dialog = showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Trying to enable too many coins'),
+            content: Text('You currently have $numCoinsEnabled coins enabled '
+                ' and you are trying to enable $numCoinsTryingEnable new coins.\n'
+                'The max number of coins allowed is 12.\n'
+                "Therefore you can't enable new coins"),
+            actions: [
+              FlatButton(
+                child: Text('OK'),
+                onPressed: () {
+                  dialogBloc.closeDialog(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      setState(() => _isDone = true);
+      coinsBloc.activateCoinsSelected();
+    }
   }
 }
