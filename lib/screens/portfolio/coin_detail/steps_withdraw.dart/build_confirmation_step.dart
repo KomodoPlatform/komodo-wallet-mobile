@@ -65,9 +65,9 @@ class _BuildConfirmationStepState extends State<BuildConfirmationStep> {
 
       ApiProvider()
           .postWithdraw(
-              MMService().client,
+              mmSe.client,
               GetWithdraw(
-                userpass: MMService().userpass,
+                userpass: mmSe.userpass,
                 fee: customFee,
                 coin: widget.coinBalance.coin.abbr,
                 to: widget.addressToSend,

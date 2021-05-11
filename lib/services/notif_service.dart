@@ -22,12 +22,12 @@ class NotifService {
   bool initialized = false;
   MethodChannel chanell = MMService.nativeC;
 
-  AppLocalizations _localizations;
+  final AppLocalizations _localizations = AppLocalizations();
   final Map<String, Swap> _swaps = {};
   List<String> _transactions;
   final List<String> _notifIds = [];
 
-  Future<void> init(AppLocalizations localizations) async {
+  Future<void> init() async {
     if (initialized) return;
     initialized = true;
 
@@ -35,7 +35,6 @@ class NotifService {
       await Future<dynamic>.delayed(const Duration(milliseconds: 500));
     }
 
-    _localizations = localizations;
     _subscribeSwapStatus();
     _subscribeTxs();
     _subscribeRewards();
@@ -63,7 +62,11 @@ class NotifService {
     }
   }
 
-  void _subscribeRewards() {
+  Future<void> _subscribeRewards() async {
+    while (coinsBloc.currentActiveCoin != null) {
+      await Future<dynamic>.delayed(Duration(milliseconds: 300));
+    }
+
     jobService.install('checkRewards', 300, (j) async {
       final List<RewardsItem> rewards = await MM.getRewardsInfo();
       if (rewards == null || rewards.isEmpty) return;

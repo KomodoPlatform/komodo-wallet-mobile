@@ -220,7 +220,7 @@ Future<bool> authenticateBiometrics(
         Navigator.pop(context);
       }
       authBloc.showLock = false;
-      if (pinStatus == PinStatus.NORMAL_PIN && !MMService().running) {
+      if (pinStatus == PinStatus.NORMAL_PIN && !mmSe.running) {
         await authBloc.login(await EncryptionTool().read('passphrase'), null);
       }
     }
