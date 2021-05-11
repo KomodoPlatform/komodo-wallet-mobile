@@ -5,7 +5,9 @@ import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/model/get_import_swaps.dart';
 import 'package:komodo_dex/model/get_min_trading_volume.dart';
+import 'package:komodo_dex/model/get_orderbook_depth.dart';
 import 'package:komodo_dex/model/import_swaps.dart';
+import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:rational/rational.dart';
 import 'package:komodo_dex/model/get_convert_address.dart';
 import 'package:komodo_dex/model/get_enabled_coins.dart';
@@ -743,6 +745,38 @@ class ApiProvider {
       return importSwaps;
     } catch (e) {
       return _catchErrorString('getImportSwaps', e, 'mm import_swaps] $e');
+    }
+  }
+
+  Future<dynamic> getOrderbookDepth(
+    GetOrderbookDepth request, {
+    http.Client client,
+  }) async {
+    client ??= mmSe.client;
+
+    try {
+      final userBody = await _assertUserpass(client, request);
+      final response = await userBody.client
+          .post(url, body: getOrderbookDepthToJson(userBody.body));
+      _assert200(response);
+      _saveRes('getOrderbookDepth', response);
+
+      // Parse JSON once, then check if the JSON is an error.
+      final dynamic jbody = jsonDecode(response.body);
+      final error = ErrorString.fromJson(jbody);
+      if (error.error.isNotEmpty) throw removeLineFromMM2(error);
+
+      if (jbody['result'] == null) return null;
+
+      final List<OrderbookDepth> list = [];
+      for (dynamic item in jbody['result']) {
+        list.add(OrderbookDepth.fromJson(item));
+      }
+
+      return list;
+    } catch (e) {
+      return _catchErrorString(
+          'getOrderbookDepth', e, 'mm orderbook_depth] $e');
     }
   }
 }

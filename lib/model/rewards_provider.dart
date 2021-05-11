@@ -13,10 +13,6 @@ import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
 class RewardsProvider extends ChangeNotifier {
-  RewardsProvider() {
-    update();
-  }
-
   final AppLocalizations _localizations = AppLocalizations();
   List<RewardsItem> _rewards;
   double _total = 0.0;
@@ -57,9 +53,9 @@ class RewardsProvider extends ChangeNotifier {
     dynamic res;
     try {
       res = await ApiProvider().postWithdraw(
-          MMService().client,
+          mmSe.client,
           GetWithdraw(
-            userpass: MMService().userpass,
+            userpass: mmSe.userpass,
             coin: 'KMD',
             to: _kmdBalance().balance.address,
             max: true,
@@ -144,9 +140,9 @@ class RewardsProvider extends ChangeNotifier {
     dynamic res;
     try {
       res = await ApiProvider().postWithdraw(
-          MMService().client,
+          mmSe.client,
           GetWithdraw(
-            userpass: MMService().userpass,
+            userpass: mmSe.userpass,
             coin: 'KMD',
             to: _kmdBalance().balance.address,
             max: true,
@@ -164,8 +160,8 @@ class RewardsProvider extends ChangeNotifier {
 
     dynamic tx;
     try {
-      tx = await ApiProvider().postRawTransaction(MMService().client,
-          GetSendRawTransaction(coin: 'KMD', txHex: res.txHex));
+      tx = await ApiProvider().postRawTransaction(
+          mmSe.client, GetSendRawTransaction(coin: 'KMD', txHex: res.txHex));
     } catch (e) {
       Log('rewards_provider', 'receive/postRawTransaction] $e');
       _setError(e);

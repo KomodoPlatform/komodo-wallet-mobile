@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'package:decimal/decimal.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
@@ -34,6 +35,10 @@ class CoinsBloc implements BlocBase {
     });
   }
 
+  LinkedHashMap<String, Coin> _knownCoins;
+
+  LinkedHashMap<String, Coin> get knownCoins => _knownCoins;
+
   List<CoinBalance> coinBalance = <CoinBalance>[];
 
   // Streams to handle the list coin
@@ -52,6 +57,8 @@ class CoinsBloc implements BlocBase {
   Sink<dynamic> get _inTransactions => _transactionsController.sink;
   Stream<dynamic> get outTransactions => _transactionsController.stream;
 
+  // currentActiveCoin == null, when all coins
+  // queued for activation are activated
   CoinToActivate currentActiveCoin = CoinToActivate();
 
   // Streams to handle the list coin
@@ -97,6 +104,10 @@ class CoinsBloc implements BlocBase {
 
   Coin getCoinByAbbr(String abbr) {
     return getBalanceByAbbr(abbr)?.coin;
+  }
+
+  Coin getKnownCoinByAbbr(String abbr) {
+    return knownCoins.containsKey(abbr) ? knownCoins[abbr] : null;
   }
 
   CoinBalance getBalanceByAbbr(String abbr) {
@@ -389,6 +400,9 @@ class CoinsBloc implements BlocBase {
       await Db.coinInactive(ticker);
       await removeCoinBalance(Coin(abbr: ticker));
     }
+
+    _knownCoins = known;
+
     return ret;
   }
 

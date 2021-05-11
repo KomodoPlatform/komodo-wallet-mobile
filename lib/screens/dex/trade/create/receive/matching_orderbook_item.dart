@@ -3,19 +3,20 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook.dart';
+import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/matching_bids_page.dart';
 import 'package:provider/provider.dart';
 
 class MatchingOrderbookItem extends StatelessWidget {
   const MatchingOrderbookItem(
       {Key key,
-      this.orderbook,
+      this.orderbookDepth,
       this.sellAmount,
       this.onCreatePressed,
       this.onBidSelected})
       : super(key: key);
 
-  final Orderbook orderbook;
+  final OrderbookDepth orderbookDepth;
   final double sellAmount;
   final Function(String) onCreatePressed;
   final Function(Ask) onBidSelected;
@@ -28,18 +29,18 @@ class MatchingOrderbookItem extends StatelessWidget {
       onTap: () {
         orderBookProvider.activePair = CoinsPair(
           sell: orderBookProvider.activePair.sell,
-          buy: coinsBloc.getCoinByAbbr(orderbook.rel),
+          buy: coinsBloc.getCoinByAbbr(orderbookDepth.pair.rel),
         );
 
-        if (orderbook.bids.isEmpty) {
-          onCreatePressed(orderbook.rel);
+        if ((orderbookDepth.depth.bids ?? 0) == 0) {
+          onCreatePressed(orderbookDepth.pair.rel);
           Navigator.pop(context);
         } else {
           Navigator.pushReplacement<dynamic, dynamic>(
             context,
             MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => MatchingBidPage(
-                    baseCoin: orderbook.base,
+                builder: (BuildContext context) => MatchingBidsPage(
+                    baseCoin: orderbookDepth.pair.base,
                     sellAmount: sellAmount,
                     onCreateNoOrder: onCreatePressed,
                     onCreateOrder: onBidSelected)),
@@ -55,14 +56,14 @@ class MatchingOrderbookItem extends StatelessWidget {
               height: 20,
               width: 20,
               child: Image.asset(
-                'assets/${orderbook.rel.toLowerCase()}.png',
+                'assets/${orderbookDepth.pair.rel.toLowerCase()}.png',
               ),
             ),
             SizedBox(width: 4),
-            Text(orderbook.rel),
+            Text(orderbookDepth.pair.rel),
             SizedBox(width: 4),
             Expanded(
-              child: orderbook.bids != null && orderbook.bids.isNotEmpty
+              child: (orderbookDepth.depth.bids ?? 0) > 0
                   ? RichText(
                       textAlign: TextAlign.end,
                       text: TextSpan(
@@ -72,7 +73,8 @@ class MatchingOrderbookItem extends StatelessWidget {
                                 text: AppLocalizations.of(context).clickToSee,
                                 style: Theme.of(context).textTheme.bodyText2),
                             TextSpan(
-                                text: orderbook.bids.length.toString() + ' ',
+                                text:
+                                    orderbookDepth.depth.bids.toString() + ' ',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText2

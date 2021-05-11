@@ -45,8 +45,8 @@ class OrdersBloc implements BlocBase {
 
   Future<void> updateOrders() async {
     try {
-      final dynamic newOrders = await MM.getMyOrders(
-          MMService().client, BaseService(method: 'my_orders'));
+      final dynamic newOrders =
+          await MM.getMyOrders(mmSe.client, BaseService(method: 'my_orders'));
       if (newOrders is Orders) {
         final List<Order> orders = <Order>[];
 
@@ -129,8 +129,7 @@ class OrdersBloc implements BlocBase {
 
   Future<void> cancelOrder(String uuid) async {
     try {
-      await ApiProvider()
-          .cancelOrder(MMService().client, GetCancelOrder(uuid: uuid));
+      await ApiProvider().cancelOrder(mmSe.client, GetCancelOrder(uuid: uuid));
       orderSwaps.removeWhere((dynamic orderSwap) {
         if (orderSwap is Order) {
           return orderSwap.uuid == uuid;

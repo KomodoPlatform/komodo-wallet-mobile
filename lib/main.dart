@@ -24,7 +24,6 @@ import 'package:komodo_dex/screens/dex/dex_page.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
@@ -293,8 +292,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
-
-    notifService.init(AppLocalizations.of(context));
 
     return StreamBuilder<int>(
       initialData: mainBloc.currentIndexTab,

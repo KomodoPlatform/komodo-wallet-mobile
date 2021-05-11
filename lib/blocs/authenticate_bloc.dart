@@ -9,6 +9,7 @@ import 'package:komodo_dex/model/balance.dart';
 import 'package:komodo_dex/model/wallet.dart';
 import 'package:komodo_dex/services/db/database.dart';
 import 'package:komodo_dex/services/mm_service.dart';
+import 'package:komodo_dex/services/notif_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -84,6 +85,8 @@ class AuthenticateBloc extends BlocBase {
 
     await mmSe.init(passphrase);
 
+    await notifService.init();
+
     isLogin = true;
     _inIsLogin.add(true);
   }
@@ -138,7 +141,7 @@ class AuthenticateBloc extends BlocBase {
     _inIsLogin.add(false);
 
     coinsBloc.stopCheckBalance();
-    await MMService().stopmm2();
+    await mmSe.stopmm2();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await EncryptionTool().delete('passphrase');
     await prefs.setBool('isPinIsSet', false);
@@ -151,7 +154,7 @@ class AuthenticateBloc extends BlocBase {
     updateStatusPin(PinStatus.NORMAL_PIN);
     await EncryptionTool().delete('pin');
     coinsBloc.resetCoinBalance();
-    MMService().balances = <Balance>[];
+    mmSe.balances = <Balance>[];
     await mediaBloc.deleteAllArticles();
     walletBloc.setCurrentWallet(null);
     await Db.deleteCurrentWallet();

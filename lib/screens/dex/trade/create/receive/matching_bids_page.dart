@@ -14,8 +14,8 @@ import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 
-class MatchingBidPage extends StatefulWidget {
-  const MatchingBidPage(
+class MatchingBidsPage extends StatefulWidget {
+  const MatchingBidsPage(
       {Key key,
       this.sellAmount,
       this.onCreateOrder,
@@ -28,10 +28,10 @@ class MatchingBidPage extends StatefulWidget {
   final String baseCoin;
 
   @override
-  _MatchingBidPageState createState() => _MatchingBidPageState();
+  _MatchingBidsPageState createState() => _MatchingBidsPageState();
 }
 
-class _MatchingBidPageState extends State<MatchingBidPage> {
+class _MatchingBidsPageState extends State<MatchingBidsPage> {
   static const double _headerHeight = 50;
   static const double _lineHeight = 50;
   static const int _listLimitMin = 25;
@@ -52,9 +52,9 @@ class _MatchingBidPageState extends State<MatchingBidPage> {
 
     bidsList = OrderBookProvider.sortByPrice(bidsList, quotePrice: true);
     setState(() {
-      _listLength = bidsList.length;
+      _listLength = bidsList?.length;
     });
-    if (bidsList.length > _listLimit)
+    if ((_listLength ?? 0) > _listLimit)
       bidsList = bidsList.sublist(0, _listLimit);
 
     return LockScreen(
