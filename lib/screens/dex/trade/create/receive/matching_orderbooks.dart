@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/screens/dex/trade/create/receive/matching_orderbook_item.dart';
 import 'package:provider/provider.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -11,13 +12,13 @@ class MatchingOrderbooks extends StatefulWidget {
     this.sellAmount,
     this.onCreatePressed,
     this.onBidSelected,
-    this.orderbooks,
+    this.orderbooksDepth,
   }) : super(key: key);
 
   final double sellAmount;
   final Function(String) onCreatePressed;
   final Function(Ask) onBidSelected;
-  final List<Orderbook> orderbooks; // for integration tests
+  final List<OrderbookDepth> orderbooksDepth; // for integration tests
 
   @override
   _MatchingOrderbooksState createState() => _MatchingOrderbooksState();
@@ -30,47 +31,49 @@ class _MatchingOrderbooksState extends State<MatchingOrderbooks> {
   @override
   Widget build(BuildContext context) {
     orderBookProvider = Provider.of<OrderBookProvider>(context);
-    final List<Orderbook> orderbooks =
-        widget.orderbooks ?? orderBookProvider.orderbooksForCoin();
+    final List<OrderbookDepth> orderbooksDepth =
+        widget.orderbooksDepth ?? orderBookProvider.depthsForCoin();
 
-    return SimpleDialog(
-      title: Text(AppLocalizations.of(context).receiveLower),
-      key: const Key('receive-list-coins'),
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: TextField(
-            controller: searchTextController,
-            decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.search,
-                color: Theme.of(context).textTheme.bodyText2.color,
+    return StatefulBuilder(builder: (context, setState) {
+      return SimpleDialog(
+        title: Text(AppLocalizations.of(context).receiveLower),
+        key: const Key('receive-list-coins'),
+        children: [
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: TextField(
+              controller: searchTextController,
+              onChanged: (_) => setState(() {}),
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Theme.of(context).textTheme.bodyText2.color,
+                ),
+                hintText: 'Search for Ticker',
+                counterText: '',
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).accentColor),
+                ),
               ),
-              hintText: 'Search for Ticker',
-              counterText: '',
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor),
-              ),
+              maxLength: 16,
             ),
-            maxLength: 16,
           ),
-        ),
-        ...orderbooks
-            .where((ob) =>
-                (ob.base != null && ob.base.isNotEmpty) &&
-                (ob.rel != null && ob.rel.isNotEmpty))
-            .where((ob) => ob.rel
-                .toLowerCase()
-                .startsWith(searchTextController.text.toLowerCase()))
-            .map((Orderbook orderbook) => MatchingOrderbookItem(
-                key: ValueKey('orderbook-item-${orderbook.rel.toLowerCase()}'),
-                orderbook: orderbook,
-                onCreatePressed: widget.onCreatePressed,
-                onBidSelected: widget.onBidSelected,
-                sellAmount: widget.sellAmount))
-            .toList(),
-      ],
-    );
+          ...orderbooksDepth
+              .where((obDepth) => obDepth.pair.rel
+                  .toLowerCase()
+                  .startsWith(searchTextController.text.toLowerCase()))
+              .map((OrderbookDepth obDepth) => MatchingOrderbookItem(
+                  key: ValueKey(
+                      'orderbook-item-${obDepth.pair.rel.toLowerCase()}'),
+                  orderbookDepth: obDepth,
+                  onCreatePressed: widget.onCreatePressed,
+                  onBidSelected: widget.onBidSelected,
+                  sellAmount: widget.sellAmount))
+              .toList(),
+        ],
+      );
+    });
   }
 
   @override

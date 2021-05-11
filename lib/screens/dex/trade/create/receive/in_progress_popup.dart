@@ -24,7 +24,7 @@ class _InProgressPopupState extends State<InProgressPopup> {
   Widget build(BuildContext context) {
     orderBookProvider = Provider.of<OrderBookProvider>(context);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await orderBookProvider.subscribeCoin();
+      await orderBookProvider.subscribeDepth();
       widget.onDone();
     });
 
