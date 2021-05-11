@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/screens/dex/constructor/constructor.dart';
 import 'package:komodo_dex/screens/dex/orders/orders_page.dart';
 import 'package:komodo_dex/screens/dex/multi/multi_order_page.dart';
-import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
 import 'package:komodo_dex/utils/custom_tab_indicator.dart';
 
 class DexPage extends StatefulWidget {
@@ -110,9 +110,7 @@ class _DexPageState extends State<DexPage> with TickerProviderStateMixin {
             return TabBarView(
               controller: tabController,
               children: <Widget>[
-                TradePage(
-                  mContext: context,
-                ),
+                SwapConstructor(),
                 OrdersPage(),
                 MultiOrderPage(),
               ],
