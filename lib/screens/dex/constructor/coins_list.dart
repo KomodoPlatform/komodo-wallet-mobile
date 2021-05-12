@@ -21,8 +21,8 @@ class CoinsList extends StatefulWidget {
 class _CoinsListState extends State<CoinsList> {
   final List<StreamSubscription> _listeners = [];
   OrderBookProvider _obProvider;
-  String _sellCoin;
-  String _buyCoin;
+  String _sellCoin = constructorBloc.sellCoin;
+  String _buyCoin = constructorBloc.buyCoin;
 
   @override
   void initState() {
@@ -78,13 +78,45 @@ class _CoinsListState extends State<CoinsList> {
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 Expanded(child: SizedBox()),
-                Text(
-                  _getMatchingCoinsNumber(coin).toString(),
-                  style: Theme.of(context).textTheme.caption,
-                )
+                _buildNumber(coin),
               ],
             )),
       ),
+    );
+  }
+
+  Widget _buildNumber(Coin coin) {
+    if (widget.type == CoinType.base && _buyCoin != null) {
+      return _buildAsksNumber(coin);
+    }
+
+    if (widget.type == CoinType.rel && _sellCoin != null) {
+      return _buildBidsNumber(coin);
+    }
+
+    return Text(
+      _getMatchingCoinsNumber(coin).toString(),
+      style: Theme.of(context).textTheme.caption,
+    );
+  }
+
+  Widget _buildAsksNumber(Coin coin) {
+    final OrderbookDepth obDepth = _obProvider.getDepth(
+      CoinsPair(sell: coin, buy: coinsBloc.getCoinByAbbr(_buyCoin)),
+    );
+    return Text(
+      obDepth.depth.bids.toString(),
+      style: Theme.of(context).textTheme.caption.copyWith(color: Colors.red),
+    );
+  }
+
+  Widget _buildBidsNumber(Coin coin) {
+    final OrderbookDepth obDepth = _obProvider.getDepth(
+      CoinsPair(sell: coinsBloc.getCoinByAbbr(_sellCoin), buy: coin),
+    );
+    return Text(
+      obDepth.depth.bids.toString(),
+      style: Theme.of(context).textTheme.caption.copyWith(color: Colors.green),
     );
   }
 
