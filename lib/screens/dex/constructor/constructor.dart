@@ -18,27 +18,34 @@ class _SwapConstructorState extends State<SwapConstructor> {
   Widget build(BuildContext context) {
     _obProvider ??= Provider.of<OrderBookProvider>(context);
 
-    return Container(
-      padding: EdgeInsets.fromLTRB(12, 12, 0, 12),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: _buildSell()),
-                VerticalDivider(
-                  color: Theme.of(context).highlightColor,
-                  width: 2,
+    return FutureBuilder(
+      future: _subscribeDepths(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return _buildProgress();
+
+        return Container(
+          padding: EdgeInsets.fromLTRB(12, 12, 0, 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: _buildSell()),
+                    VerticalDivider(
+                      color: Theme.of(context).highlightColor,
+                      width: 2,
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(child: _buildBuy()),
+                  ],
                 ),
-                SizedBox(width: 12),
-                Expanded(child: _buildBuy()),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -70,21 +77,23 @@ class _SwapConstructorState extends State<SwapConstructor> {
     );
   }
 
-  Future<List<Coin>> _getCoins(CoinType type) async {
+  List<Coin> _getCoins(CoinType type) {
     final List<Coin> active =
         coinsBloc.coinBalance.map((bal) => bal.coin).toList();
 
     final List<Coin> available = [];
     for (Coin coin in active) {
-      await _obProvider.subscribeDepth(coin, type);
       if (_getMatchingCoinsNumber(coin, type) == 0) continue;
-
       available.add(coin);
     }
 
     available.sort((a, b) {
-      return _getMatchingCoinsNumber(b, type)
-          .compareTo(_getMatchingCoinsNumber(a, type));
+      final int aNum = _getMatchingCoinsNumber(a, type);
+      final int bNum = _getMatchingCoinsNumber(b, type);
+      if (aNum > bNum) return -1;
+      if (aNum < bNum) return 1;
+
+      return a.abbr.compareTo(b.abbr);
     });
 
     return available;
@@ -100,18 +109,12 @@ class _SwapConstructorState extends State<SwapConstructor> {
   }
 
   Widget _buildCoinsList(CoinType type) {
-    return FutureBuilder(
-      future: _getCoins(type),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return _buildProgress();
-        final List<Coin> coins = snapshot.data;
+    final List<Coin> coins = _getCoins(type);
 
-        return ListView.builder(
-          itemCount: coins.length,
-          itemBuilder: (context, i) {
-            return _buildCoinItem(coins[i], type);
-          },
-        );
+    return ListView.builder(
+      itemCount: coins.length,
+      itemBuilder: (context, i) {
+        return _buildCoinItem(coins[i], type);
       },
     );
   }
@@ -162,5 +165,16 @@ class _SwapConstructorState extends State<SwapConstructor> {
       if (matchingOrders > 0) counter++;
     }
     return counter;
+  }
+
+  Future<bool> _subscribeDepths() async {
+    final List<Coin> active =
+        coinsBloc.coinBalance.map((bal) => bal.coin).toList();
+    for (Coin coin in active) {
+      await _obProvider.subscribeDepth(coin, CoinType.base);
+      await _obProvider.subscribeDepth(coin, CoinType.rel);
+    }
+
+    return true;
   }
 }
