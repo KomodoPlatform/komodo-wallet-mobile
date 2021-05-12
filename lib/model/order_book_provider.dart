@@ -42,8 +42,8 @@ class OrderBookProvider extends ChangeNotifier {
   List<Orderbook> orderbooksForCoin([Coin coin]) =>
       syncOrderbook.orderbooksForCoin(coin);
 
-  List<OrderbookDepth> depthsForCoin([Coin coin]) =>
-      syncOrderbook.orderbooksDepthForCoin(coin);
+  List<OrderbookDepth> depthsForCoin([Coin coin, CoinType type]) =>
+      syncOrderbook.depthForCoin(coin, type);
 
   // deprecated in favor of subscribeDepth
   // https://github.com/KomodoPlatform/AtomicDEX-mobile/issues/1146
@@ -228,12 +228,14 @@ class SyncOrderbook {
     return list;
   }
 
-  List<OrderbookDepth> orderbooksDepthForCoin([Coin coin]) {
+  List<OrderbookDepth> depthForCoin([Coin coin, CoinType type]) {
     coin ??= activePair.sell;
+    type ??= CoinType.base;
 
     final List<OrderbookDepth> list = [];
     _orderbooksDepth.forEach((ticker, orderbookDepth) {
-      if (ticker.split('/')[0] == coin.abbr) {
+      final int coinIndex = type == CoinType.base ? 0 : 1;
+      if (ticker.split('/')[coinIndex] == coin.abbr) {
         list.add(orderbookDepth);
       }
     });

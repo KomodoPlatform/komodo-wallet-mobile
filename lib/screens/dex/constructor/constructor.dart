@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/swap_constructor_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/screens/dex/constructor/buy_form.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list.dart';
+import 'package:komodo_dex/screens/dex/constructor/sell_form.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +61,16 @@ class _SwapConstructorState extends State<SwapConstructor> {
           style: Theme.of(context).textTheme.subtitle2,
         ),
         SizedBox(height: 6),
-        Expanded(child: CoinsList(type: CoinType.base)),
+        Expanded(
+          child: StreamBuilder(
+            initialData: constructorBloc.sellCoin,
+            stream: constructorBloc.outSellCoin,
+            builder: (context, snapshot) {
+              if (snapshot.data == null) return CoinsList(type: CoinType.base);
+              return SellForm(coin: snapshot.data);
+            },
+          ),
+        ),
       ],
     );
   }
@@ -72,7 +84,16 @@ class _SwapConstructorState extends State<SwapConstructor> {
           style: Theme.of(context).textTheme.subtitle2,
         ),
         SizedBox(height: 6),
-        Expanded(child: CoinsList(type: CoinType.rel)),
+        Expanded(
+          child: StreamBuilder(
+            initialData: constructorBloc.buyCoin,
+            stream: constructorBloc.outBuyCoin,
+            builder: (context, snapshot) {
+              if (snapshot.data == null) return CoinsList(type: CoinType.rel);
+              return BuyForm(coin: snapshot.data);
+            },
+          ),
+        ),
       ],
     );
   }
