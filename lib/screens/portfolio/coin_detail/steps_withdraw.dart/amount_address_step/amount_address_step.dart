@@ -139,26 +139,35 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     try {
       final String barcode = await BarcodeScanner.scan();
       String address;
-      String amount;
-      if (barcode.startsWith('bitcoin:')) {
-        final uri = Uri.tryParse(barcode);
+      double amount;
+      final uri = Uri.tryParse(barcode.trim());
+      if (uri.scheme == 'bitcoin') {
         if (uri != null) {
-          if (uri.path != null) address = uri.path;
+          if (uri.path != null && uri.pathSegments.isNotEmpty)
+            address = uri.pathSegments[0];
           if (uri.queryParameters != null) {
             if (uri.queryParameters.containsKey('amount'))
-              amount = uri.queryParameters['amount'];
+              amount = double.tryParse(uri.queryParameters['amount']);
           }
         }
-        print(address);
-        print(amount);
+      } else if (uri.scheme == 'ethereum') {
+        if (uri != null) {
+          if (uri.path != null && uri.pathSegments.isNotEmpty)
+            address = uri.pathSegments[0];
+          if (uri.queryParameters != null) {
+            if (uri.queryParameters.containsKey('value'))
+              amount = double.tryParse(uri.queryParameters['value']);
+          }
+        }
       }
+
       setState(() {
         if (address != null && address.isNotEmpty) {
           widget.addressController.text = address;
         } else {
           widget.addressController.text = barcode;
         }
-        if (amount != null) widget.amountController.text = amount;
+        if (amount != null) widget.amountController.text = amount.toString();
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
