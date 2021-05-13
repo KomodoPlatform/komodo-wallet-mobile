@@ -7,12 +7,16 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.app.PendingIntent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PersistableBundle;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -31,9 +35,17 @@ public class MainActivity extends FlutterFragmentActivity {
   private EventChannel logC;
   private EventChannel.EventSink logSink;
   private Handler log_handler;
+  private Uri paymentUri;
 
   static {
     System.loadLibrary("mm2-lib");
+  }
+
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Intent intent = getIntent();
+    getPaymentUri(intent);
   }
 
   @Override
@@ -46,6 +58,12 @@ public class MainActivity extends FlutterFragmentActivity {
   protected void onResume() {
     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
     super.onResume();
+  }
+
+  @Override
+  protected void onNewIntent(@NonNull Intent intent) {
+    getPaymentUri(intent);
+    super.onNewIntent(intent);
   }
 
   private void createNotificationChannel() {
@@ -120,6 +138,15 @@ public class MainActivity extends FlutterFragmentActivity {
             } else if (call.method.equals("is_camera_denied")) {
               boolean ret = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED;
               result.success(ret);
+            } else if (call.method.equals("get_native_data")) {
+              // Currently should only work for payment uris
+              // Hopefully can later be expanded for use on notifications
+              String r = null;
+              if(paymentUri!= null) {
+                r = paymentUri.toString();
+              }
+              result.success(r);
+              paymentUri = null;
             } else {
               result.notImplemented();
             }
@@ -170,6 +197,9 @@ public class MainActivity extends FlutterFragmentActivity {
     return (int) ret;
   }
 
+  void getPaymentUri(Intent intent) {
+    paymentUri = intent.getData();
+  }
   /// Corresponds to Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2MainStatus in main.cpp
   private native byte nativeMm2MainStatus();
 

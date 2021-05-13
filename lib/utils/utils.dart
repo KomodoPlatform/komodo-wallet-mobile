@@ -539,3 +539,34 @@ void printWarning(String text) {
 void printError(String text) {
   print('\x1B[31m$text\x1B[0m');
 }
+
+Map<String, String> parsePaymentUri(Uri uri) {
+  String address;
+  double amount;
+
+  if (uri.scheme == 'bitcoin') {
+    if (uri != null) {
+      if (uri.path != null && uri.pathSegments.isNotEmpty)
+        address = uri.pathSegments[0];
+      if (uri.queryParameters != null) {
+        if (uri.queryParameters.containsKey('amount'))
+          amount = double.tryParse(uri.queryParameters['amount']);
+      }
+    }
+  } else if (uri.scheme == 'ethereum') {
+    if (uri != null) {
+      if (uri.path != null && uri.pathSegments.isNotEmpty)
+        address = uri.pathSegments[0];
+      if (uri.queryParameters != null) {
+        if (uri.queryParameters.containsKey('value'))
+          amount = double.tryParse(uri.queryParameters['value']);
+      }
+    }
+  }
+
+  return {
+    'scheme': uri.scheme,
+    'address': address,
+    'amount': amount?.toString(),
+  };
+}

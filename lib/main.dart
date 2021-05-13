@@ -6,13 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/drawer/drawer.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
+import 'package:komodo_dex/model/native_data_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -21,6 +24,7 @@ import 'package:komodo_dex/screens/feed/feed_page.dart';
 import 'package:komodo_dex/screens/markets/markets_page.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/screens/dex/dex_page.dart';
+import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
@@ -88,6 +92,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ChangeNotifierProvider(
               create: (context) => MultiOrderProvider(),
             ),
+            ChangeNotifierProvider(
+              create: (context) => NativeDataProvider(),
+            ),
           ],
           child: const MyApp(),
         ));
@@ -152,6 +159,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         mainBloc.isInBackground = true;
         break;
       default:
+        Provider.of<NativeDataProvider>(context, listen: false).grabData();
         mainBloc.isInBackground = false;
     }
   }
@@ -248,6 +256,35 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _initLanguage();
     lockService.initialize();
+    Future.microtask(() {
+      final nativeDataProvider =
+          Provider.of<NativeDataProvider>(context, listen: false);
+      final data = nativeDataProvider.nativeData;
+      if (data != null) {
+        CoinBalance coinBalance;
+        if (data.screen == ScreenSelection.Ethereum) {
+          coinBalance = coinsBloc.coinBalance
+              .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () => null);
+        } else if (data.screen == ScreenSelection.Bitcoin) {
+          coinBalance = coinsBloc.coinBalance
+              .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () => null);
+        }
+        if (coinBalance != null) {
+          Navigator.pushAndRemoveUntil<dynamic>(
+            context,
+            MaterialPageRoute<dynamic>(
+              builder: (context) => CoinDetail(
+                coinBalance: coinBalance,
+                isSendIsActive: true,
+                paymentUri: data.extraData,
+              ),
+            ),
+            ModalRoute.withName('/'),
+          );
+        }
+        nativeDataProvider.emptyNativeData();
+      }
+    });
   }
 
   @override

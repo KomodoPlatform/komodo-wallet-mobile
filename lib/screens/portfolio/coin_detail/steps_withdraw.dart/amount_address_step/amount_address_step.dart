@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -23,7 +24,8 @@ class AmountAddressStep extends StatefulWidget {
       this.autoFocus = false,
       this.onWithdrawPressed,
       this.onCancel,
-      this.coin})
+      this.coin,
+      this.paymentUri})
       : super(key: key);
 
   final Function onCancel;
@@ -34,6 +36,7 @@ class AmountAddressStep extends StatefulWidget {
   final TextEditingController addressController;
   final bool autoFocus;
   final Coin coin;
+  final String paymentUri;
 
   @override
   _AmountAddressStepState createState() => _AmountAddressStepState();
@@ -43,6 +46,25 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   String barcode = '';
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool isCancel = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      final uri = Uri.tryParse(widget.paymentUri);
+
+      final r = parsePaymentUri(uri);
+      final address = r['address'];
+      final amount = r['amount'];
+
+      setState(() {
+        if (address != null && address.isNotEmpty) {
+          widget.addressController.text = address;
+        }
+        if (amount != null) widget.amountController.text = amount.toString();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,28 +160,11 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     final int lockCookie = lockService.enteringQrScanner();
     try {
       final String barcode = await BarcodeScanner.scan();
-      String address;
-      double amount;
       final uri = Uri.tryParse(barcode.trim());
-      if (uri.scheme == 'bitcoin') {
-        if (uri != null) {
-          if (uri.path != null && uri.pathSegments.isNotEmpty)
-            address = uri.pathSegments[0];
-          if (uri.queryParameters != null) {
-            if (uri.queryParameters.containsKey('amount'))
-              amount = double.tryParse(uri.queryParameters['amount']);
-          }
-        }
-      } else if (uri.scheme == 'ethereum') {
-        if (uri != null) {
-          if (uri.path != null && uri.pathSegments.isNotEmpty)
-            address = uri.pathSegments[0];
-          if (uri.queryParameters != null) {
-            if (uri.queryParameters.containsKey('value'))
-              amount = double.tryParse(uri.queryParameters['value']);
-          }
-        }
-      }
+
+      final r = parsePaymentUri(uri);
+      final address = r['address'];
+      final amount = r['amount'];
 
       setState(() {
         if (address != null && address.isNotEmpty) {
