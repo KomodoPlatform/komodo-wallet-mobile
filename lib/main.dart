@@ -15,7 +15,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
-import 'package:komodo_dex/model/native_data_provider.dart';
+import 'package:komodo_dex/model/intent_data_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
@@ -93,7 +93,7 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
               create: (context) => MultiOrderProvider(),
             ),
             ChangeNotifierProvider(
-              create: (context) => NativeDataProvider(),
+              create: (context) => IntentDataProvider(),
             ),
           ],
           child: const MyApp(),
@@ -232,7 +232,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  NativeDataProvider _nativeDataProvider;
+  IntentDataProvider _intentDataProvider;
 
   final List<Widget> _children = <Widget>[
     CoinsPage(),
@@ -247,7 +247,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _nativeDataProvider?.grabData();
+      _intentDataProvider?.grabData();
     });
 
     _initLanguage();
@@ -294,7 +294,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         if (Platform.isIOS) {
           if (!mmSe.running) await startup.startMmIfUnlocked();
         }
-        _nativeDataProvider?.grabData();
+        _intentDataProvider?.grabData();
         break;
       case AppLifecycleState.detached:
         Log('main:223', 'lifecycle: detached');
@@ -304,7 +304,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    _nativeDataProvider ??= Provider.of<NativeDataProvider>(context);
+    _intentDataProvider ??= Provider.of<IntentDataProvider>(context);
     final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
@@ -369,7 +369,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   Future<void> _handleIntentData() async {
-    final data = _nativeDataProvider.nativeData;
+    final data = _intentDataProvider.intentData;
     if (data == null) return;
 
     while (coinsBloc.coinBalance.isEmpty) {
@@ -384,7 +384,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       coinBalance = coinsBloc.coinBalance
           .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () => null);
     } else {
-      _nativeDataProvider.emptyNativeData();
+      _intentDataProvider.emptyIntentData();
       return;
     }
 
@@ -402,7 +402,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         ),
       );
     });
-    _nativeDataProvider.emptyNativeData();
+    _intentDataProvider.emptyIntentData();
   }
 
   Widget networkStatusStreamBuilder(AsyncSnapshot<int> snapshot,

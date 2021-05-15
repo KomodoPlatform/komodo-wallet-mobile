@@ -2,14 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
-class NativeDataProvider extends ChangeNotifier {
-  NativeData _nativeData;
+class IntentDataProvider extends ChangeNotifier {
+  IntentData _intentData;
 
-  NativeData get nativeData => _nativeData;
+  IntentData get intentData => _intentData;
 
   Future<void> grabData() async {
     final dynamic js =
-        await MMService.nativeC.invokeMethod<dynamic>('get_native_data');
+        await MMService.nativeC.invokeMethod<dynamic>('get_intent_data');
     if (js == null) return;
 
     //Check if is payment uri
@@ -30,23 +30,23 @@ class NativeDataProvider extends ChangeNotifier {
         screen = ScreenSelection.None;
     }
 
-    final nd = NativeData(
+    final nd = IntentData(
       screen: screen,
       extraData: uri.toString(),
     );
 
-    _nativeData = nd;
+    _intentData = nd;
     notifyListeners();
   }
 
-  void emptyNativeData() {
-    _nativeData = null;
+  void emptyIntentData() {
+    _intentData = null;
     notifyListeners();
   }
 }
 
-class NativeData {
-  NativeData({this.screen, this.extraData});
+class IntentData {
+  IntentData({this.screen, this.extraData});
 
   final ScreenSelection screen;
   final String extraData;

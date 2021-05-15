@@ -130,7 +130,7 @@ import AVFoundation
                                         } else if call.method == "metrics" {
                                             let js = metrics()
                                             result (String (cString: js!))
-                                        } else if call.method == "get_native_data" {
+                                        } else if call.method == "get_intent_data" {
                                             let uri = self.intentURI;
                                             self.intentURI = nil;
                                             result (uri)
@@ -191,4 +191,3 @@ import AVFoundation
 extension Notification.Name {
     static let didReceiveData = Notification.Name("didReceiveData")
 }
-

@@ -138,7 +138,7 @@ public class MainActivity extends FlutterFragmentActivity {
             } else if (call.method.equals("is_camera_denied")) {
               boolean ret = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED;
               result.success(ret);
-            } else if (call.method.equals("get_native_data")) {
+            } else if (call.method.equals("get_intent_data")) {
               // Currently should only work for payment uris
               // Hopefully can later be expanded for use on notifications
               String r = null;
