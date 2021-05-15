@@ -159,7 +159,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         mainBloc.isInBackground = true;
         break;
       default:
-        Provider.of<NativeDataProvider>(context, listen: false).grabData();
         mainBloc.isInBackground = false;
     }
   }
@@ -232,8 +231,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
-  Timer timer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  NativeDataProvider _nativeDataProvider;
 
   final List<Widget> _children = <Widget>[
     CoinsPage(),
@@ -242,54 +241,21 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     FeedPage(),
   ];
 
-  Future<void> _initLanguage() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('current_languages') == null) {
-      final Locale loc = Localizations.localeOf(context);
-      prefs.setString('current_languages', loc.languageCode);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _nativeDataProvider?.grabData();
+    });
+
     _initLanguage();
     lockService.initialize();
-    Future.microtask(() {
-      final nativeDataProvider =
-          Provider.of<NativeDataProvider>(context, listen: false);
-      final data = nativeDataProvider.nativeData;
-      if (data != null) {
-        CoinBalance coinBalance;
-        if (data.screen == ScreenSelection.Ethereum) {
-          coinBalance = coinsBloc.coinBalance
-              .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () => null);
-        } else if (data.screen == ScreenSelection.Bitcoin) {
-          coinBalance = coinsBloc.coinBalance
-              .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () => null);
-        }
-        if (coinBalance != null) {
-          Navigator.pushAndRemoveUntil<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (context) => CoinDetail(
-                coinBalance: coinBalance,
-                isSendIsActive: true,
-                paymentUri: data.extraData,
-              ),
-            ),
-            ModalRoute.withName('/'),
-          );
-        }
-        nativeDataProvider.emptyNativeData();
-      }
-    });
   }
 
   @override
   void dispose() {
-    timer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -328,6 +294,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         if (Platform.isIOS) {
           if (!mmSe.running) await startup.startMmIfUnlocked();
         }
+        _nativeDataProvider?.grabData();
         break;
       case AppLifecycleState.detached:
         Log('main:223', 'lifecycle: detached');
@@ -337,9 +304,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    _nativeDataProvider ??= Provider.of<NativeDataProvider>(context);
     final FeedProvider feedProvider = Provider.of<FeedProvider>(context);
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
+
+    _handleIntentData();
 
     return StreamBuilder<int>(
       initialData: mainBloc.currentIndexTab,
@@ -388,6 +358,51 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         );
       },
     );
+  }
+
+  Future<void> _initLanguage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('current_languages') == null) {
+      final Locale loc = Localizations.localeOf(context);
+      prefs.setString('current_languages', loc.languageCode);
+    }
+  }
+
+  Future<void> _handleIntentData() async {
+    final data = _nativeDataProvider.nativeData;
+    if (data == null) return;
+
+    while (coinsBloc.coinBalance.isEmpty) {
+      await Future<dynamic>.delayed(Duration(milliseconds: 100));
+    }
+
+    CoinBalance coinBalance;
+    if (data.screen == ScreenSelection.Ethereum) {
+      coinBalance = coinsBloc.coinBalance
+          .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () => null);
+    } else if (data.screen == ScreenSelection.Bitcoin) {
+      coinBalance = coinsBloc.coinBalance
+          .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () => null);
+    } else {
+      _nativeDataProvider.emptyNativeData();
+      return;
+    }
+
+    if (coinBalance == null) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.push<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (context) => CoinDetail(
+            coinBalance: coinBalance,
+            isSendIsActive: true,
+            paymentUri: data.extraData,
+          ),
+        ),
+      );
+    });
+    _nativeDataProvider.emptyNativeData();
   }
 
   Widget networkStatusStreamBuilder(AsyncSnapshot<int> snapshot,

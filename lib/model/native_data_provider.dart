@@ -10,18 +10,12 @@ class NativeDataProvider extends ChangeNotifier {
   Future<void> grabData() async {
     final dynamic js =
         await MMService.nativeC.invokeMethod<dynamic>('get_native_data');
-    if (js == null) {
-      _nativeData = null;
-      notifyListeners();
-      return;
-    }
+    if (js == null) return;
+
     //Check if is payment uri
     final uri = Uri.tryParse(js);
-    if (uri == null) {
-      _nativeData = null;
-      notifyListeners();
-      return;
-    }
+    if (uri == null) return;
+
     final map = parsePaymentUri(uri);
 
     ScreenSelection screen;
