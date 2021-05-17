@@ -560,6 +560,7 @@ Map<String, String> parsePaymentUri(Uri uri) {
       if (uri.queryParameters != null) {
         if (uri.queryParameters.containsKey('value'))
           amount = double.tryParse(uri.queryParameters['value']);
+        if (amount != null) amount = amount * pow(10, -18);
       }
     }
   }

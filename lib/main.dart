@@ -309,7 +309,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     final UpdatesProvider updatesProvider =
         Provider.of<UpdatesProvider>(context);
 
-    _handleIntentData();
+    _handleIntentData(_scaffoldKey);
 
     return StreamBuilder<int>(
       initialData: mainBloc.currentIndexTab,
@@ -368,7 +368,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _handleIntentData() async {
+  Future<void> _handleIntentData(GlobalKey<ScaffoldState> scaffoldKey) async {
     final data = _intentDataProvider.intentData;
     if (data == null) return;
 
@@ -379,10 +379,18 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     CoinBalance coinBalance;
     if (data.screen == ScreenSelection.Ethereum) {
       coinBalance = coinsBloc.coinBalance
-          .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () => null);
+          .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () {
+        scaffoldKey.currentState
+            .showSnackBar(SnackBar(content: Text('ETH coin is disabled')));
+        return null;
+      });
     } else if (data.screen == ScreenSelection.Bitcoin) {
       coinBalance = coinsBloc.coinBalance
-          .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () => null);
+          .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () {
+        scaffoldKey.currentState
+            .showSnackBar(SnackBar(content: Text('BTC coin is disabled')));
+        return null;
+      });
     } else {
       _intentDataProvider.emptyIntentData();
       return;
