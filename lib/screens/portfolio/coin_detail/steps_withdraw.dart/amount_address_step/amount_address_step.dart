@@ -50,7 +50,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final uri = Uri.tryParse(widget.paymentUri);
 
       final r = parsePaymentUri(uri);
