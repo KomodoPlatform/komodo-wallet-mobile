@@ -28,7 +28,6 @@ import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/screens/portfolio/coins_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
-import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/bloc_provider.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
@@ -277,16 +276,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.paused:
         Log('main:202', 'lifecycle: paused');
         lockService.lockSignal(context);
-
-        // AG: do we really need it? // if (Platform.isIOS) mmSe.closeLogSink();
-
-        // On iOS this corresponds to the ~5 seconds background mode before the app is suspended,
-        // `applicationDidEnterBackground`, cf. https://github.com/flutter/flutter/issues/10123
-        if (Platform.isIOS && await musicService.iosBackgroundExit()) {
-          // https://gitlab.com/artemciy/supernet/issues/4#note_284468673
-          Log('main:211', 'Suspended, exit');
-          exit(0);
-        }
         break;
       case AppLifecycleState.resumed:
         Log('main:216', 'lifecycle: resumed');
@@ -380,6 +369,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     if (data.screen == ScreenSelection.Ethereum) {
       coinBalance = coinsBloc.coinBalance
           .firstWhere((cb) => cb.coin.abbr == 'ETH', orElse: () {
+        _intentDataProvider.emptyIntentData();
         scaffoldKey.currentState
             .showSnackBar(SnackBar(content: Text('ETH coin is disabled')));
         return null;
@@ -387,6 +377,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     } else if (data.screen == ScreenSelection.Bitcoin) {
       coinBalance = coinsBloc.coinBalance
           .firstWhere((cb) => cb.coin.abbr == 'BTC', orElse: () {
+        _intentDataProvider.emptyIntentData();
         scaffoldKey.currentState
             .showSnackBar(SnackBar(content: Text('BTC coin is disabled')));
         return null;

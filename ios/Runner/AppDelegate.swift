@@ -55,7 +55,6 @@ import AVFoundation
     }
     
     override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:] ) -> Bool {
-        
         self.intentURI = url.absoluteString
         return true
     }

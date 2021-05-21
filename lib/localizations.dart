@@ -600,9 +600,9 @@ class AppLocalizations {
   String get tagBEP20 => Intl.message('BEP20', name: 'tagBEP20');
   String get tagQRC20 => Intl.message('QRC20', name: 'tagQRC20');
   String get tagKMD => Intl.message('KMD', name: 'tagKMD');
-  String errorNotEnoughtGas(String gas) =>
+  String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
-          name: 'errorNotEnoughtGas', args: <Object>[gas]);
+          name: 'errorNotEnoughGas', args: <Object>[gas]);
   String orderCancel(String coin) =>
       Intl.message('All $coin orders will be canceled.',
           name: 'orderCancel', args: <Object>[coin]);

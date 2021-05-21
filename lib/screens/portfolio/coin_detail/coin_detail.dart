@@ -286,7 +286,7 @@ class _CoinDetailState extends State<CoinDetail> {
   bool isRefresh = false;
 
   Widget _buildSyncChain() {
-    // Since we currently fething erc20 transactions history
+    // Since we currently fetching erc20 transactions history
     // from the http endpoint, sync status indicator is hidden
     // for erc20 tokens
     if (widget.coinBalance.coin.type == 'erc' ||
@@ -818,7 +818,7 @@ class _CoinDetailState extends State<CoinDetail> {
                     duration: const Duration(seconds: 2),
                     backgroundColor: Theme.of(context).errorColor,
                     content: Text(
-                      AppLocalizations.of(mainContext).errorNotEnoughtGas(gas),
+                      AppLocalizations.of(mainContext).errorNotEnoughGas(gas),
                     ),
                   ));
                 } else {
