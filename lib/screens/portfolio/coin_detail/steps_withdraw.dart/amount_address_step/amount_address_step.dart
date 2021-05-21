@@ -57,12 +57,10 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       final address = r['address'];
       final amount = r['amount'];
 
-      setState(() {
-        if (address != null && address.isNotEmpty) {
-          widget.addressController.text = address;
-        }
-        if (amount != null) widget.amountController.text = amount.toString();
-      });
+      if (address != null && address.isNotEmpty) {
+        widget.addressController.text = address;
+      }
+      if (amount != null) widget.amountController.text = amount.toString();
     });
   }
 
