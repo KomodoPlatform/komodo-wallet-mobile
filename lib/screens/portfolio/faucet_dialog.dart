@@ -16,44 +16,45 @@ void showFaucetDialog({
         return FutureBuilder<Map<String, dynamic>>(
             future: callFaucet(coin, address),
             builder: (context, snapshot) {
-              return AlertDialog(
-                  contentPadding: const EdgeInsets.all(16),
-                  titlePadding: const EdgeInsets.all(0),
-                  shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(6.0)),
-                  content: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            const SizedBox(height: 20),
-                            snapshot.hasData
-                                ? _buildFaucetResponse(
-                                    context: context,
-                                    response: snapshot.data,
-                                  )
-                                : _buildFaucetProgress(
-                                    context: context,
-                                    coin: coin,
-                                  ),
-                            Container(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .close
-                                      .toUpperCase(),
-                                  style: TextStyle(
-                                    color: Theme.of(context).accentColor,
-                                  ),
-                                ),
+              return SimpleDialog(
+                contentPadding: const EdgeInsets.all(16),
+                titlePadding: const EdgeInsets.all(0),
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const SizedBox(height: 20),
+                        snapshot.hasData
+                            ? _buildFaucetResponse(
+                                context: context,
+                                response: snapshot.data,
+                              )
+                            : _buildFaucetProgress(
+                                context: context,
+                                coin: coin,
                               ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: RaisedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              AppLocalizations.of(context).close.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .button
+                                  .copyWith(color: Colors.white),
                             ),
-                          ])));
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
             });
       });
 }

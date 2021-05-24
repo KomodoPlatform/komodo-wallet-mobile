@@ -472,34 +472,36 @@ class _RewardsPageState extends State<RewardsPage> {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(AppLocalizations.of(context).rewardsPopupTitle),
-            contentPadding: const EdgeInsets.only(
-              left: 25,
-              right: 25,
-              top: 25,
-              bottom: 15,
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+          return SimpleDialog(
+              contentPadding: const EdgeInsets.all(16),
+              title: Text(AppLocalizations.of(context).rewardsPopupTitle),
               children: <Widget>[
-                Text(item.error['long']),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    RaisedButton(
-                      onPressed: () {
-                        dialogBloc.closeDialog(context);
-                      },
-                      child: Text(AppLocalizations.of(context).rewardsPopupOk),
+                    Text(item.error['long']),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        RaisedButton(
+                          onPressed: () {
+                            dialogBloc.closeDialog(context);
+                          },
+                          child: Text(
+                            AppLocalizations.of(context).rewardsPopupOk,
+                            style: Theme.of(context)
+                                .textTheme
+                                .button
+                                .copyWith(color: Colors.white),
+                          ),
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
-            ),
-          );
+                ),
+              ]);
         });
   }
 

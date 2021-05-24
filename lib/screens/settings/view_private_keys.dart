@@ -87,13 +87,12 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
             dialogBloc.dialog = showDialog<dynamic>(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                return SimpleDialog(
+                  contentPadding: const EdgeInsets.all(16),
                   titlePadding: const EdgeInsets.all(0),
-                  shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(6.0)),
-                  content: _buildDialogContent(),
+                  children: [
+                    _buildDialogContent(),
+                  ],
                 );
               },
             ).then((dynamic data) {

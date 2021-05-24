@@ -997,19 +997,33 @@ class _SettingPageState extends State<SettingPage> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return SimpleDialog(
+            contentPadding: const EdgeInsets.all(16),
             title: Text(AppLocalizations.of(context).feedback),
-            content: Text(AppLocalizations.of(context).warningShareLogs),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(AppLocalizations.of(context).cancel),
-                onPressed: () => Navigator.of(context).pop(),
+            children: <Widget>[
+              Text(AppLocalizations.of(context).warningShareLogs),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FlatButton(
+                    child:
+                        Text(AppLocalizations.of(context).cancel.toUpperCase()),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  RaisedButton(
+                    key: const Key('setting-share-button'),
+                    child: Text(
+                      AppLocalizations.of(context).share.toUpperCase(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .button
+                          .copyWith(color: Colors.white),
+                    ),
+                    onPressed: () => _shareLogs(),
+                  )
+                ],
               ),
-              RaisedButton(
-                key: const Key('setting-share-button'),
-                child: Text(AppLocalizations.of(context).share),
-                onPressed: () => _shareLogs(),
-              )
             ],
           );
         }).then((dynamic _) {
