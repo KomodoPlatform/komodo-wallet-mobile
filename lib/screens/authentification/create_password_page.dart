@@ -107,8 +107,8 @@ class _CreatePasswordPageState extends State<CreatePasswordPage> {
               ),
               obscureText: isObscured,
               validator: (String arg) {
-                final RegExp exp = RegExp(
-                    r'^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\W])|(?=.*\W))|(?=.*\W)(?=.*[A-Z])).{12,}$');
+                final RegExp exp =
+                    RegExp(r'^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\W)).{12,}$');
                 return !arg.contains(exp)
                     ? 'Password must contain at least 12 characters, with one lower-case, one upper-case and one special symbol.'
                     : null;
