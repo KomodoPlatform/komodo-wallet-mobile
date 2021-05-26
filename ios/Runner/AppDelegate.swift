@@ -10,14 +10,6 @@ import AVFoundation
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler {
     var eventSink: FlutterEventSink?
     
-    func audio (vc: FlutterViewController) {
-        // TODO: change with actual sound-scheme samples
-        let mk = vc.lookupKey (forAsset: "assets/audio/tick-tock.mp3")
-        let mp = Bundle.main.path (forResource: mk, ofType: nil)
-        audio_init (mp)
-        handleAudioInterruptions()
-    }
-    
     // Handle audio interruptions by Siri or calls.
     // Regular audio, like 'Apple Music' will be mixed with the app playback.
     func handleAudioInterruptions() {
@@ -59,7 +51,10 @@ import AVFoundation
             fatalError ("rootViewController is not type FlutterViewController")}
         let vcbm = vc as! FlutterBinaryMessenger
         
-        audio (vc: vc)
+        let audioDirKey = vc.lookupKey (forAsset: "assets/audio/start.mp3")
+        let audioDirPath = Bundle.main.path (forResource: audioDirKey, ofType: nil)
+        save_audio_path(audioDirPath)
+        handleAudioInterruptions()
         
         let mm2main = FlutterMethodChannel (name: "mm2", binaryMessenger: vcbm)
         let chargingChannel = FlutterEventChannel (name: "AtomicDEX/logC", binaryMessenger: vcbm)
@@ -75,22 +70,22 @@ import AVFoundation
         
         mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
                                         if call.method == "audio_bg" {
-                                            let dick = call.arguments as! Dictionary<String, Any>
-                                            let path = dick["path"] as! String
+                                            let argDict = call.arguments as! Dictionary<String, Any>
+                                            let path = argDict["path"] as! String
                                             result (Int (audio_bg (path)))
                                         } else if call.method == "audio_fg" {
-                                            let dick = call.arguments as! Dictionary<String, Any>
-                                            let path = dick["path"] as! String
+                                            let argDict = call.arguments as! Dictionary<String, Any>
+                                            let path = argDict["path"] as! String
                                             result (Int (audio_fg (path)))
                                         } else if call.method == "audio_volume" {
                                             let volume = NSNumber (value: call.arguments as! Double)
                                             result (Int (audio_volume (volume)))
                                         } else if call.method == "show_notification" {
-                                            let dic = call.arguments as! Dictionary<String, Any>
-                                            let id = String(dic["uid"] as! Int)
+                                            let argDict = call.arguments as! Dictionary<String, Any>
+                                            let id = String(argDict["uid"] as! Int)
                                             let content = UNMutableNotificationContent()
-                                            content.title = dic["title"] as! String
-                                            content.subtitle = dic["text"] as! String
+                                            content.title = argDict["title"] as! String
+                                            content.subtitle = argDict["text"] as! String
                                             content.sound = UNNotificationSound.default
                                             
                                             let request = UNNotificationRequest(identifier: id, content: content, trigger: nil)

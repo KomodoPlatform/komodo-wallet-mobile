@@ -3,7 +3,9 @@
 
 #import <Foundation/Foundation.h>
 
-void audio_init (const char* assets_maker);
+void save_audio_path (const char* path);
+
+void audio_init (void);
 
 /// Start playing a file in a background loop.
 ///
