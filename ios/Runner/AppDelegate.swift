@@ -28,9 +28,6 @@ import AVFoundation
         }
         
         switch type {
-        // case .began:
-        // An interruption began.
-        
         case .ended:
             // An interruption ended. Resume playback, if appropriate.
             guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
@@ -127,8 +124,6 @@ import AVFoundation
                                             // (Flutter currently does it for us, but there's a chance that it won't).
                                             let arg = call.arguments as! String;
                                             os_log("%{public}s", type: OSLogType.default, arg);
-                                        } else if call.method == "backgroundTimeRemaining" {
-                                            result(Double(application.backgroundTimeRemaining))
                                         } else {result (FlutterMethodNotImplemented)}})
         
         GeneratedPluginRegistrant.register(with: self)

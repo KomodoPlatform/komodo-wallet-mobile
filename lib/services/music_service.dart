@@ -1,14 +1,10 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:komodo_dex/blocs/main_bloc.dart';
-import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
-import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 
@@ -126,17 +122,16 @@ class MusicService {
     return MusicMode.SILENT;
   }
 
-  // TODO(yurii): change with actual sound-scheme samples
   String _customName(MusicMode mode) => mode == MusicMode.TAKER
       ? 'tick-tock.mp3'
       : mode == MusicMode.MAKER
-          ? 'maker_order_placed_sample.mp3'
+          ? 'maker_order_placed.mp3'
           : mode == MusicMode.ACTIVE
-              ? 'swap_in_progress_sample.mp3'
+              ? 'swap_in_progress.mp3'
               : mode == MusicMode.FAILED
-                  ? 'none.mp3'
+                  ? 'swap_failed.mp3'
                   : mode == MusicMode.APPLAUSE
-                      ? 'none.mp3'
+                      ? 'swap_successful.mp3'
                       : null;
 
   Future<void> setSoundPath(MusicMode mode, String path) async {
@@ -166,21 +161,6 @@ class MusicService {
 
     _reload = true;
   }
-
-  // First batch of audio files was gathered by the various members of Komodo team
-  // and had funny names testimony to the gay variety of places it came from:
-  // 15427__lg__fax, Coin_Drop-Willem_Hunt-569197907, 162196__rickmk2__coin-rustle,
-  // 362272__zabuhailo__street-musician-money, 376196__euphrosyyn__futuristic-robotic-voice-sentences,
-  // 213901__garzul__robotic-arp-sequence, Cash-Register-Cha-Ching-SoundBible.com-184076484,
-  // poker-chips-daniel_simon
-  // We did a pair programming session on classifying that music
-  // and it was a bit of a surprise that every one of them has fallen into a place.
-  //
-  // If we are to expand the collection of audio tracks
-  // then the idea is to have some default tracks in the application bundle
-  // (just to minimally cover all the modes)
-  // and download the extra tracks on demand from an external server
-  // in order to keep the application bundle (and Git repository) small.
 
   Future<void> play(List<Order> orders) async {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
@@ -216,19 +196,16 @@ class MusicService {
       if (custom.existsSync()) customFile = custom;
     }
 
-    final Random rng = Random();
-
-    // TODO(yurii): change with actual sound-scheme samples
     final String defaultPath = newMode == MusicMode.TAKER
-        ? (rng.nextBool() ? 'tick-tock.mp3' : 'tick-tock.mp3')
+        ? 'tick-tock.mp3'
         : newMode == MusicMode.MAKER
-            ? 'maker_order_placed_sample.mp3'
+            ? 'maker_order_placed.mp3'
             : newMode == MusicMode.ACTIVE
-                ? 'swap_in_progress_sample.mp3'
+                ? 'swap_in_progress.mp3'
                 : newMode == MusicMode.FAILED
-                    ? (rng.nextBool() ? 'none.mp3' : 'none.mp3')
+                    ? 'swap_failed.mp3'
                     : newMode == MusicMode.APPLAUSE
-                        ? 'none.mp3'
+                        ? 'swap_successful.mp3'
                         : newMode == MusicMode.SILENT
                             ? 'none.mp3'
                             : null;
@@ -288,18 +265,6 @@ class MusicService {
     musicMode = newMode;
   }
 
-  /// Play a single sound file in a loop.
-  /// Useful for testing the timers without starting MM.
-  ///
-  /// NB: On iOS, when the application is suspended without any music playing,
-  /// the timers (such as the ones used by the JobService) stop
-  /// and resume only when the user returns back to the application.
-  void justPlay() {
-    if (!Platform.isAndroid) return;
-    // TODO(yurii): change with actual sound-scheme samples
-    _player.loop('tick-tock.mp3', volume: 0.1);
-  }
-
   /// True when we want to periodically update the orders and swaps.
   ///
   /// As of now the lists of orders and swaps are not a part of a separate model
@@ -313,34 +278,6 @@ class MusicService {
   /// We also want an update whenever the `musicMode` is unknown,
   /// which happens after the application restarts.
   bool get recommendsPeriodicUpdates => _reload;
-
-  /// Whether the application should `exit` when it goes to "background".
-  /// If there are active orders and swaps then we should be playing a sound and staying alive in background.
-  /// If there are none then we should `exit` in order to avoid mysterious screen flickers and crashes.
-  /// cf. https://github.com/ca333/komodoDEX/issues/658#issuecomment-583005596
-  /// https://developer.apple.com/documentation/uikit/app_and_environment/scenes/preparing_your_ui_to_run_in_the_background
-  Future<bool> iosBackgroundExit() async {
-    final double btr =
-        await MMService.nativeC.invokeMethod('backgroundTimeRemaining');
-    Log('music_service:323', 'backgroundTimeRemaining: $btr');
-
-    // When `MusicService` is playing the music the `backgroundTimeRemaining` is large
-    // and when we are silent the `backgroundTimeRemaining` is low
-    // (expected low values are ~5, ~180, ~600 seconds).
-    // #658: We should only remain in background if we're going to keep playing the sounds.
-    if (btr > 3600) {
-      final mode = pickMode(ordersBloc.orders, MusicMode.SILENT);
-      if (mode == MusicMode.ACTIVE ||
-          mode == MusicMode.MAKER ||
-          mode == MusicMode.TAKER) return false;
-    }
-
-    // Known cases of when "background" doesn't necessarily means "suspend".
-    if (mainBloc.isUrlLaucherIsOpen) return false;
-    if (lockService.inQrScanner) return false;
-    if (lockService.inFilePicker) return false;
-    return true;
-  }
 
   /// Current audio player volume, from 0 to 1, based on the `on` switch.
   double volume() {

@@ -52,22 +52,6 @@ void save_audio_path(const char* path) {
     dex_assets_audio = [[[NSString alloc] initWithUTF8String: path] substringToIndex: end - path];
 }
 
-/// Scheduled between files in order to hold to the `isPlayingProcessAssertion`.
-static AVAudioFile* ballast_file;
-void audio_ballast(void) {
-    if (ballast_file == nil) {
-        NSString* path = [NSString stringWithFormat:@"%@/%s", dex_assets_audio, "none.mp3"];
-        
-        NSURL* url = [[NSURL alloc] initFileURLWithPath: path];
-        NSError* err;
-        ballast_file = [[AVAudioFile alloc] initForReading: url error: &err];
-        if (err) {os_log (OS_LOG_DEFAULT, "audio_ballast] !file: %{public}@", err); return;}
-    }
-    
-    if (!dex_player) audio_init();
-    
-    [dex_player scheduleFile:ballast_file atTime:nil completionHandler:nil];}
-
 /// Invoked by completion handlers in order to maintain the background audio loop.
 void audio_reschedule (int generation) {
     if (!dex_player) audio_init();
@@ -88,8 +72,7 @@ void audio_reschedule (int generation) {
         //[dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: dex_bg_file.processingFormat];
         
         //os_log (OS_LOG_DEFAULT, "audio_reschedule] Looping..");
-        [dex_player scheduleFile: dex_bg_file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
-        audio_ballast();});}
+        [dex_player scheduleFile: dex_bg_file atTime: nil completionHandler: ^() {audio_reschedule (generation);}]; });}
 
 // TBD: dispatch_async, go off the main thread and run initialization in background.
 void audio_init () {
@@ -197,7 +180,6 @@ int audio_bg (NSString* rpath) {
     [dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: file.processingFormat];
     [dex_player play];
     [dex_player scheduleFile: file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
-    audio_ballast();
     return 0;}
 
 int audio_fg (NSString* rpath) {
@@ -211,7 +193,6 @@ int audio_fg (NSString* rpath) {
     [dex_engine connect: dex_player to: [dex_engine mainMixerNode] format: file.processingFormat];
     [dex_player play];
     [dex_player scheduleFile: file atTime: nil completionHandler: ^() {audio_reschedule (generation);}];
-    audio_ballast();
     return 0;}
 
 int audio_volume (NSNumber* volume) {
