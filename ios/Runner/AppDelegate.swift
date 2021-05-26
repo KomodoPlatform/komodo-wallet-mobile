@@ -80,6 +80,9 @@ import AVFoundation
                                         } else if call.method == "audio_volume" {
                                             let volume = NSNumber (value: call.arguments as! Double)
                                             result (Int (audio_volume (volume)))
+                                        } else if call.method == "audio_stop" {
+                                            audio_bg ("")
+                                            result (Int (audio_deactivate()))
                                         } else if call.method == "show_notification" {
                                             let argDict = call.arguments as! Dictionary<String, Any>
                                             let id = String(argDict["uid"] as! Int)

@@ -135,6 +135,14 @@ void audio_init () {
     dex_engine = engine;
     dex_player = player;}
 
+int audio_deactivate() {
+    if (!dex_player) return  -1;
+    
+    dex_engine = nil;
+    dex_player = nil;
+    return  0;
+}
+
 void audio_resume() {
     if (!dex_player) return;
     

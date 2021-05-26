@@ -274,14 +274,9 @@ class MusicService {
             .invokeMethod<int>('audio_fg', <String, dynamic>{'path': path});
         if (rc != 0) Log('music_service:269', 'audio_fg rc: $rc');
       } else if (newMode == MusicMode.SILENT) {
-        // Stop the background loop.
-        int rc = await MMService.nativeC
-            .invokeMethod<int>('audio_bg', <String, dynamic>{'path': ''});
-        if (rc != 0) Log('music_service:274', 'audio_bg rc: $rc');
-        // And play the file in foreground.
-        rc = await MMService.nativeC
-            .invokeMethod<int>('audio_fg', <String, dynamic>{'path': path});
-        if (rc != 0) Log('music_service:278', 'audio_fg rc: $rc');
+        final int response =
+            await MMService.nativeC.invokeMethod<int>('audio_stop');
+        if (response != 0) Log('music_service', 'audio_stop: $response');
       } else {
         // Loop the file in background.
         final rc = await MMService.nativeC
@@ -319,7 +314,7 @@ class MusicService {
   /// which happens after the application restarts.
   bool get recommendsPeriodicUpdates => _reload;
 
-  /// Whether the application shold `exit` when it goes to "background".
+  /// Whether the application should `exit` when it goes to "background".
   /// If there are active orders and swaps then we should be playing a sound and staying alive in background.
   /// If there are none then we should `exit` in order to avoid mysterious screen flickers and crashes.
   /// cf. https://github.com/ca333/komodoDEX/issues/658#issuecomment-583005596
