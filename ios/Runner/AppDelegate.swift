@@ -168,7 +168,12 @@ import AVFoundation
     }
     
     public override func applicationDidBecomeActive(_ application: UIApplication) {
+        signal(SIGPIPE, SIG_IGN)
         self.window?.viewWithTag(61007)?.removeFromSuperview()
+    }
+
+    override func applicationWillEnterForeground(_ application: UIApplication) {
+        signal(SIGPIPE, SIG_IGN)
     }
 }
 
