@@ -68,6 +68,7 @@ class NotifService {
     }
 
     jobService.install('checkRewards', 300, (j) async {
+      if (!mmSe.running) return;
       final List<RewardsItem> rewards = await MM.getRewardsInfo();
       if (rewards == null || rewards.isEmpty) return;
 
@@ -95,6 +96,8 @@ class NotifService {
 
   Future<void> _subscribeTxs() async {
     jobService.install('checkTransactions', 10, (j) async {
+      if (!mmSe.running) return;
+
       final List<CoinBalance> coins = coinsBloc.coinBalance;
       final List<Transaction> transactions = [];
 
@@ -154,6 +157,8 @@ class NotifService {
 
   void _subscribeSwapStatus() {
     jobService.install('checkSwaps', 10, (j) async {
+      if (!mmSe.running) return;
+
       _checkOrdersStatusChange(swapMonitor.swaps);
       _saveOrders(swapMonitor.swaps);
     });

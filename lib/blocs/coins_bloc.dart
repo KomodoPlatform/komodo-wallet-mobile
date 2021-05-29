@@ -31,6 +31,8 @@ import 'package:komodo_dex/services/job_service.dart';
 class CoinsBloc implements BlocBase {
   CoinsBloc() {
     Timer.periodic(const Duration(seconds: 10), (_) {
+      if (!mmSe.running) return;
+
       _saveWalletSnapshot();
     });
   }
