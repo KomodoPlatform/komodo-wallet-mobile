@@ -228,20 +228,23 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     final numCoinsEnabled = coinsBloc.coinBalance.length;
     final numCoinsTryingEnable =
         coinsBloc.coinBeforeActivation.where((c) => c.isActive).toList().length;
-    if (numCoinsEnabled + numCoinsTryingEnable > 12) {
+    if (numCoinsEnabled + numCoinsTryingEnable > 20) {
       dialogBloc.closeDialog(context);
       dialogBloc.dialog = showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Trying to enable too many coins'),
-            content: Text('You currently have $numCoinsEnabled coins enabled '
-                ' and you are trying to enable $numCoinsTryingEnable new coins.\n'
-                'The max number of coins allowed is 12.\n'
-                "Therefore you can't enable new coins"),
+            title:
+                Text(AppLocalizations.of(context).enablingTooManyAssetsTitle),
+            content: Text(
+                AppLocalizations.of(context).enablingTooManyAssetsSpan1 +
+                    numCoinsEnabled.toString() +
+                    AppLocalizations.of(context).enablingTooManyAssetsSpan2 +
+                    numCoinsTryingEnable.toString() +
+                    AppLocalizations.of(context).enablingTooManyAssetsSpan3),
             actions: [
               FlatButton(
-                child: Text('OK'),
+                child: Text(AppLocalizations.of(context).warningOkBtn),
                 onPressed: () {
                   dialogBloc.closeDialog(context);
                 },

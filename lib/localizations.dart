@@ -1378,6 +1378,27 @@ class AppLocalizations {
       Intl.message('Receive coin', name: ' filtersReceive');
   String get filtersClearAll =>
       Intl.message('Clear all filters', name: 'filtersClearAll');
+
+  String get enablingTooManyAssetsTitle =>
+      Intl.message('Trying to enable too many assets',
+          name: 'enablingTooManyAssetsTitle');
+  String get enablingTooManyAssetsSpan1 =>
+      Intl.message('You have ', name: 'enablingTooManyAssetsSpan1');
+  String get enablingTooManyAssetsSpan2 =>
+      Intl.message(' assets enabled and trying to enable ',
+          name: 'enablingTooManyAssetsSpan2');
+  String get enablingTooManyAssetsSpan3 => Intl.message(
+      ' more. Enabled assets max limit is 20. Please disable some before new ones adding.',
+      name: 'enablingTooManyAssetsSpan3');
+
+  String get tooManyAssetsEnabledTitle =>
+      Intl.message('Too many assets enabled',
+          name: 'tooManyAssetsEnabledTitle');
+  String get tooManyAssetsEnabledSpan1 =>
+      Intl.message('You have ', name: 'tooManyAssetsEnableSpan1');
+  String get tooManyAssetsEnabledSpan2 => Intl.message(
+      ' assets enabled. Enabled assets max limit is 20. Please disable some before new ones adding.',
+      name: 'tooManyAssetsEnableSpan2');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

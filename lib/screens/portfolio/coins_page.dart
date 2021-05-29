@@ -490,17 +490,20 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                               } else {
                                 final numCoinsEnabled =
                                     coinsBloc.coinBalance.length;
-                                if (numCoinsEnabled >= 12) {
+                                if (numCoinsEnabled >= 20) {
                                   dialogBloc.closeDialog(context);
                                   dialogBloc.dialog = showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Text('Too many coins enabled'),
+                                        title: Text(AppLocalizations.of(context)
+                                            .tooManyAssetsEnabledTitle),
                                         content: Text(
-                                            'You currently have $numCoinsEnabled coins enabled.\n'
-                                            'The max number of coins allowed is 12.\n'
-                                            "Therefore you can't enable new coins"),
+                                            AppLocalizations.of(context)
+                                                    .tooManyAssetsEnabledSpan1 +
+                                                numCoinsEnabled.toString() +
+                                                AppLocalizations.of(context)
+                                                    .tooManyAssetsEnabledSpan2),
                                         actions: [
                                           FlatButton(
                                             child: Text('OK'),
