@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -62,6 +63,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     SizedBox(height: 24),
                     _buildCoinSwapDetail(),
                     _buildTestCoinWarning(),
+                    _buildBatteryWarning(),
                     SizedBox(height: 24),
                     _buildFees(),
                     SizedBox(height: 24),
@@ -291,6 +293,39 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildBatteryWarning() {
+    final battery = Battery();
+
+    return FutureBuilder<int>(
+      future: battery.batteryLevel,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox();
+        if (snapshot.data > 99) return SizedBox();
+
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: settingsBloc.isLightTheme
+                  ? Colors.yellow[700].withAlpha(200)
+                  : Colors.yellow[100].withAlpha(200),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            padding: EdgeInsets.all(8),
+            child: Text(
+              'Battery level is too low',
+              style: Theme.of(context)
+                  .textTheme
+                  .caption
+                  .copyWith(color: Theme.of(context).primaryColor),
+            ),
+          ),
+        );
+      },
     );
   }
 

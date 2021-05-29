@@ -60,6 +60,8 @@ dependencies:
       url: https://github.com/KomodoPlatform/encrypt
       ref: 4.0.3
 
+  battery_plus: 0.10.1
+
 dev_dependencies:
   flutter_driver: # flutter.dev
     sdk: flutter
