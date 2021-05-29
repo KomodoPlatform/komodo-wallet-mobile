@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -145,8 +144,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
-      case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
+        mainBloc.isInBackground = true;
+        await mmSe.maintainMm2BgExecution();
+        break;
+      case AppLifecycleState.inactive:
       case AppLifecycleState.detached:
         mainBloc.isInBackground = true;
         break;
@@ -277,9 +279,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       case AppLifecycleState.resumed:
         Log('main:216', 'lifecycle: resumed');
         lockService.lockSignal(context);
-        if (Platform.isIOS) {
-          if (!mmSe.running) await startup.startMmIfUnlocked();
-        }
+        mmSe.maintainMm2BgExecution();
         break;
       case AppLifecycleState.detached:
         Log('main:223', 'lifecycle: detached');

@@ -4,8 +4,11 @@ import 'dart:io';
 import 'dart:io' show File, Platform, Process;
 
 import 'package:flutter/foundation.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/model/startup_provider.dart';
 import 'package:komodo_dex/model/version_mm2.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
+import 'package:komodo_dex/services/music_service.dart';
 import 'package:path/path.dart' as path;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart'
@@ -412,6 +415,26 @@ class MMService {
     } catch (e) {
       print(e);
       return null;
+    }
+  }
+
+  // Shutting down mm2 explicitly on iOs in background
+  // if no active swaps and/or orders are present
+  // in order to prevent killing it by system.
+  Future<dynamic> maintainMm2BgExecution() async {
+    if (!Platform.isIOS) return;
+
+    if (mainBloc.isInBackground) {
+      if (!running) return;
+      if (musicService.musicMode != MusicMode.SILENT) return;
+
+      Log('mm_service]', 'mm2BgExecution: --------STOP MM2--------');
+      await stopmm2();
+    } else {
+      if (running) return;
+
+      Log('mm_service]', 'mm2BgExecution: --------START MM2--------');
+      await startup.startMmIfUnlocked();
     }
   }
 
