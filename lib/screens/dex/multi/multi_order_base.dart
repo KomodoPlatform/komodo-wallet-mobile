@@ -10,6 +10,7 @@ import 'package:komodo_dex/model/multi_order_provider.dart';
 import 'package:komodo_dex/utils/decimal_text_input_formatter.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -194,7 +195,8 @@ class _MultiOrderBaseState extends State<MultiOrderBase> {
             return _buildNoFundsAlert();
           }
 
-          return SimpleDialog(
+          return CustomSimpleDialog(
+            hasHorizontalPadding: false,
             title: Text(AppLocalizations.of(context).multiBaseSelectTitle),
             children: coinsBloc
                 .sortCoins(availableForSell)

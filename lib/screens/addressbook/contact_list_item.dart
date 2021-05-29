@@ -8,7 +8,7 @@ import 'package:komodo_dex/model/coin_balance.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit.dart';
 import 'package:komodo_dex/screens/portfolio/coin_detail/coin_detail.dart';
 import 'package:komodo_dex/utils/utils.dart';
-import 'package:komodo_dex/widgets/unified_dialog_config.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ContactListItem extends StatefulWidget {
@@ -222,9 +222,7 @@ class _ContactListItemState extends State<ContactListItem> {
     dialogBloc.dialog = showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          contentPadding: UnifiedDialogConfig.contentPadding,
-          titlePadding: UnifiedDialogConfig.titlePadding,
+        return CustomSimpleDialog(
           title: Row(
             children: <Widget>[
               Icon(
@@ -247,14 +245,17 @@ class _ContactListItemState extends State<ContactListItem> {
                 )),
               ],
             ),
-            UnifiedDialogConfig.verticalSpacing,
+            SizedBox(height: 16),
             RaisedButton(
               onPressed: () {
                 dialogBloc.closeDialog(context);
               },
               child: Text(
-                AppLocalizations.of(context).warningOkBtn,
-                style: UnifiedDialogConfig.getButtonTextStyle(context),
+                AppLocalizations.of(context).warningOkBtn.toUpperCase(),
+                style: Theme.of(context)
+                    .textTheme
+                    .button
+                    .copyWith(color: Colors.white),
               ),
             ),
           ],

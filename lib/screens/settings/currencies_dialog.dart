@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:provider/provider.dart';
 
 void showCurrenciesDialog(BuildContext context) {
@@ -71,12 +72,9 @@ void showCurrenciesDialog(BuildContext context) {
   dialogBloc.dialog = showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
+        return CustomSimpleDialog(
+          hasHorizontalPadding: false,
           title: Text(AppLocalizations.of(context).currencyDialogTitle),
-          contentPadding: const EdgeInsets.only(
-            bottom: 20,
-          ),
-          titlePadding: const EdgeInsets.all(20),
           children: <Widget>[
             ...options,
           ],

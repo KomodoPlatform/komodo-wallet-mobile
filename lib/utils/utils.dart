@@ -18,6 +18,7 @@ import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/encryption_tool.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rational/rational.dart';
@@ -234,11 +235,10 @@ Future<void> showCantRemoveDefaultCoin(BuildContext mContext, Coin coin) async {
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
-        return SimpleDialog(
+        return CustomSimpleDialog(
           title: Text(
             AppLocalizations.of(context).cantDeleteDefaultCoinTitle + coin.abbr,
           ),
-          contentPadding: const EdgeInsets.all(16),
           children: <Widget>[
             RichText(
               text: TextSpan(
@@ -286,8 +286,7 @@ Future<void> showConfirmationRemoveCoin(
   return dialogBloc.dialog = showDialog<void>(
       context: mContext,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          contentPadding: const EdgeInsets.all(16),
+        return CustomSimpleDialog(
           title: Text(AppLocalizations.of(context).deleteConfirm),
           children: <Widget>[
             RichText(

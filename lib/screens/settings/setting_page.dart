@@ -31,6 +31,7 @@ import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/buildRedDot.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/shared_preferences_builder.dart';
@@ -997,8 +998,7 @@ class _SettingPageState extends State<SettingPage> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return SimpleDialog(
-            contentPadding: const EdgeInsets.all(16),
+          return CustomSimpleDialog(
             title: Text(AppLocalizations.of(context).feedback),
             children: <Widget>[
               Text(AppLocalizations.of(context).warningShareLogs),

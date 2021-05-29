@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/addressbook_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/addressbook/contact_edit_field.dart';
 import 'package:komodo_dex/widgets/confirmation_dialog.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/small_button.dart';
 import 'package:provider/provider.dart';
 
@@ -331,7 +332,8 @@ class _ContactEditState extends State<ContactEdit> {
             ));
           }
 
-          return SimpleDialog(
+          return CustomSimpleDialog(
+            hasHorizontalPadding: false,
             title: Text(AppLocalizations.of(context).addressSelectCoin),
             children: [
               ...coinsList,

@@ -6,6 +6,7 @@ import 'package:komodo_dex/model/order.dart';
 import 'package:komodo_dex/model/swap.dart';
 import 'package:komodo_dex/screens/dex/trade/create/auto_scroll_text.dart';
 import 'package:komodo_dex/screens/dex/trade/create/trade_page.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 class Filters extends StatefulWidget {
   const Filters({
@@ -172,8 +173,8 @@ class _FiltersState extends State<Filters> {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (context) {
-          return SimpleDialog(
-            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+          return CustomSimpleDialog(
+            hasHorizontalPadding: false,
             children: [
               InkWell(
                 onTap: () {
@@ -410,8 +411,8 @@ class _FiltersState extends State<Filters> {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (context) {
-          return SimpleDialog(
-            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+          return CustomSimpleDialog(
+            hasHorizontalPadding: false,
             children: [
               InkWell(
                 onTap: () {
@@ -631,8 +632,8 @@ class _FiltersState extends State<Filters> {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (context) {
-          return SimpleDialog(
-            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+          return CustomSimpleDialog(
+            hasHorizontalPadding: false,
             children: items,
           );
         });

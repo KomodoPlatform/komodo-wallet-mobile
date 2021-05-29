@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/widgets/unified_dialog_config.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 
 void showFaucetDialog({
   @required BuildContext context,
@@ -17,9 +17,7 @@ void showFaucetDialog({
         return FutureBuilder<Map<String, dynamic>>(
             future: callFaucet(coin, address),
             builder: (context, snapshot) {
-              return SimpleDialog(
-                contentPadding: UnifiedDialogConfig.contentPadding,
-                titlePadding: UnifiedDialogConfig.titlePaddingEmpty,
+              return CustomSimpleDialog(
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -36,15 +34,17 @@ void showFaucetDialog({
                                 context: context,
                                 coin: coin,
                               ),
-                        UnifiedDialogConfig.verticalSpacing,
+                        SizedBox(height: 16),
                         RaisedButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
                           child: Text(
                             AppLocalizations.of(context).close.toUpperCase(),
-                            style:
-                                UnifiedDialogConfig.getButtonTextStyle(context),
+                            style: Theme.of(context)
+                                .textTheme
+                                .button
+                                .copyWith(color: Colors.white),
                           ),
                         ),
                       ],
@@ -72,7 +72,7 @@ Widget _buildFaucetProgress({
                 strokeWidth: 2,
               )),
         ),
-        UnifiedDialogConfig.verticalSpacing,
+        SizedBox(height: 16),
         Text(
           AppLocalizations.of(context).faucetInProgress(coin),
           style: Theme.of(context).textTheme.bodyText1,
@@ -97,7 +97,7 @@ Widget _buildFaucetResponse({
               fontSize: 20,
             ),
           ),
-          UnifiedDialogConfig.verticalSpacing,
+          SizedBox(height: 16),
           Text(
             response['Result']['Message'],
             style: Theme.of(context).textTheme.bodyText1,
@@ -115,7 +115,7 @@ Widget _buildFaucetResponse({
               fontSize: 20,
             ),
           ),
-          UnifiedDialogConfig.verticalSpacing,
+          SizedBox(height: 16),
           Text(
             response['Result']['Message'],
             style: Theme.of(context).textTheme.bodyText1,
@@ -133,7 +133,7 @@ Widget _buildFaucetResponse({
               fontSize: 20,
             ),
           ),
-          UnifiedDialogConfig.verticalSpacing,
+          SizedBox(height: 16),
           Text(
             response['Result']['Message'],
             style: Theme.of(context).textTheme.bodyText1,
