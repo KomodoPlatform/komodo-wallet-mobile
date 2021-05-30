@@ -86,7 +86,7 @@ class MMService {
   /// Log entries streamed from native code.
   /// MM log is coming that way on iOS.
   static const EventChannel logC = EventChannel('AtomicDEX/logC');
-  final Client client = http.Client();
+  Client client = http.Client();
 
   /// Maps a $year-$month-$day date to the corresponding log file.
   /// The current date time can fluctuate (due to time correction services, for instance)
@@ -402,44 +402,34 @@ class MMService {
   }
 
   Future<dynamic> stopmm2() async {
-    _running = false;
     try {
       final BaseService baseService =
           BaseService(userpass: userpass, method: 'stop');
       final Response response =
-          await http.post(url, body: baseServiceToJson(baseService));
-      // await Future<dynamic>.delayed(const Duration(seconds: 1));
+          await client.post(url, body: baseServiceToJson(baseService));
 
       _running = false;
       return baseServiceFromJson(response.body);
     } catch (e) {
-      print(e);
+      Log('mm_service', 'stopmm2: $e');
       return null;
     }
   }
 
-  // Shutting down mm2 explicitly on iOs in background
-  // if no active swaps and/or orders are present
-  // in order to prevent killing it by system.
   Future<dynamic> maintainMm2BgExecution() async {
     if (!Platform.isIOS) return;
 
     if (mainBloc.isInBackground) {
-      if (!running) return;
-      if (musicService.musicMode != MusicMode.SILENT) return;
-
-      Log('mm_service]', 'mm2BgExecution: --------STOP MM2--------');
-      await stopmm2();
-    } else {
-      if (running) return;
-
-      Log('mm_service]', 'mm2BgExecution: --------START MM2--------');
+      if (_running && musicService.musicMode == MusicMode.SILENT) {
+        stopmm2();
+      }
+    } else if (!_running) {
       await startup.startMmIfUnlocked();
     }
   }
 
   Future<List<Balance>> getAllBalances(bool forceUpdate) async {
-    Log('mm_service:482', 'getAllBalances');
+    Log('mm_service', 'getAllBalances');
     final List<Coin> coins = await coinsBloc.electrumCoins();
 
     if (balances.isEmpty || forceUpdate || coins.length != balances.length) {

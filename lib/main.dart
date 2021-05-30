@@ -144,17 +144,28 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
-      case AppLifecycleState.paused:
-        mainBloc.isInBackground = true;
-        await mmSe.maintainMm2BgExecution();
-        break;
       case AppLifecycleState.inactive:
+        Log('main', 'lifecycle: inactive');
+        mainBloc.isInBackground = true;
+        lockService.lockSignal(context);
+        break;
+      case AppLifecycleState.paused:
+        Log('main', 'lifecycle: paused');
+        mainBloc.isInBackground = true;
+        lockService.lockSignal(context);
+        break;
       case AppLifecycleState.detached:
+        Log('main', 'lifecycle: detached');
         mainBloc.isInBackground = true;
         break;
-      default:
+      case AppLifecycleState.resumed:
+        Log('main', 'lifecycle: resumed');
         mainBloc.isInBackground = false;
+        lockService.lockSignal(context);
+        break;
     }
+
+    await mmSe.maintainMm2BgExecution();
   }
 
   @override
@@ -224,7 +235,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+class _MyHomePageState extends State<MyHomePage> {
   Timer timer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
@@ -246,7 +257,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     _initLanguage();
     lockService.initialize();
   }
@@ -254,37 +264,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void dispose() {
     timer?.cancel();
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  @override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    // https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle
-    switch (state) {
-      case AppLifecycleState.inactive:
-        // willResignActive: “your app is no longer responding to touch but is still foreground
-        // (received a phone call, doing touch ID, et cetera)”
-        // - https://github.com/flutter/flutter/issues/10123#issuecomment-302763382
-        // Picking a file also triggers this on Android (?), as it switches into a system activity.
-        // On iOS *after* picking a file the app returns to `inactive`,
-        // on Android to `inactive` and then `resumed`.
-        Log('main:198', 'lifecycle: inactive');
-        lockService.lockSignal(context);
-        break;
-      case AppLifecycleState.paused:
-        Log('main:202', 'lifecycle: paused');
-        lockService.lockSignal(context);
-        break;
-      case AppLifecycleState.resumed:
-        Log('main:216', 'lifecycle: resumed');
-        lockService.lockSignal(context);
-        mmSe.maintainMm2BgExecution();
-        break;
-      case AppLifecycleState.detached:
-        Log('main:223', 'lifecycle: detached');
-        break;
-    }
   }
 
   @override
