@@ -65,6 +65,8 @@ import AVFoundation
             }
         }
         
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        
         mm2main.setMethodCallHandler ({(call: FlutterMethodCall, result: FlutterResult) -> Void in
                                         if call.method == "audio_bg" {
                                             let argDict = call.arguments as! Dictionary<String, Any>
@@ -98,6 +100,10 @@ import AVFoundation
                                                 authorized = true;
                                             }
                                             result(!authorized)
+                                        } else if call.method == "battery_level" {
+                                            result(UIDevice.current.batteryLevel)
+                                        } else if call.method == "is_power_saving" {
+                                            result(ProcessInfo.processInfo.isLowPowerModeEnabled)
                                         } else if call.method == "start" {
                                             guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
                                             

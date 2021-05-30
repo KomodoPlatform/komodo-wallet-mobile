@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:battery_plus/battery_plus.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -20,6 +21,7 @@ import 'package:komodo_dex/screens/dex/trade/create/order_created_popup.dart';
 import 'package:komodo_dex/screens/dex/trade/evaluation.dart';
 import 'package:komodo_dex/screens/dex/trade/exchange_rate.dart';
 import 'package:komodo_dex/screens/dex/trade/trade_form.dart';
+import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
@@ -297,13 +299,13 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildBatteryWarning() {
-    final battery = Battery();
+    if (!Platform.isIOS) return SizedBox();
 
-    return FutureBuilder<int>(
-      future: battery.batteryLevel,
+    return FutureBuilder<double>(
+      future: MMService.nativeC.invokeMethod('battery_level'),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox();
-        if (snapshot.data > 99) return SizedBox();
+        if (snapshot.data > 0.99) return SizedBox();
 
         return Container(
           width: double.infinity,
