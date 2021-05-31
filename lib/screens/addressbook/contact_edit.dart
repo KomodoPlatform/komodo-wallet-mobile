@@ -326,12 +326,13 @@ class _ContactEditState extends State<ContactEdit> {
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
-                    if (networkChipLabels.containsKey(coin.type))
+                    if (networkChipLabels.containsKey(coin.type)) ...{
                       _buildNetworkChip(
                         networkChipLabels[coin.type],
                       )
-                    else if (coin.type == 'smartChain')
-                      _buildKmdChip(),
+                    } else if (coin.type == 'smartChain') ...{
+                      _buildKmdChip()
+                    }
                   ],
                 ),
               ),
