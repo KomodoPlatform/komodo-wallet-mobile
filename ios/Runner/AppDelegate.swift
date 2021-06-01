@@ -100,10 +100,12 @@ import AVFoundation
                                                 authorized = true;
                                             }
                                             result(!authorized)
-                                        } else if call.method == "battery_level" {
-                                            result(UIDevice.current.batteryLevel)
-                                        } else if call.method == "is_power_saving" {
-                                            result(ProcessInfo.processInfo.isLowPowerModeEnabled)
+                                        } else if call.method == "battery" {
+                                            let level: Float = UIDevice.current.batteryLevel;
+                                            let lowPowerMode: Bool = ProcessInfo.processInfo.isLowPowerModeEnabled;
+                                            let charging: Bool = UIDevice.current.batteryState == .charging;
+                                            
+                                            result(["level": level, "lowPowerMode": lowPowerMode, "charging": charging]);
                                         } else if call.method == "start" {
                                             guard let arg = (call.arguments as! Dictionary<String,String>)["params"] else { result(0); return }
                                             
@@ -175,7 +177,7 @@ import AVFoundation
         signal(SIGPIPE, SIG_IGN)
         self.window?.viewWithTag(61007)?.removeFromSuperview()
     }
-
+    
     override func applicationWillEnterForeground(_ application: UIApplication) {
         signal(SIGPIPE, SIG_IGN)
     }

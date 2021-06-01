@@ -146,7 +146,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.inactive:
         Log('main', 'lifecycle: inactive');
-        mainBloc.isInBackground = true;
         lockService.lockSignal(context);
         break;
       case AppLifecycleState.paused:

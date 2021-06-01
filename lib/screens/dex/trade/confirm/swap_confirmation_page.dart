@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -39,12 +41,27 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   String _minVolume;
   bool _isMinVolumeValid = true;
   BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
+  LinkedHashMap _battery;
+  Timer _batteryTimer;
   ProtectionSettings _protectionSettings = ProtectionSettings(
     requiredConfirmations:
         swapBloc.receiveCoinBalance.coin.requiredConfirmations,
     requiresNotarization:
         swapBloc.receiveCoinBalance.coin.requiresNotarization ?? false,
   );
+
+  @override
+  void initState() {
+    super.initState();
+
+    _batteryTimer = Timer.periodic(Duration(seconds: 1), _checkBattery);
+  }
+
+  @override
+  void dispose() {
+    _batteryTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +118,23 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
               ),
       ),
     );
+  }
+
+  Future<void> _checkBattery(dynamic _) async {
+    if (!Platform.isIOS) return;
+
+    final LinkedHashMap battery =
+        await MMService.nativeC.invokeMethod('battery');
+    setState(() {
+      _battery = battery;
+    });
+  }
+
+  bool _isBatteryCritical() {
+    if (_battery == null || _battery['level'] == null) return false;
+    if (_battery['charging']) return false;
+
+    return _battery['level'] < 0.2;
   }
 
   bool _hasData() {
@@ -299,35 +333,57 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildBatteryWarning() {
-    if (!Platform.isIOS) return SizedBox();
+    if (_battery == null) return SizedBox();
 
-    return FutureBuilder<double>(
-      future: MMService.nativeC.invokeMethod('battery_level'),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox();
-        if (snapshot.data > 0.99) return SizedBox();
+    final double level = _battery['level'];
+    final bool isInLowPowerMode = _battery['lowPowerMode'];
+    final bool isCharging = _battery['charging'];
 
-        return Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: settingsBloc.isLightTheme
-                  ? Colors.yellow[700].withAlpha(200)
-                  : Colors.yellow[100].withAlpha(200),
-              borderRadius: BorderRadius.circular(6),
+    if (isCharging) return SizedBox();
+
+    String message = '';
+    Color color = settingsBloc.isLightTheme
+        ? Colors.yellow[700].withAlpha(200)
+        : Colors.yellow[100].withAlpha(200);
+
+    if (_isBatteryCritical()) {
+      message = 'Critical battery level. Swap disabled.'
+          ' Please charge your phone to perform swap.';
+      color = Theme.of(context).errorColor;
+    } else if (level < 0.5) {
+      message = 'Battery level too low. Recommended level is 50%.';
+    } else if (isInLowPowerMode) {
+      message = 'Your phone is in battery saving mode.';
+    }
+
+    if (message.isEmpty) return SizedBox();
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        padding: EdgeInsets.all(8),
+        child: Row(
+          children: [
+            Icon(Icons.battery_alert,
+                size: 14, color: Theme.of(context).primaryColor),
+            SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    .copyWith(color: Theme.of(context).primaryColor),
+              ),
             ),
-            padding: EdgeInsets.all(8),
-            child: Text(
-              'Battery level is too low',
-              style: Theme.of(context)
-                  .textTheme
-                  .caption
-                  .copyWith(color: Theme.of(context).primaryColor),
-            ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 
@@ -455,7 +511,8 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildButtons() {
-    final bool disabled = _inProgress || !_isMinVolumeValid;
+    final bool disabled =
+        _inProgress || !_isMinVolumeValid || _isBatteryCritical();
 
     return Builder(builder: (context) {
       return Column(
