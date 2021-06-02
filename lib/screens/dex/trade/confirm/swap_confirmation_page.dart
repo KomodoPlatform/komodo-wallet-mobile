@@ -41,7 +41,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   String _minVolume;
   bool _isMinVolumeValid = true;
   BuyOrderType _buyOrderType = BuyOrderType.FillOrKill;
-  LinkedHashMap _battery;
+  LinkedHashMap _batteryData;
   Timer _batteryTimer;
   ProtectionSettings _protectionSettings = ProtectionSettings(
     requiredConfirmations:
@@ -121,20 +121,21 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Future<void> _checkBattery(dynamic _) async {
+    // Native 'battery' method only implemented for the iOs atm
     if (!Platform.isIOS) return;
 
     final LinkedHashMap battery =
         await MMService.nativeC.invokeMethod('battery');
     setState(() {
-      _battery = battery;
+      _batteryData = battery;
     });
   }
 
   bool _isBatteryCritical() {
-    if (_battery == null || _battery['level'] == null) return false;
-    if (_battery['charging']) return false;
+    if (_batteryData == null || _batteryData['level'] == null) return false;
+    if (_batteryData['charging']) return false;
 
-    return _battery['level'] < 0.2;
+    return _batteryData['level'] < 0.2;
   }
 
   bool _hasData() {
@@ -333,11 +334,11 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Widget _buildBatteryWarning() {
-    if (_battery == null) return SizedBox();
+    if (_batteryData == null) return SizedBox();
 
-    final double level = _battery['level'];
-    final bool isInLowPowerMode = _battery['lowPowerMode'];
-    final bool isCharging = _battery['charging'];
+    final double level = _batteryData['level'];
+    final bool isInLowPowerMode = _batteryData['lowPowerMode'];
+    final bool isCharging = _batteryData['charging'];
 
     if (isCharging) return SizedBox();
 
