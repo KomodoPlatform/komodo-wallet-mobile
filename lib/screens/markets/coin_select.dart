@@ -12,6 +12,7 @@ import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/widgets/candles_icon.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/photo_widget.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -202,7 +203,8 @@ class _CoinSelectState extends State<CoinSelect> {
           );
         }
 
-        return SimpleDialog(
+        return CustomSimpleDialog(
+          hasHorizontalPadding: false,
           title: Text(AppLocalizations.of(context).coinSelectTitle),
           children: [
             ...resetSelect,

@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/rewards_provider.dart';
 import 'package:komodo_dex/screens/authentification/lock_screen.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:komodo_dex/widgets/cex_data_marker.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/primary_button.dart';
 import 'package:komodo_dex/widgets/secondary_button.dart';
 import 'package:komodo_dex/widgets/theme_data.dart';
@@ -472,36 +473,36 @@ class _RewardsPageState extends State<RewardsPage> {
     dialogBloc.dialog = showDialog(
         context: context,
         builder: (BuildContext context) {
-          return SimpleDialog(
-              contentPadding: const EdgeInsets.all(16),
-              title: Text(AppLocalizations.of(context).rewardsPopupTitle),
-              children: <Widget>[
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(item.error['long']),
-                    const SizedBox(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        RaisedButton(
-                          onPressed: () {
-                            dialogBloc.closeDialog(context);
-                          },
-                          child: Text(
-                            AppLocalizations.of(context).rewardsPopupOk,
-                            style: Theme.of(context)
-                                .textTheme
-                                .button
-                                .copyWith(color: Colors.white),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ]);
+          return CustomSimpleDialog(
+            title: Text(AppLocalizations.of(context).rewardsPopupTitle),
+            children: <Widget>[
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(item.error['long']),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: () {
+                          dialogBloc.closeDialog(context);
+                        },
+                        child: Text(
+                          AppLocalizations.of(context).rewardsPopupOk,
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              .copyWith(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ],
+          );
         });
   }
 

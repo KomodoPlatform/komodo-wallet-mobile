@@ -7,6 +7,7 @@ import 'package:komodo_dex/model/get_priv_key.dart';
 import 'package:komodo_dex/model/priv_key.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ViewPrivateKeys extends StatelessWidget {
@@ -87,9 +88,7 @@ class _CoinPrivKeyState extends State<CoinPrivKey> {
             dialogBloc.dialog = showDialog<dynamic>(
               context: context,
               builder: (BuildContext context) {
-                return SimpleDialog(
-                  contentPadding: const EdgeInsets.all(16),
-                  titlePadding: const EdgeInsets.all(0),
+                return CustomSimpleDialog(
                   children: [
                     _buildDialogContent(),
                   ],

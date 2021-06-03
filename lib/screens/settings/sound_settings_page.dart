@@ -5,6 +5,7 @@ import 'package:komodo_dex/screens/settings/setting_page.dart';
 import 'package:komodo_dex/services/lock_service.dart';
 import 'package:komodo_dex/services/music_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:komodo_dex/widgets/sound_volume_button.dart';
 
 class SoundSettingsPage extends StatefulWidget {
@@ -129,13 +130,19 @@ class FilePickerButton extends StatelessWidget {
           if (!ck) {
             showDialog<dynamic>(
               context: context,
-              builder: (context) => AlertDialog(
+              builder: (context) => CustomSimpleDialog(
                 title: Text(AppLocalizations.of(context).soundCantPlayThat),
-                content: Text(AppLocalizations.of(context)
-                    .soundCantPlayThatMsg(description)),
-                actions: <Widget>[
-                  FlatButton(
-                    child: const Text('Ok'),
+                children: <Widget>[
+                  Text(AppLocalizations.of(context)
+                      .soundCantPlayThatMsg(description)),
+                  RaisedButton(
+                    child: Text(
+                      AppLocalizations.of(context).warningOkBtn.toUpperCase(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .button
+                          .copyWith(color: Colors.white),
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

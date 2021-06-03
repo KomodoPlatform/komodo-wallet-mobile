@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/widgets/custom_simple_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -163,25 +164,21 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+        return CustomSimpleDialog(
           title: Text(AppLocalizations.of(context).withdrawCameraAccessTitle),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                AppLocalizations.of(context).withdrawCameraAccessText,
-                style: TextStyle(fontSize: 13),
-              ),
-              SizedBox(height: 12),
-              RaisedButton(
-                child: Text(AppLocalizations.of(context).okButton),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
+          children: [
+            Text(
+              AppLocalizations.of(context).withdrawCameraAccessText,
+              style: TextStyle(fontSize: 13),
+            ),
+            SizedBox(height: 12),
+            RaisedButton(
+              child: Text(AppLocalizations.of(context).okButton),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
       },
     );
