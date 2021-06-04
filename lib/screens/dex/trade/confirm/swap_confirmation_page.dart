@@ -31,6 +31,9 @@ import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/widgets/sounds_explanation_dialog.dart';
 import 'package:provider/provider.dart';
 
+const int batteryLevelLow = 30;
+const int batteryLevelCritical = 20;
+
 class SwapConfirmationPage extends StatefulWidget {
   @override
   _SwapConfirmationPageState createState() => _SwapConfirmationPageState();
@@ -137,7 +140,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     if (_batteryData == null || _batteryData['level'] == null) return false;
     if (_batteryData['charging']) return false;
 
-    return _batteryData['level'] < 0.2;
+    return _batteryData['level'] <= batteryLevelCritical / 100;
   }
 
   bool _hasData() {
@@ -342,34 +345,9 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
         if (!snapshot.hasData) return SizedBox();
         if (snapshot.data == ConnectivityResult.wifi) return SizedBox();
 
-        return Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: settingsBloc.isLightTheme
-                  ? Colors.yellow[700].withAlpha(200)
-                  : Colors.yellow[100].withAlpha(200),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            padding: EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Icon(Icons.network_check,
-                    size: 16, color: Theme.of(context).primaryColor),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    AppLocalizations.of(context).mobileDataWarning,
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(color: Theme.of(context).primaryColor),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        return _buildWarning(
+          text: AppLocalizations.of(context).mobileDataWarning,
+          iconData: Icons.network_check,
         );
       },
     );
@@ -385,48 +363,23 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     if (isCharging) return SizedBox();
 
     String message = '';
-    Color color = settingsBloc.isLightTheme
-        ? Colors.yellow[700].withAlpha(200)
-        : Colors.yellow[100].withAlpha(200);
+    Color color;
 
     if (_isBatteryCritical()) {
-      message = 'Critical battery level. Swap disabled.'
-          ' Please charge your phone to perform swap.';
+      message = AppLocalizations.of(context).batteryCriticalError;
       color = Theme.of(context).errorColor;
-    } else if (level < 0.5) {
-      message = 'Battery level too low. Recommended level is 50%.';
+    } else if (level < batteryLevelLow / 100) {
+      message = AppLocalizations.of(context).batteryLowWarning;
     } else if (isInLowPowerMode) {
-      message = 'Your phone is in battery saving mode.';
+      message = AppLocalizations.of(context).batterySavingWarning;
     }
 
     if (message.isEmpty) return SizedBox();
 
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        padding: EdgeInsets.all(8),
-        child: Row(
-          children: [
-            Icon(Icons.battery_alert,
-                size: 14, color: Theme.of(context).primaryColor),
-            SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                message,
-                style: Theme.of(context)
-                    .textTheme
-                    .caption
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return _buildWarning(
+      text: message,
+      color: color,
+      iconData: Icons.battery_alert,
     );
   }
 
@@ -445,27 +398,43 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     if (warningMessage == null) {
       return SizedBox();
     } else {
-      return Container(
-        width: double.infinity,
-        padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: settingsBloc.isLightTheme
-                ? Colors.yellow[700].withAlpha(200)
-                : Colors.yellow[100].withAlpha(200),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          padding: EdgeInsets.all(8),
-          child: Text(
-            warningMessage,
-            style: Theme.of(context)
-                .textTheme
-                .caption
-                .copyWith(color: Theme.of(context).primaryColor),
-          ),
-        ),
-      );
+      return _buildWarning(text: warningMessage);
     }
+  }
+
+  Widget _buildWarning({String text, IconData iconData, Color color}) {
+    color ??= settingsBloc.isLightTheme
+        ? Colors.yellow[700].withAlpha(200)
+        : Colors.yellow[100].withAlpha(200);
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        padding: EdgeInsets.all(8),
+        child: Row(
+          children: [
+            if (iconData != null) ...{
+              Icon(iconData, size: 16, color: Theme.of(context).primaryColor),
+              SizedBox(width: 10),
+            },
+            Expanded(
+              child: Text(
+                text,
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    .copyWith(color: Theme.of(context).primaryColor),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildSellFiat() {
