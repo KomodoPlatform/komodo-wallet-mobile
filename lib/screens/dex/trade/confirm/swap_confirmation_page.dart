@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:komodo_dex/blocs/orders_bloc.dart';
 import 'package:komodo_dex/blocs/swap_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -83,6 +84,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                     _buildCoinSwapDetail(),
                     _buildTestCoinWarning(),
                     _buildBatteryWarning(),
+                    _buildMobileDataWarning(),
                     SizedBox(height: 24),
                     _buildFees(),
                     SizedBox(height: 24),
@@ -330,6 +332,46 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildMobileDataWarning() {
+    return FutureBuilder(
+      future: Connectivity().checkConnectivity(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox();
+        if (snapshot.data == ConnectivityResult.wifi) return SizedBox();
+
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.fromLTRB(24, 12, 24, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: settingsBloc.isLightTheme
+                  ? Colors.yellow[700].withAlpha(200)
+                  : Colors.yellow[100].withAlpha(200),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            padding: EdgeInsets.all(8),
+            child: Row(
+              children: [
+                Icon(Icons.network_check,
+                    size: 16, color: Theme.of(context).primaryColor),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(context).mobileDataWarning,
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        .copyWith(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

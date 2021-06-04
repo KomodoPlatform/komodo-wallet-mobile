@@ -44,6 +44,11 @@ class AppLocalizations {
   String get buyTestCoinWarning => Intl.message(
       'Warning, you\'re willing to buy test coins WITHOUT real value!',
       name: 'buyTestCoinWarning');
+  String get mobileDataWarning => Intl.message(
+      'Please note that now you using cellular data and participation in '
+      'atomicDEX P2P network consume internet traffic. It\'s better to use a '
+      'WiFi network if your cellular data plan is costly.',
+      name: 'mobileDataWarning');
   String get sellTestCoinWarning => Intl.message(
         'Warning, you\'re willing to sell test coins WITHOUT real value!',
         name: 'sellTestCoinWarning',
