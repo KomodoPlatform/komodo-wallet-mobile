@@ -126,11 +126,13 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
   }
 
   Future<void> _checkBattery(dynamic _) async {
-    // Native 'battery' method only implemented for the iOs atm
-    if (!Platform.isIOS) return;
+    LinkedHashMap battery;
+    try {
+      battery = await MMService.nativeC.invokeMethod('battery');
+    } catch (e) {
+      Log('swap_confirmaiton_page]', '_checkBattery: $e');
+    }
 
-    final LinkedHashMap battery =
-        await MMService.nativeC.invokeMethod('battery');
     setState(() {
       _batteryData = battery;
     });
