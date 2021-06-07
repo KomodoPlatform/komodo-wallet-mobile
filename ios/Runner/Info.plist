@@ -20,7 +20,7 @@
 		<string>English</string>
 		<string>fr</string>
 		<string>de</string>
-        	<string>ru</string>
+		<string>ru</string>
 		<string>ja</string>
 		<string>tr</string>
 		<string>hu</string>
@@ -37,20 +37,20 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Access to the music library is required in order for users to customize the sounds played by the app.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera permission is required for barcode scanning.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is required for authentication.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location services are not required by this application, please contact the app provider if you see this message.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
 	</array>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Access to the music library is required in order for users to customize the sounds played by the app.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
