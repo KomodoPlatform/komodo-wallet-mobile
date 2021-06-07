@@ -15,6 +15,7 @@ import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/feed_provider.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/rewards_provider.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/model/updates_provider.dart';
 import 'package:komodo_dex/screens/feed/feed_page.dart';
@@ -86,6 +87,9 @@ BlocProvider<AuthenticateBloc> _myAppWithProviders =
             ),
             ChangeNotifierProvider(
               create: (context) => MultiOrderProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => ConstructorProvider(),
             ),
           ],
           child: const MyApp(),

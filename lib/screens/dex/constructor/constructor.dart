@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/swap_constructor_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/dex/constructor/buy_form.dart';
 import 'package:komodo_dex/screens/dex/constructor/coins_list.dart';
 import 'package:komodo_dex/screens/dex/constructor/sell_form.dart';
@@ -16,10 +16,12 @@ class SwapConstructor extends StatefulWidget {
 
 class _SwapConstructorState extends State<SwapConstructor> {
   OrderBookProvider _obProvider;
+  ConstructorProvider _constrProvider;
 
   @override
   Widget build(BuildContext context) {
     _obProvider ??= Provider.of<OrderBookProvider>(context);
+    _constrProvider ??= Provider.of<ConstructorProvider>(context);
 
     return FutureBuilder(
       future: _subscribeDepths(),
@@ -62,14 +64,9 @@ class _SwapConstructorState extends State<SwapConstructor> {
         ),
         SizedBox(height: 6),
         Expanded(
-          child: StreamBuilder(
-            initialData: constructorBloc.sellCoin,
-            stream: constructorBloc.outSellCoin,
-            builder: (context, snapshot) {
-              if (snapshot.data == null) return CoinsList(type: CoinType.base);
-              return SellForm(coin: snapshot.data);
-            },
-          ),
+          child: _constrProvider.sellCoin == null
+              ? CoinsList(type: CoinType.base)
+              : SellForm(),
         ),
       ],
     );
@@ -85,14 +82,9 @@ class _SwapConstructorState extends State<SwapConstructor> {
         ),
         SizedBox(height: 6),
         Expanded(
-          child: StreamBuilder(
-            initialData: constructorBloc.buyCoin,
-            stream: constructorBloc.outBuyCoin,
-            builder: (context, snapshot) {
-              if (snapshot.data == null) return CoinsList(type: CoinType.rel);
-              return BuyForm(coin: snapshot.data);
-            },
-          ),
+          child: _constrProvider.buyCoin == null
+              ? CoinsList(type: CoinType.rel)
+              : BuyForm(),
         ),
       ],
     );

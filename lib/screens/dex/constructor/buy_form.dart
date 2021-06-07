@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:komodo_dex/blocs/swap_constructor_bloc.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
+import 'package:provider/provider.dart';
 
 class BuyForm extends StatefulWidget {
-  const BuyForm({this.coin});
-
-  final String coin;
-
   @override
   _BuyFormState createState() => _BuyFormState();
 }
 
 class _BuyFormState extends State<BuyForm> {
+  ConstructorProvider _constrProvider;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,11 +20,13 @@ class _BuyFormState extends State<BuyForm> {
   }
 
   Widget _buildCoin() {
+    _constrProvider ??= Provider.of<ConstructorProvider>(context);
+
     return Card(
       margin: EdgeInsets.fromLTRB(0, 6, 12, 0),
       child: InkWell(
         onTap: () {
-          constructorBloc.buyCoin = null;
+          _constrProvider.buyCoin = null;
         },
         child: Container(
             padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
@@ -33,12 +34,12 @@ class _BuyFormState extends State<BuyForm> {
               children: [
                 CircleAvatar(
                   radius: 8,
-                  backgroundImage:
-                      AssetImage('assets/${widget.coin.toLowerCase()}.png'),
+                  backgroundImage: AssetImage(
+                      'assets/${_constrProvider.buyCoin.toLowerCase()}.png'),
                 ),
                 SizedBox(width: 4),
                 Text(
-                  widget.coin,
+                  _constrProvider.buyCoin,
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 Expanded(child: SizedBox()),

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
-import 'package:komodo_dex/blocs/swap_constructor_bloc.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/order_book_provider.dart';
 import 'package:komodo_dex/model/orderbook_depth.dart';
+import 'package:komodo_dex/model/swap_constructor_provider.dart';
 import 'package:komodo_dex/screens/markets/coin_select.dart';
 import 'package:provider/provider.dart';
 
@@ -21,19 +21,7 @@ class CoinsList extends StatefulWidget {
 class _CoinsListState extends State<CoinsList> {
   final List<StreamSubscription> _listeners = [];
   OrderBookProvider _obProvider;
-  String _sellCoin = constructorBloc.sellCoin;
-  String _buyCoin = constructorBloc.buyCoin;
-
-  @override
-  void initState() {
-    super.initState();
-    _listeners.add(constructorBloc.outSellCoin.listen((String data) {
-      setState(() => _sellCoin = data);
-    }));
-    _listeners.add(constructorBloc.outBuyCoin.listen((String data) {
-      setState(() => _buyCoin = data);
-    }));
-  }
+  ConstructorProvider _constrProvider;
 
   @override
   void dispose() {
@@ -44,6 +32,7 @@ class _CoinsListState extends State<CoinsList> {
   @override
   Widget build(BuildContext context) {
     _obProvider ??= Provider.of<OrderBookProvider>(context);
+    _constrProvider ??= Provider.of<ConstructorProvider>(context);
     final List<Coin> coins = _getCoins();
 
     return ListView.builder(
@@ -60,8 +49,8 @@ class _CoinsListState extends State<CoinsList> {
       child: InkWell(
         onTap: () {
           widget.type == CoinType.base
-              ? constructorBloc.sellCoin = coin.abbr
-              : constructorBloc.buyCoin = coin.abbr;
+              ? _constrProvider.sellCoin = coin.abbr
+              : _constrProvider.buyCoin = coin.abbr;
         },
         child: Container(
             padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
@@ -86,11 +75,11 @@ class _CoinsListState extends State<CoinsList> {
   }
 
   Widget _buildNumber(Coin coin) {
-    if (widget.type == CoinType.base && _buyCoin != null) {
+    if (widget.type == CoinType.base && _constrProvider.buyCoin != null) {
       return _buildAsksNumber(coin);
     }
 
-    if (widget.type == CoinType.rel && _sellCoin != null) {
+    if (widget.type == CoinType.rel && _constrProvider.sellCoin != null) {
       return _buildBidsNumber(coin);
     }
 
@@ -102,7 +91,8 @@ class _CoinsListState extends State<CoinsList> {
 
   Widget _buildAsksNumber(Coin coin) {
     final OrderbookDepth obDepth = _obProvider.getDepth(
-      CoinsPair(sell: coin, buy: coinsBloc.getCoinByAbbr(_buyCoin)),
+      CoinsPair(
+          sell: coin, buy: coinsBloc.getCoinByAbbr(_constrProvider.buyCoin)),
     );
     return Text(
       obDepth.depth.bids.toString(),
@@ -112,7 +102,8 @@ class _CoinsListState extends State<CoinsList> {
 
   Widget _buildBidsNumber(Coin coin) {
     final OrderbookDepth obDepth = _obProvider.getDepth(
-      CoinsPair(sell: coinsBloc.getCoinByAbbr(_sellCoin), buy: coin),
+      CoinsPair(
+          sell: coinsBloc.getCoinByAbbr(_constrProvider.sellCoin), buy: coin),
     );
     return Text(
       obDepth.depth.bids.toString(),
@@ -125,14 +116,14 @@ class _CoinsListState extends State<CoinsList> {
     final List<OrderbookDepth> obDepths = _obProvider.depthsForCoin(coin);
     for (OrderbookDepth obDepth in obDepths) {
       if (widget.type == CoinType.rel &&
-          _sellCoin != null &&
-          obDepth.pair.rel != _sellCoin) {
+          _constrProvider.sellCoin != null &&
+          obDepth.pair.rel != _constrProvider.sellCoin) {
         continue;
       }
 
       if (widget.type == CoinType.base &&
-          _buyCoin != null &&
-          obDepth.pair.rel != _buyCoin) {
+          _constrProvider.buyCoin != null &&
+          obDepth.pair.rel != _constrProvider.buyCoin) {
         continue;
       }
 
