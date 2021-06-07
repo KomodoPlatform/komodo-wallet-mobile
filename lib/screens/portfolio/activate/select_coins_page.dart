@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,6 +7,7 @@ import 'package:komodo_dex/blocs/coins_bloc.dart';
 import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/app_config_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/screens/portfolio/activate/build_item_coin.dart';
 import 'package:komodo_dex/screens/portfolio/activate/build_type_header.dart';
@@ -228,7 +230,10 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     final numCoinsEnabled = coinsBloc.coinBalance.length;
     final numCoinsTryingEnable =
         coinsBloc.coinBeforeActivation.where((c) => c.isActive).toList().length;
-    if (numCoinsEnabled + numCoinsTryingEnable > 20) {
+    final maxCoinPerPlatform = Platform.isAndroid
+        ? appConfigProvider.maxCoinsEnabledAndroid
+        : appConfigProvider.maxCoinEnabledIOS;
+    if (numCoinsEnabled + numCoinsTryingEnable > maxCoinPerPlatform) {
       dialogBloc.closeDialog(context);
       dialogBloc.dialog = showDialog(
         context: context,
@@ -241,7 +246,9 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
                     numCoinsEnabled.toString() +
                     AppLocalizations.of(context).enablingTooManyAssetsSpan2 +
                     numCoinsTryingEnable.toString() +
-                    AppLocalizations.of(context).enablingTooManyAssetsSpan3),
+                    AppLocalizations.of(context).enablingTooManyAssetsSpan3 +
+                    maxCoinPerPlatform.toString() +
+                    AppLocalizations.of(context).enablingTooManyAssetsSpan4),
             actions: [
               FlatButton(
                 child: Text(AppLocalizations.of(context).warningOkBtn),

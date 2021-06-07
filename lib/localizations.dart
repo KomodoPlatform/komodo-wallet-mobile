@@ -1387,18 +1387,24 @@ class AppLocalizations {
   String get enablingTooManyAssetsSpan2 =>
       Intl.message(' assets enabled and trying to enable ',
           name: 'enablingTooManyAssetsSpan2');
-  String get enablingTooManyAssetsSpan3 => Intl.message(
-      ' more. Enabled assets max limit is 20. Please disable some before new ones adding.',
-      name: 'enablingTooManyAssetsSpan3');
+  String get enablingTooManyAssetsSpan3 =>
+      Intl.message(' more. Enabled assets max limit is ',
+          name: 'enablingTooManyAssetsSpan3');
+  String get enablingTooManyAssetsSpan4 =>
+      Intl.message('. Please disable some before new ones adding.',
+          name: 'enablingTooManyAssetsSpan4');
 
   String get tooManyAssetsEnabledTitle =>
       Intl.message('Too many assets enabled',
           name: 'tooManyAssetsEnabledTitle');
   String get tooManyAssetsEnabledSpan1 =>
       Intl.message('You have ', name: 'tooManyAssetsEnableSpan1');
-  String get tooManyAssetsEnabledSpan2 => Intl.message(
-      ' assets enabled. Enabled assets max limit is 20. Please disable some before new ones adding.',
-      name: 'tooManyAssetsEnableSpan2');
+  String get tooManyAssetsEnabledSpan2 =>
+      Intl.message(' assets enabled. Enabled assets max limit is ',
+          name: 'tooManyAssetsEnableSpan2');
+  String get tooManyAssetsEnabledSpan3 =>
+      Intl.message('. Please disable some before new ones adding.',
+          name: 'tooManyAssetsEnableSpan3');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -10,6 +11,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
+import 'package:komodo_dex/model/app_config_provider.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -490,7 +492,10 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                               } else {
                                 final numCoinsEnabled =
                                     coinsBloc.coinBalance.length;
-                                if (numCoinsEnabled >= 20) {
+                                final maxCoinPerPlatform = Platform.isAndroid
+                                    ? appConfigProvider.maxCoinsEnabledAndroid
+                                    : appConfigProvider.maxCoinEnabledIOS;
+                                if (numCoinsEnabled >= maxCoinPerPlatform) {
                                   dialogBloc.closeDialog(context);
                                   dialogBloc.dialog = showDialog(
                                     context: context,
@@ -503,7 +508,10 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                                     .tooManyAssetsEnabledSpan1 +
                                                 numCoinsEnabled.toString() +
                                                 AppLocalizations.of(context)
-                                                    .tooManyAssetsEnabledSpan2),
+                                                    .tooManyAssetsEnabledSpan2 +
+                                                maxCoinPerPlatform.toString() +
+                                                AppLocalizations.of(context)
+                                                    .tooManyAssetsEnabledSpan3),
                                         actions: [
                                           FlatButton(
                                             child: Text('OK'),
