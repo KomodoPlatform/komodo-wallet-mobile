@@ -11,7 +11,7 @@ import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/blocs/main_bloc.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
 import 'package:komodo_dex/localizations.dart';
-import 'package:komodo_dex/model/app_config_provider.dart';
+import 'package:komodo_dex/model/app_config.dart';
 import 'package:komodo_dex/model/cex_provider.dart';
 import 'package:komodo_dex/model/coin.dart';
 import 'package:komodo_dex/model/coin_balance.dart';
@@ -493,8 +493,8 @@ class _AddCoinButtonState extends State<AddCoinButton> {
                                 final numCoinsEnabled =
                                     coinsBloc.coinBalance.length;
                                 final maxCoinPerPlatform = Platform.isAndroid
-                                    ? appConfigProvider.maxCoinsEnabledAndroid
-                                    : appConfigProvider.maxCoinEnabledIOS;
+                                    ? appConfig.maxCoinsEnabledAndroid
+                                    : appConfig.maxCoinEnabledIOS;
                                 if (numCoinsEnabled >= maxCoinPerPlatform) {
                                   dialogBloc.closeDialog(context);
                                   dialogBloc.dialog = showDialog(
