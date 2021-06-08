@@ -118,6 +118,7 @@ public class MainActivity extends FlutterFragmentActivity {
               int status = (int)nativeMm2MainStatus();
               result.success(status);
             } else if (call.method.equals("stop")) {
+              logSink.success("STOP MM2 --------------------------------");
               int ret = (int)nativeMm2Stop();
               result.success(ret);
             } else if (call.method.equals("is_camera_denied")) {
