@@ -57,6 +57,9 @@ class MusicService {
   AudioPlayer _audioPlayer;
   AudioCache _player;
 
+  Iterable<Swap> _successfulSwaps;
+  Iterable<Swap> _failedSwaps;
+
   void makePlayer() {
     // On iOS we're using the “audio.m” implementation instead.
     if (!Platform.isAndroid) return;
@@ -77,10 +80,21 @@ class MusicService {
   }
 
   /// Pick the current music mode based on the list of all the orders and SWAPs.
-  static MusicMode pickMode(List<Order> orders, MusicMode prevMode) {
+  MusicMode _pickMode(List<Order> orders, MusicMode prevMode) {
+    if (_anyNewSuccessfulSwaps()) {
+      Log('music_service]', 'pickMode: MusicMode.APPLAUSE');
+      return MusicMode.APPLAUSE;
+    }
+
+    if (_anyNewFailedSwaps()) {
+      Log('music_service]', 'pickMode: MusicMode.FAILED');
+      return MusicMode.FAILED;
+    }
+
     for (final Swap swap in swapMonitor.swaps) {
       final String uuid = swap.result.uuid;
       final String shortId = uuid.substring(0, 4);
+
       final bool active = swap.status != Status.SWAP_FAILED &&
           swap.status != Status.SWAP_SUCCESSFUL &&
           swap.status != Status.TIME_OUT;
@@ -88,19 +102,6 @@ class MusicService {
         Log('music_service:92',
             'pickMode] swap $shortId status: ${swap.status}, MusicMode.ACTIVE');
         return MusicMode.ACTIVE;
-      }
-
-      if (prevMode == MusicMode.ACTIVE) {
-        if (swap.status == Status.SWAP_FAILED ||
-            swap.status == Status.TIME_OUT) {
-          Log('music_service:100',
-              'pickMode] failed swap $shortId, MusicMode.FAILED');
-          return MusicMode.FAILED;
-        } else if (swap.status == Status.SWAP_SUCCESSFUL) {
-          Log('music_service:104',
-              'pickMode] finished swap $shortId, MusicMode.APPLAUSE');
-          return MusicMode.APPLAUSE;
-        }
       }
     }
 
@@ -120,6 +121,32 @@ class MusicService {
     Log('music_service:124',
         'pickMode] no active orders or swaps, MusicMode.SILENT');
     return MusicMode.SILENT;
+  }
+
+  bool _anyNewSuccessfulSwaps() {
+    final Iterable<Swap> successfulNew = swapMonitor.swaps
+        .where((Swap swap) => swap.status == Status.SWAP_SUCCESSFUL);
+
+    bool haveNew = false;
+    if (_successfulSwaps != null && successfulNew != null) {
+      haveNew = _successfulSwaps.length < successfulNew.length;
+    }
+
+    _successfulSwaps = successfulNew;
+    return haveNew;
+  }
+
+  bool _anyNewFailedSwaps() {
+    final Iterable<Swap> failedNew = swapMonitor.swaps.where((Swap swap) =>
+        swap.status == Status.SWAP_FAILED || swap.status == Status.TIME_OUT);
+
+    bool haveNew = false;
+    if (_failedSwaps != null && failedNew != null) {
+      haveNew = _failedSwaps.length < failedNew.length;
+    }
+
+    _failedSwaps = failedNew;
+    return haveNew;
   }
 
   String _customName(MusicMode mode) => mode == MusicMode.TAKER
@@ -165,7 +192,7 @@ class MusicService {
   Future<void> play(List<Order> orders) async {
     // ^ Triggered by page transitions and certain log events (via `onLogsmm2`),
     //   but for reliability we should also add a periodic update independent from MM logs.
-    final MusicMode newMode = pickMode(orders, musicMode);
+    final MusicMode newMode = _pickMode(orders, musicMode);
 
     bool changes = false;
 
