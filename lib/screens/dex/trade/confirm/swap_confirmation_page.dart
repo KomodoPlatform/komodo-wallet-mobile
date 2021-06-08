@@ -141,7 +141,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
     if (_batteryData == null || _batteryData['level'] == null) return false;
     if (_batteryData['charging']) return false;
 
-    return _batteryData['level'] <= batteryLevelCritical / 100;
+    return (_batteryData['level'] * 100).round() <= batteryLevelCritical;
   }
 
   bool _hasData() {
