@@ -119,6 +119,12 @@ import AVFoundation
                                         } else if call.method == "status" {
                                             let ret = Int32(mm2_main_status());
                                             result(ret)
+                                        } else if call.method == "stop" {
+                                            print("STOP MM2 --------------------------------")
+                                            let error = Int32(mm2_stop());
+
+                                            print(error)
+                                            result(error)
                                         } else if call.method == "lsof" {
                                             lsof()
                                             result(0)

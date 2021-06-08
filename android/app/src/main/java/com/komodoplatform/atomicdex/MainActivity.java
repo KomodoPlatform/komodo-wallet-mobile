@@ -126,6 +126,10 @@ public class MainActivity extends FlutterFragmentActivity {
             } else if (call.method.equals("status")) {
               int status = (int)nativeMm2MainStatus();
               result.success(status);
+            } else if (call.method.equals("stop")) {
+              logSink.success("STOP MM2 --------------------------------");
+              int ret = (int)nativeMm2Stop();
+              result.success(ret);
             } else if (call.method.equals("is_camera_denied")) {
               boolean ret = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED;
               result.success(ret);
@@ -204,6 +208,9 @@ public class MainActivity extends FlutterFragmentActivity {
 
   /// Corresponds to Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2Main in main.cpp
   private native byte nativeMm2Main(String conf, JNILogListener listener);
+
+  /// Corresponds to Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2Stop in main.cpp
+  private native byte nativeMm2Stop();
 
   @Override
   public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
