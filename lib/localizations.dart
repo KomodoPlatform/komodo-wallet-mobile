@@ -1378,6 +1378,14 @@ class AppLocalizations {
       Intl.message('Receive coin', name: ' filtersReceive');
   String get filtersClearAll =>
       Intl.message('Clear all filters', name: 'filtersClearAll');
+
+  String get uriInsufficientBalanceTitle =>
+      Intl.message('Insufficient balance', name: 'uriInsufficientBalanceTitle');
+  String get uriInsufficientBalanceSpan1 =>
+      Intl.message('Not enough balance for scanned ',
+          name: 'uriInsufficientBalanceSpan1');
+  String get uriInsufficientBalanceSpan2 =>
+      Intl.message(' payment request.', name: 'uriInsufficientBalanceSpan2');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

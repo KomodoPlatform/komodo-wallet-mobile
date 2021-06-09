@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/blocs/dialog_bloc.dart';
 import 'package:komodo_dex/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:komodo_dex/blocs/coin_detail_bloc.dart';
@@ -53,14 +55,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final uri = Uri.tryParse(widget.paymentUri);
 
-      final r = parsePaymentUri(uri);
-      final address = r['address'];
-      final amount = r['amount'];
-
-      if (address != null && address.isNotEmpty) {
-        widget.addressController.text = address;
-      }
-      if (amount != null) widget.amountController.text = amount.toString();
+      handleUri(uri);
     });
   }
 
@@ -119,6 +114,63 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
     );
   }
 
+  void handleUri(Uri uri, [String barcode]) {
+    final r = parsePaymentUri(uri);
+    final address = r['address'];
+    final amount = r['amount'];
+
+    if (address != null && address.isNotEmpty) {
+      widget.addressController.text = address;
+    } else if (barcode != null) {
+      widget.addressController.text = barcode;
+    }
+    if (amount != null) {
+      final coinBalance = coinsBloc.coinBalance.firstWhere(
+          (cb) => cb.coin.abbr == widget.coin.abbr,
+          orElse: () => null);
+      final amountDecimal = deci(amount);
+
+      if (coinBalance != null && coinBalance.balance.balance >= amountDecimal) {
+        widget.amountController.text = amount.toString();
+      } else {
+        dialogBloc.dialog = showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SimpleDialog(
+                title: Text(
+                    AppLocalizations.of(context).uriInsufficientBalanceTitle),
+                contentPadding: EdgeInsets.all(24),
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context).uriInsufficientBalanceSpan1 +
+                        '${deci2s(amountDecimal)} ${widget.coin.abbr}' +
+                        AppLocalizations.of(context)
+                            .uriInsufficientBalanceSpan2,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          AppLocalizations.of(context).warningOkBtn,
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              .copyWith(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              );
+            });
+      }
+    }
+  }
+
   Widget _buildWithdrawButton(BuildContext context) {
     return Builder(
       builder: (BuildContext mContext) {
@@ -160,17 +212,8 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
       final String barcode = await BarcodeScanner.scan();
       final uri = Uri.tryParse(barcode.trim());
 
-      final r = parsePaymentUri(uri);
-      final address = r['address'];
-      final amount = r['amount'];
-
       setState(() {
-        if (address != null && address.isNotEmpty) {
-          widget.addressController.text = address;
-        } else {
-          widget.addressController.text = barcode;
-        }
-        if (amount != null) widget.amountController.text = amount.toString();
+        handleUri(uri, barcode);
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
