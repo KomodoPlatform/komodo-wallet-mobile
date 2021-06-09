@@ -424,7 +424,7 @@ class MMService {
     final Mm2StopError error = mm2StopErrorFrom(errorCode);
     Log('mm_service', 'stopmm2Ios: $error');
 
-    await pauseUntil(await _mm2status() == Mm2Status.not_running);
+    await pauseUntil(() async => await _mm2status() == Mm2Status.not_running);
     _running = false;
   }
 

@@ -278,7 +278,7 @@ class CoinsBloc implements BlocBase {
   /// Handle the coins user has picked for activation.
   /// Also used for coin activations during the application startup.
   Future<void> enableCoins(List<Coin> coins) async {
-    await pauseUntil(!_coinsLock, maxMs: 5000);
+    await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
     // Using a batch request to speed up the coin activation.
@@ -453,7 +453,7 @@ class CoinsBloc implements BlocBase {
       return;
     }
 
-    await pauseUntil(!_coinsLock, maxMs: 5000);
+    await pauseUntil(() => !_coinsLock, maxMs: 3000);
     _coinsLock = true;
 
     await cexPrices.updatePrices(coins);

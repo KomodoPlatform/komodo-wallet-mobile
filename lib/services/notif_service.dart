@@ -32,7 +32,7 @@ class NotifService {
     if (initialized) return;
     initialized = true;
 
-    await pauseUntil(mmSe.running);
+    await pauseUntil(() => mmSe.running);
 
     _subscribeSwapStatus();
     _subscribeTxs();
@@ -62,7 +62,7 @@ class NotifService {
   }
 
   Future<void> _subscribeRewards() async {
-    await pauseUntil(coinsBloc.currentActiveCoin == null, maxMs: 20000);
+    await pauseUntil(() => coinsBloc.currentActiveCoin == null, maxMs: 20000);
 
     jobService.install('checkRewards', 300, (j) async {
       if (!mmSe.running) return;

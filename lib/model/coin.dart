@@ -21,7 +21,7 @@ bool _coinsInvoked = false;
 Future<LinkedHashMap<String, Coin>> get coins async {
   // Protect from loading coins multiple times from parallel green threads.
   if (_coinsInvoked) {
-    await pauseUntil(_coins != null);
+    await pauseUntil(() => _coins != null);
     return _coins;
   }
   _coinsInvoked = true;

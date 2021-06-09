@@ -18,7 +18,7 @@ class AddressBookProvider extends ChangeNotifier {
   }
 
   Future<List<Contact>> get contacts async {
-    await pauseUntil(_contacts != null);
+    await pauseUntil(() => _contacts != null);
     return _contacts;
   }
 
