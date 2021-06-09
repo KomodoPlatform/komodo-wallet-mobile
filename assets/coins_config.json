@@ -42,7 +42,8 @@
         "proto": "tcp",
         "abbr": "AWC",
         "coingeckoId": "usd-coin",
-        "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFF2ea5fb",
         "serverList": [
             "http://eth1.cipig.net:8555",
@@ -79,7 +80,8 @@
         "proto": "tcp",
         "abbr": "BAT-ERC20",
         "coingeckoId": "basic-attention-token",
-        "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFFff5000",
         "serverList": [
             "http://eth1.cipig.net:8555",
@@ -98,7 +100,8 @@
         "proto": "tcp",
         "abbr": "BUSD-ERC20",
         "coingeckoId": "binance-usd",
-        "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFFF0BA01",
         "serverList": [
             "http://eth1.cipig.net:8555",
@@ -153,7 +156,8 @@
         "proto": "tcp",
         "abbr": "DAI-ERC20",
         "coingeckoId": "dai",
-        "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFFF8B34F",
         "serverList": [
             "http://eth1.cipig.net:8555",
@@ -244,7 +248,8 @@
         "proto": "tcp",
         "abbr": "ETH",
         "coingeckoId": "ethereum",
-        "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFF828384",
         "serverList": [
             "http://eth1.cipig.net:8555",
@@ -264,7 +269,8 @@
         "abbr": "ETHR",
         "coingeckoId": "test-coin",
         "testCoin": true,
-        "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
+        "swap_contract_address": "0x6b5A52217006B965BB190864D62dc3d270F7AaFD",
+        "fallback_swap_contract": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
         "colorCoin": "0xFF828384",
         "serverList": [
             "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
@@ -283,6 +289,7 @@
         "coingeckoId": "test-coin",
         "testCoin": true,
         "swap_contract_address": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
+        "fallback_swap_contract": "0x7Bc1bBDD6A0a722fC9bffC49c921B685ECB84b94",
         "colorCoin": "0xFFF8B34F",
         "serverList": [
             "https://ropsten.infura.io/v3/1d059a9aca7d49a3a380c71068bffb1c"
@@ -424,7 +431,8 @@
         "proto": "tcp",
         "abbr": "PAX-ERC20",
         "coingeckoId": "paxos-standard",
-        "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFF005120",
         "serverList": [
             "http://eth1.cipig.net:8555",
@@ -462,6 +470,7 @@
         "abbr": "QC",
         "coingeckoId": "qcash",
         "swap_contract_address": "0x2f754733acd6d753731c00fee32cb484551cc15d",
+        "fallback_swap_contract": "0x2f754733acd6d753731c00fee32cb484551cc15d",
         "colorCoin": "0xFF52a5da",
         "serverList": [
             "electrum1.cipig.net:10050",
@@ -534,7 +543,8 @@
         "proto": "tcp",
         "abbr": "TUSD-ERC20",
         "coingeckoId": "true-usd",
-        "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFF1B1C5B",
         "serverList": [
             "http://eth1.cipig.net:8555",
@@ -553,7 +563,8 @@
         "proto": "tcp",
         "abbr": "USDC-ERC20",
         "coingeckoId": "usd-coin",
-        "swap_contract_address": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
+        "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
+        "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "colorCoin": "0xFF2775c9",
         "serverList": [
             "http://eth1.cipig.net:8555",
@@ -717,6 +728,7 @@
         "coingeckoId": "binancecoin",
         "colorCoin": "0xFFF0B90B",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "serverList": [
             "http://bsc1.cipig.net:8655",
             "http://bsc2.cipig.net:8655",
@@ -733,6 +745,7 @@
         "coingeckoId": "komodo",
         "colorCoin": "0xFF326464",
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "serverList": [
             "http://bsc1.cipig.net:8655",
             "http://bsc2.cipig.net:8655",
@@ -756,7 +769,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xFF519FBC",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "ADA-BEP20",
@@ -772,7 +786,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xFF0E1F32",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "1INCH-BEP20",
@@ -788,7 +803,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xFFDCE5F4",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "ATOM-BEP20",
@@ -804,7 +820,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff454a65",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "AVAX-BEP20",
@@ -820,7 +837,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xffee5852",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "BAL-BEP20",
@@ -836,7 +854,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff2d2d2d",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "BAND-BEP20",
@@ -852,7 +871,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff6e8eff",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "BNT-BEP20",
@@ -868,7 +888,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff001542",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "BTC-BEP20",
@@ -884,7 +905,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xFFf7931a",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "BUSD-BEP20",
@@ -900,9 +922,9 @@
         ],
         "type": "bep",
         "colorCoin": "0xFFF0BA01",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
-
     {
         "abbr": "CAKE",
         "name": "PancakeSwap",
@@ -917,7 +939,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xffda9a61",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "COMP-BEP20",
@@ -933,7 +956,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff00dcaf",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "DAI-BEP20",
@@ -949,7 +973,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xFFF8B34F",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "DODO-BEP20",
@@ -965,7 +990,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xfffff500",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "DOT-BEP20",
@@ -981,9 +1007,9 @@
         ],
         "type": "bep",
         "colorCoin": "0xfff12e9a",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
-
     {
         "abbr": "EGLD-BEP20",
         "name": "Elrond",
@@ -998,9 +1024,9 @@
         ],
         "type": "bep",
         "colorCoin": "0xff2462c2",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
-
     {
         "abbr": "ELF-BEP20",
         "name": "aelf",
@@ -1015,7 +1041,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff3a78ca",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "EOS-BEP20",
@@ -1031,7 +1058,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff454445",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "ETC-BEP20",
@@ -1047,7 +1075,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff4fa753",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "FIL-BEP20",
@@ -1063,7 +1092,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff5fd6de",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "IOTA-BEP20",
@@ -1079,7 +1109,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff3e3d3e",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "IOTX-BEP20",
@@ -1095,7 +1126,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff00e5e7",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "MATIC-BEP20",
@@ -1111,7 +1143,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff469af7",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "NEAR-BEP20",
@@ -1127,7 +1160,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff000000",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "ONT-BEP20",
@@ -1143,7 +1177,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff4bc4d9",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "PAX-BEP20",
@@ -1159,7 +1194,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xfff5ee00",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "PAXG-BEP20",
@@ -1175,7 +1211,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xffe4ca22",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "ETH-BEP20",
@@ -1191,7 +1228,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xFF828384",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "USDC-BEP20",
@@ -1207,7 +1245,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xFF2775c9",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "USDT-BEP20",
@@ -1223,7 +1262,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff38c1a4",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "BAT-BEP20",
@@ -1239,7 +1279,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xFFff5000",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "LINK-BEP20",
@@ -1255,7 +1296,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff4588eb",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "SXP-BEP20",
@@ -1271,7 +1313,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xfffe8137",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "SUSHI-BEP20",
@@ -1287,7 +1330,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xffb58cc7",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "MKR-BEP20",
@@ -1303,7 +1347,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff1fccc3",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "SNX-BEP20",
@@ -1319,7 +1364,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff1e126c",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "XRP-BEP20",
@@ -1335,7 +1381,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff384149",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "XTZ-BEP20",
@@ -1351,7 +1398,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xffc5e900",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "XVS",
@@ -1367,7 +1415,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xfff7cc77",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "YFI-BEP20",
@@ -1383,7 +1432,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff0095f0",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "YFII-BEP20",
@@ -1399,7 +1449,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xffff498f",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "ZIL-BEP20",
@@ -1415,7 +1466,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xff6cd9da",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "abbr": "UNI-BEP20",
@@ -1431,7 +1483,8 @@
         ],
         "type": "bep",
         "colorCoin": "0xffff309e",
-        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31"
     },
     {
         "name": "tQTUM",
@@ -1458,6 +1511,7 @@
         "testCoin": true,
         "colorCoin": "0xFFF0B90B",
         "swap_contract_address": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
+        "fallback_swap_contract": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
         "serverList": [
             "https://data-seed-prebsc-1-s2.binance.org:8545"
         ],
@@ -1473,6 +1527,7 @@
         "coingeckoId": "test-token",
         "testCoin": true,
         "swap_contract_address": "0xba8b71f3544b93e2f681f996da519a98ace0107a",
+        "fallback_swap_contract": "0xba8b71f3544b93e2f681f996da519a98ace0107a",
         "colorCoin": "0xFF009dcd",
         "serverList": [
             "electrum1.cipig.net:10071",
@@ -1491,6 +1546,7 @@
         "testCoin": true,
         "colorCoin": "0xFF4a7382",
         "swap_contract_address": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
+        "fallback_swap_contract": "0xcCD17C913aD7b772755Ad4F0BDFF7B34C6339150",
         "serverList": [
             "https://data-seed-prebsc-1-s2.binance.org:8545"
         ],

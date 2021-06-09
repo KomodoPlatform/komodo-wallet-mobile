@@ -73,6 +73,7 @@ class Coin {
     coingeckoId = config['coingeckoId'] ?? '';
     testCoin = config['testCoin'] ?? false;
     swapContractAddress = config['swap_contract_address'] ?? '';
+    fallbackSwapContract = config['fallback_swap_contract'] ?? '';
     colorCoin = config['colorCoin'] ?? '';
     isDefault = config['isDefault'] ?? false;
     serverList = List<String>.from(config['serverList']);
@@ -104,6 +105,7 @@ class Coin {
   List<String> serverList;
   List<String> explorerUrl;
   String swapContractAddress;
+  String fallbackSwapContract;
 
   /// NB: If the initial value is `null` then it might be updated from MM during the coin activation.
   int requiredConfirmations;
@@ -130,6 +132,7 @@ class Coin {
         'coingeckoId': coingeckoId ?? '',
         'testCoin': testCoin ?? false,
         'swap_contract_address': swapContractAddress ?? '',
+        'fallback_swap_contract': fallbackSwapContract ?? '',
         'colorCoin': colorCoin ?? '',
         'serverList':
             List<dynamic>.from(serverList.map<String>((dynamic x) => x)) ??
