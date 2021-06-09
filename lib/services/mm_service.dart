@@ -373,7 +373,7 @@ class MMService {
       await coinsBloc.updateCoinBalances();
       Log('mm_service:434', 'loadCoin finished');
     } catch (e) {
-      print(e);
+      Log('mm_service', 'initCoinsAndLoad: $e');
     }
   }
 
@@ -401,19 +401,35 @@ class MMService {
     await file.delete();
   }
 
-  Future<dynamic> stopmm2() async {
+  Future<void> stopmm2() async {
+    if (Platform.isIOS) {
+      await _stopmm2Ios();
+      Log('mm_service', 'stopmm2: done');
+      return;
+    }
+
     try {
       final BaseService baseService =
           BaseService(userpass: userpass, method: 'stop');
-      final Response response =
-          await client.post(url, body: baseServiceToJson(baseService));
+      await client.post(url, body: baseServiceToJson(baseService));
 
       _running = false;
-      return baseServiceFromJson(response.body);
     } catch (e) {
       Log('mm_service', 'stopmm2: $e');
-      return null;
     }
+  }
+
+  Future<void> _stopmm2Ios() async {
+    final int errorCode = await nativeC.invokeMethod<int>('stop');
+    final Mm2StopError error = mm2StopErrorFrom(errorCode);
+    Log('mm_service', 'stopmm2Ios: $error');
+
+    await pauseUntil(await _mm2status() == Mm2Status.not_running);
+    _running = false;
+  }
+
+  Future<Mm2Status> _mm2status() async {
+    return mm2StatusFrom(await checkStatusMm2());
   }
 
   Future<dynamic> maintainMm2BgExecution() async {
@@ -421,9 +437,9 @@ class MMService {
 
     if (mainBloc.isInBackground) {
       if (_running && musicService.musicMode == MusicMode.SILENT) {
-        stopmm2();
+        await stopmm2();
       }
-    } else if (!_running) {
+    } else if (!(await MM.isRpcUp())) {
       await startup.startMmIfUnlocked();
     }
   }
@@ -461,6 +477,14 @@ enum Mm2Error {
   unknown,
 }
 
+/// mm2_stop error codes defined in "mm2_lib.rs".
+enum Mm2StopError {
+  ok,
+  not_running,
+  error_stopping,
+  unknown,
+}
+
 /// mm2_main_status codes defined in "mm2_lib.rs".
 enum Mm2Status {
   not_running,
@@ -485,6 +509,18 @@ Mm2Error mm2ErrorFrom(int errorCode) {
     default:
       return Mm2Error.unknown;
   }
+}
+
+Mm2StopError mm2StopErrorFrom(int errorCode) {
+  switch (errorCode) {
+    case 0:
+      return Mm2StopError.ok;
+    case 1:
+      return Mm2StopError.not_running;
+    case 2:
+      return Mm2StopError.error_stopping;
+  }
+  return Mm2StopError.unknown;
 }
 
 Mm2Status mm2StatusFrom(int statusCode) {

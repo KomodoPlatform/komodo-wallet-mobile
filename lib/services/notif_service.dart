@@ -15,6 +15,7 @@ import 'package:komodo_dex/services/job_service.dart';
 import 'package:komodo_dex/services/mm.dart';
 import 'package:komodo_dex/services/mm_service.dart';
 import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/utils/utils.dart';
 
 NotifService notifService = NotifService();
 
@@ -31,9 +32,7 @@ class NotifService {
     if (initialized) return;
     initialized = true;
 
-    while (!mmSe.running) {
-      await Future<dynamic>.delayed(const Duration(milliseconds: 500));
-    }
+    await pauseUntil(mmSe.running);
 
     _subscribeSwapStatus();
     _subscribeTxs();
@@ -63,9 +62,7 @@ class NotifService {
   }
 
   Future<void> _subscribeRewards() async {
-    while (coinsBloc.currentActiveCoin != null) {
-      await Future<dynamic>.delayed(Duration(milliseconds: 300));
-    }
+    await pauseUntil(coinsBloc.currentActiveCoin == null, maxMs: 20000);
 
     jobService.install('checkRewards', 300, (j) async {
       if (!mmSe.running) return;

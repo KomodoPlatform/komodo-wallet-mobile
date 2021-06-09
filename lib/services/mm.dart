@@ -779,4 +779,20 @@ class ApiProvider {
           'getOrderbookDepth', e, 'mm orderbook_depth] $e');
     }
   }
+
+  Future<bool> isRpcUp([http.Client client]) async {
+    client ??= mmSe.client;
+
+    bool isUp = false;
+    try {
+      final VersionMm2 versionmm2 =
+          await MM.getVersionMM2(BaseService(method: 'version'));
+
+      isUp = versionmm2 is VersionMm2 && versionmm2 != null;
+    } catch (e) {
+      Log('mm', 'isRpcUp: $e');
+    }
+
+    return isUp;
+  }
 }

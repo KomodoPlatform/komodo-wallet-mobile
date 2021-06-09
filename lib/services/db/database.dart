@@ -18,7 +18,7 @@ class Db {
   static Future<Database> get db async {
     // Protect the database from being opened and initialized multiple times.
     if (_initInvoked) {
-      while (_db == null) await sleepMs(111);
+      await pauseUntil(_db != null);
       return _db;
     }
 
