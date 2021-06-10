@@ -100,10 +100,7 @@ import AVFoundation
                                             let volume = NSNumber (value: call.arguments as! Double)
                                             result (Int (audio_volume (volume)))
                                         } else if call.method == "audio_stop" {
-                                            if self.shouldRunInBg {
-                                                self.shouldRunInBg = false;
-                                                let _ = self.performStop();
-                                            }
+                                            self.shouldRunInBg = false;
                                             audio_bg ("")
                                             result (Int (audio_deactivate()))
                                         } else if call.method == "show_notification" {
