@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:komodo_dex/localizations.dart';
@@ -8,7 +5,7 @@ import 'package:komodo_dex/model/swap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:komodo_dex/screens/dex/orders/swap/detail_swap.dart';
 import 'package:komodo_dex/blocs/settings_bloc.dart';
-import 'package:komodo_dex/utils/utils.dart';
+import 'package:komodo_dex/screens/dex/orders/swap/swap_share_preview.dart';
 
 class FinalTradeSuccess extends StatefulWidget {
   const FinalTradeSuccess({@required this.swap});
@@ -23,8 +20,6 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   Animation<dynamic> animation;
-
-  GlobalKey repaintKey = GlobalKey();
 
   @override
   void initState() {
@@ -49,79 +44,71 @@ class _FinalTradeSuccessState extends State<FinalTradeSuccess>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: animationController.drive(CurveTween(curve: Curves.easeOut)),
-      child: RepaintBoundary(
-        key: repaintKey,
-        child: Center(
-          child: ListView(
-            children: <Widget>[
-              Stack(
+      child: ListView(
+        children: <Widget>[
+          Stack(
+            alignment: AlignmentDirectional.bottomEnd,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: IconButton(
+                  icon: Icon(Icons.share),
+                  onPressed: () async {
+                    Navigator.of(context).push<dynamic>(
+                      MaterialPageRoute<dynamic>(
+                        builder: (context) => SwapSharePreview(
+                          swap: widget.swap,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Column(
                 children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: Icon(Icons.share),
-                      onPressed: () async {
-                        final RenderRepaintBoundary boundary =
-                            repaintKey.currentContext.findRenderObject();
-                        final ui.Image image = await boundary.toImage();
-                        final byteData = await image.toByteData(
-                            format: ui.ImageByteFormat.png);
-                        final pngBytes = byteData.buffer.asUint8List();
-
-                        final String directory =
-                            (await applicationDocumentsDirectory).path;
-                        final imgFile = File('$directory/screenshot.png');
-                        await imgFile.writeAsBytes(pngBytes);
-                      },
-                    ),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  Container(
+                    height: 200,
+                    child: SvgPicture.asset(
+                        settingsBloc.isLightTheme
+                            ? 'assets/svg_light/trade_success.svg'
+                            : 'assets/svg/trade_success.svg',
+                        semanticsLabel: 'Trade Success'),
+                  ),
+                  const SizedBox(
+                    height: 32,
                   ),
                   Column(
-                    children: [
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      Container(
-                        height: 200,
-                        child: SvgPicture.asset(
-                            settingsBloc.isLightTheme
-                                ? 'assets/svg_light/trade_success.svg'
-                                : 'assets/svg/trade_success.svg',
-                            semanticsLabel: 'Trade Success'),
-                      ),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context).trade,
-                              style: Theme.of(context).textTheme.headline6),
-                          Text(
-                            AppLocalizations.of(context).tradeCompleted,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                .copyWith(color: Theme.of(context).accentColor),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      Container(
-                        color: const Color.fromARGB(255, 52, 62, 76),
-                        height: 1,
-                        width: double.infinity,
+                    children: <Widget>[
+                      Text(AppLocalizations.of(context).trade,
+                          style: Theme.of(context).textTheme.headline6),
+                      Text(
+                        AppLocalizations.of(context).tradeCompleted,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            .copyWith(color: Theme.of(context).accentColor),
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  Container(
+                    color: const Color.fromARGB(255, 52, 62, 76),
+                    height: 1,
+                    width: double.infinity,
+                  ),
                 ],
               ),
-              DetailSwap(
-                swap: widget.swap,
-              )
             ],
           ),
-        ),
+          DetailSwap(
+            swap: widget.swap,
+          )
+        ],
       ),
     );
   }
